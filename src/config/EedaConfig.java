@@ -17,15 +17,13 @@ import models.UserCustomer;
 import models.UserLogin;
 import models.UserOffice;
 import models.UserRole;
+import models.eeda.OfficeConfig;
+//import models.yh.profile.Route;
 import models.eeda.profile.Country;
 import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
 import models.eeda.profile.OrderNoSeq;
 import models.eeda.profile.Unit;
-import models.eeda.OfficeConfig;
-//import models.yh.profile.Route;
-
-
 
 import org.apache.log4j.Logger;
 import org.bee.tl.ext.jfinal.BeetlRenderFactory;
@@ -48,8 +46,8 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.app.AppControllerForMobile;
+import controllers.bizadmin.BizAdminController;
 import controllers.bizadmin.account.AccountController;
-import controllers.bizadmin.login.LoginController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
 import controllers.profile.CountryController;
@@ -58,20 +56,27 @@ import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.TradeItemController;
 import controllers.profile.UnitController;
+import controllers.webadmin.WebAdminController;
+import controllers.webadmin.ad.AdController;
 import controllers.webadmin.ad.CuController;
 import controllers.webadmin.ad.HuiController;
 import controllers.webadmin.ad.TaoController;
 import controllers.webadmin.biz.BannerApplicationController;
 import controllers.webadmin.biz.InviteCodeController;
-import controllers.webadmin.customer.AskController;
-import controllers.webadmin.customer.CustomerController;
-import controllers.webadmin.customer.ProjectController;
-import controllers.webadmin.customer.QuotationController;
+import controllers.webadmin.biz.MobilePushController;
+import controllers.webadmin.biz.NoticeController;
+import controllers.webadmin.biz.ReminderController;
+import controllers.webadmin.biz.SpController;
 import controllers.webadmin.data.BestCaseController;
 import controllers.webadmin.data.CaseController;
 import controllers.webadmin.data.ProductController;
+import controllers.webadmin.data.TaoManageController;
 import controllers.webadmin.data.VideoController;
 import controllers.webadmin.msg.DashBoardController;
+import controllers.webadmin.user.AskController;
+import controllers.webadmin.user.ProjectController;
+import controllers.webadmin.user.QuotationController;
+import controllers.webadmin.user.UserController;
 
 
 public class EedaConfig extends JFinalConfig {
@@ -145,33 +150,38 @@ public class EedaConfig extends JFinalConfig {
 	    String contentPath = "";
 	    
 	    //商家的后台
-        me.add("/BusinessAdmin", LoginController.class);
+        me.add("/BusinessAdmin", BizAdminController.class);
         me.add("/BusinessAdmin/account", AccountController.class);
+        me.add("/BusinessAdmin/product", controllers.bizadmin.product.ProductController.class);
+        me.add("/BusinessAdmin/ad", controllers.bizadmin.ad.AdController.class);
+        me.add("/BusinessAdmin/case", controllers.bizadmin.weddingcase.CaseController.class);
+        me.add("/BusinessAdmin/video", controllers.bizadmin.video.VideoController.class);
 	    
 	    //总管理的后台
-	    me.add("/WebAdmin", DashBoardController.class);
+	    me.add("/WebAdmin", WebAdminController.class);
         me.add("/WebAdmin/dashBoard", DashBoardController.class);
-        me.add("/WebAdmin/customer", CustomerController.class);
-        me.add("/WebAdmin/customer/quotation", QuotationController.class);
-        me.add("/WebAdmin/customer/project", ProjectController.class);
-        me.add("/WebAdmin/customer/ask", AskController.class);
+        me.add("/WebAdmin/user", UserController.class);
+        me.add("/WebAdmin/user/quotation", QuotationController.class);
+        me.add("/WebAdmin/user/project", ProjectController.class);
+        me.add("/WebAdmin/user/ask", AskController.class);
         
-        me.add("/WebAdmin/biz/sp", TaoController.class);
-        me.add("/WebAdmin/biz/reminder", CuController.class);
+        me.add("/WebAdmin/biz", SpController.class);
+        me.add("/WebAdmin/biz/reminder", ReminderController.class);
         me.add("/WebAdmin/biz/bannerApplication", BannerApplicationController.class);
-        me.add("/WebAdmin/biz/mobilePush", HuiController.class);
+        me.add("/WebAdmin/biz/mobilePush", MobilePushController.class);
+        me.add("/WebAdmin/biz/notice", NoticeController.class);
         me.add("/WebAdmin/biz/inviteCode", InviteCodeController.class);
         
+        me.add("/WebAdmin/ad", AdController.class);
         me.add("/WebAdmin/ad/tao", TaoController.class);
         me.add("/WebAdmin/ad/cu", CuController.class);
         me.add("/WebAdmin/ad/hui", HuiController.class);
         
-        me.add("/WebAdmin/data/product", ProductController.class);
-        me.add("/WebAdmin/data/video", VideoController.class);
-        me.add("/WebAdmin/data/case", CaseController.class);
-        me.add("/WebAdmin/data/bestCase", BestCaseController.class);
-        
-        
+        me.add("/WebAdmin/tao_manage", TaoManageController.class);
+        me.add("/WebAdmin/tao_manage/product", ProductController.class);
+        me.add("/WebAdmin/tao_manage/video", VideoController.class);
+        me.add("/WebAdmin/tao_manage/case", CaseController.class);
+        me.add("/WebAdmin/best_wedding", BestCaseController.class);
         
         //后台
         me.add("/", MainController.class, contentPath);
@@ -192,8 +202,6 @@ public class EedaConfig extends JFinalConfig {
         me.add("/location", controllers.profile.LocationController.class, contentPath);
         me.add("/office", controllers.profile.OfficeController.class, contentPath);
 
-//		me.add("/accountAuditLog", AccountAuditLogController.class, contentPath);
-//		me.add("/account", AccountController.class, contentPath);
 		me.add("/privilege", PrivilegeController.class, contentPath);
 
 	}

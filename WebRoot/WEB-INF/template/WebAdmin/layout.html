@@ -4,15 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<title>${SYS_CONFIG.system_title!''}</title>
-
-  <% var logoPath=SYS_CONFIG.logo!'';
-    if(logoPath==""){%>
-  <link rel="shortcut icon" href="/yh/img/eeda_logo.ico">
-  <%}else{%>
-  <link rel="shortcut icon" href="${SYS_CONFIG.logo!''}">
-  <%}%>
+<title>admin管理后台-基本信息</title>
 <link rel="stylesheet" href="http://www.iwedclub.com/WebAdmin/css/style.default.css" type="text/css" />
 <link rel="stylesheet" href="http://www.iwedclub.com/WebAdmin/css/pagestyle.css" type="text/css" />
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery-1.7.min.js"></script>
@@ -32,77 +24,70 @@
     <link rel="stylesheet" media="screen" href="css/style.ie8.css"/>
 <![endif]-->
 <!--[if lt IE 9]>
-    <script src="js/plugins/css3-mediaqueries.js"></script>
+  <script src="js/plugins/css3-mediaqueries.js"></script>
 <![endif]-->
 </head>
 <body class="withvernav">
 <div class="bodywrapper">
     <!--topheader-->
-    <div class="topheader">
-        <div class="left">
-            <h1 class="logo">Admin<span>管理后台</span></h1> <div class="topsearch">搜索：<input class="top-search" type="text" /></div>
-            <br clear="all" />
-        </div>
-        <!--left-->
-        <div class="right">
-            <!--<div class="notification">
-                <a class="count" href="ajax/notifications.html"><span>9</span></a>
-            </div>-->
-            <div class="userinfo"> <img src="images/thumbs/avatar.png" alt="" /> <span>管理员</span> </div>
-            <!--userinfo-->
-            <div class="userinfodrop">
-                <div class="avatar"> <a href=""><img src="images/thumbs/avatarbig.png" alt="" /></a> </div>
-                <!--avatar-->
-                <div class="userdata">
-                    <h4>Juan</h4>
-                    <span class="email">youremail@yourdomain.com</span>
-                    <ul>
-                        <li><a href="editprofile.html">编辑资料</a></li>
-                        <li><a href="accountsettings.html">账号设置</a></li>
-                        <li><a href="help.html">帮助</a></li>
-                        <li><a href="index.html">退出</a></li>
-                    </ul>
-                </div>
-                <!--userdata-->
-            </div>
-            <!--userinfodrop-->
-        </div>
-        <!--right-->
-    </div>    
-    <div class="vernav2 iconmenu">
-        <ul>
-            <%  
-                var map = permissionMap!'';
-                var breadcrumb_name='';
-                for(module in modules![]){
-            %>
-                    <li id="${module.id!}">
-                        <a href="#">${module.module_name!}</a>
-                        <% if(module.orders != null ){%>
-                            
-                                <%
-                                for(menu_order in module.orders){
-                                    if(request.requestURI == '/'+menu_order.url!''){
-                                        breadcrumb_name = menu_order.module_name;
-                                    }
-                                %>
-                                    <li id="${menu_order.id}">
-                                        <a class="support"  style="padding-left:30px;" href="/${menu_order.url!''}">${menu_order.module_name!}</a>
-                                    </li>
-                                <%}%>
-                            
-                        <%}%>
-                    </li>
-            <%  }%>
-
-        </ul>
-        <br />
+<div class="topheader">
+    <div class="left">
+        <h1 class="logo">Admin<span>管理后台</span></h1> <div class="topsearch">搜索：<input class="top-search" type="text" /></div>
+        <br clear="all" />
     </div>
-    <!--leftmenu-->    
-  <div class="centercontent">
+    <!--left-->
+    <div class="right">
+        <!--<div class="notification">
+            <a class="count" href="ajax/notifications.html"><span>9</span></a>
+        </div>-->
+        <div class="userinfo"> <img src="images/thumbs/avatar.png" alt="" /> <span>管理员</span> </div>
+        <!--userinfo-->
+        <div class="userinfodrop">
+            <div class="avatar"> <a href=""><img src="images/thumbs/avatarbig.png" alt="" /></a> </div>
+            <!--avatar-->
+            <div class="userdata">
+                <h4>Juan</h4>
+                <span class="email">youremail@yourdomain.com</span>
+                <ul>
+                    <li><a href="editprofile.html">编辑资料</a></li>
+                    <li><a href="accountsettings.html">账号设置</a></li>
+                    <li><a href="help.html">帮助</a></li>
+                    <li><a href="index.html">退出</a></li>
+                </ul>
+            </div>
+            <!--userdata-->
+        </div>
+        <!--userinfodrop-->
+    </div>
+    <!--right-->
+</div>    <div class="vernav2 iconmenu">
+  <ul>
+    <li><a href="/WebAdmin">基本信息</a></li>
+    <li><a href="/WebAdmin/user">用户管理</a></li>
+      <li><a href="/WebAdmin/user/quotation" class="support" style="padding-left:30px;"><strong>用户档期查询 和 报价</strong></a></li>
+    <li><a style="padding-left:30px;" href="/WebAdmin/user/project" class="support">新增婚筹项目列表</a></li>
+    <li><a style="padding-left:30px;" href="/WebAdmin/user/ask" class="typo">婚礼问问列表</a></li>
+    <li><a href="/WebAdmin/biz" class="tables">商家管理</a></li>
+    <li><a href="/WebAdmin/biz/reminder" class="buttons" style="padding-left:30px;"><strong>商家申请入驻提醒</strong></a></li>
+      <li><a href="/WebAdmin/biz/bannerApplication" class="buttons" style="padding-left:30px;"><strong>淘婚品横幅广告申请</strong></a></li>
+      <li><a href="/WebAdmin/biz/mobilePush" class="buttons" style="padding-left:30px;"><strong>手机推送申请</strong></a></li>
+    <li><a style="padding-left:30px;" href="/WebAdmin/biz/notice" class="buttons">修改公告</a></li>
+        <li><a style="padding-left:30px;" href="/WebAdmin/biz/inviteCode" class="buttons">邀请码统计</a></li>
+    <li><a href="/WebAdmin/ad" class="typo">广告管理</a></li>
+    <li><a style="padding-left:30px;" href="/WebAdmin/ad/tao" class="buttons">淘婚品广告管理</a></li>
+    <li><a style="padding-left:30px;" href="/WebAdmin/ad/cu" class="buttons">“促”广告管理</a></li>
+    <li><a style="padding-left:30px;" href="/WebAdmin/ad/hui" class="buttons">"惠"广告管理</a></li>
+    <li><a href="/WebAdmin/tao_manage" class="typo">淘婚品管理</a></li>
+    <li><a style="padding-left:30px;" href="/WebAdmin/tao_manage/product" class="buttons">产品列表</a></li>
+    <li><a style="padding-left:30px;" href="/WebAdmin/tao_manage/video" class="buttons">视频列表</a></li>
+    <li><a style="padding-left:30px;" href="/WebAdmin/tao_manage/case" class="buttons">案例列表</a></li>
+    <li><a href="/WebAdmin/best_wedding" class="typo">精选婚礼</a></li>  
+  </ul>
+  <br />
+</div>
+<!--leftmenu-->    
+<div class="centercontent">
         ${layoutContent}
-  </div><!--contentwrapper-->
-
 </div>
 <!--bodywrapper-->
 </body>

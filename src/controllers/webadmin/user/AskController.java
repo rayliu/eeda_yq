@@ -1,4 +1,4 @@
-package controllers.webadmin.customer;
+package controllers.webadmin.user;
 
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;

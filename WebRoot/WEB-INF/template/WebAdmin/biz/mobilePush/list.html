@@ -1,48 +1,68 @@
 <%layout("/WebAdmin/layout.html"){%>
     <div class="pageheader notab overhide">
-      <div class="bdgray">
-        <h4>婚礼问问</h4>
-        <p>&nbsp; </p>
-        <p><strong>用户问题</strong><select class="ml10"><option>全国</option><option>珠海</option></select></p>
+      <div>
+     <h4>修改推送广告价格</h4>
+      <div class="bdgray mt10">
+        <div><span class="pdr10">手机推送 :4999/每条</span>     
+          <input type="text" class="mh_txt" /> <input class="modifibtn" type="button" value="修改" /></div>
+        </div>
+        <br />
+        <h4>修改钻石商家价格</h4>
+      <div class="bdgray mt10">
+        <div><span class="pdr10">钻石商家 :365/每条</span>    
+          <input type="text" class="mh_txt" /> <input class="modifibtn" type="button" value="修改" /></div>
+        </div>
+    <br />
+      <h4>手机推送申请</h4>
         <table class="userdetailtable mt10" width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
-            <td>序号</td>
-            <td>时间</td>
-            <td>问题</td>
-            <td>回复数</td>
-            <td></td>
+            <td width="2%">序号</td>
+            <td width="34%">商家</td>
+            <td width="5%">分类</td>
+            <td width="7%">地区</td>
+            <td width="10%">申请时间</td>
+            <td width="3%">条数</td>
+            <td width="14%">投放时间</td>
+            <td width="13%">联系电话</td>
+            <td width="12%">结算</td>
           </tr>
           <tr>
             <td>1</td>
-            <td>2015-1-2</td>
-            <td>哪个婚庆公司好</td>
-            <td>3</td>
-            <td><input type="button" value="查看" class="modifibtn"  onclick="window.location.href='wedding-ask-detail.php'"/> <input type="button" class="delete-btn"  value="删除" /></td>
+            <td><a href="business-remind-detail.html">珠海维多利亚</a></td>
+            <td>影楼</td>
+            <td>珠海</td>
+            <td>2016-10-20</td>
+            <td>1</td>
+            <td> 2016-11-20</td>
+            <td>1345641512</td>
+            <td>4000元</td>
           </tr>
           <tr>
             <td>2</td>
-            <td>2015-1-2</td>
-            <td>哪个婚庆公司好</td>
-            <td>3</td>
-            <td><input type="button" value="查看" class="modifibtn"  onclick="window.location.href='wedding-ask-detail.php'"/>              <input type="button" class="delete-btn"  value="删除" /></td>
+            <td><a href="#">珠海维多利亚</a></td>
+            <td>影楼</td>
+            <td>珠海</td>
+            <td>2016-10-20</td>
+            <td>1</td>
+            <td>2016-10-20</td>
+            <td>1345641512</td>
+            <td>4000元</td>
           </tr>
           <tr>
             <td>3</td>
-            <td>2015-1-2</td>
-            <td>哪个婚庆公司好</td>
-            <td>3</td>
-            <td><input type="button" value="查看" class="modifibtn"  onclick="window.location.href='wedding-ask-detail.php'"/>              <input type="button" class="delete-btn"  value="删除" /></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>2015-1-2</td>
-            <td>哪个婚庆公司好</td>
-            <td>3</td>
-            <td><input type="button" value="查看" class="modifibtn"  onclick="window.location.href='wedding-ask-detail.php'"/>              <input type="button" class="delete-btn"  value="删除" /></td>
+            <td><a href="#">珠海维多利亚</a></td>
+            <td>影楼</td>
+            <td>珠海</td>
+            <td>2016-10-20</td>
+            <td>1</td>
+            <td>2016-10-20</td>
+            <td>1345641512</td>
+            <td>4000元</td>
           </tr>
         </table>
       </div>
     </div>
+
 
 <%}%>
 <script>

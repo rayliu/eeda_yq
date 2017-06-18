@@ -1,4 +1,4 @@
-package controllers.webadmin.customer;
+package controllers.webadmin.user;
 
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
@@ -26,29 +26,17 @@ import controllers.util.DbUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class QuotationController extends Controller {
+public class UserController extends Controller {
 
-	private Logger logger = Logger.getLogger(QuotationController.class);
+	private Logger logger = Logger.getLogger(UserController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
-	@Before(EedaMenuInterceptor.class)
 	public void index() {
-	    //对应action     WebAdmin/customer/quotation
-	    logger.debug("getRequest().getRequestURI():"+getRequest().getRequestURI());
 		render(getRequest().getRequestURI()+"/list.html");
 	}
 	
-	@Before(EedaMenuInterceptor.class)
 	 public void edit(){
 	        String id = getPara("id");
-//	      String title = getPara("edit_radioTitle");
-//	      String content = getPara("edit_radioContent");
-//	      Record r= Db.findById("msg_board", id);
-//	      r.set("title", title);
-//	      r.set("content", content);
-//	      r.set("update_stamp", new Date());
-//	      r.set("updator", LoginUserController.getLoginUserId(this));
-//	      Db.update("msg_board", r);
 	        render("/WebAdmin/customer/edit.html");
 	    }
 	 
@@ -68,7 +56,7 @@ public class QuotationController extends Controller {
         redirect("/");
    	}
     
-    @Before(Tx.class)
+   
     public void saveOfMsgBoard() throws Exception {
     	String title = getPara("radioTitle");
     	String content = getPara("radioContent");

@@ -1,4 +1,4 @@
-package controllers.webadmin.customer;
+package controllers.webadmin.user;
 
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
@@ -67,22 +67,6 @@ public class ProjectController extends Controller {
         redirect("/");
    	}
     
-    @Before(Tx.class)
-    public void saveOfMsgBoard() throws Exception {
-    	String title = getPara("radioTitle");
-    	String content = getPara("radioContent");
-    	UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id=user.getLong("office_id");
-    	Record r= new Record();
-    	r.set("title", title);
-    	r.set("content", content);
-    	r.set("office_id", office_id);
-    	r.set("create_stamp", new Date());
-    	r.set("creator", LoginUserController.getLoginUserId(this));
-    	Db.save("msg_board", r);
-    	redirect("/msgBoard");
-    }
-    
     public void list(){
     	
     	UserLogin user = LoginUserController.getLoginUser(this);
@@ -116,13 +100,5 @@ public class ProjectController extends Controller {
         renderJson(map); 
     	
     }
-    
-   
 
-    public void seeMsgBoardDetail(){
-    	String id = getPara("id");
-    	Record r= Db.findById("msg_board", id);
-    	renderJson(r);
-    }
-    
 }

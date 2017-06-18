@@ -36,9 +36,9 @@ public class UrlHanlder extends Handler {
 //		logger.debug("host: " + host + ":" + port);
 //		logger.debug("----------------------------------------------------------");
 		// login page handle
-		if (target.indexOf("/login") > 0 && target.split("/").length > 2) {
-			target = target.substring(target.indexOf("/", 2));
-		}
+//		if (target.indexOf("/login") > 0 && target.split("/").length > 2) {
+//			target = target.substring(target.indexOf("/", 2));
+//		}
 		// logger.debug("content path:"+target);
 		nextHandler.handle(target, request, response, isHandled);
 	}

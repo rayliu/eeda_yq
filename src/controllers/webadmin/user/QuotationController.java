@@ -1,4 +1,4 @@
-package controllers.webadmin.customer;
+package controllers.webadmin.user;
 
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
@@ -26,14 +26,16 @@ import controllers.util.DbUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class CustomerController extends Controller {
+public class QuotationController extends Controller {
 
-	private Logger logger = Logger.getLogger(CustomerController.class);
+	private Logger logger = Logger.getLogger(QuotationController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		render("/WebAdmin/customer/list.html");
+	    //对应action     WebAdmin/customer/quotation
+	    logger.debug("getRequest().getRequestURI():"+getRequest().getRequestURI());
+		render(getRequest().getRequestURI()+"/list.html");
 	}
 	
 	@Before(EedaMenuInterceptor.class)
