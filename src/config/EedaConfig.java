@@ -45,6 +45,7 @@ import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
+import controllers.IndexController;
 import controllers.app.AppControllerForMobile;
 import controllers.bizadmin.BizAdminController;
 import controllers.bizadmin.account.AccountController;
@@ -148,7 +149,8 @@ public class EedaConfig extends JFinalConfig {
 
 	private void setWeddingRoute(Routes me) {
 	    String contentPath = "";
-	    
+	    //网站首页
+        me.add("/", IndexController.class);
 	    //商家的后台
         me.add("/BusinessAdmin", BizAdminController.class);
         me.add("/BusinessAdmin/account", AccountController.class);
@@ -184,6 +186,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/WebAdmin/best_wedding", BestCaseController.class);
         
         //后台
+        /*
         me.add("/", MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
 
@@ -203,7 +206,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/office", controllers.profile.OfficeController.class, contentPath);
 
 		me.add("/privilege", PrivilegeController.class, contentPath);
-
+        */
 	}
 
     @Override
