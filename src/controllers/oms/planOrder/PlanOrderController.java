@@ -83,7 +83,7 @@ public class PlanOrderController extends Controller {
    		String jsonStr=getPara("params");
        	
        	Gson gson = new Gson();  
-        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+       	Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
         PlanOrder planOrder = new PlanOrder();
    		String id = (String) dto.get("id");
@@ -257,6 +257,7 @@ public class PlanOrderController extends Controller {
         String sName =  getPara("columns["+sColumn+"][data]")==null?"create_stamp":getPara("columns["+sColumn+"][data]") ;
         if("0".equals(sName)){
         	sName = "create_stamp";
+        	sort ="desc";
         }
         
         String pageIndex = getPara("draw");
