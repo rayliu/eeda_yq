@@ -224,6 +224,9 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.registration = $("#registration").val();
             order.custom_registration = $("#custom_registration").val();
             order.zip_code = $("#zip_code").val();
+            order.this_year_salesamount = $("#this_year_salesamount").val();            
+            order.last_year_salesamount = $("#last_year_salesamount").val();
+            order.beforelast_year_salesamount = $("#beforelast_year_salesamount").val();
             order.docItem = buildDocItem();
             		
             order.customer_quotationItem=itemOrder.buildCustomerQuotationDetail();
