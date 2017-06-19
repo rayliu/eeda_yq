@@ -1,0 +1,17 @@
+<input type="hidden" id="" value="${hkCustom.id!''}">
+
+
+				<form id="Custom_noteForm">
+	                    <button class="btn  btn_green" id="add_account" type="button">添加账户</button> 
+                               <br>
+                               <%include("/eeda/component/form/detailTable.html", 
+                                   {
+                                       id:'cargo_table',
+                                       style:'width:100%',
+                                       headers:['','账户名','开户行', '银行账号','备注'],
+                                       field_list:['id','account_name','bank_name','account_no','remark'],
+                                       value_list: account_itemList![]
+                                   }){} %>
+	                    
+		                
+					</form>
