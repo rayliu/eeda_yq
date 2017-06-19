@@ -442,7 +442,7 @@ public class CheckOrder extends Controller {
             	
                 String qr_code = order.getStr("qr_code");
                 if(StringUtils.isNotBlank(qr_code)){
-            		GateIn gi = GateIn.dao.findFirst("select * from gate_in where error_flag = 'N' and qr_code = ? and office_id = ?",qr_code,officeId);
+            		GateIn gi = GateIn.dao.findFirst("select * from gate_in where error_flag = 'N' and out_flag = 'N' and qr_code = ? and office_id = ?",qr_code,officeId);
             		if(gi != null){
             			String this_time = order.getStr("create_time");//这次出库时间
             			String out_flag = gi.getStr("out_flag");
