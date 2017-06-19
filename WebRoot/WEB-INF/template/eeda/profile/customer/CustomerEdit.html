@@ -23,7 +23,7 @@
                                     <input id="office_id" name="office_id" type="hidden" value="${party.office_id!''}">
                                     <!-- /.col-lg-6 (odd) 奇数列 -->
                                     
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
                                                 <label>代码</label>
@@ -31,62 +31,15 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
-                                                <label>助记码(拼音首字母)</label>
-                                                <input  class="form-control" id="quick_search_code" name="quick_search_code" type="text" value="${party.quick_search_code!''}" required>
-                                            </div>                                     
+                                                <label>联系人</label>
+                                                <input class="form-control" id="contact_person" type="text" name="contact_person" value="${party.contact_person!''}">
+                                            </div>
                                         </fieldset>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>公司简称(必填)</label>
-                                                <input  class="form-control" id="abbr" name="abbr" type="text" value="${party.abbr!''}" required>
-                                            </div>                                     
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>公司英文名称</label>
-                                                <input  class="form-control" id="company_name_eng" name="company_name_eng" type="text" value="${party.company_name_eng!''}">
-                                            </div>                                     
-                                        </fieldset>
-                                    </div>
-                                    
-                              </div>
-                           <div class="row"> 
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>公司中文名称(必填)</label>
-                                                <input  class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}" required>
-                                            </div>                                     
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>英文地址</label>
-                                                <input  class="form-control" id="address_eng" type="text" name="address_eng" value="${party.address_eng!''}">
-                                            </div>                                     
-                                        </fieldset>
-                                    </div>
-                                    
-                              </div>
-							  <div class="row"> 
-                                    <!-- /.col-lg-6 (even) 偶数列-->                                  
-                                     <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>中文地址</label>
-                                                <input  class="form-control" id="address" type="text" name="address" value="${party.address!''}">
-                                            </div>                                     
-                                        </fieldset>
-                                    </div>   
-									<div class="col-lg-6">
+                                    <div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
                                                 <%include("/eeda/component/form/selectField.html", 
@@ -103,19 +56,17 @@
                                             </div>                                     
                                         </fieldset>
                                     </div>
-                                    <!-- /.col-lg-6 (odd) 奇数列 -->
-                                                                         
-                                    
-                                    <!-- /.col-lg-6 (even) 偶数列 -->
-                                    <div class="col-lg-6">
+	                          </div>
+	                          <div class="row"> 
+                              		<div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
-                                                <label>联系人</label>
-                                                <input class="form-control" id="contact_person" type="text" name="contact_person" value="${party.contact_person!''}">
-                                            </div>
+                                                <label>助记码(拼音首字母)</label>
+                                                <input  class="form-control" id="quick_search_code" name="quick_search_code" type="text" value="${party.quick_search_code!''}" required>
+                                            </div>                                     
                                         </fieldset>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
                                                 <label>联系人(英文)</label>
@@ -123,43 +74,7 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    
-                                    <!-- /.col-lg-6 (odd) 奇数列 -->
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>联系人电话</label>
-                                                <input class="form-control" id="phone" type="text" name="phone" value="${party.phone!''}">
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>视屏通话帐号(skype)</label>
-                                                <input class="form-control" id="skype" type="text" name="skype" value="${party.skype!''}">
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>邮箱</label>
-                                                <input  class="form-control " id="email" type="text" name="email" value="${party.email!''}">
-                                            </div>                                     
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>传真</label>
-                                                <input  class="form-control " id="fax" type="text" name="fax" value="${party.fax!''}">
-                                            </div>                                     
-                                        </fieldset>
-                                    </div>
-
-									<div class="col-lg-6">
+                                    <div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
                                                 <label>开票单位</label>
@@ -167,7 +82,104 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    <div class="col-lg-6">
+                              </div>
+							  <div class="row">  
+							  		<div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>公司简称(必填)</label>
+                                                <input  class="form-control" id="abbr" name="abbr" type="text" value="${party.abbr!''}" required>
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>联系人电话</label>
+                                                <input class="form-control" id="phone" type="text" name="phone" value="${party.phone!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>商检企业备案号</label>
+                                                <input class="form-control" id="registration" type="text" name="registration" value="${party.registration!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                              </div>
+							  <div class="row">
+							  		<div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>公司中文名称(必填)</label>
+                                                <input  class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}" required>
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>传真</label>
+                                                <input  class="form-control " id="fax" type="text" name="fax" value="${party.fax!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>海关备案号</label>
+                                                <input class="form-control" id="custom_registration" type="text" name="custom_registration" value="${party.custom_registration!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                              </div>
+							  <div class="row">
+							  		<div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>公司英文名称</label>
+                                                <input  class="form-control" id="company_name_eng" name="company_name_eng" type="text" value="${party.company_name_eng!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>视屏通话帐号(skype)</label>
+                                                <input class="form-control" id="skype" type="text" name="skype" value="${party.skype!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>保险费率</label>
+                                                <input class="form-control" id="insurance_rates" name="insurance_rates" type="text" value="${party.insurance_rates!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div>
+							  </div>
+							  <div class="row">
+							  		<div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>中文地址</label>
+                                                <input  class="form-control" id="address" type="text" name="address" value="${party.address!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>邮箱</label>
+                                                <input  class="form-control " id="email" type="text" name="email" value="${party.email!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+									
+                                    <div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
                                                 <label>收款方式</label>
@@ -179,7 +191,26 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    <div class="col-lg-6">
+                                    
+                              </div>
+							  <div class="row">
+							  		<div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>英文地址</label>
+                                                <input  class="form-control" id="address_eng" type="text" name="address_eng" value="${party.address_eng!''}">
+                                            </div>                                     
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>邮编</label>
+                                                <input class="form-control" id="zip_code" type="text" name="zip_code" value="${party.zip_code!''}">
+                                            </div>
+                                        </fieldset>
+                                    </div> 
+                                    <div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
                                                 <label>计费方式</label>
@@ -192,94 +223,103 @@
                                             </div>
                                         </fieldset>
                                     </div>
-                                    
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>保险费率</label>
-                                                <input class="form-control" id="insurance_rates" name="insurance_rates" type="text" value="${party.insurance_rates!''}">
+                              </div>
+							  <div class="row">
+									  <div class="col-lg-4">
+	                                        <fieldset>
+	                                            <div class="form-group">
+	                                                <label>重点客户提醒（根据一段时间内没有出现在工作单进行提醒）</label>
+		                                           	<select class="form-control" id="customer_remind" name="customer_remind">
+		                                           		<option></option>
+		                                           		<option value="7" <% if(party.customer_remind!''=='7'){%>selected<%}%>>七天</option>
+		                                           		<option value="15"<% if(party.customer_remind!''=='15'){%>selected<%}%>>十五天</option>
+		                                           		<option value="30"<% if(party.customer_remind!''=='30'){%>selected<%}%>>三十天</option>
+		                                           		<option value="90"<% if(party.customer_remind!''=='90'){%>selected<%}%>>九十天</option>
+		                                           		<option value="180"<% if(party.customer_remind!''=='180'){%>selected<%}%>>一百八十天</option>
+		                                           		<option value="360"<% if(party.customer_remind!''=='360'){%>selected<%}%>>三百六十天</option>
+		                                           	</select>
+	                                            </div>
+	                                        </fieldset>
+	                                    </div>
+	                                    <div class="col-lg-4">
+	                                        <fieldset>
+	                                            <div class="form-group">
+	                                                <label>公司简介</label>
+													<textarea class="form-control" rows="5"  id="introduction" name="introduction">${party.introduction!''}</textarea>
+	                                            </div>
+	                                        </fieldset>
+	                                    </div>                              
+	                                    <div class="col-lg-4">
+	                                        <fieldset>
+	                                            <div class="form-group">
+	                                                <label>备注</label>
+													<textarea class="form-control" rows="5" id="remark" name="remark">${party.remark!''}</textarea>
+	                                            </div>
+	                                        </fieldset>
+	                                    </div>
+                               </div>
+                               <div class="row">
+                               		   <div class="col-lg-12">                              
+									   		<h4>经营信息</h4>
+									   </div>
+                                       <div class="form-group">
+                                       		<div class="col-lg-4">
+                                                <label>今年销售额</label>
+												<input placeholder="" class="form-control" id="this_year_salesamount" name="this_year_salesamount" type="text" value="${party.this_year_salesamount!''}">
                                             </div>
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>重点客户提醒（根据一段时间内没有出现在工作单进行提醒）</label>
-	                                           	<select class="form-control" id="customer_remind" name="customer_remind">
-	                                           		<option></option>
-	                                           		<option value="7" <% if(party.customer_remind!''=='7'){%>selected<%}%>>七天</option>
-	                                           		<option value="15"<% if(party.customer_remind!''=='15'){%>selected<%}%>>十五天</option>
-	                                           		<option value="30"<% if(party.customer_remind!''=='30'){%>selected<%}%>>三十天</option>
-	                                           		<option value="90"<% if(party.customer_remind!''=='90'){%>selected<%}%>>九十天</option>
-	                                           		<option value="180"<% if(party.customer_remind!''=='180'){%>selected<%}%>>一百八十天</option>
-	                                           		<option value="360"<% if(party.customer_remind!''=='360'){%>selected<%}%>>三百六十天</option>
-	                                           	</select>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>商检企业备案号</label>
-                                                <input class="form-control" id="registration" type="text" name="registration" value="${party.registration!''}">
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>海关备案号</label>
-                                                <input class="form-control" id="custom_registration" type="text" name="custom_registration" value="${party.custom_registration!''}">
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>邮编</label>
-                                                <input class="form-control" id="zip_code" type="text" name="zip_code" value="${party.zip_code!''}">
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>公司简介</label>
-												<textarea class="form-control" rows="5"  id="introduction" name="introduction">${party.introduction!''}</textarea>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-                                    
-                                    <div class="col-lg-6">
-                                        <fieldset>
-                                            <div class="form-group">
-                                                <label>备注</label>
-												<textarea class="form-control" rows="5" id="remark" name="remark">${party.remark!''}</textarea>
-                                            </div>
-                                        </fieldset>
-                                    </div>
-								</form>       
-                            </div>
-
-             <div class="col-lg-12" style="margin-top:15px;">
-               <label>公司地点信息</label>
+                                    		<div class="col-lg-4">
+                                                 <label>去年销售额</label>
+											      <input placeholder="" class="form-control" id="last_year_salesamount" name="last_year_salesamount" type="text" value="${party.last_year_salesamount!''}">
+                                             </div>
+                                    		<div class="col-lg-4">
+                                             	<label>前年销售额</label>
+												<input placeholder="" class="form-control" id="beforelast_year_salesamount" name="beforelast_year_salesamount" type="text" value="${party.beforelast_year_salesamount!''}">
+                                         	</div>
+                                        </div>
+                                </div>
+						   </form>
+			 
+			 <div class="row">        
+	             <div class="col-lg-12" style="margin-top:15px;">
+	               <h4>公司地点信息</h4>
+	             </div>
+	             <div class="form-group">
+	                 <div class="col-lg-12">
+	                        <form id="Custom_noteForm" style="margin-top:15px;">
+	                            <button class="btn  btn_green" id="add_cargo" type="button">    添加地点</button> 
+	                                   <br>
+	                                   <%include("/eeda/component/form/detailTable.html", 
+	                                       {
+	                                           id:'dock_table',
+	                                           style:'width:100%',
+	                                           headers:['','地点名称','地点英文名称', '助记码','所属区域'],
+	                                           field_list:['id','dock_name','dock_name_eng','quick_search_code','dock_region'],
+	                                           value_list: itemList![]
+	                                       }){} %>
+	                        </form>
+	                    </div>
+	            </div>
+            </div>
+            <div class="row">
+			 	<div class="col-lg-12">
+                    <h4>银行账户信息</h4>
+                </div>
+                <div class="form-group">
+                <div class="col-lg-12">
+                     <%include("/eeda/profile/customer/BankAccount.html",{}){}%>
+                </div>
              </div>
-             <div class="form-group">
-                 <div class="col-lg-12">
-                        <form id="Custom_noteForm" style="margin-top:15px;">
-                            <button class="btn  btn_green" id="add_cargo" type="button">    添加地点</button> 
-                                   <br>
-                                   <%include("/eeda/component/form/detailTable.html", 
-                                       {
-                                           id:'dock_table',
-                                           style:'width:100%',
-                                           headers:['','地点名称','地点英文名称', '助记码','所属区域'],
-                                           field_list:['id','dock_name','dock_name_eng','quick_search_code','dock_region'],
-                                           value_list: itemList![]
-                                       }){} %>
-                        </form>
-                    </div>
-            </div>           
+			 </div>
+			 <div class="row">
+			 		<div class="col-lg-12">
+						<h4>联系信息</h4>
+	               </div>
+	               <div class="form-group">
+	                 <div class="col-lg-12">
+	                    <%include("/eeda/profile/customer/ContactsItem.html",{}){}%>
+	                 </div>
+	              </div>  
+			 </div>           
                             <!-- /.row (nested) -->
           <div class="row" style="margin-top:15px;">
                <div class="col-lg-12"> 

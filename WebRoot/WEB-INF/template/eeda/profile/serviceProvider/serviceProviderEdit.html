@@ -25,6 +25,10 @@
                                                 <input placeholder="" class="form-control" id="quick_search_code" type="text" name="quick_search_code" value="${party.quick_search_code!''}">
                                             </div>
                                             <div class="form-group">
+                                                <label>简称(必填)</label>
+                                                <input class="form-control" id="abbr" type="text" name="abbr" value="${party.abbr!''}">
+                                            </div>
+                                            <div class="form-group">
                                                 <label>公司名称(必填)</label>
                                                 <input placeholder="" class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}">
                                             </div> 
@@ -32,10 +36,7 @@
                                                 <label>公司英文名称</label>
                                                 <input placeholder="" class="form-control" id="company_name_eng" name="company_name_eng" type="text" value="${party.company_name_eng!''}">
                                             </div>
-                                            <div class="form-group">
-                                                <label>简称(必填)</label>
-                                                <input class="form-control" id="abbr" type="text" name="abbr" value="${party.abbr!''}">
-                                            </div>
+                                            
                                             <div class="form-group">
                                                 <label>联系地址</label>
                                                 <input placeholder="" class="form-control" id="address" type="text" name="address" value="${party.address!''}">
@@ -181,7 +182,7 @@
                                             </div>
                                        </div>
                                        <div class="col-lg-12">
-                                      		<label>公司银行账户信息</label>
+                                      		<label>银行账户信息</label>
                                       </div>
                                        <div class="form-group">
 						                 <div class="col-lg-12">

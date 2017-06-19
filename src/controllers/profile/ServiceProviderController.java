@@ -221,6 +221,7 @@ public class ServiceProviderController extends Controller {
         String order_id = party.get("id").toString();
         List<Map<String, String>> acount = (ArrayList<Map<String, String>>)dto.get("acount_json");
 		DbUtils.handleList(acount, order_id, FinAccount.class, "order_id");
+		//保存联系人信息
 		List<Map<String, String>> contacts = (ArrayList<Map<String, String>>)dto.get("contacts_json");
 		DbUtils.handleList(contacts, "contacts_item", order_id, "party_id");
 		//保存公司车辆信息

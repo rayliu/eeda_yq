@@ -1252,9 +1252,11 @@ public class BookOrderController extends Controller {
 	    	if(jobland!=null){
 	    		if(jobland.get("eta")==null){
 	        		Record joblandcab = Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",job_order_id);
-	        		if(joblandcab.get("cabinet_arrive_date") != null){
-	        			String cabinet_arrive_date = (joblandcab.get("cabinet_arrive_date")).toString();
-	        			setAttr("job_eta", cabinet_arrive_date.substring(0,cabinet_arrive_date.length()-2));
+	        		if(joblandcab!=null){
+	        			if(joblandcab.get("cabinet_arrive_date") != null&&joblandcab.get("cabinet_arrive_date")!=""){
+		        			String cabinet_arrive_date = (joblandcab.get("cabinet_arrive_date")).toString();
+		        			setAttr("job_eta", cabinet_arrive_date.substring(0,cabinet_arrive_date.length()-2));
+		        		}
 	        		}
 	    		}else{
 	    			String eta = jobland.get("eta").toString();

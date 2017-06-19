@@ -91,6 +91,20 @@ public class CustomerController extends Controller {
             render("/eeda/profile/customer/CustomerEdit.html");
     }
     
+    
+    //返回明细对象	
+//    private List<Record> getItemDetail(String id,String type){
+//     	String itemSql = "";
+//    	List<Record> itemList = null;
+//    	if("contacts".equals(type)){
+//    		itemSql = "SELECT * FROM contacts_item WHERE party_id=?";
+//    		itemList = Db.find(itemSql, id);
+//    	}else if("account".equals(type)){
+//    		itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",id);
+//		}
+//		return itemList;
+//    }
+    
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
@@ -101,6 +115,8 @@ public class CustomerController extends Controller {
         setAttr("docList", Db.find(sql,id));
         setAttr("customerQuotationList", getItems(id, "customerQuotationItem"));
         setAttr("itemList", getItems(id, "dock"));
+        setAttr("contacts_itemList", getItems(id,"contacts"));
+        setAttr("account_itemList", getItems(id,"account"));
         render("/eeda/profile/customer/CustomerEdit.html");
     }
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_DELETE})
@@ -177,10 +193,18 @@ public class CustomerController extends Controller {
             }
             
         }
+        //文档上传保存
         List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("docItem");
 		DbUtils.handleList(itemList, "party_doc", id, "party_id");
+		//车队客户合同价
 		List<Map<String, String>> customerQuotationItemList = (ArrayList<Map<String, String>>)dto.get("customer_quotationItem");
 		DbUtils.handleList(customerQuotationItemList,  "party_quotation", id, "party_id");
+		//保存账户信息
+        List<Map<String, String>> acount = (ArrayList<Map<String, String>>)dto.get("acount_json");
+		DbUtils.handleList(acount, id, FinAccount.class, "order_id");
+		//保存联系人信息
+		List<Map<String, String>> contacts = (ArrayList<Map<String, String>>)dto.get("contacts_json");
+		DbUtils.handleList(contacts, "contacts_item", id, "party_id");
 		//客户的工厂地点dock
 		List<Map<String, String>> dock_Item = (ArrayList<Map<String, String>>)dto.get("dock_Item");
 		DbUtils.handleList(dock_Item,  "dockinfo", id, "party_id");
@@ -495,7 +519,12 @@ public class CustomerController extends Controller {
     	}else if("dock".equals(type)){
     		itemSql = "SELECT d.* FROM dockinfo d WHERE  d.party_type='customer' and d.party_id=? order by d.id";
     		itemList = Db.find(itemSql, orderId);
-    	}
+    	}else if("contacts".equals(type)){
+    		itemSql = "SELECT * FROM contacts_item WHERE party_id=?";
+    		itemList = Db.find(itemSql, orderId);
+    	}else if("account".equals(type)){
+    		itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",orderId);
+		}
 		return itemList;
 	}
     
