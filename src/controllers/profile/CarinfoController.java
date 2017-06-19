@@ -16,7 +16,6 @@ import models.ParentOfficeModel;
 import models.Party;
 import models.UserLogin;
 import models.yh.profile.Carinfo;
-import models.yh.profile.Contact;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -31,7 +30,6 @@ import com.jfinal.plugin.activerecord.Record;
 
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
-import controllers.util.getCustomFile;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -69,12 +67,7 @@ public class CarinfoController extends Controller {
     public void index() {	
 	    render("/eeda/profile/carinfo/carlist.html"); 
     }
-    //行车记录单
-    public void carmanageIndex(){
-    	Map<String, String> customizeField = getCustomFile.getInstance().getCustomizeFile(this);
-    	setAttr("customizeField", customizeField);
-    	render("/yh/carmanage/carmanage.html");
-    }
+
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_D_LIST})
     public void driverinfoIndex(){
         render("/eeda/profile/carinfo/driverlist.html");
@@ -271,7 +264,7 @@ public class CarinfoController extends Controller {
     public void driversave() {
         String id = getPara("driverId");
         Party party = null;
-        Contact contact = null;
+        /*Contact contact = null;
         Date createDate = Calendar.getInstance().getTime();
         if (!id.isEmpty()) {
             party = Party.dao.findById(id);
@@ -295,17 +288,12 @@ public class CarinfoController extends Controller {
             party.save();
 
         }
+        */
         setAttr("saveOK", true);
         	redirect("/driverinfo/driverinfoIndex");
     }
 
-    private void setContact(Contact contact) {
-        // contact.set("company_name", getPara("company_name"));
-        contact.set("contact_person", getPara("driver"));
-        contact.set("phone", getPara("phone"));
-        contact.set("identification", getPara("identification"));
-        contact.set("license", getPara("license"));
-    }
+    
 
     public void setCarifo(Carinfo carinfo) {
         carinfo.set("driver", getPara("driver")== "" ? 0 : getPara("driver"));
@@ -362,10 +350,10 @@ public class CarinfoController extends Controller {
     public void driveredit() {
         String id = getPara();
         Party party = Party.dao.findById(id);
-        Contact contact = Contact.dao.findById(party.get("contact_id"));
-        
-        setAttr("lu", party);
-        setAttr("lu2", contact);
+//        Contact contact = Contact.dao.findById(party.get("contact_id"));
+//        
+//        setAttr("lu", party);
+//        setAttr("lu2", contact);
         render("/eeda/profile/carinfo/driveredit.html");
     }
     
@@ -501,11 +489,11 @@ public class CarinfoController extends Controller {
     public void addSpDriver() {
     	render("/eeda/profile/carinfo/spDriverEdit.html");
     }
-//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_PD_CREATE, PermissionConstant.PERMSSION_PD_UPDATE}, logical=Logical.OR)
+
     public void saveSpDriver() {
     	String id = getPara("driverId");
         Party party = null;
-        Contact contact = null;
+        /*Contact contact = null;
         if (!"".equals(id) && id != null) {
             party = Party.dao.findById(id);
             party.set("last_update_date", new Date());
@@ -531,18 +519,11 @@ public class CarinfoController extends Controller {
             party.set("office_id", parentID);
             party.save();
         }
+        */
         setAttr("saveOK", true);
         	redirect("/spdriverinfo/spdriverinfoIndex");
     }    
-//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_PD_UPDATE})
-    public void editSpDriver() {
-    	String id = getPara();
-        Party party = Party.dao.findById(id);
-        Contact contact = Contact.dao.findById(party.get("contact_id"));
-        setAttr("lu", party);
-        setAttr("lu2", contact);
-    	render("/eeda/profile/carinfo/spDriverEdit.html");
-    }
+
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_PD_DELETE})
     public void deleteSpDriver() {
     	String id = getPara();
