@@ -4,7 +4,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#menu_profile').addClass('active').find('ul').addClass('in');
         $("#breadcrumb_li").text('计量单位');
       //校验是否已存在
-        $('#orderForm').validate({
+        var order_id = $('#id').val();
+        if(!order_id){
+        	$('#orderForm').validate({
 	            rules: {
 	                code: {
 	                	remote:{
@@ -58,7 +60,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            success: function(element) {
 	                element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
 	            }
-        });
+            });
+        }
+        
         
         //------------save
         $('#saveBtn').click(function(e){

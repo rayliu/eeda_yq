@@ -107,6 +107,7 @@ import models.eeda.profile.Currency;
 import models.eeda.profile.CurrencyRate;
 import models.eeda.profile.Custom;
 import models.eeda.profile.DockInfo;
+import models.eeda.profile.Employee;
 import models.eeda.profile.FinItem;
 import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
@@ -295,9 +296,13 @@ public class EedaConfig extends JFinalConfig {
         //register loginUser
         me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
         me.add("/reset",controllers.profile.ResetPassWordController.class,contentPath);
-        
+        //系统配置
         me.add("/role", controllers.profile.RoleController.class, contentPath);
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
+        me.add("/employeeFiling",controllers.profile.EmployeeFilingController.class,contentPath);
+        
+        
+        
         me.add("/customer", controllers.profile.CustomerController.class, contentPath);
         me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);
         me.add("/supplierRating", controllers.profile.SupplierRatingController.class, contentPath);
@@ -472,6 +477,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("eeda_modules", Module.class);
         arp.addMapping("module_role", ModuleRole.class);
         arp.addMapping("unit", Unit.class);
+        arp.addMapping("employee", Employee.class);
         arp.addMapping("country", Country.class);
         arp.addMapping("trade_item", TradeItem.class);
         arp.addMapping("fin_item", FinItem.class);

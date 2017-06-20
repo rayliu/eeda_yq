@@ -117,6 +117,7 @@ public class CustomerController extends Controller {
         setAttr("itemList", getItems(id, "dock"));
         setAttr("contacts_itemList", getItems(id,"contacts"));
         setAttr("account_itemList", getItems(id,"account"));
+        setAttr("salesman_itemList", getItems(id,"salesman"));
         render("/eeda/profile/customer/CustomerEdit.html");
     }
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_DELETE})
@@ -205,6 +206,9 @@ public class CustomerController extends Controller {
 		//保存联系人信息
 		List<Map<String, String>> contacts = (ArrayList<Map<String, String>>)dto.get("contacts_json");
 		DbUtils.handleList(contacts, "contacts_item", id, "party_id");
+		//保存联系人信息
+		List<Map<String, String>> salesman = (ArrayList<Map<String, String>>)dto.get("salesman_json");
+		DbUtils.handleList(salesman, "customer_salesman", id, "party_id");
 		//客户的工厂地点dock
 		List<Map<String, String>> dock_Item = (ArrayList<Map<String, String>>)dto.get("dock_Item");
 		DbUtils.handleList(dock_Item,  "dockinfo", id, "party_id");
@@ -410,8 +414,7 @@ public class CustomerController extends Controller {
             renderJson(resultFirst);
         
     }
-    
-    
+
     
     // 列出所有party名称,供应商
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})
@@ -524,6 +527,9 @@ public class CustomerController extends Controller {
     		itemList = Db.find(itemSql, orderId);
     	}else if("account".equals(type)){
     		itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",orderId);
+		}else if("salesman".equals(type)){
+    		itemList = Db.find("SELECT cs.*,em.employee_name salesman_name FROM customer_salesman cs "
+    				+ " LEFT JOIN employee em on cs.salesman_id = em.id WHERE party_id =?",orderId);
 		}
 		return itemList;
 	}

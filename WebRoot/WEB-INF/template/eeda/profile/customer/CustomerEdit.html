@@ -4,14 +4,23 @@
  <div id="page-wrapper">
 
     <div class="row simple_search_div"><br>
-                <div class="col-lg-12">
-                            <div class="row">
+                <div class="col-lg-12">                            
 <!--                                 <form id="customerForm" role="form" action="/customer/save" method="post"> 用js提交保存了 -->
-                                <form id="customerForm" >
+						 <div class="row" >
+						 	<div class="col-lg-12">
+			                    <h4>业务员关联信息</h4>
+			                </div>
+			                <div class="form-group">
+				                <div class="col-lg-12">
+				                     <%include("/eeda/profile/customer/salesmanTable.html",{}){}%>
+				                </div>
+			                </div>
+						 </div>	<br><br>
+                         <form id="customerForm" >
                                     <input id="partyId" name="party_id" type="hidden" value="${party.id!''}">
                                     <input id="office_id" name="office_id" type="hidden" value="${party.office_id!''}">
                                     <!-- /.col-lg-6 (odd) 奇数列 -->
-                                    
+                              <div class="row">
                                     <div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
@@ -294,10 +303,10 @@
                     <h4>银行账户信息</h4>
                 </div>
                 <div class="form-group">
-                <div class="col-lg-12">
-                     <%include("/eeda/profile/customer/BankAccount.html",{}){}%>
+	                <div class="col-lg-12">
+	                     <%include("/eeda/profile/customer/BankAccount.html",{}){}%>
+	                </div>
                 </div>
-             </div>
 			 </div>
 			 <div class="row">
 			 		<div class="col-lg-12">

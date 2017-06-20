@@ -453,7 +453,9 @@ public class CustomPlanOrderController extends Controller {
     private List<Record> getItems(String orderId, String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
-		Office office=LoginUserController.getLoginUserOffice(this);
+		Record office=Db.findFirst("SELECT DISTINCT o.type from custom_plan_order cpo LEFT JOIN office o on o.id = cpo.office_id "
+				+ " LEFT JOIN user_login u on u.office_id=cpo.office_id"
+				+ " LEFT JOIN job_order_custom_doc jocd on u.id = jocd.uploader where cpo.id = ?",orderId);
     	if("cargo".equals(type)){
     		itemSql = " SELECT cpo.*,cur.name currency_name,l.name destination_country_item_name, concat(cen.code,' ',cen.name) exemption_name"
     				+ " FROM custom_plan_order_item cpo"

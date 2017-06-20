@@ -1,4 +1,5 @@
-define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_doc_table', './edit_customer_quotation_table','./add_dock_item_table','./contacts_item_table','./account_item_table'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_doc_table', './edit_customer_quotation_table','./add_dock_item_table','./contacts_item_table',
+        './account_item_table','./salesman_item_table'], function ($, metisMenu) { 
     $(document).ready(function() {
   
         $('#menu_profile').addClass('active').find('ul').addClass('in');
@@ -233,12 +234,14 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.dock_Item=itemOrder.buildDockItem();
             order.acount_json =itemOrder.buildAccountDetail();
        	    order.contacts_json =itemOrder.buildContactsDetail();
+       	    order.salesman_json = itemOrder.buildSalesmanDetail();
         	$('#saveBtn').attr('disabled', true);
         	$.post('/customer/save', {params:JSON.stringify(order)}, function(data){
         		eeda.contactUrl("edit?id",data.ID);
         		itemOrder.refleshTable(data.ID);
         		itemOrder.refleshAccountTable(data.ID);
         		itemOrder.refleshContactsTable(data.ID);
+        		itemOrder.refleshSalesmanTable(data.ID);
         		$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
         		$('#partyId').val(data.ID);
         		$('#saveBtn').attr('disabled', false);
