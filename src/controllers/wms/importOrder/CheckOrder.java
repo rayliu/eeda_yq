@@ -307,13 +307,23 @@ public class CheckOrder extends Controller {
                 		creator_id = ul.getLong("id");
                 	}
                 }else{
-                	order.set("creator", creator_id);
+                	if(creator_id != null){
+                		order.set("creator", creator_id);
+                	}
+//                	else{
+//                		UserLogin ul = UserLogin.dao.findFirst("select * from user_login where user_name = ? and office_id = ?",creator,officeId);
+//                    	if(ul != null){
+//                    		order.set("creator", ul.getLong("id"));
+//                    		creator_id = ul.getLong("id");
+//                    	}
+//                	}	
                 }
                 
                 String qr_code = order.getStr("qr_code");
                 if(StringUtils.isNotBlank(qr_code)){
-            		GateIn gi = GateIn.dao.findFirst("select * from gate_in where out_flag = 'N' and qr_code = ? "
-            				+ " and move_flag = ? and return_flag = ? and office_id = ?",qr_code,order.getStr("move_flag"),order.getStr("return_flag"),officeId);
+                	//忽视移库动作
+            		GateIn gi = GateIn.dao.findFirst("select * from gate_in where out_flag = 'N' and error_flag = 'N' and qr_code = ? "
+            				+ " and office_id = ?",qr_code,officeId);
             		if(gi != null){
             			String order_timeStr = gi.get("create_time").toString();
             			String order_time = order_timeStr.substring(0,order_timeStr.length()-2);
@@ -321,6 +331,11 @@ public class CheckOrder extends Controller {
             			String order_shelves = gi.getStr("shelves");
             			String this_shelves = order.getStr("shelves");
             			
+            			//退货入库情况
+            			String return_flag = order.getStr("return_flag");  //当前导入数据的退货入库标记位
+            			if("Y".equals(return_flag)){
+            				throw new Exception("此件货品【"+qr_code+"】在库存中已存在，不能退货入库");
+            			}
             			
             			if(!this_time.equals(order_time) || !this_shelves.equals(order_shelves)){
             				String import_msg = gi.getStr("import_msg")==null?"":gi.getStr("import_msg");
@@ -332,6 +347,8 @@ public class CheckOrder extends Controller {
                 				gi.set("create_time", this_time);
                 				gi.set("import_msg",import_msg+ "日期更新;");
                 			}
+                			gi.set("create_time",order.get("create_time"));
+                			gi.set("creator",order.get("creator"));
                 			gi.update();
                 			updateRow++;
             			}
@@ -436,7 +453,9 @@ public class CheckOrder extends Controller {
                 		creator_id = ul.getLong("id");
                 	}
                 }else{
-                	order.set("creator", creator_id);
+                	if(creator_id != null){
+                		order.set("creator", creator_id);
+                	}
                 }
             	
             	
@@ -447,21 +466,22 @@ public class CheckOrder extends Controller {
             			String this_time = order.getStr("create_time");//这次出库时间
             			String out_flag = gi.getStr("out_flag");
             			if("Y".equals(out_flag)){
-                			String order_time = null;
-                			if(gi.get("out_time")!=null){
-                				String order_timeStr = gi.get("out_time").toString();
-                				order_time = order_timeStr.substring(0,order_timeStr.length()-2);//系统单据时间
-                			}else{
-                				order_time = "2017-01-01 00:00:00";
-                			}
-                			
-                    		Record compareTime = Db.findFirst("select ?>? result;",this_time,order_time);
-                        	String a = compareTime.getLong("result").toString(); //判断 这次出库时间>系统单据时间
-                        	if("1".equals(a)){//2
-                        		gi.set("out_time", this_time);
-                				gi.set("out_creator_code", order.get("creator_code"));
-                				gi.set("out_creator", creator_id).update();
-                        	}
+            				//此代码暂时屏蔽，有争议
+//                			String order_time = null;
+//                			if(gi.get("out_time")!=null){
+//                				String order_timeStr = gi.get("out_time").toString();
+//                				order_time = order_timeStr.substring(0,order_timeStr.length()-2);//系统单据时间
+//                			}else{
+//                				order_time = "2017-01-01 00:00:00";
+//                			}
+//                			
+//                    		Record compareTime = Db.findFirst("select ?>? result;",this_time,order_time);
+//                        	String a = compareTime.getLong("result").toString(); //判断 这次出库时间>系统单据时间
+//                        	if("1".equals(a)){//2
+//                        		gi.set("out_time", this_time);
+//                				gi.set("out_creator_code", order.get("creator_code"));
+//                				gi.set("out_creator", creator_id).update();
+//                        	}
             			}else{
             				gi.set("out_flag", "Y");
             				gi.set("out_time", this_time);
@@ -486,15 +506,15 @@ public class CheckOrder extends Controller {
                 if(goo != null){
                 	Long out_order_id = goo.getLong("id");
                 	String item_no = goo.getStr("item_no");
-                    	Record re = Db.findFirst("select * from wmsproduct where item_no =? and part_no = ? and office_id = ?",item_no,part_no,officeId);
-                    	if(re==null){
-                    		//说明拿错货品了
-                    		order.set("import_msg", order_no+"里面没有此货品");
-                    		order.set("out_order_id", out_order_id).update();
-                    	}else{
-                    		//货品对了，只是不是出库单里面的货品，要更新
-                    		order.set("out_order_id", out_order_id).update();
-                    	}
+                	Record re = Db.findFirst("select * from wmsproduct where item_no =? and part_no = ? and office_id = ?",item_no,part_no,officeId);
+                	if(re==null){
+                		//说明拿错货品了
+                		order.set("import_msg", order_no+"里面没有此货品");
+                		order.set("out_order_id", out_order_id).update();
+                	}else{
+                		//货品对了，只是不是出库单里面的货品，要更新
+                		order.set("out_order_id", out_order_id).update();
+                	}
                 }
                 
                 order.set("office_id", officeId);
@@ -670,39 +690,7 @@ public class CheckOrder extends Controller {
             		re.update();
             	}
             }
-            
-          //这次盘点以库位为单位分组
-//            List<Record> invList = Db.find("SELECT shelves,GROUP_CONCAT(qr_code SEPARATOR ',') qr_codes,count(qr_code) amount FROM"
-//            		+ " `inv_check_order` where order_no = ? and office_id=? GROUP BY shelves",order_no,officeId);
-//            List<Record> gateInList = Db.find("SELECT GROUP_CONCAT(qr_code SEPARATOR ',') qr_codes,shelves,count(qr_code) amount FROM `gate_in` where out_flag='N' and error_flag='N'  and office_id=?"
-//        			+ "  GROUP BY shelves",officeId);
-//            for(Record invR : invList){
-//            	String invShelves = invR.getStr("shelves");
-//            	Long invQuantity = invR.getLong("amount");
-//            	
-//            	for(Record giR : gateInList){
-//            		String giShelves = giR.getStr("shelves");
-//                	Long giQuantity = giR.getLong("amount");
-//                	
-//                	if(invShelves.equals(giShelves)){
-//                		if(invQuantity != giQuantity){	
-//                			String inv_qrCode = invR.getStr("qr_codes");
-//                			String [] invArray = inv_qrCode.split(",");
-//                			String gi_qrCode = giR.getStr("qr_codes");
-//                			String [] giArray = gi_qrCode.split(",");
-//                			
-//                			for (int i = 0; i < giArray.length; i++) {
-//                				if(!useList(invArray,giArray[i])){
-//                					String qr_code = giArray[i];//多出来的
-//            						Db.update("update gate_in set inv_flag = 'Y',out_flag='Y', inv_msg = '盘点单号:"+order_no+",盘点出库' where qr_code = ? and office_id = ?",qr_code,officeId);
-//                				}
-//							}
-//                		}
-//                	}
-//            	}
-//            }
-            
-            
+
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！<br/>");
 			long end = Calendar.getInstance().getTimeInMillis();
             long time = (end- start)/1000;
