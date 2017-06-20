@@ -1,0 +1,94 @@
+<%layout("/eeda/layout.html"){%>    
+        <div id="page-wrapper">
+           <div class="row simple_search_div">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+                            <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
+                        </h4>
+                    </div>
+                    <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
+                        <div class="panel-body" id="ChargeDiv">
+                            <div class="col-lg-12">
+                                <form id="orderForm">
+                                    <div class="row"><!--  第1行  -->
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'employee_name', 
+                                                                    label: '员工名称', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'station_name', 
+                                                                    label: '岗位', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                                                {   id: 'induction_time', 
+                                                                    label: '入职时间', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                    </div>
+                                    <div class="row"><!--  第1行  -->
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                                                {   id: 'create_stamp', 
+                                                                    label: '创建时间', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                    </div><!-- /.row-->
+                                    <div class="form-group table_btn_bar" >
+                                        <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                                        <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
+                                        <a href="/employeeFiling/create" class="btn btn_green" type="button">新建员工档案</a>
+                                        
+                                        <button id="lockBtn" class="btn btn_green" style="float:right" type="button" disabled>工作单锁单</button><br>
+                                        
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+
+                
+            </div><!-- /.row 查询条件 结束-->
+            <div class="row simple_list_div">
+                    <%include("/eeda/component/form/detailTable.html", 
+                        {
+                        	style:'width:800px',
+                            id:'eeda-table', 
+                            headers:[
+                                '员工名称',
+                                '岗位',
+                                '入职时间',
+                                '建档时间',
+                                '编辑']
+                        }){} %>
+                
+            </div><!-- /.row 列表结束-->
+    </div>
+ 
+ <%}%>\
+ <script>
+     var userRole={};
+     userRole.update = true;
+     userRole.query = true;
+ 
+ </script>
+ 
+<script>
+  //app根目录在WebRoot/js/
+    requirejs([ 'app/eeda-common'], function () {
+        requirejs(['app/profile/employee/list']);
+    });
+</script>
+
+   

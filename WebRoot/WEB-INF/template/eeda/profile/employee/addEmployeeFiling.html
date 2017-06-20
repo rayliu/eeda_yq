@@ -1,0 +1,70 @@
+<%layout("/eeda/layout.html"){%>
+<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet">
+        <div id="page-wrapper">
+
+           <div class="row simple_search_div"><br>
+                <div class="col-lg-12">                            
+
+                         <form id="orderForm" >
+                                    <input id="order_id" name="order_id" type="hidden" value="${order.id!''}">
+                                    <input id="office_id" name="office_id" type="hidden" value="${party.office_id!''}">
+                                    <!-- /.col-lg-6 (odd) 奇数列 -->
+                              <div class="row">
+                                    <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+		                                    {   id:'employee_name', 
+		                                        label:'员工名称', 
+		                                        value:order.employee_name!''
+		                                    }){}%>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputStationField.html", 
+		                                    {   id:'station', 
+		                                        label:'岗位', 
+		                                        value:order.station!'',
+		                                        display_value:order.station_name!''
+		                                    }){}%>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <%include("/eeda/component/form/dateInputField.html", 
+					                        {   id:'induction_time', 
+					                            label:'入职时间',
+					                            value:order.induction_time!''
+					                        }){}%>
+                                    </div>
+	                          </div>
+	                          <div class="row"> 
+                              		<div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+		                                    {   id:'create_stamp', 
+		                                        label:'创建时间', 
+		                                        value:order.create_stamp!'', 
+		                                        disabled: 'disabled'
+		                                    }){}%>
+                                    </div>
+                              </div>                        
+						   </form>
+			           
+                            <!-- /.row (nested) --><div class="col-lg-12" style="margin-top:15px;">
+             <div class="row" style="clear:both;">
+                    <button id="saveBtn" type="button" class="btn  btn-primary">保存</button>
+                    <a class="btn  btn-primary" href="/employeeFiling">返回</a>
+                    <a class="btn btn_green" href="/employeeFiling/create" >新增员工档案</a>
+             </div><br>
+          </div>
+
+      </div>
+      <!-- /.panel-body -->
+    </div>
+  </div>
+       
+
+<%}%>
+
+
+<script>
+  //app根目录在WebRoot/js/
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/profile/employee/add']);
+    });
+</script>
