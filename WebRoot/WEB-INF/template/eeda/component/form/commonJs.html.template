@@ -1,10 +1,21 @@
 <script>
     window.eeda_version='@version@';
+
+    requirejs.onError = function (err) {
+        console.log(err.requireType);
+        console.log('modules: ' + err.requireModules);
+        if(err && typeof(err.indexOf)=='function' && err.indexOf("reinitialise")>0){
+            window.location.reload();
+        }else{
+            throw err;
+        }
+    };
+    
     requirejs.config({
         urlArgs: 'v=@version@',
         baseUrl: '/js/lib',
         paths: {
-            app: '../eeda',
+            app: '..',
             jquery: 'jquery/jquery-1.10.2',
             jquery_ui:'jquery-ui-1.11.4/jquery-ui',
             jq_blockui: 'jquery-blockUI-2.7/jquery.blockUI',
