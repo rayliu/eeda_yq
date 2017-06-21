@@ -1127,13 +1127,13 @@ public class TrJobOrderController extends Controller {
 	    }else if("custom_doc".equals(type)){
 //	    	itemSql = "select jod.*,u.c_name from job_order_custom_doc jod left join user_login u on jod.uploader=u.id "
 //	    			+ " where order_id=? order by jod.id";
-	        itemSql =" select cpo.ref_job_order_id, jocd.id,null cpodid,jocd.doc_name,jocd.upload_time, jocd.remark, "
+	        itemSql =" select cpo.ref_job_order_id, jocd.id,jocd.doc_name,jocd.upload_time, jocd.remark, "
 	        		+" 	ul.c_name,jocd.uploader, jocd.share_flag ,null share_flag, jocd.new_flag,null cms_new_flag from job_order_custom_doc jocd "
 	        		  +" LEFT JOIN user_login ul on ul.id = jocd.uploader "
 	        		  +" LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id and jocd.order_type = '"+office.get("type")+"'  and jocd.share_flag = 'Y' and cpo.delete_flag='N' "
 	        		  +" where jocd.order_id ="+orderId
 	        		  +" union all "
-	        		  +" select cpo.ref_job_order_id, jod.id id ,jod.id cpodid ,jod.doc_name,jod.upload_time, jod.remark,u.c_name, "
+	        		  +" select cpo.ref_job_order_id, null id ,jod.doc_name,jod.upload_time, jod.remark,u.c_name, "
 	        		  +" jod.uploader,null share_flag, jod.cms_share_flag,null ,jod.new_flag cms_new_flag "
 	        		  +" from custom_plan_order_doc jod  "
 	        		  +" left join custom_plan_order cpo on cpo.id = jod.order_id "

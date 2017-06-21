@@ -87,7 +87,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#mbl_no_land').keyup(function(){
         	$('#mbl_no').val($('#mbl_no_land').val());
         });
-        
+        //ocean_MBLnotify_party_info 默认制是SAME AS CONSIGNEE
+        var ocean_MBLnotify_party_info = $('#ocean_MBLnotify_party_info').val();
+        if(!ocean_MBLnotify_party_info){
+        	$('#ocean_MBLnotify_party_info').val('SAME AS CONSIGNEE');
+        }
         
 
         //常用海运信息模版
