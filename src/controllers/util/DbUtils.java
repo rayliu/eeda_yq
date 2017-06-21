@@ -214,7 +214,8 @@ public class DbUtils {
 		for (Entry<String, ?> entry : dto.entrySet()) { 
 			String key = entry.getKey();
 			if(!key.endsWith("_list")){
-            	String value = String.valueOf(entry.getValue()).trim();
+            	String preValue = String.valueOf(entry.getValue()).trim();
+            	String value = ToDBCUtil.ToDBC(preValue);//全角转半角函数
             	//忽略  action 字段
             	if(!"action".equals(key)){
 //            		logger.debug(key+":"+value);
