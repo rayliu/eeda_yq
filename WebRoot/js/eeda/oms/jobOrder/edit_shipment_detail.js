@@ -72,6 +72,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#fnd').val($('#pod').val());
             }
         });
+        //SO NO赋值
+        $('#SONO').keyup(function(){
+        	$('#SONO_land').val($('#SONO').val());
+        });
+        $('#SONO_land').keyup(function(){
+        	$('#SONO').val($('#SONO_land').val());
+        });
+        
+      //MBL NO赋值
+        $('#mbl_no').keyup(function(){
+        	$('#mbl_no_land').val($('#mbl_no').val());
+        });
+        $('#mbl_no_land').keyup(function(){
+        	$('#mbl_no').val($('#mbl_no_land').val());
+        });
+        
+        
 
         //常用海运信息模版
         $('#usedOceanInfo').on('click', '.selectOceanTemplate', function(){

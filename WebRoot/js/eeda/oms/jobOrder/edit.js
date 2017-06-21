@@ -434,10 +434,6 @@ $(document).ready(function() {
     var land_sendTruckHide=$('#land_sendTruckHide').val(); 
     if(land_sendTruckHide=='Y'){
     	$('#land_sendTruck').attr('disabled', true);
-    }
-
-    
-    
-    
+    }  
 });
 });
