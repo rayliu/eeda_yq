@@ -279,8 +279,10 @@ public class TransJobOrderController extends Controller {
    		long customerId = Long.valueOf(dto.get("customer_id").toString());
    		saveCustomerQueryHistory(customerId);
    		
-   		//陆运明细保存
-   		DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
+   		//陆运柜货明细保存
+   		if(!"出口散货".equals(type)&&!"进口散货".equals(type)){
+   			DbUtils.handleList(land_item, id, TransJobOrderLandItem.class, "order_id");
+   		}
    		
 		//陆运散货
 		
