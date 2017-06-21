@@ -19,7 +19,6 @@ var queryOffice=function(){
    					$(this).append("<option ></option>");
    				}
 	   		});
-   			
    			for(var i=0; i<data.length; i++){
    				var n=0;
    				for(var j=0;j<offices.length;j++){
@@ -39,6 +38,53 @@ var queryOffice=function(){
    		 }
 	 },'json');
 };
+	//中文校验，全角校验
+	var isChn =function (){
+		var str=$('#username').val();
+	    var reg = /^[u4E00-u9FA5]+$/;//中文校验
+	    var full_reg = /[\uFF00-\uFFEF]/;//全角校验
+	    if(!reg.test(str)||full_reg.test(str)){
+	     return false;
+	    }
+	    return true;
+	}
+	
+	
+		
+		jQuery.validator.addMethod("levelLimit",function(value, element){  
+            var returnVal = true;  
+            var level = $("#username").val();
+            var reg = /^[\u4e00-\u9fa5]+$/; //中文校验
+//    	    var full_reg = /[\uFF00-\uFFEF]/;//全角校验
+           if(reg.test(level)){  
+               returnVal = false;  
+           }  
+            return returnVal;  
+       },"输入的是非法字符"); 
+		
+		
+	
+	$('#leadsForm').validate({
+        rules: {
+        	"username": {
+        		
+        		levelLimit:true
+            }
+        },
+        messages:{
+        	"username":{
+        		levelLimit:"输入含有非法字符，不能输入中文"
+            }
+        },
+        highlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+        },
+        success: function(element) {
+            element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
+        }
+    });
+	
+	
 
 var queryCustomer=function(){
 	var customers=[];

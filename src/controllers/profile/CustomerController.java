@@ -356,9 +356,9 @@ public class CustomerController extends Controller {
         }
     }
     
-    // 列出所有party名称，客户
+    // 列出所有客户名称
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
-    public void search_party() {
+    public void search_customer() {
         String customerName = getPara("customerName");
        
         if(StringUtils.isEmpty(customerName)){
@@ -392,6 +392,46 @@ public class CustomerController extends Controller {
             renderJson(resultList);
         }
     }
+    
+    
+    // 列出所有party名称
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+    public void search_party() {
+        String partyName = getPara("customerName");
+       
+        if(StringUtils.isEmpty(partyName)){
+        	partyName = "";
+        }
+        long userId = LoginUserController.getLoginUserId(this); 
+        List<Record> resultList = Collections.EMPTY_LIST;
+        if(StrKit.isBlank(partyName)){//从历史记录查找
+            String sql = "select h.ref_id, p.id, p.abbr,ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from user_query_history h, party p "
+                    + "where h.ref_id=p.id  and h.user_id=?";
+            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
+            if(resultList.size()==0){
+                sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from party p where 1=1 "
+                    + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
+                resultList = Db.find(sql+" order by abbr limit 10");
+            }
+            renderJson(resultList);
+        }else{
+            String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from party p where  "
+                    + " 1=1 ";
+                        
+            if (partyName.trim().length() > 0) {
+                sql +=" and (p.abbr like '%" + partyName + "%' or p.quick_search_code like '%" + partyName.toLowerCase() +"%'"
+                	+ " or p.quick_search_code like '%" + partyName.toUpperCase() + "%') ";
+            }
+            resultList = Db.find(sql+" limit 10");
+
+            renderJson(resultList);
+        }
+    }
+    
+    
     
     // 列出指定party名称，客户
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
