@@ -156,6 +156,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/BusinessAdmin/account", AccountController.class);
         me.add("/BusinessAdmin/product", controllers.bizadmin.product.ProductController.class);
         me.add("/BusinessAdmin/ad", controllers.bizadmin.ad.AdController.class);
+        me.add("/BusinessAdmin/ad/cu", controllers.bizadmin.ad.CuController.class);
         me.add("/BusinessAdmin/case", controllers.bizadmin.weddingcase.CaseController.class);
         me.add("/BusinessAdmin/video", controllers.bizadmin.video.VideoController.class);
 	    
