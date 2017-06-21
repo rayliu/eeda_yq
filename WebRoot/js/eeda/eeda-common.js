@@ -133,6 +133,9 @@ window.eeda =eeda;
 
 $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) { 
     console.log(message);
+    if(message.indexOf("reinitialise")>0){
+    	throw message;
+    }
 };
 //dataTables builder for 1.10
 eeda.dt = function(opt){
