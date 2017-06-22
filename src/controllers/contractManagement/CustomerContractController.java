@@ -153,10 +153,11 @@ public class CustomerContractController extends Controller {
     		sql = " SELECT cci.*, fi.name fee_name, "
     		        + " CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
 					+" from customer_contract_item cci"
+					+ " left join customer_contract_location ccl on ccl.id = cci.customer_loc_id"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE cci.contract_id = ? and cci.contract_type='ocean' ";
+					+" WHERE ccl.contract_id = ? and cci.contract_type='"+type+"' and ccl.is_select = 'Y'";
     	}else if("land_loc".equals(type) || "tour_loc".equals(type)){
             sql = " SELECT ccl.*, "
                     + " l.dock_name pol_name, "
@@ -293,10 +294,15 @@ public class CustomerContractController extends Controller {
    			
    		}
    		//海运费用明细保存
-   		List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemOceanList");
-   		DbUtils.handleList(charge_items, "customer_contract_item", id,"contract_id");
+   		
    		List<Map<String,String>> oceanLocs = (ArrayList<Map<String, String>>) dto.get("itemOceanLocList");
         DbUtils.handleList(oceanLocs, "customer_contract_location", id,"contract_id");
+        
+        Record re = Db.findFirst("select * from customer_contract_location where contract_id = ? and type = 'ocean_loc' and is_select = 'Y' ",id);
+        if(re != null){
+        	List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemOceanList");
+       		DbUtils.handleList(charge_items, "customer_contract_item", re.get("id").toString(),"customer_loc_id");	
+        }
         
    		List<Map<String,String>> charge_air_items = (ArrayList<Map<String, String>>) dto.get("itemAirList");
    		DbUtils.handleList(charge_air_items, "customer_contract_item", id,"contract_id");
@@ -327,6 +333,35 @@ public class CustomerContractController extends Controller {
     }
 
 
+  //异步刷新字表
+    public void clickItem(){
+    	String contract_id = getPara("contract_id");
+    	String type = getPara("type");
+    	String costomer_loc_id = getPara("customer_loc_id");
+
+    	String sql = "";
+    	if("ocean".equals(type)){
+    		sql = " SELECT cci.*, fi.name fee_name, "
+    		        + " CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+					+" from customer_contract_item cci"
+					+ " left join customer_contract_location ccl on ccl.id = cci.customer_loc_id"
+					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
+					+" LEFT JOIN unit u on u.id = cci.uom"
+					+" LEFT JOIN currency c on c.id= cci.currency_id"
+					+" WHERE cci.contract_type='ocean' and cci.customer_loc_id = ?";
+    	}
+    	
+    	List<Record> list = Db.find(sql,costomer_loc_id);
+
+    	Map BillingOrderListMap = new HashMap();
+        BillingOrderListMap.put("sEcho", 1);
+        BillingOrderListMap.put("iTotalRecords", list.size());
+        BillingOrderListMap.put("iTotalDisplayRecords", list.size());
+
+        BillingOrderListMap.put("aaData", list);
+
+        renderJson(BillingOrderListMap); 
+    }
     
     //异步刷新字表
     public void tableList(){

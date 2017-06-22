@@ -58,6 +58,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	     			$.scojs_message('数据有误', $.scojs_message.TYPE_ERROR);
 	     			$("#saveBtn").attr("disabled",false);
 	     		}
+	        	itemOrder.refleshOceanLocTable(data.ID);
 	        	itemOrder.refleshOceanItemTable(data.ID);
 	        	itemOrder.refleshAirItemTable(data.ID);
 	        	itemOrder.refleshLandItemTable(data.ID);
