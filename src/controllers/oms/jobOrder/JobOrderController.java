@@ -547,7 +547,7 @@ public class JobOrderController extends Controller {
    	}
     
     
-    private void saveJobContractConditions(JobOrder order) throws JSONException{
+    private void saveJobContractConditions(JobOrder order){
     	String order_id =  order.get("id").toString();
     	String customer_id = order.get("customer_id").toString();//客户
     	String trans_clause = order.getStr("trans_clause");//运输条款
@@ -560,11 +560,10 @@ public class JobOrderController extends Controller {
     	String pol = oseanRe.get("pol").toString();
     	String pod = oseanRe.get("pod").toString();
     	
-    	
     	List<Record> oseanItem = Db.find("SELECT count(1) count,container_type FROM `job_order_shipment_item`"
     			+ "  where order_id = ? GROUP BY container_type;",order_id);
     	
-    	JSONArray jArray = new JSONArray();
+    	List jArray = new ArrayList();
     	for(Record re :oseanItem){
     		String container_type = re.getStr("container_type");
     		String count = re.get("count").toString();
@@ -574,7 +573,7 @@ public class JobOrderController extends Controller {
     			Record map1 = new Record();
                 map1.set("container_type", container_type.replaceAll("'", ""));
                 map1.set("count", count);
-                jArray.put(map1);
+                jArray.add(map1);
     		}
     	}
     	
@@ -629,7 +628,7 @@ public class JobOrderController extends Controller {
      * @return
      * @throws JSONException 
      */
-    private void getContractMsg(String order_id,String jsonStr,JSONArray jArray,String order_export_date) throws JSONException{
+    private void getContractMsg(String order_id,String jsonStr,List jArray,String order_export_date){
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
@@ -644,7 +643,7 @@ public class JobOrderController extends Controller {
 
     	
     	String container_types = "";
-    	for (int i = 0; i < jArray.length(); i++) {
+    	for (int i = 0; i < jArray.size(); i++) {
     		Record map=new Record();  
     		map = (Record) jArray.get(i);
     		String container_type = (String)map.get("container_type");
@@ -674,7 +673,7 @@ public class JobOrderController extends Controller {
     		end_time = re.getDate("contract_end_time");
     		Double amount = 1.0;
     		String thsi_container_type = re.getStr("container_type");
-    		for (int i = 0; i < jArray.length(); i++) {
+    		for (int i = 0; i < jArray.size(); i++) {
     			Record map=new Record();  
         		map = (Record) jArray.get(i);
         		String json_container_type = (String)map.get("container_type");
