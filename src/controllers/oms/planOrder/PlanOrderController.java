@@ -73,7 +73,6 @@ public class PlanOrderController extends Controller {
    	   		Office ref_office = Office.dao.findById(ref_office_id);
    	   		setAttr("ref_office", ref_office);
    		}
-   		
 		
         render("/oms/PlanOrder/PlanOrderEdit.html");
     }
@@ -104,17 +103,15 @@ public class PlanOrderController extends Controller {
    			DbUtils.setModelValues(dto, planOrder);
    			
    			//需后台处理的字段
-   			if(office_id==8){
-   				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("XXJH", office_id));
-   			}else if (office_id==9){
-   				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("XXHKJH", office_id));
-   			}else if(office_id==1){
-   				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("YQJH", office_id));
-   			}else if(office_id==7){
-   				planOrder.set("order_no", OrderNoGenerator.getNextOrderNo("YQSMJH", office_id));
+   			Record office = Db.findFirst("select * from office_order_no_config where office_id=? and order_type='plan_order'", office_id);
+   			String orderNo = "";
+   			if(office!=null){
+   			    orderNo = OrderNoGenerator.getNextOrderNo(office.getStr("prefix"), office_id);
+   			}else {
+   			    orderNo = OrderNoGenerator.getNextOrderNo("JH", office_id);
    			}
    			
-   			
+   			planOrder.set("order_no", orderNo);
    			planOrder.set("creator", user.getLong("id"));
    			planOrder.set("create_stamp", new Date());
    			planOrder.set("office_id", office_id);
