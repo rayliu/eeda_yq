@@ -6,13 +6,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       var dataTable = eeda.dt({
           id: 'eeda_table',
           serverSide: false, //不打开会出现排序不对 
-          ajax: "/outputScale/list?audit_flag_notequals="+$("#audit_flag").val(),
+          ajax: "/outputScale/list",
           columns: [
 			{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
-				    	if(full.AUDIT_FLAG != 'Y')
-				    		return '<input type="checkbox" class="checkBox">';
-				    	else 
 				    		return '<input type="checkbox" disabled>';
 				    }
 			},
@@ -21,25 +18,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     return "<a href='/transJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
                 }
 			},
-           { "data": "CABINET_DATE", "width": "60px"},			
-            { "data": "CREATE_STAMP", "width": "80px"},
+           { "data": "LADING_NO", "width": "60px"},			
+            { "data": "C_DATE", "width": "80px"},
+            { "data": "CUSTOMER_NAME", "width": "80px"},
+            { "data": "TYPE", "width": "100px"},
+            { "data": "COMBINE_WHARF", "width": "150px"},
             { "data": "CONTAINER_NO", "width": "80px"},
-            { "data": "SO_NO", "width": "100px"},
-            { "data": "AUDIT_FLAG", "width": "40px",
-            	"render": function ( data, type, full, meta ) {
-			    	if(data != 'Y')
-			    		return '未确认';
-			    	else 
-			    		return '已确认';
-			    }
-            },
-            { "data": "CUSTOMER", "width": "80px"},
-            { "data": "SP_NAME", "width": "80px"},
-            { "data": "CAR_NO", "width": "80px"},
-            { "data": "CHARGE_NAME", "width": "60px"},
-            { "data": "PRICE", "width": "40px"},
-            { "data": "PRICE", "width": "40px"},
-            { "data": "AMOUNT","width": "40px"}
+            { "data": "CABINET_TYPE", "width": "40px"},
+            { "data": "COMBINE_UNLOAD_TYPE", "width": "80px"},
+            { "data": "COMBINE_CAR_NO", "width": "70px"},
+            { "data": "null", "width": "40px"},
+            { "data": "REMARK", "width": "40px"},
+            { "data": "CREATE_STAMP","width": "80px"}
           ]
       });
 
@@ -53,14 +43,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       })
 
      var searchData=function(){
-          var order_no = $.trim($("#order_no").val()); 
+          var order_no = $.trim($("#order_no").val()); driver
+          var driver = $("#driver").val().trim();
+          var c_date_begin_time = $("#c_date_begin_time").val();
+          var c_date_end_time = $("#c_date_end_time").val();
           
-          var order_export_date_begin_time = $("#order_export_date_begin_time").val();
-          var order_export_date_end_time = $("#order_export_date_end_time").val();
-          
-          var customer = $("#customer").val(); 
-          var sp = $("#sp").val(); 
+          var customer = $("#customer").val();
+          var customer_name = $("#customer_input").val().trim(); 
+//          var sp = $("#sp").val(); 
           var car_id = $("#car_id").val();
+          var car_no = $("#car_id_input").val().trim();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var audit_flag = $("#audit_flag").val();
@@ -72,14 +64,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/outputScale/list?order_no="+order_no
-          			   +"&order_export_date_begin_time="+order_export_date_begin_time
-          			   +"&order_export_date_end_time="+order_export_date_end_time
-			           +"&customer_id="+customer
-			           +"&sp_id="+sp
-                 +"&car_id="+car_id
+          			   +"&c_date_begin_time="+c_date_begin_time
+          			   +"&c_date_end_time="+c_date_end_time
+			           +"&customer="+customer
+			           +"&customer_name="+customer_name
+//			           +"&sp_id="+sp
+                       +"&car_id="+car_id
+                       +"&car_no="+car_no
+                       +"&driver="+driver
 		               +"&create_stamp_begin_time="+start_date
-		               +"&create_stamp_end_time="+end_date
-          			   +"&audit_flag_notequals="+audit_flag;
+		               +"&create_stamp_end_time="+end_date;
 
           dataTable.ajax.url(url).load();
       };
@@ -120,33 +114,51 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			}
 		});
 		//确认费用
-		$('#confirmBtn').click(function(){
-			$('#confirmBtn').attr('disabled',true);
-        	var itemIds=[];
-        	$('#eeda_table input[type="checkbox"]').each(function(){
-        		var checkbox = $(this).prop('checked');
-        		if(checkbox){
-        			var itemId = $(this).parent().parent().attr('id');
-        			if(itemId!=undefined){
-                itemIds.push(itemId);
-              }
-        		}
-        	});
-          if(itemIds.length==0){
-            $.scojs_message('该单据没有费用，请先录入费用', $.scojs_message.TYPE_ERROR);
-            return;
-          }
-	    	 $.post('/transCostConfirm/costConfirm?itemIds='+itemIds, function(data){
-	    		 if(data.result==true){
-	    			 $.scojs_message('单据确认成功', $.scojs_message.TYPE_OK);
-	    			 searchData();
-	    			 $('#confirmBtn').attr('disabled', false);
-	    		 }
-	    	 },'json').fail(function() {
-	                $.scojs_message('单据确认失败', $.scojs_message.TYPE_ERROR);
-	                $('#confirmBtn').attr('disabled', false);
-	              });
-        })
+//		$('#confirmBtn').click(function(){
+//			$('#confirmBtn').attr('disabled',true);
+//        	var itemIds=[];
+//        	$('#eeda_table input[type="checkbox"]').each(function(){
+//        		var checkbox = $(this).prop('checked');
+//        		if(checkbox){
+//        			var itemId = $(this).parent().parent().attr('id');
+//        			if(itemId!=undefined){
+//                itemIds.push(itemId);
+//              }
+//        		}
+//        	});
+//          if(itemIds.length==0){
+//            $.scojs_message('该单据没有费用，请先录入费用', $.scojs_message.TYPE_ERROR);
+//            return;
+//          }
+//	    	 $.post('/transCostConfirm/costConfirm?itemIds='+itemIds, function(data){
+//	    		 if(data.result==true){
+//	    			 $.scojs_message('单据确认成功', $.scojs_message.TYPE_OK);
+//	    			 searchData();
+//	    			 $('#confirmBtn').attr('disabled', false);
+//	    		 }
+//	    	 },'json').fail(function() {
+//	                $.scojs_message('单据确认失败', $.scojs_message.TYPE_ERROR);
+//	                $('#confirmBtn').attr('disabled', false);
+//	              });
+//        })
+        //导出产值表
+        $('#export_outputTable').click(function(){
+        	var car_no = $('#car_id_input').val().trim();
+        	var driver = $('#driver').val().trim();
+        	if(car_no||driver){
+        		var order_id = $('#order_id').val();
+            	var company_name = $('#company_name').val();
+            	$.post('/outputScale/downloadList',{car_no:car_no,driver:driver},function(data){
+            		if(data){
+            			window.open(data);
+            		}else{
+            			$.scojs_message('生成产值表PDF失败',$.scojs_message.TYPE_ERROR);
+            		}
+            	});
+        	}else{
+        		$.scojs_message('请填上车牌或者司机', $.scojs_message.TYPE_ERROR);
+        	}
+        });
       
   });
 });
