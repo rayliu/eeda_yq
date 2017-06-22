@@ -1526,7 +1526,36 @@ public class BookOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql = "";
-       
+        
+        Office office = Office.dao.findById(office_id);
+        
+        String forwarderTodo = "(CASE"
+                + " WHEN (SELECT count(jod0.id) FROM book_order_doc jod0 WHERE jod0.order_id =bo.id and jod0.type='zero')=0 "
+                + "     THEN '头程资料待生成'"
+                + " WHEN (SELECT count(jod0.id) FROM book_order_doc jod0 WHERE jod0.order_id =bo.id and jod0.type='one' and jod0.send_status='已发送')>0"
+                + "     THEN 'packing资料待下载'"
+                + " WHEN (SELECT count(jod0.id) FROM book_order_doc jod0 WHERE jod0.order_id =bo.id and jod0.type='two')=0 "
+                + "     THEN 'B/L文件待生成'"
+                + " WHEN (SELECT count(jod0.id) FROM book_order_doc jod0 WHERE jod0.order_id =bo.id and jod0.type='three' and jod0.send_status='已发送')>0"
+                + "     THEN '盖章保函资料待下载'"
+                + " WHEN (SELECT count(jod0.id) FROM book_order_doc jod0 WHERE jod0.order_id =bo.id and jod0.type='four')=0"
+                + "     THEN '盖章HBL资料待上传'"
+                + " end"
+                + " ) to_do";
+        
+        String factoryTodo = "(CASE"
+                + " WHEN (SELECT count(jod0.id) FROM book_order_doc jod0 WHERE jod0.order_id =bo.id and jod0.type='zero' and jod0.send_status='已发送')>0 "
+                + "     THEN '头程资料待下载'"
+                + " WHEN (SELECT count(jod0.id) FROM book_order_doc jod0 WHERE jod0.order_id =bo.id and jod0.type='one')=0 "
+                + "     THEN 'packing资料待上传'"
+                + " WHEN (SELECT count(jod0.id) FROM book_order_doc jod0 WHERE jod0.order_id =bo.id and jod0.type='two' and jod0.send_status='已发送')>0 "
+                + "     THEN 'B/L文件待下载'"
+                + " WHEN  (SELECT count(jod0.id) FROM book_order_doc jod0 WHERE jod0.order_id =bo.id and jod0.type='three')=0 "
+                + "     THEN '盖章保函资料待上传'"
+                + " WHEN (SELECT count(jod0.id) FROM book_order_doc jod0 WHERE jod0.order_id =bo.id and jod0.type='four' and jod0.send_status='已发送')>0 "
+                + "     THEN '盖章HBL待下载'"
+                + " end"
+                + " ) to_do";
         
         sql = "SELECT * from (select bo.*,"
      		+ " ifnull(u.c_name, u.user_name) creator_name,o.office_name sp_name,"
@@ -1543,7 +1572,8 @@ public class BookOrderController extends Controller {
      		+ " else"
      		+ " '新建'"
      		+ " end"
-     		+ " ) order_status"
+     		+ " ) order_status, "
+     		+ (office.getStr("type").equals("customer")?factoryTodo:forwarderTodo)
      		+ "	from book_order bo"
      		+ " LEFT JOIN job_order jor on jor.plan_order_item_id = bo.plan_item_id"
      		+ " LEFT JOIN job_order_land_item joli on joli.order_id = jor.id"

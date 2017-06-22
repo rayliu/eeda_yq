@@ -38,7 +38,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     return "<a href='/bookOrder/edit?id="+full.ID+"'target='_blank' >"+data+str+"</a>";
                   }
               },
-              { "data": "ORDER_STATUS"}, 
+              { "data": "ORDER_STATUS"},
+              { "data": "TO_DO"}, 
               { "data": "TYPE",
                   "render": function ( data, type, full, meta ) {
 	                    if(!data)
