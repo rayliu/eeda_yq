@@ -73,19 +73,19 @@ public class GateOutController extends Controller {
             String part_no = dto.get("part_no");
             
             if(StringUtils.isNotBlank(item_no)){
-            	condition += " and item_no like '%"+item_no+"%'";
+            	condition += " and pro.item_no like '%"+item_no+"%'";
             }
             
             if(StringUtils.isNotBlank(item_name)){
-            	condition += " and item_name like '%"+item_name+"%'";
+            	condition += " and pro.item_name like '%"+item_name+"%'";
             }
             
             if(StringUtils.isNotBlank(part_name)){
-            	condition += " and part_name like '%"+part_name+"%'";
+            	condition += " and pro.part_name like '%"+part_name+"%'";
             }
             
             if(StringUtils.isNotBlank(part_no)){
-            	condition += " and part_no like '%"+part_no+"%'";
+            	condition += " and pro.part_no like '%"+part_no+"%'";
             }
             
             
@@ -101,7 +101,7 @@ public class GateOutController extends Controller {
             	end_time = end_time +" 23:59:59";
             }
             
-            condition += " and create_time between '"+begin_time+"' and '"+end_time+"'";
+            condition += " and go.create_time between '"+begin_time+"' and '"+end_time+"'";
             
     	}
         
@@ -114,6 +114,7 @@ public class GateOutController extends Controller {
 			+ " left join wmsproduct pro on pro.part_no = go.part_no"
 			+ " where go.office_id="+office_id
 			+ error_flag
+			+ condition
 			+ " group by go.id "
 			+ " ) B";
        
@@ -123,6 +124,7 @@ public class GateOutController extends Controller {
 			+ " left join wmsproduct pro on pro.part_no = go.part_no"
 			+ " where go.office_id="+office_id
 			+ error_flag
+			+ condition
 			+ " group by go.id ";
     	
         
@@ -130,7 +132,7 @@ public class GateOutController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by go.id desc " +sLimit);
+        List<Record> orderList = Db.find(sql + " order by go.id desc " +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));

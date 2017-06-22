@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	$(document).ready(function() {
     	document.title = '出库记录 | '+document.title;
 
-    	$("#breadcrumb_li").text('出库记录列表 ');
+    	$("#breadcrumb_li").text('出库记录');
     	
     	$('#eeda-table').on('mouseover','.part_no',function(body){////body可以随便
    		 //var value = $($(this).find('.part_no')).text();
