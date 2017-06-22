@@ -25,6 +25,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                 var item = items[i];
                 item.contract_type = "ocean";
             }
+            deletedTableIds = [];
             return items;
         };
 
@@ -50,16 +51,16 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                 
                 var item={}
                 item.id = id;
-                for(var i = 1; i < row.childNodes.length; i++){
-                	if(i == 1){
-                		var check = $(row.childNodes[i]).find('input').attr('checked');
-                     	if(check == 'checked'){
+                for(var i = 0; i < row.childNodes.length; i++){
+                	var name = $(row.childNodes[i]).find('input,select').attr('name');
+                	if(name == 'checkRoute'){
+                		var check = $($(row.childNodes[i]).find('input')).prop('checked');
+                     	if(check){
                      		item.is_select = 'Y';
                      	}else{
                      		item.is_select = 'N';
                      	}
                 	}else{
-                		var name = $(row.childNodes[i]).find('input,select').attr('name');
                         var value = $(row.childNodes[i]).find('input,select').val();
                         if(name){
                             item[name] = value;
@@ -344,14 +345,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         
         $('#ocean_location_table').on('click','[name=checkRoute]', function(){
         	var self = this;
-//        	$('#ocean_location_table').each(function(){
-//        		if(this.checked){
-//        			this.checked = false;
-//        		}
-//        	})
-        	
-        	//self.checked=true;
-
         	var order_id = $('#contract_id').val();
         	if(order_id == '')
         		return;
