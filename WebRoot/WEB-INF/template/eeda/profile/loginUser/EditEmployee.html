@@ -1,0 +1,42 @@
+
+		
+		<input id="office_id" name="office_id" type="hidden" value="${party.office_id!''}">
+		<form id = "employeeForm">
+		            <div class="row">
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/inputField.html", 
+		                              {   id:'employee_name', 
+		                                  label:'员工名称', 
+		                                  value:employee.employee_name!''
+		                              }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/inputStationField.html", 
+		                              {   id:'station', 
+		                                  label:'岗位', 
+		                                  value:employee.station!'',
+		                                  display_value:employee.station_name!'',
+		                                  disabled: 'disabled'
+		                              }){}%>
+                            </div>
+                            <div class="col-lg-4">
+                                <%include("/eeda/component/form/dateInputField.html", 
+				                     {   id:'induction_time', 
+				                         label:'入职时间',
+				                         value:employee.induction_time!''
+				                     }){}%>
+                            </div>
+                   </div>
+                   <div class="row"> 
+                      		<div class="col-lg-4" style= "display:none">
+                                <%include("/eeda/component/form/inputField.html", 
+		                              {   id:'create_stamp', 
+		                                  label:'创建时间', 
+		                                  value:employee.create_stamp!'', 
+		                                  disabled: 'disabled'
+		                              }){}%>
+                            </div>
+                   </div> 
+		</form>
+
+
