@@ -1,6 +1,9 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 
-        'validate_cn', 'sco', 'datetimepicker_CN', 'jq_blockui'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','validate_cn', 'sco', 'datetimepicker_CN', 
+        'jq_blockui','./employee_detail'], function ($, metisMenu) { 
 
+
+    $("#breadcrumb_li").text('编辑用户');
+	
 var queryOffice=function(){
 	var offices=[];
 	$.post('/loginUser/searchAllOffice',function(data){
@@ -301,6 +304,8 @@ $(document).ready(function(){
    		});
 		$("#officeIds").val(officeIds.toString());
 		$("#customerIds").val(customerIds.toString());
+		order.employee_json = itemOrder.buildEmployeeDetail();
+		$('#employee_json').val(JSON.stringify(order));
 
         //异步向后台提交数据
         $.post('/loginUser/saveUser',$("#leadsForm").serialize() , function(data){
@@ -308,7 +313,11 @@ $(document).ready(function(){
             if(order.ID>0){
                 $.unblockUI();
                 //异步刷新明细表
+                
                 eeda.contactUrl("edit?id",order.ID);
+                $('#employee_id').val(order.EMPLOYEE.ID);
+                $('#create_stamp').val(order.EMPLOYEE.CREATE_STAMP);
+                
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $("#assigning_role").show();
                 $('#saveBtn').attr('disabled', false);
