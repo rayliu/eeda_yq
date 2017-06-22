@@ -14,6 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.jsp.el.ELException;
+
 import models.Office;
 import models.ParentOfficeModel;
 import models.Party;
@@ -598,10 +600,16 @@ public class JobOrderController extends Controller {
     			reJCC.set("conditions", conditions);
     			Db.update("job_contract_compare", reJCC);
     			
-    			//先删除原来的再把最新的合同价格明细带过去
-    			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'charge' and cus_contract_flag = 'Y'",order_id);
-    			getContractMsg(order_id,json,order_export_date);
-    			
+    			//校验是否带过来的合同费用是否已确认
+    			Record reArap = Db.findFirst("select * from job_order_arap "
+    					+ " where order_id = ? and order_type = 'charge' and audit_flag = 'Y' and cus_contract_flag = 'Y'",order_id);
+    			if(reArap == null){
+    				//先删除原来的再把最新的合同费用明细带过去
+        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'charge' and cus_contract_flag = 'Y'",order_id);
+        			getContractMsg(order_id,json,order_export_date);
+    			}else{
+    				//已确认后无法更新费用明细
+    			}
     		}
     	}else{
     		Record re = new Record();
