@@ -547,7 +547,7 @@ public class JobOrderController extends Controller {
    	}
     
     
-    public void saveJobContractConditions(JobOrder order) throws JSONException{
+    private void saveJobContractConditions(JobOrder order) throws JSONException{
     	String order_id =  order.get("id").toString();
     	String customer_id = order.get("customer_id").toString();//客户
     	String trans_clause = order.getStr("trans_clause");//运输条款
@@ -570,34 +570,35 @@ public class JobOrderController extends Controller {
     		String count = re.get("count").toString();
     		
     		if(StringUtils.isNotBlank(container_type)){
-    			
-    			Map<String, String> map = new HashMap<String, String>();
-                map.put("container_type", container_type.replaceAll("'", ""));
-                map.put("count", count);
-                jArray.put(map);
+    			//Map<String, String> map = new HashMap<String, String>();
+    			Record map1 = new Record();
+                map1.set("container_type", container_type.replaceAll("'", ""));
+                map1.set("count", count);
+                jArray.put(map1);
     		}
     	}
     	
-    	JSONObject json=new JSONObject();  
-    	json.put("customer_id", customer_id);
-    	json.put("trans_clause", trans_clause);
-    	json.put("trade_type", trade_type);
+    	Gson json = new Gson();
+    	//JSONObject json=new JSONObject();  
+    	Record map = new Record();
+    	map.set("customer_id", customer_id);
+    	map.set("trans_clause", trans_clause);
+    	map.set("trade_type", trade_type);
     	//json.put("order_export_date", order_export_date);
-    	json.put("type", type);
-    	json.put("pol", pol);
-    	json.put("pod", pod);
-    	json.put("jArray", jArray);
+    	map.set("type", type);
+    	map.set("pol", pol);
+    	map.set("pod", pod);
+    	map.set("jArray", jArray);
     	
-    	String conditions = json.toString();
-    	System.out.println(json.toString());
+    	String jsonStr = json.toJson(map);
     	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ?",order_id);
     	if(reJCC != null){
     		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and ? between contract_begin_time and contract_end_time",order_id,order_export_date);
     		
     		String reConditions = reJCC.getStr("conditions");
-    		if(!conditions.equals(reConditions) || re == null){
+    		if(!jsonStr.equals(reConditions) || re == null){
     			//不同更新
-    			reJCC.set("conditions", conditions);
+    			reJCC.set("conditions", jsonStr);
     			Db.update("job_contract_compare", reJCC);
     			
     			//校验是否带过来的合同费用是否已确认
@@ -606,18 +607,18 @@ public class JobOrderController extends Controller {
     			if(reArap == null){
     				//先删除原来的再把最新的合同费用明细带过去
         			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'charge' and cus_contract_flag = 'Y'",order_id);
-        			getContractMsg(order_id,json,order_export_date);
+        			getContractMsg(order_id,jsonStr,jArray,order_export_date);
     			}else{
     				//已确认后无法更新费用明细
     			}
     		}
     	}else{
     		Record re = new Record();
-        	re.set("conditions", conditions);
+        	re.set("conditions", jsonStr);
         	re.set("order_id", order_id);
         	Db.save("job_contract_compare", re);
         	
-        	getContractMsg(order_id,json,order_export_date);
+        	getContractMsg(order_id,jsonStr,jArray,order_export_date);
     	}
     }
     
@@ -628,22 +629,24 @@ public class JobOrderController extends Controller {
      * @return
      * @throws JSONException 
      */
-    public void getContractMsg(String order_id,JSONObject json,String order_export_date) throws JSONException{
+    private void getContractMsg(String order_id,String jsonStr,JSONArray jArray,String order_export_date) throws JSONException{
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
+        Gson gson = new Gson();
+        Record dto= gson.fromJson(jsonStr, Record.class);   
+    	String customer_id =  dto.getStr("CUSTOMER_ID");
+    	String trans_clause =  dto.getStr("TRANS_CLAUSE");
+    	String trade_type =  dto.getStr("TRADE_TYPE");
+    	String type =  dto.getStr("TYPE");
+    	String pol =  dto.getStr("POL");
+    	String pod =  dto.getStr("POD");
+
     	
-    	String customer_id =  (String)json.get("customer_id");
-    	String trans_clause =  (String)json.get("trans_clause");
-    	String trade_type =  (String)json.get("trade_type");
-    	//String order_export_date =  (String)json.get("order_export_date");
-    	String type =  (String)json.get("type");
-    	String pol =  (String)json.get("pol");
-    	String pod =  (String)json.get("pod");
-    	JSONArray jArray =  (JSONArray)json.get("jArray");
     	String container_types = "";
     	for (int i = 0; i < jArray.length(); i++) {
-    		JSONObject map=new JSONObject();  
-    		map = (JSONObject) jArray.get(i);
+    		Record map=new Record();  
+    		map = (Record) jArray.get(i);
     		String container_type = (String)map.get("container_type");
     		if(i==0){
     			container_types = "'"+container_type+"'";
@@ -672,8 +675,8 @@ public class JobOrderController extends Controller {
     		Double amount = 1.0;
     		String thsi_container_type = re.getStr("container_type");
     		for (int i = 0; i < jArray.length(); i++) {
-        		JSONObject map=new JSONObject();  
-        		map = (JSONObject) jArray.get(i);
+    			Record map=new Record();  
+        		map = (Record) jArray.get(i);
         		String json_container_type = (String)map.get("container_type");
         		String json_amount = (String)map.get("count");
         		if(json_container_type.equals(thsi_container_type)){
