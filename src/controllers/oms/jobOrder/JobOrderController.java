@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,10 +41,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.MultiPartEmail;
+import org.apache.jasper.tagplugins.jstl.ForEach;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
+import org.eclipse.jetty.util.ajax.JSON;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import sun.misc.BASE64Encoder;
 
@@ -56,6 +62,7 @@ import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
+import com.sun.org.apache.regexp.internal.RE;
 
 import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
@@ -516,6 +523,8 @@ public class JobOrderController extends Controller {
    		saveOceanTemplate(shipment_detail);
    		//保存空运填写模板
    		saveAirTemplate(air_detail);
+   		//保持客户合同相对应的信息（方便监听条件是否发生改变去重新加载合同香的费用信息）
+   		saveJobContractConditions(jobOrder);
    		
    	    //费用明细，应收应付
 		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
@@ -534,6 +543,167 @@ public class JobOrderController extends Controller {
 	
    		renderJson(r);
    	}
+    
+    
+    public void saveJobContractConditions(JobOrder order) throws JSONException{
+    	String order_id =  order.getStr("id");
+    	String customer_id = order.getStr("customer_id");//客户
+    	String trans_clause = order.getStr("trans_clause");//运输条款
+    	String trade_type = order.getStr("trade_type");//贸易类型
+    	
+    	String order_export_date = order.get("order_export_date").toString();// 出货日期 *
+    	String type = order.getStr("type");//类型
+    	
+    	Record oseanRe = Db.findFirst("select * from job_order_shipment where order_id = ?",order_id);
+    	String pol = oseanRe.get("pol").toString();
+    	String pod = oseanRe.get("pod").toString();
+    	
+    	
+    	List<Record> oseanItem = Db.find("SELECT count(1) count,container_type FROM `job_order_shipment_item`"
+    			+ "  where order_id = ? GROUP BY container_type;",order_id);
+    	
+    	JSONArray jArray = new JSONArray();
+    	for(Record re :oseanItem){
+    		String container_type = re.getStr("container_type");
+    		String count = re.get("count").toString();
+    		
+    		if(StringUtils.isNotBlank(container_type)){
+    			
+    			Map<String, String> map = new HashMap<String, String>();
+                map.put("container_type", container_type.replaceAll("'", ""));
+                map.put("count", count);
+                jArray.put(map);
+    		}
+    	}
+    	
+    	JSONObject json=new JSONObject();  
+    	json.put("customer_id", customer_id);
+    	json.put("trans_clause", trans_clause);
+    	json.put("trade_type", trade_type);
+    	json.put("order_export_date", order_export_date);
+    	json.put("type", type);
+    	json.put("pol", pol);
+    	json.put("pod", pod);
+    	json.put("jArray", jArray);
+    	
+    	String conditions = json.toString();
+    	//String conditions = customer_id+";"+trans_clause+";"+trade_type+";"+order_export_date+";"+type+";"+pol+";"+pod+";"+jArray.toString();
+    	System.out.println(json.toString());
+    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ?",order_id);
+    	if(reJCC != null){
+    		String reConditions = reJCC.getStr("conditions");
+    		if(!conditions.equals(reConditions)){
+    			//不同更新
+    			reJCC.set("conditions", conditions);
+    			Db.update("job_contract_compare", reJCC);
+    			
+    			//先删除原来的再把最新的合同价格明细带过去
+    			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'charge' and cus_contract_flag = 'Y'",order_id);
+    			getContractMsg(order_id,json);
+    			
+    		}else{
+    			//忽视相同
+    		}
+    	}else{
+    		Record re = new Record();
+        	re.set("conditions", conditions);
+        	re.set("order_id", order_id);
+        	Db.save("job_contract_compare", re);
+        	
+        	getContractMsg(order_id,json);
+    	}
+    }
+    
+    
+    /**
+     * 获取客户合同费用明细信息
+     * @param order_no
+     * @return
+     * @throws JSONException 
+     */
+    public void getContractMsg(String order_id,JSONObject json) throws JSONException{
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+    	
+    	String customer_id =  (String)json.get("customer_id");
+    	String trans_clause =  (String)json.get("trans_clause");
+    	String trade_type =  (String)json.get("trade_type");
+    	String order_export_date =  (String)json.get("order_export_date");
+    	String type =  (String)json.get("type");
+    	String pol =  (String)json.get("pol");
+    	String pod =  (String)json.get("pod");
+    	JSONArray jArray =  (JSONArray)json.get("jArray");
+    	String container_types = "";
+    	for (int i = 0; i < jArray.length(); i++) {
+    		JSONObject map=new JSONObject();  
+    		map = (JSONObject) jArray.get(i);
+    		String container_type = (String)map.get("container_type");
+    		if(i==0){
+    			container_types = "'"+container_type+"'";
+    		}else{
+    			container_types += ",'"+container_type+"'";
+    		}
+		}
+
+    	String sql = "select cci.* from customer_contract_location ccl"
+    			+ " LEFT JOIN customer_contract cc on cc.id = ccl.contract_id"
+    			+ " LEFT JOIN customer_contract_item cci on cci.customer_loc_id = ccl.id"
+    			+ " where "
+    			+ " customer_id = '"+customer_id+"' and cc.type = '"+type+"' and ('"+order_export_date+"' BETWEEN cc.contract_begin_time and cc.contract_end_time)"
+    			+ " and cc.trans_clause = '"+trans_clause+"' and cc.trade_type = '"+trade_type+"'"
+    			+ " and ccl.pol_id = '"+pol+"' and ccl.pod_id = '"+pod+"'"
+    			+ " and (cci.container_type in ("+container_types+") or ifnull(cci.container_type,'')='')"
+    			+ "	and cc.office_id = "+office_id
+    			+ " GROUP BY cci.id";
+    	List<Record> itemList = Db.find(sql) ;
+    	
+    	for(Record re : itemList ){
+    		Double amount = 1.0;
+    		String thsi_container_type = re.getStr("container_type");
+    		for (int i = 0; i < jArray.length(); i++) {
+        		JSONObject map=new JSONObject();  
+        		map = (JSONObject) jArray.get(i);
+        		String json_container_type = (String)map.get("container_type");
+        		String json_amount = (String)map.get("count");
+        		if(json_container_type.equals(thsi_container_type)){
+        			amount = Double.parseDouble(json_amount);
+        		}
+    		}
+    		
+    		JobOrderArap jarap = new JobOrderArap();
+    		jarap.set("order_type", "charge");
+    		jarap.set("type", "海运");
+    		jarap.set("sp_id", customer_id);
+    		jarap.set("charge_id", re.get("fee_id"));
+    		jarap.set("charge_eng_id", re.get("fee_id"));
+    		jarap.set("price", re.get("price"));
+    		jarap.set("amount", amount);
+    		jarap.set("unit_id", re.get("uom"));
+    		Double total_amount = re.getDouble("price")*amount;
+    		jarap.set("total_amount", total_amount);
+    		jarap.set("currency_id", re.get("currency_id"));
+    		//获取汇率
+    		Record crc = Db.findFirst("select * from currency_rate where currency_id = ? and office_id = ?",re.get("currency_id"),office_id);
+    		Double rate = null;
+    		if(crc != null){
+    			rate = crc.getDouble("rate");
+    		}
+    		jarap.set("exchange_rate", rate);
+    		jarap.set("currency_total_amount", total_amount*rate);
+    		jarap.set("exchange_currency_id", re.get("currency_id"));
+    		
+    		jarap.set("exchange_currency_rate_rmb", rate);
+    		jarap.set("exchange_total_amount", total_amount);
+    		jarap.set("exchange_currency_rate",1.0);
+    		jarap.set("exchange_total_amount_rmb", total_amount*rate);
+    		jarap.set("rmb_difference", 0.00);
+    		jarap.set("order_id", order_id);
+    		jarap.set("cus_contract_flag","Y");//标记位
+    		jarap.save();
+    	}
+    	
+    }
+    
     
     
     private StringBuilder StringBuilder(String order_no) {
