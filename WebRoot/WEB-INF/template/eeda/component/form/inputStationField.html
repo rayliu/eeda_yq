@@ -1,0 +1,100 @@
+<div class="form-group">
+	<label class="search-label">${label!''}
+			<%if(required!'' =='required'){%>
+        		<span style='color:red; display:initial;'>*</span>
+    		<%}%>
+	</label>
+	
+	<input type="text" class="form-control search-control" 
+	id="${id}_input" 
+	${required!''} 
+	placeholder="${placeholder!'请选择'}"  value="${display_value!''}">
+	<ul id='${id}_list' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;">
+</ul>
+</div>
+<input id="${id}" style="display: none;" name="${id}" value="${value!''}"/>
+<script>
+
+$(document).ready(function() {
+	//获取sp列表，自动填充
+	var spList =$("#${id}_list");
+	var inputField = $('#${id}_input');
+	var hiddenField = $('#${id}');
+	
+	//供应商查询
+    //获取供应商的list，选中信息在下方展示其他信息
+    inputField.on('keyup click', function(event){
+    	var me = this;
+		var inputStr = inputField.val();
+     if(event.keyCode==8){
+
+    	return ;
+    }else{
+		$.get('/role/searchStation', {stationName:inputStr}, function(data){
+			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+				return;
+			}
+			spList.empty();
+			
+			for(var i = 0; i < data.length; i++){
+				var station_name = data[i].NAME;
+				
+				if(station_name == null){
+					station_name = '';
+				} 
+				spList.append("<li><a tabindex='-1' class='fromLocationItem'  roleId='"+data[i].ID+"' >"+station_name+"</a></li>");
+			}
+			spList.css({ 
+	        	left:$(me).position().left+"px", 
+	        	top:$(me).position().top+28+"px" 
+	        }); 
+			
+			eeda.hidePopList();
+			spList.show();
+			//当查询结果只有一个时，自动赋值到hiddenField
+			if(data.length==0)
+                hiddenField.val('');
+            if(data.length==1&&data[0].ID){
+            	hiddenField.val(data[0].ID);
+            	$('#${id}_input').val(data[0].NAME);
+            }
+                
+            if(!inputStr){
+            	if(data.length>1)
+                    hiddenField.val('');
+            }  
+		},'json');
+     }
+    });
+    
+    // 没选中供应商，焦点离开，隐藏列表
+	inputField.on('blur', function(){
+		if (inputField.val().trim().length ==0) {
+			hiddenField.val('');
+		};
+		if (hiddenField.val().trim().length ==0) {
+            inputField.val('');
+        };
+		spList.hide();
+ 	});
+
+	//当用户只点击了滚动条，没选供应商，再点击页面别的地方时，隐藏列表
+	spList.on('blur', function(){
+		spList.hide();
+ 	});
+
+	spList.on('mousedown', function(){
+		return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+	});
+
+	// 选中供应商
+	spList.on('mousedown', '.fromLocationItem', function(e){
+		//console.log($('#spList').is(":focus"));
+		inputField.val($(this).text());
+		hiddenField.val($(this).attr('roleId'));
+		spList.hide();
+    });
+    
+	
+});
+</script>
