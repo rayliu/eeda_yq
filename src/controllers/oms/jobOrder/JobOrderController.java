@@ -546,8 +546,8 @@ public class JobOrderController extends Controller {
     
     
     public void saveJobContractConditions(JobOrder order) throws JSONException{
-    	String order_id =  order.getStr("id");
-    	String customer_id = order.getStr("customer_id");//客户
+    	String order_id =  order.get("id").toString();
+    	String customer_id = order.get("customer_id").toString();//客户
     	String trans_clause = order.getStr("trans_clause");//运输条款
     	String trade_type = order.getStr("trade_type");//贸易类型
     	
@@ -580,29 +580,28 @@ public class JobOrderController extends Controller {
     	json.put("customer_id", customer_id);
     	json.put("trans_clause", trans_clause);
     	json.put("trade_type", trade_type);
-    	json.put("order_export_date", order_export_date);
+    	//json.put("order_export_date", order_export_date);
     	json.put("type", type);
     	json.put("pol", pol);
     	json.put("pod", pod);
     	json.put("jArray", jArray);
     	
     	String conditions = json.toString();
-    	//String conditions = customer_id+";"+trans_clause+";"+trade_type+";"+order_export_date+";"+type+";"+pol+";"+pod+";"+jArray.toString();
     	System.out.println(json.toString());
     	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ?",order_id);
     	if(reJCC != null){
+    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and ? between contract_begin_time and contract_end_time",order_id,order_export_date);
+    		
     		String reConditions = reJCC.getStr("conditions");
-    		if(!conditions.equals(reConditions)){
+    		if(!conditions.equals(reConditions) || re == null){
     			//不同更新
     			reJCC.set("conditions", conditions);
     			Db.update("job_contract_compare", reJCC);
     			
     			//先删除原来的再把最新的合同价格明细带过去
     			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'charge' and cus_contract_flag = 'Y'",order_id);
-    			getContractMsg(order_id,json);
+    			getContractMsg(order_id,json,order_export_date);
     			
-    		}else{
-    			//忽视相同
     		}
     	}else{
     		Record re = new Record();
@@ -610,7 +609,7 @@ public class JobOrderController extends Controller {
         	re.set("order_id", order_id);
         	Db.save("job_contract_compare", re);
         	
-        	getContractMsg(order_id,json);
+        	getContractMsg(order_id,json,order_export_date);
     	}
     }
     
@@ -621,14 +620,14 @@ public class JobOrderController extends Controller {
      * @return
      * @throws JSONException 
      */
-    public void getContractMsg(String order_id,JSONObject json) throws JSONException{
+    public void getContractMsg(String order_id,JSONObject json,String order_export_date) throws JSONException{
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
     	
     	String customer_id =  (String)json.get("customer_id");
     	String trans_clause =  (String)json.get("trans_clause");
     	String trade_type =  (String)json.get("trade_type");
-    	String order_export_date =  (String)json.get("order_export_date");
+    	//String order_export_date =  (String)json.get("order_export_date");
     	String type =  (String)json.get("type");
     	String pol =  (String)json.get("pol");
     	String pod =  (String)json.get("pod");
@@ -645,7 +644,7 @@ public class JobOrderController extends Controller {
     		}
 		}
 
-    	String sql = "select cci.* from customer_contract_location ccl"
+    	String sql = "select cci.*,cc.contract_begin_time,cc.contract_end_time from customer_contract_location ccl"
     			+ " LEFT JOIN customer_contract cc on cc.id = ccl.contract_id"
     			+ " LEFT JOIN customer_contract_item cci on cci.customer_loc_id = ccl.id"
     			+ " where "
@@ -657,7 +656,11 @@ public class JobOrderController extends Controller {
     			+ " GROUP BY cci.id";
     	List<Record> itemList = Db.find(sql) ;
     	
+    	Date begin_time = null;
+    	Date end_time = null;
     	for(Record re : itemList ){
+    		begin_time = re.getDate("contract_begin_time");
+    		end_time = re.getDate("contract_end_time");
     		Double amount = 1.0;
     		String thsi_container_type = re.getStr("container_type");
     		for (int i = 0; i < jArray.length(); i++) {
@@ -698,10 +701,17 @@ public class JobOrderController extends Controller {
     		jarap.set("exchange_total_amount_rmb", total_amount*rate);
     		jarap.set("rmb_difference", 0.00);
     		jarap.set("order_id", order_id);
-    		jarap.set("cus_contract_flag","Y");//标记位
+    		jarap.set("cus_contract_flag","Y");//标记位 
     		jarap.save();
     	}
     	
+    	//更新合同时间到对比表，方便校验
+    	Record jc = Db.findFirst("select * from job_contract_compare where order_id = ?",order_id);
+    	if(jc != null){
+    		jc.set("contract_begin_time",begin_time );
+    		jc.set("contract_end_time", end_time);
+    		Db.update("job_contract_compare", jc);
+    	}
     }
     
     
