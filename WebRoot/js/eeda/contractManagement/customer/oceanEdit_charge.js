@@ -307,7 +307,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                         return field_html; 
                     }
                 },
-                { "data": "TYPE", "width": "150px",
+                { "data": "TYPE", "width": "150px","visible": false,
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';

@@ -34,9 +34,6 @@ $(document).ready(function() {
     	if($('#ocean_MBLconsignee_info').val()==''){
     		alert+='收货人备注<br><br>';
     	}
-    	if($('#ocean_MBLnotify_party_input').val()==''){
-    		alert+='通知人NotifyParty<br><br>';
-    	}
     	if($('#ocean_MBLnotify_party_info').val()==''){
     		alert+='通知人备注<br><br>';
     	}
@@ -98,9 +95,6 @@ $(document).ready(function() {
     	}
     	if($('#ocean_HBLconsignee_info').val()==''){
     		alert+='收货人备注<br><br>';
-    	}
-    	if($('#ocean_HBLnotify_party_input').val()==''){
-    		alert+='通知人NotifyParty<br><br>';
     	}
     	if($('#ocean_HBLnotify_party_info').val()==''){
     		alert+='通知人备注<br><br>';
@@ -166,9 +160,6 @@ $(document).ready(function() {
     	}
     	if($('#ocean_consignee_info').val()==''){
     		alert+='收货人备注<br><br>';
-    	}
-    	if($('#ocean_notify_party_input').val()==''){
-    		alert+='通知人NotifyParty<br><br>';
     	}
     	if($('#ocean_notify_party_info').val()==''){
     		alert+='通知人备注<br><br>';
@@ -238,9 +229,6 @@ $(document).ready(function() {
     	}
     	if($('#ocean_consignee_info').val()==''){
     		alert+='收货人备注<br><br>';
-    	}
-    	if($('#ocean_notify_party_input').val()==''){
-    		alert+='通知人NotifyParty<br><br>';
     	}
     	if($('#ocean_notify_party_info').val()==''){
     		alert+='通知人备注<br><br>';
@@ -474,9 +462,6 @@ $(document).ready(function() {
     	    	}
     	    	if($('#consignee_info').val()==''){
     	    		alert+='收货人备注<br><br>';
-    	    	}
-    	    	if($('#notify_party_input').val()==''){
-    	    		alert+='通知人NotifyParty<br><br>';
     	    	}
     	    	if($('#notify_party_info').val()==''){
     	    		alert+='通知人备注<br><br>';
