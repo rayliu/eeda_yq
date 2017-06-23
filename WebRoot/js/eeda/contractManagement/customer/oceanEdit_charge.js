@@ -336,7 +336,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         	var url = "/customerContract/tableList?contract_id="+contract_id+"&type=ocean_loc";
         	locationTable.ajax.url(url).load();
         }
-
+        //添加海运地点
         $('#add_ocean_location').on('click', function(){
             var item={};
             locationTable.row.add(item).draw(true);
