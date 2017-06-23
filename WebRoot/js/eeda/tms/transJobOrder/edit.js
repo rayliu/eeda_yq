@@ -204,7 +204,7 @@ $(document).ready(function() {
         order.customer_salesman =$('#customer_salesman').val();
         order.transport_type = transport_type_str;
         order.toca_no = $('#toca_no').val();
-        
+        order.cross_border_travel = $('#cross_border_travel').val();      
        
         
         
