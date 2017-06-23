@@ -1,6 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) {
 	$(document).ready(function() {
-	
+		var isImporting = false;
 		// 导入运输单
 	    $("#uploadBtn").click(function(){
 	    	$("#toFileUpload").click();
@@ -12,23 +12,41 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		$('#toFileUpload').fileupload({
 	        dataType: 'json',
 	        done: function (e,data) {
-	        	alert("导入已结束");
+	        	$("#uploadBtn").attr('disabled',false);
+	        	$("#uploadBtn").text('导入单据');
+	        	isImporting = false;
 	        	order.refleshTable();
-	        	$("#footer").show();
-	        	$("#msgLoad").empty().append('<h4>'+data.result.CAUSE+'</h4>');
+	        	alert(data.result.CAUSE);
 	        },
 	        progressall: function (e, data) {//设置上传进度事件的回调函数  
-	        	str=null;
-	            errCustomerNo=null;
-	            errCustomerNoArr=[];
-	        	$('#msgLoad').empty().append('<center><img src="/yh/image/loading5.gif" width="20%"><h4>导入过程可能需要一点时间，请勿退出页面！</h4></center>');
-	        	$('#myModal').modal('show');
-	        	$("#footer").hide();
+	        	 $("#uploadBtn").attr('disabled',true);
+	        	 $("#uploadBtn").html("<img src='/images/loading.gif' style='height: 25px;'/>正在导入...");
+	        	 isImporting = true;
 	        } 
 	    },'json').error(function (jqXHR, textStatus, errorThrown) {
 	        alert("出错了，请刷新页面重新尝试。")
 	        console.log(errorThrown);
-	    });;
+	    });
+		
+		
+//		if(true){
+//			$.scojs_message('in', $.scojs_message.OK);
+//			window.setInterval(updateStatus(),3000)
+//		}
+//		
+//		function updateStatus(){
+//			$.scojs_message('d', $.scojs_message.TYPE_FALSE);
+//			$.post('/importOrder/getImportStatus',function(data){
+//				if(data){
+//					$("#uploadBtn").attr('disabled',false);
+//		        	$("#uploadBtn").text('导入单据');
+//		        	isImporting = false;
+//		        	order.refleshTable();
+//		        	alert('导入成功');
+//				}
+//			});
+//		}
+		
 	});
 });
 

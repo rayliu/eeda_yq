@@ -53,6 +53,7 @@ public class ImportOrder extends Controller {
 	
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
+		setAttr("isImporting", isImporting);
 	    render("/wms/import/list.html");
 	}
 	
@@ -69,13 +70,15 @@ public class ImportOrder extends Controller {
 		CSVReader csvReader = null;  
 		
 		String doc_name = null;
-		String[] fileArray = fileName.split("_");
-		doc_name =fileArray[0]+"_"+fileArray[1]+"_"+fileArray[2].substring(0, 6)+fileName.subSequence(fileName.length()-4, fileName.length());
+		
 		
 	    try {  
 	    	if(isImporting){
 	    		throw new Exception("有文件正在上传，请稍等1~2分钟。。。");
 	    	}
+	    	
+	    	String[] fileArray = fileName.split("_");
+			doc_name =fileArray[0]+"_"+fileArray[1]+"_"+fileArray[2].substring(0, 6)+fileName.subSequence(fileName.length()-4, fileName.length());
 	    	
 	    	Record import_log = Db.findFirst("select * from import_log where doc_name = ?",doc_name);
 			if(import_log == null){
@@ -120,7 +123,11 @@ public class ImportOrder extends Controller {
 	    } catch (Exception e) {  
 	        e.printStackTrace(); 
 	        resultMap.set("result", false);
-	        resultMap.set("cause", e.getMessage());
+	        String message = e.getMessage();
+	        if("2".equals(message)){
+	        	message = "文件名不规范";
+	        }
+	        resultMap.set("cause", message);
 	        isImporting = false;
 	    } 
 	    renderJson(resultMap);
@@ -313,4 +320,8 @@ public class ImportOrder extends Controller {
 
         renderJson(orderListMap); 
     }
+	
+	public void getImportStatus(){
+		renderJson(isImporting);
+	}
 }
