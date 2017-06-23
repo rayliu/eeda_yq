@@ -548,8 +548,13 @@ public class JobOrderController extends Controller {
     	String type = order.getStr("type");//类型
     	
     	Record oseanRe = Db.findFirst("select * from job_order_shipment where order_id = ?",order_id);
-    	String pol = oseanRe.get("pol").toString();
-    	String pod = oseanRe.get("pod").toString();
+    	String pol="";
+    	String pod=""; 
+    	if(oseanRe!=null){
+    		 pol = oseanRe.get("pol").toString();
+        	 pod = oseanRe.get("pod").toString();
+    	}
+    	
     	
     	List<Record> oseanItem = Db.find("SELECT count(1) count,container_type FROM `job_order_shipment_item`"
     			+ "  where order_id = ? GROUP BY container_type;",order_id);
@@ -633,7 +638,7 @@ public class JobOrderController extends Controller {
     	String pod =  dto.getStr("POD");
 
     	
-    	String container_types = "";
+    	String container_types = "''";
     	for (int i = 0; i < jArray.size(); i++) {
     		Record map=new Record();  
     		map = (Record) jArray.get(i);
