@@ -517,6 +517,7 @@ public class JobOrderController extends Controller {
    		//保存空运填写模板
    		saveAirTemplate(air_detail);
    		//保持客户合同相对应的信息（方便监听条件是否发生改变去重新加载合同香的费用信息）
+   		
    		saveJobContractConditions(jobOrder);
    		
    	    //费用明细，应收应付
@@ -551,8 +552,11 @@ public class JobOrderController extends Controller {
     	String pol="";
     	String pod=""; 
     	if(oseanRe!=null){
-    		 pol = oseanRe.get("pol").toString();
-        	 pod = oseanRe.get("pod").toString();
+    		if(oseanRe.get("pol") != null && oseanRe.get("pod")!= null){
+    			pol = oseanRe.get("pol").toString();
+           	 	pod = oseanRe.get("pod").toString();
+    		}
+    		 
     	}
     	
     	
