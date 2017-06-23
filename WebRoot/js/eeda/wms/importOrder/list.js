@@ -21,6 +21,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             ]
         });
         
+        $("#stopBtn").click(function(){
+        	$.post('/importOrder/stopImport',function(data){
+        		if(!data){
+        			$.scojs_message('已停', $.scojs_message.TYPE_OK);
+        		}
+        	}
+        });
+        
         
         order.refleshTable = function(){
         	dataTable.ajax.url("/importOrder/list").load();

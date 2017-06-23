@@ -324,4 +324,9 @@ public class ImportOrder extends Controller {
 	public void getImportStatus(){
 		renderJson(isImporting);
 	}
+	
+	public void stopImport(){
+		isImporting = false;
+		renderJson(isImporting);
+	}
 }
