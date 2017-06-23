@@ -6,6 +6,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	$("#toFileUpload").click();
 	    });
 	    
+	    
+	    
+	    
 	    var str=null;
 	    var errCustomerNo=null;
 	    var errCustomerNoArr=[];
@@ -22,13 +25,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	        	 $("#uploadBtn").attr('disabled',true);
 	        	 $("#uploadBtn").html("<img src='/images/loading.gif' style='height: 25px;'/>正在导入...");
 	        	 isImporting = true;
-	        	 interval();
+	        	 
+	        	 var impor = window.setInterval(function(){
+	 				if(isImporting){
+	 					$.post('/importOrder/getImportStatus',function(data){
+	 						if(!data){
+	 							$("#uploadBtn").attr('disabled',false);
+	 				        	$("#uploadBtn").text('导入单据');
+	 				        	isImporting = false;
+	 				        	order.refleshTable();
+	 				        	alert('导入成功');
+	 				        	clearInterval(impor);
+	 						}
+	 					});
+	 				}
+	 			},10000)
 	        } 
 	    },'json').error(function (jqXHR, textStatus, errorThrown) {
 	        alert("出错了，请刷新页面重新尝试。")
 	        console.log(errorThrown);
 	    });
-		
 		
 		
 		var interval = window.setInterval(function(){
@@ -45,6 +61,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				});
 			}
 		},10000)
+		
 	});
 });
 
