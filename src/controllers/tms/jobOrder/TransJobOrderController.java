@@ -971,6 +971,7 @@ public class TransJobOrderController extends Controller {
         String sName =  getPara("columns["+sColumn+"][data]")==null?"create_stamp":getPara("columns["+sColumn+"][data]") ;
         if("0".equals(sName)){
         	sName = "cabinet_date";
+        	sort ="desc";
         }
         
         String sql = "";
