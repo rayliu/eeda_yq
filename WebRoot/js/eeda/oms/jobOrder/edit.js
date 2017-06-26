@@ -171,6 +171,7 @@ $(document).ready(function() {
         order.ref_no = $("#ref_no").val();
         order.trans_clause = $("#trans_clause").val();
         order.trade_type = $("#trade_type").val();
+        order.fee_count = $("#fee_count").val();
         order.land_export_date = $('#land_export_date').val();
         order.order_export_date = $('#order_export_date').val();
         //报关类型

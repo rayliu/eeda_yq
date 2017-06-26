@@ -152,16 +152,7 @@ public class SupplierContractController extends Controller {
     
     public List<Record> getItems(String contract_id,String type){
     	String sql = "";
-    	if("ocean".equals(type)){
-    		sql = " SELECT cci.*, fi.name fee_name, "
-    		        + " CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
-					+" from supplier_contract_item cci"
-					+ " left join supplier_contract_location ccl on ccl.id = cci.supplier_loc_id"
-					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
-					+" LEFT JOIN unit u on u.id = cci.uom"
-					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE ccl.contract_id = ? and cci.contract_type='"+type+"' and ccl.is_select = 'Y'";
-    	}else if("land_loc".equals(type) || "tour_loc".equals(type)){
+    	if("land_loc".equals(type) || "tour_loc".equals(type)){
             sql = " SELECT ccl.*, "
                     + " l.dock_name pol_name, "
                     + " l1.dock_name pod_name"
@@ -170,28 +161,16 @@ public class SupplierContractController extends Controller {
                     +" LEFT JOIN dockinfo l1 on l1.id = ccl.pod_id"
                     +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' "; 
     	}else if(type.indexOf("_loc")>0){
-                sql = " SELECT ccl.*, "
+                sql = " SELECT ccl.*,p.abbr carrier_name, "
                         + " CONCAT(l.name,' -', l.code) pol_name, "
-                        + " CONCAT(l1.name,' -', l1.code) pod_name"
+                        + " CONCAT(l1.name,' -', l1.code) pod_name,"
+                        + " CONCAT(l2.name,' -', l2.code) hub_name"
                         +" from supplier_contract_location ccl"
                         +" LEFT JOIN location l on l.id = ccl.pol_id"
                         +" LEFT JOIN location l1 on l1.id = ccl.pod_id"
+                        +" LEFT JOIN location l2 on l2.id = ccl.hub_id"
+                        + " left join party p on p.id = ccl.carrier_id"
                         +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' ";	
-    	}else if("air".equals(type)){
-    		sql = " SELECT cci.*,fi.name fee_name, "
-    		        + "CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
-					+" from supplier_contract_item cci"
-					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
-					+" LEFT JOIN unit u on u.id = cci.uom"
-					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE cci.contract_id = ? and cci.contract_type='air' ";
-    	}else if("land".equals(type)){
-    		sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
-					+" from supplier_contract_item cci"
-					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
-					+" LEFT JOIN unit u on u.id = cci.uom"
-					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE cci.contract_id = ?  and cci.contract_type='land'";
     	}else if("trade".equals(type)){
             sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
                     +" from supplier_contract_item cci"
@@ -206,7 +185,16 @@ public class SupplierContractController extends Controller {
                     +" LEFT JOIN unit u on u.id = cci.uom"
                     +" LEFT JOIN currency c on c.id= cci.currency_id"
                     +" WHERE cci.contract_id = ?  and cci.contract_type='tour'";
-        }
+        }else {  
+    		sql = " SELECT cci.*,fi.name fee_name, "
+    		        + "CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+					+" from supplier_contract_item cci"
+					+ " left join supplier_contract_location ccl on ccl.id = cci.supplier_loc_id"
+					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
+					+" LEFT JOIN unit u on u.id = cci.uom"
+					+" LEFT JOIN currency c on c.id= cci.currency_id"
+					+" WHERE ccl.contract_id = ? and cci.contract_type='"+type+"' and ccl.is_select = 'Y' ";
+    	}
     	
     	
     	List<Record> re = Db.find(sql,contract_id);
@@ -294,8 +282,7 @@ public class SupplierContractController extends Controller {
    			}
    			
    		}
-   		//海运费用明细保存
-   		
+   		//海运路线、费用明细保存
    		List<Map<String,String>> oceanLocs = (ArrayList<Map<String, String>>) dto.get("itemOceanLocList");
         DbUtils.handleList(oceanLocs, "supplier_contract_location", id,"contract_id");
         Record re = Db.findFirst("select * from supplier_contract_location where contract_id = ? and type ="
@@ -304,20 +291,30 @@ public class SupplierContractController extends Controller {
 	   		List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemOceanList");
 	   		DbUtils.handleList(charge_items, "supplier_contract_item", re.get("id").toString(),"supplier_loc_id");
         }
-
-
         
-        
-        
-   		List<Map<String,String>> charge_air_items = (ArrayList<Map<String, String>>) dto.get("itemAirList");
-   		DbUtils.handleList(charge_air_items, "supplier_contract_item", id,"contract_id");
+        //空运路线、费用明细保存
         List<Map<String,String>> airLocs = (ArrayList<Map<String, String>>) dto.get("itemAirLocList");
         DbUtils.handleList(airLocs, "supplier_contract_location", id,"contract_id");
-   		
-   		List<Map<String,String>> charge_land_items = (ArrayList<Map<String, String>>) dto.get("itemLandList");
-   		DbUtils.handleList(charge_land_items, "supplier_contract_item", id,"contract_id");
+        
+        Record reAir = Db.findFirst("select * from supplier_contract_location where contract_id = ? and type ="
+                + "  'air_loc' and is_select = 'Y' ",id);
+		if(reAir != null){
+			List<Map<String,String>> charge_air_items = (ArrayList<Map<String, String>>) dto.get("itemAirList");
+			DbUtils.handleList(charge_air_items, "supplier_contract_item", reAir.get("id").toString(),"supplier_loc_id");
+		}
+        
+        //陆运路线、费用明细保存
         List<Map<String,String>> landLocs = (ArrayList<Map<String, String>>) dto.get("itemLandLocList");
         DbUtils.handleList(landLocs, "supplier_contract_location", id,"contract_id");
+        
+        Record reLand = Db.findFirst("select * from supplier_contract_location where contract_id = ? and type ="
+                + "  'land_loc' and is_select = 'Y' ",id);
+		if(reLand != null){
+			List<Map<String,String>> charge_land_items = (ArrayList<Map<String, String>>) dto.get("itemLandList");
+			DbUtils.handleList(charge_land_items, "supplier_contract_item", reLand.get("id").toString(),"supplier_loc_id");
+		}
+
+        
    		
         List<Map<String,String>> charge_trade_items = (ArrayList<Map<String, String>>) dto.get("itemTradeList");
         DbUtils.handleList(charge_trade_items, "supplier_contract_item", id,"contract_id");
@@ -329,7 +326,7 @@ public class SupplierContractController extends Controller {
    		
    		Record rcon = new Record();
    		rcon= Db.findFirst("select * from supplier_contract joc where id = ? ",id);
-//   		rcon.set("charge_items", getItems(id));
+        //rcon.set("charge_items", getItems(id));
        
         setAttr("saveOK", true);
         //redirect("/serviceProvider");
@@ -345,7 +342,6 @@ public class SupplierContractController extends Controller {
     	String supplier_loc_id = getPara("supplier_loc_id");
 
     	String sql = "";
-    	if("ocean".equals(type)){
     		sql = " SELECT cci.*, fi.name fee_name, "
     		        + " CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
 					+" from supplier_contract_item cci"
@@ -353,8 +349,8 @@ public class SupplierContractController extends Controller {
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE cci.contract_type='ocean' and cci.supplier_loc_id = ?";
-    	}
+					+" WHERE cci.contract_type='"+type+"' and cci.supplier_loc_id = ?";
+
     	
     	List<Record> list = Db.find(sql,supplier_loc_id);
 

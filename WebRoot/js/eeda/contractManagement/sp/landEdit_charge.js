@@ -29,12 +29,66 @@ $(document).ready(function() {
     };
 
     itemOrder.buildLandLocItem=function(){
-        var items = eeda.buildTableDetail("land_location_table", deletedLoactionTableIds);
-        for (var i = 0; i < items.length; i++) {
-            var item = items[i];
+    	var table_id = 'land_location_table';
+    	var deletedTableIds = deletedLoactionTableIds;
+
+    	var item_table_rows = $("#"+table_id+" tr:visible");
+        var items_array=[];
+        for(var index=0; index<item_table_rows.length; index++){
+            if(index==0)
+                continue;
+
+            var row = item_table_rows[index];
+            var empty = $(row).find('.dataTables_empty').text();
+            if(empty)
+              continue;
+            
+            var id = $(row).attr('id');
+            if(!id){
+                id='';
+            }
+            
+            var item={}
+            item.id = id;
+            for(var i = 0; i < row.childNodes.length; i++){
+            	var name = $(row.childNodes[i]).find('input,select').attr('name');
+            	if(name == 'checkLandRoute'){
+            		var check = $($(row.childNodes[i]).find('input')).prop('checked');
+                 	if(check){
+                 		item.is_select = 'Y';
+                 	}else{
+                 		item.is_select = 'N';
+                 	}
+            	}else{
+                    var value = $(row.childNodes[i]).find('input,select').val();
+                    if(name){
+                        item[name] = value;
+                    }
+            	}
+            }
+            item.action = id.length > 0?'UPDATE':'CREATE';
             item.type = "land_loc";
+    		if(item_table_rows.length == 2){
+            	item.is_select = 'Y'; 
+            }
+    		
+            items_array.push(item);
         }
-        return items;
+
+        //add deleted items
+        if(deletedTableIds!=''){
+        	
+        	for(var index=0; index<deletedTableIds.length; index++){
+        		var id = deletedTableIds[index];
+        		var item={
+        				id: id,
+        				action: 'DELETE'
+        		};
+        		items_array.push(item);
+        	}
+        	deletedLoactionTableIds = [];
+        }
+        return items_array;
     };
     
 
@@ -189,6 +243,16 @@ $(document).ready(function() {
                 bindLocationFieldEvent();
             },
             columns:[
+ 				{"data": "IS_SELECT",  
+					"width": "30px",
+				    "render": function ( data, type, full, meta ) {
+				    	var select = "";
+				    	if(data == 'Y'){
+				    		select = "checked";
+				    	}
+				        return '<input type="radio" '+select+' name="checkLandRoute" style="margin-right:20px;" />';
+				    }
+				},                
                 {  "width": "50px",
                     "render": function ( data, type, full, meta ) {
                         return '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>';
@@ -223,6 +287,13 @@ $(document).ready(function() {
                         return field_html; 
                     }
                 },
+                { "data": "TYPE", "width": "150px", "visible": false,
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                },
                 { "data": "POL_NAME", "visible": false,
                     "render": function ( data, type, full, meta ) {
                         if(!data)
@@ -239,10 +310,31 @@ $(document).ready(function() {
                 }
             ]
         });
+        
+        //刷新明细表
+        itemOrder.refleshLandLocTable = function(contract_id){
+        	var url = "/supplierContract/tableList?contract_id="+contract_id+"&type=land_loc";
+        	locationTable.ajax.url(url).load();
+        }
 
+        //添加陆运地点
         $('#add_land_location').on('click', function(){
             var item={};
             locationTable.row.add(item).draw(true);
+        });
+        
+        //根据radioButton显示对应路线费用
+        $('#land_location_table').on('click','[name=checkLandRoute]', function(){
+        	var self = this;
+        	var order_id = $('#contract_id').val();
+        	if(order_id == '')
+        		return;
+            var item_id = $(this).parent().parent().attr('id');
+            if(item_id==undefined){
+            	item_id = "";
+            }
+            var url = "/supplierContract/clickItem?contract_id="+order_id+"&type=land&supplier_loc_id="+item_id;
+        	cargoTable.ajax.url(url).load();
         });
 });
 });

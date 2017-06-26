@@ -60,7 +60,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	     		}
 	        	itemOrder.refleshOceanLocTable(data.ID);
 	        	itemOrder.refleshOceanItemTable(data.ID);
+	        	
+	        	itemOrder.refleshAirLocTable(data.ID);
 	        	itemOrder.refleshAirItemTable(data.ID);
+	        	
+	        	itemOrder.refleshLandLocTable(data.ID);
 	        	itemOrder.refleshLandItemTable(data.ID);
 	        },'json').fail(function() {
 	            $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
