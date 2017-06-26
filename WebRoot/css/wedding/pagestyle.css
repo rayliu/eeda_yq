@@ -1,0 +1,74 @@
+ul,li{ list-style:none;}
+.mr10{ margin-right:10px;}
+
+.mt10{ margin-top:10px;}
+table.mt10{ margin-top:0px;}
+.registered{ padding:10px;}
+.registered dl{ margin-bottom:10px;}
+.textin{ padding:5px;}
+.textin input{ border:1px solid #ccc; width:200px; padding:5px; height:20px; line-height:25px;}
+.fm-label-wrap { float:left; padding:10px 10px 0 10px; text-align:right; width:75px;}
+
+.fill-detail{width:200px; height:100px; line-height:22px; padding:5px; border:1px solid #ccc;}
+
+.verify{ border:1px solid #ccc; margin:10px; padding:10px; font-size:14px;}
+.fail-verify{ border:1px solid #FC6; background:#FFC; color:#F63; font-size:12px; margin-top:10px; padding:5px;}
+
+.announcement{ margin:0 10px; background-color:#fff; border:1px solid #ccc;}
+.announcement p{ margin-left:20px;}
+.notice{margin-top:10px;}
+.notice h3{ position:relative;}
+.notice h3 a{ position:absolute; right:5px; top:0px; font-size:12px; text-decoration:underline;}
+.notice p{ border-bottom:1px dashed #ccc;}
+
+.xx-detail{background:#fff; border:1px solid #ccc; margin:10px; color:#333;}
+.xx-detail h3{ margin:10px;}
+.xx-detail  p{ margin:10px;}
+
+.product-table{ margin:0 10px;}
+
+.product-upload{ width:400px; border-right:1px solid #ccc;}
+
+.chose{ padding:5px;}
+.chose .radio{ vertical-align:middle;}
+
+.zdy-fenlei{ position:absolute; left:500px; top:20px;}
+.zdy-fenlei div{ padding:10px 0;}
+.delete-btn{ border:1px solid #CCC; background:#f7f7f7; color:#333; cursor:pointer; width:65px; height:24px; }
+
+.yoohui{border:1px solid #ccc; background:#f7f7f7; padding:10px;}
+
+.dingdan{ margin-bottom:10px; border:1px dashed #ccc; padding:10px;}
+.dingdan .edit-btn{ width:70px; height:22px;text-align:center; border:1px solid #89daff; background:#c4ecff; color:#333; cursor:pointer; width:65px; height:24px; margin-left:10px; }
+.dingdan .end{ width:70px; height:22px; display:inline-block; color:#f00; text-align:center; margin-left:10px; }
+
+.ad-smallpic{ width:60px; height:40px; border:1px solid #ccc; background:#fff;}
+.ad-bigpic{ width:60px; height:200px; border:1px solid #ccc; background:#fff;}
+
+.hang{margin-top:10px; border-bottom:1px solid #ccc; padding:10px 0;}
+.tipsred{ padding:10px; background:#ffeaea; border:1px solid #ff8383; color:#F33;}
+
+.ud-year{ margin:0 10px; color:#F63;}
+.riqi{ color:#06F;}
+
+.hh5{ margin:10px 0;}
+
+.caselist{}
+.caselist li{ position:relative; padding:5px 0; border-bottom:1px dashed #ccc; height:30px; line-height:30px; }
+.casename{ position:absolute; top:10px; left:10px;}
+.casebtn{ position:absolute; top:10px; right:10px;}
+.modifibtn{width:70px; height:22px;text-align:center; border:1px solid #89daff; background:#c4ecff; color:#333; cursor:pointer; width:65px; height:24px; margin-right:10px;}
+
+.casetable{ border:1px solid #ccc;border-collapse: collapse;border-spacing: 0;}
+.casetable td{ padding:10px; border:1px solid #ccc;  }
+.deletecase{border:1px solid #CCC; background:#f7f7f7; color:#333; cursor:pointer; width:65px; height:24px;  vertical-align:middle}
+
+.longtxt{ width:350px; height:22px; line-height:22px;}
+
+.dataTables_paginate .pagination{
+    display: inline-block;
+}
+
+a.btn_yellow{
+    color: #ae510d;
+}
