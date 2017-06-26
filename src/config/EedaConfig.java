@@ -26,7 +26,7 @@ import models.eeda.profile.OrderNoSeq;
 import models.eeda.profile.Unit;
 
 import org.apache.log4j.Logger;
-import org.bee.tl.ext.jfinal.BeetlRenderFactory;
+import org.beetl.ext.jfinal.BeetlRenderFactory;
 import org.h2.tools.Server;
 
 import com.jfinal.config.Constants;
@@ -49,14 +49,6 @@ import controllers.IndexController;
 import controllers.app.AppControllerForMobile;
 import controllers.bizadmin.BizAdminController;
 import controllers.bizadmin.account.AccountController;
-import controllers.eeda.MainController;
-import controllers.eeda.ModuleController;
-import controllers.profile.CountryController;
-import controllers.profile.CustomController;
-import controllers.profile.FinItemController;
-import controllers.profile.PrivilegeController;
-import controllers.profile.TradeItemController;
-import controllers.profile.UnitController;
 import controllers.webadmin.WebAdminController;
 import controllers.webadmin.ad.AdController;
 import controllers.webadmin.ad.CuController;
@@ -113,8 +105,6 @@ public class EedaConfig extends JFinalConfig {
 
         BeetlRenderFactory templateFactory = new BeetlRenderFactory();
         me.setMainRenderFactory(templateFactory);
-
-        BeetlRenderFactory.groupTemplate.setCharset("utf-8");// 没有这句，html上的汉字会乱码
 
         // 注册后，可以使beetl html中使用shiro tag
         BeetlRenderFactory.groupTemplate.registerFunctionPackage("shiro", new ShiroExt());
