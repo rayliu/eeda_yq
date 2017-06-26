@@ -47,11 +47,11 @@ public class ChargeBalanceReportController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
-        String sql = " SELECT A.id,A.customer_id,A.abbr,A.sp_id,sum(charge_cny) charge_cny,"
+        String sql = " SELECT A.id,A.customer_id,A.abbr,A.sp_id,A.employee_name,A.employee_id,sum(charge_cny) charge_cny,"
         		+ " SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,"
         		+ " SUM(uncharge_cny) uncharge_cny,SUM(uncharge_usd) uncharge_usd,sum(uncharge_jpy) uncharge_jpy,"
         		+ " SUM(uncharge_hkd) uncharge_hkd,SUM(charge_rmb) charge_rmb,sum(uncharge_rmb) uncharge_rmb"
-        		+ " FROM (SELECT jo.id,jo.customer_id,p.abbr,joa.sp_id,IF (joa.order_type = 'charge'"
+        		+ " FROM (SELECT jo.id,jo.customer_id,p.abbr,joa.sp_id,em.employee_name,em.id employee_id,IF (joa.order_type = 'charge'"
         		+ " AND joa.exchange_currency_id = 3,exchange_total_amount,0) charge_cny,"
         		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 6,"
         		+ " exchange_total_amount,0) charge_usd,IF (joa.order_type = 'charge'"
@@ -71,10 +71,12 @@ public class ChargeBalanceReportController extends Controller {
         		+ " FROM job_order jo"
         		+ " LEFT JOIN job_order_arap joa ON jo.id = joa.order_id"
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"
-        		+ " WHERE jo.office_id =" +office_id+" "+condition
+        		+ " LEFT JOIN customer_salesman cs on cs.party_id = joa.sp_id"
+        		+ " LEFT JOIN employee em on em.id = cs.salesman_id"
+        		+ " WHERE jo.office_id =" +office_id+" "
         		+ " and jo.delete_flag = 'N'"
 				+ " ) A"
-        		+ " WHERE A.sp_id IS NOT NULL AND A.charge_rmb!=0"
+        		+ " WHERE A.sp_id IS NOT NULL AND A.charge_rmb!=0"+condition
         		+ " GROUP BY A.sp_id"
         		+ " ORDER BY uncharge_rmb desc";
 		

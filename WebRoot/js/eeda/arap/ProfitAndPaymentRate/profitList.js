@@ -74,7 +74,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
           var employee_name = $("#employee_id_input").val().trim(); 
-          var employee_id = $("#employee_id").val().trim();
+          var employee_id = $("#employee_id").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
