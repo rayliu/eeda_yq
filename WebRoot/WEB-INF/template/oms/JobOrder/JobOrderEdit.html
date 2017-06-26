@@ -255,17 +255,14 @@
                                     }){}%>
                             </div>
                             <div class="col-lg-4">
-                                <div class="form-group" id="billing_method">
-                                <input type="hidden" id="hidden_billing_method" value="${order.billing_method!''}">
-                                    <label class="search-label">计费方式</label>
-                                    <label class="checkbox-inline" style="margin-right:0px;">
-                                        <input type="radio" name='billing_method' value='perWeight' checked style="margin-left:-10px;">重货(按重量)
-                                    </label>
-                                    <label class="checkbox-inline" style="margin-right:0px;">
-                                        <input type="radio" name='billing_method' value='perVolume'>泡货(按体积)
-                                    </label>
-                                </div>
-                             </div>
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'fee_count', 
+                                        label:'计费数量', 
+                                        value: order.fee_count!planOrderItem.fee_count!'',
+                                        placeholder:'请输入数字'
+                                    }){}%>
+                            </div>
+                            
                         </div>
                         <div class="row">
                             <div class="col-lg-8">
@@ -285,6 +282,18 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" id="billing_method">
+                                <input type="hidden" id="hidden_billing_method" value="${order.billing_method!''}">
+                                    <label class="search-label">计费方式</label>
+                                    <label class="checkbox-inline" style="margin-right:0px;">
+                                        <input type="radio" name='billing_method' value='perWeight' checked style="margin-left:-10px;">按重量(KG)
+                                    </label>
+                                    <label class="checkbox-inline" style="margin-right:0px;">
+                                        <input type="radio" name='billing_method' value='perVolume'>按体积(CBM)
+                                    </label>
+                                </div>
+                             </div>
                         </div>
                         <div class="form-group">
                              <label>备注</label>
