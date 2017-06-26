@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>WeUI</title>
+    <link rel="stylesheet" href="/js/lib/weui-1.1.2/style/weui.css"/>
+    <link rel="stylesheet" href="/js/lib/weui-1.1.2/example/example.css"/>
+</head>
+<body ontouchstart>
+    <div class="weui-toptips weui-toptips_warn js_tooltips">请输入Part No.</div>
+
+    <div class="container" id="container"></div>
+
+    <script type="text/html" id="tpl_home">
+<div class="page">
+
+    <img style="width: 100%;" src="/images/features-img1.png">
+    <div class="page__bd page__bd_spacing">
+        <div class="weui-media-box weui-media-box_text">
+            <h4 class="weui-media-box__title">Part No.: 12312321312</h4>
+            <h4 class="weui-media-box__title"></h4>
+            <h4 class="weui-media-box__title">库存: 2000</h4>
+            <p class="weui-media-box__desc">QR code: 12312321321312312321312312312</p>
+            
+        </div>
+
+        
+        
+         <div class="button-sp-area" style="margin-top: 20px;margin-bottom: 20px;">
+            <a href="/wx/query" class="weui-btn weui-btn_primary">返回</a>
+        </div>
+
+        
+
+       
+    </div>
+ </div><!-- home -->
+
+    <script type="text/javascript">
+        $(function(){
+            var $tooltips = $('.js_tooltips');
+            $('#queryPartNo').on('click', function(){
+                if($('#part_no').val().length>0){
+                    console.log('click 查询按钮...')
+                }else{
+                    if ($tooltips.css('display') != 'none') return;
+
+                    // toptips的fixed, 如果有`animation`, `position: fixed`不生效
+                    $('.page.cell').removeClass('slideIn');
+
+                    $tooltips.css('display', 'block');
+                    setTimeout(function () {
+                        $tooltips.css('display', 'none');
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+   
+
+
+   
+</script>
+    <script src="/js/lib/weui-1.1.2/example//zepto.min.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="https://res.wx.qq.com/open/libs/weuijs/1.0.0/weui.min.js"></script>
+    <script src="/js/lib/weui-1.1.2/example/example.js"></script>
+</body>
+</html>
