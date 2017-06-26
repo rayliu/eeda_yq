@@ -223,9 +223,12 @@ public class TransOrderShortCutController extends Controller {
 		        if(!"".equals(loading_wharf2)){
 		        		loadingWharf2=" and pq.loading_wharf2= "+loading_wharf2;
 		        }
-		        long charge_id;
+		        String charge_id="";
 		        Record fin_itemId = Db.findFirst("SELECT id from fin_item where  `name`='运费' and office_id = "+office_id);
-		        charge_id =fin_itemId.getLong("id");
+		        if(fin_itemId!=null){
+		        	charge_id =fin_itemId.getLong("id").toString();
+		        }
+		        
 		        
 		        Record rer= new Record();
 		        
