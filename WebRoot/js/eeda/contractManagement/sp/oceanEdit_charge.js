@@ -166,8 +166,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             				});
                 		return field_html;
                 	}
-                },
-                
+                },                
                 { "data": "CONTAINER_TYPE", "width": "50px",
                 	"render": function ( data, type, full, meta ) {
                 		 if(!data)
@@ -182,19 +181,34 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
     	                    return str;
                 	}
                 },
-                { "data": "VOLUME", "width": "60px",
+                { "data": "VOLUME1", "width": "30px",
                 	"render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:80px"/>';
+                        return '<input type="text" name="volume1" value="'+data+'" class="form-control" style="width:50px"/>';
                     }
                 },
-                { "data": "GROSS_WEIGHT", "width": "60px",
+                { "data": "VOLUME2", "width": "30px",
+                	"render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return '<input type="text" name="volume2" value="'+data+'" class="form-control" style="width:50px"/>';
+                    }
+                },
+                { "data": "GROSS_WEIGHT1", "width": "30px",
                     "render": function ( data, type, full, meta ) {
                     	 if(!data)
     	                        data='';
     	                    
-    	                    return '<input type="text" style="width:80px" name="gross_weight" value = "'+data+'" class="form-control notsave" >';
+    	                    return '<input type="text" style="width:50px" name="gross_weight1" value = "'+data+'" class="form-control notsave" >';
+                    }
+                },
+                { "data": "GROSS_WEIGHT2", "width": "30px",
+                    "render": function ( data, type, full, meta ) {
+                    	 if(!data)
+    	                        data='';
+    	                    
+    	                    return '<input type="text" style="width:50px" name="gross_weight2" value = "'+data+'" class="form-control notsave" >';
                     }
                 },
                 { "data": "POL_NAME", "visible": false,
@@ -250,6 +264,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         var bindLocationFieldEvent=function(){
             eeda.bindTableField('ocean_location_table','POL_ID','/location/searchPort','port');
             eeda.bindTableField('ocean_location_table','POD_ID','/location/searchPort','port');
+            eeda.bindTableField('ocean_location_table','HUB_ID','/location/searchPort','port');
+            eeda.bindTableField('ocean_location_table','CARRIER_ID','/customer/searchParty','carrier');
         };
 
         //------------事件处理
@@ -306,6 +322,34 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                         return field_html; 
                     }
                 },
+                { "data": "HUB_ID", "width": "130px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        var field_html = template('table_dropdown_template',
+                        {
+                         id:'HUB_ID',
+                         value:data,
+                         display_value:full.HUB_NAME,
+                         style:'width:150px'
+                        });
+                        return field_html; 
+                    }
+                },
+                { "data": "CARRIER_ID", "width": "130px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        var field_html = template('table_dropdown_template',
+                        {
+                         id:'CARRIER_ID',
+                         value:data,
+                         display_value:full.CARRIER_NAME,
+                         style:'width:150px'
+                        });
+                        return field_html; 
+                    }
+                },
                 { "data": "TYPE", "width": "150px", "visible": false,
                     "render": function ( data, type, full, meta ) {
                         if(!data)
@@ -321,6 +365,20 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                     }
                 }, 
                 { "data": "POD_NAME", "visible": false,
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                }, 
+                { "data": "HUB_NAME", "visible": false,
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                }, 
+                { "data": "CARRIER_NAME", "visible": false,
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
@@ -342,7 +400,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         });
 
         
-        
+        //根据radioButton显示对应路线费用
         $('#ocean_location_table').on('click','[name=checkRoute]', function(){
         	var self = this;
         	var order_id = $('#contract_id').val();

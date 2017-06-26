@@ -7,8 +7,8 @@
             {
                 id:'ocean_location_table',
                 style:'width:500px',
-                headers:['','操作','POL', 'POD','单据类型', 'POL_NAME','POD_NAME'],
-                field_list:['is_select','', 'pol_id', 'pod_id','TYPE', 'POL_NAME','POD_NAME'],
+                headers:['','操作','POL', 'POD','HUB','船东公司','单据类型', 'POL_NAME','POD_NAME','HUB_NAME','CARRIER_NAME'],
+                field_list:['is_select','', 'pol_id', 'pod_id','hub_id','carrier_id','TYPE', 'POL_NAME','POD_NAME','HUB_NAME','CARRIER_NAME'],
                 value_list: ocean_locations![]
             }){} %>
 
@@ -19,10 +19,10 @@
             {
                 id:'charge_ocean_table',
                 style:'width:1000px',
-                headers:['操作','费用名称', '单价','币制' , '单位', '柜型','体积(CBM)','重量(KG)', 
+                headers:['操作','费用名称', '单价','币制' , '单位', '柜型','体积(CBM) -','区间','重量(KG) -','区间', 
                 		 'POL_NAME','POD_NAME','FEE_NAME','CURRENCY_NAME','UOM_NAME'],
-                field_list:['','fee_id','price','currency_id','uom','container_type','volume','gross_weight',
-                		'POL_NAME','POD_NAME','FEE_NAME','CURRENCY_NAME','UOM_NAME'],
+                field_list:['','fee_id','price','currency_id','uom','container_type','volume1','volume2','gross_weight1',
+                		'gross_weight2','POL_NAME','POD_NAME','FEE_NAME','CURRENCY_NAME','UOM_NAME'],
                 value_list: charge_items![]
             }){} %>
 		
