@@ -1,6 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder'], function ($, metisMenu) { 
     $(document).ready(function() {
-    	document.title = '公告信息 | '+document.title;
+    	document.title = '公告信息 | ' + i18n.title;
     	
       $("#breadcrumb_li").text('公告信息');
     	//datatable, 动态处理

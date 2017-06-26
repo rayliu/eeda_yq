@@ -140,7 +140,7 @@ import models.eeda.tr.tradeJoborder.TradeJobOrderSendMailTemplate;
 import models.yh.profile.Carinfo;
 
 import org.apache.log4j.Logger;
-import org.bee.tl.ext.jfinal.BeetlRenderFactory;
+import org.beetl.ext.jfinal.BeetlRenderFactory;
 import org.h2.tools.Server;
 
 import com.jfinal.config.Constants;
@@ -153,6 +153,7 @@ import com.jfinal.ext.handler.UrlSkipHandler;
 import com.jfinal.ext.plugin.shiro.ShiroInterceptor;
 import com.jfinal.ext.plugin.shiro.ShiroKit;
 import com.jfinal.ext.plugin.shiro.ShiroPlugin;
+import com.jfinal.i18n.I18nInterceptor;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
@@ -230,12 +231,13 @@ public class EedaConfig extends JFinalConfig {
     	// 微信 ApiConfigKit 设为开发模式可以在开发阶段输出请求交互的 xml 与 json 数据
     	ApiConfigKit.setDevMode(me.getDevMode());
         
-    	
+        //指定国际化的路径
+    	me.setI18nDefaultBaseName("i18n");
 
         BeetlRenderFactory templateFactory = new BeetlRenderFactory();
         me.setMainRenderFactory(templateFactory);
 
-        BeetlRenderFactory.groupTemplate.setCharset("utf-8");// 没有这句，html上的汉字会乱码
+//        BeetlRenderFactory.groupTemplate.setCharset("utf-8");// 没有这句，html上的汉字会乱码
 
         // 注册后，可以使beetl html中使用shiro tag
         BeetlRenderFactory.groupTemplate.registerFunctionPackage("shiro", new ShiroExt());
@@ -681,6 +683,8 @@ public class EedaConfig extends JFinalConfig {
     	// 添加控制层全局拦截器, 每次进入页面时构造菜单项
         //me.addGlobalActionInterceptor(new EedaMenuInterceptor());
         me.add(new ActionCostInterceptor());
+        
+        me.add(new I18nInterceptor());
     }
 
     @Override
