@@ -14,7 +14,6 @@ import models.ParentOfficeModel;
 import models.Party;
 import models.eeda.profile.Account;
 import models.eeda.profile.Warehouse;
-import models.yh.profile.Contact;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -84,10 +83,10 @@ public class WarehouseController extends Controller{
         renderJson(orderMap); 
 	}
 	
-	public void listContact(){
-		List<Contact> contactjson = Contact.dao.find("select * from contact");			
-        renderJson(contactjson);
-	}
+//	public void listContact(){
+//		List<Contact> contactjson = Contact.dao.find("select * from contact");			
+//        renderJson(contactjson);
+//	}
 	@RequiresPermissions(value = {PermissionConstant.PERMSSION_W_CREATE})
 	public void add() {
 		setAttr("saveOK", false);

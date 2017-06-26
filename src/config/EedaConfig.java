@@ -6,98 +6,30 @@ import interceptor.ActionCostInterceptor;
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
 
-import models.AppInvoiceDoc;
-import models.ArapAccountAuditLog;
-import models.ArapChargeApplication;
-import models.ArapChargeInvoice;
-import models.ArapChargeItem;
-import models.ArapChargeOrder;
-import models.ArapCostApplication;
-import models.ArapCostItem;
-import models.ArapCostOrder;
-import models.ArapMiscCostOrder;
 import models.Category;
-import models.ChargeApplicationOrderRel;
-import models.CostApplicationOrderRel;
 import models.Location;
 import models.Office;
 import models.Party;
-import models.PartyMark;
 import models.Permission;
-import models.Product;
-import models.RateContrast;
 import models.Role;
 import models.RolePermission;
-import models.SpAirTransport;
-import models.SpAirTransportItem;
-import models.SpBulkCargo;
-import models.SpBulkCargoItem;
-import models.SpCargoInsurance;
-import models.SpCustom;
-import models.SpInternalTrade;
-import models.SpLandTransport;
-import models.SpLandTransportItem;
-import models.SpOceanCargo;
-import models.SpOceanCargoItem;
-import models.SpPickingCrane;
-import models.SpStorage;
-import models.TradeItem;
 import models.UserCustomer;
 import models.UserLogin;
 import models.UserOffice;
 import models.UserRole;
-import models.eeda.cms.CustomArapChargeItem;
-import models.eeda.cms.CustomArapChargeOrder;
-import models.eeda.cms.CustomPlanOrder;
-import models.eeda.cms.CustomPlanOrderArap;
-import models.eeda.cms.CustomPlanOrderItem;
-import models.eeda.oms.PlanOrder;
-import models.eeda.oms.PlanOrderItem;
-import models.eeda.oms.jobOrder.JobOrder;
-import models.eeda.oms.jobOrder.JobOrderAir;
-import models.eeda.oms.jobOrder.JobOrderAirCargoDesc;
-import models.eeda.oms.jobOrder.JobOrderAirItem;
-import models.eeda.oms.jobOrder.JobOrderArap;
-import models.eeda.oms.jobOrder.JobOrderCustom;
-import models.eeda.oms.jobOrder.JobOrderDoc;
-import models.eeda.oms.jobOrder.JobOrderExpress;
-import models.eeda.oms.jobOrder.JobOrderInsurance;
-import models.eeda.oms.jobOrder.JobOrderLandItem;
-import models.eeda.oms.jobOrder.JobOrderOceanTemplate;
-import models.eeda.oms.jobOrder.JobOrderSendMail;
-import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
-import models.eeda.oms.jobOrder.JobOrderShipment;
-import models.eeda.oms.jobOrder.JobOrderShipmentHead;
-import models.eeda.oms.jobOrder.JobOrderShipmentItem;
-import models.eeda.oms.truckOrder.TruckOrder;
-import models.eeda.oms.truckOrder.TruckOrderArap;
-import models.eeda.oms.truckOrder.TruckOrderCargo;
-import models.eeda.profile.Account;
-import models.eeda.profile.ContainerType;
 import models.eeda.profile.Country;
-import models.eeda.profile.Currency;
-import models.eeda.profile.CurrencyRate;
-import models.eeda.profile.Custom;
-import models.eeda.profile.FinItem;
 import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
+import models.eeda.profile.OfficeConfig;
 import models.eeda.profile.OrderNoSeq;
 import models.eeda.profile.Unit;
-import models.eeda.profile.Warehouse;
-import models.eeda.tms.TransJobOrder;
-import models.eeda.tms.TransJobOrderArap;
-import models.eeda.tms.TransJobOrderLandItem;
 import models.wms.GateIn;
 import models.wms.GateOut;
 import models.wms.InvCheckOrder;
 import models.wms.Wmsproduct;
-import models.yh.profile.Carinfo;
-import models.yh.profile.CustomizeField;
-import models.yh.profile.OfficeCofig;
-import models.yh.profile.Route;
 
 import org.apache.log4j.Logger;
-import org.bee.tl.ext.jfinal.BeetlRenderFactory;
+import org.beetl.ext.jfinal.BeetlRenderFactory;
 import org.h2.tools.Server;
 
 import com.jfinal.config.Constants;
@@ -117,32 +49,19 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.app.AppControllerForMobile;
-import controllers.cms.jobOrder.CustomJobOrderController;
-import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
 import controllers.msg.EwmsDashBoardController;
-import controllers.oms.customOrder.CustomOrderController;
-import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderControllerForMobile;
-import controllers.oms.jobOrder.JobOrderReportController;
-import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.planOrder.PlanOrderControllerForMobile;
-import controllers.oms.todo.TodoController;
-import controllers.oms.truckOrder.TruckOrderController;
 import controllers.profile.AccountController;
 import controllers.profile.ContainerTypeController;
 import controllers.profile.CountryController;
-import controllers.profile.CurrencyController;
-import controllers.profile.CurrencyRateController;
 import controllers.profile.CustomController;
 import controllers.profile.FinItemController;
 import controllers.profile.PrivilegeController;
 import controllers.profile.TradeItemController;
 import controllers.profile.UnitController;
-import controllers.report.OrderStatusController;
-import controllers.tms.jobOrder.TransJobOrderController;
-import controllers.tms.planOrder.TransPlanOrderController;
 import controllers.wms.ChangePartNoController;
 import controllers.wms.ErrorReportController;
 import controllers.wms.GateInController;
@@ -152,6 +71,7 @@ import controllers.wms.InvCheckOrderController;
 import controllers.wms.InventoryController;
 import controllers.wms.ProductController;
 import controllers.wms.importOrder.ImportOrder;
+import controllers.wx.WxController;
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -186,8 +106,6 @@ public class EedaConfig extends JFinalConfig {
 
         BeetlRenderFactory templateFactory = new BeetlRenderFactory();
         me.setMainRenderFactory(templateFactory);
-
-        BeetlRenderFactory.groupTemplate.setCharset("utf-8");// 没有这句，html上的汉字会乱码
 
         // 注册后，可以使beetl html中使用shiro tag
         BeetlRenderFactory.groupTemplate.registerFunctionPackage("shiro", new ShiroExt());
@@ -242,15 +160,12 @@ public class EedaConfig extends JFinalConfig {
         me.add("/country", CountryController.class, contentPath);
         me.add("/finItem", FinItemController.class, contentPath);
         me.add("/custom", CustomController.class, contentPath);
-        me.add("/carInfo", controllers.profile.CarinfoController.class, contentPath);
         me.add("/containerType", ContainerTypeController.class, contentPath);
         //register loginUser
 //        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
         //me.add("/reset",controllers.profile.ResetPassWordController.class,contentPath);
         me.add("/role", controllers.profile.RoleController.class, contentPath);
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
-        me.add("/customer", controllers.profile.CustomerController.class, contentPath);
-        me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);
         me.add("/location", controllers.profile.LocationController.class, contentPath);
         me.add("/office", controllers.profile.OfficeController.class, contentPath);
         me.add("/product", controllers.profile.ProductController.class, contentPath);
@@ -259,86 +174,7 @@ public class EedaConfig extends JFinalConfig {
 //		me.add("/accountAuditLog", AccountAuditLogController.class, contentPath);
 		me.add("/account", AccountController.class, contentPath);
 		me.add("/privilege", PrivilegeController.class, contentPath);
-		//oms管理系统
-		me.add("/planOrder", PlanOrderController.class, contentPath);
-		me.add("/todo", TodoController.class, contentPath);
-		me.add("/jobOrder", JobOrderController.class, contentPath);
 		
-		me.add("/jobOrderReport", JobOrderReportController.class, contentPath);
-//		me.add("/report", ReportController.class, contentPath);
-		me.add("/customOrder", CustomOrderController.class, contentPath);
-		me.add("/truckOrder", TruckOrderController.class, contentPath);
-		me.add("/currency", CurrencyController.class, contentPath);
-		me.add("/currencyRate", CurrencyRateController.class, contentPath);
-		
-		
-		//cms 报关管理
-		me.add("/customJobOrder", CustomJobOrderController.class, contentPath);
-		me.add("/customPlanOrder", CustomPlanOrderController.class, contentPath);
-		me.add("/cmsChargeConfirm", controllers.arap.cmsAr.CmsChargeConfirmController.class, contentPath);
-		me.add("/cmsChargeCheckOrder", controllers.arap.cmsAr.CmsChargeCheckOrderController.class, contentPath);
-		me.add("/cmsCostCheckOrder", controllers.arap.cmsAr.CmsCostCheckOrderController.class, contentPath);
-		
-		
-		//tms 车队系统
-		me.add("/transJobOrder", TransJobOrderController.class, contentPath);
-		me.add("/transPlanOrder", TransPlanOrderController.class, contentPath);		
-		
-		//ar= account revenue  应收条目处理
-		me.add("/chargeRequest", controllers.arap.ar.chargeRequest.ChargeReuqestrController.class, contentPath);
-		me.add("/costRequest", controllers.arap.ar.costRequest.CostReuqestrController.class, contentPath);
-        me.add("/chargeConfirmList", controllers.arap.ar.ChargeItemConfirmController.class, contentPath);
-        me.add("/chargeCheckOrder", controllers.arap.ar.ChargeCheckOrderController.class, contentPath);
-        me.add("/chargeCheckOrderList", controllers.arap.ar.ChargeCheckOrderController.class, contentPath);
-        me.add("/chargePreInvoiceOrder", controllers.arap.ar.ChargePreInvoiceOrderController.class, contentPath);
-        me.add("/chargeInvoiceOrder", controllers.arap.ar.ChargeInvoiceOrderController.class, contentPath);
-        me.add("/chargeAdjustOrder", controllers.arap.ar.ChargeAdjustOrderController.class, contentPath);
-        me.add("/chargeMiscOrder", controllers.arap.ar.chargeMiscOrder.ChargeMiscOrderController.class, contentPath);
-        me.add("/chargeAcceptOrder", controllers.arap.ar.ChargeAcceptOrderController.class, contentPath);
-        me.add("/chargeConfirm", controllers.arap.ar.ChargeConfirmController.class, contentPath);
-        
-        //ap 应付条目处理
-        me.add("/costConfirmList", controllers.arap.ap.CostItemConfirmController.class, contentPath);
-        me.add("/costCheckOrder", controllers.arap.ap.CostCheckOrderController.class, contentPath);
-        me.add("/costAdjustOrder", controllers.arap.ap.CostAdjustOrderController.class, contentPath);
-        me.add("/costAcceptOrder", controllers.arap.ap.CostAcceptOrderController.class, contentPath);
-        me.add("/costConfirm", controllers.arap.ap.CostConfirmController.class, contentPath);
-        
-        //运营报表
-        me.add("/arapReport", controllers.arap.ArapReportController.class, contentPath);
-        me.add("/profitReport", controllers.report.ProfitReportController.class, contentPath);
-        me.add("/balanceReport", controllers.report.BalanceReportController.class, contentPath);
-        me.add("/customReport", controllers.report.CustomReportController.class, contentPath);
-        me.add("/chargeBalanceReport",controllers.arap.ChargeBalanceReportController.class, contentPath);
-        me.add("/costBalanceReport",controllers.arap.CostBalanceReportController.class, contentPath);
-        me.add("/profitAndPaymentRate",controllers.arap.ProfitAndPaymentRateController.class, contentPath);
-        me.add("/accountAging",controllers.arap.AccountAging.class, contentPath);
-        me.add("/billProfitAndPayment",controllers.arap.BillProfitAndPaymentController.class, contentPath);
-        me.add("/oceanRouteReport", controllers.report.OceanRouteReportController.class, contentPath); 
-        me.add("/airRouteReport", controllers.report.AirRouteReportController.class, contentPath); 
-        
-        //合同管理
-        me.add("/supplierContract", controllers.contractManagement.SupplierContractController.class, contentPath);
-        
-        //应付报销单
-        //ßme.add("/costReimbursement", controllers.arap.ap.CostReimbursementOrder.class, contentPath);
-        //财务转账单
-        me.add("/transferAccountsOrder", controllers.arap.ap.TransferAccountsController.class, contentPath);
-//        me.add("/reimbursementItem", controllers.yh.ReimbursementItemController.class, contentPath);
-        //手工成本单
-        me.add("/costMiscOrder", controllers.arap.ap.costMiscOrder.CostMiscOrderController.class, contentPath);
-        
-        me.add("/inOutMiscOrder", controllers.arap.financial.inOutOrder.InOutMiscOrderController.class, contentPath);
-        
-        //预付单
-        me.add("/costPrePayOrder", controllers.arap.ap.PrePayOrderController.class, contentPath);
-        //audit log
-        me.add("/accountAuditLog", controllers.arap.AccountAuditLogController.class, contentPath);
-        
-        //发布公告
-        me.add("/msgBoard", controllers.msg.MsgBoardController.class, contentPath);
-        me.add("/orderStatus", OrderStatusController.class, contentPath);
-        
         
         //仓库管理模块wms
         me.add("/importOrder", ImportOrder.class, contentPath);
@@ -351,6 +187,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/errorReport", ErrorReportController.class, contentPath);
         me.add("/changePartNo", ChangePartNoController.class, contentPath);
   
+        me.add("/wx", WxController.class);
 	}
 
     @Override
@@ -396,7 +233,7 @@ public class EedaConfig extends JFinalConfig {
        
         arp.addMapping("party", Party.class);
 
-        arp.addMapping("route", Route.class);
+//        arp.addMapping("route", Route.class);
         arp.addMapping("category", Category.class);
         arp.addMapping("location", Location.class);
         arp.addMapping("order_no_seq", OrderNoSeq.class);
@@ -405,7 +242,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("user_office", UserOffice.class);
         arp.addMapping("user_customer", UserCustomer.class);
         
-        arp.addMapping("office_config", OfficeCofig.class);
+        arp.addMapping("office_config", OfficeConfig.class);
       
         
         //仓库管理模块wms

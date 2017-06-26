@@ -17,7 +17,7 @@ import models.Office;
 import models.ParentOfficeModel;
 import models.UserLogin;
 import models.UserOffice;
-import models.yh.profile.OfficeCofig;
+import models.eeda.profile.OfficeConfig;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -171,7 +171,7 @@ public class MainController extends Controller {
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
         
         logger.debug("Current host path:"+basePath);
-        OfficeCofig of = OfficeCofig.dao.findFirst("select * from office_config where domain like '"
+        OfficeConfig of = OfficeConfig.dao.findFirst("select * from office_config where domain like '"
                 +serverName +"%' or domain like '%"+serverName +"%'");
         if(of==null){//没有配置公司的login信息, 不知道显示那个系统的login页面, 跳到公司首页
             redirect("/");
@@ -255,9 +255,9 @@ public class MainController extends Controller {
         String basePath = getRequest().getScheme()+"://"+getRequest().getServerName()+":"+getRequest().getServerPort()+"/";
         
         logger.debug(serverName);
-        OfficeCofig of = OfficeCofig.dao.findFirst("select * from office_config where domain like '"+serverName +"%' or domain like '%"+serverName +"%'");
+        OfficeConfig of = OfficeConfig.dao.findFirst("select * from office_config where domain like '"+serverName +"%' or domain like '%"+serverName +"%'");
         if(of==null){//没有配置公司的信息会导致页面出错，显示空白页
-        	of = new OfficeCofig();
+        	of = new OfficeConfig();
         	of.set("system_title", "易达物流");
         	of.set("logo", "/eeda/img/eeda_logo.ico");
         }

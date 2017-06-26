@@ -1,0 +1,1 @@
+package models.eeda.profile;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class OfficeConfig extends Model<OfficeConfig> {	public static final OfficeConfig dao = new OfficeConfig();}

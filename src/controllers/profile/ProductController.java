@@ -13,7 +13,6 @@ import models.Category;
 import models.ParentOfficeModel;
 import models.Party;
 import models.Product;
-import models.yh.profile.Contact;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
