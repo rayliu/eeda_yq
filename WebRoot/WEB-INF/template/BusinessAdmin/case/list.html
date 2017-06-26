@@ -1,0 +1,27 @@
+<%layout("/BusinessAdmin/layout.html"){%>
+    <div class="pageheader notab">
+      <h1 class="pagetitle" style="float:left;">案例管理</h1><span class="red" style="float:left;">*普通商家只能上传5个案例</span>
+      <div style=" clear:both;"></div>
+    </div>
+    <div id="contentwrapper" class="contentwrapper">
+        <!-- #tab1 -->
+        <div class="mt10">
+          <p>
+            <a class="stdbtn btn_blue" href="/BusinessAdmin/case/add">添加</a>
+          </p>
+        </div>
+        <%include("/eeda/component/form/detailTable.html", 
+          {
+              id:'eeda_table', 
+              headers:['案例名称', '日期','']
+          }){} %>
+    </div>
+    
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+         requirejs(['app/BusinessAdmin/case/list']);
+    });
+</script>

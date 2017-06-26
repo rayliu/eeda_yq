@@ -1,0 +1,125 @@
+<%layout("/BusinessAdmin/layout.html"){%>
+        <div class="pageheader notab">
+      <h1 class="pagetitle">修改公司资料</h1>
+    </div>
+    <div class="pageheader notab">
+     <div class="registered " id="login-content">
+          <dl>
+            <dt>
+              <div class="fm-label-wrap ">
+                <label for="fm-login-id">负责人姓名：</label>
+              </div>
+            </dt>
+            <dd>
+              <div class="textin">
+                <input type="text" name="Contact" value="${company.contact_person!''}" />
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt class="fm-label">
+              <div class="fm-label-wrap ">
+                <label for="fm-login-password">联系电话：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+              <div class="textin">
+                <input type="text" name="Tel" value="${company.phone!''}" >
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt class="fm-label">
+              <div class="fm-label-wrap ">
+                <label for="fm-login-password">店铺地址：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+              <div class="textin">
+                <select name="select" class="uniformselect">
+                  <option value="">广东</option>
+                  <option value="">广东</option>
+                  <option value="">广东</option>
+                  <option value="">广东</option>
+                  <option value="">广东</option>
+                </select>
+                <select name="select" class="uniformselect">
+                  <option value="">珠海</option>
+                  <option value="">珠海</option>
+                  <option value="">珠海</option>
+                  <option value="">珠海</option>
+                  <option value="">珠海</option>
+                </select>
+                <select name="select" class="uniformselect">
+                  <option value="">香洲</option>
+                  <option value="">香洲</option>
+                  <option value="">香洲</option>
+                  <option value="">香洲</option>
+                  <option value="">香洲</option>
+                </select>
+                <input type="text" name="ShopAddress" value="${company.address!''}" >
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt class="fm-label">
+              <div class="fm-label-wrap ">
+                <label for="fm-login-password">店铺电话：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+              <div class="textin">
+                <input type="text" name="ShopTel" value="${company.address_phone!''}" />
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt class="fm-label">
+              <div class="fm-label-wrap ">
+                <label for="fm-login-password">QQ：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+              <div class="textin">
+                <input type="text" name="QQ" value="${company.qq!''}" />
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt class="fm-label">
+              <div class="fm-label-wrap ">
+                <label for="fm-login-password">公司简介：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+              <div class="textin">
+                <textarea class="fill-detail" name="About">${company.intro!''}</textarea>
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt class="fm-label">
+              <div class="fm-label-wrap ">
+                <label for="fm-login-password">公司Logo：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+              <div class="textin">
+                <input type="file" name="Logo" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                <span class="red">图片为JPG格式，小于1000kb</span> </div>
+            </dd>
+          </dl>
+          
+          <div style="padding-left:10px; margin-top:10px;">
+            <input type="submit" class="stdbtn btn_blue" style="width:200px;" value="修改" />
+          </div>
+        </div>
+    </div>
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+         requirejs(['app/msgBoard/list']);
+    });
+</script>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>商家后台-账号信息</title>
+<link rel="stylesheet" href="/css/wedding/style.default.css" type="text/css" />
+<link rel="stylesheet" href="/css/wedding/pagestyle.css" type="text/css" />
+
+<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet"> 
+<link href="/js/lib/jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet">
+
+
+
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery-1.7.min.js"></script>
+<!--script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery-ui-1.8.16.custom.min.js"></script-->
+<script type="text/javascript" src="/js/lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.cookie.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.flot.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.flot.resize.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/custom/general.js"></script>
+<!-- script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/custom/dashboard.js"></script -->
+
+<script src="/js/lib/require2.3.2.min.js"></script>
+<%include("/eeda/component/form/commonJs.html",{}){} %>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
+<!--[if IE 9]>
+    <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
+<![endif]-->
+<!--[if IE 8]>
+    <link rel="stylesheet" media="screen" href="css/style.ie8.css"/>
+<![endif]-->
+<!--[if lt IE 9]>
+    <script src="js/plugins/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+<body class="withvernav">
+<div class="bodywrapper">
+    <div class="topheader">
+        <div class="left">
+            <h1 class="logo"><img src="/images/logo.png" alt="" /><span style="margin-bottom:10px;">商家后台</span></h1>
+            <br clear="all" />
+        </div>
+        <!--left-->
+        <div class="right"><!--<div class="notification"><a class="count" href="ajax/notifications.html"><span>9</span></a></div>-->
+<div class="userinfo"> <img src="/images/thumbs/avatar.png" alt="" /> <span>赵国辉</span> </div>
+<!--userinfo-->
+<div class="userinfodrop">
+    <div class="avatar"> <a href=""><img src="/images/thumbs/avatarbig.png" alt="" /></a> </div>
+    <!--avatar-->
+    <div class="userdata">
+        <h4>赵国辉</h4><br/>
+        <span class="email">联系电话：18088823273</span>
+        <ul>
+            <li><a href="exit.php">退出</a></li>
+        </ul>
+    </div>
+    <!--userdata-->
+</div>
+<!--userinfodrop--></div>
+        <!--right-->
+    </div>
+    <!--topheader-->
+    <div class="vernav2 iconmenu">
+<ul>    
+    <li><a href="/BusinessAdmin/account" class="calendar">账号信息</a></li>
+      <li><a style="padding-left:30px;" href="/BusinessAdmin/account/modify_info" class="support">修改公司资料</a></li>
+      <li><a style="padding-left:30px;" href="/BusinessAdmin/account/modify_pwd" class="typo">修改密码</a></li>
+      <li><a href="/BusinessAdmin/product" class="tables">产品管理</a></li>
+      <li><a style="padding-left:30px;" href="/BusinessAdmin/product/edit" class="buttons">上传产品</a></li>
+      <li><a href="/BusinessAdmin/ad/cu/buy" class="buttons">广告管理</a></li>
+      <li><a style="padding-left:30px;" href="/BusinessAdmin/ad/cu/buy" class="buttons">开通"促"销</a></li>
+      <li><a style="padding-left:30px;" href="/BusinessAdmin/ad/cu" class="buttons">管理"促"销</a></li>
+      <li><a style="padding-left:30px;" href="/BusinessAdmin/ad/hui" class="buttons">开通优"惠"</a></li>
+      <li><a style="padding-left:30px;" href="/BusinessAdmin/ad/dimond" class="buttons">开通钻石商家</a></li>
+      <li><a style="padding-left:30px;" href="/BusinessAdmin/ad/mobile" class="buttons">开通手机推送广告</a></li>
+      <li><a style="padding-left:30px;" href="/BusinessAdmin/ad/banner" class="buttons">开通横幅广告</a></li>
+      <li><a href="/BusinessAdmin/case" class="buttons">案例列表</a></li>
+      <li><a href="/BusinessAdmin/video" class="buttons">视频案例</a></li>
+  </ul>
+<br /></div>
+    <!--leftmenu-->
+    <div class="centercontent">
+        ${layoutContent}
+    </div>
+    <!-- centercontent -->
+</div>
+<!--bodywrapper-->
+</body>
+</html>

@@ -1,0 +1,257 @@
+<%layout("/BusinessAdmin/layout.html"){%>
+        <div class="pageheader notab">
+            <h1 class="pagetitle" style="float:left;">产品上传</h1>
+            <span class="red" style="float:left;">*普通商家只能上传10个产品</span>
+            <div style="clear:both"></div>
+        </div>
+      <div class="pageheader notab">
+            <form enctype="multipart/form-data" method="post">
+            <input type="hidden" name="IDProduct" value="" />
+            <div class="registered product-upload" id="login-content">
+                <dl>
+                    <dt>
+                        <div class="fm-label-wrap">
+                            <label for="fm-login-id">产品名称：</label>
+                        </div>
+                    </dt>
+                    <dd>
+                        <div class="textin">
+                            <input type="text" name="ProductName" value="${product.name!''}" /> <span class="red">*</span>
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">产品封面：</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                        </div>
+                        <% var imgPath = product.cover!'http://via.placeholder.com/200x150'; %>
+                        <img style='width: 200px; height: 150px;' src='${imgPath}'>
+                        <span class="red">*图片要求: 200*150, 小于500Kb</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">分类：</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <div style="padding-top:5px;">
+                                <select name="IDProductType" id="IDProductType">
+                                    <option value ="摄楼">摄楼</option>
+                                    <option value ="婚礼策划 ">婚礼策划 </option>
+                                    <option value="跟拍摄影 ">跟拍摄影 </option>
+                                    <option value="跟拍摄像">跟拍摄像</option>
+                                </select>
+                                
+                            </div>    
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">单 位：</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="chose">
+                            <label><input type="radio" class="radio" name="ProductUnit" value="1"  />一套</label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label><input type="radio" class="radio" name="ProductUnit" value="2"  />一件</label>
+                            <span class="red">*</span>
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">价 格：</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="chose">
+                            <label>
+                                <input type="radio" class="radio" name="ProductPriceType" value="1"  />
+                                <input style="width:100px;" type="text" name="ProductPrice" value="${product.price!''}" />人民币
+                            </label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <label><input type="radio" class="radio" name="ProductPriceType" value="2"  />面议</label>
+                            <span class="red">*</span>
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">产品编辑：</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <textarea name="ProductContent" class="fill-detail">${product.content!''}</textarea>
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">图片1：</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                        </div>
+                        <img src='http://via.placeholder.com/200x150'>
+                        <span class="red">*图片要求小于500Kb</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">图片2</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                        </div>
+                        <img src='http://via.placeholder.com/200x150'>
+                        <span class="red">*图片要求小于500Kb</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">图片3</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                        </div>
+                        <img src='http://via.placeholder.com/200x150'>
+                        <span class="red">*图片要求小于500Kb</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">图片4</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                        </div>
+                        <img src='http://via.placeholder.com/200x150'>
+                        <span class="red">*图片要求小于500Kb</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">图片5</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                        </div>
+                        <img src='http://via.placeholder.com/200x150'>
+                        <span class="red">*图片要求小于500Kb</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">图片6</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                        </div>
+                        <img src='http://via.placeholder.com/200x150'>
+                        <span class="red">*图片要求小于500Kb</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">图片7</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                        </div>
+                        <img src='http://via.placeholder.com/200x150'>
+                        <span class="red">*图片要求小于500Kb</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">图片8</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                        </div>
+                        <img src='http://via.placeholder.com/200x150'>
+                        <span class="red">*图片要求小于500Kb</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">图片9</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                        </div>
+                        <img src='http://via.placeholder.com/200x150'>
+                        <span class="red">*图片要求小于500Kb</span>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">图片10</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                        </div>
+                        <img src='http://via.placeholder.com/200x150'>
+                        <span class="red">*图片要求小于500Kb</span>
+                    </dd>
+                </dl>
+                <p style="padding-left:10px;">&nbsp;</p>
+                <div style="padding-left:10px; margin-top:10px;">
+                    <input type="submit" class="stdbtn btn_blue" style="width:200px;" value="提交" />
+                </div>
+            </div>
+            </form>
+      </div>
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+         requirejs(['app/msgBoard/list']);
+    });
+</script>

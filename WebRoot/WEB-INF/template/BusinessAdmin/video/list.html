@@ -1,0 +1,37 @@
+<%layout("/BusinessAdmin/layout.html"){%>
+        <div class="pageheader notab">
+      <h1 class="pagetitle" style="float:left;">视频案例</h1><span class="red" style="float:left;">*普通商家只能上传5个视频</span>
+      <div style=" clear:both;"></div>
+    </div>
+    <div class="pageheader notab" style="height:650px;">
+        <div class="registered product-upload" id="login-content">
+        <ul class="caselist">
+            <li><span class="casename">某某某结婚视频</span><div class="casebtn"><input type="button"  class="modifibtn"  value="修改"  onclick="window.location.href='video-updata.html'" /><input type="button"    value="删除" class="delete-btn" /></div></li>
+            <li><span class="casename">某某某结婚视频</span><div class="casebtn"><input type="button"  class="modifibtn"  value="修改" /><input type="button"  value="删除" class="delete-btn" /></div></li>
+            <li><span class="casename">某某某结婚视频</span><div class="casebtn"><input type="button"  class="modifibtn"  value="修改" /><input type="button"  value="删除" class="delete-btn" /></div></li>
+        </ul>       
+        <div style="padding-left:10px; margin-top:10px;"></div>
+        </div>
+        <div class="zdy-fenlei">
+        <p><strong>上传案例</strong></p>
+        <div class="mt10"><label>案例名称：<input type="text" /></label></div>
+         <div class="mt10">上传封面：<input type="button" value="单张上传" class="edit" /><span class="red">*图片小于500Kb</span>
+         </div>
+         <table width="400" border="0" cellspacing="0" cellpadding="0" class="casetable">
+            <tr>
+                <td><img src="/images/fengmianpic.png" /></td>    
+            </tr>  
+        </table>
+        <div class="mt10">优酷视频地址：<input type="text" class="longtxt" /></label></div>
+        <div class="mt10"><input type="button" style="width:200px;" class="stdbtn btn_blue" value="上 传" /> </div>
+        </div>
+    </div>
+    
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+         requirejs(['app/msgBoard/list']);
+    });
+</script>

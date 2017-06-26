@@ -1,0 +1,26 @@
+<%layout("/BusinessAdmin/layout.html"){%>
+        <div class="pageheader notab">
+            <h1 class="pagetitle">产品管理列表
+              <a class="stdbtn btn_blue" href="/BusinessAdmin/product/edit" >上传产品</a>
+            </h1>
+            
+      </div>
+        <div class="pageheader notab">
+          <input type='checkbox'> 惠
+
+          <div class="product-table">
+            <%include("/eeda/component/form/detailTable.html", 
+            {
+                id:'eeda_table', 
+                headers:['封 面','产品名','价 格','上 架','促(剩余0天)',
+                    '排 序','']
+            }){} %>
+          </div>
+        </div>
+<%}%>
+
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/BusinessAdmin/product/list']);
+    });
+</script>

@@ -1,0 +1,55 @@
+<%layout("/BusinessAdmin/layout.html"){%>
+        <div class="pageheader notab">
+            <h1 class="pagetitle">修改密码</h1>
+        </div>
+        <div class="pageheader notab">
+            <div class="registered " id="login-content">
+                <dl>
+                    <dt>
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-id">原密码：</label>
+                        </div>
+                    </dt>
+                    <dd>
+                        <div class="textin">
+                            <input type="password" name="LoginPassOld" />
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">输入新密码：</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="password" name="LoginPassNew" >
+                        </div>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt class="fm-label">
+                        <div class="fm-label-wrap ">
+                            <label for="fm-login-password">确认新密码：</label>
+                        </div>
+                    </dt>
+                    <dd class="fm-field" id="fm-login-password-wrap">
+                        <div class="textin">
+                            <input type="password" name="LoginPassNewConfirm" >
+                        </div>
+                    </dd>
+                </dl>
+                <div style="padding-left:10px; margin-top:10px;">
+                    <input type="submit" class="stdbtn btn_blue" style="width:200px;" value="修 改" />
+                </div>
+            </div>
+        </div>
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+         requirejs(['app/msgBoard/list']);
+    });
+</script>

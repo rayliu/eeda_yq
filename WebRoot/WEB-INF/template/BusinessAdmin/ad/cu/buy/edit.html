@@ -1,0 +1,98 @@
+<%layout("/BusinessAdmin/layout.html"){%>
+        <div class="pageheader notab">
+      <h1 class="pagetitle">广告购买</h1>
+  </div>
+  <ul class="hornav">
+    <li class="current"><a href="#cuxiao">"促"销选购</a></li>
+  </ul>
+  <div id="contentwrapper" class="contentwrapper">
+    <!-- #tab1 -->
+    <div id="cuxiao" class="subcontent">
+    <div class="" style="float:left; width:60%"><!-- #left -->
+        <h3>选择广告时间</h3>
+        <!--
+        <div class="hang">你的"促"销广告服务：剩余30天 至 2016-1-1</div>
+        -->
+        <div class="mt10"></div>
+        <div class="product-table">
+            <form method="post" action="ad-buy-confirm.php">
+            <input type="hidden" name="Act" value="Cu" />
+            <table cellpadding="0" cellspacing="0" border="0" class="stdtable">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="head0">订单</th>
+                        <th width="22%" class="head0">备注</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="20%">广告开始时间</td>
+                  <td width="58%">
+                            <span class="">
+                            <input type="text" id="CuStartDate" name="StartDate" value="2017-06-18" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:CuChangeDate()})" />
+                            </span>
+                        </td>
+                      <td rowspan="5">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>广告结束时间</td>
+                        <td>
+                            <span class="">
+                                <input type="text" id="CuEndDate" name="EndDate" value="2017-06-21" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:CuChangeDate()})" />
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>总投放时间</td>
+                        <td id="CuDays">4天</td>
+                    </tr>
+                    <tr>
+                        <td>结算</td>
+                        <td><span class="anchorbutton" id="CuPriceSum">4元</span>人民币</td>
+                    </tr>
+                    <tr>
+                        <td>提交申请</td>
+                        <td><input type="submit" class="stdbtn btn_yellow" value="在线支付" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            </form>
+        </div>
+        <p class="tipsred">
+            注：在线支付后，到”产品管理“中选择要加”促“的商品。<br />
+            ”促“服务广告投放的计算方法：即日至结束日。中途商家没投放”促“服务也视为使用服务，婚礼帮不给于退款或延期。
+        </p>
+    </div>
+    <div style="background-color: #fff;float: left;"><img width="600" src="/images/cu.png" /></div>
+</div>
+<script type="text/javascript">
+var f_CuDayPrice = 1;
+function CuChangeDate(){
+    var s_CurStartDate = $("#CuStartDate").val();
+    var s_CurEndDate = $("#CuEndDate").val();
+    var i_CurDayDiff = DateDiff(s_CurStartDate,s_CurEndDate);
+
+    var f_CuSumPrice = i_CurDayDiff*f_CuDayPrice;
+
+    $("#CuPriceSum").html(f_CuSumPrice+"元");
+    $("#CuDays").html(i_CurDayDiff);
+    console.log("CuChangeDate");
+    console.log(s_CurStartDate);
+    console.log(s_CurEndDate);
+    console.log(i_CurDayDiff);
+    console.log("===============");
+}
+</script>
+    
+    
+
+    <!--contentwrapper-->
+  </div>
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+         requirejs(['app/msgBoard/list']);
+    });
+</script>

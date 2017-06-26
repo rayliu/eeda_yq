@@ -1,0 +1,90 @@
+<%layout("/BusinessAdmin/layout.html"){%>
+      <div class="pageheader notab">
+      <h1 class="pagetitle">广告购买</h1>
+  </div>
+  <ul class="hornav">
+
+
+    <li  class="current"><a href="#shengji">升级钻石商家</a></li>
+
+  </ul>
+  <div id="contentwrapper" class="contentwrapper">
+
+    <!-- #tab3 -->
+     <div id="shengji" class="subcontent" >
+    <div class="" style="float:left; width:70%;"><!-- #left -->
+        <h3>升级钻石商家</h3>
+                <div class="mt10"></div>
+        <div class="product-table">
+            <form method="post" action="ad-buy-confirm.php">
+            <input type="hidden" name="Act" value="Diamond" />
+            <table cellpadding="0" cellspacing="0" border="0" class="stdtable">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="head0">订单</th>
+                        <th class="head0">备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="13%">两年钻石商家服务</td>
+                        <td width="65%">
+                            <span class="">
+                                <input type="radio" name="BuyType" checked value="2" style="vertical-align:middle;" onclick="BuyTypeChoose(2);" />
+                                <strong class="ud-year">两年</strong> <span class="fail-verify"> 至 </span>
+                            </span>
+                        </td>
+                        <td rowspan="5">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>一年钻石商家服务</td>
+                        <td>
+                            <span class="">
+                                <input type="radio" name="BuyType" value="1" style="vertical-align:middle;" onclick="BuyTypeChoose(1);" />
+                                <strong class="ud-year">一年</strong> <span class="fail-verify"> 至 </span>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>总投放时间</td>
+                        <td id="DiamondBuyDays">天</td>
+                    </tr>
+                    <tr>
+                        <td>结算</td>
+                        <td><span class="anchorbutton" id="DiamondBuyPrice">元</span>人民币</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="在线支付" class="stdbtn btn_yellow" /></td>
+                    </tr>
+                </tbody>
+            </table>
+            </form>
+        </div>
+    </div>
+    <!-- #left -->
+    <div style="background-color: #fff;float: lift;"><img src="/images/zuan.png" /></div>
+</div>
+<script type="text/javascript">
+var s_CountDay = 'null';
+var s_DiamontPriceCfg = 'null';
+
+var arr_CountDay = eval("("+s_CountDay+")");
+var arr_DiamondPriceCfg = eval("("+s_DiamontPriceCfg+")");
+
+function BuyTypeChoose(i_BuyType){
+    $("#DiamondBuyDays").html(arr_CountDay[i_BuyType]+"天");
+    $("#DiamondBuyPrice").html(arr_DiamondPriceCfg[i_BuyType]['YearPrice']+"元");
+}
+</script>
+
+    <!--contentwrapper-->
+  </div>
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+         // requirejs(['app/msgBoard/list']);
+    });
+</script>
