@@ -3,6 +3,7 @@ package controllers.profile;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -220,6 +221,19 @@ public class EmployeeFilingController extends Controller {
 		UserOffice currentoffice = UserOffice.dao.findFirst("select * from user_office where user_name = ? and is_main = ?",userName,true);
 		Office parentOffice = Office.dao.findFirst("select * from office where id = ?",currentoffice.get("office_id"));
 		return parentOffice;
+	}
+	//查询员工名字
+	public void searchEmployee(){
+		String employee_name= getPara("employee_name");
+		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+   		List<Record> employeeList = Collections.EMPTY_LIST;
+   		String sql = "SELECT *  FROM employee em WHERE office_id="+office_id;
+   		if (employee_name.trim().length() > 0) {
+            sql +=" and (em.employee_name like '%" + employee_name + "%' ) ";
+        }
+   		employeeList = Db.find(sql);
+   		renderJson(employeeList);
 	}
 	
 }

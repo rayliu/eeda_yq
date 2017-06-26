@@ -293,19 +293,16 @@
           <div class="row" style="margin-top:15px;">
                <div class="col-lg-12"> 
                 <ul  class="nav nav-tabs">
-                    <li class="active">
-                        <a id='document_info' href="#documentInfo" data-toggle="tab" >文档信息</a>
-                    </li>
-
+                	<li class="active">
+                        <a id='salesman_Info' href="#salesmanInfo" data-toggle="tab" >业务员关联信息</a>
+                    </li>                    
                      <% if(shiro.hasPermission("customer.transOffer")){%>
                     <li >
                         <a id='customer_quotation' href="#customerQuotation" data-toggle="tab" >客户报价表</a>
                     </li>
                     <%}%>
                     
-                    <li >
-                        <a id='salesman_Info' href="#salesmanInfo" data-toggle="tab" >业务员关联信息</a>
-                    </li>
+                    
 
                     <li >
                         <a id='account_Info' href="#accountInfo" data-toggle="tab" >银行账户信息</a>
@@ -314,11 +311,14 @@
                     <li >
                         <a id='contact_Info' href="#contactInfo" data-toggle="tab" >联系人信息</a>
                     </li>
+                    <li >
+                        <a id='document_info' href="#documentInfo" data-toggle="tab" >文档信息</a>
+                    </li>
                 </ul>
                </div>
          </div>
          <div class="tab-content">
-                <div class="tab-pane fade active in" id="documentInfo">
+                <div class="tab-pane fade  in" id="documentInfo">
                     <div class="form-group"> 
                      <div class="col-lg-12"> 
                         <span class="btn btn-success btn-xs fileinput-button" id="fileuploadSpan"> 
@@ -356,7 +356,7 @@
                         </div> 
                 </div>
                 
-                <div class="tab-pane fade  in" id="salesmanInfo">
+                <div class="tab-pane fade active  in" id="salesmanInfo">
                     <div class="form-group"> 
                      <div class="col-lg-12"> 
                          <%include("/eeda/profile/customer/salesmanTable.html",{}){}%>
@@ -381,7 +381,7 @@
 
                 <div class="col-lg-12" style="margin-top:15px;">
                    <div class="col-lg-6" style="clear:both;">
-                       <button id="saveBtn" type="button" class="btn  btn-primary">保存</button>
+                       <button id="saveBtn" type="button" class="btn btn_green">保存</button>
                        <a class="btn  btn-primary" href="/customer">返回</a>
                        <a class="btn btn_green" href="/customer/add" style = "float:right">新增客户</a>
                    </div>

@@ -42,9 +42,9 @@ public class profitController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
-        String sql = " SELECT A.id,A.customer_id,A.abbr,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
+        String sql = " SELECT A.id,A.customer_id,A.abbr,A.employee_name,A.employee_id,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
         		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb FROM ("
-        		+" SELECT jo.id,jo.customer_id,p.abbr,"
+        		+" SELECT jo.id,jo.customer_id,p.abbr,em.employee_name,em.id employee_id,"
         		+" IF(joa.order_type='charge' and joa.exchange_currency_id = 3,exchange_total_amount,0) charge_cny,"
         		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 6,exchange_total_amount,0) charge_usd,"
         		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 8,exchange_total_amount,0) charge_jpy,"
@@ -58,9 +58,11 @@ public class profitController extends Controller {
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
-        		+"  WHERE jo.office_id ="+office_id+" "+condition
+        		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
+        		+ " LEFT JOIN employee em on em.id = cs.salesman_id"
+        		+"  WHERE jo.office_id ="+office_id+" "
         		+ " and jo.delete_flag = 'N'"
-    			+" ) A where 1=1 GROUP BY A.customer_id  ORDER BY abbr";
+    			+" ) A where 1=1 "+condition+" GROUP BY A.customer_id  ORDER BY abbr";
 		
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);

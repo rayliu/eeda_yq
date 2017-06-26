@@ -14,7 +14,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorde
                   { "data": "STATION_NAME"},          
                   { "data": "INDUCTION_TIME",
                 	"render":function(data, type, full, meta ){
-                		return data.substring(0,10);
+                		if(!data){
+                			return "";
+                		}
+                		return data.substr(0,10)
                 	}  
                   },
                   { "data": "CREATE_STAMP"},

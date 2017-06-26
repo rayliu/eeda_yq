@@ -19,6 +19,13 @@
                                                                     }){}%>
                                             </div>
                                             <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputEmployeeField.html", 
+                                                                    {   id: 'employee_id', 
+                                                                        label: '业务员', 
+                                                                        value: ''
+                                                                    }){}%>
+                                            </div>
+                                            <div class="col-lg-4">
                                                  
 	                             				<%include("/eeda/component/form/inputDateQueryField.html",
 	                             									 {   id:'order_export_date', 
@@ -63,7 +70,7 @@
                                         {
                                             id:'eeda_table', 
                                             style: 'width:900px',
-                                            headers:['客户','折合应收(CNY)','折合应付(CNY)','利润(CNY)','利润率(%)'
+                                            headers:['客户','业务员','折合应收(CNY)','折合应付(CNY)','利润(CNY)','利润率(%)'
                                             ]
                                         }){} %>
                  </div> <!-- /.col-lg-12 -->
