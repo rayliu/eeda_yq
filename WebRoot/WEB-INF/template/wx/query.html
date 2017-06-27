@@ -38,7 +38,7 @@
             
         </div>
          <div class="button-sp-area" style="margin-top: 20px;margin-bottom: 20px;">
-            <a href="javascript:;" class="weui-btn weui-btn_primary">扫描二维码</a>
+            <a href="javascript:;" class="weui-btn weui-btn_primary" id="qr_btn">扫描二维码</a>
         </div>
 
         <div class="weui-cells">
@@ -63,7 +63,32 @@
     </div>
  </div><!-- home -->
 
-    <script type="text/javascript">
+    
+   
+
+
+   
+</script>
+    <script src="/js/lib/weui-1.1.2/example//zepto.min.js"></script>
+    <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="https://res.wx.qq.com/open/libs/weuijs/1.0.0/weui.min.js"></script>
+    <script src="/js/lib/weui-1.1.2/example/example.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+ wx.config({
+    debug: true,
+    appId:'${appId}',
+    timestamp: '${timestamp}',
+    nonceStr: '${nonceStr }',
+    signature: '${signature}',
+    jsApiList: [
+      'checkJsApi',
+      'scanQRCode'
+    ]
+  });
+
+
         $(function(){
             var $tooltips = $('.js_tooltips');
             $('#queryPartNo').on('click', function(){
@@ -81,16 +106,17 @@
                     }, 2000);
                 }
             });
+
+            $('#qr_btn').on('click', function(){
+                wx.scanQRCode({
+                    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                        console.log(result);
+                    }
+                });
+            });
         });
-    </script>
    
-
-
-   
-</script>
-    <script src="/js/lib/weui-1.1.2/example//zepto.min.js"></script>
-    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script src="https://res.wx.qq.com/open/libs/weuijs/1.0.0/weui.min.js"></script>
-    <script src="/js/lib/weui-1.1.2/example/example.js"></script>
-</body>
-</html>
+  </script>

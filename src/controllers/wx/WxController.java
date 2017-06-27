@@ -1,11 +1,15 @@
 package controllers.wx;
 
+import interceptor.JSSDKInterceptor;
+
 import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 
+@Before(JSSDKInterceptor.class)
 public class WxController extends Controller {
 
     private Logger logger = Logger.getLogger(WxController.class);
