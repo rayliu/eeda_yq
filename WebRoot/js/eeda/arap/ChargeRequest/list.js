@@ -140,7 +140,7 @@ $(document).ready(function() {
                 "render": function(data, type, full, meta) {
                        return "<a href='/chargeRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
                 }
-           },
+            },
             {"data":"CHARGE_ORDER_NO"},
             {"data":"PAYMENT_METHOD",'class':'payment_method',
                 "render": function(data, type, full, meta) {
@@ -502,6 +502,7 @@ $(document).ready(function() {
             +"&receive_time_begin_time="+confirmBegin_date_begin_time
             +"&receive_time_end_time="+confirmBegin_date_end_time;
        application_table.ajax.url(url).load();
+       totalMoney();
        saveConditions();
     };
     
@@ -631,7 +632,7 @@ $(document).ready(function() {
                      tr.remove();
     
                     if(status=='新建') $('#checked').attr('disabled',false);
-                     if(status=='已复核') {
+                    if(status=='已复核') {
                         $('#confirmed').attr('disabled',false);
                         $('#badBtn').attr('disabled',false);
                       }

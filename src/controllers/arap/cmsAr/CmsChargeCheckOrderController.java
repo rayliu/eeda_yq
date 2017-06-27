@@ -507,8 +507,9 @@ public class CmsChargeCheckOrderController extends Controller {
 		   		String receive_time = (String) dto.get("receive_time");
 		   		String deposit_bank = "";
 		     	String payment_method = (String) dto.get("payment_method");
+		     	String empty = (String) dto.get("deposit_bank");
 		     	
-		     	if(dto.get("deposit_bank")!=null){
+		     	if(StringUtils.isNotEmpty(empty)){
 		   			 deposit_bank =  dto.get("deposit_bank").toString();
 		   		}else{
 		   			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
