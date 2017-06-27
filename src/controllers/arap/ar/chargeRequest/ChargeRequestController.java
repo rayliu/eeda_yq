@@ -778,8 +778,9 @@ public class ChargeRequestController extends Controller {
         		String receive_time = (String) dto.get("receive_time");
             	String receive_bank_id = "";
             	String payment_method = (String) dto.get("payment_method");
+            	String empty = (String) dto.get("receive_bank_id");
             	
-            	if(dto.get("receive_bank_id")!=null){
+            	if(StringUtils.isNotEmpty(empty)){
           			 receive_bank_id =  dto.get("receive_bank_id").toString();
           		}else{
           			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
