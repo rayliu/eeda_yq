@@ -86,12 +86,36 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         });
         $('#mbl_no_land').keyup(function(){
         	$('#mbl_no').val($('#mbl_no_land').val());
-        });
+        });	
+    
+    
+    
         //ocean_MBLnotify_party_info 默认制是SAME AS CONSIGNEE
-        var ocean_MBLnotify_party_info = $('#ocean_MBLnotify_party_info').val();
-        if(!ocean_MBLnotify_party_info){
-        	$('#ocean_MBLnotify_party_info').val('SAME AS CONSIGNEE');
+        $('#copy_consignee').click(function(){
+        	var boolean = $('#copy_consignee').is(':checked');
+        	if(boolean){
+        		$('#ocean_MBLnotify_party_info').val('SAME AS CONSIGNEE');
+        	}else{
+        		$('#ocean_MBLnotify_party_info').val('');
+        	}
+        });
+        if($('#ocean_MBLnotify_party_info').val()=='SAME AS CONSIGNEE'){
+        	$('#copy_consignee').attr('checked',true)
         }
+        
+      //ocean_HBLnotify_party_info 默认制是SAME AS CONSIGNEE
+        $('#copyConsignee').click(function(){
+        	var boolean = $('#copyConsignee').is(':checked');
+        	if(boolean){
+        		$('#ocean_HBLnotify_party_info').val('SAME AS CONSIGNEE');
+        	}else{
+        		$('#ocean_HBLnotify_party_info').val('');
+        	}
+        });
+        if($('#ocean_HBLnotify_party_info').val()=='SAME AS CONSIGNEE'){
+        	$('#copyConsignee').attr('checked',true)
+        }
+
         
 
         //常用海运信息模版
