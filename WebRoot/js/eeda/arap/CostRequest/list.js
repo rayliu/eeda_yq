@@ -492,7 +492,7 @@ $(document).ready(function() {
             +"&receive_time_begin_time="+confirmBegin_date_begin_time
             +"&receive_time_end_time="+confirmBegin_date_end_time;
        application_table.ajax.url(url).load();
-       
+       totalMoney();
        saveConditions();
     };
 
@@ -567,9 +567,9 @@ $(document).ready(function() {
             }
        }
         $('#cny_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_cny).toFixed(2),3))
-       $('#usd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_usd).toFixed(2),3));
-      $('#jpy_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_jpy).toFixed(2),3));
-       $('#hkd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_hkd).toFixed(2),3));
+        $('#usd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_usd).toFixed(2),3));
+        $('#jpy_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_jpy).toFixed(2),3));
+        $('#hkd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_hkd).toFixed(2),3));
     }
 
     //勾选进行金额汇总
@@ -587,7 +587,7 @@ $(document).ready(function() {
             $("#allCheck2").prop('checked',true)
             $('#checked_application_table .dataTables_empty').remove();
             status=$(this).parent().parent().find('.status').html();
-                if(status=='新建') $('#checked').attr('disabled',false);
+                 if(status=='新建') $('#checked').attr('disabled',false);
                  if(status=='已复核'){
                      $('#confirmed').attr('disabled',false);
                      $('#badBtn').attr('disabled',false);
@@ -639,9 +639,9 @@ $(document).ready(function() {
             $('#usd_totalAmountSpan').text(0);
             $('#hkd_totalAmountSpan').text(0);
             $('#jpy_totalAmountSpan').text(0);
-             $('#checked').attr('disabled',true);
+            $('#checked').attr('disabled',true);
             $('#confirmed').attr('disabled',true);
-             $('#badBtn').attr('disabled',true);
+            $('#badBtn').attr('disabled',true);
         }
         $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
         $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
@@ -695,7 +695,7 @@ $(document).ready(function() {
     //弹出下拉框 确认付款时间
       $("#application_table").on('click','.confirmBtn',function(){
             $('#cost_table_msg_btn').click();
-             $('#confirmVal').val('');
+            $('#confirmVal').val('');
             var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
             $('#table_id').val($(this).parent().parent().parent().parent().parent().attr("id"));
             $('#rowIndex').val(checkbox1.val());
@@ -728,7 +728,7 @@ $(document).ready(function() {
 
     //弹出下拉框 确认付款时间
       $("#checked_application_table").on('click','.confirmBtn',function(){
-             $('#confirmVal').val('');
+            $('#confirmVal').val('');
             $('#cost_table_msg_btn').click();           
             var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
             $('#table_id').val($(this).parent().parent().parent().parent().parent().attr("id"));
@@ -871,8 +871,8 @@ $(document).ready(function() {
                             
                             totalMoney();
                             $('#rowIndex').val('');
-                             $('#confirmed').attr('disabled',true);
-                             $('#badBtn').attr('disabled',true);
+                            $('#confirmed').attr('disabled',true);
+                            $('#badBtn').attr('disabled',true);
 			            }else{
                             
                             $.scojs_message('付款失败', $.scojs_message.TYPE_FALSE);
@@ -887,7 +887,7 @@ $(document).ready(function() {
                 $(this).prop('checked',true);
                 var status= $(this).parent().parent().find('.status').html();
                 if(status=='新建') $('#checked').attr('disabled',false);
-                 if(status=='已复核'){
+                if(status=='已复核'){
                      $('#confirmed').attr('disabled',false);
                      $('#badBtn').attr('disabled',false);
                     }
