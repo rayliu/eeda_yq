@@ -11,10 +11,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 { "data":"DOCK_NAME",
                     "render": function ( data, type, full, meta ) {
                         return "<a href='/dockInfo/edit?id="+full.ID+"'target='_blank'>"+full.DOCK_NAME+"</a>";  
-                    }},
+                    }
+                },
                 { "data":"DOCK_NAME_ENG"},
-                { "data":"QUICK_SEARCH_CODE"},
                 { "data":"DOCK_REGION"},
+                { "data":"QUICK_SEARCH_CODE"},
                 { 
                     "data": null, 
                     "width": "5%",
