@@ -187,7 +187,7 @@ public class SupplierContractController extends Controller {
                     +" WHERE cci.contract_id = ?  and cci.contract_type='tour'";
         }else {  
     		sql = " SELECT cci.*,fi.name fee_name, "
-    		        + "CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+    		        + "u.name uom_name,c.name currency_name"
 					+" from supplier_contract_item cci"
 					+ " left join supplier_contract_location ccl on ccl.id = cci.supplier_loc_id"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"

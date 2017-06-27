@@ -151,7 +151,7 @@ public class CustomerContractController extends Controller {
     	String sql = "";
     	if("ocean".equals(type)){
     		sql = " SELECT cci.*, fi.name fee_name, "
-    		        + " CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+    		        + " u.name uom_name,c.name currency_name"
 					+" from customer_contract_item cci"
 					+ " left join customer_contract_location ccl on ccl.id = cci.customer_loc_id"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
@@ -176,14 +176,14 @@ public class CustomerContractController extends Controller {
                         +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' ";	
     	}else if("air".equals(type)){
     		sql = " SELECT cci.*,fi.name fee_name, "
-    		        + "CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+    		        + "u.name uom_name,c.name currency_name"
 					+" from customer_contract_item cci"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
 					+" WHERE cci.contract_id = ? and cci.contract_type='air' ";
     	}else if("land".equals(type)){
-    		sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+    		sql = " SELECT cci.*,fi.name fee_name,u.name uom_name,c.name currency_name"
 					+" from customer_contract_item cci"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
