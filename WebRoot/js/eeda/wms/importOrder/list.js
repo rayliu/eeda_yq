@@ -26,7 +26,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		if(!data){
         			$.scojs_message('已停', $.scojs_message.TYPE_OK);
         		}
-        	}
+        	});
         });
         
         
