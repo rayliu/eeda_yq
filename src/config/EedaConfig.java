@@ -42,6 +42,7 @@ import com.jfinal.ext.handler.UrlSkipHandler;
 import com.jfinal.ext.plugin.shiro.ShiroInterceptor;
 import com.jfinal.ext.plugin.shiro.ShiroKit;
 import com.jfinal.ext.plugin.shiro.ShiroPlugin;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
@@ -71,6 +72,8 @@ import controllers.wms.InvCheckOrderController;
 import controllers.wms.InventoryController;
 import controllers.wms.ProductController;
 import controllers.wms.importOrder.ImportOrder;
+import controllers.wx.WeixinApiController;
+import controllers.wx.WeixinMsgController;
 import controllers.wx.WxController;
 
 public class EedaConfig extends JFinalConfig {
@@ -96,6 +99,7 @@ public class EedaConfig extends JFinalConfig {
 	public void configConstant(Constants me) {
         //加载配置文件    	
         loadPropertyFile("app_config.txt");
+        PropKit.use("app_config.txt");
         
         me.setDevMode(getPropertyToBoolean("devMode", false));
         
@@ -188,6 +192,9 @@ public class EedaConfig extends JFinalConfig {
         me.add("/changePartNo", ChangePartNoController.class, contentPath);
   
         me.add("/wx", WxController.class);
+        
+        me.add("/msg", WeixinMsgController.class);
+        me.add("/api", WeixinApiController.class, "/api");
 	}
 
     @Override
