@@ -214,7 +214,7 @@ public class CmsCostCheckOrderController extends Controller {
 		   				 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 		   				 +" from custom_plan_order_arap cpoa "
 		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-		   				 +" LEFT JOIN fin_item f on f.id = cpoa.currency_id "
+		   				 +" LEFT JOIN fin_item f on f.id = cpoa.charge_id "
 		   				 +" LEFT JOIN party p on p.id = cpoa.sp_id "
 		   				 +" where cpoa.id in("+ids+")"
 		   				 +" and cpo.delete_flag='N' "
@@ -225,7 +225,7 @@ public class CmsCostCheckOrderController extends Controller {
 		   				 +" from custom_plan_order_arap cpoa "
 		   				 +" left join custom_arap_cost_item caci on caci.ref_order_id = cpoa.id"
 		   				 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
-		   				 +" LEFT JOIN fin_item f on f.id = cpoa.currency_id "
+		   				 +" LEFT JOIN fin_item f on f.id = cpoa.charge_id "
 		   				 +" LEFT JOIN party p on p.id = cpoa.sp_id "
 		   				 +" where caci.custom_cost_order_id ="+order_id
 		   				 +" and cpo.delete_flag='N' ";
