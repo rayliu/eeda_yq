@@ -276,6 +276,8 @@ eeda.refreshUrl = refreshUrl;
 	         str = "<a href='/chargeCheckOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }else if(orderNo.indexOf("YFDZ")== 0){//应付对账
 	         str = "<a href='/costCheckOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
+	     }else{
+	    	 str = "<a href='/jobOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }
 
 	     return str;
