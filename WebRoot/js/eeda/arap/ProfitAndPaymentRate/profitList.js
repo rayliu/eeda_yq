@@ -56,7 +56,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            		}
 	            		return profit_rate;
 					}
-	            }
+	            },
+	            {
+					"render": function(data, type, full, meta) {
+	            	    var profit = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
+	            	    var profit = ((profit*full.ROYALTY_RATE)/100).toFixed(2);
+	            	    if(profit<0){
+	            	    	return '<span style="color:red;width:120px">'+eeda.numFormat(profit,3)+'</span>';
+	            	    }else if(profit=="0.00"){
+	            	    	return '';
+	            	    }
+						return eeda.numFormat(profit,3);
+					}
+				}
 	          ]
 	      });
 
@@ -130,16 +142,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  }else(
         		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("利润(CNY):"+eeda.numFormat(total_profit,3))
         	  )
-        	  
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("提成");
 
           });
           
           var cssTd=function(){
         	  $("#eeda_table th:eq(6)").css('background-color','#f5f5dc');
         	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
-        	  $("#eeda_table td:nth-child(7)").css('background-color','#f5f5dc');
         	  $("#eeda_table td:nth-child(8)").css('background-color','#f5f5dc');
         	  $("#eeda_table td:nth-child(9)").css('background-color','#f5f5dc');
+        	  $("#eeda_table td:nth-child(10)").css('background-color','#f5f5dc');
           }
          
           
