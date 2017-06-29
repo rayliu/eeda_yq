@@ -311,7 +311,7 @@ public class CmsCostCheckOrderController extends Controller {
 		}
 		setAttr("order",rec);
 		render("/eeda/cmsArap/cmsCostCheckOrder/cmsCostcheckorderEdit.html");
-	}
+	} //cmsCostCheckOrderEdit
 
     
     @Before(Tx.class)
