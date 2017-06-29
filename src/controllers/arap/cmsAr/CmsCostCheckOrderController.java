@@ -310,7 +310,7 @@ public class CmsCostCheckOrderController extends Controller {
 			rec.set("residual_cny", rec2.get("residual_cny"));
 		}
 		setAttr("order",rec);
-		render("/eeda/cmsArap/cmsCostCheckOrder/cmsCostcheckorderedit.html");
+		render("/eeda/cmsArap/cmsCostCheckOrder/cmsCostcheckorderEdit.html");
 	}
 
     

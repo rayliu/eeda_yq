@@ -277,6 +277,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             eeda.bindTableField('ocean_location_table','POL_ID','/location/searchPort','port');
             eeda.bindTableField('ocean_location_table','POD_ID','/location/searchPort','port');
             eeda.bindTableField('ocean_location_table','HUB_ID','/location/searchPort','port');
+            eeda.bindTableField('ocean_location_table','POR_ID','/location/searchPort','port');
             eeda.bindTableField('ocean_location_table','CARRIER_ID','/customer/searchParty','carrier');
         };
 
@@ -303,6 +304,21 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                 {  "width": "50px",
                     "render": function ( data, type, full, meta ) {
                         return '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>';
+                    }
+                },
+                { "data": "POR_ID", "width":"130px",
+                    "render": function ( data, type, full, meta ) {
+                    if(!data)
+                           data='';
+                       var field_html = template('table_dropdown_template',
+                           {
+                               id: 'POR_ID',
+                               value: data,
+                               display_value: full.POR_NAME,
+                               style:'width:150px'
+                           }
+                       );
+                       return field_html; 
                     }
                 },
                 { "data": "POL_ID", "width":"130px",
@@ -363,6 +379,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                     }
                 },
                 { "data": "TYPE", "width": "150px", "visible": false,
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                },
+                { "data": "POR_NAME", "visible": false,
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';

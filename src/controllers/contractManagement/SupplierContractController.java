@@ -164,11 +164,13 @@ public class SupplierContractController extends Controller {
                 sql = " SELECT ccl.*,p.abbr carrier_name, "
                         + " CONCAT(l.name,' -', l.code) pol_name, "
                         + " CONCAT(l1.name,' -', l1.code) pod_name,"
-                        + " CONCAT(l2.name,' -', l2.code) hub_name"
+                        + " CONCAT(l2.name,' -', l2.code) hub_name,"
+                        + " CONCAT(l3.name,' -', l3.code) por_name"
                         +" from supplier_contract_location ccl"
                         +" LEFT JOIN location l on l.id = ccl.pol_id"
                         +" LEFT JOIN location l1 on l1.id = ccl.pod_id"
                         +" LEFT JOIN location l2 on l2.id = ccl.hub_id"
+                        +" LEFT JOIN location l3 on l3.id = ccl.por_id"
                         + " left join party p on p.id = ccl.carrier_id"
                         +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' ";	
     	}else if("trade".equals(type)){
