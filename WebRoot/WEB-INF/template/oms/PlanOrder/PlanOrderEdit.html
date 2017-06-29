@@ -69,21 +69,21 @@
             <div class="simple_order_list_div">
 	            <div class="col-lg-6">
 	            	<%include("/eeda/component/form/inputOfficeField.html",
-											{ id:'entrusted_id', 
-											label:'委托方',  
-											value:entrusted.id!office.id,
-											display_value:entrusted.office_name!office.office_name!,
-											'disabled':'disabled'
+											{   id:'entrusted_id', 
+												label:'委托方',  
+												value:entrusted.id!office.id,
+												display_value:entrusted.office_name!office.office_name!,
+												'disabled':'disabled'
 											}){} %>
 	             </div>
             	
            		<div class="col-lg-6">
            			<%include("/eeda/component/form/inputOfficeField.html",
-											{ id:'to_entrusted_id', 
-											label:'被委托方',  
-											value:toEntrusted.id!ref_office.id!,
-											display_value:toEntrusted.office_name!ref_office.office_name!,
-											'disabled':'disabled'
+											{   id:'to_entrusted_id', 
+												label:'被委托方',  
+												value:toEntrusted.id!ref_office.id!,
+												display_value:toEntrusted.office_name!ref_office.office_name!,
+												'disabled':'disabled'
 											}){} %>
                 </div>  
                    
@@ -101,7 +101,7 @@
                                     {
                                         id:'cargo_table',
                                         style:'width:2700px',
-                                        headers:['<input type="checkBox" class="allCheck">','','','Booking单号','出货类型','出货时间','纳期','提货地点', '起运港POL','目的港POD','件数','毛重(KG)','体积(CBM)','柜型','柜量','车型车量','货物名称',
+                                        headers:['<input type="checkBox" class="allCheck">','','','Booking单号','出货类型','出货时间','纳期','提货地点', '启运港POL','目的港POD','件数','毛重(KG)','体积(CBM)','柜型','柜量','车型车量','货物名称',
                                         			'船公司', '船名vessel', '航次voyage','ETA','ETD','SO号码','运输方式', '负载方式','单位','净重(KG)','总重量(KG)','送货地点','收货港POR',  
                                                  '截关日期',  '报关类型','报关日期', 'por_name', 'pol_name', 'pod_name', 'carrier_name', 'is_gen_job','unit_name','confirm_shipment','book_order_id'],
                                         field_list:['id','','','book_order_no','job_order_type','factory_loading_time','delivery','pickup_addr','pol','pod','pieces','gross_weight','volume', 

@@ -16,8 +16,6 @@ import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
 import models.UserLogin;
-import models.eeda.oms.PlanOrder;
-import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.bookOrder.BookOrder;
 import models.eeda.oms.bookOrder.BookOrderArap;
 import models.eeda.oms.bookOrder.BookOrderDoc;
@@ -25,6 +23,7 @@ import models.eeda.oms.bookOrder.BookOrderLandItem;
 import models.eeda.oms.bookOrder.BookOrderSendMail;
 import models.eeda.oms.bookOrder.BookOrderSendMailTemplate;
 import models.eeda.oms.bookOrder.BookOrderShipment;
+import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderDoc;
 
 import org.apache.commons.lang.StringUtils;
@@ -48,6 +47,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
 import controllers.eeda.ListConfigController;
+import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.FileUploadUtil;
@@ -75,60 +75,21 @@ public class BookOrderController extends Controller {
 	
 	@Before(EedaMenuInterceptor.class)
     public void create() {
-    	
-    	String order_id=getPara("order_id");
-    	String itemIds=getPara("itemIds");
-    	if(StringUtils.isNotEmpty(order_id)){
-    		//查询plan_order 里的计划单号
-    		PlanOrder planOrder = PlanOrder.dao.findById(order_id);
-        	setAttr("planOrder", planOrder);
-        	//客户回显
-        	Party party = Party.dao.findById(planOrder.get("customer_id"));
-        	setAttr("party", party);
-    	}
-
-    	if(StringUtils.isNotEmpty(itemIds)){
-    		
-    		String strAry[] = itemIds.split(",");
-    		String id = strAry[0];
-    		//查询plan_order_item
-	    	PlanOrderItem plan_order_item = PlanOrderItem.dao.findById(id);
-	    	setAttr("planOrderItem", plan_order_item);
-	    	
-	    	String transport_type = "";
-	    	String truct_type = plan_order_item.getStr("truck_type");
-	    	String container_type = plan_order_item.getStr("container_type");
-	    	if(StringUtils.isNotBlank(truct_type)){
-	    		if(StringUtils.isBlank(transport_type)){
-	    			transport_type += "land";
-	    		}else{
-	    			transport_type += ",land";
-	    		}
-	    	}
-	    	if(StringUtils.isNotBlank(container_type)){
-	    		if(StringUtils.isBlank(transport_type)){
-	    			transport_type += "ocean";
-	    		}else{
-	    			transport_type += ",ocean";
-	    		}
-	    	}
-	    	setAttr("transport_type", transport_type);
-	    	
-	    	
-	    	//返回海运的港口名称,加多一个船公司
-	    	String port_sql = "select lo.name por_name,lo1.name pol_name,lo2.name pod_name,p.abbr carrier_name from plan_order_item joi"
-				    			+" LEFT JOIN location lo on lo.id = joi.por"
-				    			+" LEFT JOIN location lo1 on lo1.id = joi.pol"
-				    			+" LEFT JOIN location lo2 on lo2.id = joi.pod"
-				    			+ " left join party p on p.id = joi.carrier"
-				    			+" where joi.id = ?";
-	    	setAttr("portCreate",Db.findFirst(port_sql,id));
-    	}
-    	setAttr("usedOceanInfo", getUsedOceanInfo());
-    	setAttr("usedAirInfo", getUsedAirInfo());
-    	setAttr("emailTemplateInfo", getEmailTemplateInfo());
-    	setAttr("loginUser",LoginUserController.getLoginUserName(this));
-        render("/oms/bookOrder/bookOrderEdit.html");
+		
+		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+   		Office office = Office.dao.findById(office_id);
+   		setAttr("office", office);
+   		
+   		Record re = Db.findFirst("select * from party where type='SP' and ref_office_id is not null and office_id = ?",office_id);
+   		if(re!=null){
+   			Long ref_office_id = re.getLong("ref_office_id");
+   	   		Office ref_office = Office.dao.findById(ref_office_id);
+   	   		setAttr("ref_office", ref_office);
+   		}
+   		
+   		render("/oms/bookOrder/bookOrderEdit.html");
+        
     }
     
     //插入动作MBL标识符
@@ -243,9 +204,6 @@ public class BookOrderController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         String id = (String) dto.get("id");
-        String planOrderItemID = (String) dto.get("plan_order_item_id");
-        String type = (String) dto.get("type");//根据工作单类型生成不同前缀
-        String customer_id = (String)dto.get("customer_id");
         
         BookOrder bookOrder = new BookOrder();
         
@@ -267,13 +225,10 @@ public class BookOrderController extends Controller {
             
    			bookOrder.update();
    		} else {
-   			//create 
+   			//create
    			DbUtils.setModelValues(dto, bookOrder);
    			//需后台处理的字段
    			String order_no = OrderNoGenerator.getNextOrderNo("BK", newDateStr, office_id);
-   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
-   			sb.insert(5, generateBookPrefix(type));//在指定的位置1，插入指定的字符串
-   			order_no = sb.toString();
             bookOrder.set("order_no", order_no);
    			bookOrder.set("creator", user.getLong("id"));
    			bookOrder.set("create_stamp", new Date());
@@ -282,13 +237,6 @@ public class BookOrderController extends Controller {
    			bookOrder.set("office_id", office_id);
    			bookOrder.save();
    			id = bookOrder.getLong("id").toString();
-   			
-   			//创建过工作单，设置plan_order_item的字段
-   			PlanOrderItem planOrderItem = PlanOrderItem.dao.findById(planOrderItemID);
-   			if(planOrderItem!=null){
-                   planOrderItem.set("is_gen_book", "Y");
-                   planOrderItem.update();
-   			}
    		}
 //   		long customerId = Long.valueOf(dto.get("customer_id").toString());
 //   		saveCustomerQueryHistory(customerId);
@@ -1198,7 +1146,14 @@ public class BookOrderController extends Controller {
     @Before({EedaMenuInterceptor.class, Tx.class})
     public void edit() {
     	String id = getPara("id");
-    	BookOrder bookOrder = BookOrder.dao.findById(id);
+    	BookOrder bookOrder = BookOrder.dao.findFirst(" SELECT bor.*,oe1.office_name office_name,oe2.office_name entrusted_name,p.company_name HBLconsignee_name,lo1.name pol_name,lo2.name pod_name  "
+														+" from book_order bor  "
+														+" LEFT JOIN office oe1 on oe1.id = bor.office_id "
+														+" LEFT JOIN office oe2 on oe2.id = bor.ref_office_id "
+														+" LEFT JOIN party p on p.id = bor.HBLconsignee "
+														+" LEFT JOIN location lo1 on lo1.id = bor.pol_id "
+														+" LEFT JOIN location lo2 on  lo2.id = bor.pod_id "
+														+" WHERE bor.id = ?",id);
     	Long plan_order_id = bookOrder.getLong("plan_item_id");
     	
     	String sqlString=" SELECT *,IFNULL(vessel_voyage,air_flight_no_voyage_no)vessel_voyage_or_flight_no_voyage_no "
@@ -1288,8 +1243,6 @@ public class BookOrderController extends Controller {
 	    		}
 	    	}
     	}
-    	
-    	
 //    	Record re = Db.findFirst("");
     	String create_stamp = bookOrder.get("create_stamp").toString();
     	bookOrder.set("create_stamp",create_stamp.substring(0, create_stamp.length()-2));
@@ -1558,7 +1511,7 @@ public class BookOrderController extends Controller {
                 + " ) to_do";
         
         sql = "SELECT * from (select bo.*,"
-     		+ " ifnull(u.c_name, u.user_name) creator_name,o.office_name sp_name,"
+     		+ " ifnull(u.c_name, u.user_name) creator_name,ifnull(o.office_name,oe1.office_name) sp_name,"
      		+ " (SELECT  count(jod0.id) FROM book_order_doc jod0 WHERE  jod0.order_id =bo.id and (jod0.type='zero' or jod0.type='two' or jod0.type='four')  and   jod0.send_status='已发送' ) new_count,"
      		+ " (CASE"
      		+ " WHEN jos.ata is not null"
@@ -1581,6 +1534,7 @@ public class BookOrderController extends Controller {
      		+ " LEFT JOIN job_order_shipment jos on jos.order_id = jor.id "
      		+ "	LEFT JOIN plan_order po on po.id = bo.plan_order_id"
      		+ "	LEFT JOIN office o on o.id = po.to_entrusted_id"
+     		+ " left join office oe1 on oe1.id  = bo.ref_office_id"
      		+ "	left join user_login u on u.id = bo.creator"
      		+ "	where bo.office_id="+office_id
      	    + " and bo.delete_flag = 'N'"
@@ -1990,6 +1944,153 @@ public class BookOrderController extends Controller {
     		refOrder.update();
     	}
         renderJson(order);
+    }
+    public void submitBooking(){
+    	String booking_id = getPara("order_id");
+    	JobOrder order  = JobOrder.dao.findFirst("select * from job_order where from_order_id = ? and from_order_type = 'booking' ",booking_id);
+    	UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+   		
+   		
+   		
+    	if(order==null){
+    		BookOrder re = BookOrder.dao.findById(booking_id);
+       		order  = new JobOrder();
+       		
+        	String pol_id = re.getStr("pol_id");
+        	String pod_id = re.getStr("pod_id");
+        	String transport_type = pol_id+pol_id;
+//        	if(StringUtils.isNotBlank(truct_type)){
+//        		if(StringUtils.isBlank(transport_type)){
+//        			transport_type += "land";
+//        		}else{
+//        			transport_type += ",land";
+//        		}
+//        	}
+//        	if(StringUtils.isNotBlank(container_type)){
+        		if(StringUtils.isBlank(transport_type)){
+        			transport_type += "ocean";
+        		}
+//        		else{
+//        			transport_type += ",ocean";
+//        		}
+//        	}
+       		
+       		
+       		
+            String newDateStr = "";
+            SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
+            Date date= re.get("order_export_date");
+            newDateStr=sdf.format(date);
+            
+            Long officeNo = null;//生成单号要用到的office_id
+            Record office = Db.findFirst("select office_id from party where ref_office_id = ?",office_id);
+            if(office != null){
+            	officeNo = office.getLong("office_id");
+            }else{
+            	try {
+					throw new Exception("不存在ref_customer");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+            	
+       		String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, officeNo==null?office_id:officeNo);
+   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
+   			sb.insert(5, JobOrderController.generateJobPrefix(re.getStr("type")));//在指定的位置1，插入指定的字符串
+   			order_no = sb.toString();
+   			order.set("order_no", order_no);
+        	order.set("creator", user.getLong("id"));
+        	order.set("create_stamp", new Date());
+        	order.set("updator", user.getLong("id"));
+        	order.set("update_stamp", new Date());
+            order.set("office_id", re.getLong("ref_office_id"));
+            order.set("from_order_type", "booking");
+            order.set("from_order_id", booking_id);
+            order.set("from_order_no", re.getStr("order_no"));
+            
+            Long entrusted_id = re.getLong("office_id");
+            if(StringUtils.isNotBlank(entrusted_id.toString())){
+            	Record customer = Db.findFirst("select * from party where type='CUSTOMER' and ref_office_id = ? ",entrusted_id);
+            	if(customer!=null){
+            		Long customer_id = customer.getLong("id");
+            		order.set("customer_id", customer_id);
+            	}
+            }
+            
+            order.set("type", re.getStr("type"));
+            order.set("order_export_date", re.get("order_export_date"));
+//            order.set("transport_type", re.getStr("transport_type"));
+            order.set("pieces", re.get("pieces"));
+//            order.set("net_weight", re.get("net_weight"));
+            order.set("gross_weight", re.get("gross_weight"));
+            order.set("volume", re.get("volume"));
+            order.set("transport_type", transport_type);
+            
+            //-----------默认
+            order.set("billing_method", "perWeight");
+            order.set("trans_clause", "CFS-CFS");
+            order.set("trade_type", "FOB");
+
+            order.save();
+            
+            //从表默认选项
+//            if(StringUtils.isNotBlank(container_type)){
+//            	String[] array = container_type.split(",");
+//            	for (int i = 0; i < array.length; i++) {
+//            		String[] ctypeMsg = array[i].split("X");
+//            		String con_type = ctypeMsg[0];
+//            		String number = ctypeMsg[1];
+//            		for (int j = 0; j < Integer.parseInt(number); j++) {
+//            			Record landItem = new Record();
+//            			landItem.set("order_id", order.get("id"));
+//            			landItem.set("container_type", con_type);
+//            			Db.save("job_order_shipment_item", landItem);
+//					}
+//            		
+//            	}
+//        		
+//        		
+//        		
+//        	}
+//        	if(StringUtils.isNotBlank(truct_type)){
+//        		String[] array = truct_type.split(",");
+//            	for (int i = 0; i < array.length; i++) {
+//            		String[] ctypeMsg = array[i].split("X");
+//            		String tr_type = ctypeMsg[0];
+//            		String number = ctypeMsg[1];
+//            		for (int j = 0; j < Integer.parseInt(number); j++) {
+//            			Record oceanItem = new Record();
+//            			oceanItem.set("order_id", order.get("id"));
+//            			oceanItem.set("status", "待发车");
+//            			oceanItem.set("truck_type", tr_type);
+//            			Db.save("job_order_land_item", oceanItem);
+//					}
+//            	}
+//            	
+//            	Record oceanDetail = new Record();
+//            	oceanDetail.set("order_id", order.get("id"));
+//            	oceanDetail.set("pol", item.get("pol"));
+//            	oceanDetail.set("pod", item.get("pod"));
+//            	
+//            	oceanDetail.set("carrier", item.get("carrier"));
+//            	oceanDetail.set("vessel", item.get("vessel"));
+//            	oceanDetail.set("voyage", item.get("voyage"));
+//            	oceanDetail.set("eta", item.get("eta"));
+//            	oceanDetail.set("etd", item.get("etd"));
+//            	//oceanDetail.set("SONO", item.get("SONO"));
+//    			Db.save("job_order_shipment", oceanDetail);
+//            	
+//        	}
+            
+            re.set("to_order_id", order.getLong("id"));
+            re.set("to_order_type", "forwarderJobOrder");
+            re.set("booking_submit_flag", "Y");
+            re.update();
+    	}
+    	renderJson("{\"result\":true}");
+    
     }
 
 

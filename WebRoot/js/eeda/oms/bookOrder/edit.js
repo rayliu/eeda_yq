@@ -70,6 +70,23 @@ $(document).ready(function() {
 
         var order={}
         order.id = $('#order_id').val();
+        order.office_id = $('#office_id').val();
+        order.ref_office_id = $('#ref_office_id').val();
+        order.HBLconsignee = $('#HBLconsignee').val();
+        order.outer_order_no = $('#outer_order_no').val();
+        order.type = $('#type').val();
+        order.order_export_date = $('#order_export_date').val();
+        order.gargo_name = $('#gargo_name').val();        
+        order.pickup_addr = $('#pickup_addr').val();
+        order.delivery = $('#delivery').val();
+        order.pieces = $('#pieces').val();
+        order.gross_weight = $('#gross_weight').val();
+        order.volume = $('#volume').val();
+        order.pol_id = $('#pol_id').val();
+        order.pod_id = $('#pod_id').val();
+        order.remark = $('#remark').val();
+        
+        
         //相关文档
         order.doc_list = eeda.buildTableDetail("doc_table","");
         //异步向后台提交数据
@@ -80,8 +97,7 @@ $(document).ready(function() {
             	$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
             	$('#saveBtn').attr('disabled', false);
             	$('#confirmCompleted').attr('disabled', false);
-                $("#order_id").val(server_back_order.ID);
-                
+                $("#order_id").val(server_back_order.ID);                
                 //异步刷新明细表
                 $.unblockUI();
             }else{
@@ -103,5 +119,38 @@ $(document).ready(function() {
     	
 	});
 	$.unblockUI();
+	
+	$('#submitBtn').click(function(){
+			var order_id = $('#order_id').val();
+			$.post('/bookOrder/submitBooking',{order_id:order_id},function(data){
+				if(data.result){
+				    $.scojs_message('提交成功', $.scojs_message.TYPE_OK);
+				    //异步刷新明细表
+	                $('#submitBtn').attr('disabled',true);
+	                $('#saveBtn').attr('disabled',true);
+			    }else{
+				    $.scojs_message('提交失败', $.scojs_message.TYPE_ERROR);
+				    self.disabled = false;
+			    }
+			    $.unblockUI();
+			}).fail(function() {
+			    $.unblockUI();
+			    self.disabled = false;
+	            $.scojs_message('后台出错', $.scojs_message.TYPE_ERROR);
+	        });
+		});
+	if($('#booking_submit_flag').val()=='Y'){
+		$('#submitBtn').attr('disabled',true);
+        $('#saveBtn').attr('disabled',true);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 });
 });
