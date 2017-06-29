@@ -35,7 +35,7 @@
 				},
 				{"data":"ORDER_NO","width":"90px",
 					"render": function(data, type, full, meta) {
-						return "<a href='/chargeCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
+						return "<a href='/tradeChargeCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
 					}
 				},
 				{"data":"ORDER_TYPE","class":"order_type","width":"60px"},   
