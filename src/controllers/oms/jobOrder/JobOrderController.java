@@ -1041,9 +1041,13 @@ public class JobOrderController extends Controller {
     	
     	String billing_method_condition = "";
     	if(billing_method.equals("perWeight")){
-    		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.gross_weight1,'0') and ifnull(sci.gross_weight2,'1000') and ifnull(sci.container_type, '') = '') ";
+    		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.gross_weight1,'0')"
+    				+ " and ifnull(sci.gross_weight2,'1000') and ifnull(sci.container_type, '') = '') "
+    				+ "  and ifnull(sci.gross_weight1, '') != '' and ifnull(sci.gross_weight2, '') != ''";
     	}else{
-    		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.volume1,'0') and ifnull(sci.volume2,'1000') and ifnull(sci.container_type, '') = '') ";
+    		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.volume1,'0') "
+    				+ " and ifnull(sci.volume2,'1000') and ifnull(sci.container_type, '') = '') "
+    				+ "  and ifnull(sci.volume1, '') != '' and ifnull(sci.volume2, '') != ''";
     	}
 
     	String sql = "select sci.*,sc.contract_begin_time,sc.contract_end_time,"
