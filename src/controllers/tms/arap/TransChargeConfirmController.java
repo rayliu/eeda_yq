@@ -62,6 +62,7 @@ public class TransChargeConfirmController extends Controller {
 				+ " left join currency c on c.id=tjoa.currency_id "
 				+ " where ifnull(tjoa.order_type ,'')!='cost' and tjo.office_id = "+office_id
 				 + " and tjo.delete_flag = 'N'"
+				 + " group by tjoa.id"
 					+ " ) A where 1=1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
