@@ -14,12 +14,13 @@
 
     <script type="text/html" id="tpl_home">
 <div class="page">
-    <img src="/images/product/${part_no!''}.jpg" height="200" onerror="javascript:this.src='/images/product/no_photo.jpg'"/>
+    <img src="/images/product/${part_no!''}.jpg" width="100%" onerror="javascript:this.src='/images/product/no_photo.jpg'"/>
     <div class="page__bd page__bd_spacing">
         <div class="weui-media-box weui-media-box_text">
             <h4 class="weui-media-box__title">Part No:${part_no!''}</h4>
             <h4 class="weui-media-box__title"></h4>
             <h4 class="weui-media-box__title">库存:${total!''}</h4>
+		    <h4 class="weui-media-box__title">总件数:${totalQuantity!''}</h4>
             
         </div>
 

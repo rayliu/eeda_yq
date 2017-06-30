@@ -26,20 +26,21 @@ public class WxController extends Controller {
     }
     
     public void queryPartNo(){
-    	String part_no=getPara("part_no");
-    	List<Record> list=Db.find("select part_no,count(1) total from gate_in"
+    	String part_no = getPara("part_no");
+    	List<Record> list = Db.find("select part_no,count(1) total,sum(quantity) totalQuantity from gate_in"
     			+ " where part_no like '%"+part_no+"%'"
     			+ " and out_flag = 'N' and error_flag = 'N'"
     			+ " and office_id = 1 GROUP BY part_no");
-
     	renderJson(list);
     }
     
     public void showImg() throws IOException{
-    	String part_no=getPara("part_no");
-    	String total=getPara("total");
+    	String part_no = getPara("part_no");
+    	String total = getPara("total");
+    	String totalQuantity = getPara("totalQuantity");
     	setAttr("part_no", part_no);
     	setAttr("total", total);
+    	setAttr("totalQuantity", totalQuantity);
     	render("/wx/show.html");
     }
     

@@ -6,39 +6,38 @@
     <title>创诚易达WMS</title>
     <link rel="stylesheet" href="/js/lib/weui-1.1.2/style/weui.css"/>
     <link rel="stylesheet" href="/js/lib/weui-1.1.2/example/example.css"/>
+    <link rel="stylesheet" href="/css/weui/weui.css"/>
 </head>
 <body ontouchstart>
-    <div class="weui-toptips weui-toptips_warn js_tooltips">请输入Part No.</div>
+    <div class="weui-toptips weui-toptips_warn js_tooltips">请输入Part No</div>
 
     <div class="container" id="container"></div>
 
     <script type="text/html" id="tpl_home">
 <div class="page">
-
-
-    <div class="page__bd page__bd_spacing">
+	<div class="page__bd page__bd_spacing">
         <div class="weui-media-box weui-media-box_text">
             <h4 class="weui-media-box__title">产品库存查询</h4>
-            <p class="weui-media-box__desc">可手工输入Part No.查询，也可通过扫描二维码查询。</p>
+            <p class="weui-media-box__desc">可手工输入Part No查询，也可通过扫描二维码查询。</p>
         </div>
 
         <div class="weui-cells weui-cells_form">
             <div class="weui-cell weui-cell_vcode">
                 <div class="weui-cell__hd">
-                    <label class="weui-label">Part No.</label>
+                    <label class="weui-label">Part No</label>
                 </div>
                 <div class="weui-cell__bd">
-                    <input id="part_no" class="weui-input" type="text" placeholder="请输入Part No.">
+                    <input id="part_no" class="weui-input" type="text" placeholder="请输入Part No">
                 </div>
 
                 <div class="weui-cell__ft">
-                     <button class="weui-vcode-btn" id="queryPartNo">查询</button>
+                     <button class="weui-vcode-btn" id="qr_btn">二维码</button>
                 </div>
             </div>
             
         </div>
          <div class="button-sp-area" style="margin-top: 20px;margin-bottom: 20px;">
-            <a href="javascript:;" class="weui-btn weui-btn_primary" id="qr_btn">扫描二维码</a>
+            <a href="javascript:;" class="weui-btn weui-btn_primary" id="queryPartNo">查询</a>
         </div>
 
         <div class="weui-cells" id="dataValue">
@@ -48,10 +47,35 @@
     </div>
  </div><!-- home -->
 
-    
+<div id="loadingToast" class="weui_loading_toast" style="display:none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <div class="weui_loading">        
+            <div class="weui_loading_leaf weui_loading_leaf_0"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_1"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_2"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_3"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_4"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_5"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_6"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_7"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_8"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_9"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_10"></div>
+            <div class="weui_loading_leaf weui_loading_leaf_11"></div>
+        </div>
+        <p class="weui_toast_content">数据加载中</p>
+    </div>
+</div>
    
 
-
+<div id="toast" style="display: none;">
+    <div class="weui_mask_transparent"></div>
+    <div class="weui_toast">
+        <i class="weui_icon_msg weui_icon_warn"></i>
+        <p class="weui_toast_content msg"></p>
+    </div>
+</div>
    
 </script>
     <script src="/js/lib/weui-1.1.2/example//zepto.min.js"></script>
@@ -75,46 +99,42 @@
 
 
         $(function(){
+        	var searchData = function(part_no){
+        		$("#loadingToast").css("display","block");
+            	var part_no = $('#part_no').val();
+            	
+            	$.post("/wx/queryPartNo",{part_no:part_no},function(data){
+            		if(data.length > 0){
+            			$('#dataValue').text("");
+            			$('#dataValue').css("text-align","left");
+            			for(var i = 0 ;i<data.length;i++){
+            				$('#dataValue').append('<a id="part_no_a" class="weui-cell weui-cell_access" href="/wx/showImg?part_no='+data[i].PART_NO+'&total='+data[i].TOTAL+'&totalQuantity='+data[i].TOTALQUANTITY+'">'
+                	            +'<div class="weui-cell__hd"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=" alt="" style="width:20px;margin-right:5px;display:block"></div>'
+                	            +'<div class="weui-cell__bd">'
+                	            +'<p id="part_no_show">'+data[i].PART_NO+'</p>'
+                	            +'</div>'
+                	            +'<div class="weui-cell__ft">库存(框)'+data[i].TOTAL+'</div>'
+                	            +'</a>'); 
+            			}
+            		}else if(data.length == 0){
+            			$('#dataValue').html("<div class='weui-cell' ><center>无数据</center></div>");
+            		}
+            		$("#loadingToast").css("display","none");
+            	});
+        	};
+        	
+        	
             var $tooltips = $('.js_tooltips');
             $('#queryPartNo').on('click', function(){
                 if($('#part_no').val().length>0){
-                	var part_no=$('#part_no').val();
-                	$.post("/wx/queryPartNo",{part_no:part_no},function(data){
-                		if(data){
-                			//var list=data;
-                			var part_no=null;
-                			var total=null;
-                			for(var i=0 ;i<data.length;i++){
-                				$('#dataValue').append('<a id="part_no_a" class="weui-cell weui-cell_access" href="/wx/showImg?part_no='+data[i].PART_NO+'&total='+data[i].TOTAL+'">'
-                    	            +'<div class="weui-cell__hd"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=" alt="" style="width:20px;margin-right:5px;display:block"></div>'
-                    	            +'<div class="weui-cell__bd">'
-                    	            +'<p id="part_no_show">'+data[i].PART_NO+'</p>'
-                    	            +'</div>'
-                    	            +'<div class="weui-cell__ft">库存'+data[i].TOTAL+'</div>'
-                    	            +'</a>'); 
-                					part_no=data[i].PART_NO;
-                					total=data[i].TOTAL;
-                			} 
-
-           					  /* $("#part_no_a").click(function(){
-           		            	$.post("/wx/showImg",{part_no:part_no,total:total},function(data){
-           		            		
-           		            	});
-           		            });   */  
-                		}
-                	});
-                	
-                	
-                    console.log('click 查询按钮...')
+                	var part_no = $('#part_no').val();
+                	localStorage.setItem('part_no', part_no);
+                	searchData($('#part_no').val());
                 }else{
-                    if ($tooltips.css('display') != 'none') return;
-
-                    // toptips的fixed, 如果有`animation`, `position: fixed`不生效
-                    $('.page.cell').removeClass('slideIn');
-
-                    $tooltips.css('display', 'block');
+                   $('#toast').css("display","block");
+                   $('.msg').text("请输入Part No");
                     setTimeout(function () {
-                        $tooltips.css('display', 'none');
+                    	$('#toast').css("display","none");
                     }, 2000);
                 }
             });
@@ -126,12 +146,14 @@
                     success: function (res) {
                         var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果 */
                         var part_no = result.split('(')[4].substring(0,result.split('(')[4].length-1);
-
+                        //
+                        localStorage.setItem.set('part_no', part_no);
                         $.post("/wx/queryPartNo",{part_no:part_no},function(data){
                     		if(data){
                     			var part_no = null;
                     			var total = null;
                     			for(var i = 0 ;i<data.length;i++){
+                    				$("#part_no").text(part_no);
                     				$('#dataValue').append('<a id="part_no_a" class="weui-cell weui-cell_access" href="/wx/showImg?part_no='+data[i].PART_NO+'&total='+data[i].TOTAL+'">'
                         	            +'<div class="weui-cell__hd"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAMAAABgZ9sFAAAAVFBMVEXx8fHMzMzr6+vn5+fv7+/t7e3d3d2+vr7W1tbHx8eysrKdnZ3p6enk5OTR0dG7u7u3t7ejo6PY2Njh4eHf39/T09PExMSvr6+goKCqqqqnp6e4uLgcLY/OAAAAnklEQVRIx+3RSRLDIAxE0QYhAbGZPNu5/z0zrXHiqiz5W72FqhqtVuuXAl3iOV7iPV/iSsAqZa9BS7YOmMXnNNX4TWGxRMn3R6SxRNgy0bzXOW8EBO8SAClsPdB3psqlvG+Lw7ONXg/pTld52BjgSSkA3PV2OOemjIDcZQWgVvONw60q7sIpR38EnHPSMDQ4MjDjLPozhAkGrVbr/z0ANjAF4AcbXmYAAAAASUVORK5CYII=" alt="" style="width:20px;margin-right:5px;display:block"></div>'
                         	            +'<div class="weui-cell__bd">'
@@ -145,6 +167,14 @@
                     }
                 });
             });
+                        
+            var loc_part_no = localStorage.getItem('part_no');
+        	if(loc_part_no != '' || loc_part_no != null){
+        		$('#part_no').val(loc_part_no);
+        		searchData($('#part_no').val());
+        	}
+       
         });
-   
+                 
+       
   </script>
