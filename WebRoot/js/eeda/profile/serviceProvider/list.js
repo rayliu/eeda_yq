@@ -63,6 +63,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                                  str += "生产商<br>";
                              }else if(val == "traders"){
                                  str += "贸易商<br>";
+                             }else if(val == "port_supervision"){
+                            	 str +="港口监管<br>";
+                             }else if(val == "wharf"){
+                            	 str +="码头";
                              }
                          });
                          
