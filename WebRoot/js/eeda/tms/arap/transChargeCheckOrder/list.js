@@ -43,14 +43,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	                      return "<a href='/transJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
 	                  }
 	            },
-	            { "data": "CREATE_STAMP", "width": "70px"},
+	            
 	            { "data": "CONTAINER_NO", "width": "60px"},
-	            { "data": "CABINET_TYPE", "width": "60px"},
+	            { "data": "CABINET_TYPE", "width": "40px"},
 	            { "data": "SO_NO", "width": "60px"},
-              	{ "data": "CABINET_DATE", 
+              	{ "data": "CABINET_DATE", "width": "70px", 
             		  render: function(data){
-            			  if(data)
-            				  return data.substr(0,10);
+            			  if(data){
+            				  return "<span style='width:70px'>"+data.substr(0,10)+"</span>";
+            			  } 
             			  return '';
             		  }
               	},
@@ -65,7 +66,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	                  }
 	            },
 	            { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
-	            { "data": "EXCHANGE_RATE", "width": "60px" },
+	            { "data": "EXCHANGE_RATE", "width": "70px" },
 	            { "data": "AFTER_TOTAL", "width": "80px" ,'class':'AFTER_TOTAL',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='cost'){
@@ -74,7 +75,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	                  }
 	            },	
-	            { "data": "REMARK", "width": "80px"}
+	            { "data": "REMARK", "width": "80px"},
+	            { "data": "CREATE_STAMP", "width": "70px"}
 	          ]
 	      });
 		
@@ -270,13 +272,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	 			 cnames.push(sp_name);
 	 			 f = true;
 	 		  }
-	 		  if(cnames[0]!=sp_name){
-	 			  flag++;
-	 		  }
+//	 		  if(cnames[0]!=sp_name){
+//	 			  flag++;
+//	 		  }
 	 	    })
     	 if(this.checked==true){
 		 	    if(flag>0){
-		 	    	$.scojs_message('不能全选，包含不同结算公司', $.scojs_message.TYPE_ERROR);
+		 	    	$.scojs_message('全选不能包含不同结算公司', $.scojs_message.TYPE_ERROR);
 		 	    	$(this).prop('checked',false);
 		 	    	if(f==true){
 		 	    		cnames=[];

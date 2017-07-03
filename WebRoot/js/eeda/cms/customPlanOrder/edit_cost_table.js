@@ -115,8 +115,8 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
                 	if(data&&full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" disabled><i class="fa fa-trash-o"></i> 删除</button></button>&nbsp';
+                		str+= '<button type="button" class="cancelCostConfirm btn table_btn btn-danger btn-xs">取消确认</button> '; 
                 		}
                 	else if(data){
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>&nbsp';
@@ -581,6 +581,24 @@ $(document).ready(function() {
         }
         return cargo_items_array;
     };
+    
+    
+    //费用明细取消确认按钮动作
+    $("#cost_table").on('click', '.cancelCostConfirm', function(){
+    	var id = $(this).parent().parent().parent().attr('id');
+    	$.post('/customPlanOrder/feeCancelConfirm',{id:id},function(data){
+    		if(data.BILL_FLAG == 'Y'){
+    			$.scojs_message('该单据已生成对账单，不能取消确认', $.scojs_message.TYPE_ERROR);
+    		}
+    		else{
+	    		var order_id = $('#order_id').val();
+	    		salesOrder.refleshCostTable(order_id); 
+	    		$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
+    		}
+    	},'json').fail(function() {
+            $.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
+       });
+    });
     
 
     
