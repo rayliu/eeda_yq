@@ -50,20 +50,22 @@ import controllers.IndexController;
 import controllers.app.AppControllerForMobile;
 import controllers.bizadmin.BizAdminController;
 import controllers.bizadmin.account.AccountController;
-import controllers.bizadmin.ad.AdController;
 import controllers.eeda.LocationController;
-import controllers.eeda.ServiceProviderController;
+import controllers.webadmin.WebAdminController;
+import controllers.webadmin.ad.AdController;
 import controllers.webadmin.ad.CuController;
 import controllers.webadmin.ad.HuiController;
 import controllers.webadmin.ad.TaoController;
 import controllers.webadmin.biz.BannerApplicationController;
 import controllers.webadmin.biz.InviteCodeController;
 import controllers.webadmin.biz.MobilePushController;
+import controllers.webadmin.biz.NoticeController;
 import controllers.webadmin.biz.ReminderController;
 import controllers.webadmin.biz.SpController;
 import controllers.webadmin.data.BestCaseController;
 import controllers.webadmin.data.CaseController;
 import controllers.webadmin.data.ProductController;
+import controllers.webadmin.data.TaoManageController;
 import controllers.webadmin.data.VideoController;
 import controllers.webadmin.msg.DashBoardController;
 import controllers.webadmin.user.AskController;
@@ -151,7 +153,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/BusinessAdmin/video", controllers.bizadmin.video.VideoController.class);
 	    
 	    //总管理的后台
-	    //me.add("/WebAdmin", WebAdminController.class);
+	    me.add("/WebAdmin", WebAdminController.class);
         me.add("/WebAdmin/dashBoard", DashBoardController.class);
         me.add("/WebAdmin/user", UserController.class);
         me.add("/WebAdmin/user/quotation", QuotationController.class);
@@ -162,15 +164,15 @@ public class EedaConfig extends JFinalConfig {
         me.add("/WebAdmin/biz/reminder", ReminderController.class);
         me.add("/WebAdmin/biz/bannerApplication", BannerApplicationController.class);
         me.add("/WebAdmin/biz/mobilePush", MobilePushController.class);
-        //me.add("/WebAdmin/biz/notice", NoticeController.class);
+        me.add("/WebAdmin/biz/notice", NoticeController.class);
         me.add("/WebAdmin/biz/inviteCode", InviteCodeController.class);
         
-        //me.add("/WebAdmin/ad", AdController.class);
+        me.add("/WebAdmin/ad", AdController.class);
         me.add("/WebAdmin/ad/tao", TaoController.class);
         me.add("/WebAdmin/ad/cu", CuController.class);
         me.add("/WebAdmin/ad/hui", HuiController.class);
         
-        //me.add("/WebAdmin/tao_manage", TaoManageController.class);
+        me.add("/WebAdmin/tao_manage", TaoManageController.class);
         me.add("/WebAdmin/tao_manage/product", ProductController.class);
         me.add("/WebAdmin/tao_manage/video", VideoController.class);
         me.add("/WebAdmin/tao_manage/case", CaseController.class);

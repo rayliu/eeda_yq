@@ -1,0 +1,22 @@
+<%layout("/WebAdmin/layout.html"){%>
+    <div class="pageheader notab overhide">
+      <!--修改公告-->
+      <div class="mt10 bdgray">
+        <h4>修改公告</h4>
+        <div class="mt10">
+          <textarea class="txtarea"></textarea>
+        </div>
+        <div class="mt10">
+          <input class="modifibtn" type="button" value="确定/修改" />
+        </div>
+      </div>
+      <!--发送通知-->
+    </div>
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['app/msgBoard/list']);
+    });
+</script>

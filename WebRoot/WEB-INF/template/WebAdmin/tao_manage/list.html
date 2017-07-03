@@ -1,0 +1,17 @@
+<%layout("/WebAdmin/layout.html"){%>
+    
+    <div class="pageheader notab overhide">
+      <div class="baseinfo-list">
+            <div class="adm-wrap"><span><a href="/WebAdmin/tao_manage/product"><img src="/images/webAdmin/cp.png" /></a></span><br /><a href="/WebAdmin/tao_manage/product">产品列表</a></div>
+            <div class="adm-wrap"><span><a href="/WebAdmin/tao_manage/video"><img src="/images/webAdmin/vedio.png" /></a></span><br /><a href="/WebAdmin/tao_manage/video">视频列表</a></div>
+            <div class="adm-wrap"><span><a href="/WebAdmin/tao_manage/case"><img src="/images/webAdmin/case.png" /></a></span><br /><a href="/WebAdmin/tao_manage/case">案例列表</a></div>
+        </div>
+    </div>
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['app/msgBoard/list']);
+    });
+</script>

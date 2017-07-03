@@ -1,0 +1,17 @@
+<%layout("/WebAdmin/layout.html"){%>
+    <div class="pageheader notab overhide">
+        
+        <div class="baseinfo-list">
+            <div class="adm-wrap"><span><a href="/WebAdmin/ad/tao"><img src="/images/webAdmin/tao.png" /></a></span><br /><a href="/WebAdmin/ad/tao">淘婚品广告管理</a></div>
+            <div class="adm-wrap"><span><a href="/WebAdmin/ad/cu"><img src="/images/webAdmin/cu.png" /></a></span><br /><a href="/WebAdmin/ad/cu">“促”广告管理</a></div>
+            <div class="adm-wrap"><span><a href="/WebAdmin/ad/hui"><img src="/images/webAdmin/hui.png" /></a></span><br /><a href="/WebAdmin/ad/hui">"惠"广告管理</a></div>
+      </div>
+    </div>
+
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['app/msgBoard/list']);
+    });
+</script>
