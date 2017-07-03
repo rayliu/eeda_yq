@@ -14,6 +14,7 @@ import java.util.Map;
 import models.Office;
 import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
+import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.cms.CustomPlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.tr.tradeJoborder.TradeJobOrder;
@@ -856,6 +857,21 @@ public class CustomPlanOrderController extends Controller {
 		String id = getPara("id");
 		Db.update("update custom_plan_order_arap set audit_flag = 'Y' where id = ?", id);
 		renderJson("{\"result\":true}");
+	 }
+    //取消费用明细确认
+    @Before(Tx.class)
+    public void feeCancelConfirm(){
+		String id = getPara("id");
+		if (id != null) {
+			CustomPlanOrderArap cjoa = CustomPlanOrderArap.dao.findFirst("select * from custom_plan_order_arap where id = ?",id);
+        	if( cjoa.get("audit_flag").equals("Y")&&cjoa.get("bill_flag").equals("N")){
+        		cjoa.set("audit_flag", "N");
+        	}
+        	cjoa.update();
+        }
+		//Db.update("update job_order_arap set audit_flag = 'Y' where id = ?", id);
+		Record re = Db.findFirst("select * from custom_plan_order_arap where id = ?",id);
+		renderJson(re);
 	 }
     
   //删除工作单据，把offfice_ID改成开发账号offfice_ID
