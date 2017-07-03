@@ -1,7 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '应付明细查询 | '+document.title;
+    	document.title = '应付费用明细确认 | '+document.title;
+    	$('#breadcrumb_li').text('应付费用明细确认 ');
 
     	$('#menu_charge').addClass('active').find('ul').addClass('in');
 
@@ -28,17 +29,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 			            	}
 						}
 					},
-					{ "data": "AUDIT_FLAG", "width": "60px",
-					"render": function ( data, type, full, meta ) {
-						if(data != 'Y')
-							return '未确认';
-						else 
-							return '已确认';
-					}
+					{ "data": "AUDIT_FLAG", "width": "50px",
+						"render": function ( data, type, full, meta ) {
+							if(data != 'Y')
+								return '未确认';
+							else 
+								return '已确认';
+						}
 					},
-					{ "data": "CREATE_STAMP", "width": "100px"},
+					{ "data": "DATE_CUSTOM", "width": "60px",
+						"render":function(data,type,full,meta){
+							if(!data){
+								return '';
+							}
+							return data.substring(0,10);
+						}
+					},	
 					{ "data": "JOB_TYPE", "width": "60px"},
-					{ "data": "SP_NAME", "width": "60px"},
+					{ "data": "SP_NAME", "width": "100px"},
 					{ "data": "CHARGE_NAME", "width": "100px"},
 					{ "data": "PRICE", "width": "60px"},
 					{ "data": "AMOUNT", "width": "60px"},
