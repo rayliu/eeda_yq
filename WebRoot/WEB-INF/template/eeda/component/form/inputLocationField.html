@@ -3,19 +3,10 @@
 	<div class="form-group">
 	    <input id="${id}_province" type="text" name="${id}_province" field_type='list' value="" style="display:none;"/>
 		<input id="${id}" type="text" name="${id}" field_type='list' value="${value}" style="display:none;"/>
-		<label 
-			<%  var v=vertical!false;
-				if(!v){%>
-				class="search-label"
-			<%}%>
-			>${label}</label>
-		<input type="text" class="form-control 
-		<% if(!v){%>
-			search-control
-		<%}%>
-		" 
-		id="${id}_INPUT" name="${id}_INPUT" 
-		placeholder="请选择城市"  value="${display_value}">
+		<div class="textin">
+		<input type="text" class="form-control" id="${id}_input" name="${id}_input" 
+		placeholder=" 请选择城市"  value="${display_value}">
+		</div>
 		<div id="${id}_list" class="area-list pull-right dropdown-menu default dropdown-scroll" tabindex="-1"  
 		style="top: 35%; left: 2%; display: none;">
 			<div class="area-list-title">
@@ -35,13 +26,12 @@
 
 
 <script>
-
+requirejs(['/js/eeda/eeda-common.js'], function (common) {
 	$(document).ready(function() {
-		
 		var spList =$("#${id}_list");
 		var area_list_title = $("#${id}_list .area-list-title input");
 		var spListContent =$("#${id}_list .area-list-content");
-		var inputField = $('#${id}_INPUT');
+		var inputField = $('#${id}_input');
 		var hiddenField = $('#${id}');
 		var hiddenProvinceField = $('#${id}_province');//这里是方便用户选错时，回选上级
 		
@@ -102,12 +92,14 @@
 	    	var code = $(this).attr('code');
 	    	var name = $(this).attr('name');
 	    	var oldValue = inputField.val();
+	    	var oldCode = hiddenField.val();
 	    	if(dataLevel == 1){
 	    		hiddenProvinceField.val(code);
 	    	}
 	    	
 	    	if(dataLevel>1){
 	    		name = oldValue+'-'+name;
+	    		code = oldCode+'-'+code;
 	    	}
 	    	inputField.val(name);
 	    	hiddenField.val(code);
@@ -116,7 +108,7 @@
 	    		spList.hide();
 	    		return;
 	    	}
-	    	searchLocation(dataLevel, code);
+	    	searchLocation(dataLevel, $(this).attr('code'));
 
 	    	spList.find('input').removeClass('this');
 	    	spList.find('input[data-level='+dataLevel+']').addClass('this');
@@ -140,6 +132,6 @@
 			return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
 		});
 
-	
+	});
 	});
 </script>
