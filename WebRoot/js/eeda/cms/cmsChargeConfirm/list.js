@@ -1,7 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '应收明细查询 | '+document.title;
+    	document.title = '应收费用明细确认 | '+document.title;
+    	$('#breadcrumb_li').text('应收费用明细确认 ');
 
     	$('#menu_charge').addClass('active').find('ul').addClass('in');
 
@@ -19,7 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 					    		return '<input type="checkbox" disabled>';
 					    }
 					},
-					{ "data": "ORDER_NO", "width": "100px",
+					{ "data": "ORDER_NO", "width": "70px",
 						"render": function ( data, type, full, meta ) {
 			            	if(data){
 			            		return '<a href="/customPlanOrder/edit?id='+full.CPOBID+'" target="_blank">'+data+'</a>';
@@ -28,7 +29,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 			            	}
 						}
 					},
-					{ "data": "AUDIT_FLAG", "width": "60px",
+					{ "data": "AUDIT_FLAG", "width": "50px",
 						"render": function ( data, type, full, meta ) {
 							if(data != 'Y')
 								return '未确认';
@@ -36,7 +37,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 								return '已确认';
 						}
 					},
-					{ "data": "DATE_CUSTOM", "width": "100px",
+					{ "data": "DATE_CUSTOM", "width": "60px",
 						"render":function(data,type,full,meta){
 							if(!data){
 								return '';
@@ -45,11 +46,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 						}
 					},					
 					{ "data": "JOB_TYPE", "width": "60px"},
-					{ "data": "SP_NAME", "width": "60px"},
+					{ "data": "SP_NAME", "width": "100px"},
 					{ "data": "CHARGE_NAME", "width": "100px"},
-					{ "data": "PRICE", "width": "60px"},
-					{ "data": "AMOUNT", "width": "60px"},
-					{ "data": "CURRENCY_NAME","width": "60px"},
+					{ "data": "PRICE", "width": "50px"},
+					{ "data": "AMOUNT", "width": "50px"},
+					{ "data": "CURRENCY_NAME","width": "40px"},
 					{ "data": "TOTAL_AMOUNT", "width": "60px"},
 					{ "data": "REMARK", "width": "60px"},
 					{ "data": "CREATE_STAMP", "width": "60px"}
@@ -80,17 +81,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 
       var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
-          var customer = $("#customer").val(); 
-          var sp = $("#sp").val(); 
-          var start_date = $("#create_stamp_begin_time").val();
-          var end_date = $("#create_stamp_end_time").val();
+//          var customer = $("#customer").val(); 
+          var sp_name = $("#sp_input").val().trim();
+          var date_custom_begin_time = $("#date_custom_begin_time").val();
+          var date_custom_end_time = $("#date_custom_end_time").val();
+          var create_stamp_begin_time = $("#create_stamp_begin_time").val();
+          var create_stamp_end_time = $("#create_stamp_end_time").val();
           var audit_flag = $("#audit_flag").val();
        
           var url = "/cmsChargeConfirm/list?order_no="+order_no
-			           +"&customer_id="+customer
-			           +"&sp_id="+sp
-		               +"&create_stamp_begin_time="+start_date
-		               +"&create_stamp_end_time="+end_date
+//			           +"&customer_id="+customer
+			           +"&sp_name="+sp_name
+			           +"&date_custom_begin_time="+date_custom_begin_time
+		               +"&date_custom_end_time="+date_custom_end_time
+		               +"&create_stamp_begin_time="+create_stamp_begin_time
+		               +"&create_stamp_end_time="+create_stamp_end_time
           			   +"&audit_flag_notequals="+audit_flag;
 
           dataTable.ajax.url(url).load();

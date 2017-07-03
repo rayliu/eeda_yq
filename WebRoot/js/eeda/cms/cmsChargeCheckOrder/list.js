@@ -32,23 +32,30 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			        	return strcheck;
 				    }
 			      },
-	            { "data": "ORDER_NO", "width": "100px",
+	            { "data": "ORDER_NO", "width": "80px",
 			    	  "render": function ( data, type, full, meta ) {
 	                      return "<a href='/customPlanOrder/edit?id="+full.ORDER_ID+"' target='_blank'>"+data+"</a>";
 	                  }
 	            },
-	            { "data": "DATE_CUSTOM", "width": "100px"},
-	            { "data": "TRACKING_NO", "width": "180px"},
+	            { "data": "DATE_CUSTOM", "width": "70px",
+	            	"render":function(data,type,full,meta){
+	            		if(!data){
+	            			return '';
+	            		}
+	            		return data.substring(0,10);
+	            	}
+	            },
+	            { "data": "TRACKING_NO", "width": "120px"},
 	            { "data": "ABBR_NAME", "width": "120px","class":"SP_NAME"},
-	            { "data": "FIN_NAME", "width": "200px"},
-	            { "data": "AMOUNT", "width": "80px"},
-	            { "data": "PRICE", "width": "80px",
+	            { "data": "FIN_NAME", "width": "100px"},
+	            { "data": "AMOUNT", "width": "60px"},
+	            { "data": "PRICE", "width": "60px",
 	            	"render": function ( data, type, full, meta ) {
 						return eeda.numFormat(parseFloat(data).toFixed(2),3);
 	            	}
 	        	},
-	            { "data": "CURRENCY_NAME", "width": "100px"},
-	            { "data": "TOTAL_AMOUNT", "width": "100px","class":"TOTAL_AMOUNT",
+	            { "data": "CURRENCY_NAME", "width": "60px"},
+	            { "data": "TOTAL_AMOUNT", "width": "60px","class":"TOTAL_AMOUNT",
 	            	"render": function ( data, type, full, meta ) {
 	            		if(data==null){
 	            			data = 0.0;
@@ -63,7 +70,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            	}
 	            },
 	            { "data": "REMARK", "width": "100px"},
-	            { "data": "CUSTOMS_BILLCODE", "width": "120px"},
+	            { "data": "CUSTOMS_BILLCODE", "width": "100px"},
 	            { "data": "CREATE_STAMP", "width": "100px"}
 	          ]
 	      });

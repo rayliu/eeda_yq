@@ -12,15 +12,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             serverSide: true, //不打开会出现排序不对
             ajax: "/cmsChargeCheckOrder/checkedList",
             columns:[	                
-					  { "data": "ORDER_NO", "width": "100px",
+					  { "data": "ORDER_NO", "width": "80px",
 			            	 "render": function ( data, type, full, meta ) {
 			           		  return "<a href='/cmsChargeCheckOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
 			           	  }
 			          },
 					  
-					  { "data": "STATUS", "width": "100px"},
-					  { "data": "SP_NAME", "width": "80px"}, 
-					  { "data": "CHECK_AMOUNT","width": "80px",
+					  { "data": "STATUS", "width": "60px"},
+					  { "data": "SP_NAME", "width": "120px"}, 
+					  { "data": "CHECK_AMOUNT","width": "60px",
 				    	 "render":function(data, type, full, meta){
 				    		 if(data<0){
 				    			 return '<span style="color:red">'+data+'</span>';
