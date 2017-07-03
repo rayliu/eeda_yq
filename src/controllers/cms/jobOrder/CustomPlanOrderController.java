@@ -652,7 +652,7 @@ public class CustomPlanOrderController extends Controller {
         			+" and cpo.delete_flag='N' )) A"
     		        + " where 1 =1 and (arapTotal>0 or auditFlag is NULL)";
         }else if("confirmFee".equals(confirmFee)){
-        	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.date_custom,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,cpo.booking_no,"
+        	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.date_custom,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.receive_sent_consignee_input receive_company_name,ul.c_name creator_name,cpo.booking_no,"
         			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order cpo WHERE cpo.custom_state = '放行' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+") AND cpo.delete_flag = 'N') pass,"
         			+"    (SELECT COUNT(0) total from custom_plan_order cpor "
 					+"		LEFT JOIN custom_plan_order_arap cpol on cpol.order_id = cpor.id "
@@ -677,7 +677,7 @@ public class CustomPlanOrderController extends Controller {
         			+" and cpo.delete_flag='N' )) A"
     		        + " where 1 =1 and (arapTotal=0 and auditFlag is not NULL)";
         }else{
-        	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.date_custom,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.production_and_sales_input application_company_name,ul.c_name creator_name,cpo.booking_no,"
+        	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.date_custom,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.receive_sent_consignee_input receive_company_name,ul.c_name creator_name,cpo.booking_no,"
         			+ " cpo.create_stamp,cpo.status,cpo.custom_state,(SELECT COUNT(0) from custom_plan_order cpo WHERE cpo.custom_state = '放行' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+") AND cpo.delete_flag = 'N') pass,"
         			+ " (SELECT COUNT(1) from custom_plan_order cpo WHERE cpo.custom_state = '查验' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+") AND cpo.delete_flag = 'N') checked,"
         			+ "	(SELECT COUNT(2) from custom_plan_order cpo WHERE cpo.custom_state = '异常待处理' and (cpo.office_id="+office_id+" or cpo.to_office_id ="+office_id+") AND cpo.delete_flag = 'N') handling,"

@@ -200,7 +200,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
                +"&status_equals="+status
                +"&booking_no_equals="+booking_no
                +"&custom_state_equals="+custom_state
-               +"&application_company_name="+customer_name
+               +"&receive_company_name="+customer_name
                +"&type_equals="+type
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
