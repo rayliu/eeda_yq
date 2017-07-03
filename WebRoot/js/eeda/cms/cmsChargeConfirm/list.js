@@ -28,28 +28,31 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 			            	}
 						}
 					},
-					{ "data": "CREATE_STAMP", "width": "100px"},
 					{ "data": "AUDIT_FLAG", "width": "60px",
-					"render": function ( data, type, full, meta ) {
-						if(data != 'Y')
-							return '未确认';
-						else 
-							return '已确认';
-					}
+						"render": function ( data, type, full, meta ) {
+							if(data != 'Y')
+								return '未确认';
+							else 
+								return '已确认';
+						}
 					},
-					{ "data": "CUSTOMER", "width": "100px"},
-					{ "data": "TYPE", "width": "60px"},
-					{ "data": "SP_NAME", "width": "100px"},
-					{ "data": "CHARGE_NAME", "width": "60px"},
+					{ "data": "DATE_CUSTOM", "width": "100px",
+						"render":function(data,type,full,meta){
+							if(!data){
+								return '';
+							}
+							return data.substring(0,10);
+						}
+					},					
+					{ "data": "JOB_TYPE", "width": "60px"},
+					{ "data": "SP_NAME", "width": "60px"},
+					{ "data": "CHARGE_NAME", "width": "100px"},
 					{ "data": "PRICE", "width": "60px"},
-					{ "data": "AMOUNT","width": "60px"},
-					{ "data": "UNIT_NAME", "width": "60px"},
+					{ "data": "AMOUNT", "width": "60px"},
+					{ "data": "CURRENCY_NAME","width": "60px"},
 					{ "data": "TOTAL_AMOUNT", "width": "60px"},
-					{ "data": "CURRENCY_NAME", "width": "60px"},
-					{ "data": "EXCHANGE_RATE", "width": "60px"},
-					{ "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
-					{ "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
-					{ "data": "REMARK", "width": "180px"},
+					{ "data": "REMARK", "width": "60px"},
+					{ "data": "CREATE_STAMP", "width": "60px"}
             ]
         });
         
