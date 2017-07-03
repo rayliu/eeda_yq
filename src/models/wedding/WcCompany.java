@@ -1,0 +1,1 @@
+package models.wedding;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class WcCompany extends Model<WcCompany> {	public static final WcCompany dao = new WcCompany();}
