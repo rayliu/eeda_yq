@@ -648,3 +648,8 @@ div.dataTables_wrapper div.dataTables_info {
     padding-top: 35px;
     border-bottom: solid 3px #607D8B;
 }
+
+.search_single>select{
+    display: inline;
+    margin-right: 5px;
+}

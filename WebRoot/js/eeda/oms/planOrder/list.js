@@ -5,6 +5,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
       $("#breadcrumb_li").text('计划订单列表');
 
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+
     	if(type != ""){
     		$('#menu_order').removeClass('active').find('ul').removeClass('in');
             $('#menu_todo_list').addClass('active').find('ul').addClass('in');
@@ -77,7 +85,32 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
       $('#searchBtn').click(function(){
           searchData(); 
-      })
+      });
+
+      $('#selected_field').change(function(event) {
+          var selectField = $('#selected_field').val();
+          if(selectField == 'order_no'){
+            $('#selected_field_value').show();
+            $('#status_list').hide();
+          }else if(selectField == 'status'){
+            $('#selected_field_value').hide();
+            $('#status_list').show();
+          }
+      });
+
+      $('#singleSearchBtn').click(function(){
+          var selectField = $('#selected_field').val();
+          var selectFieldValue = $('#selected_field_value').val();
+          if(selectField == 'order'){
+            selectFieldValue = $('#selected_field_value').val();
+          }else if(selectField == 'status'){
+            selectFieldValue = $('#status_list').val();
+          }
+
+          var url = "/planOrder/list?"+selectField+"="+selectFieldValue;
+
+          dataTable.ajax.url(url).load();
+      });
       
       if(type!=""){
     	  $('#orderTabs').css('display','none');
