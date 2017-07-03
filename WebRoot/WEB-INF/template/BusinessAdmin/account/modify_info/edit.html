@@ -2,8 +2,10 @@
         <div class="pageheader notab">
       <h1 class="pagetitle">修改公司资料</h1>
     </div>
+    <input type="hidden" id="order_id" name="order_id" value="${company.id!''}"/>
     <div class="pageheader notab">
      <div class="registered " id="login-content">
+     	<form id="orderForm">
           <dl>
             <dt>
               <div class="fm-label-wrap ">
@@ -12,7 +14,7 @@
             </dt>
             <dd>
               <div class="textin">
-                <input type="text" name="Contact" value="${company.contact_person!''}" />
+                <input type="text" id="contact_person" name="contact_person" value="${company.contact_person!''}" required/>
               </div>
             </dd>
           </dl>
@@ -24,43 +26,30 @@
             </dt>
             <dd class="fm-field" id="fm-login-password-wrap">
               <div class="textin">
-                <input type="text" name="Tel" value="${company.phone!''}" >
+                <input type="text" id="phone" name="phone" value="${company.phone!''}" >
               </div>
             </dd>
           </dl>
           <dl>
-            <dt class="fm-label">
-              <div class="fm-label-wrap ">
-                <label for="fm-login-password">店铺地址：</label>
+          	  <dt class="fm-label">
+	              <div class="fm-label-wrap">
+	                <label for="fm-login-password">店铺地址：</label>
+	              </div>
+              </dt>
+              <div class="row">
+                  <%include("/eeda/component/form/inputLocationField.html", 
+                  {
+                      id:'p_c_d', 
+                      label:'店铺地址', 
+                      value: p_c_d!'',
+                      display_value: p_c_d_name!''
+                  }){} %>
+                  <div class="textin" style="margin-left:90px;" >
+              	  	  <input type="text" id="address" name="address" value="${company.address!''}" placeholder=" 具体地址" >
+              	  </div>
               </div>
-            </dt>
-            <dd class="fm-field" id="fm-login-password-wrap">
-              <div class="textin">
-                <select name="select" class="uniformselect">
-                  <option value="">广东</option>
-                  <option value="">广东</option>
-                  <option value="">广东</option>
-                  <option value="">广东</option>
-                  <option value="">广东</option>
-                </select>
-                <select name="select" class="uniformselect">
-                  <option value="">珠海</option>
-                  <option value="">珠海</option>
-                  <option value="">珠海</option>
-                  <option value="">珠海</option>
-                  <option value="">珠海</option>
-                </select>
-                <select name="select" class="uniformselect">
-                  <option value="">香洲</option>
-                  <option value="">香洲</option>
-                  <option value="">香洲</option>
-                  <option value="">香洲</option>
-                  <option value="">香洲</option>
-                </select>
-                <input type="text" name="ShopAddress" value="${company.address!''}" >
-              </div>
-            </dd>
           </dl>
+          
           <dl>
             <dt class="fm-label">
               <div class="fm-label-wrap ">
@@ -69,7 +58,7 @@
             </dt>
             <dd class="fm-field" id="fm-login-password-wrap">
               <div class="textin">
-                <input type="text" name="ShopTel" value="${company.address_phone!''}" />
+                <input type="text" id="address_phone" name="address_phone" value="${company.address_phone!''}" />
               </div>
             </dd>
           </dl>
@@ -81,7 +70,7 @@
             </dt>
             <dd class="fm-field" id="fm-login-password-wrap">
               <div class="textin">
-                <input type="text" name="QQ" value="${company.qq!''}" />
+                <input type="text" id="qq" name="qq" value="${company.qq!''}" />
               </div>
             </dd>
           </dl>
@@ -93,33 +82,34 @@
             </dt>
             <dd class="fm-field" id="fm-login-password-wrap">
               <div class="textin">
-                <textarea class="fill-detail" name="About">${company.intro!''}</textarea>
+                <textarea class="fill-detail" id="intro" name="intro">${company.intro!''}</textarea>
               </div>
             </dd>
           </dl>
           <dl>
-            <dt class="fm-label">
-              <div class="fm-label-wrap ">
-                <label for="fm-login-password">公司Logo：</label>
+              <dt class="fm-label">
+              		<div class="fm-label-wrap ">
+                	<label for="fm-login-password">公司Logo：</label>
               </div>
             </dt>
             <dd class="fm-field" id="fm-login-password-wrap">
-              <div class="textin">
-                <input type="file" name="Logo" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
-                <span class="red">图片为JPG格式，小于1000kb</span> </div>
+                <div class="textin">
+	                <input type="file" name="logo" id="logo"  class="ehdel_upload" value="${company.logo!''}"/>
+	                <span class="red">图片为JPG格式，小于1000kb</span> 
+                </div>
             </dd>
           </dl>
           
           <div style="padding-left:10px; margin-top:10px;">
-            <input type="submit" class="stdbtn btn_blue" style="width:200px;" value="修改" />
+            <button  id="updateBtn" class="stdbtn btn_blue" style="width:200px;"/>修改</button>
           </div>
+          </form>
         </div>
     </div>
-
 
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-         requirejs(['app/msgBoard/list']);
+         requirejs(['/js/BusinessAdmin/account/modify_info/edit.js']);
     });
 </script>
