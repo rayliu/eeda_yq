@@ -53,17 +53,14 @@ public class CmsCostConfirmController extends Controller {
         }
      
         String sql = "select * from( "
-        		  +" select cpoa.*,cpo.order_no,cpo.id cpobid,cpo.create_stamp,cpo.carrier,p.company_name carrier_name,p1.company_name sp_name,f.name charge_name,u.name  unit_name,c.name currency_name  "
-        					+" 			  from custom_plan_order_arap cpoa  "
-        					+" 			  right join custom_plan_order cpo on cpo.id=cpoa.order_id  "
-        					+" 			  left join party p on p.id=3324 "
-        					+" 			  left join party p1 on p1.id=cpoa.sp_id  "
-        					+" 			  left join fin_item f on f.id=cpoa.charge_id  "
-        					+" 			  left join unit u on u.id=cpoa.unit_id  "
-        					+" 			  left join currency c on c.id=cpoa.currency_id  "
-        					+" 			  where cpoa.order_type!='charge' and (cpo.office_id="+office_id+ref_office+ ")"
-        					+" 			  and cpo.delete_flag = 'N'"
-        					+"			or (cpo.to_office_id ="+office_id+" and cpo.delete_flag='N' )"
+        		+"  select cpoa.*,cpo.order_no,cpo.id cpobid,cpo.create_stamp,p1.company_name sp_name,cpo.type job_type,f.name charge_name,"
+        		+"  cpo.date_custom,c.name currency_name  "
+				+" 	from custom_plan_order_arap cpoa  "
+				+" 	right join custom_plan_order cpo on cpo.id=cpoa.order_id  "
+				+" 	left join party p1 on p1.id=cpoa.sp_id  "
+				+" 	left join fin_item f on f.id=cpoa.charge_id  "
+				+" 	left join currency c on c.id=cpoa.currency_id  "
+				+" 	where cpoa.order_type ='cost' and (cpo.office_id="+office_id+ref_office+ ") and cpo.delete_flag = 'N'"				
 				+ " ) A where 1=1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
