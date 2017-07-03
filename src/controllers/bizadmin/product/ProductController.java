@@ -6,6 +6,7 @@ import java.util.Map;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -52,7 +53,35 @@ public class ProductController extends Controller {
         map.put("data", orderList);
         renderJson(map);
     }
+	
+	public void deleteProduct(){
+		String id = getPara("id");
+		boolean result = false;
+		if(StringUtils.isNotBlank(id)){
+			Db.update("delete from wc_product_pic where product_id = ?",id);
+			
+			Db.update("delete from wc_product where id = ?",id);
+			
+			result = true;
+		}
+		
+		renderJson(result);
+	}
 
+	public void setActive(){
+		String id = getPara("id");
+        String flag = getPara("flag");
+        boolean result = false;
+        if(StringUtils.isNotBlank(id)){
+        	Record rec = Db.findFirst("select * from wc_product where id = "+ id);
+        	rec.set("is_active", flag);
+        	Db.update("wc_product",rec);
+        	result = true;
+        }
+        renderJson(result);
+    }
+	
+	
 	public void edit(){
         String id = getPara("id");
         if(id == null){
