@@ -4,15 +4,16 @@
         </div>
         <div class="pageheader notab">
             <div class="registered " id="login-content">
+            	<form id="orderForm" autocomplete="off">
                 <dl>
-                    <dt>
+                    <dd>
                         <div class="fm-label-wrap ">
                             <label for="fm-login-id">原密码：</label>
                         </div>
-                    </dt>
+                    </dd>
                     <dd>
-                        <div class="textin">
-                            <input type="password" name="LoginPassOld" />
+                         <div class="textin">
+                            <input type="password" id="old_password" name="old_password"/>
                         </div>
                     </dd>
                 </dl>
@@ -24,7 +25,7 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="password" name="LoginPassNew" >
+                            <input type="password" id="password" name="password"/>
                         </div>
                     </dd>
                 </dl>
@@ -36,12 +37,13 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="password" name="LoginPassNewConfirm" >
+                            <input type="password" id="confirm_password" name="confirm_password"/>
                         </div>
                     </dd>
                 </dl>
+                </form>
                 <div style="padding-left:10px; margin-top:10px;">
-                    <input type="submit" class="stdbtn btn_blue" style="width:200px;" value="修 改" />
+                    <button id="updateBtn" class="stdbtn btn_blue" style="width:200px;"/>修改</button>
                 </div>
             </div>
         </div>
@@ -50,6 +52,6 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-         requirejs(['app/msgBoard/list']);
+    	 requirejs(['/js/BusinessAdmin/account/modify_pwd/edit.js']);
     });
 </script>
