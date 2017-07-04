@@ -246,13 +246,16 @@
 
 		<div class="tab-content">
                 <div class="tab-pane fade active in" id="itemDetail">
+                	<div class="table_btn_bar">
+			        	<button class="btn btn_blue" id="add_cost">添加明细</button> 
+			        </div><br/>
 						<%include("/eeda/component/form/detailTable.html", 
                             {
                                 id:'eeda-table', 
                                 style:'width:1500px',
-                               headers:['<input type="checkbox" id="allCheck">','工作单号','报关日期','提单号/船运单号','结算公司','费用名称','单价','数量',
+                               headers:['<input type="checkbox" id="allCheck">','操作','工作单号','报关日期','提单号/船运单号','结算公司','费用名称','单价','数量',
                                '币制','金额','备注','报关单号码','创建时间','order_id'],
-								field_list:['id','order_no','date_custom','tracking_no','abbr_name','fin_name',
+								field_list:['id','','order_no','date_custom','tracking_no','abbr_name','fin_name',
 								'amount','price','currency_name','total_amount','remark','customs_billcode','create_stamp','order_id'], 
 								value_list: order.itemList!item_list![] 
 							}){} %>
@@ -280,6 +283,65 @@
 		</div>
 	</div>
 </div>
+		<a id='cost_table_msg_btn' data-target='#cost_table_msg' data-toggle='modal' style='display:none'></a>
+		  <div class="modal fade" id="cost_table_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content">
+		            <div class="modal-body">
+						  <div class="row">
+		                        <div class="col-lg-4">
+		                            <%include("/eeda/component/form/inputSpField.html", 
+		                                {
+		                                    id:'que_sp', 
+		                                    label:'结算公司', 
+		                                    value: '',
+		                                    required: 'required'
+		                            }){} %>
+		                        </div>
+		                        <div class="col-lg-4">
+		                            <%include("/eeda/component/form/inputField.html", 
+		                                {   id: 'que_order_no', 
+		                                    label: '工作单号', 
+		                                    value: ''
+		                                }){}%>
+		                        </div>    
+		                  </div>    
+		                   <div class="row">
+		                        <div class="col-lg-4">
+			                         <%include("/eeda/component/form/inputDateQueryField.html", 
+					                         {   id:'que_date_custom', 
+					                             label:'报关日期'
+					                         }){} %>
+			                     </div>			                     
+			                     <div class="col-lg-4">
+		                                <%include("/eeda/component/form/inputCustomerField.html", 
+		                                     {   id: 'que_customer', 
+		                                         label: '客户', 
+		                                         value: ''
+		                                     }){}%>
+		                       </div>
+		                  </div>    
+					 		 <div class="form-group button-bar" >
+		                        <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+		                        <button id="resetBtn" class="btn btn_white btn-sm" type="button">清空条件</button>
+		                        &nbsp&nbsp<input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red">(红色为应付)</span>
+		                    </div>
+						  <br>
+						  <%include("/eeda/component/form/detailTable.html", 
+					      {
+					          id:'eeda_cost_table',
+					          style:'width:1200px',					          
+			                  headers:['<input type="checkbox" id="allCharge">','工作单号','报关日期','提单号/船运单号','结算公司','费用名称','单价','数量',
+	                                            '币制','金额','备注','报关单号码','创建时间']
+					      }){} %>
+					</div>
+		            <div class="modal-footer">
+		           		 <button id="add_cost_item" type="button" class="btn btn_green save" data-dismiss="modal">添加</button>
+		            	 <button type="button" class="btn  btn_white" data-dismiss="modal">返回</button>
+		           </div>
+		        </div>
+		    </div>
+		</div>
 <%}%>
 <script> 
     var itemOrder = {};

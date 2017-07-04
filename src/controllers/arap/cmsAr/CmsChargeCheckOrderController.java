@@ -15,6 +15,7 @@ import models.UserLogin;
 import models.eeda.cms.CustomArapChargeItem;
 import models.eeda.cms.CustomArapChargeOrder;
 import models.eeda.cms.CustomArapChargeReceiveItem;
+import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.profile.Currency;
 
 import org.apache.commons.lang.StringUtils;
@@ -123,7 +124,7 @@ public class CmsChargeCheckOrderController extends Controller {
         }
 
 		sql = "select B.* from(  "
-			+" SELECT cpo.order_no,cpoa.order_type ,cpoa.id arap_id,cpo.id order_id,cpo.date_custom,cpo.tracking_no,p.abbr abbr_name,f.name fin_name,cpoa.amount, cpoa.price, "
+			+" SELECT cpo.order_no,cpoa.order_type ,cpoa.id arap_id,cpo.id order_id,cpo.date_custom,cpo.tracking_no,p.abbr sp_name,f.name fin_name,cpoa.amount, cpoa.price, "
 			 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 			 +" from custom_plan_order_arap cpoa "
 			 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
@@ -317,23 +318,23 @@ public class CmsChargeCheckOrderController extends Controller {
 		renderJson(exchangeTotalMap);
 	}
     
+    @Before(Tx.class)
     private Map<String, Double> updateExchangeTotal(String chargeOrderId) {
-        String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
-        +"       ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount "
-        +"       from  custom_plan_order_arap joa "
-        +"       LEFT JOIN currency cur ON cur.id = joa.currency_id"
-        +"       LEFT JOIN currency cur1 ON cur1.id = joa.exchange_currency_id"
-        +"       where joa.id in (select aci.ref_order_id from custom_arap_charge_item aci where aci.custom_charge_order_id="+chargeOrderId+")";
+        String sql="select cpoa.order_type,  cur.NAME exchange_currency_name, "
+        +"       ifnull(cpoa.exchange_total_amount, cpoa.total_amount) exchange_total_amount "
+        +"       from  custom_plan_order_arap cpoa "
+        +"       LEFT JOIN currency cur ON cur.id = cpoa.currency_id"
+        +"       where cpoa.id in (select aci.ref_order_id from custom_arap_charge_item aci where aci.custom_charge_order_id="+chargeOrderId+")";
 		
 		Map<String, Double> exchangeTotalMap = new HashMap<String, Double>();
-		exchangeTotalMap.put("CNY", 0d);
-		exchangeTotalMap.put("USD", 0d);
-		exchangeTotalMap.put("HKD", 0d);
-		exchangeTotalMap.put("JPY", 0d);
+		exchangeTotalMap.put("total_amount", 0d);
+//		exchangeTotalMap.put("USD", 0d);
+//		exchangeTotalMap.put("HKD", 0d);
+//		exchangeTotalMap.put("JPY", 0d);
 		
 		List<Record> resultList= Db.find(sql);
 		for (Record rec : resultList) {
-            String name = rec.get("exchange_currency_name");
+            String name = "total_amount";
             String type = rec.get("order_type");
             Double exchange_amount = exchangeTotalMap.get(name);
             if(exchangeTotalMap.get(name)==null){
@@ -416,8 +417,8 @@ public class CmsChargeCheckOrderController extends Controller {
 		
 		//设置y，已生成对账单o
 		String itemList=caco.get("ref_order_id");
-		String sql="UPDATE custom_plan_order_arap joa set billConfirm_flag='Y' "
-					+"where joa.id in (select aci.ref_order_id FROM custom_arap_charge_item aci where custom_charge_order_id="+id+" )";
+		String sql="UPDATE custom_plan_order_arap cpoa set billConfirm_flag='Y' "
+					+"where cpoa.id in (select aci.ref_order_id FROM custom_arap_charge_item aci where custom_charge_order_id="+id+" )";
 		Db.update(sql);
 				
 		Record r = caco.toRecord();
@@ -436,7 +437,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		if(StringUtils.isNotEmpty(exchange_currency)){
 			String sql2="select id from currency where currency.name='"+exchange_currency+"'";
 			List<Record> re=Db.find(sql2);
-			query_exchange_currency=" and joa. exchange_currency_id="+re.get(0).get("id");
+			query_exchange_currency=" and cpoa. exchange_currency_id="+re.get(0).get("id");
 		}
 		if(StringUtils.isNotEmpty(fin_name)){
 			query_fin_name=" and fi.id="+fin_name;
@@ -462,25 +463,25 @@ public class CmsChargeCheckOrderController extends Controller {
 						+" 							 ORDER BY aco.order_no, cpo.order_no";
 				
 			}else{
-				sql = "  select joa.*,aco.order_no check_order_no, jo.order_no,jo.customs_billcode , "
+				sql = "  select cpoa.*,aco.order_no check_order_no, jo.order_no,jo.customs_billcode , "
 						+" jo.create_stamp,jo.carrier customer_id,jo.type,  "
 						+" 							 p.abbr sp_name,p1.abbr customer_name, "
 						+" 							  fi.name fin_name, "
 						+" 							 cur.name currency_name "
 						+" 							 from custom_plan_order jo "
-						+" 							 left join custom_plan_order_arap joa on jo.id=joa.order_id "
-						+" 							 left join fin_item fi on joa.charge_id = fi.id "
-						+" 							 left join custom_plan_order_shipping_item josi on josi.order_id=joa.order_id "
-						+" 							 left join party p on p.id=joa.sp_id "
+						+" 							 left join custom_plan_order_arap cpoa on jo.id=cpoa.order_id "
+						+" 							 left join fin_item fi on cpoa.charge_id = fi.id "
+						+" 							 left join custom_plan_order_shipping_item josi on josi.order_id=cpoa.order_id "
+						+" 							 left join party p on p.id=cpoa.sp_id "
 						+" 							 left join party p1 on p1.id=jo.carrier "
-						+" 							 left join currency cur on cur.id=joa.currency_id "
-						+" 							 left join custom_arap_charge_item aci on aci.ref_order_id = joa.id "
+						+" 							 left join currency cur on cur.id=cpoa.currency_id "
+						+" 							 left join custom_arap_charge_item aci on aci.ref_order_id = cpoa.id "
 						+" 						  left join custom_arap_charge_order aco on aco.id = aci.custom_charge_order_id "
-						+" 						  where joa.id = aci.ref_order_id and joa.create_flag='N' and aco.id in ("+order_ids+")"
+						+" 						  where cpoa.id = aci.ref_order_id and cpoa.create_flag='N' and aco.id in ("+order_ids+")"
 							+currency_code
 							+query_exchange_currency+query_fin_name
 							 +" and jo.delete_flag='N' "
-							 +" GROUP BY joa.id"
+							 +" GROUP BY cpoa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
 			}		
 			
@@ -539,17 +540,17 @@ public class CmsChargeCheckOrderController extends Controller {
                          
                          	//求每张应收对账单的总金额
                          String sql = "SELECT "
-                         		+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
-                 				+" where  joa.currency_id =3 and aci.custom_charge_order_id="+id
+                         		+" IFNULL((SELECT SUM(cpoa.total_amount) from  custom_plan_order_arap cpoa LEFT JOIN custom_arap_charge_item aci on cpoa.id = aci.ref_order_id"
+                 				+" where  cpoa.currency_id =3 and aci.custom_charge_order_id="+id
                  				+" ),0) cny,"
-                 				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
-                 				+" where  joa.currency_id =6 and aci.custom_charge_order_id="+id
+                 				+" IFNULL((SELECT SUM(cpoa.total_amount) from  custom_plan_order_arap cpoa LEFT JOIN custom_arap_charge_item aci on cpoa.id = aci.ref_order_id"
+                 				+" where  cpoa.currency_id =6 and aci.custom_charge_order_id="+id
                  				+" ),0) usd,"
-                 				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
-                 				+" where  joa.currency_id =8 and aci.custom_charge_order_id="+id
+                 				+" IFNULL((SELECT SUM(cpoa.total_amount) from  custom_plan_order_arap cpoa LEFT JOIN custom_arap_charge_item aci on cpoa.id = aci.ref_order_id"
+                 				+" where  cpoa.currency_id =8 and aci.custom_charge_order_id="+id
                  				+" ),0) jpy,"
-                 				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_charge_item aci on joa.id = aci.ref_order_id"
-                 				+" where  joa.currency_id =9 and aci.custom_charge_order_id="+id
+                 				+" IFNULL((SELECT SUM(cpoa.total_amount) from  custom_plan_order_arap cpoa LEFT JOIN custom_arap_charge_item aci on cpoa.id = aci.ref_order_id"
+                 				+" where  cpoa.currency_id =9 and aci.custom_charge_order_id="+id
                  				+" ),0) hkd ";
                             
                             Record r = Db.findFirst(sql);
@@ -617,5 +618,56 @@ public class CmsChargeCheckOrderController extends Controller {
         auditLog.set("invoice_order_id", application_id);
         auditLog.save();
     }
+	
+	@Before(Tx.class)
+	public void deleteChargeItem(){
+    	String chargeOrderId=getPara("order_id");
+    	String itemid=getPara("charge_itemid");
+    	if(itemid !=null&& chargeOrderId!=null){
+    		CustomPlanOrderArap cusPlanOrderArap = CustomPlanOrderArap.dao.findById(itemid);
+    		cusPlanOrderArap.set("bill_flag", "N");
+//    		cusPlanOrderArap.set("hedge_flag", "N");
+    		cusPlanOrderArap.update();
+             Db.deleteById("custom_arap_charge_item","ref_order_id,custom_charge_order_id",itemid,chargeOrderId);
+    	}
+    	//计算结算汇总
+    			Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);
+    			exchangeTotalMap.put("customChargeOrderId", Double.parseDouble(chargeOrderId));
+    	    	renderJson(exchangeTotalMap);
+    } 
+	
+	public void insertChargeItem(){
+    	String itemList= getPara("charge_itemlist");
+    	String[] itemArray =  itemList.split(",");
+    	String customChargeOrderId=getPara("order_id");
+    	CustomArapChargeItem aci = null;
+    	
+    	if(customChargeOrderId != null){
+    		for(String itemId:itemArray){
+    			aci = new CustomArapChargeItem();
+    			CustomPlanOrderArap cusPlanArap = CustomPlanOrderArap.dao.findById(itemId);
+
+    			cusPlanArap.set("bill_flag", "Y");
+	             String hedge_order_type = cusPlanArap.getStr("order_type");
+	             if("cost".equals(hedge_order_type)){
+	            	 cusPlanArap.set("hedge_flag", "Y");
+	               }
+	             cusPlanArap.update();
+				aci.set("ref_order_id", itemId);
+				aci.set("custom_charge_order_id", customChargeOrderId);
+				aci.save();
+//        	String sql="INSERT into arap_charge_item (ref_order_id,charge_order_id) "
+//        				+ "VALUES ("+itemId+","+order_id+")";
+    		}
+    		
+    	}
+    	//计算结算汇总
+		Map<String, Double> exchangeTotalMap = updateExchangeTotal(customChargeOrderId);
+		exchangeTotalMap.put("customChargeOrderId", Double.parseDouble(customChargeOrderId));
+		
+    	renderJson(exchangeTotalMap);
+
+    }
+	
    	
 }

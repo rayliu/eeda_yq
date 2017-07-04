@@ -40,7 +40,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            },
 	            { "data": "DATE_CUSTOM", "width": "100px"},
 	            { "data": "TRACKING_NO", "width": "180px"},
-	            { "data": "ABBR_NAME", "width": "120px","class":"SP_NAME"},
+	            { "data": "SP_NAME", "width": "120px","class":"SP_NAME"},
 	            { "data": "FIN_NAME", "width": "200px"},
 	            { "data": "AMOUNT", "width": "80px"},
 	            { "data": "PRICE", "width": "80px"},
@@ -158,7 +158,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 
            var url = "/cmsCostCheckOrder/list?checked="+checked
            	   +"&order_no="+order_no
-           	   +"&abbr_name="+sp_name
+           	   +"&sp_name="+sp_name
  	           +"&create_stamp_begin_time="+start_date
  	           +"&create_stamp_end_time="+end_date
  	           +"&date_custom_begin_time="+custom_start_date
