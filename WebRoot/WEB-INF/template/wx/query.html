@@ -18,10 +18,20 @@
 	<div class="page__bd page__bd_spacing">
         <div class="weui-media-box weui-media-box_text">
             <h4 class="weui-media-box__title">产品库存查询</h4>
-            <p class="weui-media-box__desc">可手工输入Part No查询，也可通过扫描二维码查询。</p>
         </div>
 
         <div class="weui-cells weui-cells_form">
+			<div class="weui-cell weui-cell_vcode">
+                <div class="weui-cell__hd">
+                    <label class="weui-label">Item No</label>
+                </div>
+                <div class="weui-cell__bd">
+                    <input id="item_no" class="weui-input" type="text" placeholder="请输入SP码">
+                </div>
+                <div class="weui-cell__ft">
+                     <button class="weui-vcode-btn" id="qr_btn">二维码</button>
+                </div>
+            </div>
             <div class="weui-cell weui-cell_vcode">
                 <div class="weui-cell__hd">
                     <label class="weui-label">Part No</label>
@@ -29,23 +39,19 @@
                 <div class="weui-cell__bd">
                     <input id="part_no" class="weui-input" type="text" placeholder="请输入Part No">
                 </div>
-
                 <div class="weui-cell__ft">
-                     <button class="weui-vcode-btn" id="qr_btn">二维码</button>
+                     <button class="weui-btn weui-btn_primary" id="clear_btn">清空</button>
                 </div>
             </div>
-            
         </div>
-         <div class="button-sp-area" style="margin-top: 20px;margin-bottom: 20px;">
+        <div class="button-sp-area" style="margin-top: 20px;margin-bottom: 20px;">
             <a href="javascript:;" class="weui-btn weui-btn_primary" id="queryPartNo">查询</a>
         </div>
 
         <div class="weui-cells" id="dataValue">
         </div>
-
-       
     </div>
- </div><!-- home -->
+ </div>
 
 <div id="loadingToast" class="weui_loading_toast" style="display:none;">
     <div class="weui_mask_transparent"></div>
@@ -82,97 +88,6 @@
     <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script src="https://res.wx.qq.com/open/libs/weuijs/1.0.0/weui.min.js"></script>
     <script src="/js/lib/weui-1.1.2/example/example.js"></script>
+    <script src="/js/eeda/wms/wx/edit.js?v=1.0"></script>
 </body>
 </html>
-<script type="text/javascript">
- wx.config({
-    debug: false,
-    appId:'${appId}',
-    timestamp: '${timestamp}',
-    nonceStr: '${nonceStr }',
-    signature: '${signature}',
-    jsApiList: [
-      'checkJsApi',
-      'scanQRCode'
-    ]
-  });
-
-
-        $(function(){
-        	var searchData = function(part_no){
-        		$("#loadingToast").css("display","block");
-            	var part_no = $('#part_no').val();
-            	
-            	$.post("/wx/queryPartNo",{part_no:part_no},function(data){
-            		if(data.length > 0){
-            			$('#dataValue').text("");
-            			$('#dataValue').css("text-align","left");
-            			for(var i = 0 ;i<data.length;i++){
-            				$('#dataValue').append('<a id="part_no_a" class="weui-cell weui-cell_access" href="/wx/showImg?part_no='+data[i].PART_NO+'&total='+data[i].TOTAL+'&totalQuantity='+data[i].TOTALQUANTITY+'">'
-                	            +'<div class="weui-cell__bd">'
-                	            +'<p id="part_no_show">'+data[i].PART_NO+'</p>'
-                	            +'</div>'
-                	            +'<div class="weui-cell__ft">库存(框)'+data[i].TOTAL+'</div>'
-                	            +'</a>'); 
-            			}
-            		}else if(data.length == 0){
-            			$('#dataValue').html("<div class='weui-cell' ><center>无数据</center></div>");
-            		}
-            		$("#loadingToast").css("display","none");
-            	});
-        	};
-        	
-        	
-            var $tooltips = $('.js_tooltips');
-            $('#queryPartNo').on('click', function(){
-                if($('#part_no').val().length>0){
-                	var part_no = $('#part_no').val();
-                	localStorage.setItem('part_no', part_no);
-                	searchData($('#part_no').val());
-                }else{
-                   $('#toast').css("display","block");
-                   $('.msg').text("请输入Part No");
-                    setTimeout(function () {
-                    	$('#toast').css("display","none");
-                    }, 2000);
-                }
-            });
-            
-            $('#qr_btn').on('click', function(){
-                 wx.scanQRCode({
-                    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-                    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
-                    success: function (res) {
-                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果 */
-                        var part_no = result.split('(')[4].substring(0,result.split('(')[4].length-1);
-                        //
-                        localStorage.setItem.set('part_no', part_no);
-                        $.post("/wx/queryPartNo",{part_no:part_no},function(data){
-                    		if(data){
-                    			var part_no = null;
-                    			var total = null;
-                    			for(var i = 0 ;i<data.length;i++){
-                    				$("#part_no").text(part_no);
-                    				$('#dataValue').append('<a id="part_no_a" class="weui-cell weui-cell_access" href="/wx/showImg?part_no='+data[i].PART_NO+'&total='+data[i].TOTAL+'">'
-                        	            +'<div class="weui-cell__bd">'
-                        	            +'<p id="part_no_show">'+data[i].PART_NO+'</p>'
-                        	            +'</div>'
-                        	            +'<div class="weui-cell__ft">库存'+data[i].TOTAL+'</div>'
-                        	            +'</a>'); 
-                    			} 
-                    		}
-                    	});
-                    }
-                });
-            });
-                        
-            var loc_part_no = localStorage.getItem('part_no');
-        	if(loc_part_no != '' && loc_part_no != null){
-        		$('#part_no').val(loc_part_no);
-        		searchData($('#part_no').val());
-        	}
-       
-        });
-                 
-       
-  </script>
