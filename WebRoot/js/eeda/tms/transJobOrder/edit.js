@@ -36,11 +36,9 @@ $(document).ready(function() {
 	        	take_wharf.attr('required',false);
 	        	take_wharf.parent().find('span').text('');
 	        	
-	        	
 	        	var back_wharf = $('#back_wharf_input');
 	        	back_wharf.attr('required',false);
 	        	back_wharf.parent().find('span').text('');
-	        	
 	        	
 	        	var head_carrier = $('#head_carrier_input');
 	        	head_carrier.attr('required',false);
@@ -68,6 +66,8 @@ $(document).ready(function() {
 	        	var take_wharf = $('#take_wharf_input');
 	        	take_wharf.attr('required',true);
 	        	take_wharf.parent().find('span').text('*');
+	        	
+	        	
 	        	
 	        	var back_wharf = $('#back_wharf_input');
 	        	back_wharf.attr('required',true);
