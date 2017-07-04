@@ -253,7 +253,7 @@ $(document).ready(function() {
            checked = 'Y';
           }
         var order_no = $("#que_order_no").val().trim(); 
-        var sp_name = $('#company_name').val();
+        var sp_name = $('#sp_name').val();
         $('#que_sp_input').val(sp_name);
         $('#que_sp_input').attr('disabled',true);
         if(!sp_name){

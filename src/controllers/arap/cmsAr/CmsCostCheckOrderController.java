@@ -305,6 +305,7 @@ public class CmsCostCheckOrderController extends Controller {
 		rec.set("creator_name", ul.getStr("c_name"));
 		rec.set("confirm_name", ul2==null?"":ul2.getStr("c_name"));
 		rec.set("company_name", sp==null?"":sp.getStr("company_name"));//
+		rec.set("sp_name", sp==null?"":sp.getStr("abbr"));//
 		rec.set("itemList", getItemList("",id));
 		rec.set("receive_itemList", getReceiveItemList(id));
 		if(rec2!=null){
