@@ -49,10 +49,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               },
               { "data": "CONTAINER_NO"}, 
               { "data": "SO_NO"}, 
-              { "data": "CABINET_DATE", 
+              { "data": "CABINET_DATE", //提柜、提货时间
             	  "render": function(data){
             		  if(data)
-            			  return data.substr(0,10);
+            			  return data;
             		  return '';
             	  }
               },

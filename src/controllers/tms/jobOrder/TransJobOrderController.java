@@ -792,9 +792,10 @@ public class TransJobOrderController extends Controller {
     @Before({EedaMenuInterceptor.class, Tx.class})
     public void edit() {
     	String id = getPara("id");
-    	String str=" select tjo.*,di.dock_name take_wharf_name ,di1.dock_name back_wharf_name from trans_job_order tjo "
+    	String str=" select tjo.*,di.dock_name take_wharf_name ,di1.dock_name back_wharf_name,di2.dock_name cross_border_travel_name from trans_job_order tjo "
 					+" LEFT JOIN dockinfo di on di.id=tjo.take_wharf "
 					+" LEFT JOIN dockinfo di1 on di1.id=tjo.back_wharf "
+					+" LEFT JOIN dockinfo di2 on di2.id=tjo.cross_border_travel "
 					+"  where tjo.id= "+id;
     	Record re= Db.find(str).get(0);
     	String str2="  select tjol.*,ci.car_no car_no_name,d1.dock_name take_address_name,d2.dock_name delivery_address_name,d3.dock_name loading_wharf1_name,d4.dock_name loading_wharf2_name,"
@@ -979,7 +980,7 @@ public class TransJobOrderController extends Controller {
         	sql=" ";        	
         }
         else{
-		         sql = "SELECT * from (select tjol.cabinet_date  cabinet_date,"
+		         sql = "SELECT * from (select cast(substring(tjol.cabinet_date, 1, 10) as char) cabinet_date,"
 		         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id"
 		         		+ " ,tjo.land_export_stamp sent_out_time,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
