@@ -1,16 +1,3 @@
-wx.config({
-    debug: false,
-    appId:'${appId}',
-    timestamp: '${timestamp}',
-    nonceStr: '${nonceStr }',
-    signature: '${signature}',
-    jsApiList: [
-      'checkJsApi',
-      'scanQRCode'
-    ]
-});
-
-
 $(function(){
 	var searchPartData = function(order_no,type){
 		$("#loadingToast").css("display","block");
