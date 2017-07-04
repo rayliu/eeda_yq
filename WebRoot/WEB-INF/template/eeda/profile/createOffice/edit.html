@@ -1,0 +1,148 @@
+<%layout("/eeda/layout.html"){%>
+
+	<div id="page-wrapper">
+		<div class="row">
+
+        <ul id="orderTabs" class="nav nav-tabs" >
+            <li class="active">
+                <a href="#basicDetail" data-toggle="tab">1 基本信息</a>
+            </li>
+            <li>
+                <a href="#officeType" data-toggle="tab">2 选择类型</a>
+            </li>
+        </ul>
+        
+        <div class="tab-content">
+          <div class="tab-pane fade active in" id="basicDetail">
+              
+                      <div class="panel panel-default">
+                          <div class="panel-body">
+                            <div class="row">
+                              <div class="col-lg-4">
+                                  <%include("/eeda/component/form/inputField.html", 
+                                      {   id:'office_name', 
+                                          label:'公司名称'
+                                      }){}%>
+                              </div>
+                              <div class="col-lg-4">
+                                  <%include("/eeda/component/form/inputField.html", 
+                                      {   id:'user', 
+                                          label:'登录名'
+                                      }){}%>
+                              </div>
+                              <div class="col-lg-4">
+                                  <%include("/eeda/component/form/inputField.html", 
+                                      {   id:'pwd', 
+                                          label:'密码'
+                                      }){}%>
+                              </div>
+                           </div>
+                            <div class="row">
+                              <div class="col-lg-4">
+                                  <%include("/eeda/component/form/selectField.html", 
+                                        {   id:'type', 
+                                            label:'公司类型', 
+                                            value: '',
+                                            value_list:[
+                                                {code:'forwarderCompany', value:'货代'},
+                                                {code:'customer', value:'客户'},
+                                                {code:'customCompany', value:'报关'},
+                                                {code:'landCompany', value:'运输'},
+                                                {code:'tradeCompany', value:'贸易'}
+                                            ]
+                                        }
+                                     ){} %>
+                              </div>
+                              
+                           </div>
+                            <div class="modal-footer button-bar">
+                                <button type="button" id="nextBtn" class="btn btn-primary">下一步</button>
+                                        
+                            </div>
+                          
+                      </div>
+                      
+             
+                   </div>
+          </div>
+          <div class="tab-pane fade in" id="officeType">
+              <div class="panel panel-default">
+                          <div class="panel-body">
+                                <div class="row">
+                              <div class="col-lg-4">
+                                  <input type="hidden" id="office_id" name="office_id">
+                                  <input type="hidden" id="role_id" name="role_id">
+                                  <div class="form-group">
+                                      <label class="search-label">公司</label>
+                                      <select id="office_list" name="office_list" class="${class!'form-control search-control'}" >
+                                      </select>
+                                  </div>
+                              </div>
+                              
+                           </div>
+                            <div class="modal-footer button-bar">
+                                <button type="button" id="saveBtn" class="btn btn-primary">保存</button>
+                                        
+                            </div>
+                          </div>
+              </div>
+          </div>
+        </div>
+			</div>
+		</div>
+	</div>
+	
+				
+	
+<%}%>
+
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        $(document).ready(function() {
+            $('#nextBtn').click(function(e){
+                var office_name=$('#office_name').val();
+                var user=$('#user').val();
+                var pwd=$('#office_name').val();
+                var type= $('#type').val();
+
+                $.post('/createOffice/step1', {office_name:office_name, user:user, pwd:pwd, type:type}, function(data){
+                    if(data){
+                      $('#office_id').val(data.OFFICE_ID);
+                      $('#role_id').val(data.ROLE_ID);
+
+                      $.each(data.OFFICE_LIST, function(index, item) {
+                        $('#office_list').append('<option value="'+item.ID+'">'+item.OFFICE_NAME+'</option>');
+                      });
+                    }
+
+                    $('#basicDetail').hide();
+                    $('#officeType').show();
+                    $('#orderTabs li:eq(0)').removeClass('active');
+                    $('#orderTabs li:eq(1)').addClass('active');
+                });
+
+                
+            });
+
+            $('#saveBtn').click(function(e){
+                var office_id=$('#office_id').val();
+                var role_id = $('#role_id').val();
+                var to_office_id=$('#office_list').val();
+
+                $.post('/createOffice/step2', {office_id:office_id, role_id:role_id, to_office_id:to_office_id}, function(data){
+                    if(data == 'OK')
+                      alert('保存成功!');
+                });
+
+                
+            });
+        });
+    },
+    function(error) {
+        console.error('报错了: ',error);
+        //error.requireModules : is Array of all failed modules
+        var failedId = error.requireModules && error.requireModules[0];
+        console.error(failedId);
+        console.error(error.message);
+    });
+</script>
