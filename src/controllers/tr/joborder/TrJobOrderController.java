@@ -1159,9 +1159,11 @@ public class TrJobOrderController extends Controller {
     	String id = getPara("id");
     	TradeJobOrder jobOrder = TradeJobOrder.dao.findById(id);
     	setAttr("order", jobOrder);
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
     	
     	//获取汇率日期信息
-    	Record r = Db.findFirst("SELECT * from ( SELECT min(to_stamp) min_stamp FROM currency_rate) A WHERE min_stamp > now()");
+    	Record r = Db.findFirst("SELECT * from ( SELECT min(to_stamp) min_stamp FROM currency_rate WHERE office_id = "+office_id+") A WHERE min_stamp > now()");
     	if(r==null){
     		setAttr("rateExpired", "Y");
     	}
@@ -1194,8 +1196,8 @@ public class TrJobOrderController extends Controller {
     	setAttr("party", party);
     	//工作单创建人
     	long creator = jobOrder.getLong("creator");
-    	UserLogin user = UserLogin.dao.findById(creator);
-    	setAttr("user", user);
+    	UserLogin creator_user = UserLogin.dao.findById(creator);
+    	setAttr("user", creator_user);
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
     	setAttr("login_id", LoginUserController.getLoginUserId(this));
