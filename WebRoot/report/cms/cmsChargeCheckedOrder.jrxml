@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="24"/>
 	<property name="ireport.y" value="0"/>
 	<style name="style1" forecolor="#000000" backcolor="#000000">
 		<box>
@@ -40,40 +40,200 @@
 		</box>
 	</style>
 	<parameter name="order_id" class="java.lang.String"/>
+	<parameter name="login_user_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select * ,(IFNULL(GKJSF,0)+IFNULL(GWF,0)+IFNULL(MTF,0)+IFNULL(CZGF,0)+IFNULL(DCF,0)+IFNULL(ZKCLF,0)+IFNULL(DBZF,0)+IFNULL(ZGZXF,0)+IFNULL(NFPTF,0)+IFNULL(TYDDYF,0)+IFNULL(WLDLF,0)+IFNULL(AC,0)+IFNULL(ZHF,0)+IFNULL(XDF,0)+IFNULL(BGDZLRF,0)+IFNULL(BGDSCF,0)+IFNULL(BGDLF,0)) as total from(
-							  SELECT cpo.id cpoid,cpo.order_no order_no,cpo.create_stamp create_stamp,cpo.booking_no booking_no,cpo.tracking_no tracking_no,cpo.cabinet_no,substr(cpo.date_custom,1,10) date_custom,
-								cpo.container_no container_no,cpo.container_type container_type,p.abbr company_abbr,p.fax fax,
-									p.company_name company_name,p.contact_person contact_person ,p.phone phone,p.email email,
+		<![CDATA[SELECT
+	*,
+	(
+		IFNULL(GKJSF, 0) + IFNULL(GWF, 0) + IFNULL(MTF, 0) + IFNULL(CZGF, 0) + IFNULL(DCF, 0) + IFNULL(ZKCLF, 0) + IFNULL(DBZF, 0) + IFNULL(ZGZXF, 0) + IFNULL(NFPTF, 0) + IFNULL(TYDDYF, 0) + IFNULL(WLDLF, 0) + IFNULL(AC, 0) + IFNULL(ZHF, 0) + IFNULL(XDF, 0) + IFNULL(BGDZLRF, 0) + IFNULL(BGDSCF, 0) + IFNULL(BGDLF, 0)
+	) AS total
+FROM
+	(
+		SELECT
+			oe.office_name office_name,
+			u.c_name,
+			u.user_tel,
+			cpo.id cpoid,
+			cpo.order_no order_no,
+			cpo.create_stamp create_stamp,
+			cpo.booking_no booking_no,
+			cpo.tracking_no tracking_no,
+			cpo.cabinet_no,
+			substr(cpo.date_custom, 1, 10) date_custom,
+			cpo.container_no container_no,
+			cpo.container_type container_type,
+			p.abbr company_abbr,
+			p.fax fax,
+			p.company_name company_name,
+			p.contact_person contact_person,
+			p.phone phone,
+			p.email email,
+			sum(
 
-	sum(iF(fi.`code`='GKJSF',cpoa.total_amount,null )) GKJSF,
-							  sum(iF(fi.`code`='GWF',cpoa.total_amount,null)) GWF,
-							  sum(iF(fi.`code`='MTF',cpoa.total_amount,null)) MTF,
-							  sum(iF(fi.`code`='CZGF',cpoa.total_amount,null)) CZGF,
-							  sum(iF(fi.`code`='DCF',cpoa.total_amount,null)) DCF,
-							  sum(iF(fi.`code`='ZKCLF',cpoa.total_amount,null)) ZKCLF,
-							  sum(iF(fi.`code`='DBZF',cpoa.total_amount,null)) DBZF,
-							  sum(iF(fi.`code`='ZGZXF',cpoa.total_amount,null)) ZGZXF,
-							  sum(iF(fi.`code`='NFPTF',cpoa.total_amount,null)) NFPTF,
-							  sum(iF(fi.`code`='TYDDYF',cpoa.total_amount,null)) TYDDYF,
-							  sum(iF(fi.`code`='WLDLF',cpoa.total_amount,null)) WLDLF,
-							  sum(iF(fi.`code`='AC',cpoa.total_amount,null)) AC,
-							  sum(iF(fi.`code`='ZHF',cpoa.total_amount,null)) ZHF,
-							  sum(iF(fi.`code`='XDF',cpoa.total_amount,null)) XDF,
-							  sum(iF(fi.`code`='BGDZLRF',cpoa.total_amount,null)) BGDZLRF,
-								sum(iF(fi.`code`='BGDSCF',cpoa.total_amount,null)) BGDSCF,
+				IF (
+					fi.`code` = 'GKJSF',
+					cpoa.total_amount,
+					NULL
+				)
+			) GKJSF,
+			sum(
 
-								sum(iF(fi.`code`='BGDLF',cpoa.total_amount,null)) BGDLF							  FROM custom_arap_charge_order caco
-							  left join custom_arap_charge_item caci on caci.custom_charge_order_id=caco.id
-							  left join custom_plan_order_arap cpoa on cpoa.id=caci.ref_order_id
-							  LEFT JOIN custom_plan_order cpo on cpo.id=cpoa.order_id
-					      LEFT JOIN party p on p.id=cpo.application_unit
-									LEFT JOIN fin_item fi on fi.id=cpoa.charge_id and caco.office_id=fi.office_id						where cpo.order_no is not NULL and  caco.id=$P{order_id}
+				IF (
+					fi.`code` = 'GWF',
+					cpoa.total_amount,
+					NULL
+				)
+			) GWF,
+			sum(
 
-			 				  GROUP BY cpoa.order_id
+				IF (
+					fi.`code` = 'MTF',
+					cpoa.total_amount,
+					NULL
+				)
+			) MTF,
+			sum(
 
-			 				  ) B where 1=1 ;]]>
+				IF (
+					fi.`code` = 'CZGF',
+					cpoa.total_amount,
+					NULL
+				)
+			) CZGF,
+			sum(
+
+				IF (
+					fi.`code` = 'DCF',
+					cpoa.total_amount,
+					NULL
+				)
+			) DCF,
+			sum(
+
+				IF (
+					fi.`code` = 'ZKCLF',
+					cpoa.total_amount,
+					NULL
+				)
+			) ZKCLF,
+			sum(
+
+				IF (
+					fi.`code` = 'DBZF',
+					cpoa.total_amount,
+					NULL
+				)
+			) DBZF,
+			sum(
+
+				IF (
+					fi.`code` = 'ZGZXF',
+					cpoa.total_amount,
+					NULL
+				)
+			) ZGZXF,
+			sum(
+
+				IF (
+					fi.`code` = 'NFPTF',
+					cpoa.total_amount,
+					NULL
+				)
+			) NFPTF,
+			sum(
+
+				IF (
+					fi.`code` = 'TYDDYF',
+					cpoa.total_amount,
+					NULL
+				)
+			) TYDDYF,
+			sum(
+
+				IF (
+					fi.`code` = 'WLDLF',
+					cpoa.total_amount,
+					NULL
+				)
+			) WLDLF,
+			sum(
+
+				IF (
+					fi.`code` = 'AC',
+					cpoa.total_amount,
+					NULL
+				)
+			) AC,
+			sum(
+
+				IF (
+					fi.`code` = 'ZHF',
+					cpoa.total_amount,
+					NULL
+				)
+			) ZHF,
+			sum(
+
+				IF (
+					fi.`code` = 'XDF',
+					cpoa.total_amount,
+					NULL
+				)
+			) XDF,
+			sum(
+
+				IF (
+					fi.`code` = 'BGDZLRF',
+					cpoa.total_amount,
+					NULL
+				)
+			) BGDZLRF,
+			sum(
+
+				IF (
+					fi.`code` = 'BGDSCF',
+					cpoa.total_amount,
+					NULL
+				)
+			) BGDSCF,
+			sum(
+
+				IF (
+					fi.`code` = 'BGDLF',
+					cpoa.total_amount,
+					NULL
+				)
+			) BGDLF
+		FROM
+			custom_arap_charge_order caco
+		LEFT JOIN custom_arap_charge_item caci ON caci.custom_charge_order_id = caco.id
+		LEFT JOIN custom_plan_order_arap cpoa ON cpoa.id = caci.ref_order_id
+		LEFT JOIN custom_plan_order cpo ON cpo.id = cpoa.order_id
+		LEFT JOIN office oe ON oe.id = caco.office_id
+		LEFT JOIN user_login u ON u.id = $P{login_user_id}
+		LEFT JOIN party p ON p.id = caco.sp_id
+		LEFT JOIN fin_item fi ON fi.id = cpoa.charge_id
+		AND caco.office_id = fi.office_id
+		WHERE
+			cpo.order_no IS NOT NULL
+		AND caco.id = $P{order_id}
+		GROUP BY
+			cpoa.order_id
+	) B
+WHERE
+	1 = 1;]]>
 	</queryString>
+	<field name="office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="c_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_tel" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="cpoid" class="java.lang.Long"/>
 	<field name="order_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -197,13 +357,14 @@
 	</title>
 	<pageHeader>
 		<band height="50" splitType="Stretch">
-			<staticText>
-				<reportElement x="89" y="17" width="597" height="23" uuid="4ed9d707-a40e-4a26-b148-f7edc508b2a6"/>
-				<textElement textAlignment="Center">
-					<font fontName="黑体" size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="84" y="14" width="597" height="36" forecolor="#000000" backcolor="#FFFFFF" uuid="179902b5-029d-4107-ab68-09db22b27c42"/>
+				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[珠海瑞龙报关代理有限公司（西域/洪湾）码头报关费用结算明细]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[($F{office_name}.equals("")?"":$F{office_name}+"码头报关费用结算明细")]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -356,7 +517,7 @@
 				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement mode="Transparent" x="1" y="64" width="801" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="9f471d4d-5606-46ac-8965-54a16d395127"/>
+				<reportElement mode="Transparent" x="1" y="64" width="802" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="9f471d4d-5606-46ac-8965-54a16d395127"/>
 			</line>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="506" y="39" width="104" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="022eafb6-77cf-4fa0-aeb0-bb8d79fd56e7"/>
@@ -758,25 +919,25 @@
 	<summary>
 		<band height="71" splitType="Stretch">
 			<staticText>
-				<reportElement x="2" y="37" width="169" height="15" uuid="85797879-e05f-4b04-9d4d-1f8e52129aec"/>
+				<reportElement x="2" y="53" width="53" height="15" uuid="85797879-e05f-4b04-9d4d-1f8e52129aec"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[开户银行：中国银行珠海九洲港支行		]]></text>
+				<text><![CDATA[开户银行：	]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="51" width="116" height="15" uuid="7bf2d8c7-c7d8-46e4-9585-858c152f80d2"/>
+				<reportElement x="2" y="38" width="53" height="15" uuid="7bf2d8c7-c7d8-46e4-9585-858c152f80d2"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[帐号：630153286894]]></text>
+				<text><![CDATA[帐号：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="23" width="116" height="15" uuid="4cd28af0-847c-45c4-9acb-131dac6e9516"/>
+				<reportElement x="2" y="23" width="53" height="15" uuid="4cd28af0-847c-45c4-9acb-131dac6e9516"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[账户名：朱文丽]]></text>
+				<text><![CDATA[账户名：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="r_l_border" mode="Transparent" x="0" y="0" width="41" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="d49899ef-c58b-4e83-83ad-1b5fc948c02b"/>
@@ -787,7 +948,7 @@
 				<text><![CDATA[合计]]></text>
 			</staticText>
 			<line>
-				<reportElement mode="Transparent" x="0" y="22" width="801" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="54bd7c17-3974-4c91-afa1-fe03758b7037"/>
+				<reportElement mode="Transparent" x="0" y="22" width="802" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="54bd7c17-3974-4c91-afa1-fe03758b7037"/>
 			</line>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" x="343" y="0" width="29" height="22" uuid="39cc37b1-f334-46a7-af13-f0dd62002fd5"/>
@@ -944,19 +1105,35 @@
 				</textElement>
 			</textField>
 			<staticText>
-				<reportElement x="635" y="23" width="116" height="15" uuid="c811938a-78a8-4681-93e4-d26a3b2e066e"/>
+				<reportElement x="635" y="23" width="60" height="15" uuid="c811938a-78a8-4681-93e4-d26a3b2e066e"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[制单人：朱文丽]]></text>
+				<text><![CDATA[制单人：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="635" y="38" width="116" height="15" uuid="8e449c8c-0fda-4077-a0e9-366f18e15aad"/>
+				<reportElement x="635" y="38" width="60" height="15" uuid="8e449c8c-0fda-4077-a0e9-366f18e15aad"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[制单人电话：]]></text>
 			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="694" y="24" width="107" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="bffcd5d8-44dd-4af9-ab6c-e23b417d3696"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="694" y="37" width="106" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="a87c4c4e-d505-4a38-9ca5-da0014c3abfa"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{user_tel}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>
