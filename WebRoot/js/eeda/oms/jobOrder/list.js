@@ -122,7 +122,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                     return data;
                   }
               },
-              { "data": "CREATOR_NAME"}, 
+              { "data": "CREATOR_NAME"},
+              { "data": "UPDATOR_NAME"}, 
               { "data": "CREATE_STAMP"}, 
               { "data": "STATUS"},
               {"data": "NEW_COUNT","visible":false}
