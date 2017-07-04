@@ -112,6 +112,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
           var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
           var cabinet_date_end_time = $("#cabinet_date_end_time").val();
           var audit_flag = $("#audit_flag").val();
+          var cabinet_type=$("#cabinet_type").val();
        
           var url = "/transChargeConfirm/list?order_no="+order_no
 //			           +"&customer_id="+customer
@@ -122,7 +123,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 		               +"&create_stamp_end_time="+end_date
 		               +"&cabinet_date_begin_time="+cabinet_date_begin_time
 		          	   +"&cabinet_date_end_time="+cabinet_date_end_time
-          			   +"&audit_flag_notequals="+audit_flag;
+          			   +"&audit_flag_notequals="+audit_flag
+          			   +"&cabinet_type="+cabinet_type;
 
           dataTable.ajax.url(url).load();
       };

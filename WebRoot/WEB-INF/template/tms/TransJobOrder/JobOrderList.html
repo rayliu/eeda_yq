@@ -56,6 +56,29 @@
                                                                   value: ''
                                                               }){}%>
                                         </div>
+                                     </div>
+                                     <div class="row">
+                                        <div class="col-lg-4">
+							               <%include("/eeda/component/form/selectField.html", 
+							                  			  {   id:'cabinet_type', 
+							                      			  label:'柜型', 
+							                     		      value:order.cabinet_type!'',
+							                        	   	  value_list:[
+							                        	   	  	  {code:'', value:''},
+						                                          {code:'40HQ', value:'40HQ'},
+									                              {code:'20GP', value:'20GP'},
+									                              {code:'40GP', value:'40GP'}, 
+									                              {code:'45GP', value:'45GP'}
+							                        		  ]
+							                   			  }){}%>
+							              </div>
+                                        <div class="col-lg-4">
+                            			  <%include("/eeda/component/form/inputField.html", 
+								                          	  {   id:'container_no', 
+								                                  label:'柜号',
+								                                  value: order.container_no!''
+								                              }){}%>
+                        				</div>
                                   </div>
                                 </form>
 

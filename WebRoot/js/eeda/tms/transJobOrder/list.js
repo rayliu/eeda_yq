@@ -129,6 +129,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var status = $('#status').val();
           var customer_code = $("#customer_code").val().trim();
           var customer_name = $("#customer_name").val().trim();
+          var cabinet_type=$("#cabinet_type").val().trim();
+          var container_no= $.trim($("#container_no").val());
           //增加出口日期查询
           var url = "/transJobOrder/list?order_no="+order_no
           	   +"&status="+status
@@ -137,8 +139,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
           	   +"&cabinet_date_begin_time="+cabinet_date_begin_time
-          	   +"&cabinet_date_end_time="+cabinet_date_end_time;
-          
+          	   +"&cabinet_date_end_time="+cabinet_date_end_time
+          	   +"&cabinet_type="+cabinet_type
+          	   +"&container_no="+container_no;
           dataTable.ajax.url(url).load();
       };
       
