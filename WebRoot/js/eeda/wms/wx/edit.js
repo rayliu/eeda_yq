@@ -23,7 +23,6 @@ $(function(){
 	
 	var searchItemData = function(item_no){
 		$("#loadingToast").css("display","block");
-    	var item_no = $('#item_no').val();
     	$('#dataValue').text("");
     	$.post("/wx/queryItemNo",{item_no:item_no},function(data){
     		if(data.length > 0){
@@ -86,14 +85,15 @@ $(function(){
                 
     var loc_part_no = localStorage.getItem('part_no');
     var loc_item_no = localStorage.getItem('item_no');
+    $('#part_no').val(loc_part_no);
+	$('#item_no').val(loc_item_no);
 	if(loc_part_no!=null || loc_item_no!=null){
 		if(loc_part_no!=null){
         	searchPartData(loc_part_no,'part_no');
     	}else{
         	searchItemData(loc_item_no);
     	}
-		$('#part_no').val(loc_part_no);
-		$('#item_no').val(loc_item_no);
+		
     }
 	
 	
