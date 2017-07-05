@@ -326,6 +326,8 @@ public class TrJobOrderController extends Controller {
 		Model<?> model = (Model<?>) TradeJobOrderArap.class.newInstance();
 		List<Map<String, String>> trade_service_list = (ArrayList<Map<String, String>>)dto.get("trade_service");
 		
+		List<Map<String, String>> trade_cost_service_list = (ArrayList<Map<String, String>>)dto.get("trade_cost_service");
+		
 		List<Map<String, String>> trade_sale_list = (ArrayList<Map<String, String>>)dto.get("trade_sale");
 		if(trade_service_list!=null){
 	        for(int i=0;i<trade_service_list.size();i++){
@@ -345,6 +347,26 @@ public class TrJobOrderController extends Controller {
 	        	}
 	        }
 		}
+		
+		if(trade_cost_service_list!=null){
+	        for(int i=0;i<trade_cost_service_list.size();i++){
+	        	Map<String, String> map=trade_cost_service_list.get(i);
+	        	DbUtils.setModelValues(map,model);
+	        	model.set("order_id", id);
+	        	model.set("order_type", "cost");
+	        	model.set("type", "贸易");
+	        	model.set("trade_fee_flag", "trade_cost_service_fee");
+	        	if("UPDATE".equals(map.get("action"))){
+	        		model.update();
+	        	}else if("DELETE".equals(map.get("action"))){
+	        		if(map.get("id")!=null)
+	        		model.delete();
+	        	}else{
+	        		model.save();
+	        	}
+	        }
+		}
+		
 		if(trade_sale_list!=null){
 	        for(int i=0;i<trade_sale_list.size();i++){
 	        	Map<String, String> map=trade_sale_list.get(i);
@@ -363,6 +385,8 @@ public class TrJobOrderController extends Controller {
 	        	}
 	        }
 		}
+		
+		
 
 		long creator = jobOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
@@ -379,13 +403,19 @@ public class TrJobOrderController extends Controller {
 		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
 		List<Map<String, String>> allCost_template = (ArrayList<Map<String, String>>)dto.get("allCost_template");
    		saveArapTemplate(type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);
-     	//贸易信息，应收服务，销售应收模板
+     	//贸易信息，应收服务费用模板
 		List<Map<String, String>> chargeService_template = (ArrayList<Map<String, String>>)dto.get("chargeService_template");
 		List<Map<String, String>> allChargeService_template = (ArrayList<Map<String, String>>)dto.get("allChargeService_template");
 		saveTradeServiceTemplate(type,customer_id,chargeService_template,allChargeService_template);
+		//贸易信息，应付服务费用模板
+		List<Map<String, String>> costService_template = (ArrayList<Map<String, String>>)dto.get("costService_template");
+		List<Map<String, String>> allCostService_template = (ArrayList<Map<String, String>>)dto.get("allCostService_template");
+   		saveTradeSaleTemplate(type,customer_id,costService_template,allCostService_template);
+		//贸易信息，销售应收费用模板
 		List<Map<String, String>> chargeSale_template = (ArrayList<Map<String, String>>)dto.get("chargeSale_template");
 		List<Map<String, String>> allChargeSale_template = (ArrayList<Map<String, String>>)dto.get("allChargeSale_template");
    		saveTradeSaleTemplate(type,customer_id,chargeSale_template,allChargeSale_template);
+   	    
    	   	   		
 	
    		renderJson(r);
@@ -1119,6 +1149,17 @@ public class TrJobOrderController extends Controller {
     		        + " left join currency c1 on c1.id=jor.exchange_currency_id"
     		        + " where jor.order_id=? and jor.order_type=? and jor.trade_fee_flag=? order by jor.id";
     		itemList = Db.find(itemSql, orderId,"charge","trade_service_fee");
+	    }else if("trade_cost_service".equals(type)){
+	    	itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
+    				+ " c1.name exchange_currency_id_name"
+    				+ " from trade_job_order_arap jor "
+    		        + " left join party pr on pr.id=jor.sp_id"
+    		        + " left join fin_item f on f.id=jor.charge_id"
+    		        + " left join unit u on u.id=jor.unit_id"
+    		        + " left join currency c on c.id=jor.currency_id"
+    		        + " left join currency c1 on c1.id=jor.exchange_currency_id"
+    		        + " where jor.order_id=? and jor.order_type=? and jor.trade_fee_flag=? order by jor.id";
+    		itemList = Db.find(itemSql, orderId,"cost","trade_cost_service_fee");
 	    }else if("china_self".equals(type)){
 	    	itemSql = "select j.*,p.abbr custom_bank_name from job_order_custom_china_self_item j"
 	    			+ " left join party p on p.id = j.custom_bank"
@@ -1171,6 +1212,7 @@ public class TrJobOrderController extends Controller {
     	setAttr("trade", getItemDetail(id,"trade"));
     	setAttr("trade_cost_list", getItems(id,"trade_cost"));
     	setAttr("trade_charge_service_list", getItems(id,"trade_service"));
+    	setAttr("trade_cost_service_list", getItems(id,"trade_cost_service"));
     	setAttr("trade_charge_sale_list", getItems(id,"trade_sale"));
     	
     	//报关

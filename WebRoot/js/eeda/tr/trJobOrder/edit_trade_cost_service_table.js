@@ -3,16 +3,16 @@ $(document).ready(function() {
 
     var deletedTableIds=[];
     //删除一行
-    $("#charge_service_table").on('click', '.delete', function(e){
+    $("#cost_service_table").on('click', '.delete', function(e){
         e.preventDefault();
         var tr = $(this).parent().parent();
         deletedTableIds.push(tr.attr('id'))
         
-        cargoTable.row(tr).remove().draw();
+        costServiceTable.row(tr).remove().draw();
     }); 
     
-    itemOrder.buildTradeServiceItem=function(){
-        var cargo_table_rows = $("#charge_service_table tr");
+    itemOrder.buildTradeCostServiceItem=function(){
+        var cargo_table_rows = $("#cost_service_table tr");
         var cargo_items_array=[];
         for(var index=2; index<cargo_table_rows.length; index++){
             var row = cargo_table_rows[index];
@@ -72,16 +72,16 @@ $(document).ready(function() {
 
     //------------事件处理
     var bindFieldEvent=function(){  
-        // eeda.bindTableField('charge_service_table','CHARGE_ID','/finItem/search','');
-        eeda.bindTableFieldChargeId('charge_service_table','CHARGE_ID','/finItem/search','');
-        eeda.bindTableField('charge_service_table','SP_ID','/serviceProvider/searchCompany','');
-        eeda.bindTableFieldCurrencyId('charge_service_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
-        eeda.bindTableFieldCurrencyId('charge_service_table','exchange_currency_id','/serviceProvider/searchCurrency','');
-        eeda.bindTableField('charge_service_table','CHARGE_ENG_ID','/finItem/search_eng','');
-        eeda.bindTableField('charge_service_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
+        // eeda.bindTableField('cost_service_table','CHARGE_ID','/finItem/search','');
+        eeda.bindTableFieldChargeId('cost_service_table','CHARGE_ID','/finItem/search','');
+        eeda.bindTableField('cost_service_table','SP_ID','/serviceProvider/searchCompany','');
+        eeda.bindTableFieldCurrencyId('cost_service_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
+        eeda.bindTableFieldCurrencyId('cost_service_table','exchange_currency_id','/serviceProvider/searchCurrency','');
+        eeda.bindTableField('cost_service_table','CHARGE_ENG_ID','/finItem/search_eng','');
+        eeda.bindTableField('cost_service_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
     };
-    var cargoTable = eeda.dt({
-        id: 'charge_service_table',
+    var costServiceTable = eeda.dt({
+        id: 'cost_service_table',
         autoWidth: false,
         scrollY: 530,
         drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
@@ -467,39 +467,39 @@ $(document).ready(function() {
         ]
     });
 
-    $('#add_charge_service_table').on('click', function(){
+    $('#add_cost_service_table').on('click', function(){
         if($('#rateExpired').val()=='Y'){
             $.scojs_message('当前汇率已过期，请更新汇率才能进行添加费用', $.scojs_message.TYPE_ERROR);
             return;
         }
         var item={};
-        cargoTable.row.add(item).draw(true);
+        costServiceTable.row.add(item).draw(true);
     });
     
     //获取回填到下表的汇率
-    $('#service_currency_id_list').on('mousedown','a',function(){
-          $('#service_currency_rate').val( $(this).attr('rate'));
-       if($('#service_exchange_currency_input').val()==''){
-          $('#service_exchange_currency_input').val($(this).text());
-          $('#service_exchange_currency').val($(this).attr('id'));
+    $('#cost_service_currency_id_list').on('mousedown','a',function(){
+          $('#cost_service_currency_rate').val( $(this).attr('rate'));
+       if($('#cost_service_exchange_currency_input').val()==''){
+          $('#cost_service_exchange_currency_input').val($(this).text());
+          $('#cost_service_exchange_currency').val($(this).attr('id'));
        }
-       if($('#service_exchange_currency_rate').val()==''){
-          $('#service_exchange_currency_rate').val($(this).attr('rate'));
+       if($('#cost_service_exchange_currency_rate').val()==''){
+          $('#cost_service_exchange_currency_rate').val($(this).attr('rate'));
        }
     });
     
     
     //刷新明细表
-    itemOrder.refleshTradeServiceItemTable = function(order_id){
-        var url = "/trJobOrder/tableList?order_id="+order_id+"&type=trade_service";
-        cargoTable.ajax.url(url).load();
+    itemOrder.refleshTradeCostServiceItemTable = function(order_id){
+        var url = "/trJobOrder/tableList?order_id="+order_id+"&type=trade_cost_service";
+        costServiceTable.ajax.url(url).load();
     }
     
-    if($('#charge_service_table td').length>1){
-        var col = [6,11,,16,17];
+    var cost_service_tableFoot_sum=function(){
+    	var col = [6,11,16,17];
         for (var i=0;i<col.length;i++){
-            var arr = cargoTable.column(col[i]).data();
-            $('#charge_service_table tfoot').find('th').eq(col[i]).html(
+            var arr = costServiceTable.column(col[i]).data();
+            $('#cost_service_table tfoot').find('th').eq(col[i]).html(
                 arr.reduce(function (a, b) {
                     a = parseFloat(a);
                     if(isNaN(a)){ a = 0; }                   
@@ -510,8 +510,12 @@ $(document).ready(function() {
             );
         }
     }
+    
+    if($('#cost_service_table td').length>1){
+    	cost_service_tableFoot_sum();
+    }
 
-    $('#charge_service_table').on('keyup','[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate],[name=exchange_currency_rate_rmb]', function(){
+    $('#cost_service_table').on('keyup','[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate],[name=exchange_currency_rate_rmb]', function(){
         var row = $(this).parent().parent();
         var price = $(row.find('[name=price]')).val();
         var amount = $(row.find('[name=amount]')).val();
@@ -554,42 +558,43 @@ $(document).ready(function() {
                 }
             }
         }
+        
         var amount = 0;
-        $('#charge_service_table [name=amount]').each(function(){
+        $('#cost_service_table [name=amount]').each(function(){
             var a = this.value;
             if(a!=''&&!isNaN(a)){
             	amount+=parseFloat(a);
             }
         })
-        $($('.dataTables_scrollFoot tr')[1]).find('.amount').html(amount.toFixed(2));
+        $($('.dataTables_scrollFoot tr')[2]).find('.amount').html(amount.toFixed(2));
         
 
         var total_cny_total_amount = 0;
-        $('#charge_service_table [name=currency_total_amount]').each(function(){
+        $('#cost_service_table [name=currency_total_amount]').each(function(){
             var a = this.value;
             if(a!=''&&!isNaN(a)){
                 total_cny_total_amount+=parseFloat(a);
             }
         })
-        $($('.dataTables_scrollFoot tr')[1]).find('.cny_total_amount').html(total_cny_total_amount.toFixed(3));
+        $($('.dataTables_scrollFoot tr')[2]).find('.cny_total_amount').html(total_cny_total_amount.toFixed(3));
         
         var total_exchange_total_amount_rmb = 0;
-        $('#charge_service_table [name=exchange_total_amount_rmb]').each(function(){
+        $('#cost_service_table [name=exchange_total_amount_rmb]').each(function(){
             var a = this.value;
             if(a!=''&&!isNaN(a)){
                 total_exchange_total_amount_rmb+=parseFloat(a);
             }
         })
-        $($('.dataTables_scrollFoot tr')[1]).find('.exchange_total_amount_rmb').html(total_exchange_total_amount_rmb.toFixed(3));
+        $($('.dataTables_scrollFoot tr')[2]).find('.exchange_total_amount_rmb').html(total_exchange_total_amount_rmb.toFixed(3));
         
         var total_rmb_difference = 0;
-        $('#charge_service_table [name=rmb_difference]').each(function(){
+        $('#cost_service_table [name=rmb_difference]').each(function(){
             var a = this.value;
             if(a!=''&&!isNaN(a)){
                 total_rmb_difference+=parseFloat(a);
             }
         })
-        $($('.dataTables_scrollFoot tr')[1]).find('.rmb_difference').html(total_rmb_difference.toFixed(3));
+        $($('.dataTables_scrollFoot tr')[2]).find('.rmb_difference').html(total_rmb_difference.toFixed(3));
         
         
         
@@ -597,14 +602,15 @@ $(document).ready(function() {
             $(this).keyup();
         });
         itemOrder.count_difference();
+        
     })
 
-           //贸易常用模板
+       //贸易常用模板
       //------------------费用明细
-    $('#collapseChargeServiceInfo').on('show.bs.collapse', function () {
+    $('#collapseCostServiceInfo').on('show.bs.collapse', function () {
         var thisType = $(this).attr('id');
-        var type = 'Charge';
-        if('collapseChargeServiceInfo'!=thisType){
+        var type = 'Cost';
+        if('collapseCostServiceInfo'!=thisType){
             type='Cost';
         }
         var div = $('#'+type+'ServiceDiv').empty();
@@ -669,16 +675,16 @@ $(document).ready(function() {
         }
     });
  
-    $('#collapseChargeServiceInfo').on('hide.bs.collapse', function () {
+    $('#collapseCostServiceInfo').on('hide.bs.collapse', function () {
         var thisType = $(this).attr('id');
-        var type = 'Charge';
-        if('collapseChargeServiceInfo'!=thisType){
+        var type = 'Cost';
+        if('collapseCostServiceInfo'!=thisType){
             type='Cost';
         }
         $('#collapse'+type+'ServiceIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
     });
   
-    $('#collapseChargeServiceInfo').on('click', '.deleteChargeTemplate,.deleteCostTemplate', function(){
+    $('#collapseCostServiceInfo').on('click', '.deleteCostTemplate,.deleteCostTemplate', function(){
         $(this).attr('disabled', true);
         var ul = $(this).parent().parent();
         var id = ul.attr('id');
@@ -696,13 +702,13 @@ $(document).ready(function() {
     
     
     //选中回显
-    $('#ChargeServiceDiv').on('click', '.selectChargeTemplate,.selectCostTemplate', function(){
+    $('#CostServiceDiv').on('click', '.selectCostTemplate,.selectCostTemplate', function(){
         $(this).parent().find('[type=radio]').prop('checked',true)
         
         var thisType = $(this).attr('class');
-        var type = 'Charge';
-        var table = 'charge_service_table';
-        // if('selectChargeTemplate'!=thisType){
+        var type = 'Cost';
+        var table = 'cost_service_table';
+        // if('selectCostTemplate'!=thisType){
         //     type='Cost';
         //     table='trade_sale_table';
         // }
@@ -743,8 +749,8 @@ $(document).ready(function() {
         }
     });
    
-    itemOrder.buildChargeServiceTemplate=function(){
-        var cargo_table_rows = $("#charge_service_table tr");
+    itemOrder.buildCostServiceTemplate=function(){
+        var cargo_table_rows = $("#cost_service_table tr");
         var cargo_items_array=[];
         for(var index=0; index<cargo_table_rows.length; index++){
             if(index==0||index==1)
@@ -760,7 +766,7 @@ $(document).ready(function() {
             }
             
             var item={}
-            item.order_type = "charge";//应收
+            item.order_type = "cost";//应付
             for(var i = 1; i < row.childNodes.length; i++){
                 if($(row.childNodes[i]).find('.notsave').size()==0){
                     var el = $(row.childNodes[i]).find('input,select');
@@ -800,8 +806,8 @@ $(document).ready(function() {
         return cargo_items_array;
     };
 
-     itemOrder.buildAllChargeServiceTemplate=function(){
-        var cargo_table_rows = $("#charge_service_table tr");
+     itemOrder.buildAllCostServiceTemplate=function(){
+        var cargo_table_rows = $("#cost_service_table tr");
         var cargo_items_array=[];
         for(var index=0; index<cargo_table_rows.length; index++){
             if(index==0||index==1)
@@ -821,7 +827,7 @@ $(document).ready(function() {
             }
             
             var item={}
-            item.order_type = "charge";//应收
+            item.order_type = "cost";//应付
             for(var i = 1; i < row.childNodes.length; i++){
                     var el = $(row.childNodes[i]).find('input,select');
                     var name = el.attr('name'); 

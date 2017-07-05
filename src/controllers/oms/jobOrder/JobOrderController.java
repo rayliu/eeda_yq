@@ -1924,9 +1924,13 @@ public class JobOrderController extends Controller {
     				+ " where order_id=? order by jos.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("air".equals(type)){
-    		itemSql = "select joa.*, pa.abbr air_company_name from job_order_air_item joa"
-    		        + " left join party pa on pa.id=joa.air_company"
-    		        + " where order_id=? order by joa.id";
+    		itemSql = "select IFNULL(concat(lo.name,' -',lo.code),joai.start_from_input) start_from_name,"
+    				+ " IFNULL(concat(lo1.name,' -',lo1.code),joai.destination_input) destination_name,"
+    				+ " joai.*, pa.abbr air_company_name from job_order_air_item joai"
+    		        + " left join party pa on pa.id=joai.air_company"
+    				+ " LEFT JOIN location lo on lo.id = joai.start_from"
+    		        + " LEFT JOIN location lo1 on lo1.id = joai.destination"
+    		        + " where joai.order_id=? order by joai.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("cargoDesc".equals(type)){
     		itemSql = "select * from job_order_air_cargodesc where order_id=? order by id";

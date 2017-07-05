@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'jq_blockui',
      './edit_charge_table','./edit_cost_table', './edit_custom_china_self_table','./edit_custom_detail','./edit_custom_doc_table',
-    './edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
-    './edit_trade_cost_table', './edit_trade_charge_sale_table', './edit_trade_charge_service_table','./edit_trade_detail',
+    './edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report','./edit_trade_cost_table', 
+    './edit_trade_charge_sale_table', './edit_trade_charge_service_table','./edit_trade_detail','./edit_trade_cost_service_table',
     './edit_arap_detail'], function ($, metisMenu) {
 $(document).ready(function() {
 
@@ -205,7 +205,8 @@ $(document).ready(function() {
 	        //贸易
 	        order.trade_detail = itemOrder.buildTradeDetail();//form input
 	        order.trade_cost = itemOrder.buildTradeCostItem();//商品信息table
-	        order.trade_service = itemOrder.buildTradeServiceItem();//服务费用table
+	        order.trade_service = itemOrder.buildTradeServiceItem();//应收服务费用table
+	        order.trade_cost_service = itemOrder.buildTradeCostServiceItem();//应付服务费用table
 	        order.trade_sale = itemOrder.buildTradeSaleItem();//销售应收费用table
         }
         
@@ -218,8 +219,10 @@ $(document).ready(function() {
         order.allCost_template = itemOrder.buildAllCostTemplate();
         //贸易信息模板
         order.chargeService_template = itemOrder.buildChargeServiceTemplate();
+        order.costService_template = itemOrder.buildCostServiceTemplate();
         order.chargeSale_template = itemOrder.buildChargeSaleTemplate();
         order.allChargeService_template = itemOrder.buildAllChargeServiceTemplate();
+        order.allCostService_template = itemOrder.buildAllCostServiceTemplate();
         order.allChargeSale_template = itemOrder.buildAllChargeSaleTemplate();
         //相关文档
         order.doc_list = eeda.buildTableDetail("doc_table","");
@@ -283,6 +286,7 @@ $(document).ready(function() {
                 itemOrder.refleshCostTable(server_back_order.ID);
                 itemOrder.refleshTradeCostItemTable(server_back_order.ID);
                 itemOrder.refleshTradeServiceItemTable(server_back_order.ID);
+                itemOrder.refleshTradeCostServiceItemTable(server_back_order.ID);
                 itemOrder.refleshTradeSaleItemTable(server_back_order.ID);
                 itemOrder.refleshCustomChinaSelfItemTable(server_back_order.ID);
                 $.unblockUI();

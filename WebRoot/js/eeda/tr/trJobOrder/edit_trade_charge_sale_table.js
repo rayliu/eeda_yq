@@ -213,7 +213,7 @@ $(document).ready(function() {
                      }
                   }
             },
-            { "data": "AMOUNT","width": "50px",
+            { "data": "AMOUNT","width": "50px","className":"amount",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='1';
@@ -309,7 +309,7 @@ $(document).ready(function() {
                }
               }
             },
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "90px","className":"cny_total_amount",
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "100px","className":"cny_total_amount",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -383,7 +383,7 @@ $(document).ready(function() {
                     }
                 }
             },
-            { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "90px","className":"exchange_total_amount_rmb",
+            { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "100px","className":"exchange_total_amount_rmb",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -554,6 +554,15 @@ $(document).ready(function() {
             }
         }
         
+        var amount = 0;
+        $('#trade_sale_table [name=amount]').each(function(){
+            var a = this.value;
+            if(a!=''&&!isNaN(a)){
+            	amount+=parseFloat(a);
+            }
+        })
+        $($('.dataTables_scrollFoot tr')[3]).find('.amount').html(amount.toFixed(2));
+        
         var total_currency_total_amount = 0;
         $('#trade_sale_table [name=currency_total_amount]').each(function(){
             var a = this.value;
@@ -561,7 +570,7 @@ $(document).ready(function() {
                 total_currency_total_amount+=parseFloat(a);
             }
         })
-        $($('.dataTables_scrollFoot tr')[2]).find('.cny_total_amount').html(total_currency_total_amount.toFixed(3));
+        $($('.dataTables_scrollFoot tr')[3]).find('.cny_total_amount').html(total_currency_total_amount.toFixed(3));
         
         var total_exchange_total_amount_rmb = 0;
         $('#trade_sale_table [name=exchange_total_amount_rmb]').each(function(){
@@ -570,7 +579,7 @@ $(document).ready(function() {
                 total_exchange_total_amount_rmb+=parseFloat(a);
             }
         })
-        $($('.dataTables_scrollFoot tr')[2]).find('.exchange_total_amount_rmb').html(total_exchange_total_amount_rmb.toFixed(3));
+        $($('.dataTables_scrollFoot tr')[3]).find('.exchange_total_amount_rmb').html(total_exchange_total_amount_rmb.toFixed(3));
         
         var total_rmb_difference = 0;
         $('#trade_sale_table [name=rmb_difference]').each(function(){
@@ -579,7 +588,8 @@ $(document).ready(function() {
                 total_rmb_difference+=parseFloat(a);
             }
         })
-        $($('.dataTables_scrollFoot tr')[2]).find('.rmb_difference').html(total_rmb_difference.toFixed(3));
+        $($('.dataTables_scrollFoot tr')[3]).find('.rmb_difference').html(total_rmb_difference.toFixed(3));
+        
         
     })
    
