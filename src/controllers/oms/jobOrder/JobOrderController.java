@@ -44,7 +44,6 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
-import org.json.JSONException;
 
 import sun.misc.BASE64Encoder;
 

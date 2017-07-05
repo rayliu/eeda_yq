@@ -10,7 +10,7 @@
              <div class="row">
                     <div class="col-lg-12">
                         <h3>贸易商品信息</h3> 
-                        <button class="btn btn_blue" type="button" id="add_tradeItem" style="float:right;margin-bottom:15px;">添加贸易商品条目</button> 
+                        <button class="btn btn_green" type="button" id="add_tradeItem" style="float:right;margin-bottom:15px;">添加贸易商品条目</button> 
                       
                     </div>
              </div>
@@ -67,7 +67,7 @@
                             <div class="col-lg-12">
                             <input type="hidden" id="total_difference" value="${trade.total_difference!''}"  >
                             <input type="hidden" id="price_difference" value="${trade.price_difference!''}">
-                                <button class="btn btn_blue btn-xs" type="button" id="add_trade_cost_table">添加明细</button><br><br>
+                                <button class="btn btn_green" type="button" id="add_trade_cost_table">添加明细</button><br><br>
                                 <font size="3px">(客户退税金额总额 - 减去应收服务费用总额)总价差异：<span id="total_difference_span" name="total_difference" text="${trade.total_difference!''}" ></span></font>&nbsp&nbsp
                                 <font size="3px">(总价差异 / 总数量)单价差异：<span id="price_difference_span" name="price_difference" text="${trade.price_difference!''}"></span></font>
                                 <br>
@@ -168,7 +168,7 @@
 				                                }){}%>
 				                 </div>
 				                 <div class="col-lg-12">
-	                            	<button class="btn btn_blue btn-xs" type="button" id="add_charge_service_table">添加明细</button>
+	                            	<button class="btn btn_green" type="button" id="add_charge_service_table">添加明细</button>
 	                              </div>
                                 <br>
                                 <div class="col-lg-12">
@@ -232,7 +232,7 @@
 
                              </div>
                             <div class="col-lg-12">
-                                <button class="btn btn_blue btn-xs" type="button" id="add_trade_sale_table">添加明细</button>
+                                <button class="btn btn_green" type="button" id="add_trade_sale_table">添加明细</button>
                                 <br>
                                 <%include("/eeda/component/form/detailTableWithFoot.html", 
                                     {
