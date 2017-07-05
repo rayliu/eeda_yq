@@ -89,24 +89,40 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
       $('#selected_field').change(function(event) {
           var selectField = $('#selected_field').val();
-          if(selectField == 'order_no'){
+          if(selectField == 'order_no'){//计划订单号
             $('#selected_field_value').show();
-            $('#status_list').hide();
-          }else if(selectField == 'status'){
+            $('#order_status_list').hide();
+            $('#create_stamp').hide();
+            $('#sp_name').hide();
+          }else if(selectField == 'order_status'){//单据状态
             $('#selected_field_value').hide();
-            $('#status_list').show();
+            $('#sp_name').hide();
+            $('#create_stamp').hide();
+            $('#order_status_list').show();
+          }else if(selectField=='create_stamp'){//创建时间
+//            $('#selected_field_value').hide();
+//            $('#status_list').hide();
+//            $('#create_stamp').show();
+          }else if(selectField=='sp_name'){//被委托方
+        	  $('#selected_field_value').hide();
+        	  $('#status_list').hide();
+        	  $('#order_status_list').hide();
+              $('#sp_name').show();
           }
       });
 
       $('#singleSearchBtn').click(function(){
           var selectField = $('#selected_field').val();
           var selectFieldValue = $('#selected_field_value').val();
-          if(selectField == 'order'){
+          if(selectField == 'order'){//计划订单号
             selectFieldValue = $('#selected_field_value').val();
-          }else if(selectField == 'status'){
-            selectFieldValue = $('#status_list').val();
+          }else if(selectField == 'order_status'){//单据状态
+            selectFieldValue = $('#order_status_list').val();
+          }else if(selectField == 'create_stamp'){//创建时间
+            selectFieldValue = $().val();
+          }else if(selectField == 'sp_name'){//被委托方
+            selectFieldValue = $('#selected_field_value').val();
           }
-
           var url = "/planOrder/list?"+selectField+"="+selectFieldValue;
 
           dataTable.ajax.url(url).load();
@@ -118,11 +134,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
-          var status = $('#status').val();
+          var order_status = $('#order_status').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
-          var customer_code = $("#customer_code").val().trim();
-          var customer_name = $("#customer_name_input").val().trim();
+          var sp_name = $("#sp_name").val().trim();
           
           /*  
               查询规则：参数对应DB字段名
@@ -132,9 +147,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/planOrder/list?order_no="+order_no
-               +"&status="+status
-               +"&customer_code_like="+customer_code
-               +"&customer_name_like="+customer_name
+               +"&order_status="+order_status
+               +"&sp_name_like="+sp_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 
