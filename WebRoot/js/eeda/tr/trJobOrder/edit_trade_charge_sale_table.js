@@ -309,7 +309,7 @@ $(document).ready(function() {
                }
               }
             },
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "80px","className":"cny_total_amount",
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "90px","className":"cny_total_amount",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -383,7 +383,7 @@ $(document).ready(function() {
                     }
                 }
             },
-            { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "80px","className":"exchange_total_amount_rmb",
+            { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "90px","className":"exchange_total_amount_rmb",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
