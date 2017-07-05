@@ -3,7 +3,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	document.title = 'Booking列表| '+document.title;
 
     $("#breadcrumb_li").text('Booking列表');
-    
+      
+    $('.complex_search').click(function(event) {
+        if($('.search_single').is(':visible')){
+          $('.search_single').hide();
+        }else{
+          $('.search_single').show();
+        }
+    });
   	  if(type!=""){
   		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');
   		  $('#menu_order').removeClass('active').find('ul').removeClass('in');
@@ -62,37 +69,79 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           ]
       });
 
+      $("#selected_field").change(function(event){
+    	  var selected_field = $("#selected_field").val();
+    	  if(selected_field == "order_no"){
+    		  $("#order_no").show();
+    		  $("#creator_name").hide();
+    		  $("#sp_name").hide();
+    	  }else if(selected_field == "creator_name"){
+    		  $("#order_no").hide();
+    		  $("#sp_name").hide();
+    		  $("#creator_name").show();
+    	  }else if(selected_field == "sp_name"){
+    		  $("#order_no").hide();
+    		  $("#creator_name").hide();
+    		  $("#sp_name").show();
+    	  }
+      });
+      
+      $('#singleSearchBtn').click(function(){
+          var selectField = $('#selected_field').val();
+          var selectFieldValue = $('#selected_field_value').val();
+          var orderStatus = $("#orderTabs li.active").text().trim();
+          if(orderStatus=='全部'){
+    		  orderStatus = "";
+    	  }
+          if(selectField == 'order_no'){//Booking号
+            selectFieldValue = $('#order_no').val();
+          }else if(selectField == 'creator_name'){//创建人
+            selectFieldValue = $('#creator_name').val();
+          }else if(selectField == 'sp_name'){//被委托方
+            selectFieldValue = $('#sp_name').val();
+          }
+          var url = "/bookOrder/list?"+selectField+"="+selectFieldValue
+                   +"&order_status="+orderStatus;
+          dataTable.ajax.url(url).load();
+      });
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
-
+      
       $('#searchBtn').click(function(){
     	  var orderStatus = $("#orderTabs li.active").text().trim();
-
+    	  if(orderStatus=='全部'){
+    		  orderStatus = "";
+    	  }
           searchData(orderStatus); 
       })
-
+      
      var searchData=function(order_status){
           var order_no = $.trim($("#order_no").val()); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var sent_out_time_begin_time = $("#sent_out_time_begin_time").val();
           var sent_out_time_end_time = $("#sent_out_time_end_time").val();
-          var status = $('#status').val();
-          var customer_code = $("#customer_code").val().trim();
-          var customer_name = $("#customer_name_input").val().trim();
+          var creator_name = $("#creator_name_input").val();
+          var sp_name = $("#sp_name_input").val();
+          //var status = $('#status').val();
+          //var customer_code = $("#customer_code").val().trim();
+          //var customer_name = $("#customer_name_input").val().trim();
           var order_status = order_status;
+          
           //增加出口日期查询
           var url = "/bookOrder/list?order_no="+order_no
-          	   +"&status="+status
+          	   //+"&status="+status
           	   +"&order_status="+order_status
-          	   +"&customer_code_like="+customer_code
-               +"&customer_name_like="+customer_name
+          	   //+"&customer_code_like="+customer_code
+               //+"&customer_name_like="+customer_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
           	   +"&order_export_date_begin_time="+sent_out_time_begin_time
-          	   +"&order_export_date_end_time="+sent_out_time_end_time;
+          	   +"&order_export_date_end_time="+sent_out_time_end_time
+          	   +"&creator_name="+creator_name
+          	   +"&sp_name="+sp_name;
 
           dataTable.ajax.url(url).load();
       };
