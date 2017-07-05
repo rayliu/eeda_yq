@@ -1,0 +1,96 @@
+<html xmlns="http://www.w3.org/1999/xhtml" class="_ok_app_hidden" style="width: 100%; margin-left: 0px;"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商家后台-填写资料</title>
+<link rel="stylesheet" href="http://www.iwedclub.com/BusinessAdmin/css/style.default.css" type="text/css">
+<link rel="stylesheet" href="http://www.iwedclub.com/BusinessAdmin/css/pagestyle.css" type="text/css">
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.cookie.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.flot.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.flot.resize.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/custom/general.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/custom/dashboard.js"></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
+<!--[if IE 9]>
+    <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
+<![endif]-->
+<!--[if IE 8]>
+    <link rel="stylesheet" media="screen" href="css/style.ie8.css"/>
+<![endif]-->
+<!--[if lt IE 9]>
+    <script src="js/plugins/css3-mediaqueries.js"></script>
+<![endif]-->
+<script type="text/javascript">
+$(function(){
+    $('.hornav a').click(function(){
+        $('.hornav li').removeClass('current');
+        $(this).parent().addClass('current');
+        $("#personal").hide();
+        $("#company").hide();
+
+        var curShowType = $(this).data('type');
+        $("#"+curShowType).show();
+
+        if(curShowType=="personal"){
+            $("#Type").val(1);
+        }else{
+            $("#Type").val(2);
+        }
+    });
+});
+
+</script>
+<meta http-equiv="Content-Security-Policy" content="style-src * 'unsafe-inline' 'self' blob: data: file:"><meta name="chromesniffer" id="chromesniffer_meta" content="{&quot;jQuery&quot;:&quot;1.7&quot;,&quot;jQuery UI&quot;:&quot;1.8.16&quot;}"><script type="text/javascript" src="chrome-extension://fhhdlnnepfjhlhilgmeepgkhjmhhhjkh/js/detector.js"></script><style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
+.en-markup-crop-options {
+    top: 18px !important;
+    left: 50% !important;
+    margin-left: -100px !important;
+    width: 200px !important;
+    border: 2px rgba(255,255,255,.38) solid !important;
+    border-radius: 4px !important;
+}
+
+.en-markup-crop-options div div:first-of-type {
+    margin-left: 0px !important;
+}
+</style></head><div id="ok_frame_wrapper"><iframe id="ok_frame" src="chrome-extension://bicdefpoleoohkhgcbbhambpghigfeid/build/extension.html" class="MC40MzY5Mjk4OTE3MzgyMzgyNk9LMTQ5OTIzNTUxNTQ1MQ MC4wMTg3ODk1OTk3MjQzMzkyNDVPSyBDb21wb25lbnRzIDE0OTkyMzU1MTU0NTE" style="display:none"></iframe><fp-div id="okmemo_overlay" class="MC4wMTg3ODk1OTk3MjQzMzkyNDVPSyBDb21wb25lbnRzIDE0OTkyMzU1MTU0NTE"><fp-div class="okmemo-nav"></fp-div><fp-div class="okmemo-current okmemo-tag" style="height:584px;"><fp-div class="okmemo-current-mark"><fp-div class="okmemo-con" id="okmemo_current_tag"><fp-span class="public-collection">全部</fp-span><fp-span class="collect-success">正在保存</fp-span></fp-div><fp-div class="okmemo-description">拖拽至此处以完成收集</fp-div></fp-div><fp-div class="okmemo-tmp-note"><fp-div class="okmemo-note-title"><fp-h2><fp-span id="okmemo_note_title"></fp-span></fp-h2></fp-div><fp-div class="okmemo-note-content"><fp-div class="okmemo-padding-con" id="okmemo_note_content"></fp-div></fp-div></fp-div></fp-div><fp-div class="okmemo-bottom-btn"><fp-div class="okmemo-bottom-area okmemo-no-tag okmemo-tag"><fp-div class="okmemo-con">待分类</fp-div></fp-div></fp-div><fp-div class="okmemo-others-wrapper" id="okmemo_others_wrapper"><fp-div class="okmemo-other okmemo-private okmemo-tag"><fp-div class="okmemo-con">私密</fp-div></fp-div></fp-div></fp-div></div>
+<body class="reg_header">
+<form method="post" action="reg-finish.php">
+<input type="hidden" name="LoginName" value="">
+<input type="hidden" name="Mobile" value="">
+<input type="hidden" name="LoginPass" value="">
+<input type="hidden" name="LoginPassConfirm" value="">
+<input type="hidden" id="Type" name="Type" value="1">
+<div class="bodywrapper">
+    <!--topheader-->
+    <!--leftmenu-->
+    <div style="width:900px; margin:30px auto; border:1px solid #ccc; background-color:#FFF;">
+        <div class="pageheader notab">
+            <h1 class="pagetitle">注册账号 &gt; 填写资料 &gt;  <strong class="orange">等待审核</strong> &gt; 完成 </h1>
+        </div>
+        <!--pageheader-->
+        
+        <div id="contentwrapper" class="contentwrapper">
+
+            <h3>您提交的资料已成功，我们会尽快审核并通知结果，谢谢。</h3>
+
+            
+        </div>
+        <!--contentwrapper-->
+    </div>
+    <!-- centercontent -->
+</div>
+<!--bodywrapper-->
+
+</form>
+
+</body>
+
+
+
+
+</html>

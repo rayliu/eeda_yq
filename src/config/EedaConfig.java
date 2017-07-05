@@ -50,6 +50,7 @@ import controllers.IndexController;
 import controllers.app.AppControllerForMobile;
 import controllers.bizadmin.BizAdminController;
 import controllers.bizadmin.account.AccountController;
+import controllers.bizadmin.register.RegisterController;
 import controllers.eeda.LocationController;
 import controllers.webadmin.WebAdminController;
 import controllers.webadmin.ad.AdController;
@@ -145,6 +146,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/", IndexController.class);
 	    //商家的后台
         me.add("/BusinessAdmin", BizAdminController.class);
+        me.add("/BusinessAdmin/register", RegisterController.class);
         me.add("/BusinessAdmin/account", AccountController.class);
         me.add("/BusinessAdmin/product", controllers.bizadmin.product.ProductController.class);
         me.add("/BusinessAdmin/ad", controllers.bizadmin.ad.AdController.class);

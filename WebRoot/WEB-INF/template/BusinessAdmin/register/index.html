@@ -1,0 +1,106 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>商家后台-商家注册</title>
+<link rel="stylesheet" href="http://www.iwedclub.com/BusinessAdmin/css/style.default.css" type="text/css" />
+<link rel="stylesheet" href="http://www.iwedclub.com/BusinessAdmin/css/pagestyle.css" type="text/css" />
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.cookie.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.flot.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.flot.resize.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/custom/general.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/custom/dashboard.js"></script>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
+<!--[if IE 9]>
+    <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
+<![endif]-->
+<!--[if IE 8]>
+    <link rel="stylesheet" media="screen" href="css/style.ie8.css"/>
+<![endif]-->
+<!--[if lt IE 9]>
+    <script src="js/plugins/css3-mediaqueries.js"></script>
+<![endif]-->
+</head>
+<body class="reg_header">
+<form method="post" action="/BusinessAdmin/register/info">
+<div class="bodywrapper" style="width:900px; margin:100px auto; border:1px solid #ccc; background-color:#FFF">  
+    <!--leftmenu-->
+    <div class="">
+        <div class="pageheader notab">
+            <h1 class="pagetitle"> <strong class="orange">注册账号</strong> > 填写资料 >  等待审核 > 完成 </h1>      
+        </div>
+        <div class="registered " id="login-content">
+            <dl>
+                <dt>
+                    <div class="fm-label-wrap "> 
+                        <label for="fm-login-id">用户名：</label>
+                    </div>
+                </dt>
+                <dd>
+                    <div class="textin">
+                        <input type="text" name="LoginName" />
+                        <span class="red">            *</span>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt>
+                    <div class="fm-label-wrap "> 
+                        <label for="fm-login-id">手机号码：</label>
+                    </div>
+                </dt>
+                <dd>
+                    <div class="textin">
+                        <input type="text" name="Mobile" />
+                        <span class="red">*</span>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fm-label">
+                    <div class="fm-label-wrap ">
+                        <label for="fm-login-password">设置密码：</label>
+                    </div>
+                </dt>
+                <dd class="fm-field" id="fm-login-password-wrap">
+                    <div class="textin">
+                        <input type="password" name="LoginPass" >
+                        <span class="red">*</span>
+                    </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="fm-label">
+                    <div class="fm-label-wrap ">
+                        <label for="fm-login-password">确认密码：</label>
+                    </div>
+                </dt>
+                <dd class="fm-field" id="fm-login-password-wrap">
+                    <div class="textin">
+                        <input type="password" name="LoginPassConfirm" />
+                        <span class="red">*</span>
+                    </div>
+                </dd>
+            </dl>
+            <p style="padding-left:10px;">
+                注册即同意并接受<strong class="red"><a href="agreement.html" class="orangeboldlink">商家服务条款</a></strong>
+            </p>
+            <div style="padding-left:10px; margin-top:10px;">
+                <button class="stdbtn btn_blue" style="width:200px;" >下一步</button>
+            </div>
+        </div>
+    <!--pageheader-->
+    <!--contentwrapper-->
+  </div>
+  <!-- centercontent -->
+</div>
+<!--bodywrapper-->
+</form>
+</body>
+</html>
