@@ -64,6 +64,8 @@ $(document).ready(function() {
          });
 
         eeda.bindTableField('air_table','AIR_COMPANY','/serviceProvider/searchAirCompany','air');
+        eeda.bindTableField('air_table','START_FROM','/location/searchPort','air_port');
+        eeda.bindTableField('air_table','DESTINATION','/location/searchPort','air_port');
     };
     //------------事件处理
     var cargoTable = eeda.dt({
@@ -106,11 +108,19 @@ $(document).ready(function() {
                     return '<input type="text" name="voyage_no" value="'+data+'" class="form-control" style="width:200px"/>';
                 }
             },
-            { "data": "START_FROM", "width": "180px",
+            { "data": "START_FROM", "width":"130px",
                 "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="start_from" value="'+data+'" class="form-control" style="width:200px"/>';
+                if(!data)
+                       data='';
+                   var field_html = template('table_dropdown_template',
+                       {
+                           id: 'START_FROM',
+                           value: data,
+                           display_value: full.START_FROM_NAME,
+                           style:'width:150px'
+                       }
+                   );
+                   return field_html; 
                 }
             },
             { "data": "ETD", "width": "180px",
@@ -126,13 +136,22 @@ $(document).ready(function() {
 		                );
 	                    return field_html;
             	}
-            },
-            { "data": "DESTINATION", "width": "180px",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="destination" value="'+data+'" class="form-control" style="width:200px"/>';
-            	}
+            },            
+            { "data": "DESTINATION", "width":"130px",
+                "render": function ( data, type, full, meta ) {
+                if(!data)
+                       data='';
+                   var field_html = template('table_dropdown_template',
+                       {
+                           id: 'DESTINATION',
+                           value: data,
+                           list:'list',
+                           display_value: full.DESTINATION_NAME,
+                           style:'width:150px'
+                       }
+                   );
+                   return field_html; 
+                }
             },
             { "data": "ETA", "width": "180px",
                 "render": function ( data, type, full, meta ) {
@@ -149,6 +168,20 @@ $(document).ready(function() {
                 }
             }, 
             { "data": "AIR_COMPANY_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            }, 
+            { "data": "START_FROM_NAME", "visible": false,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return data;
+                }
+            }, 
+            { "data": "DESTINATION_NAME", "visible": false,
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
