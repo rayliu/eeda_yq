@@ -125,14 +125,15 @@ public class GateOutController extends Controller {
 			+ " where go.office_id="+office_id
 			+ error_flag
 			+ condition
-			+ " group by go.id ";
+			+ " group by go.id"
+			+ " order by go.id desc";
     	
         
         
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql + " order by go.id desc " +sLimit);
+        List<Record> orderList = Db.find(sql +sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
@@ -141,6 +142,77 @@ public class GateOutController extends Controller {
         orderListMap.put("data", orderList);
 
         renderJson(orderListMap); 
+    }
+    
+    
+    public void getTotalQuantity(){
+    	String sql = "";
+        String condition="";
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        
+        String error_flag = getPara("error_flag");
+        if(StringUtils.isNotBlank(error_flag)){
+        	error_flag = " and error_flag = '"+error_flag+"'";
+        }else{
+        	error_flag = "";
+        }
+
+        String jsonStr = getPara("jsonStr");
+    	if(StringUtils.isNotBlank(jsonStr)){
+    		Gson gson = new Gson(); 
+            Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class);  
+            String item_no = dto.get("item_no");
+            String item_name = dto.get("item_name");
+            String part_name = dto.get("part_name");
+            String part_no = dto.get("part_no");
+            
+            if(StringUtils.isNotBlank(item_no)){
+            	condition += " and pro.item_no like '%"+item_no+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(item_name)){
+            	condition += " and pro.item_name like '%"+item_name+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(part_name)){
+            	condition += " and pro.part_name like '%"+part_name+"%'";
+            }
+            
+            if(StringUtils.isNotBlank(part_no)){
+            	condition += " and pro.part_no like '%"+part_no+"%'";
+            }
+            
+            
+            String begin_time = dto.get("create_time_begin_time");
+            if(StringUtils.isBlank(begin_time)){
+            	begin_time = "2000-01-01";
+            }
+            
+            String end_time = dto.get("create_time_end_time");
+            if(StringUtils.isBlank(end_time)){
+            	end_time = "2037-01-01";
+            }else{
+            	end_time = end_time +" 23:59:59";
+            }
+            
+            condition += " and go.create_time between '"+begin_time+"' and '"+end_time+"'";
+            
+    	}
+
+    	sql = "SELECT sum(A.quantity) totalPiece from("
+    		+ " select "
+    		+ " go.quantity "
+			+ " from gate_out go "
+			+ " left join wmsproduct pro on pro.part_no = go.part_no"
+			+ " where go.office_id="+office_id
+			+ error_flag
+			+ condition
+			+ " group by go.id ) A";
+
+        Record re = Db.findFirst(sql);
+
+        renderJson(re); 
     }
  
 

@@ -151,6 +151,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#resetBtn').click(function(e){
         	$("#orderForm")[0].reset();
         	showText();
+        	$('#totalPiece').html('0.00');
         	searchData(); 
         });
 
@@ -172,6 +173,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	      	}
 	        return item;
         };
+        
+        var getQuantity = function(){
+        	var itemJson = buildCondition();
+        	var url = "/gateOut/getTotalQuantity";
+        	$.post(url,{error_flag:"N",jsonStr:JSON.stringify(itemJson)},function(data){
+        		if(data){
+                	$('#totalPiece').html(data.TOTALPIECE);
+        		}
+        	});
+        };
       
         var searchData=function(){
         	$.blockUI({ 
@@ -181,6 +192,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var itemJson = buildCondition();
         	var url = "/gateOut/list?error_flag=N&jsonStr="+JSON.stringify(itemJson);
         	dataTable.ajax.url(url).load();
+
+        	getQuantity();
         };
         
         
@@ -200,6 +213,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	dataTable.ajax.url("/gateOut/list?error_flag=N").load();
         	errorTable.ajax.url("/gateOut/list?error_flag=Y").load();
         }
+        
+        getQuantity();
         
 	});
 });
