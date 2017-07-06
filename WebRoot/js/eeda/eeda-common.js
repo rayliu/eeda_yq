@@ -1,17 +1,26 @@
 define(['jquery', 'dataTablesBootstrap'], function($){
   
     var url = window.location;
-    // var element = $('ul.nav a').filter(function() {
-    //     return this.href == url;
-    // }).addClass('active').parent().parent().addClass('in').parent();
-    var element = $('ul.nav a').filter(function() {
+    var order_name = "";
+    var element = $('#side-menu ul.nav a').filter(function() {
         var pathname = '/'+url.pathname.split('/')[1];
 
-        var order_name = $('#side-menu a[href="'+pathname+'"]').text().trim();
-        $('#breadcrumb_li').text(order_name);
-        
-        return this.href.indexOf(pathname)>0;
+        var href = '/'+this.href.split('/')[3];
+        if(href == pathname){
+          // console.log('this.href:'+this.href);
+          // console.log('pathname:'+pathname);
+          order_name = $(this).text().trim();
+          // console.log('order_name:'+order_name);
+        }
+        return href == pathname;
     }).addClass('active').parent();
+
+    
+    $('#breadcrumb_li').text(order_name);
+    if(document.title.indexOf('|') == -1){
+      document.title = order_name+' | '+document.title;
+    }
+    
 
     while (true) {
         if (element.is('li')) {
