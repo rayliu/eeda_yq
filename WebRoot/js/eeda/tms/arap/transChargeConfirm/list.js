@@ -27,8 +27,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 			            	}
 						}
 					},
-					{ "data": "CABINET_DATE", "width": "60px"},
-					{ "data": "CREATE_STAMP", "width": "60px"},
+					{ "data": "CABINET_DATE", "width": "65px"},
+					{ "data": "CREATE_STAMP", "width": "65px"},
 					{ "data": "CONTAINER_NO", "width": "60px"},
 					{ "data": "CABINET_TYPE", "width": "60px"},
 					{ "data": "SO_NO", "width": "80px"},
@@ -46,10 +46,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 					{ "data": "PRICE", "width": "40px"},
 					{ "data": "AMOUNT","width": "40px"},
 					{ "data": "UNIT_NAME", "width": "40px"},
-					{ "data": "TOTAL_AMOUNT", "width": "40px","class":"total_amount"},
-					{ "data": "CURRENCY_NAME", "width": "40px","class":"currency_name"},
-					{ "data": "EXCHANGE_RATE", "width": "40px"},
-					{ "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
+					{ "data": "TOTAL_AMOUNT", "width": "60px","class":"total_amount"},
+					{ "data": "CURRENCY_NAME", "width": "60px","class":"currency_name"},
+					{ "data": "EXCHANGE_RATE", "width": "60px"},
+					{ "data": "CURRENCY_TOTAL_AMOUNT", "width": "70px"},
 					{ "data": "REMARK", "width": "60px"},
             ]
         });

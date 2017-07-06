@@ -55,7 +55,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             		  return '';
             	  }
               },
-              { "data": "CABINET_TYPE"},
+              { "data": "CABINET_TYPE",
+            	  "render":function(data, type, full, meta ) {
+            		  if(!data){
+            			  return  data="";
+            		  }else{
+            			  if(full.CABINET_TYPE==full.TRUCK_TYPE){
+                			  return data;
+                		  }else{
+                			  data="<span style='color:red;'>"+full.CABINET_TYPE+"</span>";
+                		  }
+                		  return data; 
+            		  }            		  
+            	  }
+              },
               { "data": "HEAD_CARRIER_NAME"}, 
               { "data": "YUNFEI",
                   "render": function ( data, type, full, meta ) {
