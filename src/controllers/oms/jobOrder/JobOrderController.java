@@ -812,9 +812,9 @@ public class JobOrderController extends Controller {
     	map.set("jArray", jArray);
     	
     	String jsonStr = json.toJson(map);
-    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost' and order_type='ocean'",order_id);
+    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost' and order_type='ocean_gh'",order_id);
     	if(reJCC != null){
-    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='ocean' and ? between contract_begin_time and contract_end_time",order_id,atd);
+    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='ocean_gh' and ? between contract_begin_time and contract_end_time",order_id,atd);
     		
     		String reConditions = reJCC.getStr("conditions");
     		if(!jsonStr.equals(reConditions) || re == null){
@@ -824,10 +824,10 @@ public class JobOrderController extends Controller {
     			
     			//校验是否带过来的合同费用是否已确认
     			Record reArap = Db.findFirst("select * from job_order_arap "
-    					+ " where order_id = ? and order_type = 'cost' and type = '海运' and audit_flag = 'Y' and cus_contract_flag = 'Y'",order_id);
+    					+ " where order_id = ? and order_type = 'cost' and type = '海运' and audit_flag = 'Y' and cus_contract_flag = 'GH'",order_id);
     			if(reArap == null){
     				//先删除原来的再把最新的合同费用明细带过去
-        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and type = '海运' and cus_contract_flag = 'Y'",order_id);
+        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and type = '海运' and cus_contract_flag = 'GH'",order_id);
         			getOceanGHSpContractMsg(order_id,jsonStr,jArray,atd);
     			}else{
     				//已确认后无法更新费用明细
@@ -837,7 +837,7 @@ public class JobOrderController extends Controller {
     		Record re = new Record();
         	re.set("conditions", jsonStr);
         	re.set("charge_type", "cost");
-        	re.set("order_type", "ocean");
+        	re.set("order_type", "ocean_gh");
         	re.set("order_id", order_id);
         	Db.save("job_contract_compare", re);
         	
@@ -936,12 +936,12 @@ public class JobOrderController extends Controller {
     		jarap.set("exchange_total_amount_rmb", total_amount*rate);
     		jarap.set("rmb_difference", 0.00);
     		jarap.set("order_id", order_id);
-    		jarap.set("cus_contract_flag","Y");//标记位 
+    		jarap.set("cus_contract_flag","GH");//标记位 
     		jarap.save();
     	}
     	
     	//更新合同时间到对比表，方便校验
-    	Record jc = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type = 'cost' and order_type='ocean'",order_id);
+    	Record jc = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type = 'cost' and order_type='ocean_gh'",order_id);
     	if(jc != null){
     		jc.set("contract_begin_time",begin_time );
     		jc.set("contract_end_time", end_time);
@@ -1007,9 +1007,9 @@ public class JobOrderController extends Controller {
     	map.set("fee_count", fee_count);
     	
     	String jsonStr = json.toJson(map);
-    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost' and order_type='ocean'",order_id);
+    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost' and order_type='ocean_sh'",order_id);
     	if(reJCC != null){
-    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='ocean' and ? between contract_begin_time and contract_end_time",order_id,atd);
+    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='ocean_sh' and ? between contract_begin_time and contract_end_time",order_id,atd);
     		
     		String reConditions = reJCC.getStr("conditions");
     		if(!jsonStr.equals(reConditions) || re == null){
@@ -1019,10 +1019,10 @@ public class JobOrderController extends Controller {
     			
     			//校验是否带过来的合同费用是否已确认
     			Record reArap = Db.findFirst("select * from job_order_arap "
-    					+ " where order_id = ? and order_type = 'cost' and type = '海运' and audit_flag = 'Y' and cus_contract_flag = 'Y'",order_id);
+    					+ " where order_id = ? and order_type = 'cost' and type = '海运' and audit_flag = 'Y' and cus_contract_flag = 'SH'",order_id);
     			if(reArap == null){
     				//先删除原来的再把最新的合同费用明细带过去
-        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and type = '海运' and cus_contract_flag = 'Y'",order_id);
+        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and type = '海运' and cus_contract_flag = 'SH'",order_id);
         			getOceanSHSpContractMsg(order_id,jsonStr,atd);
     			}else{
     				//已确认后无法更新费用明细
@@ -1063,14 +1063,13 @@ public class JobOrderController extends Controller {
     	
     	String billing_method_condition = "";
     	if(billing_method.equals("perWeight")){
-    		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.gross_weight1,'0')"
-    				+ " and ifnull(sci.gross_weight2,'10000') and ifnull(sci.container_type, '') = '') "
-    				+ "  and ifnull(sci.gross_weight1, '') != '' and ifnull(sci.gross_weight2, '') != ''";
+    		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(sci.gross_weight1,0)"
+    				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.gross_weight2,10000)) ";
     	}else{
-    		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.volume1,'0') "
-    				+ " and ifnull(sci.volume2,'10000') and ifnull(sci.container_type, '') = '') "
-    				+ "  and ifnull(sci.volume1, '') != '' and ifnull(sci.volume2, '') != ''";
+    		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(sci.volume1,0) "
+    				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.volume2,10000))";
     	}
+
 
     	String sql = "select sci.*,sc.contract_begin_time,sc.contract_end_time,"
     			+ " if(ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
@@ -1083,7 +1082,7 @@ public class JobOrderController extends Controller {
     			+ " and ('"+atd+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
     			+ " and scl.pol_id = '"+pol+"' and scl.pod_id = '"+pod+"'"
     			+ " and scl.por_id = '"+por+"' and scl.hub_id = '"+hub+"' and  scl.carrier_id = '"+carrier+"'"
-    			+ " and ("+billing_method_condition+" "
+    			+ " and ("+billing_method_condition
     			+ " or (ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
     			+ " and ifnull(sci.volume1,'')='' and ifnull(sci.volume2,'')=''))"
     			+ " and contract_type = 'ocean'"
@@ -1130,7 +1129,7 @@ public class JobOrderController extends Controller {
     		jarap.set("exchange_total_amount_rmb", total_amount*rate);
     		jarap.set("rmb_difference", 0.00);
     		jarap.set("order_id", order_id);
-    		jarap.set("cus_contract_flag","Y");//标记位 
+    		jarap.set("cus_contract_flag","SH");//标记位 
     		jarap.save();
     	}
     	
@@ -1268,13 +1267,11 @@ public class JobOrderController extends Controller {
     	
     	String billing_method_condition = "";
     	if(billing_method.equals("perWeight")){
-    		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.gross_weight1,'0')"
-    				+ " and ifnull(sci.gross_weight2,'10000') and ifnull(sci.container_type, '') = '') "
-    				+ "  and ifnull(sci.gross_weight1, '') != '' and ifnull(sci.gross_weight2, '') != ''";
+    		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(sci.gross_weight1,0)"
+    				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.gross_weight2,10000)) ";
     	}else{
-    		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.volume1,'0') "
-    				+ " and ifnull(sci.volume2,'10000') and ifnull(sci.container_type, '') = '') "
-    				+ "  and ifnull(sci.volume1, '') != '' and ifnull(sci.volume2, '') != ''";
+    		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(sci.volume1,0) "
+    				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.volume2,10000))";
     	}
 
     	String sql = "select sci.*,sc.contract_begin_time,sc.contract_end_time,"
@@ -1288,7 +1285,7 @@ public class JobOrderController extends Controller {
     			+ " and ('"+etd+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
     			+ " and scl.pol_id = '"+start_from+"' and scl.pod_id = '"+destination+"'"
     			+ " and  scl.air_company = '"+air_company+"'"
-    			+ " and ("+billing_method_condition+" "
+    			+ " and ("+billing_method_condition
     			+ " or (ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
     			+ " and ifnull(sci.volume1,'')='' and ifnull(sci.volume2,'')=''))"
     			+ " AND contract_type = 'air'"
@@ -1308,7 +1305,9 @@ public class JobOrderController extends Controller {
     		}
     		
     		JobOrderArap jarap = new JobOrderArap();
-    		if(re.getDouble("price")<0){
+    		Double price = re.getDouble("price") == null?0.0:re.getDouble("price");
+    		if(price < 0){
+    			price = price * -1;
     			jarap.set("order_type", "charge");
     		}else{
     			jarap.set("order_type", "cost");
@@ -1317,10 +1316,10 @@ public class JobOrderController extends Controller {
     		jarap.set("sp_id", booking_agent);
     		jarap.set("charge_id", re.get("fee_id"));
     		jarap.set("charge_eng_id", re.get("fee_id"));
-    		jarap.set("price", re.get("price"));
+    		jarap.set("price", price);
     		jarap.set("amount", amount);
     		jarap.set("unit_id", re.get("uom"));
-    		Double total_amount = re.getDouble("price")*amount;
+    		Double total_amount = price*amount;
     		jarap.set("total_amount", total_amount);
     		jarap.set("currency_id", re.get("currency_id"));
     		//获取汇率
