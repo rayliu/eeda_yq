@@ -788,7 +788,7 @@ public class ServiceProviderController extends Controller {
         List<Record> rec = null;
         String sql = "select p.id,p.abbr name, p.phone, p.address from party p where office_id="+office_id;
         if(!StringUtils.isBlank(name)){
-            sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
+            sql+=" and (p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%')";
         }
         rec = Db.find(sql);
         renderJson(rec);
