@@ -132,7 +132,19 @@
                                         ${module.module_name!}<span class="fa arrow"></span>
                                     </a>
                                     <% if(module.orders != null ){%>
+
+
                                         <ul class="nav nav-second-level">
+                                            <!--li id="${module.id!}">
+                                                <a href="#">
+                                                    ${module.module_name!}<span class="fa arrow"></span>
+                                                </a>
+                                                <ul class="nav nav-second-level">
+                                                    <li id="${module.id}">
+                                                        <a href="#">${module.module_name!}</a>
+                                                    </li>
+                                                </ul>
+                                            </li-->
                                             <%
                                             for(menu_order in module.orders){
                                             %>
