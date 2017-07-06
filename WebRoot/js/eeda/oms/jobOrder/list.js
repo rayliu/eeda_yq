@@ -14,6 +14,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
   	  if(type!=""){
   		$('#orderTabs').css('display','none');
   	  }
+  	  
+  	$('.complex_search').click(function(event) {
+        if($('.search_single').is(':visible')){
+          $('.search_single').hide();
+        }else{
+          $('.search_single').show();
+        }
+    });
   	//datatable, 动态处理
       var dataTable = eeda.dt({
           id: 'eeda-table',
@@ -191,7 +199,90 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           });
       });
 
-      
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField == 'sono_like'){
+	     	 $('#sono').show();
+	          $('#container_no').hide();
+	          $('#status_list').hide();
+	          $('#order_no').hide();
+	          $('#old_order_no').hide();
+	          $('#customer_name').hide();
+	          $('#customer_code').hide();
+	      }else if(selectField == 'status'){
+	    	  $('#sono').hide();
+		      $('#container_no').hide();
+		      $('#order_no').hide();
+		      $('#old_order_no').hide();
+		      $('#customer_name').hide();
+		      $('#customer_code').hide()
+		      $('#status_list').show();
+	     }else if(selectField=='container_no'){
+	     	  $('#sono').hide();
+	          $('#status_list').hide();
+	          $('#order_no').hide();
+	          $('#old_order_no').hide();
+	          $('#customer_name').hide();
+	          $('#customer_code').hide();
+	          $('#container_no').show();
+	     }else if(selectField=='old_order_no'){
+	     	  $('#sono').hide();
+	          $('#container_no').hide();
+	          $('#status_list').hide();
+	          $('#order_no').hide();
+	          $('#customer_name').hide();
+	          $('#customer_code').hide();
+	          $('#old_order_no').show();
+	     }else if(selectField=='order_no'){
+	     	  $('#sono').hide();
+	          $('#container_no').hide();
+	          $('#status_list').hide();
+	          $('#old_order_no').hide();
+	          $('#customer_name').hide();
+	          $('#customer_code').hide();
+	          $('#order_no').show();
+	     }else if(selectField=='customer_name'){
+	     	  $('#sono').hide();
+	          $('#container_no').hide();
+	          $('#status_list').hide();
+	          $('#order_no').hide();
+	          $('#old_order_no').hide();
+	          $('#customer_code').hide();
+	          $('#customer_name').show();
+         }else if(selectField=='customer_code_like'){
+         	  $('#sono').hide();
+              $('#container_no').hide();
+              $('#status_list').hide();
+              $('#order_no').hide();
+              $('#old_order_no').hide();
+              $('#customer_name').hide();
+              $('#customer_code').show();
+        }
+     });
+	
+	$('#singleSearchBtn').click(function(){
+	     var selectField = $('#selected_field').val();
+	     var selectFieldValue = $('#selected_field_value').val();
+	     if(selectField == 'sono_like'){
+	       selectFieldValue = $('#sono').val();
+	     }else if(selectField == 'container_no'){
+	       selectFieldValue = $('#container_no').val();
+	     }else if(selectField == 'order_no'){
+	       selectFieldValue = $("#order_no").val();
+	     }else if(selectField == 'old_order_no'){
+	       selectFieldValue = $('#old_order_no').val();
+	     }else if(selectField == 'customer_name'){
+	     	selectFieldValue = $('#customer_name').val();
+	     }else if(selectField == 'customer_code_like'){
+	     	selectFieldValue = $('#customer_code').val();
+	     }else if(selectField == 'status'){
+	     	selectFieldValue = $('#status_list').val();
+	     }
+     
+	     var url = "/jobOrder/list?"+selectField+"="+selectFieldValue;
+	
+	     dataTable.ajax.url(url).load();
+	});
       
       
       $('#resetBtn').click(function(e){

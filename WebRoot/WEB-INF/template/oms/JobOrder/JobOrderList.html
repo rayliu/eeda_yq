@@ -8,12 +8,56 @@
             <div class="row simple_search_div">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
-                            <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
-                        </h4>
-                    </div>
-                    <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
+                    	<div class="row"><!--  第1行  -->
+                        	<div class="col-lg-4"><!--  三列排版  -->
+                            	<div class="search_single">
+                              		<select id="selected_field" name="selected_field" class="form-control search-label">
+	                            		<option value="sono_like">SO号</option>
+	                               		<option value="container_no">柜号</option>
+	                               		<option value="status">状态</option>
+	                                	<option value="order_no">工作单号</option>
+	                                	<option value="old_order_no">旧工作单号</option>
+	                                	<option value="customer_name">客户名称</option>
+	                                	<option value="customer_code_like">客户代码</option>
+                            		</select>
+
+                            		<input type="text" class="form-control search-control" id="sono" name="sono">
+                            		
+                            		<input type="text" class="form-control search-control" id="container_no" name="container_no" style="display: none;">
+                            		
+                            		<select id="status_list" name="status_list" class="form-control search-control" style="display: none;">
+                                		<option value="新建">新建</option>
+                                		<option value="已完成">已完成</option>
+                            		</select>
+                            
+                           	 		<input type="text" class="form-control search-control" id="order_no" name="order_no" style="display: none;">
+                           	 
+                           	 		<input type="text" class="form-control search-control" id="old_order_no" name="old_order_no" style="display: none;">
+                           	 		
+                           	 		<input type="text" class="form-control search-control" id="customer_name" name="customer_name" style="display: none;">
+                           	 		
+                           	 		<input type="text" class="form-control search-control" id="customer_code" name="customer_code" style="display: none;">
+                           	 		
+                          		</div>
+                      		</div>
+                      <div class="col-lg-4"><!--  三列排版  -->
+                          <div class="search_single">
+                            <button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
+                            <a class="btn btn_green" href="/planOrder/create">新增计划订单</a>
+                          </div>
+                          
+                      </div>
+                      <div class="col-lg-4"><!--  三列排版  -->
+                          <h4 class="panel-title pull-right" style="padding-top: 5px;">
+                              <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
+                                <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
+                              </a>
+                          </h4>
+                      </div>
+                  </div>
+                  
+              </div>
+                    <div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
                         <div class="panel-body" id="ChargeDiv">
                             <div class="col-lg-12">
                                 <form id="orderForm">
