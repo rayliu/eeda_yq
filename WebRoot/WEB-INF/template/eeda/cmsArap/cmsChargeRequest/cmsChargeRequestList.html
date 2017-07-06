@@ -1,17 +1,29 @@
 <%layout("/eeda/layout.html"){%>
 <div id="page-wrapper">
 	<div class="row simple_search_div">
-        <div class="col-lg-12">
-						<form id="applicationForm" role="form" style="margin: 15px 15px;">
-						    <input id='back' name='back' type="hidden" value="${back!''}">
+        <div class="panel panel-default">
+	    	<div class="panel-heading">
+	        	<h4 class="panel-title">
+	            	<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+	                	<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件 
+	                </a>
+                </h4>
+	        </div>
+	    	<div id="collapseChargeInfo" class="panel-collapse collapse " aria-expanded="false" style="height: auto;">
+	        	<div class="panel-body" id="ChargeDiv">
+        			<div class="col-lg-12">
+						<form id="applicationForm" role="form" >
+							<input id='back' name='back' type="hidden" value="${back!''}">
+                			<input id="confirmVal" type="hidden">
 							<div class="row search_panel">
 								<div class="col-lg-4">
 									<input id="rowIndex" type="text" hidden>
+									<input id="table_id" type="text" hidden>
 									<div class="form-group">
 										<%include("/eeda/component/form/inputSpField.html", { id:'sp_id', label:'结算公司',  value: '' }){} %>
-	                                </div>     
-                                    <div class="form-group">      
-                                         	<%include("/eeda/component/form/inputField.html", {id:'orderNo', label:'业务单据号'}){} %>
+		                            </div>     
+	                                <div class="form-group">      
+	                                  	<%include("/eeda/component/form/inputField.html", {id:'orderNo', label:'业务单据号'}){} %>
 									</div>
 									<div class="form-group">
 										<label class="search-label">申请单号</label>
@@ -22,36 +34,57 @@
 										<select id="status2" class="form-control search-control status2">
 											<option value="新建">新建</option>
 											<option value="已复核">已复核</option>
-											<option value="已收款">已收款</option>
+											<option value="复核不通过">复核不通过</option>
+											<option value="已付款">已付款</option>
+	                     					<option value="该笔为坏账">该笔为坏账</option>
 											<option value=""></option>
-										</select>
+											</select>
 									</div>
 								</div>
 								<!-- end of col-lg-6-->
 								<div class="col-lg-4">
 									<div class="form-group">      
-                                         	<%include("/eeda/component/form/inputDateQueryField.html", {id:'begin_date', label:'创建时间', value:''}){} %>
+	                                   	<%include("/eeda/component/form/inputField.html", {id:'sp_code', label:'结算公司代码'}){} %>
+									</div>
+									<div class="form-group">
+										<label class="search-label">项目</label>
+										<select id="fee_type" class="form-control search-control ">
+											<option></option>
+											<option value="transFee">代理货运服务费</option>
+											<option value="customFee">代理报关服务费</option>
+											<option value="consultFee">咨询服务费</option>
+											<option value="internationalFee">国际货代服务费</option>
+			                                <option value="transAndInsurance">货物运输保险费</option>
+			                                <option value="domesticPaymentFee" >国内货款</option>
+			                                <option value="otherFee">其他</option>
+										</select>
 									</div>
 									<div class="form-group">      
-                                         	<%include("/eeda/component/form/inputDateQueryField.html", {id:'check_begin_date', label:'复核时间', value:''}){} %>
+			                   			<%include("/eeda/component/form/dateInputField.html", {id:'service_stamp', label:'业务发生月', value:''}){} %>
+									</div>
+										
+								</div>
+							<div class="col-lg-4">
+								<div class="form-group">      
+	                            		<%include("/eeda/component/form/inputDateQueryField.html", {id:'check_begin_date', label:'复核时间', value:''}){} %>
 									</div>
 									<div class="form-group">      
-                                         	<%include("/eeda/component/form/inputDateQueryField.html", {id:'confirmBegin_date', label:'付款时间', value:''}){} %>
+	                            		<%include("/eeda/component/form/inputDateQueryField.html", {id:'confirmBegin_date', label:'付款时间', value:''}){} %>
 									</div>
 									<div class="form-group">      
-	                             			<%include("/eeda/component/form/dateInputField.html", {id:'service_stamp', label:'业务发生月', value:''}){} %>
+	                            		<%include("/eeda/component/form/inputDateQueryField.html", {id:'begin_date', label:'创建时间', value:''}){} %>
 									</div>
 								</div>
 								
 							</div>
-							<!-- end of row-->
-					
-					<button id="searchBtn1" class="btn btn_grey" type="button">查询</button>
-                    <button id="resetBtn1" class="btn btn_white" type="button">清空条件</button>
-                    <a href="/cmsChargeRequest/create" class="btn btn_green" type="button">创建申请单</a>
-					</form>
-				</div>
+								<button id="searchBtn1" class="btn btn_grey" type="button">查询</button>
+                    			<button id="resetBtn1" class="btn btn_white" type="button">清空条件</button>
+						</form>
+					</div>
+		 		</div>
+			</div>
 		</div>
+	</div>
 					
 		
 		<div class="simple_row_div">
@@ -59,7 +92,6 @@
 					<span class="badge" style='margin-top:12px;margin-right:5px;display:none;'> USD总额: <span id="usd_totalAmountSpan">0</span></span>
 					<span class="badge" style='margin-top:12px;margin-right:5px;display:none;'> JPY总额: <span id="jpy_totalAmountSpan">0</span></span>
 					<span class="badge" style='margin-top:12px;margin-right:10px;display:none;'> HKD总额: <span id="hkd_totalAmountSpan">0</span></span>
-					<button id="totalZero" class="badge"  style='margin-top:12px;background-color: #005BAC;'>金额清零</button>&nbsp;&nbsp;
 					<button id="checked" class="badge  btn btn_green" style="margin-top:12px;"  disabled>复核</button>
 					<button id="confirmed" class="badge btn btn_green" style="margin-top:12px;"  disabled>付款确认</button>
 		</div>
