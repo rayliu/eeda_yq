@@ -82,7 +82,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            },
 	            { "data": "CHARGE_RMB", "width": "120px","class":"charge_rmb",
 	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
+            	    if(!data){
             	    	return '';
             	    }
 					return eeda.numFormat(data.toFixed(2),3);
@@ -90,13 +90,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            },
 	            { "data": "COST_RMB", "width": "120px" ,"class":"cost_rmb",
 	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
+            	    if(!data){
             	    	return '';
             	    }
 					return eeda.numFormat(data.toFixed(2),3);
 				  }
-	            }
-	          ]
+	            }]
 	      });
       //base on config hide cols
       dataTable.columns().eq(0).each( function(index) {
