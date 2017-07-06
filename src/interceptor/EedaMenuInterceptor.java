@@ -110,6 +110,9 @@ public class EedaMenuInterceptor implements Interceptor {
                     order.set("url", "/"+urlStr);
                 }
             }
+            if(orders.size()==1){
+                module.set("is_one_module", "Y");
+            }
             module.set("orders", orders);
         }
 

@@ -118,17 +118,30 @@
                         for(module in modules![]){
                         %>
                             <li id="${module.id!}">
-                                <a href="#"><i class="fa fa-file-text fa-fw"></i>${module.module_name!}<span class="fa arrow"></span></a>
-                                <% if(module.orders != null ){%>
-                                    <ul class="nav nav-second-level">
-                                        <%
-                                        for(menu_order in module.orders){
-                                        %>
-                                            <li id="${menu_order.id}">
-                                                <a href="${menu_order.url!''}">${menu_order.module_name!}</a>
-                                            </li>
-                                        <%}%>
-                                    </ul>
+
+                                <% if('Y' == module.is_one_module!) {
+                                    first_moudle = module.orders[0];
+                                %>
+                                    <a href="${first_moudle.url!''}">
+                                        <i class="fa fa-file-text fa-fw"></i>
+                                        ${first_moudle.module_name!}
+                                    </a>
+                                <%} else {%>
+                                    <a href="#">
+                                        <i class="fa fa-file-text fa-fw"></i>
+                                        ${module.module_name!}<span class="fa arrow"></span>
+                                    </a>
+                                    <% if(module.orders != null ){%>
+                                        <ul class="nav nav-second-level">
+                                            <%
+                                            for(menu_order in module.orders){
+                                            %>
+                                                <li id="${menu_order.id}">
+                                                    <a href="${menu_order.url!''}">${menu_order.module_name!}</a>
+                                                </li>
+                                            <%}%>
+                                        </ul>
+                                    <%}%>
                                 <%}%>
                             </li>
                     <%  }%>
