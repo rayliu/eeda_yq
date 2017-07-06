@@ -109,21 +109,47 @@ $(document).ready(function() {
             		return field_html;
             	}
             },
-            
-            { "data": "VOLUME", "width": "60px",
+            { "data": "VOLUME1", "width": "50px",
             	"render": function ( data, type, full, meta ) {
-            		 if(!data)
-	                        data='';
-	                    return '<input text="type" name="volume" value="'+data+'" class="form-control" style= "width:80px" >';
-            	}
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="volume1" value="'+data+'" class="form-control" style="width:55px"/>';
+                }
             },
-            { "data": "GROSS_WEIGHT", "width": "60px",
+            { "data": "-","width": "5px",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		
-            		return '<input type="type" name="gross_weight" value="'+data+'" class="form-control" style="width:80px">';
-            	}
+                    
+                    return "<span style='width:5px'>-</span>"
+                }
+            },
+            { "data": "VOLUME2", "width": "30px",
+            	"render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="volume2" value="'+data+'" class="form-control" style="width:50px"/>';
+                }
+            },
+            { "data": "GROSS_WEIGHT1", "width": "40px",
+                "render": function ( data, type, full, meta ) {
+                	 if(!data)
+	                        data='';
+	                    
+	                    return '<input type="text" style="width:50px" name="gross_weight1" value = "'+data+'" class="form-control notsave" >';
+                }
+            },
+            { "data": "-","width": "5px",
+            	"render": function ( data, type, full, meta ) {
+                    
+                    return "<span style='width:5px'>-</span>"
+                }
+            },
+            { "data": "GROSS_WEIGHT2", "width": "30px",
+                "render": function ( data, type, full, meta ) {
+                	 if(!data)
+	                        data='';
+	                    
+	                    return '<input type="text" style="width:50px" name="gross_weight2" value = "'+data+'" class="form-control notsave" >';
+                }
             },
             { "data": "TRUCK_TYPE", "width": "70px",
                 "render": function ( data, type, full, meta ) {
