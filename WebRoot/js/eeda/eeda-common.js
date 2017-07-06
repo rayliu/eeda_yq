@@ -2,7 +2,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
   
     var url = window.location;
     var order_name = "";
-    var element = $('#side-menu ul.nav a').filter(function() {
+    var element = $('#side-menu a').filter(function() {
         var pathname = '/'+url.pathname.split('/')[1];
 
         var href = '/'+this.href.split('/')[3];
