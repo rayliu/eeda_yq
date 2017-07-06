@@ -51,6 +51,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 employee_name: $('#employee_name').val(),
                 station: $('#station').val(),
                 induction_time: $('#induction_time').val(),
+                user_tel: $('#user_tel').val(),
+                user_phone: $('#user_phone').val(),
+            	user_fax: $('#user_fax').val(),
+            	email:$("#email").val()
             };
             //异步向后台提交数据
             $.post('/employeeFiling/save', {params:JSON.stringify(order)}, function(data){
@@ -61,6 +65,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	$("#station").val(order.STATION);
                 	$("#induction_time").val(order.INDUCTION_TIME);
                 	$("#create_stamp").val(order.CREATE_STAMP);
+                	$("#user_tel").val(order.USER_TEL);
+                	$("#user_phone").val(order.USER_PHONE);
+                	$("#user_fax").val(order.USER_FAX);
+                	$("#email").val(order.EMAIL);
                     eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     $('#saveBtn').attr('disabled', false);
