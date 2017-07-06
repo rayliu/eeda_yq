@@ -1,7 +1,4 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) { 
-	document.title = '币制查询 | '+document.title;
-	$('#menu_profile').addClass('active').find('ul').addClass('in');
-	$('#breadcrumb_li').text('币制列表');
 
 	var dataTable = eeda.dt({
         id: 'eeda-table',

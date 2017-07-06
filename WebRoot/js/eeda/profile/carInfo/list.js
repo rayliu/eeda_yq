@@ -1,7 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) {
     $(document).ready(function() {
-        document.title = '车辆司机信息列表 | '+document.title;
-        $("#breadcrumb_li").text('车辆司机信息列表');
+
         var carTable = eeda.dt({
             id: 'car_table',
             autoWidth: false,

@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
     $(document).ready(function() {
 
-        $('#menu_profile').addClass('active').find('ul').addClass('in');
-        $("#breadcrumb_li").text('员工档案');
       //校验是否已存在
         var order_id = $('#order_id').val();
         if(!order_id){

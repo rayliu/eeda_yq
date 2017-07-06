@@ -2,11 +2,6 @@ define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table',  'dataTablesBoots
 
 $(document).ready(function() {
 
-	document.title = '创建应收对账单 | ' + document.title;
-	$("#breadcrumb_li").text('应收对账单');
-    $('#menu_charge').addClass('active').find('ul').addClass('in');
-    
-    
     //构造主表json
     var buildOrder = function(){
     	var item = {};

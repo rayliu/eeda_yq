@@ -1,9 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'validate_cn', 'sco'], function ($, metisMenu) {
     $(document).ready(function() {
-        document.title = '车辆司机信息 | '+document.title;
-        $("#breadcrumb_li").text('车辆司机信息');
 
-        
         //保存
         //自动提交改为手动提交
         $("#save").click(function(){

@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn',  'dtColReorder'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '供应商合同 | '+document.title;
-        $("#breadcrumb_li").text('供应商合同');
 
     	//datatable, 动态处理
         var dataTable = eeda.dt({

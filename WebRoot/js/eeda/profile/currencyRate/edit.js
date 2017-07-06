@@ -1,7 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
 	
 	document.title = '汇率 | '+document.title;
-	$('#breadcrumb_li').text('汇率');
 	
 
 	$('#saveBtn').click(function(e){

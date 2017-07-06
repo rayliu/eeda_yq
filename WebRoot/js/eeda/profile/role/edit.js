@@ -1,8 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', 'jq_blockui', 'sco'], function ($, metisMenu) {
 
 	$(document).ready(function() {
-		document.title = '岗位编辑 | '+document.title;
-        $("#breadcrumb_li").text('岗位编辑');
+
 
 		$('#editForm').validate({
 			rules : {

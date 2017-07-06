@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
     $(document).ready(function() {
 
-        $('#menu_profile').addClass('active').find('ul').addClass('in');
-        $("#breadcrumb_li").text('计量单位');
       //校验是否已存在
         var order_id = $('#id').val();
         if(!order_id){

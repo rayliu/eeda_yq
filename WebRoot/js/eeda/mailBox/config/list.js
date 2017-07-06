@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'sco', 'dataTablesBootstrap', 'validate_cn',  'dtColReorder'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	  document.title = '邮箱账号设置 | '+document.title;
-        $("#breadcrumb_li").text('邮箱账号设置');
 
     	  //datatable, 动态处理
         var dataTable = eeda.dt({

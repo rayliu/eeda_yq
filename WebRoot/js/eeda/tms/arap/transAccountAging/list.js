@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '账龄分析表  | '+document.title;
-  	  $("#breadcrumb_li").text('账龄分析表');
-  	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
+
   	  
   	  var cny_total = 0.0;
   	  var hkd_total = 0.0;

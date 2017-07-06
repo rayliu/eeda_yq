@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	'./oceanEdit_charge','./airEdit_charge','./landEdit_charge', './edit_charge_trade', './edit_charge_tour'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-	  $("#breadcrumb_li").text('供应商合同');
+
 	  //主表构造json
 	  var buildOrder = function(){
 		  var item = {};

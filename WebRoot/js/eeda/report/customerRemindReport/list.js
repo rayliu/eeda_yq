@@ -1,8 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn',  'dtColReorder'], function ($, metisMenu) {
 
     $(document).ready(function() {
-    	document.title = '重要客户提醒 | '+document.title;
-    	$('#breadcrumb_li').text("重要客户提醒");
+
     	
     	$('#menu_profile').addClass('active').find('ul').addClass('in');
 

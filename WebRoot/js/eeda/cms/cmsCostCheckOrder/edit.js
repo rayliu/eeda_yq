@@ -1,11 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table','./edit_receiptItem_table', 'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
 
 $(document).ready(function() {
-
-	document.title = '报关创建应付对账单 | ' + document.title;
-
-    $('#menu_charge').addClass('active').find('ul').addClass('in');
-    $("#breadcrumb_li").text('报关应付对账单');
     
     $(function(){
       if(!$('#receive_cny').val()){

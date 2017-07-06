@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '产值表  | '+document.title;
-      $('#menu_cost').addClass('active').find('ul').addClass('in');
-      $("#breadcrumb_li").text('产值表');
+  	
       var dataTable = eeda.dt({
           id: 'eeda_table',
           serverSide: false, //不打开会出现排序不对 

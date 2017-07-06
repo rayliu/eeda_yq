@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '工作单列表   | '+document.title;
 
-    $("#breadcrumb_li").text('工作单列表');
     
   	  if(type!=""){
   		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');

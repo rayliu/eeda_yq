@@ -1,7 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN'], function ($, metisMenu) {
 $(document).ready(function() {
-	document.title = '报关应收申请单| '+document.title;
-	$("#breadcrumb_li").text('报关应收申请单');
+
                 
     var application_table = eeda.dt({
     	id: 'application_table',

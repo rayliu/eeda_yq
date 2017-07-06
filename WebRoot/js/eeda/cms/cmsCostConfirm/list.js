@@ -2,7 +2,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 
     $(document).ready(function() {
     	document.title = '应付费用明细确认 | '+document.title;
-    	$('#breadcrumb_li').text('应付费用明细确认 ');
 
     	$('#menu_charge').addClass('active').find('ul').addClass('in');
 

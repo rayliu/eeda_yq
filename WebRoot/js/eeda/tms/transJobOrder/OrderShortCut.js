@@ -1,7 +1,5 @@
 define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN'], function ($, metisMenu,template) {
   $(document).ready(function() {
-  	document.title = '托运单快速录入   | '+document.title;
-  	$('#breadcrumb_li').text('托运单快速录入');
   	  
       var deletedTableIds=[];
         var bindFieldEvent=function(){

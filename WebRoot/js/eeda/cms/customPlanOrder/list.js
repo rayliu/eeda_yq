@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 
     $(document).ready(function() {
     	document.title = '报关申请单列表 | '+document.title;
-    	$('#breadcrumb_li').html('报关申请单列表');
+
     	if(type != ""){
     		$('#menu_order').removeClass('active').find('ul').removeClass('in');
             $('#menu_todo_list').addClass('active').find('ul').addClass('in');

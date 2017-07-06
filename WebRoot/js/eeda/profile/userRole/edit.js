@@ -1,10 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], function ($, metisMenu) {
     $(document).ready(function() {
         var name = $("#user_name").val();
-    	if(name){
-    		document.title = name+' | '+document.title;
-    	}
-    	$("#breadcrumb_li").text('岗位编辑');
+
 
         var eeda_table = eeda.dt( {
             id: 'eeda_table',

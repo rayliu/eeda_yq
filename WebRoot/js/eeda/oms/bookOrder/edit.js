@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'jq_blockui'], function ($, metisMenu) {
 $(document).ready(function() {
 
-	document.title = order_no + ' | ' + document.title;
-    $("#breadcrumb_li").text('Booking');
     
     $('#collapseGoodsInfo').on('show.bs.collapse', function () {
         $('#collapseGoodsIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');

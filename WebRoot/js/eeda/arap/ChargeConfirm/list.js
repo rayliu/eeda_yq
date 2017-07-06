@@ -1,11 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '应收明细查询 | '+document.title;
-
-    	$("#breadcrumb_li").text('应收明细');
-    	 
-    	$('#menu_charge').addClass('active').find('ul').addClass('in');
 
         var dataTable = eeda.dt({
             id: 'eeda_table',

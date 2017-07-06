@@ -1,11 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColReorder'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '应收费用明细确认 | '+document.title;
 
-    	$("#breadcrumb_li").text('应收费用明细确认');
-    	 
-    	$('#menu_charge').addClass('active').find('ul').addClass('in');
 
         var dataTable = eeda.dt({
             id: 'eeda_table',

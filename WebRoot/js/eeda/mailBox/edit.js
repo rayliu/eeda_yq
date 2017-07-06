@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','./edit_charge'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-	  $("#breadcrumb_li").text('客户合同');
+
 	  //主表构造json
 	  var buildOrder = function(){
 		  var item = {};

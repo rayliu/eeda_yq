@@ -1,9 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_doc_table', './edit_customer_quotation_table','./add_dock_item_table','./contacts_item_table',
         './account_item_table','./salesman_item_table'], function ($, metisMenu) { 
     $(document).ready(function() {
-  
-        $('#menu_profile').addClass('active').find('ul').addClass('in');
-        $("#breadcrumb_li").text('客户基本信息');
+
         var cname = $("#company_name").val();
         var sname = $("#abbr").val();
         $('#customerForm').validate({

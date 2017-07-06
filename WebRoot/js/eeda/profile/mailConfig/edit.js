@@ -1,6 +1,6 @@
 define(['jquery', 'dataTablesBootstrap', 'sb_admin', 'validate_cn', 'sco'], function ($) {
     $(document).ready(function() {
-        $("#breadcrumb_li").text('邮箱设置');
+
 
         $('#saveBtn').click(function(event) {
             if(!$('#orderForm').valid())

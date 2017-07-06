@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
     $(document).ready(function() {
 
-        $('#menu_profile').addClass('active').find('ul').addClass('in');
-        $("#breadcrumb_li").text('箱型');
         //------------save
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转

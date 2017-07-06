@@ -1,9 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '贸易商品信息列表 | '+document.title;
-    	$('#menu_profile').addClass('active').find('ul').addClass('in');
-    	$('#breadcrumb_li').text('贸易商品信息列表');
+
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-table',

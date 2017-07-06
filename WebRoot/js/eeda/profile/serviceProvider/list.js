@@ -1,9 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn',  'dtColReorder'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '供应商基本信息列表| '+document.title;
-    	$('#menu_profile').addClass('active').find('ul').addClass('in');
-        $("#breadcrumb_li").text('供应商基本信息列表');
+
 
     	//datatable, 动态处理
         var dataTable = eeda.dt({

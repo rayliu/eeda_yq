@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
 
   $(document).ready(function() {
-	  $("#breadcrumb_li").text('陆运地点信息');
+
 	  
 	  
         $('#customerForm').validate({

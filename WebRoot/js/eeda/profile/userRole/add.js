@@ -16,8 +16,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
     	},'json');
     };
     $(document).ready(function() {
-    	
-    	$("#breadcrumb_li").text('分配用户岗位');
+
     	
         var roletable = eeda.dt({
             id: 'eeda-table',

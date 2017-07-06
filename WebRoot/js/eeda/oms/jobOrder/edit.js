@@ -6,8 +6,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     './edit_custom_china_self_table', './edit_custom_doc_table','./edit_land_charge_table','./edit_land_shipment_table','./edit_arap_detail','./edit_shipment_doc_detail'], function ($, metisMenu) {
 $(document).ready(function() {
 
-	document.title = order_no + ' | ' + document.title;
-    $("#breadcrumb_li").text('工作单');
     
 	var loadOrderToLocalstorage=function(order_id){
         if(!!window.localStorage){//查询条件处理

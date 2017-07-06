@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','validate_cn', 'sco', 'datetimepicker_CN', 
         'jq_blockui','./employee_detail'], function ($, metisMenu) { 
 
-
-    $("#breadcrumb_li").text('编辑用户');
 	
 var queryOffice=function(){
 	var offices=[];

@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '单票利润率查询  | '+document.title;
-  	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
-    	$("#breadcrumb_li").text('单票利润率查询');
+
   	  
       var dataTable = eeda.dt({
           id: 'eeda_table',

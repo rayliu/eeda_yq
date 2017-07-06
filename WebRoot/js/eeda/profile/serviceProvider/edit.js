@@ -1,7 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','./account_item_table','./contacts_item_table','./car_item_table'], function ($, metisMenu) { 
 
   $(document).ready(function() {
-	  $("#breadcrumb_li").text('供应商基本信息');
+
 	  
     	var id = $("#partyId").val();
     	if(id != null && id != ""){

@@ -1,9 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '应付对账单查询  | '+document.title;
-  	  $('#menu_cost').addClass('active').find('ul').removeClass('in');
-  	  
-  	  $("#breadcrumb_li").text('应付对账单');
+ 
 	  	var cnames = [];
 		var itemIds=[];
 	    var totalAmount = 0.0;

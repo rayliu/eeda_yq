@@ -1,7 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '空运路线运营报表  | '+document.title;
-  	$('#breadcrumb_li').text('空运路线运营报表');
+
   	
   	//datatable, 动态处理
       var dataTable = eeda.dt({

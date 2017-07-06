@@ -2,11 +2,6 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap','sco','validate
 
 $(document).ready(function() {
 
-	document.title = '创建应收对账单 | ' + document.title;
-
-    $('#menu_charge').addClass('active').find('ul').addClass('in');
-    $('#menu_charge').addClass('active').find('ul').addClass('in');
-    $("#breadcrumb_li").text('报关模块应收对账单');
     $(function(){
       if(!$('#receive_cny').val()){
             $('#receive_cny').val($('#total_amount').val());

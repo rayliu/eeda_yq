@@ -1,8 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'sco', 'dataTablesBootstrap', 'validate_cn',  'dtColReorder', 'jq_blockui'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '收件箱 | '+document.title;
-        $("#breadcrumb_li").text('收件箱');
+
 
     	//datatable, 动态处理
         var dataTable = eeda.dt({

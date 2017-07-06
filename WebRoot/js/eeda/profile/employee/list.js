@@ -1,9 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorder'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '员工建档 | '+document.title;
-    	$('#menu_profile').addClass('active').find('ul').addClass('in');
-    	$("#breadcrumb_li").text('员工建档');
+
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-table',

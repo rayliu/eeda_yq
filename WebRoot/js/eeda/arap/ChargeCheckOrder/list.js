@@ -1,8 +1,7 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder','sco','validate_cn'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	document.title = '应收对账单查询 | '+document.title;
-    	$("#breadcrumb_li").text('应收对账单');
+
     	//datatable, 动态处理
 		var cnames = [];
 		var itemIds=[];

@@ -1,8 +1,5 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '应付明细确认列表   | '+document.title;
-      $('#menu_cost').addClass('active').find('ul').addClass('in');
-      $("#breadcrumb_li").text('应付明细确认  ');
       var dataTable = eeda.dt({
           id: 'eeda_table',
           colReorder: true,

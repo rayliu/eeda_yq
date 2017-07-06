@@ -1,10 +1,7 @@
 ﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './costEdit_select_item', './edit_doc_table','dataTablesBootstrap', 
         'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
-	document.title = '付款申请单 | '+document.title;
-	$("#breadcrumb_li").text('付款申请单');
 
-    $('#menu_finance').addClass('active').find('ul').addClass('in');
     if($('#receive_time').val()==""){
 //    	$('#receive_time').val(eeda.getDate());
     }

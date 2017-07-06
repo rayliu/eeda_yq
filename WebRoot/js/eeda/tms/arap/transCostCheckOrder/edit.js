@@ -3,12 +3,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table','./edit_receiptIt
     $(document).ready(function() {
     	  
         var order_no = $('#order_no').val();
-        if(order_no){
-            document.title = order_no + ' | ' + document.title;
-        }else{
-            document.title = '创建应付对账单 | ' + document.title;
-        }
-        $("#breadcrumb_li").text('应付对账单');
+       
         
         $(function(){
 	            var status=$('#status').val();

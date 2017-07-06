@@ -1,18 +1,10 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = '工作单查询   | '+document.title;
-
-    $("#breadcrumb_li").text('工作单');
+  	
     
+  	 
   	  if(type!=""){
-  		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');
-  		  $('#menu_order').removeClass('active').find('ul').removeClass('in');
-  	  }else{
-  		$('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
-		  $('#menu_order').addClass('active').find('ul').addClass('in');
-  	  }
-  	  if(type!=""){
-  		$('#orderTabs').css('display','none');
+  		  $('#orderTabs').css('display','none');
   	  }
   	//datatable, 动态处理
       var dataTable = eeda.dt({

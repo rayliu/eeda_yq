@@ -1,8 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	document.title = 'Booking列表| '+document.title;
 
-    $("#breadcrumb_li").text('Booking列表');
       
     $('.complex_search').click(function(event) {
         if($('.search_single').is(':visible')){

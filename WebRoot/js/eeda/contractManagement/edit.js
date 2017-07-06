@@ -2,7 +2,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         './edit_ocean_item_table','./edit_internal_trade_table','./edit_bulkCargo_table','./edit_bulkCargo_item_table'], function ($, metisMenu) { 
 
   $(document).ready(function() {
-	  $("#breadcrumb_li").text('供应商管理');
+
 	  
     	var id = $("#partyId").val();
     	if(id != null && id != ""){

@@ -5,8 +5,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     './edit_arap_detail'], function ($, metisMenu) {
 $(document).ready(function() {
 
-	document.title = order_no + ' | ' + document.title;
-    $("#breadcrumb_li").text('贸易工作单');
+	
     
 	var loadOrderToLocalstorage=function(order_id){
         if(!!window.localStorage){//查询条件处理
