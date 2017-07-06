@@ -243,6 +243,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         var bindLocationFieldEvent=function(){
             eeda.bindTableField('air_location_table','POL_ID','/location/searchPort','air_port');
             eeda.bindTableField('air_location_table','POD_ID','/location/searchPort','air_port');
+            eeda.bindTableField('air_location_table','AIR_COMPANY','/serviceProvider/searchAirCompany','air');
         };
 
         //------------事件处理
@@ -299,6 +300,20 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                         return field_html; 
                     }
                 },
+                { "data": "AIR_COMPANY", "width": "130px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        var field_html = template('table_dropdown_template',
+                        {
+                         id:'AIR_COMPANY',
+                         value:data,
+                         display_value:full.AIR_COMPANY_NAME,
+                         style:'width:150px'
+                        });
+                        return field_html; 
+                    }
+                },
                 { "data": "TYPE", "width": "150px", "visible": false,
                     "render": function ( data, type, full, meta ) {
                         if(!data)
@@ -314,6 +329,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                     }
                 }, 
                 { "data": "POD_NAME", "visible": false,
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return data;
+                    }
+                },
+                { "data": "AIR_COMPANY_NAME", "visible": false,
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';

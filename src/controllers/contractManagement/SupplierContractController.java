@@ -161,17 +161,18 @@ public class SupplierContractController extends Controller {
                     +" LEFT JOIN dockinfo l1 on l1.id = ccl.pod_id"
                     +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' "; 
     	}else if(type.indexOf("_loc")>0){
-                sql = " SELECT ccl.*,p.abbr carrier_name, "
+                sql = " SELECT ccl.*,p.abbr carrier_name,air_p.company_name air_company_name,"
                         + " CONCAT(l.name,' -', l.code) pol_name, "
                         + " CONCAT(l1.name,' -', l1.code) pod_name,"
                         + " CONCAT(l2.name,' -', l2.code) hub_name,"
                         + " CONCAT(l3.name,' -', l3.code) por_name"
                         +" from supplier_contract_location ccl"
+                        +" left join party air_p on air_p.id = ccl.air_company"
                         +" LEFT JOIN location l on l.id = ccl.pol_id"
                         +" LEFT JOIN location l1 on l1.id = ccl.pod_id"
                         +" LEFT JOIN location l2 on l2.id = ccl.hub_id"
                         +" LEFT JOIN location l3 on l3.id = ccl.por_id"
-                        + " left join party p on p.id = ccl.carrier_id"
+                        +" left join party p on p.id = ccl.carrier_id"
                         +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' ";	
     	}else if("trade".equals(type)){
             sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
@@ -345,9 +346,10 @@ public class SupplierContractController extends Controller {
 
     	String sql = "";
     		sql = " SELECT cci.*, fi.name fee_name, "
-    		        + " CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
+    		        + " CONCAT(u.name,u.name_eng) uom_name,c.name currency_name,p.company_name air_company_name"
 					+" from supplier_contract_item cci"
 					+ " left join supplier_contract_location ccl on ccl.id = cci.supplier_loc_id"
+					+" left join party p on p.id = ccl.air_company"
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
