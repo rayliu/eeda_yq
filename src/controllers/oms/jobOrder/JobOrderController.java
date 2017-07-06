@@ -517,14 +517,19 @@ public class JobOrderController extends Controller {
    		//保存空运填写模板
    		saveAirTemplate(air_detail);
    		//保存客户合同相对应的信息（方便监听条件是否发生改变去重新加载合同香的费用信息）
-   		saveJobCustomerContractConditions(jobOrder);
+   		//海运合同费用信息
+   		saveJobOceanCustomerContractConditions(jobOrder);
    	    //保存供应商合同相对应的信息（方便监听条件是否发生改变去重新加载合同香的费用信息）
-   		
+   		//海运带出合同费用信息
    		if(type.indexOf("柜货")>0){
-   			saveJobGHSpContractConditions(jobOrder);
+   			saveJobOceanGHSpContractConditions(jobOrder);
    		}else if(type.indexOf("散货")>0){
-   			saveJobSHSpContractConditions(jobOrder);
+   			saveJobOceanSHSpContractConditions(jobOrder);
    		}
+   		//空运带出合同费用信息
+   		saveJobAirSpContractConditions(jobOrder);
+   		//陆运带出合同费用信息
+   		saveJobLandSpContractConditions(jobOrder);
    		
    	    //费用明细，应收应付
 		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
@@ -544,8 +549,11 @@ public class JobOrderController extends Controller {
    		renderJson(r);
    	}
     
-    
-    private void saveJobCustomerContractConditions(JobOrder order){
+    /**
+     * 客户合同条件
+     * @param order
+     */
+    private void saveJobOceanCustomerContractConditions(JobOrder order){
     	String order_id =  order.get("id").toString();
     	String customer_id = order.get("customer_id").toString();//客户
     	String trans_clause = order.getStr("trans_clause");//运输条款
@@ -596,9 +604,9 @@ public class JobOrderController extends Controller {
     	map.set("jArray", jArray);
     	
     	String jsonStr = json.toJson(map);
-    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='charge'",order_id);
+    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='charge' and order_type='ocean'",order_id);
     	if(reJCC != null){
-    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='charge' and ? between contract_begin_time and contract_end_time",order_id,order_export_date);
+    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='charge' and order_type='ocean' and ? between contract_begin_time and contract_end_time",order_id,order_export_date);
     		
     		String reConditions = reJCC.getStr("conditions");
     		if(!jsonStr.equals(reConditions) || re == null){
@@ -608,11 +616,11 @@ public class JobOrderController extends Controller {
     			
     			//校验是否带过来的合同费用是否已确认
     			Record reArap = Db.findFirst("select * from job_order_arap "
-    					+ " where order_id = ? and order_type = 'charge' and audit_flag = 'Y' and cus_contract_flag = 'Y'",order_id);
+    					+ " where order_id = ? and order_type = 'charge' and type='海运' and audit_flag = 'Y' and cus_contract_flag = 'Y'",order_id);
     			if(reArap == null){
     				//先删除原来的再把最新的合同费用明细带过去
-        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'charge' and cus_contract_flag = 'Y'",order_id);
-        			getCustomerContractMsg(order_id,jsonStr,jArray,order_export_date);
+        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'charge' and type='海运' and cus_contract_flag = 'Y'",order_id);
+        			getOceanCustomerContractMsg(order_id,jsonStr,jArray,order_export_date);
     			}else{
     				//已确认后无法更新费用明细
     			}
@@ -621,9 +629,11 @@ public class JobOrderController extends Controller {
     		Record re = new Record();
         	re.set("conditions", jsonStr);
         	re.set("order_id", order_id);
+        	re.set("charge_type", "charge");
+        	re.set("order_type", "ocean");
         	Db.save("job_contract_compare", re);
         	
-        	getCustomerContractMsg(order_id,jsonStr,jArray,order_export_date);
+        	getOceanCustomerContractMsg(order_id,jsonStr,jArray,order_export_date);
     	}
     }
     
@@ -634,7 +644,7 @@ public class JobOrderController extends Controller {
      * @return
      * @throws JSONException 
      */
-    private void getCustomerContractMsg(String order_id,String jsonStr,List jArray,String order_export_date){
+    private void getOceanCustomerContractMsg(String order_id,String jsonStr,List jArray,String order_export_date){
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
@@ -668,6 +678,7 @@ public class JobOrderController extends Controller {
     			+ " and cc.trans_clause = '"+trans_clause+"' and cc.trade_type = '"+trade_type+"'"
     			+ " and ccl.pol_id = '"+pol+"' and ccl.pod_id = '"+pod+"'"
     			+ " and (cci.container_type in ("+container_types+") or ifnull(cci.container_type,'')='')"
+    			+ " and contract_type = 'ocean'"
     			+ "	and cc.office_id = "+office_id
     			+ " GROUP BY cci.id";
     	List<Record> itemList = Db.find(sql) ;
@@ -722,7 +733,7 @@ public class JobOrderController extends Controller {
     	}
     	
     	//更新合同时间到对比表，方便校验
-    	Record jc = Db.findFirst("select * from job_contract_compare where order_id = ?",order_id);
+    	Record jc = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='charge' and order_type='ocean'",order_id);
     	if(jc != null){
     		jc.set("contract_begin_time",begin_time );
     		jc.set("contract_end_time", end_time);
@@ -733,10 +744,10 @@ public class JobOrderController extends Controller {
     
     
     /**
-     * 柜货
+     * 海运柜货
      * @param order
      */
-    private void saveJobGHSpContractConditions(JobOrder order){
+    private void saveJobOceanGHSpContractConditions(JobOrder order){
     	String order_id =  order.get("id").toString();
     	String type = order.getStr("type");//类型
     	
@@ -801,9 +812,9 @@ public class JobOrderController extends Controller {
     	map.set("jArray", jArray);
     	
     	String jsonStr = json.toJson(map);
-    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost'",order_id);
+    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost' and order_type='ocean'",order_id);
     	if(reJCC != null){
-    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and ? between contract_begin_time and contract_end_time",order_id,atd);
+    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='ocean' and ? between contract_begin_time and contract_end_time",order_id,atd);
     		
     		String reConditions = reJCC.getStr("conditions");
     		if(!jsonStr.equals(reConditions) || re == null){
@@ -813,11 +824,11 @@ public class JobOrderController extends Controller {
     			
     			//校验是否带过来的合同费用是否已确认
     			Record reArap = Db.findFirst("select * from job_order_arap "
-    					+ " where order_id = ? and order_type = 'cost' and audit_flag = 'Y' and cus_contract_flag = 'Y'",order_id);
+    					+ " where order_id = ? and order_type = 'cost' and type = '海运' and audit_flag = 'Y' and cus_contract_flag = 'Y'",order_id);
     			if(reArap == null){
     				//先删除原来的再把最新的合同费用明细带过去
-        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and cus_contract_flag = 'Y'",order_id);
-        			getGHSpContractMsg(order_id,jsonStr,jArray,atd);
+        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and type = '海运' and cus_contract_flag = 'Y'",order_id);
+        			getOceanGHSpContractMsg(order_id,jsonStr,jArray,atd);
     			}else{
     				//已确认后无法更新费用明细
     			}
@@ -826,108 +837,22 @@ public class JobOrderController extends Controller {
     		Record re = new Record();
         	re.set("conditions", jsonStr);
         	re.set("charge_type", "cost");
+        	re.set("order_type", "ocean");
         	re.set("order_id", order_id);
         	Db.save("job_contract_compare", re);
         	
-        	getGHSpContractMsg(order_id,jsonStr,jArray,atd);
+        	getOceanGHSpContractMsg(order_id,jsonStr,jArray,atd);
     	}
     }
-    
-    
-    
     
     /**
-     * 柜货
-     * @param order
+     * 海运柜货
+     * @param order_id
+     * @param jsonStr
+     * @param jArray
+     * @param atd
      */
-    private void saveJobSHSpContractConditions(JobOrder order){
-    	String order_id =  order.get("id").toString();
-    	String type = order.getStr("TYPE");//类型
-    	String billing_method =  order.getStr("BILLING_METHOD");//计费方式
-    	String fee_count =  order.getStr("FEE_COUNT")==null?"1":order.getStr("FEE_COUNT");//计费数量
-    	
-    	Record oseanRe = Db.findFirst("select * from job_order_shipment where order_id = ?",order_id);
-    	String pol = null;
-    	String pod = null;
-    	String por = null;
-    	String hub = null;
-    	String booking_agent = null;  //订舱代理
-    	String atd = null;
-    	String carrier = null;//创公司
-    	
-    	if(oseanRe!=null){
-    		if(oseanRe.get("por") != null){
-    			por = oseanRe.get("por").toString();
-    		}
-    		if(oseanRe.get("pol")!= null){
-    			pol = oseanRe.get("pol").toString();
-    		}
-    		if(oseanRe.get("hub")!= null){
-    			hub = oseanRe.get("hub").toString();
-    		}
-    		if(oseanRe.get("pod")!= null){
-    			pod = oseanRe.get("pod").toString();
-    		}
-    		if(oseanRe.get("booking_agent")!= null){
-    			booking_agent = oseanRe.get("booking_agent").toString();
-    		}
-    		if(oseanRe.getDate("atd")!= null){
-    			atd = oseanRe.getDate("atd").toString();
-    		}
-    		if(oseanRe.get("carrier")!= null){
-    			carrier = oseanRe.get("carrier").toString();
-    		}
-    	}
-    	
-
-    	Gson json = new Gson();
-    	Record map = new Record();
-    	map.set("booking_agent", booking_agent);
-    	map.set("pol", pol);
-    	map.set("pod", pod);
-    	map.set("por", por);
-    	map.set("hub", hub);
-    	map.set("atd", atd);
-    	map.set("carrier", carrier);
-    	map.set("billing_method", billing_method);
-    	map.set("fee_count", fee_count);
-    	
-    	String jsonStr = json.toJson(map);
-    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost'",order_id);
-    	if(reJCC != null){
-    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and ? between contract_begin_time and contract_end_time",order_id,atd);
-    		
-    		String reConditions = reJCC.getStr("conditions");
-    		if(!jsonStr.equals(reConditions) || re == null){
-    			//不同更新
-    			reJCC.set("conditions", jsonStr);
-    			Db.update("job_contract_compare", reJCC);
-    			
-    			//校验是否带过来的合同费用是否已确认
-    			Record reArap = Db.findFirst("select * from job_order_arap "
-    					+ " where order_id = ? and order_type = 'cost' and audit_flag = 'Y' and cus_contract_flag = 'Y'",order_id);
-    			if(reArap == null){
-    				//先删除原来的再把最新的合同费用明细带过去
-        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and cus_contract_flag = 'Y'",order_id);
-        			getSHSpContractMsg(order_id,jsonStr,atd);
-    			}else{
-    				//已确认后无法更新费用明细
-    			}
-    		}
-    	}else{
-    		Record re = new Record();
-        	re.set("conditions", jsonStr);
-        	re.set("charge_type", "cost");
-        	re.set("order_id", order_id);
-        	Db.save("job_contract_compare", re);
-        	
-        	getSHSpContractMsg(order_id,jsonStr,atd);
-    	}
-    }
-    
-    
-
-    private void getGHSpContractMsg(String order_id,String jsonStr,List jArray,String atd){
+    private void getOceanGHSpContractMsg(String order_id,String jsonStr,List jArray,String atd){
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
@@ -961,6 +886,7 @@ public class JobOrderController extends Controller {
     			+ " and (sci.container_type in ("+container_types+") "
     			+ " or (ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
     			+ " and ifnull(sci.volume1,'')='' and ifnull(sci.volume2,'')=''))"
+    			+ " and contract_type = 'ocean'"
     			+ "	and sc.office_id = "+office_id
     			+ " GROUP BY sci.id";
     	List<Record> itemList = Db.find(sql) ;
@@ -1015,7 +941,7 @@ public class JobOrderController extends Controller {
     	}
     	
     	//更新合同时间到对比表，方便校验
-    	Record jc = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type = 'cost'",order_id);
+    	Record jc = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type = 'cost' and order_type='ocean'",order_id);
     	if(jc != null){
     		jc.set("contract_begin_time",begin_time );
     		jc.set("contract_end_time", end_time);
@@ -1024,8 +950,104 @@ public class JobOrderController extends Controller {
     }
     
     
+    /**
+     * 海运散货
+     * @param order
+     */
+    private void saveJobOceanSHSpContractConditions(JobOrder order){
+    	String order_id =  order.get("id").toString();
+    	String type = order.getStr("TYPE");//类型
+    	String billing_method =  order.getStr("BILLING_METHOD");//计费方式
+    	String fee_count =  order.getStr("FEE_COUNT")==null?"1":order.getStr("FEE_COUNT");//计费数量
+    	
+    	Record oseanRe = Db.findFirst("select * from job_order_shipment where order_id = ?",order_id);
+    	String pol = null;
+    	String pod = null;
+    	String por = null;
+    	String hub = null;
+    	String booking_agent = null;  //订舱代理
+    	String atd = null;
+    	String carrier = null;//创公司
+    	
+    	if(oseanRe!=null){
+    		if(oseanRe.get("por") != null){
+    			por = oseanRe.get("por").toString();
+    		}
+    		if(oseanRe.get("pol")!= null){
+    			pol = oseanRe.get("pol").toString();
+    		}
+    		if(oseanRe.get("hub")!= null){
+    			hub = oseanRe.get("hub").toString();
+    		}
+    		if(oseanRe.get("pod")!= null){
+    			pod = oseanRe.get("pod").toString();
+    		}
+    		if(oseanRe.get("booking_agent")!= null){
+    			booking_agent = oseanRe.get("booking_agent").toString();
+    		}
+    		if(oseanRe.getDate("atd")!= null){
+    			atd = oseanRe.getDate("atd").toString();
+    		}
+    		if(oseanRe.get("carrier")!= null){
+    			carrier = oseanRe.get("carrier").toString();
+    		}
+    	}
+    	
+
+    	Gson json = new Gson();
+    	Record map = new Record();
+    	map.set("booking_agent", booking_agent);
+    	map.set("pol", pol);
+    	map.set("pod", pod);
+    	map.set("por", por);
+    	map.set("hub", hub);
+    	map.set("atd", atd);
+    	map.set("carrier", carrier);
+    	map.set("billing_method", billing_method);
+    	map.set("fee_count", fee_count);
+    	
+    	String jsonStr = json.toJson(map);
+    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost' and order_type='ocean'",order_id);
+    	if(reJCC != null){
+    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='ocean' and ? between contract_begin_time and contract_end_time",order_id,atd);
+    		
+    		String reConditions = reJCC.getStr("conditions");
+    		if(!jsonStr.equals(reConditions) || re == null){
+    			//不同更新
+    			reJCC.set("conditions", jsonStr);
+    			Db.update("job_contract_compare", reJCC);
+    			
+    			//校验是否带过来的合同费用是否已确认
+    			Record reArap = Db.findFirst("select * from job_order_arap "
+    					+ " where order_id = ? and order_type = 'cost' and type = '海运' and audit_flag = 'Y' and cus_contract_flag = 'Y'",order_id);
+    			if(reArap == null){
+    				//先删除原来的再把最新的合同费用明细带过去
+        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and type = '海运' and cus_contract_flag = 'Y'",order_id);
+        			getOceanSHSpContractMsg(order_id,jsonStr,atd);
+    			}else{
+    				//已确认后无法更新费用明细
+    			}
+    		}
+    	}else{
+    		Record re = new Record();
+        	re.set("conditions", jsonStr);
+        	re.set("charge_type", "cost");
+        	re.set("order_type", "ocean");
+        	re.set("order_id", order_id);
+        	Db.save("job_contract_compare", re);
+        	
+        	getOceanSHSpContractMsg(order_id,jsonStr,atd);
+    	}
+    }
     
-    private void getSHSpContractMsg(String order_id,String jsonStr,String atd){
+  
+    /**
+     * 海运散货
+     * @param order_id
+     * @param jsonStr
+     * @param atd
+     */
+    private void getOceanSHSpContractMsg(String order_id,String jsonStr,String atd){
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
@@ -1042,11 +1064,11 @@ public class JobOrderController extends Controller {
     	String billing_method_condition = "";
     	if(billing_method.equals("perWeight")){
     		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.gross_weight1,'0')"
-    				+ " and ifnull(sci.gross_weight2,'1000') and ifnull(sci.container_type, '') = '') "
+    				+ " and ifnull(sci.gross_weight2,'10000') and ifnull(sci.container_type, '') = '') "
     				+ "  and ifnull(sci.gross_weight1, '') != '' and ifnull(sci.gross_weight2, '') != ''";
     	}else{
     		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.volume1,'0') "
-    				+ " and ifnull(sci.volume2,'1000') and ifnull(sci.container_type, '') = '') "
+    				+ " and ifnull(sci.volume2,'10000') and ifnull(sci.container_type, '') = '') "
     				+ "  and ifnull(sci.volume1, '') != '' and ifnull(sci.volume2, '') != ''";
     	}
 
@@ -1064,6 +1086,7 @@ public class JobOrderController extends Controller {
     			+ " and ("+billing_method_condition+" "
     			+ " or (ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
     			+ " and ifnull(sci.volume1,'')='' and ifnull(sci.volume2,'')=''))"
+    			+ " and contract_type = 'ocean'"
     			+ "	and sc.office_id = "+office_id
     			+ " GROUP BY sci.id";
     	List<Record> itemList = Db.find(sql) ;
@@ -1112,7 +1135,7 @@ public class JobOrderController extends Controller {
     	}
     	
     	//更新合同时间到对比表，方便校验
-    	Record jc = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type = 'cost'",order_id);
+    	Record jc = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type = 'cost' and order_type='ocean'",order_id);
     	if(jc != null){
     		jc.set("contract_begin_time",begin_time );
     		jc.set("contract_end_time", end_time);
@@ -1122,6 +1145,381 @@ public class JobOrderController extends Controller {
     
     
     
+    
+    /**
+     * 保存空运工作单-供应商合同条件
+     * @param order
+     */
+    private void saveJobAirSpContractConditions(JobOrder order){
+    	String order_id =  order.get("ID").toString();
+    	String type = order.getStr("TYPE");//类型
+    	String billing_method =  order.getStr("BILLING_METHOD");//计费方式
+    	String fee_count =  order.getStr("FEE_COUNT")==null?"1":order.getStr("FEE_COUNT");//计费数量
+    	
+    	Record orderRe = Db.findFirst("select * from job_order_air where order_id = ?",order_id);
+    	String booking_agent = null;  //订舱代理
+    	if(orderRe!=null){
+    		if(orderRe.get("booking_agent")!= null){
+    			booking_agent = orderRe.get("booking_agent").toString();//船舱代理
+    		}
+    	}
+    	
+    	List<Record> itemReList = Db.find("select * from job_order_air_item where order_id = ? order by id",order_id);
+    	String air_company = null;  //航空公司
+    	String start_from = null;//起始地
+    	String destination = null; //目的地
+    	String etd = null;  //对应合同有效期
+    	if(itemReList.size()>0){
+    		if(itemReList.size()>1){
+    			if(itemReList.get(0).get("air_company") != null){
+    				air_company = itemReList.get(0).get("air_company").toString();
+    			}
+    			if(itemReList.get(0).get("start_from") != null){
+    				start_from = itemReList.get(0).get("start_from").toString();
+    			}
+    			if(itemReList.get(0).get("etd") != null){
+    				etd = itemReList.get(0).get("etd").toString();
+    			}
+    			if(itemReList.get(itemReList.size()-1).get("destination") != null){
+    				destination = itemReList.get(itemReList.size()-1).get("destination").toString();//拿最后一条的地址
+    			}
+    			
+    		}else{
+    			if(itemReList.get(0).get("air_company") != null){
+    				air_company = itemReList.get(0).get("air_company").toString();
+    			}
+    			if(itemReList.get(0).get("start_from") != null){
+    				start_from = itemReList.get(0).get("start_from").toString();
+    			}
+    			if(itemReList.get(0).get("etd") != null){
+    				etd = itemReList.get(0).get("etd").toString();
+    			}
+    			if(itemReList.get(0).get("destination") != null){
+    				destination = itemReList.get(0).get("destination").toString();
+    			}
+    			
+    		}
+    	}
+    	
+
+    	Gson json = new Gson();
+    	Record map = new Record();
+    	map.set("booking_agent", booking_agent);
+    	map.set("air_company", air_company);
+    	map.set("start_from", start_from);
+    	map.set("destination", destination);
+    	map.set("etd",etd);
+    	map.set("billing_method", billing_method);
+    	map.set("fee_count", fee_count);
+    	
+    	String jsonStr = json.toJson(map);
+    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost' and order_type='air'",order_id);
+    	if(reJCC != null){ 
+    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='air' and ? between contract_begin_time and contract_end_time",order_id,etd);
+    		
+    		String reConditions = reJCC.getStr("conditions");
+    		if(!jsonStr.equals(reConditions) || re == null){
+    			//不同更新
+    			reJCC.set("conditions", jsonStr);
+    			Db.update("job_contract_compare", reJCC);
+    			
+    			//校验是否带过来的合同费用是否已确认
+    			Record reArap = Db.findFirst("select * from job_order_arap "
+    					+ " where order_id = ? and order_type = 'cost' and type = '空运' and audit_flag = 'Y' and cus_contract_flag = 'Y'",order_id);
+    			if(reArap == null){
+    				//先删除原来的再把最新的合同费用明细带过去
+        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and type = '空运' and cus_contract_flag = 'Y'",order_id);
+        			getAirSpContractMsg(order_id,jsonStr);
+    			}else{
+    				//已确认后无法更新费用明细
+    			}
+    		}
+    	}else{
+    		Record re = new Record();
+        	re.set("conditions", jsonStr);
+        	re.set("charge_type", "cost");
+        	re.set("order_type", "air");
+        	re.set("order_id", order_id);
+        	Db.save("job_contract_compare", re);
+        	
+        	getAirSpContractMsg(order_id,jsonStr);
+    	}
+    }
+    
+  
+    /**
+     * 空运供应商合同
+     * @param order_id
+     * @param jsonStr
+     * @param atd
+     */
+    private void getAirSpContractMsg(String order_id,String jsonStr){
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        Gson gson = new Gson();
+        Record dto= gson.fromJson(jsonStr, Record.class);   
+    	String booking_agent =  dto.getStr("BOOKING_AGENT");//订舱代理
+    	String air_company =  dto.getStr("AIR_COMPANY");
+    	String start_from =  dto.getStr("START_FROM");
+    	String destination =  dto.getStr("DESTINATION");
+    	String etd =  dto.getStr("ETD");
+    	String fee_count =  dto.getStr("FEE_COUNT");
+    	String billing_method =  dto.getStr("BILLING_METHOD");
+    	
+    	String billing_method_condition = "";
+    	if(billing_method.equals("perWeight")){
+    		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.gross_weight1,'0')"
+    				+ " and ifnull(sci.gross_weight2,'10000') and ifnull(sci.container_type, '') = '') "
+    				+ "  and ifnull(sci.gross_weight1, '') != '' and ifnull(sci.gross_weight2, '') != ''";
+    	}else{
+    		billing_method_condition = " (ifnull("+fee_count+",'1') BETWEEN ifnull(sci.volume1,'0') "
+    				+ " and ifnull(sci.volume2,'10000') and ifnull(sci.container_type, '') = '') "
+    				+ "  and ifnull(sci.volume1, '') != '' and ifnull(sci.volume2, '') != ''";
+    	}
+
+    	String sql = "select sci.*,sc.contract_begin_time,sc.contract_end_time,"
+    			+ " if(ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
+    			+ " and ifnull(sci.volume1,'')='' and ifnull(sci.volume2,'')='','Y','N') isNull"
+    			+ " from supplier_contract_location scl"
+    			+ " LEFT JOIN supplier_contract sc on sc.id = scl.contract_id"
+    			+ " LEFT JOIN supplier_contract_item sci on sci.supplier_loc_id = scl.id"
+    			+ " where "
+    			+ " sc.customer_id = '"+booking_agent+"' "
+    			+ " and ('"+etd+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
+    			+ " and scl.pol_id = '"+start_from+"' and scl.pod_id = '"+destination+"'"
+    			+ " and  scl.air_company = '"+air_company+"'"
+    			+ " and ("+billing_method_condition+" "
+    			+ " or (ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
+    			+ " and ifnull(sci.volume1,'')='' and ifnull(sci.volume2,'')=''))"
+    			+ " AND contract_type = 'air'"
+    			+ "	and sc.office_id = "+office_id
+    			+ " GROUP BY sci.id";
+    	List<Record> itemList = Db.find(sql) ;
+    	
+    	Date begin_time = null;
+    	Date end_time = null;
+    	for(Record re : itemList ){
+    		begin_time = re.getDate("contract_begin_time");
+    		end_time = re.getDate("contract_end_time");
+    		Double amount = 1.0;
+    		
+    		if ("N".equals(re.getStr("isNull"))) {
+    			amount = Double.parseDouble(fee_count);
+    		}
+    		
+    		JobOrderArap jarap = new JobOrderArap();
+    		if(re.getDouble("price")<0){
+    			jarap.set("order_type", "charge");
+    		}else{
+    			jarap.set("order_type", "cost");
+    		}
+    		jarap.set("type", "空运");
+    		jarap.set("sp_id", booking_agent);
+    		jarap.set("charge_id", re.get("fee_id"));
+    		jarap.set("charge_eng_id", re.get("fee_id"));
+    		jarap.set("price", re.get("price"));
+    		jarap.set("amount", amount);
+    		jarap.set("unit_id", re.get("uom"));
+    		Double total_amount = re.getDouble("price")*amount;
+    		jarap.set("total_amount", total_amount);
+    		jarap.set("currency_id", re.get("currency_id"));
+    		//获取汇率
+    		Record crc = Db.findFirst("select * from currency_rate where currency_id = ? and office_id = ?",re.get("currency_id"),office_id);
+    		Double rate = null;
+    		if(crc != null){
+    			rate = crc.getDouble("rate");
+    		}
+    		jarap.set("exchange_rate", rate);
+    		jarap.set("currency_total_amount", total_amount*rate);
+    		jarap.set("exchange_currency_id", re.get("currency_id"));
+    		
+    		jarap.set("exchange_currency_rate_rmb", rate);
+    		jarap.set("exchange_total_amount", total_amount);
+    		jarap.set("exchange_currency_rate",1.0);
+    		jarap.set("exchange_total_amount_rmb", total_amount*rate);
+    		jarap.set("rmb_difference", 0.00);
+    		jarap.set("order_id", order_id);
+    		jarap.set("cus_contract_flag","Y");//标记位 
+    		jarap.save();
+    	}
+    	
+    	//更新合同时间到对比表，方便校验
+    	Record jc = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type = 'cost' and order_type='air'",order_id);
+    	if(jc != null){
+    		jc.set("contract_begin_time",begin_time );
+    		jc.set("contract_end_time", end_time);
+    		Db.update("job_contract_compare", jc);
+    	}
+    }
+    
+    
+    
+    /**
+     * 保存陆运工作单-供应商合同条件
+     * @param order
+     */
+    private void saveJobLandSpContractConditions(JobOrder order){
+    	String order_id =  order.get("ID").toString();
+    	String type = order.getStr("TYPE");//类型
+    	String order_export_date = order.get("order_export_date").toString();//出货日期
+    	
+    	List<Record> itemReList = Db.find("select * from job_order_land_item where order_id = ? order by id",order_id);
+    	List jArray = new ArrayList();
+    	for(Record re :itemReList){
+    		String transport_company = null;  //运输公司
+    		String truck_type = null;         //车型
+    		String take_address = null;       //发货地址
+    		String delivery_address = null;   //收货地点
+    		if(re.get("transport_company") != null){
+    			transport_company = re.get("transport_company").toString();
+    		}
+    		if(re.get("truck_type") != null){
+    			truck_type = re.get("truck_type").toString();
+    		}
+    		if(re.get("take_address") != null){
+    			take_address = re.get("take_address").toString();
+    		}
+    		if(re.get("delivery_address") != null){
+    			delivery_address = re.get("delivery_address").toString();
+    		}
+    		
+    		Record map = new Record();
+            map.set("transport_company", transport_company);
+            map.set("truck_type", truck_type);
+            map.set("take_address", take_address);
+            map.set("delivery_address", delivery_address);
+            jArray.add(map);
+    	}
+    	
+    	Gson json = new Gson();
+    	Record map = new Record();
+    	map.set("order_export_date", order_export_date);
+    	map.set("jArray", jArray);
+    	
+    	String jsonStr = json.toJson(map);
+    	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost' and order_type='land'",order_id);
+    	if(reJCC != null){ 
+    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='land' and ? between contract_begin_time and contract_end_time",order_id,order_export_date);
+    		
+    		String reConditions = reJCC.getStr("conditions");
+    		if(!jsonStr.equals(reConditions) || re == null){
+    			//不同更新
+    			reJCC.set("conditions", jsonStr);
+    			Db.update("job_contract_compare", reJCC);
+    			
+    			//校验是否带过来的合同费用是否已确认
+    			Record reArap = Db.findFirst("select * from job_order_arap "
+    					+ " where order_id = ? and order_type = 'cost' and audit_flag = 'Y' and cus_contract_flag = 'Y' and type = '陆运'",order_id);
+    			if(reArap == null){
+    				//先删除原来的再把最新的合同费用明细带过去
+        			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and cus_contract_flag = 'Y' and type = '陆运'",order_id);
+        			getLandSpContractMsg(order_id,jsonStr,jArray);
+    			}else{
+    				//已确认后无法更新费用明细
+    			}
+    		}
+    	}else{
+    		Record re = new Record();
+        	re.set("conditions", jsonStr);
+        	re.set("charge_type", "cost");
+        	re.set("order_type", "land");
+        	re.set("order_id", order_id);
+        	Db.save("job_contract_compare", re);
+        	
+        	getLandSpContractMsg(order_id,jsonStr,jArray);
+    	}
+    }
+    
+  
+    /**
+     * 陆运供应商合同
+     * @param order_id
+     * @param jsonStr
+     * @param atd
+     */
+    private void getLandSpContractMsg(String order_id,String jsonStr,List jArray){
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        Gson gson = new Gson();
+        Record dto= gson.fromJson(jsonStr, Record.class);   
+    	String order_export_date =  dto.getStr("ORDER_EXPORT_DATE");
+    	
+    	String container_types = "''";
+    	for (int i = 0; i < jArray.size(); i++) {
+    		Record map=new Record();  
+    		map = (Record) jArray.get(i);
+    		String transport_company = (String)map.get("TRANSPORT_COMPANY");
+    		String truck_type = (String)map.get("TRUCK_TYPE");
+    		String take_address = (String)map.get("TAKE_ADDRESS");
+    		String delivery_address = (String)map.get("DELIVERY_ADDRESS");
+    		
+    		String sql = "select sci.*,sc.contract_begin_time,sc.contract_end_time"
+        			+ " from supplier_contract_location scl"
+        			+ " LEFT JOIN supplier_contract sc on sc.id = scl.contract_id"
+        			+ " LEFT JOIN supplier_contract_item sci on sci.supplier_loc_id = scl.id"
+        			+ " where "
+        			+ " sc.customer_id = '"+transport_company+"' "
+        			+ " and ('"+order_export_date+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
+        			+ " and scl.pol_id = '"+take_address+"' and scl.pod_id = '"+delivery_address+"'"
+        			+ " and (sci.truck_type = '"+truck_type+"'"
+        			+ " or ifnull(sci.truck_type,'') ='')"
+        			+ " AND contract_type = 'land'"
+        			+ "	and sc.office_id = "+office_id
+        			+ " GROUP BY sci.id";
+        	List<Record> itemList = Db.find(sql) ;
+        	
+        	Date begin_time = null;
+        	Date end_time = null;
+        	for(Record re : itemList ){
+        		begin_time = re.getDate("contract_begin_time");
+        		end_time = re.getDate("contract_end_time");
+        		Double amount = 1.0;
+
+        		JobOrderArap jarap = new JobOrderArap();
+        		if(re.getDouble("price")<0){
+        			jarap.set("order_type", "charge");
+        		}else{
+        			jarap.set("order_type", "cost");
+        		}
+        		jarap.set("type", "陆运");
+        		jarap.set("sp_id", transport_company);
+        		jarap.set("charge_id", re.get("fee_id"));
+        		jarap.set("charge_eng_id", re.get("fee_id"));
+        		jarap.set("price", re.get("price"));
+        		jarap.set("amount", amount);
+        		jarap.set("unit_id", re.get("uom"));
+        		Double total_amount = re.getDouble("price")*amount;
+        		jarap.set("total_amount", total_amount);
+        		jarap.set("currency_id", re.get("currency_id"));
+        		//获取汇率
+        		Record crc = Db.findFirst("select * from currency_rate where currency_id = ? and office_id = ?",re.get("currency_id"),office_id);
+        		Double rate = null;
+        		if(crc != null){
+        			rate = crc.getDouble("rate");
+        		}
+        		jarap.set("exchange_rate", rate);
+        		jarap.set("currency_total_amount", total_amount*rate);
+        		jarap.set("exchange_currency_id", re.get("currency_id"));
+        		
+        		jarap.set("exchange_currency_rate_rmb", rate);
+        		jarap.set("exchange_total_amount", total_amount);
+        		jarap.set("exchange_currency_rate",1.0);
+        		jarap.set("exchange_total_amount_rmb", total_amount*rate);
+        		jarap.set("rmb_difference", 0.00);
+        		jarap.set("order_id", order_id);
+        		jarap.set("cus_contract_flag","Y");//标记位 
+        		jarap.save();
+        	}
+        	
+        	//更新合同时间到对比表，方便校验
+        	Record jc = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type = 'cost' and order_type='land'",order_id);
+        	if(jc != null){
+        		jc.set("contract_begin_time",begin_time );
+        		jc.set("contract_end_time", end_time);
+        		Db.update("job_contract_compare", jc);
+        	}
+		}
+    }
     
     
     private StringBuilder StringBuilder(String order_no) {
