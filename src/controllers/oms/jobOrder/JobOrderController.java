@@ -1069,11 +1069,11 @@ public class JobOrderController extends Controller {
     	if(billing_method.equals("perWeight")){
     		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(sci.gross_weight1,0)"
     				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.gross_weight2,10000) "
-    				+ " and (ifnull(sci.gross_weight1,'') !='' or (ifnull(sci.gross_weight2,'') !=''))";
+    				+ " and (ifnull(sci.gross_weight1,'') !='' or ifnull(sci.gross_weight2,'') !=''))";
     	}else{
     		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(sci.volume1,0) "
-    				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.volume2,10000))"
-    				+ " and (ifnull(sci.volume1,'') !='' or (ifnull(sci.volume2,'') !=''))";
+    				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.volume2,10000)"
+    				+ " and (ifnull(sci.volume1,'') !='' or ifnull(sci.volume2,'') !=''))";
     	}
 
 
@@ -1275,13 +1275,12 @@ public class JobOrderController extends Controller {
     	if(billing_method.equals("perWeight")){
     		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(sci.gross_weight1,0)"
     				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.gross_weight2,10000) "
-    				+ " and (ifnull(sci.gross_weight1,'') !='' or (ifnull(sci.gross_weight2,'') !=''))";
+    				+ " and (ifnull(sci.gross_weight1,'') !='' or ifnull(sci.gross_weight2,'') !=''))";
     	}else{
     		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(sci.volume1,0) "
-    				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.volume2,10000))"
-    				+ " and (ifnull(sci.volume1,'') !='' or (ifnull(sci.volume2,'') !=''))";
+    				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.volume2,10000)"
+    				+ " and (ifnull(sci.volume1,'') !='' or ifnull(sci.volume2,'') !=''))";
     	}
-
     	String sql = "select sci.*,sc.contract_begin_time,sc.contract_end_time,"
     			+ " if(ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
     			+ " and ifnull(sci.volume1,'')='' and ifnull(sci.volume2,'')='','Y','N') isNull"
@@ -1475,13 +1474,13 @@ public class JobOrderController extends Controller {
 
     	String billing_method_condition = "";
     	if(billing_method.equals("perWeight")){
-    		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(sci.gross_weight1,0)"
-    				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.gross_weight2,10000) "
-    				+ " and (ifnull(sci.gross_weight1,'') !='' or (ifnull(sci.gross_weight2,'') !=''))";
+    		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(cci.gross_weight1,0)"
+    				+ " and ifnull("+fee_count+",-1) <= ifnull(cci.gross_weight2,10000) "
+    				+ " and (ifnull(cci.gross_weight1,'') !='' or ifnull(cci.gross_weight2,'') !=''))";
     	}else{
-    		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(sci.volume1,0) "
-    				+ " and ifnull("+fee_count+",-1) <= ifnull(sci.volume2,10000))"
-    				+ " and (ifnull(sci.volume1,'') !='' or (ifnull(sci.volume2,'') !=''))";
+    		billing_method_condition = " (ifnull("+fee_count+",-1) >= ifnull(cci.volume1,0) "
+    				+ " and ifnull("+fee_count+",-1) <= ifnull(cci.volume2,10000)"
+    				+ " and (ifnull(cci.volume1,'') !='' or ifnull(cci.volume2,'') !=''))";
     	}
 
     	String sql = "select cci.*,cc.contract_begin_time,cc.contract_end_time,"
