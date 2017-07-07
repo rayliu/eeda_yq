@@ -379,4 +379,31 @@ public class CustomerContractController extends Controller {
 
         renderJson(BillingOrderListMap); 
     }
+    
+    /**
+     * copy route
+     */
+    public void copyRoute(){
+    	String item_id =  getPara("item_id");
+    	
+    	Record re = Db.findFirst("select * from customer_contract_location where id = ?",item_id);
+    	Record new_loc = re;
+    	new_loc.set("id", null);
+    	new_loc.set("is_select", "N");
+    	Db.save("customer_contract_location", new_loc);
+    	
+    	Long newItemId = new_loc.getLong("id");
+    	if(newItemId != null){
+    		List<Record> reList = Db.find("select * from customer_contract_item where customer_loc_id = ?",item_id);
+        	for(Record item : reList){
+        		Record new_item = item;
+        		item.set("id", null);
+        		item.set("customer_loc_id", newItemId);
+        		Db.save("customer_contract_item", new_item);
+        	}
+    	}
+    	
+    	
+    	renderJson(true);
+    }
 }
