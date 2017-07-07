@@ -402,7 +402,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         //添加海运地点
         $('#add_ocean_location').on('click', function(){
             var item={};
-            locationTable.row.add(item).draw(true);
+            locationTable.row.add(item).draw();
         });
         
         

@@ -149,7 +149,7 @@ public class CustomerContractController extends Controller {
     
     public List<Record> getItems(String contract_id,String type){
     	String sql = "";
-    	if("ocean".equals(type)){
+    	if("ocean".equals(type) || "land".equals(type) ||"air".equals(type)){
     		sql = " SELECT cci.*, fi.name fee_name, "
     		        + " u.name uom_name,c.name currency_name"
 					+" from customer_contract_item cci"
@@ -158,37 +158,7 @@ public class CustomerContractController extends Controller {
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
 					+" WHERE ccl.contract_id = ? and cci.contract_type='"+type+"' and ccl.is_select = 'Y'";
-    	}else if("land_loc".equals(type) || "tour_loc".equals(type)){
-            sql = " SELECT ccl.*, "
-                    + " l.dock_name pol_name, "
-                    + " l1.dock_name pod_name"
-                    +" from customer_contract_location ccl"
-                    +" LEFT JOIN dockinfo l on l.id = ccl.pol_id"
-                    +" LEFT JOIN dockinfo l1 on l1.id = ccl.pod_id"
-                    +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' "; 
-    	}else if(type.indexOf("_loc")>0){
-                sql = " SELECT ccl.*, "
-                        + " CONCAT(l.name,' -', l.code) pol_name, "
-                        + " CONCAT(l1.name,' -', l1.code) pod_name"
-                        +" from customer_contract_location ccl"
-                        +" LEFT JOIN location l on l.id = ccl.pol_id"
-                        +" LEFT JOIN location l1 on l1.id = ccl.pod_id"
-                        +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' ";	
-    	}else if("air".equals(type)){
-    		sql = " SELECT cci.*,fi.name fee_name, "
-    		        + "u.name uom_name,c.name currency_name"
-					+" from customer_contract_item cci"
-					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
-					+" LEFT JOIN unit u on u.id = cci.uom"
-					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE cci.contract_id = ? and cci.contract_type='air' ";
-    	}else if("land".equals(type)){
-    		sql = " SELECT cci.*,fi.name fee_name,u.name uom_name,c.name currency_name"
-					+" from customer_contract_item cci"
-					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
-					+" LEFT JOIN unit u on u.id = cci.uom"
-					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE cci.contract_id = ?  and cci.contract_type='land'";
+    	
     	}else if("trade".equals(type)){
             sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
                     +" from customer_contract_item cci"
@@ -203,6 +173,14 @@ public class CustomerContractController extends Controller {
                     +" LEFT JOIN unit u on u.id = cci.uom"
                     +" LEFT JOIN currency c on c.id= cci.currency_id"
                     +" WHERE cci.contract_id = ?  and cci.contract_type='tour'";
+        }else if(type.indexOf("_loc")>0){
+            sql = " SELECT ccl.*, "
+                    + " CONCAT(l.name,' -', l.code) pol_name, "
+                    + " CONCAT(l1.name,' -', l1.code) pod_name"
+                    +" from customer_contract_location ccl"
+                    +" LEFT JOIN location l on l.id = ccl.pol_id"
+                    +" LEFT JOIN location l1 on l1.id = ccl.pod_id"
+                    +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' ";	
         }
     	
     	
@@ -298,21 +276,30 @@ public class CustomerContractController extends Controller {
    		List<Map<String,String>> oceanLocs = (ArrayList<Map<String, String>>) dto.get("itemOceanLocList");
         DbUtils.handleList(oceanLocs, "customer_contract_location", id,"contract_id");
         
-        Record re = Db.findFirst("select * from customer_contract_location where contract_id = ? and type = 'ocean_loc' and is_select = 'Y' ",id);
-        if(re != null){
+        Record oceanRe = Db.findFirst("select * from customer_contract_location where contract_id = ? and type = 'ocean_loc' and is_select = 'Y' ",id);
+        if(oceanRe != null){
         	List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemOceanList");
-       		DbUtils.handleList(charge_items, "customer_contract_item", re.get("id").toString(),"customer_loc_id");	
+       		DbUtils.handleList(charge_items, "customer_contract_item", oceanRe.get("id").toString(),"customer_loc_id");	
         }
         
-   		List<Map<String,String>> charge_air_items = (ArrayList<Map<String, String>>) dto.get("itemAirList");
-   		DbUtils.handleList(charge_air_items, "customer_contract_item", id,"contract_id");
         List<Map<String,String>> airLocs = (ArrayList<Map<String, String>>) dto.get("itemAirLocList");
         DbUtils.handleList(airLocs, "customer_contract_location", id,"contract_id");
-   		
-   		List<Map<String,String>> charge_land_items = (ArrayList<Map<String, String>>) dto.get("itemLandList");
-   		DbUtils.handleList(charge_land_items, "customer_contract_item", id,"contract_id");
+        
+        Record airRe = Db.findFirst("select * from customer_contract_location where contract_id = ? and type = 'air_loc' and is_select = 'Y' ",id);
+        if(airRe != null){
+        	List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemAirList");
+       		DbUtils.handleList(charge_items, "customer_contract_item", airRe.get("id").toString(),"customer_loc_id");	
+        }
+        
         List<Map<String,String>> landLocs = (ArrayList<Map<String, String>>) dto.get("itemLandLocList");
         DbUtils.handleList(landLocs, "customer_contract_location", id,"contract_id");
+        
+        Record landRe = Db.findFirst("select * from customer_contract_location where contract_id = ? and type = 'land_loc' and is_select = 'Y' ",id);
+        if(landRe != null){
+        	List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemLandList");
+       		DbUtils.handleList(charge_items, "customer_contract_item", landRe.get("id").toString(),"customer_loc_id");	
+        }
+       
    		
         List<Map<String,String>> charge_trade_items = (ArrayList<Map<String, String>>) dto.get("itemTradeList");
         DbUtils.handleList(charge_trade_items, "customer_contract_item", id,"contract_id");
@@ -340,7 +327,7 @@ public class CustomerContractController extends Controller {
     	String costomer_loc_id = getPara("customer_loc_id");
 
     	String sql = "";
-    	if("ocean".equals(type)){
+    	if("ocean".equals(type) || "air".equals(type) || "land".equals(type)){
     		sql = " SELECT cci.*, fi.name fee_name, "
     		        + " CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
 					+" from customer_contract_item cci"
@@ -348,7 +335,7 @@ public class CustomerContractController extends Controller {
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE cci.contract_type='ocean' and cci.customer_loc_id = ?";
+					+" WHERE cci.contract_type='"+type+"' and cci.customer_loc_id = ?";
     	}
     	
     	List<Record> list = Db.find(sql,costomer_loc_id);
