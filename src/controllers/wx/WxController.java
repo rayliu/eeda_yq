@@ -45,16 +45,31 @@ public class WxController extends Controller {
     	
     	List<Record> list = null;
     	if("item_no".equals(type)){
-    		list = Db.find("select gi.part_no,count(1) total,sum(gi.quantity) totalQuantity from gate_in gi"
+    		list = Db.find("select *,count(1) total,sum(quantity) totalQuantity from ("
+    				+ " select gi.part_no,gi.quantity from gate_in gi"
     				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
         			+ " where pro.item_no like '%"+order_no+"%'"
         			+ " and gi.out_flag = 'N' and gi.error_flag = 'N'"
-        			+ " and gi.office_id = 1 GROUP BY gi.part_no");
+        			+ " and gi.office_id = 1 GROUP BY gi.id"
+        			+ " union"
+        			+ " select part_no,0 quantity "
+        			+ " from wmsproduct"
+        			+ " where office_id = 1 "
+        			+ " and item_no like '%"+order_no+"%'"
+        			+ " ) A group by A.part_no");
     	}else{
-    		list = Db.find("select part_no,count(1) total,sum(quantity) totalQuantity from gate_in"
+    		list = Db.find("select *,count(1) total,sum(quantity) totalQuantity from ("
+    				+ " select part_no,quantity from gate_in"
         			+ " where part_no like '%"+order_no+"%'"
         			+ " and out_flag = 'N' and error_flag = 'N'"
-        			+ " and office_id = 1 GROUP BY part_no");
+        			+ " and office_id = 1 "
+        			+ " group by id"
+        			+ " union"
+        			+ " select part_no,0 quantity "
+        			+ " from wmsproduct"
+        			+ " where office_id = 1 "
+        			+ " and part_no like '%"+order_no+"%'"
+        			+ " ) A group by A.part_no");
     	}
     	
     	renderJson(list);
