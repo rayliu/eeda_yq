@@ -8,6 +8,23 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             tr.css("display","none");
             deletedTableIds.push(tr.attr('id'))
         }); 
+        //复制一行
+        $("#air_location_table").on('click', '.copy', function(){
+        	var item_id = $(this).parent().parent().attr('id');
+        	if(item_id > 0 ){
+                $.post('/supplierContract/copyRoute',{item_id:item_id},function(data){
+                	if(data){
+                		$.scojs_message('复制成功', $.scojs_message.TYPE_OK);
+                		itemOrder.refleshAirLocTable($('#contract_id').val());
+                	}else{
+                		$.scojs_message('复制失败', $.scojs_message.TYPE_ERROR);
+                	}
+                });
+        	}else{
+        		$.scojs_message('请先保存单据', $.scojs_message.TYPE_ERROR);
+        	}
+            
+        }); 
 
         //删除location 一行
         var deletedLoactionTableIds=[];
@@ -266,6 +283,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 				        return '<input type="radio" '+select+' name="checkAirRoute" style="margin-right:20px;" />';
 				    }
 				}, 
+				{  "width": "30px",
+				    "render": function ( data, type, full, meta ) {
+				        return '<button type="button" class="copy btn table_btn delete_btn btn-xs" > 复制</button></button>';
+				    }
+				},
                 {  "width": "50px",
                     "render": function ( data, type, full, meta ) {
                         return '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>';
