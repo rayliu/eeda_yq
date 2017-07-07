@@ -70,33 +70,32 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $("#selected_field").change(function(event){
     	  var selected_field = $("#selected_field").val();
     	  if(selected_field == "order_no"){
-    		  $("#order_no").show();
-    		  $("#creator_name").hide();
-    		  $("#sp_name").hide();
+    		  $("#single_order_no").show();
+    		  $("#single_creator_name").hide();
+    		  $("#single_sp_name").hide();
     	  }else if(selected_field == "creator_name"){
-    		  $("#order_no").hide();
-    		  $("#sp_name").hide();
-    		  $("#creator_name").show();
+    		  $("#single_order_no").hide();
+    		  $("#single_sp_name").hide();
+    		  $("#single_creator_name").show();
     	  }else if(selected_field == "sp_name"){
-    		  $("#order_no").hide();
-    		  $("#creator_name").hide();
-    		  $("#sp_name").show();
+    		  $("#single_order_no").hide();
+    		  $("#single_creator_name").hide();
+    		  $("#single_sp_name").show();
     	  }
       });
       
       $('#singleSearchBtn').click(function(){
           var selectField = $('#selected_field').val();
-          var selectFieldValue = $('#selected_field_value').val();
           var orderStatus = $("#orderTabs li.active").text().trim();
           if(orderStatus=='全部'){
     		  orderStatus = "";
     	  }
           if(selectField == 'order_no'){//Booking号
-            selectFieldValue = $('#order_no').val();
+            selectFieldValue = $('#single_order_no').val();
           }else if(selectField == 'creator_name'){//创建人
-            selectFieldValue = $('#creator_name').val();
+            selectFieldValue = $('#single_creator_name').val();
           }else if(selectField == 'sp_name'){//被委托方
-            selectFieldValue = $('#sp_name').val();
+            selectFieldValue = $('#single_sp_name').val();
           }
           var url = "/bookOrder/list?"+selectField+"="+selectFieldValue
                    +"&order_status="+orderStatus;
