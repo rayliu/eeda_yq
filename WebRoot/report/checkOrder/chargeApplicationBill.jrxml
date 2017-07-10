@@ -435,7 +435,7 @@ ORDER BY
 			<staticText>
 				<reportElement mode="Transparent" x="77" y="92" width="52" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="ecc2080e-767d-46a2-8452-93b33174d5c8"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[ETD]]></text>
@@ -594,7 +594,7 @@ ORDER BY
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="77" height="20" uuid="8b1b394d-1950-4880-b90d-02c2224060a7"/>
 				<textElement>
-					<font size="8" pdfEncoding="Cp1252"/>
+					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
@@ -622,7 +622,7 @@ ORDER BY
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="333" y="0" width="52" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d381a7ce-d0d9-48ad-b932-b9434108a8a0"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
@@ -644,7 +644,7 @@ ORDER BY
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="485" y="1" width="31" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="96f1ab88-c295-4b92-9008-3e46616260c0"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cur_name}]]></textFieldExpression>
