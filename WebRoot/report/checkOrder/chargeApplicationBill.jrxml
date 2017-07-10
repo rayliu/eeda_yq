@@ -272,7 +272,7 @@ ORDER BY
 			<staticText>
 				<reportElement mode="Transparent" x="109" y="38" width="361" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="dda69d07-58ec-4217-a6cd-e533cdf37552"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD]]></text>
@@ -329,7 +329,7 @@ ORDER BY
 			<staticText>
 				<reportElement mode="Transparent" x="365" y="62" width="100" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="22c185b9-ad44-4694-9ffc-1505f13c4e1c"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[86-756-3225991]]></text>
@@ -337,7 +337,7 @@ ORDER BY
 			<staticText>
 				<reportElement mode="Transparent" x="365" y="79" width="100" height="18" forecolor="#000000" backcolor="#FFFFFF" uuid="41430ddd-5424-48d9-8721-90a238258e4d"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[86-756-3225900]]></text>
@@ -358,7 +358,7 @@ ORDER BY
 			<staticText>
 				<reportElement mode="Transparent" x="61" y="79" width="240" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="92b5b21b-a216-4ab6-8b6c-948047108f4c"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[519015
@@ -367,7 +367,7 @@ ORDER BY
 			<staticText>
 				<reportElement mode="Transparent" x="61" y="96" width="240" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="e3b84697-2a4e-4ef2-8429-f9be6c440da3"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[www.yq-scm.com]]></text>
@@ -535,7 +535,7 @@ ORDER BY
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="335" y="30" width="183" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="875bf7e3-0353-44c3-93fc-d44d3a49fc87"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
@@ -558,7 +558,7 @@ ORDER BY
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="420" y="72" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="bff39af6-d6a4-48d2-806d-55210bc16de6"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
@@ -566,7 +566,7 @@ ORDER BY
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="63" y="72" width="60" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="cfc438ef-9ff0-4bd5-a279-0a4c582cb2db"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{begin_time}]]></textFieldExpression>
@@ -574,7 +574,7 @@ ORDER BY
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="130" y="72" width="60" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0ed81480-377b-40c0-9064-c2b1cd2f23ba"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{end_time}]]></textFieldExpression>
@@ -582,7 +582,7 @@ ORDER BY
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="335" y="52" width="181" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="51e24686-8ece-445a-a0a6-41cb4f65eab2"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fax}]]></textFieldExpression>
