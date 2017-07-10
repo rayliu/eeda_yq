@@ -10,12 +10,12 @@
             <% 
                 var ref_order_id='';
                 if(has(order) && (null != order.ref_job_order_id!)){
-                    order_id = order.ref_job_order_id;
+                    ref_order_id = order.ref_job_order_id;
                 }else if(has(jobOrder) && (null != jobOrder.id!)){
-                    order_id = jobOrder.id;
+                    ref_order_id = jobOrder.id;
                 }
             %>
-            <input id="ref_job_order_id" type="hidden" name="ref_job_order_id" value="${ref_order_id}"/>
+            <input id="ref_job_order_id"  name="ref_job_order_id" value="${ref_order_id}"/>
             
                 <form id="customForm">
                     <div class="row"><!--  第1行  --> 
