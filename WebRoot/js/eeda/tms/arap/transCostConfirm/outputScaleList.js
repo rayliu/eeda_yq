@@ -13,7 +13,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			},
 			{ "data": "ORDER_NO", "width": "80px",
 		    	  "render": function ( data, type, full, meta ) {
-                    return "<a href='/transJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+                    return "<a href='/transJobOrder/edit?id="+full.TJOID+"'target='_blank'>"+data+"</a>";
                 }
 			},
            { "data": "LADING_NO", "width": "60px"},			
@@ -26,7 +26,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "COMBINE_UNLOAD_TYPE", "width": "80px"},
             { "data": "COMBINE_CAR_NO", "width": "70px"},
             { "data": "null", "width": "40px"},
-            { "data": "REMARK", "width": "40px"},
+            { "data": "FREIGHT","width":"60px",
+                "render": function ( data, type, full, meta ) {
+                  if(data)
+                    return eeda.numFormat(parseFloat(data).toFixed(2),3)
+                  else
+                    return '';
+                  }
+            },
+            { "data": "REMARK", "width": "200px"},
             { "data": "CREATE_STAMP","width": "80px"}
           ]
       });
