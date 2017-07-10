@@ -233,7 +233,9 @@ eeda.hidePopList=function(){
 		  var hiddenField = eeda._hiddenField;
       if(inputField!=undefined){
     		  if(inputField.val()=='' || hiddenField.val()==''){
-    			  inputField.val('');
+    			  $(inputField).blur(function(){
+    				  inputField.val('');
+    			  });		  
             if(hiddenField)
     			    hiddenField.val('');
     		  }
@@ -1483,11 +1485,18 @@ eeda.refreshUrl = refreshUrl;
 					  return;
 				  }
 				  tableFieldList.empty();
-				  for(var i = 0; i < data.length; i++)
+				  for(var i = 0; i < data.length; i++){
+					  var fin_code =  " - "+data[i].CODE 
+					  if(!data[i].CODE){
+						  fin_code="";
+					  }
 					  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
 							  +"' charge_name='"+data[i].NAME+"' currency_id='"+data[i].CURRENCY_ID
 							  +"' charge_name_eng='"+data[i].NAME_ENG
-							  +"' currency_code='"+data[i].CURRENCY_CODE+"' currency_rate='"+data[i].RATE+"' >"+data[i].NAME+"</a></li>");
+							  +"' currency_code='"+data[i].CURRENCY_CODE+"' currency_rate='"+data[i].RATE+"' >"+data[i].NAME+fin_code+"</a></li>");
+				  }
+					  
+				  		
 				  tableFieldList.css({ 
 					  left:$(me).offset().left+"px", 
 					  top:$(me).offset().top+28+"px" 
