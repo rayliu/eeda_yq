@@ -33,29 +33,29 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                           '<i class="fa fa-trash-o"></i> 删除</button>';
                   }
               },
-              { "data": "ORDER_NO", 
+              { "data": "ORDER_NO",  "width": "80px",
                   "render": function ( data, type, full, meta ) {
                       return "<a href='/transJobOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
                   }
               },
-              { "data": "CUSTOMER_NAME"},
-              { "data": "TYPE",
+              { "data": "CUSTOMER_NAME","width":"60px"},
+              { "data": "TYPE","width":"50px",
                   "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                    	data='';
 	                    return data;
                   }
               },
-              { "data": "CONTAINER_NO"}, 
-              { "data": "SO_NO"}, 
-              { "data": "CABINET_DATE", //提柜、提货时间
+              { "data": "CONTAINER_NO","width":"60px"}, 
+              { "data": "SO_NO","width":"60px"}, 
+              { "data": "CABINET_DATE", "width":"72px",//提柜、提货时间
             	  "render": function(data){
             		  if(data)
             			  return data;
             		  return '';
             	  }
               },
-              { "data": "CABINET_TYPE",
+              { "data": "CABINET_TYPE","width":"30px",
             	  "render":function(data, type, full, meta ) {
             		  if(!data){
             			  return  data="";
@@ -69,8 +69,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             		  }            		  
             	  }
               },
-              { "data": "HEAD_CARRIER_NAME"}, 
-              { "data": "YUNFEI",
+              { "data": "HEAD_CARRIER_NAME","width":"55px"}, 
+              { "data": "YUNFEI","width":"45px",
                   "render": function ( data, type, full, meta ) {
                     if(data)
                       return eeda.numFormat(parseFloat(data).toFixed(2),3)
@@ -78,7 +78,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       return '';
                     }
               },
-              { "data": null,
+              { "data": null,"width":"65px",
                   "render": function ( data, type, full, meta ) {
                 	  if(data){
                 		  data = '';
@@ -116,9 +116,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	  return data;
                   }
               },
-              { "data": "CREATOR_NAME"},
-              { "data": "CREATE_STAMP"}, 
-              { "data": "STATUS"}
+              { "data": "CREATOR_NAME","width":"40px"},
+              { "data": "CREATE_STAMP","width":"60px"}, 
+              { "data": "STATUS","width":"30px"}
               
           ]
       });
