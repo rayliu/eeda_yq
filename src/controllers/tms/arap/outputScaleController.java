@@ -48,7 +48,7 @@ public class outputScaleController extends Controller {
         long office_id=user.getLong("office_id");
         String sql = "select * from( "
         		+" SELECT tjo.id tjoid,tjol.id ,tjo.office_id,tjo.delete_flag,tjo.order_no,tjo.lading_no,p.company_name customer_name,tjo.customer_id customer,"
-        		+" IFNULL(substring(tjol.cabinet_date,1,10),substring(tjol.closing_date,1,10)) c_date" 
+        		+" IFNULL(CONVERT (substring(tjol.cabinet_date, 1, 10),CHAR),CONVERT (substring(tjol.closing_date, 1, 10),CHAR)) c_date" 
         		+" ,tjo.type,dock.dock_name take_wharf_name, "
         		+" dock1.dock_name back_wharf_name,dock2.dock_name loading_wharf1_name,dock3.dock_name " 
         		+" loading_wharf2_name,tjo.container_no,tjo.cabinet_type,tjol.unload_type,car.car_no,tjol.car_no car_id,tjo.remark, "
@@ -108,10 +108,10 @@ public class outputScaleController extends Controller {
 			car_no=driver;
 		}
 		String sqlExport = sql+sql_car_no+sql_driver;
-		String[] headers = new String[]{"提单号", "提/收柜日期", "客户", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌", "产值",
+		String[] headers = new String[]{"提单号", "提/收柜日期", "客户", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌", "产值","运费",
 				"备注"};
 		String[] fields = new String[]{"LADING_NO", "C_DATE", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO", "",
-						"REMARK"};
+						"FREIGHT","REMARK"};
 		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,car_no);
 		renderText(fileName);
 	}
