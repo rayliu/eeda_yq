@@ -594,7 +594,7 @@ ORDER BY
 			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="77" height="20" uuid="8b1b394d-1950-4880-b90d-02c2224060a7"/>
 				<textElement>
-					<font size="8"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
@@ -658,7 +658,7 @@ ORDER BY
 			<textField isBlankWhenNull="true">
 				<reportElement x="167" y="1" width="59" height="20" uuid="ab4a71a0-795f-4f93-875e-454b64d097b6"/>
 				<textElement>
-					<font size="8"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
 			</textField>
