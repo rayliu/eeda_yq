@@ -224,11 +224,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
     	 
           var order_no = $("#order_no").val().trim(); 
           var sp_name = $('#sp_input').val().trim();
-
-          if(!sp_name){
-              $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
-              return;
-          }
           var customer_name = $('#customer_input').val().trim();
           var type = $('#type').val();
           var start_date = $("#create_stamp_begin_time").val();

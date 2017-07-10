@@ -18,8 +18,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			           	  }
 			          },
 					  { "data": "CREATE_STAMP", "width": "100px"},  
-					  { "data": "STATUS", "width": "100px"},
-					  { "data": "SP_NAME", "width": "60px"}, 
+					  { "data": "STATUS", "width": "50px"},
+					  { "data": "SP_NAME", "width": "80px"}, 
+					  { "data": "SERVICE_STAMP","width": "100px"}, 
 					  { "data": "TOTAL_AMOUNT","width": "60px","visible":false,
 				    	 "render":function(data, type, full, meta){
 				    		 if(data<0){
