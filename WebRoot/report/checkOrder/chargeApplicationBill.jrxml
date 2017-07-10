@@ -265,7 +265,7 @@ ORDER BY
 			<staticText>
 				<reportElement x="30" y="12" width="496" height="26" uuid="9f5bc2b4-6067-454d-8506-9f42f0978740"/>
 				<textElement textAlignment="Center">
-					<font fontName="黑体" size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[珠海横琴远桥供应链管理有限公司]]></text>
 			</staticText>
@@ -601,7 +601,7 @@ ORDER BY
 			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement x="77" y="0" width="52" height="20" uuid="54c8fd4a-dbfb-4a94-b28f-d6cdff6b2cf0"/>
 				<textElement>
-					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
@@ -755,21 +755,21 @@ ORDER BY
 			<staticText>
 				<reportElement x="40" y="48" width="47" height="20" uuid="b5f12f15-dbe4-453d-8dc4-bf043d084a7f"/>
 				<textElement>
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[制单人：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="232" y="47" width="51" height="20" uuid="b322ce47-cbe1-405d-98a3-8445aa2b2610"/>
 				<textElement>
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[联系电话：]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="86" y="47" width="100" height="20" uuid="46d1539f-8f26-4db6-b7c7-e146812237cb"/>
 				<textElement>
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
 			</textField>
