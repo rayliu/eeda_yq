@@ -27,7 +27,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 			            	}
 						}
 					},
-					{ "data": "CABINET_DATE", "width": "65px"},
+					{ "data": "CABINET_DATE", "width":"72px"//提柜、提货时间
+		            },
 					{ "data": "CREATE_STAMP", "width": "65px"},
 					{ "data": "CONTAINER_NO", "width": "60px"},
 					{ "data": "CABINET_TYPE", "width": "60px"},
