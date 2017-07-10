@@ -720,37 +720,37 @@ ORDER BY
 				</textElement>
 				<text><![CDATA[HKD:]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="###0.00" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="352" y="1" width="74" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="49885abc-19d6-472e-ad6c-9b52dd0cca2d"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_JPR}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($V{SUM_JPR}.equals(null)?"":$V{SUM_JPR})]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="###0.00" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="456" y="1" width="81" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="c2f111d9-6872-44e2-b434-6c3900db9f0c"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_HKD}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($V{SUM_HKD}.equals(null)?"":$V{SUM_HKD})]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="###0.00" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="262" y="1" width="60" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ba0079c1-bba4-4e40-aa7e-3f210461de6f"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_USD}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($V{SUM_USD}.equals(null)?"":$V{SUM_USD})]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="false">
+			<textField pattern="###0.00" isBlankWhenNull="false">
 				<reportElement mode="Transparent" x="167" y="0" width="65" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="98394662-caa3-4f32-a945-25583ba0b11b"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$V{SUM_CNY}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($V{SUM_CNY}.equals(null)?"":$V{SUM_CNY})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="40" y="48" width="47" height="20" uuid="b5f12f15-dbe4-453d-8dc4-bf043d084a7f"/>
