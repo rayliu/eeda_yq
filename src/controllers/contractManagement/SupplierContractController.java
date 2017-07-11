@@ -231,15 +231,15 @@ public class SupplierContractController extends Controller {
    			//update
    			supplierContract = SupplierContract.dao.findById(id);
    			
-   			String oldContract_no=supplierContract.get("contract_no");
-   			String oldType =supplierContract.get("type");
+//   			String oldContract_no=supplierContract.get("contract_no");
+//   			String oldType =supplierContract.get("type");
    			DbUtils.setModelValues(dto, supplierContract);
-   			if(!type.equals(oldType)){
-   				StringBuilder sb = new StringBuilder(oldContract_no);//构造一个StringBuilder对象
-				sb.replace(2, 3, generateJobPrefix(type));
-				oldContract_no =sb.toString();
-				supplierContract.set("contract_no", oldContract_no);
-   			}
+//   			if(!type.equals(oldType)){
+//   				StringBuilder sb = new StringBuilder(oldContract_no);//构造一个StringBuilder对象
+//				sb.replace(2, 3, generateJobPrefix(type));
+//				oldContract_no =sb.toString();
+//				supplierContract.set("contract_no", oldContract_no);
+//   			}
    			
    			supplierContract.set("updator", user.getLong("id"));
    			supplierContract.set("update_stamp", new Date());
@@ -253,8 +253,8 @@ public class SupplierContractController extends Controller {
    			//需后台处理的字段
    	   			String contract_no = OrderNoGenerator.getNextOrderNo("EK", newDateStr, office_id);
    	   			StringBuilder sb = new StringBuilder(contract_no);//构造一个StringBuilder对象
-   	   			sb.insert(2, generateJobPrefix(type));//在指定的位置，插入指定的字符串（类型代表）
-   	   			sb.insert(5, newDateStrMM);//在指定的位置，插入指定的字符串(月份)
+//   	   			sb.insert(2, generateJobPrefix(type));//在指定的位置，插入指定的字符串（类型代表）
+   	   			sb.insert(4, newDateStrMM);//在指定的位置，插入指定的字符串(月份)
    	   			contract_no = sb.toString();
    	   		supplierContract.set("contract_no", contract_no);
    	   		supplierContract.set("creator", user.getLong("id"));
