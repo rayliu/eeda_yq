@@ -1511,12 +1511,12 @@ eeda.refreshUrl = refreshUrl;
 				  //tableFieldList;
 				  if(data.length==0)
 		                hiddenField.val('');
-		            if(data.length==1&&data[0].ID)
-		                hiddenField.val(data[0].ID);
-		            if(!inputStr){
-		            	if(data.length>1)
-			                hiddenField.val('');
-		            }
+	              if(data.length==1&&data[0].ID)
+	                   hiddenField.val(data[0].ID);
+	              if(!inputStr){
+	            	   if(data.length>1)
+		                   hiddenField.val('');
+		              }
 			  },'json');
 		  });
 		  
