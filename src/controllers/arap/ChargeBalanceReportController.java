@@ -51,7 +51,7 @@ public class ChargeBalanceReportController extends Controller {
         		+ " SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,"
         		+ " SUM(uncharge_cny) uncharge_cny,SUM(uncharge_usd) uncharge_usd,sum(uncharge_jpy) uncharge_jpy,"
         		+ " SUM(uncharge_hkd) uncharge_hkd,SUM(charge_rmb) charge_rmb,sum(uncharge_rmb) uncharge_rmb"
-        		+ " FROM (SELECT jo.id,jo.customer_id,p.abbr,joa.sp_id,em.employee_name,em.id employee_id,IF (joa.order_type = 'charge'"
+        		+ " FROM (SELECT jo.id,jo.customer_id,jo.order_export_date,p.abbr,joa.sp_id,em.employee_name,em.id employee_id,IF (joa.order_type = 'charge'"
         		+ " AND joa.exchange_currency_id = 3,exchange_total_amount,0) charge_cny,"
         		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 6,"
         		+ " exchange_total_amount,0) charge_usd,IF (joa.order_type = 'charge'"
