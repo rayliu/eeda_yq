@@ -72,25 +72,34 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:100%" >删除</button> ';
 	                }
 	            },
-	            { "data": "DOCK_NAME","width": "25%",
+	            { "data": "DOCK_NAME","width": "20%",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    return '<input style="width:100%"  type="text" name="dock_name" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            { "data": "DOCK_NAME_ENG","width": "25%",
+	            {"data":"LAND_CONTACTS","width":"20%",
+	            	 "render": function ( data, type, full, meta ) {
+	            		 if(!data)
+	            			 data='';
+	            		return '<input style="width:100%" type="text" name="land_contacts" value="'+data+'" class="form-control search-control" />';
+	            		 
+	            	 }
+	            },
+	            {"data":"LAND_CONTACT_PHONE","width":"20%",
+	            	 "render": function ( data, type, full, meta ) {
+	            		 if(!data)
+	            			 data='';
+	            		return '<input style="width:100%" type="text" name="land_contact_phone" value="'+data+'" class="form-control search-control" />';
+	            		 
+	            	 }
+	            },
+	            { "data": "DOCK_NAME_ENG","width": "20%",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
 	                    return '<input type="text" name="dock_name_eng" value="'+data+'" class="form-control search-control" style="width:100%"/>';
-	                }
-	            },
-	            { "data": "QUICK_SEARCH_CODE","width": "25%",
-	                "render": function ( data, type, full, meta ) {
-	                   if(!data)
-	                	   data='';
-	                   return '<input type="text" name="quick_search_code" value="'+data+'" class="form-control search-control" style="width:100%"/>';
 	                }
 	            },
 	            { "data": "DOCK_REGION","width": "20%",
