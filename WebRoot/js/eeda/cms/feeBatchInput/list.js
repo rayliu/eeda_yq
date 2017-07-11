@@ -26,17 +26,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
                 });
   		  },
             columns:[
-					{ "width": "30px",
+					{ "width": "10px",
 					    "render": function ( data, type, full, meta ) {
-					    	var to_office_id=full.TO_OFFICE_ID;
-					    	if(to_office_id){
-					    		return '<button type="button" class="btn table_btn delete btn-xs" disabled>'+
-					            '<i class="fa fa-trash-o"></i> 删除</button>';
-					    	}
-					    		return '<button type="button" class="btn table_btn delete btn-xs" >'+
-				            '<i class="fa fa-trash-o"></i> 删除</button>';
+					    	if(full.AUDIT_FLAG != 'Y')
+					    		return '<input type="checkbox" class="checkBox">';
+					    	else 
+					    		return '<input type="checkbox" disabled>';
 					    }
-				   },
+					},
                   {"data": "ORDER_NO", 
                 	  "render": function ( data, type, full, meta ) {
                 		  var other = '';
@@ -152,6 +149,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
             });
         });
       
+        //全选
+        $('#AllCheck').click(function(){
+      	  var ischeck = this.checked;
+        	$(".checkBox").each(function () {  
+                this.checked = ischeck;  
+             });  
+        	if(ischeck==true){
+        		$('#confirmBtn').attr('disabled',false);
+        	}else{
+        		$('#confirmBtn').attr('disabled',true);
+        	}
+        });
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
