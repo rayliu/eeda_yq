@@ -8,17 +8,20 @@
                     		if(isImporting){
                     	%>
                         		<button id="uploadBtn" class="btn btn-default" disabled type="button"><img src='/images/loading.gif' style='height: 25px;'/>正在导入...</button>
+                        		<input type="file" id="toFileUpload" name="files[]" 
+								     style="position:absolute;;  opacity:0;" data-url="/importOrder/importMac?order_type=gateIn">
                         <%
                         	}else{
                          %>
                          		<button id="uploadBtn" class="btn btn-default" type="button">导入单据</button>
+                         		<input type="file" id="toFileUpload" name="files[]" 
+						     		style="position:absolute;;  opacity:0;" data-url="/importOrder/importMac?order_type=gateIn">
+								
                          <%
                         	}
                           }
                          %>
-                        <input type="file" id="toFileUpload" name="files[]" 
-						     style="position:absolute;;  opacity:0;" data-url="/importOrder/importMac?order_type=gateIn">
-						<button id="stopBtn" class="btn btn-default" type="button" style="display:none;float:right">STOP</button>
+                         <button id="stopBtn" class="btn btn-default" type="button" style="display:none;float:right">STOP</button>
                     </div>
                 </form>
             </div>

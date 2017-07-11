@@ -5,6 +5,7 @@ import interceptor.SetAttrLoginUserInterceptor;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -409,6 +410,7 @@ public class CheckOrder extends Controller {
 		int rowNumber = 0;
 		int totalRow = 0;   //文件总数量
 		int updateRow = 0;   //更新数量
+		Long user_id = LoginUserController.getLoginUserId(this);
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhMMss");
   		String c=sdf.format(new Date());   //临时单号
 		try {
@@ -461,42 +463,82 @@ public class CheckOrder extends Controller {
             	
                 String qr_code = order.getStr("qr_code");
                 if(StringUtils.isNotBlank(qr_code)){
-            		GateIn gi = GateIn.dao.findFirst("select * from gate_in where error_flag = 'N' and out_flag = 'N' and qr_code = ? and office_id = ?",qr_code,officeId);
-            		if(gi != null){
-            			String this_time = order.getStr("create_time");//这次出库时间
-            			String out_flag = gi.getStr("out_flag");
-            			if("Y".equals(out_flag)){
-            				//此代码暂时屏蔽，有争议
-//                			String order_time = null;
-//                			if(gi.get("out_time")!=null){
-//                				String order_timeStr = gi.get("out_time").toString();
-//                				order_time = order_timeStr.substring(0,order_timeStr.length()-2);//系统单据时间
-//                			}else{
-//                				order_time = "2017-01-01 00:00:00";
-//                			}
-//                			
-//                    		Record compareTime = Db.findFirst("select ?>? result;",this_time,order_time);
-//                        	String a = compareTime.getLong("result").toString(); //判断 这次出库时间>系统单据时间
-//                        	if("1".equals(a)){//2
-//                        		gi.set("out_time", this_time);
-//                				gi.set("out_creator_code", order.get("creator_code"));
-//                				gi.set("out_creator", creator_id).update();
-//                        	}
-            			}else{
-            				gi.set("out_flag", "Y");
+            		List<GateIn> giList = GateIn.dao.find("select * from gate_in where error_flag = 'N' and out_flag = 'N' and qr_code = ? and office_id = ?",qr_code,officeId);
+            		if(giList.size() > 0 ){
+            			for(GateIn gi : giList){
+            				String this_time = order.getStr("create_time");//这次出库时间
+                			gi.set("out_flag", "Y");
             				gi.set("out_time", this_time);
             				gi.set("out_creator_code", order.get("creator_code"));
             				gi.set("out_creator", creator_id).update();
+//                			String out_flag = gi.getStr("out_flag");
+//                			if("Y".equals(out_flag)){
+//                				//此代码暂时屏蔽，有争议
+//                    			String order_time = null;
+//                    			if(gi.get("out_time")!=null){
+//                    				String order_timeStr = gi.get("out_time").toString();
+//                  				order_time = order_timeStr.substring(0,order_timeStr.length()-2);//系统单据时间
+//                   			}else{
+//                    				order_time = "2017-01-01 00:00:00";
+//                    			}
+//                    			
+//                        		Record compareTime = Db.findFirst("select ?>? result;",this_time,order_time);
+//                            	String a = compareTime.getLong("result").toString(); //判断 这次出库时间>系统单据时间
+//                            	if("1".equals(a)){//2
+//                            		gi.set("out_time", this_time);
+//                    				gi.set("out_creator_code", order.get("creator_code"));
+//                    				gi.set("out_creator", creator_id).update();
+//                            	}
+//                			}
             			}
             		}else{//仓库里并没有这个记录
-            			GateOut go = GateOut.dao.findFirst("select * from gate_out where error_flag = 'Y' and qr_code = ? and office_id = ?",qr_code,officeId);
+            			GateOut go = GateOut.dao.findFirst("select * from gate_out where error_flag = 'N' and qr_code = ? and office_id = ? order by id desc",qr_code,officeId);
             			if(go != null){
-            				//重复导入，直接跳过
-            				continue;
+            				String order_time = go.get("create_time").toString();
+            				//String order_time = order_timeStr.substring(0,order_timeStr.length()-2);//系统单据时间
+            				String this_time = order.getStr("create_time");
+            				Record compareTime = Db.findFirst("Select DATEDIFF(?,?) result;",this_time,order_time);
+            				long a = Math.abs(compareTime.getLong("result")); 
+            				if(a <= 1){
+            					//重复导入，直接跳过
+                				continue;
+            				}else{
+            					GateIn gi = new GateIn();
+                    			gi.set("office_id", officeId);
+                    			gi.set("qr_code", order.get("qr_code"));
+                    			gi.set("part_no", order.get("part_no"));
+                    			gi.set("quantity", order.get("quantity"));
+                    			gi.set("creator", user_id);
+                    			gi.set("create_time", order.get("create_time"));
+                    			gi.set("creator_code", order.get("creator_code"));
+                    			gi.set("out_creator", user_id);
+                    			gi.set("out_creator_code", order.get("out_creator_code"));
+                    			gi.set("out_time", order.get("create_time"));
+                    			gi.set("out_flag", "Y");
+                    			gi.set("self_in_flag", "Y");
+                    			gi.set("import_by", user_id);
+                    			gi.set("import_time", new Date());
+                    			gi.save();
+            				}
             			}else{
-            				order.set("error_flag", "Y");
-                			order.set("error_msg", "未入库");
+            				GateIn gi = new GateIn();
+                			gi.set("office_id", officeId);
+                			gi.set("qr_code", order.get("qr_code"));
+                			gi.set("part_no", order.get("part_no"));
+                			gi.set("quantity", order.get("quantity"));
+                			gi.set("creator", user_id);
+                			gi.set("create_time", order.get("create_time"));
+                			gi.set("creator_code", order.get("creator_code"));
+                			gi.set("out_creator", user_id);
+                			gi.set("out_creator_code", order.get("out_creator_code"));
+                			gi.set("out_time", order.get("create_time"));
+                			gi.set("out_flag", "Y");
+                			gi.set("self_in_flag", "Y");
+                			gi.set("import_by", user_id);
+                			gi.set("import_time", new Date());
+                			gi.save();
             			}
+            			
             		}
             	}
 
@@ -519,7 +561,7 @@ public class CheckOrder extends Controller {
                 
                 order.set("office_id", officeId);
                 order.set("date_no", c);
-                order.set("import_by", LoginUserController.getLoginUserId(this));
+                order.set("import_by", user_id);
                 order.set("import_time", new Date());
                 order.save();
                 rowNumber++;
@@ -556,7 +598,7 @@ public class CheckOrder extends Controller {
 		return result;
 	}
 	
-	
+
 	/**
 	 * 盘点单开始导入
 	 * @param lines
