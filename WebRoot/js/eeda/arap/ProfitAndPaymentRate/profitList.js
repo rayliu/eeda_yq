@@ -22,7 +22,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+					return eeda.numFormat(data.toFixed(2),3);
 				  }
 	            },
 	            { "data": "COST_RMB", 
@@ -30,7 +30,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+					return eeda.numFormat(data.toFixed(2),3);
 				  }
 	            },
 	            {
