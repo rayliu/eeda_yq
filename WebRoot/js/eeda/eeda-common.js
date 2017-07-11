@@ -230,16 +230,20 @@ eeda.hidePopList=function(){
         if($(el).is(':visible')){
           $(el).hide();
           var inputField = eeda._inputField;
-		  var hiddenField = eeda._hiddenField;
+//		  var hiddenField = eeda._hiddenField;
       if(inputField!=undefined){
-    		  if(inputField.val()=='' || hiddenField.val()==''){
+    		  
     			  $(inputField).blur(function(){
-    				  inputField.val('');
-    			  });		  
-            if(hiddenField)
-    			    hiddenField.val('');
-    		  }
-        }
+    				  if(eeda._hiddenField.val()==''){
+    					  inputField.val('');
+    				  }
+    			  });
+    			  if(inputField == ""){
+    				  if(eeda._hiddenField){
+    	            	  eeda._hiddenField.val('');
+    	            	}
+    			  }
+           }
         }
     });
 };
