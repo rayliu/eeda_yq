@@ -34,6 +34,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
+import controllers.util.PoiUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -669,6 +670,33 @@ public class CmsChargeCheckOrderController extends Controller {
     	renderJson(exchangeTotalMap);
 
     }
+	
+	//导出excel对账单
+	public void downloadExcelList(){
+		String car_no = getPara("car_no");
+		String driver = getPara("driver");
+//		String sql = list();
+		String sql_car_no ="";
+		String sql_driver ="";
+		if(StringUtils.isNotBlank(car_no)){
+			 sql_car_no = " and car_no='"+car_no+"'";
+		}
+		if(StringUtils.isNotBlank(driver)){
+			 sql_driver = " and driver='"+driver+"'";
+		}
+		if(StringUtils.isBlank(car_no)){
+			car_no=driver;
+		}
+		String sqlExport = sql_car_no+sql_driver;
+		String[] headers = new String[]{"序号","日期", "申请单号", "结算对象", "报关单号"};
+		String[] fields = new String[]{"LADING_NO","C_DATE", "C_DATE", "CUSTOMER_NAME", "TYPE"};
+		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,car_no);
+		renderText(fileName);
+	}
+	
+	
+	
+	
 	
    	
 }
