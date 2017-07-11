@@ -1,0 +1,217 @@
+
+
+<%layout("/eeda/layout.html"){%>
+
+        <div id="page-wrapper">
+            <div class="row simple_search_div">
+             <div class="panel panel-default">
+		            	<div class="panel-heading">
+	                        <h4 class="panel-title">
+	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+	                            <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
+	                        </h4>
+		                 </div>
+		          <div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+	                <div class="panel-body" id="ChargeDiv">
+	                <div class="col-lg-12">
+	                                <form id="orderForm">
+	                                    <div class="row"><!--  第1行  -->
+	                                    	<div class="col-lg-4">
+	                                          <%include("/eeda/component/form/inputField.html", 
+	                                                              {   id: 'customer_name', 
+	                                                                  label: '客户名称', 
+	                                                                  value: ''
+	                                                              }){}%>
+	                                        </div>
+	                                        <div class="col-lg-4"><!--  三列排版  -->
+	                                            <%include("/eeda/component/form/inputField.html", 
+	                                                                {   id: 'order_no', 
+	                                                                    label: '申请单号', 
+	                                                                    value: ''
+	                                                                }){}%>
+	                                        </div>
+	                                        <div class="col-lg-4"> 
+	                                            <%include("/eeda/component/form/selectField.html", 
+				                                                   {   id:'status', 
+				                                                       label:'单据状态', 
+				                                                       value_list:[
+				                                                           {code:'', value:''},
+				                                                           {code:'新建', value:'新建'},
+				                                                           {code:'待审核', value:'待审核'},
+				                                                           {code:'审核通过', value:'审核通过'},
+				                                                           {code:'审核不通过', value:'审核不通过'}
+				                                                       ]
+				                                                   }
+				                                                ){} %>
+	                                        </div>
+	                                        
+	                                    </div><!-- /.row-->
+									<div class="row">
+											<div class="col-lg-4">				                        	
+					                        	<%include("/eeda/component/form/inputField.html",
+					                        			{	id:"booking_no",
+					                        				label:"订舱号",
+					                        				value:""
+					                        			}
+					                        	){}%>
+					                        
+					                        </div>
+	                                        <div class="col-lg-4">
+					                            <%include("/eeda/component/form/selectField.html", 
+	                                                 {   id:'custom_state', 
+	                                                     label:'海关状态',
+	                                                     value_list:[
+	                                                        {code:'', value:''},
+	                                                        {code:'改单', value:'改单'},
+	                                                        {code:'复查', value:'复查'},
+	                                                        {code:'过磅', value:'过磅'},
+	                                                        {code:'查验', value:'查验'},
+	                                                        {code:'异常', value:'异常'},
+	                                                        {code:'异常待处理', value:'异常待处理'},
+	                                                        {code:'询价', value:'询价'},
+	                                                        {code:'商检', value:'商检'},
+	                                                        {code:'抽样', value:'抽样'},
+	                                                        {code:'补税', value:'补税'},
+	                                                        {code:'放行', value:'放行'}
+	                                                    ] 
+	                                                 }){}%>
+					                        </div>
+					                        <div class="col-lg-4">	
+	                                  		<%include("/eeda/component/form/selectField.html",
+	                                  					{	id:'type',
+	                                  						label:'类型',
+	                                  						value_list:[
+	                                  							{code:'',value:''},
+	                                  							{code:'出口柜货',value:'出口柜货'},
+	                                  							{code:'出口散货',value:'出口散货'},
+	                                  							{code:'进口柜货',value:'进口柜货'},
+	                                  							{code:'进口散货',value:'进口散货'}
+	                                  						]
+	                                  					}
+	                                  		){}%>
+	                                  		</div>
+	                                  </div>
+	                                  <div class="row">
+	                                  		<div class="col-lg-4">        
+	                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+			                                            {	id:'date_custom',
+			                                            	label:'报关日期', 
+			                                            	value:''
+			                                            }){} %>
+	                                        </div>
+	                                        <div class="col-lg-4">        
+	                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+			                                            {	id:'create_stamp', 
+			                                            	label:'创建时间', 
+			                                            	value:''
+			                                            }){} %>
+	                                        </div>
+	                                  </div>
+	
+	                                    
+	                                </form>
+	                            </div><!-- /.row -->
+	                            
+	                            <div class="form-group button-bar" >
+	                                <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+	                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+	                            </div> 
+	               </div>
+	            </div>
+			 </div>
+		 </div>
+		 
+		 	<div class="simple_row_div">
+		 		<div class="panel-heading">
+					<a class="btn btn_green"  href="/customPlanOrder/create">新增报关申请单</a>	
+				</div>
+			</div>
+		 
+			<!-- /.row 查询条件 结束-->
+            <div class="row simple_list_div">
+                            <ul id="orderTabs" class="nav nav-tabs" >
+                            	<li class="active">
+                                    <a href="#" data-toggle="tab" name="未完成费用确认">未完成费用确认 <span id="unConfirmFee" class="badge"></span></a>
+                                </li>
+                                <li style="text-align:center;">
+                                    <a href="#" data-toggle="tab"  name="已完成费用确认">已完成费用确认<span id="confirmFee" class="badge"></span></a>
+                                </li>
+                                <li >
+                                    <a href="#" data-toggle="tab" name="全部">全部</a>
+                                </li>
+                                <li style="text-align:center;">
+                                    <a href="#" data-toggle="tab"  name="待审核">申请单待审核 <span id="waitAuditing" class="badge"></span></a>
+                                </li>
+                                <li style="text-align:center;">
+                                    <a href="#" data-toggle="tab" style='color:green' name="放行">放行 <span id="release" class="badge"></span></a>
+                                </li>
+                                <li style="text-align:center;">
+                                    <a href="#" data-toggle="tab" style='color:#f7b314' name="异常待处理">异常待处理 <span id="handing" class="badge"></span></a><nbsp>
+                                </li>
+                                <li style="text-align:center;">
+                                    <a href="#" data-toggle="tab" style='color:#f7b314' name="查验">查验 <span id="checked" class="badge"></span></a>
+                                </li>
+                                <li style="text-align:center;">
+                                    <a href="#" data-toggle="tab" style='color:red' name="异常">异常 <span id="abnormal" class="badge"></span></a>
+                                </li>
+                            </ul>
+                            <%include("/eeda/component/form/detailTable.html", 
+							                                {
+							                                    id:'eeda-table', 
+							                                    headers:[
+							                                    	'',
+							                                    	'申请单号',
+							                                    	'提运单号',
+							                                    	'报关单号',
+							                                    	'状态',
+							                                    	'海关状态',
+							                                    	'类型',
+							                                        '申请企业',
+                                        							'费用',
+                                        							'报关日期',
+							                                        '创建人',
+							                                        '创建时间']
+							                                }){} %>
+                            
+                        </div>
+        </div><!-- end of  .page-wrapper-->
+
+		  <!-- 删除单据的原因 -->
+        <a data-target='#deleteReasonDetail' data-toggle='modal'>
+            <button id="deleteReasonDetailAlert" style="display:none"></button>
+        </a>
+        <div class="modal fade" id="deleteReasonDetail">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">请填写删除原因</div>
+                <div class="modal-body">
+                    <input id="delete_id" type="hidden">
+                    <form id="deleteReasonDetailForm">
+                     <div class="form-group">
+                     <select class="form-control search-control deleteReason">
+                     <option>单据重复</option>                   
+                     <option>单据作废</option>
+                     <option>单据信息错误太多，不要了</option>                     
+                     </select><br/><br/>
+                     <textarea id='deleteReason' name="deleteReason" class="form-control" rows="3" required></textarea>
+                     </div>
+                     </form>
+                </div>
+              <div class="modal-footer">
+                <button class="btn  btn-default return" data-dismiss="modal">返回</button>
+                <button class="btn btn-primary confirm" >确定删除</button>
+            </div>
+        </div>
+      </div>
+    </div>
+<%}%>
+
+ <script>
+   var type="${type!''}";
+ </script>
+<script>
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/cms/feeBatchInput/list']);
+        
+    });
+</script>

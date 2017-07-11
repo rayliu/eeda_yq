@@ -163,6 +163,7 @@ import com.jfinal.weixin.sdk.api.ApiConfigKit;
 import controllers.app.AppControllerForMobile;
 import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
+import controllers.cms.jobOrder.FeeBatchInputController;
 import controllers.eeda.ListConfigController;
 import controllers.eeda.ModuleController;
 import controllers.msg.MailBoxController;
@@ -335,6 +336,7 @@ public class EedaConfig extends JFinalConfig {
 		//cms 报关管理
 		me.add("/customJobOrder", CustomJobOrderController.class, contentPath);
 		me.add("/customPlanOrder", CustomPlanOrderController.class, contentPath);
+		me.add("/feeBatchInput", FeeBatchInputController.class, contentPath);
 		me.add("/cmsChargeConfirm", controllers.arap.cmsAr.CmsChargeConfirmController.class, contentPath);
 		me.add("/cmsCostConfirm", controllers.arap.cmsAr.CmsCostConfirmController.class, contentPath);
 		me.add("/cmsChargeCheckOrder", controllers.arap.cmsAr.CmsChargeCheckOrderController.class, contentPath);

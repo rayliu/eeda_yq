@@ -276,9 +276,12 @@
 			<button id='saveBtn' class="btn  btn_green" disabled >保存</button> 
 			<button id='confrimBtn' class="btn  btn_green" disabled >确认</button> 
 			<a class="btn  btn_white" href="/cmsChargeCheckOrder">返回</a>
-
-            <button id="printCustomOrderBtn" class="btn   btn_green" >生成对账单PDF</button>
-            
+			<%if(shiro.hasPermission("cmsChargeCheckOrder.exportPDF")){%>
+            	<button id="printCustomOrderBtn" class="btn   btn_green" >生成PDF对账单</button>
+            <%}%>
+            <%if(shiro.hasPermission("cmsChargeCheckOrder.exportExcel")){%>
+            	<button id="printCustomOrderBtn" class="btn   btn_green" >导出excel对账单</button>
+            <%}%>
 		</div>
 	</div>
 </div>
