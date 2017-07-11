@@ -206,7 +206,7 @@ $(document).ready(function() {
     	var id = $(this).parent().parent().parent().attr('id');
     	$.post('/customPlanOrder/feeConfirm',{id:id},function(data){
     		var order_id = $('#order_id').val();
-	    	var url = "/customPlanOrder/tableList?order_id="+order_id+"&type=charge";
+	    	var url = "/customPlanOrder/tableList?order_id="+order_id+"&type=charge"+"&showHide="+is_show_hide_charge_col;
 	    	chargeTable.ajax.url(url).load();
     		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	},'json').fail(function() {
@@ -295,8 +295,8 @@ $(document).ready(function() {
             {"data": "ID", "width": "70px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
-                	if(full.AUDIT_FLAG == 'Y'){
-                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>&nbsp';
+                	if(data&&full.AUDIT_FLAG == 'Y'){
+                		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px"  disabled>删除</button>&nbsp';
                 		str+= '<button type="button" class="cancelChargeConfirm btn table_btn btn-danger btn-xs"  >取消确认</button> ';  
                 	}else if(data){
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px">删除</button>&nbsp';

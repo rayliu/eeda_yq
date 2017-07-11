@@ -3347,13 +3347,13 @@ public class JobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = "SELECT * from (select jor.*,jos.sono,if(jor.office_id != "+office_id+",'other','self') other_flag,"
-		         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
-		        		 +" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
-		        		 +" FROM  job_order_shipment_item josi  "
-		        		 +" LEFT JOIN job_order jo on jo.id=josi.order_id "
-		        		 +" WHERE josi.order_id =jor.id) container_no, "
-		        		 + " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
+		         sql = 		"SELECT * from (select jor.*,jos.sono,jos.mbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\"/\",jos.mbl_no), \"\")) AS sono_mbl,if(jor.office_id != "+office_id+",'other','self') other_flag,"
+		         			+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
+		         			+" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
+		        		 	+" FROM  job_order_shipment_item josi  "
+		        		 	+" LEFT JOIN job_order jo on jo.id=josi.order_id "
+		        		 	+" WHERE josi.order_id =jor.id) container_no, "
+		        		 	+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 							+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 							+ " LEFT JOIN currency c ON c.id = joa.currency_id "
 							+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
@@ -3380,6 +3380,8 @@ public class JobOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by " + sName +" "+ sort +sLimit);
+        String ss=sql+ condition + " order by " + sName +" "+ sort +sLimit;
+        System.out.println(ss);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

@@ -43,8 +43,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 							}
 							return data.substring(0,10);
 						}
-					},					
+					},
 					{ "data": "JOB_TYPE", "width": "60px"},
+					{"data":"RECEIVE_SENT_CONSIGNEE_INPUT","width":"100px",
+						"render":function(data,type,full,meta){
+								return data;
+							}
+					},
 					{ "data": "SP_NAME", "width": "100px"},
 					{ "data": "CHARGE_NAME", "width": "100px"},
 					{ "data": "PRICE", "width": "50px"},

@@ -114,7 +114,9 @@ $(document).ready(function() {
 			{ "data": "ID","width": "70px",
                 "render": function ( data, type, full, meta ) {
                 	var str="<nobr>";
+            
                 	if(data&&full.AUDIT_FLAG == 'Y'){
+                	
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" disabled><i class="fa fa-trash-o"></i> 删除</button></button>&nbsp';
                 		str+= '<button type="button" class="cancelCostConfirm btn table_btn btn-danger btn-xs">取消确认</button> '; 
                 		}

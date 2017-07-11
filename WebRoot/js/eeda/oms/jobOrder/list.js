@@ -81,7 +81,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
             	  }
               }, 
               { "data": "CUSTOMER_NAME"}, 
-              { "data": "SONO"},
+              { "data": "SONO_MBL"},
               { "data": "CONTAINER_NO"},
               { "data": null,
                   "render": function ( data, type, full, meta ) {

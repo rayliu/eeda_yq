@@ -123,7 +123,7 @@ public class CmsCostCheckOrderController extends Controller {
         }
 
 		sql = "select B.* from(  "
-			+" SELECT cpo.order_no,cpoa.order_type ,cpoa.id arap_id,cpo.id order_id,cpo.date_custom,cpo.tracking_no,p.abbr sp_name,f.name fin_name,cpoa.amount, cpoa.price, "
+			+" SELECT cpo.order_no,cpoa.order_type ,cpo.receive_sent_consignee_input,cpoa.id arap_id,cpo.id order_id,cpo.date_custom,cpo.tracking_no,p.abbr sp_name,f.name fin_name,cpoa.amount, cpoa.price, "
 			 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 			 +" from custom_plan_order_arap cpoa "
 			 +" LEFT JOIN custom_plan_order cpo on cpo.id = cpoa.order_id "
@@ -142,8 +142,8 @@ public class CmsCostCheckOrderController extends Controller {
         String sqlTotal = "select count(1) total from ("+sql+ condition+") A";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
-        
         List<Record> orderList = Db.find(sql+ condition  );
+        String sqq=sql+condition;
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));

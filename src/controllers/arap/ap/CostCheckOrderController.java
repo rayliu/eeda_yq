@@ -284,6 +284,9 @@ public class CostCheckOrderController extends Controller {
 		String ids = getPara("itemIds");
 		String order_id = getPara("order_id")==null?"":getPara("order_id");
 		String sLimit = "";
+		String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
+        String sColumn =  getPara("order[0][column]");
+        String sName =  getPara("columns["+sColumn+"][data]")==null?"order_export_date":getPara("columns["+sColumn+"][data]") ;
 		String pageIndex = getPara("draw");
 		if (getPara("start") != null && getPara("length") != null) {
 			sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
@@ -326,6 +329,9 @@ public class CostCheckOrderController extends Controller {
 		
 		String sLimit = "";
         String pageIndex = getPara("draw");
+        String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
+        String sColumn =  getPara("order[0][column]");
+        String sName =  getPara("columns["+sColumn+"][data]")==null?"order_export_date":getPara("columns["+sColumn+"][data]") ;
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
@@ -399,14 +405,13 @@ public class CostCheckOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by order_export_date desc " );
+        List<Record> orderList = Db.find(sql+ condition + " order by "+ sName +" "+ sort );
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
         map.put("data", orderList);
         renderJson(map); 
-		
 	}
 	public void orderList() {
 		String sLimit = "";

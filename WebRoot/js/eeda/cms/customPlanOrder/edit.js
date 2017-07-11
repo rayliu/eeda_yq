@@ -1,4 +1,5 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN', './edit_doc_table', './edit_cost_table', './edit_charge_table', './edit_shipping_item_table'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 
+        'datetimepicker_CN', './edit_doc_table', './edit_cost_table', './edit_charge_table', './edit_shipping_item_table'], function ($, metisMenu) { 
     $(document).ready(function() {
 
 
