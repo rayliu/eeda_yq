@@ -158,8 +158,7 @@ public class CustomAccountAuditLogController extends Controller {
     	UserLogin user = LoginUserController.getLoginUser(this);
     	long office_id = user.getLong("office_id");
     	
-    	String sqlTotal = "select count(1) total from fin_account";
-    	Record rec = Db.findFirst(sqlTotal);
+    
     	 
     	String sql = " SELECT fa.office_id,fa.id,(select bank_name from fin_account where id = fa.id) bank_name,'"+ beginTime +"' date, "
     			+ " ( ( SELECT ROUND(ifnull(sum(amount), 0), 2)"
@@ -191,13 +190,14 @@ public class CustomAccountAuditLogController extends Controller {
     			+ " GROUP BY fa.id ";
     	
     	List<Record> BillingOrders = Db.find(sql+sLimit);
-    	
+    	String sqlTotal = "select count(1) total from ("+sql+") C";
+    	Record rec = Db.findFirst(sqlTotal);
     	Map BillingOrderListMap = new HashMap();
     	BillingOrderListMap.put("sEcho", pageIndex);
     	BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
     	BillingOrderListMap.put("iTotalDisplayRecords", rec.getLong("total"));
     	
-    	BillingOrderListMap.put("aaData", BillingOrders);
+    	BillingOrderListMap.put("data", BillingOrders);
     	
     	renderJson(BillingOrderListMap);
     }
