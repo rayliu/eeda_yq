@@ -3347,7 +3347,7 @@ public class JobOrderController extends Controller {
                     + " and jor.delete_flag = 'N'";
         }
         else{
-		         sql = 		"SELECT * from (select jor.*,jos.sono,jos.mbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\"/\",jos.mbl_no), \"\")) AS sono_mbl,if(jor.office_id != "+office_id+",'other','self') other_flag,"
+		         sql = 		"SELECT * from (select jor.*, loc.name as pod_name,jos.sono,jos.mbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\"/\",jos.mbl_no), \"\")) AS sono_mbl,if(jor.office_id != "+office_id+",'other','self') other_flag,"
 		         			+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
 		         			+" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
 		        		 	+" FROM  job_order_shipment_item josi  "
@@ -3364,6 +3364,7 @@ public class JobOrderController extends Controller {
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code,ifnull(u1.c_name, u1.user_name) updator_name"
 		         		+ "	from job_order jor"
 		         		+ "	left join job_order_shipment jos on jos.order_id = jor.id"
+		         		+ " left join location loc on jos.pod=loc.id"
 		         		+ "	left join party p on p.id = jor.customer_id"
 		         		+ "	left join user_login u on u.id = jor.creator"
 		         		+ " left join user_login u1 ON u1.id = jor.updator"
@@ -3380,7 +3381,7 @@ public class JobOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by " + sName +" "+ sort +sLimit);
-
+        System.out.println(sql+ condition + " order by " + sName +" "+ sort +sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

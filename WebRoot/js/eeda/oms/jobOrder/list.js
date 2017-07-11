@@ -81,8 +81,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
             	  }
               }, 
               { "data": "CUSTOMER_NAME"}, 
-              { "data": "SONO_MBL"},
+              { "data": "SONO_MBL"},  
               { "data": "CONTAINER_NO"},
+              {"data":"POD_NAME",
+            	  "render":function(data,type,full,meta){
+            		  if(data !=null)
+            		  var index=data.indexOf(",")
+            		  if(index>0){
+            			  data=data.substr(0,index);
+            		  }
+            		  return data;
+            	  	}
+            	  },
               { "data": null,
                   "render": function ( data, type, full, meta ) {
                     if(data){
