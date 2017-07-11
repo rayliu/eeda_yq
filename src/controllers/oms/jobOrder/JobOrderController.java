@@ -3380,8 +3380,7 @@ public class JobOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by " + sName +" "+ sort +sLimit);
-        String ss=sql+ condition + " order by " + sName +" "+ sort +sLimit;
-        System.out.println(ss);
+
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
