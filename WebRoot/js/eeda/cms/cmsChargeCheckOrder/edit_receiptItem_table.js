@@ -37,13 +37,23 @@ $(document).ready(function() {
     var itemIds=[];
     var cnames = [];
     //------------事件处理
+    var index=0;
     var reciveitemTable = eeda.dt({
         id: 'receip-table',
         columns:[
         { "data": "CURRENCY_NAME", "width": "100px"},
         { "data": "TOTAL_AMOUNT", "width": "180px"},
         { "data": "RECEIVE_CNY", "width": "120px"},
-        { "data": "RESIDUAL_CNY", "width": "200px"},
+        { "data": "RESIDUAL_CNY", "width": "200px",
+        		render:function(data,full){
+        			
+        			if(index==0){
+        				data="<span style='color:red'>"+data+"</span>"      			
+        				index++;
+        			}
+        			return data;
+        		}
+        },
         { "data": "RECEIVE_TIME", "width": "80px"},
         { "data": "RECEIVE_NAME", "width": "80px"}
         ]
