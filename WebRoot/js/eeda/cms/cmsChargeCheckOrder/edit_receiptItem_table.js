@@ -46,7 +46,6 @@ $(document).ready(function() {
         { "data": "RECEIVE_CNY", "width": "120px"},
         { "data": "RESIDUAL_CNY", "width": "200px",
         		render:function(data,full){
-        			
         			if(index==0){
         				data="<span style='color:red'>"+data+"</span>"      			
         				index++;
