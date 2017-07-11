@@ -687,6 +687,7 @@ $(document).ready(function() {
                     $(this_but).attr('disabled',true);
                     $(this_but).next().attr('disabled',false);
                     td.parent().find('.status').html(data.STATUS);
+                    $(row).css("background-color","#FFFFDF");
                     row.find('[type=checkbox]').prop('checked',false);
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
                     totalMoney();
@@ -720,6 +721,7 @@ $(document).ready(function() {
                     $(this_but).next().attr('disabled',false);
                     td.parent().find('.status').html(data.STATUS);
                     row.find('[type=checkbox]').prop('checked',false);
+                    $(row).css("background-color","#FFFFDF");
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
                     totalMoney();
                 }else{
@@ -772,7 +774,7 @@ $(document).ready(function() {
                 if(data.IDS){
                     var arr=data.IDS.split(',');
                     for(var j=0;j<arr.length;j++){
-                        for(var i=1;i<rows.length;i++){
+                        for(var i=0;i<rows.length;i++){
                             var td=$(rows[i]).find('[type=checkbox]');
                             var btn0=$(rows[i]).find('[type=button]').eq(0);
                             if($(td).val()==arr[j]){

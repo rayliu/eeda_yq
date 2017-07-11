@@ -124,6 +124,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  
         	  var total_profit=parseFloat(total_charge-total_cost).toFixed(2);
         	  var average_profit_rate = parseFloat((total_profit/total_cost)*100).toFixed(2);
+        	  if(!average_profit_rate){
+        		  average_profit_rate=0.00;
+        	  }
         	  if(total_profit<0){
         		  $('#total_profit').text(total_profit).css('color','red');
         	  }else(
@@ -131,13 +134,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  )
         	  var total=parseFloat(data.TOTAL);
         	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("折合应收(CNY):"+eeda.numFormat(total_charge,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("折合应付(CNY):"+eeda.numFormat(total_cost,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("平均利润率(%)："+average_profit_rate);
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("折合应收(CNY):<br>"+eeda.numFormat(total_charge,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("折合应付(CNY):<br>"+eeda.numFormat(total_cost,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("平均利润率(%):<br>"+average_profit_rate);
         	  if(total_profit<0){
-        		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("利润(CNY):"+eeda.numFormat(total_profit,3)).css('color','red');
+        		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("利润(CNY):<br>"+eeda.numFormat(total_profit,3)).css('color','red');
         	  }else(
-        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("利润(CNY):"+eeda.numFormat(total_profit,3))
+        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("利润(CNY):<br>"+eeda.numFormat(total_profit,3))
         	  )
         	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("提成");
 

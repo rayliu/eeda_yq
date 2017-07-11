@@ -773,7 +773,7 @@ $(document).ready(function() {
                 if(data.IDS){
                     var arr=data.IDS.split(',');
                     for(var j=0;j<arr.length;j++){
-                        for(var i=1;i<rows.length;i++){
+                        for(var i=0;i<rows.length;i++){
                             var td=$(rows[i]).find('[type=checkbox]');
                             var btn0=$(rows[i]).find('[type=button]').eq(0);
                             if($(td).val()==arr[j]){
