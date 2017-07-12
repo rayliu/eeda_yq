@@ -184,7 +184,8 @@ public class CmsChargeCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.*, p.abbr sp_name,ul.c_name creator_name,ul2.c_name confirm_name "
+        		+ " select if(aco.audit_status IS NULL ,aco.status,aco.audit_status) as real_status,"
+        		+ "aco.*, p.abbr sp_name,ul.c_name creator_name,ul2.c_name confirm_name "
 				+ " from custom_arap_charge_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " left join user_login ul on ul.id = aco.create_by"
@@ -196,8 +197,8 @@ public class CmsChargeCheckOrderController extends Controller {
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
-        
-        List<Record> orderList = Db.find(sql+ condition  +sLimit);
+        String ordersql=sql+ condition  +sLimit;
+        List<Record> orderList = Db.find(ordersql);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));

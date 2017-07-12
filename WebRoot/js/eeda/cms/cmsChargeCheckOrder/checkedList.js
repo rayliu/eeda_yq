@@ -18,7 +18,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			           	  }
 			          },
 					  
-					  { "data": "STATUS", "width": "60px"},
+					  { "data": "REAL_STATUS", "width": "60px"},
 					  { "data": "SP_NAME", "width": "120px"}, 
 					  { "data": "CHECK_AMOUNT","width": "60px",
 				    	 "render":function(data, type, full, meta){

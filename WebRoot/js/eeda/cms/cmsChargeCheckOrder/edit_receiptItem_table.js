@@ -53,7 +53,13 @@ $(document).ready(function() {
         			return data;
         		}
         },
-        { "data": "RECEIVE_TIME", "width": "80px"},
+        { "data": "RECEIVE_TIME", "width": "80px",
+        		render:function(data,full){
+        			var index=data.indexOf(" ");
+        			data=data.substring(0,index);
+        			return data;
+        		}
+        },
         { "data": "RECEIVE_NAME", "width": "80px"}
         ]
     }); 
