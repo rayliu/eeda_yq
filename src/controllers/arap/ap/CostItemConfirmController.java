@@ -71,7 +71,7 @@ public class CostItemConfirmController extends Controller {
 				+ " left join unit u on u.id=joa.unit_id "
 				+ " left join currency c on c.id=joa.currency_id "
 				+ " LEFT JOIN currency c1 ON c1.id = joa.exchange_currency_id"
-				+ " where joa.order_type='cost' and jo.office_id = "+office_id + ref_office
+				+ " where joa.order_type='cost' and (jo.office_id = "+office_id + ref_office+")"
 				+ " and jo.delete_flag = 'N'"
 				+ " ) A where 1=1 ";
 		

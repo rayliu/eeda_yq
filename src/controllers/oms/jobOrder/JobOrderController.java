@@ -862,11 +862,11 @@ public class JobOrderController extends Controller {
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
     	String booking_agent =  dto.getStr("BOOKING_AGENT");//订舱代理
-    	String pol =  dto.getStr("POL");
-    	String pod =  dto.getStr("POD");
-    	String por =  dto.getStr("POR");
-    	String hub =  dto.getStr("HUB");
-    	String carrier =  dto.getStr("CARRIER");
+    	String pol =  dto.getStr("POL")==null?"":dto.getStr("POL");
+    	String pod =  dto.getStr("POD")==null?"":dto.getStr("POD");
+    	String por =  dto.getStr("POR")==null?"":dto.getStr("POR");
+    	String hub =  dto.getStr("HUB")==null?"":dto.getStr("HUB");
+    	String carrier =  dto.getStr("CARRIER")==null?"":dto.getStr("CARRIER");
 
     	String container_types = "''";
     	for (int i = 0; i < jArray.size(); i++) {
@@ -884,10 +884,10 @@ public class JobOrderController extends Controller {
     			+ " LEFT JOIN supplier_contract sc on sc.id = scl.contract_id"
     			+ " LEFT JOIN supplier_contract_item sci on sci.supplier_loc_id = scl.id"
     			+ " where "
-    			+ " sc.customer_id = '"+booking_agent+"'  and ('"+atd+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
-    			+ " and scl.pol_id = '"+pol+"' and scl.pod_id = '"+pod+"'"
-    			+ " and scl.por_id = '"+por+"' and scl.hub_id = '"+hub+"' and  scl.carrier_id = '"+carrier+"'"
-    			+ " and (sci.container_type in ("+container_types+") "
+    			+ " ifnull(sc.customer_id,'') = '"+booking_agent+"'  and ('"+atd+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
+    			+ " and ifnull(scl.pol_id,'') = '"+pol+"' and ifnull(scl.pod_id,'') = '"+pod+"'"
+    			+ " and ifnull(scl.por_id,'') = '"+por+"' and ifnull(scl.hub_id,'') = '"+hub+"' and  ifnull(scl.carrier_id,'') = '"+carrier+"'"
+    			+ " and (ifnull(sci.container_type,'') in ("+container_types+") "
     			+ " or (ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
     			+ " and ifnull(sci.volume1,'')='' and ifnull(sci.volume2,'')=''))"
     			+ " and contract_type = 'ocean'"
