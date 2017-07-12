@@ -654,12 +654,12 @@ public class JobOrderController extends Controller {
         
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
-    	String customer_id =  dto.getStr("CUSTOMER_ID");
-    	String trans_clause =  dto.getStr("TRANS_CLAUSE");
-    	String trade_type =  dto.getStr("TRADE_TYPE");
-    	String type =  dto.getStr("TYPE");
-    	String pol =  dto.getStr("POL");
-    	String pod =  dto.getStr("POD");
+    	String customer_id =  dto.getStr("CUSTOMER_ID")==null?"":dto.getStr("CUSTOMER_ID");
+    	String trans_clause =  dto.getStr("TRANS_CLAUSE")==null?"":dto.getStr("TRANS_CLAUSE");
+    	String trade_type =  dto.getStr("TRADE_TYPE")==null?"":dto.getStr("TRADE_TYPE");
+    	String type =  dto.getStr("TYPE")==null?"":dto.getStr("TYPE");
+    	String pol =  dto.getStr("POL")==null?"":dto.getStr("POL");
+    	String pod =  dto.getStr("POD")==null?"":dto.getStr("POD");
 
     	
     	String container_types = "''";
@@ -678,8 +678,8 @@ public class JobOrderController extends Controller {
     			+ " LEFT JOIN customer_contract cc on cc.id = ccl.contract_id"
     			+ " LEFT JOIN customer_contract_item cci on cci.customer_loc_id = ccl.id"
     			+ " where "
-    			+ " customer_id = '"+customer_id+"' and cc.type = '"+type+"' and ('"+order_export_date+"' BETWEEN cc.contract_begin_time and cc.contract_end_time)"
-    			+ " and cc.trans_clause = '"+trans_clause+"' and cc.trade_type = '"+trade_type+"'"
+    			+ " ifnull(customer_id,'') = '"+customer_id+"' and ifnull(cc.type,'') = '"+type+"' and ('"+order_export_date+"' BETWEEN cc.contract_begin_time and cc.contract_end_time)"
+    			+ " and ifnull(cc.trans_clause,'') = '"+trans_clause+"' and ifnull(cc.trade_type,'') = '"+trade_type+"'"
     			+ " and ccl.pol_id = '"+pol+"' and ccl.pod_id = '"+pod+"'"
     			+ " and (cci.container_type in ("+container_types+") or ifnull(cci.container_type,'')='')"
     			+ " and contract_type = 'ocean'"
@@ -885,9 +885,9 @@ public class JobOrderController extends Controller {
     			+ " LEFT JOIN supplier_contract_item sci on sci.supplier_loc_id = scl.id"
     			+ " where "
     			+ " ifnull(sc.customer_id,'') = '"+booking_agent+"'  and ('"+atd+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
-    			+ " and ifnull(scl.pol_id,'') = '"+pol+"' and ifnull(scl.pod_id,'') = '"+pod+"'"
+    			+ " and ifnull(scl.pol_id,"+pol+") = '"+pol+"' and scl.pod_id = '"+pod+"'"
     			+ " and ifnull(scl.por_id,'') = '"+por+"' and ifnull(scl.hub_id,'') = '"+hub+"' and  ifnull(scl.carrier_id,'') = '"+carrier+"'"
-    			+ " and (ifnull(sci.container_type,'') in ("+container_types+") "
+    			+ " and (sci.container_type in ("+container_types+") "
     			+ " or (ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
     			+ " and ifnull(sci.volume1,'')='' and ifnull(sci.volume2,'')=''))"
     			+ " and contract_type = 'ocean'"
@@ -1057,13 +1057,13 @@ public class JobOrderController extends Controller {
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
     	String booking_agent =  dto.getStr("BOOKING_AGENT");//订舱代理
-    	String pol =  dto.getStr("POL");
-    	String pod =  dto.getStr("POD");
-    	String por =  dto.getStr("POR");
-    	String hub =  dto.getStr("HUB");
-    	String carrier =  dto.getStr("CARRIER");
+    	String pol =  dto.getStr("POL")==null?"":dto.getStr("POL");
+    	String pod =  dto.getStr("POD")==null?"":dto.getStr("POD");
+    	String por =  dto.getStr("POR")==null?"":dto.getStr("POR");
+    	String hub =  dto.getStr("HUB")==null?"":dto.getStr("HUB");
+    	String carrier =  dto.getStr("CARRIER")==null?"":dto.getStr("CARRIER");
     	String fee_count =  dto.getStr("FEE_COUNT")==null?"1":dto.getStr("FEE_COUNT");
-    	String billing_method =  dto.getStr("BILLING_METHOD");
+    	String billing_method =  dto.getStr("BILLING_METHOD")==null?"":dto.getStr("BILLING_METHOD");
     	
     	String billing_method_condition = "";
     	if(billing_method.equals("perWeight")){
@@ -1086,8 +1086,8 @@ public class JobOrderController extends Controller {
     			+ " where "
     			+ " sc.customer_id = '"+booking_agent+"' "
     			+ " and ('"+atd+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
-    			+ " and scl.pol_id = '"+pol+"' and scl.pod_id = '"+pod+"'"
-    			+ " and scl.por_id = '"+por+"' and scl.hub_id = '"+hub+"' and  scl.carrier_id = '"+carrier+"'"
+    			+ " and ifnull(scl.pol_id,'') = '"+pol+"' and ifnull(scl.pod_id,'') = '"+pod+"'"
+    			+ " and ifnull(scl.por_id,'') = '"+por+"' and ifnull(scl.hub_id,'') = '"+hub+"' and  ifnull(scl.carrier_id,'') = '"+carrier+"'"
     			+ " and ("+billing_method_condition
     			+ " or (ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
     			+ " and ifnull(sci.volume1,'')='' and ifnull(sci.volume2,'')=''))"
@@ -1263,13 +1263,13 @@ public class JobOrderController extends Controller {
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
-    	String booking_agent =  dto.getStr("BOOKING_AGENT");//订舱代理
-    	String air_company =  dto.getStr("AIR_COMPANY");
-    	String start_from =  dto.getStr("START_FROM");
-    	String destination =  dto.getStr("DESTINATION");
-    	String etd =  dto.getStr("ETD");
-    	String fee_count =  dto.getStr("FEE_COUNT");
-    	String billing_method =  dto.getStr("BILLING_METHOD");
+    	String booking_agent =  dto.getStr("BOOKING_AGENT")==null?"":dto.getStr("BOOKING_AGENT");//订舱代理
+    	String air_company =  dto.getStr("AIR_COMPANY")==null?"":dto.getStr("AIR_COMPANY");
+    	String start_from =  dto.getStr("START_FROM")==null?"":dto.getStr("START_FROM");
+    	String destination =  dto.getStr("DESTINATION")==null?"":dto.getStr("DESTINATION");
+    	String etd =  dto.getStr("ETD")==null?"":dto.getStr("ETD");
+    	String fee_count =  dto.getStr("FEE_COUNT")==null?"":dto.getStr("FEE_COUNT");
+    	String billing_method =  dto.getStr("BILLING_METHOD")==null?"":dto.getStr("BILLING_METHOD");
     	
     	String billing_method_condition = "";
     	if(billing_method.equals("perWeight")){
@@ -1288,10 +1288,10 @@ public class JobOrderController extends Controller {
     			+ " LEFT JOIN supplier_contract sc on sc.id = scl.contract_id"
     			+ " LEFT JOIN supplier_contract_item sci on sci.supplier_loc_id = scl.id"
     			+ " where "
-    			+ " sc.customer_id = '"+booking_agent+"' "
+    			+ " ifnull(sc.customer_id,'') = '"+booking_agent+"' "
     			+ " and ('"+etd+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
-    			+ " and scl.pol_id = '"+start_from+"' and scl.pod_id = '"+destination+"'"
-    			+ " and  scl.air_company = '"+air_company+"'"
+    			+ " and ifnull(scl.pol_id,'') = '"+start_from+"' and ifnull(scl.pod_id,'') = '"+destination+"'"
+    			+ " and  ifnull(scl.air_company,'') = '"+air_company+"'"
     			+ " and ("+billing_method_condition
     			+ " or (ifnull(sci.container_type,'')='' and ifnull(sci.gross_weight1,'')='' and ifnull(sci.gross_weight2,'')=''"
     			+ " and ifnull(sci.volume1,'')='' and ifnull(sci.volume2,'')=''))"
@@ -1464,13 +1464,13 @@ public class JobOrderController extends Controller {
         Record dto= gson.fromJson(jsonStr, Record.class);   
         String customer_id =  dto.getStr("CUSTOMER_ID");
     	String type =  dto.getStr("TYPE");
-    	String trans_clause =  dto.getStr("TRANS_CLAUSE");
-    	String trade_type =  dto.getStr("TRADE_TYPE");
-    	String start_from =  dto.getStr("START_FROM");
-    	String destination =  dto.getStr("DESTINATION");
-    	String etd =  dto.getStr("ETD");
-    	String fee_count =  dto.getStr("FEE_COUNT");
-    	String billing_method =  dto.getStr("BILLING_METHOD");
+    	String trans_clause =  dto.getStr("TRANS_CLAUSE")==null?"":dto.getStr("TRANS_CLAUSE");
+    	String trade_type =  dto.getStr("TRADE_TYPE")==null?"":dto.getStr("TRADE_TYPE");
+    	String start_from =  dto.getStr("START_FROM")==null?"":dto.getStr("START_FROM");
+    	String destination =  dto.getStr("DESTINATION")==null?"":dto.getStr("DESTINATION");
+    	String etd =  dto.getStr("ETD")==null?"":dto.getStr("ETD");
+    	String fee_count =  dto.getStr("FEE_COUNT")==null?"":dto.getStr("FEE_COUNT");
+    	String billing_method =  dto.getStr("BILLING_METHOD")==null?"":dto.getStr("BILLING_METHOD");
 
     	String billing_method_condition = "";
     	if(billing_method.equals("perWeight")){
@@ -1491,10 +1491,10 @@ public class JobOrderController extends Controller {
     			//+ " LEFT JOIN customer_contract_item cci on cci.customer_loc_id = ccl.id"
     			+ " LEFT JOIN customer_contract_item cci on cci.contract_id = cc.id"
     			+ " where "
-    			+ " cc.customer_id = '"+customer_id+"' and cc.type = '"+type+"'"
-    			+ " and cc.trans_clause = '"+trans_clause+"' and cc.trade_type = '"+trade_type+"'"
+    			+ " ifnull(cc.customer_id,'') = '"+customer_id+"' and ifnull(cc.type,'') = '"+type+"'"
+    			+ " and ifnull(cc.trans_clause,'') = '"+trans_clause+"' and ifnull(cc.trade_type,'') = '"+trade_type+"'"
     			+ " and ('"+etd+"' BETWEEN cc.contract_begin_time and cc.contract_end_time)"
-    			+ " and ccl.pol_id = '"+start_from+"' and ccl.pod_id = '"+destination+"'"
+    			+ " and ifnull(ccl.pol_id,'') = '"+start_from+"' and ifnull(ccl.pod_id,'') = '"+destination+"'"
     			+ " and ("+billing_method_condition
     			+ " or (ifnull(cci.container_type,'')='' and ifnull(cci.gross_weight1,'')='' and ifnull(cci.gross_weight2,'')=''"
     			+ " and ifnull(cci.volume1,'')='' and ifnull(cci.volume2,'')=''))"
@@ -1658,10 +1658,10 @@ public class JobOrderController extends Controller {
     	for (int i = 0; i < jArray.size(); i++) {
     		Record map=new Record();  
     		map = (Record) jArray.get(i);
-    		String transport_company = (String)map.get("TRANSPORT_COMPANY");
-    		String truck_type = (String)map.get("TRUCK_TYPE");
-    		String take_address = (String)map.get("TAKE_ADDRESS");
-    		String delivery_address = (String)map.get("DELIVERY_ADDRESS");
+    		String transport_company = (String)map.get("TRANSPORT_COMPANY")==null?"":dto.getStr("TRANSPORT_COMPANY");
+    		String truck_type = (String)map.get("TRUCK_TYPE")==null?"":dto.getStr("TRUCK_TYPE");
+    		String take_address = (String)map.get("TAKE_ADDRESS")==null?"":dto.getStr("TAKE_ADDRESS");
+    		String delivery_address = (String)map.get("DELIVERY_ADDRESS")==null?"":dto.getStr("DELIVERY_ADDRESS");
     		
     		String sql = "select sci.*,sc.contract_begin_time,sc.contract_end_time"
         			+ " from supplier_contract_location scl"
@@ -1670,12 +1670,12 @@ public class JobOrderController extends Controller {
         			+ " LEFT JOIN supplier_contract sc on sc.id = scl.contract_id"
         			+ " LEFT JOIN supplier_contract_item sci on sci.supplier_loc_id = scl.id"
         			+ " where "
-        			+ " sc.customer_id = '"+transport_company+"' "
+        			+ " ifnull(sc.customer_id,'') = '"+transport_company+"' "
         			+ " and ('"+order_export_date+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
-        			+ " and ((dc_f.dock_name = '"+take_address+"' and dc_t.dock_name = '"+delivery_address+"') "
+        			+ " and ((ifnull(dc_f.dock_name,'') = '"+take_address+"' and ifnull(dc_t.dock_name,'') = '"+delivery_address+"') "
         			+ " or"
-        			+ " (dc_f.dock_name = '"+delivery_address+"' and dc_t.dock_name = '"+take_address+"'))"
-        			+ " and (sci.truck_type = '"+truck_type+"'"
+        			+ " (ifnull(dc_f.dock_name,'') = '"+delivery_address+"' and ifnull(dc_t.dock_name,'') = '"+take_address+"'))"
+        			+ " and (ifnull(sci.truck_type,'') = '"+truck_type+"'"
         			+ " or ifnull(sci.truck_type,'') ='')"
         			+ " AND contract_type = 'land'"
         			+ "	and sc.office_id = "+office_id
@@ -1829,9 +1829,9 @@ public class JobOrderController extends Controller {
     	for (int i = 0; i < jArray.size(); i++) {
     		Record map=new Record();  
     		map = (Record) jArray.get(i);
-    		String truck_type = (String)map.get("TRUCK_TYPE");
-    		String take_address = (String)map.get("TAKE_ADDRESS");
-    		String delivery_address = (String)map.get("DELIVERY_ADDRESS");
+    		String truck_type = (String)map.get("TRUCK_TYPE")==null?"":dto.getStr("TRUCK_TYPE");
+    		String take_address = (String)map.get("TAKE_ADDRESS")==null?"":dto.getStr("TAKE_ADDRESS");
+    		String delivery_address = (String)map.get("DELIVERY_ADDRESS")==null?"":dto.getStr("DELIVERY_ADDRESS");
     		
     		String sql = "select sci.*,sc.contract_begin_time,sc.contract_end_time"
         			+ " from customer_contract_location scl"
@@ -1841,12 +1841,12 @@ public class JobOrderController extends Controller {
         			//+ " LEFT JOIN supplier_contract_item sci on sci.supplier_loc_id = scl.id"
         			+ " LEFT JOIN customer_contract_item sci on sci.contract_id = sc.id"
         			+ " where "
-        			+ " sc.customer_id = '"+customer_id+"' "
+        			+ " ifnull(sc.customer_id,'') = '"+customer_id+"' "
         			+ " and ('"+order_export_date+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
-        			+ " and ((dc_f.dock_name = '"+take_address+"' and dc_t.dock_name = '"+delivery_address+"') "
+        			+ " and ((ifnull(dc_f.dock_name,'') = '"+take_address+"' and ifnull(dc_t.dock_name,'') = '"+delivery_address+"') "
         			+ " or"
-        			+ " (dc_f.dock_name = '"+delivery_address+"' and dc_t.dock_name = '"+take_address+"'))"
-        			+ " and (sci.truck_type = '"+truck_type+"'"
+        			+ " (ifnull(dc_f.dock_name,'') = '"+delivery_address+"' and ifnull(dc_t.dock_name,'') = '"+take_address+"'))"
+        			+ " and (ifnull(sci.truck_type,'') = '"+truck_type+"'"
         			+ " or ifnull(sci.truck_type,'') ='')"
         			+ " AND contract_type = 'land'"
         			+ "	and sc.office_id = "+office_id

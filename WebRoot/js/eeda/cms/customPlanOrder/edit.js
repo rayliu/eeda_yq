@@ -414,7 +414,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                                 +'type="'+json_obj[j].type+'" '
                                 +'unit_name="'+json_obj[j].unit_name+'" '
                                 +'></li>';
-                            li_val += '<span></span> '+json_obj[j].sp_name+' , '+json_obj[j].charge_name+' , '+json_obj[j].charge_eng_name+'<br/>';
+                            li_val += '<span></span> '+json_obj[j].sp_name+' , '+json_obj[j].charge_name+' , '+json_obj[j].total_amount+'<br/>';
                         }
                         
                         div.append('<ul class="used'+type+'Info" id="'+data[i].ID+'">'
