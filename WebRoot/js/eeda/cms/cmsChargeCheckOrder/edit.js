@@ -144,7 +144,24 @@ $(document).ready(function() {
     	}
     });
     
-    //打印
+    //导出excel对账单
+    $('#exportCustomOrderExcel').click(function(){
+        $(this).attr('disabled', true);
+        var id = $('#order_id').val();
+        var sp_name = $('#company_name').val();
+        $.post('/cmsChargeCheckOrder/downloadExcelList', {id:id,sp_name:sp_name}, function(data){
+            $('#exportCustomOrderExcel').prop('disabled', false);
+            window.open(data);
+        }).fail(function() {
+            $('#exportCustomOrderExcel').prop('disabled', false);
+            $.scojs_message('生成报关应收对账单PDF失败', $.scojs_message.TYPE_ERROR);
+        });
+    });
+    
+    
+    
+    
+    //生成对账单
     $('#printCustomOrderBtn').click(function(){
             $(this).attr('disabled', true);
             var id = $('#order_id').val();

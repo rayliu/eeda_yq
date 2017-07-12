@@ -34,6 +34,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
+import controllers.util.PoiUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -671,5 +672,92 @@ public class CmsChargeCheckOrderController extends Controller {
 
     }
 	
-   	
+	//导出excel对账单
+		public void downloadExcelList(){
+			String order_id = getPara("id");
+			String sp_name = getPara("sp_name");
+//			String sql = list();
+			String sql_fin_name =" SELECT GROUP_CONCAT(DISTINCT f. NAME,':',f.id)  fin_name_id "
+					+" FROM  custom_plan_order_arap cpoa "
+					+" LEFT JOIN custom_arap_charge_item caci ON caci.ref_order_id = cpoa.id  "
+					+" LEFT JOIN custom_plan_order cpo ON cpo.id = cpoa.order_id "
+					+" LEFT JOIN fin_item f ON f.id = cpoa.charge_id "
+					+" WHERE caci.custom_charge_order_id = "+order_id
+					+" AND cpo.delete_flag = 'N'  ";
+			Record re_fin_name_id = Db.findFirst(sql_fin_name);
+			String fin_name_id_stirng = re_fin_name_id.getStr("fin_name_id");
+			String [] fin_name_id = fin_name_id_stirng.split(",");
+			String sql_name_combina = "";
+			ArrayList<String> list = new ArrayList<String>();
+			ArrayList<String> list_id = new ArrayList<String>();
+			ArrayList<String> list_name = new ArrayList<String>();
+
+			list_id.add("DATE_CUSTOM");
+			list_id.add("ORDER_NO");
+			list_id.add("ABBR_NAME");
+			list_id.add("CUSTOMS_BILLCODE");
+			
+			for(String fin_name_id_single : fin_name_id){
+				 String [] fin_name_id_separate = fin_name_id_single.split(":");
+				 sql_name_combina += "if(f.name = '"+fin_name_id_separate[0] +"' and cpoa.order_type = 'charge',cpoa.total_amount,0) "+fin_name_id_separate[1]+"_total_amount,";
+				 				 
+			     list_name.add(fin_name_id_separate[0]);
+	 
+				 list.add("SUM("+fin_name_id_separate[1]+"_total_amount) SUM_"+fin_name_id_separate[1]+"_total_amount");
+				 list_id.add("SUM_"+fin_name_id_separate[1]+"_total_amount");
+				 
+			}
+			
+//			//去除重复值  
+//			HashSet list_remove_repeat=new HashSet(list);
+//			HashSet list_id_remove_repeat=new HashSet(list_id);
+//			HashSet list_name_remove_repeat=new HashSet(list_name);
+			
+			
+			String sum_sql_total = "";
+			String head_id_sql_total = "";
+			String head_name_sql_total = "";
+			
+			sum_sql_total = StringUtils.join(list.toArray(), ",");
+			head_id_sql_total = StringUtils.join(list_id.toArray(), ",");
+			head_name_sql_total = StringUtils.join(list_name.toArray(), ",");
+	
+			
+			String sqlExport = "SELECT "
+							+"	date_custom, "
+							+"	order_no, "
+							+"	abbr_name, "
+							+"	customs_billCode, "
+							+"	create_stamp, "
+							+sum_sql_total
+							+" FROM "
+							+"	( "
+							+"		SELECT "
+							+"			cpo.date_custom, "
+							+"			cpo.order_no, "
+							+"			p.abbr abbr_name, "
+							+"			cpo.customs_billCode, "							
+							+sql_name_combina
+							+"      cpo.create_stamp "
+							+" FROM "
+							+"	custom_plan_order_arap cpoa "
+							+" LEFT JOIN custom_arap_charge_item caci ON caci.ref_order_id = cpoa.id  "
+							+" LEFT JOIN custom_plan_order cpo ON cpo.id = cpoa.order_id "
+							+" LEFT JOIN fin_item f ON f.id = cpoa.charge_id "
+							+" LEFT JOIN party p ON p.id = cpoa.sp_id "
+							+" WHERE "
+							+"	caci.custom_charge_order_id = "+order_id
+							+" AND cpo.delete_flag = 'N' "
+							+" GROUP BY "
+							+"	cpoa.id "
+							+"	) A "
+							+" GROUP BY "
+							+"	order_no  ";
+			String total_name_header = "报关日期, 申请单号, 公司名称, 报关单号,"+head_name_sql_total;
+			String[] headers = total_name_header.split(",");
+			
+			String[] fields = head_id_sql_total.split(",");
+			String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,sp_name);
+			renderText(fileName);
+		}
 }

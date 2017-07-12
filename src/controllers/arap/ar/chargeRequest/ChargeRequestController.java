@@ -249,7 +249,7 @@ public class ChargeRequestController extends Controller {
         		+" 	) A "
         		+" WHERE "
         		+" 	( "
-        		+" 		(ifnull(usd, 0)-paid_usd > 0.01) "
+        		+" 		(ifnull(usd, 0)-paid_usd > 0.02) "
         		+" 		OR (ifnull(cny, 0)-paid_cny > 0.01) "
         		+" 		OR (ifnull(hkd, 0)-paid_hkd > 0.01) "
         		+" 		OR (ifnull(jpy, 0)-paid_jpy > 0.01) "
@@ -1211,7 +1211,7 @@ public class ChargeRequestController extends Controller {
       				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
       				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
       				+ " left join fin_item f on f.id = joa.charge_id"
-      				+ " where  joa.audit_flag='Y' and joa.billconfirm_flag = 'Y'  and joa.create_flag='N'  and jo.office_id = "+office_id+ref_office
+      				+ " where  joa.audit_flag='Y' and joa.billconfirm_flag = 'Y'  and joa.create_flag='N'  and (jo.office_id = "+office_id+ref_office+")"
       				+ " and jo.delete_flag = 'N'"
       				+ " GROUP BY joa.id "
     				+ " ) B where 1=1 ";
@@ -1239,7 +1239,7 @@ public class ChargeRequestController extends Controller {
          				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
          				+ " left join job_order_land_item joli on joli.order_id=joa.order_id "
          				+ " left join fin_item f on f.id = joa.charge_id"
-         				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.billconfirm_flag = 'Y' and joa.create_flag='N' and jo.office_id = "+office_id+ref_office
+         				+ " where joa.order_type='charge' and joa.audit_flag='Y' and joa.billconfirm_flag = 'Y' and joa.create_flag='N' and (jo.office_id = "+office_id+ref_office+")"
          				+ " and jo.delete_flag = 'N'"
          				+ " GROUP BY joa.id "
          				+ " ) B where 1=1 ";
