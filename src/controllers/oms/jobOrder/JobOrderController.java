@@ -263,6 +263,8 @@ public class JobOrderController extends Controller {
         String planOrderItemID = (String) dto.get("plan_order_item_id");
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
         String customer_id = (String)dto.get("customer_id");
+        String supplier_contract_type = (String) dto.get("supplier_contract_type");
+        String customer_contract_type = (String) dto.get("customer_contract_type");
         
         JobOrder jobOrder = new JobOrder();
         
@@ -516,16 +518,33 @@ public class JobOrderController extends Controller {
    		saveOceanTemplate(shipment_detail);
    		//保存空运填写模板
    		saveAirTemplate(air_detail);
-   		//保存客户合同相对应的信息（方便监听条件是否发生改变去重新加载合同香的费用信息）
-   		//海运合同费用信息
-   		saveJobOceanCustomerContractConditions(jobOrder);
-   	    //保存供应商合同相对应的信息（方便监听条件是否发生改变去重新加载合同香的费用信息）
-   		//海运带出合同费用信息(供应商)
-   		if(type.indexOf("柜货")>0){
-   			saveJobOceanGHSpContractConditions(jobOrder);
-   		}else if(type.indexOf("散货")>0){
-   			saveJobOceanSHSpContractConditions(jobOrder);
+   		
+   		//海 陆 空运带出合同费用信息(供应商)
+   		if(supplier_contract_type.indexOf("ocean")>-1){
+   			if(type.indexOf("柜货")>-1){
+   	   			saveJobOceanGHSpContractConditions(jobOrder);
+   	   		}else if(type.indexOf("散货")>-1){
+   	   			saveJobOceanSHSpContractConditions(jobOrder);
+   	   		}
    		}
+   		if(supplier_contract_type.indexOf("air")>-1){
+   			saveJobAirSpContractConditions(jobOrder);
+   		}
+   		if(supplier_contract_type.indexOf("land")>-1){
+   			saveJobLandSpContractConditions(jobOrder);
+   		}
+   		
+   		//海 陆 空运带出合同费用信息(客户)
+   		if(customer_contract_type.indexOf("ocean")>-1){
+   			saveJobOceanCustomerContractConditions(jobOrder);
+   		}
+   		if(customer_contract_type.indexOf("air")>-1){
+   			saveJobAirCustomerContractConditions(jobOrder);
+   		}
+   		if(customer_contract_type.indexOf("land")>-1){
+   			saveJobLandCustomerContractConditions(jobOrder);
+   		}
+
    		//空运带出合同费用信息(供应商)
    		saveJobAirSpContractConditions(jobOrder);
    		//陆运带出合同费用信息(供应商)

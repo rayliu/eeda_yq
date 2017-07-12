@@ -131,6 +131,20 @@ $(document).ready(function() {
         });
         var transport_type_str = transport_type.toString();
         
+        //供应商合同费用带出遍历取值
+        var supplier_contract_type=[];
+        $('#supplier_contract_type input[type="checkbox"]:checked').each(function(){
+        	supplier_contract_type.push($(this).val()); 
+        });
+        var supplier_contract_type_str = supplier_contract_type.toString();
+        
+        //客户合同费用带出遍历取值
+        var customer_contract_type=[];
+        $('#customer_contract_type input[type="checkbox"]:checked').each(function(){
+        	customer_contract_type.push($(this).val()); 
+        });
+        var customer_contract_type_str = customer_contract_type.toString();
+        
         //报关类型遍历取值
         var  this_custom_type = [];
         $('#custom_type input[type="checkbox"]:checked').each(function(){
@@ -156,6 +170,8 @@ $(document).ready(function() {
         order.status = $('#status').val()==''?'新建':$('#status').val();
         order.remark = $('#note').val();
         order.transport_type = transport_type_str;
+        order.supplier_contract_type=supplier_contract_type_str;
+        order.customer_contract_type=customer_contract_type_str;
         order.gross_weight = $("#gross_weight").val();
         order.net_weight = $("#net_weight").val();
         order.volume = $("#volume").val();
@@ -409,6 +425,38 @@ $(document).ready(function() {
 	        }
 	    })
     }
+    
+  //checkbox回显,supplier_contract_type是用js拿值
+    var supplier_checkArray = supplier_contract_type_hidden.split(",");
+    for(var i=0;i<supplier_checkArray.length;i++){
+	    $('#supplier_contract_type input[type="checkbox"]').each(function(){
+	        var checkValue=$(this).val();
+	        if(supplier_checkArray[i]==checkValue){
+	        	this.checked = true;
+
+                showServiceTab(checkValue);
+	        }
+	    })
+    }
+    
+  //checkbox回显,customer_contract_type是用js拿值
+    var customer_checkArray = customer_contract_type_hidden.split(",");
+    for(var i=0;i<customer_checkArray.length;i++){
+	    $('#customer_contract_type input[type="checkbox"]').each(function(){
+	        var checkValue=$(this).val();
+	        if(customer_checkArray[i]==checkValue){
+	        	this.checked = true;
+
+                showServiceTab(checkValue);
+	        }
+	    })
+    }
+    
+    if($('#order_id').val()==''){
+    	$('#customer_contract_type input[type="checkbox"], #supplier_contract_type input[type="checkbox"]').attr('checked',true);
+    }
+    
+    
     
     //放货方式radio回显
     var radioVal = $('#hidden_billing_method').val();
