@@ -52,7 +52,7 @@ public class outputScaleController extends Controller {
         		+" ,tjo.type,dock.dock_name take_wharf_name, "
         		+" dock1.dock_name back_wharf_name,dock2.dock_name loading_wharf1_name,dock3.dock_name " 
         		+" loading_wharf2_name,tjo.container_no,tjo.cabinet_type,tjol.unload_type,car.car_no,tjol.car_no car_id,tjo.remark, "
-        		+" SUBSTR(tjo.create_stamp,1, 10) create_stamp,tjol.driver,CONCAT(IFNULL(CONCAT(dock.dock_name,'-'),''),IFNULL(CONCAT(dock2.dock_name,'-'),''),IFNULL(CONCAT(dock3.dock_name,'-'),''),IFNULL(" 
+        		+" (CONVERT (substring(tjol.closing_date, 1, 10),CHAR)) create_stamp,tjol.driver,CONCAT(IFNULL(CONCAT(dock.dock_name,'-'),''),IFNULL(CONCAT(dock2.dock_name,'-'),''),IFNULL(CONCAT(dock3.dock_name,'-'),''),IFNULL(" 
         		+ "dock1.dock_name,'')) combine_wharf, "
         		+" (SELECT GROUP_CONCAT(car.car_no SEPARATOR '/') from trans_job_order tjo1  "
         		+" LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo1.id "
@@ -62,7 +62,7 @@ public class outputScaleController extends Controller {
         		+" LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo1.id "
         		+" WHERE tjo.id = tjo1.id) combine_unload_type ,"
         		+ " (SELECT SUM(tjoa.currency_total_amount) FROM trans_job_order_arap tjoa WHERE tjoa.order_id = tjo.id AND tjoa.order_type = 'CHARGE' AND tjoa.charge_id = ( SELECT id FROM "
-        		+ " fin_item f WHERE f. NAME = '运费' AND f.office_id = 4) ) freight"
+        		+ " fin_item f WHERE f. NAME = '运费' AND f.office_id = 4) ) freight,tjol.export_flag"
         		+" from trans_job_order_land_item tjol  "
         		+" LEFT JOIN trans_job_order tjo on tjol.order_id = tjo.id "
         		+" LEFT JOIN trans_job_order_arap tjoa ON tjol.order_id = tjoa.order_id"
@@ -98,6 +98,13 @@ public class outputScaleController extends Controller {
 		String sql = list();
 		String sql_car_no ="";
 		String sql_driver ="";
+		String ids = getPara("itemIds");
+		String idAttr[] = ids.split(",");
+		for(int i=0 ; i<idAttr.length ; i++){
+			Record re = Db.findFirst("select * from trans_job_order_land_item tjol where id = ?",idAttr[i]);
+			long arapId = re.getLong("id");
+			Db.update("UPDATE trans_job_order_land_item SET export_flag = 'Y' WHERE id=?",arapId);
+		}
 		if(StringUtils.isNotBlank(car_no)){
 			 sql_car_no = " and car_no='"+car_no+"'";
 		}

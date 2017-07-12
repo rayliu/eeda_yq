@@ -27,13 +27,17 @@
 	                                                    value: ''
 	                                                }){}%>
 	                        </div>
-	                        <div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputField.html", 
-	                                                {   id: 'order_no', 
-	                                                    label: '工作单号', 
-	                                                    value: ''
-	                                                }){}%>
-	                        </div>
+	                         <div class="col-lg-4">
+				               <%include("/eeda/component/form/selectField.html", 
+				                   {   id:'export_flag', 
+				                       label:'导出状态', 
+				                       value_list:[
+				                           {code:'N', value:'未导出'},
+				                           {code:'Y', value:'已导出'},
+				                           {code:'', value:''}
+				                       ]
+				                   }){}%>
+					         </div>
 	                      </div>
 	                      <div class="row">
 	                        <div class="col-lg-4">
@@ -56,11 +60,20 @@
 	                            }){} %>
 	                        </div>
 	                    </div>
+	                    <div class="row">	
+	                    	<div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id: 'order_no', 
+	                                                    label: '工作单号', 
+	                                                    value: ''
+	                                                }){}%>
+	                        </div>
+	                    </div>
 	                    <div class="form-group button-bar" >
                             <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
                             <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
                             <button id="confirmBtn" class="btn btn_green" type="button" disabled style = "display:none">确认</button>
-                            <button id="export_outputTable" class="btn btn_green" type="button" >导出产值表</button>
+                            <button id="export_outputTable" class="btn btn_green" type="button"  disabled>导出产值表</button>
                         </div>
 	                </form>
 	             </div>
@@ -71,7 +84,7 @@
                        {
                            id:'eeda_table', 
                            style:'width:1500px',
-                           headers:['<input type="checkbox" id="AllCheck"  >','工作单号','提单号','提/收柜时间','客户','类型','拖柜地址','柜号','柜型',
+                           headers:['<input type="checkbox" id="AllCheck"  >','工作单号','提单号','提/收柜时间','客户','类型','导出状态','拖柜地址','柜号','柜型',
                                    '提柜类型','结算车牌','产值','运费','备注','创建时间']
                        }){} %>
              </div>
