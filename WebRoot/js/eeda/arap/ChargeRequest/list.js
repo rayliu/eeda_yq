@@ -1,5 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder', 'datetimepicker_CN'], function ($, metisMenu) {
 $(document).ready(function() {
+	
+	var flash = function(){    
+        $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
+     };
                 
     var application_table = eeda.dt({
         id: 'application_table',
@@ -671,9 +675,7 @@ $(document).ready(function() {
            $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
       });
       
-      var flash = function(){    
-         $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
-      };
+      
 
       //复核
       $("#application_table").on('click','.checkBtn',function(){
