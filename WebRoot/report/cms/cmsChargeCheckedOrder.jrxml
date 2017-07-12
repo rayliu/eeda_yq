@@ -363,7 +363,7 @@ WHERE
 					<font fontName="黑体" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{office_name}.equals("")?"":$F{office_name}+"码头报关费用结算明细")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{office_name}.equals("")?"":$F{office_name}+" - 报关费用结算明细")]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -423,23 +423,23 @@ WHERE
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[提运单号]]></text>
+				<text><![CDATA[公司名称]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="right-border" mode="Transparent" x="175" y="82" width="36" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="783b170c-4d40-4059-b113-108edb8eb1d3"/>
+				<reportElement style="right-border" mode="Transparent" x="177" y="82" width="53" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="783b170c-4d40-4059-b113-108edb8eb1d3"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[柜型/(体积)]]></text>
+				<text><![CDATA[报关单号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="right-border" mode="Transparent" x="211" y="82" width="45" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="59288b4d-326a-4a71-95b4-3c9414ec5a6a"/>
+				<reportElement style="right-border" mode="Transparent" x="230" y="82" width="26" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="59288b4d-326a-4a71-95b4-3c9414ec5a6a"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[柜号]]></text>
+				<text><![CDATA[序号]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="right-border" mode="Transparent" x="285" y="82" width="29" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="8f8b6526-8b49-4f14-b97d-05edbf88b451"/>
@@ -797,7 +797,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{GWF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="212" y="0" width="44" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
+				<reportElement style="right-border" mode="Transparent" x="230" y="0" width="26" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -805,7 +805,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{cabinet_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="177" y="0" width="34" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
+				<reportElement style="right-border" mode="Transparent" x="177" y="0" width="53" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
