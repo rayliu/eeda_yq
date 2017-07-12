@@ -1,7 +1,6 @@
 define(['jquery', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
 	 $('#updateBtn').on('click',function(){
-		 
 		 var p_c_d = $('#p_c_d').val();
 		 var province = '';
 		 var city = '';
@@ -32,10 +31,14 @@ define(['jquery', 'validate_cn', 'sco'], function ($, metisMenu) {
 		 order.intro = $('#intro').val();
 		 order.logo = $('#logo').val();
 		 
+		 
+		 var self = this;
+		 $(self).attr('disabled',true);
 		 $.post('/BusinessAdmin/account/save_info',{jsonStr:JSON.stringify(order)},function(data){
 			 if(data){
 				 $('#order_id').val(data.ID);
 				 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+				 $(self).attr('disabled',false);
 			 }else{
 				 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 			 }

@@ -10,7 +10,7 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
               render: function(data,type,full,meta){
                 var str = "<img style='width: 100px; height: 75px;' src='http://via.placeholder.com/200x150'>";
                 if(data)
-                  str ="<img style='width: 100px; height: 75px;' src='"+data+"'>";
+                  str ="<a href='/BusinessAdmin/product/edit?id="+full.ID+"'><img style='width: 100px; height: 75px;' src='/upload/"+data+"'></a>";
                 return str;
               }
             },

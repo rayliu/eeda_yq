@@ -5,8 +5,8 @@
             <div style="clear:both"></div>
         </div>
       <div class="pageheader notab">
-            <form enctype="multipart/form-data" method="post">
-            <input type="hidden" name="IDProduct" value="" />
+            <form id="orderForm">
+            <input type="hidden" id="order_id" name="order_id" value="${product.id!''}" />
             <div class="registered product-upload" id="login-content">
                 <dl>
                     <dt>
@@ -16,7 +16,7 @@
                     </dt>
                     <dd>
                         <div class="textin">
-                            <input type="text" name="ProductName" value="${product.name!''}" /> <span class="red">*</span>
+                            <input type="text" id="name" name="ProductName" value="${product.name!''}" /> <span class="red">*</span>
                         </div>
                     </dd>
                 </dl>
@@ -28,10 +28,10 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                            <input type="file" id="file_cover" name="file_photo"  class="ehdel_upload" />
                         </div>
-                        <% var imgPath = product.cover!'http://via.placeholder.com/200x150'; %>
-                        <img style='width: 200px; height: 150px;' src='${imgPath}'>
+
+                        <img style="width: 200px; height: 150px;" src="/upload/${product.cover!'nophoto.png'}" value="${product.cover!''}" id="img_cover"/>
                         <span class="red">*图片要求: 200*150, 小于500Kb</span>
                     </dd>
                 </dl>
@@ -44,11 +44,11 @@
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
                             <div style="padding-top:5px;">
-                                <select name="IDProductType" id="IDProductType">
-                                    <option value ="摄楼">摄楼</option>
-                                    <option value ="婚礼策划 ">婚礼策划 </option>
-                                    <option value="跟拍摄影 ">跟拍摄影 </option>
-                                    <option value="跟拍摄像">跟拍摄像</option>
+                                <select name="category" id="category">
+                                    <option value ="摄楼" <% if(product.category!'摄楼'=='摄楼'){%>selected<%}%>>摄楼</option>
+                                    <option value ="婚礼策划 " <% if(product.category!''=='婚礼策划'){%>selected<%}%>>婚礼策划 </option>
+                                    <option value="跟拍摄影 " <% if(product.category!''=='跟拍摄影'){%>selected<%}%>>跟拍摄影 </option>
+                                    <option value="跟拍摄像" <% if(product.category!''=='跟拍摄像'){%>selected<%}%>>跟拍摄像</option>
                                 </select>
                                 
                             </div>    
@@ -63,9 +63,9 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="chose">
-                            <label><input type="radio" class="radio" name="ProductUnit" value="1"  />一套</label>
+                            <label><input type="radio" class="radio" name="unit" value="一套" <% if(product.unit!'一套'=='一套'){%>checked<%}%>  />一套</label>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <label><input type="radio" class="radio" name="ProductUnit" value="2"  />一件</label>
+                            <label><input type="radio" class="radio" name="unit" value="一件" <% if(product.unit!''=='一件'){%>checked<%}%>  />一件</label>
                             <span class="red">*</span>
                         </div>
                     </dd>
@@ -79,11 +79,11 @@
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="chose">
                             <label>
-                                <input type="radio" class="radio" name="ProductPriceType" value="1"  />
-                                <input style="width:100px;" type="text" name="ProductPrice" value="${product.price!''}" />人民币
+                                <input type="radio" class="radio" name="price_type" value="人民币" <% if(product.price_type!'人民币'=='人民币'){%>checked<%}%>  />
+                                <input style="width:100px;" type="text" id="price" name="price" value="${product.price!''}" />人民币
                             </label>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <label><input type="radio" class="radio" name="ProductPriceType" value="2"  />面议</label>
+                            <label><input type="radio" class="radio" name="price_type" value="面议" <% if(product.price_type!''=='面议'){%>checked<%}%> />面议</label>
                             <span class="red">*</span>
                         </div>
                     </dd>
@@ -96,7 +96,7 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <textarea name="ProductContent" class="fill-detail">${product.content!''}</textarea>
+                            <textarea name="ProductContent" id="contend" class="fill-detail">${product.content!''}</textarea>
                         </div>
                     </dd>
                 </dl>
@@ -108,9 +108,9 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                            <input type="file" id="file_photo1" name="file_photo"   class="ehdel_upload" />
                         </div>
-                        <img src='http://via.placeholder.com/200x150'>
+                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo1!"nophoto.png"}' value='${productItem.photo1!""}' id="img_photo1">
                         <span class="red">*图片要求小于500Kb</span>
                     </dd>
                 </dl>
@@ -122,9 +122,9 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                            <input type="file" id="file_photo2" name="file_photo"   class="ehdel_upload" />
                         </div>
-                        <img src='http://via.placeholder.com/200x150'>
+                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo2!"nophoto.png"}' value='${productItem.photo2!""}' id="img_photo2">
                         <span class="red">*图片要求小于500Kb</span>
                     </dd>
                 </dl>
@@ -136,9 +136,9 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                            <input type="file" id="file_photo3" name="file_photo"   class="ehdel_upload" />
                         </div>
-                        <img src='http://via.placeholder.com/200x150'>
+                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo3!"nophoto.png"}' value='${productItem.photo3!""}' id="img_photo3">
                         <span class="red">*图片要求小于500Kb</span>
                     </dd>
                 </dl>
@@ -150,9 +150,9 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                            <input type="file" id="file_photo4" name="file_photo"   class="ehdel_upload" />
                         </div>
-                        <img src='http://via.placeholder.com/200x150'>
+                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo4!"nophoto.png"}' value='${productItem.photo4!""}' id="img_photo4">
                         <span class="red">*图片要求小于500Kb</span>
                     </dd>
                 </dl>
@@ -164,9 +164,9 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                            <input type="file" id="file_photo5" name="file_photo"   class="ehdel_upload" />
                         </div>
-                        <img src='http://via.placeholder.com/200x150'>
+                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo5!"nophoto.png"}' value='${productItem.photo5!""}' id="img_photo5">
                         <span class="red">*图片要求小于500Kb</span>
                     </dd>
                 </dl>
@@ -178,9 +178,9 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                            <input type="file" id="file_photo6" name="file_photo"   class="ehdel_upload" />
                         </div>
-                        <img src='http://via.placeholder.com/200x150'>
+                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo6!"nophoto.png"}' value='${productItem.photo6!""}' id="img_photo6">
                         <span class="red">*图片要求小于500Kb</span>
                     </dd>
                 </dl>
@@ -192,9 +192,9 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                            <input type="file" id="file_photo7" name="file_photo"   class="ehdel_upload" />
                         </div>
-                        <img src='http://via.placeholder.com/200x150'>
+                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo7!"nophoto.png"}' value='${productItem.photo7!""}' id="img_photo7">
                         <span class="red">*图片要求小于500Kb</span>
                     </dd>
                 </dl>
@@ -206,9 +206,9 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                            <input type="file" id="file_photo8" name="file_photo"   class="ehdel_upload" />
                         </div>
-                        <img src='http://via.placeholder.com/200x150'>
+                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo8!"nophoto.png"}' value='${productItem.photo8!""}' id="img_photo8">
                         <span class="red">*图片要求小于500Kb</span>
                     </dd>
                 </dl>
@@ -220,9 +220,9 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                            <input type="file" id="file_photo9" name="file_photo"   class="ehdel_upload" />
                         </div>
-                        <img src='http://via.placeholder.com/200x150'>
+                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo9!"nophoto.png"}' value='${productItem.photo9!""}' id="img_photo9">
                         <span class="red">*图片要求小于500Kb</span>
                     </dd>
                 </dl>
@@ -234,24 +234,24 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <input type="file" name="ProductCover" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload" />
+                            <input type="file" name="file_photo" id="file_photo10"  class="ehdel_upload" />
                         </div>
-                        <img src='http://via.placeholder.com/200x150'>
+                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo10!"nophoto.png"}' value='${productItem.photo10!""}' id="img_photo10">
                         <span class="red">*图片要求小于500Kb</span>
                     </dd>
                 </dl>
-                <p style="padding-left:10px;">&nbsp;</p>
-                <div style="padding-left:10px; margin-top:10px;">
-                    <input type="submit" class="stdbtn btn_blue" style="width:200px;" value="提交" />
-                </div>
             </div>
             </form>
+            <p style="padding-left:10px;">&nbsp;</p>
+            <div style="padding-left:10px; margin-top:10px;">
+                <button type="button" id="save_btn" class="stdbtn btn_blue" style="width:200px;" >保存</button>
+            </div>
       </div>
 
 
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-         requirejs(['app/msgBoard/list']);
+    	requirejs(['/js/BusinessAdmin/product/edit/edit.js']);
     });
 </script>
