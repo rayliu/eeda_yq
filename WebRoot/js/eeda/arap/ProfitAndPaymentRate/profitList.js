@@ -19,7 +19,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       			{ "data": "EMPLOYEE_NAME", "width": "120px"},
 	            { "data": "CHARGE_RMB", 
 	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
+            	    if(!data){
             	    	return '';
             	    }
 					return eeda.numFormat(data.toFixed(2),3);
@@ -27,7 +27,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            },
 	            { "data": "COST_RMB", 
 	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
+            	    if(!data){
             	    	return '';
             	    }
 					return eeda.numFormat(data.toFixed(2),3);
