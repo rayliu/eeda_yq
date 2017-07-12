@@ -1,6 +1,10 @@
 
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'dtColReorder'], function ($, metisMenu) {
 $(document).ready(function() {
+	
+	var flash = function(){    
+	 	 $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
+	  };
                 
     var application_table = eeda.dt({
     	id: 'application_table',
@@ -441,7 +445,44 @@ $(document).ready(function() {
         if(!!window.localStorage){//查询条件处理
             localStorage.setItem("query_to", JSON.stringify(conditions));
         }
-    };   
+    }; 
+    
+    
+    
+  //金额汇总
+    var totalMoney=function(){
+       var rows=$('#checked_application_table tr');
+       var sum_cny=0.0;
+       var sum_usd=0.0;
+       var sum_jpy=0.0;
+       var sum_hkd=0.0;
+       for(var i=1;i<rows.length;i++){
+            var tr=rows[i];
+            var currency_cny = $(tr).find('.cny').text().replace(/,/g,'');
+            var currency_usd = $(tr).find('.usd').text().replace(/,/g,'');
+            var currency_jpy = $(tr).find('.jpy').text().replace(/,/g,'');
+            var currency_hkd = $(tr).find('.hkd').text().replace(/,/g,'');
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_cny){
+                sum_cny+=parseFloat(currency_cny);
+            }
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_usd){
+                sum_usd+=parseFloat(currency_usd);
+            }
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_jpy){
+                sum_jpy+=parseFloat(currency_jpy);
+            }
+            if($(tr).find('[type=checkbox]').prop('checked')&&currency_hkd){
+                sum_hkd+=parseFloat(currency_hkd);
+            }
+       }
+        $('#cny_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_cny).toFixed(2),3))
+        $('#usd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_usd).toFixed(2),3));
+        $('#jpy_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_jpy).toFixed(2),3));
+        $('#hkd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_hkd).toFixed(2),3));
+    }
+    
+    
+    
 
 
     var refreshData=function(back){
@@ -538,37 +579,7 @@ $(document).ready(function() {
 	
 	
     	
-    //金额汇总
-    var totalMoney=function(){
-       var rows=$('#checked_application_table tr');
-       var sum_cny=0.0;
-       var sum_usd=0.0;
-       var sum_jpy=0.0;
-       var sum_hkd=0.0;
-       for(var i=1;i<rows.length;i++){
-            var tr=rows[i];
-            var currency_cny = $(tr).find('.cny').text().replace(/,/g,'');
-            var currency_usd = $(tr).find('.usd').text().replace(/,/g,'');
-            var currency_jpy = $(tr).find('.jpy').text().replace(/,/g,'');
-            var currency_hkd = $(tr).find('.hkd').text().replace(/,/g,'');
-            if($(tr).find('[type=checkbox]').prop('checked')&&currency_cny){
-                sum_cny+=parseFloat(currency_cny);
-            }
-            if($(tr).find('[type=checkbox]').prop('checked')&&currency_usd){
-                sum_usd+=parseFloat(currency_usd);
-            }
-            if($(tr).find('[type=checkbox]').prop('checked')&&currency_jpy){
-                sum_jpy+=parseFloat(currency_jpy);
-            }
-            if($(tr).find('[type=checkbox]').prop('checked')&&currency_hkd){
-                sum_hkd+=parseFloat(currency_hkd);
-            }
-       }
-        $('#cny_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_cny).toFixed(2),3))
-        $('#usd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_usd).toFixed(2),3));
-        $('#jpy_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_jpy).toFixed(2),3));
-        $('#hkd_totalAmountSpan').html(eeda.numFormat(parseFloat(sum_hkd).toFixed(2),3));
-    }
+    
 
     //勾选进行金额汇总
 	$('#application_table').on('click',"input[name='order_check_box']",function (e) {
@@ -664,9 +675,7 @@ $(document).ready(function() {
 		   $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
 	  });
 	  
-	  var flash = function(){    
-	 	 $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
-	  };
+	  
       
       //复核
       $("#application_table").on('click','.checkBtn',function(){
