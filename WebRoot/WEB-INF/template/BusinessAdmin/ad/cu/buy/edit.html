@@ -29,7 +29,7 @@
                         <td width="20%">广告开始时间</td>
                   <td width="58%">
                             <span class="">
-                            <input type="text" id="CuStartDate" name="StartDate" value="2017-06-18" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:CuChangeDate()})" />
+                            <input type="text" id="CuStartDate" name="StartDate" value="2017-06-18"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:CuChangeDate()})" />
                             </span>
                         </td>
                       <td rowspan="5">&nbsp;</td>
@@ -38,7 +38,7 @@
                         <td>广告结束时间</td>
                         <td>
                             <span class="">
-                                <input type="text" id="CuEndDate" name="EndDate" value="2017-06-21" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:CuChangeDate()})" />
+                                <input type="text" id="CuEndDate" name="EndDate" value="2017-06-21"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:CuChangeDate()})" />
                             </span>
                         </td>
                     </tr>
@@ -93,6 +93,6 @@ function CuChangeDate(){
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-         requirejs(['app/msgBoard/list']);
+    	 requirejs(['/js/BusinessAdmin/ad/cu/buy/edit.js']);
     });
 </script>

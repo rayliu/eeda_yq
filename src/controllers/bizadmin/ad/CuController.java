@@ -15,6 +15,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -66,5 +67,18 @@ public class CuController extends Controller {
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	
+	@Before(Tx.class)
+	public void update(){
+		String id = getPara("id");
+		String title = getPara("title");
+		String content = getPara("content");
+		
+		Record order = Db.findById("wc_ad_deal", id);
+		order.set("title", title);
+		order.set("content", content);
+		Db.update("wc_ad_deal", order);
+		
+		renderJson(order);
+	}
 	
 }
