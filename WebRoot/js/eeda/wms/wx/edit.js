@@ -6,9 +6,12 @@ $(function(){
     		if(data.length > 0){
     			$('#dataValue').css("text-align","left");
     			for(var i = 0 ;i<data.length;i++){
-    				$('#dataValue').append('<a id="" class="weui-cell weui-cell_access" href="/wx/showImg?part_no='+data[i].PART_NO+'&total='+data[i].TOTAL+'&totalQuantity='+data[i].TOTALQUANTITY+'">'
+    				$('#dataValue').append('<a id="" class="weui-cell weui-cell_access" href="/wx/showImg?'
+    					+'part_no='+data[i].PART_NO+'&total='+data[i].TOTAL+'&totalQuantity='+data[i].TOTALQUANTITY
+    					+'&part_name='+data[i].PART_NAME+'">'
         	            +'<div class="weui-cell__bd">'
         	            +'<p id="">'+data[i].PART_NO+'</p>'
+        	            +'<p id="">'+data[i].PART_NAME+'</p>'
         	            +'</div>'
         	            +'<div class="weui-cell__ft">'+data[i].TOTALQUANTITY+'件</div>'
         	            +'</a>'); 
@@ -90,7 +93,7 @@ $(function(){
 	if(loc_part_no!=null || loc_item_no!=null){
 		if(loc_part_no!=null){
         	searchPartData(loc_part_no,'part_no');
-    	}else{
+    	}else if(loc_item_no!=null){
         	searchItemData(loc_item_no);
     	}
 		

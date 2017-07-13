@@ -46,26 +46,27 @@ public class WxController extends Controller {
     	List<Record> list = null;
     	if("item_no".equals(type)){
     		list = Db.find("select *,count(1) total,sum(quantity) totalQuantity from ("
-    				+ " select gi.part_no,gi.quantity from gate_in gi"
+    				+ " select gi.part_no,pro.part_name,gi.quantity from gate_in gi"
     				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
         			+ " where pro.item_no like '%"+order_no+"%'"
         			+ " and gi.out_flag = 'N' and gi.error_flag = 'N'"
         			+ " and gi.office_id = 1 GROUP BY gi.id"
         			+ " union"
-        			+ " select part_no,0 quantity "
+        			+ " select part_no,part_name,0 quantity "
         			+ " from wmsproduct"
         			+ " where office_id = 1 "
         			+ " and item_no like '%"+order_no+"%'"
         			+ " ) A group by A.part_no");
     	}else{
     		list = Db.find("select *,count(1) total,sum(quantity) totalQuantity from ("
-    				+ " select part_no,quantity from gate_in"
-        			+ " where part_no like '%"+order_no+"%'"
-        			+ " and out_flag = 'N' and error_flag = 'N'"
-        			+ " and office_id = 1 "
-        			+ " group by id"
+    				+ " select gi.part_no,pro.part_name,gi.quantity from gate_in gi"
+    				+ " left join wmsproduct pro on gi.office_id=pro.office_id"
+        			+ " where gi.part_no like '%"+order_no+"%'"
+        			+ " and gi.out_flag = 'N' and gi.error_flag = 'N'"
+        			+ " and gi.office_id = 1 "
+        			+ " group by gi.id"
         			+ " union"
-        			+ " select part_no,0 quantity "
+        			+ " select part_no,part_name,0 quantity "
         			+ " from wmsproduct"
         			+ " where office_id = 1 "
         			+ " and part_no like '%"+order_no+"%'"
@@ -79,9 +80,11 @@ public class WxController extends Controller {
     	String part_no = getPara("part_no");
     	String total = getPara("total");
     	String totalQuantity = getPara("totalQuantity");
+    	String part_name = getPara("part_name");
     	setAttr("part_no", part_no);
     	setAttr("total", total);
     	setAttr("totalQuantity", totalQuantity);
+    	setAttr("part_name", part_name);
     	render("/wx/show.html");
     }
     
