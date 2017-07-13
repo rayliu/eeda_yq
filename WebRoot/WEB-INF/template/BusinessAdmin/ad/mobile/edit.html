@@ -28,12 +28,12 @@
                                     <tr>
                                         <td width="13%">投放条数</td>
                                         <td width="65%">
-                                            <select name="select3">
-                                                <option>100条</option>
-                                                <option>200条</option>
-                                                <option>500条</option>
-                                                <option>1000条</option>
-                                                <option>5000条</option>
+                                            <select name="select3" id="delivery_number">
+                                                <option value="100">100条</option>
+                                                <option value="200">200条</option>
+                                                <option value="500">500条</option>
+                                                <option value="1000">1000条</option>
+                                                <option value="5000">5000条</option>
                                             </select>
                                         </td>
                                         <td rowspan="6">&nbsp;</td>
@@ -44,74 +44,22 @@
                                             <div type="text" id="datepicker"></div>
 
                                             <span class="">
-                                                <select name="select">
-                                                    <option>2017</option>
-                                                    <option>2018</option>
-                                                    <option>2019</option>
-                                                    <option>2020</option>
-                                                </select>
-                                                <select name="select">
-                                                    <option>1月</option>
-                                                    <option>2月</option>
-                                                    <option>3月</option>
-                                                    <option>4月</option>
-                                                    <option>5月</option>
-                                                    <option>6月</option>
-                                                    <option>7月</option>
-                                                    <option>8月</option>
-                                                    <option>9月</option>
-                                                    <option>10月</option>
-                                                    <option>11月</option>
-                                                    <option>12月</option>
-                                                </select>
-                                                <select name="select">
-                                                    <option>1日</option>
-                                                    <option>2日</option>
-                                                    <option>3日</option>
-                                                    <option>4日</option>
-                                                    <option>5日</option>
-                                                    <option>6日</option>
-                                                    <option>7日</option>
-                                                    <option>8日</option>
-                                                    <option>9日</option>
-                                                    <option>10日</option>
-                                                    <option>11日</option>
-                                                    <option>12日</option>
-                                                    <option>13日</option>
-                                                    <option>14日</option>
-                                                    <option>15日</option>
-                                                    <option>16日</option>
-                                                    <option>17日</option>
-                                                    <option>18日</option>
-                                                    <option>19日</option>
-                                                    <option>20日</option>
-                                                    <option>21日</option>
-                                                    <option>22日</option>
-                                                    <option>23日</option>
-                                                    <option>24日</option>
-                                                    <option>25日</option>
-                                                    <option>26日</option>
-                                                    <option>27日</option>
-                                                    <option>28日</option>
-                                                    <option>20日</option>
-                                                    <option>30日</option>
-                                                    <option>31日</option>
-                                                </select>
+                                                <input type="text" id="delivery_time" />
                                             </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>单价</td>
-                                        <td>0.05元/条</td>
+                                        <td id="price" value="0.05">0.05元/条</td>
                                     </tr>
                                     <tr>
                                         <td>结算</td>
-                                        <td><span class="anchorbutton" id='total'>50元</span>人民币</td>
+                                        <td><span class="anchorbutton" id="settlement_price" value=""></span>人民币</td>
                                     </tr>
                                     <tr>
                                         
                                             <td>联系电话 <span style="color: red;">*</span></td>
-                                            <td><input id='mobile' name="mobile" type="text"/></td>
+                                            <td><input id="contact_phone" name="mobile" type="text"/></td>
                                         
                                     </tr>
                                     <tr>
@@ -134,6 +82,6 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-         requirejs(['app/BusinessAdmin/ad/mobile/edit']);
+         requirejs(['/js/BusinessAdmin/ad/mobile/edit.js']);
     });
 </script>

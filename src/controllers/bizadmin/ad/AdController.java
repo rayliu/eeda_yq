@@ -1,5 +1,7 @@
 package controllers.bizadmin.ad;
 
+import java.util.Date;
+
 import interceptor.SetAttrLoginUserInterceptor;
 
 import org.apache.log4j.Logger;
@@ -53,6 +55,28 @@ public class AdController extends Controller {
         String id = getPara("id");
         render(getRequest().getRequestURI()+"/edit.html");
     }
+	
+	public void mobile_save(){
+		String delivery_number = getPara("delivery_number");
+		String delivery_time = getPara("delivery_time");
+		String price=getPara("price");
+		String settlement_price=getPara("settlement_price");
+		String contact_phone=getPara("contact_phone");
+		System.out.println(delivery_number);
+		Long userId = LoginUserController.getLoginUserId(this);
+		
+		Record rec = new Record();
+		rec.set("creator", userId);
+		rec.set("create_time", new Date());
+		rec.set("delivery_number", delivery_number);
+		rec.set("delivery_time", delivery_time);
+		rec.set("price", price);
+		rec.set("settlement_price",settlement_price);
+		rec.set("contact_phone",contact_phone);
+		Db.save("mobile_ad_promotion", rec);
+		
+		renderJson(true);
+	}
 	
 	public void banner(){
         String id = getPara("id");
