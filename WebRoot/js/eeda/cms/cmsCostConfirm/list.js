@@ -7,9 +7,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 
         var dataTable = eeda.dt({
             id: 'eeda_table',
-            paging: true,
-            serverSide: false, //不打开会出现排序不对 
-            ajax: "/cmsCostConfirm/list?audit_flag_notequals="+$("#audit_flag").val(),
+            colReorder: true,
+            serverSide: true, //不打开会出现排序不对 
+//            paging: true,
+//            serverSide: false, //不打开会出现排序不对 
+//            ajax: "/cmsCostConfirm/list?audit_flag_notequals="+$("#audit_flag").val(),
             columns: [
 					{ "width": "10px",
 					    "render": function ( data, type, full, meta ) {

@@ -9,7 +9,6 @@ import java.util.Map;
 
 import models.UserLogin;
 import models.eeda.cms.CustomPlanOrderArap;
-import models.eeda.oms.jobOrder.JobOrderArap;
 
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -46,11 +45,11 @@ public class CmsCostConfirmController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
-        String ref_office = "";
-        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
-        if(relist!=null){
-        	ref_office = " or cpo.office_id in ("+relist.getStr("office_id")+")";
-        }
+//        String ref_office = "";
+//        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+//        if(relist!=null){
+//        	ref_office = " or cpo.office_id in ("+relist.getStr("office_id")+")";
+//        }
      
         String sql = "select * from( "
         		+"  select cpoa.*,cpo.order_no,cpo.id cpobid,cpo.create_stamp,p1.company_name sp_name,cpo.type job_type,f.name charge_name,"
@@ -60,7 +59,7 @@ public class CmsCostConfirmController extends Controller {
 				+" 	left join party p1 on p1.id=cpoa.sp_id  "
 				+" 	left join fin_item f on f.id=cpoa.charge_id  "
 				+" 	left join currency c on c.id=cpoa.currency_id  "
-				+" 	where cpoa.order_type ='cost' and (cpo.office_id="+office_id+ref_office+ ") and cpo.delete_flag = 'N'"				
+				+" 	where cpoa.order_type ='cost' and (cpo.office_id="+office_id+ " or cpo.to_office_id ="+office_id +") and cpo.delete_flag = 'N'"				
 				+ " ) A where 1=1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
@@ -69,7 +68,7 @@ public class CmsCostConfirmController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition  +sLimit);
+        List<Record> orderList = Db.find(sql+ condition  );//不分页+sLimit
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
