@@ -1,12 +1,24 @@
-define(['jquery', 'sco', 'file_upload'], function ($, metisMenu) {
+define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
+	
 	$(document).ready(function() {
-	  
+		//校验表单字段
+		$('#orderForm').validate({
+			rules: {
+				ProductName : {
+				    required: true
+				}
+			},
+		    messages: {
+		    	ProductName: {
+			        required: "产品名不能为空!!"
+			    }
+		    }
+		});
+
 	  $('[name=file_photo]').on('click',function(){
 		  var fileid = this.id;
 		  var str = fileid.substring(5,20);
-		  
-		  //changeToop('file_'+str,'img_'+str);
-		  
+		  //changeToop('file_'+str,'img_'+str);	  
 		  $('#file_'+str).fileupload({
 				validation: {allowedExtensions: ['*']},
 				autoUpload: true, 
@@ -66,9 +78,14 @@ define(['jquery', 'sco', 'file_upload'], function ($, metisMenu) {
 	  } 
 
 	    $('#save_btn').click(function(event) {
+			if($("input[name=price_type]:checked").val()=="面议"){
+				$("input[name=price]").prop("required",false);
+			}
+	    	if(!$('#orderForm').valid()){
+				 return;
+			 }
 	    	var self = this;
 	    	$(self).attr('disabled',true);
-    	  
 	    	var order = {};
 	    	order.id = $('#order_id').val();
 	    	order.name = $('#name').val();

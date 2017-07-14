@@ -80,7 +80,7 @@
                         <div class="chose">
                             <label>
                                 <input type="radio" class="radio" name="price_type" value="人民币" <% if(product.price_type!'人民币'=='人民币'){%>checked<%}%>  />
-                                <input style="width:100px;" type="text" id="price" name="price" value="${product.price!''}" />人民币
+                                <input style="width:100px;" type="text" id="price" name="price" value="${product.price!''}" required/>人民币
                             </label>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <label><input type="radio" class="radio" name="price_type" value="面议" <% if(product.price_type!''=='面议'){%>checked<%}%> />面议</label>

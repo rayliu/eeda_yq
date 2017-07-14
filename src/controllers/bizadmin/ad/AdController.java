@@ -86,6 +86,31 @@ public class AdController extends Controller {
 	
 	public void banner(){
         String id = getPara("id");
+        System.out.println(getRequest().getRequestURI()+"/edit.html");
         render(getRequest().getRequestURI()+"/edit.html");
+        //BusinessAdmin/ad/banner/edit.html
     }
+	public void saveBanner(){
+
+		String advantage=getPara("advantage");
+        Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(advantage, HashMap.class);
+        String begin_date=(String) dto.get("begin_date");
+    	String ad_location = (String) dto.get("ad_location");
+		String end_date = (String) dto.get("end_date");
+		String price = (String) dto.get("price");
+		String telephone = (String) dto.get("phone");
+		String total_price=(String)dto.get("total_price");
+		Record order = new Record();
+    	order.set("begin_date", begin_date);
+    	order.set("end_date", end_date);
+    	order.set("telephone", telephone);
+    	order.set("price", price);
+    	order.set("total_price", total_price);
+    	order.set("ad_location",ad_location);
+    	order.set("create_time", new Date());
+    	Db.save("ad_banner", order);
+		renderJson(order);
+		
+	}
 }

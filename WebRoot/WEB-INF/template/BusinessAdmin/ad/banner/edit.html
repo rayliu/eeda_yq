@@ -11,14 +11,17 @@
     <!-- #tab4 -->
     </script>
 <div id="ad-xuangou" class="subcontent" >
-    <form method="post" action="ad-buy-confirm.php">
+    <form method="post"  id="weddingform">
     <div class="" style=" float:left; width:70%;">
         <!-- #left -->
         <h3>选择投放广告位置</h3>
         <div class="hang">
             
             广告位：
-          <select id="CurBannerIndex" name="BannerIndex">
+          <select id="ad_location" name="ad_location">
+                       <option value="1">广告位1</option>    
+                       <option value="2">广告位2</option>    
+                       <option value="3">广告位3</option>        
                             </select>
             <span class="red">
                 （
@@ -52,7 +55,7 @@
         <div id="DateMap"></div>
         <h5 class="hh5">选取档期时间：</h5>
         <div class="mt10"></div>
-        <div class="product-table">
+        <div class="product-table">       	
             <input type="hidden" name="Act" value="Tao" />
             <table cellpadding="0" cellspacing="0" border="0" class="stdtable">
                 <thead>
@@ -65,42 +68,50 @@
                     <tr>
                         <td width="13%">档期开始时间</td>
                         <td width="65%">
-                            <input type="text" id="TaoStartDate" name="StartDate" value="" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:TaoChangeDate()})" />                        </td>
+                            <input type="text" id="begin_date" name="begin_date" value=""   />                        </td>
                         <td rowspan="6">&nbsp;</td>
                     </tr>
                     <tr>
                         <td>档期结束时间</td>
                         <td>
                             <span class="">
-                                <input type="text" id="TaoEndDate" name="EndDate" value="" readonly onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:TaoChangeDate()})" />
+                                <input type="text" id="end_date" name="end_date" value=""  />
                             </span>                        </td>
+                    </tr>
+                      <tr>
+                        <td>单价</td>
+                       	<td><input type="text" id="price" name="price" readyonly value="1"/>元/天</td>
                     </tr>
                     <tr>
                         <td>总投放时间</td>
-                        <td><span id="TaoDays"></span>天</td>
+                       
+                         	<td><span id="days"></span>天</td>
                     </tr>
                     <tr>
                         <td>结算</td>
-                        <td><span class="anchorbutton" id="TaoPriceSum">元</span>人民币</td>
+                        <td><span class="anchorbutton" id="total_price"></span>元人民币</td>
                     </tr>
                     <tr>
                       <td>联系电话</td>
-                      <td><input name="input" type="text" /></td>
+                      <td><input name="phone" id="phone" type="text"/></td>
                     </tr>
                     <tr>
                         <td>提交</td>
-                        <td><input type="button" value="提交/预审" class="stdbtn btn_yellow" />
-提交后，客户会稍后会联系你。</td>
+                        <td><input type="button" value="提交/预审" class="stdbtn btn_yellow" id="saveBtn"/>
+						提交后，客户会稍后会联系你。</td>
                     </tr>
                 </tbody>
             </table>
+            </form>
         </div>
         <p class="tipsred">注:由于较多商家订购广告，可能会出现并发购买至服务库存不足情况，所以有效定单以二者早发生为准。</p>
         </div>
     <div style="background-color: #fff;float: right; "><img src="/images/tao.png" /></div>
-    </form>
 </div>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
+	$("#tel").blur(function(){
+		alert("s")
+	})
 var s_BannerPriceCfg = 'null';
 var arr_BannerPriceCfg = eval("("+s_BannerPriceCfg+")");
 function GetDateMap(){
@@ -114,7 +125,7 @@ function GetDateMap(){
 }
 
 var f_TaoDayPrice = ;
-function TaoChangeDate(){
+	function TaoChangeDate(){
     var CurBannerIndex = $("#CurBannerIndex").val();
     var f_TaoDayPrice = arr_BannerPriceCfg[CurBannerIndex]['BannerDayPrice'];
 
@@ -137,10 +148,10 @@ $(function(){
     });
 });
 </script>
-
+ -->
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-         requirejs(['app/msgBoard/list']);
+         requirejs(['/js/BusinessAdmin/ad/banner/edit.js']);
     });
 </script>

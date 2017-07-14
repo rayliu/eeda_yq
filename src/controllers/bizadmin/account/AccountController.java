@@ -19,6 +19,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -120,4 +121,16 @@ public class AccountController extends Controller {
         
         renderJson(ul);
 	}
+	
+    public void saveFile() throws Exception{
+    	Record re = new Record();
+    	try {
+            UploadFile file = getFile();
+            re.set("name", file.getFileName());
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    	renderJson(re);
+    }
+    
 }

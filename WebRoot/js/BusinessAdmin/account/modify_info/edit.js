@@ -1,5 +1,33 @@
-define(['jquery', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) {
   $(document).ready(function() {
+	  //上传公司logo
+	  $("#logo").on('click',function(){
+		  $(this).fileupload({
+				validation: {allowedExtensions: ['*']},
+				autoUpload: true, 
+			    url: '/BusinessAdmin/account/saveFile',
+			    dataType: 'json',
+		        done: function (e, data) {
+	        		if(data){
+			    		$('#img_logo').val(data.result.NAME);
+			    	
+			    		var imgPre =Id("img_logo");
+			  		    imgPre.src = '/upload/'+data.result.NAME;
+			    	}else{
+			    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
+			    	}
+			     },error: function () {
+		            alert('上传的时候出现了错误！');
+		        }
+		   });
+		  
+		  
+	  })
+	  //定义id选择器
+	  function Id(id){
+		  return document.getElementById(id);
+	  }
+	  
 	 $('#updateBtn').on('click',function(){
 		 var p_c_d = $('#p_c_d').val();
 		 var province = '';
@@ -29,7 +57,7 @@ define(['jquery', 'validate_cn', 'sco'], function ($, metisMenu) {
 		 order.address_phone = $('#address_phone').val();
 		 order.qq = $('#qq').val();
 		 order.intro = $('#intro').val();
-		 order.logo = $('#logo').val();
+		 order.logo = $('#img_logo').val();
 		 
 		 
 		 var self = this;
@@ -43,6 +71,7 @@ define(['jquery', 'validate_cn', 'sco'], function ($, metisMenu) {
 				 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 			 }
 		 });
+		 
 		 
 	 });
   });
