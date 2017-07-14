@@ -3,7 +3,7 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
 
 		var dataTable = eeda.dt({
           id: 'eeda_table',
-          paging: false,
+          paging: true,
           serverSide: true, 
           ajax: "/BusinessAdmin/ad/cu/list",
           columns: [
