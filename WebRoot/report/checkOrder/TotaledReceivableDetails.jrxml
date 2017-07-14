@@ -23,7 +23,8 @@ jo.order_export_date,jo.order_no,jo.ref_no,
 
 CASE when l.name !='' then l.name when l1.name !='' then l1.name
 else p1.abbr end fnd,
- (SELECT GROUP_CONCAT(joli.truck_type) from job_order_land_item joli  WHERE joli.order_id = jo.id) truck_type,
+replace(ifnull((SELECT GROUP_CONCAT(josi.container_type) from job_order_shipment_item josi  WHERE josi.order_id = jo.id),
+  (SELECT GROUP_CONCAT(joli.truck_type) from job_order_land_item joli  WHERE joli.order_id = jo.id)),'\'','') truck_type,
 
 (SELECT j.volume from job_order j where j.id = joa.order_id) CBM,
 
