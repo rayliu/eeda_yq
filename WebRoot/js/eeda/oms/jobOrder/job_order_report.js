@@ -686,18 +686,18 @@ $(document).ready(function() {
         var CONSIGNEE_input = $('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=CONSIGNEE_input]').val();
         var TAKE_ADDRESS_input = $('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=TAKE_ADDRESS_input]').val();
         
-        var closing_date = new Date($('#closing_date').val());
+        var order_export_date = new Date($('#order_export_date').val());
         
-        var format_closing_dd =formatDate(closing_date,"dd");
-        var format_closing_MMM =formatDate(closing_date,"MM");
-        var format_closing_date = format_closing_dd+'/'+format_closing_MMM;
+        var format_order_export_date_dd =formatDate(order_export_date,"dd");
+        var format_order_export_date_MMM =formatDate(order_export_date,"MM");
+        var format_order_export_date_date = format_order_export_date_dd+'/'+format_order_export_date_MMM;
 		$.post('/serviceProvider/searchTruckCompany_id', {TRANSPORT_COMPANY_id:TRANSPORT_COMPANY}, function(data){
 			$('#truck_head_end_place').val(data.ABBR);
 			$('#truck_head_attn').val(data.CONTACT_PERSON);
 			$('#truck_head_customer_tel').val(data.PHONE);
 			$('#truck_head_fax').val(data.FAX);
 		});
-        var cabinet_arrive_remark = "请安排"+format_closing_date+CONSIGNEE_input+"报关出口，吉柜于"+cabinet_arrive_date+"到"+TAKE_ADDRESS_input+",待通知收柜。";
+        var cabinet_arrive_remark = "请安排"+format_order_export_date_date+"报关出口，吉柜于"+cabinet_arrive_date+"到"+TAKE_ADDRESS_input+",待通知收柜。";
         $('#cabinet_arrive_remark').val(cabinet_arrive_remark);
         
         
