@@ -21,7 +21,7 @@
 		<![CDATA[SELECT aco.begin_time,aco.end_time,p.company_name,p.contact_person,p.phone,p.fax, u.c_name,u.user_tel,
 jo.order_export_date,jo.order_no,jo.ref_no,
 
-CASE when l.name !='' then l.name when joai.destination!='' then joai.destination
+CASE when l.name !='' then l.name when l1.name !='' then l1.name
 else p1.abbr end fnd,
  (SELECT GROUP_CONCAT(joli.truck_type) from job_order_land_item joli  WHERE joli.order_id = jo.id) truck_type,
 
@@ -145,6 +145,7 @@ left join job_order_shipment_item josi on josi.order_id = jo.id
 left join job_order_air_item joai on joai.order_id = jo.id
 left join job_order_land_item joli on joli.order_id = jo.id
 left join location l on l.id = jos.fnd
+left join location l1 on l1.id = joai.destination
 left join party p on p.id=aco.sp_id
 left join party p1 on p1.id=joli.consignee
 left join user_login u on u.id = $P{login_user_id}
@@ -334,28 +335,28 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<text><![CDATA[MBL NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="514" y="65" width="61" height="17" uuid="4eb7ce89-54b7-41bb-8d42-f04e283f2ccc"/>
+				<reportElement x="521" y="65" width="64" height="17" uuid="4eb7ce89-54b7-41bb-8d42-f04e283f2ccc"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[CTNR NO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="575" y="65" width="57" height="17" uuid="9909966c-2046-468c-9e53-0850e9789e9a"/>
+				<reportElement x="584" y="65" width="51" height="17" uuid="9909966c-2046-468c-9e53-0850e9789e9a"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[CNY]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="632" y="65" width="51" height="17" uuid="280dc1db-cc0d-4759-a1cf-0714e97e5a88"/>
+				<reportElement x="634" y="65" width="51" height="17" uuid="280dc1db-cc0d-4759-a1cf-0714e97e5a88"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<text><![CDATA[USD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="683" y="65" width="59" height="17" uuid="24f766aa-0d26-41b9-9d2a-5769f5f099bc"/>
+				<reportElement x="684" y="65" width="57" height="17" uuid="24f766aa-0d26-41b9-9d2a-5769f5f099bc"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
@@ -372,7 +373,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<reportElement x="1" y="81" width="801" height="1" uuid="2b11b7f3-6ece-4e5c-a0c2-cb7875047478"/>
 			</line>
 			<staticText>
-				<reportElement x="457" y="65" width="58" height="16" uuid="86997206-8c3d-456b-a5be-b745215e11cd"/>
+				<reportElement x="457" y="65" width="64" height="16" uuid="86997206-8c3d-456b-a5be-b745215e11cd"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
@@ -442,7 +443,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{usd}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="575" y="0" width="57" height="12" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
+				<reportElement x="585" y="0" width="50" height="12" uuid="16b5d67b-1dca-41f6-a562-1d3e3f709591"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -484,14 +485,14 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{truck_type}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="514" y="0" width="62" height="12" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
+				<reportElement x="521" y="0" width="64" height="12" uuid="d3d45fa5-a3d7-444d-aa12-85feab34e35a"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{container_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="458" y="0" width="59" height="12" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
+				<reportElement x="458" y="0" width="63" height="12" uuid="f24a4c1a-3f07-4b8e-b200-0e77e85d92f3"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -554,14 +555,14 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 	<summary>
 		<band height="35" splitType="Stretch">
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="631" y="0" width="54" height="20" uuid="9d492093-0cd2-4ca4-95d6-3f5a0db9d529"/>
+				<reportElement x="635" y="0" width="54" height="20" uuid="9d492093-0cd2-4ca4-95d6-3f5a0db9d529"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_USD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="684" y="0" width="59" height="20" uuid="637f854b-f301-411d-bbf2-4887855d655c"/>
+				<reportElement x="686" y="0" width="55" height="20" uuid="637f854b-f301-411d-bbf2-4887855d655c"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
@@ -603,14 +604,14 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{user_tel}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="573" y="0" width="59" height="20" uuid="d438846b-7740-4512-9d7e-9bde9b2483c0"/>
+				<reportElement x="581" y="0" width="54" height="20" uuid="d438846b-7740-4512-9d7e-9bde9b2483c0"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_RMB}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="514" y="0" width="59" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
+				<reportElement x="523" y="0" width="59" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 		</band>
