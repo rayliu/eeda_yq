@@ -1,6 +1,8 @@
 package controllers.bizadmin.ad;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
@@ -9,6 +11,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
+import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
@@ -57,22 +60,25 @@ public class AdController extends Controller {
     }
 	
 	public void mobile_save(){
-		String delivery_number = getPara("delivery_number");
-		String delivery_time = getPara("delivery_time");
-		String price=getPara("price");
-		String settlement_price=getPara("settlement_price");
-		String contact_phone=getPara("contact_phone");
-		System.out.println(delivery_number);
+		String jsonStr=getPara("jsonStr");
 		Long userId = LoginUserController.getLoginUserId(this);
+		Gson gson=new Gson();
+		Map<String,?> dto = gson.fromJson(jsonStr, HashMap.class);
+		
+		String amount = (String)dto.get("amount");
+		String put_in_time = (String)dto.get("put_in_time");
+		String price = (String)dto.get("price");
+		String total_price = (String)dto.get("total_price");
+		String phone = (String)dto.get("phone");
 		
 		Record rec = new Record();
 		rec.set("creator", userId);
 		rec.set("create_time", new Date());
-		rec.set("delivery_number", delivery_number);
-		rec.set("delivery_time", delivery_time);
+		rec.set("amount", amount);
+		rec.set("put_in_time", put_in_time);
 		rec.set("price", price);
-		rec.set("settlement_price",settlement_price);
-		rec.set("contact_phone",contact_phone);
+		rec.set("total_price",total_price);
+		rec.set("phone",phone);
 		Db.save("mobile_ad_promotion", rec);
 		
 		renderJson(true);

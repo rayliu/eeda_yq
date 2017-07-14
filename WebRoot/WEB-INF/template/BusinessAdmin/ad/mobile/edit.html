@@ -28,7 +28,7 @@
                                     <tr>
                                         <td width="13%">投放条数</td>
                                         <td width="65%">
-                                            <select name="select3" id="delivery_number">
+                                            <select name="select3" id="amount">
                                                 <option value="100">100条</option>
                                                 <option value="200">200条</option>
                                                 <option value="500">500条</option>
@@ -44,22 +44,22 @@
                                             <div type="text" id="datepicker"></div>
 
                                             <span class="">
-                                                <input type="text" id="delivery_time" />
+                                                <input type="text" id="put_in_time" />
                                             </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>单价</td>
-                                        <td id="price" value="0.05">0.05元/条</td>
+                                        <td id="price" value="${price!'0.05'}">0.05元/条</td>
                                     </tr>
                                     <tr>
                                         <td>结算</td>
-                                        <td><span class="anchorbutton" id="settlement_price" value=""></span>人民币</td>
+                                        <td><span class="anchorbutton" id="total_price" >${total_price!0.05*100}</span>人民币(元)</td>
                                     </tr>
                                     <tr>
                                         
                                             <td>联系电话 <span style="color: red;">*</span></td>
-                                            <td><input id="contact_phone" name="mobile" type="text"/></td>
+                                            <td><input id="phone" name="phone" type="text"/></td>
                                         
                                     </tr>
                                     <tr>
