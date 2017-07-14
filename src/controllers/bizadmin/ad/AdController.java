@@ -54,6 +54,21 @@ public class AdController extends Controller {
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	
+	public void dimond_save(){
+		String years = getPara("years");
+		String total_price = getPara("total_price");
+		String status = getPara("status");
+		Long userId = LoginUserController.getLoginUserId(this);
+		Record rec = new Record();
+		rec.set("years", years);
+		rec.set("total_price", total_price);
+		rec.set("status", status);
+		rec.set("creator", userId);
+		rec.set("create_time", new Date());
+		Db.save("dimond", rec);
+		renderJson(true);
+	}
+	
 	public void mobile(){
         String id = getPara("id");
         render(getRequest().getRequestURI()+"/edit.html");
