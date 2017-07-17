@@ -235,13 +235,7 @@ $(document).ready(function() {
     	}
     	if($('#hbl_no').val()==''){
     		alert+='HBL号码<br><br>';
-    	}
-    	if($('#vessel').val()==''){
-    		alert+='船名<br><br>';
-    	}
-    	if($('#voyage').val()==''){
-    		alert+='航次<br><br>';
-    	}
+    	}    	
     	if($('#por').val()==''){
     		alert+='收货港 POR<br><br>';
     	}
