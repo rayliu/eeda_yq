@@ -52,9 +52,9 @@
 		CN_no) A
 	GROUP BY
 		A.flag) CN_NO,
-ifnull(p4.company_name_eng,p3.company_name) bookingAgent_name,
-ifnull(p3.company_name_eng,p3.company_name) HBLshipper_name,
-ifnull(p1.company_name_eng,p1.company_name) HBLconsignee_name, ifnull(p2.company_name_eng,p2.company_name) HBLnotify_party_name
+ifnull(p4.company_name_eng,p4.company_name) bookingAgent_name,
+ifnull(p3.company_name_eng,p3.company_name) MBLshipper_name,
+ifnull(p1.company_name_eng,p1.company_name) MBLconsignee_name, ifnull(p2.company_name_eng,p2.company_name) MBLnotify_party_name
 FROM
           job_order_shipment jos
 LEFT JOIN job_order jo ON jo.id = jos.order_id
@@ -83,7 +83,7 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
 	</field>
 	<field name="container_type_count" class="java.lang.String"/>
 	<field name="headCarrier_name" class="java.lang.String"/>
@@ -450,9 +450,9 @@ WHERE
 	</field>
 	<field name="CN_NO" class="java.lang.String"/>
 	<field name="bookingAgent_name" class="java.lang.String"/>
-	<field name="HBLshipper_name" class="java.lang.String"/>
-	<field name="HBLconsignee_name" class="java.lang.String"/>
-	<field name="HBLnotify_party_name" class="java.lang.String"/>
+	<field name="MBLshipper_name" class="java.lang.String"/>
+	<field name="MBLconsignee_name" class="java.lang.String"/>
+	<field name="MBLnotify_party_name" class="java.lang.String"/>
 	<variable name="pieces_sum" class="java.lang.Long" incrementType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{pieces}]]></variableExpression>
 	</variable>
@@ -1152,28 +1152,28 @@ WHERE
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HBLshipper_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{MBLshipper_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="21" y="59" width="269" height="0" uuid="7205862b-6cdd-4ca0-9896-bc875805ac96"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HBLshipper_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{MBLshipper_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="8" y="108" width="269" height="10" uuid="b2473b20-2549-4c1f-9455-633364f7f11b"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HBLconsignee_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{MBLconsignee_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="8" y="197" width="269" height="10" uuid="beae980e-3ee8-4e60-b1c0-6517dbd748ee"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{HBLnotify_party_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{MBLnotify_party_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="281" y="123" width="274" height="36" uuid="bf5e3b01-fdda-49d3-bca7-171ea73171e2"/>
