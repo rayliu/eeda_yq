@@ -31,7 +31,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			var begin_date = $("#begin_date").val();
 			var end_date = $("#end_date").val();
 			var v = DateDiff(begin_date,end_date)-0;
-			$("#days").text(v);
+			$("#total_day").text(v);
 			var price = $("#price").val()-0;
 			var sum=v*price;
 			$("#total_price").text(sum);
@@ -46,20 +46,25 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			}
 			
 			var ad = {};
+			ad.id=$("#ad_id").val();
 			ad.begin_date = $("#begin_date").val();
 			ad.end_date = $("#end_date").val();
 			ad.ad_location = $("#ad_location").val();
 			ad.total_price = $("#total_price").text();
+			ad.total_day = $("#total_day").text();
 			ad.price = $("#price").val();
 			ad.phone = $("#phone").val();
 			$.post('/BusinessAdmin/ad/saveBanner',{advantage:JSON.stringify(ad)},function(data) {
 		    		if(data){
 		    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+		    			
 		    		}else{
 		    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 		    		}
 		    		$(self).attr('disabled',false);
+		    		
 				});
+			
 			});
 		
 		
@@ -72,6 +77,26 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			iDays  =  parseInt(Math.abs(oDate1  -  oDate2)  /  1000  /  60  /  60  /24)    //把相差的毫秒数转换为天数  
 			return  iDays  
 		}    
+		
+		$("#eeda_table").on("click",".editBtn" ,function(){
+			var self=$(this);
+			var id=self.data("id");
+			var begin_date=self.data("begin_date");
+			var end_date=self.data("end_date");
+			var price=self.data("price");
+			var phone=self.data("phone");
+			var ad_location=self.data("ad_location");
+			var total_day=self.data("total_day");
+			if(self.data("status")=="新建"){
+				$("#begin_date").val(begin_date)
+				$("#end_date").val(end_date)
+				$("#phone").val(phone)
+				$("#price").val(price)
+				$("#ad_location").val(ad_location)
+				$("#total_day").text(total_day)
+				
+			}
+		})
 		
 	});	
 })

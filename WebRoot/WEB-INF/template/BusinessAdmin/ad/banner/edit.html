@@ -1,15 +1,11 @@
 <%layout("/BusinessAdmin/layout.html"){%>
-       <div class="pageheader notab">
+  <div class="pageheader notab">
       <h1 class="pagetitle">广告购买</h1>
   </div>
   <ul class="hornav">
-
     <li class="current"><a href="#phonepush">淘婚品横幅广告选购</a></li>
   </ul>
   <div id="contentwrapper" class="contentwrapper">
-   
-    <!-- #tab4 -->
-    </script>
 <div id="ad-xuangou" class="subcontent" >
     <form method="post"  id="weddingform">
     <div class="" style=" float:left; width:70%;">
@@ -18,39 +14,12 @@
         <div class="hang">
             
             广告位：
-          <select id="ad_location" name="ad_location">
+          <select id="ad_location" name="ad_location" value="{{user.end_date!''}}">
                        <option value="1">广告位1</option>    
                        <option value="2">广告位2</option>    
                        <option value="3">广告位3</option>        
                             </select>
-            <span class="red">
-                （
-                                    ）
-            </span>
         </div>
-        <!--<h5 class="hh5">查看<span class="red">第张广告</span>档期表</h5>
-        年份：
-        <select name="Year" id="CurYear" onchange="GetDateMap();">
-                        <option -1 >-1</option>
-                        <option 0 selected>0</option>
-                        <option 1 >1</option>
-                        <option 2 >2</option>
-                    </select>
-        月份：
-        <select name="Month" id="CurMonth" onchange="GetDateMap();">
-                        <option value="1" >1月</option>
-                        <option value="2" >2月</option>
-                        <option value="3" >3月</option>
-                        <option value="4" >4月</option>
-                        <option value="5" >5月</option>
-                        <option value="6" >6月</option>
-                        <option value="7" >7月</option>
-                        <option value="8" >8月</option>
-                        <option value="9" >9月</option>
-                        <option value="10" >10月</option>
-                        <option value="11" >11月</option>
-                        <option value="12" >12月</option>
-                    </select><div class="padding10"></div>-->
         
         <div id="DateMap"></div>
         <h5 class="hh5">选取档期时间：</h5>
@@ -68,32 +37,33 @@
                     <tr>
                         <td width="13%">档期开始时间</td>
                         <td width="65%">
-                            <input type="text" id="begin_date" name="begin_date" value=""   />                        </td>
+                        	<input type="hidden" id="ad_id" value="${user.id!''}"/>
+                            <input type="text" id="begin_date" name="begin_date" value="${user.begin_date!''}"  />                        </td>
                         <td rowspan="6">&nbsp;</td>
                     </tr>
                     <tr>
                         <td>档期结束时间</td>
                         <td>
                             <span class="">
-                                <input type="text" id="end_date" name="end_date" value=""  />
+                                <input type="text" id="end_date" name="end_date" value="${user.end_date!''}" />
                             </span>                        </td>
                     </tr>
                       <tr>
                         <td>单价</td>
-                       	<td><input type="text" id="price" name="price" readyonly value="1"/>元/天</td>
+                       	<td><input type="text" id="price" name="price" readonly value="${user.price!''}"/>元/天</td>
                     </tr>
                     <tr>
                         <td>总投放时间</td>
                        
-                         	<td><span id="days"></span>天</td>
+                         	<td><span id="total_day" value="">${user.total_day!''}</span>天</td>
                     </tr>
                     <tr>
                         <td>结算</td>
-                        <td><span class="anchorbutton" id="total_price"></span>元人民币</td>
+                        <td><span class="anchorbutton" id="total_price" >${user.total_price!''}</span>元人民币</td>
                     </tr>
                     <tr>
                       <td>联系电话</td>
-                      <td><input name="phone" id="phone" type="text"/></td>
+                      <td><input name="phone" id="phone" type="text" value="${user.phone!''}"/></td>
                     </tr>
                     <tr>
                         <td>提交</td>
@@ -107,51 +77,18 @@
         <p class="tipsred">注:由于较多商家订购广告，可能会出现并发购买至服务库存不足情况，所以有效定单以二者早发生为准。</p>
         </div>
     <div style="background-color: #fff;float: right; "><img src="/images/tao.png" /></div>
-</div>
-<!-- <script type="text/javascript">
-	$("#tel").blur(function(){
-		alert("s")
-	})
-var s_BannerPriceCfg = 'null';
-var arr_BannerPriceCfg = eval("("+s_BannerPriceCfg+")");
-function GetDateMap(){
-    var curYear = $("#CurYear").val();
-    var curMonth = $("#CurMonth").val();
-    var curBannerIndex = $("#CurBannerIndex").val();
-    var s_Url = "/ajax/ajax_adbuy_datemap.php?Year="+curYear+"&Month="+curMonth+"&BannerIndex="+curBannerIndex;
-    $.get(s_Url,function(data){
-      $("#DateMap").html(data);
-    });
-}
 
-var f_TaoDayPrice = ;
-	function TaoChangeDate(){
-    var CurBannerIndex = $("#CurBannerIndex").val();
-    var f_TaoDayPrice = arr_BannerPriceCfg[CurBannerIndex]['BannerDayPrice'];
-
-    var s_TaoStartDate = $("#TaoStartDate").val();
-    var s_TaoEndDate = $("#TaoEndDate").val();
-    var i_TaoDayDiff = DateDiff(s_TaoStartDate,s_TaoEndDate);
-
-    var f_TaoSumPrice = i_TaoDayDiff*f_TaoDayPrice;
-
-    $("#TaoPriceSum").html(f_TaoSumPrice+"元");
-    $("#TaoDays").html(i_TaoDayDiff);
-}
-
-$(function(){
-    GetDateMap();
-
-    $("#CurBannerIndex").change(function(){
-        GetDateMap();
-        TaoChangeDate();
-    });
-});
-</script>
- -->
+		<div class="row" style="float:left;">
+	      <%include("/eeda/component/form/detailTable.html", 
+	          {
+	              id:'eeda_table', 
+	              headers:['档期开始时间', '档期结束时间', '单价','联系电话','']
+	      }){} %> 
+ 		</div>
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
          requirejs(['/js/BusinessAdmin/ad/banner/edit.js']);
+         requirejs(['/js/BusinessAdmin/ad/banner/list.js']);
     });
 </script>
