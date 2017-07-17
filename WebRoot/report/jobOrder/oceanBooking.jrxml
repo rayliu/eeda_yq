@@ -1000,14 +1000,14 @@ WHERE
 				<textFieldExpression><![CDATA[$F{trans_clause}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="386" y="728" width="164" height="15" uuid="df6d9f7a-b30f-4ed1-95cd-735d6585e573"/>
+				<reportElement x="386" y="729" width="164" height="15" uuid="df6d9f7a-b30f-4ed1-95cd-735d6585e573"/>
 				<textElement>
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="386" y="754" width="164" height="15" uuid="1f93827f-0a5a-4c93-8418-41530da5bd3f"/>
+				<reportElement x="386" y="756" width="164" height="14" uuid="1f93827f-0a5a-4c93-8418-41530da5bd3f"/>
 				<textElement>
 					<font size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
