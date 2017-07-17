@@ -76,7 +76,7 @@ $(document).ready(function() {
 				companyList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
 			}
             for(var i = 0; i < data.length; i++)
-                companyList.append("<li><a class='fromLocationItem popListItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' phone='"+data[i].PHONE+"' fax='"+data[i].FAX+"' partyId='"+data[i].ID+"' zip_code='"+data[i].ZIP_CODE+"' address='"+data[i].ADDRESS+"' >"+data[i].ABBR+"</a></li>");
+                companyList.append("<li><a class='fromLocationItem popListItem'  bill_of_lading_info='"+data[i].BILL_OF_LADING_INFO+"'      post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' phone='"+data[i].PHONE+"' fax='"+data[i].FAX+"' partyId='"+data[i].ID+"' zip_code='"+data[i].ZIP_CODE+"' address='"+data[i].ADDRESS+"' >"+data[i].ABBR+"</a></li>");
             companyList.css({ 
                 left:$(me).position().left+"px", 
                 top:$(me).position().top+28+"px" 
@@ -110,6 +110,7 @@ $(document).ready(function() {
         var phone = $(this).attr('phone');
         var fax = $(this).attr('fax');
         var zip_code = $(this).attr('zip_code');
+        var self_info = $(this).attr('bill_of_lading_info');
        	if(address==''||address=='undefined'||address=="null"){
                address='';
         }
@@ -133,7 +134,12 @@ $(document).ready(function() {
         }else{
         	zip_code = 'ZIP CODE:'+zip_code+'\r';
         }
-        infoField.val(address+'\r'+zip_code+contact_person+phone+fax);
+        var system_info=address+'\r'+zip_code+contact_person+phone+fax;
+        if(self_info!=''&&self_info!='undefined'&&self_info!="null"){
+        	infoField.val(self_info);
+        }else{
+        	infoField.val(system_info);
+        }
     });
 
     // 1 没选中客户，焦点离开，隐藏列表

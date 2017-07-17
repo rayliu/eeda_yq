@@ -182,6 +182,7 @@ public class ServiceProviderController extends Controller {
             party.set("receiver", getPara("receiver"));
             party.set("bank_no", getPara("bank_no"));
             party.set("bank_name", getPara("bank_name"));
+            
             setParty(party);
             party.update();
         } else {
@@ -238,6 +239,7 @@ public class ServiceProviderController extends Controller {
     	contact.set("quick_search_code", getPara("quick_search_code"));
     	contact.set("fax", getPara("fax"));
     	contact.set("company_name", getPara("company_name"));
+    	contact.set("bill_of_lading_info", getPara("bill_of_lading_info"));
         contact.set("company_name_eng", getPara("company_name_eng"));
         contact.set("contact_person", getPara("contact_person"));
         contact.set("contact_person_eng", getPara("contact_person_eng")==""?null:getPara("contact_person_eng"));

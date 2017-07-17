@@ -368,19 +368,21 @@ public class CustomerController extends Controller {
         List<Record> resultList = Collections.EMPTY_LIST;
         if(StrKit.isBlank(customerName)){//从历史记录查找
             String sql = "select h.ref_id, p.id, p.abbr,ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from user_query_history h, party p "
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info from user_query_history h, party p "
                     + "where h.ref_id=p.id and h.type='CUSTOMER' and h.user_id=?";
             resultList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
             if(resultList.size()==0){
                 sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from party p where p.type = 'CUSTOMER' "
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
+                    + " from party p where p.type = 'CUSTOMER' "
                     + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
                 resultList = Db.find(sql+" order by abbr limit 10");
             }
             renderJson(resultList);
         }else{
             String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from party p where  "
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
+                    + " from party p where  "
                     + " p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
                         
             if (customerName.trim().length() > 0) {
@@ -398,6 +400,8 @@ public class CustomerController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void search_party() {
         String partyName = getPara("customerName");
+        UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
        
         if(StringUtils.isEmpty(partyName)){
         	partyName = "";
@@ -406,20 +410,23 @@ public class CustomerController extends Controller {
         List<Record> resultList = Collections.EMPTY_LIST;
         if(StrKit.isBlank(partyName)){//从历史记录查找
             String sql = "select h.ref_id, p.id, p.abbr,ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from user_query_history h, party p "
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
+                    + " from user_query_history h, party p "
                     + "where h.ref_id=p.id  and h.user_id=?";
             resultList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
             if(resultList.size()==0){
                 sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from party p where 1=1 "
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
+                    + " from party p where 1=1 "
                     + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
                 resultList = Db.find(sql+" order by abbr limit 10");
             }
             renderJson(resultList);
         }else{
             String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from party p where  "
-                    + " 1=1 ";
+                    + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
+                    + " from party p where  "
+                    + " 1=1 and p.office_id ="+office_id;
                         
             if (partyName.trim().length() > 0) {
                 sql +=" and (p.abbr like '%" + partyName + "%' or p.quick_search_code like '%" + partyName.toLowerCase() +"%'"
@@ -443,7 +450,8 @@ public class CustomerController extends Controller {
         }
         Record resultFirst = new Record();
         String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code from party p where  "
+                + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
+                + " from party p where  "
                 + " p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
                         
             if (customer_id.trim().length() > 0) {
@@ -466,7 +474,8 @@ public class CustomerController extends Controller {
         
         List<Record> partyList = Collections.EMPTY_LIST;
         String sql = "select p.id, p.abbr,p.abbr name, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                + " ifnull(p.address_eng, p.address) address, p.phone from party p where sp_type like '%"+type+"%' ";
+                + " ifnull(p.address_eng, p.address) address, p.phone,p.bill_of_lading_info"
+                + " from party p where sp_type like '%"+type+"%' ";
         if(!"carrier".equals(type)){
             sql += "and office_id="+office_id;
         }

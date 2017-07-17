@@ -226,6 +226,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.this_year_salesamount = $("#this_year_salesamount").val();            
             order.last_year_salesamount = $("#last_year_salesamount").val();
             order.beforelast_year_salesamount = $("#beforelast_year_salesamount").val();
+            order.bill_of_lading_info = $("#bill_of_lading_info").val();
             order.docItem = buildDocItem();
             		
             order.customer_quotationItem=itemOrder.buildCustomerQuotationDetail();
