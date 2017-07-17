@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="28"/>
+	<property name="ireport.y" value="421"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
@@ -33,9 +33,9 @@
 	lo1. NAME pol_name,
 	lo2. NAME pod_name,
 	lo2. NAME fnd_name,
-	SUM(josi.pieces),
-	SUM(josi.gross_weight),
-	SUM(josi.volume),
+	IFNULL(jo.pieces,SUM(josi.pieces)) pieces,
+	IFNULL(jo.gross_weight,SUM(josi.gross_weight)) gross_weight,
+	IFNULL(jo.volume,SUM(josi.volume)) volume,
 	u.c_name,
 	( SELECT
                 GROUP_CONCAT(CN_no SEPARATOR ' ; ')
@@ -66,9 +66,9 @@ LEFT JOIN location lo1 ON lo1.id = jos.pol
 LEFT JOIN location lo2 ON lo2.id = jos.pod
 LEFT JOIN location lo3 ON lo3.id = jos.fnd
 LEFT JOIN party p on jos.head_carrier = p.id
-left join party p3 on p3.id = jos.HBLshipper
-left join party p1 on p1.id = jos.HBLconsignee
-left join party p2 on p2.id = jos.HBLnotify_party
+left join party p3 on p3.id = jos.MBLshipper
+left join party p1 on p1.id = jos.MBLconsignee
+left join party p2 on p2.id = jos.MBLnotify_party
 LEFT JOIN party p4 on p4.id = jos.booking_agent
 WHERE
 	jo.order_no = $P{order_no}]]>
@@ -445,9 +445,6 @@ WHERE
 	<field name="pol_name" class="java.lang.String"/>
 	<field name="pod_name" class="java.lang.String"/>
 	<field name="fnd_name" class="java.lang.String"/>
-	<field name="SUM(josi.pieces)" class="java.math.BigDecimal"/>
-	<field name="SUM(josi.gross_weight)" class="java.lang.Double"/>
-	<field name="SUM(josi.volume)" class="java.lang.Double"/>
 	<field name="c_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -1035,21 +1032,21 @@ WHERE
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{SUM(josi.pieces)}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="411" y="467" width="65" height="20" uuid="0aebaca5-135e-4d31-a6d1-469774b7f7ea"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{SUM(josi.gross_weight)}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="476" y="467" width="79" height="20" uuid="8ef7e55b-5901-4d29-bed2-c50afb7b636b"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{SUM(josi.volume)}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="126" y="444" width="200" height="75" uuid="edca4d75-23e4-4b3d-8596-f0a7ed3119b6"/>
