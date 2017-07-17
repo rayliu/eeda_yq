@@ -43,14 +43,14 @@ public class FinItemController extends Controller {
 					+" LEFT JOIN currency_rate cr on cr.currency_id =c.id  and cr.office_id=f.office_id "
                     + " where h.ref_id=f.id and h.type='ARAP_FIN' and h.user_id=? ) B"
                     + " where currency_id is not null or currency_code is not null or rate is not null ";
-            finItems = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
+            finItems = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
             if(finItems.size()==0){
                 finItems = Db.find("SELECT	f.*,c.id currency_id,c.`code` currency_code,cr.rate FROM 	fin_item f "
 						+" LEFT JOIN currency c on  c.`code` = f.binding_currency "
 						+" LEFT JOIN currency_rate cr ON cr.currency_id = c.id	and cr.office_id=f.office_id "
 						+" WHERE	f.office_id = ?  "
                 		+ " and f.name like '%"+input+"%' "
-                        + " order by convert(f.name using gb2312) asc limit 10", officeId);
+                        + " order by convert(f.name using gb2312) asc limit 25", officeId);
             }
         }else{
             if (input !=null && input.trim().length() > 0) {
@@ -59,13 +59,13 @@ public class FinItemController extends Controller {
 						+" LEFT JOIN currency_rate cr ON cr.currency_id = c.id	and cr.office_id=f.office_id "
 						+" WHERE	f.office_id = ?  "
                 		+ " and (f.name like '%"+input+"%' or f.code like '%"+input+"%')"
-                        + " order by convert(f.name using gb2312) asc limit 10", officeId);
+                        + " order by convert(f.name using gb2312) asc limit 25", officeId);
             }else{
                 finItems = Db.find("SELECT	f.*,c.id currency_id,c.`code` currency_code,cr.rate FROM 	fin_item f "
 						+" LEFT JOIN currency c on  c.`code` = f.binding_currency "
 						+" LEFT JOIN currency_rate cr ON cr.currency_id = c.id		and cr.office_id=f.office_id "
 						+" WHERE	f.office_id = ?   "
-                        + "order by convert(f.name using gb2312) asc limit 10", officeId);
+                        + "order by convert(f.name using gb2312) asc limit 25", officeId);
             }
             
         }

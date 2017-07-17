@@ -271,7 +271,7 @@ public class CustomerController extends Controller {
 							+ input
 							+ "%' or postal_code like '%"
 							+ input
-							+ "%') and (p.is_stop is null or p.is_stop = 0) and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') limit 0,10");
+							+ "%') and (p.is_stop is null or p.is_stop = 0) and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') limit 0,25");
 		} else {
 			locationList = Db
 					.find("select *,p.id as pid from party p,contact c where p.contact_id = c.id and p.party_type = '"
@@ -335,11 +335,11 @@ public class CustomerController extends Controller {
         if(StrKit.isBlank(customerName)){//从历史记录查找
             String sql = "select h.ref_id, p.id, p.abbr from user_query_history h, party p "
                     + "where h.ref_id=p.id and h.type='CUSTOMER' and h.user_id=?";
-            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
+            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
             if(resultList.size()==0){
                 sql = "select p.id, p.abbr from party p where p.type = 'CUSTOMER' "
                         + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
-                resultList = Db.find(sql+" order by abbr limit 10");
+                resultList = Db.find(sql+" order by abbr limit 25");
             }
             renderJson(resultList);
         }else{
@@ -350,7 +350,7 @@ public class CustomerController extends Controller {
                 sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" +customerName.toLowerCase()+ "%'"
                 	+ " or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
             }
-            resultList = Db.find(sql+" order by abbr limit 10");
+            resultList = Db.find(sql+" order by abbr limit 25");
 
             renderJson(resultList);
         }
@@ -370,13 +370,13 @@ public class CustomerController extends Controller {
             String sql = "select h.ref_id, p.id, p.abbr,ifnull(p.contact_person_eng, p.contact_person) contact_person, "
                     + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info from user_query_history h, party p "
                     + "where h.ref_id=p.id and h.type='CUSTOMER' and h.user_id=?";
-            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
+            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
             if(resultList.size()==0){
                 sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
                     + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
                     + " from party p where p.type = 'CUSTOMER' "
                     + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
-                resultList = Db.find(sql+" order by abbr limit 10");
+                resultList = Db.find(sql+" order by abbr limit 25");
             }
             renderJson(resultList);
         }else{
@@ -389,7 +389,7 @@ public class CustomerController extends Controller {
                 sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" + customerName.toLowerCase() +"%'"
                 	+ " or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
             }
-            resultList = Db.find(sql+" limit 10");
+            resultList = Db.find(sql+" limit 25");
 
             renderJson(resultList);
         }
@@ -413,13 +413,13 @@ public class CustomerController extends Controller {
                     + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
                     + " from user_query_history h, party p "
                     + "where h.ref_id=p.id  and h.user_id=?";
-            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
+            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
             if(resultList.size()==0){
                 sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
                     + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
                     + " from party p where 1=1 "
                     + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
-                resultList = Db.find(sql+" order by abbr limit 10");
+                resultList = Db.find(sql+" order by abbr limit 25");
             }
             renderJson(resultList);
         }else{
@@ -432,7 +432,7 @@ public class CustomerController extends Controller {
                 sql +=" and (p.abbr like '%" + partyName + "%' or p.quick_search_code like '%" + partyName.toLowerCase() +"%'"
                 	+ " or p.quick_search_code like '%" + partyName.toUpperCase() + "%') ";
             }
-            resultList = Db.find(sql+" limit 10");
+            resultList = Db.find(sql+" limit 25");
 
             renderJson(resultList);
         }
