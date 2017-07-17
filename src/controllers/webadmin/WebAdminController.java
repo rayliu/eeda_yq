@@ -82,6 +82,21 @@ public class WebAdminController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
         if (isAuthenticated()) {
+        	//注册用户数
+        	Record user = Db.findFirst("select count(1) total from user_login");
+        	setAttr("user", user);
+        	//上传产品
+        	Record product = Db.findFirst("select count(1) total from wc_product");//全部（不管是否上架）
+        	setAttr("product", product);
+        	//“促”用户数
+        	Record ad_cu = Db.findFirst("select count(1) total from wc_ad_deal group by creator");//全部（不管是否上架）
+        	setAttr("ad_cu", ad_cu);
+        	//“惠”用户数
+        	Record ad_hui = Db.findFirst("select count(1) total from wc_ad_hui group by creator");//全部（不管是否上架）
+        	setAttr("ad_hui", ad_hui);
+        	//钻石商家数
+        	Record dimond = Db.findFirst("select count(1) total from dimond group by creator");//全部（不管是否上架）
+        	setAttr("dimond", dimond);
             render("/WebAdmin/dashBoard/list.html");
         }
     }

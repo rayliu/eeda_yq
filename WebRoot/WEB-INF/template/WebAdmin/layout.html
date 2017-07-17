@@ -7,6 +7,13 @@
 <title>admin管理后台-基本信息</title>
 <link rel="stylesheet" href="http://www.iwedclub.com/WebAdmin/css/style.default.css" type="text/css" />
 <link rel="stylesheet" href="http://www.iwedclub.com/WebAdmin/css/pagestyle.css" type="text/css" />
+
+<link rel="stylesheet" href="/css/wedding/style.default.css" type="text/css" />
+<link rel="stylesheet" href="/css/wedding/pagestyle.css" type="text/css" />
+<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet"> 
+<link href="/js/lib/jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet">
+<link href="/css/eeda.css" rel="stylesheet"> 
+
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery.cookie.js"></script>
@@ -16,6 +23,10 @@
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery.slimscroll.js"></script>
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/custom/general.js"></script>
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/custom/dashboard.js"></script>
+<script src="/js/lib/require2.3.2.min.js"></script>
+
+<script type="text/javascript" src="/js/lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
 <!--[if IE 9]>
     <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
@@ -86,6 +97,7 @@
   <br />
 </div>
 <!--leftmenu-->    
+<%include("/eeda/component/form/commonJs.html",{}){} %>
 <div class="centercontent">
         ${layoutContent}
 </div>
