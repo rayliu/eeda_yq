@@ -2,6 +2,7 @@ package controllers.bizadmin.ad;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import interceptor.SetAttrLoginUserInterceptor;
@@ -18,6 +19,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.profile.LoginUserController;
+import controllers.util.DbUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -28,6 +30,30 @@ public class AdController extends Controller {
 
 	public void index() {
 		render(getRequest().getRequestURI()+"/buy_cu/edit.html");
+	}
+	public void list() {
+		String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+        Long userId = LoginUserController.getLoginUserId(this);
+        String sql = "select id,order_no,price,total_price,phone,amount,CONVERT(SUBSTR(put_in_time,1,10),CHAR) put_in_time,status from mobile_ad_promotion where creator = "+ userId;
+        
+        String condition = DbUtils.buildConditions(getParaMap());
+
+        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        List<Record> orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
+        
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map);
 	}
 	
 	public void hui(){
@@ -79,21 +105,24 @@ public class AdController extends Controller {
 		Long userId = LoginUserController.getLoginUserId(this);
 		Gson gson=new Gson();
 		Map<String,?> dto = gson.fromJson(jsonStr, HashMap.class);
-		
+		String order_no = (String)dto.get("order_no");
 		String amount = (String)dto.get("amount");
 		String put_in_time = (String)dto.get("put_in_time");
 		String price = (String)dto.get("price");
 		String total_price = (String)dto.get("total_price");
 		String phone = (String)dto.get("phone");
+		String status = (String)dto.get("status");
 		
 		Record rec = new Record();
 		rec.set("creator", userId);
 		rec.set("create_time", new Date());
+		rec.set("order_no", order_no);
 		rec.set("amount", amount);
 		rec.set("put_in_time", put_in_time);
 		rec.set("price", price);
 		rec.set("total_price",total_price);
 		rec.set("phone",phone);
+		rec.set("status",status);
 		Db.save("mobile_ad_promotion", rec);
 		
 		renderJson(true);
@@ -109,13 +138,13 @@ public class AdController extends Controller {
 
 		String advantage=getPara("advantage");
         Gson gson = new Gson();  
-        Map<String, ?> dto= gson.fromJson(advantage, HashMap.class);
-        String begin_date=(String) dto.get("begin_date");
+        Map<String, ?> dto = gson.fromJson(advantage, HashMap.class);
+        String begin_date = (String) dto.get("begin_date");
     	String ad_location = (String) dto.get("ad_location");
 		String end_date = (String) dto.get("end_date");
 		String price = (String) dto.get("price");
 		String telephone = (String) dto.get("phone");
-		String total_price=(String)dto.get("total_price");
+		String total_price = (String)dto.get("total_price");
 		Record order = new Record();
     	order.set("begin_date", begin_date);
     	order.set("end_date", end_date);
@@ -127,5 +156,26 @@ public class AdController extends Controller {
     	Db.save("ad_banner", order);
 		renderJson(order);
 		
+	}
+	
+	public void update(){
+		 String jsonStr=getPara("jsonStr");
+		 Gson gson = new Gson();  
+	     Map<String, ?> dto = gson.fromJson(jsonStr, HashMap.class);
+	     String id = (String) dto.get("id");
+	     String amount = (String) dto.get("amount");
+	     String put_in_time = (String) dto.get("put_in_time");
+		 String price = (String) dto.get("price");
+	 	 String total_price = (String) dto.get("total_price");
+		 String phone = (String) dto.get("phone");
+		 
+		 Record re = Db.findById("mobile_ad_promotion", id);
+		 re.set("amount", amount);
+		 re.set("put_in_time", put_in_time);
+		 re.set("price", price);
+		 re.set("total_price", total_price);
+		 re.set("phone", phone);
+		 Db.update("mobile_ad_promotion",re);
+		 renderJson(true);
 	}
 }
