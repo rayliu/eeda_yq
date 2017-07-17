@@ -10,83 +10,57 @@
     <div id="cuxiao" class="subcontent">
     <div class="" style="float:left; width:60%"><!-- #left -->
         <h3>选择广告时间</h3>
-        <!--
-        <div class="hang">你的"促"销广告服务：剩余30天 至 2016-1-1</div>
-        -->
         <div class="mt10"></div>
         <div class="product-table">
-            <form method="post" action="ad-buy-confirm.php">
-            <input type="hidden" name="Act" value="Cu" />
-            <table cellpadding="0" cellspacing="0" border="0" class="stdtable">
-                <thead>
-                    <tr>
-                        <th colspan="2" class="head0">订单</th>
-                        <th width="22%" class="head0">备注</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td width="20%">广告开始时间</td>
-                  <td width="58%">
-                            <span class="">
-                            <input type="text" id="CuStartDate" name="StartDate" value="2017-06-18"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:CuChangeDate()})" />
-                            </span>
-                        </td>
-                      <td rowspan="5">&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td>广告结束时间</td>
-                        <td>
-                            <span class="">
-                                <input type="text" id="CuEndDate" name="EndDate" value="2017-06-21"  onclick="WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:CuChangeDate()})" />
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>总投放时间</td>
-                        <td id="CuDays">4天</td>
-                    </tr>
-                    <tr>
-                        <td>结算</td>
-                        <td><span class="anchorbutton" id="CuPriceSum">4元</span>人民币</td>
-                    </tr>
-                    <tr>
-                        <td>提交申请</td>
-                        <td><input type="submit" class="stdbtn btn_yellow" value="在线支付" /></td>
-                    </tr>
-                </tbody>
+            <form method="post" id="order_form">
+            	<input type="hidden" name="Act" value="Cu" />
+           		 <table cellpadding="0" cellspacing="0" border="0" class="stdtable">
+                		<thead>
+		                    <tr>
+		                        <th colspan="2" class="head0">订单</th>
+		                        <th width="22%" class="head0">备注</th>
+		                 	</tr>
+               			 </thead>
+		                <tbody>
+		                    <tr>
+		                        <td width="20%">广告开始时间</td>
+		                  			<td width="58%">
+		                            	<span class="">
+		                            		<input type="text" id="begin_date" name="begin_date" value="${user.begin_date!''}" />
+		                            	</span>
+		                        	</td>
+		                      		<td rowspan="5">&nbsp;</td>
+		                    </tr>
+		                    <tr>
+		                        <td>广告结束时间</td>
+		                        <td>
+		                            <span class="">
+		                                <input type="text" id="end_date" name="end_date" value="${user.end_date!''}" />
+		                            </span>
+		                        </td>
+		                    </tr>
+		                    <tr>
+		                        <td>总投放时间</td>
+		                        <td ><span id="total_day" >${user.total_day!''}</span>天</td>
+		                    </tr>
+		                    <tr>
+		                        <td>结算</td>
+		                        <td><span class="anchorbutton" id="price">${user.price!''}</span>元人民币</td>
+		                    </tr>
+		                    <tr>
+		                        <td>提交申请</td>
+		                        <td><input type="button" class="stdbtn btn_yellow" value="在线支付"   id="saveBtn" /></td>
+		                    </tr>
+		                </tbody>
             </table>
             </form>
         </div>
         <p class="tipsred">
-            注：在线支付后，到”产品管理“中选择要加”促“的商品。<br />
-            ”促“服务广告投放的计算方法：即日至结束日。中途商家没投放”促“服务也视为使用服务，婚礼帮不给于退款或延期。
+            		注：在线支付后，到”产品管理“中选择要加”促“的商品。<br />
+           			”促“服务广告投放的计算方法：即日至结束日。中途商家没投放”促“服务也视为使用服务，婚礼帮不给于退款或延期。
         </p>
     </div>
-    <div style="background-color: #fff;float: left;"><img width="600" src="/images/cu.png" /></div>
 </div>
-<script type="text/javascript">
-var f_CuDayPrice = 1;
-function CuChangeDate(){
-    var s_CurStartDate = $("#CuStartDate").val();
-    var s_CurEndDate = $("#CuEndDate").val();
-    var i_CurDayDiff = DateDiff(s_CurStartDate,s_CurEndDate);
-
-    var f_CuSumPrice = i_CurDayDiff*f_CuDayPrice;
-
-    $("#CuPriceSum").html(f_CuSumPrice+"元");
-    $("#CuDays").html(i_CurDayDiff);
-    console.log("CuChangeDate");
-    console.log(s_CurStartDate);
-    console.log(s_CurEndDate);
-    console.log(i_CurDayDiff);
-    console.log("===============");
-}
-</script>
-    
-    
-
-    <!--contentwrapper-->
   </div>
 
 

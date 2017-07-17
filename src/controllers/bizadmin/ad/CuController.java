@@ -1,5 +1,6 @@
 package controllers.bizadmin.ad;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
+import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
@@ -33,6 +35,10 @@ public class CuController extends Controller {
 	
 	public void buy(){
         String id = getPara("id");
+        Long user_id = LoginUserController.getLoginUserId(this);
+        String sql="select * from wc_ad_buy where creator ="+user_id;
+        Record user=Db.findFirst(sql);
+        setAttr("user", user);
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	
@@ -80,5 +86,23 @@ public class CuController extends Controller {
 		
 		renderJson(order);
 	}
-	
+	public void save(){
+		String advertisement = getPara("advertisement");
+        Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(advertisement, HashMap.class);
+        String begin_date=(String) dto.get("begin_date");
+        String end_date=(String) dto.get("end_date");
+        String total_day=(String) dto.get("total_day");
+        String price=(String) dto.get("price");
+        Long user_id = LoginUserController.getLoginUserId(this);
+        Record order = new Record();
+    	order.set("begin_date", begin_date);
+    	order.set("end_date", end_date);
+    	order.set("total_day", total_day);
+    	order.set("price", price);
+    	order.set("create_time", new Date());
+    	order.set("creator",user_id);
+    	Db.save("wc_ad_buy", order);
+    	renderJson(order);
+	}
 }

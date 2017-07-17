@@ -131,6 +131,10 @@ public class AdController extends Controller {
 	public void banner(){
         String id = getPara("id");
         System.out.println(getRequest().getRequestURI()+"/edit.html");
+        Long user_id = LoginUserController.getLoginUserId(this);
+        String sql="select * from wc_ad_banner where creator ="+user_id;
+        Record user=Db.findFirst(sql);
+        setAttr("user",user);
         render(getRequest().getRequestURI()+"/edit.html");
         //BusinessAdmin/ad/banner/edit.html
     }
@@ -139,23 +143,35 @@ public class AdController extends Controller {
 		String advantage=getPara("advantage");
         Gson gson = new Gson();  
         Map<String, ?> dto = gson.fromJson(advantage, HashMap.class);
+        String id=(String)dto.get("id");
         String begin_date = (String) dto.get("begin_date");
     	String ad_location = (String) dto.get("ad_location");
 		String end_date = (String) dto.get("end_date");
 		String price = (String) dto.get("price");
 		String telephone = (String) dto.get("phone");
 		String total_price = (String)dto.get("total_price");
+		String total_day=(String)dto.get("total_day");
+		Record exist=Db.findById("advertisement_banner", id);
+		Long user_id = LoginUserController.getLoginUserId(this);
 		Record order = new Record();
+		order.set("id", id);
     	order.set("begin_date", begin_date);
     	order.set("end_date", end_date);
-    	order.set("telephone", telephone);
+    	order.set("phone", telephone);
     	order.set("price", price);
     	order.set("total_price", total_price);
     	order.set("ad_location",ad_location);
     	order.set("create_time", new Date());
-    	Db.save("ad_banner", order);
+    	order.set("creator", user_id);
+    	order.set("total_day", total_day);
+    	if(exist==null){
+    		Db.save("wc_ad_banner", order);
+    	}
+    	else{
+    		Db.update("wc_ad_banner", order);
+    	}
 		renderJson(order);
-		
+	}
 	}
 	
 	public void update(){
@@ -178,4 +194,26 @@ public class AdController extends Controller {
 		 Db.update("mobile_ad_promotion",re);
 		 renderJson(true);
 	}
+	
+	
+        public void list(){
+	    String sLimit = "";
+       		String pageIndex = getPara("draw");
+       	 	if (getPara("start") != null && getPara("length") != null) {
+            		sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        	}
+		Long user_id = LoginUserController.getLoginUserId(this);
+		String sqlTotal = "select count(1) total from wc_ad_banner where creator = "+user_id ;
+		Record rec = Db.findFirst(sqlTotal);
+		String sql = "select * from wc_ad_banner where  creator = "+user_id+" order by begin_date desc " +sLimit;
+		List<Record> orderList =  Db.find(sql);
+	   	Map map = new HashMap();
+	        map.put("draw", pageIndex);
+       	 	map.put("recordsTotal", rec.getLong("total"));
+        	map.put("recordsFiltered", rec.getLong("total"));
+       		 map.put("data", orderList);
+        	renderJson(map);
+        }
+
+       	
 }
