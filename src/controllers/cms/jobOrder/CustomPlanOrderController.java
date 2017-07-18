@@ -113,9 +113,9 @@ public class CustomPlanOrderController extends Controller {
         newDateStr=sdf.format(new Date());
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
-   		if(StringUtils.isNotEmpty(to_office_id)){
-   			office_id =Long.parseLong(to_office_id);
-   		}
+//   		if(StringUtils.isNotEmpty(to_office_id)){
+//   			office_id =Long.parseLong(to_office_id);
+//   		}
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			customPlanOrder = CustomPlanOrder.dao.findById(id);
