@@ -96,12 +96,11 @@ public class ProductController extends Controller {
         if(StringUtils.isBlank(id)){
             render(getRequest().getRequestURI()+"/edit.html");
             setAttr("product", new Record());
-            setAttr("productItem", new Record());
         }else{
             Record rec = Db.findFirst("select * from wc_product where id = ?",id);
             setAttr("product", rec);
             
-            Record productItem = Db.findFirst("select * from wc_product_pic where order_id = ? ", id);
+            List<Record> productItem = Db.find("select * from wc_product_pic where order_id = ? order by seq asc ", id);
             setAttr("productItem", productItem);
             
             render(getRequest().getRequestURI()+"/edit.html");
@@ -109,7 +108,7 @@ public class ProductController extends Controller {
         
     }
 	
-	
+	@Before(Tx.class)
 	public void save(){
 		//String rootPath = PathKit.getWebRootPath();
 		String jsonStr = getPara("jsonStr");
@@ -124,21 +123,14 @@ public class ProductController extends Controller {
         String unit = (String) dto.get("unit");
         String content = (String) dto.get("content");
         String cover = "".equals((String) dto.get("cover"))?null:(String) dto.get("cover");
-        String photo1 = "".equals((String) dto.get("photo1"))?null:(String) dto.get("photo1");
-        String photo2 = "".equals((String) dto.get("photo2"))?null:(String) dto.get("photo2");
-        String photo3 = "".equals((String) dto.get("photo3"))?null:(String) dto.get("photo3");
-        String photo4 = "".equals((String) dto.get("photo4"))?null:(String) dto.get("photo4");
-        String photo5 = "".equals((String) dto.get("photo5"))?null:(String) dto.get("photo5");
-        String photo6 = "".equals((String) dto.get("photo6"))?null:(String) dto.get("photo6");
-        String photo7 = "".equals((String) dto.get("photo7"))?null:(String) dto.get("photo7");
-        String photo8 = "".equals((String) dto.get("photo8"))?null:(String) dto.get("photo8");
-        String photo9 = "".equals((String) dto.get("photo9"))?null:(String) dto.get("photo9");
-        String photo10 = "".equals((String) dto.get("photo10"))?null:(String) dto.get("photo10");
-      
+        Double img_num = (Double) dto.get("img_num");
+
+
         Record order = null;
         if(StringUtils.isNotBlank(order_id)){
         	order = Db.findById("wc_product", order_id);
         	order.set("category", category);
+        	order.set("name", name);
         	order.set("price_type", price_type);
         	order.set("price", price);
         	order.set("unit", unit);
@@ -147,19 +139,18 @@ public class ProductController extends Controller {
         	order.set("cover", cover);
         	Db.update("wc_product", order);
         	
-        	Record orderItem = Db.findFirst("select * from wc_product_pic where order_id = ?",order_id);
-        	orderItem.set("photo1", photo1);
-        	orderItem.set("photo2", photo2);
-        	orderItem.set("photo3", photo3);
-        	orderItem.set("photo4", photo4);
-        	orderItem.set("photo5", photo5);
-        	orderItem.set("photo6", photo6);
-        	orderItem.set("photo7", photo7);
-        	orderItem.set("photo8", photo8);
-        	orderItem.set("photo9", photo9);
-        	orderItem.set("photo10", photo10);
-        	Db.update("wc_product_pic", orderItem);
-        	
+        	List<Record> orderItem = Db.find("select * from wc_product_pic where order_id = ? order by seq asc",order_id);
+        	for (int i = 1; i <= img_num; i++) {
+        		int order_num = orderItem.size();
+        		Record re = null;
+        		if(i > order_num){
+        			re = new Record();
+        			re.set("photo", (String) dto.get("photo"+i));
+            		re.set("seq", i);
+            		re.set("order_id", order.get("id"));
+                	Db.save("wc_product_pic", re);
+        		}
+    		}
         }else{
         	order = new Record();
         	order.set("name", name);
@@ -174,18 +165,12 @@ public class ProductController extends Controller {
         	Db.save("wc_product", order);
         	
         	Record orderItem = new Record();
-        	orderItem.set("photo1", photo1);
-        	orderItem.set("photo2", photo2);
-        	orderItem.set("photo3", photo3);
-        	orderItem.set("photo4", photo4);
-        	orderItem.set("photo5", photo5);
-        	orderItem.set("photo6", photo6);
-        	orderItem.set("photo7", photo7);
-        	orderItem.set("photo8", photo8);
-        	orderItem.set("photo9", photo9);
-        	orderItem.set("photo10", photo10);
-        	orderItem.set("order_id", order.get("id"));
-        	Db.save("wc_product_pic", orderItem);
+        	for (int i = 1; i <= img_num; i++) {
+        		orderItem.set("photo", (String) dto.get("photo"+i));
+        		orderItem.set("seq", i);
+        		orderItem.set("order_id", order.get("id"));
+            	Db.save("wc_product_pic", orderItem);
+    		}
         }
         renderJson(order);
 	}

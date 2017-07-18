@@ -1,21 +1,20 @@
 <%layout("/BusinessAdmin/layout.html"){%>
         <div class="pageheader notab">
             <h1 class="pagetitle" style="float:left;">产品上传</h1>
-            <span class="red" style="float:left;">*普通商家只能上传10个产品</span>
             <div style="clear:both"></div>
         </div>
       <div class="pageheader notab">
             <form id="orderForm">
             <input type="hidden" id="order_id" name="order_id" value="${product.id!''}" />
-            <div class="registered product-upload" id="login-content">
-                <dl>
+            <div class="registered " id="login-content" >
+                <dl class="form-group">
                     <dt>
-                        <div class="fm-label-wrap">
+                        <div class="fm-label-wrap" >
                             <label for="fm-login-id">产品名称：</label>
                         </div>
                     </dt>
                     <dd>
-                        <div class="textin">
+                        <div class="textin input_div">
                             <input type="text" id="name" name="ProductName" value="${product.name!''}" /> <span class="red">*</span>
                         </div>
                     </dd>
@@ -27,12 +26,13 @@
                         </div>
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
-                            <input type="file" id="file_cover" name="file_photo"  class="ehdel_upload" />
+                        <div class="file">
+                            <input type="file" id="file_cover" name="file_photo"  class="ehdel_upload" />选择图片
                         </div>
-
-                        <img style="width: 200px; height: 150px;" src="/upload/${product.cover!'nophoto.png'}" value="${product.cover!''}" id="img_cover"/>
                         <span class="red">*图片要求: 200*150, 小于500Kb</span>
+						<div class="form-control" style="margin-left:100px">
+                        	<img style="width: 200px; height: 150px;" class="shadow" src="/upload/${product.cover!'nophoto.png'}" value="${product.cover!''}" id="img_cover"/>
+                        </div>
                     </dd>
                 </dl>
                 <dl>
@@ -42,7 +42,7 @@
                         </div>
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
+                        <div class="textin input_div">
                             <div style="padding-top:5px;">
                                 <select name="category" id="category">
                                     <option value ="摄楼" <% if(product.category!'摄楼'=='摄楼'){%>selected<%}%>>摄楼</option>
@@ -50,7 +50,6 @@
                                     <option value="跟拍摄影 " <% if(product.category!''=='跟拍摄影'){%>selected<%}%>>跟拍摄影 </option>
                                     <option value="跟拍摄像" <% if(product.category!''=='跟拍摄像'){%>selected<%}%>>跟拍摄像</option>
                                 </select>
-                                
                             </div>    
                         </div>
                     </dd>
@@ -96,154 +95,25 @@
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin">
-                            <textarea name="ProductContent" id="contend" class="fill-detail">${product.content!''}</textarea>
+                            <textarea name="ProductContent" id="contend" class="fill-detail" style="width:350px">${product.content!''}</textarea>
                         </div>
                     </dd>
                 </dl>
-                <dl>
-                    <dt class="fm-label">
-                        <div class="fm-label-wrap ">
-                            <label for="fm-login-password">图片1：</label>
-                        </div>
-                    </dt>
-                    <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
-                            <input type="file" id="file_photo1" name="file_photo"   class="ehdel_upload" />
-                        </div>
-                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo1!"nophoto.png"}' value='${productItem.photo1!""}' id="img_photo1">
-                        <span class="red">*图片要求小于500Kb</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt class="fm-label">
-                        <div class="fm-label-wrap ">
-                            <label for="fm-login-password">图片2</label>
-                        </div>
-                    </dt>
-                    <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
-                            <input type="file" id="file_photo2" name="file_photo"   class="ehdel_upload" />
-                        </div>
-                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo2!"nophoto.png"}' value='${productItem.photo2!""}' id="img_photo2">
-                        <span class="red">*图片要求小于500Kb</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt class="fm-label">
-                        <div class="fm-label-wrap ">
-                            <label for="fm-login-password">图片3</label>
-                        </div>
-                    </dt>
-                    <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
-                            <input type="file" id="file_photo3" name="file_photo"   class="ehdel_upload" />
-                        </div>
-                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo3!"nophoto.png"}' value='${productItem.photo3!""}' id="img_photo3">
-                        <span class="red">*图片要求小于500Kb</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt class="fm-label">
-                        <div class="fm-label-wrap ">
-                            <label for="fm-login-password">图片4</label>
-                        </div>
-                    </dt>
-                    <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
-                            <input type="file" id="file_photo4" name="file_photo"   class="ehdel_upload" />
-                        </div>
-                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo4!"nophoto.png"}' value='${productItem.photo4!""}' id="img_photo4">
-                        <span class="red">*图片要求小于500Kb</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt class="fm-label">
-                        <div class="fm-label-wrap ">
-                            <label for="fm-login-password">图片5</label>
-                        </div>
-                    </dt>
-                    <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
-                            <input type="file" id="file_photo5" name="file_photo"   class="ehdel_upload" />
-                        </div>
-                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo5!"nophoto.png"}' value='${productItem.photo5!""}' id="img_photo5">
-                        <span class="red">*图片要求小于500Kb</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt class="fm-label">
-                        <div class="fm-label-wrap ">
-                            <label for="fm-login-password">图片6</label>
-                        </div>
-                    </dt>
-                    <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
-                            <input type="file" id="file_photo6" name="file_photo"   class="ehdel_upload" />
-                        </div>
-                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo6!"nophoto.png"}' value='${productItem.photo6!""}' id="img_photo6">
-                        <span class="red">*图片要求小于500Kb</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt class="fm-label">
-                        <div class="fm-label-wrap ">
-                            <label for="fm-login-password">图片7</label>
-                        </div>
-                    </dt>
-                    <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
-                            <input type="file" id="file_photo7" name="file_photo"   class="ehdel_upload" />
-                        </div>
-                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo7!"nophoto.png"}' value='${productItem.photo7!""}' id="img_photo7">
-                        <span class="red">*图片要求小于500Kb</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt class="fm-label">
-                        <div class="fm-label-wrap ">
-                            <label for="fm-login-password">图片8</label>
-                        </div>
-                    </dt>
-                    <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
-                            <input type="file" id="file_photo8" name="file_photo"   class="ehdel_upload" />
-                        </div>
-                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo8!"nophoto.png"}' value='${productItem.photo8!""}' id="img_photo8">
-                        <span class="red">*图片要求小于500Kb</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt class="fm-label">
-                        <div class="fm-label-wrap ">
-                            <label for="fm-login-password">图片9</label>
-                        </div>
-                    </dt>
-                    <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
-                            <input type="file" id="file_photo9" name="file_photo"   class="ehdel_upload" />
-                        </div>
-                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo9!"nophoto.png"}' value='${productItem.photo9!""}' id="img_photo9">
-                        <span class="red">*图片要求小于500Kb</span>
-                    </dd>
-                </dl>
-                <dl>
-                    <dt class="fm-label">
-                        <div class="fm-label-wrap ">
-                            <label for="fm-login-password">图片10</label>
-                        </div>
-                    </dt>
-                    <dd class="fm-field" id="fm-login-password-wrap">
-                        <div class="textin">
-                            <input type="file" name="file_photo" id="file_photo10"  class="ehdel_upload" />
-                        </div>
-                        <img style='width: 200px; height: 150px;' src='/upload/${productItem.photo10!"nophoto.png"}' value='${productItem.photo10!""}' id="img_photo10">
-                        <span class="red">*图片要求小于500Kb</span>
-                    </dd>
-                </dl>
+                <h3 style="padding:10px">产品明细图</h3>
+                <div class="file" style="margin-left:10px;">
+                    <input type="file"  id="file_photo" name="file_photo" class="ehdel_upload" />
+                    	选择图片
+                </div>
+                <span class="red">*图片要求小于500Kb(普通商家只能上传10个产品)</span>
+				<hr/>
+                <div class="img_row" id="img_item">
+                <%for(item in productItem![]){%>
+                  	<img style='width: 200px; height: 150px;margin-left:20px;' name="img_photo" class="shadow " src='/upload/${item.photo!"nophoto.png"}' value='${item.photo!""}' id="img_photo${item.seq!''}">
+                <%}%>
+                </div>
             </div>
             </form>
-            <p style="padding-left:10px;">&nbsp;</p>
-            <div style="padding-left:10px; margin-top:10px;">
+            <div style=" margin:10px 0 0 20px">
                 <button type="button" id="save_btn" class="stdbtn btn_blue" style="width:200px;" >保存</button>
             </div>
       </div>

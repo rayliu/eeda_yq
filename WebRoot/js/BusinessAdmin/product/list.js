@@ -6,21 +6,24 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
           serverSide: true, 
           ajax: "/BusinessAdmin/product/list",
           columns: [
-            { "data": "COVER" ,"width": "80px",
+            { "data": "COVER" ,"width": "130px",
               render: function(data,type,full,meta){
-                var str = "<img style='width: 100px; height: 75px;' src='http://via.placeholder.com/200x150'>";
-                if(data)
-                  str ="<a href='/BusinessAdmin/product/edit?id="+full.ID+"'><img style='width: 100px; height: 75px;' src='/upload/"+data+"'></a>";
+                var str = "";
+                if(!data){
+                	data = 'nophoto.png';
+                }
+                str ="<a href='/BusinessAdmin/product/edit?id="+full.ID+"'>" +
+                  		"<img style='width:120px; height: 90px;' src='/upload/"+data+"' </a>";
                 return str;
               }
             },
-            { "data": "NAME", "width": "100px",
+            { "data": "NAME", "width": "200px",
               render:function(data,type,full,meta){
                    return "<a href='/BusinessAdmin/product/edit?id="+full.ID+"'>"+data+"</a>";
               }
             },
-            { "data": "PRICE","width": "100px"},
-            { "data": "IS_ACTIVE","width": "100px",
+            { "data": "PRICE","width": "60px"},
+            { "data": "IS_ACTIVE","width": "150px",
               render:function(data,type,full,meta){
                 if(data && data == 'N'){
                   return "未上架 <a class='stdbtn btn_yellow setActive' flag='Y'>上架</a>";
@@ -38,8 +41,8 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
                 }
               }
             },
-            { "data": "SEQ", "width": "100px"},
-            { "data": null, "width": "100px",
+            { "data": "SEQ", "width": "60px"},
+            { "data": null,
             	"render":function(data,type,full,meta){
 	            	   var str = '<input class="stdbtn btn_red delete" type="button" value="删除" >';
 
@@ -51,7 +54,6 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
       
       $('#eeda_table').on('click','.setActive',function(){
     	  var id = $(this).parent().parent().attr('id');
-    	  debugger;
     	  var flag = $(this).attr("flag");
     	  $.post('/BusinessAdmin/product/setActive',{id:id,flag:flag},function(data){
     		  if(data){
@@ -66,6 +68,11 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
     		  }
     	  });
       });
+      
+      
+      $('#uploadBtn').on('click',function(){
+    	  window.location.href="/BusinessAdmin/product/edit";
+      })
       
       $('#eeda_table').on('click','.delete',function(){
     	  var id = $(this).parent().parent().attr('id');
