@@ -98,6 +98,12 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                 }else if(status=='已确认'){
                     $('#add_cost').attr("disabled",true);
                     $('.delete').attr("disabled",true);
+                    $('#cancelConfirmBtn').attr('disabled', false);
+                    }else if(status=='取消确认'){
+                    	$('#saveBtn').attr('disabled', false);
+                		$('#confirmBtn').attr('disabled', false);
+                		$('#printTotaledBtn').attr('disabled', false);
+                		$('#printBtn').attr('disabled', false);
                     }
             }
         
@@ -110,11 +116,12 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                      $('#printBtn').attr('disabled', true);
                      $('.delete').attr('disabled', true);
                      $('#add_cost').attr('disabled', true);
-
+                     $('#cancelConfirmBtn').attr('disabled', false);
                      $("#status").val(data.STATUS);
 	    			 $('#confirm_name').val(data.CONFIRM_BY_NAME);
 	    			 $('#confirm_stamp').val(data.CONFIRM_STAMP);
                      $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+                     
         		 }
 	         },'json').fail(function() {
 	        	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
@@ -133,6 +140,23 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
         		}
         	});
         	
+        });
+        
+        $("#cancelConfirmBtn").click(function(){
+        	var order_id = $("#order_id").val();
+        	$.post("/costCheckOrder/cancelConfirm",{order_id:order_id},function(data){
+        		if(data){
+        			$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
+        			$('#cancelConfirmBtn').attr('disabled', true);
+        			$('#confirmBtn').attr('disabled', false);
+        			$('#saveBtn').attr('disabled', false);
+        			$('#printBtn').attr('disabled', false);
+        			$('#add_cost').attr('disabled', false);
+        			$('.delete').attr('disabled', false);
+        		}else{
+        			$.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
+        		}
+        	});
         });
         
         

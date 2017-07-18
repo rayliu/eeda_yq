@@ -714,4 +714,29 @@ public class ChargeCheckOrderController extends Controller {
     	    	renderJson(exchangeTotalMap);
     }  
 
+    public void cancelConfirm(){
+    	 String order_id = getPara("order_id");
+    	 long office_id = LoginUserController.getLoginUser(this).getLong("office_id");
+    	 Date action_time = new Date();
+    	 String action = "cancelConfirm";
+    	 String order_type = "ChargeCheckOrder";
+    	 //保存进状态审核表
+    	 Record re = new Record();
+    	 re.set("order_id", order_id);
+    	 re.set("user_id", office_id);
+    	 re.set("action_time", action_time);
+    	 re.set("action",action);
+    	 re.set("order_type", order_type);
+    	 Db.save("status_audit", re);
+    	 //更新arap_charge_order表的状态
+    	 ArapChargeOrder aco = ArapChargeOrder.dao.findById(order_id);
+ 		 aco.set("status","取消确认");
+ 		 aco.update();
+ 		//更新job_order_arap表的billConfirm_flag设为'N'(变回未确认状态)
+ 		String sql="UPDATE job_order_arap joa set billConfirm_flag='N' "
+				+"where joa.id in (select aci.ref_order_id FROM arap_charge_item aci where charge_order_id="+order_id+" )";
+ 		 Db.update(sql);
+ 		 
+ 		 renderJson(true);
+    }
 }

@@ -242,7 +242,7 @@ public class ChargeRequestController extends Controller {
         		+" 		LEFT JOIN charge_application_order_rel c ON c.charge_order_id = aco.id "
         		+" 		LEFT JOIN party p ON p.id = aco.sp_id "
         		+" 		WHERE "
-        		+" 			aco. STATUS != '新建' "
+        		+" 			aco. STATUS = '已确认' "
         		+" 		AND aco.office_id = "+office_id+" "
         		+" 		GROUP BY "
         		+" 			aco.id "

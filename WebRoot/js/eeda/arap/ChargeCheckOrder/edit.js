@@ -101,9 +101,15 @@ $(document).ready(function() {
     		$('#saveBtn').attr('disabled', false);
     		$('#confirmBtn').attr('disabled', false);
     		$('#printTotaledBtn').attr('disabled', false);
-    		$('#printBtn').attr('disabled', false);    		
+    		$('#printBtn').attr('disabled', false);  
     	}else if(status=='已确认'){
             $('#printTotaledBtn').attr('disabled', false);
+            $("#cancelConfirmBtn").attr('disabled', false);
+        }else if(status=='取消确认'){
+        	$('#saveBtn').attr('disabled', false);
+    		$('#confirmBtn').attr('disabled', false);
+    		$('#printTotaledBtn').attr('disabled', false);
+    		$('#printBtn').attr('disabled', false);
         }
     }
     
@@ -123,7 +129,7 @@ $(document).ready(function() {
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
- 			 
+    			 $("#cancelConfirmBtn").attr('disabled', false);
     		 }
          },'json').fail(function() {
         	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
@@ -166,6 +172,24 @@ $(document).ready(function() {
     	}else{
     		$('#invoice_flag').hide();
     	}
+    });
+    
+    $("#cancelConfirmBtn").click(function(){
+    	var order_id = $("#order_id").val();
+    	$.post("/chargeCheckOrder/cancelConfirm",{order_id:order_id},function(data){
+    		if(data){
+    			$("#status").val('取消确认');
+    			$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
+    			$('#cancelConfirmBtn').attr('disabled', true);
+    			$('#confirmBtn').attr('disabled', false);
+    			$('#saveBtn').attr('disabled', false);
+    			$('#printBtn').attr('disabled', false);
+    			$('#add_charge').attr('disabled', false);
+    			$('.delete').attr('disabled', false);
+    		}else{
+    			$.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	})
     });
    
   

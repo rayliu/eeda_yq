@@ -204,7 +204,7 @@ public class CostRequestController extends Controller {
         				+" from arap_cost_order aco"
         				+" left join cost_application_order_rel c on c.cost_order_id=aco.id"
         				+" left join party p on p.id=aco.sp_id "
-        				+" where aco.status!='新建' and aco.office_id = "+office_id+" "
+        				+" where aco.status='已确认' and aco.office_id = "+office_id+" "
         				+" group by aco.id"
         				+ " ) A where (convert(ifnull(usd, 0), decimal) > convert(paid_usd, decimal) OR convert(ifnull(cny, 0), decimal) > convert(IFNULL(paid_cny,0), decimal) OR convert(ifnull(hkd, 0), decimal) > convert(paid_hkd, decimal)	OR convert(ifnull(jpy, 0), decimal) > convert(paid_jpy, decimal))" ;
 		
