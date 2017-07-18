@@ -3,6 +3,7 @@ package controllers.webadmin.biz;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,8 @@ public class MobilePushController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
+		List prices=Db.find("select price from price_maintain ");
+		setAttr("prices", prices);
 		render(getRequest().getRequestURI()+"/list.html");
 	}
 	
@@ -83,8 +86,8 @@ public class MobilePushController extends Controller {
     }
     
     public void list(){
-    	
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	Long user_id = LoginUserController.getLoginUserId(this);
         long office_id=user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -92,21 +95,24 @@ public class MobilePushController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
          
-    	String sql = "select * from ("
+/*    	String sql = "select * from ("
     			+ " select m.*, u.c_name create_name, u1.c_name update_name"
         		+ " from msg_board m "
         		+ " left join user_login u on u.id = m.creator"
         		+ " left join user_login u1 on u1.id = m.updator"
         		+ " where m.office_id="+office_id
-        		+ " ) A where 1=1 ";
+        		+ " ) A where 1=1 ";*/
+        String sql="select ul.c_name productor,map.* from mobile_ad_promotion map "
+        		+ "LEFT JOIN user_login ul on ul.id=map.creator "
+        		+ "where map.creator="+user_id+" "+sLimit;
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        List<Record> orderList = Db.find(sql);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -116,7 +122,27 @@ public class MobilePushController extends Controller {
     	
     }
     
-   
+   public void exam(){
+	   String  id=getPara("id");
+	   String sql="update mobile_ad_promotion set status='已审批'  where id = "+id;
+	   Db.update(sql);
+	   renderJson(true);
+	   
+   }
+   public void updateDiamond(){
+	   SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	   String  price=getPara("price");
+	   String sql="update price_maintain set price= "+price+",update_time = '"+df.format(new Date())+" where type='钻石商家'";
+	   Db.update(sql);
+	   renderJson(true);
+   }
+   public void updateMobile(){
+	   SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	   String  price=getPara("price");
+	   String sql="update price_maintain set price= "+price+" ,update_time='"+df.format(new Date())+"' where type='推送广告'";
+	   Db.update(sql);
+	   renderJson(true);
+   }
 
     public void seeMsgBoardDetail(){
     	String id = getPara("id");
