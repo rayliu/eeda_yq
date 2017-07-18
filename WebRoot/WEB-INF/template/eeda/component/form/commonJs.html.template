@@ -4,7 +4,7 @@
         debugger;
         console.log(err.requireType);
         console.log('modules: ' + err.requireModules);
-        if(err.indexOf("reinitialise")>0){
+        if(err && typeof(err.indexOf)=='function' && err.indexOf("reinitialise")>0){
             window.location.reload();
         }else{
             throw err;

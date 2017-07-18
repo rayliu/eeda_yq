@@ -50,8 +50,10 @@ define(['jquery','zTree'], function ($) {
                 childNodes[i].parent_id = childNodes[i].PARENT_ID;
                 childNodes[i].url = childNodes[i].URL;
                 childNodes[i].is_public = childNodes[i].IS_PUBLIC;
-                if(childNodes[i].PARENT_ID>0){
+                if(childNodes[i].IS_PARENT == 'N'){
                     childNodes[i].isParent=false;
+                }else{
+                    childNodes[i].isParent=true;
                 }
             }
             return childNodes;
@@ -106,7 +108,8 @@ define(['jquery','zTree'], function ($) {
         function addHoverDom(treeId, treeNode) {
             var sObj = $("#" + treeNode.tId + "_span");
             //如果是单据则不能在其下级添加节点
-            if (treeNode.level==1 ||treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+            if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+
             var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
                 + "' title='添加' onfocus='this.blur();'></span>";
             sObj.after(addStr);

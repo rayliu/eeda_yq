@@ -71,6 +71,20 @@ public class EedaMenuInterceptor implements Interceptor {
                     + " and m.parent_id=module.id and m.office_id=? and u.user_name=?"
                 + " ) order by seq";
         List<Record> modules = Db.find(sql, office_id, username);
+        getNextLevelModules(office_id, username, modules);//获取第二层的菜单
+        
+        if (modules == null){
+            modules = Collections.EMPTY_LIST;
+        }else{
+            menuCache.put(user_id, modules);
+        }
+        return modules;
+    }
+
+    //获取第二层的菜单
+    private void getNextLevelModules(Long office_id, String username,
+            List<Record> modules) {
+        String sql;
         for (Record module : modules) {
             sql = "SELECT "
                     +"    u.office_id,"
@@ -115,12 +129,5 @@ public class EedaMenuInterceptor implements Interceptor {
             }
             module.set("orders", orders);
         }
-
-        if (modules == null){
-            modules = Collections.EMPTY_LIST;
-        }else{
-            menuCache.put(user_id, modules);
-        }
-        return modules;
     }
 }

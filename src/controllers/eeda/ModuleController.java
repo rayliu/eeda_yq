@@ -106,7 +106,18 @@ public class ModuleController extends Controller {
     public void searchModule() {
         String parent_id = getPara("id");
         String cons = "";
-        String sql = "select id, module_name, parent_id, office_id, seq, version, url, is_public from eeda_modules where office_id="
+        String sql = "SELECT "
+                +" id,"
+                +" module_name,"
+                +" parent_id,"
+                +" office_id,"
+                +" seq,"
+                +" version,"
+                +" url,"
+                +" is_public,"
+                +" if((select count(1)>0 from eeda_modules m where m.parent_id = e.id), 'Y','N') is_parent"
+            +" FROM "
+             +"    eeda_modules e where office_id="
                 + LoginUserController.getLoginUser(this).get("office_id");
 
         List<Record> modules = null;
