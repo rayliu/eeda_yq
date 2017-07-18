@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="47"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="style1" forecolor="#000000" backcolor="#000000">
 		<box>
@@ -57,6 +57,7 @@ FROM
 			u.user_tel,
 			cpo.id cpoid,
 			cpo.order_no order_no,
+			cpo.customs_billCode,
 			cpo.create_stamp create_stamp,
 			cpo.booking_no booking_no,
 			cpo.tracking_no tracking_no,
@@ -70,6 +71,7 @@ FROM
 			p.contact_person contact_person,
 			p.phone phone,
 			p.email email,
+			p1.company_name customer_name,
 			sum(
 
 				IF (
@@ -215,6 +217,7 @@ FROM
 		LEFT JOIN user_login u ON u.id = $P{login_user_id}
 		LEFT JOIN party p ON p.id = caco.sp_id
 		LEFT JOIN fin_item fi ON fi.id = cpoa.charge_id
+		LEFT JOIN party p1 ON p1.id = cpo.receive_sent_consignee
 		AND caco.office_id = fi.office_id
 		WHERE
 			cpo.order_no IS NOT NULL
@@ -236,6 +239,9 @@ WHERE
 	</field>
 	<field name="cpoid" class="java.lang.Long"/>
 	<field name="order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="customs_billCode" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="create_stamp" class="java.lang.String">
@@ -275,6 +281,7 @@ WHERE
 	<field name="email" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="customer_name" class="java.lang.String"/>
 	<field name="GKJSF" class="java.lang.Double"/>
 	<field name="GWF" class="java.lang.Double"/>
 	<field name="MTF" class="java.lang.Double"/>
@@ -405,7 +412,7 @@ WHERE
 				<text><![CDATA[传真：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="r_l_border" mode="Transparent" x="0" y="82" width="41" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="2296abe4-f822-4292-b5c8-52e350fc9005"/>
+				<reportElement style="r_l_border" mode="Transparent" x="0" y="82" width="43" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="2296abe4-f822-4292-b5c8-52e350fc9005"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -413,7 +420,7 @@ WHERE
 				<text><![CDATA[日期]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="right-border" mode="Transparent" x="41" y="82" width="71" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="64467f91-acc8-4246-b170-dc2861052e28"/>
+				<reportElement style="right-border" mode="Transparent" x="43" y="82" width="69" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="64467f91-acc8-4246-b170-dc2861052e28"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -421,28 +428,20 @@ WHERE
 				<text><![CDATA[申请单号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="right-border" mode="Transparent" x="112" y="82" width="65" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="1384bf7d-a986-4f8a-abe9-066a193c46c7"/>
+				<reportElement style="right-border" mode="Transparent" x="112" y="82" width="77" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="1384bf7d-a986-4f8a-abe9-066a193c46c7"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[提运单号]]></text>
+				<text><![CDATA[客户名称]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="right-border" mode="Transparent" x="177" y="82" width="35" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="783b170c-4d40-4059-b113-108edb8eb1d3"/>
+				<reportElement style="right-border" mode="Transparent" x="189" y="82" width="67" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="783b170c-4d40-4059-b113-108edb8eb1d3"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<text><![CDATA[柜型/(体积)]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="right-border" mode="Transparent" x="212" y="82" width="44" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="59288b4d-326a-4a71-95b4-3c9414ec5a6a"/>
-				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<text><![CDATA[柜号]]></text>
+				<text><![CDATA[报关单号]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="right-border" mode="Transparent" x="285" y="82" width="29" height="23" forecolor="#000000" backcolor="#FFFFFF" uuid="8f8b6526-8b49-4f14-b97d-05edbf88b451"/>
@@ -550,7 +549,7 @@ WHERE
 				<reportElement mode="Transparent" x="0" y="104" width="803" height="1" forecolor="#000000" backcolor="#FFFFFF" uuid="23a40c22-0b0d-48c3-a138-f2f0e0d99606"/>
 			</line>
 			<staticText>
-				<reportElement style="style1" mode="Transparent" x="41" y="65" width="215" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="a15350cd-a1f5-4095-ad6c-3e337435e840"/>
+				<reportElement style="style1" mode="Transparent" x="43" y="65" width="213" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="a15350cd-a1f5-4095-ad6c-3e337435e840"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -694,7 +693,7 @@ WHERE
 				<text><![CDATA[合计]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="r_l_border" mode="Transparent" x="0" y="64" width="41" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="21d02983-83de-4f55-9d74-9d613457dced"/>
+				<reportElement style="r_l_border" mode="Transparent" x="0" y="64" width="43" height="17" forecolor="#000000" backcolor="#FFFFFF" uuid="21d02983-83de-4f55-9d74-9d613457dced"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -760,7 +759,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{BGDZLRF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement style="r_l_border" mode="Transparent" x="0" y="0" width="41" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="3512196d-f5c9-4c4f-bf9d-35288b99e69e"/>
+				<reportElement style="r_l_border" mode="Transparent" x="0" y="0" width="43" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="3512196d-f5c9-4c4f-bf9d-35288b99e69e"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -800,28 +799,20 @@ WHERE
 				<textFieldExpression><![CDATA[$F{GWF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="212" y="0" width="44" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
+				<reportElement style="right-border" mode="Transparent" x="189" y="0" width="67" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cabinet_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{customs_billCode}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="177" y="0" width="35" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="939560c9-d279-4c6b-b88c-4642734d0680"/>
+				<reportElement style="right-border" mode="Transparent" x="112" y="0" width="77" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{container_type}]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="112" y="0" width="65" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="031ec9cc-8b73-404c-94d7-8695bbeabf86"/>
-				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{booking_no}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{customer_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" mode="Transparent" x="700" y="0" width="29" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="5bd07be3-9c35-4c13-b6e5-703f28705972"/>
@@ -888,7 +879,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{MTF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="41" y="0" width="71" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
+				<reportElement style="right-border" mode="Transparent" x="43" y="0" width="69" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="eea6e29c-697d-4e3d-9f4f-d189cf34077e"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -922,28 +913,28 @@ WHERE
 	<summary>
 		<band height="71" splitType="Stretch">
 			<staticText>
-				<reportElement x="2" y="53" width="53" height="15" uuid="85797879-e05f-4b04-9d4d-1f8e52129aec"/>
+				<reportElement x="2" y="24" width="50" height="15" uuid="85797879-e05f-4b04-9d4d-1f8e52129aec"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[开户银行：	]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="38" width="53" height="15" uuid="7bf2d8c7-c7d8-46e4-9585-858c152f80d2"/>
+				<reportElement x="195" y="24" width="30" height="15" uuid="7bf2d8c7-c7d8-46e4-9585-858c152f80d2"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[帐号：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="2" y="23" width="53" height="15" uuid="4cd28af0-847c-45c4-9acb-131dac6e9516"/>
+				<reportElement x="331" y="24" width="40" height="15" uuid="4cd28af0-847c-45c4-9acb-131dac6e9516"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[账户名：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="r_l_border" mode="Transparent" x="0" y="0" width="41" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="d49899ef-c58b-4e83-83ad-1b5fc948c02b"/>
+				<reportElement style="r_l_border" mode="Transparent" x="0" y="0" width="43" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="d49899ef-c58b-4e83-83ad-1b5fc948c02b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -1078,7 +1069,7 @@ WHERE
 				<textFieldExpression><![CDATA[$V{SUM_GKJSF}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="right-border" x="40" y="0" width="72" height="22" uuid="8f151fef-42f7-4b55-abb6-a8458d03e4ec"/>
+				<reportElement style="right-border" x="43" y="0" width="69" height="22" uuid="8f151fef-42f7-4b55-abb6-a8458d03e4ec"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -1144,6 +1135,69 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_TOTAL}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="224" y="24" width="73" height="15" uuid="b531c5de-a157-4a24-88b1-a2df14886dba"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[630153286894]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="24" width="143" height="15" uuid="a2f2d541-dd6a-483f-9fd1-2ce7120cd202"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[中国银行珠海九州港支行]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="24" width="46" height="15" uuid="ae55277f-50a8-4224-ba2a-3dec62f2e28c"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[朱文丽]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="52" y="45" width="143" height="15" uuid="3fd20a5b-9a5d-4e2d-a1e8-87422c1e5d31"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[中国工商银行珠海九州港支行]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="331" y="45" width="40" height="15" uuid="23fef025-5c69-404a-9ec4-ccab93401fce"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[账户名：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="195" y="45" width="30" height="15" uuid="f258679a-3767-46be-9066-7efd872204b4"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[帐号：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="45" width="50" height="15" uuid="e58d9d08-3231-4976-8068-97edb7b9a719"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[开户银行：	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="45" width="148" height="15" uuid="396aa2d0-b365-4095-a6f3-1c65fbd1c26c"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[珠海瑞龙报关代理有限公司]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="224" y="45" width="107" height="15" uuid="0a219251-00d5-4101-bf41-b41ec64040a1"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[2002022109100079359]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>
