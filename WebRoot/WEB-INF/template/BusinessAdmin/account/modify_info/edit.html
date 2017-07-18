@@ -1,10 +1,10 @@
 <%layout("/BusinessAdmin/layout.html"){%>
-        <div class="pageheader notab">
+    <div class="pageheader notab">
       <h1 class="pagetitle">修改公司资料</h1>
     </div>
     <input type="hidden" id="order_id" name="order_id" value="${company.id!''}"/>
     <div class="pageheader notab">
-     <div class="registered " id="login-content">
+     <div class="registered " id="login-content" >
      	<form id="orderForm">
           <dl>
             <dt>
@@ -81,8 +81,8 @@
               </div>
             </dt>
             <dd class="fm-field" id="fm-login-password-wrap">
-              <div class="textin">
-                <textarea class="fill-detail" id="intro" name="intro">${company.intro!''}</textarea>
+              <div class="textin" >
+                <textarea class="form-control" rows="5" id="intro" name="intro">${company.intro!''}</textarea>
               </div>
             </dd>
           </dl>
@@ -93,11 +93,14 @@
               </div>
             </dt>
             <dd class="fm-field" id="fm-login-password-wrap">
-                <div class="textin">
-	                <input type="file" name="logo" id="logo"  class="ehdel_upload" value="${company.logo!''}"/>
-	                <span class="red">图片为JPG格式，小于1000kb</span> 
+                <div class="file">
+	                <input type="file" name="logo" id="logo" value="${company.logo!''}"/>
+	                选择图片
                 </div>
-                <img style='width: 200px; height: 150px;' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_logo">      
+                <span class="red">图片为JPG格式，小于1000kb</span> 
+                <div class="form-control" style="margin-left:100px">
+                	<img style='width: 300px;' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_logo">      
+            	</div>
             </dd>
           </dl>
           </form>
