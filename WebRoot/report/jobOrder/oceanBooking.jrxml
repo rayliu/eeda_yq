@@ -13,7 +13,14 @@
 	o.office_name,
 	CONCAT('Tel:',IFNULL(u.user_tel,u.user_phone)) user_tel,
 	CONCAT('Fax:',o.office_fax) office_fax,
-(
+
+IF(jo.amount_20gp is not null or jo.amount_40gp is not null or jo.amount_40hq is not null or jo.amount_45gp is not null,
+	CONCAT(
+		IF(jo.amount_20gp is not null,CONCAT('20\'GP X',jo.amount_20gp,','),''),
+		IF(jo.amount_40gp is not null,CONCAT('40\'GP X',jo.amount_40gp,','),''),
+		IF(jo.amount_40hq is not null,CONCAT('40\'HQ X',jo.amount_40hq,','),''),
+		IF(jo.amount_45gp is not null,CONCAT('45\'GP X',jo.amount_45gp,','),'')
+	),(
   SELECT
 	GROUP_CONCAT(abc SEPARATOR ' ; ')
   FROM
@@ -24,11 +31,12 @@
 	   job_order_shipment_item josi
 	   LEFT JOIN job_order jo ON jo.id = josi.order_id
 	WHERE
-	   jo.order_no = $P{order_no}
+	   jo.order_no =$P{order_no}
 	GROUP BY
 	   josi.container_type) A
 	GROUP BY
-	   A.flag) container_type_count,
+	   A.flag)) container_type_count,
+
 	p.company_name headCarrier_name ,jo.*,josi.*, jos.*, lo. NAME por_name,
 	lo1. NAME pol_name,
 	lo2. NAME pod_name,

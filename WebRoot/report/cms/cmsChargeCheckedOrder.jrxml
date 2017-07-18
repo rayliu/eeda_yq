@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="24"/>
+	<property name="ireport.x" value="47"/>
 	<property name="ireport.y" value="0"/>
 	<style name="style1" forecolor="#000000" backcolor="#000000">
 		<box>
@@ -348,6 +348,9 @@ WHERE
 	</variable>
 	<variable name="sum_row" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{GKJSF}+$F{GWF}]]></variableExpression>
+	</variable>
+	<variable name="SUM_TOTAL" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{total}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -900,7 +903,7 @@ WHERE
 				</textElement>
 				<textFieldExpression><![CDATA[$F{DCF}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="true">
+			<textField pattern="###0.00" isBlankWhenNull="true">
 				<reportElement style="right-border" mode="Transparent" x="758" y="0" width="44" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="485562c8-5465-4af4-a8ac-058fcabb79d5"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
@@ -1119,7 +1122,7 @@ WHERE
 				<text><![CDATA[制单人电话：]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="694" y="24" width="107" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="bffcd5d8-44dd-4af9-ab6c-e23b417d3696"/>
+				<reportElement mode="Transparent" x="694" y="24" width="107" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="bffcd5d8-44dd-4af9-ab6c-e23b417d3696"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -1127,12 +1130,19 @@ WHERE
 				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="694" y="37" width="106" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="a87c4c4e-d505-4a38-9ca5-da0014c3abfa"/>
+				<reportElement mode="Transparent" x="694" y="39" width="106" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="a87c4c4e-d505-4a38-9ca5-da0014c3abfa"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{user_tel}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement style="right-border" x="758" y="0" width="43" height="22" uuid="83005d90-adf8-4c50-a1a9-273b541a056e"/>
+				<textElement textAlignment="Center">
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUM_TOTAL}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

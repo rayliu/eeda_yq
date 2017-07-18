@@ -206,7 +206,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
               $.scojs_message('后台出错', $.scojs_message.TYPE_ERROR);
           });
       });
-
+      //简单查询
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
 	      if(selectField == 'sono_like'){
