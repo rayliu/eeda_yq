@@ -1,5 +1,5 @@
 define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
-	
+	var img_num = $('[name=img_photo]').size();
 	$(document).ready(function() {
 		//校验表单字段
 		$('#orderForm').validate({
@@ -18,27 +18,54 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 	  $('[name=file_photo]').on('click',function(){
 		  var fileid = this.id;
 		  var str = fileid.substring(5,20);
-		  //changeToop('file_'+str,'img_'+str);	  
-		  $('#file_'+str).fileupload({
-				validation: {allowedExtensions: ['*']},
-				autoUpload: true, 
-			    url: '/BusinessAdmin/product/saveFile',
-			    dataType: 'json',
-		        done: function (e, data) {
-	        		if(data){
-			    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
-			    		$('#img_'+str).val(data.result.NAME);
-			    		var imgPre =Id('img_'+str);
-			  		    imgPre.src = '/upload/'+data.result.NAME; 
+		  //changeToop('file_'+str,'img_'+str);	
+		  if(str != 'photo'){
+			  $('#file_'+str).fileupload({
+					validation: {allowedExtensions: ['*']},
+					autoUpload: true, 
+				    url: '/BusinessAdmin/product/saveFile',
+				    dataType: 'json',
+			        done: function (e, data) {
+		        		if(data){
+				    		$.scojs_message('已选择', $.scojs_message.TYPE_OK);
+				    		$('#img_'+str).attr('value',data.result.NAME);
+				    		var imgPre =Id('img_'+str);
+				  		    imgPre.src = '/upload/'+data.result.NAME; 
 
-			    	}else{
-			    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
-			    	}
-			     },error: function () {
-		            alert('上传的时候出现了错误！');
-		        }
-		   });
-	  })
+				    	}else{
+				    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
+				    	}
+				     },error: function () {
+			            alert('上传的时候出现了错误！');
+			        }
+			   });
+		  }else{
+			  img_num = img_num+1;
+			  var img = "<img style='width: 200px; height: 150px;margin-left:20px;display:none' name='img_photo'  class='shadow' id='img_photo"+img_num+"'>";
+			  $('#img_item').append(img);
+			  
+			  $('#file_'+str).fileupload({
+					validation: {allowedExtensions: ['*']},
+					autoUpload: true, 
+				    url: '/BusinessAdmin/product/saveFile',
+				    dataType: 'json',
+			        done: function (e, data) {
+		        		if(data){
+		        			$('#img_'+str+img_num).show();
+				    		$.scojs_message('已选择', $.scojs_message.TYPE_OK);
+				    		$('#img_'+str+img_num).attr('value',data.result.NAME);
+				    		var imgPre =Id('img_'+str+img_num);
+				  		    imgPre.src = '/upload/'+data.result.NAME; 
+
+				    	}else{
+				    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
+				    	}
+				     },error: function () {
+			            alert('上传的时候出现了错误！');
+			        }
+			   });
+		  }
+	  });
 	  
 	  
 	  //定义id选择器
@@ -86,7 +113,9 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 			 }
 	    	var self = this;
 	    	$(self).attr('disabled',true);
+	    	
 	    	var order = {};
+	    	order.img_num = img_num;
 	    	order.id = $('#order_id').val();
 	    	order.name = $('#name').val();
 	    	order.category = $('#category').val();
@@ -94,23 +123,15 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 	    	if(order.price_type=='人民币'){
 	    		order.price = $('#price').val();
 	    	}else{
-	    		order.price = 0.00;
+	    		order.price = "0";
 	    	}
 	    	order.unit = $('[name=unit]:checked').val();
 	    	order.content = $('#content').val();
-	    	order.cover = $('#img_cover').val();
-	    	order.photo1 = $('#img_photo1').val();
-	    	order.photo2 = $('#img_photo2').val();
-	    	order.photo3 = $('#img_photo3').val();
-	    	order.photo4 = $('#img_photo4').val();
-	    	order.photo5 = $('#img_photo5').val();
-	    	order.photo6 = $('#img_photo6').val();
-	    	order.photo7 = $('#img_photo7').val();
-	    	order.photo8 = $('#img_photo8').val();
-	    	order.photo9 = $('#img_photo9').val();
-	    	order.photo10 = $('#img_photo10').val();
-	    	
- 		  
+	    	order.cover = $('#img_cover').attr('value');
+	    	for(var i = 1;i <= img_num;i++){
+	    		order['photo'+i] = $('#img_photo'+i).attr('value');
+	    	}
+
 	    	$.post('/BusinessAdmin/product/save',{jsonStr:JSON.stringify(order)}, function(data, textStatus, xhr) {
 	    		if(data){
 	    			eeda.refreshUrl('edit?id='+data.ID)
