@@ -12,16 +12,16 @@
                         	<div class="col-lg-4"><!--  三列排版  -->
                             	<div class="search_single">
                               		<select id="selected_field" name="selected_field" class="form-control search-label">
+                              			<option value="order_no">工作单号</option>
 	                            		<option value="sono_like">SO号</option>
 	                               		<option value="container_no">柜号</option>
-	                               		<option value="status">状态</option>
-	                                	<option value="order_no">工作单号</option>
+	                               		<option value="status">状态</option>	                                	
 	                                	<option value="old_order_no">旧工作单号</option>
 	                                	<option value="customer_name">客户名称</option>
 	                                	<option value="customer_code_like">客户代码</option>
                             		</select>
 
-                            		<input type="text" class="form-control search-control" id="single_sono" name="sono">
+                            		<input type="text" class="form-control search-control" id="single_sono" name="sono" style="display: none;">
                             		
                             		<input type="text" class="form-control search-control" id="single_container_no" name="container_no" style="display: none;">
                             		
@@ -30,7 +30,7 @@
                                 		<option value="已完成">已完成</option>
                             		</select>
                             
-                           	 		<input type="text" class="form-control search-control" id="single_order_no" name="order_no" style="display: none;">
+                           	 		<input type="text" class="form-control search-control" id="single_order_no" name="order_no" >
                            	 
                            	 		<input type="text" class="form-control search-control" id="single_old_order_no" name="old_order_no" style="display: none;">
                            	 		
