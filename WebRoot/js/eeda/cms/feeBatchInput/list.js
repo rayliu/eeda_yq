@@ -172,7 +172,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 
      var searchData=function(paraStr){
           var order_no = $.trim($("#order_no").val());
-          var customer_name = $('#customer_name').val().trim();
+          var customer_name = $('#customer_name_input').val().trim();
           var status = $('#status').val();
           var custom_state = $('#custom_state').val();
           var start_date = $("#create_stamp_begin_time").val();
