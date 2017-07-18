@@ -85,6 +85,8 @@ public class ProductController extends Controller {
     public void list(){
     	
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	Long user_id = LoginUserController.getLoginUserId(this);
+
         long office_id=user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -92,21 +94,24 @@ public class ProductController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
          
-    	String sql = "select * from ("
+/*    	String sql = "select * from ("
     			+ " select m.*, u.c_name create_name, u1.c_name update_name"
         		+ " from msg_board m "
         		+ " left join user_login u on u.id = m.creator"
         		+ " left join user_login u1 on u1.id = m.updator"
         		+ " where m.office_id="+office_id
-        		+ " ) A where 1=1 ";
+        		+ " ) A where 1=1 ";*/
+        String sql="select ul.c_name productor,wp.* from wc_product wp "
+        		+ "LEFT JOIN user_login ul on wp.id=ul.id"
+        		+ " where wp.creator="+user_id+" "+sLimit;
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        List<Record> orderList = Db.find(sql);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
