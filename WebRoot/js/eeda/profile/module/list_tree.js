@@ -86,10 +86,10 @@ define(['jquery','zTree'], function ($) {
                 alert("单据不能拖到模块同级");
                 return false;
             }
-            if(treeNodes[0].level ==1 && targetNode.level == 1 && moveType =='inner'){
-                alert("单据不能拖到单据下级");
-                return false;
-            }
+            // if(treeNodes[0].level ==1 && targetNode.level == 1 && moveType =='inner'){
+            //     alert("单据不能拖到单据下级");
+            //     return false;
+            // }
             return true;
         };
 
@@ -108,7 +108,9 @@ define(['jquery','zTree'], function ($) {
         function addHoverDom(treeId, treeNode) {
             var sObj = $("#" + treeNode.tId + "_span");
             //如果是单据则不能在其下级添加节点
-            if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+            if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) {
+                return;
+            }
 
             var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
                 + "' title='添加' onfocus='this.blur();'></span>";
@@ -137,7 +139,9 @@ define(['jquery','zTree'], function ($) {
         };
 
         function onNodeClick(event, treeId, treeNode){
-            if (treeNode.level==0 ||treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+            if (treeNode.level==0 ||treeNode.editNameFlag || treeNode.IS_PARENT == 'Y' ) {
+                return;
+            }
             if(treeNode.parentTId != null){
                 $("#addProductDiv").show();
                 $("#displayDiv").show();
