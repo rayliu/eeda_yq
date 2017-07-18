@@ -4,10 +4,10 @@
       <div class="mt10 bdgray">
         <h4>修改公告</h4>
         <div class="mt10">
-          <textarea class="txtarea"></textarea>
+          <textarea class="txtarea" id="notice_content"></textarea>
         </div>
         <div class="mt10">
-          <input class="modifibtn" type="button" value="确定/修改" />
+          <input class="modifibtn" type="button" value="确定/修改" id="updateBtn"/>
         </div>
       </div>
       <!--发送通知-->
@@ -17,6 +17,6 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-    	 requirejs(['app/msgBoard/list']);
+    	 requirejs(['/js/WebAdmin/biz/notice/list.js']);
     });
 </script>
