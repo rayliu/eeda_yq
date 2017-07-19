@@ -31,7 +31,11 @@ var checkIds=[];
                           return str;
                       }
                 },
-                { "data": "ORDER_NO"},
+                { "data": "ORDER_NO",
+                	"render": function ( data, type, full, meta ) {
+		           		  return "<a href='/jobOrder/edit?id="+full.JOB_ORDER_ID+"'>"+data+"</a>";
+		           	  }
+                },
                 { "data": "TYPE"},
                 { "data": "CREATE_STAMP", visible: false},
                 { "data": "CUSTOMER_NAME"},
