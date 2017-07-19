@@ -1,5 +1,7 @@
 package controllers.bizadmin.ad;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,33 +37,7 @@ public class AdController extends Controller {
 		render(getRequest().getRequestURI()+"/buy_cu/edit.html");
 	}
 	
-	/**
-	 * 促销列表
-	 */
-	public void culist() {
-		String sLimit = "";
-        String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
-        Long userId = LoginUserController.getLoginUserId(this);
-        String sql = "select id,order_no,price,total_price,phone,amount,CONVERT(SUBSTR(put_in_time,1,10),CHAR) put_in_time,status from mobile_ad_promotion where creator = "+ userId;
-        
-        String condition = DbUtils.buildConditions(getParaMap());
-
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
-        Record rec = Db.findFirst(sqlTotal);
-        logger.debug("total records:" + rec.getLong("total"));
-        
-        List<Record> orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
-        
-        Map map = new HashMap();
-        map.put("draw", pageIndex);
-        map.put("recordsTotal", rec.getLong("total"));
-        map.put("recordsFiltered", rec.getLong("total"));
-        map.put("data", orderList);
-        renderJson(map);
-	}
+	
 	
 	public void hui(){
 	    Long userId = LoginUserController.getLoginUserId(this);
@@ -129,7 +105,6 @@ public class AdController extends Controller {
 		String price = (String)dto.get("price");
 		String total_price = (String)dto.get("total_price");
 		String phone = (String)dto.get("phone");
-		String status = (String)dto.get("status");
 		
 		if(StringUtils.isNotBlank(order_id)){
 			Record order = Db.findById("wc_ad_mobile_promotion", order_id);
@@ -141,20 +116,51 @@ public class AdController extends Controller {
 			
 			Db.save("wc_ad_mobile_promotion", order);
 		}else{
-			Record rec = new Record();
-			rec.set("creator", userId);
-			rec.set("create_time", new Date());
-			rec.set("amount", amount);
-			rec.set("put_in_time", put_in_time);
-			rec.set("price", price);
-			rec.set("total_price",total_price);
-			rec.set("phone",phone);
-			rec.set("status",status);
-			Db.save("wc_ad_mobile_promotion", rec);
+			Record order = new Record();
+			DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
+			order.set("order_no", format.format(new Date()));
+			order.set("amount", amount);
+			order.set("put_in_time", put_in_time);
+			order.set("price", price);
+			order.set("total_price",total_price);
+			order.set("phone",phone);
+			order.set("status","新建");
+			order.set("creator", userId);
+			order.set("create_time", new Date());
+			Db.save("wc_ad_mobile_promotion", order);
 		}
 		
-		
 		renderJson(true);
+	}
+	
+	/**
+	 * 手机推广列表
+	 */
+	public void mobilelist() {
+		String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+        Long userId = LoginUserController.getLoginUserId(this);
+        String sql = "select * "
+        		+ " from wc_ad_mobile_promotion "
+        		+ " where creator = "+ userId;
+        
+        String condition = DbUtils.buildConditions(getParaMap());
+
+        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        List<Record> orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
+        
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map);
 	}
 	
 	public void banner(){

@@ -7,7 +7,7 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
           serverSide: false,
           pageLength: false,
 
-          ajax: "/BusinessAdmin/ad/list",
+          ajax: "/BusinessAdmin/ad/mobilelist",
           columns: [
             { "data": "ORDER_NO","width": "120px"},
             { "data": "AMOUNT","class":"title", "width": "60px"},
@@ -15,11 +15,15 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
             { "data": "PRICE","width": "60px" },
             { "data": "TOTAL_PRICE", "width": "60px" },
             { "data": "PHONE", "width": "100px"},
-            { "data": "STATUS", "width": "70px"},
             { "data": null, "width": "60px",
-              render: function(data,type,full,meta){
-                return "<a class='stdbtn btn_blue editBtn' id='"+full.ID+"' amount='"+full.AMOUNT+"' put_in_time='"+full.PUT_IN_TIME+"' total_price='"+full.TOTAL_PRICE+"' phone='"+full.PHONE+"' href='#amount'>编辑</a>";
-              }
+            	render: function(data,type,full,meta){
+            		if(full.STATUS == '新建'){
+            			return "<a class='stdbtn btn_blue editBtn' id='"+full.ID+"' amount='"+full.AMOUNT+"' put_in_time='"+full.PUT_IN_TIME+"' total_price='"+full.TOTAL_PRICE+"' phone='"+full.PHONE+"' href='#put_in_time'>编辑</a>";
+            		}else{
+            			return full.STATUS;
+            		}
+            	  
+            	}
             }
           ]
 		});
@@ -71,10 +75,11 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
     	    order.id=$("#order_id").val();
     	    order.amount = $("#amount").val();
     	    order.price = $("#price").text();
+    	    order.put_in_time = $("#put_in_time").val();
     	    order.total_price = $("#total_price").text();
     	    order.phone = $("#phone").val();
     	    order.remark = $("#remark").val();
-			$.post('/BusinessAdmin/ad/mobile_save',{param:JSON.stringify(order)},function(data) {
+			$.post('/BusinessAdmin/ad/mobile_save',{jsonStr:JSON.stringify(order)},function(data) {
 				if(data){
 					$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 					refleshTable();
@@ -94,10 +99,9 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
     	  	var put_in_time = $(this).attr('put_in_time');
     	  	var total_price = $(this).attr('total_price');
     	  	var phone = $(this).attr('phone');
-    	  	$('#item_id').val(id);
+    	  	$('#order_id').val(id);
 			$('#amount').val(amount);
 			$('#put_in_time').val(put_in_time);
-			$('#total_price').attr("value",total_price);
 			$('#total_price').text(total_price);
 			$('#phone').val(phone);
 		});
