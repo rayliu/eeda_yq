@@ -780,7 +780,7 @@ public class JobOrderController extends Controller {
     	String por = null;
     	String hub = null;
     	String booking_agent = null;  //订舱代理
-    	String atd = null;
+    	String sailing_date = null;
     	String carrier = null;//创公司
     	if(oseanRe!=null){
     		if(oseanRe.get("por") != null){
@@ -798,8 +798,8 @@ public class JobOrderController extends Controller {
     		if(oseanRe.get("booking_agent")!= null){
     			booking_agent = oseanRe.get("booking_agent").toString();
     		}
-    		if(oseanRe.getDate("atd")!= null){
-    			atd = oseanRe.getDate("atd").toString();
+    		if(oseanRe.getDate("sailing_date")!= null){
+    			sailing_date = oseanRe.getDate("sailing_date").toString();
     		}
     		if(oseanRe.get("carrier")!= null){
     			carrier = oseanRe.get("carrier").toString();
@@ -830,14 +830,14 @@ public class JobOrderController extends Controller {
     	map.set("pod", pod);
     	map.set("por", por);
     	map.set("hub", hub);
-    	map.set("atd", atd);
+    	map.set("sailing_date", sailing_date);
     	map.set("carrier", carrier);
     	map.set("jArray", jArray);
     	
     	String jsonStr = json.toJson(map);
     	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost' and order_type='ocean_gh'",order_id);
     	if(reJCC != null){
-    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='ocean_gh' and ? between contract_begin_time and contract_end_time",order_id,atd);
+    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='ocean_gh' and ? between contract_begin_time and contract_end_time",order_id,sailing_date);
     		
     		String reConditions = reJCC.getStr("conditions");
     		if(!jsonStr.equals(reConditions) || re == null){
@@ -851,7 +851,7 @@ public class JobOrderController extends Controller {
     			if(reArap == null){
     				//先删除原来的再把最新的合同费用明细带过去
         			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and type = '海运' and cus_contract_flag = 'GH'",order_id);
-        			getOceanGHSpContractMsg(order_id,jsonStr,jArray,atd);
+        			getOceanGHSpContractMsg(order_id,jsonStr,jArray,sailing_date);
     			}else{
     				//已确认后无法更新费用明细
     			}
@@ -864,7 +864,7 @@ public class JobOrderController extends Controller {
         	re.set("order_id", order_id);
         	Db.save("job_contract_compare", re);
         	
-        	getOceanGHSpContractMsg(order_id,jsonStr,jArray,atd);
+        	getOceanGHSpContractMsg(order_id,jsonStr,jArray,sailing_date);
     	}
     }
     
@@ -873,9 +873,9 @@ public class JobOrderController extends Controller {
      * @param order_id
      * @param jsonStr
      * @param jArray
-     * @param atd
+     * @param sailing_date
      */
-    private void getOceanGHSpContractMsg(String order_id,String jsonStr,List jArray,String atd){
+    private void getOceanGHSpContractMsg(String order_id,String jsonStr,List jArray,String sailing_date){
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
@@ -903,7 +903,7 @@ public class JobOrderController extends Controller {
     			+ " LEFT JOIN supplier_contract sc on sc.id = scl.contract_id"
     			+ " LEFT JOIN supplier_contract_item sci on sci.supplier_loc_id = scl.id"
     			+ " where "
-    			+ " ifnull(sc.customer_id,'') = '"+booking_agent+"'  and ('"+atd+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
+    			+ " ifnull(sc.customer_id,'') = '"+booking_agent+"'  and ('"+sailing_date+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
     			+ " and ifnull(scl.pol_id,'"+pol+"') = '"+pol+"' and ifnull(scl.pod_id,'') = '"+pod+"'"
     			+ " and ifnull(scl.por_id,'') = '"+por+"' and ifnull(scl.hub_id,'') = '"+hub+"' and  ifnull(scl.carrier_id,'') = '"+carrier+"'"
     			+ " and (ifnull(sci.container_type,'') in ("+container_types+") "
@@ -989,7 +989,7 @@ public class JobOrderController extends Controller {
     	String por = null;
     	String hub = null;
     	String booking_agent = null;  //订舱代理
-    	String atd = null;
+    	String sailing_date = null;
     	String carrier = null;//创公司
     	
     	if(oseanRe!=null){
@@ -1008,8 +1008,8 @@ public class JobOrderController extends Controller {
     		if(oseanRe.get("booking_agent")!= null){
     			booking_agent = oseanRe.get("booking_agent").toString();
     		}
-    		if(oseanRe.getDate("atd")!= null){
-    			atd = oseanRe.getDate("atd").toString();
+    		if(oseanRe.getDate("sailing_date")!= null){
+    			sailing_date = oseanRe.getDate("sailing_date").toString();
     		}
     		if(oseanRe.get("carrier")!= null){
     			carrier = oseanRe.get("carrier").toString();
@@ -1024,7 +1024,7 @@ public class JobOrderController extends Controller {
     	map.set("pod", pod);
     	map.set("por", por);
     	map.set("hub", hub);
-    	map.set("atd", atd);
+    	map.set("sailing_date", sailing_date);
     	map.set("carrier", carrier);
     	map.set("billing_method", billing_method);
     	map.set("fee_count", fee_count);
@@ -1032,7 +1032,7 @@ public class JobOrderController extends Controller {
     	String jsonStr = json.toJson(map);
     	Record reJCC = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type='cost' and order_type='ocean_sh'",order_id);
     	if(reJCC != null){
-    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='ocean_sh' and ? between contract_begin_time and contract_end_time",order_id,atd);
+    		Record re = Db.findFirst("select * from job_contract_compare where order_id = ? and charge_type ='cost' and order_type='ocean_sh' and ? between contract_begin_time and contract_end_time",order_id,sailing_date);
     		
     		String reConditions = reJCC.getStr("conditions");
     		if(!jsonStr.equals(reConditions) || re == null){
@@ -1046,7 +1046,7 @@ public class JobOrderController extends Controller {
     			if(reArap == null){
     				//先删除原来的再把最新的合同费用明细带过去
         			Db.update("delete from `job_order_arap` where order_id = ? and order_type = 'cost' and type = '海运' and cus_contract_flag = 'SH'",order_id);
-        			getOceanSHSpContractMsg(order_id,jsonStr,atd);
+        			getOceanSHSpContractMsg(order_id,jsonStr,sailing_date);
     			}else{
     				//已确认后无法更新费用明细
     			}
@@ -1059,7 +1059,7 @@ public class JobOrderController extends Controller {
         	re.set("order_id", order_id);
         	Db.save("job_contract_compare", re);
         	
-        	getOceanSHSpContractMsg(order_id,jsonStr,atd);
+        	getOceanSHSpContractMsg(order_id,jsonStr,sailing_date);
     	}
     }
     
@@ -1068,9 +1068,9 @@ public class JobOrderController extends Controller {
      * 海运散货
      * @param order_id
      * @param jsonStr
-     * @param atd
+     * @param sailing_date
      */
-    private void getOceanSHSpContractMsg(String order_id,String jsonStr,String atd){
+    private void getOceanSHSpContractMsg(String order_id,String jsonStr,String sailing_date){
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
@@ -1104,7 +1104,7 @@ public class JobOrderController extends Controller {
     			+ " LEFT JOIN supplier_contract_item sci on sci.supplier_loc_id = scl.id"
     			+ " where "
     			+ " sc.customer_id = '"+booking_agent+"' "
-    			+ " and ('"+atd+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
+    			+ " and ('"+sailing_date+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
     			+ " and ifnull(scl.pol_id,'') = '"+pol+"' and ifnull(scl.pod_id,'') = '"+pod+"'"
     			+ " and ifnull(scl.por_id,'') = '"+por+"' and ifnull(scl.hub_id,'') = '"+hub+"' and  ifnull(scl.carrier_id,'') = '"+carrier+"'"
     			+ " and ("+billing_method_condition
