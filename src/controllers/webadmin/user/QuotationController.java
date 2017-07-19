@@ -85,7 +85,7 @@ public class QuotationController extends Controller {
     }
     
     public void list(){
-    	
+    	Long user_id = LoginUserController.getLoginUserId(this);
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String sLimit = "";
@@ -93,22 +93,15 @@ public class QuotationController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-         
-    	String sql = "select * from ("
-    			+ " select m.*, u.c_name create_name, u1.c_name update_name"
-        		+ " from msg_board m "
-        		+ " left join user_login u on u.id = m.creator"
-        		+ " left join user_login u1 on u1.id = m.updator"
-        		+ " where m.office_id="+office_id
-        		+ " ) A where 1=1 ";
-    	
+        String sql="SELECT wc.phone,wc.contact_person,wc.company,wq.* from wc_quotation wq "
+        		+ "LEFT JOIN wc_company wc on wq.creator=wc.creator "
+        		+ "where wq.creator = "+user_id;
     	String condition = DbUtils.buildConditions(getParaMap());
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
-        
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        List<Record> orderList = Db.find(sql+" "+sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -117,8 +110,14 @@ public class QuotationController extends Controller {
         renderJson(map); 
     	
     }
-    
-   
+    @Before(Tx.class)
+   public void updateRemark(){
+	   String id=getPara("id");
+	   String remark=getPara("remark");
+	   String sql="update wc_quotation set remark='"+remark+"' where id="+id;
+	   Db.update(sql);
+	   renderJson(true);
+   }
 
     public void seeMsgBoardDetail(){
     	String id = getPara("id");
