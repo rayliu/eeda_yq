@@ -60,7 +60,7 @@ public class WxController extends Controller {
     	}else{
     		list = Db.find("select *,count(IF (A.quantity = 0, null,A.id)) total,sum(quantity) totalQuantity from ("
     				+ " select gi.id,gi.part_no,pro.part_name,gi.quantity from gate_in gi"
-    				+ " left join wmsproduct pro on gi.office_id=pro.office_id"
+    				+ " left join wmsproduct pro on gi.part_no=pro.part_no"
         			+ " where gi.part_no like '%"+order_no+"%'"
         			+ " and gi.out_flag = 'N' and gi.error_flag = 'N'"
         			+ " and gi.office_id = 1 "
@@ -70,7 +70,7 @@ public class WxController extends Controller {
         			+ " from wmsproduct"
         			+ " where office_id = 1 "
         			+ " and part_no like '%"+order_no+"%'"
-        			+ " ) A group by A.part_no");
+        			+ " ) A group by A.part_no ");
     	}
     	
     	renderJson(list);
