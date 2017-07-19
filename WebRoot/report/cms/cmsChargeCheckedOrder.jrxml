@@ -799,7 +799,7 @@ WHERE
 				<textFieldExpression><![CDATA[$F{GWF}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement style="right-border" mode="Transparent" x="189" y="0" width="67" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
+				<reportElement style="right-border" mode="Transparent" x="189" y="0" width="67" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="ad909f5c-6c40-4a6b-8e12-f503dbdef981"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -1075,19 +1075,13 @@ WHERE
 				</textElement>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="right-border" x="112" y="0" width="65" height="22" uuid="e80abda4-9718-4296-821a-e24e8bdc662c"/>
-				<textElement textAlignment="Center">
-					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement style="right-border" x="177" y="0" width="35" height="22" uuid="500db03e-a4bf-4e8e-bf64-1b9807373579"/>
+				<reportElement style="right-border" x="112" y="0" width="77" height="22" uuid="e80abda4-9718-4296-821a-e24e8bdc662c"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement style="right-border" x="212" y="0" width="44" height="22" uuid="9303487a-094e-4b41-9734-8ad753914f9d"/>
+				<reportElement style="right-border" x="189" y="0" width="67" height="22" uuid="9303487a-094e-4b41-9734-8ad753914f9d"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
