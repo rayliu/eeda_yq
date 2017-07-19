@@ -84,37 +84,22 @@ public class TaoController extends Controller {
     }
     
     public void list(){
-    	
-    	UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id=user.getLong("office_id");
-        String sLimit = "";
-        String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-        	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
-         
-    	String sql = "select * from ("
-    			+ " select m.*, u.c_name create_name, u1.c_name update_name"
-        		+ " from msg_board m "
-        		+ " left join user_login u on u.id = m.creator"
-        		+ " left join user_login u1 on u1.id = m.updator"
-        		+ " where m.office_id="+office_id
-        		+ " ) A where 1=1 ";
-    	
-    	String condition = DbUtils.buildConditions(getParaMap());
-
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
-        Record rec = Db.findFirst(sqlTotal);
-        logger.debug("total records:" + rec.getLong("total"));
-        
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
-        Map map = new HashMap();
+    	String sLimit = "";
+   		String pageIndex = getPara("draw");
+   	 	if (getPara("start") != null && getPara("length") != null) {
+        		sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+    	}
+   	 	Long user_id = LoginUserController.getLoginUserId(this);
+		String sqlTotal = "select count(1) total from wc_ad_banner where creator = "+user_id ;
+		Record rec = Db.findFirst(sqlTotal);
+		String sql = "select * from wc_ad_banner where  creator = "+user_id+" order by begin_date desc " +sLimit;
+		List<Record> orderList =  Db.find(sql);
+		Map map = new HashMap();
         map.put("draw", pageIndex);
-        map.put("recordsTotal", rec.getLong("total"));
-        map.put("recordsFiltered", rec.getLong("total"));
-        map.put("data", orderList);
-        renderJson(map); 
-    	
+   	 	map.put("recordsTotal", rec.getLong("total"));
+    	map.put("recordsFiltered", rec.getLong("total"));
+   		 map.put("data", orderList);
+    	renderJson(map);
     }
     
    @Before(Tx.class)
@@ -125,7 +110,20 @@ public class TaoController extends Controller {
 	   String sql="update price_maintain set price ="+price+" ,  update_time='"+df.format(new Date())+"' where id="+id;
 	   Db.update(sql);
    }
-
+   @Before(Tx.class)
+   public void whetherApprove(){
+	   String status=getPara("status");
+	   String info="";
+	   if(status.equals("Y")){
+		   info="已审批";
+	   }else if(status.equals("N")){
+		   info="已拒绝";
+	   }
+	   String id = getPara("id");
+	   String sql = "update wc_ad_banner set status = '"+info+"' where id="+id+""; 
+	   Db.update(sql);
+	   renderJson(true);
+   }
     public void seeMsgBoardDetail(){
     	String id = getPara("id");
     	Record r= Db.findById("msg_board", id);
