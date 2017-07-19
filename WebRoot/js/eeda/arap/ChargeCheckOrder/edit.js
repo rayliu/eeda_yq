@@ -120,7 +120,7 @@ $(document).ready(function() {
     	 $.post('/chargeCheckOrder/confirm', {id:id}, function(data){
     		 if(data){
     			 $('#saveBtn').attr('disabled', true);
-                 $('#printBtn').attr('disabled', true);
+                 $('#printBtn').attr('disabled', false);
                  $('.delete').attr('disabled', true);
                  $('#add_charge').attr('disabled', true);
 

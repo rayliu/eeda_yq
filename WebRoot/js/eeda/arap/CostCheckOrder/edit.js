@@ -113,7 +113,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
         	 $.post('/costCheckOrder/confirm', {id:id}, function(data){
         		 if(data){
 	    			 $('#saveBtn').attr('disabled', true);
-                     $('#printBtn').attr('disabled', true);
+                     $('#printBtn').attr('disabled', false);
                      $('.delete').attr('disabled', true);
                      $('#add_cost').attr('disabled', true);
                      $('#cancelConfirmBtn').attr('disabled', false);
