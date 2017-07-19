@@ -13,54 +13,12 @@
         </select>
       </div>     
       <div>
-        <table cellspacing="0" cellpadding="0" border="0" class="stdtable mt10">
-                    <colgroup>
-                        <col class="con0">
-                        <col class="con1">
-                        <col class="con0">
-                        <col class="con1">
-                        <col class="con0">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th class="head0">序 号</th>
-                            <th class="head1">商 家</th>
-                            <th class="head0">状 态</th>
-                            <th class="head1">折 扣</th>
-                            <th class="head0">地 区</th>
-                            <th class="head1">分 类</th>
-                            <th class="head0">开 启</th>
-                            <th class="head1">关 闭</th>
-                            <th class="head0">禁 用</th>
-                        </tr>
-                    </thead>
-                    
-                    <tbody>
-                        <tr>
-                            <td>02</td>
-                            <td>珠海维多利亚</td>
-                            <td>开启</td>
-                            <td>9折</td>
-                            <td>珠海</td>
-                            <td>影楼</td>
-                            <td><input type="button" class="modifibtn" value="开启"  /></td>
-                            <td><input type="button" class="modifibtn" value="关闭"  /></td>
-                            <td><input type="button" class="modifibtn" value="禁用"  /></td>
-                        </tr>
-                        <tr>
-                            <td>03</td>
-                            <td>珠海维多利亚</td>
-                            <td>开启</td>
-                            <td>9折</td>
-                            <td>珠海</td>
-                            <td>影楼</td>
-                            <td><input type="button" class="modifibtn" value="开启"  /></td>
-                            <td><input type="button" class="modifibtn" value="关闭"  /></td>
-                            <td><input type="button" class="modifibtn" value="禁用"  /></td>
-                        </tr>
-                    </tbody>
-                </table>  
-                <div id="dyntable2_paginate" class="dataTables_paginate paging_full_numbers"><span id="dyntable2_first" class="first paginate_button paginate_button_disabled">First</span><span id="dyntable2_previous" class="previous paginate_button paginate_button_disabled">Previous</span><span><span class="paginate_active">1</span><span class="paginate_button">2</span><span class="paginate_button">3</span><span class="paginate_button">4</span><span class="paginate_button">5</span></span><span id="dyntable2_next" class="next paginate_button">Next</span><span id="dyntable2_last" class="last paginate_button">Last</span></div>    
+
+            <%include("/eeda/component/form/detailTable.html", 
+          {
+              id:'eeda_table', 
+              headers:['序号', '商家', '状 态','折 扣','地 区','分 类','开 启','关 闭','禁用']
+          }){} %>
       </div>  
       
     </div>
@@ -69,6 +27,6 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-    	 requirejs(['app/msgBoard/list']);
+    	 requirejs(['/js/WebAdmin/ad/hui/list.js']);
     });
 </script>

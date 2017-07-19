@@ -3,9 +3,9 @@
             <h3>“促”广告管理</h3>
             <div class="bdgray mt10">
                 <div>
-                    <span class="pdr10">"促"广告价格设定:  1元/每天</span>
-                    <input type="text" class="mh_txt" />
-                    <input type="button" value="修改" class="modifibtn" />
+                    <span class="pdr10">"促"广告价格设定:  <span id="cu_price">${prices[5].price!""}</span>/每天</span>
+                    <input type="text" class="mh_txt" id="price"/>
+                    <input type="button" value="修改" class="modifibtn" id="update_cu" />
                 </div>
             </div>
             <div class="mt10">
@@ -33,38 +33,11 @@
                                     </select>
             </div>
             <div>
-                <table cellspacing="0" cellpadding="0" border="0" class="stdtable mt10">
-                    <colgroup>
-                        <col class="con0">
-                        <col class="con1">
-                        <col class="con0">
-                        <col class="con1">
-                        <col class="con0">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th class="head0">序 号</th>
-                            <th class="head1">商 家</th>
-                            <th class="head0">天 数</th>
-                            <th class="head1">剩余天数</th>
-                            <th class="head0">结束时间</th>
-                            <th class="head1">地区</th>
-                            <th class="head0">分类</th>
-                            <th class="head1">&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                                            </tbody>
-                </table>
-                <div id="dyntable2_paginate" class="dataTables_paginate paging_full_numbers">
-                    <span class="first paginate_button paginate_button_disabled" onclick="GoPage(1);">First</span>
-                    <span class="previous paginate_button paginate_button_disabled" onclick="GoPage(1);">Previous</span>
-                    <span>
-                                                <span class="paginate_button" onclick="GoPage(1);">1</span>
-                                            </span>
-                    <span class="next paginate_button" onclick="GoPage(1);">Next</span>
-                    <span class="last paginate_button" onclick="GoPage(1);">Last</span>
-                </div>
+				          <%include("/eeda/component/form/detailTable.html", 
+          {
+              id:'eeda_table', 
+              headers:['序号', '商家', '天数','剩余天数','结束时间','地区','分类','操作']
+          }){} %>
             </div>
         </div>
 
@@ -72,6 +45,6 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-    	 requirejs(['app/msgBoard/list']);
+    	 requirejs(['/js/WebAdmin/ad/cu/list.js']);
     });
 </script>

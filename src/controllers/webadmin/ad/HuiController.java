@@ -64,5 +64,42 @@ public class HuiController extends Controller {
         Db.save("msg_board", r);
         redirect("/");
    	}
+    
+    public void list(){
+
+    	Long user_id = LoginUserController.getLoginUserId(this);
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+        	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+
+        String sql="select ul.c_name productor,wah.* from wc_ad_hui wah "
+        		+ "LEFT JOIN user_login ul on wah.creator=ul.id "
+        		+ "where wah.creator ="+user_id+" "+sLimit;
+    	
+    	String condition = DbUtils.buildConditions(getParaMap());
+
+        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        List<Record> orderList = Db.find(sql);
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map); 
+    }
+    public void updateStatus(){
+    	String status=getPara("status");
+    	String id=getPara("id");
+    	String sql="update wc_ad_hui set is_active='"+status+"' where id="+id;
+    	Db.update(sql);
+    	renderJson(true);
+    }
 
 }
