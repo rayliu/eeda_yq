@@ -142,7 +142,7 @@
     </div>
 
   <%}%> 
-    <div id="collapseOceanInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
+    <div id="collapseOceanInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
         <div class="panel-body">
             <ul id="usedOceanInfo" class="usedOceanInfo">
               <%for(userInfo in usedOceanInfo![]){%>
@@ -580,6 +580,13 @@
                     {   id:'ata', 
                         label:'ATA', 
                         value:shipment.ata!''
+                    }){}%>
+           		</div>
+           		<div class="col-lg-4">
+           			<%include("/eeda/component/form/dateInputField.html", 
+                    {   id:'sailing_date', 
+                        label:'驳船开船日', 
+                        value:shipment.sailing_date!''
                     }){}%>
            		</div>
            </div>

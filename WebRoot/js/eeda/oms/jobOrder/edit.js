@@ -484,5 +484,22 @@ $(document).ready(function() {
     if(land_sendTruckHide=='Y'){
     	$('#land_sendTruck').attr('disabled', true);
     }  
+    
+    
 });
+
+//
+	$('#order_export_date').parent().datetimepicker({
+		format: 'yyyy-MM-dd',  
+		language: 'zh-CN'
+    }).on('changeDate', function(ev){
+        $(".bootstrap-datetimepicker-widget").hide();
+        var self_val = $("#order_export_date").val();
+        $("#sailing_date").val(self_val);
+    });
+	
+	$('#order_export_date').keyup(function(){
+		var self_val = $("#order_export_date").val();
+        $("#sailing_date").val(self_val);
+	});
 });
