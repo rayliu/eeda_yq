@@ -17,6 +17,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -31,7 +32,11 @@ public class AdController extends Controller {
 	public void index() {
 		render(getRequest().getRequestURI()+"/buy_cu/edit.html");
 	}
-	public void list() {
+	
+	/**
+	 * 促销列表
+	 */
+	public void culist() {
 		String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
@@ -63,16 +68,17 @@ public class AdController extends Controller {
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	
+	@Before(Tx.class)
 	public void hui_save(){
         Long userId = LoginUserController.getLoginUserId(this);
-        Record rec = Db.findFirst("select * from wc_ad_hui where creator=?", userId);
-        if(rec!=null){
+        Record rec = Db.findFirst("select * from wc_ad_hui where creator = ?", userId);
+        if(rec != null){
             rec.set("is_active", getPara("is_active"));
             rec.set("discount", getPara("discount"));
             Db.update("wc_ad_hui", rec);
         }
         
-        renderText("OK");
+        renderJson(rec);
     }
 	
 	public void dimond(){
@@ -171,7 +177,6 @@ public class AdController extends Controller {
     		Db.update("wc_ad_banner", order);
     	}
 		renderJson(order);
-	}
 	}
 	
 	public void update(){
