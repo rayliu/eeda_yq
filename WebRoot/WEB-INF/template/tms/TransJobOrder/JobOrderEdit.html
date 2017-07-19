@@ -238,6 +238,13 @@
                                     display_value:order.cross_border_travel_name!''
 			                    }){}%>
 			            </div>
+                       	<div class="col-lg-4">
+			                  <%include("/eeda/component/form/dateInputField.html", 
+                                {   id:'charge_time', 
+                                    label:'结算时间', 
+                                    value:order.charge_time!''
+                                }){}%>
+			            </div>
                     </div>
                     <div class="form-group">
 	                 <label>发票信息及备注</label>

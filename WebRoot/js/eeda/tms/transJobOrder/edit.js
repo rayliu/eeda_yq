@@ -119,7 +119,36 @@ $(document).ready(function() {
             $.unblockUI();
 	   });
 	})
-
+	
+	/*$("input[name='CLOSING_DATE']").on('changeDate', function(ev){
+		if($("input[name='CLOSING_DATE']").val()){
+	    	$("#charge_time").val($("input[name='CLOSING_DATE']").val());
+	    }
+     });*/
+	$('#land_table [name=CLOSING_DATE_div]').datetimepicker({
+        format: 'yyyy-MM-dd mm:hh:ss',  
+        language: 'zh-CN'
+      }).on('changeDate', function(ev){
+            $(".bootstrap-datetimepicker-widget").hide();
+            	$('#land_table [name=CLOSING_DATE_div]').each(function(){
+            		var self_val = $(this).find('input').val();
+            		if(self_val){
+            			$("#charge_time").val(self_val);
+            		}
+            		
+            	});
+        });
+	
+	$('#land_table [name=CLOSING_DATE_div]').on('keyup','[name=CLOSING_DATE]',function(){
+		$('#land_table [name=CLOSING_DATE_div]').each(function(){
+    		var self_val = $(this).find('input').val();
+    		if(self_val){
+    			$("#charge_time").val(self_val);
+    		}
+    		
+    	});
+	});
+	
 	
     //------------save
 	$('#saveBtn').click(function(e){
@@ -204,8 +233,7 @@ $(document).ready(function() {
         order.transport_type = transport_type_str;
         order.toca_no = $('#toca_no').val();
         order.cross_border_travel = $('#cross_border_travel').val();      
-       
-        
+        order.charge_time = $("#charge_time").val();
         
         if(transport_type_str.indexOf('land')>-1){
 	        //陆运
