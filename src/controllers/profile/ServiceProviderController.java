@@ -766,17 +766,25 @@ public class ServiceProviderController extends Controller {
         String sql = " SELECT "
         		+" 	p.id,p.abbr NAME,p.phone, "
         		+" 	p.address, "
+        		+" 	p.contact_person, "
         		+" 	CONCAT( "
-        		+" 		IFNULL(p.address, ''), "
-        		+" 		',',IFNULL((SELECT GROUP_CONCAT(di.dock_name) from dockinfo di WHERE di.party_id=p.id "+addStr+"),'') "
+        		+" 		CONCAT(IFNULL(p.address, ''),':',IFNULL(p.contact_person, ''),':',IFNULL(p.phone, '')), "
+        		+" 		',',IFNULL((SELECT GROUP_CONCAT(CONCAT(ifnull(di.dock_name,''),':',ifnull(di.land_contacts,''),':',ifnull(di.land_contact_phone,'')))"
+        		+ " from dockinfo di WHERE di.party_id=p.id "+addStr+"),'') "
         		+" 	) dock_names "
+        		
         		+" FROM "
         		+" 	party p "
         		+" WHERE "
         		+" 	p.office_id ="+office_id;
-        if(!StringUtils.isBlank(name)){
-            sql+="  and ( p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ) ";
+        if(addressInputStr!=null){
+        	sql+="  and ( p.abbr ='" + name + "' or p.company_name = '" + name + "' ) ";
+        }else{
+        	if(!StringUtils.isBlank(name)){
+                sql+="  and ( p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ) ";
+            }
         }
+        
         rec = Db.find(sql);
         renderJson(rec);
     }
@@ -788,7 +796,7 @@ public class ServiceProviderController extends Controller {
         long office_id = user.getLong("office_id");
         String name = getPara("input");
         List<Record> rec = null;
-        String sql = "select p.id,p.abbr name, p.phone, p.address from party p where office_id="+office_id;
+        String sql = "select p.id,p.abbr name, p.phone, p.address,p.contact_person from party p where office_id="+office_id;
         if(!StringUtils.isBlank(name)){
             sql+=" and (p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%')";
         }

@@ -21,6 +21,7 @@ $(document).ready(function() {
          		if(data.length>0){
          			item={"CONSIGNOR_NAME":data[0].NAME,"CONSIGNOR":data[0].ID
          				,"CONSIGNOR_PHONE":data[0].PHONE,"TAKE_ADDRESS":data[0].ADDRESS
+         				,"CONSIGNOR_CONTACT_MAN":data[0].CONTACT_PERSON
          			};
          		}
             	 cargoTable.row.add(item).draw(true);
@@ -233,14 +234,7 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "CONSIGNOR_PHONE","width": "80px", "className":"consigner_phone",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="consignor_phone" value="'+data+'" class="form-control" style="width:100px"/>';
-            	}
-            },
-            { "data": "TAKE_ADDRESS", "width": "180px", "className":"consigner_addr",
+            { "data": "TAKE_ADDRESS", "width": "180px", "className":"consignor_addr",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
@@ -255,6 +249,23 @@ $(document).ready(function() {
                         return field_html;
             	}
             },
+            
+            { "data": "CONSIGNOR_CONTACT_MAN","width": "80px", "className":"consignor_contact_man",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="consignor_contact_man" value="'+data+'" class="form-control" style="width:100px"/>';
+            	}
+            },
+            
+            { "data": "CONSIGNOR_PHONE","width": "80px", "className":"consignor_phone",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="consignor_phone" value="'+data+'" class="form-control" style="width:100px"/>';
+            	}
+            },
+            
             { "data": "CONSIGNEE", "width": "80px",
             	"render": function ( data, type, full, meta ) {
                     if(!data)
@@ -270,13 +281,6 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "CONSIGNEE_PHONE","width": "80px",  "className":"consignee_phone",
-            	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:100px"/>';
-            	}
-            },
             { "data": "DELIVERY_ADDRESS", "width": "180px", "className":"consignee_addr",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -290,6 +294,22 @@ $(document).ready(function() {
                             }
                         );
                         return field_html;
+            	}
+            },
+            
+            { "data": "CONSIGNEE_CONTACT_MAN","width": "80px",  "className":"consignee_contact_man",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="consignee_contact_man" value="'+data+'" class="form-control" style="width:100px"/>';
+            	}
+            },
+            
+            { "data": "CONSIGNEE_PHONE","width": "80px",  "className":"consignee_phone",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:100px"/>';
             	}
             },
             { "data": "CAR_NO", "width": "80px",

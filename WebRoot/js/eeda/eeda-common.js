@@ -833,7 +833,8 @@ eeda.refreshUrl = refreshUrl;
                       tableFieldList.append("<li tabindex='"+i+"'><a class='item' dataId='"+data[i].ID
                               +"' dataName='"+data[i].NAME+"' "
                               +" phone='"+data[i].PHONE+"' "
-                              +" addr='"+data[i].ADDRESS+"' >"+data[i].NAME
+                              +" addr='"+data[i].ADDRESS+"' "
+                              +" contact_man='"+data[i].CONTACT_PERSON+"' >"+data[i].NAME
                               +"</a></li>");
                   tableFieldList.css({ 
                       left:$(me).offset().left+"px", 
@@ -862,8 +863,9 @@ eeda.refreshUrl = refreshUrl;
               hiddenField.val(dataId);//id
 
               var row = inputField.parent().parent().parent();
-              row.find('.consigner_phone input').val($(this).attr('phone'));
-              row.find('.consigner_addr input').val($(this).attr('addr'));
+              row.find('.consignor_phone input').val($(this).attr('phone'));
+              row.find('.consignor_addr input').val($(this).attr('addr'));
+              row.find('.consignor_contact_man input').val($(this).attr('contact_man'));
           });
 
           tableFieldList.on('keydown', 'li', function(e){
@@ -936,7 +938,8 @@ eeda.refreshUrl = refreshUrl;
                       tableFieldList.append("<li tabindex='"+i+"'><a class='item' dataId='"+data[i].ID
                               +"' dataName='"+data[i].NAME+"' "
                               +" phone='"+data[i].PHONE+"' "
-                              +" addr='"+data[i].ADDRESS+"' >"+data[i].NAME
+                              +" addr='"+data[i].ADDRESS+"' "
+                              +" contact_man='"+data[i].CONTACT_PERSON+"' >"+data[i].NAME
                               +"</a></li>");
                   tableFieldList.css({ 
                       left:$(me).offset().left+"px", 
@@ -967,6 +970,7 @@ eeda.refreshUrl = refreshUrl;
               var row = inputField.parent().parent().parent();
               row.find('.consignee_phone input').val($(this).attr('phone'));
               row.find('.consignee_addr input').val($(this).attr('addr'));
+              row.find('.consignee_contact_man input').val($(this).attr('contact_man'));
           });
 
           tableFieldList.on('keydown', 'li', function(e){
@@ -1672,10 +1676,16 @@ eeda.refreshUrl = refreshUrl;
 
 	            
               for(var i = 0; i < data.length; i++){
-                 var aa=data[i].DOCK_NAMES.split(',')
-                 if(aa!=undefined && aa!=''){
-                     for (d in aa) {
-                       tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+aa[d]+"' >"+aa[d]+"</a></li>");
+                 var d_unions=data[i].DOCK_NAMES.split(',');
+                 if(d_unions!=undefined && d_unions!=''){
+                     for (var j=0;j< d_unions.length;j++) {
+                       var d_separate=d_unions[j].split(':');
+                       tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' " 
+                    		       +"  dataId='"+d_separate[0]+"' " 
+                    		       +"  contact_man='"+d_separate[1]+"' " 
+                    		       +"  consignor_phone='"+d_separate[2]+"' " 
+                    		       +">"+d_separate[0]+"</a></li>");
+                       
                      };
                   }
               }
@@ -1698,6 +1708,19 @@ eeda.refreshUrl = refreshUrl;
 				  tableFieldList.hide();
 				  var dataId = $(this).attr('dataId');
 				  hiddenField.val(dataId);//id
+				  var input_name = hiddenField.attr('name');
+				  
+				  var row = inputField.parent().parent().parent();
+				  if(input_name=="TAKE_ADDRESS"){
+					  row.find('.consignor_phone input').val($(this).attr('consignor_phone'));
+		              row.find('.consignor_contact_man input').val($(this).attr('contact_man')); 
+				  }
+				  if(input_name=="DELIVERY_ADDRESS"){
+					  row.find('.consignee_phone input').val($(this).attr('consignor_phone'));
+		              row.find('.consignee_contact_man input').val($(this).attr('contact_man')); 
+				  }
+	              
+				  
 			  });
 
 	      tableFieldList.on('keydown', 'li', function(e){
