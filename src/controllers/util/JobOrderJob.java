@@ -4,7 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
+
+import sun.org.mozilla.javascript.internal.regexp.SubString;
+import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 
 import com.jfinal.log.Log;
@@ -49,6 +53,24 @@ public class JobOrderJob implements Runnable {
 			}
 		}
 		System.out.println("-------------------job----------------------");
+		
+		Calendar c = Calendar.getInstance();
+		//int current_day=c.get(Calendar.DATE);//获取当前日
+		int current_month = c.get(Calendar.MONTH )+1;//获取当前月份
+		int month_int = 0;
+		int current_day = 20;
+		if(current_day==20){
+			JobOrder jobOrder = new JobOrder();
+			List<JobOrder> jobOrederList = jobOrder.find("select id,status,order_export_date from job_order where office_id=1 and status!='已完成' and Date(order_export_date)>='2017-01-01'; ");
+			for(int i = 0; i<jobOrederList.size(); i++){
+				month_int = Integer.parseInt((jobOrederList.get(i).get("order_export_date").toString()).substring(6,7));
+				if(current_month-month_int==1){
+					jobOrederList.get(i).set("status","已完成");
+					jobOrederList.get(i).update();
+				}
+			}
+				
+		}
 	}
 
 }
