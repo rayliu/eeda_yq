@@ -272,6 +272,7 @@ $(document).ready(function() {
                 });
             	eeda.contactUrl("edit?id",server_back_order.ID);
             	$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+            	$("#fileuploadSpanOfCustom").show();
             	$('#saveBtn').attr('disabled', false);
             	$('#confirmCompleted').attr('disabled', false);
                 $("#order_id").val(server_back_order.ID);
