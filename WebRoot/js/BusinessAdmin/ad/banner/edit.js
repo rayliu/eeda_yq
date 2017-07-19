@@ -27,16 +27,19 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		
 		$("#end_date").on('blur',function(){
 			//获取日期
-		
 			var begin_date = $("#begin_date").val();
 			var end_date = $("#end_date").val();
-			var v = DateDiff(begin_date,end_date)-0;
-			$("#total_day").text(v);
-			var price = $("#price").val()-0;
-			var sum=v*price;
-			$("#total_price").text(sum);
-		
+			var v = DateDiff(begin_date,end_date);
+			
+			if(v){
+				$("#total_day").text(v);
+				var price = $("#price").text();
+				var sum=v*price;
+				$("#total_price").text(sum);
+			}
+			
 		});
+		
 		
 		$("#saveBtn").click(function(){
 			var self = this;
@@ -45,27 +48,27 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 				return;
 			}
 			
-			var ad = {};
-			ad.id=$("#ad_id").val();
-			ad.begin_date = $("#begin_date").val();
-			ad.end_date = $("#end_date").val();
-			ad.ad_location = $("#ad_location").val();
-			ad.total_price = $("#total_price").text();
-			ad.total_day = $("#total_day").text();
-			ad.price = $("#price").val();
-			ad.phone = $("#phone").val();
-			$.post('/BusinessAdmin/ad/saveBanner',{advantage:JSON.stringify(ad)},function(data) {
-		    		if(data){
-		    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-		    			
-		    		}else{
-		    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-		    		}
-		    		$(self).attr('disabled',false);
-		    		
-				});
-			
+			var order = {};
+			order.id=$("#order_id").val();
+			order.begin_date = $("#begin_date").val();
+			order.end_date = $("#end_date").val();
+			order.ad_location = $("#ad_location").val();
+			order.total_price = $("#total_price").text();
+			order.total_day = $("#total_day").text();
+			order.price = $("#price").text();
+			order.phone = $("#phone").val();
+			self.disabled = true;
+			$.post('/BusinessAdmin/ad/banner_save',{jsonStr:JSON.stringify(order)},function(data) {
+	    		if(data){
+	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+	    			itemOrder.refleshTable();
+	    		}else{
+	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+	    		}
+	    		self.disabled = false;
 			});
+		
+		});
 		
 		
 		var DateDiff = function  DateDiff(sDate1,sDate2){   //sDate1和sDate2是2006-12-18格式  
@@ -79,23 +82,20 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		}    
 		
 		$("#eeda_table").on("click",".editBtn" ,function(){
-			var self=$(this);
-			var id=self.data("id");
-			var begin_date=self.data("begin_date");
-			var end_date=self.data("end_date");
-			var price=self.data("price");
-			var phone=self.data("phone");
-			var ad_location=self.data("ad_location");
-			var total_day=self.data("total_day");
-			if(self.data("status")=="新建"){
-				$("#begin_date").val(begin_date)
-				$("#end_date").val(end_date)
-				$("#phone").val(phone)
-				$("#price").val(price)
-				$("#ad_location").val(ad_location)
-				$("#total_day").text(total_day)
-				
-			}
+			var self = $(this);
+			var id = self.attr("id");
+			var begin_date = self.attr("begin_date");
+			var end_date = self.attr("end_date");
+			var phone = self.attr("phone");
+			var ad_location = self.attr("ad_location");
+			var total_day = self.attr("total_day");
+			var total_price = self.attr("total_price");
+			$("#begin_date").val(begin_date);
+			$("#end_date").val(end_date);
+			$("#phone").val(phone);
+			$("#ad_location").val(ad_location);
+			$("#total_day").text(total_day);
+			$("#total_price").text(total_price);
 		})
 		
 	});	

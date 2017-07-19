@@ -57,7 +57,7 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
 	  
 	  //结算价格计算并默认显示
 	  $("#amount").change(function(){
-		  var price = $('#price').attr('value');
+		  var price = $('#price').text();
 		  var amount = $('#amount').val();
 		  var total_price = parseFloat(price)*parseFloat(amount);
 		  $("#total_price").text(total_price);
@@ -108,7 +108,7 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
       
       //异步刷新
       var refleshTable = function(){
-    	  dataTable.ajax.url("/BusinessAdmin/ad/list").load();
+    	  dataTable.ajax.url("/BusinessAdmin/ad/mobilelist").load();
       }
   });
 });
