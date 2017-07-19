@@ -72,6 +72,10 @@
   </div>
 </div>
 
+<!--      var i18n={ -->
+<!--         title:'${_res.msgBoard}' -->
+<!--      } -->
+
 <!-- 拟态框，编辑修改公告 -->
 <% if(shiro.hasPermission("msg.create")){%>
   <a data-target='#editRadioDetail' data-toggle='modal'>
@@ -105,9 +109,7 @@
 
 
 <script>
-//     var i18n={
-//        title:'${_res.msgBoard}'
-//     }
+
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
     	 requirejs(['app/msgBoard/list']);
     });
