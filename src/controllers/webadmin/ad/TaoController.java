@@ -3,6 +3,7 @@ package controllers.webadmin.ad;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -116,7 +117,14 @@ public class TaoController extends Controller {
     	
     }
     
-   
+   @Before(Tx.class)
+   public void updatePrice(){
+	   String id = getPara("id");
+	   String price = getPara("price") == null?"0":getPara("price");
+	   SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	   String sql="update price_maintain set price ="+price+" ,  update_time='"+df.format(new Date())+"' where id="+id;
+	   Db.update(sql);
+   }
 
     public void seeMsgBoardDetail(){
     	String id = getPara("id");

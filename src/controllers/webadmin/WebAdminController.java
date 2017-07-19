@@ -95,7 +95,7 @@ public class WebAdminController extends Controller {
         	Record ad_hui = Db.findFirst("select count(1) total from wc_ad_hui group by creator");//全部（不管是否上架）
         	setAttr("ad_hui", ad_hui);
         	//钻石商家数
-        	Record dimond = Db.findFirst("select count(1) total from dimond group by creator");//全部（不管是否上架）
+        	Record dimond = Db.findFirst("select count(1) total from wc_ad_dimond group by creator");//全部（不管是否上架）
         	setAttr("dimond", dimond);
             render("/WebAdmin/dashBoard/list.html");
         }

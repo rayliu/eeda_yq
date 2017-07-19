@@ -3,6 +3,7 @@ package controllers.webadmin.ad;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -83,7 +84,7 @@ public class CuController extends Controller {
     }
     
     public void list(){
-    	
+    	Long user_id = LoginUserController.getLoginUserId(this);
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String sLimit = "";
@@ -92,13 +93,16 @@ public class CuController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
          
-    	String sql = "select * from ("
+/*    	String sql = "select * from ("
     			+ " select m.*, u.c_name create_name, u1.c_name update_name"
         		+ " from msg_board m "
         		+ " left join user_login u on u.id = m.creator"
         		+ " left join user_login u1 on u1.id = m.updator"
         		+ " where m.office_id="+office_id
-        		+ " ) A where 1=1 ";
+        		+ " ) A where 1=1 ";*/
+        String sql="select ul.c_name productor,wab.* from wc_ad_buy wab "
+        		+ "LEFT JOIN user_login ul on wab.creator=ul.id "
+        		+ "where wab.creator ="+user_id+" "+sLimit;
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
@@ -106,7 +110,7 @@ public class CuController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        List<Record> orderList = Db.find(sql);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -115,8 +119,13 @@ public class CuController extends Controller {
         renderJson(map); 
     	
     }
-    
-   
+    public void updateCu(){
+    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	String price=getPara("price");
+    	String sql="update price_maintain set price= " +price +", update_time='"+df.format(new Date())+"' where type='促广告'";
+    	Db.update(sql);
+    	renderJson(true);
+    }
 
     public void seeMsgBoardDetail(){
     	String id = getPara("id");
