@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import interceptor.SetAttrLoginUserInterceptor;
+import models.wedding.WcCompany;
 
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -82,23 +83,33 @@ public class AdController extends Controller {
     }
 	
 	public void dimond(){
-        String id = getPara("id");
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	
+	@Before(Tx.class)
 	public void dimond_save(){
-		String years = getPara("years");
-		String total_price = getPara("total_price");
-		String status = getPara("status");
-		Long userId = LoginUserController.getLoginUserId(this);
-		Record rec = new Record();
-		rec.set("years", years);
-		rec.set("total_price", total_price);
-		rec.set("status", status);
-		rec.set("creator", userId);
-		rec.set("create_time", new Date());
-		Db.save("dimond", rec);
-		renderJson(true);
+		String jsonStr = getPara("jsonStr");
+        Long userId = LoginUserController.getLoginUserId(this);
+        Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+        
+		String years = (String)dto.get("years");
+		String end_date = (String)dto.get("end_date");
+		String put_in_days = (String)dto.get("put_in_days");
+		String total_price = (String)dto.get("total_price");
+		String status = "新建";
+		
+		Record order = new Record();
+		order.set("years", years);
+		order.set("total_price", total_price);
+		order.set("status", status);
+		order.set("begin_date", new Date());
+		order.set("end_date", end_date);
+		order.set("put_in_days", put_in_days);
+		order.set("creator", userId);
+		order.set("create_time", new Date());
+		Db.save("wc_ad_dimond", order);
+		renderJson(order);
 	}
 	
 	public void mobile(){
