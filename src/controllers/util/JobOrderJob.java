@@ -1,19 +1,13 @@
 package controllers.util;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
-import sun.org.mozilla.javascript.internal.regexp.SubString;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 
 import com.jfinal.log.Log;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Record;
 
 public class JobOrderJob implements Runnable {
 	private Log logger = Log.getLog(JobOrderJob.class);
