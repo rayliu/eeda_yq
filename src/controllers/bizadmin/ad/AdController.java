@@ -8,6 +8,7 @@ import java.util.Map;
 import interceptor.SetAttrLoginUserInterceptor;
 import models.wedding.WcCompany;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -113,16 +114,16 @@ public class AdController extends Controller {
 	}
 	
 	public void mobile(){
-        String id = getPara("id");
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	
+	@Before(Tx.class)
 	public void mobile_save(){
 		String jsonStr=getPara("jsonStr");
 		Long userId = LoginUserController.getLoginUserId(this);
 		Gson gson=new Gson();
 		Map<String,?> dto = gson.fromJson(jsonStr, HashMap.class);
-		String order_no = (String)dto.get("order_no");
+		String order_id = (String)dto.get("order_id");
 		String amount = (String)dto.get("amount");
 		String put_in_time = (String)dto.get("put_in_time");
 		String price = (String)dto.get("price");
@@ -130,17 +131,28 @@ public class AdController extends Controller {
 		String phone = (String)dto.get("phone");
 		String status = (String)dto.get("status");
 		
-		Record rec = new Record();
-		rec.set("creator", userId);
-		rec.set("create_time", new Date());
-		rec.set("order_no", order_no);
-		rec.set("amount", amount);
-		rec.set("put_in_time", put_in_time);
-		rec.set("price", price);
-		rec.set("total_price",total_price);
-		rec.set("phone",phone);
-		rec.set("status",status);
-		Db.save("mobile_ad_promotion", rec);
+		if(StringUtils.isNotBlank(order_id)){
+			Record order = Db.findById("wc_ad_mobile_promotion", order_id);
+			order.set("amount", amount);
+			order.set("put_in_time", put_in_time);
+			order.set("price", price);
+			order.set("total_price",total_price);
+			order.set("phone",phone);
+			
+			Db.save("wc_ad_mobile_promotion", order);
+		}else{
+			Record rec = new Record();
+			rec.set("creator", userId);
+			rec.set("create_time", new Date());
+			rec.set("amount", amount);
+			rec.set("put_in_time", put_in_time);
+			rec.set("price", price);
+			rec.set("total_price",total_price);
+			rec.set("phone",phone);
+			rec.set("status",status);
+			Db.save("wc_ad_mobile_promotion", rec);
+		}
+		
 		
 		renderJson(true);
 	}
@@ -190,46 +202,25 @@ public class AdController extends Controller {
 		renderJson(order);
 	}
 	
-	public void update(){
-		 String jsonStr=getPara("jsonStr");
-		 Gson gson = new Gson();  
-	     Map<String, ?> dto = gson.fromJson(jsonStr, HashMap.class);
-	     String id = (String) dto.get("id");
-	     String amount = (String) dto.get("amount");
-	     String put_in_time = (String) dto.get("put_in_time");
-		 String price = (String) dto.get("price");
-	 	 String total_price = (String) dto.get("total_price");
-		 String phone = (String) dto.get("phone");
-		 
-		 Record re = Db.findById("mobile_ad_promotion", id);
-		 re.set("amount", amount);
-		 re.set("put_in_time", put_in_time);
-		 re.set("price", price);
-		 re.set("total_price", total_price);
-		 re.set("phone", phone);
-		 Db.update("mobile_ad_promotion",re);
-		 renderJson(true);
-	}
-	
-	
-        public void list(){
-	    String sLimit = "";
-       		String pageIndex = getPara("draw");
-       	 	if (getPara("start") != null && getPara("length") != null) {
-            		sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        	}
-		Long user_id = LoginUserController.getLoginUserId(this);
-		String sqlTotal = "select count(1) total from wc_ad_banner where creator = "+user_id ;
-		Record rec = Db.findFirst(sqlTotal);
-		String sql = "select * from wc_ad_banner where  creator = "+user_id+" order by begin_date desc " +sLimit;
-		List<Record> orderList =  Db.find(sql);
-	   	Map map = new HashMap();
-	        map.put("draw", pageIndex);
-       	 	map.put("recordsTotal", rec.getLong("total"));
-        	map.put("recordsFiltered", rec.getLong("total"));
-       		 map.put("data", orderList);
-        	renderJson(map);
-        }
+
+    public void list(){
+    String sLimit = "";
+   		String pageIndex = getPara("draw");
+   	 	if (getPara("start") != null && getPara("length") != null) {
+        		sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+    	}
+	Long user_id = LoginUserController.getLoginUserId(this);
+	String sqlTotal = "select count(1) total from wc_ad_banner where creator = "+user_id ;
+	Record rec = Db.findFirst(sqlTotal);
+	String sql = "select * from wc_ad_banner where  creator = "+user_id+" order by begin_date desc " +sLimit;
+	List<Record> orderList =  Db.find(sql);
+   	Map map = new HashMap();
+        map.put("draw", pageIndex);
+   	 	map.put("recordsTotal", rec.getLong("total"));
+    	map.put("recordsFiltered", rec.getLong("total"));
+   		 map.put("data", orderList);
+    	renderJson(map);
+    }
 
        	
 }

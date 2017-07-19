@@ -26,12 +26,18 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
 
 	  $('#eeda_form').validate({
 			rules: {
+				put_in_time:{
+					required: true,
+				},
 				phone : {
 				    required: true,
 					isMobile:true
 				}
 			},
 		    messages: {
+		    	put_in_time: {
+		    		required: "投放时间不能为空!!"
+		    	},
 		    	phone: {
 		    		required: "电话不能为空!!"
 			    }
@@ -44,70 +50,42 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
 		  return this.optional(element) || (length == 11 && mobile.test(value)); 
 	  }, "请正确填写您的手机号码"); 
 	  
+	  
 	  //结算价格计算并默认显示
 	  $("#amount").change(function(){
 		  var price = $('#price').attr('value');
 		  var amount = $('#amount').val();
 		  var total_price = parseFloat(price)*parseFloat(amount);
-		  $("#total_price").attr("value",total_price);
 		  $("#total_price").text(total_price);
 	  }); 
-	  
+
 	  //提交按钮
-      $('#save_btn').click(function(event) {
-    	  var id = $("#item_id").val();
-    	  if(id){
-    		  update();
-    	  }else{
-    		  save();
+      $('#saveBtn').click(function(event) {
+    	  var self = this;
+    	  if(!$('#eeda_form').valid()){
+    		  return false;
     	  }
-    	  refleshTable();
+    	  
+    	  self.disabled = true;
+    	    var order = {};
+    	    order.id=$("#order_id").val();
+    	    order.amount = $("#amount").val();
+    	    order.price = $("#price").text();
+    	    order.total_price = $("#total_price").text();
+    	    order.phone = $("#phone").val();
+    	    order.remark = $("#remark").val();
+			$.post('/BusinessAdmin/ad/mobile_save',{param:JSON.stringify(order)},function(data) {
+				if(data){
+					$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+					refleshTable();
+				}else{
+					$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+				}
+				self.disabled = false;
+			});
       });
       
-      //保存方法
-      var save = function(){
-    	  if(!$('#eeda_form').valid()){
-    		  return;  
-    	  }
-    	  var time = new Date();//获取当前时间
-    	  //获取当前时间的年月日时分秒毫秒来生成订单号
-    	  var order_no = (time.getFullYear().toString())+((time.getMonth()+1).toString())+(time.getDate().toString())
-			            +(time.getHours().toString())+(time.getMinutes().toString())+(time.getSeconds().toString())
-			            +(time.getMilliseconds().toString());
-    	  var order = {};
-    	  order.order_no = order_no;//订单号
-    	  order.amount = $("#amount").val();//投放条数获取值
-    	  order.put_in_time = $("#put_in_time").val();//投放时间获取值
-    	  order.price = $('#price').attr('value');//单价获取值
-    	  order.total_price = $('#total_price').attr('value');//结算价格获取值
-    	  order.phone = $("#phone").val();//联系电话获取值
-    	  order.status = "新建"; 
-    	  $.post("/BusinessAdmin/ad/mobile_save",{jsonStr:JSON.stringify(order)},function(data){
-			  if(data){
-				  $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-			  }else{
-				  $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-			  }
-		  });
-      }
-      
-      //修改方法
-      var update = function(){
-    	  var order = {};
-    	  order.id = $("#item_id").val();
-    	  order.amount = $("#amount").val();//投放条数获取值
-    	  order.put_in_time = $("#put_in_time").val();//投放时间获取值
-    	  order.price = $('#price').attr('value');//单价获取值
-    	  order.total_price = $('#total_price').attr('value');//结算价格获取值
-    	  order.phone = $("#phone").val();//联系电话获取值
-    	  $.post("/BusinessAdmin/ad/update",{jsonStr:JSON.stringify(order)},function(data){
-			  if(data){
-				  $.scojs_message('更新成功', $.scojs_message.TYPE_OK);
-			  }else{
-				  $.scojs_message('更新失败', $.scojs_message.TYPE_ERROR);
-			  }
-		  });
-      }
+   
       
       //编辑按钮
       $('#eeda_table').on('click','.editBtn',function(){
@@ -127,6 +105,6 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
       //异步刷新
       var refleshTable = function(){
     	  dataTable.ajax.url("/BusinessAdmin/ad/list").load();
-     }
+      }
   });
 });

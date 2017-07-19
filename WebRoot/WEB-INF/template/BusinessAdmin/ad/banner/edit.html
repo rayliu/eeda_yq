@@ -12,13 +12,13 @@
         <!-- #left -->
         <h3>选择投放广告位置</h3>
         <div class="hang">
-            
             广告位：
           <select id="ad_location" name="ad_location" value="{{user.end_date!''}}">
-                       <option value="1">广告位1</option>    
-                       <option value="2">广告位2</option>    
-                       <option value="3">广告位3</option>        
-                            </select>
+              <option value="1">广告位1</option>    
+              <option value="2">广告位2</option>    
+              <option value="3">广告位3</option>        
+              <option value="4">广告位4</option>        
+          </select>
         </div>
         
         <div id="DateMap"></div>
@@ -88,7 +88,6 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-         requirejs(['/js/BusinessAdmin/ad/banner/edit.js']);
-         requirejs(['/js/BusinessAdmin/ad/banner/list.js']);
+         requirejs(['/js/BusinessAdmin/ad/banner/edit.js','/js/BusinessAdmin/ad/banner/list.js']);
     });
 </script>
