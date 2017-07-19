@@ -564,7 +564,7 @@ where joli.id=$P{item_id}]]>
 				<textFieldExpression><![CDATA[$F{head_title}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="153" y="398" width="402" height="20" uuid="ecd2ad4c-966c-4cf5-a6b5-98abea359659"/>
+				<reportElement x="153" y="398" width="402" height="36" uuid="ecd2ad4c-966c-4cf5-a6b5-98abea359659"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
