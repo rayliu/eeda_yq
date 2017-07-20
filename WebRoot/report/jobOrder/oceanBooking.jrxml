@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="725"/>
+	<property name="ireport.y" value="672"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
@@ -13,13 +13,13 @@
 	o.office_name,
 	CONCAT('Tel:',IFNULL(u.user_tel,u.user_phone)) user_tel,
 	CONCAT('Fax:',o.office_fax) office_fax,
-
+	CONVERT(substring(jos.etd,1,10),char) ETD,
 IF(jo.amount_20gp is not null or jo.amount_40gp is not null or jo.amount_40hq is not null or jo.amount_45gp is not null,
 	CONCAT(
-		IF(jo.amount_20gp is not null,CONCAT('20\'GP X',jo.amount_20gp,','),''),
-		IF(jo.amount_40gp is not null,CONCAT('40\'GP X',jo.amount_40gp,','),''),
-		IF(jo.amount_40hq is not null,CONCAT('40\'HQ X',jo.amount_40hq,','),''),
-		IF(jo.amount_45gp is not null,CONCAT('45\'GP X',jo.amount_45gp,','),'')
+		IF(jo.amount_20gp is not null,CONCAT('20\'GP X',jo.amount_20gp,';'),''),
+		IF(jo.amount_40gp is not null,CONCAT('40\'GP X',jo.amount_40gp,';'),''),
+		IF(jo.amount_40hq is not null,CONCAT('40\'HQ X',jo.amount_40hq,';'),''),
+		IF(jo.amount_45gp is not null,CONCAT('45\'GP X',jo.amount_45gp,';'),'')
 	),(
   SELECT
 	GROUP_CONCAT(abc SEPARATOR ' ; ')
@@ -91,7 +91,10 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+	</field>
+	<field name="ETD" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="container_type_count" class="java.lang.String"/>
 	<field name="headCarrier_name" class="java.lang.String"/>
@@ -395,9 +398,6 @@ WHERE
 	<field name="fnd" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="etd" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
 	<field name="eta" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -447,6 +447,9 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="ata" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sailing_date" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="por_name" class="java.lang.String"/>
@@ -548,7 +551,7 @@ WHERE
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[  Port of discharge卸货港]]></text>
+				<text><![CDATA[  Port of discharge目的港]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="417" y="245" width="138" height="15" uuid="051007c0-fb39-4448-b71e-52ee6ed6bd8d"/>
@@ -1208,6 +1211,13 @@ WHERE
 				<reportElement x="297" y="44" width="258" height="74" uuid="b5fd949e-77c4-4f2d-ae93-aa1cafd3b551"/>
 				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
 			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="333" y="650" width="219" height="39" uuid="331c1dbe-c9e9-426e-90b2-a29be29c8062"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA["请按排订舱于"+$F{etd}+"；港口："+$F{pol_name}+" - "+$F{pod_name}+"；箱型："+$F{container_type_count}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
