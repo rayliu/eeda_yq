@@ -105,6 +105,7 @@ $(document).ready(function() {
     	}else if(status=='已确认'){
             $('#printTotaledBtn').attr('disabled', false);
             $("#cancelConfirmBtn").attr('disabled', false);
+            $("#printBtn").attr('disabled', false);
         }else if(status=='取消确认'){
         	$('#saveBtn').attr('disabled', false);
     		$('#confirmBtn').attr('disabled', false);

@@ -99,6 +99,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                     $('#add_cost').attr("disabled",true);
                     $('.delete').attr("disabled",true);
                     $('#cancelConfirmBtn').attr('disabled', false);
+                    $('#printBtn').attr('disabled', false);
                     }else if(status=='取消确认'){
                     	$('#saveBtn').attr('disabled', false);
                 		$('#confirmBtn').attr('disabled', false);
