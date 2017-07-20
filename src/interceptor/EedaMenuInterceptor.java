@@ -114,11 +114,11 @@ public class EedaMenuInterceptor implements Interceptor {
                     +"        and m.parent_id = ?"
                     +"        AND m.office_id = ?"
                     +"        AND u.user_name = ?"
-                    +" ORDER BY m.seq";
+                    +" ORDER BY m.seq";//union 查folder
             //logger.debug("EedaInterceptor module_id:"+module.get("id")+", office_id:"+office_id+", username:"+username);
             List<Record> orders = Db.find(sql, module.get("id"), office_id,
                     username);
-            for (Record order : orders) {
+            for (Record order : orders) {//再查一层单据
                 String urlStr = order.getStr("url");
                 if(!urlStr.startsWith("http")){
                     order.set("url", "/"+urlStr);
