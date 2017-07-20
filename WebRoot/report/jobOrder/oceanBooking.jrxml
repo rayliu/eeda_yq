@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BonkingForm" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="672"/>
+	<property name="ireport.y" value="505"/>
 	<parameter name="order_no" class="java.lang.String">
 		<property name="order_no" value="$P{order_no}"/>
 	</parameter>
@@ -60,7 +60,7 @@ IF(jo.amount_20gp is not null or jo.amount_40gp is not null or jo.amount_40hq is
 		CN_no) A
 	GROUP BY
 		A.flag) CN_NO,
-ifnull(p4.company_name_eng,p4.company_name) bookingAgent_name,
+if(p4.company_name_eng is not null and p4.company_name_eng!='',p4.company_name_eng,p4.company_name) bookingAgent_name,
 ifnull(p3.company_name_eng,p3.company_name) MBLshipper_name,
 ifnull(p1.company_name_eng,p1.company_name) MBLconsignee_name, ifnull(p2.company_name_eng,p2.company_name) MBLnotify_party_name
 FROM
@@ -91,7 +91,7 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
 	</field>
 	<field name="ETD" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -1216,7 +1216,7 @@ WHERE
 				<textElement verticalAlignment="Top">
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA["请按排订舱于"+$F{etd}+"；港口："+$F{pol_name}+" - "+$F{pod_name}+"；箱型："+$F{container_type_count}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["To："+$F{bookingAgent_name}+"； 请按排订舱于"+$F{ETD}+"；港口："+$F{pol_name}+" - "+$F{pod_name}+"；箱型："+$F{container_type_count}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
