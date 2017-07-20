@@ -154,6 +154,10 @@ public class CustomerController extends Controller {
             party.set("last_modified_by", userId);
             party.set("last_updated_stamp", createDate);
             DbUtils.setModelValues(dto, party);
+            if(StringUtils.isBlank(party.getStr("code"))){
+            	String code = OrderNoGenerator.getOrderNo("party",office_id);
+                party.set("code", code.replace("P", "C"));
+            }
             party.update();
 
         } else {

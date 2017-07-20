@@ -182,9 +182,13 @@ public class ServiceProviderController extends Controller {
             }
             party.set("receiver", getPara("receiver"));
             party.set("bank_no", getPara("bank_no"));
-            party.set("bank_name", getPara("bank_name"));
+            party.set("bank_name", getPara("bank_name"));           
             
             setParty(party);
+            if(StringUtils.isBlank(party.getStr("code"))){
+            	String code = OrderNoGenerator.getOrderNo("party",pom.getCurrentOfficeId());
+                party.set("code", code.replace("P", "S"));
+            }            
             party.update();
         } else {
             //判断供应商简称
