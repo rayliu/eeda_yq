@@ -22,7 +22,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	            		}else{
 	            			data =  "<a class=' stdbtn  wherether_approve' " +
 	              					" data-id="+full.ID+" href='#begin_date' status='Y'>审批</a>"
-	              					+"&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a class=' stdbtn btn-dangger color='red' wherether_approve' " +
+	              					+"&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a class=' stdbtn btn-dangger wherether_approve' " +
 	              					" data-id="+full.ID+" href='#begin_date' status='N'>拒绝</a>";
 	            	  	}
 	            		return data;
@@ -80,7 +80,6 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             			if(status == "Y"){
             				$.scojs_message("审批成功",$.scojs_message.TYPE_OK);
             			}
-            		
             			if(status == "N"){
             				$.scojs_message("已拒绝",$.scojs_message.TYPE_OK);
             			}
