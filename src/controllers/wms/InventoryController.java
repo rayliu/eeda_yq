@@ -159,6 +159,7 @@ public class InventoryController extends Controller {
     public void list() {
     	String sql = "";
         String condition="";
+        String proCondition="";
         String sLimit = "";
         String pageIndex = getPara("draw");
         UserLogin user = LoginUserController.getLoginUser(this);
@@ -176,40 +177,49 @@ public class InventoryController extends Controller {
             String item_no = dto.get("item_no");
             String part_no = dto.get("part_no");
             String shelves = dto.get("shelves");
+            //String inv = dto.get("inv");
             
             if(StringUtils.isNotBlank(item_no)){
             	condition += " and pro.item_no like '%"+item_no+"%'";
+            	proCondition += " and pro.item_no like '%"+item_no+"%'";
             }
             
             if(StringUtils.isNotBlank(part_no)){
             	condition += " and pro.part_no like '%"+part_no+"%'";
+            	proCondition += " and pro.part_no like '%"+part_no+"%'";
             }
             
             if(StringUtils.isNotBlank(shelves)){
             	condition += " and gi.shelves like '%"+shelves+"%'";
-            }
-            
-  
-            
-            
+            } 
     	}
     	
-    	String sqlTotal = "select count(1) total from (select pro.id "
+    	String sqlTotal = "select count(1) total from ("
+    		+ " select * from(select pro.item_no "
 			+ " from gate_in gi "
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
 			+ " and out_flag = 'N' and error_flag = 'N'"
 			+ condition 
-			+ " group by pro.item_no) B";
+			+ " union"
+			+ " select pro.item_no from wmsproduct pro"
+			+ " where amount>0 and pro.office_id="+office_id
+			+ proCondition 
+			+ " ) A group by  A.item_no) B";
     	
         
-    	sql = "select pro.item_no,pro.item_name "
+    	sql = "select * from(select pro.item_no,pro.item_name,'Y' flag "
 			+ " from gate_in gi "
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
 			+ " and out_flag = 'N' and error_flag = 'N'"
 			+ condition 
-			+ " group by pro.item_no";
+			+ " union"
+			+ " select pro.item_no,pro.item_name,'N' flag from wmsproduct pro"
+			+ " where amount>0 and pro.office_id="+office_id
+			+ proCondition 
+			+ " ) A "
+			+ " group by A.item_no";
     	
         
         
