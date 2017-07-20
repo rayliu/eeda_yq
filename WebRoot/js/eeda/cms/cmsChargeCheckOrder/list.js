@@ -142,10 +142,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           var sp_name = $('#sp_input').val().trim();
           var custom_start_date = $("#date_custom_begin_time").val();
           var custom_end_date = $("#date_custom_end_time").val();
-          if(!sp_name){
-              $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
-              return;
-          }
+//          if(!sp_name){
+//              $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
+//              return;
+//          }
 
           var url = "/cmsChargeCheckOrder/list?checked="+checked
           	   +"&order_no="+order_no
