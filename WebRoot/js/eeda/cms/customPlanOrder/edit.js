@@ -468,6 +468,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	$('#copyTracking_no').val($('#tracking_no').val());
     });
     
+    //外单申请企业控制
+    if($('#other_flag').val()=="other"){
+    	$('#receive_sent_consignee1_input').attr('disabled',true);
+    	$('#receive_sent_consignee_input').attr('disabled',true);
+    	$('#receive_sent_consignee_info').attr('disabled',true);
+    }
+    
     
 
      //选中回显

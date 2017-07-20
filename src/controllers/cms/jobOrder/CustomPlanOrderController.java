@@ -521,7 +521,7 @@ public class CustomPlanOrderController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
     	String id = getPara("id");
-    	String sql = "select cpo.*,l.name trading_country_name,l1.name destination_country_name,l2.name destination_port_name,"
+    	String sql = "select cpo.*,IF (cpo.office_id != 3,'other','self') other_flag,l.name trading_country_name,l1.name destination_country_name,l2.name destination_port_name,"
     			+ " sm.name supervision_mode_name,p.abbr hongkong_consignee_input"
     			+ "	,p1.abbr head_carrier_name,l3.name aim_port_name,l4.name shipment_port_name,concat(ce.code,' ',ce.name) nature_of_exemption_name,"
     			+ " concat(cp.under_code,' ',cp.under_port) export_port_name, concat(cgs.code,' ',cgs.name) supply_of_goods_name,"
