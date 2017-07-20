@@ -357,7 +357,8 @@ public class CustomerController extends Controller {
                 sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" +customerName.toLowerCase()+ "%'"
                 	+ " or p.quick_search_code like '%" + customerName.toUpperCase() + "%'"
                 	+ " or p.code like '%" + customerName.toUpperCase() + "%'"
-                	+ " or p.code like '%" +customerName.toLowerCase()+ "%' ) ";
+                	+ " or p.code like '%" +customerName.toLowerCase()+ "%' "
+                    + " or concat(p.abbr,' - ',p.code) like '%" +customerName+ "%') ";
             }
             resultList = Db.find(sql+" order by abbr limit 25");
 
