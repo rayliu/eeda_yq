@@ -350,12 +350,14 @@ public class CustomerController extends Controller {
             }
             renderJson(resultList);
         }else{
-            String sql = "select p.id, p.abbr from party p where p.type = 'CUSTOMER' "
+            String sql = "select p.id, p.abbr,p.code from party p where p.type = 'CUSTOMER' "
                     + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
                         
             if (customerName.trim().length() > 0) {
                 sql +=" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" +customerName.toLowerCase()+ "%'"
-                	+ " or p.quick_search_code like '%" + customerName.toUpperCase() + "%') ";
+                	+ " or p.quick_search_code like '%" + customerName.toUpperCase() + "%'"
+                	+ " or p.code like '%" + customerName.toUpperCase() + "%'"
+                	+ " or p.code like '%" +customerName.toLowerCase()+ "%' ) ";
             }
             resultList = Db.find(sql+" order by abbr limit 25");
 
