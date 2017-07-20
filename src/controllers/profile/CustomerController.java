@@ -449,7 +449,7 @@ public class CustomerController extends Controller {
         	customer_id = "";
         }
         Record resultFirst = new Record();
-        String sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+        String sql = "select p.id, p.abbr,p.company_name , ifnull(p.contact_person_eng, p.contact_person) contact_person, "
                 + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
                 + " from party p where  "
                 + " p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";

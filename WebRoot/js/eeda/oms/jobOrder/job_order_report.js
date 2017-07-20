@@ -309,7 +309,7 @@ $(document).ready(function() {
 			var customer_id = $('#customer_id').val();
 			
 			$.post('/customer/search_party_id', {customer_id:customer_id}, function(data){
-				$('#head_endPlace').val(data.ABBR);
+				$('#head_endPlace').val(data.COMPANY_NAME);
 				$('#head_attn').val(data.CONTACT_PERSON);
 				$('#head_customer_tel').val(data.PHONE);
 				$('#head_fax').val(data.FAX);
