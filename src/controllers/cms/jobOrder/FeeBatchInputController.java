@@ -953,6 +953,63 @@ public class FeeBatchInputController extends Controller {
         }
        
     }
+    
+    
+    @Before(Tx.class)
+    public void importArapItem(){
+    	String cost_id = getPara("cost_id");
+    	String charge_id = getPara("charge_id");
+    	String ids = getPara("ids");
+    	String idsArray[] = ids.split(",");
+    	
+    	for (int i = 0; i < idsArray.length; i++) {
+			String id = idsArray[i];
+			
+			List<Record> temList = null;
+			if(StringUtils.isNotBlank(cost_id) && StringUtils.isNotBlank(charge_id)){
+				temList = Db.find("select * from custom_plan_order_arap_template where id in ("+cost_id+","+charge_id+")");
+			}else{
+				String arap_id = null;
+				if(StringUtils.isNotBlank(cost_id)){
+					arap_id = cost_id;
+				}else{
+					arap_id = charge_id;
+				}
+				temList = Db.find("select * from custom_plan_order_arap_template where id =? ", arap_id);
+			}
+			
+			for(Record templ : temList){
+				String jsonValue = templ.getStr("json_value");
+				Gson gson = new Gson();  
+				Map<String, ?> dto= gson.fromJson("{array:"+jsonValue+"}",HashMap.class);  
+				List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("array");
+				
+				for (int j = 0; j < charge_template.size(); j++) {
+					Map<String, String> map = charge_template.get(j);
+					Record item = new Record();
+					item.set("order_type", map.get("order_type"));
+					item.set("type", map.get("type"));
+					item.set("sp_id", map.get("SP_ID"));
+					item.set("charge_id", map.get("CHARGE_ID"));
+					//item.set("charge_eng_id", map.get("CHARGE_ENG_ID"));
+					item.set("price", map.get("price"));
+					item.set("amount", map.get("amount"));
+					//item.set("unit_id", map.get("UNIT_ID"));
+					item.set("total_amount", map.get("total_amount"));
+					item.set("currency_id", map.get("CURRENCY_ID"));
+					//item.set("exchange_rate", map.get("exchange_rate"));
+					//item.set("currency_total_amount", map.get("currency_total_amount"));
+					//item.set("exchange_currency_id", map.get("exchange_currency_id"));
+					//item.set("exchange_currency_rate", map.get("exchange_currency_rate"));
+					//item.set("exchange_total_amount", map.get("exchange_total_amount"));
+					item.set("remark", map.get("remark"));
+					item.set("order_id", id);
+					Db.save("custom_plan_order_arap", item);
+				}
+			}
+		}
+    	renderJson(true);
+    }
    
     
 }

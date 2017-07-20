@@ -7,12 +7,12 @@
              <div class="panel panel-default">
 		            	<div class="panel-heading">
 	                        <h4 class="panel-title">
-	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
-	                            <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
+	                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseSearchInfo" aria-expanded="false" class="collapsed">
+	                            <i id="collapseSearchIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
 	                        </h4>
 		                 </div>
-		          <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" >
-	                <div class="panel-body" id="ChargeDiv">
+		          <div id="collapseSearchInfo" class="panel-collapse collapse in" aria-expanded="false" >
+	                <div class="panel-body" id="SearchDiv">
 	                <div class="col-lg-12">
 	                                <form id="orderForm">
 	                                    <div class="row"><!--  第1行  -->
@@ -116,16 +116,46 @@
 	                            <div class="form-group button-bar" >
 	                                <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
 	                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+	                                <button id="importBtn" class="btn btn-default btn-sm" type="button">批量带入费用</button>
 	                            </div> 
 	               </div>
 	            </div>
 			 </div>
 		 </div>
 		 
-
-		 
+		 	<br/>
+			<div class="form-group" >
+			      <div class="panel panel-default" style="width:48%;float:left">
+				    <div class="panel-heading">
+					  <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+					     <i id='collapseChargeIcon' class="fa fa-angle-double-down"></i>  常用应收费用明细
+					  </a>
+					</div>
+					 <div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" 	style="height: auto;">
+                         <div class="panel-body" id="ChargeDiv">
+                            
+                          </div>
+                      </div>
+					</div>
+					
+					
+					<div class="panel panel-default" style="width:48%;float:left;margin-left:30px">
+				    <div class="panel-heading">
+					  <a data-toggle="collapse" data-parent="#accordion" href="#collapseCostInfo" aria-expanded="false" class="collapsed">
+					     <i id='collapseCostIcon' class="fa  fa-angle-double-down"></i>
+					                常用应付费用明细
+					  </a>
+					</div>
+					<div id="collapseCostInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+                       <div class="panel-body" id="CostDiv">
+                            
+                        </div>
+                   </div>
+					</div>
+             </div>
+             
 			<!-- /.row 查询条件 结束-->
-            <div class="row simple_list_div">
+            <div class="row simple_list_div" style="float:left">
                             <ul id="orderTabs" class="nav nav-tabs" >
                             	<li class="active">
                                     <a href="#" data-toggle="tab" name="未完成费用确认">未完成费用确认 <span id="unConfirmFee" class="badge"></span></a>

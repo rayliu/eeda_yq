@@ -29,9 +29,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 					{ "width": "10px",
 					    "render": function ( data, type, full, meta ) {
 					    	if(full.AUDIT_FLAG != 'Y')
-					    		return '<input type="checkbox" class="checkBox">';
+					    		return '<input type="checkbox" class="checkBox" name="checkBox">';
 					    	else 
-					    		return '<input type="checkbox" disabled>';
+					    		return '<input type="checkbox" disabled name="checkBox">';
 					    }
 					},
                   {"data": "ORDER_NO", 
@@ -132,6 +132,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	              }
             ]
         });
+        
+        //全选
+        $('#AllCheck').click(function(){
+      	  var ischeck = this.checked;
+      	  	  $(".checkBox").each(function () {  
+                this.checked = ischeck;  
+            });  
+  	      if(ischeck==true){
+  	      	  $('#confirmBtn').attr('disabled',false);
+  	      }else{
+  	      	  $('#confirmBtn').attr('disabled',true);
+  	      }
+        });
 
         //base on config hide cols
         dataTable.columns().eq(0).each( function(index) {
@@ -149,18 +162,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
             });
         });
       
-        //全选
-        $('#AllCheck').click(function(){
-      	  var ischeck = this.checked;
-        	$(".checkBox").each(function () {  
-                this.checked = ischeck;  
-             });  
-        	if(ischeck==true){
-        		$('#confirmBtn').attr('disabled',false);
-        	}else{
-        		$('#confirmBtn').attr('disabled',true);
-        	}
-        });
+
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
@@ -250,5 +252,137 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
           });
       });
 
+      
+      
+      
+     //应收应付常用费用
+     $('#collapseChargeInfo,#collapseCostInfo').on('show.bs.collapse', function () {
+     var thisType = $(this).attr('id');
+     var type = 'Charge';
+     if('collapseChargeInfo'!=thisType){
+         type='Cost';
+     }
+     var div = $('#'+type+'Div').empty();
+     $('#collapse'+type+'Icon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+     var order_type = $('#type').val();
+     var customer_id = $('#customer_name').val();
+     if( customer_id == '' || order_type == ''){
+         $.scojs_message('客户和类型必填', $.scojs_message.TYPE_ERROR);
+         return;
+     }else{
+         
+         $.post('/customPlanOrder/getArapTemplate', {order_type:order_type,customer_id:customer_id,arap_type:type}, function(data){
+             if(data){
+                 for(var i = 0;i<data.length;i++){
+                     var json_obj = JSON.parse(data[i].JSON_VALUE);
+                     var li = '';
+                     var li_val = '';
+                     for(var j = 0;j<json_obj.length;j++){
+                         li +='<li '
+                             +' sp_name="'+json_obj[j].sp_name+'" '
+                             +'charge_eng_id="'+json_obj[j].CHARGE_ENG_ID+'" '
+                             +'charge_id="'+json_obj[j].CHARGE_ID+'" '
+                             +'currency_id="'+json_obj[j].CURRENCY_ID+'" '
+                             +'sp_id="'+json_obj[j].SP_ID+'" '
+                             +'unit_id="'+json_obj[j].UNIT_ID+'" '
+                             +'amount="'+json_obj[j].amount+'" '
+                             +'charge_name="'+json_obj[j].charge_name+'" '
+                             +'charge_name_eng="'+json_obj[j].charge_eng_name+'" '
+                             +'currency_name="'+json_obj[j].currency_name+'" '
+                             +'currency_total_amount="'+json_obj[j].currency_total_amount+'" '
+                             +'exchange_currency_id="'+json_obj[j].exchange_currency_id+'" '
+                             +'exchange_currency_name="'+json_obj[j].exchange_currency_name+'" '
+                             +'exchange_currency_rate="'+json_obj[j].exchange_currency_rate+'" '
+                             +'exchange_rate="'+json_obj[j].exchange_rate+'" '
+                             +'exchange_total_amount="'+json_obj[j].exchange_total_amount+'" '
+                             +'order_type="'+json_obj[j].order_type+'" '
+                             +'price="'+json_obj[j].price+'" '
+                             +'remark="'+json_obj[j].remark+'" '
+                             +'total_amount="'+json_obj[j].total_amount+'" '
+                             +'type="'+json_obj[j].type+'" '
+                             +'unit_name="'+json_obj[j].unit_name+'" '
+                             +'></li>';
+                         li_val += '<span></span> '+json_obj[j].sp_name+' , '+json_obj[j].charge_name+' , '+json_obj[j].total_amount+'<br/>';
+                     }
+                     
+                     div.append('<ul class="used'+type+'Info" id="'+data[i].ID+'">'
+                             +li
+                             +'<div class="radio">'
+                             +'  <a class="delete'+type+'Template" style="margin-right: 10px;padding-top: 5px;float: left;">删除</a>'
+                             +'  <div class="select'+type+'Template" style="margin-left: 60px;padding-top: 0px;">'
+                             +'      <input type="radio" value="1" name="used'+type+'Info">'
+                             +       li_val
+                             +'  </div>'
+                             +'</div><hr/>'
+                             +'</ul>');
+	                 }
+	             }else{
+	            	 div.append('<ul><li>无数据</li></ul>');
+	             }
+	         });
+	     }
+	 });
+	
+	  $('#collapseChargeInfo,#collapseCostInfo').on('hide.bs.collapse', function () {
+	     var thisType = $(this).attr('id');
+	     var type = 'Charge';
+	     if('collapseChargeInfo'!=thisType){
+	         type='Cost';
+	     }
+	     $('#collapse'+type+'Icon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
+	 });
+	  
+	  
+	  $('#ChargeDiv,#CostDiv').on('click', '.deleteChargeTemplate,.deleteCostTemplate', function(){
+	        $(this).attr('disabled', true);
+	        var ul = $(this).parent().parent();
+	        var id = ul.attr('id');
+	        $.post('/customPlanOrder/deleteArapTemplate', {id:id}, function(data){
+	            if(data){
+	                $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+	                $(this).attr('disabled', false);
+	                ul.css("display","none");
+	            }
+	        },'json').fail(function() {
+	            $(this).attr('disabled', false);
+	              $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+	        });
+	  });
+	  
+	    
+      $('#importBtn').on('click',function(){
+    	  var self = this;
+    	  var ids = [];
+    	  $('[name=checkBox]:checked').each(function(){
+    		  var id = $(this).parent().parent().attr('id');
+    		  ids.push(id); 
+    	  });
+    	
+    	  var charge_id = $($('#ChargeDiv [type=radio]:checked').parent().parent().parent()).attr("id");
+    	  var cost_id = $($('#CostDiv [type=radio]:checked').parent().parent().parent()).attr("id");
+    	  
+    	  if(ids.length && (charge_id>0 || cost_id>0)){
+    		  //self.disabled = true;
+    		  $.post('/feeBatchInput/importArapItem',{ids:ids.toString(),charge_id:charge_id,cost_id:cost_id},function(data){
+    			  if(data){
+    				  $.scojs_message('操作成功', $.scojs_message.TYPE_OK);
+    				  refleshTable();
+    			  }else{
+    				  $.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+    			  }
+    			  self.disabled = false;
+    		  });
+    	  }else{
+    		  $.scojs_message('请勾选你要带的费用明细和单据', $.scojs_message.TYPE_ERROR);
+    	  }
+      });
+      
+      
+      refleshTable = function(){
+      	var url = "/feeBatchInput/list?confirmFee=unConfirmFee";
+      	dataTable.ajax.url(url).load();
+      }
+      
+      
     });
 });
