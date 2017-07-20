@@ -458,9 +458,9 @@ public class CustomPlanOrderController extends Controller {
     private List<Record> getItems(String orderId, String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
-		Record office=Db.findFirst("SELECT DISTINCT o.type from custom_plan_order cpo LEFT JOIN office o on o.id = cpo.office_id "
-				+ " LEFT JOIN user_login u on u.office_id=cpo.office_id"
-				+ " LEFT JOIN job_order_custom_doc jocd on u.id = jocd.uploader where cpo.id = ?",orderId);
+		Record office=Db.findFirst("SELECT DISTINCT o.type from custom_plan_order cpo "
+				+ " LEFT JOIN party p on p.id = cpo.receive_sent_consignee "
+				+ "LEFT JOIN office o on o.id = p.office_id  where cpo.id = ",orderId);
     	if("cargo".equals(type)){
     		itemSql = " SELECT cpo.*,cur.name currency_name,l.name destination_country_item_name, concat(cen.code,' ',cen.name) exemption_name"
     				+ " FROM custom_plan_order_item cpo"
@@ -521,7 +521,8 @@ public class CustomPlanOrderController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
     	String id = getPara("id");
-    	String sql = "select cpo.*,l.name trading_country_name,l1.name destination_country_name,l2.name destination_port_name,sm.name supervision_mode_name,p.abbr hongkong_consignee_input"
+    	String sql = "select cpo.*,IF (cpo.office_id != 3,'other','self') other_flag,l.name trading_country_name,l1.name destination_country_name,l2.name destination_port_name,"
+    			+ " sm.name supervision_mode_name,p.abbr hongkong_consignee_input"
     			+ "	,p1.abbr head_carrier_name,l3.name aim_port_name,l4.name shipment_port_name,concat(ce.code,' ',ce.name) nature_of_exemption_name,"
     			+ " concat(cp.under_code,' ',cp.under_port) export_port_name, concat(cgs.code,' ',cgs.name) supply_of_goods_name,"
     			+ " l5.name appointed_port_name, p2.abbr boat_company_name, p3.abbr shipping_men_name, p4.abbr consignee_name, p5.abbr notice_man_name,"

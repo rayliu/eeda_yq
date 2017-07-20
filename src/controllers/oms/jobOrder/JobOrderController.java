@@ -3603,7 +3603,7 @@ public class JobOrderController extends Controller {
     	if(StringUtils.isEmpty(item_id)){//全选
     		Db.update("update job_order_custom_doc set share_flag =? where order_id = ? and order_type = '"+office.get("type")+"' ",check,order_id);
     	}else{//单选
-    		Db.update("update job_order_custom_doc set share_flag =? where id = ?",check,item_id);
+    		Db.update("update job_order_custom_doc set share_flag =? where id = ? and order_type='forwarderCompany'",check,item_id);
 //    		
 //    		List<Record> CPOList = Db.find("select cpod.* from custom_plan_order cpo where cpo.ref_job_order_id = ?",order_id);
 //    		for(Record re :CPOList){
