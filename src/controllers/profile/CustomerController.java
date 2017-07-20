@@ -36,6 +36,7 @@ import com.jfinal.upload.UploadFile;
 
 import controllers.eeda.ListConfigController;
 import controllers.util.DbUtils;
+import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
 @RequiresAuthentication
@@ -142,7 +143,7 @@ public class CustomerController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         String id = (String) dto.get("id");
-        
+        Long office_id = pom.getCurrentOfficeId();
         Party party = null;
         Long userId = LoginUserController.getLoginUserId(this);
         Date createDate = Calendar.getInstance().getTime();
@@ -163,6 +164,8 @@ public class CustomerController extends Controller {
             party.set("creator", userId);
             party.set("create_date", createDate);
             DbUtils.setModelValues(dto, party);
+            String code = OrderNoGenerator.getOrderNo("party",office_id);
+            party.set("code", code.replace("P", "C"));
             party.save();
             id = party.getLong("id").toString();
             

@@ -243,6 +243,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
         		itemOrder.refleshSalesmanTable(data.ID);
         		$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
         		$('#partyId').val(data.ID);
+        		$('#code').val(data.CODE);
         		$('#saveBtn').attr('disabled', false);
         		$("#fileuploadSpan").show();
         		

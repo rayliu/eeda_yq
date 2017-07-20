@@ -34,6 +34,41 @@ public class OrderNoGenerator {
 		return orderNo;
 	}
 	
+	public synchronized static String getOrderNo(String order_type, long officeId) {
+	    String orderNo = null;
+	    Record re = Db.findFirst("select * from code_produce where order_type = ? and office_id = ?",order_type,officeId);
+	    
+	    if(re != null){
+	    	String date_type = re.getStr("date_type");
+	    	String first_name = re.getStr("first_name");
+	    	int serial_length = re.getInt("serial_length");
+	    	int last_serial_no = re.getInt("last_serial_no")+1;
+	    	
+	    	SimpleDateFormat sdf = null;
+	    	sdf = new SimpleDateFormat(date_type);
+	        String middle_name = sdf.format(new Date());  //中间
+	        
+	        String serial = String.valueOf(last_serial_no);   //构造后的序号
+	        int length = String.valueOf(last_serial_no).length();
+        	if(length < serial_length){
+        		int c = serial_length - length;
+        		String sero = "";
+        		for (int j = 0; j < c; j++) {
+        			sero += "0";
+				}
+        		serial = sero+serial;
+        		
+        	}
+        	re.set("last_serial_no", last_serial_no);
+        	Db.update("code_produce",re);
+	        orderNo = first_name + middle_name + serial;
+	    }
+		return orderNo;
+	}
+	
+	
+	
+	
 	//按照年流水号生成单号
     private static String generateNo(String orderPrefix, long officeId,
             String dateStr) {
@@ -77,6 +112,9 @@ public class OrderNoGenerator {
 		}
 		return rs;
 	}
+	
+	
+	
 
 
 }

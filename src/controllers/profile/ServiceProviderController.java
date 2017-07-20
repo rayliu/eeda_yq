@@ -35,6 +35,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.eeda.ListConfigController;
 import controllers.util.DbUtils;
+import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
 @RequiresAuthentication
@@ -210,8 +211,9 @@ public class ServiceProviderController extends Controller {
             party.set("payment", getPara("payment"));
             party.set("charge_type", getPara("chargeType"));
             party.set("office_id", pom.getCurrentOfficeId());
-            
             setParty(party);
+            String code = OrderNoGenerator.getOrderNo("party",pom.getCurrentOfficeId());
+            party.set("code", code.replace("P", "S"));
             party.save();
 
         }

@@ -160,6 +160,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      			$("#status").val(data.STATUS);
      			var status= data.STATUS;
      			$("#status_").val(data.STATUS);
+     			$("#code").val(data.CODE);
      			$("#partyId").val(data.ID);
      			$("#sp_id").val(data.ID);
      			$("#addChargeType").attr("disabled",false);
