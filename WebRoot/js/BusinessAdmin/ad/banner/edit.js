@@ -90,6 +90,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			var ad_location = self.attr("ad_location");
 			var total_day = self.attr("total_day");
 			var total_price = self.attr("total_price");
+			$("#order_id").val(id);
 			$("#begin_date").val(begin_date);
 			$("#end_date").val(end_date);
 			$("#phone").val(phone);
