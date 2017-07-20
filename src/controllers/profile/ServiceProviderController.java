@@ -583,6 +583,8 @@ public class ServiceProviderController extends Controller {
                         + input
                         + "%' or p.abbr like '%"
                         + input
+                        + "%' or p.code like '%"
+                        + input
                         + "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) "
                         + " order by convert(p.abbr using gb2312) asc limit 10", parentID, parentID);
             }
@@ -594,6 +596,8 @@ public class ServiceProviderController extends Controller {
                                 + " and (p.company_name like '%"
                                 + input
                                 + "%' or p.abbr like '%"
+                                + input
+                                + "%' or p.code like '%"
                                 + input
                                 + "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) "
                                 + " order by convert(p.abbr using gb2312) asc limit 10",parentID,parentID);
