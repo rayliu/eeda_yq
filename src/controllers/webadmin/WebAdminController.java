@@ -191,7 +191,10 @@ public class WebAdminController extends Controller {
             render(strLoginPagePath);
         }
     }
-
+    public void logOut(){
+    	currentUser.logout();
+    	redirect("/WebAdmin");
+    }
 	private void setSysTitle() {
 		String serverName = getRequest().getServerName();
         String basePath = getRequest().getScheme()+"://"+getRequest().getServerName()+":"+getRequest().getServerPort()+"/";

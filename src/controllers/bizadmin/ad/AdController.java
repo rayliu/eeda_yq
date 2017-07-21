@@ -74,6 +74,7 @@ public class AdController extends Controller {
 		String end_date = (String)dto.get("end_date");
 		String put_in_days = (String)dto.get("put_in_days");
 		String total_price = (String)dto.get("total_price");
+		String remark = (String)dto.get("remark");
 		String status = "新建";
 		
 		Record order = new Record();
@@ -85,6 +86,7 @@ public class AdController extends Controller {
 		order.set("put_in_days", put_in_days);
 		order.set("creator", userId);
 		order.set("create_time", new Date());
+		order.set("remark", remark);
 		Db.save("wc_ad_dimond", order);
 		renderJson(order);
 	}
@@ -105,6 +107,7 @@ public class AdController extends Controller {
 		String price = (String)dto.get("price");
 		String total_price = (String)dto.get("total_price");
 		String phone = (String)dto.get("phone");
+		String remark = (String)dto.get("remark");
 		
 		if(StringUtils.isNotBlank(order_id)){
 			Record order = Db.findById("wc_ad_mobile_promotion", order_id);
@@ -113,6 +116,7 @@ public class AdController extends Controller {
 			order.set("price", price);
 			order.set("total_price",total_price);
 			order.set("phone",phone);
+			order.set("remark",remark);
 			
 			Db.save("wc_ad_mobile_promotion", order);
 		}else{
@@ -126,6 +130,7 @@ public class AdController extends Controller {
 			order.set("phone",phone);
 			order.set("status","新建");
 			order.set("creator", userId);
+			order.set("remark",remark);
 			order.set("create_time", new Date());
 			Db.save("wc_ad_mobile_promotion", order);
 		}
@@ -179,7 +184,8 @@ public class AdController extends Controller {
 		String price = (String) dto.get("price");
 		String telephone = (String) dto.get("phone");
 		String total_price = (String)dto.get("total_price");
-		String total_day=(String)dto.get("total_day");
+		String total_day = (String)dto.get("total_day");
+		String remark = (String)dto.get("remark");
 		Record order = null;
 		if(StringUtils.isNotBlank(id)){
 			//update
@@ -191,6 +197,7 @@ public class AdController extends Controller {
 	    	order.set("ad_location",ad_location);
 	    	order.set("total_day", total_day);
 	    	order.set("update_time", new Date());
+	    	order.set("remark", remark);
 	    	Db.update("wc_ad_banner", order);
 		}else{
 			//create
@@ -202,7 +209,7 @@ public class AdController extends Controller {
 	    	order.set("total_price", total_price);
 	    	order.set("ad_location",ad_location);
 	    	order.set("total_day", total_day);
-	    	
+	    	order.set("remark", remark);
 	    	order.set("create_time", new Date());
 	    	order.set("creator", user_id);
 	    	Db.save("wc_ad_banner", order);

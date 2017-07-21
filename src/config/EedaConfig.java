@@ -149,13 +149,14 @@ public class EedaConfig extends JFinalConfig {
         me.add("/BusinessAdmin/register", RegisterController.class);
         me.add("/BusinessAdmin/account", AccountController.class);
         me.add("/BusinessAdmin/product", controllers.bizadmin.product.ProductController.class);
-        me.add("/BusinessAdmin/ad", controllers.bizadmin.ad.AdController.class);
+        me.add("/BusinessAdmin/ad",controllers.bizadmin.ad.AdController.class);
         me.add("/BusinessAdmin/ad/cu", controllers.bizadmin.ad.CuController.class);
         me.add("/BusinessAdmin/case", controllers.bizadmin.weddingcase.CaseController.class);
         me.add("/BusinessAdmin/video", controllers.bizadmin.video.VideoController.class);
 	    
 	    //总管理的后台
 	    me.add("/WebAdmin", WebAdminController.class);
+	    me.add("/WebAdmin/account", controllers.webadmin.account.AccountController.class);
         me.add("/WebAdmin/dashBoard", DashBoardController.class);
         me.add("/WebAdmin/user", UserController.class);
         me.add("/WebAdmin/user/quotation", QuotationController.class);

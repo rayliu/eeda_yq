@@ -38,6 +38,7 @@ define(['jquery', 'sco', 'jquery_ui', 'validate_cn'], function ($) {
 		  }
 		  order.put_in_days =  $("#put_in_days").text();
 		  order.total_price = $("#total_price").text();
+		  order.remark = $("#remark").val();
 		  order.status = "新建";
 		 
 		  self.disabled = true;

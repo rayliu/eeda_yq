@@ -14,36 +14,12 @@
 <script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery.slimscroll.js"></script>
 <script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/custom/general.js"></script>
 <script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/custom/dashboard.js"></script>
-<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
-<!--[if IE 9]>
-    <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
-<![endif]-->
-<!--[if IE 8]>
-    <link rel="stylesheet" media="screen" href="css/style.ie8.css"/>
-<![endif]-->
-<!--[if lt IE 9]>
-    <script src="js/plugins/css3-mediaqueries.js"></script>
-<![endif]-->
-<script type="text/javascript">
-$(function(){
-    $('.hornav a').click(function(){
-        $('.hornav li').removeClass('current');
-        $(this).parent().addClass('current');
-        $("#personal").hide();
-        $("#company").hide();
-
-        var curShowType = $(this).data('type');
-        $("#"+curShowType).show();
-
-        if(curShowType=="personal"){
-            $("#Type").val(1);
-        }else{
-            $("#Type").val(2);
-        }
-    });
-});
-
-</script>
+<script src="/js/lib/require2.3.2.min.js"></script>
+<%include("/eeda/component/form/commonJs.html",{}){} %>
+<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet"> 
+<link href="/js/lib/jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet">
+<link href="/css/eeda.css" rel="stylesheet"> 
+<link href="/css/wedding/main.css" rel="stylesheet">
 <meta http-equiv="Content-Security-Policy" content="style-src * 'unsafe-inline' 'self' blob: data: file:"><meta name="chromesniffer" id="chromesniffer_meta" content="{&quot;jQuery&quot;:&quot;1.7&quot;,&quot;jQuery UI&quot;:&quot;1.8.16&quot;}"><script type="text/javascript" src="chrome-extension://fhhdlnnepfjhlhilgmeepgkhjmhhhjkh/js/detector.js"></script><style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
 .en-markup-crop-options {
     top: 18px !important;
@@ -59,12 +35,11 @@ $(function(){
 }
 </style></head><div id="ok_frame_wrapper"><iframe id="ok_frame" src="chrome-extension://bicdefpoleoohkhgcbbhambpghigfeid/build/extension.html" class="MC40MzY5Mjk4OTE3MzgyMzgyNk9LMTQ5OTIzNTUxNTQ1MQ MC4wMTg3ODk1OTk3MjQzMzkyNDVPSyBDb21wb25lbnRzIDE0OTkyMzU1MTU0NTE" style="display:none"></iframe><fp-div id="okmemo_overlay" class="MC4wMTg3ODk1OTk3MjQzMzkyNDVPSyBDb21wb25lbnRzIDE0OTkyMzU1MTU0NTE"><fp-div class="okmemo-nav"></fp-div><fp-div class="okmemo-current okmemo-tag" style="height:584px;"><fp-div class="okmemo-current-mark"><fp-div class="okmemo-con" id="okmemo_current_tag"><fp-span class="public-collection">全部</fp-span><fp-span class="collect-success">正在保存</fp-span></fp-div><fp-div class="okmemo-description">拖拽至此处以完成收集</fp-div></fp-div><fp-div class="okmemo-tmp-note"><fp-div class="okmemo-note-title"><fp-h2><fp-span id="okmemo_note_title"></fp-span></fp-h2></fp-div><fp-div class="okmemo-note-content"><fp-div class="okmemo-padding-con" id="okmemo_note_content"></fp-div></fp-div></fp-div></fp-div><fp-div class="okmemo-bottom-btn"><fp-div class="okmemo-bottom-area okmemo-no-tag okmemo-tag"><fp-div class="okmemo-con">待分类</fp-div></fp-div></fp-div><fp-div class="okmemo-others-wrapper" id="okmemo_others_wrapper"><fp-div class="okmemo-other okmemo-private okmemo-tag"><fp-div class="okmemo-con">私密</fp-div></fp-div></fp-div></fp-div></div>
 <body class="reg_header">
-<form method="post" action="/BusinessAdmin/register/done">
-<input type="hidden" name="LoginName" value="">
-<input type="hidden" name="Mobile" value="">
-<input type="hidden" name="LoginPass" value="">
-<input type="hidden" name="LoginPassConfirm" value="">
-<input type="hidden" id="Type" name="Type" value="1">
+
+<input type="hidden" name="login_name" value="${userInfo.login_name!''}">
+<input type="hidden" name="phone" value="${userInfo.phone!''}">
+<input type="hidden" name="password" value="${userInfo.password!''}">
+<input type="hidden" name="register_type"  id="register_type" value="1">
 <div class="bodywrapper">
     <!--topheader-->
     <!--leftmenu-->
@@ -78,6 +53,7 @@ $(function(){
             <li><a href="#company" data-type="company">企业注册</a></li>
         </ul>
         <div id="contentwrapper" class="contentwrapper">
+        <form  id="two_form">
             <div id="personal" class="subcontent">
                 <div class="registered " id="login-content">
                     <dl>
@@ -88,7 +64,7 @@ $(function(){
                         </dt>
                         <dd>
                             <div class="textin">
-                                <input type="text" name="Contact[1]">
+                                <input type="text" name="contact_1"/>
                             </div>
                         </dd>
                     </dl>
@@ -100,7 +76,7 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <input type="text" name="Tel[1]">
+                                <input type="text" name="telephone_1">
                             </div>
                         </dd>
                     </dl>
@@ -112,7 +88,8 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <input type="file" name="IDCard" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload">
+                                <input type="file" id="id_card" name="id_card" class="ehdel_upload"/>
+                                <img style="width: 200px; height: 150px;" class="shadow" src="" value="" id="img_id_card"/>
                                 <span class="red">图片为JPG格式，小于2M</span>
                             </div>
                         </dd>
@@ -126,7 +103,7 @@ $(function(){
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
                                 <div style="padding-top:5px;">
-                                    <select name="TradeType[1]">
+                                    <select name="trade_type_1">
                                                                                 <option value="1">影楼</option>
                                                                                 <option value="2">婚礼策划</option>
                                                                                 <option value="3">跟拍摄影</option>
@@ -142,7 +119,7 @@ $(function(){
                                                                                 <option value="13">烟酒</option>
                                                                                 <option value="14">珠宝</option>
                                                                                 <option value="15">酒店</option>
-                                                                            </select>
+                                    </select>
                                 </div>
                             </div>
                         </dd>
@@ -155,21 +132,21 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <select name="ShopProvince[1]" class="uniformselect">
-                                    <option value="">广东</option>
-                                    <option value="">广东</option>
-                                    <option value="">广东</option>
-                                    <option value="">广东</option>
-                                    <option value="">广东</option>
+                                <select name="shop_province_1" class="uniformselect">
+                                    <option value="1">广东</option>
+                                    <option value="2">广东</option>
+                                    <option value="4">广东</option>
+                                    <option value="5">广东</option>
+                                    <option value="6">广东</option>
                                 </select>
-                                <select name="ShopCity[1]" class="uniformselect">
-                                    <option value="">珠海</option>
-                                    <option value="">珠海</option>
-                                    <option value="">珠海</option>
-                                    <option value="">珠海</option>
-                                    <option value="">珠海</option>
+                                <select name="shop_city_1" id="shop_city_1" class="uniformselect">
+                                    <option value="6">珠海</option>
+                                    <option value="2">珠海</option>
+                                    <option value="3">珠海</option>
+                                    <option value="2">珠海</option>
+                                    <option value="2">珠海</option>
                                 </select>
-                                <input type="text" name="ShopAddress[1]">
+                                <input type="text" name="shop_address_1">
                             </div>
                         </dd>
                     </dl>
@@ -181,7 +158,7 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <input type="text" name="ShopTel[1]">
+                                <input type="text" name="shop_telephone_1">
                             </div>
                         </dd>
                     </dl>
@@ -193,7 +170,7 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <input type="text" name="QQ[1]">
+                                <input type="text" name="qq_1">
                             </div>
                         </dd>
                     </dl>
@@ -205,7 +182,7 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <textarea class="fill-detail" name="About[1]"></textarea>
+                                <textarea class="fill-detail" name="about_1"></textarea>
                             </div>
                         </dd>
                     </dl>
@@ -217,14 +194,15 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <input type="file" name="Logo[1]" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload">
+                                <input type="file" name="logo_1"  class="ehdel_upload" id="logo_1">
+                                <img style="width: 200px; height: 150px;" class="shadow" src="" value="" id="img_logo_1"/>
                                 <span class="red">图片为JPG格式，小于2M</span>
                             </div>
                         </dd>
                     </dl>
-                    <div style="padding-left:10px; margin-top:10px;">
+                    <!-- <div style="padding-left:10px; margin-top:10px;">
                         <button class="stdbtn btn_blue" style="width:200px;" onclick="window.location.href='verify.html'">下一步</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <!-- #updates -->
@@ -238,7 +216,7 @@ $(function(){
                         </dt>
                         <dd>
                             <div class="textin">
-                                <input type="text" name="Company[2]">
+                                <input type="text" name="company_name">
                             </div>
                         </dd>
                     </dl>
@@ -250,7 +228,7 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <input type="text" name="Contact[2]">
+                                <input type="text" name="contact_2"/>
                             </div>
                         </dd>
                     </dl>
@@ -262,7 +240,7 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <input type="text" name="Tel[2]">
+                                <input type="text" name="telephone_2"/>
                             </div>
                         </dd>
                     </dl>
@@ -274,7 +252,8 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <input type="file" name="CompanyPic[2]" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload">
+                                <input type="file" name="company_pic_2" class="ehdel_upload" id="company_pic_2"/>
+                                <img style="width: 200px; height: 150px;" class="shadow" src="" value="" id="img_company_pic_2"/>
                                 <span class="red">图片为JPG格式，小于2M</span>
                             </div>
                         </dd>
@@ -288,7 +267,7 @@ $(function(){
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
                                 <div style="padding-top:5px;">
-                                    <select name="TradeType[2]">
+                                    <select name="trade_type_2">
                                                                                 <option value="1">影楼</option>
                                                                                 <option value="2">婚礼策划</option>
                                                                                 <option value="3">跟拍摄影</option>
@@ -317,21 +296,21 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <select name="ShopProvince[2]" class="uniformselect">
-                                    <option value="">广东</option>
-                                    <option value="">广东</option>
-                                    <option value="">广东</option>
-                                    <option value="">广东</option>
-                                    <option value="">广东</option>
+                                <select name="shop_province_2" class="uniformselect">
+                                    <option value="1">广东</option>
+                                    <option value="2">广东</option>
+                                    <option value="4">广东</option>
+                                    <option value="5">广东</option>
+                                    <option value="6">广东</option>
                                 </select>
-                                <select name="ShopCity[2]" class="uniformselect">
-                                    <option value="">珠海</option>
-                                    <option value="">珠海</option>
-                                    <option value="">珠海</option>
-                                    <option value="">珠海</option>
-                                    <option value="">珠海</option>
+                                <select name="shop_city_2" id="shop_city_2" class="uniformselect">
+                                    <option value="1">珠海</option>
+                                    <option value="2">珠海</option>
+                                    <option value="3">珠海</option>
+                                    <option value="4">珠海</option>
+                                    <option value="5">珠海</option>
                                 </select>
-                                <input type="text" name="ShopAddress[2]">
+                                <input type="text" name="shop_address_2">
                             </div>
                         </dd>
                     </dl>
@@ -343,7 +322,7 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <input type="text" name="ShopTel[2]">
+                                <input type="text" name="shop_telephone_2">
                             </div>
                         </dd>
                     </dl>
@@ -355,7 +334,7 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <input type="text" name="QQ[2]">
+                                <input type="text" name="qq_2">
                             </div>
                         </dd>
                     </dl>
@@ -367,7 +346,7 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <textarea class="fill-detail" name="About[2]"></textarea>
+                                <textarea class="fill-detail" name="about_2"></textarea>
                             </div>
                         </dd>
                     </dl>
@@ -379,29 +358,36 @@ $(function(){
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <input type="file" name="Logo[2]" onchange="ehdel_upload_text.value=this.value" class="ehdel_upload">
+                                <input type="file" name="logo_2"  class="ehdel_upload" id="logo_2">
+                                <img style="width: 200px; height: 150px;" class="shadow" src="" value="" id="img_logo_2"/>
                                 <span class="red">图片为JPG格式，小于2M</span> 
                             </div>
                         </dd>
                     </dl>
-                    <div style="padding-left:10px; margin-top:10px;">
-                        <button onclick="this.form.submit()" class="stdbtn btn_blue" style="width:200px;">下一步</button>
-                    </div>
-                </div>
-            </div>
+                    
+                	</div>
+            	</div>
             <!-- #activities -->
+            </form>
+            <div style="padding-left:10px; margin-top:10px;">
+                <button type="button"  class="stdbtn btn_blue" style="width:200px;"  id="nextBtn">下一步</button>
+            </div>
         </div>
         <!--contentwrapper-->
     </div>
     <!-- centercontent -->
 </div>
-<!--bodywrapper-->
 
-</form>
+
+
 
 </body>
 
-
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+         requirejs(['/js/BusinessAdmin/register/info/index.js']);
+    });
+</script>
 
 
 </html>

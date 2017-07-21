@@ -93,6 +93,7 @@ public class CuController extends Controller {
         String begin_date=(String) dto.get("begin_date");
         String end_date=(String) dto.get("end_date");
         String total_day=(String) dto.get("total_day");
+        String remark=(String) dto.get("remark");
         String price=(String) dto.get("price");
         Long user_id = LoginUserController.getLoginUserId(this);
         Record order = new Record();
@@ -100,6 +101,7 @@ public class CuController extends Controller {
     	order.set("end_date", end_date);
     	order.set("total_day", total_day);
     	order.set("price", price);
+    	order.set("remark", remark);
     	order.set("create_time", new Date());
     	order.set("creator",user_id);
     	Db.save("wc_ad_buy", order);

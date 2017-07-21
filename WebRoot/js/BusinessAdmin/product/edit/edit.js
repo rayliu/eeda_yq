@@ -55,8 +55,7 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 				    		$.scojs_message('已选择', $.scojs_message.TYPE_OK);
 				    		$('#img_'+str+img_num).attr('value',data.result.NAME);
 				    		var imgPre =Id('img_'+str+img_num);
-				  		    imgPre.src = '/upload/'+data.result.NAME; 
-
+				  		    imgPre.src = '/upload/'+data.result.NAME;
 				    	}else{
 				    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
 				    	}
