@@ -420,7 +420,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/profit",controllers.arap.profitController.class, contentPath);
         
         //货代业务员报表
-//        me.add("/salesBillReport",controllers.arap.salesReport.SalesBillReportController.class, contentPath);
+        me.add("/salesBillReport",controllers.arap.salesReport.SalesBillReportController.class, contentPath);
 //        me.add("/profitReport",controllers.arap.ChargeBalanceReportController.class, contentPath);
         
         //贸易运营报表
