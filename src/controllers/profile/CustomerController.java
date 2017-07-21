@@ -156,7 +156,9 @@ public class CustomerController extends Controller {
             DbUtils.setModelValues(dto, party);
             if(StringUtils.isBlank(party.getStr("code"))){
             	String code = OrderNoGenerator.getOrderNo("party",office_id);
-                party.set("code", code.replace("P", "C"));
+            	if(StringUtils.isNotBlank(code)){
+            		party.set("code", code.replace("P", "C"));
+            	}
             }
             party.update();
 
@@ -169,7 +171,9 @@ public class CustomerController extends Controller {
             party.set("create_date", createDate);
             DbUtils.setModelValues(dto, party);
             String code = OrderNoGenerator.getOrderNo("party",office_id);
-            party.set("code", code.replace("P", "C"));
+            if(StringUtils.isNotBlank(code)){
+            	party.set("code", code.replace("P", "C"));
+            }
             party.save();
             id = party.getLong("id").toString();
             

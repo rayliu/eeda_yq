@@ -187,7 +187,9 @@ public class ServiceProviderController extends Controller {
             setParty(party);
             if(StringUtils.isBlank(party.getStr("code"))){
             	String code = OrderNoGenerator.getOrderNo("party",pom.getCurrentOfficeId());
-                party.set("code", code.replace("P", "S"));
+            	if(StringUtils.isNotBlank(code)){
+            		party.set("code", code.replace("P", "S"));
+            	}
             }            
             party.update();
         } else {
@@ -217,7 +219,9 @@ public class ServiceProviderController extends Controller {
             party.set("office_id", pom.getCurrentOfficeId());
             setParty(party);
             String code = OrderNoGenerator.getOrderNo("party",pom.getCurrentOfficeId());
-            party.set("code", code.replace("P", "S"));
+            if(StringUtils.isNotBlank(code)){
+            	party.set("code", code.replace("P", "S"));
+            }
             party.save();
 
         }
