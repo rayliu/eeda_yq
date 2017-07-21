@@ -653,9 +653,9 @@ public class CustomPlanOrderController extends Controller {
 							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
         			+ " FROM custom_plan_order cpo"
         			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
-        			+ " where (cpo.office_id="+office_id+ref_office+ ")"
+        			+ " where (cpo.office_id="+office_id+ ")"
         			+" and cpo.delete_flag='N'  or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建' "
-        			+" and cpo.delete_flag='N' )) A"
+        			+"  )) A"
     		        + " where 1 =1 and (arapTotal>0 or auditFlag is NULL)";
         }else if("confirmFee".equals(confirmFee)){
         	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.date_custom,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.receive_sent_consignee_input receive_company_name,ul.c_name creator_name,cpo.booking_no,"
@@ -678,9 +678,9 @@ public class CustomPlanOrderController extends Controller {
 							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
         			+ " FROM custom_plan_order cpo"
         			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
-        			+ " where (cpo.office_id="+office_id+ref_office+ ")"
+        			+ " where (cpo.office_id="+office_id+ ")"
         			+" and cpo.delete_flag='N'  or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建'"
-        			+" and cpo.delete_flag='N' )) A"
+        			+"  )) A"
     		        + " where 1 =1 and (arapTotal=0 and auditFlag is not NULL)";
         }else{
         	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.date_custom,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.receive_sent_consignee_input receive_company_name,ul.c_name creator_name,cpo.booking_no,"
@@ -697,9 +697,9 @@ public class CustomPlanOrderController extends Controller {
 							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
         			+ " FROM custom_plan_order cpo"
         			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
-        			+ " where (cpo.office_id="+office_id+ref_office+ ")"
+        			+ " where (cpo.office_id="+office_id+ ")"
         			+" and cpo.delete_flag='N'  or (cpo.to_office_id ="+office_id+" AND cpo.status!='新建'"
-        			+" and cpo.delete_flag='N' "
+        			
         			+ ")"
         			+ ") A"
     		        + " where 1 =1 ";

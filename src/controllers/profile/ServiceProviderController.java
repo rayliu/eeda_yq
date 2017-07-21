@@ -379,10 +379,10 @@ public class ServiceProviderController extends Controller {
 		if(StrKit.isBlank(input)){//从历史记录查找
             String sql = "select h.ref_id, p.id, p.abbr from user_query_history h, party p "
                     + "where h.ref_id=p.id and h.type='ARAP_COM' and h.user_id=?";
-            spList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
+            spList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
             if(spList.size()==0){
                 sql = "select p.* from party p where office_id="+office_id;
-                spList = Db.find(sql+" order by abbr limit 10");
+                spList = Db.find(sql+" order by abbr limit 25");
             }
             renderJson(spList);
         }else{
@@ -392,7 +392,7 @@ public class ServiceProviderController extends Controller {
                 sql +=" and (p.abbr like '%" + input + "%' or p.quick_search_code like '%" +input.toLowerCase()+ "%'"
                 	+ " or p.quick_search_code like '%" + input.toUpperCase() + "%') ";
             }
-            spList = Db.find(sql+" order by abbr limit 10");
+            spList = Db.find(sql+" order by abbr limit 25");
 
             renderJson(spList);
         }
@@ -415,7 +415,7 @@ public class ServiceProviderController extends Controller {
     						+ input
     						+ "%' or p.abbr like '%"
     						+ input
-    						+ "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) limit 0,10",parentID,parentID);
+    						+ "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) limit 0,25",parentID,parentID);
     	} else {
     		spList = Db
     				.find("select p.* from party p, office o where o.id = p.office_id and p.type='SP' and "
@@ -450,7 +450,7 @@ public class ServiceProviderController extends Controller {
 							+ input
 							+ "%' or c.postal_code like '%"
 							+ input
-							+ "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) limit 0,10",parentID,parentID);
+							+ "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) limit 0,25",parentID,parentID);
 		} else {
 			locationList = Db
 					.find("select p.*,c.*,p.id as pid from party p,contact c,office o where o.id = p.office_id and p.contact_id = c.id and"
@@ -584,7 +584,7 @@ public class ServiceProviderController extends Controller {
 		if(StrKit.isBlank(input)){//从历史记录查找
             String sql = "select h.ref_id, p.id, p.abbr name from user_query_history h, party p "
                     + "where h.ref_id=p.id and h.type='ARAP_COM' and h.user_id=?";
-            spList = Db.find(sql+" ORDER BY query_stamp desc limit 10", userId);
+            spList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
             if(spList.size()==0){
                 spList = Db.find(" select p.id,p.abbr name from party p, office o where o.id = p.office_id "
                         + " and (p.company_name like '%"
@@ -594,7 +594,7 @@ public class ServiceProviderController extends Controller {
                         + "%' or p.code like '%"
                         + input
                         + "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) "
-                        + " order by convert(p.abbr using gb2312) asc limit 10", parentID, parentID);
+                        + " order by convert(p.abbr using gb2312) asc limit 25", parentID, parentID);
             }
             renderJson(spList);
         }else{
@@ -608,12 +608,12 @@ public class ServiceProviderController extends Controller {
                                 + "%' or p.code like '%"
                                 + input
                                 + "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) "
-                                + " order by convert(p.abbr using gb2312) asc limit 10",parentID,parentID);
+                                + " order by convert(p.abbr using gb2312) asc limit 25",parentID,parentID);
             } else {
                 spList = Db
                         .find("select p.id,p.abbr name from party p, office o where o.id = p.office_id "
                                 + " and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?) "
-                                + " order by convert(p.abbr using gb2312) asc limit 10", parentID, parentID);
+                                + " order by convert(p.abbr using gb2312) asc limit 25", parentID, parentID);
             }
             renderJson(spList);
         }
@@ -827,7 +827,7 @@ public class ServiceProviderController extends Controller {
         if(!StringUtils.isBlank(name)){
             sql+=" and s.name like '%" + name + "%' ";
         }
-        rec = Db.find(sql + " limit 10");
+        rec = Db.find(sql + " limit 25");
         renderJson(rec);
     }
     
@@ -840,7 +840,7 @@ public class ServiceProviderController extends Controller {
     	if(!StringUtils.isBlank(input)){
     		sql+=" and (code like '%" + input + "%' or name like '%" + input + "%') ";
     	}
-    	rec = Db.find(sql + " limit 10");
+    	rec = Db.find(sql + " limit 25");
     	renderJson(rec);
     }
     
@@ -851,9 +851,11 @@ public class ServiceProviderController extends Controller {
     	List<Record> rec = null;
     	String sql = "select id,concat(code,' ',name) name from custom_goods_supply where 1=1 ";
     	if(!StringUtils.isBlank(input)){
-    		sql+=" and (code like '%" + input + "%' or name like '%" + input + "%') ";
+    		sql+=" and (code like '%" + input + "%' "
+    				+ " or name like '%" + input + "%'"
+    				+ " or concat(code,' ',name) like '%" + input + "%') ";
     	}
-    	rec = Db.find(sql + " limit 10");
+    	rec = Db.find(sql + " limit 25");
     	renderJson(rec);
     }
     
@@ -864,9 +866,11 @@ public class ServiceProviderController extends Controller {
     	List<Record> rec = null;
     	String sql = "select id,concat(under_code,' ',under_port) name from custom_port where 1=1 ";
     	if(!StringUtils.isBlank(input)){
-    		sql+=" and (code like '%" + input + "%' or under_port like '%" + input + "%' or under_code like '%" + input + "%') ";
+    		sql+=" and (code like '%" + input + "%' or under_port like '%" + input + "%' "
+    				+ " or under_code like '%" + input + "%'"
+    			    + " or concat(under_code,' ',under_port) like '%" + input + "%') ";
     	}
-    	rec = Db.find(sql + " limit 10");
+    	rec = Db.find(sql + " limit 25");
     	renderJson(rec);
     }
     
@@ -882,9 +886,11 @@ public class ServiceProviderController extends Controller {
     			+ " concat(ifnull(ifnull(address_eng, address),''),'\n',ifnull(ifnull(contact_person_eng, contact_person),''),'\n',ifnull(phone,''),ifnull(fax,'')) str"
     			+ " from party where office_id="+office_id + " and type in('CUSTOMER', 'SP')";
     	if(!StringUtils.isBlank(input)){
-    		sql+=" and (custom_registration like '%" + input + "%' or abbr like '%" + input + "%' or company_name like '%" + input + "%') ";
+    		sql+=" and (custom_registration like '%" + input + "%' "
+    			+ " or abbr like '%" + input + "%' or company_name like '%" + input + "%'"
+    			+ " or concat(abbr,' ',ifnull(custom_registration,'')) like '%" + input + "%') ";
     	}
-    	rec = Db.find(sql + " limit 10");
+    	rec = Db.find(sql + " limit 25");
     	renderJson(rec);
     }
     
