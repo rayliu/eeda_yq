@@ -14,6 +14,8 @@
                     ref_order_id = order.ref_job_order_id;
                 }else if(has(jobOrder) && (null != jobOrder.id!)){
                     ref_order_id = jobOrder.id;
+                }else if(has(tradeJobOrder) && (null != tradeJobOrder.id!)){
+                    ref_order_id = tradeJobOrder.id;
                 }
             %>
             <input id="ref_job_order_id" type = "hidden"  name="ref_job_order_id" value="${ref_order_id}"/>
@@ -32,7 +34,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                                {   id:'ref_no', 
                                                    label:'关联单号', 
-                                                   value:order.ref_no!jobOrder.order_no!''
+                                                   value:order.ref_no!jobOrder.order_no!tradeJobOrder.order_no!''
                                                }){}%>
                         </div>
                         <div class="col-lg-4">

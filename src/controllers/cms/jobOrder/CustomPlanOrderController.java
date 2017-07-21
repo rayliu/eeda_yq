@@ -79,7 +79,7 @@ public class CustomPlanOrderController extends Controller {
         String to_office_id = getPara("to_office_id");
         if("tradeCompany".equals(type)){
         	TradeJobOrder jo = TradeJobOrder.dao.findById(jobId);
-        	setAttr("jobOrder", jo);
+        	setAttr("tradeJobOrder", jo);
         }else{
         	JobOrder jo = JobOrder.dao.findById(jobId);
         	setAttr("jobOrder", jo);
