@@ -134,5 +134,65 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
           dataTable.ajax.url(url).load();
       };
+      
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='order_no'||selectField=='sp_name'||selectField=='fin_name'){
+	    	  $("#public_text").val("");
+	    	  $("#customer_name").hide();
+	    	  $("#single_flag").hide();
+	    	  $("#export_date").hide();
+	    	  $("#public_text").show();
+	      }
+	      if(selectField=='flag'){
+	    	  $("#public_text").hide();
+	    	  $("#customer_name").hide();
+	    	  $("#export_date").hide();
+	    	  $("#single_flag").show();
+	      }
+	      if(selectField=="customer_name"){
+	    	  $("#single_customer_nama_input").val("");
+	    	  $("#public_text").hide();
+	    	  $("#single_flag").hide();
+	    	  $("#export_date").hide();
+	    	  $("#customer_name").show();
+	      }
+	      if(selectField=="order_export_date"){
+	    	  $("#public_text").hide();
+	    	  $("#single_flag").hide();
+	    	  $("#customer_name").hide();
+	    	  $("#export_date").show();
+	      }
+     });
+	
+	$('#singleSearchBtn').click(function(){
+	     var selectField = $('#selected_field').val();
+	     var selectFieldValue = '';
+	     if(selectField=='order_no'||selectField=='sp_name'||selectField=='fin_name'){
+	    	 selectFieldValue = $("#public_text").val();
+	     }
+	     if(selectField=='flag'){
+	    	 selectFieldValue = $("#single_flag").val();
+	      }
+	     if(selectField=="customer_name"){
+	    	 selectFieldValue = $("#single_customer_nama_input").val();
+	      }
+	      if(selectField=="order_export_date"){
+	    	  var export_date_start_date = $("#single_export_date_begin_time").val();
+	    	  var export_date_end_date = $("#single_export_date_end_time").val();
+	      }
+	     var url = "/arapReport/list?"+selectField+"="+selectFieldValue
+	     		 +"&order_export_date_begin_time="+export_date_start_date
+	     		 +"&order_export_date_end_time="+export_date_end_date;
+	     dataTable.ajax.url(url).load();
+	});
   });
 });
