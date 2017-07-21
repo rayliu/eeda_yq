@@ -15,15 +15,36 @@
                             		<option value="order_no">Booking</option>
                             		<option value="creator_name">创建人</option>
 	                            	<option value="sp_name">被委托方</option>
-	                                <!-- <option value="create_stamp">创建时间</option> -->
+	                            	<option value="create_stamp">创建时间</option>
+	                            	<option value="sent_out_time">出货时间</option>
                             	</select>
 
-                            	<input type="text" class="form-control search-control" id="single_order_no" name="single_order_no">
-                            
-                           	 	<input type="text" class="form-control search-control" id="single_creator_name" name="single_creator_name" style="display: none;">
-                           	 
-                           	 	<input type="text" class="form-control search-control" id="single_sp_name" name="single_sp_name" style="display: none;">
-                           	 
+                            	<input type="text" class="form-control search-control" id="public_text">
+                            	<!-- <div style="display:none;float:right;" id="single_sp_name">
+	                            	<%include("/eeda/component/form/inputSpField.html", 
+	                                                  {   id: 'sp_name_k', 
+	                                                      style:'width:245px',
+	                                                      value: ''
+	                               	}){}%>
+	                            </div> -->
+                           	 	<div style="display:none;float:right;" id="single_sent_out_time">
+	                                <%include("/eeda/component/form/inputDateQueryField.html", 
+	                                                    {   id: 'sent_out_time_k', 
+	                                                        style:'width:245px',
+								                            begin_style:'width:90px',
+								                            end_style:'width:90px',  
+	                                                        value: ''
+	                                                    }){}%>
+	                            </div>
+                           	 	<div style="display:none;float:right;" id="single_create_stamp">
+	                                <%include("/eeda/component/form/inputDateQueryField.html", 
+	                                {   id:'create_stamp_k', 
+	                                    style:'width:245px',
+								        begin_style:'width:90px',
+								        end_style:'width:90px',  
+	                                    value:''
+	                                }){} %>
+	                            </div>
                           	</div>
                      	</div>
                     	<div class="col-lg-4"><!--  三列排版  -->
@@ -71,10 +92,9 @@
                         </div><!-- /.row-->
                          <div class="row"><!--  三列排版  -->
                          	 <div class="col-lg-4">
-                              <%include("/eeda/component/form/inputSpField.html", 
+                              <%include("/eeda/component/form/inputField.html", 
                                                   {   id: 'creator_name', 
                                                       label: '创建人',
-                                                      list:'list', 
                                                       value: ''
                                                   }){}%>
                             </div>

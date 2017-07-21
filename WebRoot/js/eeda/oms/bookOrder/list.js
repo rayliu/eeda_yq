@@ -67,38 +67,64 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           ]
       });
 
+      //简单查询下拉列表控制
       $("#selected_field").change(function(event){
     	  var selected_field = $("#selected_field").val();
-    	  if(selected_field == "order_no"){
-    		  $("#single_order_no").show();
-    		  $("#single_creator_name").hide();
+    	  if(selected_field == "order_no"||selected_field == "creator_name"||selected_field == "sp_name"){
+    		  $("#public_text").val("");
     		  $("#single_sp_name").hide();
-    	  }else if(selected_field == "creator_name"){
-    		  $("#single_order_no").hide();
-    		  $("#single_sp_name").hide();
-    		  $("#single_creator_name").show();
-    	  }else if(selected_field == "sp_name"){
-    		  $("#single_order_no").hide();
-    		  $("#single_creator_name").hide();
+    		  $("#single_create_stamp").hide();
+    		  $("#single_sent_out_time").hide();
+    		  $("#public_text").show();
+    	  }
+    	 /* if(selected_field == "sp_name"){
+    		  $("#sp_name_k_input").val("");
+    		  $("#public_text").hide();
+    		  $("#single_create_stamp").hide();
+    		  $("#single_sent_out_time").hide();
     		  $("#single_sp_name").show();
+    	  }*/
+    	  if(selected_field == "create_stamp"){
+    		  $("#public_text").hide();
+    		  $("#single_sent_out_time").hide();
+    		  $("#single_sp_name").hide();
+    		  $("#single_create_stamp").show();
+    	  }
+    	  if(selected_field == "sent_out_time"){
+    		  $("#public_text").hide();
+    		  $("#single_sp_name").hide();
+    		  $("#single_create_stamp").hide();
+    		  $("#single_sent_out_time").show();
     	  }
       });
-      
+      //简单查询按钮
       $('#singleSearchBtn').click(function(){
           var selectField = $('#selected_field').val();
           var orderStatus = $("#orderTabs li.active").text().trim();
+          var selectFieldValue = "";
           if(orderStatus=='全部'){
     		  orderStatus = "";
     	  }
-          if(selectField == 'order_no'){//Booking号
-            selectFieldValue = $('#single_order_no').val();
-          }else if(selectField == 'creator_name'){//创建人
-            selectFieldValue = $('#single_creator_name').val();
-          }else if(selectField == 'sp_name'){//被委托方
-            selectFieldValue = $('#single_sp_name').val();
+          if(selectField == "order_no"||selectField == "creator_name"||selectField == 'sp_name'){
+            selectFieldValue = $('#public_text').val();
           }
+          /*if(selectField == 'sp_name'){
+            selectFieldValue = $('#sp_name_k_input').val();
+          }*/
+          if(selectField == 'create_stamp'){
+        	var create_stamp_k_begin_time = $('#create_stamp_k_begin_time').val();
+        	var create_stamp_k_end_time = $('#create_stamp_k_end_time').val();
+          }
+          if(selectField == 'sent_out_time'){
+        	var sent_out_time_k_begin_time = $('#sent_out_time_k_begin_time').val();
+          	var sent_out_time_k_end_time = $('#sent_out_time_k_end_time').val();
+            }
           var url = "/bookOrder/list?"+selectField+"="+selectFieldValue
-                   +"&order_status="+orderStatus;
+                   +"&order_status="+orderStatus
+                   +"&create_stamp_begin_time="+create_stamp_k_begin_time
+                   +"&create_stamp_end_time="+create_stamp_k_end_time
+                   +"&order_export_date_begin_time="+sent_out_time_k_begin_time
+                   +"&order_export_date_end_time="+sent_out_time_k_end_time;
           dataTable.ajax.url(url).load();
       });
       
@@ -120,7 +146,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var end_date = $("#create_stamp_end_time").val();
           var sent_out_time_begin_time = $("#sent_out_time_begin_time").val();
           var sent_out_time_end_time = $("#sent_out_time_end_time").val();
-          var creator_name = $("#creator_name_input").val();
+          var creator_name = $("#creator_name").val();
           var sp_name = $("#sp_name_input").val();
           //var status = $('#status').val();
           //var customer_code = $("#customer_code").val().trim();
