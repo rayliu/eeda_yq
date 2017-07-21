@@ -134,7 +134,7 @@ public class CmsChargeCheckOrderController extends Controller {
 			 +" where 1 = 1 "
 			 + checkCondition
 			 +" and cpo.delete_flag='N' "
-			 + " and cpoa.audit_flag='Y' and cpoa.bill_flag='N'  and (cpo.office_id = "+office_id+ " or cpo.to_office_id="+office_id+")"
+			 + " and cpoa.bill_flag='N'  and (cpo.office_id = "+office_id+ " or cpo.to_office_id="+office_id+")"
 			 +"  GROUP BY cpoa.id " 
 			 + " ) B "
 			 +" where 1=1 ";
