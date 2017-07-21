@@ -97,16 +97,20 @@
                                     <div class="form-group table_btn_bar" >
                                         <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
                                         <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
-                                        <button id="lockBtn" class="btn btn_green"  type="button" disabled>工作单锁单</button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                    </div>
+                      
                 </div>
 
                 
             </div><!-- /.row 查询条件 结束-->
+            <div class="simple_row_div" >
+            	<button id="lockBtn" class="btn btn_green" style="margin-top:12px;margin-left:12px;" type="button" disabled>工作单锁单</button>
+            	<button id="unLockBtn" class="btn btn_green" style="margin-top:12px;" type="button" disabled>工作单解锁</button>
+            </div>
             <div class="row simple_list_div">
                 
                     <ul id="orderTabs" class="nav nav-tabs" >
@@ -141,7 +145,7 @@
                     <%include("/eeda/component/form/detailTable.html", 
                         {
                             id:'eeda-table', 
-                            headers:['<input type="checkBox" name="allCheckBox" >','','工作单号',
+                            headers:['<input type="checkBox" name="allCheckBox" >','工作单号',
                                 '类型',
                                 '出货时间',
                                 '客户名称',

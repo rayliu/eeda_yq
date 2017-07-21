@@ -3480,18 +3480,43 @@ public class JobOrderController extends Controller {
    		renderJson(order);
     }
    
-    //确认已完成工作单
+    //工作单锁单解锁
     @Before(Tx.class)
     public void confirmCompleted(){
-    	String id = getPara("id");
-    	
+    	String id = getPara("id"); 
     	String[] idArray = id.split(",");
-    	for (int i = 0; i < idArray.length; i++) {
-    		JobOrder order = JobOrder.dao.findById(idArray[i]);
-        	order.set("status", "已完成");
-        	order.update();
-		}
-    	
+    	String action = getPara("action");
+    	long user_id = LoginUserController.getLoginUser(this).getLong("id");
+    	String order_type = "jobOrderLock";
+    	Date action_time = new Date();
+    	if(action=="lock"||action.equals("lock")){
+    		for (int i = 0; i < idArray.length; i++) {
+        		JobOrder order = JobOrder.dao.findById(idArray[i]);
+            	order.set("status", "已完成");
+            	order.update();
+            	Record re = new Record();
+            	re.set("order_id", idArray[i]);
+            	re.set("user_id", user_id);
+            	re.set("order_type", order_type);
+            	re.set("action_time", action_time);
+            	re.set("action", action);
+            	Db.save("status_audit", re);
+    		}
+    	}
+    	if(action=="unLock"||action.equals("unLock")){
+    		for (int i = 0; i < idArray.length; i++) {
+        		JobOrder order = JobOrder.dao.findById(idArray[i]);
+            	order.set("status", "新建");
+            	order.update();
+            	Record re = new Record();
+            	re.set("order_id", idArray[i]);
+            	re.set("user_id", user_id);
+            	re.set("order_type", order_type);
+            	re.set("action_time", action_time);
+            	re.set("action", action);
+            	Db.save("status_audit", re);
+    		}
+    	}
     	renderJson("{\"result\":true}");
     }
     

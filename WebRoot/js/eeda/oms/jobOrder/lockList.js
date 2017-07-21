@@ -1,7 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-    
-  	  
+	  var final_status = '';
   	  if(type!=""){
   		  $('#orderTabs').css('display','none');
   	  }
@@ -11,7 +10,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           colReorder: true,
           // "pagingType":"full_numbers",
           serverSide: true, //不打开会出现排序不对
-//          ajax: "/jobOrder/list",
+          //= ajax: "/jobOrder/list",
            "drawCallback": function( settings ) {
                 $('.other').popover({
                     html: true,
@@ -23,23 +22,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           columns: [
 				{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
-              $('[name=allCheckBox]').attr("checked",true);
-				    	if(full.STATUS!='已完成'){
+				    	if($("#status").val()=='新建'){
+				    		$('[name=allCheckBox]').prop("checked",true);
 				    		return '<input type = "checkBox" name = "checkBox" checked>';
-				    	}else{
-				    		return '<input type = "checkBox" disabled name = "checkBox">';
 				    	}
-
+				    	if($("#status").val()=='已完成'){
+				    		$('[name=allCheckBox]').prop("checked",true);
+				    		return '<input type = "checkBox" name = "checkBox" checked>';
+				    		
+				    	}
+				    	return '<input type = "checkBox" name = "checkBox" >';
 				    }
 				},
-              { "width": "30px",
-                  "render": function ( data, type, full, meta ) {
-                    var str=""
-                    if(full.STATUS=='已完成') str="disabled";
-                    return '<button type="button" class="btn table_btn delete btn-xs" '+ str+'>'+
-                          '<i class="fa fa-trash-o"></i> 删除</button>';
-                  }
-              },
               { "data": "ORDER_NO", 
                   "render": function ( data, type, full, meta ) {
                 	  var other = '';
@@ -113,45 +107,69 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
               },
               { "data": "CREATOR_NAME"}, 
               { "data": "CREATE_STAMP"}, 
-              { "data": "STATUS"},
+              { "data": "STATUS","class":"status"},
               
           ]
       });
-          $('#eeda-table').on('click',' [type=checkBox]',function(){
-              $('[name=allCheckBox]').prop("checked",$('#eeda-table tbody [type=checkBox]:unchecked').size()==0)
-              //全选
-              if($('#eeda-table tbody [type=checkBox]:checked').size()>0){
-                  $('#lockBtn').attr('disabled',false);
-              }else{
+          
+    $('#eeda-table').on('click',' [type=checkBox]',function(){
+    	$('[name=allCheckBox]').prop("checked",$('#eeda-table tbody [type=checkBox]:unchecked').size()==0)
+        var current_status = $(this).parent().parent().find('.status').text();
+        	if($('#eeda-table tbody [type=checkBox]:checked').size()>0){
+        		if(current_status=='新建'){
+        			if($("#unLockBtn").prop('disabled')==false){
+        				$(this).attr("checked",false);
+        				$.scojs_message('状态不同的单，不能同时勾选', $.scojs_message.TYPE_ERROR);
+        				return;
+        			}
+        			$('#lockBtn').attr('disabled',false);
+            	}
+                if(current_status=='已完成'){
+                	if($("#lockBtn").prop('disabled')==false){
+                		$(this).attr("checked",false);
+        				$.scojs_message('状态不同的单，不能同时勾选', $.scojs_message.TYPE_ERROR);
+        				return;
+        			}
+                	$('#unLockBtn').attr('disabled',false);
+                }
+           }else{
                 $('#lockBtn').attr('disabled',true);
-              }
-          });
-          $('#eeda-table [name=allCheckBox]').on('click',function(){
-                  $('#eeda-table [type=checkBox]').prop('checked',this.checked);
-                  if($('#eeda-table tbody [type=checkBox]').size()>0){
-                        $('#lockBtn').attr('disabled',!this.checked);
-                  }
-          });
-
-
-      //base on config hide cols
+                $('#unLockBtn').attr('disabled',true);
+           }
+       });
+       //全选
+       $('#eeda-table [name=allCheckBox]').click(function(){
+           if(final_status=='已完成'){
+        	   $('#eeda-table [type=checkBox]').prop('checked',this.checked);
+           }
+           if(final_status=='新建'){
+        	   $('#eeda-table [type=checkBox]').prop('checked',this.checked);
+           }
+           if($('#eeda-table tbody [type=checkBox]').size()>0){
+        	   if(final_status=='新建'){
+        		   $('#lockBtn').attr('disabled',!this.checked);
+               }
+	           if(final_status=='已完成'){
+	        	   $('#unLockBtn').attr('disabled',!this.checked);
+	           }
+           }
+       });
+                
+     //base on config hide cols
       dataTable.columns().eq(0).each( function(index) {
           var column = dataTable.column(index);
           $.each(cols_config, function(index, el) {
-              
               if(column.dataSrc() == el.COL_FIELD){
-                
-                if(el.IS_SHOW == 'N'){
-                  column.visible(false, false);
-                }else{
-                  column.visible(true, false);
-                }
+            	  if(el.IS_SHOW == 'N'){
+            		  column.visible(false, false);
+            	  }else{
+            		  column.visible(true, false);
+            	  }
               }
           });
       });
-      
      
-      
+    //工作单锁单
       $('#lockBtn').on('click',function(){
     	  checkNum = 0;
     	  var self = this;
@@ -162,9 +180,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
     		  var id  = $(this).parent().parent().attr('id');
     		  idArray.push(id);
     	  });
+    	  var action = 'lock';
     	  
-    	  
-    	  $.post('/jobOrder/confirmCompleted',{id:idArray.toString()},function(data){
+    	  $.post('/jobOrder/confirmCompleted',{id:idArray.toString(),action:action},function(data){
     		  if(data.result){
     			  $.scojs_message('锁单成功', $.scojs_message.TYPE_OK);
     			  searchData();
@@ -179,24 +197,50 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
               $.scojs_message('后台出错', $.scojs_message.TYPE_ERROR);
           });
       });
+      
+      //工作单解锁
+      $("#unLockBtn").click(function(){
+    	  checkNum = 0;
+    	  var self = this;
+    	  self.disabled = true;
+    	  
+    	  var idArray = [];
+    	  $('#eeda-table [name=checkBox]:checked').each(function(){
+    		  var id  = $(this).parent().parent().attr('id');
+    		  idArray.push(id);
+    	  });
+    	  var action = 'unLock';
+    	  $.post('/jobOrder/confirmCompleted',{id:idArray.toString(),action:action},function(data){
+    		  if(data.result){
+    			  $.scojs_message('解锁成功', $.scojs_message.TYPE_OK);
+    			  searchData();
+    		  }else{
+    			  $.scojs_message('解锁失败', $.scojs_message.TYPE_ERROR);
+    			  self.disabled = false;
+    		  }
+    		  //$.unblockUI();
+    	  }).fail(function() {
+    		  //$.unblockUI();
+    		  self.disabled = false;
+              $.scojs_message('后台出错', $.scojs_message.TYPE_ERROR);
+          });
+      });
 
-      
-      
-      
+      //清空条件按钮
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
-
+      //查询按钮
       $('#searchBtn').click(function(){
-          searchData(); 
-          var transport_type = $("#transport_type option:selected").text();
+    	  searchData();
+          /*var transport_type = $("#transport_type option:selected").text();
           $('#orderTabs .active').removeClass('active');
           $('#orderTabs a').each(function(){
         	  var value = $(this).text();
         	  if(value==transport_type){
         		  $(this).parent().addClass('active');
         	  }
-          })
+          })*/
       })
 
      var searchData=function(type){
@@ -232,10 +276,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
              //  }else{
              //    $('#lockBtn').attr('disabled',true);
              //  }
+        	  final_status = $("#status").val();
+        	  if(final_status=='已完成'){
+        		  $("#unLockBtn").attr("disabled",false);
+        	  }else{
+        		  $("#unLockBtn").attr("disabled",true);
+        	  }
+        	  if(final_status=='新建'){
+        		  $("#lockBtn").attr("disabled",false);
+        	  }else{
+        		  $("#lockBtn").attr("disabled",true);
+        	  }
           });
       };
-      
-      $('#orderTabs a').click(function(){
+    /*  $('#orderTabs a').click(function(){
     	  var value = $(this).text();
     	  var transport_type = "";
     	  if(value=="报关"){
@@ -255,10 +309,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
     	  }
     	  searchData(transport_type);
 
-      })
+      })*/
       
       
-      $("#eeda-table").on('click', '.delete', function(){
+      /*$("#eeda-table").on('click', '.delete', function(){
     	  var tr = $(this).parent().parent();
           var id = tr.attr('id');
     	  $('#delete_id').val(id);
@@ -281,7 +335,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           },'json').fail(function() {
               $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
           });
-      });
+      });*/
       
   });
 });
