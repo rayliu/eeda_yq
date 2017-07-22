@@ -8,7 +8,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对 
           ajax: "/chargeBalanceReport/list",
           initComplete:function(settings){
-    	  cssTd();
+        	  tableStyle();
           },
           columns: [
       			{ "data": "ABBR", "width": "120px","className":"abbr"},
@@ -89,7 +89,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return '<span style="color:red;">'+eeda.numFormat(data,3)+'</span>';
 				  }
 	            },
-	            {
+	            {"width": "80px",
 					"render": function(data, type, full, meta) {
 						return ((parseFloat((full.CHARGE_RMB-full.UNCHARGE_RMB) / full.CHARGE_RMB).toFixed(4))*100).toFixed(2);
 					}
@@ -121,11 +121,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#searchBtn').click(function(){
           searchData(); 
       })
-      
-      var cssTd=function(){
-    	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
-    	  $("#eeda_table td:nth-child(11)").css('background-color','#f5f5dc');
-      }
       
       
 	
@@ -205,5 +200,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           dataTable.ajax.url(url).load();
       };
       searchData();
+      
+      
+      var tableStyle = function(){
+    	  $('.oneRow').css('line-height','30px');
+    	  $('.doubleRow').css('text-align','center');
+    	  
+    	  var tableName = "eeda_table";
+    	  //格式【合成表头的第一列位置，合成的列数，颜色】
+    	  var array= [[2,5,'#f8fff0'],[7,5,'#eeffff']];
+    	  for (var i = 0; i < array.length; i++) {
+    		  var firstChild = array[i][0];
+        	  var cols = array[i][1];
+        	  var bgColor = array[i][2];
+        	  for (var j = firstChild; j < (firstChild+cols); j++) {
+        		  $("#"+tableName+" td:nth-child("+j+")").css('background-color',bgColor);
+        	  }
+		  }
+      }
   });
 });

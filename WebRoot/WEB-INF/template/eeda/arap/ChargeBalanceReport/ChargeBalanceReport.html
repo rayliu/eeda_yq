@@ -67,14 +67,34 @@
 			</div>
 		 </div>
 		 <div class="row simple_list_div">
-                                     <%include("/eeda/component/form/detailTableWithFoot.html", 
-                                        {
-                                            id:'eeda_table', 
-                                           
-                                            headers:['结算公司','应收CNY','应收USD','应收JPY','应收HKD','折合应收(CNY)','未收CNY','未收USD','未收JPY','未收HKD','折合未收(CNY)','回款率（%）'
-                                            ]
-                                        }){} %>
-               
+		 	<div class="row simple_list_div">  
+               	<table id="eeda_table" class="table table-striped table-bordered table-hover display" cellspacing="0" style="width:100%">
+				    <thead class="eeda head">
+				   		<tr>
+				   			<th class="oneRow" rowspan='2'>结算公司</th>
+				   			<th class="doubleRow" colspan='5'>应收费用</th>
+				   			<th class="doubleRow" colspan='5'>未付费用</th>
+				   			<th class="oneRow" rowspan='2'>回款率/%</th>
+				   		</tr>
+				        <tr>
+				        	<th>应收(CNY)</th>
+				        	<th>应收(USD)</th>
+				        	<th>应收(JPY)</th>
+				        	<th>应收(HKD)</th>
+				        	<th>折合应收(CNY)</th>
+				        	<th>未收CNY</th>
+				        	<th>未收USD</th>
+				        	<th>未收JPY</th>
+				        	<th>未收HKD</th>
+				        	<th>折合未收(CNY)</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				    </tbody>
+				    <tfoot>
+				    </tfoot>
+				</table>     
+			</div>
             </div>
         </div><!-- end of  .page-wrapper-->
 

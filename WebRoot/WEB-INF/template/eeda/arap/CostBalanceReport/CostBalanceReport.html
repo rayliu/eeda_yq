@@ -58,12 +58,35 @@
                                     <div class="form-group button-bar" >
                                         <span style="margin-left:70%;color:#AAAAAA">* 注：付款率 = 确认付款金额 / 应付金额
                                     </div>
-                                     <%include("/eeda/component/form/detailTableWithFoot.html", 
-                                        {
-                                            id:'eeda_table', 
-                                            headers:['结算公司','应付CNY','应付USD','应付JPY','应付HKD','折合应付(CNY)','未付CNY','未付USD','未付JPY','未付HKD','折合未付(CNY)','付款率（%）'
-                                            ]
-                                        }){} %>
+                                    
+                                    <div class="row simple_list_div">  
+						               	<table id="eeda_table" class="table table-striped table-bordered table-hover display" cellspacing="0" style="width:100%">
+										    <thead class="eeda head">
+											    <tr>
+										   			<th class="oneRow" rowspan='2'>结算公司</th>
+										   			<th class="doubleRow" colspan='5'>应付费用</th>
+										   			<th class="doubleRow" colspan='5'>未付费用</th>
+										   			<th class="oneRow" rowspan='2'>回款率/%</th>
+										   		</tr>
+										        <tr>
+										        	<th>应付(CNY)</th>
+										        	<th>应付(USD)</th>
+										        	<th>应付(JPY)</th>
+										        	<th>应付(HKD)</th>
+										        	<th>折合应付(CNY)</th>
+										        	<th>未付CNY</th>
+										        	<th>未付USD</th>
+										        	<th>未付JPY</th>
+										        	<th>未付HKD</th>
+										        	<th>折合未付(CNY)</th>
+										        </tr>
+										    </thead>
+										    <tbody>
+										    </tbody>
+										    <tfoot>
+										    </tfoot>
+										</table>     
+									</div>
                  </div> <!-- /.col-lg-12 -->
                </div> <!-- /.panel panel-default -->
             </div> <!-- /.simple_search_div -->
