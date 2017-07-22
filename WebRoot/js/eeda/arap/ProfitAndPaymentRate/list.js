@@ -187,7 +187,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  
         	  var tableName = "eeda_table";
         	  //格式【合成表头的第一列位置，合成的列数，颜色】
-        	  var array= [[2,5,'#eeffff']];
+        	  var array= [[2,5,'#f8fff0'],[7,5,'#eeffff']];
         	  for (var i = 0; i < array.length; i++) {
         		  var firstChild = array[i][0];
             	  var cols = array[i][1];
