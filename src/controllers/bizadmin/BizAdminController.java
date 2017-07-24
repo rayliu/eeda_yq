@@ -200,5 +200,10 @@ public class BizAdminController extends Controller {
         currentUser.logout();
         redirect("/BusinessAdmin/login");
     }
+    
+    public void getLoginUser(){
+    	UserLogin ul = LoginUserController.getLoginUser(this);
+    	renderJson(ul);
+    }
 
 }

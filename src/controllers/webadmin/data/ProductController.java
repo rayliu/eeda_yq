@@ -93,16 +93,9 @@ public class ProductController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-         
-/*    	String sql = "select * from ("
-    			+ " select m.*, u.c_name create_name, u1.c_name update_name"
-        		+ " from msg_board m "
-        		+ " left join user_login u on u.id = m.creator"
-        		+ " left join user_login u1 on u1.id = m.updator"
-        		+ " where m.office_id="+office_id
-        		+ " ) A where 1=1 ";*/
+
         String sql="select ul.c_name productor,wp.* from wc_product wp "
-        		+ "LEFT JOIN user_login ul on wp.id=ul.id"
+        		+ "LEFT JOIN user_login ul on ul.id = wp.creator"
         		+ " where wp.creator="+user_id+" "+sLimit;
     	
     	String condition = DbUtils.buildConditions(getParaMap());

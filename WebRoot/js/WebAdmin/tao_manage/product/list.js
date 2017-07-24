@@ -11,7 +11,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap'], function ($, metisMenu) 
                      {"data": "NAME", "width":"120px"},
                      {"data": "COVER", "width":"150px",
                     	 "render":function(data){
-                    		 return "<img src="+data+" width='229' height='115'/>"
+                    		 return "<img src='/upload/"+data+"' width='120' height='90'/>"
                     	 }
                      }, 
                      {"data": "PRICE", "width":"60px"},

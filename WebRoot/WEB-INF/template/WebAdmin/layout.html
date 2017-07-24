@@ -10,11 +10,23 @@
 
 <link rel="stylesheet" href="/css/wedding/style.default.css" type="text/css" />
 <link rel="stylesheet" href="/css/wedding/pagestyle.css" type="text/css" />
-<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet"> 
-<link href="/js/lib/jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet">
-<link href="/css/eeda.css" rel="stylesheet"> 
 
-<script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery-1.7.min.js"></script>
+
+<link href="/css/wedding/plugins/colorbox.css" rel="stylesheet">
+<link href="/css/wedding/plugins/colorpicker.css" rel="stylesheet">
+<link href="/css/wedding/plugins/fullcalendar.css" rel="stylesheet">
+<link href="/css/wedding/plugins/jquery.alerts.css" rel="stylesheet">
+<link href="/css/wedding/plugins/jquery.chosen.css" rel="stylesheet">
+<link href="/css/wedding/plugins/jquery.jgrowl.css" rel="stylesheet">
+<link href="/css/wedding/plugins/jquery.tagsinput.css" rel="stylesheet">
+<link href="/css/wedding/plugins/jquery.ui.autocomplete.css" rel="stylesheet">
+<link href="/css/wedding/plugins/jquery.ui.css" rel="stylesheet">
+<link href="/css/wedding/plugins/ui.spinner.css" rel="stylesheet">
+<link href="/css/wedding/plugins/uniform.tp.css" rel="stylesheet">
+<link href="/css/eeda.css" rel="stylesheet"> 
+<link href="/css/wedding/main.css" rel="stylesheet"> 
+
+<!-- <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery-1.7.min.js"></script>
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery.cookie.js"></script>
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery.uniform.min.js"></script>
@@ -22,10 +34,33 @@
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery.flot.resize.min.js"></script>
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/plugins/jquery.slimscroll.js"></script>
 <script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/custom/general.js"></script>
-<script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/custom/dashboard.js"></script>
-<script src="/js/lib/require2.3.2.min.js"></script>
+<script type="text/javascript" src="http://www.iwedclub.com/WebAdmin/js/custom/dashboard.js"></script> -->
+<script type="text/javascript" src="http://www.iwedclub.com/BusinessAdmin/js/plugins/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="/js/lib/jquery/jquery-1.10.2.js"></script>
+
+<script src="/js/wedding/plugins/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="/js/wedding/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="/js/wedding/plugins/jquery.cookie.js"></script>
+<script type="text/javascript" src="/js/wedding/plugins/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="/js/wedding/plugins/jquery.flot.min.js"></script>
+<script type="text/javascript" src="/js/wedding/plugins/jquery.flot.resize.min.js"></script>
+<script type="text/javascript" src="/js/wedding/plugins/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="/js/wedding/custom/general.js"></script>
+<script type="text/javascript" src="/js/wedding/custom/dashboard.js"></script>
+
 
 <script type="text/javascript" src="/js/lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+<script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
+<script>
+$().ready(function(){
+	$.post('/WebAdmin/getLoginUser',function(data){
+		if(data){
+			$('.login_name').text(data.C_NAME);
+			$('#email').text(data.USER_NAME);
+		}
+	});
+});
+</script>
 
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/plugins/excanvas.min.js"></script><![endif]-->
 <!--[if IE 9]>
@@ -51,14 +86,14 @@
         <!--<div class="notification">
             <a class="count" href="ajax/notifications.html"><span>9</span></a>
         </div>-->
-        <div class="userinfo"> <img src="images/thumbs/avatar.png" alt="" /> <span>管理员</span> </div>
+        <div class="userinfo"> <img src="/images/thumbs/avatar.png" alt="" /> <span class="login_name">管理员</span> </div>
         <!--userinfo-->
         <div class="userinfodrop">
-            <div class="avatar"> <a href=""><img src="images/thumbs/avatarbig.png" alt="" /></a> </div>
+            <div class="avatar"> <a href=""><img src="/images/thumbs/avatarbig.png" alt="" /></a> </div>
             <!--avatar-->
             <div class="userdata">
-                <h4>Juan</h4>
-                <span class="email">youremail@yourdomain.com</span>
+                <h4 class="login_name">Juan</h4><br/>
+                <span class="email" id="email">youremail@yourdomain.com</span>
                 <ul>
                     <li><a href="editprofile.html">编辑资料</a></li>
                     <li><a href="/WebAdmin/account">账号设置</a></li>
@@ -97,6 +132,7 @@
   <br />
 </div>
 <!--leftmenu-->    
+<script src="/js/lib/require2.3.2.min.js"></script>
 <%include("/eeda/component/form/commonJs.html",{}){} %>
 <div class="centercontent">
         ${layoutContent}

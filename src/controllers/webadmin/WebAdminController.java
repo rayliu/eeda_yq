@@ -218,5 +218,10 @@ public class WebAdminController extends Controller {
         currentUser.logout();
         redirect("/WebAdmin/login");
     }
+    
+    public void getLoginUser(){
+    	UserLogin ul = LoginUserController.getLoginUser(this);
+    	renderJson(ul);
+    }
 
 }
