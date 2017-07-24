@@ -55,6 +55,43 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
       });
 
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+      //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='"plan_order_no"'||selectField=='job_order_no'||selectField=='charge_check_no'||selectField=='cost_check_no'||selectField=='charge_app_no'||selectField=='cost_app_no'){
+	    	  $("#public_text").val("");
+	    	  $("#customer_name_show").hide();
+	    	  $("#public_text").show();
+	      }
+	      if(selectField=="customer_name"){
+	    	  $("#single_customer_name_input").val("");
+	    	  $("#public_text").hide();
+	    	  $("#customer_name_show").show();
+	      }
+     });
+	
+	$('#singleSearchBtn').click(function(){
+	     var selectField = $('#selected_field').val();
+	     var selectFieldValue = '';
+	     if(selectField=='"plan_order_no"'||selectField=='job_order_no'||selectField=='charge_check_no'||selectField=='cost_check_no'||selectField=='charge_app_no'||selectField=='cost_app_no'){
+	    	 selectFieldValue = $("#public_text").val();
+	     }
+	     if(selectField=="customer_name"){
+	    	 selectFieldValue = $("#single_customer_name_input").val();
+	      }
+	     
+	     var url = "/orderStatus/list?"+selectField+"="+selectFieldValue;
+	     dataTable.ajax.url(url).load();
+	});
+      
+      
       var orderUrl = function(data){
     	  var array = [];
     	  var re = "";
@@ -80,7 +117,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           
-          var customer_id = $("#customer_id").val();
+          var customer_name = $("#customer_name_input").val();
           var plan_order = $.trim($("#plan_order").val()); 
           var job_order = $.trim($("#job_order").val()); 
           var charge_check = $.trim($("#charge_check").val()); 
@@ -91,7 +128,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           
           //增加出口日期查询
           var url = "/orderStatus/list?"
-        	    + "customer_id="+customer_id
+        	    + "customer_name="+customer_name
           	    +"&plan_order_no="+plan_order
           	    +"&job_order_no="+job_order
 	          	+"&charge_check_no="+charge_check
