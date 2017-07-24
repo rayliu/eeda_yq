@@ -92,6 +92,8 @@ public class AdController extends Controller {
 	}
 	
 	public void mobile(){
+		String sql="select * from price_maintain where id=1";
+		setAttr("price", Db.findFirst(sql).get("price"));
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	

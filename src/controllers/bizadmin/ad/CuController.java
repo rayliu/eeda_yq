@@ -37,8 +37,11 @@ public class CuController extends Controller {
         String id = getPara("id");
         Long user_id = LoginUserController.getLoginUserId(this);
         String sql="select * from wc_ad_buy where creator ="+user_id;
+        String per_price="select * from price_maintain where id =5";
         Record user=Db.findFirst(sql);
+        Record price=Db.findFirst(per_price);
         setAttr("user", user);
+        setAttr("per_price", price.get("price"));
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	
