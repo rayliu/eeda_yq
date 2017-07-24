@@ -209,85 +209,63 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
       //简单查询
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
-	      if(selectField == 'sono_like'){
-	     	 $('#single_sono').show();
-	          $('#single_container_no').hide();
-	          $('#single_status_list').hide();
-	          $('#single_order_no').hide();
-	          $('#single_old_order_no').hide();
-	          $('#single_customer_name').hide();
-	          $('#single_customer_code').hide();
+	      if(selectField == 'sono_like'||selectField == 'container_no'||selectField == 'old_order_no'||selectField == 'order_no'||selectField == 'customer_code_like'){
+	    	  $('#public_text').val("");
+	    	  $('#customer_name_show').hide();
+	    	  $('#single_status_list').hide();
+	    	  $('#create_stamp_show').hide();
+	    	  $('#sent_out_time_show').hide();
+	    	  $('#public_text').show();
 	      }else if(selectField == 'status'){
-	    	  $('#single_sono').hide();
-		      $('#single_container_no').hide();
-		      $('#single_order_no').hide();
-		      $('#single_old_order_no').hide();
-		      $('#single_customer_name').hide();
-		      $('#single_customer_code').hide()
-		      $('#single_status_list').show();
-	     }else if(selectField=='container_no'){
-	     	  $('#single_sono').hide();
-	          $('#single_status_list').hide();
-	          $('#single_order_no').hide();
-	          $('#single_old_order_no').hide();
-	          $('#single_customer_name').hide();
-	          $('#single_customer_code').hide();
-	          $('#single_container_no').show();
-	     }else if(selectField=='old_order_no'){
-	     	  $('#single_sono').hide();
-	          $('#single_container_no').hide();
-	          $('#single_status_list').hide();
-	          $('#single_order_no').hide();
-	          $('#single_customer_name').hide();
-	          $('#single_customer_code').hide();
-	          $('#single_old_order_no').show();
-	     }else if(selectField=='order_no'){
-	     	  $('#single_sono').hide();
-	          $('#single_container_no').hide();
-	          $('#single_status_list').hide();
-	          $('#single_old_order_no').hide();
-	          $('#single_customer_name').hide();
-	          $('#single_customer_code').hide();
-	          $('#single_order_no').show();
-	     }else if(selectField=='customer_name'){
-	     	  $('#single_sono').hide();
-	          $('#single_container_no').hide();
-	          $('#single_status_list').hide();
-	          $('#single_order_no').hide();
-	          $('#single_old_order_no').hide();
-	          $('#single_customer_code').hide();
-	          $('#single_customer_name').show();
-         }else if(selectField=='customer_code_like'){
-         	  $('#single_sono').hide();
-              $('#single_container_no').hide();
-              $('#single_status_list').hide();
-              $('#single_order_no').hide();
-              $('#single_old_order_no').hide();
-              $('#single_customer_name').hide();
-              $('#single_customer_code').show();
-        }
+	    	  $('#customer_name_show').hide();
+	    	  $('#public_text').hide();
+	    	  $('#create_stamp_show').hide();
+	    	  $('#sent_out_time_show').hide();
+	    	  $('#single_status_list').show();
+	      }else if(selectField == 'customer_name'){
+	    	  $('#single_status_list').hide();
+	    	  $('#public_text').hide();
+	    	  $('#sent_out_time_show').hide();
+	    	  $('#create_stamp_show').hide();
+	    	  $('#customer_name_show').show();
+         }else if(selectField == 'create_stamp'){
+	    	  $('#single_status_list').hide();
+	    	  $('#public_text').hide();
+	    	  $('#customer_name_show').hide();
+	    	  $('#sent_out_time_show').hide();
+	    	  $('#create_stamp_show').show();
+         }else if(selectField == 'sent_out_time'){
+	    	  $('#single_status_list').hide();
+	    	  $('#public_text').hide();
+	    	  $('#customer_name_show').hide();
+	    	  $('#create_stamp_show').hide();
+	    	  $('#sent_out_time_show').show();
+         }
      });
 	
 	$('#singleSearchBtn').click(function(){
 	     var selectField = $('#selected_field').val();
 	     var selectFieldValue = '';
-	     if(selectField == 'sono_like'){
-	       selectFieldValue = $('#single_sono').val();
-	     }else if(selectField == 'container_no'){
-	       selectFieldValue = $('#single_container_no').val();
-	     }else if(selectField == 'order_no'){
-	       selectFieldValue = $("#single_order_no").val();
-	     }else if(selectField == 'old_order_no'){
-	       selectFieldValue = $('#old_order_no').val();
-	     }else if(selectField == 'customer_name'){
-	     	selectFieldValue = $('#single_customer_name').val();
-	     }else if(selectField == 'customer_code_like'){
-	     	selectFieldValue = $('#single_customer_code').val();
-	     }else if(selectField == 'status'){
-	     	selectFieldValue = $('#single_status_list').val();
-	     }
+	     if(selectField == 'sono_like'||selectField == 'container_no'||selectField == 'old_order_no'||selectField == 'order_no'||selectField == 'customer_code_like'){
+	    	  selectFieldValue = $("#public_text").val();
+	      }else if(selectField == 'status'){
+	    	  selectFieldValue = $("#single_status_list").val();
+	      }else if(selectField == 'customer_name'){
+	    	  selectFieldValue = $("#single_customer_name_input").val();
+          }else if(selectField == 'create_stamp'){
+        	  var start_date = $("#single_create_stamp_begin_time").val();
+              var end_date = $("#single_create_stamp_end_time").val();
+          }else if(selectField == 'sent_out_time'){
+              var sent_out_time_begin_time = $("#single_sent_out_time_begin_time").val();
+              var sent_out_time_end_time = $("#single_sent_out_time_end_time").val();
+          }
+	     
      
-	     var url = "/jobOrder/list?"+selectField+"="+selectFieldValue;
+	     var url = "/jobOrder/list?"+selectField+"="+selectFieldValue
+	     			+"&create_stamp_begin_time="+start_date
+	     			+"&create_stamp_end_time="+end_date
+	     			+"&order_export_date_begin_time="+sent_out_time_begin_time
+	     			+"&order_export_date_end_time="+sent_out_time_end_time;
 	
 	     dataTable.ajax.url(url).load();
 	});

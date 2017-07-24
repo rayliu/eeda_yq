@@ -19,25 +19,45 @@
 	                                	<option value="old_order_no">旧工作单号</option>
 	                                	<option value="customer_name">客户名称</option>
 	                                	<option value="customer_code_like">客户代码</option>
+	                                	<option value="create_stamp">创建时间</option>
+	                                	<option value="sent_out_time">出货代码</option>
                             		</select>
 
-                            		<input type="text" class="form-control search-control" id="single_sono" name="sono" style="display: none;">
                             		
-                            		<input type="text" class="form-control search-control" id="single_container_no" name="container_no" style="display: none;">
+                            		<input type="text" class="form-control search-control" id="public_text" name="public_text">
                             		
                             		<select id="single_status_list" name="status_list" class="form-control search-control" style="display: none;">
                                 		<option value="新建">新建</option>
                                 		<option value="已完成">已完成</option>
                             		</select>
-                            
-                           	 		<input type="text" class="form-control search-control" id="single_order_no" name="order_no" >
-                           	 
-                           	 		<input type="text" class="form-control search-control" id="single_old_order_no" name="old_order_no" style="display: none;">
                            	 		
-                           	 		<input type="text" class="form-control search-control" id="single_customer_name" name="customer_name" style="display: none;">
-                           	 		
-                           	 		<input type="text" class="form-control search-control" id="single_customer_code" name="customer_code" style="display: none;">
-                           	 		
+	                           	 	<div style="display: none;float:right;" id="customer_name_show">
+                                          <%include("/eeda/component/form/inputSpField.html", 
+                                                              {   id: 'single_customer_name',
+                                                              	  style:'width:245px',
+                                                                  value: ''
+                                                              }){}%>
+                                    </div>
+                                    
+                                    <div style="display: none;float:right;" id="sent_out_time_show">
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                                                {   id: 'single_sent_out_time', 
+                                                                    style:'width:245px',
+								                                    begin_style:'width:90px',
+								                                    end_style:'width:90px', 
+                                                                    value: ''
+                                                                }){}%>
+                                   </div>
+                                   
+                                   <div style="display: none;float:right;" id="create_stamp_show">
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                            {   id:'single_create_stamp', 
+                                                style:'width:245px',
+								                begin_style:'width:90px',
+								                end_style:'width:90px', 
+                                                value:''
+                                            }){} %>
+                                   </div>
                           		</div>
                       		</div>
                       <div class="col-lg-4"><!--  三列排版  -->
