@@ -197,7 +197,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         				+"&employee_id="+employee_id
           				+"&order_export_date_begin_time="+order_export_date_begin_time
 				        +"&order_export_date_end_time="+order_export_date_end_time;
-          dataTable.ajax.url(url).load();
+          dataTable.ajax.url(url).load(tableStyle);
       };
       searchData();
       

@@ -339,7 +339,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 
       })
       
-      
+      //删除按钮动作
       $("#eeda-table").on('click', '.delete', function(){
     	  var tr = $(this).parent().parent();
           var id = tr.attr('id');

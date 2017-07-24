@@ -121,6 +121,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           searchData(); 
       })
       
+      var tableStyle = function(){
+    	  $('.oneRow').css('line-height','30px');
+    	  $('.doubleRow').css('text-align','center');
+    	  
+    	  var tableName = "eeda_table";
+    	  //格式【合成表头的第一列位置，合成的列数，颜色】
+    	  var array= [[2,5,'#f8fff0'],[7,5,'#eeffff']];
+    	  for (var i = 0; i < array.length; i++) {
+    		  var firstChild = array[i][0];
+        	  var cols = array[i][1];
+        	  var bgColor = array[i][2];
+        	  for (var j = firstChild; j < (firstChild+cols); j++) {
+        		  $("#"+tableName+" td:nth-child("+j+")").css('background-color',bgColor);
+        	  }
+		  }
+      }
+      
       var cssTd=function(){
     	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
     	  $("#eeda_table td:nth-child(11)").css('background-color','#f5f5dc');
@@ -192,27 +209,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           				+"&abbr_equals="+abbr_name
           				+"&order_export_date_begin_time="+order_export_date_begin_time
 				        +"&order_export_date_end_time="+order_export_date_end_time;
-          dataTable.ajax.url(url).load(cssTd);
+          dataTable.ajax.url(url).load(tableStyle);
           
       };
       
       searchData();
       
-      var tableStyle = function(){
-    	  $('.oneRow').css('line-height','30px');
-    	  $('.doubleRow').css('text-align','center');
-    	  
-    	  var tableName = "eeda_table";
-    	  //格式【合成表头的第一列位置，合成的列数，颜色】
-    	  var array= [[2,5,'#f8fff0'],[7,5,'#eeffff']];
-    	  for (var i = 0; i < array.length; i++) {
-    		  var firstChild = array[i][0];
-        	  var cols = array[i][1];
-        	  var bgColor = array[i][2];
-        	  for (var j = firstChild; j < (firstChild+cols); j++) {
-        		  $("#"+tableName+" td:nth-child("+j+")").css('background-color',bgColor);
-        	  }
-		  }
-      }
+      
   });
 });
