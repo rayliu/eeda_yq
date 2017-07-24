@@ -406,7 +406,7 @@ $(document).ready(function() {
 		                		+'<input class="upload" type="file" multiple>'
 		                		+'</span>'
 		            else
-		            	return '<span class="btn table_btn btn-default btn-xs fileinput-button" title="请先保存再上传文件">' 
+		            	return '<span class="btn table_btn btn-default btn-xs fileinput-button" style="100px" title="请先保存再上传文件">' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
 		                		+'<input  class="upload" type="button" disabled>'
