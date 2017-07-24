@@ -53,6 +53,53 @@ $(document).ready(function() {
           });
       });
     
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='order_no'){
+	    	  $("#single_order_no").val("");
+	    	  $("#create_stamp_show").hide();
+	    	  $("#single_status").hide();
+	    	  $("#single_order_no").show();
+	      }
+	      if(selectField=='status'){
+	    	  $("#single_order_no").hide();
+	    	  $("#create_stamp_show").hide();
+	    	  $("#single_status").show();
+	      }
+	      if(selectField=="create_stamp"){
+	    	  $("#single_order_no").hide();
+	    	  $("#single_status").hide();
+	    	  $("#create_stamp_show").show();
+	      }
+     });
+	
+	$('#singleSearchBtn').click(function(){
+	     var selectField = $('#selected_field').val();
+	     if(selectField=='order_no'){
+	    	 var order_no = $("#single_order_no").val();
+	     }
+	     if(selectField=='status'){
+	    	 var status = $("#single_status").val();
+	      }
+	     if(selectField=="create_stamp"){
+	    	var start_date = $("#single_create_stamp_begin_time").val();
+	    	var end_date = $("#single_create_stamp_end_time").val();
+	      }
+	     var url = "/truckOrder/list?order_no="+order_no
+	 				+"&status="+status
+	 				+"&create_stamp_begin_time="+start_date
+	 				+"&create_stamp_end_time="+end_date;
+	     dataTable.ajax.url(url).load();
+	}); 
+    
     $('#resetBtn').click(function(e){
         $("#orderForm")[0].reset();
     });
