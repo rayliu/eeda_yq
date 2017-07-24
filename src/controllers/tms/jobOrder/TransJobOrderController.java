@@ -1158,6 +1158,27 @@ public class TransJobOrderController extends Controller {
     			+ " delete_reason='"+delete_reason+"' where id = ?  ",id);
     	renderJson("{\"result\":true}");
     }
+    //更新结算日期和收重日期一样
+    public void updateChageTimeSameASClosingDate(){
+    	String sql_order_id = "SELECT CONVERT(GROUP_CONCAT(CONCAT(tjol.order_id,':',tjol.id)),char) re_order_id from trans_job_order_land_item  tjol"
+    				+" LEFT JOIN trans_job_order tjo on tjo.id = tjol.order_id where (tjol.closing_date is  null) AND (tjo.charge_time is null) "
+    				+"and tjo.office_id and tjo.type like '%散货%' and tjo.office_id = 4";
+    	Record re_order_id = Db.findFirst(sql_order_id);
+    	String []array_order_id = re_order_id.getStr("re_order_id").split(",");
+    	
+    	for(int i=0;i<array_order_id.length;i++){
+    		String [] separation_id= array_order_id[i].split(":");
+    		for(int j=0;j<separation_id.length;j++){
+    			String sql_update = "update trans_job_order tjo,trans_job_order_land_item tjol set tjo.charge_time =tjol.cabinet_date  WHERE "
+        				+" tjo.id ="+separation_id[0]+" and tjol.id ="+separation_id[1];
+    			Db.update(sql_update);   
+    		}
+    		 	
+    	}
+    	renderJson("{\"result\":true}");
+    	
+    	
+    }
     
 
 }

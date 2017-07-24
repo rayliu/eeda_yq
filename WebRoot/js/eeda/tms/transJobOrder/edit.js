@@ -301,6 +301,18 @@ $(document).ready(function() {
         });
     	
 	});
+	
+	
+	//更新结算日期
+	$('#updateChaegeTime').click(function(){
+		$.post('/transJobOrder/updateChageTimeSameASClosingDate',{},function(data){
+			$.scojs_message('更新成功', $.scojs_message.TYPE_OK);
+		},'json').fail(function(){
+			 $.scojs_message('失败', $.scojs_message.TYPE_ERROR);
+		});
+	});
+	
+	
     
     $('#take_wharf_list').on('mousedown', '.fromLocationItem', function(e){
         $('#back_wharf_input').val($(this).text());
