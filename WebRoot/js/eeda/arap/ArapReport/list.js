@@ -159,7 +159,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_flag").show();
 	      }
 	      if(selectField=="customer_name"){
-	    	  $("#single_customer_nama_input").val("");
+	    	  $("#single_customer_name_input").val("");
 	    	  $("#public_text").hide();
 	    	  $("#single_flag").hide();
 	    	  $("#export_date").hide();
@@ -183,7 +183,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	 selectFieldValue = $("#single_flag").val();
 	      }
 	     if(selectField=="customer_name"){
-	    	 selectFieldValue = $("#single_customer_nama_input").val();
+	    	 selectFieldValue = $("#single_customer_name_input").val();
 	      }
 	      if(selectField=="order_export_date"){
 	    	  var export_date_start_date = $("#single_export_date_begin_time").val();
