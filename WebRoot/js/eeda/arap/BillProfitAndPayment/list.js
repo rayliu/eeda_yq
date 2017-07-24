@@ -63,8 +63,41 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  
     	  
       });
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='customer_name'){
+	    	  $("#export_date").hide();
+	    	  $("#customer_name").show();
+	      }
+	      if(selectField=='order_export_date'){
+	    	  $("#customer_name").hide();
+	    	  $("#export_date").show();
+	      }
+     });
+	
+	$('#singleSearchBtn').click(function(){
+		var selectField = $("#selected_field").val();
+	     if(selectField=='customer_name'){
+	    	  var customer_name = $("#single_customer_name").val();
+	      }
+	      if(selectField=='order_export_date'){
+	    	  var single_export_date_begin_time = $("#single_export_date_begin_time").val();
+	          var single_export_date_end_time = $("#single_export_date_end_time").val();
+	      }
+	     var url = "/billProfitAndPayment/list?customer_id="+customer_name
+	     		 +"&order_export_date_begin_time="+single_export_date_begin_time
+	     		 +"&order_export_date_end_time="+single_export_date_end_time;
+	     dataTable.ajax.url(url).load();
+	});
       
-
       $('#searchBtn').click(function(){
           searchData(); 
       })
