@@ -5,18 +5,36 @@
     </div>
     <div>
     
-    <div class="pageheader" style="float:left">
-        <div class="zdy-fenlei">
+    <div class="pageheader"  style="height:360px;">
+        <div style="margin-left:80px;">
         <p><strong>上传案例</strong></p>
-        <input type="hidden" value="${example.id!""}" id="id"/>
-        <div class="mt10"><label>案例名称：<input type="text" name="example_name" id="example_name"/></label></div>
-         <div class="mt10">上传图片：<input type="file" value="单张上传" class="edit" id="picture_up" name="picture_up"/><span class="red">*图片小于500Kb</span>
-         </div>
-                <img src="/images/fengmianpic.png" id="example_img" style="width:200px"/>
-        <div class="mt10"><input type="button" style="width:200px;" class="stdbtn btn_blue" value="上 传" id="upload"/> </div>
+		       	 <input type="hidden" value="${example.id!''}" id="id"/>
+		       	 <div class="mt10"><label>案例名称：<input type="text" name="example_name" id="example_name"/></label></div>
+		        		 <div class="mt10">上传图片：<input type="file" value="单张上传" class="edit" id="picture_up" name="picture_up"/><span class="red">*图片小于500Kb</span>
+		         		</div>
+		                <img src="/images/fengmianpic.png" id="example_img" style="width:200px"/>
         </div>
+       	 <div style="margin-left:80px;">
+                         	<h3 style="padding:10px">案例明细图</h3>
+				             <div class="file" style="margin-left:10px;">
+				                    	<input type="file"  id="file_photo" name="file_photo" class="ehdel_upload" />
+				                    		选择图片
+				             </div>
+               						 <span class="red">*图片要求小于500Kb(普通商家只能上传10个产品)</span>
+				<hr/>
+			                <div class="img_row" id="img_item">
+			                <%for(item in productItem![]){%>
+			                  	<img style='width: 200px; height: 150px;margin-left:20px;' name="img_photo" class="shadow " src='/upload/${item.photo!"nophoto.png"}' value='${item.photo!""}' id="img_photo${item.seq!''}">
+			                <%}%>
+			                </div>
+        </div>
+
+            </div>
+       		 <div style="margin-left:120px;">
+                <button type="button" id="save_btn" class="stdbtn btn_blue" style="width:200px;" >保存</button>
+          	</div>
     </div>
-    <div class="row" style="float:left">
+    <div class="row" >
 	      <%include("/eeda/component/form/detailTable.html", 
 	          {
 	              id:'eeda_table', 
@@ -24,6 +42,7 @@
 	      }){} %> 
  	</div>
 <%}%>
+    
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
          requirejs(['/js/BusinessAdmin/case/list.js']);
