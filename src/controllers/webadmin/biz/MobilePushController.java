@@ -95,14 +95,7 @@ public class MobilePushController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
          
-/*    	String sql = "select * from ("
-    			+ " select m.*, u.c_name create_name, u1.c_name update_name"
-        		+ " from msg_board m "
-        		+ " left join user_login u on u.id = m.creator"
-        		+ " left join user_login u1 on u1.id = m.updator"
-        		+ " where m.office_id="+office_id
-        		+ " ) A where 1=1 ";*/
-        String sql="select ul.c_name productor,map.* from mobile_ad_promotion map "
+        String sql="select ul.c_name productor,map.* from wc_ad_mobile_promotion map "
         		+ "LEFT JOIN user_login ul on ul.id=map.creator "
         		+ "where map.creator="+user_id+" "+sLimit;
     	
