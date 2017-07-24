@@ -57,6 +57,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			order.total_day = $("#total_day").text();
 			order.price = $("#price").text();
 			order.phone = $("#phone").val();
+			order.remark = $("#remark").val();
 			self.disabled = true;
 			$.post('/BusinessAdmin/ad/banner_save',{jsonStr:JSON.stringify(order)},function(data) {
 	    		if(data){
@@ -90,13 +91,18 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			var ad_location = self.attr("ad_location");
 			var total_day = self.attr("total_day");
 			var total_price = self.attr("total_price");
+<<<<<<< Updated upstream
 			$("#order_id").val(id);
+=======
+			var remark =(self.attr("remark")=='null'?"该订单暂时没备注！":self.attr("remark"));
+>>>>>>> Stashed changes
 			$("#begin_date").val(begin_date);
 			$("#end_date").val(end_date);
 			$("#phone").val(phone);
 			$("#ad_location").val(ad_location);
 			$("#total_day").text(total_day);
 			$("#total_price").text(total_price);
+			$("#remark").text(remark);
 		})
 		
 	});	
