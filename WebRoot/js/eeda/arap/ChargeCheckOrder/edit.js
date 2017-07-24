@@ -95,7 +95,9 @@ $(document).ready(function() {
     var status = $("#status").val()
     if(order_id==""){
     	$('#saveBtn').attr('disabled', false);
-    	
+		$('#confirmBtn').attr('disabled', true);
+    	$('#printTotaledBtn').attr('disabled', true);
+		$('#printBtn').attr('disabled', true);
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
