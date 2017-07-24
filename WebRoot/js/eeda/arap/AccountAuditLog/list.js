@@ -68,7 +68,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     }
                 },
                 {"data":"BANK_NAME"},
-                {"data":"CREATE_DATE"},
+                {"data":"CREATE_DATE",
+                	"render":function(data,type,full,meta){
+                		if(!data){
+                			return '';
+                		}
+                		return data.substr(0,10);
+                	}
+                },
                 {"data":"USER_NAME"}
             ]
         });
