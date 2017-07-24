@@ -90,17 +90,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           if(selectField == 'sp_name'){//被委托方
         	  $('#single_order_no').hide();
         	  $('#single_order_status_list').hide();
-              $('#single_sp_name').show();
-            
+              $('#sp_name_show').show();
+              $('#create_stamp_show').hide();
           }else if(selectField == 'order_no'){//计划订单号
         	  $('#single_order_no').show();
               $('#single_order_status_list').hide();
-              $('#single_sp_name').hide();
-           
+              $('#sp_name_show').hide();
+              $('#create_stamp_show').hide();
           }else if(selectField=='order_status'){//单据状态
         	  $('#single_order_no').hide();
-              $('#single_sp_name').hide();
+              $('#sp_name_show').hide();
+              $('#create_stamp_show').hide();
               $('#single_order_status_list').show();
+          }else if(selectField=='create_stamp'){//单据状态
+        	  $('#single_order_no').hide();
+              $('#sp_name_show').hide();
+              $('#single_order_status_list').hide();
+              $('#create_stamp_show').show();
           }
       });
 
@@ -112,9 +118,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           }else if(selectField == 'order_status'){//单据状态
             selectFieldValue = $('#single_order_status_list').val();
           }else if(selectField == 'sp_name'){//被委托方
-            selectFieldValue = $('#single_sp_name').val();
+            selectFieldValue = $('#single_sp_name_input').val();
+          }else if(selectField == 'create_stamp'){//被委托方
+        	var start_date = $("#single_create_stamp_begin_time").val();
+        	var end_date = $("#single_create_stamp_end_time").val();
           }
-          var url = "/planOrder/list?"+selectField+"="+selectFieldValue;
+          var url = "/planOrder/list?"+selectField+"="+selectFieldValue
+          			+"&create_stamp_begin_time="+start_date
+          			+"&create_stamp_end_time="+end_date;;
 
           dataTable.ajax.url(url).load();
       });
@@ -128,7 +139,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_status = $('#order_status').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
-          var sp_name = $("#sp_name").val().trim();
+          var sp_name = $("#sp_name_input").val().trim();
           
           /*  
               查询规则：参数对应DB字段名

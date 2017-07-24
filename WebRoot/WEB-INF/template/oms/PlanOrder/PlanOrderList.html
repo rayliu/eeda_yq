@@ -14,15 +14,32 @@
                             	<option value="sp_name">被委托方</option>
                                 <option value="order_no">计划订单号</option>
                                 <option value="order_status">单据状态</option>
-                                <!-- <option value="create_stamp">创建时间</option> -->
+                                <option value="create_stamp">创建时间</option>
                             </select>
 
-                            <input type="text" class="form-control search-control" id="single_order_no" name="single_order_no">
+                            <input type="text" class="form-control search-control" id="single_order_no" name="single_order_no" style="display: none;">
                             <select id="single_order_status_list" name="single_order_status_list" class="form-control search-control" style="display: none;">
                                 <option value="新建">新建</option>
                                 <option value="已完成">已完成</option>
                             </select>
-                           	 <input type="text" class="form-control search-control" id="single_sp_name" name="single_sp_name" style="display: none;">
+                           	 
+                           	 <div style="float:right;" id="sp_name_show"><!--  三列排版  -->
+                              <%include("/eeda/component/form/inputSpField.html", 
+                                                  {   id: 'single_sp_name', 
+                                                      style:'width:245px',
+                                                      value: ''
+                                                  }){}%>
+                          	</div>
+                          	
+                          	<div style="display: none;float:right;" id="create_stamp_show">        
+                                <%include("/eeda/component/form/inputDateQueryField.html",
+                                				  {id:'single_create_stamp',
+                                				   style:'width:245px',
+								                   begin_style:'width:90px',
+								                   end_style:'width:90px',  
+                                				   value:''
+                                				  }){} %>
+                            </div>
                           </div>
                       </div>
                       <div class="col-lg-4"><!--  三列排版  -->
