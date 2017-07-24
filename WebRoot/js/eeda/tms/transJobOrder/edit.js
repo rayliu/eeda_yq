@@ -126,7 +126,7 @@ $(document).ready(function() {
 	    }
      });*/
 	$('#land_table [name=CLOSING_DATE_div]').datetimepicker({
-        format: 'yyyy-MM-dd mm:hh:ss',  
+        format: 'yyyy-MM-dd',  
         language: 'zh-CN'
       }).on('changeDate', function(ev){
             $(".bootstrap-datetimepicker-widget").hide();

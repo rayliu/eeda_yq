@@ -129,7 +129,7 @@ $(document).ready(function() {
 	                    var field_html = template('table_date_field_template',
 		                    {
 		                        id: 'create_stamp',
-		                        value: data.substr(0,19),
+		                        value: data.substr(0,10),
 		                        style:'width:180px'
 		                    }
 		                );

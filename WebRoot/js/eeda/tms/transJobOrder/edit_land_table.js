@@ -152,7 +152,7 @@ $(document).ready(function() {
                     var field_html = template('table_date_field_template',
 	                    {
 	                        id: 'CLOSING_DATE',
-	                        value: data.substr(0,19),
+	                        value: data.substr(0,10),
 	                        style:'width:140px'
 	                    }
 	                );
