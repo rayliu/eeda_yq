@@ -56,7 +56,68 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
 					  }
             ]
         });
-   	           
+   	  
+        $('.complex_search').click(function(event) {
+            if($('.search_single').is(':visible')){
+              $('.search_single').hide();
+            }else{
+              $('.search_single').show();
+            }
+        });
+      //简单查询
+        $('#selected_field').change(function(event) {
+  	      var selectField = $('#selected_field').val();
+  	      if(selectField=='order_no'){
+  	    	$("#single_order_no1").val("");
+  	    	  $("#sp_name_show").hide();
+  	    	  $("#single_status").hide();
+  	    	  $("#create_stamp1_show").hide();
+  	    	  $("#single_order_no1").show();
+  	      }
+  	      if(selectField=='sp_name'){
+  	    	$("#sp_name_show").val("");
+  	    	  $("#single_order_no1").hide();
+	    	  $("#single_status").hide();
+	    	  $("#create_stamp1_show").hide();
+	    	  $("#sp_name_show").show();
+  	      }
+  	      if(selectField=="toStatus_equals"){
+  	    	$("#single_status").val("");
+  	    	  $("#single_order_no1").hide();
+	    	  $("#create_stamp1_show").hide();
+	    	  $("#sp_name_show").hide();
+	    	  $("#single_status").show();
+  	      }
+  	      if(selectField=="create_stamp"){
+  	    	  $("#single_order_no1").hide();
+	    	  $("#sp_name_show").hide();
+	    	  $("#single_status").hide();
+	    	  $("#create_stamp1_show").show();
+  	      }
+       });
+  	
+  	$('#singleSearchBtn').click(function(){
+  	     var selectField = $('#selected_field').val();
+  	     var selectFieldValue = '';
+  	      if(selectField=='order_no'){
+  	    	  selectFieldValue = $("#single_order_no1").val();
+	      }
+	      if(selectField=='sp_name'){
+	    	  selectFieldValue = $("#single_sp_name_name_input").val();
+	      }
+	      if(selectField=="toStatus_equals"){
+	    	  selectFieldValue = $("#single_status").val();
+	      }
+	      if(selectField=="create_stamp"){
+	    	  var start_date = $("#single_create_stamp1_begin_time").val();
+	    	  var end_date = $("#single_create_stamp1_end_time").val();
+	      }
+  	     var url = "/chargeCheckOrder/checkedList?"+selectField+"="+selectFieldValue
+  	     		+"&create_stamp_begin_time="+start_date
+  	     		+"&create_stamp_end_time="+end_date;
+  	     dataTable.ajax.url(url).load();
+  	});
+        
       $('#resetBtn1').click(function(e){
           $("#orderSearchForm")[0].reset();
       });
