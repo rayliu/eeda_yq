@@ -78,6 +78,31 @@ $(document).ready(function() {
         eeda.bindTableFieldCarInfo('land_table', 'CAR_NO');
         eeda.bindTableFieldDockInfo('land_table','LOADING_WHARF1');
         eeda.bindTableFieldDockInfo('land_table','LOADING_WHARF2');
+        
+        
+        $('#land_table [name=CLOSING_DATE_div]').datetimepicker({
+            format: 'yyyy-MM-dd',  
+            language: 'zh-CN'
+          }).on('changeDate', function(ev){
+                $(".bootstrap-datetimepicker-widget").hide();
+                	$('#land_table [name=CLOSING_DATE_div]').each(function(){
+                		var self_val = $(this).find('input').val();
+                		if(self_val){
+                			$("#charge_time").val(self_val);
+                		}
+                		
+                	});
+            });
+    	
+    	$('#land_table [name=CLOSING_DATE_div]').on('keyup','[name=CLOSING_DATE]',function(){
+    		$('#land_table [name=CLOSING_DATE_div]').each(function(){
+        		var self_val = $(this).find('input').val();
+        		if(self_val){
+        			$("#charge_time").val(self_val);
+        		}
+        		
+        	});
+    	});        
     };
 
 
