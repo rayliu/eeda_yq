@@ -151,6 +151,162 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
                 }
             });
         });
+        
+        $('.complex_search').click(function(event) {
+            if($('.search_single').is(':visible')){
+              $('.search_single').hide();
+            }else{
+              $('.search_single').show();
+            }
+        });
+      //简单查询
+        $('#selected_field').change(function(event) {
+  	      var selectField = $('#selected_field').val();
+  	      if(selectField=='receive_company_name'){
+  	    	  $("#customer_name_show").val("");
+  	    	  $("#single_order_no").hide();
+  	    	  $("#single_booking_no").hide();
+  	    	  $("#single_status").hide();
+  	    	  $("#single_custom_state").hide();
+  	    	  $("#single_type").hide();
+  	    	  $("#date_custom_show").hide();
+  	    	  $("#create_stamp_show").hide();
+  	    	  $("#customer_name_show").show();
+  	      }
+  	      if(selectField=='order_no'){
+  	    	  $("#single_order_no").val("");
+  	    	  $("#single_order_no").show();
+	    	  $("#single_booking_no").hide();
+	    	  $("#single_status").hide();
+	    	  $("#single_custom_state").hide();
+	    	  $("#single_type").hide();
+	    	  $("#date_custom_show").hide();
+	    	  $("#create_stamp_show").hide();
+	    	  $("#customer_name_show").hide();
+	    	  $("#single_order_no").show();
+  	      }
+  	      if(selectField=="booking_no_equals"){
+  	    	  $("#single_booking_no").val("");
+  	    	  $("#single_order_no").hide();
+	    	  $("#single_status").hide();
+	    	  $("#single_custom_state").hide();
+	    	  $("#single_type").hide();
+	    	  $("#date_custom_show").hide();
+	    	  $("#create_stamp_show").hide();
+	    	  $("#customer_name_show").hide();
+	    	  $("#single_booking_no").show();
+  	      }
+  	      if(selectField=="status"){
+  	    	  $("#single_status").val("");
+  	    	  $("#single_order_no").hide();
+	    	  $("#single_booking_no").hide();
+	    	  $("#single_custom_state").hide();
+	    	  $("#single_type").hide();
+	    	  $("#date_custom_show").hide();
+	    	  $("#create_stamp_show").hide();
+	    	  $("#customer_name_show").hide();
+	    	  $("#single_status").show();
+  	      }
+  	      if(selectField=="custom_state_equals"){
+  	    	  $("#single_custom_state").val("");
+  	    	  $("#single_order_no").hide();
+	    	  $("#single_booking_no").hide();
+	    	  $("#single_status").hide();
+	    	  $("#single_type").hide();
+	    	  $("#date_custom_show").hide();
+	    	  $("#create_stamp_show").hide();
+	    	  $("#customer_name_show").hide();
+	    	  $("#single_custom_state").show();
+	      }
+  	      if(selectField=="type_equals"){
+  	    	  $("#single_type").val("")
+  	    	  $("#single_order_no").hide();
+	    	  $("#single_booking_no").hide();
+	    	  $("#single_status").hide();
+	    	  $("#single_custom_state").hide();
+	    	  $("#date_custom_show").hide();
+	    	  $("#create_stamp_show").hide();
+	    	  $("#customer_name_show").hide();
+	    	  $("#single_type").show();
+	      }
+  	      if(selectField=="date_custom"){
+  	    	  $("#single_order_no").hide();
+	    	  $("#single_booking_no").hide();
+	    	  $("#single_status").hide();
+	    	  $("#single_custom_state").hide();
+	    	  $("#single_type").hide();
+	    	  $("#create_stamp_show").hide();
+	    	  $("#customer_name_show").hide();
+	    	  $("#date_custom_show").show();
+  	      }
+  	      if(selectField=="create_stamp"){
+  	    	  $("#single_order_no").hide();
+	    	  $("#single_booking_no").hide();
+	    	  $("#single_status").hide();
+	    	  $("#single_custom_state").hide();
+	    	  $("#single_type").hide();
+	    	  $("#date_custom_show").hide();
+	    	  $("#customer_name_show").hide();
+	    	  $("#create_stamp_show").show();
+	      }
+       });
+  	
+	  $('#singleSearchBtn').click(function(){
+	  	var orderStatus = $("#orderTabs li.active a").attr("name").trim();
+	  	singleSearchData(orderStatus);
+	  });
+      var singleSearchData = function(paraStr){
+    	  var selectField = $('#selected_field').val();
+   	     var selectFieldValue = '';
+ 	     if(selectField=='receive_company_name'){
+ 	    	 selectFieldValue = $("#single_customer_name_input").val();
+ 	     }
+ 	     if(selectField=='order_no'){
+ 	    	 selectFieldValue = $("#single_order_no").val();
+ 	     }
+ 	     if(selectField=="booking_no_equals"){
+ 	    	 selectFieldValue = $("#single_booking_no").val();
+ 	     }
+ 	     if(selectField=="status"){
+ 	    	 selectFieldValue = $("#single_status").val();
+ 	     }
+ 	      if(selectField=="custom_state_equals"){
+ 	    	 selectFieldValue = $("#single_custom_state").val();
+ 	     }
+ 	     if(selectField=="type_equals"){
+ 	    	 selectFieldValue = $("#single_type").val();
+ 	     }
+ 	     if(selectField=="date_custom"){
+ 	    	 var custom_start_date = $("#single_date_custom_begin_time").val();
+ 	    	 var custom_end_date = $("#single_date_custom_end_time").val();
+ 	     }
+ 	     if(selectField=="create_stamp"){
+ 	    	 var start_date = $("#single_create_stamp_begin_time").val();
+ 	    	 var end_date = $("#single_create_stamp_end_time").val();
+ 	     }
+ 	     var confirmFee = "";
+ 	     if(paraStr=="未完成费用确认"){
+        	  confirmFee ="unConfirmFee";
+          }else if(paraStr=="已完成费用确认"){
+        	  confirmFee="confirmFee"
+          }else{
+        	  if(paraStr=="待审核"&&paraStr!=undefined){
+            	  status = paraStr;
+              }else{
+            	  
+    	    	  if(paraStr!='全部'&&paraStr!=undefined){
+    	    		  custom_state=paraStr;
+    	    	  }
+              }
+          }
+   	     var url = "/customPlanOrder/list?"+selectField+"="+selectFieldValue
+ 	       +"&create_stamp_begin_time="+start_date
+ 	       +"&create_stamp_end_time="+end_date
+ 	       +"&date_custom_begin_time="+custom_start_date
+ 	       +"&date_custom_end_time="+custom_end_date
+ 	       +"&confirmFee="+confirmFee;
+   	     dataTable.ajax.url(url).load();
+      }
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
@@ -163,7 +319,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 
      var searchData=function(paraStr){
           var order_no = $.trim($("#order_no").val());
-          var customer_name = $('#customer_name').val().trim();
+          var customer_name = $('#customer_input').val();
           var status = $('#status').val();
           var custom_state = $('#custom_state').val();
           var start_date = $("#create_stamp_begin_time").val();
