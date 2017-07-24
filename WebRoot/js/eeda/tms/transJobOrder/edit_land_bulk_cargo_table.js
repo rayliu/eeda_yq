@@ -79,6 +79,30 @@ $(document).ready(function() {
     	
         eeda.bindTableFieldDockInfo('land_bulk_cargo_table','LOADING_WHARF1');
         eeda.bindTableFieldDockInfo('land_bulk_cargo_table','LOADING_WHARF2');
+        
+        $('#land_bulk_cargo_table [name=CABINET_DATE_div]').datetimepicker({
+            format: 'yyyy-MM-dd',  
+            language: 'zh-CN'
+          }).on('changeDate', function(ev){
+                $(".bootstrap-datetimepicker-widget").hide();
+                	$('#land_bulk_cargo_table [name=CABINET_DATE_div]').each(function(){
+                		var self_val = $(this).find('input').val();
+                		if(self_val){
+                			$("#charge_time").val(self_val);
+                		}
+                		
+                	});
+            });
+    	
+    	$('#land_bulk_cargo_table [name=CABINET_DATE_div]').on('keyup','[name=CABINET_DATE]',function(){
+    		$('#land_table [name=CLOSING_DATE_div]').each(function(){
+        		var self_val = $(this).find('input').val();
+        		if(self_val){
+        			$("#charge_time").val(self_val);
+        		}
+        		
+        	});
+    	}); 
     };
 
 
