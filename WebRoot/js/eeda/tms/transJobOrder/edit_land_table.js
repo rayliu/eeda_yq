@@ -156,7 +156,7 @@ $(document).ready(function() {
                     return str;
                 }
             },
-            { "data": "CABINET_DATE", "width": "120px",
+            { "data": "CABINET_DATE", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
@@ -164,13 +164,13 @@ $(document).ready(function() {
 	                    {
 	                        id: 'CABINET_DATE',
 	                        value: data.substr(0,19),
-	                        style:'width:140px'
+	                        style:'width:120px'
 	                    }
 	                );
                     return field_html;
             	}
             },
-            { "data": "CLOSING_DATE", "width": "120px",
+            { "data": "CLOSING_DATE", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
@@ -178,13 +178,13 @@ $(document).ready(function() {
 	                    {
 	                        id: 'CLOSING_DATE',
 	                        value: data.substr(0,10),
-	                        style:'width:140px'
+	                        style:'width:120px'
 	                    }
 	                );
                     return field_html;
             	}
             },
-            { "data": "LOADING_WHARF1", "width": "120px", "className":"consigner_addr",
+            { "data": "LOADING_WHARF1", "width": "100px", "className":"consigner_addr",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                             data='';
@@ -193,13 +193,13 @@ $(document).ready(function() {
                                 id: 'LOADING_WHARF1',
                                 value: data,
                                 display_value: full.LOADING_WHARF1_NAME,
-                                style:'width:140px',
+                                style:'width:120px',
                             }
                         );
                         return field_html;
                     }
             },
-            { "data": "LOADING_WHARF2", "width": "120px", "className":"consigner_addr",
+            { "data": "LOADING_WHARF2", "width": "100px", "className":"consigner_addr",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                             data='';
@@ -208,20 +208,20 @@ $(document).ready(function() {
                                 id: 'LOADING_WHARF2',
                                 value: data,
                                 display_value: full.LOADING_WHARF2_NAME,
-                                style:'width:140px',
+                                style:'width:120px',
                             }
                         );
                         return field_html;
                     }
             },
-            { "data": "LOADING_PLATFORM", "width": "120px", 
+            { "data": "LOADING_PLATFORM", "width": "80px", 
             	"render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     return '<input type="text" name="loading_platform" value="'+data+'" class="form-control" style="width:100px" />';
                 }
             },
-            { "data": "CAR_NO", "width": "100px",
+            { "data": "CAR_NO", "width": "80px",
             	"render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -230,13 +230,13 @@ $(document).ready(function() {
                             id: 'CAR_NO',  //component_id 便于用 #id取组件
                             value: data,
                             display_value: full.CAR_NO_NAME,
-                            style:'width:120px'
+                            style:'width:100px'
                         }
                     );
                     return field_html;
                 }
             },
-            { "data": "TRUCK_TYPE", "width": "30px",
+            { "data": "TRUCK_TYPE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
                         data='';
@@ -244,7 +244,7 @@ $(document).ready(function() {
 	                    {
 	                        id: 'TRUCK_TYPE',
 	                        value: data,
-	                        style:'width:50px'
+	                        style:'width:60px'
 	                    }
 	                );
                     return field_html;
