@@ -18,7 +18,7 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
             { "data": "PRICE","width": "100px"},
             { "data": "TOTAL_PRICE","width": "100px"},
             { "data": "PHONE","width": "100px" },
-            { "data": "BEGIN_DATE",
+            { "data": null,"width": "100px" ,
             	render: function(data,type,full,meta){
             		var data = "";
             		if(full.STATUS == "新建"){
