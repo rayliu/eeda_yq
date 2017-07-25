@@ -72,7 +72,7 @@ public class CostBalanceReportController extends Controller {
         		+ " FROM job_order jo"
         		+ " LEFT JOIN job_order_arap joa ON jo.id = joa.order_id"
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"
-        		+ " WHERE jo.office_id =" +office_id+" "+condition
+        		+ " WHERE p.office_id =" +office_id+" "+condition
         		+ " and jo.delete_flag = 'N'"
     			+ " ) A"
         		+ " WHERE A.sp_id IS NOT NULL AND A.cost_rmb!=0"
@@ -125,7 +125,7 @@ public class CostBalanceReportController extends Controller {
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_cny,"
@@ -133,7 +133,7 @@ public class CostBalanceReportController extends Controller {
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_usd,"
@@ -141,7 +141,7 @@ public class CostBalanceReportController extends Controller {
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_jpy,"
@@ -149,7 +149,7 @@ public class CostBalanceReportController extends Controller {
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_hkd,"
@@ -157,7 +157,7 @@ public class CostBalanceReportController extends Controller {
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'cost' and pay_flag!='Y'  "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncost_cny,"
@@ -165,7 +165,7 @@ public class CostBalanceReportController extends Controller {
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'cost' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncost_usd,"
@@ -173,7 +173,7 @@ public class CostBalanceReportController extends Controller {
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'cost' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncost_jpy,"
@@ -181,7 +181,7 @@ public class CostBalanceReportController extends Controller {
 			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'cost' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncost_hkd, "
@@ -189,7 +189,7 @@ public class CostBalanceReportController extends Controller {
 			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
-			+"	WHERE 	jo.office_id = "+office_id
+			+"	WHERE 	p.office_id = "+office_id
 			+"	AND joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_cost,"
@@ -197,7 +197,7 @@ public class CostBalanceReportController extends Controller {
 			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
-			+"	WHERE 	jo.office_id = "+office_id
+			+"	WHERE 	p.office_id = "+office_id
 			+"	AND joa.order_type = 'cost' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_uncost";
