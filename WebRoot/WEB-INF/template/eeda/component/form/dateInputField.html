@@ -1,6 +1,7 @@
 <div class="form-group" >
 	<div id="${id}_div" class="input-append date">
-        <%if(inline!true){%>
+		<% if(label!''!=""){ %>
+			<%if(inline!true){%>
         <label class="search-label">
          <%}else{%>
         <label>
@@ -10,6 +11,8 @@
         <span style='color:red; display:initial;'>*</span>
    		<%}%>
    		</label>
+		<% } %>
+        
         
         <% if(inline!true){%>
 			<span class="add-on"> 
@@ -20,7 +23,7 @@
         </span>
         <input id="${id}" name= "${id}" class="form-control <% if(inline!true){%>
 			search-control
-		<%}%>  beginTime_filter" type="text" value="${value}" ${required!''} ${disabled!''}>
+		<%}%>  beginTime_filter" type="text" value="${value}" style="${style!''}" ${required!''} ${disabled!''}>
      </div>
 </div>
 <script>
