@@ -97,6 +97,12 @@ public class WebAdminController extends Controller {
         	//钻石商家数
         	Record dimond = Db.findFirst("select count(1) total from wc_ad_dimond group by creator");//全部（不管是否上架）
         	setAttr("dimond", dimond);
+        	//上传案例数
+        	Record wccase = Db.findFirst("select count(1) total from wc_case");//所有
+        	setAttr("wccase", wccase);
+        	//视频案例数
+        	Record video = Db.findFirst("select count(1) total from video_case");
+        	setAttr("wcvideo", video);
             render("/WebAdmin/dashBoard/list.html");
         }
     }

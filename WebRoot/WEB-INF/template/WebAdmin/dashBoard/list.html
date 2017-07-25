@@ -7,8 +7,8 @@
                 <div class="baseinfo-wrap">商家申请入驻<br /><strong>2个</strong> </div>
                 <div class="baseinfo-wrap">商家入驻量<br /><strong>300人</strong> </div>
                 <div class="baseinfo-wrap">上传产品数<br /><strong>${product.total!'0'}个</strong> </div>
-                <div class="baseinfo-wrap">上传案例数<br /><strong>200个</strong> </div>
-                <div class="baseinfo-wrap">发布视频数<br /><strong>200个</strong> </div>
+                <div class="baseinfo-wrap">上传案例数<br /><strong>${wccase.total!'0'}</strong> </div>
+                <div class="baseinfo-wrap">发布视频数<br /><strong>${wcvideo.total!'0'}</strong> </div>
             </div>
             <div class="baseinfo-list">
                 <div class="baseinfo-wrap">“促”用户数<br /><strong>${ad_deal.total!'0'}个</strong> </div>
@@ -23,7 +23,7 @@
             <div class="baseinfo-list">
                 <h3>地区管理</h3>
                 <div style="margin:5px 0 0 0">
-                	<button class="stdbtn btn-xs" id="add_loc">添加地区</button>
+                	<button class="modifibtn" id="add_loc">添加地区</button>
                 </div>
                 
 		        <%include("/eeda/component/form/detailTable.html", 

@@ -21,7 +21,7 @@ define(['jquery', 'sco', 'dataTablesBootstrap' , 'validate_cn'], function ($, me
 	            { "data": "ORDER_NO","width":"100px" },
 	            { "data": null,
 	            	render: function(data,type,full,meta){
-	            		return "<button class='stdbtn  editBtn delete' id='"+full.ID+"' >删除</button>";
+	            		return "<button class='modifibtn delete' id='"+full.ID+"' >删除</button>";
 	            	}
 	            }
           ]

@@ -69,6 +69,58 @@ table.mt10{ margin-top:0px;}
     display: inline-block;
 }
 
+.baseinfo-wrap{ padding-top:20px; width:100px; height:80px; background:#fff; border:1px solid #ccc; float:left; margin-right:10px; text-align:center; }
+.baseinfo-wrap strong{ color:#06C}
+
 a.btn_yellow{
     color: #ae510d;
 }
+
+.topsearch{ float:left; color:#fff; margin:10px 0 0 20px;}
+.top-search{ width:200px; height:22px; line-height:22px; border:1px solid #CCC;}
+
+.overhide{ overflow:hidden; padding:20px;}
+.overhide_np{overflow:hidden;}
+.baseinfo-list{ margin-bottom:10px; overflow:hidden;}
+.baseinfo-wrap{ padding-top:20px; width:100px; height:80px; background:#fff; border:1px solid #ccc; float:left; margin-right:10px; text-align:center; }
+.baseinfo-wrap strong{ color:#06C}
+
+.stdtable td a,.userdetailtable a{ color:#06C; text-decoration:underline; }
+
+.userdetailtable{ border:1px solid #ccc;border-collapse: collapse;border-spacing: 0;}
+.userdetailtable td{background:#fff; border:1px solid #ccc; padding:5px; vertical-align:middle}
+
+.title{ font-size:16px; line-height:30px;}
+.newproject-wrap{}
+.newproject-wrap ul li{ border-bottom:1px dashed #ccc; line-height:30px; padding:5px;}
+
+.bd-detail{border:1px solid #ccc; padding:10px;}
+.bd{ padding:10px 0} 
+.bd span{padding-right:20px;}
+
+.bdtable td span{padding-right:20px;}
+
+.bdgray{ border:1px solid #ccc; padding:10px; background:#fff;}
+.txtarea{ width:300px; height:80px; border:1px solid #ccc; padding:5px;}
+
+.adm-wrap{padding:10px; height:100px; background:#fff; border:1px solid #ccc; float:left; margin-right:10px; text-align:center;}
+.adm-wrap a{ text-decoration:underline; color:#06F; padding-top:10px;}
+
+
+.no_1ad{ width:24%;  float:left}
+
+.no_2ad{ width:24%; float:left; margin-left:10px;}
+
+.hb_list li{ padding:5px; border:1px dashed #ccc; margin:15px 0;}
+.hb_list{}
+
+.mh_txt{ border:1px solid #ccc; background:#fff; height:22px; line-height:22px; margin-right:10px;}
+
+.case-list{ float:left;}
+.case-list li{ float:left; margin-right:10px; width:120px; height:120px; padding:5px; border:1px solid #ccc; }
+.case-btn{ padding-top:55px;}
+
+.s-upload{ width:140px;}
+.bdr{ border-right:1px solid #ccc;}
+
+.upload-adpic{width:60px; height:40px; padding:1px; border:1px solid #ccc;}
