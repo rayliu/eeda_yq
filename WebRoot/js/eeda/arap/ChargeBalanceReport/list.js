@@ -113,6 +113,53 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               }
           });
       });
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='sp_id'){
+	    	  $("#single_sp_id_input").val("");
+	    	  $("#order_export_date_show").hide();
+	    	  $("#employee_id_show").hide();
+	    	  $("#sp_id_show").show();
+	      }
+	      if(selectField=='employee_id'){
+	    	  $("#employee_id_show").val("");
+	    	  $("#sp_id_show").hide();
+	    	  $("#order_export_date_show").hide();
+	    	  $("#employee_id_show").show();
+	      }
+	      if(selectField=="order_export_date"){
+	    	  $("#employee_id_show").hide();
+	    	  $("#sp_id_show").hide();
+	    	  $("#order_export_date_show").show();
+	      }
+     });
+	
+	$('#singleSearchBtn').click(function(){
+	     var selectField = $('#selected_field').val();
+	     if(selectField=='sp_id'){
+	    	 var sp_id = $("#single_sp_id").val();
+	      }
+	      if(selectField=='employee_id'){
+	    	 var employee_id = $("#single_employee_id").val();
+	      }
+	      if(selectField=="order_export_date"){
+	    	 var begin_data = $("#single_order_export_date_begin_time").val();
+	    	 var end_date = $("#single_order_export_date_end_time").val();
+	      }
+	     var url = "/chargeBalanceReport/list?sp_id="+sp_id
+			+"&employee_id="+employee_id
+			+"&order_export_date_begin_time="+begin_data
+	        +"&order_export_date_end_time="+end_date;
+	     dataTable.ajax.url(url).load();
+	}); 
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
@@ -129,7 +176,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var abbr_name=$('#sp_id_input').val();
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
-          var employee_name = $("#employee_id_input").val().trim(); 
+          var employee_name = $("#employee_id_input").val(); 
           var employee_id = $("#employee_id").val();
           
           
