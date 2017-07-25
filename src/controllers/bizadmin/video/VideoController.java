@@ -17,6 +17,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
@@ -59,6 +60,8 @@ public class VideoController extends Controller {
         map.put("data", orderList);
         renderJson(map);
 	}
+	
+	@Before(Tx.class)
 	public void saveFile(){
 		Record re = new Record();
     	try {
@@ -69,6 +72,8 @@ public class VideoController extends Controller {
         }
     	renderJson(re);
 	}
+	
+	@Before(Tx.class)
 	public void save(){
 		String jsonStr = getPara("jsonStr");
         Long userId = LoginUserController.getLoginUserId(this);
@@ -83,6 +88,8 @@ public class VideoController extends Controller {
         Db.save("video_case", video);
         renderJson(video);
 	}
+	
+	@Before(Tx.class)
 	public void delete(){
 		String id=getPara("id");
 		String sql="delete from video_case where id="+id;

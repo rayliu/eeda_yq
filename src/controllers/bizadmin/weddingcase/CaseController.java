@@ -18,6 +18,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
@@ -33,6 +34,7 @@ public class CaseController extends Controller {
 		setAttr("example", new Record());
 		render(getRequest().getRequestURI()+"/list.html");
 	}
+	
 	public void list(){
 	    String sLimit = "";
         String pageIndex = getPara("draw");
@@ -50,15 +52,19 @@ public class CaseController extends Controller {
 		map.put("data", example_list);
 		renderJson(map);
 	}
+	
 	public void modify_info(){
         String id = getPara("id");
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	
+
 	public void modify_pwd(){
         String id = getPara("id");
         render(getRequest().getRequestURI()+"/edit.html");
     }
+	
+	@Before(Tx.class)
 	public void saveFile(){
 		Record re = new Record();
     	try {
@@ -69,6 +75,8 @@ public class CaseController extends Controller {
         }
     	renderJson(re);
 	}
+	
+	@Before(Tx.class)
 	public void save(){
 		String jsonStr = getPara("jsonStr");
         Long userId = LoginUserController.getLoginUserId(this);
@@ -114,10 +122,11 @@ public class CaseController extends Controller {
 	            	Db.save("wc_case_item", orderItem);
         		}
         }
-       
-
         renderJson(example);
 	}
+	
+	
+	@Before(Tx.class)
 	public void delete(){
 		String id=getPara("id");
 		Db.deleteById("wc_case", id);
