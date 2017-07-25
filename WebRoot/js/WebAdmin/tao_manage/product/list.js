@@ -27,7 +27,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap'], function ($, metisMenu) 
                      },
                      {"data": "ID", "width":"60px",
                     	 "render":function(data,full){
-                    		 return "<a href='#'>操作1</a>";
+                    		 return "<a href='/WebAdmin/tao_manage/product/detail?id="+data+"'>操作1</a>";
                     	 }
                      }
                     ]
