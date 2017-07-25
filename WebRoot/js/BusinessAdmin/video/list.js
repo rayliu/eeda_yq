@@ -31,6 +31,10 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload','dataTablesBootstrap'], fu
   			video.name=$("#name").val();
   			video.title_img=$("#title_img").val();
   			video.youku_address=$("#youku_address").val();
+  			if($.trim(video.name) == ""||$.trim(video.youku_address) == ""){
+  				alert("案例名称和优酷地址都必须要填！！！")
+  				return;
+  			}
   		  $.post("/BusinessAdmin/video/save",{jsonStr:JSON.stringify(video)},function(data){
   			 if(data){
 				 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);

@@ -58,8 +58,8 @@ $(document).ready(function() {
 	  
 	  
 	$("#save_btn").click(function(){
-		var self=$(this);
-		var example={};
+		var self = $(this);
+		var example = {};
 		example.img_num = img_num;
 		example.id=$("#id").val();
 		example.name=$("#name").val();
@@ -67,6 +67,10 @@ $(document).ready(function() {
 	  	for(var i = 1;i <= img_num;i++){
     		example['photo'+i] = $('#img_photo'+i).attr('value');
     	}
+		if($.trim(example.name)==""){
+			alert("案例名称必须要填！！")
+			return;
+		}
 		$.post("/BusinessAdmin/case/save",{jsonStr:JSON.stringify(example)},function(data){
   			if(data){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
@@ -77,8 +81,7 @@ $(document).ready(function() {
 			}  
 		});
 	});
-	  
-
+	
 	var dataTable = eeda.dt({
 		id: 'eeda_table',
         paging: true,
