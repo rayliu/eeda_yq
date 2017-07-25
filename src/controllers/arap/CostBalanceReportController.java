@@ -9,6 +9,7 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -102,7 +103,7 @@ public class CostBalanceReportController extends Controller {
         long office_id=user.getLong("office_id");
 		
 		String sp_id =" and sp_id="+spid;
-		if(" and sp_id=".equals(sp_id)){
+		if(StringUtils.isBlank(spid)){
 			sp_id="";
 		}
 		if(order_export_date_begin_time==null){
