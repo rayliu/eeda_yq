@@ -103,7 +103,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
   	    	  selectFieldValue = $("#single_order_no1").val();
 	      }
 	      if(selectField=='sp_name'){
-	    	  selectFieldValue = $("#single_sp_name_name_input").val();
+	    	  selectFieldValue = $("#single_sp_name_input").val();
 	      }
 	      if(selectField=="toStatus_equals"){
 	    	  selectFieldValue = $("#single_status").val();
