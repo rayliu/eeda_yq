@@ -34,33 +34,28 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     }
                      ]
         });
-        $("#update_diamond").click(function(){
-        	var price=$("#diamond").val();
-        	$.post("/WebAdmin/biz/mobilePush/updateDiamond",{price,price},function(data){
-        		if(data){
-	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-	    			$("#diamond_price").text(price);
-	    		}else{
-	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-	    		}
-        	})
         
-        })
+
+        
          $("#update_cu").click(function(){
+        	var self = this;
         	var price=$("#price").val();
+        	self.disabled = true;
         	$.post("/WebAdmin/ad/cu/updateCu",{price,price},function(data){
         		if(data){
-	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+	    			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
 	    			$("#cu_price").text(price);
 	    		}else{
-	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+	    			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
 	    		}
-        	})
+        		self.disabled = true;
+        	});
+        });
         
-        })
- 	 var refleshTable = function(){
-   	  dataTable.ajax.url("/WebAdmin/biz/mobilePush/list").load();
-    }
+        
+        var refleshTable = function(){
+        	 dataTable.ajax.url("/WebAdmin/biz/mobilePush/list").load();
+        }
      
 
 		var DateDiff = function  DateDiff(sDate1,sDate2){   //sDate1和sDate2是2006-12-18格式  

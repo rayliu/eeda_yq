@@ -34,20 +34,14 @@ public class CuController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
+		Record re = Db.findFirst("select * from price_maintain where type = ?","促广告");
+		setAttr("order", re);
 		render(getRequest().getRequestURI()+"/list.html");
 	}
 	
 	@Before(EedaMenuInterceptor.class)
 	 public void edit(){
 	        String id = getPara("id");
-//	      String title = getPara("edit_radioTitle");
-//	      String content = getPara("edit_radioContent");
-//	      Record r= Db.findById("msg_board", id);
-//	      r.set("title", title);
-//	      r.set("content", content);
-//	      r.set("update_stamp", new Date());
-//	      r.set("updator", LoginUserController.getLoginUserId(this));
-//	      Db.update("msg_board", r);
 	        render(getRequest().getRequestURI()+"/edit.html");
 	    }
 	 
@@ -93,13 +87,7 @@ public class CuController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
          
-/*    	String sql = "select * from ("
-    			+ " select m.*, u.c_name create_name, u1.c_name update_name"
-        		+ " from msg_board m "
-        		+ " left join user_login u on u.id = m.creator"
-        		+ " left join user_login u1 on u1.id = m.updator"
-        		+ " where m.office_id="+office_id
-        		+ " ) A where 1=1 ";*/
+
         String sql="select ul.c_name productor,wab.* from wc_ad_buy wab "
         		+ "LEFT JOIN user_login ul on wab.creator=ul.id "
         		+ "where wab.creator ="+user_id+" "+sLimit;
