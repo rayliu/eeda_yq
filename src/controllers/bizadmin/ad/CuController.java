@@ -36,7 +36,7 @@ public class CuController extends Controller {
 	public void buy(){
         String id = getPara("id");
         Long user_id = LoginUserController.getLoginUserId(this);
-        String sql="select * from wc_ad_buy where creator ="+user_id;
+        String sql="select * from wc_ad_cu where creator ="+user_id;
         String per_price="select * from price_maintain where id =5";
         Record user=Db.findFirst(sql);
         Record price=Db.findFirst(per_price);
@@ -89,6 +89,8 @@ public class CuController extends Controller {
 		
 		renderJson(order);
 	}
+	
+	@Before(Tx.class)
 	public void save(){
 		String advertisement = getPara("advertisement");
         Gson gson = new Gson();  
@@ -99,6 +101,7 @@ public class CuController extends Controller {
         String remark=(String) dto.get("remark");
         String price=(String) dto.get("price");
         Long user_id = LoginUserController.getLoginUserId(this);
+        
         Record order = new Record();
     	order.set("begin_date", begin_date);
     	order.set("end_date", end_date);
@@ -107,7 +110,7 @@ public class CuController extends Controller {
     	order.set("remark", remark);
     	order.set("create_time", new Date());
     	order.set("creator",user_id);
-    	Db.save("wc_ad_buy", order);
+    	Db.save("wc_ad_cu", order);
     	renderJson(order);
 	}
 }
