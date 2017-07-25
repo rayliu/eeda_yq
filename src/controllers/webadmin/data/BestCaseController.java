@@ -82,6 +82,8 @@ public class BestCaseController extends Controller {
     	redirect("/msgBoard");
     }
     
+    
+    
     public void list(){
     	Long user_id = LoginUserController.getLoginUserId(this);
     	UserLogin user = LoginUserController.getLoginUser(this);
@@ -92,14 +94,13 @@ public class BestCaseController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql="select ul.c_name productor,wc.* from wc_case wc " 
-        		+  " LEFT JOIN user_login ul on wc.creator=ul.id "
+        		+  " LEFT JOIN user_login ul on wc.creator = ul.id "
         		+  " where wc.creator=" +user_id;
     	String condition = DbUtils.buildConditions(getParaMap());
-
+    	System.out.println(sql);
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
-        
         List<Record> orderList = Db.find(sql+ " " +sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
@@ -111,10 +112,27 @@ public class BestCaseController extends Controller {
     }
     
    
+    @Before(Tx.class)
+    public void delete(){
+	   String id = getPara("id");
+	   Db.deleteById("wc_case", id);
+	   renderJson(true);
+   }
+   
+   
+   
+   @Before(Tx.class)
+   public void updateFlag(){
+	   String id = getPara("id");
+	   String flag = getPara("flag");
+	   String sql = "update wc_case set flag="+flag+" where id="+id;
+	   Db.update(sql);
+	   renderJson(true);
+   }
 
     public void seeMsgBoardDetail(){
     	String id = getPara("id");
-    	Record r= Db.findById("msg_board", id);
+    	Record r = Db.findById("msg_board", id);
     	renderJson(r);
     }
     

@@ -1,120 +1,17 @@
 <%layout("/WebAdmin/layout.html"){%>
     <div class="pageheader notab overhide">
       <h3>精选婚礼列表</h3>
-      <div class="mt10">
-        <select>
-          <option>全国</option>
-          <option>珠海</option>
-        </select>
-        <select>
-          <option>行业分类</option>
-          <option>影楼</option>
-          <option>婚礼跟拍</option>
-        </select>
-      </div>
+
       <div>
-        <table cellspacing="0" cellpadding="0" border="0" class="stdtable mt10">
-          <colgroup>
-          <col class="con0">
-          <col class="con1">
-          <col class="con0">
-          <col class="con1">
-          <col class="con0">
-          </colgroup>
-          <thead>
-            <tr>
-              <th class="head0">商 家</th>
-              <th class="head1">地 区</th>
-              <th class="head0">案例名称</th>
-              <th class="head1"></th>
-              <th class="head0"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>维多利亚</td>
-              <td>珠海</td>
-              <td>某某某案例</td>
-              <td>
-              <input type="button" class="modifibtn" value="编辑"  />
-                <input type="button" class="delete-btn" value="删除"  /></td>
-              <td><label class="padding10">
-              <input name="checkbox" type="checkbox" />
-精选</label>
-              <input type="button" class="modifibtn" value="确定/修改"  /></td>
-            </tr>
-            <tr>
-              <td colspan="5" align="left"><div>
-                  <ul class="case-list">
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                  </ul>
-                </div>
-                <div class="case-btn">
-                  <input type="button" class="modifibtn" value="查看全部"  />
-                </div></td>
-            </tr>
-          </tbody>
-        </table>
-        <table cellspacing="0" cellpadding="0" border="0" class="stdtable mt10">
-          <colgroup>
-          <col class="con0">
-          <col class="con1">
-          <col class="con0">
-          <col class="con1">
-          <col class="con0">
-          </colgroup>
-          <thead>
-            <tr>
-              <th class="head0">商 家</th>
-              <th class="head1">地 区</th>
-              <th class="head0">案例名称</th>
-              <th class="head1"></th>
-              <th class="head0"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>维多利亚</td>
-              <td>珠海</td>
-              <td>某某某案例</td>
-              <td><input type="button" class="modifibtn" value="编辑"  />
-                <input type="button" class="delete-btn" value="删除"  /></td>
-              <td><label class="padding10">
-              <input name="checkbox2" type="checkbox" />
-精选</label>
-              <input type="button" class="modifibtn" value="确定/修改"  /></td>
-            </tr>
-            <tr>
-              <td colspan="5" align="left"><div>
-                  <ul class="case-list">
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                    <li><a href="###"><img src="images/casepic.png" /></a></li>
-                  </ul>
-                </div>
-                <div class="case-btn">
-                  <input type="button" class="modifibtn" value="查看全部"  />
-                </div></td>
-            </tr>
-          </tbody>
-        </table>
-        <div id="dyntable2_paginate" class="dataTables_paginate paging_full_numbers"><span id="dyntable2_first" class="first paginate_button paginate_button_disabled">First</span><span id="dyntable2_previous" class="previous paginate_button paginate_button_disabled">Previous</span><span><span class="paginate_active">1</span><span class="paginate_button">2</span><span class="paginate_button">3</span><span class="paginate_button">4</span><span class="paginate_button">5</span></span><span id="dyntable2_next" class="next paginate_button">Next</span><span id="dyntable2_last" class="last paginate_button">Last</span></div>
+      	<%include("/eeda/component/form/detailTable.html", 
+	          {
+	              id:'eeda_table', 
+	              headers:['商家', '地区', '案例名称','案例封面','操作/精选']
+	      }){} %>
       </div>
       
     </div>
-	       <%include("/eeda/component/form/detailTable.html", 
-	          {
-	              id:'eeda_table', 
-	              headers:['商家', '地区', '案例名称','案例封面','操作','']
-	      }){} %>
+	       
 
 <%}%>
 <script>
