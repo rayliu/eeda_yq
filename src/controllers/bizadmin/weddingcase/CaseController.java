@@ -105,19 +105,17 @@ public class CaseController extends Controller {
      			example.set("creator",userId);
      			example.set("create_time",new Date());
      			 Db.save("wc_case", example);
-     			Record orderItem =null;
-            	for (int i = 1; i <= img_num; i++) {
-            	orderItem=new Record();
-            	orderItem.set("photo", (String) dto.get("photo"+i));
-            	orderItem.set("seq", i);
-            	orderItem.set("order_id", example.get("id"));
-            	Db.save("wc_case_item", orderItem);
+     			Record orderItem=null;
+            	for (int i = 1;i <= img_num; i++) {
+            		orderItem=new Record();
+	            	orderItem.set("photo", (String) dto.get("photo"+i));
+	            	orderItem.set("seq", i);
+	            	orderItem.set("order_id",example.get("id"));
+	            	Db.save("wc_case_item", orderItem);
         		}
         }
        
-    
-       
-       
+
         renderJson(example);
 	}
 	public void delete(){

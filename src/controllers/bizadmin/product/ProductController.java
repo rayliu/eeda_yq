@@ -164,8 +164,9 @@ public class ProductController extends Controller {
         	order.set("create_stamp", new Date());
         	Db.save("wc_product", order);
         	
-        	Record orderItem = new Record();
+        	Record orderItem = null;
         	for (int i = 1; i <= img_num; i++) {
+        		orderItem = new Record();
         		orderItem.set("photo", (String) dto.get("photo"+i));
         		orderItem.set("seq", i);
         		orderItem.set("order_id", order.get("id"));

@@ -1,6 +1,6 @@
 
 define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco','file_upload'], function ($, metisMenu) {
-	var img_num;
+	var img_num=0;
   $(document).ready(function() {
 	  $("#picture_up").on("click",function(){
 		  $(this).fileupload({
@@ -58,9 +58,9 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco','file_upload'], fu
 		 var self=$(this);
 		 var example={};
 		 example.img_num = img_num;
-		 example.id=$("#example_id").val();
+		 example.id=$("#id").val();
 		 example.name=$("#example_name").val();
-		 example.picture=$("#example_img").val();
+		 example.picture_name=$("#example_img").val();
 		  	for(var i = 1;i <= img_num;i++){
 	    		example['photo'+i] = $('#img_photo'+i).attr('value');
 	    	}
