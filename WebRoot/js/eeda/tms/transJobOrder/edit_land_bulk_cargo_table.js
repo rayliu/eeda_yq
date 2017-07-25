@@ -136,7 +136,7 @@ $(document).ready(function() {
                 		return '';
                 }
             },
-            { "data": "CABINET_DATE", "width": "158px",
+            { "data": "CABINET_DATE", "width": "120px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
                         data='';
@@ -144,7 +144,7 @@ $(document).ready(function() {
 	                    {
 	                        id: 'CABINET_DATE',
 	                        value: data.substr(0,19),
-	                        style:'width:150px'
+	                        style:'width:140px'
 	                    }
 	                );
                     return field_html;
