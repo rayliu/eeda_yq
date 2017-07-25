@@ -60,6 +60,12 @@ public class AdController extends Controller {
     }
 	
 	public void dimond(){
+		String sql="select * from price_maintain where type = '钻石商家'";
+		Record re = Db.findFirst(sql);
+		if(re != null){
+			setAttr("damond_price",re.get("price"));
+		}
+		
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	
@@ -92,7 +98,11 @@ public class AdController extends Controller {
 	}
 	
 	public void mobile(){
-		String sql="select * from price_maintain where id=1";
+		String sql="select * from price_maintain where type = '推送广告'";
+		Record re = Db.findFirst(sql);
+		if(re != null){
+			setAttr("price",re.get("price"));
+		}
 		setAttr("price", Db.findFirst(sql).get("price"));
         render(getRequest().getRequestURI()+"/edit.html");
     }

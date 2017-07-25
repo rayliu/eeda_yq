@@ -89,8 +89,7 @@ public class CuController extends Controller {
          
 
         String sql="select ul.c_name productor,wab.* from wc_ad_buy wab "
-        		+ "LEFT JOIN user_login ul on wab.creator=ul.id "
-        		+ "where wab.creator ="+user_id+" "+sLimit;
+        		+ "LEFT JOIN user_login ul on wab.creator=ul.id  "+sLimit;
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 

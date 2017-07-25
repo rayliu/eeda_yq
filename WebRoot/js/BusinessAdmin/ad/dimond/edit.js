@@ -6,7 +6,7 @@ define(['jquery', 'sco', 'jquery_ui', 'validate_cn'], function ($) {
 	  var month = new Date().getMonth();
 	  var day = new Date().getDate();
 	  var today = year+"-"+(month+1)+"-"+day;
-	  
+	  var price = $('#price').val();
 	  var date = new Date(today);
 	  date.setFullYear(date.getFullYear()+1); 
 	  var newDate = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
@@ -18,10 +18,10 @@ define(['jquery', 'sco', 'jquery_ui', 'validate_cn'], function ($) {
 	  $("[name=years]").click(function(){
 		  if(this.value == 1){
 			  $("#put_in_days").text('365');
-			  $("#total_price").text('999');
+			  $("#total_price").text(price);
 		  }else{
 			  $("#put_in_days").text('730');
-			  $("#total_price").text('1888');
+			  $("#total_price").text(price*2);
 		  }
 	  });
 	  

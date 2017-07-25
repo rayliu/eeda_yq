@@ -96,8 +96,7 @@ public class MobilePushController extends Controller {
         }
          
         String sql="select ul.c_name productor,map.* from wc_ad_mobile_promotion map "
-        		+ "LEFT JOIN user_login ul on ul.id=map.creator "
-        		+ "where map.creator="+user_id+" "+sLimit;
+        		+ "LEFT JOIN user_login ul on ul.id=map.creator "+sLimit;
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
