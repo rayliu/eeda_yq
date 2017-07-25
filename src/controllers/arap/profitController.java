@@ -61,7 +61,7 @@ public class profitController extends Controller {
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
         		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
         		+ " LEFT JOIN employee em on em.id = cs.salesman_id"
-        		+"  WHERE jo.office_id ="+office_id+" "
+        		+"  WHERE p.office_id ="+office_id+" "
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1 "+condition+" GROUP BY A.customer_id  ORDER BY abbr";
 		
@@ -118,7 +118,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
 			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_cny,"
@@ -129,7 +129,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
 			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_usd,"
@@ -140,7 +140,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
 			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_jpy,"
@@ -151,7 +151,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
 			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_hkd,"
@@ -162,7 +162,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
 			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+"	) cost_cny,"
 			+"	(SELECT "
@@ -172,7 +172,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
 			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_usd,"
@@ -183,7 +183,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
 			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_jpy,"
@@ -194,7 +194,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
 			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_hkd, "
@@ -205,7 +205,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN party p ON p.id = jo.customer_id "
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
 			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
-			+"	WHERE 	jo.office_id = "+office_id
+			+"	WHERE 	p.office_id = "+office_id
 			+"	AND joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_charge,"
@@ -216,7 +216,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN party p ON p.id = jo.customer_id "
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
 			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
-			+"	WHERE 	jo.office_id = "+office_id
+			+"	WHERE 	p.office_id = "+office_id
 			+"	AND joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_cost";
