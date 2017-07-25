@@ -100,6 +100,44 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               }
           });
       });
+      
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='sp_id'){
+	    	  $("#single_sp_id_input").val("");
+	    	  $("#create_time_show").hide();
+	    	  $("#sp_id_show").show();
+	      }
+	      if(selectField=='create_time'){
+	    	  $("#sp_id_show").hide();
+	    	  $("#create_time_show").show();
+	      }
+     });
+	
+	$('#singleSearchBtn').click(function(){
+		var selectField = $('#selected_field').val();
+		if(selectField=='sp_id'){
+	    	  var sp_id = $("#single_sp_id").val();
+	      }
+	      if(selectField=='create_time'){
+	    	  var create_time_begin_time = $("#single_create_time_begin_time").val();
+	    	  var create_time_end_time = $("#single_create_time_end_time").val();
+	      }
+	      var url = "/customReport/list?"
+        	    +"sp_id="+sp_id
+        		+"&create_stamp_begin_time="+create_time_begin_time
+        		+"&create_stamp_end_time="+create_time_end_time;
+	     dataTable.ajax.url(url).load();
+	});
+      
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
