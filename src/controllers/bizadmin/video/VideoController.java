@@ -75,7 +75,7 @@ public class VideoController extends Controller {
         Gson gson = new Gson();  
         Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class);
         Record video = new Record();
-        video.set("example_name", dto.get("example_name"));
+        video.set("name", dto.get("name"));
         video.set("title_img", dto.get("title_img"));
         video.set("youku_url", dto.get("youku_address"));
         video.set("creator", userId);

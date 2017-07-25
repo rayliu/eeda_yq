@@ -28,7 +28,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload','dataTablesBootstrap'], fu
   	  $("#upload").on("click",function(){
   		var self=this;
   		var video={};
-  			video.example_name=$("#example_name").val();
+  			video.name=$("#name").val();
   			video.title_img=$("#title_img").val();
   			video.youku_address=$("#youku_address").val();
   		  $.post("/BusinessAdmin/video/save",{jsonStr:JSON.stringify(video)},function(data){
@@ -48,8 +48,8 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload','dataTablesBootstrap'], fu
 	          serverSide: true, 
 	          ajax: "/BusinessAdmin/video/list",
 	          columns: [
-	            { "data": "EXAMPLE_NAME" ,"width": "50px"},
-	            { "data": "YOUKU_ADDRESS","class":"title", "width": "100px"},
+	            { "data": "NAME" ,"width": "50px"},
+	            { "data": "YOUKU_URL","class":"title", "width": "100px"},
 	            { "data": "CREATE_TIME","width": "100px"},
 	            { "data": "BEGIN_DATE", "width": "100px",
 	            	render: function(data,type,full,meta){

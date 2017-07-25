@@ -15,12 +15,12 @@ $(document).ready(function() {
 		        minlength: 6,
 		        equalTo: "#password"
 		    },
-		    user_name{
+		    user_name:{
 		    	required:true
 		    }
 		},
 	    messages: {
-	    	user_name{
+	    	user_name:{
 	    		required:"用户名不能为空"
 	    	},
 	        old_password: {
