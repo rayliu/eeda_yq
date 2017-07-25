@@ -12,9 +12,14 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data": "TOTAL_DAY", "width":"90px"}, 
 	                     { "data": "ID", "width":"60px",
 	                    	 "render":function(data,type,full,meta){
+	                    		 var   d=new   Date(Date.parse(full.END_DATE .replace(/-/g,"/")));
+	                    		 if(d<new Date){
+	                    			 return "已经过期"
+	                    		 }
 	                    		 var index=full.END_DATE.indexOf(" ");
 	                    		 var endday=full.END_DATE.substring(0,index);
 	                    		 var nowday=new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate();
+	                    		
                     		 return DateDiff(nowday,endday);
 	                     	}
 	                     }, 
