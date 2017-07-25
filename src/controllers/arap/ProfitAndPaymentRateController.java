@@ -63,7 +63,7 @@ public class ProfitAndPaymentRateController extends Controller {
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p ON p.id = joa.sp_id"
-        		+"  WHERE jo.office_id ="+office_id+" "+condition
+        		+"  WHERE p.office_id ="+office_id+" "+condition
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where A.sp_id is NOT NULL GROUP BY A.sp_id  ORDER BY abbr";
 		
@@ -114,7 +114,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_cny,"
@@ -123,7 +123,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_usd,"
@@ -132,7 +132,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_jpy,"
@@ -141,7 +141,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_hkd,"
@@ -150,7 +150,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_cny,"
@@ -159,7 +159,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_usd,"
@@ -168,7 +168,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_jpy,"
@@ -177,7 +177,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_hkd, "
@@ -186,7 +186,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"	LEFT JOIN party p ON p.id = jo.customer_id "
-			+"	WHERE 	jo.office_id = "+office_id
+			+"	WHERE 	p.office_id = "+office_id
 			+"	AND joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_charge,"
@@ -195,7 +195,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"	LEFT JOIN party p ON p.id = jo.customer_id "
-			+"	WHERE 	jo.office_id = "+office_id
+			+"	WHERE 	p.office_id = "+office_id
 			+"	AND joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_cost";
