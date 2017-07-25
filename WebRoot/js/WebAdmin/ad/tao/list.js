@@ -20,10 +20,11 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	            		}else if(full.STATUS=='已拒绝'){
 	            			data="已拒绝";
 	            		}else{
-	            			data =  "<a class=' stdbtn  wherether_approve' " +
-	              					" data-id="+full.ID+" href='#begin_date' status='Y'>审批</a>"
-	              					+"&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a class=' stdbtn btn-dangger wherether_approve' " +
-	              					" data-id="+full.ID+" href='#begin_date' status='N'>拒绝</a>";
+	            			data =  "<button class='modifibtn  wherether_approve' " +
+	              					" data-id="+full.ID+" href='#begin_date' status='Y'>审批</button>"+
+	              					"&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" +
+	              					"<button class='modifibtn btn-dangger wherether_approve' " +
+	              					" data-id="+full.ID+" href='#begin_date' status='N'>拒绝</button>";
 	            	  	}
 	            		return data;
 	            	} 

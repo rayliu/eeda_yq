@@ -128,7 +128,7 @@ public class MobilePushController extends Controller {
        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	   String price = getPara("price");
-       String sql="update price_maintain set price= "+price+",update_time = '"+df.format(new Date())+" where type='钻石商家'";
+       String sql="update price_maintain set price= "+price+",update_time = '"+df.format(new Date())+"' where type='钻石商家'";
 
 	   Db.update(sql);
 	   renderJson(true);

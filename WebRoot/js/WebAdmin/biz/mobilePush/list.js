@@ -27,9 +27,9 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data": "STATUS", "width":"60px",
 	                    	"render":function(data,type,full,meta){
 	                    		if(data == "已审批"){
-	                    			data = "<button class='btn' disabled>"+data+"</button>"
+	                    			data = "<button class='delete-btn' disabled>"+data+"</button>"
 	                    		}else{
-	                    			data = "<button class='btn action' data-id="+full.ID+">审批</button>"
+	                    			data = "<button class='modifibtn action' data-id="+full.ID+">审批</button>"
 	                    		}
 	                    			
 	                    		return data;
@@ -39,39 +39,32 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         });
         
         
-        $("#update_diamond").click(function(){
-        	var price=$("#diamond").val();
-        	$.post("/WebAdmin/biz/mobilePush/updateDiamond",{price,price},function(data){
-        		if(data){
-	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-	    			$("#diamond_price").text(price);
-	    		}else{
-	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-	    		}
-        	});
-        });
-        
-        
-        
-        $("#update_mobile").click(function(){
-        	var price = $("#mobile").val();
-        	$.post("/WebAdmin/biz/mobilePush/updateMobile",{price,price},function(data){
+        $("#updateDiamond, #updateMobile").click(function(){
+        	var self = this;	
+        	var btn_id = self.id;
+        	var price = $($(self).parent().parent().find('input')).val();
+        	self.disabled = true;
+        	$.post("/WebAdmin/biz/mobilePush/"+btn_id, {price,price},function(data){
         		if(data){
 	    			$.scojs_message('更新成功', $.scojs_message.TYPE_OK);
-	    			$("#mobile_price").text(price);
 	    		}else{
 	    			$.scojs_message('更新失败', $.scojs_message.TYPE_ERROR);
 	    		}
+        		self.disabled = false;
         	});
         });
         
+        
+       
         var refleshTable = function(){
         	dataTable.ajax.url("/WebAdmin/biz/mobilePush/list").load();
         }
      
         $('#eeda_table').on('click','.action',function(){
-    		var self=$(this);	
-    		var sid=$(this).data("id");
+    		var self = this;	
+
+    		var sid = $(self).data("id");
+    		self.disabled = true;
     	  	$.post("/WebAdmin/biz/mobilePush/exam",{id:sid},function(data){
     	  		if(data){
 	    			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
