@@ -48,6 +48,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data.toFixed(2),3);
 				  }
 	            },
+	            { "data": "CHARGE_RMB", "width": "120px","class":"charge_rmb",
+	            	"render": function(data, type, full, meta) {
+            	    if(!data){
+            	    	return '';
+            	    }
+					return eeda.numFormat(data.toFixed(2),3);
+				  }
+	            },
 	            { "data": "COST_CNY", "width": "100px" ,"class":"cost_cny",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
@@ -75,14 +83,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "COST_HKD", "width": "100px","class":"cost_hkd",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data.toFixed(2),3);
-				  }
-	            },
-	            { "data": "CHARGE_RMB", "width": "120px","class":"charge_rmb",
-	            	"render": function(data, type, full, meta) {
-            	    if(!data){
             	    	return '';
             	    }
 					return eeda.numFormat(data.toFixed(2),3);
