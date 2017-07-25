@@ -116,30 +116,38 @@ public class MobilePushController extends Controller {
     }
     
    public void exam(){
-	   String  id=getPara("id");
-	   String sql="update mobile_ad_promotion set status='已审批'  where id = "+id;
+	   String id=getPara("id");
+	   String sql="update wc_ad_mobile_promotion set status='已审批'  where id = "+id;
 	   Db.update(sql);
 	   renderJson(true);
 	   
    }
+   
+   @Before(Tx.class)
    public void updateDiamond(){
-	   SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	   String  price=getPara("price");
-	   String sql="update price_maintain set price= "+price+",update_time = '"+df.format(new Date())+" where type='钻石商家'";
+       SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+	   String price = getPara("price");
+       String sql="update price_maintain set price= "+price+",update_time = '"+df.format(new Date())+" where type='钻石商家'";
+
 	   Db.update(sql);
 	   renderJson(true);
    }
+   
+   @Before(Tx.class)
    public void updateMobile(){
-	   SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	   String  price=getPara("price");
-	   String sql="update price_maintain set price= "+price+" ,update_time='"+df.format(new Date())+"' where type='推送广告'";
+       SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+	   String  price = getPara("price");
+	   String sql = "update price_maintain set price = "+price+" ,update_time='"+df.format(new Date())+"' where type='推送广告'";
 	   Db.update(sql);
 	   renderJson(true);
    }
 
-    public void seeMsgBoardDetail(){
+    
+   public void seeMsgBoardDetail(){
     	String id = getPara("id");
-    	Record r= Db.findById("msg_board", id);
+    	Record r = Db.findById("msg_board", id);
     	renderJson(r);
     }
     

@@ -57,3 +57,28 @@
 	margin-left:50px;
 	width:400px;
 }
+
+
+.btn{
+	background: #5fc5fc;
+    border-color: #60b7f0;
+    color: #ffffff;
+    font-weight:bold;
+    height:25px;
+    box-shadow: 1px 1px 2px #96e9fe, 1px 1px 2px #96e9fe, 1px 1px 2px #96e9fe, inset 1px 1px 2px #96e9fe;
+}
+
+.btn:hover{
+	background: #1eadfb;
+    border-color: #44aaee;
+    color: #ffffff;
+    font-weight:bold;
+    text-decoration: none;
+}
+
+.btn:disabled{
+	background: #c0c0c0;
+    border-color: #c0c0c0;
+    color: #ffffff;
+}
+
