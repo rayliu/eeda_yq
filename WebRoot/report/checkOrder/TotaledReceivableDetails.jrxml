@@ -18,7 +18,7 @@
 	</parameter>
 	<parameter name="login_user_id" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT aco.begin_time,aco.end_time,p.company_name,p.contact_person,p.phone,p.fax, u.c_name,u.user_tel,
+		<![CDATA[SELECT aco.begin_time,aco.end_time,o.eng_office_name,p.company_name,p.contact_person,p.phone,p.fax, u.c_name,u.user_tel,
 jo.order_export_date,jo.order_no,jo.ref_no,
 
 CASE when l.name !='' then l.name when l1.name !='' then l1.name
@@ -141,6 +141,7 @@ from job_order_arap joa
 left join job_order jo on jo.id = joa.order_id
 left join arap_charge_item aci on aci.ref_order_id = joa.id
 left join arap_charge_order aco on aco.id = aci.charge_order_id
+LEFT JOIN office o on o.id = aco.office_id
 left join job_order_shipment jos on jos.order_id = jo.id
 left join job_order_shipment_item josi on josi.order_id = jo.id
 left join job_order_air_item joai on joai.order_id = jo.id
@@ -159,6 +160,9 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 	</field>
 	<field name="end_time" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="eng_office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[公司英文名称]]></fieldDescription>
 	</field>
 	<field name="company_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -182,6 +186,9 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ref_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="fnd" class="java.lang.String">
@@ -210,7 +217,6 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 	<field name="hkd" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="ref_no" class="java.lang.String"/>
 	<variable name="SUM_RMB" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{cny}]]></variableExpression>
 	</variable>
@@ -231,13 +237,6 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 	</title>
 	<pageHeader>
 		<band height="53" splitType="Stretch">
-			<staticText>
-				<reportElement x="161" y="4" width="509" height="23" uuid="4ed9d707-a40e-4a26-b148-f7edc508b2a6"/>
-				<textElement textAlignment="Center">
-					<font size="16" isBold="true"/>
-				</textElement>
-				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD]]></text>
-			</staticText>
 			<line>
 				<reportElement x="162" y="27" width="509" height="1" uuid="8da3511b-409f-4ae7-8a0e-3a9598727131"/>
 				<graphicElement>
@@ -251,6 +250,13 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				</textElement>
 				<text><![CDATA[MONTHLY STATEMENT]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="162" y="0" width="509" height="28" uuid="eb01bf54-6c9c-4c84-9b1b-bd7239b2f308"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
