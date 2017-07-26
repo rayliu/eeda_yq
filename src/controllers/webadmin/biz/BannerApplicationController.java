@@ -93,7 +93,7 @@ public class BannerApplicationController extends Controller {
         }
          
     	String sql = "select ul.c_name productor,wab.* from wc_ad_banner wab "
-    					+ "LEFT JOIN user_login ul on ul.id=wab.creator";
+    					+ "LEFT JOIN user_login ul on ul.id=wab.creator order by create_time desc";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 

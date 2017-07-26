@@ -1,4 +1,4 @@
-<%layout("/BusinessAdmin/layout.html"){%>
+、<%layout("/BusinessAdmin/layout.html"){%>
         <div class="pageheader notab">
       <h1 class="pagetitle">广告购买</h1>
   </div>
@@ -26,7 +26,7 @@
 		                        <td width="20%">广告开始时间</td>
 		                  			<td width="58%">
 		                            	<span class="">
-		                            		<input type="text" id="begin_date" name="begin_date" value="${user.begin_date!''}" />
+		                            		<input type="text" id="begin_date" name="begin_date" />
 		                            	</span>
 		                        	</td>
 		                      		<td rowspan="5"><textarea rows="20" cols="15" id="remark" placecholder="还有什么要说的?"></textarea></td>
@@ -35,13 +35,13 @@
 		                        <td>广告结束时间</td>
 		                        <td>
 		                            <span class="">
-		                                <input type="text" id="end_date" name="end_date" value="${user.end_date!''}" />
+		                                <input type="text" id="end_date" name="end_date"  />
 		                            </span>
 		                        </td>
 		                    </tr>
 		                    <tr>
 		                        <td>总投放时间</td>
-		                        <td ><span id="total_day" >${user.total_day!''}</span>天</td>
+		                        <td ><span id="total_day" >0</span>天</td>
 		                    </tr>
 		                     <tr>
 		                        <td>每条的价格</td>
@@ -49,11 +49,11 @@
 		                    </tr>
 		                    <tr>
 		                        <td>结算</td>
-		                        <td><span class="anchorbutton" id="price">${user.price!''}</span>元人民币</td>
+		                        <td><span class="anchorbutton" id="price">0</span>元人民币</td>
 		                    </tr>
 		                    <tr>
 		                        <td>提交申请</td>
-		                        <td><input type="button" class="stdbtn btn_yellow" value="在线支付"   id="saveBtn" /></td>
+		                        <td><input type="button" class="stdbtn btn_yellow" value="保存"   id="saveBtn" /></td>
 		                    </tr>
 		                </tbody>
             </table>

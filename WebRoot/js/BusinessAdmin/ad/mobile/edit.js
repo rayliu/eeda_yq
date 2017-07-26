@@ -61,7 +61,16 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
 		  var total_price = parseFloat(price)*parseFloat(amount);
 		  $("#total_price").text(total_price);
 	  }); 
-
+	  
+	  //初始化价格
+	  function init(){
+		  var price = $('#price').text();
+		  var amount = $('#amount').val();
+		  var total_price = parseFloat(price)*parseFloat(amount);
+		  $("#total_price").text(total_price);
+	  };
+	  init();
+	  
 	  //提交按钮
       $('#saveBtn').click(function(event) {
     	  var self = this;
@@ -76,7 +85,7 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
     	    order.price = $("#price").text();
     	    order.put_in_time = $("#put_in_time").val();
     	    order.total_price = $("#total_price").text();
-    	    order.phone = $("#phone").val();
+    	    order.phone = $("#telphone").val();
     	    order.remark = $("#remark").val();
 			$.post('/BusinessAdmin/ad/mobile_save',{jsonStr:JSON.stringify(order)},function(data) {
 				if(data){
@@ -98,12 +107,12 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
     	  	var put_in_time = $(this).attr('put_in_time');
     	  	var total_price = $(this).attr('total_price');
     	  	var phone = $(this).attr('phone');
-    	  	var remark =($(this).attr("remark")=='null'?"该订单暂时没备注！":self.attr("remark"));
+    	  	var remark =($(this).attr("remark")=='null'?"该订单暂时没备注！":$(this).attr("remark"));
     	  	$('#order_id').val(id);
 			$('#amount').val(amount);
 			$('#put_in_time').val(put_in_time);
 			$('#total_price').text(total_price);
-			$('#phone').val(phone);
+			$('#telphone').val(phone);
 			$('#remark').val(remark);
 		});
       

@@ -4,7 +4,6 @@ $(document).ready(function() {
 		rules: {
 			old_password: {
 			    required: true,
-			    minlength: 6,
 			    remote: {
 			    	url: "/BusinessAdmin/account/check_pwd",
 			    	type: "post",             
@@ -22,14 +21,12 @@ $(document).ready(function() {
 		    },
 		    confirm_password: {
 		        required: true,
-		        minlength: 6,
 		        equalTo: "#password"
 		    }
 		},
 	    messages: {
 	        old_password: {
-		        required: "不能为空",
-		        minlength: "密码长度不能小于 6 个字母",
+		        required: "请填写原密码！！",
 		        remote:"密码错误"
 		    },
 	        password: {
@@ -37,8 +34,7 @@ $(document).ready(function() {
 	            minlength: "密码长度不能小于 6 个字母"
 	        },
 	        confirm_password: {
-	            required: "不能为空",
-	            minlength: "密码长度不能小于 6 个字母",
+	            required: "请填写你刚才设定的密码！",
 	            equalTo: "两次密码输入不一致"
 	        }
 	    }

@@ -164,13 +164,12 @@ public class AdController extends Controller {
         		+ " from wc_ad_mobile_promotion "
         		+ " where creator = "+ userId;
         
-        String condition = DbUtils.buildConditions(getParaMap());
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        String sqlTotal = "select count(1) total from ("+sql+ ") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
+        List<Record> orderList = Db.find(sql+  " order by create_time desc " +sLimit);
         
         Map map = new HashMap();
         map.put("draw", pageIndex);

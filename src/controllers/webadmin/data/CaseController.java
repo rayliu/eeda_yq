@@ -99,8 +99,7 @@ public class CaseController extends Controller {
         		+ " where m.office_id="+office_id
         		+ " ) A where 1=1 ";*/
         String sql=" select ul.c_name productor,wc.* from wc_case wc "
-        		+ "left join user_login ul on wc.creator=ul.id "
-        		+ "where 1=1 and wc.creator= "+user_id+" "+sLimit;
+        		+ "left join user_login ul on wc.creator=ul.id ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
@@ -108,7 +107,7 @@ public class CaseController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql);
+        List<Record> orderList = Db.find(sql+sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

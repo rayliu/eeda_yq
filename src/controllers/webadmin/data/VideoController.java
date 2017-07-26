@@ -94,7 +94,7 @@ public class VideoController extends Controller {
         }
   
     	String sql = " SELECT vc.*, ul.c_name productor "
-    			+ " FROM video_case vc LEFT JOIN user_login ul ON vc.creator = ul.id where vc.creator="+user_id+" "+sLimit;
+    			+ " FROM video_case vc LEFT JOIN user_login ul ON vc.creator = ul.id  ";
 
     	String condition = DbUtils.buildConditions(getParaMap());
 
@@ -103,7 +103,7 @@ public class VideoController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql);
+        List<Record> orderList = Db.find(sql+sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

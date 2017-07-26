@@ -27,16 +27,15 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 				    dataType: 'json',
 			        done: function (e, data) {
 		        		if(data){
-				    		$.scojs_message('已选择', $.scojs_message.TYPE_OK);
 				    		$('#img_'+str).attr('value',data.result.NAME);
 				    		var imgPre =Id('img_'+str);
 				  		    imgPre.src = '/upload/'+data.result.NAME; 
 
 				    	}else{
-				    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
+				    		$.scojs_message('上传图片失败', $.scojs_message.TYPE_ERROR);
 				    	}
 				     },error: function () {
-			            alert('上传的时候出现了错误！');
+			            alert('上传图片的时候出现了错误！');
 			        }
 			   });
 		  }else{
@@ -52,7 +51,6 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 			        done: function (e, data) {
 		        		if(data){
 		        			$('#img_'+str+img_num).show();
-				    		$.scojs_message('已选择', $.scojs_message.TYPE_OK);
 				    		$('#img_'+str+img_num).attr('value',data.result.NAME);
 				    		var imgPre =Id('img_'+str+img_num);
 				  		    imgPre.src = '/upload/'+data.result.NAME;

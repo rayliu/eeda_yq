@@ -30,7 +30,7 @@
                         <td width="13%">两年钻石商家服务</td>
                         <td width="65%">
                             <span class="">
-                                <input type="radio" name="years" checked value="2" style="vertical-align:middle;" />
+                                <input type="radio" name="years" value="2" style="vertical-align:middle;" />
                                 <strong class="ud-year">两年</strong>
                                 <span class="fail-verify"> 至 </span>&nbsp&nbsp&nbsp&nbsp<strong id="tow_year"></strong>
                             </span>
@@ -41,7 +41,7 @@
                         <td>一年钻石商家服务</td>
                         <td>
                             <span class="">
-                                <input type="radio" name="years" value="1" style="vertical-align:middle;" />
+                                <input type="radio" name="years" value="1" checked style="vertical-align:middle;" />
                                 <strong class="ud-year">一年</strong>
                                 <span class="fail-verify"> 至 </span>&nbsp&nbsp&nbsp&nbsp<strong id="one_year"></strong>
                             </span>
@@ -49,11 +49,11 @@
                     </tr>
                     <tr>
                         <td>总投放时间</td>
-                        <td ><span id="put_in_days">730</span>天</td>
+                        <td ><span id="put_in_days">365</span>天</td>
                     </tr>
                     <tr>
                         <td>结算</td>
-                        <input type="hidden" id="price">
+                        <input type="hidden" id="price" value="${damond_price!''}">
                         <td><span class="anchorbutton" id="total_price" >${damond_price!'0.0'}</span>人民币(元)</td>
                     </tr>
                     <tr>

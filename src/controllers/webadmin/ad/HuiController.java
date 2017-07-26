@@ -78,7 +78,7 @@ public class HuiController extends Controller {
 
         String sql="select ul.c_name productor,wah.* from wc_ad_hui wah "
         		+ "LEFT JOIN user_login ul on wah.creator=ul.id "
-        		+ "where wah.creator ="+user_id+" "+sLimit;
+        		+ " "+sLimit;
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 

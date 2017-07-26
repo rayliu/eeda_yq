@@ -10,7 +10,6 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		        done: function (e, data) {
 	        		if(data){
 			    		$('#img_logo').val(data.result.NAME);
-			    	
 			    		var imgPre =Id("img_logo");
 			  		    imgPre.src = '/upload/'+data.result.NAME;
 			    	}else{
@@ -49,7 +48,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		 var order = {};
 		 order.id = $('#order_id').val();
 		 order.contact_person = $('#contact_person').val();
-		 order.phone = $('#phone').val();
+		 order.phone = $('#tel_phone').val();
 		 order.province = province;
 		 order.city = city;
 		 order.district = district;
@@ -57,7 +56,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		 order.address_phone = $('#address_phone').val();
 		 order.qq = $('#qq').val();
 		 order.intro = $('#intro').val();
-		 order.logo = $('#img_logo').val();
+		 order.logo = $('#img_logo').attr('value');
 		 
 		 
 		 var self = this;

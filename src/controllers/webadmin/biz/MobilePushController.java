@@ -96,7 +96,7 @@ public class MobilePushController extends Controller {
         }
          
         String sql="select ul.c_name productor,map.* from wc_ad_mobile_promotion map "
-        		+ "LEFT JOIN user_login ul on ul.id=map.creator "+sLimit;
+        		+ "LEFT JOIN user_login ul on ul.id=map.creator order by create_time desc";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
@@ -104,7 +104,7 @@ public class MobilePushController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql);
+        List<Record> orderList = Db.find(sql+" "+sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

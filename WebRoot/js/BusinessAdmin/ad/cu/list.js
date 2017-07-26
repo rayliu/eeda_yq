@@ -9,10 +9,10 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
           columns: [
             { "data": "ORDER_NO" ,"width": "80px"},
             { "data": "TITLE","class":"title", "width": "100px"},
-            { "data": "IS_APPROVED","width": "100px"},
-            { "data": "DATE_FROM","width": "100px" },
-            { "data": "DATE_TO", "width": "100px" },
-            { "data": "UNIT_PRICE", "width": "100px"},
+            { "data": "STATUS","width": "100px"},
+            { "data": "BEGIN_DATE","width": "100px" },
+            { "data": "END_DATE", "width": "100px" },
+            { "data": "PRICE", "width": "100px"},
             { "data": null, "width": "100px",
               render: function(data,type,full,meta){
                 return "<a class='stdbtn btn_blue editBtn' id='"+full.ID+"' content='"+full.CONTENT+"' href='#title'>编辑</a>";
@@ -29,12 +29,13 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
 		$('#eeda_table').on('click','.editBtn',function(){
 			var $row = $(this).parent().parent();
 			var title = $($row.find('.title')).text();
-			var content = $(this).attr('content');
+			var content = $(this).attr('content')=='null'?"暂无":$(this).attr('content');
 			var id = $(this).attr('id');
 			
 			$('#item_id').val(id);
 			$('#title').val(title);
 			$('#content').val(content);
+			$("#edit").show();
 			
 		});
 		
@@ -53,6 +54,7 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
 		    			$('#item_id').val('');
 		    			$('#title').val('');
 		    			$('#content').val('');
+		    			$("#edit"). hide();
 		    		}else{
 		    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 		    		}

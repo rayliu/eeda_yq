@@ -1,5 +1,7 @@
 package controllers.bizadmin.ad;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +39,7 @@ public class CuController extends Controller {
         String id = getPara("id");
         Long user_id = LoginUserController.getLoginUserId(this);
         String sql="select * from wc_ad_cu where creator ="+user_id;
-        String per_price="select * from price_maintain where id =5";
+        String per_price="select * from price_maintain where type  ='促广告'";
         Record user=Db.findFirst(sql);
         Record price=Db.findFirst(per_price);
         setAttr("user", user);
@@ -53,7 +55,7 @@ public class CuController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         Long userId = LoginUserController.getLoginUserId(this);
-        String sql = "select * from wc_ad_deal where creator = "+ userId;
+        String sql = "select * from wc_ad_cu where creator = "+ userId;
         
         String condition = DbUtils.buildConditions(getParaMap());
 
@@ -82,10 +84,10 @@ public class CuController extends Controller {
 		String title = getPara("title");
 		String content = getPara("content");
 		
-		Record order = Db.findById("wc_ad_deal", id);
+		Record order = Db.findById("wc_ad_cu", id);
 		order.set("title", title);
 		order.set("content", content);
-		Db.update("wc_ad_deal", order);
+		Db.update("wc_ad_cu", order);
 		
 		renderJson(order);
 	}
@@ -103,6 +105,9 @@ public class CuController extends Controller {
         Long user_id = LoginUserController.getLoginUserId(this);
         
         Record order = new Record();
+
+		DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
+		order.set("order_no", format.format(new Date()));
     	order.set("begin_date", begin_date);
     	order.set("end_date", end_date);
     	order.set("total_day", total_day);
