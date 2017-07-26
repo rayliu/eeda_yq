@@ -1,5 +1,5 @@
 <table id="${id}" class="table table-striped table-bordered table-hover display" cellspacing="0" style="${style!'width:100%;'}">
-    <thead class="eeda head">
+    <thead class="eeda head" id="${id}_head">
         <tr>
         	<%for(name in headers){%>
         		<th>${name}</th>
@@ -31,3 +31,21 @@
         </tr>
     </tfoot>
 </table>
+<script>
+	  //表头浮动
+	  if(${fixedheader!false}){
+		  $(function(){
+	          var scroll_bar = $("#${id}");//表格的id
+	          var bar_head = $("#${id}_head");//表头
+	          $(window).scroll(function(){
+	              var scroll_top = $('body').scrollTop() - scroll_bar.offset().top;//判断是否到达窗口顶部
+	              if (scroll_top > 0) {
+	            	  bar_head.css({'z-index':'1','position':'fixed','top':'0','width':$("#${id}").width()});
+	              }else {
+	            	  bar_head.css({'z-index':'auto','position':'static','top':'auto','width':$("#${id}").width()});
+	              }
+	          });
+	      });
+	  }
+</script>
+    
