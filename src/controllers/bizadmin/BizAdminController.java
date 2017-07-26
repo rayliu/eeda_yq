@@ -176,6 +176,11 @@ public class BizAdminController extends Controller {
             render(strLoginPagePath);
         }
     }
+    
+    public void logOut(){
+    	currentUser.logout();
+    	redirect("/BusinessAdmin/");
+    }
 
 	private void setSysTitle() {
 		String serverName = getRequest().getServerName();
