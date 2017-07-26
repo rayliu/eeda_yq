@@ -107,10 +107,16 @@ $(document).ready(function() {
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
     		$('#confirmBtn').attr('disabled', false);
-    		$('#printTotaledBtn').attr('disabled', false);
-    		$('#printBtn').attr('disabled', false);    		
-    	}else if(status!='新建'){
-            $('#printTotaledBtn').attr('disabled', false);
+    	}else if(status=='已确认'){
+    		$('#saveBtn').attr('disabled', true);
+    		$('#confirmBtn').attr('disabled', true);
+    		$('#cancelConfirmBtn').attr('disabled', false);
+        }else if(status=='取消确认'){
+        	$('#cancelConfirmBtn').attr('disabled', true);
+        	$('#saveBtn').attr('disabled', false);
+    		$('#confirmBtn').attr('disabled', false);
+    		$('#add_charge').attr('disabled', false);
+    		$('.delete').attr('disabled', false);
         }
     }
     
@@ -121,10 +127,9 @@ $(document).ready(function() {
     	 $.post('/transChargeCheckOrder/confirm', {id:id}, function(data){
     		 if(data){
     			 $('#saveBtn').attr('disabled', true);
-                 $('#printBtn').attr('disabled', true);
                  $('.delete').attr('disabled', true);
                  $('#add_charge').attr('disabled', true);
-
+                 $('#cancelConfirmBtn').attr('disabled', false);
                  $("#status").val('已确认');
                  $('#confirmOrder_div').show();
                  $('#costCheckreceipt').show();
@@ -138,7 +143,7 @@ $(document).ready(function() {
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
 
-                  $("#total_amount").val($('#cny').val());
+                 $("#total_amount").val($('#cny').val());
                  $("#receive_cny").val($('#cny').val());
                  $("#residual_cny").val($('#cny').val());
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
@@ -148,9 +153,39 @@ $(document).ready(function() {
         	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
         	 $(this).attr('disabled', false);
          });
-    })
-    
-    
+    });
+  
+  //取消确认单据
+    $('#cancelConfirmBtn').click(function(){
+    	$(this).attr('disabled', true);
+    	var id = $("#order_id").val();
+    	var action = "cancelConfirm";
+    	 $.post('/transChargeCheckOrder/confirm', {id:id,action:action}, function(data){
+    		 if(data){
+    			 $('#saveBtn').attr('disabled', false);
+    			 $('#confirmBtn').attr('disabled', false);
+                 $('.delete').attr('disabled', false);
+                 $('#add_charge').attr('disabled', false);
+
+                 $("#status").val('取消确认');
+                 $('#confirmOrder_div').hide();
+                 $('#costCheckreceipt').hide();
+
+    			 $("#confirm_name").val("");
+    			 $("#confirm_stamp").val(""); 
+
+                 $("#total_amount").val("");
+                 $("#receive_cny").val("");
+                 $("#residual_cny").val("");
+    			 $.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
+ 			 
+    		 }
+         },'json').fail(function() {
+        	 $.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
+        	 $(this).attr('disabled', false);
+         });
+    });
+
     //下载应收对账明细
     $('#exportBtn').click(function(){
     	var order_id = $('#order_id').val();

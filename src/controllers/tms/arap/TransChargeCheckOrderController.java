@@ -263,9 +263,10 @@ public class TransChargeCheckOrderController extends Controller {
         		+" IFNULL(aco.cny, 0) total_amount_cny, "
 			    +" (SELECT IFNULL(SUM(t.receive_cny), 0) FROM trans_arap_charge_receive_item t WHERE t. charge_order_id=aco.id) total_receive_cny, "
 			    +" (aco.cny-(SELECT IFNULL(SUM(t.receive_cny), 0)  FROM trans_arap_charge_receive_item t WHERE t.charge_order_id=aco.id)) total_RESIDUAL_CNY, "
-			    + " p.abbr sp_name,CAST(CONCAT(begin_time,'到',end_time) AS CHAR) service_stamp"
+			    + " p.abbr sp_name,CAST(CONCAT(begin_time,'到',end_time) AS CHAR) service_stamp,u.c_name confirm_name"
 				+ " from trans_arap_charge_order aco "
 				+ " left join party p on p.id=aco.sp_id "
+				+ " LEFT JOIN user_login u ON u.id = aco.confirm_by "
 				+ " where aco.office_id = "+office_id+" order by aco.create_stamp DESC "
 				+ " ) B where 1=1 ";
         String condition = DbUtils.buildConditions(getParaMap());
@@ -639,21 +640,48 @@ public class TransChargeCheckOrderController extends Controller {
     @Before(Tx.class)
     public void confirm(){
 		String id = getPara("id");
+		String action = getPara("action");
 		TransArapChargeOrder aco = TransArapChargeOrder.dao.findById(id);
-		aco.set("status","已确认");
-		aco.set("confirm_stamp", new Date());
-		aco.set("confirm_by", LoginUserController.getLoginUserId(this));
-		aco.update();
+		if(action==null){
+			action="";
+		}
+		if(action.equals("cancelConfirm")){
+			//
+			aco.set("status","取消确认");
+			aco.update();
+			
+			//
+			String sql="UPDATE trans_job_order_arap joa set billConfirm_flag='N' "
+						+"where joa.id in (select aci.ref_order_id FROM trans_arap_charge_item aci where charge_order_id="+id+" )";
+			Db.update(sql);
+			
+			//保存这次取消确认记录进status_audit表
+			Record re = new Record(); 
+			re.set("order_type", "transChargeCheckOrder");
+			re.set("order_id", id);
+			re.set("user_id", LoginUserController.getLoginUser(this).getLong("office_id"));
+			re.set("action_time",new Date());
+			re.set("action",action);
+			Db.save("status_audit", re);
+			renderJson(re);
+		}else{
+			
+			aco.set("status","已确认");
+			aco.set("confirm_stamp", new Date());
+			aco.set("confirm_by", LoginUserController.getLoginUserId(this));
+			aco.update();
+			
+			//设置y，已生成对账单o
+			String itemList=aco.get("ref_order_id");
+			String sql="UPDATE trans_job_order_arap joa set billConfirm_flag='Y' "
+						+"where joa.id in (select aci.ref_order_id FROM trans_arap_charge_item aci where charge_order_id="+id+" )";
+			Db.update(sql);
+			
+			Record r = aco.toRecord();
+			r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
+			renderJson(r);
+		}
 		
-		//设置y，已生成对账单o
-		String itemList=aco.get("ref_order_id");
-		String sql="UPDATE trans_job_order_arap joa set billConfirm_flag='Y' "
-					+"where joa.id in (select aci.ref_order_id FROM trans_arap_charge_item aci where charge_order_id="+id+" )";
-		Db.update(sql);
-		
-		Record r = aco.toRecord();
-		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
-		renderJson(r);
 	}
     
     public void insertChargeItem(){
