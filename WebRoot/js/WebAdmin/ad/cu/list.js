@@ -27,17 +27,53 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data": "ID", "width":"60px"},
 	                     { "data": "ID", "width":"60px"},
 	                     { "data": "STATUS", "width":"60px",
-	                    	"render":function(data,type,full,meta){
-	                    		
-	                    		if(data=="已审批"){
-	                    			data="<button>"+data+"</button>"
-	                    		}else{
-	                    			data="<a class='stdbtn  exam' data-id="+full.ID+" href='#eeda_table'>审批</a>"
-	                    		}	
-	                    		return "";
-	                    	} 
-	                     }
+	                    	 "render":function(data,type,full,meta){
+	                    		 return "已经"+data;
+	                    	 }
+	                     },
+	                     { "data": "STATUS", "width":"60px",
+	                    	 render: function(data,type,full,meta){
+	     	            		var status = "";
+	     	            		var info = ""
+	     	            		var button = "";
+	     	            		if(full.STATUS=="下架"){
+	     	            			status="toUp";
+	     	            			info = '上架'; 
+	     	            		}else if(full.STATUS=='上架'){
+	     	            			button="style='color:black;background:red;'"
+	     	            			status='toDown'
+	     	            			info = "下架";
+	     	            		}
+	     	            		data =  "<button "+button+" class='modifibtn btn-blue  wherether_carriage' " +
+	     	              					" data-id="+full.ID+" href='#begin_date' status="+status+">"+info+"</button>";
+	     	            		return data;
+	     	            	} 
+		                  }
                      ]
+        });
+        
+        //更新状态 
+        $("#eeda_table").on("click"," .wherether_carriage",function(){
+        	var result = confirm("确定要这样做吗？");
+        	var self = $(this);
+        	var id = self.data('id');
+        	var status = self.attr("status");
+        	if(result){
+        		$.post("/WebAdmin/ad/cu/whetherCarriage",{id:id,status:status},function(data){
+            		if(data){
+            			if(status == "toUp"){
+            				$.scojs_message("上架成功",$.scojs_message.TYPE_OK);
+                			
+            			}
+            			if(status == "toDown"){
+            				$.scojs_message("已下架",$.scojs_message.TYPE_OK);
+            			}
+            			refleshTable();
+            		}else{
+            			$.scojs.message("操作失败",$.scojs_message.TYPE_OK);
+            		}
+            	})
+        	}
         });
         
 
@@ -59,7 +95,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         
         
         var refleshTable = function(){
-        	 dataTable.ajax.url("/WebAdmin/biz/mobilePush/list").load();
+        	 dataTable.ajax.url("/WebAdmin/ad/cu/list").load();
         }
      
 

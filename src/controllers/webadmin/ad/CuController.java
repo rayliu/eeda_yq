@@ -106,12 +106,29 @@ public class CuController extends Controller {
         renderJson(map); 
     	
     }
+    
+    @Before(Tx.class)
     public void updateCu(){
     	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	String price=getPara("price");
     	String sql="update price_maintain set price= " +price +", update_time='"+df.format(new Date())+"' where type='促广告'";
     	Db.update(sql);
     	renderJson(true);
+    }
+    
+    @Before(Tx.class)
+    public void whetherCarriage(){
+ 	   String status=getPara("status");
+ 	   String info="";
+ 	   if(status.equals("toUp")){
+ 		   info="上架";
+ 	   }else if(status.equals("toDown")){
+ 		   info="下架";
+ 	   }
+ 	   String id = getPara("id");
+ 	   String sql = "update wc_ad_cu set status = '"+info+"' where id="+id+""; 
+ 	   Db.update(sql);
+ 	   renderJson(true);
     }
 
     public void seeMsgBoardDetail(){

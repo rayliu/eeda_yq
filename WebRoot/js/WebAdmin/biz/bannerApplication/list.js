@@ -9,119 +9,59 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             columns: [
 	                     { "data":"ID","width": "80px" },
 	                     { "data": "PRODUCTOR", "width":"120px"},
-	                     { "data": "ID", "width":"90px",
-	                    	 "render":function(data,type,full,meta){
-	                    		
-	                    		 return data;
-	                    	 }
-	                     }, 
+	                     { "data": "ID", "width":"90px"}, 
 	                     { "data": "ID", "width":"60px"}, 
-	                     { "data": "TOTAL_DAY", "width":"60px",
-	                    	 "render":function(data,type,full,meta){
-	                    		 return data;
-	                    	 }
-	                     },
-	                     { "data": "AD_LOCATION", "width":"60px",
-	                    	 "render":function(data,type,full,meta){
-	                    		 return data;
-	                    	 }
-	                     },
-	                     { "data": "PHONE", "width":"60px",
-	                    	 "render":function(data,type,full,meta){
-	                    		return data;
-	                    	 }
-	                     },
-	                     { "data": "TOTAL_PRICE", "width":"60px",
-	                    	"render":function(data,type,full,meta){
-	                    		return data
-	                    	} 
-	                     }
+	                     { "data": "TOTAL_DAY", "width":"60px"},
+	                     { "data": "AD_LOCATION", "width":"60px"},
+	                     { "data": "PHONE", "width":"60px"},
+	                     { "data": "TOTAL_PRICE", "width":"60px"},
+	                     { "data": "STATUS", "width":"60px",
+	                    	 render: function(data,type,full,meta){
+	     	            		var data = "";
+	     	            		if(full.STATUS=="已审批"){
+	     	            			data = '已审批'; 
+	     	            		}else if(full.STATUS=='已拒绝'){
+	     	            			data="已拒绝";
+	     	            		}else{
+	     	            			data =  "<button class='modifibtn  wherether_approve' " +
+	     	              					" data-id="+full.ID+" href='#begin_date' status='Y'>审批</button>"+
+	     	              					"&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" +
+	     	              					"<button class='modifibtn btn-dangger wherether_approve' " +
+	     	              					" data-id="+full.ID+" href='#begin_date' status='N'>拒绝</button>";
+	     	            	  	}
+	     	            		return data;
+	     	            	} 
+		                  }
                      ]
         });
-        $("#update_diamond").click(function(){
-        	var price=$("#diamond").val();
-        	$.post("/WebAdmin/biz/mobilePush/updateDiamond",{price,price},function(data){
-        		if(data){
-	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-	    			$("#diamond_price").text(price);
-	    		}else{
-	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-	    		}
-        	})
-        
-        })
-        $("#eeda_table").on("click",".open",function(){
-        	var self=$(this);
-        	var id=self.data("id");
-        	var status="Y";
-        	$.post("/WebAdmin/ad/hui/updateStatus",{id:id,status:status},function(data){
-        		if(data){
-        			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-        			refleshTable();
-        		}else{
-        			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-        		}
-        		
-        	})
-        	
-        })
-        $("#eeda_table").on("click",".close",function(){
-        	var self=$(this);
-        	var id=self.data("id");
-        	var status="N";
-        	$.post("/WebAdmin/ad/hui/updateStatus",{id:id,status:status},function(data){
-        		if(data){
-        			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-        			refleshTable();
-        		}else{
-        			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-        		}
-        		
-        	})
-        	
-        })
-       $("#eeda_table").on("click",".ban",function(){
-        	var self=$(this);
-        	var id=self.data("id");
-        	var status="B";
-        	$.post("/WebAdmin/ad/hui/updateStatus",{id:id,status:status},function(data){
-        		if(data){
-        			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-        			refleshTable();
-        		}else{
-        			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-        		}
-        		
-        	})
-        	
-        })
-        
-        $("#update_cu").click(function(){
-        	var price=$("#price").val();
-        	$.post("/WebAdmin/ad/cu/updateCu",{price,price},function(data){
-        		if(data){
-	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-	    			$("#cu_price").text(price);
-	    		}else{
-	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-	    		}
-        	})
-        
-        })
- 	 var refleshTable = function(){
-   	  dataTable.ajax.url("/WebAdmin/ad/hui/list").load();
-    }
-     
 
-		var DateDiff = function  DateDiff(sDate1,sDate2){   //sDate1和sDate2是2006-12-18格式  
-			var  aDate,  oDate1,  oDate2,  iDays  ;
-			aDate  =  sDate1.split("-")  
-			oDate1  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])    //转换为12-18-2006格式  
-			aDate  =  sDate2.split("-")  
-			oDate2  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])  
-			iDays  =  parseInt(Math.abs(oDate1  -  oDate2)  /  1000  /  60  /  60  /24)    //把相差的毫秒数转换为天数  
-			return  iDays  
-		}  
-    	
+        //是否审批
+        $("#eeda_table").on("click"," .wherether_approve",function(){
+        	var result = confirm("确定要这样做吗？");
+        	var self = $(this);
+        	var id = self.data('id');
+        	var status = self.attr("status");
+        	if(result){
+        		$.post("/WebAdmin/biz/bannerApplication/whetherApprove",{id:id,status:status},function(data){
+            		if(data){
+            			if(status == "Y"){
+            				$.scojs_message("审批成功",$.scojs_message.TYPE_OK);
+                			
+            			}
+            			if(status == "N"){
+            				$.scojs_message("已拒绝",$.scojs_message.TYPE_OK);
+            			}
+            			refleshTable();
+            		}else{
+            			$.scojs.message("审批失败",$.scojs_message.TYPE_OK);
+            		}
+            	})
+        	}
+        });
+        
+   	 	var refleshTable = function(){
+      	  dataTable.ajax.url("/WebAdmin/biz/bannerApplication/list").load();
+       }
+     
 });
 });

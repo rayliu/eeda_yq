@@ -93,7 +93,7 @@ public class BannerApplicationController extends Controller {
         }
          
     	String sql = "select ul.c_name productor,wab.* from wc_ad_banner wab "
-    			+ "LEFT JOIN user_login ul on ul.id=wab.creator";
+    					+ "LEFT JOIN user_login ul on ul.id=wab.creator";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
@@ -108,7 +108,21 @@ public class BannerApplicationController extends Controller {
         map.put("recordsFiltered", rec.getLong("total"));
         map.put("data", orderList);
         renderJson(map); 
-    	
+    }
+    
+    @Before(Tx.class)
+    public void whetherApprove(){
+ 	   String status=getPara("status");
+ 	   String info="";
+ 	   if(status.equals("Y")){
+ 		   info="已审批";
+ 	   }else if(status.equals("N")){
+ 		   info="已拒绝";
+ 	   }
+ 	   String id = getPara("id");
+ 	   String sql = "update wc_ad_banner set status = '"+info+"' where id="+id+""; 
+ 	   Db.update(sql);
+ 	   renderJson(true);
     }
     
    

@@ -90,7 +90,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             		}
             	})
         	}
-        })
+        });
 
         
  	 var refleshTable = function(){

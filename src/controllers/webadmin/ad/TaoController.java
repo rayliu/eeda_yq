@@ -110,6 +110,7 @@ public class TaoController extends Controller {
 	   String sql="update price_maintain set price ="+price+" ,  update_time='"+df.format(new Date())+"' where id="+id;
 	   Db.update(sql);
    }
+   
    @Before(Tx.class)
    public void whetherApprove(){
 	   String status=getPara("status");
@@ -124,6 +125,7 @@ public class TaoController extends Controller {
 	   Db.update(sql);
 	   renderJson(true);
    }
+   
     public void seeMsgBoardDetail(){
     	String id = getPara("id");
     	Record r= Db.findById("msg_board", id);
