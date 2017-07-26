@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) { 
     $(document).ready(function() {
     	//datatable, 动态处理
         var dataTable = eeda.dt({
@@ -16,14 +16,43 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap'], function ($, metisMenu) 
               	  }
                 },
 	              { "data": "NAME", "width":"90px"}, 
-	              { "data": "TITLE_IMG", "width":"60px"}, 
-	              { "data": "YOUKU_URL", "width":"90px"}
+	              { "data": "TITLE_IMG", "width":"60px",
+	            	  "render":function(data,type,full,meta){
+	            		  var img="<img src='/upload/"+data+"' style='width:200px;'/>";
+	            		  return img;
+	            	  }
+	              }, 
+	              { "data": "YOUKU_URL", "width":"90px",
+	            	  "render":function(data,type,full,meta){
+	            		  var url="<a href='"+data+"'>点击跳转至优酷观看</a>"
+	            		  return url;
+	            	  }
+	              },
+	              { "data": "YOUKU_URL", "width":"90px",
+	            	"render":function(data,type,full,meta){
+	            		data="<button  class='modifibtn btn-blue  delete' " +
+       					" data-id="+full.ID+" >删除</button>";
+	            		return data
+	            	}  
+	              }
             ]
         });
       
-      $('#searchBtn').click(function(){
-          searchData(); 
-      })
+        $("#eeda_table").on("click"," .delete",function(){
+        	var result = confirm("确定要这样做吗？");
+        	var self = $(this);
+        	var id = self.data('id');
+        	if(result){
+        		$.post("/WebAdmin/tao_manage/video/delete",{id:id},function(data){
+            		if(data){
+            				$.scojs_message("删除成功",$.scojs_message.TYPE_OK);
+            				refleshTable();
+            		}else{
+            			$.scojs.message("操作失败",$.scojs_message.TYPE_OK);
+            		}
+            	})
+        	}
+        });
 
      var searchData=function(){
           var creator = $.trim($("#creator").val()); 
@@ -44,6 +73,11 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap'], function ($, metisMenu) 
     	  $('#edit_radioContent').val($(tr.find(".content")).text());
     	  $('#editRadio').click();
       });
+     
+      var refleshTable = function(){
+        	 dataTable.ajax.url("/WebAdmin/tao_manage/video/list").load();
+        }
+     
     	
 });
 });

@@ -113,6 +113,12 @@ public class VideoController extends Controller {
     	
     }
     
+    @Before(Tx.class)
+    public void delete(){
+    	String id = getPara("id");
+    	Db.deleteById("video_case", id);
+    	renderJson(true);
+    }
    
 
     public void seeMsgBoardDetail(){
