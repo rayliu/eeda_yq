@@ -88,9 +88,9 @@ public class profitController extends Controller {
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
-		String sp_id =" and customer_id="+customer_id;
-		if(" and customer_id=".equals(sp_id)){
-			sp_id="";
+		String customerId =" and customer_id="+customer_id;
+		if(StringUtils.isBlank(customer_id)){
+			customerId="";
 		}
 		String employeeId =" and em.id ="+employee_id;
 		if(StringUtils.isBlank(employee_id)){
@@ -108,7 +108,7 @@ public class profitController extends Controller {
 		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
 			order_export_date="";
 		}
-		String condition = sp_id+employeeId+order_export_date;
+		String condition = customerId+employeeId+order_export_date;
 		
 		String sql=" SELECT "
 			+"	(SELECT "
