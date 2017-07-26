@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) { 
 	$(document).ready(function() {
     	//datatable, 动态处理
         var dataTable = eeda.dt({
@@ -26,28 +26,56 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap'], function ($, metisMenu) 
                     	}
                      },
                      {"data": "ID", "width":"60px",
-                    	 "render":function(data,full){
-                    		 return "<a href='/WebAdmin/tao_manage/product/detail?id="+data+"'>操作1</a>";
+                    	 "render":function(data,type,full,meta){
+                    			var status = "";
+	     	            		var info = ""
+	     	            		var button = "";
+	     	            		if(full.IS_ACTIVE=="N"){
+	     	            			status="toUp";
+	     	            			info = '上架'; 
+	     	            		}else if(full.IS_ACTIVE=='Y'){
+	     	            			button="style='color:black;background:red;'"
+	     	            			status='toDown'
+	     	            			info = "下架";
+	     	            		}
+	     	            	data =  "<button "+button+" class='modifibtn btn-blue  wherether_carriage' " +
+	     	              					" data-id="+full.ID+" href='#begin_date' status="+status+">"+info+"</button>"
+	     	            			+"&nbsp&nbsp&nbsp<a href='/WebAdmin/tao_manage/product/detail?id="+data+"'>查看或修改信息</a>";
+                    		 
+                    		 return data;
                     	 }
                      }
                     ]
         });
+
       
-      $('#searchBtn').click(function(){
-          searchData(); 
-      })
+              //更新状态 
+        $("#eeda_table").on("click"," .wherether_carriage",function(){
+        	var result = confirm("确定要这样做吗？");
+        	var self = $(this);
+        	var id = self.data('id');
+        	var status = self.attr("status");
+        	if(result){
+        		$.post("/WebAdmin/tao_manage/product/whetherCarriage",{id:id,status:status},function(data){
+            		if(data){
+            			if(status == "toUp"){
+            				$.scojs_message("上架成功",$.scojs_message.TYPE_OK);
+            			}
+            			if(status == "toDown"){
+            				$.scojs_message("已下架",$.scojs_message.TYPE_OK);
+            			}
+            			refleshTable();
+            		}else{
+            			$.scojs.message("操作失败",$.scojs_message.TYPE_OK);
+            		}
+            	})
+        	}
+        });
 
-     var searchData=function(){
-          var creator = $.trim($("#creator").val()); 
-          var start_date = $("#create_stamp_begin_time").val();
-          var end_date = $("#create_stamp_end_time").val();
-
-          var url = "/msgBoard/list?create_name_like="+creator
-               +"&create_stamp_begin_time="+start_date
-               +"&create_stamp_end_time="+end_date;
-
-          dataTable.ajax.url(url).load();
-      };
+        var refleshTable = function(){
+       	 dataTable.ajax.url("/WebAdmin/tao_manage/product/list").load();
+       }
+    
       
       $('#eeda_table').on('click','.edit',function(){
 

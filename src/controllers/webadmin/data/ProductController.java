@@ -97,9 +97,8 @@ public class ProductController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
 
-        String sql="select ul.c_name productor,wp.* from wc_product wp "
-        		+ "LEFT JOIN user_login ul on ul.id = wp.creator"
-        		+ " where wp.creator="+user_id+" "+sLimit;
+        String sql = "select ul.c_name productor,wp.* from wc_product wp "
+        		+ "LEFT JOIN user_login ul on ul.id = wp.creator order by create_time asc ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
@@ -107,7 +106,7 @@ public class ProductController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql);
+        List<Record> orderList = Db.find(sql+sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -116,6 +115,22 @@ public class ProductController extends Controller {
         renderJson(map); 
     	
     }
+    
+    @Before(Tx.class)
+    public void whetherCarriage(){
+ 	   String status=getPara("status");
+ 	   String info="";
+ 	   if(status.equals("toUp")){
+ 		   info="Y";
+ 	   }else if(status.equals("toDown")){
+ 		   info="N";
+ 	   }
+ 	   String id = getPara("id");
+ 	   String sql = "update wc_product set is_active = '"+info+"' where id="+id+""; 
+ 	   Db.update(sql);
+ 	   renderJson(true);
+    }
+    
     
     public void detail(){
     	String id = getPara("id");
