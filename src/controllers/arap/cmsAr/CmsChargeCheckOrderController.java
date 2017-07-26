@@ -94,7 +94,7 @@ public class CmsChargeCheckOrderController extends Controller {
 				aci.set("custom_charge_order_id", id);
 				aci.save();
 				
-				Db.update("update custom_plan_order_arap set bill_flag = 'Y' where id = ?",item.get("id"));
+				Db.update("update custom_plan_order_arap set bill_flag = 'Y',audit_flag='Y' where id = ?",item.get("id"));
 			}
    		}
 
