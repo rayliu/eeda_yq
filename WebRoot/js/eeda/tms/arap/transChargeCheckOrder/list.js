@@ -54,6 +54,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             			  return '';
             		  }
               	},
+              	{ "data": "CHARGE_TIME", "width": "60px"},
 	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
             	{ "data": "FEE_NAME", "width": "70px"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
@@ -226,8 +227,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           var sp_name = $('#sp_input').val().trim();
           var customer_name = $('#customer_input').val().trim();
           var type = $('#type').val();
-          var start_date = $("#create_stamp_begin_time").val();
-          var end_date = $("#create_stamp_end_time").val();
+          var start_date = $("#charge_time_begin_time").val();
+          var end_date = $("#charge_time_end_time").val();
           var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
           var cabinet_date_end_time = $("#cabinet_date_end_time").val();
           
@@ -248,8 +249,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
                +"&type_equals="+type
                +"&cabinet_date_begin_time="+cabinet_date_begin_time
           	   +"&cabinet_date_end_time="+cabinet_date_end_time
-	           +"&create_stamp_begin_time="+start_date
-	           +"&create_stamp_end_time="+end_date
+	           +"&charge_time_begin_time="+start_date
+	           +"&charge_time_end_time="+end_date
 	           +"&container_no_like="+container_no
 		       +"&so_no_like="+so_no;
 
