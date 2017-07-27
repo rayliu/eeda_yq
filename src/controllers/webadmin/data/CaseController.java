@@ -10,16 +10,19 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
+import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -51,19 +54,35 @@ public class CaseController extends Controller {
 	    }
 	 
     @Before(Tx.class)
-   	public void save() throws Exception {
-    	String title = getPara("radioTitle");
-    	String content = getPara("radioContent");
-    	UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id=user.getLong("office_id");
-    	Record r= new Record();
-        r.set("title", title);
-        r.set("content", content);
-        r.set("office_id", office_id);
-        r.set("create_stamp", new Date());
-        r.set("creator", LoginUserController.getLoginUserId(this));
-        Db.save("msg_board", r);
-        redirect("/");
+   	public void update() throws Exception {
+    	String jsonStr=getPara("jsonStr");
+    	Gson gson = new Gson();  
+    	Map<String, ?> dto = gson.fromJson(jsonStr, HashMap.class);
+    	String id=(String) dto.get("id");
+    	Double img_num = (Double) dto.get("img_num");
+    	String name=(String) dto.get("name");
+        String picture_name=(String) dto.get("picture_name");
+        Record example=null;
+        if(StringUtils.isNotBlank(id)){
+    		example=Db.findById("wc_case", id);
+    		example.set("name", name);
+    		example.set("picture_name", picture_name);
+    		example.set("create_time",new Date());
+    		Db.update("wc_case", example);
+     	List<Record> orderItem = Db.find("select * from wc_case_item where order_id = ?",id);
+    	for (int i = 1; i <= img_num; i++) {
+    		int order_num = orderItem.size();
+    		Record re = null;
+    		if(i > order_num){
+    			re = new Record();
+    			re.set("photo", (String) dto.get("photo"+i));
+        		re.set("seq", i);
+        		re.set("order_id", id);
+            	Db.save("wc_case_item", re);
+	    		}
+			}
+	    }
+        renderJson(true);
    	}
     
     @Before(Tx.class)
@@ -82,6 +101,13 @@ public class CaseController extends Controller {
     	redirect("/msgBoard");
     }
     
+	@Before(Tx.class)
+	public void deletePicture(){
+		String id=getPara("id");
+		Db.deleteById("wc_case_item", id);
+		renderJson(true);
+	}
+    
     public void list(){
     	UserLogin user = LoginUserController.getLoginUser(this);
     	   Long user_id = LoginUserController.getLoginUserId(this);
@@ -91,15 +117,8 @@ public class CaseController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-  /*  	String sql = "select * from ("
-    			+ " select m.*, u.c_name create_name, u1.c_name update_name"
-        		+ " from msg_board m "
-        		+ " left join user_login u on u.id = m.creator"
-        		+ " left join user_login u1 on u1.id = m.updator"
-        		+ " where m.office_id="+office_id
-        		+ " ) A where 1=1 ";*/
-        String sql=" select ul.c_name productor,wc.* from wc_case wc "
-        		+ "left join user_login ul on wc.creator=ul.id ";
+        String sql = " select ul.c_name productor,wc.* from wc_case wc "
+        				+ "left join user_login ul on wc.creator=ul.id ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
@@ -116,6 +135,37 @@ public class CaseController extends Controller {
         renderJson(map); 
     }
     
+	@Before(Tx.class)
+	public void saveFile(){
+		Record re = new Record();
+    	try {
+            UploadFile file = getFile();
+            re.set("name", file.getFileName());
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    	renderJson(re);
+	}
+	
+    
+    public void detail(){
+    	String id = getPara("id");
+    	String sql="select * from wc_case where id = "+id;
+    	String pic="select * from wc_case_item where order_id="+id;
+    	Record  re = Db.findFirst(sql);
+    	List  pictures = Db.find(pic);
+    	setAttr("wccase",re);
+    	setAttr("pictures",pictures);
+    	render("/WebAdmin/tao_manage/case/modify/edit.html");
+    }
+    
+    @Before(Tx.class)
+    public void delete(){
+    	String id = getPara("id");
+    	Db.deleteById("wc_case", id);
+    	renderJson(true);
+    }
+   
    
 
     public void seeMsgBoardDetail(){

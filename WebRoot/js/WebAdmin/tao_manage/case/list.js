@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) { 
     $(document).ready(function() {
     	//datatable, 动态处理
         var dataTable = eeda.dt({
@@ -12,13 +12,38 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap'], function ($, metisMenu) 
                 },
                 {	"data": "NAME", "width":"120px"},
 	              { "data": "CREATE_TIME", "width":"90px"}, 
-	              { "data": "ID", "width":"60px"}
+	              { "data": "PICTURE_NAME", "width":"90px",
+	            	"render":function(data,type,full,meta){
+	            		var img ="<img src='/upload/"+data+"' style='width:200px;'/>";
+	            		return img;
+	            	}  
+	              }, 
+	              { "data": "ID", "width":"60px",
+	            	"render":function(data,type,full,meta){
+	            		data ="<button  class='modifibtn btn-blue  delete' " 
+       							+" data-id="+data+" >删除</button>" 
+       							+"&nbsp&nbsp&nbsp<a href='/WebAdmin/tao_manage/case/detail?id="+data+"'>查看或修改信息</a>";
+	            		return data;
+	            	}  
+	              }
             ]
         });
       
-      $('#searchBtn').click(function(){
-          searchData(); 
-      })
+        $("#eeda_table").on("click"," .delete",function(){
+        	var result = confirm("确定要这样做吗？");
+        	var self = $(this);
+        	var id = self.data('id');
+        	if(result){
+        		$.post("/WebAdmin/tao_manage/case/delete",{id:id},function(data){
+            		if(data){
+            				$.scojs_message("删除成功",$.scojs_message.TYPE_OK);
+            				refleshTable();
+            		}else{
+            			$.scojs.message("操作失败",$.scojs_message.TYPE_OK);
+            		}
+            	})
+        	}
+        });
 
      var searchData=function(){
           var creator = $.trim($("#creator").val()); 
@@ -32,9 +57,9 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap'], function ($, metisMenu) 
           dataTable.ajax.url(url).load();
       };
       
-      $('#eeda_table').on('click','.edit',function(){
-
-      });
+      var refleshTable = function(){
+     	 dataTable.ajax.url("/WebAdmin/tao_manage/case/list").load();
+     }
     	
 });
 });
