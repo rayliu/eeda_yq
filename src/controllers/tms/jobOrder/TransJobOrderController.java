@@ -980,7 +980,7 @@ public class TransJobOrderController extends Controller {
         	sql=" ";        	
         }
         else{
-		         sql = "SELECT * from (select cast(substring(tjol.cabinet_date, 1, 10) as char) cabinet_date,"
+		         sql = "SELECT * from (select GROUP_CONCAT(cast(substring(tjol.cabinet_date, 1, 10) AS CHAR)) cabinet_date,"
 		         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id"
 		         		+ " ,tjo.land_export_stamp sent_out_time,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
@@ -992,7 +992,7 @@ public class TransJobOrderController extends Controller {
 						+ "cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',tjoa.currency_total_amount)) from trans_job_order_arap tjoa"
 						+ " LEFT JOIN fin_item fi on fi.id = tjoa.charge_id "
 						+ " WHERE tjoa.order_id=tjo.id and tjoa.order_type='charge' and fi.name!='运费' group by tjoa.order_type) as char) charge, "
-		         		+ " p1.abbr head_carrier_name,tjo.charge_time"
+		         		+ " p1.abbr head_carrier_name,cast(substring(tjo.charge_time, 1, 10) AS CHAR) charge_time"
 		         		+ "	from trans_job_order tjo "
 		         		+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo.id"
 		         		+ "	left join party p on p.id = tjo.customer_id"
@@ -1161,15 +1161,15 @@ public class TransJobOrderController extends Controller {
     //更新结算日期和收重日期一样
     public void updateChageTimeSameASClosingDate(){
     	String sql_order_id = "SELECT CONVERT(GROUP_CONCAT(CONCAT(tjol.order_id,':',tjol.id)),char) re_order_id from trans_job_order_land_item  tjol"
-    				+" LEFT JOIN trans_job_order tjo on tjo.id = tjol.order_id where (tjol.closing_date is  null) AND (tjo.charge_time is null) "
-    				+"and tjo.office_id and tjo.type like '%散货%' and tjo.office_id = 4";
+    				+" LEFT JOIN trans_job_order tjo on tjo.id = tjol.order_id where (tjol.closing_date is not  null) AND (tjo.charge_time is null) "
+    				+"and tjo.office_id and tjo.type like '%柜货%' and tjo.office_id = 4";
     	Record re_order_id = Db.findFirst(sql_order_id);
     	String []array_order_id = re_order_id.getStr("re_order_id").split(",");
     	
     	for(int i=0;i<array_order_id.length;i++){
     		String [] separation_id= array_order_id[i].split(":");
     		for(int j=0;j<separation_id.length;j++){
-    			String sql_update = "update trans_job_order tjo,trans_job_order_land_item tjol set tjo.charge_time =tjol.cabinet_date  WHERE "
+    			String sql_update = "update trans_job_order tjo,trans_job_order_land_item tjol set tjo.charge_time =tjol.closing_date  WHERE "
         				+" tjo.id ="+separation_id[0]+" and tjol.id ="+separation_id[1];
     			Db.update(sql_update);   
     		}
