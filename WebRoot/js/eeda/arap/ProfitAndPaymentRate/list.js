@@ -12,7 +12,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               type: 'POST'
           },
           initComplete:function(settings){
-
+        	  tableStyle();
           },
           columns: [
       			{ "data": "ABBR", "width": "100px","class":"abbr"},

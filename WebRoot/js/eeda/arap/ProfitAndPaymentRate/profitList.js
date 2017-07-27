@@ -15,9 +15,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  
           },
           columns: [
-      			{ "data": "ABBR", "width": "120px"},
+      			{ "data": "ABBR", "width": "220px"},
       			{ "data": "EMPLOYEE_NAME", "width": "120px"},
-	            { "data": "CHARGE_RMB", 
+	            { "data": "CHARGE_RMB", "width": "120px", 
 	            	"render": function(data, type, full, meta) {
             	    if(!data){
             	    	return '';
@@ -25,7 +25,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data.toFixed(2),3);
 				  }
 	            },
-	            { "data": "COST_RMB", 
+	            { "data": "COST_RMB", "width": "120px", 
 	            	"render": function(data, type, full, meta) {
             	    if(!data){
             	    	return '';
@@ -33,7 +33,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data.toFixed(2),3);
 				  }
 	            },
-	            {
+	            { "width": "120px",
 					"render": function(data, type, full, meta) {
 	            	    var profit = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
 	            	    if(profit<0){
@@ -42,7 +42,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 						return eeda.numFormat(profit,3);
 					}
 				},
-	            { 
+	            { "width": "120px",
 	            	"render": function(data, type, full, meta) {
 					    var profit_rate=parseFloat(((full.CHARGE_RMB - full.COST_RMB)/full.COST_RMB)*100).toFixed(2);
 	            		if(!full.COST_RMB){
@@ -54,7 +54,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            		return profit_rate;
 					}
 	            },
-	            {
+	            {"width": "120px",
 					"render": function(data, type, full, meta) {
 	            	    var profit = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
 	            	    var profit = ((profit*full.ROYALTY_RATE)/100).toFixed(2);
