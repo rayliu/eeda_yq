@@ -51,8 +51,9 @@ public class TransChargeConfirmController extends Controller {
      
         String sql = "select * from( "
         		+ " select tjoa.*,tjo.order_no,tjo.id jobid,tjo.container_no,tjo.so_no,CONVERT(substring(GROUP_CONCAT(tjo.create_stamp), 1, 10),char) create_stamp,tjo.customer_id,tjo.cabinet_type,"
-        		+ " CONVERT(substring(REPLACE(GROUP_CONCAT(tjol.cabinet_date),',',''),1,11),char) cabinet_date,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name "
-				+ " from trans_job_order_arap tjoa "
+        		+ " CONVERT(substring(REPLACE(GROUP_CONCAT(tjol.cabinet_date),',',''),1,11),char) cabinet_date,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,c.name currency_name, "
+				+ " tjo.charge_time charge_time"
+        		+ " from trans_job_order_arap tjoa "
 				+ " right join trans_job_order tjo on tjo.id=tjoa.order_id "
 				+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjoa.order_id"
 				+ " left join party p on p.id=tjo.customer_id "

@@ -29,7 +29,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 					},
 					{ "data": "CABINET_DATE", "width":"72px"//提柜、提货时间
 		            },
-					{ "data": "CREATE_STAMP", "width": "65px"},
+					{ "data": "CHARGE_TIME", "width": "65px"},
 					{ "data": "CONTAINER_NO", "width": "60px"},
 					{ "data": "CABINET_TYPE", "width": "60px"},
 					{ "data": "SO_NO", "width": "80px"},
@@ -104,8 +104,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 //          var customer_name = $("#customer_input").val(); 
           var sp_name = $("#sp_input").val(); 
           var sp = $("#sp").val(); 
-          var start_date = $("#create_stamp_begin_time").val();
-          var end_date = $("#create_stamp_end_time").val();
+          var start_date = $("#charge_time_begin_time").val();
+          var end_date = $("#charge_time_end_time").val();
           var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
           var cabinet_date_end_time = $("#cabinet_date_end_time").val();
           var audit_flag = $("#audit_flag").val();
@@ -116,8 +116,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 //			           +"&customer_name_like="+customer_name
 //			           +"&sp_id="+sp
 			           +"&sp_name_like="+sp_name
-		               +"&create_stamp_begin_time="+start_date
-		               +"&create_stamp_end_time="+end_date
+		               +"&charge_time_begin_time="+start_date
+		               +"&charge_time_end_time="+end_date
 		               +"&cabinet_date_begin_time="+cabinet_date_begin_time
 		          	   +"&cabinet_date_end_time="+cabinet_date_end_time
           			   +"&audit_flag_notequals="+audit_flag

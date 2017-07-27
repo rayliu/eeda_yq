@@ -68,8 +68,8 @@
 	                            </div>
 	                            <div class="col-lg-4">
 	                                <%include("/eeda/component/form/inputDateQueryField.html", 
-	                                {	id:'create_stamp', 
-	                                	label:'创建时间', 
+	                                {	id:'charge_time', 
+	                                	label:'结算时间', 
 	                                	value:''
 	                                }){} %>
 	                            </div>
@@ -94,7 +94,7 @@
                     {
                         id:'eeda_table', 
                         style:'width:1500px',
-                        headers:['<input type="checkbox" id="AllCheck"  >','工作单号','提柜/货日期','创建时间','柜号','柜型','SO号','状态','客户','结算公司', '费用名称', '单价', 
+                        headers:['<input type="checkbox" id="AllCheck"  >','工作单号','提柜/货日期','结算时间','柜号','柜型','SO号','状态','客户','结算公司', '费用名称', '单价', 
                         '数量', '单位', '对账金额','对账币制', '对账汇率','金额(人民币)','备注'
                         ]
                     }){} %>
