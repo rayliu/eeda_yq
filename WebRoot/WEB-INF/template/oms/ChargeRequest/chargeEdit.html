@@ -130,7 +130,7 @@
                 </div>
             </div>
             
-            <% if(shiro.hasPermission("confirmRequest")){%>
+            <% if(shiro.hasPermission("chargeRequest.confirmRequest")){%>
             <div class="row simple_search_div" style="margin-top:15px" > 
                     	<!-- <div class=" head_style"><label class="font_style">收款信息</label></div> -->
                       	<div class="panel-body">
@@ -370,7 +370,7 @@
 		             		          	<button id="saveBtn" type="button" disabled="disabled" class="btn  btn_green" >保存</button> 
 		             		              <button id="printBtn" type="button" disabled="disabled" class="btn btn_white" >打印</button>
 		             		              <a class="btn  btn_white" href="/chargeRequest?back=true">返回</a>
-		             		              <% if(shiro.hasPermission("checkedRequest")){%>
+		             		              <% if(shiro.hasPermission("chargeRequest.checkedRequest")){%>
 		             		              <button id="checkBtn" type="button" disabled="disabled" class="btn  btn_green" >复核</button>
 		             		              <button id="cancelcheckBtn" class="btn btn-danger btn-xs" style="background-color:#d9534f">复核不通过</button>
 		             		              <%}%>

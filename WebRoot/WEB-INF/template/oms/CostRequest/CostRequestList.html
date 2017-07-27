@@ -131,10 +131,15 @@
 					<span class="badge" style='margin-top:12px;margin-right:5px;'> JPY总额: <span id="jpy_totalAmountSpan">0</span></span>
 					<span class="badge" style='margin-top:12px;margin-right:10px;'> HKD总额: <span id="hkd_totalAmountSpan">0</span></span>
 					<button id="totalZero" class="badge" style='display:none;margin-top:12px;margin-right:10px;background-color: #005BAC;'>金额清零</button>
-					<button id="checked" class="btn  btn btn_green" style="margin-top:12px;"  disabled>复核</button>
-					<button id="confirmed" class="btn btn btn_green" style="margin-top:12px;"  disabled>付款确认</button>
-					<button id="badBtn" type="button" class="btn btn-danger btn-xs" style="background-color:#d9534f;margin-top:12px;	"  disabled="disabled" >坏账确认</button>
 					
+					<% if(shiro.hasPermission("chargeRequest.checkedRequest")){%>
+                    	<button id="checked" class="btn  btn btn_green" style="margin-top:12px;"  disabled>复核</button>
+                   	<%}%>					
+					
+					<% if(shiro.hasPermission("chargeRequest.confirmRequest")){%>
+						<button id="confirmed" class="btn btn btn_green" style="margin-top:12px;"  disabled>付款确认</button>					
+						<button id="badBtn" type="button" class="btn btn-danger btn-xs" style="background-color:#d9534f;margin-top:12px;	"  disabled="disabled" >坏账确认</button>
+					<%}%>
 				  </div>
 					<div class="row simple_list_div">
 						<div class="form-group">
