@@ -145,7 +145,7 @@ public class UserRoleController extends Controller {
 			ur.set("role_id", id);
 			ur.save();
 		}
-		renderJson();
+		renderJson("{\"result\":true}");
 	}
 	public void updateRole(){
 		String userName = getPara("name");

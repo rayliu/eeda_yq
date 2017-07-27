@@ -313,12 +313,15 @@ $(document).ready(function(){
                 //异步刷新明细表
                 
                 eeda.contactUrl("edit?id",order.ID);
-                $('#employee_id').val(order.EMPLOYEE.ID);
-                $('#create_stamp').val(order.EMPLOYEE.CREATE_STAMP);
-                
+                $("#userId").val(order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $("#assigning_role").show();
                 $('#saveBtn').attr('disabled', false);
+                if(order.EMPLOYEE){
+                	$('#employee_id').val(order.EMPLOYEE.ID);
+                	$('#create_stamp').val(order.EMPLOYEE.CREATE_STAMP);
+                }
+                
             }else{
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                 $('#saveBtn').attr('disabled', false);
