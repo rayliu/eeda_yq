@@ -11,7 +11,6 @@ import java.util.Map;
 import models.Office;
 import models.ParentOfficeModel;
 import models.Permission;
-import models.Role;
 import models.RolePermission;
 import models.UserLogin;
 import models.UserOffice;
@@ -28,7 +27,6 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
-import controllers.util.CompareStrList;
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
 @RequiresAuthentication
@@ -175,7 +173,7 @@ public class UserRoleController extends Controller {
             }
 		}
 		clearMenuCache(userName);
-		renderJson();
+		renderJson("{\"result\":true}");
 	}
 	
 	//清除菜单缓存
