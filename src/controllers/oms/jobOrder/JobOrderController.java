@@ -2831,18 +2831,20 @@ public class JobOrderController extends Controller {
 	        itemSql = "select cpo.ref_job_order_id, jocd.id,jocd.doc_name,jocd.upload_time,jocd.remark,"
 	                + " ul.c_name c_name,jocd.uploader, jocd.share_flag ,null share_flag from job_order_custom_doc jocd"
                     + " LEFT JOIN user_login ul on ul.id = jocd.uploader"
-                    + " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id  and jocd.order_type = '"+office.get("type")+"' and jocd.share_flag = 'Y' and cpo.delete_flag='N'"
+                    + " LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id  "                    
                     + " where jocd.order_id =?"
+                    + " and jocd.order_type = '"+office.get("type")+"' and jocd.share_flag = 'Y' and cpo.delete_flag='N'"
                     + " union all"
                     + " select cpo.ref_job_order_id, null id ,jod.doc_name,jod.upload_time,jod.remark,u.c_name c_name,"
                     + " jod.uploader,null share_flag, jod.cms_share_flag"
                     + " from custom_plan_order_doc jod "
                     + " left join custom_plan_order cpo on cpo.id = jod.order_id"
+                    +" LEFT JOIN user_login u1 ON cpo.creator = u1.id"
                     + " left join user_login u on jod.uploader=u.id "
-                    + " where cpo.ref_job_order_id=? and cpo.delete_flag='N' ";
+                    + " where cpo.ref_job_order_id=? and cpo.delete_flag='N' and (u.office_id = "+office.getLong("id")+" or u1.office_id = "+office.getLong("id")+") ";
 	    	itemList = Db.find(itemSql, orderId, orderId);
 	    }else if("custom_app".equals(type)){
-	    	itemList = Db.find("SELECT"
+	    	itemSql = "SELECT"
 	    			+ " cjo.id, cjo.order_no custom_plan_no, o.office_name custom_bank,cjo.status applybill_status,"
 	    			+ " cjo.ref_no custom_order_no, cjo.custom_state custom_status, ul.c_name creator,"
 	    			+ " cjo.create_stamp, ul2.c_name fill_name, cjo.fill_stamp,cjo.customs_billCode"
@@ -2850,7 +2852,8 @@ public class JobOrderController extends Controller {
 	    			+ " LEFT JOIN user_login ul ON ul.id = cjo.creator"
 	    			+ " LEFT JOIN user_login ul2 ON ul2.id = cjo.fill_by"
 	    			+ " left join office o on o.id = cjo.to_office_id"
-	    			+ " WHERE cjo.ref_job_order_id = ?  and cjo.delete_flag='N'",orderId);
+	    			+ " WHERE cjo.ref_job_order_id = "+orderId+" and ul.office_id = "+office.getLong("id")+"  and cjo.delete_flag='N'";
+	    	itemList = Db.find(itemSql);
 	    }
 		return itemList;
 	}
