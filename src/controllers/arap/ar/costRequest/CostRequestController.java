@@ -691,7 +691,7 @@ public class CostRequestController extends Controller {
                 for (Record re : res) {
 	    			Long cost_order_id = re.getLong("cost_order_id");
 	    			String order_type = re.getStr("order_type");
-          			if(order_type.equals("应付对账单")){
+          			if("应付对账单".equals(order_type)){
 		  				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
 		                  Double usd = arapCostOrder.getDouble("usd");
 		                  Double cny = arapCostOrder.getDouble("cny");
@@ -758,7 +758,7 @@ public class CostRequestController extends Controller {
 		    			Long cost_order_id = re.getLong("cost_order_id");
 		    			String order_type = re.getStr("order_type");
 	
-		    			if(order_type.equals("应付对账单")){
+		    			if("应付对账单".equals(order_type)){
 		  				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
 		                  Double usd = arapCostOrder.getDouble("usd");
 		                  Double cny = arapCostOrder.getDouble("cny");
