@@ -1,0 +1,52 @@
+<%layout("/WebAdmin/layout.html"){%>
+    <div class="pageheader notab">
+      <h1 class="pagetitle" style="float:left;">案例管理</h1><span class="red" style="float:left;">*普通商家只能上传5个案例</span>
+      <div style=" clear:both;"></div>
+    </div>
+    
+    <div class="pageheader"  style="height:550px;">
+                <a type="button" id="back_btn" class=" btn btn_blue"  >返回</a>
+        <div style="margin-left:20px;">
+        	<p><strong>上传案例</strong></p>
+	       	<input type="hidden" value="${wccase.id!''}" id="example_id"/>
+	       	<div class="form-group">
+		        <div style="width:500px">
+		        	<label>案例名称： </label>
+		        	<input type="text" class="input_text" name="name" id="name"  value="${wccase.name!''}"/>
+		        </div>
+	        </div>
+	       	<div class="file">
+                 <input type="file" id="picture_up" name="picture_up"  class="ehdel_upload" />选择图片
+            </div>
+            <span class="red">*图片小于500Kb</span>
+            <div class="form-control" style="margin-left:100px">
+	              <img src="/upload/${wccase.picture_name!''}"  class="shadow" style="width:200px;height:200px" value="${wccase.picture_name!''}"  id="example_img"/>
+            </div>
+	    </div>
+       	<div style="margin-left:20px;">
+            <h3 style="padding:10px">案例明细图</h3>
+			<div class="file" style="margin-left:10px;">
+				<input type="file"  id="file_photo" name="file_photo" class="ehdel_upload" />
+				 选择图片
+			</div>
+            <span class="red">*图片要求小于500Kb(普通商家只能上传10个产品)</span>
+				<hr/>
+                <div class="img_row" id="img_item">
+                <%for(item in pictures![]){%>
+                  	<img style='width: 200px; height: 150px;margin-left:20px;' name="img_photo" class="shadow " src='/upload/${item.photo!"nophoto.png"}' value='${item.photo!""}' id="img_photo${item.seq!''}">
+                  	<a href="#" style="color:red" class="delete_picture" pid="${item.id!''}">删除</a>
+                <%}%>
+            </div>
+        </div>
+
+       		 <div style="margin:20px 0 0 20px">
+                <button type="button" id="save_btn" class="stdbtn btn_blue" style="width:200px;" >修改</button>
+          	</div>
+    </div>
+<%}%>
+    
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+         requirejs(['/js/WebAdmin/tao_manage/case/modify/edit.js']);
+    });
+</script>
