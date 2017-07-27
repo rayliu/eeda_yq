@@ -1,4 +1,6 @@
 <%layout("/BusinessAdmin/layout.html"){%>
+
+
   <div class="pageheader notab">
       <h1 class="pagetitle">广告购买</h1>
   </div>
@@ -14,12 +16,30 @@
         <div class="hang">
             广告位：
           <select id="ad_location" name="ad_location" ">
-              <option value="${first_price!''}">广告位1</option>    
-              <option value="${second_price!''}">广告位2</option>    
-              <option value="${third_price!''}">广告位3</option>        
-              <option value="${fourth_price!''}">广告位4</option>        
+              <option price="${first_price!''}" value='1'>广告位1</option>    
+              <option price="${second_price!''}" value='2'>广告位2</option>    
+              <option price="${third_price!''}" value='3'>广告位3</option>        
+              <option price="${fourth_price!''}" value='4'>广告位4</option>        
           </select>
         </div>
+        
+          <dl>
+              <dt class="fm-label">
+              		<div class="fm-label-wrap ">
+                	<label for="fm-login-password">广告图片：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+                <div class="file">
+	                <input type="file" name="logo" id="ad_picture" value="${company.logo!''}"/>
+	                选择图片
+                </div>
+                <span class="red">图片为JPG格式，小于1000kb</span> 
+                <div class="form-control" style="margin-left:100px">
+                	<img style='width: 300px;height:200px;' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_logo">      
+            	</div>
+            </dd>
+          </dl>
         
         <div id="DateMap"></div>
         <h5 class="hh5">选取档期时间：</h5>
@@ -38,7 +58,7 @@
                     <tr>
                         <td width="13%">档期开始时间</td>
                         <td width="65%">
-                            <input type="text" id="begin_date" name="begin_date" />
+                            <input type="date" id="begin_date" name="begin_date" /> 
                         </td>
                         <td rowspan="6"><textarea rows="20" cols="15" id="remark"></textarea></td>
                     </tr>
@@ -46,7 +66,7 @@
                         <td>档期结束时间</td>
                         <td>
                             <span class="">
-                                <input type="text" id="end_date" name="end_date" />
+                                <input type="date" id="end_date" name="end_date" />
                             </span>                        </td>
                     </tr>
                       <tr>

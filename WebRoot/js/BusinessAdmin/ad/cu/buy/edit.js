@@ -3,17 +3,18 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 
 		$("#end_date,#begin_date").on('blur',function(){
 			//获取日期
-			var v=0,sum=0, price=0;
 			var begin_date = $("#begin_date").val();
 			var end_date = $("#end_date").val();
-			if(!($.trim(begin_date)==""||$.trim(end_date)=="")){
-				v = DateDiff(end_date,begin_date);
-				 price = $("#per_price").text();
+			var v = DateDiff(begin_date,end_date);
+			if(v=="N"){
+				alert("选择的日期不合法，请重新选择")
+				window.location.href="http://localhost:8080/BusinessAdmin/ad/cu/buy";
+			}else if(v){
+				$("#total_day").text(v);
+				var price = $("#price").text();
+				var sum=v*price;
+				$("#price").text(sum);
 			}
-			$("#total_day").text(v);
-			 sum=v*price;
-			$("#price").text(sum);
-		
 		});
 		
 		$("#saveBtn").click(function(){
@@ -38,13 +39,16 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		
 		
 		var DateDiff = function  DateDiff(sDate1,sDate2){   //sDate1和sDate2是2006-12-18格式  
-			var  aDate,  oDate1,  oDate2,  iDays  ;
+			var  aDate,  bDate,oDate1,  oDate2,  iDays  ;
 			aDate  =  sDate1.split("-")  
 			oDate1  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])    //转换为12-18-2006格式  
-			aDate  =  sDate2.split("-")  
-			oDate2  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])  
+			bDate  =  sDate2.split("-")  
+			oDate2  =  new  Date(bDate[1]  +  '-'  +  bDate[2]  +  '-'  +  bDate[0])
+			if(new Date(oDate1)>new Date(oDate2)){
+				return "N";
+			}
 			iDays  =  parseInt(Math.abs(oDate1  -  oDate2)  /  1000  /  60  /  60  /24)    //把相差的毫秒数转换为天数  
 			return  iDays  
-		}    
+		}      
 	});	
 })

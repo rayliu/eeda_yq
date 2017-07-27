@@ -33,6 +33,7 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
               				" id="+full.ID+
               				" remark="+full.REMARK+
               				" total_price="+full.TOTAL_PRICE+
+              				" picture="+full.PICTURE+
               				" href='#begin_date'>编辑</a>";
             	  	}else{
             	  		data = full.STATUS;

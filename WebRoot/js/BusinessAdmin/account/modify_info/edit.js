@@ -19,9 +19,8 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		            alert('上传的时候出现了错误！');
 		        }
 		   });
-		  
-		  
 	  })
+	  
 	  //定义id选择器
 	  function Id(id){
 		  return document.getElementById(id);

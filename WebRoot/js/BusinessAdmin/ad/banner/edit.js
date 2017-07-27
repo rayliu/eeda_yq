@@ -17,6 +17,31 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		    }
 		});
 		
+		  //上传公司logo
+		  $("#ad_picture").on('click',function(){
+			  $(this).fileupload({
+					validation: {allowedExtensions: ['*']},
+					autoUpload: true, 
+				    url: '/BusinessAdmin/ad/saveFile',
+				    dataType: 'json',
+			        done: function (e, data) {
+		        		if(data){
+				    		$('#img_logo').attr('value',data.result.NAME);
+				    		var imgPre =Id("img_logo");
+				  		    imgPre.src = '/upload/'+data.result.NAME;
+				    	}else{
+				    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
+				    	}
+				     },error: function () {
+			            alert('上传的时候出现了错误！');
+			        }
+			   });
+		  });
+		  
+		  //定义id选择器
+		  function Id(id){
+			  return document.getElementById(id);
+		  };
 		
 		jQuery.validator.addMethod("isMobile", function(value, element) { 
 		  var length = value.length; 
@@ -26,23 +51,31 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		
 		
 		$("#ad_location").change(function(){
-			var self = $(this);
-			$("#price").text(self.val());
+			var self = this;
+			var index = this.options.selectedIndex;
+			$("#price").text($(self.options[index]).attr("price"));
+			account();
 		})
 		
-		$("#end_date,#begin_date").on('blur',function(){
+		//结算
+		function account(){
 			//获取日期
 			var begin_date = $("#begin_date").val();
 			var end_date = $("#end_date").val();
 			var v = DateDiff(begin_date,end_date);
-			
-			if(v){
+			if(v=="N"){
+				alert("选择的日期不合法，请重新选择")
+				window.location.href="http://localhost:8080/BusinessAdmin/ad/banner";
+			}else if(v>0){
 				$("#total_day").text(v);
 				var price = $("#price").text();
-				var sum=v*price;
+				var sum = v*price;
 				$("#total_price").text(sum);
 			}
-			
+		}
+		
+		$("#end_date,#begin_date").on('blur',function(){
+			account();
 		});
 		
 		
@@ -63,11 +96,13 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			order.price = $("#price").text();
 			order.phone = $("#telphone").val();
 			order.remark = $("#remark").val();
+			order.picture=$("#img_logo").attr('value');
 			self.disabled = true;
 			$.post('/BusinessAdmin/ad/banner_save',{jsonStr:JSON.stringify(order)},function(data) {
 	    		if(data){
 	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 	    			itemOrder.refleshTable();
+	    			window.location.href="http://localhost:8080/BusinessAdmin/ad/banner";
 	    		}else{
 	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 	    		}
@@ -78,11 +113,14 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		
 		
 		var DateDiff = function  DateDiff(sDate1,sDate2){   //sDate1和sDate2是2006-12-18格式  
-			var  aDate,  oDate1,  oDate2,  iDays  ;
+			var  aDate,  bDate,oDate1,  oDate2,  iDays  ;
 			aDate  =  sDate1.split("-")  
 			oDate1  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])    //转换为12-18-2006格式  
-			aDate  =  sDate2.split("-")  
-			oDate2  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])  
+			bDate  =  sDate2.split("-")  
+			oDate2  =  new  Date(bDate[1]  +  '-'  +  bDate[2]  +  '-'  +  bDate[0])
+			if(new Date(oDate1)>new Date(oDate2)){
+				return "N";
+			}
 			iDays  =  parseInt(Math.abs(oDate1  -  oDate2)  /  1000  /  60  /  60  /24)    //把相差的毫秒数转换为天数  
 			return  iDays  
 		}    
@@ -97,6 +135,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			var total_day = self.attr("total_day");
 			var remark = self.attr("remark");
 			var total_price = self.attr("total_price");
+			var picture = self.attr("picture");
 			$("#order_id").val(id);
 			var remark =(self.attr("remark")=='null'?"该订单暂时没备注！":self.attr("remark"));
 			$("#begin_date").val(begin_date);
@@ -105,8 +144,11 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			$("#ad_location").val(ad_location);
 			$("#total_day").text(total_day);
 			$("#total_price").text(total_price);
+			$("#img_logo").attr('src','/upload/'+picture);
 			$("#remark").text(remark)=='null'?"暂无备注":("#remark").text(remark);
-		})
+		});
+		
+		
 		
 	});	
-})
+});

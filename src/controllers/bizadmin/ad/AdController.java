@@ -22,6 +22,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -250,6 +251,7 @@ public class AdController extends Controller {
 		String total_price = (String)dto.get("total_price");
 		String total_day = (String)dto.get("total_day");
 		String remark = (String)dto.get("remark");
+		String picture = (String)dto.get("picture");
 		Record order = null;
 		if(StringUtils.isNotBlank(id)){
 			//update
@@ -262,6 +264,7 @@ public class AdController extends Controller {
 	    	order.set("total_day", total_day);
 	    	order.set("update_time", new Date());
 	    	order.set("remark", remark);
+	    	order.set("picture", picture);
 	    	Db.update("wc_ad_banner", order);
 		}else{
 			//create
@@ -276,6 +279,7 @@ public class AdController extends Controller {
 	    	order.set("remark", remark);
 	    	order.set("create_time", new Date());
 	    	order.set("creator", user_id);
+	    	order.set("picture", picture);
 	    	Db.save("wc_ad_banner", order);
 		}
 		
@@ -300,6 +304,17 @@ public class AdController extends Controller {
     	map.put("recordsFiltered", rec.getLong("total"));
    		map.put("data", orderList);
     	renderJson(map);
+    }
+    
+    public void saveFile() throws Exception{
+    	Record re = new Record();
+    	try {
+            UploadFile file = getFile();
+            re.set("name", file.getFileName());
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    	renderJson(re);
     }
 
        	
