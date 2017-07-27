@@ -7,13 +7,13 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             serverSide: true, //不打开会出现排序不对
             ajax: "/WebAdmin/biz/bannerApplication/list",
             columns: [
-	                     { "data":"ID","width": "80px" },
 	                     { "data": "PRODUCTOR", "width":"120px"},
-	                     { "data": "ID", "width":"90px"}, 
-	                     { "data": "ID", "width":"60px"}, 
+	                     { "data": "PHONE", "width":"90px"}, 
+	                     { "data": "AD_LOCATION", "width":"60px"}, 
+	                     { "data": "BEGIN_DATE", "width":"60px"}, 
+	                     { "data": "END_DATE", "width":"60px"}, 
+	                     { "data": "PRICE", "width":"60px"}, 
 	                     { "data": "TOTAL_DAY", "width":"60px"},
-	                     { "data": "AD_LOCATION", "width":"60px"},
-	                     { "data": "PHONE", "width":"60px"},
 	                     { "data": "TOTAL_PRICE", "width":"60px"},
 	                     { "data": "STATUS", "width":"60px",
 	                    	 render: function(data,type,full,meta){
