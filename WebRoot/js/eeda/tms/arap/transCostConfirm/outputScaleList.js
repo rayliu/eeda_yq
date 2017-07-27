@@ -21,6 +21,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               },
               { "data": "LADING_NO", "width": "60px"},			
               { "data": "C_DATE", "width": "80px"},
+              { "data": "CHARGE_TIME", "width": "120px"},
               { "data": "CUSTOMER_NAME", "width": "80px"},
               { "data": "TYPE", "width": "60px"},
               { "data": "EXPORT_FLAG", "width": "60px",
@@ -83,8 +84,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 //        var sp = $("#sp").val(); 
           var car_id = $("#car_id").val();
           var car_no = $("#car_id_input").val().trim();
-          var start_date = $("#create_stamp_begin_time").val();
-          var end_date = $("#create_stamp_end_time").val();
+          var start_date = $("#charge_time_begin_time").val();
+          var end_date = $("#charge_time_end_time").val();
           var audit_flag = $("#audit_flag").val();
           /*  
               查询规则：参数对应DB字段名
@@ -103,8 +104,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                        +"&car_no="+car_no
                        +"&driver_equals="+driver
                        +"&export_flag="+export_flag
-		               +"&create_stamp_begin_time="+start_date
-		               +"&create_stamp_end_time="+end_date;
+		               +"&charge_time_begin_time="+start_date
+		               +"&charge_time_end_time="+end_date;
 
           dataTable.ajax.url(url).load(enable_checkbox);
       };

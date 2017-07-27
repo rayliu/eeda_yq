@@ -62,7 +62,7 @@ public class outputScaleController extends Controller {
         		+" LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo1.id "
         		+" WHERE tjo.id = tjo1.id) combine_unload_type ,"
         		+ " (SELECT SUM(tjoa.currency_total_amount) FROM trans_job_order_arap tjoa WHERE tjoa.order_id = tjo.id AND tjoa.order_type = 'CHARGE' AND tjoa.charge_id = ( SELECT id FROM "
-        		+ " fin_item f WHERE f. NAME = '运费' AND f.office_id = 4) ) freight,tjol.export_flag"
+        		+ " fin_item f WHERE f. NAME = '运费' AND f.office_id = 4) ) freight,tjol.export_flag,tjo.charge_time"
         		+" from trans_job_order_land_item tjol  "
         		+" LEFT JOIN trans_job_order tjo on tjol.order_id = tjo.id "
         		+" LEFT JOIN trans_job_order_arap tjoa ON tjol.order_id = tjoa.order_id"
