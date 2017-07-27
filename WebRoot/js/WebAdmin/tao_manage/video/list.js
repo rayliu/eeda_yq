@@ -18,13 +18,18 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	              { "data": "NAME", "width":"90px"}, 
 	              { "data": "TITLE_IMG", "width":"60px",
 	            	  "render":function(data,type,full,meta){
-	            		  var img="<img src='/upload/"+data+"' style='width:200px;'/>";
+	            		  var img="<img src='/upload/"+data+"' style='width:120px;height:90px'/>";
 	            		  return img;
 	            	  }
 	              }, 
 	              { "data": "YOUKU_URL", "width":"90px",
 	            	  "render":function(data,type,full,meta){
-	            		  var url="<a href='"+data+"'>点击跳转至优酷观看</a>"
+	            		  var url = data;
+	            		  if(data.indexOf('http')<0){
+	            			  url = "<a href='http://"+data+"' target='_blank'>点击跳转至视频观看</a>"
+	            		  }else{
+	            			  url = "<a href='"+data+"' target='_blank'>点击跳转至视频观看</a>"
+	            		  }
 	            		  return url;
 	            	  }
 	              },
