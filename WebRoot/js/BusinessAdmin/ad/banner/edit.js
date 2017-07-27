@@ -30,7 +30,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			$("#price").text(self.val());
 		})
 		
-		$("#end_date").on('blur',function(){
+		$("#end_date,#begin_date").on('blur',function(){
 			//获取日期
 			var begin_date = $("#begin_date").val();
 			var end_date = $("#end_date").val();
