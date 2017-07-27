@@ -3,13 +3,15 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 
 		$("#end_date").on('blur',function(){
 			//获取日期
-		
+			var v=0,sum=0, price=0;
 			var begin_date = $("#begin_date").val();
 			var end_date = $("#end_date").val();
-			var v = DateDiff(end_date,begin_date);
+			if(!($.trim(begin_date)==""||$.trim(end_date)=="")){
+				v = DateDiff(end_date,begin_date);
+				 price = $("#per_price").text();
+			}
 			$("#total_day").text(v);
-			var price = $("#per_price").text();
-			var sum=v*price;
+			 sum=v*price;
 			$("#price").text(sum);
 		
 		});
@@ -25,10 +27,12 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			$.post('/BusinessAdmin/ad/cu/save',{advertisement:JSON.stringify(ad)},function(data) {
 				if(data){
 		    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+		    			$(self).attr('disabled',false);
+		    			window.location.href="http://localhost:8080/BusinessAdmin/ad/cu";
 		    		}else{
 		    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 		    		}
-		    		$(self).attr('disabled',false);
+		    		
 				});
 			});
 		
