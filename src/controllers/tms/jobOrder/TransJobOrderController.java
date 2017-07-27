@@ -992,7 +992,7 @@ public class TransJobOrderController extends Controller {
 						+ "cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',tjoa.currency_total_amount)) from trans_job_order_arap tjoa"
 						+ " LEFT JOIN fin_item fi on fi.id = tjoa.charge_id "
 						+ " WHERE tjoa.order_id=tjo.id and tjoa.order_type='charge' and fi.name!='运费' group by tjoa.order_type) as char) charge, "
-		         		+ " p1.abbr head_carrier_name"
+		         		+ " p1.abbr head_carrier_name,tjo.charge_time"
 		         		+ "	from trans_job_order tjo "
 		         		+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo.id"
 		         		+ "	left join party p on p.id = tjo.customer_id"

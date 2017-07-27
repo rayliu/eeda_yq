@@ -55,6 +55,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             		  return '';
             	  }
               },
+              { "data": "CHARGE_TIME","width":"60px"},
               { "data": "CABINET_TYPE","width":"30px",
             	  "render":function(data, type, full, meta ) {
             		  if(!data){
@@ -134,8 +135,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
-          var start_date = $("#create_stamp_begin_time").val();
-          var end_date = $("#create_stamp_end_time").val();
+          var start_date = $("#charge_time_begin_time").val();
+          var end_date = $("#charge_time_end_time").val();
           var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
           var cabinet_date_end_time = $("#cabinet_date_end_time").val();
           var status = $('#status').val();
@@ -148,8 +149,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           	   +"&status="+status
           	   +"&customer_code_like="+customer_code
                +"&customer_name_like="+customer_name
-               +"&create_stamp_begin_time="+start_date
-               +"&create_stamp_end_time="+end_date
+               +"&charge_time_begin_time="+start_date
+               +"&charge_time_end_time="+end_date
           	   +"&cabinet_date_begin_time="+cabinet_date_begin_time
           	   +"&cabinet_date_end_time="+cabinet_date_end_time
           	   +"&cabinet_type="+cabinet_type

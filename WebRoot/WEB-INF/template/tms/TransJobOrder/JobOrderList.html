@@ -22,8 +22,8 @@
                                         </div>
                                         <div class="col-lg-4">
                                             <%include("/eeda/component/form/inputDateQueryField.html", 
-                                            {	id:'create_stamp', 
-                                            	label:'创建时间', 
+                                            {	id:'charge_time', 
+                                            	label:'结算时间', 
                                             	value:''
                                             }){} %>
                                         </div><!-- /.col-lg-4 -->
@@ -72,6 +72,13 @@
 							                        		  ]
 							                   			  }){}%>
 							              </div>
+							              <div class="col-lg-4">
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                            {	id:'create_stamp', 
+                                            	label:'创建时间', 
+                                            	value:''
+                                            }){} %>
+                                        </div>
                                         <div class="col-lg-4">
                             			  <%include("/eeda/component/form/inputField.html", 
 								                          	  {   id:'container_no', 
@@ -107,13 +114,14 @@
                             <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'eeda-table', 
-                                    style:'width:1400px',
+                                    style:'width:1450px',
                                     headers:['','工作单号',
                                         '客户名称',
                                         '类型',
                                         '柜号',
                                         'SO号',
                                         '提柜/提货时间',
+                                        '结算时间',
                                         '柜型',
                                         '头程船公司',
                                         '运费',
