@@ -98,7 +98,16 @@ public class AdController extends Controller {
 	}
 	
 	public void mobile(){
-		String sql="select * from price_maintain where type = '推送广告'";
+
+        Long userId = LoginUserController.getLoginUserId(this);
+        String sql="";
+		String is_diamond="select * from wc_ad_dimond where creator = "+userId;
+		if(Db.find(is_diamond).size()!=0){
+			sql="select * from price_maintain where type = '钻石商家'";
+			setAttr("dimond_tip","您是尊贵的钻石商家，已经为您提供了优惠");
+		}else{
+			sql="select * from price_maintain where type = '推送广告'";
+		}
 		Record re = Db.findFirst(sql);
 		if(re != null){
 			setAttr("price",re.get("price"));

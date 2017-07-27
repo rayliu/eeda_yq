@@ -42,14 +42,6 @@ public class MobilePushController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	 public void edit(){
 	        String id = getPara("id");
-//	      String title = getPara("edit_radioTitle");
-//	      String content = getPara("edit_radioContent");
-//	      Record r= Db.findById("msg_board", id);
-//	      r.set("title", title);
-//	      r.set("content", content);
-//	      r.set("update_stamp", new Date());
-//	      r.set("updator", LoginUserController.getLoginUserId(this));
-//	      Db.update("msg_board", r);
 	        render(getRequest().getRequestURI()+"/edit.html");
 	    }
 	 

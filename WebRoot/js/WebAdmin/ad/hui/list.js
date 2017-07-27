@@ -7,7 +7,6 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             serverSide: true, //不打开会出现排序不对
             ajax: "/WebAdmin/ad/hui/list",
             columns: [
-	                     { "data":"ID","width": "80px" },
 	                     { "data": "PRODUCTOR", "width":"120px"},
 	                     { "data": "IS_ACTIVE", "width":"90px",
 	                    	 "render":function(data,type,full,meta){

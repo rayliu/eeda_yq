@@ -8,22 +8,17 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             ajax: "/WebAdmin/biz/mobilePush/list",
             columns: [
 	                     { "data":"ORDER_NO","width": "80px"},
-	                     { "data": "PRODUCTOR", "width":"120px"},
-	                     { "data": "ID", "width":"90px",
-	                    	 "render":function(data,full){
-	                    		 return "暂无";
-	                    	 }
-	                     }, 
-	                     { "data": "ID", "width":"60px",
-	                    	 "render":function(data,full){
-	                    		 return "暂无";
-	                     	 }
-	                     }, 
+	                     { "data": "PRODUCTOR", "width":"120px"}, 
 	                     { "data": "CREATE_TIME", "width":"60px"},
 	                     { "data": "AMOUNT", "width":"60px"},
 	                     { "data": "PUT_IN_TIME", "width":"60px"},
 	                     { "data": "PHONE", "width":"60px"},
 	                     { "data": "TOTAL_PRICE", "width":"60px"},
+	                     { "data": "REMARK", "width":"60px",
+	                    	 "render":function(data,type,full,meta){
+	                    		 return data;
+	                    	 }
+	                     },
 	                     { "data": "STATUS", "width":"60px",
 	                    	"render":function(data,type,full,meta){
 	                    		if(data == "已审批"){
