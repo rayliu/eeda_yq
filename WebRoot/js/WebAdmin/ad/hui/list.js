@@ -15,7 +15,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                    			 data="已开启";
 	                    		 }else if(data=="N"){
 	                    			 data="未开启";
-	                    		 }else{
+	                    		 }else if(data=='B'){
 	                    			 data="已禁用"
 	                    		 }
 	                    		 return data;

@@ -10,6 +10,7 @@
         <!-- #tab2 -->
         <div id="youhui" class="subcontent" style="float:left; width:660px;" >
             <form method="post">
+            <input type=hidden id="status" value="${hui.is_active}"/>
             <input type="hidden" name="Act" value="Discount" />
             <div style="margin-bottom:10px; font-size:14px; font-weight:bold;">免费开通</div>
             <div style="margin-bottom:10px;">商家必需同意：</div>
@@ -32,7 +33,8 @@
                 <label><input class="radio" type="radio" name="DiscountOpen" <%if(hui.is_active == 'Y'){%>checked<%}%> value="Y" />开启“惠”</label> 
                 <label><input class="radio" type="radio" name="DiscountOpen" <%if(hui.is_active == 'N'){%>checked<%}%> value="N" />关闭“惠”</label>
             </div>
-            <input id="saveBtn" type="button" class="stdbtn btn_blue" value="确 认" /> 
+            <button id="saveBtn" type="button" class="stdbtn btn_blue" > 确 认</button>
+            <span  id="ban_tip" style="color:red;" ></span>
             </form>
         </div>
 

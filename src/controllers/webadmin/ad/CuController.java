@@ -121,9 +121,9 @@ public class CuController extends Controller {
  	   String status=getPara("status");
  	   String info="";
  	   if(status.equals("toUp")){
- 		   info="上架";
+ 		   info="开启";
  	   }else if(status.equals("toDown")){
- 		   info="下架";
+ 		   info="关闭";
  	   }
  	   String id = getPara("id");
  	   String sql = "update wc_ad_cu set status = '"+info+"' where id="+id+""; 

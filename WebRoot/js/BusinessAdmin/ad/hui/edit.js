@@ -1,6 +1,17 @@
 define(['jquery', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-
+	  
+	  function init(){
+		  var status = $("#status").val();
+		  if(status == 'B'){
+			 $("#saveBtn").attr("disabled",true).css({'background':'#e4e4e4'});
+			  $("#ban_tip").text("优惠操作已经被关闭，请联系管理员恢复 ")
+		  }
+		  
+	  };
+	  
+	  init();
+	
       $('#saveBtn').click(function() {
     	  var slef = this;
     	  slef.disabled = true;

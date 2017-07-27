@@ -37,13 +37,13 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	     	            		var status = "";
 	     	            		var info = ""
 	     	            		var button = "";
-	     	            		if(full.STATUS=="下架"){
+	     	            		if(full.STATUS=="关闭"){
 	     	            			status="toUp";
-	     	            			info = '上架'; 
-	     	            		}else if(full.STATUS=='上架'){
+	     	            			info = '开启'; 
+	     	            		}else if(full.STATUS=='开启'){
 	     	            			button="style='color:black;background:red;'"
 	     	            			status='toDown'
-	     	            			info = "下架";
+	     	            			info = "关闭";
 	     	            		}
 	     	            		data =  "<button "+button+" class='modifibtn btn-blue  wherether_carriage' " +
 	     	              					" data-id="+full.ID+" href='#begin_date' status="+status+">"+info+"</button>";
@@ -63,11 +63,11 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         		$.post("/WebAdmin/ad/cu/whetherCarriage",{id:id,status:status},function(data){
             		if(data){
             			if(status == "toUp"){
-            				$.scojs_message("上架成功",$.scojs_message.TYPE_OK);
+            				$.scojs_message("开启成功",$.scojs_message.TYPE_OK);
                 			
             			}
             			if(status == "toDown"){
-            				$.scojs_message("已下架",$.scojs_message.TYPE_OK);
+            				$.scojs_message("已关闭",$.scojs_message.TYPE_OK);
             			}
             			refleshTable();
             		}else{
