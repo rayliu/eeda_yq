@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import models.Office;
 import models.UserLogin;
 import models.UserOffice;
-import models.yh.profile.OfficeCofig;
+import models.eeda.profile.OfficeConfig;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -47,9 +47,9 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
         
         logger.debug("Current host path:"+basePath);
-        OfficeCofig of = OfficeCofig.dao.findFirst("select * from office_config where domain like '"+serverName +"%' or domain like '%"+serverName +"%'");
+        OfficeConfig of = OfficeConfig.dao.findFirst("select * from office_config where domain like '"+serverName +"%' or domain like '%"+serverName +"%'");
         if(of==null){//没有配置公司的信息会导致页面出错，显示空白页
-        	of = new OfficeCofig();
+        	of = new OfficeConfig();
         	of.set("system_title", "易达物流");
         	of.set("logo", "/yh/img/eeda_logo.ico");
         }

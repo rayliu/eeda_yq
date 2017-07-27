@@ -28,7 +28,6 @@ import models.PartyMark;
 import models.Permission;
 import models.Product;
 import models.RateContrast;
-import models.Role;
 import models.RolePermission;
 import models.SpAirTransport;
 import models.SpAirTransportItem;
@@ -47,7 +46,6 @@ import models.TradeItem;
 import models.UserCustomer;
 import models.UserLogin;
 import models.UserOffice;
-import models.UserRole;
 import models.eeda.cms.CustomArapChargeItem;
 import models.eeda.cms.CustomArapChargeOrder;
 import models.eeda.cms.CustomPlanOrder;
@@ -84,6 +82,7 @@ import models.eeda.profile.DockInfo;
 import models.eeda.profile.FinItem;
 import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
+import models.eeda.profile.OfficeConfig;
 import models.eeda.profile.OrderNoSeq;
 import models.eeda.profile.Unit;
 import models.eeda.profile.Warehouse;
@@ -91,12 +90,9 @@ import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 import models.eeda.tms.TransJobOrderLandItem;
 import models.yh.profile.Carinfo;
-import models.yh.profile.CustomizeField;
-import models.yh.profile.OfficeCofig;
-import models.yh.profile.Route;
 
 import org.apache.log4j.Logger;
-import org.bee.tl.ext.jfinal.BeetlRenderFactory;
+import org.beetl.ext.jfinal.BeetlRenderFactory;
 import org.h2.tools.Server;
 
 import com.jfinal.config.Constants;
@@ -121,10 +117,10 @@ import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
 import controllers.issue.ebay.cacellation.EbayCancellationController;
-import controllers.msg.MailBoxController;
 import controllers.issue.ebay.ebayNotReceive.EbayNotReceiveController;
 import controllers.issue.ebay.ebayReturn.EbayReturnController;
 import controllers.msg.EwmsDashBoardController;
+import controllers.msg.MailBoxController;
 import controllers.msg.YqDashBoardController;
 import controllers.msg.aliMsg.AliMsgController;
 import controllers.msg.ebayMsg.EbayMemberMsgController;
@@ -192,7 +188,7 @@ public class EedaConfig extends JFinalConfig {
         BeetlRenderFactory templateFactory = new BeetlRenderFactory();
         me.setMainRenderFactory(templateFactory);
 
-        BeetlRenderFactory.groupTemplate.setCharset("utf-8");// 没有这句，html上的汉字会乱码
+//        BeetlRenderFactory.groupTemplate.setCharset("utf-8");// 没有这句，html上的汉字会乱码
 
         // 注册后，可以使beetl html中使用shiro tag
         BeetlRenderFactory.groupTemplate.registerFunctionPackage("shiro", new ShiroExt());
@@ -229,7 +225,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath); 
         
-        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
+//        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
         
         setErpRoute(me, contentPath);
         
@@ -285,7 +281,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/containerType", ContainerTypeController.class, contentPath);
         //register loginUser
 //        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
-        me.add("/reset",controllers.profile.ResetPassWordController.class,contentPath);
+//        me.add("/reset",controllers.profile.ResetPassWordController.class,contentPath);
         
         
         me.add("/customer", controllers.profile.CustomerController.class, contentPath);
@@ -415,9 +411,9 @@ public class EedaConfig extends JFinalConfig {
     private void setTableMapping() {
         arp.addMapping("office", Office.class);
         arp.addMapping("user_login", UserLogin.class);
-        arp.addMapping("role", Role.class);
+//        arp.addMapping("role", Role.class);
         arp.addMapping("permission", Permission.class);
-        arp.addMapping("user_role", UserRole.class);
+//        arp.addMapping("user_role", UserRole.class);
         arp.addMapping("role_permission", RolePermission.class);
         arp.addMapping("eeda_modules", Module.class);
         arp.addMapping("module_role", ModuleRole.class);
@@ -430,7 +426,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("party", Party.class);
         arp.addMapping("party_mark", PartyMark.class);
 //        arp.addMapping("contact", Contact.class);       
-        arp.addMapping("route", Route.class);
+//        arp.addMapping("route", Route.class);
         arp.addMapping("product", Product.class);
         arp.addMapping("category", Category.class);
         arp.addMapping("location", Location.class);
@@ -441,85 +437,85 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("user_office", UserOffice.class);
         arp.addMapping("user_customer", UserCustomer.class);
         
-        arp.addMapping("customize_field", CustomizeField.class);
-        arp.addMapping("office_config", OfficeCofig.class);
+//        arp.addMapping("customize_field", CustomizeField.class);
+        arp.addMapping("office_config", OfficeConfig.class);
         
         //中转仓
         arp.addMapping("warehouse", Warehouse.class);
         arp.addMapping("fin_account", Account.class);
-        arp.addMapping("arap_account_audit_log", ArapAccountAuditLog.class);
+//        arp.addMapping("arap_account_audit_log", ArapAccountAuditLog.class);
         
 
         //oms
-        arp.addMapping("plan_order", PlanOrder.class);
-        arp.addMapping("plan_order_item", PlanOrderItem.class);
-        
-        arp.addMapping("job_order", JobOrder.class);
-        arp.addMapping("job_order_shipment_item", JobOrderShipmentItem.class);
-        arp.addMapping("job_order_arap", JobOrderArap.class);
-        arp.addMapping("job_order_shipment", JobOrderShipment.class);
-        arp.addMapping("job_order_doc", JobOrderDoc.class);
-        arp.addMapping("job_order_air", JobOrderAir.class);
-        arp.addMapping("job_order_air_item", JobOrderAirItem.class);
-        arp.addMapping("job_order_air_cargodesc", JobOrderAirCargoDesc.class);
-        arp.addMapping("job_order_land_item", JobOrderLandItem.class);
-        arp.addMapping("job_order_custom", JobOrderCustom.class);
-        arp.addMapping("job_order_insurance", JobOrderInsurance.class);
-        arp.addMapping("job_order_sendMail", JobOrderSendMail.class);
-        arp.addMapping("job_order_shipment_head", JobOrderShipmentHead.class);
-        arp.addMapping("job_order_ocean_template", JobOrderOceanTemplate.class);
-        arp.addMapping("job_order_sendmail_template", JobOrderSendMailTemplate.class);
-        arp.addMapping("job_order_express", JobOrderExpress.class);
-        
-        arp.addMapping("truck_order", TruckOrder.class);
-        arp.addMapping("truck_order_arap", TruckOrderArap.class);
-        arp.addMapping("truck_order_cargo", TruckOrderCargo.class);
-        arp.addMapping("currency", Currency.class);
-        arp.addMapping("currency_rate", CurrencyRate.class);
+//        arp.addMapping("plan_order", PlanOrder.class);
+//        arp.addMapping("plan_order_item", PlanOrderItem.class);
+//        
+//        arp.addMapping("job_order", JobOrder.class);
+//        arp.addMapping("job_order_shipment_item", JobOrderShipmentItem.class);
+//        arp.addMapping("job_order_arap", JobOrderArap.class);
+//        arp.addMapping("job_order_shipment", JobOrderShipment.class);
+//        arp.addMapping("job_order_doc", JobOrderDoc.class);
+//        arp.addMapping("job_order_air", JobOrderAir.class);
+//        arp.addMapping("job_order_air_item", JobOrderAirItem.class);
+//        arp.addMapping("job_order_air_cargodesc", JobOrderAirCargoDesc.class);
+//        arp.addMapping("job_order_land_item", JobOrderLandItem.class);
+//        arp.addMapping("job_order_custom", JobOrderCustom.class);
+//        arp.addMapping("job_order_insurance", JobOrderInsurance.class);
+//        arp.addMapping("job_order_sendMail", JobOrderSendMail.class);
+//        arp.addMapping("job_order_shipment_head", JobOrderShipmentHead.class);
+//        arp.addMapping("job_order_ocean_template", JobOrderOceanTemplate.class);
+//        arp.addMapping("job_order_sendmail_template", JobOrderSendMailTemplate.class);
+//        arp.addMapping("job_order_express", JobOrderExpress.class);
+//        
+//        arp.addMapping("truck_order", TruckOrder.class);
+//        arp.addMapping("truck_order_arap", TruckOrderArap.class);
+//        arp.addMapping("truck_order_cargo", TruckOrderCargo.class);
+//        arp.addMapping("currency", Currency.class);
+//        arp.addMapping("currency_rate", CurrencyRate.class);
         
         //财务
-        arp.addMapping("arap_cost_order", ArapCostOrder.class);
-        arp.addMapping("arap_cost_item", ArapCostItem.class);
-        arp.addMapping("arap_misc_cost_order", ArapMiscCostOrder.class);
-        arp.addMapping("arap_cost_application_order", ArapCostApplication.class);
-        arp.addMapping("cost_application_order_rel", CostApplicationOrderRel.class);
-        arp.addMapping("arap_charge_order", ArapChargeOrder.class);
-        arp.addMapping("arap_charge_item", ArapChargeItem.class);
-        arp.addMapping("arap_charge_invoice", ArapChargeInvoice.class);
-        arp.addMapping("arap_charge_application_order", ArapChargeApplication.class);
-        arp.addMapping("charge_application_order_rel", ChargeApplicationOrderRel.class);
-        arp.addMapping("app_invoice_doc", AppInvoiceDoc.class);
-        arp.addMapping("rate_contrast", RateContrast.class);
+//        arp.addMapping("arap_cost_order", ArapCostOrder.class);
+//        arp.addMapping("arap_cost_item", ArapCostItem.class);
+//        arp.addMapping("arap_misc_cost_order", ArapMiscCostOrder.class);
+//        arp.addMapping("arap_cost_application_order", ArapCostApplication.class);
+//        arp.addMapping("cost_application_order_rel", CostApplicationOrderRel.class);
+//        arp.addMapping("arap_charge_order", ArapChargeOrder.class);
+//        arp.addMapping("arap_charge_item", ArapChargeItem.class);
+//        arp.addMapping("arap_charge_invoice", ArapChargeInvoice.class);
+//        arp.addMapping("arap_charge_application_order", ArapChargeApplication.class);
+//        arp.addMapping("charge_application_order_rel", ChargeApplicationOrderRel.class);
+//        arp.addMapping("app_invoice_doc", AppInvoiceDoc.class);
+//        arp.addMapping("rate_contrast", RateContrast.class);
         
         //cms 报关管理		
-        arp.addMapping("custom_plan_order", CustomPlanOrder.class);
-        arp.addMapping("custom_plan_order_item", CustomPlanOrderItem.class);
-        arp.addMapping("custom_arap_charge_order", CustomArapChargeOrder.class);
-        arp.addMapping("custom_arap_charge_item", CustomArapChargeItem.class);
-        arp.addMapping("custom_arap_cost_order", CustomArapCostOrder.class);
-        arp.addMapping("custom_arap_cost_item", CustomArapCostItem.class);
-        arp.addMapping("custom_plan_order_arap", CustomPlanOrderArap.class);
+//        arp.addMapping("custom_plan_order", CustomPlanOrder.class);
+//        arp.addMapping("custom_plan_order_item", CustomPlanOrderItem.class);
+//        arp.addMapping("custom_arap_charge_order", CustomArapChargeOrder.class);
+//        arp.addMapping("custom_arap_charge_item", CustomArapChargeItem.class);
+//        arp.addMapping("custom_arap_cost_order", CustomArapCostOrder.class);
+//        arp.addMapping("custom_arap_cost_item", CustomArapCostItem.class);
+//        arp.addMapping("custom_plan_order_arap", CustomPlanOrderArap.class);
         
         //tms 车队管理
-        arp.addMapping("trans_job_order", TransJobOrder.class);
-        arp.addMapping("trans_job_order_land_item", TransJobOrderLandItem.class);
-        arp.addMapping("trans_job_order_arap", TransJobOrderArap.class);
-        
-        //保险供应商
-        arp.addMapping("sp_ocean_cargo", SpOceanCargo.class);
-        arp.addMapping("sp_ocean_cargo_item", SpOceanCargoItem.class);
-        arp.addMapping("sp_internal_trade", SpInternalTrade.class);
-        arp.addMapping("sp_bulk_cargo_item", SpBulkCargoItem.class);
-        arp.addMapping("sp_bulk_cargo", SpBulkCargo.class);  
-        
-        arp.addMapping("sp_land_transport", SpLandTransport.class); 
-        arp.addMapping("sp_land_transport_item", SpLandTransportItem.class); 
-        arp.addMapping("sp_storage", SpStorage.class);  
-        arp.addMapping("sp_air_transport", SpAirTransport.class);  
-        arp.addMapping("sp_air_transport_item", SpAirTransportItem.class);  
-        arp.addMapping("sp_custom", SpCustom.class);  
-        arp.addMapping("sp_picking_crane", SpPickingCrane.class);  
-        arp.addMapping("sp_cargo_insurance", SpCargoInsurance.class); 
+//        arp.addMapping("trans_job_order", TransJobOrder.class);
+//        arp.addMapping("trans_job_order_land_item", TransJobOrderLandItem.class);
+//        arp.addMapping("trans_job_order_arap", TransJobOrderArap.class);
+//        
+//        //保险供应商
+//        arp.addMapping("sp_ocean_cargo", SpOceanCargo.class);
+//        arp.addMapping("sp_ocean_cargo_item", SpOceanCargoItem.class);
+//        arp.addMapping("sp_internal_trade", SpInternalTrade.class);
+//        arp.addMapping("sp_bulk_cargo_item", SpBulkCargoItem.class);
+//        arp.addMapping("sp_bulk_cargo", SpBulkCargo.class);  
+//        
+//        arp.addMapping("sp_land_transport", SpLandTransport.class); 
+//        arp.addMapping("sp_land_transport_item", SpLandTransportItem.class); 
+//        arp.addMapping("sp_storage", SpStorage.class);  
+//        arp.addMapping("sp_air_transport", SpAirTransport.class);  
+//        arp.addMapping("sp_air_transport_item", SpAirTransportItem.class);  
+//        arp.addMapping("sp_custom", SpCustom.class);  
+//        arp.addMapping("sp_picking_crane", SpPickingCrane.class);  
+//        arp.addMapping("sp_cargo_insurance", SpCargoInsurance.class); 
     }
 
     private void initDBconnector() {
