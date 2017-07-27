@@ -34,6 +34,51 @@ public class TaoController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
+		//获取广告价格
+		String sql1 = "select type,price from price_maintain where type ='第一张广告'";
+		String sql2 = "select type,price from price_maintain where type ='第二张广告'";
+		String sql3 = "select type,price from price_maintain where type ='第三张广告'";
+		String sql4 = "select type,price from price_maintain where type ='第四张广告'";
+        Record re1 = Db.findFirst(sql1);
+        Record re2 = Db.findFirst(sql2);
+        Record re3 = Db.findFirst(sql3);
+        Record re4 = Db.findFirst(sql4);
+		if(re1==null){
+        	re1 = new Record();
+        	re1.set("type", "第一张广告");
+        	re1.set("price",0);
+        	Db.save("price_maintain", re1);
+        }else{
+        	setAttr("first_price",re1.get("price"));
+        }
+		
+		if(re2 == null){
+        	re2 = new Record();
+        	re2.set("type", "第二张广告");
+        	re2.set("price",0);
+        	Db.save("price_maintain", re2);
+        }else{
+        	setAttr("second_price",re2.get("price"));
+        }
+		
+		if(re3 == null){
+        	re3 = new Record();
+        	re3.set("type", "第三张广告");
+        	re3.set("price",0);
+        	Db.save("price_maintain", re3);
+        }else{
+        	setAttr("third_price",re3.get("price"));
+        }
+		
+		if(re4 == null){
+        	re4 = new Record();
+        	re4.set("type", "第四张广告");
+        	re4.set("price", 0);
+        	Db.save("price_maintain", re4);
+        }else{
+        	setAttr("fourth_price",re4.get("price"));
+        }
+        
 		render(getRequest().getRequestURI()+"/list.html");
 	}
 	

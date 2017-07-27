@@ -58,7 +58,7 @@ public class DimondController extends Controller {
          
 
         String sql="select ul.c_name creator_name,DATEDIFF(dim.end_date,now()) less_days,dim.* from wc_ad_dimond dim "
-        		+ "LEFT JOIN user_login ul on dim.creator = ul.id "+sLimit;
+        		+ "LEFT JOIN user_login ul on dim.creator = ul.id ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
@@ -66,7 +66,7 @@ public class DimondController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql);
+        List<Record> orderList = Db.find(sql+sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

@@ -14,10 +14,10 @@
         <div class="hang">
             广告位：
           <select id="ad_location" name="ad_location" ">
-              <option value="1">广告位1</option>    
-              <option value="2">广告位2</option>    
-              <option value="3">广告位3</option>        
-              <option value="4">广告位4</option>        
+              <option value="${first_price!''}">广告位1</option>    
+              <option value="${second_price!''}">广告位2</option>    
+              <option value="${third_price!''}">广告位3</option>        
+              <option value="${fourth_price!''}">广告位4</option>        
           </select>
         </div>
         
@@ -51,7 +51,7 @@
                     </tr>
                       <tr>
                         <td>单价(元/天)</td>
-                       	<td><strong id="price">${price!'100'}</strong></td>
+                       	<td><strong id="price">${first_price!''}</strong></td>
                     </tr>
                     <tr>
                         <td>总投放时间</td>

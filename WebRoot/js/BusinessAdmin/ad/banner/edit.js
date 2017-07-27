@@ -1,5 +1,7 @@
 define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) {
 	$(document).ready(function(){
+		
+
 		//电话不能为空
 		$('#weddingform').validate({
 			rules: {
@@ -23,7 +25,10 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		}, "请正确填写您的手机号码"); 
 		
 		
-		
+		$("#ad_location").change(function(){
+			var self = $(this);
+			$("#price").text(self.val());
+		})
 		
 		$("#end_date").on('blur',function(){
 			//获取日期
