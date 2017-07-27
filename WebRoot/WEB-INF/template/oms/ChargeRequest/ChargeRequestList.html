@@ -137,7 +137,6 @@
 					
 					<% if(shiro.hasPermission("chargeRequest.confirmRequest")){%>
 						<button id="confirmed" class="btn btn btn_green" style="margin-top:12px;"  disabled>收款确认</button>
-						<button id="badBtn" type="button" class="btn btn-danger btn-xs" style="background-color:#d9534f;margin-top:12px;"  disabled="disabled" >坏账确认</button>
 					<%}%>
                     
 					
@@ -224,7 +223,14 @@
     <div class="modal-dialog" style="width:500px;">
         <div class="modal-content">
             <div class="modal-body">
-				 
+				 <div class="row " style="margin:5px 0 10px 0">
+                 	<label class="radio-inline">
+				        <input type="radio" name="confirm_type" id="" value="收款确认" checked> 正常收款
+				    </label>
+				    <label class="radio-inline">
+				        <input type="radio" name="confirm_type" id=""  value="坏账确认"> 坏账确认
+				    </label>
+                 </div>
                    <div class="row">
                         <div class="col-lg-6">
                          <%include("/eeda/component/form/dateInputField.html",
@@ -240,6 +246,7 @@
                            <textarea id='pay_remark' class="form-control" rows="1" name="pay_remark">${order.pay_remark!''}</textarea>
                         </div>                    
                  </div>  
+                 
                    <div class="row" style="margin-top:15px;">
 	                     <div class="col-lg-6">
 	                      	 <button id="confirmBtn"  type="button" class="btn  btn-primary save" data-dismiss="modal">确定</button>

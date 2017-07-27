@@ -409,7 +409,7 @@ $(document).ready(function() {
     		 $('#checkedCostCheckOrder').html('已选中明细  '+0);//uncheckedCostCheckOrder
  	 		 $('#uncheckedCostCheckOrder').html('未选中明细  '+0);//uncheckedCostCheckOrder
     	 }else{
-    		 $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
+    		 $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
     		 $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));//uncheckedCostCheckOrder
     	 }
      }
@@ -725,6 +725,8 @@ $(document).ready(function() {
                     $(row).css("background-color","#FFFFDF");
                     row.find('[type=checkbox]').prop('checked',false);
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+                    row.remove();
+                    $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
                     totalMoney();
                 }else{
                     $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
@@ -758,6 +760,7 @@ $(document).ready(function() {
                     row.find('[type=checkbox]').prop('checked',false);
                     $(row).css("background-color","#FFFFDF");
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+                    $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
                     totalMoney();
                 }else{
                     $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
@@ -817,10 +820,14 @@ $(document).ready(function() {
                                  $(btn0).next().attr('disabled',false);
                                  $(btn0).parent().parent().parent().find('.status').html("已复核");
                                  $(rows[i]).css("background-color","#FFFFDF"); 
+                                 
+                                 $(rows[i]).remove();
+                                 $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
                             }
                         }
                     }
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
+                    totalMoney();
                     $('#checked').attr('disabled',true);
                     $('#confirmed').attr('disabled',false);
                     $('#badBtn').attr('disabled',false);
@@ -842,11 +849,13 @@ $(document).ready(function() {
 
     //收款确认
      $("#confirmBtn").on('click',function(){
-        //单条确认，多条确认
+        //单条确认，多条确认 
         var application_ids=[];
         var rowIndex=$('#rowIndex').val();
         var table=$('#table_id').val();
-        var confirmVal =$('#confirmVal').val();
+
+       // var confirmVal =$('#confirmVal').val();
+        var confirmVal = $('[name=confirm_type]:checked').val();
         if(confirmVal=='坏账确认'){
                 var pay_remark =$('#pay_remark').val()+'\n 这笔为坏账'
                 $('#pay_remark').html(pay_remark);              
@@ -876,7 +885,7 @@ $(document).ready(function() {
                                 var arr=[];
                                     arr=data.IDS.split(',');
                                 for(var j=0;j<arr.length;j++){
-                                    for(var i=1;i<rows.length;i++){
+                                    for(var i=0;i<rows.length;i++){
                                         var td=$(rows[i]).find('[type=checkbox]');
                                         var btn0=$(rows[i]).find('[type=button]').eq(1);
                                         if($(td).val()==arr[j]){

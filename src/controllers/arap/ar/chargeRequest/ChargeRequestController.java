@@ -898,7 +898,7 @@ public class ChargeRequestController extends Controller {
 		                for (Record re : res) {
 		          			Long charge_order_id = re.getLong("charge_order_id");
 		          			String order_type = re.getStr("order_type");
-		          			if(order_type.equals("应收对账单")){
+		          			if("应收对账单".equals(order_type)){
 		        				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
 		                        Double usd = arapChargeOrder.getDouble("usd");
 		                        Double cny = arapChargeOrder.getDouble("cny");
@@ -965,7 +965,7 @@ public class ChargeRequestController extends Controller {
 			            for (Record re : res) {
 			      			Long charge_order_id = re.getLong("charge_order_id");
 			      			String order_type = re.getStr("order_type");
-			      			if(order_type.equals("应收对账单")){
+			      			if("应收对账单".equals(order_type)){
 			    				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
 			                    Double usd = arapChargeOrder.getDouble("usd");
 			                    Double cny = arapChargeOrder.getDouble("cny");
