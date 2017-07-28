@@ -1,0 +1,43 @@
+<%layout("/BusinessAdmin/layout.html"){%>
+    <div class="pageheader notab overhide">
+      <div class="bd-detail">
+      <h4>商家详细</h4>
+      <p class="bd"><span>珠海维多利亚</span> <span>珠海</span>  <span>影楼</span>  <span>公司注册</span>  <span>钻石商家</span> <span>剩余30天</span><input type="button" value="删除商家" class="red-deletbtn"></p>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="userdetailtable bdtable mt10">
+        <tbody><tr>
+          <td>账号资料</td>
+          <td><span>用户名：tlewxc@gmail.com</span>  <span>负责人：周通</span> <span>联系电话</span></td>
+        </tr>
+        <tr>
+          <td rowspan="3">商铺资料</td>
+          <td><span>电话：22331098</span> <span>QQ：2363032542</span>    <span> 注册时间：2012-1-1</span> </td>
+        </tr>
+        <tr>
+          <td><span>地址：广东珠海拱北是烛城中以顺困2-384号</span></td>
+        </tr>
+        <tr>
+          <td><span>邀请码： xhkdu</span> </td>
+        </tr>
+        <tr>
+          <td>公司LOGO</td>
+          <td><img src="./business-remind-detail_files/cplogo.png"></td>
+        </tr>
+        <tr>
+          <td>营业执照/身份证</td>
+          <td><img src="./business-remind-detail_files/yyzz.png"></td>
+        </tr>
+        <tr>
+          <td>公司简介</td>
+          <td><textarea style="width:200px; height:60px; border:1px solid #ccc;" class="textin"></textarea></td>
+        </tr>
+      </tbody></table>
+      <div class="mt10"><input type="button" value="通过" style="width:200px;" class="stdbtn btn_blue"></div>
+      </div>
+    </div>
+<%}%>
+    
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+         requirejs(['/js/BusinessAdmin/case/list.js']);
+    });
+</script>
