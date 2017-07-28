@@ -131,6 +131,20 @@ public class ProductController extends Controller {
  	   renderJson(true);
     }
     
+	public void deleteProduct(){
+		String id = getPara("id");
+		boolean result = false;
+		if(StringUtils.isNotBlank(id)){
+			Db.update("delete from wc_product_pic where order_id = ?",id);
+			
+			Db.update("delete from wc_product where id = ?",id);
+			
+			result = true;
+		}
+		
+		renderJson(result);
+	}
+    
     
     public void modify(){
     	String id = getPara("id");

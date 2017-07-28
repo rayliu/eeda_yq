@@ -106,13 +106,22 @@ public class MobilePushController extends Controller {
     	
     }
     
+    @Before(Tx.class)
    public void exam(){
-	   String id=getPara("id");
-	   String sql="update wc_ad_mobile_promotion set status='已审批'  where id = "+id;
+	   String id = getPara("id");
+	   String sql = "update wc_ad_mobile_promotion set status='已审批'  where id = "+id;
 	   Db.update(sql);
 	   renderJson(true);
 	   
    }
+    
+    @Before(Tx.class)
+    public void rollBack(){
+ 	   String id = getPara("id");
+ 	   String sql = "update wc_ad_mobile_promotion set status='新建'  where id = "+id;
+ 	   Db.update(sql);
+ 	   renderJson(true);
+    }
    
    @Before(Tx.class)
    public void updateDiamond(){

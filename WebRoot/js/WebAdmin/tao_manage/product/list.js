@@ -38,14 +38,28 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	     	            			status='toDown'
 	     	            			info = "下架";
 	     	            		}
-	     	            	data =  "<button "+button+" class='modifibtn btn-blue  wherether_carriage' " +
+	     	            	data =  "<button "+button+" class='modifibtn btn-red  wherether_carriage' " +
 	     	              					" data-id="+full.ID+" href='#begin_date' status="+status+">"+info+"</button>"
-	     	            			+"&nbsp&nbsp&nbsp<button class = 'modifibtn btn-blue editBtn' data-id="+data+">编辑</button>";
+	     	            			+"&nbsp&nbsp&nbsp<button class = 'modifibtn btn-red editBtn' data-id="+data+">编辑</button>" 
+	     	            			+'<input class="stdbtn btn_red delete" type="button" value="删除" >';
                     		 
                     		 return data;
                     	 }
                      }
                     ]
+        });
+        
+        //删除 
+        $('#eeda_table').on('click','.delete',function(){
+      	  var id = $(this).parent().parent().attr('id');
+      	  $.post('/WebAdmin/tao_manage/product/deleteProduct',{id:id},function(data){
+      		  if(data){
+      			  $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+      			  refleshTable();
+   			  }else{
+   				 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR); 
+      		  }
+      	  });
         });
         
         //进入编辑页面

@@ -22,7 +22,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data": "STATUS", "width":"60px",
 	                    	"render":function(data,type,full,meta){
 	                    		if(data == "已审批"){
-	                    			data = "<button class='delete-btn' disabled>"+data+"</button>"
+	                    			data = "<button class='delete-btn rollback' data-id="+full.ID+">"+data+"</button>"
 	                    		}else{
 	                    			data = "<button class='modifibtn action' data-id="+full.ID+">审批</button>"
 	                    		}
@@ -61,6 +61,21 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
     		var sid = $(self).data("id");
     		self.disabled = true;
     	  	$.post("/WebAdmin/biz/mobilePush/exam",{id:sid},function(data){
+    	  		if(data){
+	    			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
+	    			refleshTable();
+	    		}else{
+	    			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+	    		}
+    	  	});
+        });
+        
+        $('#eeda_table').on('click','.rollback',function(){
+    		var self = this;	
+
+    		var sid = $(self).data("id");
+    		self.disabled = true;
+    	  	$.post("/WebAdmin/biz/mobilePush/rollBack",{id:sid},function(data){
     	  		if(data){
 	    			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
 	    			refleshTable();
