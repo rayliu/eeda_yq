@@ -51,7 +51,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         //进入编辑页面
         $("#eeda_table").on("click"," .editBtn",function(){
         	var id = $(this).data('id');
-        	window.location.href = "/WebAdmin/tao_manage/product/detail?id="+id;
+        	window.location.href = "/WebAdmin/tao_manage/product/modify?id="+id;
         });
               //更新状态 
         $("#eeda_table").on("click"," .wherether_carriage",function(){

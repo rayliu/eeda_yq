@@ -132,7 +132,7 @@ public class ProductController extends Controller {
     }
     
     
-    public void detail(){
+    public void modify(){
     	String id = getPara("id");
     	String sql="select * from wc_product where id = "+id;
     	String pic="select * from wc_product_pic where order_id="+id;
@@ -140,7 +140,7 @@ public class ProductController extends Controller {
     	List  pictures = Db.find(pic);
     	setAttr("product",re);
     	setAttr("pictures",pictures);
-    	render("/WebAdmin/tao_manage/product/modify/edit.html");
+    	render(getRequest().getRequestURI()+"/edit.html");
     }
     
     @Before(Tx.class)

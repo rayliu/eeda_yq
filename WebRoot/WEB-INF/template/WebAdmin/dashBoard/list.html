@@ -32,7 +32,20 @@
 		              headers:['地区','操作']
 		          }){} %>
         	</div>
-        <div class="baseinfo-list">
+        	
+        	<div class="baseinfo-list">
+                <h3>地区管理</h3>
+                <div style="margin:5px 0 0 0">
+                	<button class="modifibtn" id="add_category">添加分类</button>
+                </div>
+                
+		        <%include("/eeda/component/form/detailTable.html", 
+		          {
+		              id:'category_table', 
+		              headers:['分类','操作']
+		          }){} %>
+        	</div>
+<!--         <div class="baseinfo-list">
              <h3>分类管理</h3>
       
              <table cellspacing="0" cellpadding="0" border="0" class="stdtable mt10">
@@ -113,7 +126,7 @@
                         </tr>
                     </tbody>
                 </table>
-        </div>
+        </div> -->
     </div>
 
 <%}%>

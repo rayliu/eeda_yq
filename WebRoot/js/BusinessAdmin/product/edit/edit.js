@@ -131,9 +131,12 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 
 	    	$.post('/BusinessAdmin/product/save',{jsonStr:JSON.stringify(order)}, function(data, textStatus, xhr) {
 	    		if(data){
-	    			eeda.refreshUrl('edit?id='+data.ID);
+//	    			eeda.refreshUrl('edit?id='+data.ID);
+//	    			eeda.refreshUrl('edit');
+	    			
 	    			$('#order_id').val(data.ID);
 	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+	    			window.location.href="/BusinessAdmin/product";
 	    		}else{
 	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 	    		}

@@ -23,23 +23,18 @@
           </select>
         </div>
         
-          <dl>
-              <dt class="fm-label">
-              		<div class="fm-label-wrap ">
-                	<label for="fm-login-password">广告图片：</label>
-              </div>
-            </dt>
-            <dd class="fm-field" id="fm-login-password-wrap">
-                <div class="file">
+          <div class="mt10">
+           		<label for="fm-photo">广告图片：</label>
+          		
+                <div class="file" id="fm-photo">
 	                <input type="file" name="logo" id="ad_picture" value="${company.logo!''}"/>
-	                选择图片
+	                	选择图片
                 </div>
                 <span class="red">图片为JPG格式，小于1000kb</span> 
-                <div class="form-control" style="margin-left:100px">
+                <div class="form-control" style="margin:10px 0 0 60px">
                 	<img style='width: 300px;height:200px;' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_logo">      
             	</div>
-            </dd>
-          </dl>
+          </div>
         
         <div id="DateMap"></div>
         <h5 class="hh5">选取档期时间：</h5>
@@ -58,7 +53,7 @@
                     <tr>
                         <td width="13%">档期开始时间</td>
                         <td width="65%">
-                            <input type="date" id="begin_date" name="begin_date" /> 
+                            <input type="date"  class="input_text" id="begin_date" name="begin_date" /> 
                         </td>
                         <td rowspan="6"><textarea rows="20" cols="15" id="remark"></textarea></td>
                     </tr>
@@ -66,7 +61,7 @@
                         <td>档期结束时间</td>
                         <td>
                             <span class="">
-                                <input type="date" id="end_date" name="end_date" />
+                                <input type="date"  class="input_text" id="end_date" name="end_date" />
                             </span>                        </td>
                     </tr>
                       <tr>

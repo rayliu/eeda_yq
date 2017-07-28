@@ -27,6 +27,23 @@ define(['jquery', 'sco', 'dataTablesBootstrap' , 'validate_cn'], function ($, me
           ]
 		});
 	    
+	    var category_table = eeda.dt({
+	          id: 'category_table',
+	          paging: false,
+	          serverSide: false, 
+	          ajax: "/BusinessAdmin/ad/cu/list_category",
+	          columns: [
+		            { "data": "NAME","width":"100px" },
+		            { "data": "PARENT_ID","width":"100px" },
+		            { "data": "CUSTOMER_ID","width":"100px" },
+		            { "data": null,
+		            	render: function(data,type,full,meta){
+		            		return "<button class='modifibtn delete' id='"+full.ID+"' >删除</button>";
+		            	}
+		            }
+	          ]
+			});
+	    
 	    $('#add_loc').on('click', function(){
 	        var item={};
 	        locTable.row.add(item).draw(true);

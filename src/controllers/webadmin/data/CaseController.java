@@ -148,7 +148,7 @@ public class CaseController extends Controller {
 	}
 	
     
-    public void detail(){
+    public void modify(){
     	String id = getPara("id");
     	String sql="select * from wc_case where id = "+id;
     	String pic="select * from wc_case_item where order_id="+id;
@@ -156,14 +156,21 @@ public class CaseController extends Controller {
     	List  pictures = Db.find(pic);
     	setAttr("wccase",re);
     	setAttr("pictures",pictures);
-    	render("/WebAdmin/tao_manage/case/modify/edit.html");
+    	System.out.println(getRequest().getRequestURI()+"modify/edit.html");
+    	render(getRequest().getRequestURI()+"/edit.html");
     }
     
     @Before(Tx.class)
     public void delete(){
     	String id = getPara("id");
-    	Db.deleteById("wc_case", id);
-    	renderJson(true);
+    	boolean result=false;
+    	if(StringUtils.isNotBlank(id)){
+	    	String sql = "delete from wc_case_item where order_id = "+id; 
+			Db.update(sql);
+	    	Db.deleteById("wc_case", id);
+	    	result=true;
+    	}
+    	renderJson(result);
     }
    
    

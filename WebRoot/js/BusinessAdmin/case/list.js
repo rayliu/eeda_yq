@@ -59,6 +59,7 @@ $(document).ready(function() {
 	  
 	$("#save_btn").click(function(){
 		var self = $(this);
+		
 		var example = {};
 		example.img_num = img_num;
 		example.id=$("#id").val();
@@ -71,11 +72,12 @@ $(document).ready(function() {
 			alert("案例名称必须要填！！")
 			return;
 		}
+		self.attr('disabled',true);
 		$.post("/BusinessAdmin/case/save",{jsonStr:JSON.stringify(example)},function(data){
   			if(data){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 				self.attr('disabled',false);
-				refleshTable();
+				window.location.href="/BusinessAdmin/case";
 			}else{
 				$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 			}  

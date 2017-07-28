@@ -116,7 +116,7 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 	    			eeda.refreshUrl('edit?id='+data.ID);
 	    			$('#order_id').val(data.ID);
 	    			$.scojs_message('成功删除成功', $.scojs_message.TYPE_OK);
-	    			window.location.href = '/WebAdmin/tao_manage/product/detail?id='+p_id+''; 
+	    			window.location.href = '/WebAdmin/tao_manage/product/modify?id='+p_id+''; 
 	    		}else{
 	    			$.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
 	    		}

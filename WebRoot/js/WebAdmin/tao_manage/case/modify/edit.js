@@ -104,7 +104,7 @@ $(document).ready(function() {
     			eeda.refreshUrl('edit?id='+data.ID);
     			$('#order_id').val(data.ID);
     			$.scojs_message('成功删除成功', $.scojs_message.TYPE_OK);
-    			window.location.href = '/WebAdmin/tao_manage/case/detail?id='+c_id+''; 
+    			window.location.href = '/WebAdmin/tao_manage/case/modify?id='+c_id+''; 
     		}else{
     			$.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
     		}

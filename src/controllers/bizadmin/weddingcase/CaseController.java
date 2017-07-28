@@ -128,8 +128,14 @@ public class CaseController extends Controller {
 	
 	@Before(Tx.class)
 	public void delete(){
-		String id=getPara("id");
+		String id = getPara("id");
+		boolean result=false;
+		if(StringUtils.isNotBlank(id)){
+			String sql = "delete from wc_case_item where order_id = "+id; 
+			Db.update(sql);
+			result=true;
+		}
 		Db.deleteById("wc_case", id);
-		renderJson(true);
+		renderJson(result);
 	}
 }

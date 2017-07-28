@@ -32,7 +32,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         //进入编辑页面
         $("#eeda_table").on("click"," .editBtn",function(){
         	var id = $(this).data('id');
-        	window.location.href = "/WebAdmin/tao_manage/case/detail?id="+id;
+        	window.location.href = "/WebAdmin/tao_manage/case/modify?id="+id;
         });
       
         $("#eeda_table").on("click"," .delete",function(){
