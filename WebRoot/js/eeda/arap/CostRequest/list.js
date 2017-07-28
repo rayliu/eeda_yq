@@ -1,5 +1,5 @@
 
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'dtColReorder'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN','jq_blockui','dtColReorder'], function ($, metisMenu) {
 $(document).ready(function() {
 	
 	var flash = function(){    
@@ -706,7 +706,9 @@ $(document).ready(function() {
             var row = td.parent();
             var order_id=row.attr('id');
             var this_but=$(this);
-
+            $.blockUI({ 
+                message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在复核...</h4>' 
+            });
             $.get("/costRequest/checkOrder", {order_id:order_id}, function(data){
                 if(data.ID>0){
                     $(this_but).attr('disabled',true);
@@ -718,6 +720,7 @@ $(document).ready(function() {
                     row.remove();
                     $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
                     totalMoney();
+                    $.unblockUI();
                 }else{
                     $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
                 }
@@ -742,7 +745,7 @@ $(document).ready(function() {
             var row = td.parent();
             var order_id=row.attr('id');
             var this_but=$(this);
-
+          
             $.get("/costRequest/checkOrder", {order_id:order_id,}, function(data){
                 if(data.ID>0){
                     $(this_but).attr('disabled',true);
@@ -753,6 +756,7 @@ $(document).ready(function() {
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
                     $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
                     totalMoney();
+                    
                 }else{
                     $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
                 }
@@ -804,6 +808,7 @@ $(document).ready(function() {
            }
 
         }
+       
         $.post("/costRequest/checkOrder", {ids:application_ids.toString()}, function(data){
                 if(data.IDS){
                     var arr=data.IDS.split(',');
