@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder', 'datetimepicker_CN'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'jq_blockui','dtColReorder', 'datetimepicker_CN'], function ($, metisMenu) {
 $(document).ready(function() {
 	
 	var flash = function(){    
@@ -7,7 +7,6 @@ $(document).ready(function() {
                 
     var application_table = eeda.dt({
         id: 'application_table',
-        colReorder: true,
         autoWidth: false,
 //        scrollY: 530,
         
@@ -716,7 +715,9 @@ $(document).ready(function() {
             var row = td.parent();
             var order_id=row.attr('id');
             var this_but=$(this);
-
+            $.blockUI({ 
+                message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在复核...</h4>' 
+            });
             $.get("/chargeRequest/checkOrder", {order_id:order_id,}, function(data){
                 if(data.ID>0){
                     $(this_but).attr('disabled',true);
@@ -728,6 +729,7 @@ $(document).ready(function() {
                     row.remove();
                     $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
                     totalMoney();
+                    $.unblockUI();
                 }else{
                     $.scojs_message('复核失败', $.scojs_message.TYPE_FALSE);
                 }
