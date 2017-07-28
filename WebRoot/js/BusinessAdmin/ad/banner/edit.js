@@ -8,12 +8,27 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 				phone : {
 				    required: true,
 					isMobile:true
+				},
+				begin_date : {
+					required : true,
+					afterToday: true
+				},
+				end_date :{
+					required : true,
+					afterBegin:true
 				}
 			},
 		    messages: {
 		    	phone: {
 		    		required: "电话不能为空!!"
+			    },
+			    begin_date:{
+			    	afterToday:"必须大于当前日期"
+			    },
+			    end_date:{
+			    	
 			    }
+			    
 		    }
 		});
 		
@@ -49,7 +64,17 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		  return this.optional(element) || (length == 11 && mobile.test(value)); 
 		}, "请正确填写您的手机号码"); 
 		
+		jQuery.validator.addMethod("afterBegin", function(value, element) { 
+				var begin = $("#begin_date").val();
+				var after = $("#end_date").val();
+			  return new Date(begin) < new Date(after); 
+			}, "开始时间大于结束时间"); 
 		
+		  jQuery.validator.addMethod("afterToday", function(value, element) { 
+			  
+			  return new Date(value) > new Date(); 
+		  }, "请选择今天之后的日期"); 
+		  
 		$("#ad_location").change(function(){
 			var self = this;
 			var index = this.options.selectedIndex;
@@ -63,10 +88,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			var begin_date = $("#begin_date").val();
 			var end_date = $("#end_date").val();
 			var v = DateDiff(begin_date,end_date);
-			if(v=="N"){
-				alert("选择的日期不合法，请重新选择")
-				window.location.href="http://localhost:8080/BusinessAdmin/ad/banner";
-			}else if(v>0){
+			if(v>0){
 				$("#total_day").text(v);
 				var price = $("#price").text();
 				var sum = v*price;
@@ -82,7 +104,8 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		$("#saveBtn").click(function(){
 			var self = this;
 			
-			if(!$("#weddingform").validate()){
+			if(!$("#weddingform").valid()){
+				alert("填写信息有误，请重新核对！")
 				return;
 			}
 			
@@ -118,9 +141,6 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			oDate1  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])    //转换为12-18-2006格式  
 			bDate  =  sDate2.split("-")  
 			oDate2  =  new  Date(bDate[1]  +  '-'  +  bDate[2]  +  '-'  +  bDate[0])
-			if(new Date(oDate1)>new Date(oDate2)){
-				return "N";
-			}
 			iDays  =  parseInt(Math.abs(oDate1  -  oDate2)  /  1000  /  60  /  60  /24)    //把相差的毫秒数转换为天数  
 			return  iDays  
 		}    
