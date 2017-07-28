@@ -29,7 +29,7 @@
                         <input type="button" class="delete-btn" value="烟酒" onclick="GoTradeType(13);">
                         <input type="button" class="delete-btn" value="珠宝" onclick="GoTradeType(14);">
                         <input type="button" class="delete-btn" value="酒店" onclick="GoTradeType(15);">
-                        <table cellspacing="0" cellpadding="0" border="0" class="stdtable mt10">
+<!--                         <table cellspacing="0" cellpadding="0" border="0" class="stdtable mt10">
                 <colgroup>
                     <col class="con0">
                     <col class="con1">
@@ -80,8 +80,8 @@
                         <td>无</td>
                     </tr>
                                     </tbody>
-            </table>
-            <div class="dataTables_paginate paging_full_numbers" id="dyntable2_paginate">
+            </table> -->
+          <!--   <div class="dataTables_paginate paging_full_numbers" id="dyntable2_paginate">
                 <span class="first paginate_button paginate_button_disabled" onclick="GoPage(1);">First</span>
                 <span class="previous paginate_button paginate_button_disabled" onclick="GoPage(1);">Previous</span>
                 <span>
@@ -89,12 +89,17 @@
                                     </span>
                 <span class="next paginate_button" onclick="GoPage(1);">Next</span>
                 <span class="last paginate_button" onclick="GoPage(1);">Last</span>
-            </div>
+            </div> -->
+             <%include("/eeda/component/form/detailTable.html", 
+          {
+              id:'eeda_table', 
+              headers:['序号', '商家', '用户名','负责人','联系电话','分类','店铺电话','城 市','注册时间','级别','钻石剩余时间','操作']
+          }){} %>
         </div>
 
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-    	 requirejs(['app/msgBoard/list']);
+    	 requirejs(['/js/WebAdmin/biz/list.js']);
     });
 </script>
