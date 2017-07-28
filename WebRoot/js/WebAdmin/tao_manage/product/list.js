@@ -40,15 +40,19 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	     	            		}
 	     	            	data =  "<button "+button+" class='modifibtn btn-blue  wherether_carriage' " +
 	     	              					" data-id="+full.ID+" href='#begin_date' status="+status+">"+info+"</button>"
-	     	            			+"&nbsp&nbsp&nbsp<a href='/WebAdmin/tao_manage/product/detail?id="+data+"'>查看或修改信息</a>";
+	     	            			+"&nbsp&nbsp&nbsp<button class = 'modifibtn btn-blue editBtn' data-id="+data+">编辑</button>";
                     		 
                     		 return data;
                     	 }
                      }
                     ]
         });
-
-      
+        
+        //进入编辑页面
+        $("#eeda_table").on("click"," .editBtn",function(){
+        	var id = $(this).data('id');
+        	window.location.href = "/WebAdmin/tao_manage/product/detail?id="+id;
+        });
               //更新状态 
         $("#eeda_table").on("click"," .wherether_carriage",function(){
         	var result = confirm("确定要这样做吗？");

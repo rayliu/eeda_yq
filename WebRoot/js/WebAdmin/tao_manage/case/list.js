@@ -22,11 +22,17 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	            	"render":function(data,type,full,meta){
 	            		data ="<button  class='modifibtn btn-blue  delete' " 
        							+" data-id="+data+" >删除</button>" 
-       							+"&nbsp&nbsp&nbsp<a href='/WebAdmin/tao_manage/case/detail?id="+data+"'>查看或修改信息</a>";
+       							+"&nbsp&nbsp&nbsp<button class = 'modifibtn btn-blue editBtn' data-id="+data+">编辑</button>";
 	            		return data;
 	            	}  
 	              }
             ]
+        });
+        
+        //进入编辑页面
+        $("#eeda_table").on("click"," .editBtn",function(){
+        	var id = $(this).data('id');
+        	window.location.href = "/WebAdmin/tao_manage/case/detail?id="+id;
         });
       
         $("#eeda_table").on("click"," .delete",function(){
