@@ -30,7 +30,8 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
 	  $('#eeda_form').validate({
 			rules: {
 				put_in_time:{
-					required: true,
+					required : true,
+					afterToday :true
 				},
 				phone : {
 				    required: true,
@@ -53,6 +54,11 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
 		  return this.optional(element) || (length == 11 && mobile.test(value)); 
 	  }, "请正确填写您的手机号码"); 
 	  
+	  jQuery.validator.addMethod("afterToday", function(value, element) { 
+		  
+		  return new Date(value) > new Date(); 
+	  }, "请选择今天之后的日期"); 
+	  
 	  
 	  //结算价格计算并默认显示
 	  $("#amount").change(function(){
@@ -60,7 +66,7 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
 		  var amount = $('#amount').val();
 		  var total_price = parseFloat(price)*parseFloat(amount);
 		  $("#total_price").text(total_price);
-	  }); 
+	  });
 	  
 	  //初始化价格
 	  function init(){
@@ -98,7 +104,6 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
 			});
       });
       
-   
       
       //编辑按钮
       $('#eeda_table').on('click','.editBtn',function(){
