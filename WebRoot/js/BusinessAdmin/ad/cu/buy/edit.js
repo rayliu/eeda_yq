@@ -1,15 +1,45 @@
 define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) {
 	$(document).ready(function(){
 
+		$("#order_form").validate({
+			rules:{
+				begin_date:{
+					required:true,
+					afterToday:true
+				},
+				end_date : {
+					required:true,
+					afterBegin:true
+				}
+			},
+			messages:{
+				begin_date : {
+					required:"请选择广告的开始时间！"
+				},
+				end_date : {
+					required:"请选择广告的结束时间！"
+				}
+				
+			}
+		})
+		
+		jQuery.validator.addMethod("afterBegin", function(value, element) { 
+				var begin = $("#begin_date").val();
+				var after = $("#end_date").val();
+			  return new Date(begin) < new Date(after); 
+			}, "开始时间大于结束时间"); 
+		
+		  jQuery.validator.addMethod("afterToday", function(value, element) { 
+			  
+			  return new Date(value) > new Date(); 
+		  }, "请选择今天之后的日期"); 
+		
+		
 		$("#end_date,#begin_date").on('blur',function(){
 			//获取日期
 			var begin_date = $("#begin_date").val();
 			var end_date = $("#end_date").val();
-			var v = DateDiff(begin_date,end_date);
-			if(v=="N"){
-				alert("选择的日期不合法，请重新选择")
-				window.location.href="http://localhost:8080/BusinessAdmin/ad/cu/buy";
-			}else if(v){
+			var v = DateDiff(begin_date,end_date);if(v){
 				$("#total_day").text(v);
 				var price = $("#price").text();
 				var sum=v*price;
@@ -20,6 +50,10 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		$("#saveBtn").click(function(){
 			var self = this;
 			var ad = {};
+			if(!$("#order_form").valid()){
+				alert("保存失败，请重新核对填写信息！");
+				return;
+			}
 			ad.begin_date = $("#begin_date").val();
 			ad.end_date = $("#end_date").val();
 			ad.total_day = $("#total_day").text();
@@ -44,9 +78,6 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			oDate1  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])    //转换为12-18-2006格式  
 			bDate  =  sDate2.split("-")  
 			oDate2  =  new  Date(bDate[1]  +  '-'  +  bDate[2]  +  '-'  +  bDate[0])
-			if(new Date(oDate1)>new Date(oDate2)){
-				return "N";
-			}
 			iDays  =  parseInt(Math.abs(oDate1  -  oDate2)  /  1000  /  60  /  60  /24)    //把相差的毫秒数转换为天数  
 			return  iDays  
 		}      
