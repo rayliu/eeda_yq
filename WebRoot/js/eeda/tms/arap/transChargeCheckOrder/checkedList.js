@@ -18,7 +18,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			           	  }
 			          },
 					  { "data": "CREATE_STAMP", "width": "100px"},  
-					  { "data": "STATUS", "width": "50px"},
+					  { "data": "STATUS", "width": "50px",
+						  "render": function ( data, type, full, meta ) {
+			           		  if(full.AUDIT_STATUS=='已收款'){
+			           			  return data=full.AUDIT_STATUS;
+			           		  }else{
+			           			  return data;
+			           		  }
+			           	  }
+					  },
 					  { "data": "SP_NAME", "width": "80px"}, 
 					  { "data": "SERVICE_STAMP","width": "100px"}, 
 					  { "data": "TOTAL_AMOUNT","width": "60px","visible":false,

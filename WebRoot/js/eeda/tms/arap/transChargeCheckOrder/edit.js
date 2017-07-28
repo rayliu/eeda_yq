@@ -100,6 +100,7 @@ $(document).ready(function() {
     //按钮控制
     var order_id = $("#order_id").val();
     var status = $("#status").val()
+    var audit_status = $("#audit_status").val();
     if(order_id==""){
     	$('#saveBtn').attr('disabled', false);
     	
@@ -117,6 +118,9 @@ $(document).ready(function() {
     		$('#confirmBtn').attr('disabled', false);
     		$('#add_charge').attr('disabled', false);
     		$('.delete').attr('disabled', false);
+        }
+    	if(audit_status=='已收款'){
+        	$('#cancelConfirmBtn').attr('disabled', true);
         }
     }
     
@@ -238,7 +242,7 @@ $(document).ready(function() {
         }
     })
 
-      //付款确认
+      //收款确认
       $("#charge_confirmBtn,#badBtn").on('click',function(){
             var confirmVal =$(this).text();
             if(confirmVal=='坏账确认'){
@@ -300,6 +304,7 @@ $(document).ready(function() {
                     }else{
                         $("#status").val(data.STATUS);
                         $("#audit_status").val(data.STATUS);
+                        $("#cancelConfirmBtn").attr("disabled",true);
                         $.scojs_message('确认收款成功', $.scojs_message.TYPE_OK);
                     }
             }else{
