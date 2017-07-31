@@ -591,8 +591,8 @@ public class CustomerController extends Controller {
     	}else if("account".equals(type)){
     		itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",orderId);
 		}else if("salesman".equals(type)){
-    		itemList = Db.find("SELECT cs.*,em.employee_name salesman_name FROM customer_salesman cs "
-    				+ " LEFT JOIN employee em on cs.salesman_id = em.id WHERE party_id =?",orderId);
+    		itemList = Db.find("SELECT cs.*,ul.c_name salesman_name FROM customer_salesman cs "
+    				+ " LEFT JOIN user_login ul on cs.salesman_id = ul.id WHERE party_id =?",orderId);
 		}
 		return itemList;
 	}

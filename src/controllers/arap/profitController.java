@@ -43,9 +43,9 @@ public class profitController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
-        String sql = " SELECT A.id,A.customer_id,A.abbr,A.employee_name,A.royalty_rate,A.employee_id,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
+        String sql = " SELECT A.id,A.customer_id,A.abbr,A.user_name,A.royalty_rate,A.user_id,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
         		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb FROM ("
-        		+" SELECT jo.id,jo.customer_id,jo.order_export_date,p.abbr,em.employee_name,em.id employee_id,cs.royalty_rate,"
+        		+" SELECT jo.id,jo.customer_id,jo.order_export_date,p.abbr,ul.c_name user_name,ul.id user_id,cs.royalty_rate,"
         		+" IF(joa.order_type='charge' and joa.exchange_currency_id = 3,exchange_total_amount,0) charge_cny,"
         		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 6,exchange_total_amount,0) charge_usd,"
         		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 8,exchange_total_amount,0) charge_jpy,"
@@ -60,7 +60,7 @@ public class profitController extends Controller {
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
         		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
-        		+ " LEFT JOIN employee em on em.id = cs.salesman_id"
+        		+ " LEFT JOIN user_login ul on ul.id = cs.salesman_id"
         		+"  WHERE p.office_id ="+office_id+" "
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1 "+condition+" GROUP BY A.customer_id  ORDER BY abbr";
@@ -83,8 +83,8 @@ public class profitController extends Controller {
 		String customer_id =(String) getPara("customer");
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
-//		String employee_name =(String) getPara("employee_name");
-		String employee_id =(String) getPara("employee_id");
+//		String user_name =(String) getPara("user_name");
+		String user_id =(String) getPara("user_id");
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
@@ -92,9 +92,9 @@ public class profitController extends Controller {
 		if(StringUtils.isBlank(customer_id)){
 			customerId="";
 		}
-		String employeeId =" and em.id ="+employee_id;
-		if(StringUtils.isBlank(employee_id)){
-			employeeId="";
+		String userId =" and ul.id ="+user_id;
+		if(StringUtils.isBlank(user_id)){
+			userId="";
 		}
 		if(order_export_date_begin_time==null){
 			order_export_date_begin_time="";
@@ -108,7 +108,7 @@ public class profitController extends Controller {
 		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
 			order_export_date="";
 		}
-		String condition = customerId+employeeId+order_export_date;
+		String condition = customerId+userId+order_export_date;
 		
 		String sql=" SELECT "
 			+"	(SELECT "
@@ -117,7 +117,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
+			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
 			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -128,7 +128,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
+			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
 			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -139,7 +139,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
+			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
 			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -150,7 +150,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
+			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
 			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -161,7 +161,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
+			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
 			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+"	) cost_cny,"
@@ -171,7 +171,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
+			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
 			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -182,7 +182,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
+			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
 			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -193,7 +193,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
+			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
 			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -204,7 +204,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"	  LEFT JOIN party p ON p.id = jo.customer_id "
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
+			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
 			+"	WHERE 	p.office_id = "+office_id
 			+"	AND joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -215,7 +215,7 @@ public class profitController extends Controller {
 			+"	  LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"	  LEFT JOIN party p ON p.id = jo.customer_id "
 			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN employee em ON em.id = cs.salesman_id"
+			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
 			+"	WHERE 	p.office_id = "+office_id
 			+"	AND joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"

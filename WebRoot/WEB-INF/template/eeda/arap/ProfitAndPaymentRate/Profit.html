@@ -9,7 +9,7 @@
                         	<select id="selected_field" name="selected_field" class="form-control search-label">
                             	<option value="order_export_date">出货时间</option>
                             	<option value="customer">客户</option>
-	                            <option value="employee_id">业务员</option>
+	                            <option value="user_id">业务员</option>
                             </select>
 
                             <div style="display:none;float:right;" id="sp_customer_show">
@@ -19,7 +19,7 @@
                                                                      value: ''
                                                                  }){}%>
 								</div>
-		                    <input type="text" id="employee_id_show" style="display:none;" class="form-control search-control"/>
+		                    <input type="text" id="user_id_show" style="display:none;" class="form-control search-control"/>
                         	<div style="float:right;" id="order_export_date_show">        
 		                            	<%include("/eeda/component/form/inputDateQueryField.html",
 		                                	{	id:'single_order_export_date',
@@ -66,7 +66,7 @@
                                             </div>
                                             <div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputEmployeeField.html", 
-                                                                    {   id: 'employee_id', 
+                                                                    {   id: 'user_id', 
                                                                         label: '业务员', 
                                                                         value: ''
                                                                     }){}%>

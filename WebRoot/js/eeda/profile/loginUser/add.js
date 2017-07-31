@@ -206,6 +206,19 @@ $(document).ready(function(){
 		$("#selectAllCustomer").prop("checked",false);
 		queryCustomer();
 	});
+	
+	/*分配岗位*/
+	$("#assigning_role").click(function(){
+		var userId = $('#userId').val();
+		if(userId){
+			 window.location.href="/userRole/addOrUpdate?id="+userId;
+		}else{
+			$.scojs_message('请先保存单据', $.scojs_message.TYPE_ERROR);
+		}
+	});
+	
+	
+	
 	/*下拉框选择、点击*/
 	$("#tobdy").on('change','.sOffice',function(){
 		$(this).parent().next().find("input[type=radio]").prop("value",$(this).val());		

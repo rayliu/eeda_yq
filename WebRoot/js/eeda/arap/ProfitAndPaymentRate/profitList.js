@@ -80,21 +80,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
 	      if(selectField=='order_export_date'){
-	    	  $("#employee_id_show").hide();
+	    	  $("#user_id_show").hide();
 	    	  $("#sp_customer_show").hide();
 	    	  $("#order_export_date_show").show();
 		  }
 		  if(selectField=='customer'){
 			  $("#sp_customer_show").val("");
-			  $("#employee_id_show").hide();
+			  $("#user_id_show").hide();
 	    	  $("#order_export_date_show").hide();
 			  $("#sp_customer_show").show();
 		  }
-		  if(selectField=="employee_id"){
-			  $("#employee_id_show").val("");
+		  if(selectField=="user_id"){
+			  $("#user_id_show").val("");
 			  $("#sp_customer_show").hide();
 			  $("#order_export_date_show").hide();
-			  $("#employee_id_show").show();
+			  $("#user_id_show").show();
 		  }
      });
 	
@@ -107,14 +107,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	      if(selectField=='customer'){
 	    	 var customer = $("#single_customer").val();
 	      }
-	      if(selectField=="employee_id"){
-	    	  var employee_id = $("#single_employee_id").val();
+	      if(selectField=="user_id"){
+	    	  var user_id = $("#single_user_id").val();
 	      }
 	      
 	      //合计字段
           $.post('/profit/listTotal',{
         	  customer:customer,
-        	  employee_id:employee_id,
+        	  user_id:user_id,
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
           },function(data){
@@ -165,7 +165,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
           
           var url = "/profit/list?customer_id="+customer
-          				  +"&employee_id="+employee_id
+          				  +"&user_id="+user_id
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load(cssTd);
@@ -184,8 +184,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var customer = $("#customer").val(); 
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
-          var employee_name = $("#employee_id_input").val().trim(); 
-          var employee_id = $("#employee_id").val();
+          var user_name = $("#user_id_input").val().trim(); 
+          var user_id = $("#user_id").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -197,8 +197,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           //合计字段
           $.post('profit/listTotal',{
         	  customer:customer,
-        	  employee_name:employee_name,
-        	  employee_id:employee_id,
+        	  user_name:user_name,
+        	  user_id:user_id,
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
           },function(data){
@@ -249,8 +249,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
           
           var url = "/profit/list?customer_id="+customer
-          				  +"&employee_name="+employee_name  
-          				  +"&employee_id="+employee_id
+          				  +"&user_name="+user_name  
+          				  +"&user_id="+user_id
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load(cssTd);

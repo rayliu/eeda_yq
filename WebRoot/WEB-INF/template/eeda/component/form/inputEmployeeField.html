@@ -34,7 +34,7 @@ $(document).ready(function() {
 
     	return ;
     }else{
-		$.get('/employeeFiling/searchEmployee', {employee_name:inputStr}, function(data){
+		$.get('/role/searchOneStation', {input:inputStr,para:'业务员'}, function(data){
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
 			}

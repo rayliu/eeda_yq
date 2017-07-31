@@ -50,17 +50,21 @@ $(document).ready(function() {
             		var str = '<input type="checkbox" class="checkBox" style="width:30px" value="'+data+'">';
             		for(var i=0;i<ids.length;i++){
                         if(ids[i]==full.ID){
-                       	 str = '<input type="checkbox" class="checkBox" style="width:30px" value="'+data+'" checked>';
+                       	 str = '<input type="checkbox" class="checkBox" style="width:30px" value="'+data+'" checked>';                       	 
                         }
                     }
             		return str;
 			          }
             },
-            {"width":"30px",
+            {"width":"80px",
               "render": function ( data, type, full, meta ) {
-                    var str = '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>';
+                    var str = '';
                      if($("#status").val()=='已确认'){
-                        return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>';
+                    	 str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px" >删除</button>&nbsp'
+                         str += '<button type="button" class="itemEidt btn table_btn btn_green btn-xs" style="width:40px" >编辑</button>';
+                     }else{                    	
+                        str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px" >删除</button>&nbsp'
+                        str += '<button type="button" class="itemEidt btn table_btn btn_green btn-xs" style="width:40px" >编辑</button>';
                      }
                     return str;
                 }
@@ -78,9 +82,11 @@ $(document).ready(function() {
             { "data": "TOTAL_AMOUNT",'class':'total_amount', "width": "70px",
             	"render": function ( data, type, full, meta ) {
             		var total_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
+            		
             		if(full.ORDER_TYPE=='cost'){
 	            		return '<span style="color:red;">'+'-'+total_str+'</span>';
 	            	}
+            		
                     return total_str;
                   }
             },
