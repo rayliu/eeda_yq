@@ -87,11 +87,12 @@ public class EedaMenuInterceptor implements Interceptor {
         String sql;
         for (Record module : modules) {
             sql = "SELECT "
+            		+"    DISTINCT m.module_name,"
                     +"    u.office_id,"
                     +"    u.user_name,"
-                    +"    r.name role_name,"
+                    +"    GROUP_CONCAT(DISTINCT r. NAME) role_name,"
                     +"    ur.role_id,"
-                    +"    m.module_name,"
+                    
                     +"    m.id module_id,"
                     +"    p.code permission_code,"
                     +"    p.name permission_name,"
@@ -114,6 +115,7 @@ public class EedaMenuInterceptor implements Interceptor {
                     +"        and m.parent_id = ?"
                     +"        AND m.office_id = ?"
                     +"        AND u.user_name = ?"
+                    +" GROUP BY module_name"
                     +" ORDER BY m.seq";//union 查folder
             //logger.debug("EedaInterceptor module_id:"+module.get("id")+", office_id:"+office_id+", username:"+username);
             List<Record> orders = Db.find(sql, module.get("id"), office_id,
