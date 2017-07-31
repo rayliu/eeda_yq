@@ -12,15 +12,16 @@
                               <div class="row">
                                     <div class="col-lg-4">
                                         <%include("/eeda/component/form/inputField.html", 
-		                                    {   id:'employee_name', 
+		                                    {   id:'c_name', 
 		                                        label:'员工名称', 
-		                                        value:order.employee_name!''
+		                                        value:order.c_name!''
 		                                    }){}%>
                                     </div>
                                     <div class="col-lg-4">
                                         <%include("/eeda/component/form/inputStationField.html", 
 		                                    {   id:'station', 
-		                                        label:'岗位', 
+		                                        label:'岗位',
+		                                        disabled:'disabled', 
 		                                        value:order.station!'',
 		                                        display_value:order.station_name!''
 		                                    }){}%>
@@ -68,7 +69,7 @@
                                         <%include("/eeda/component/form/inputField.html", 
 		                                    {   id:'create_stamp', 
 		                                        label:'创建时间', 
-		                                        value:order.create_stamp!'', 
+		                                        value:order.create_time!'', 
 		                                        disabled: 'disabled'
 		                                    }){}%>
                                     </div>

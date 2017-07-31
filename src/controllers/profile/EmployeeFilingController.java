@@ -88,7 +88,11 @@ public class EmployeeFilingController extends Controller {
         String condition="";
         String ref_office = "";
 
-        sql = " SELECT em.*,r.name station_name from employee em  LEFT JOIN role r on em.station = r.id where 1 =1 and em.office_id= "+office_id;
+        sql = " SELECT	ul.*, GROUP_CONCAT( DISTINCT r. NAME) station_name FROM	user_login ul "
+        		+ " LEFT JOIN user_role ur on ur.user_name = ul.user_name"
+        		+ " LEFT JOIN role r ON r.id = ur.role_id "
+        		+ " where 1 =1 and ul.office_id= "+office_id
+        		+ " group BY ul.id";
         
 
         condition = DbUtils.buildConditions(getParaMap());
@@ -97,7 +101,7 @@ public class EmployeeFilingController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by   create_stamp desc " );
+        List<Record> orderList = Db.find(sql+ condition + " order by   ul.id " );
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
@@ -110,11 +114,14 @@ public class EmployeeFilingController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void edit(){
 		String id = getPara("id");
-		Record em = new Record();
-		String sql = "SELECT em.*,r.name station_name from employee em  LEFT JOIN role r on em.station = r.id"
-				+ " WHERE em.id = ?";
-		em = Db.findFirst(sql,id);
-        setAttr("order", em);		
+		Record user = new Record();
+		String sql = "SELECT	ul.*, GROUP_CONCAT( DISTINCT r. NAME) station_name"
+				+ " FROM	user_login ul"
+				+ " LEFT JOIN user_role ur on ur.user_name = ul.user_name"
+				+ " LEFT JOIN role r ON r.id = ur.role_id"
+				+ " WHERE	ul.id = ?";
+		user = Db.findFirst(sql,id);
+        setAttr("order", user);		
 		render("/eeda/profile/employee/addEmployeeFiling.html");
 	}
 	

@@ -8,9 +8,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorde
             colReorder: true,
             ajax: "/employeeFiling/list",
             columns:[
-	              { "data": "EMPLOYEE_NAME"},          
+	              { "data": "C_NAME"},          
                   { "data": "STATION_NAME"},          
-                  { "data": "INDUCTION_TIME",
+                  { "data": "ENTRY_TIME",
                 	"render":function(data, type, full, meta ){
                 		if(!data){
                 			return "";
@@ -18,7 +18,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorde
                 		return data.substr(0,10)
                 	}  
                   },
-                  { "data": "CREATE_STAMP"},
+                  { "data": "CREATE_TIME"},
                   {"data": null,"width":"50px", 
                     "render": function ( data, type, full, meta ) {
                       var str = "<a class='btn table_btn btn_green btn-xs' style='width:70px' href='/employeeFiling/edit?id="+full.ID+"' target='_blank'>"+
@@ -54,15 +54,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorde
       })
 
      var searchData=function(){
-    	  var employee_name = $("#employee_name").val().trim();
+    	  var user_name = $("#user_name").val().trim();
           var station_name = $("#station_name").val().trim();
-          var induction_time_begin_time = $("#induction_time_begin_time").val();
-          var induction_time_end_time = $("#induction_time_end_time").val();
+          var entry_time_begin_time = $("#entry_time_begin_time").val();
+          var entry_time_end_time = $("#entry_time_end_time").val();
           var create_stamp_begin_time = $("#create_stamp_begin_time").val();
           var create_stamp_end_time = $("#create_stamp_end_time").val();
           
           
-          var url = "/employeeFiling/list?employee_name="+employee_name
+          var url = "/employeeFiling/list?c_name="+user_name
 								          +"&station_name="+station_name
 								          +"&induction_time_begin_time="+induction_time_begin_time
 							          	  +"&induction_time_end_time="+induction_time_end_time
