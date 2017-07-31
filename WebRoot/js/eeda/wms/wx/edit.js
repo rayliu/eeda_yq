@@ -34,6 +34,7 @@ $(function(){
     				$('#dataValue').append('<a id="" class="weui-cell weui-cell_access itemNo" item_no='+data[i].ITEM_NO+' ">'
         	            +'<div class="weui-cell__bd">'
         	            +'<p id="">'+data[i].ITEM_NO+'</p>'
+        	            +'<div class="weui-cell__ft">'+data[i].TOTAL_BOX+'框</div>'
         	            +'</div>'
         	            +'</a>'); 
     			}

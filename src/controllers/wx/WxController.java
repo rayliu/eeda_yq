@@ -28,13 +28,33 @@ public class WxController extends Controller {
     public void queryItemNo(){
     	String item_no = getPara("item_no");
     	
-    	List<Record> list = Db.find("select pro.item_no,pro.item_name,count(1) total,sum(gi.quantity) totalQuantity "
+    	List<Record> list = Db.find("select *,sum(if(A.hav='Y',1,0)) total_box from("
+    			+ " select gi.id, pro.item_no,pro.item_name,'Y' hav"
     			+ " from gate_in gi "
     			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
     			+ " where gi.office_id=1"
     			+ " and gi.out_flag = 'N' and gi.error_flag = 'N'"
     			+ " and pro.item_no like '%"+item_no+"%'" 
-    			+ " group by pro.item_no");
+    			+ " union"
+    			+ " select pro.id,pro.item_no,pro.item_name,'N' hav"
+    			+ " from wmsproduct pro"
+    			+ " where amount>0 and pro.office_id=1"
+    			+ " and pro.item_no like '%"+item_no+"%'" 
+    			+ " ) A group by A.item_no");
+    	
+//    	sql = "select * from(select pro.item_no,pro.item_name,'Y' flag "
+//    			+ " from gate_in gi "
+//    			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+//    			+ " where gi.office_id=1"
+//    			+ " and out_flag = 'N' and error_flag = 'N'"
+//    			+ condition 
+//    			+ " union"
+//    			+ " select pro.item_no,pro.item_name,'N' flag from wmsproduct pro"
+//    			+ " where amount>0 and pro.office_id=1"
+//    			+ proCondition 
+//    			+ " ) A "
+//    			+ " group by A.item_no";
+
     	
     	renderJson(list);
     }
