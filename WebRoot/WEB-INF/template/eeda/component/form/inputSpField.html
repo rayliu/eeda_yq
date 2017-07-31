@@ -1,6 +1,6 @@
 <div class="form-group">
 	<% if(label!''!=""){ %>
-		<label class="search-label">${label!''}
+		<label class="search-label" style="${labelStyle!''};">${label!''}
 	<% } %>
 	
 		<%if(required!'' =='required'){%>
@@ -10,7 +10,7 @@
 	<input type="text" class="form-control search-control " 
 	id="${id}_input" AUTOCOMPLETE="off" list ="${list!''}"
 	placeholder="${placeholder!'请选择'}"  value="${display_value!''}" style="${style!''};">
-	<ul id='${id}_list' class="pull-right dropdown-menu default dropdown-scroll " tabindex="-1" style="top: 35%; left: 2%;">
+	<ul id='${id}_list' class="pull-right dropdown-menu default dropdown-scroll " tabindex="-1" style="top: 35%; left: 2%;max-width:260px;">
 </ul>
 </div>
 <input id="${id}" style="display: none;" name="${id}" value="${value!''}"/>
@@ -64,8 +64,7 @@ $(document).ready(function() {
 				spList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
 			}
 	        for(var i = 0; i < data.length; i++)
-	        	spList.append("<li><a tabindex='-1' class='fromLocationItem' chargeType='"+data[i].CHARGE_TYPE+"' partyId='"+data[i].ID+"' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' spid='"+data[i].ID+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].NAME+"</a></li>");
-	            
+	        	spList.append("<li><a tabindex='-1'  class='fromLocationItem' chargeType='"+data[i].CHARGE_TYPE+"' partyId='"+data[i].ID+"' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' spid='"+data[i].ID+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].NAME+"</a></li>");
 	        spList.css({ 
 		    	left:$(me).position().left+"px", 
 		    	top:$(me).position().top+28+"px" 

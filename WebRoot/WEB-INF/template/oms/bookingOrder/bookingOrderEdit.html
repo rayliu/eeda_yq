@@ -1,0 +1,808 @@
+<%layout("/eeda/layout.html"){%>
+<% var orderPermission = shiro.hasPermission("planOrder.order");
+   var boolOrder = orderPermission;
+   %>
+<link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
+<div id="page-wrapper">
+	<div class="row simple_search_div">
+    	<div class="col-lg-12" style="margin:5px 0 15px 0;">
+        	<div style="width:10%;float:left;text-align:center;">
+				<h4 <% if(order.create_stamp!''!=''){%>style="color:green;"<%}%>>
+                	<img src="/images/booking.png" style="width: 50px;"> <span>Booking</span>
+                	</h4>
+				<% if(order.create_stamp!'' != null && order.create_stamp!'' !=''){%>
+              		<span style="color:green;">${order.create_stamp!''}创建</span>
+           		<%}%>
+			</div>
+	    	<div style="width:8%;float:left;text-align:center;">
+	        	<div class="booking_line"></div>
+			</div>
+					
+	    	<div style="width:10%;float:left;text-align:center;">
+	        	<h4 style="padding-top:5px;" <% if(job_eta!''!=''){%>style="color:green;"<%}%>>
+                	<img src="/images/货车装车.png" style="width: 50px;margin-top:-10px;"> <span>提货</span>
+                </h4>
+	        	<% if(job_eta!'' != null && job_eta!'' !=''){%>
+	            	<span id="sendCar" style="color:green;">预计${job_eta!''}到厂</span>
+	        	<%}%>
+			</div>
+	        <div style="width:8%;float:left;text-align:center;">
+	        	<div class="booking_line"></div>
+			</div>
+	              		
+	        <div style="width:10%;float:left;text-align:center;">
+				<h4 <% if(job_status!''!=''){%>style="color:green;"<%}%>>
+                	<img src="/images/报关.png" style="width: 50px;"> 报关
+            	</h4>
+				<% if(job_custom_order_no!'' != null && job_custom_order_no!'' !=''){%>
+					<label id="custom" style="color:green;>报关单号：</label>${job_custom_order_no!''}
+				<%}%>
+				<% if(job_status!'' != null && job_status!'' !=''){%>
+					<br/>
+					<label id="custom" style="color:green;">状态：</label>${job_status!''}
+				<%}%>
+			</div>
+	        <div style="width:8%;float:left;text-align:center;">
+	        	<div class="booking_line"></div>
+			</div>
+	              		
+	        <div style="width:10%;float:left;text-align:center;">
+				<h4 style="padding-top: 10px;"<% if(job_atd!''!=''){%>style="color:green;"<%}%>>
+                	<img src="/images/轮船.png" style="width: 50px;"> 离港
+                </h4>
+				<% if(job_atd!'' != null && job_atd!'' !=''){%>
+	            	<span id="boarding" style="color:green;">${job_atd!''}开船</span>
+	            <%}%>
+			</div>
+	        <div style="width:8%;float:left;text-align:center;">
+	            <div class="booking_line"></div>
+			</div>
+	              		
+	        <div style="width:10%;float:left;text-align:center;">
+				<h4 <% if(job_ata!''!=''){%>style="color:green;"<%}%>>
+                	<img src="/images/check.png" style="width: 50px;"> 到港
+                </h4>
+				<% if(job_ata!'' != null && job_ata!'' !=''){%>
+	              	<span id="arrival" style="color:green;">${job_ata!''}到港</span>
+	            <%}%>
+			</div>
+			<div style="width:8%;float:left;text-align:center;">
+	            <div class="booking_line"></div>
+			</div>
+					
+			<div style="width:10%;float:left;text-align:center;">
+				<h4 style="padding-top: 10px;"<% if(job_atd!''!=''){%>style="color:green;"<%}%>>
+                	<img src="/images/货车装车.png" style="width: 50px;margin-top:-10px;"> <span>送货</span>
+                </h4>
+				<% if(job_atd!'' != null && job_atd!'' !=''){%>
+	              	<span id="boarding" style="color:green;">${job_atd!''}开船</span>
+	            <%}%>
+			</div>
+		</div>
+	</div><br>
+    
+    <div class="panel-body">
+	    <div class="simple_search_div" style="width:380px;height:215px;float:left;margin-left:-13px;">
+	    	<div class="panel-body">发布人信息Shipper
+	    		<div style="margin-left:25px;margin-top:15px;">
+		    		<div>
+	                	<%include("/eeda/component/form/inputSpField.html", 
+	                                    	{   id: 'consignor', 
+	                                    		label:'发货公司',
+	                                    		style:'width:200px',
+	                                    		labelStyle:'width:80px',
+	                                            value: ''
+	                                        }){}%>
+	                </div>
+		    		<div><br/>
+		    			<%include("/eeda/component/form/inputField.html", 
+		                                                {   id:'contacts', 
+		                                                    label:'联系人',
+		                                                    style:'width:200px',
+		                                                    labelStyle:'width:80px',
+		                                                    value:order.order_no!''
+		                                                }){}%>
+		    		</div>
+		    		<div><br/>
+		    			<%include("/eeda/component/form/inputField.html", 
+		                                                {   id:'contacts_phone', 
+		                                                    label:'联系电话',
+		                                                    style:'width:200px',
+		                                                    labelStyle:'width:80px',
+		                                                    value:order.order_no!''
+		                                                }){}%>
+		    		</div>
+		    		<div><br>
+		    			<label style="width:82px;position:relative;bottom:30px;">地址</label><textarea rows="3" style="width:200px;"></textarea>
+		    		</div>
+	    		</div>
+	    	</div>
+	    </div>
+	    
+	    <div class="simple_search_div" style="width:380px;height:220px;float:left;margin-left:32px;">
+			<div class="panel-body">收货人信息Shipper
+	    		<div style="margin-left:25px;margin-top:15px;">
+		    		<div>
+	                	<%include("/eeda/component/form/inputSpField.html", 
+	                                    	{   id: 'consignee', 
+	                                    		label:'收货公司',
+	                                    		style:'width:200px',
+	                                    		labelStyle:'width:80px',
+	                                            value: ''
+	                                        }){}%>
+	                </div>
+		    		<div><br/>
+		    			<%include("/eeda/component/form/inputField.html", 
+		                                                {   id:'联系人', 
+		                                                    label:'联系人',
+		                                                    style:'width:200px',
+		                                                    labelStyle:'width:80px',
+		                                                    value:order.order_no!''
+		                                                }){}%>
+		    		</div>
+		    		<div><br/>
+		    			<%include("/eeda/component/form/inputField.html", 
+		                                                {   id:'', 
+		                                                    label:'联系电话',
+		                                                    style:'width:200px',
+		                                                    labelStyle:'width:80px',
+		                                                    value:order.order_no!''
+		                                                }){}%>
+		    		</div>
+		    		<div><br>
+		    			<label style="width:82px;position:relative;bottom:30px;">地址</label><textarea rows="3" style="width:200px;"></textarea>
+		    		</div>
+	    		</div>
+	    	</div>
+	    </div>
+	    
+	    <div class="simple_search_div" style="width:380px;height:220px;float:left;margin-left:33px;padding-right:-50px;">
+	    	<div class="panel-body">通知人信息Shipper
+	    		<div style="margin-left:25px;margin-top:15px;">
+		    		<div>
+	                	<%include("/eeda/component/form/inputSpField.html", 
+	                                    	{   id: 'customer', 
+	                                    		label:'通知人公司',
+	                                    		style:'width:200px',
+	                                    		labelStyle:'width:80px',
+	                                            value: ''
+	                                        }){}%>
+	                </div>
+		    		<div><br/>
+		    			<%include("/eeda/component/form/inputField.html", 
+		                                                {   id:'', 
+		                                                    label:'联系人',
+		                                                    style:'width:200px',
+		                                                    labelStyle:'width:80px',
+		                                                    value:order.order_no!''
+		                                                }){}%>
+		    		</div>
+		    		<div><br/>
+		    			<%include("/eeda/component/form/inputField.html", 
+		                                                {   id:'', 
+		                                                    label:'联系电话',
+		                                                    style:'width:200px',
+		                                                    labelStyle:'width:80px',
+		                                                    value:order.order_no!''
+		                                                }){}%>
+		    		</div>
+		    		<div><br>
+		    			<label style="width:82px;position:relative;bottom:30px;">地址</label><textarea rows="3" style="width:200px;"></textarea>
+		    		</div>
+	    		</div>
+	    	</div>
+	    </div>
+    </div>
+    <br>
+    
+    <div class="row simple_search_div">
+    	<div class="panel-body">
+    		<strong>业务信息</strong>
+    		<div style="margin-left:25px;">
+			<div class="row"><br>
+	                        <div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'booking_no', 
+	                                                    label:'booking', 
+	                                                    value:order.booking_no!''
+	                                                }){}%>
+	                        </div> 
+	                        <div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'outer_order_no', 
+	                                                    label:'外部单号', 
+	                                                    value:order.outer_order_no!''
+	                                                }){}%>
+	                        </div>
+	                        <div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'relation_no', 
+	                                                    label:'关联单号', 
+	                                                    value:jobOrder.order_no!''
+	                                                }){}%>
+	                        </div>
+        	</div>
+        	
+        	<div class="row">
+        		<div class="col-lg-4">
+                	<div class="form-group" id="transport_type">
+                                    <label class="search-label">所需服务项目</label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value='ocean'>海运
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value='air'>空运
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value='land'>陆运
+                                    </label>
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value='custom'>报关
+                                    </label>
+                     </div>
+        		</div>
+        		<div class="col-lg-4">
+	            	<%include("/eeda/component/form/selectField.html",  
+	                                                {   id:'service_type', 
+	                                                    label:'服务类型', 
+	                                                    value:jobOrder.service_type!order.service_type!,
+				                                        value_list:[
+				                                            {code:'出口柜货', value:'出口柜货'},
+				                                            {code:'进口柜货', value:'进口柜货'}, 
+				                                            {code:'出口散货', value:'出口散货'},
+				                                            {code:'进口散货', value:'进口散货'},
+				                                            {code:'出口空运', value:'出口空运'},
+				                                            {code:'进口空运', value:'进口空运'},
+				                                            {code:'内贸海运', value:'内贸海运'},
+				                                            {code:'香港头程', value:'香港头程'},
+				                                            {code:'香港游', value:'香港游'},
+				                                            {code:'陆运', value:'陆运'},
+				                                            {code:'报关', value:'报关'},
+				                                            {code:'快递', value:'快递'},
+				                                            {code:'加贸', value:'加贸'},
+				                                            {code:'贸易', value:'贸易'},
+				                                            {code:'园区游', value:'园区游'}
+				                                        ]
+	        		}){}%>
+	            </div>
+        		<div class="col-lg-4">
+                	<%include("/eeda/component/form/inputField.html", 
+                                                {   id:'creator_name', 
+                                                    label:'创建人', 
+                                                    value:user.c_name!''
+                                                }){}%>
+                </div>
+        	</div>
+        	
+        	<div class="row">
+        		<div class="col-lg-4">
+	            	<%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'entrusto_type', 
+	                                                    label:'委托类型', 
+	                                                    value:jobOrder.entrusto_type!''
+	                                                }){}%>
+	            </div>
+        		<div class="col-lg-4">
+	            	<%include("/eeda/component/form/inputOfficeField.html",
+											{   id:'office_id', 
+												label:'委托公司',  
+												value:office.id!order.office_id!'',
+												display_value:office.office_name!order.office_name!''
+											}){} %>
+	            </div>
+        	</div>
+        	
+        	<div class="row">
+        		<div class="col-lg-4">
+	            	<%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'gargo_name', 
+	                                                    label:'货物名称',
+	                                                    value:jobOrder.gargo_name!order.gargo_name!''
+	                                                }){}%>
+	            </div>
+				<div class="col-lg-4">
+	            	<%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'pieces', 
+	                                                    label:'件数', 	                                                    
+	                                                    value:jobOrder.pieces!order.pieces!'',
+	                                                    placeholder:'请输入数字'
+	                                                }){}%>
+				</div>
+				<div class="col-lg-4">
+                	<%include("/eeda/component/form/inputUnitItem.html", 
+                                    {   id:'job_unit', 
+                                        label:'计量单位', 
+                                        value: order.job_unit!planOrderItem.job_unit!'',
+                                        display_value:unit.job_unit_name!'',
+                                        placeholder:'请选择计量单位'
+                	}){}%>
+            	</div>
+        	</div>
+        	
+        	<div class="row">
+        		<div class="col-lg-4">
+	            	<%include("/eeda/component/form/dateInputField.html",  
+	                                                {   id:'order_export_date', 
+	                                                    label:'出货时间', 
+	                                                    value:jobOrder.order_export_date!order.order_export_date!''
+	                                                }){}%>
+				</div>
+				<div class="col-lg-4">
+	           		<%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'volume', 
+	                                                    label:'体积CBM',	                                                    
+	                                                    value:jobOrder.volume!order.volume!'',
+	                                                    placeholder:'请输入数字'
+	                                                }){}%>
+	           	</div>
+	           	<div class="col-lg-4">
+	            	<%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'gross_weight', 
+	                                                    label:'重量KG',	                                                    
+	                                                    value:jobOrder.gross_weight!order.gross_weight!'',
+	                                                    placeholder:'请输入数字'
+	                                                }){}%>
+	           	</div>
+        	</div>
+        	</div>
+		</div>                    
+     </div><br><br>
+     
+     <div class="row simple_search_div">
+     	<div class="panel-body">
+     		<strong>海运信息</strong>
+     		<div style="margin-left:25px;">
+     		<div class="row"><br/>
+     			<div class="col-lg-4">
+     				<%include("/eeda/component/form/inputPartyField.html", 
+                   		{   id:'ocean_booking_agent', 
+                        	label:'货运代理', 
+                        	type:'booking_agent',
+                        	value:shipment.booking_agent!'',
+                        	display_value:shipment.booking_agent_name!''
+                    	}){}%>
+                </div>
+                <div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputPortField.html", 
+	                                                {   id:'pol_id', 
+	                                                    label:'启运港POL',	                                                   
+	                                                    value:order.pol_name!'',
+	                                                    display_value:jobOrder.pol_name!order.pol_name!''
+	                                                }){}%>
+	            </div>
+	           	<div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputPortField.html", 
+	                                                {   id:'pod_id', 
+	                                                    label:'目的港POD',	                                                    
+	                                                    value:order.pod_name!'',
+	                                                    display_value:jobOrder.pod_name!order.pod_name!''
+	                                                }){}%>
+	                        </div>
+     		</div>
+     		
+     		<div class="row">
+     			<div class="col-lg-4">
+     				 <% 
+		                 include("/eeda/component/form/inputPartyField.html", 
+		                    {   id:'carrier',
+		                        type:  'carrier',
+		                        label: '船公司', 
+		                        value: shipment.carrier!planOrderItem.carrier!'',
+		                        display_value: shipment.carrier_name!portCreate.carrier_name!''
+		                  	}){}%>
+                </div>
+                <div class="col-lg-4">
+	           		<%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'etd', 
+                           label:'ETD',
+                           value:shipment.etd!planOrderItem.etd!''
+                       }){}%>
+	           	</div>
+	           	<div class="col-lg-4">
+	           		<%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'eta', 
+                           label:'ETA', 
+                           value:shipment.eta!planOrderItem.eta!''
+                       }){}%>
+	           	</div>
+     		</div>
+     		
+     		<div class="row">
+				<div class="col-lg-4">
+     				<%include("/eeda/component/form/inputField.html", 
+                    {   id:'vessel', 
+                        label:'船名', 
+                        value:shipment.vessel!planOrderItem.vessel!''
+                    }){}%>
+                </div>
+                <div class="col-lg-4">
+	           		<%include("/eeda/component/form/dateInputField.html", 
+                    {   id:'atd', 
+                        label:'ATD', 
+                        value:shipment.atd!''
+                    }){}%>
+	           	</div>
+	           	<div class="col-lg-4">
+	           		<%include("/eeda/component/form/dateInputField.html", 
+                    {   id:'ata', 
+                        label:'ATA', 
+                        value:shipment.ata!''
+                    }){}%>
+	           	</div>     		
+     		</div>
+     		
+     		<div class="row">
+     			<div class="col-lg-4">
+		        	<%include("/eeda/component/form/inputField.html", 
+		            	{   id:'vessel_voyage_or_flight_no_voyage_no', 
+		                	label:'航次/航班', 
+		                    value:jobOrder.vessel_voyage_or_flight_no_voyage_no!''
+		                }){}%>
+		        </div> 
+                <div class="col-lg-4">
+	            	<%include("/eeda/component/form/inputField.html", 
+	                	{   id:'ship_container_no', 
+	                    	label:'柜号/封条号', 
+	                    	value:jobOrder.ship_container_no!''
+	            		}){}%>
+	            </div>
+	           	<div class="col-lg-4">
+	            	<%include("/eeda/component/form/inputField.html", 
+	                	{   id:'ship_seal_no', 
+	                    	label:'封条号', 
+	                    	value:jobOrder.ship_seal_no!''
+	              		}){}%>
+	        	</div>
+     		</div>
+     		
+     		<div class="row">
+     			<div class="col-lg-4">
+                                  <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'trade_type', 
+                                        label:'贸易类型', 
+                                        value:order.trade_type!'',
+                                        value_list:[
+                                            {code:'FOB', value:'FOB'},
+                                            {code:'CIF', value:'CIF'},
+                                            {code:'CFR', value:'CFR'},
+                                            {code:'DDU', value:'DDU'},
+                                            {code:'DDP', value:'DDP'},
+                                            {code:'OTHER', value:'OTHER'}
+                                        ]
+                                    }){}%>
+                </div>
+                <div class="col-lg-4">
+                                <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'trans_clause', 
+                                        label:'运输条款', 
+                                        value:order.trans_clause!'',
+                                        value_list:[
+                                        	{code:'CY-CY', value:'CY-CY'},
+                                        	{code:'CY-DOOR', value:'CY-DOOR'},
+                                            {code:'CFS-CFS', value:'CFS-CFS'},
+                                            {code:'CFS-DOOR', value:'CFS-DOOR'},                                            
+                                            {code:'DOOR-DOOR', value:'DOOR-DOOR'},
+                                            {code:'DOOR-CFS', value:'DOOR-CFS'},
+                                            {code:'DOOR-CY', value:'DOOR-CY'}
+                                        ]
+                                    }){}%>
+            	</div>
+     		</div>
+     	</div>
+     	</div>
+     </div><br><br>
+     
+     <div class="row simple_search_div">
+     	<div class="panel-body">
+     		<strong>陆运信息</strong>
+     		<div style="margin-left:25px;">
+     		<div class="row"><br/>
+		        <div class="col-lg-4">
+     				<%include("/eeda/component/form/inputPartyField.html", 
+                   		{   id:'', 
+                        	label:'提货公司', 
+                        	type:'booking_agent',
+                        	value:''
+                    	}){}%>
+                </div>
+	        	<div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'pickup_addr', 
+	                                                    label:'提货地', 	                                                   
+	                                                    value:jobOrder.take_address!order.pickup_addr!''
+	                                                }){}%>
+	        	</div>
+	        	<div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'pickup_addr', 
+	                                                    label:'目的地', 	                                                   
+	                                                    value:jobOrder.take_address!order.pickup_addr!''
+	                                                }){}%>
+	        	</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-lg-4">
+		        	<%include("/eeda/component/form/dateInputField.html",  
+		                                                {   id:'order_export_date', 
+		                                                    label:'预计提货时间', 
+		                                                    value:jobOrder.order_export_date!order.order_export_date!''
+		                                                }){}%>
+				</div>
+				<div class="col-lg-4">
+                	<%include("/eeda/component/form/inputField.html", 
+                                                {   id:'creator_name', 
+                                                    label:'收货人', 
+                                                    value:user.c_name!''
+                                                }){}%>
+                </div>
+                
+                <div class="col-lg-4">
+	           		<%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'volume', 
+	                                                    label:'联系电话',	                                                    
+	                                                    value:jobOrder.volume!order.volume!'',
+	                                                    placeholder:'请输入数字'
+	                                                }){}%>
+	           	</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-lg-4">
+	            	<%include("/eeda/component/form/selectField.html",  
+	                                                {   id:'truck_type', 
+	                                                    label:'车型', 
+	                                                    value:jobOrder.truck_type!order.truck_type!,
+				                                        value_list:[
+				                                            {code:'40HQ', value:'40HQ'},
+				                                            {code:'40GP', value:'40GP'}, 
+				                                            {code:'20GP', value:'20GP'},
+				                                            {code:'40T', value:'40T'},
+				                                            {code:'20T', value:'20T'},
+				                                            {code:'10T', value:'10T'},
+				                                            {code:'8T', value:'8T'},
+				                                            {code:'5T', value:'5T'},
+				                                            {code:'3T', value:'3T'},
+				                                            {code:'1.5T', value:'1.5T'},
+				                                            {code:'21M', value:'21M'},
+				                                            {code:'18.5M', value:'18.5M'},
+				                                            {code:'18.0M', value:'18.0M'},
+				                                            {code:'17.8M', value:'17.8M'},
+				                                            {code:'17.5M', value:'17.5M'},
+				                                            {code:'16.0M', value:'16.0M'},
+				                                            {code:'15.8M', value:'15.8M'},
+				                                            {code:'14.5M', value:'14.5M'},
+				                                            {code:'13.5M', value:'13.5M'},
+				                                            {code:'13.0M', value:'13.0M'},
+				                                            {code:'12.5M', value:'12.5M'},
+				                                            {code:'9.6M', value:'9.6M'},
+				                                            {code:'8.6M', value:'8.6M'},
+				                                            {code:'7.6M', value:'7.6M'},
+				                                            {code:'7.2M', value:'7.2M'},
+				                                            {code:'6.8M', value:'6.8M'},
+				                                            {code:'6.5M', value:'6.5M'},
+				                                            {code:'5.3M', value:'5.3M'},
+				                                            {code:'4.3M', value:'4.3M'},
+				                                            {code:'4.2M', value:'4.2M'},
+				                                            {code:'2.6M', value:'2.6M'}
+				                                        ]
+	        		}){}%>
+	            </div>
+		       	<div class="col-lg-4">
+		        	<%include("/eeda/component/form/inputField.html", 
+		                                                {   id:'truck_type', 
+		                                                    label:'司机', 
+		                                                    value:jobOrder.truck_type!''
+		                                                }){}%>
+		       	</div>
+		       	<div class="col-lg-4">
+	           		<%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'volume', 
+	                                                    label:'联系电话',	                                                    
+	                                                    value:jobOrder.volume!order.volume!'',
+	                                                    placeholder:'请输入数字'
+	                                                }){}%>
+	           	</div>
+	       	</div><br><br>
+	       	
+	       	<div class="row"><br/>
+		        <div class="col-lg-4">
+     				<%include("/eeda/component/form/inputPartyField.html", 
+                   		{   id:'', 
+                        	label:'送货公司', 
+                        	type:'booking_agent',
+                        	value:''
+                    	}){}%>
+                </div>
+	        	<div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'pickup_addr', 
+	                                                    label:'提货地', 	                                                   
+	                                                    value:jobOrder.take_address!order.pickup_addr!''
+	                                                }){}%>
+	        	</div>
+	        	<div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'pickup_addr', 
+	                                                    label:'目的地', 	                                                   
+	                                                    value:jobOrder.take_address!order.pickup_addr!''
+	                                                }){}%>
+	        	</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-lg-4">
+		        	<%include("/eeda/component/form/dateInputField.html",  
+		                                                {   id:'order_export_date', 
+		                                                    label:'预计送货时间', 
+		                                                    value:jobOrder.order_export_date!order.order_export_date!''
+		                                                }){}%>
+				</div>
+				<div class="col-lg-4">
+                	<%include("/eeda/component/form/inputField.html", 
+                                                {   id:'creator_name', 
+                                                    label:'收货人', 
+                                                    value:user.c_name!''
+                                                }){}%>
+                </div>
+                <div class="col-lg-4">
+	           		<%include("/eeda/component/form/inputField.html", 
+	                                                {   id:'volume', 
+	                                                    label:'联系电话',	                                                    
+	                                                    value:jobOrder.volume!order.volume!'',
+	                                                    placeholder:'请输入数字'
+	                                                }){}%>
+	           	</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-lg-4">
+	            	<%include("/eeda/component/form/selectField.html",  
+	                                                {   id:'truck_type', 
+	                                                    label:'车型', 
+	                                                    value:jobOrder.truck_type!order.truck_type!,
+				                                        value_list:[
+				                                            {code:'40HQ', value:'40HQ'},
+				                                            {code:'40GP', value:'40GP'}, 
+				                                            {code:'20GP', value:'20GP'},
+				                                            {code:'40T', value:'40T'},
+				                                            {code:'20T', value:'20T'},
+				                                            {code:'10T', value:'10T'},
+				                                            {code:'8T', value:'8T'},
+				                                            {code:'5T', value:'5T'},
+				                                            {code:'3T', value:'3T'},
+				                                            {code:'1.5T', value:'1.5T'},
+				                                            {code:'21M', value:'21M'},
+				                                            {code:'18.5M', value:'18.5M'},
+				                                            {code:'18.0M', value:'18.0M'},
+				                                            {code:'17.8M', value:'17.8M'},
+				                                            {code:'17.5M', value:'17.5M'},
+				                                            {code:'16.0M', value:'16.0M'},
+				                                            {code:'15.8M', value:'15.8M'},
+				                                            {code:'14.5M', value:'14.5M'},
+				                                            {code:'13.5M', value:'13.5M'},
+				                                            {code:'13.0M', value:'13.0M'},
+				                                            {code:'12.5M', value:'12.5M'},
+				                                            {code:'9.6M', value:'9.6M'},
+				                                            {code:'8.6M', value:'8.6M'},
+				                                            {code:'7.6M', value:'7.6M'},
+				                                            {code:'7.2M', value:'7.2M'},
+				                                            {code:'6.8M', value:'6.8M'},
+				                                            {code:'6.5M', value:'6.5M'},
+				                                            {code:'5.3M', value:'5.3M'},
+				                                            {code:'4.3M', value:'4.3M'},
+				                                            {code:'4.2M', value:'4.2M'},
+				                                            {code:'2.6M', value:'2.6M'}
+				                                        ]
+	        		}){}%>
+	            </div>
+		       	<div class="col-lg-4">
+		        	<%include("/eeda/component/form/inputField.html", 
+		                                                {   id:'truck_driver', 
+		                                                    label:'司机', 
+		                                                    value:jobOrder.truck_type!''
+		                                                }){}%>
+		       	</div>
+		       	<div class="col-lg-4">
+		        	<%include("/eeda/component/form/inputField.html", 
+		                                                {   id:'truck_type', 
+		                                                    label:'联系电话', 
+		                                                    value:jobOrder.truck_type!''
+		                                                }){}%>
+		       	</div>
+	       	</div>
+        </div>
+        </div>
+     </div><br><br>
+     
+     <div class="row simple_search_div">
+        <div class="panel-body">
+        	<strong>报关信息</strong>
+        	<div style="margin-left:25px;">
+        	<div class="row"><br/>
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", 
+						{   id:'hk_customs_broker', 
+							label:'报关公司', 
+							value:hkCustom.customs_broker!''
+						}){}%>
+				</div>
+				
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", 
+						{   id:'hk_custom_order_no', 
+						 	label:'报关单号', 
+							value:hkCustom.custom_order_no!''
+						}){}%>
+				</div>
+				<div class="col-lg-4">
+		        	<%include("/eeda/component/form/dateInputField.html",  
+		            	{   id:'order_export_date', 
+		                	label:'报关时间', 
+		                	value:jobOrder.order_export_date!order.order_export_date!''
+		                }){}%>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-lg-4">
+		            <button id="singleSearchBtn" class="btn btn_grey" type="button">添加报关申请单</button>
+	            </div>
+				<div class="col-lg-4">
+	            	<%include("/eeda/component/form/selectField.html",  
+	                                                {   id:'type', 
+	                                                    label:'报关状态', 
+	                                                    value:jobOrder.type!order.type!,
+				                                        value_list:[
+				                                            {code:'新建', value:'新建'},
+				                                            {code:'审核', value:'审核'}, 
+				                                            {code:'出口散货', value:'出口散货'},
+				                                            {code:'进口散货', value:'进口散货'}
+				                                           
+				                                        ]
+	        		}){}%>
+	            </div>
+	            <div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", 
+						{   id:'hk_custom_order_no', 
+						 	label:'异常', 
+							value:hkCustom.custom_order_no!''
+						}){}%>
+	            </div>
+			</div>
+			</div>
+        </div>
+     </div><br>
+     
+    <div class="row simple_search_div">
+              <div class="button-bar">
+                        <a id='saveBtn' class="btn btn_green" href="#">保存</a>
+                        <button id='submitBtn' class="btn btn_green" href="#">提交</button>
+
+                        <a class="btn btn_white" href="/bookOrder">返回</a>
+                        <a class="btn btn_green" href="/bookOrder/create">创建新booking</a>
+              </div><br>
+     </div>
+</div>
+
+
+<%}%>
+<%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
+
+<div class="blockUI" style="display:none"></div>
+<div class="blockUI blockOverlay" style="z-index: 1000; border: none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(0, 0, 0); opacity: 0.6; cursor: wait; position: fixed;"></div>
+<div class="blockUI blockMsg blockPage" style="z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; color: rgb(0, 0, 0); border: 3px solid rgb(170, 170, 170); background-color: rgb(255, 255, 255); cursor: wait;"><h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"></h4></div>
+
+<script>
+    var order_no = '${order.order_no!'订单编辑'}'; 
+    var itemOrder = {};
+</script>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/oms/bookOrder/edit']);
+        requirejs(['app/oms/bookOrder/edit_doc_table','app/oms/bookOrder/edit_file_upload']); 
+    });
+
+</script>
