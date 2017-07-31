@@ -50,8 +50,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				{ "data": "PART_NAME", "class":"part_name", "width": "320px"}, 
 				{ "data": "QUANTITY", "width": "50px"},
 				{ "data": "SHELVES", "width": "80px"},
-				{ "data": "RETURN_FLAG", "width": "80px"},
-				{ "data": "MOVE_FLAG", "width": "80px"}, 
 				{ "data": "CREATE_TIME", "width": "180px"},
 				{ "data": "CREATOR_NAME", "width": "80px"},
                 { "data": "QR_CODE", "width": "580px"}, 
@@ -146,8 +144,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				{ "data": "PART_NAME", "width": "320px"}, 
 				{ "data": "QUANTITY", "width": "50px"},
 				{ "data": "SHELVES", "width": "80px"},
-				{ "data": "RETURN_FLAG", "width": "80px"},
-				{ "data": "MOVE_FLAG", "width": "80px"}, 
 				{ "data": "CREATE_TIME", "width": "120px"},
 				{ "data": "CREATOR_NAME", "width": "80px"},
                 { "data": "QR_CODE", "width": "480px"}, 
@@ -183,8 +179,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				{ "data": "PART_NAME", "width": "320px"}, 
 				{ "data": "QUANTITY", "width": "50px"},
 				{ "data": "SHELVES", "width": "80px"},
-				{ "data": "RETURN_FLAG", "width": "80px"},
-				{ "data": "MOVE_FLAG", "width": "80px"}, 
 				{ "data": "CREATE_TIME", "width": "120px"},
 				{ "data": "CREATOR_NAME", "width": "80px"},
                 { "data": "QR_CODE", "width": "480px"}, 
@@ -225,7 +219,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var url = "/gateIn/getTotalQuantity";
         	$.post(url,{error_flag:"N",jsonStr:JSON.stringify(itemJson)},function(data){
         		if(data){
-                	$('#totalPiece').html(data.TOTALPIECE);
+                	$('#totalPiece').html(eeda.formatNum(data.TOTALPIECE));
         		}
         	});
         };

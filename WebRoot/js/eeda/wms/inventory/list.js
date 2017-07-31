@@ -153,6 +153,9 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
 	                window.open(data);
 	        });
 	    });
+        
+        var totalK = $('#totalLabel').text();
+        $('#totalLabel').text(eeda.formatNum(totalK));
 
 	});
 });

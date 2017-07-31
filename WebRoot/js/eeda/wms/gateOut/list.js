@@ -179,7 +179,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var url = "/gateOut/getTotalQuantity";
         	$.post(url,{error_flag:"N",jsonStr:JSON.stringify(itemJson)},function(data){
         		if(data){
-                	$('#totalPiece').html(data.TOTALPIECE);
+                	$('#totalPiece').html(eeda.formatNum(data.TOTALPIECE));
         		}
         	});
         };
