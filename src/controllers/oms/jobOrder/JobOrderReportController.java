@@ -256,11 +256,11 @@ public class JobOrderReportController extends Controller {
 			id = r.getLong("id").toString();
 		}
 		String fileName = "";
-//		if("so_no".equals(noType)){
-//			 fileName = "/report/jobOrder/cabinetTruckOrder.jasper";
-//		}else if("mbl_no".equals(noType)){
+		if("so_no".equals(noType)){
 			 fileName = "/report/jobOrder/cabinetTruckOrder.jasper";
-//		}
+		}else if("mbl_no".equals(noType)){
+			 fileName = "/report/jobOrder/cabinetTruckOrder.jasper";
+		}
 		
 		String outFileName = "/download/工作单陆运柜货派车单"+item_id+",";
 		HashMap<String, Object> hm = new HashMap<String, Object>();

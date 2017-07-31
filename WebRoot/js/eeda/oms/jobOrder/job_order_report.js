@@ -671,10 +671,27 @@ $(document).ready(function() {
 	
 	//生成陆运的柜货派车单PDF
 	$('#cabinet_truck').click(function(){
+		$("#generate_show").text("生成柜货派车单PDF详情");
+		$("#printCabinetTruck1").hide();
+		$("#printCabinetTruck").show();
+		type();
+	});
+	//生成陆运的柜货派车单MBL
+	$('#test_truck').click(function(){
 //		var arrStr = $('#ocean_HBLshipper_info').val();
 //		var arry = arrStr.split("\n");
 //		$('#truck_head_attn').val(arry[1]);
 //        $('#truck_head_customer_tel').val(arry[2]);
+		$("#generate_show").text("生成柜货派车单MBL详情");
+		$("#printCabinetTruck").hide();
+		$("#printCabinetTruck1").show();
+		type();
+	});
+	var type = function(){
+//		var arrStr = $('#ocean_HBLshipper_info').val();
+//		var arry = arrStr.split("\n");
+//		$('#truck_head_attn').val(arry[1]);
+//      $('#truck_head_customer_tel').val(arry[2]);
         var cabinet_arrive_date=$('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=ETA]').val();
         var TRANSPORT_COMPANY = $('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=TRANSPORT_COMPANY]').val();
         var CONSIGNEE_input = $('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=CONSIGNEE_input]').val();
@@ -705,7 +722,7 @@ $(document).ready(function() {
 			$('#truck_head_email').val(loginUserEmail);
 		}
 		$('#truck_head_date').val(eeda.getDate());
-	});
+	}
 	
 	//日期格式化 解析网址：http://www.cnblogs.com/xuyangblog/p/4878043.html
 	var formatDate= function (now,mask)
@@ -759,6 +776,14 @@ $(document).ready(function() {
 	
 
     $('#printCabinetTruck').click(function(){
+    	var noType = $('#cabinet_truck_detail input[name="so_no"]').val();
+    	pdf_btn(noType);
+    });
+    $('#printCabinetTruck1').click(function(){
+    	var noType = $('#cabinet_truck_detail input[name="mbl_no"]').val();
+    	pdf_btn(noType);
+    });
+    var pdf_btn = function(noType){
     	var truckHead = {}
     	var form = $('#truckHeadForm input,#truckHeadForm textarea');
     	for(var i = 0; i < form.length; i++){
@@ -772,7 +797,6 @@ $(document).ready(function() {
     			truckHead[name] = value;
     		}
     	}
-    	var noType = $('#cabinet_truck_detail input[type="radio"]:checked').val();
     	var k = 0;
 		$('#land_table input[type="checkbox"]:checked').each(function(){ //land_shipment_table
 				truckHead.item_id = $(this).parent().parent().attr('id');
@@ -790,9 +814,7 @@ $(document).ready(function() {
 			    	$.scojs_message('生成柜货派车单PDF失败', $.scojs_message.TYPE_ERROR);
 			  }); 
 		});
-		
-    });
-    	
+    }
     
 //    	
 //		$.post('/jobOrderReport/printCabinetTruck', {params:JSON.stringify(truckHead)}, function(data){

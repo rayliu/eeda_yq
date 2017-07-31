@@ -5,13 +5,17 @@
                         <div class="form-group">
                             <div class="col-lg-12" style="margin:15px 0px;">
                                 <a href='#' data-toggle="modal" data-target="#partyModal" class="btn btn_green">添加收发货人</a>
-                                <button class="btn btn_green" id="truckOrderPDF" disabled>生成散货派车单PDF</button> 
+                                	<button class="btn btn_green" id="truckOrderPDF" disabled>生成散货派车单PDF</button> 
                                 <a href='#' data-toggle="modal" data-target="#cabinet_truck_detail">
                                     <button class="btn btn_green" id="cabinet_truck" disabled>生成柜货派车单PDF</button>
                                 </a>
-                                <a data-target='#land_printDebit' data-toggle='modal'>
-                                <button class="btn btn_green btn-xs" id="land_print_debit_note" disabled>Invoice(分单)PDF</button>
+                                <a href="#" data-toggle="modal" data-target="#cabinet_truck_detail">
+                                	<button class="btn btn_green" id="test_truck" disabled>生成柜货派车单MBL</button>
                                 </a>
+                                <a data-target='#land_printDebit' data-toggle='modal'>
+                                	<button class="btn btn_green btn-xs" id="land_print_debit_note" disabled>Invoice(分单)PDF</button>
+                                </a>
+                                
                                 <button class="btn btn_green btn-xs" id="land_sendTruck" >已完成派车</button>
                                  <input id="land_sendTruckHide" type="hidden" value="${order.send_truckorder_flag!''}">
                                 
@@ -157,13 +161,13 @@
     <div class="modal fade" id="cabinet_truck_detail">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">生成柜货派车单PDF详情
+          <div class="modal-header"><span id="generate_show"></span><!-- 生成柜货派车单PDF详情 -->
           		<div align="center" style = "margin-top:-17px;display:none" >          
                      <label class="radio-inline">
-                         <input type="radio" name="noType" value="so_no" checked>显示so号
+                         <input type="radio" name="so_no" value="so_no">显示so号
                      </label><nbsp>
                      <label class="radio-inline">
-                         <input type="radio" name="noType"  value="mbl_no" >显示MBL号
+                         <input type="radio" name="mbl_no"  value="mbl_no">显示MBL号
                      </label>
 		        </div>
           </div>
@@ -272,10 +276,12 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button id="printCabinetTruck" class="btn btn-primary" >生成柜货派车单PDF</button>
+                <button id="printCabinetTruck" class="btn btn-primary" style="display:none;">生成柜货派车单PDF</button>
+                <button id="printCabinetTruck1" class="btn btn-primary" style="display:none;">生成柜货派车单MBL</button>
                 <button class="btn  btn-default" data-dismiss="modal" >返回</button>
             </div>
         </div>
+        
       </div>
     </div>
     
