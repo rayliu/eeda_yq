@@ -434,8 +434,6 @@ $(document).ready(function() {
 	        var checkValue=$(this).val();
 	        if(supplier_checkArray[i]==checkValue){
 	        	this.checked = true;
-
-                showServiceTab(checkValue);
 	        }
 	    })
     }
@@ -447,14 +445,13 @@ $(document).ready(function() {
 	        var checkValue=$(this).val();
 	        if(customer_checkArray[i]==checkValue){
 	        	this.checked = true;
-
-                showServiceTab(checkValue);
 	        }
 	    })
     }
     
+    //创建工作单时，默认选中
     if($('#order_id').val()==''){
-    	$('#customer_contract_type input[type="checkbox"], #supplier_contract_type input[type="checkbox"]').attr('checked',true);
+    	$('#supplier_contract_type input[type="checkbox"]').attr('checked',true);
     }
     
     
