@@ -1,5 +1,6 @@
 package controllers.webadmin.biz;
 
+import freemarker.template.utility.StringUtil;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
@@ -36,19 +37,31 @@ public class ReminderController extends Controller {
 		render(getRequest().getRequestURI()+"/list.html");
 	}
 	
-	@Before(EedaMenuInterceptor.class)
-	 public void edit(){
-	        String id = getPara("id");
-//	      String title = getPara("edit_radioTitle");
-//	      String content = getPara("edit_radioContent");
-//	      Record r= Db.findById("msg_board", id);
-//	      r.set("title", title);
-//	      r.set("content", content);
-//	      r.set("update_stamp", new Date());
-//	      r.set("updator", LoginUserController.getLoginUserId(this));
-//	      Db.update("msg_board", r);
-	        render(getRequest().getRequestURI()+"/edit.html");
-	    }
+
+	public void edit(){
+        String id = getPara("id");
+        String sql="select * from user_login where id = "+id;
+        Record re=Db.findFirst(sql);
+        setAttr("user",re);
+        render(getRequest().getRequestURI()+".html");
+    }
+	
+	@Before(Tx.class)
+	public void delete(){
+		String id = getPara("id");
+		String sql = "delete from user_login where id = "+id;
+		Db.update(sql);
+		renderJson(true);
+	}
+	
+	@Before(Tx.class)
+	public void pass(){
+		String id = getPara("id");
+		String status = getPara("status");
+		String sql="update user_login set pass = '"+status+"' where id = "+id;
+		Db.update(sql);
+		renderJson(true);
+	}
 	 
     @Before(Tx.class)
    	public void save() throws Exception {

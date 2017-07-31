@@ -3,99 +3,75 @@
     <div class="pageheader notab overhide">
       <div class="bd-detail">
       <h4>商家详细</h4>
-      <p class="bd"><span>珠海维多利亚</span> <span>珠海</span>  <span>影楼</span>  <span>公司注册</span>  <span>钻石商家</span> <span>剩余30天</span><input type="button" value="删除商家" class="red-deletbtn">
+      <input type="hidden" value="${user.id!''}" id="user_id"/>
+      <p class="bd"><span>${user.c_name!''}</span> <span>暂无</span>  <span>${user.tarde_type}</span>  <span>${user.user_type!''}</span>  <span>钻石商家</span> <span>剩余30天</span><input type="button" value="删除商家" id="delButton"  class="red-deletbtn">
       </p>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="userdetailtable bdtable mt10">
         <tbody><tr>
           <td>账号资料</td>
-          <td><span>用户名：tlewxc@gmail.com</span>  <span>负责人：周通</span> <span>联系电话</span></td>
+          <td><span>用户名：${user.user_name!''}</span>  <span>负责人：${user.contact!''}</span> <span>联系电话:${user.telephone!''}</span></td>
         </tr>
         <tr>
           <td rowspan="3">商铺资料</td>
-          <td><span>电话：22331098</span> <span>QQ：2363032542</span>    <span> 注册时间：2012-1-1</span> </td>
+          <td><span>电话：${user.phone!''}</span> <span>QQ：${user.qq!''}</span>    <span> 注册时间：${user.create_time!''}</span> </td>
         </tr>
         <tr>
-          <td><span>地址：广东珠海拱北是烛城中以顺困2-384号</span></td>
+          <td><span>地址：${user.address!''}</span></td>
         </tr>
         <tr>
-          <td><span>邀请码： xhkdu</span>邀请人数（影响力）:100<span></span> <span>密码：********</span></td>
+          <td><span>邀请码： ${user.invitation_code!''}</span>邀请人数（影响力）:100<span></span> <span>密码：********</span></td>
         </tr>
         <tr>
           <td>公司LOGO</td>
-          <td><img src="./business-detail_files/cplogo.png"></td>
+          <td><img src="/upload/${user.logo!''}" style="width:300px;"></td>
         </tr>
         <tr>
           <td>营业执照/身份证</td>
-          <td><img src="./business-detail_files/yyzz.png"></td>
+          <td><img src="/upload/${user.company_pic!''}"  style="width:300px;"></td>
         </tr>
         <tr>
           <td>公司简介</td>
-          <td><textarea style="width:200px; height:60px; border:1px solid #ccc;" class="textin"></textarea></td>
+          <td><textarea style="width:200px; height:60px; border:1px solid #ccc;" class="textin">${user.about!''}</textarea></td>
         </tr>
       </tbody></table>
       <div class="mt10">
       <h4>在线支付记录</h4>
-        <table cellspacing="0" cellpadding="0" border="0" class="stdtable mt10">
-                    <colgroup>
-                        <col class="con0">
-                        <col class="con1">
-                        <col class="con0">
-                        <col class="con1">
-                        <col class="con0">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th class="head0">序 号</th>
-                            <th class="head1">购买时间</th>
-                            <th class="head0">订单编号</th>
-                            <th class="head1">产品分类</th>
-                            <th class="head0">投放时间</th>
-                            <th class="head1">天数</th>
-                            <th class="head0">价格</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>01</td>
-                            <td>2014-1-1</td>
-                            <td>21312323</td>
-                            <td>促</td>
-                            <td>2014-1-1 至  2014-2-1</td>
-                            <td>30天</td>
-                            <td>30元</td>
-                        </tr>
-                        <tr>
-                            <td>02</td>
-                            <td>2014-1-1</td>
-                            <td>123213213</td>
-                            <td>钻石商家</td>
-                            <td>2014-1-1 至  2014-2-1</td>
-                            <td>30天</td>
-                            <td>30元</td>
-                        </tr>
-                    </tbody>
-          </table>
+       <%include("/eeda/component/form/detailTable.html", 
+          {
+              id:'eeda_table', 
+              headers:['序号', '购买时间', '订单编号','产品分类','投放时间','天数','价格']
+          }){} %> 
       </div>
       </div>
       <div class="mt10 bdgray">
-        <input type="button" class="modifibtn" value="商品管理" onclick="window.location.href=&#39;business-product-list.html&#39;">  <input type="button" class="modifibtn" value="视频管理" onclick="window.location.href=&#39;business-vedio-list.html&#39;"> <input class="modifibtn" type="button" value="案例管理" onclick="window.location.href=&#39;business-case-list.html&#39;">
+        <a  class=" modifibtn" href="/WebAdmin/tao_manage/product">商品管理</a>  
+        <a  class="modifibtn" value="视频管理" href="/WebAdmin/tao_manage/video">视频管理</a> 
+        <a class="modifibtn" href="/WebAdmin/tao_manage/case">案例管理</a>
       </div>
       
       <div class="mt10 bdgray">
       <h4>升级钻石商家</h4>
-      <p class="bd"><span>状态：钻石商家</span>  <span>剩余30天  至  2016-1-1</span></p>
-      <div><span>设置结束时间</span> <select><option>2015年</option></select>&nbsp;<select><option>5月</option></select>&nbsp;<select><option>10</option></select><input type="button" class="modifibtn" style="width:130px; margin-left:10px;" value="升级/延期钻石商家"></div>
+      <p class="bd"><span>状态：<%if(dimond.whether!''=='Y') {%>钻石会员<%}else {%>非钻石会员<% }%></span>  <span>剩余${dimond.leave_days!'0'}天</span></p>
+      <div><span>设置结束时间</span><input type='date' last_date="${dimond.last_date!''}" value="${dimond.last_date!''}" id="new_date"/><input type="button" class="modifibtn" style="width:130px; margin-left:10px;" value="升级/延期钻石商家" id="update_dimond"></div>
       </div>
       
       <div class="mt10 bdgray">
       <h4>”促“广告服务</h4>
-      <p class="bd"><span>状态：钻石商家</span>  <span>剩余5天  至  2016-1-1</span></p>
-      <div><span>设置结束时间</span> <select><option>2015年</option></select>&nbsp;<select><option>5月</option></select>&nbsp;<select><option>10</option></select><input type="button" class="modifibtn" style="width:130px; margin-left:10px;" value="开启/延期服务"></div>
+      <p class="bd"><span>状态：<%if(dimond.whether!''=='Y') {%>钻石会员<%}else {%>非钻石会员<% }%></span>  <span>剩余${cu.LEAVE_DAYS!'0'}天  至${cu.end_date!''}</span></p>
+      <div><span>设置结束时间</span> <input type="date" last_date="${cu.end_date!''}"  value="${cu.end_date!''}" id='cu_date'/><input type="button" class="modifibtn" style="width:130px; margin-left:10px;" value="开启/延期服务" id='update_cu'></div>
       </div>
       
       <div class="mt10 bdgray">
-      <h4>”惠“ 广告</h4>
-      <div class="bd"><span>状态：开启</span> <input type="button" class="modifibtn" value="开启">  <input type="button" class="modifibtn" value="关闭"> <input class="modifibtn" type="button" value="禁用"></div>
+	      <h4>”惠“ 广告</h4>
+	      <input type="hidden" value="${hui.IS_ACTIVE!''}" id="hui_status"/>
+	      <div class="bd"><span>状态：开启</span> 
+		      <input id="openButton" status="Y" type="button"
+		       <% if(hui.IS_ACTIVE!''=='Y'){%>disabled="disabled"<%}%> class="modifibtn" value="开启">  
+		      <input type="button" id="closeButton" status="N"
+		      <% if(hui.IS_ACTIVE!''=='N'){%>disabled="disabled"<%}%> class="modifibtn"  value="关闭">
+		      <input id="closeButton" status="B" type="button" 
+		      <% if(hui.IS_ACTIVE!''=='B'){%>disabled="disabled"<%}%> class="modifibtn" value="禁用">
+	      </div>
       </div>
       
     </div>
@@ -104,6 +80,6 @@
     
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-         requirejs(['/js/BusinessAdmin/case/list.js']);
+         requirejs(['/js/WebAdmin/biz/edit.js']);
     });
 </script>

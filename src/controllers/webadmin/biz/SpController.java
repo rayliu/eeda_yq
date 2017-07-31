@@ -37,18 +37,101 @@ public class SpController extends Controller {
 	}
 	
 	@Before(EedaMenuInterceptor.class)
-	 public void edit(){
-	        String id = getPara("id");
-//	      String title = getPara("edit_radioTitle");
-//	      String content = getPara("edit_radioContent");
-//	      Record r= Db.findById("msg_board", id);
-//	      r.set("title", title);
-//	      r.set("content", content);
-//	      r.set("update_stamp", new Date());
-//	      r.set("updator", LoginUserController.getLoginUserId(this));
-//	      Db.update("msg_board", r);
-	        render(getRequest().getRequestURI()+"/edit.html");
+	 public void edit(){ 
+		String id = getPara("id");
+        String sql_user = "select * from user_login where id = "+id;
+        String sql_dimond = "select if(DATEDIFF(max(end_date),now())>0,'Y','N') whether,DATEDIFF(max(end_date),"
+        					+ "now()) leave_days,max(end_date) last_date from wc_ad_dimond where status = '已开通' and creator = "+id;
+        String sql_cu =	"SELECT if(DATEDIFF(max(end_date),now())>0,cast(DATEDIFF(max(end_date),now()) as char),'0') leave_days,max(end_date) end_date FROM `wc_ad_cu` where status='开启' and creator ="+id;
+        String sql_hui="select * from wc_ad_hui where creator = "+id;
+        Record re_user = Db.findFirst(sql_user);
+        Record re_dimond = Db.findFirst(sql_dimond);
+        Record re_cu = Db.findFirst(sql_cu);
+        Record re_hui = Db.findFirst(sql_hui);
+        setAttr("user",re_user);
+        setAttr("dimond",re_dimond);
+        setAttr("cu",re_cu);
+        setAttr("hui",re_hui);
+        render(getRequest().getRequestURI()+".html");
 	    }
+	
+	public void editList(){
+		String id = getPara("id");
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+        	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+    	String sql=	"SELECT id,'cu' type,"
+    			+" create_time,order_no, cast(CONCAT(begin_date, '-', end_date) as char) duringday,"
+    			+" if(DATEDIFF(end_date,begin_date)<0,'over time',cast(DATEDIFF(end_date,begin_date) as char)) total_day, price "
+    			+" FROM  wc_ad_cu  WHERE id = "+id
+    			+" UNION ALL"
+    			+" SELECT id, 'dimond' type, create_time, order_no, cast(CONCAT(begin_date, '-', end_date) as char) duringday,"
+    			+" if(DATEDIFF(end_date,begin_date)<0,'over time',cast(DATEDIFF(end_date,begin_date) as char)) total_day, total_price  price"
+    			+" FROM wc_ad_dimond WHERE id = "+ id;
+    	String sqlTotal = "select count(1) total from ("+sql+ ") B";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        List<Record> orderList = Db.find(sql+ " order by create_time desc " +sLimit);
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map);
+	}
+	
+	@Before(Tx.class)
+	public void updateDimond(){
+		String id = getPara("id");
+		String endDate = getPara("end_date");
+		String beginDate = (String) (getPara("begin_date").equals("begin_date")?new Date():getPara("begin_date"));
+		Record re = new Record();
+		re.set("begin_date", beginDate);
+		re.set("end_date", endDate);
+		re.set("status", "已开通");
+		re.set("creator", id);
+		re.set("remark", "管理员续费");
+		re.set("create_time", new Date());
+		re.set("total_price", 0);
+		Db.save("wc_ad_dimond", re);
+		renderJson(true);
+	}
+	
+	@Before(Tx.class)
+	public void updateCu(){
+		String id = getPara("id");
+		String endDate = getPara("end_date");
+		String beginDate = getPara("begin_date");
+		Record re = new Record();
+		re.set("begin_date", beginDate);
+		re.set("end_date", endDate);
+		re.set("status", "开启");
+		re.set("creator", id);
+		re.set("remark", "管理员续费");
+		re.set("create_time", new Date());
+		re.set("price", 0);
+		Db.save("wc_ad_cu", re);
+		renderJson(true);
+	}
+	
+    @Before(Tx.class)
+	public void updateStatus(){
+    	String status=getPara("status");
+    	String id=getPara("id");
+    	String sql="update wc_ad_hui set is_active='"+status+"' where creator="+id;
+    	Db.update(sql);
+    	renderJson(true);
+    }
+	
+	@Before(Tx.class)
+	public void delete(){
+		String id = getPara("id");
+		String sql = "delete from user_login where id = "+id;
+		Db.update(sql);
+		renderJson(true);
+	}
 	 
     @Before(Tx.class)
    	public void save() throws Exception {
@@ -105,10 +188,7 @@ public class SpController extends Controller {
         map.put("recordsFiltered", rec.getLong("total"));
         map.put("data", orderList);
         renderJson(map); 
-    	
     }
-    
-   
 
     public void seeMsgBoardDetail(){
     	String id = getPara("id");

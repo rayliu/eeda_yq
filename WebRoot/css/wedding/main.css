@@ -82,7 +82,8 @@
     color: #ffffff;
 }
 
-.modifibtn :disabled{
-	{ border:1px solid #CCC; background:#f7f7f7; color:#333; cursor:pointer; width:65px; height:24px; }
+.modifibtn:disabled{
+	border:1px solid #CCC; background:#f7f7f7; color:#9b9b9b; cursor:pointer; width:65px; height:24px; 
 }
+
 
