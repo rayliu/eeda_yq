@@ -85,6 +85,8 @@ public class AdController extends Controller {
 		String status = "新建";
 		
 		Record order = new Record();
+		DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
+		order.set("order_no", format.format(new Date()));
 		order.set("years", years);
 		order.set("total_price", total_price);
 		order.set("status", status);
