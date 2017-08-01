@@ -52,6 +52,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             				$.scojs_message("已拒绝",$.scojs_message.TYPE_OK);
             			}
             			refleshTable();
+            			checkMessage();
             		}else{
             			$.scojs.message("审批失败",$.scojs_message.TYPE_OK);
             		}

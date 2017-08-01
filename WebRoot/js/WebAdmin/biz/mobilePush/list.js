@@ -64,6 +64,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
     	  		if(data){
 	    			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
 	    			refleshTable();
+	    			checkMessage();
 	    		}else{
 	    			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
 	    		}

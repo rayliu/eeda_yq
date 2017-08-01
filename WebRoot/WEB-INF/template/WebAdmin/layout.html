@@ -45,8 +45,8 @@
 <script type="text/javascript" src="/js/lib/jquery-ui-1.11.4/jquery-ui.min.js"></script>
 <script src="http://static.runoob.com/assets/jquery-validation-1.14.0/lib/jquery.js"></script>
 <script>
-$().ready(function(){
-	 $.post('/WebAdmin/getLoginUser',function(data){
+function checkMessage(){
+	$.post('/WebAdmin/getLoginUser',function(data){
 		if(data){
 			var banner = data.banner;
 			var mobile = data.mobile;
@@ -64,6 +64,10 @@ $().ready(function(){
 			}
 		}
 	});
+}
+$().ready(function(){
+
+	 checkMessage();
 });
 </script>
 
