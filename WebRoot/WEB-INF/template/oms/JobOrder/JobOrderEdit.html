@@ -32,7 +32,9 @@
 
         <div style="margin-left:12px;margin-right:12px">
             <form id="orderForm" class="form-group">
-            	<div class="row small_head"><div class="font_style">Work Order 工作单</div></div>
+            	<div class="row small_head first_element_to_target">
+                    <div class="font_style">Work Order 工作单</div>
+                </div>
                 <div class="row simple_small_title_div">
                 	<div class="col-lg-12">
                         <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
@@ -80,7 +82,7 @@
                             
                             <div class="col-lg-8">
                                 <div class="form-group" id="transport_type">
-                                    <label class="search-label">服务项目</label>
+                                    <label class="search-label second_element_to_target">服务项目</label>
                                     <label class="checkbox-inline">
                                         <input type="checkbox" value='ocean'>海运
                                     </label>
@@ -201,7 +203,7 @@
                                     }){}%>
                             </div><!-- /.col-lg-4 -->
                             <div class="col-lg-4">
-                                <div class="form-group" id="supplier_contract_type">
+                                <div class="form-group third_element_to_target" id="supplier_contract_type">
                                     <label class="search-label">供应商合同费用带出</label>
                                     <label class="checkbox-inline">
                                         <input type="checkbox" value='ocean'>海运
@@ -337,7 +339,7 @@
                 
             
             <div class="simple_order_list_div">
-                <ul id="orderTabs" class="nav nav-tabs">
+                <ul id="orderTabs" class="nav nav-tabs fourth_element_to_target">
                     <li>
                         <a id='oceanDetailTab' href="#oceanDetail" data-toggle="tab" style="display: none;">海运信息</a>
                     </li>
@@ -722,6 +724,8 @@
 <%include("/eeda/component/jsTemplate/tableInputFinItemField.js",{}){} %>
 
 <%include("/eeda/component/jsTemplate/tableInputAddressField.js",{}){} %>
+
+<%include("/oms/JobOrder/guide.html",{}){} %>
 
 
 
