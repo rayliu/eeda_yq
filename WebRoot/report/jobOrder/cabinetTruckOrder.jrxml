@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cabinetTruckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="192"/>
+	<property name="ireport.y" value="42"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -11,8 +11,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     IFNULL(p5.company_name,p5.company_name_eng) carrier_name,o.logo_path,o.office_name,jos.*,josi.*,josh.*,IFNULL(p4.company_name,p4.company_name_eng) transport_company_name,p.company_name head_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,lo4.name hub_name,CONCAT(IFNULL(CONCAT('SO:',jos.SONO,''),''),
-IF(jos.SONO IS NOT NULL,IFNULL(CONCAT('/MBL:',jos.mbl_no),''),IFNULL(CONCAT('MBL:',jos.mbl_no),''))) bookingNo,
+     IFNULL(p5.company_name,p5.company_name_eng) carrier_name,o.logo_path,o.office_name,jos.*,josi.*,josh.*,IFNULL(p4.company_name,p4.company_name_eng) transport_company_name,p.company_name head_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,lo4.name hub_name,IFNULL(jos.SONO,'') bookingNo,
 ifnull(
 (select GROUP_CONCAT(CN_no SEPARATOR '  ;  ') from
 (SELECT
@@ -388,63 +387,63 @@ where joli.id=$P{item_id}]]>
 				<text><![CDATA[订舱号：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="55" y="365" width="97" height="20" uuid="ccc77593-ac6d-43b0-987f-b6737e515234"/>
+				<reportElement x="55" y="336" width="97" height="20" uuid="ccc77593-ac6d-43b0-987f-b6737e515234"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[香港收货人：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="54" y="332" width="98" height="20" uuid="aad7df20-6de7-4418-b4ac-d51894e80d6d"/>
+				<reportElement x="54" y="303" width="98" height="20" uuid="aad7df20-6de7-4418-b4ac-d51894e80d6d"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[头程船公司：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="55" y="434" width="97" height="20" uuid="e36ce9a9-8a19-4d03-9a25-837838b9dfdf"/>
+				<reportElement x="55" y="415" width="97" height="20" uuid="e36ce9a9-8a19-4d03-9a25-837838b9dfdf"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[预订船名/航次：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="56" y="495" width="94" height="20" uuid="375cae5d-8295-4a5f-b62f-65ed63d95dbd"/>
+				<reportElement x="56" y="487" width="94" height="20" uuid="375cae5d-8295-4a5f-b62f-65ed63d95dbd"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[目的港：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="56" y="561" width="45" height="20" uuid="3520f623-08f1-4e03-b00c-fdb7b15a6c68"/>
+				<reportElement x="56" y="554" width="45" height="20" uuid="3520f623-08f1-4e03-b00c-fdb7b15a6c68"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[截关：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="56" y="464" width="96" height="20" uuid="387b2c83-575a-4bc4-8f86-901eb5dd450f"/>
+				<reportElement x="56" y="452" width="96" height="20" uuid="387b2c83-575a-4bc4-8f86-901eb5dd450f"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[装运港：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="55" y="398" width="97" height="20" uuid="3149fc29-4d32-4485-93af-e9c1ed9b7189"/>
+				<reportElement x="55" y="369" width="97" height="20" uuid="3149fc29-4d32-4485-93af-e9c1ed9b7189"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[柜号/封条号：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="214" y="561" width="40" height="20" uuid="c0d5a88a-9cdd-4e00-823d-eb334d40f8f4"/>
+				<reportElement x="214" y="554" width="40" height="20" uuid="c0d5a88a-9cdd-4e00-823d-eb334d40f8f4"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[ETD :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="378" y="561" width="33" height="20" uuid="37052863-f17f-4a76-84c9-72c1ed58d1e7"/>
+				<reportElement x="378" y="554" width="33" height="20" uuid="37052863-f17f-4a76-84c9-72c1ed58d1e7"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -459,56 +458,56 @@ where joli.id=$P{item_id}]]>
 **************************************************************************************]]></text>
 			</staticText>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="254" y="561" width="124" height="20" uuid="8d2e8875-dde4-4bdd-8fc6-2cba0cc3a784"/>
+				<reportElement mode="Transparent" x="254" y="554" width="124" height="20" uuid="8d2e8875-dde4-4bdd-8fc6-2cba0cc3a784"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="411" y="561" width="139" height="20" uuid="bd797236-48a6-4460-a82f-6b5a057eb455"/>
+				<reportElement x="411" y="554" width="139" height="20" uuid="bd797236-48a6-4460-a82f-6b5a057eb455"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="154" y="434" width="401" height="20" uuid="41a49fc8-ddc1-4a04-9954-4f9a7653061f"/>
+				<reportElement x="154" y="415" width="401" height="20" uuid="41a49fc8-ddc1-4a04-9954-4f9a7653061f"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{Vessel_voyage}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="154" y="463" width="379" height="20" uuid="71c92c9f-2e28-48eb-ac7f-95e9cc8d01da"/>
+				<reportElement x="154" y="451" width="401" height="20" uuid="71c92c9f-2e28-48eb-ac7f-95e9cc8d01da"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="154" y="495" width="371" height="20" uuid="ab0de0b0-1e70-4000-b5b4-cd96d9c6e209"/>
+				<reportElement x="154" y="487" width="371" height="20" uuid="ab0de0b0-1e70-4000-b5b4-cd96d9c6e209"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fnd_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="100" y="561" width="114" height="20" uuid="35c7836b-05c8-4ab8-8da0-78d353fa64a0"/>
+				<reportElement x="100" y="554" width="114" height="20" uuid="35c7836b-05c8-4ab8-8da0-78d353fa64a0"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{closing_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="153" y="332" width="402" height="20" uuid="22b56d9b-b74f-4a25-b012-2d9866d57479"/>
+				<reportElement x="153" y="303" width="402" height="20" uuid="22b56d9b-b74f-4a25-b012-2d9866d57479"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{head_company}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="153" y="366" width="402" height="20" uuid="999354c2-1199-4102-89bf-bddc32b89bad"/>
+				<reportElement x="153" y="337" width="402" height="20" uuid="999354c2-1199-4102-89bf-bddc32b89bad"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -564,7 +563,7 @@ where joli.id=$P{item_id}]]>
 				<textFieldExpression><![CDATA[$F{head_title}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="153" y="398" width="402" height="36" uuid="ecd2ad4c-966c-4cf5-a6b5-98abea359659"/>
+				<reportElement x="153" y="369" width="402" height="36" uuid="ecd2ad4c-966c-4cf5-a6b5-98abea359659"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -592,7 +591,7 @@ where joli.id=$P{item_id}]]>
 				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
 			</image>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="28" y="595" width="522" height="39" uuid="02a98bcb-57a9-489f-a93c-0628d61cedfc"/>
+				<reportElement x="28" y="585" width="522" height="49" uuid="02a98bcb-57a9-489f-a93c-0628d61cedfc"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -627,28 +626,14 @@ where joli.id=$P{item_id}]]>
 				<textFieldExpression><![CDATA[$F{head_email}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="54" y="300" width="98" height="20" uuid="e7b42ce2-b8e2-4d0b-971a-cdd9b9e937ad"/>
-				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[船东公司：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="57" y="528" width="94" height="20" uuid="e6cf2eb5-343b-441a-bf68-8e44d6859af0"/>
+				<reportElement x="57" y="521" width="94" height="20" uuid="e6cf2eb5-343b-441a-bf68-8e44d6859af0"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[中转港：]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="152" y="300" width="402" height="20" uuid="8460f6a7-4e78-4eb5-8f80-69a51a8059a2"/>
-				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{carrier_name}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="150" y="528" width="371" height="20" uuid="08614e39-6063-4f3c-92af-812cd1e144f2"/>
+				<reportElement x="150" y="521" width="371" height="20" uuid="08614e39-6063-4f3c-92af-812cd1e144f2"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>

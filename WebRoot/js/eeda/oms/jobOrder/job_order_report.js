@@ -712,7 +712,6 @@ $(document).ready(function() {
 		}else{
 			cabinet_arrive_remark = "请安排"+format_order_export_date_date+"报关出口，吉柜于"+cabinet_arrive_date+"到"+TAKE_ADDRESS_input+",待通知收柜。";
 		}
-		
         
         $('#cabinet_arrive_remark').val(cabinet_arrive_remark);
         
