@@ -1,7 +1,6 @@
 define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], function ($, metisMenu) {
 	
 	$(document).ready(function() {
-	
 		//校验规则
 		$("#first_form").validate({
 			rules:{
@@ -11,14 +10,9 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 					remote:{
 						type:"post",
 						url:"/BusinessAdmin/register/exist",
-						dataType:"html",
+						dataType:"json",
 						dataFilter:function(data,type){
-							if(data=="true"){
-								return false;
-							}else{
-								return true;
-							}
-								
+							return data;
 						}
 					}
 				},
@@ -28,27 +22,23 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 				},
 				password:{
 					required:true,
+					minlength:6
 				},
 				passwordagain:{
 					required:true,
+					minlength:6,
 					equalTo:"#password"
 				}
 			},
 			messages:{
 				login_name:{
-					required:"请输入用户名！！！",
-					remote:"已经存在了"
+					remote:"用户名已存在"
 				},
 				phone:{
-					required:"必须填写手机号码！！",
-					isMobile:"必须是手机号!!!"
-				},
-				password:{
-					required:"请设置密码！！！"
+					isMobile:"不合法手机号码"
 				},
 				passwordagain:{
-					required:"请再次核对密码！！！",
-					equalTo:"前后密码不一致！！！！！！"
+					equalTo:"前后秘密不一致"
 				}
 			}
 		})

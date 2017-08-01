@@ -27,32 +27,35 @@ public class RegisterController extends Controller {
 	}
     
 	public void info(){
-/*		String jsonStr=getPara("jsonStr");
-		Gson gson=new Gson();
-		Map<String,String> user = gson.fromJson(jsonStr, HashMap.class);*/
-		
-		Record user=new Record();
-		String login_name=getPara("login_name");
-		String phone=getPara("phone");
-		String password=getPara("password");
+		Record user = new Record();
+		String login_name = getPara("login_name");
+		String phone = getPara("phone");
+		String password = getPara("password");
 		user.set("login_name", login_name);
 		user.set("phone", phone);
 		user.set("password", password);
 		setAttr("userInfo",user);
+		List<Record> cateList = Db.find("select * from category");
+		setAttr("cateList", cateList);
+		
+		
 		render(getRequest().getRequestURI()+"/index.html");
 	}
+	
+	
 	public void exist(){
-		String userName=getPara("login_name");
-		String sql="select * from user_login where user_name = '"+userName+"'";
-		List re=Db.find(sql);
-		System.out.println("长度是   "+re.size());
-		if(re.size()!=0){
-			renderJson(true);
-		}else{
-			renderJson(false);
+		boolean result = false;
+		String userName = getPara("login_name");
+		String sql = "select * from user_login where user_name = ?";
+		Record re = Db.findFirst(sql,userName);
+		if(re == null){
+			result = true;
 		}
 		
+		renderJson(result);
 	}
+	
+	
 	public void done(){
 		String jsonStr=getPara("jsonStr");
 		Gson gson=new Gson();

@@ -100,3 +100,8 @@
   display:none;
 }
 
+input{
+	autocomplete:off;
+	color:red;
+}
+

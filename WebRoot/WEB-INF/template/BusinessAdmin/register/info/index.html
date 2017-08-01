@@ -63,8 +63,8 @@
                             </div>
                         </dt>
                         <dd>
-                            <div class="textin">
-                                <input type="text" name="contact_1"/>
+                            <div class="">
+                                <input type="text" class="input_text" name="contact_1"/>
                             </div>
                         </dd>
                     </dl>
@@ -75,8 +75,8 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <input type="text" name="telephone_1">
+                            <div class="">
+                                <input type="text" class="input_text" name="telephone_1">
                             </div>
                         </dd>
                     </dl>
@@ -87,11 +87,14 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <input type="file" id="id_card" name="id_card" class="ehdel_upload"/>
-                                <img style="width: 200px; height: 150px;" class="shadow" src="" value="" id="img_id_card"/>
-                                <span class="red">图片为JPG格式，小于2M</span>
+                            <div class="file">
+                           		 选择图片
+                                <input type="file" id="id_card" name="id_card" />
                             </div>
+                            <span class="red">图片为JPG格式，小于2M</span>
+                            <div class="form-control" style="margin-left:100px">
+                            	<img style="width: 200px; height: 150px;" class="shadow" src="" value="" id="img_id_card"/>   
+			            	</div>
                         </dd>
                     </dl>
                     <dl>
@@ -104,52 +107,33 @@
                             <div class="textin">
                                 <div style="padding-top:5px;">
                                     <select name="trade_type_1">
-                                                                                <option value="1">影楼</option>
-                                                                                <option value="2">婚礼策划</option>
-                                                                                <option value="3">跟拍摄影</option>
-                                                                                <option value="4">跟拍摄像</option>
-                                                                                <option value="5">化妆</option>
-                                                                                <option value="6">主持</option>
-                                                                                <option value="7">花店</option>
-                                                                                <option value="8">婚品</option>
-                                                                                <option value="9">甜品</option>
-                                                                                <option value="10">租车</option>
-                                                                                <option value="11">礼服</option>
-                                                                                <option value="12">蜜月旅游</option>
-                                                                                <option value="13">烟酒</option>
-                                                                                <option value="14">珠宝</option>
-                                                                                <option value="15">酒店</option>
+                                    <% for(cate in cateList![]){%>
+                                    	<option value="${cate.id}">${cate.name}</option>
+                                    <%}%>
                                     </select>
                                 </div>
                             </div>
                         </dd>
                     </dl>
                     <dl>
-                        <dt class="fm-label">
-                            <div class="fm-label-wrap ">
-                                <label for="fm-login-password">店铺地址：</label>
-                            </div>
-                        </dt>
-                        <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <select name="shop_province_1" class="uniformselect">
-                                    <option value="1">广东</option>
-                                    <option value="2">广东</option>
-                                    <option value="4">广东</option>
-                                    <option value="5">广东</option>
-                                    <option value="6">广东</option>
-                                </select>
-                                <select name="shop_city_1" id="shop_city_1" class="uniformselect">
-                                    <option value="6">珠海</option>
-                                    <option value="2">珠海</option>
-                                    <option value="3">珠海</option>
-                                    <option value="2">珠海</option>
-                                    <option value="2">珠海</option>
-                                </select>
-                                <input type="text" name="shop_address_1">
-                            </div>
-                        </dd>
-                    </dl>
+		          	  <dt class="fm-label">
+			              <div class="fm-label-wrap">
+			                <label for="fm-login-password">店铺地址：</label>
+			              </div>
+		              </dt>
+		              <div class="row">
+		                  <%include("/eeda/component/form/inputLocationField.html", 
+		                  {
+		                      id:'p_c_d', 
+		                      label:'店铺地址', 
+		                      value: p_c_d!'',
+		                      display_value: p_c_d_name!''
+		                  }){} %>
+		                  <div class="" style="margin-left:95px;" >
+		              	  	  <input type="text" id="address" class="input_text" name="shop_address_1" value="" placeholder=" 具体地址" >
+		              	  </div>
+		              </div>
+		            </dl>
                     <dl>
                         <dt class="fm-label">
                             <div class="fm-label-wrap ">
@@ -157,8 +141,8 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <input type="text" name="shop_telephone_1">
+                            <div class="">
+                                <input type="text" class="input_text" name="shop_telephone_1">
                             </div>
                         </dd>
                     </dl>
@@ -169,8 +153,8 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <input type="text" name="qq_1">
+                            <div class="">
+                                <input type="text" class="input_text" name="qq_1">
                             </div>
                         </dd>
                     </dl>
@@ -182,7 +166,7 @@
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
                             <div class="textin">
-                                <textarea class="fill-detail" name="about_1"></textarea>
+                                <textarea class="form-control" rows="5" name="about_1"></textarea>
                             </div>
                         </dd>
                     </dl>
@@ -193,16 +177,16 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <input type="file" name="logo_1"  class="ehdel_upload" id="logo_1">
-                                <img style="width: 200px; height: 150px;" class="shadow" src="" value="" id="img_logo_1"/>
-                                <span class="red">图片为JPG格式，小于2M</span>
-                            </div>
-                        </dd>
+			                <div class="file">
+				                <input type="file" name="logo_1" id="logo_1" value=""/>
+				               	 选择图片
+			                </div>
+			                <span class="red">图片为JPG格式，小于1000kb</span> 
+			                <div class="form-control" style="margin-left:100px">
+			                	<img style='width: 200px; height: 150px;' class='shadow' value='' id="img_logo_1">      
+			            	</div>
+			            </dd>
                     </dl>
-                    <!-- <div style="padding-left:10px; margin-top:10px;">
-                        <button class="stdbtn btn_blue" style="width:200px;" onclick="window.location.href='verify.html'">下一步</button>
-                    </div> -->
                 </div>
             </div>
             <!-- #updates -->
@@ -215,8 +199,8 @@
                             </div>
                         </dt>
                         <dd>
-                            <div class="textin">
-                                <input type="text" name="company_name">
+                            <div class="">
+                                <input class="input_text" type="text" name="company_name">
                             </div>
                         </dd>
                     </dl>
@@ -227,8 +211,8 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <input type="text" name="contact_2"/>
+                            <div class="">
+                                <input class="input_text" type="text" name="contact_2"/>
                             </div>
                         </dd>
                     </dl>
@@ -239,8 +223,8 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <input type="text" name="telephone_2"/>
+                            <div class="">
+                                <input class="input_text" type="text" name="telephone_2"/>
                             </div>
                         </dd>
                     </dl>
@@ -251,11 +235,14 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <input type="file" name="company_pic_2" class="ehdel_upload" id="company_pic_2"/>
-                                <img style="width: 200px; height: 150px;" class="shadow" src="" value="" id="img_company_pic_2"/>
-                                <span class="red">图片为JPG格式，小于2M</span>
+                            <div class="file">
+                           		 选择图片
+                                <input type="file" id="company_pic_2" name="company_pic_2" />
                             </div>
+                            <span class="red">图片为JPG格式，小于2M</span>
+                            <div class="form-control" style="margin-left:100px">
+                            	<img style="width: 200px; height: 150px;" class="shadow" src="" value="" id="img_company_pic_2"/>   
+			            	</div>
                         </dd>
                     </dl>
                     <dl>
@@ -268,22 +255,10 @@
                             <div class="textin">
                                 <div style="padding-top:5px;">
                                     <select name="trade_type_2">
-                                                                                <option value="1">影楼</option>
-                                                                                <option value="2">婚礼策划</option>
-                                                                                <option value="3">跟拍摄影</option>
-                                                                                <option value="4">跟拍摄像</option>
-                                                                                <option value="5">化妆</option>
-                                                                                <option value="6">主持</option>
-                                                                                <option value="7">花店</option>
-                                                                                <option value="8">婚品</option>
-                                                                                <option value="9">甜品</option>
-                                                                                <option value="10">租车</option>
-                                                                                <option value="11">礼服</option>
-                                                                                <option value="12">蜜月旅游</option>
-                                                                                <option value="13">烟酒</option>
-                                                                                <option value="14">珠宝</option>
-                                                                                <option value="15">酒店</option>
-                                                                            </select>
+                                    <% for(cate in cateList![]){%>
+                                    	<option value="${cate.id}">${cate.name}</option>
+                                    <%}%>
+                                    </select>
                                 </div>
                             </div>
                         </dd>
@@ -294,25 +269,18 @@
                                 <label for="fm-login-password">店铺地址：</label>
                             </div>
                         </dt>
-                        <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <select name="shop_province_2" class="uniformselect">
-                                    <option value="1">广东</option>
-                                    <option value="2">广东</option>
-                                    <option value="4">广东</option>
-                                    <option value="5">广东</option>
-                                    <option value="6">广东</option>
-                                </select>
-                                <select name="shop_city_2" id="shop_city_2" class="uniformselect">
-                                    <option value="1">珠海</option>
-                                    <option value="2">珠海</option>
-                                    <option value="3">珠海</option>
-                                    <option value="4">珠海</option>
-                                    <option value="5">珠海</option>
-                                </select>
-                                <input type="text" name="shop_address_2">
-                            </div>
-                        </dd>
+                        <div class="row">
+		                  <%include("/eeda/component/form/inputLocationField.html", 
+		                  {
+		                      id:'p_c_d2', 
+		                      label:'店铺地址', 
+		                      value: '',
+		                      display_value: ''
+		                  }){} %>
+		                  <div class="" style="margin-left:95px;" >
+		              	  	  <input type="text" id="address" class="input_text" name="shop_address_2" value="" placeholder=" 具体地址" >
+		              	  </div>
+		              </div>
                     </dl>
                     <dl>
                         <dt class="fm-label">
@@ -321,8 +289,8 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <input type="text" name="shop_telephone_2">
+                            <div class="">
+                                <input class="input_text" type="text" name="shop_telephone_2">
                             </div>
                         </dd>
                     </dl>
@@ -333,8 +301,8 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <input type="text" name="qq_2">
+                            <div class="">
+                                <input class="input_text" type="text" name="qq_2">
                             </div>
                         </dd>
                     </dl>
@@ -345,8 +313,8 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <textarea class="fill-detail" name="about_2"></textarea>
+                            <div class="">
+                                <textarea class="input_text" class="form-control" rows="5" name="about_2"></textarea>
                             </div>
                         </dd>
                     </dl>
@@ -357,12 +325,15 @@
                             </div>
                         </dt>
                         <dd class="fm-field" id="fm-login-password-wrap">
-                            <div class="textin">
-                                <input type="file" name="logo_2"  class="ehdel_upload" id="logo_2">
-                                <img style="width: 200px; height: 150px;" class="shadow" src="" value="" id="img_logo_2"/>
-                                <span class="red">图片为JPG格式，小于2M</span> 
-                            </div>
-                        </dd>
+			                <div class="file">
+				                <input type="file" name="logo_2" id="logo_2" value=""/>
+				               	 选择图片
+			                </div>
+			                <span class="red">图片为JPG格式，小于1000kb</span> 
+			                <div class="form-control" style="margin-left:100px">
+			                	<img style='width: 200px; height: 150px;' class='shadow' value='' id="img_logo_2">      
+			            	</div>
+			            </dd>
                     </dl>
                     
                 	</div>
