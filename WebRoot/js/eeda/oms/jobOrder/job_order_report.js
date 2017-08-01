@@ -671,27 +671,21 @@ $(document).ready(function() {
 	
 	//生成陆运的柜货派车单PDF
 	$('#cabinet_truck').click(function(){
+		var btn_type = $(this).attr('id');
 		$("#generate_show").text("生成柜货派车单PDF详情");
-		$("#printCabinetTruck1").hide();
+		$("#printCabinetTruckMBL").hide();
 		$("#printCabinetTruck").show();
-		type();
+		type(btn_type);
 	});
 	//生成陆运的柜货派车单MBL
-	$('#test_truck').click(function(){
-//		var arrStr = $('#ocean_HBLshipper_info').val();
-//		var arry = arrStr.split("\n");
-//		$('#truck_head_attn').val(arry[1]);
-//        $('#truck_head_customer_tel').val(arry[2]);
+	$('#cabinet_truckMBL').click(function(){
+		var btn_type = $(this).attr('id');
 		$("#generate_show").text("生成柜货派车单MBL详情");
 		$("#printCabinetTruck").hide();
-		$("#printCabinetTruck1").show();
-		type();
+		$("#printCabinetTruckMBL").show();
+		type(btn_type);
 	});
-	var type = function(){
-//		var arrStr = $('#ocean_HBLshipper_info').val();
-//		var arry = arrStr.split("\n");
-//		$('#truck_head_attn').val(arry[1]);
-//      $('#truck_head_customer_tel').val(arry[2]);
+	var type = function(btn_type){
         var cabinet_arrive_date=$('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=ETA]').val();
         var TRANSPORT_COMPANY = $('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=TRANSPORT_COMPANY]').val();
         var CONSIGNEE_input = $('#land_table tbody [type=checkbox]:checked').first().parents('tr').find('[name=CONSIGNEE_input]').val();
@@ -708,7 +702,18 @@ $(document).ready(function() {
 			$('#truck_head_customer_tel').val(data.PHONE);
 			$('#truck_head_fax').val(data.FAX);
 		});
-        var cabinet_arrive_remark = "请安排"+format_order_export_date_date+"报关出口，吉柜于"+cabinet_arrive_date+"到"+TAKE_ADDRESS_input+",待通知收柜。";
+		var cabinet_arrive_remark = "";
+		if(btn_type=="cabinet_truckMBL"){
+			cabinet_arrive_remark = "请安排于"+cabinet_arrive_date+"到"+TAKE_ADDRESS_input+",待通知收柜。\n";
+			cabinet_arrive_remark+="1、进港箱单全部打好。\n";
+			cabinet_arrive_remark+="2、请务必准时到达，如迟到，请提前 1 小时联系工厂负责人或者通知我公司!\n";
+			cabinet_arrive_remark+="3、请提清洁无损坏集装箱!如发生集装箱破损有污染不适合装货，造成重新提箱或者船期延迟，所产生的费用与责任都有贵司无条件承担!\n";
+			cabinet_arrive_remark+="4、 请装柜日9:00之前提供箱封号及皮重!\n";
+		}else{
+			cabinet_arrive_remark = "请安排"+format_order_export_date_date+"报关出口，吉柜于"+cabinet_arrive_date+"到"+TAKE_ADDRESS_input+",待通知收柜。";
+		}
+		
+        
         $('#cabinet_arrive_remark').val(cabinet_arrive_remark);
         
         
@@ -779,7 +784,7 @@ $(document).ready(function() {
     	var noType = $('#cabinet_truck_detail input[name="so_no"]').val();
     	pdf_btn(noType);
     });
-    $('#printCabinetTruck1').click(function(){
+    $('#printCabinetTruckMBL').click(function(){
     	var noType = $('#cabinet_truck_detail input[name="mbl_no"]').val();
     	pdf_btn(noType);
     });

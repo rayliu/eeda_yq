@@ -234,9 +234,7 @@ public class JobOrderReportController extends Controller {
 		String order_id = (String) dto.get("order_id");
 		String item_id = (String) dto.get("item_id");
 		String SONO = (String) dto.get("SONO_land");
-		String mbl_no = (String) dto.get("mbl_no_land");
-		
-		
+		String mbl_no = (String) dto.get("mbl_no_land");	
 		
 		Record rOcean =new Record();
 		rOcean =Db.findFirst("SELECT * from job_order_shipment WHERE order_id = ?",order_id);
@@ -259,7 +257,7 @@ public class JobOrderReportController extends Controller {
 		if("so_no".equals(noType)){
 			 fileName = "/report/jobOrder/cabinetTruckOrder.jasper";
 		}else if("mbl_no".equals(noType)){
-			 fileName = "/report/jobOrder/cabinetTruckOrder.jasper";
+			 fileName = "/report/jobOrder/MBLcabinetTruckOrder.jasper";
 		}
 		
 		String outFileName = "/download/工作单陆运柜货派车单"+item_id+",";
