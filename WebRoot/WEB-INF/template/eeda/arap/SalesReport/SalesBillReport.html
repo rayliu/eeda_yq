@@ -15,14 +15,14 @@
                                      <div class="row">
                                          <div class="col-lg-4">
                                              <%include("/eeda/component/form/inputSpField.html", 
-                                                                 {   id: 'sp_id', 
-                                                                     label: '结算公司', 
+                                                                 {   id: 'customer_id', 
+                                                                     label: '客户', 
                                                                      value: ''
                                                                  }){}%>
                                          </div>
                                          <div class="col-lg-4">
                                              <%include("/eeda/component/form/inputEmployeeField.html", 
-                                                                 {   id: 'employee_id', 
+                                                                 {   id: 'user_id', 
                                                                      label: '业务员', 
                                                                      value: ''
                                                                  }){}%>
@@ -51,7 +51,7 @@
                                      <%include("/eeda/component/form/detailTableWithFoot.html", 
                                         {
                                             id:'eeda_table', 
-                                            style:'width:1900px',
+                                            style:'width:1700px',
                                             headers:['工作单号','提单号','出货期日(日)','业务员','客户','合同编号','应收','折合应收CNY','实收','折合实收CNY',
                                             		'应付','折合应付CNY','毛利润(CNY)','当前盈亏(CNY)','提成比例(%)','提成(金额)'
                                             ]

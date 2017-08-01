@@ -47,44 +47,49 @@ public class SalesBillReportController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
-        String sql = " SELECT A.id,A.customer_id,A.abbr,A.sp_id,A.employee_name,A.employee_id,sum(charge_cny) charge_cny,"
-        		+ " SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,"
-        		+ " SUM(uncharge_cny) uncharge_cny,SUM(uncharge_usd) uncharge_usd,sum(uncharge_jpy) uncharge_jpy,"
-        		+ " SUM(uncharge_hkd) uncharge_hkd,SUM(charge_rmb) charge_rmb,sum(uncharge_rmb) uncharge_rmb"
-        		+ " FROM (SELECT jo.id,jo.customer_id,jo.order_export_date,p.abbr,joa.sp_id,em.employee_name,em.id employee_id,IF (joa.order_type = 'charge'"
-        		+ " AND joa.exchange_currency_id = 3,exchange_total_amount,0) charge_cny,"
-        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 6,"
-        		+ " exchange_total_amount,0) charge_usd,IF (joa.order_type = 'charge'"
-        		+ " AND joa.exchange_currency_id = 8,exchange_total_amount,0) charge_jpy,"
-        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 9,"
-        		+ " exchange_total_amount,0) charge_hkd,"
-        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 3 AND pay_flag!='Y',"
-        		+ " exchange_total_amount,0) uncharge_cny,"
-        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 6 AND pay_flag!='Y',"
-        		+ " exchange_total_amount,0) uncharge_usd,"
-        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 8 AND pay_flag!='Y',"
-        		+ " exchange_total_amount,0) uncharge_jpy,"
-        		+ " IF (joa.order_type = 'charge' AND joa.exchange_currency_id = 9 AND pay_flag!='Y',"
-        		+ " exchange_total_amount,0) uncharge_hkd,"
-        		+ " IF (joa.order_type = 'charge',currency_total_amount,0) charge_rmb,"
-        		+ " IF (joa.order_type = 'charge' AND pay_flag!='Y',currency_total_amount,0) uncharge_rmb"
-        		+ " FROM job_order jo"
-        		+ " LEFT JOIN job_order_arap joa ON jo.id = joa.order_id"
-        		+ " LEFT JOIN party p ON p.id = joa.sp_id"
-        		+ " LEFT JOIN customer_salesman cs on cs.party_id = joa.sp_id"
-        		+ " LEFT JOIN employee em on em.id = cs.salesman_id"
-        		+ " WHERE jo.office_id =" +office_id+" "
-        		+ " and jo.delete_flag = 'N'"
-				+ " ) A"
-        		+ " WHERE A.sp_id IS NOT NULL AND A.charge_rmb!=0"+condition
-        		+ " GROUP BY A.sp_id"
-        		+ " ORDER BY uncharge_rmb desc";
+        String sql = " SELECT A.*,SUM(charge_CNY) sum_charge_CNY,SUM(charge_USD) sum_charge_USD,SUM(charge_JPY) sum_charge_JPY ,SUM(charge_HKD) sum_charge_HKD,SUM(charge_total) sum_charge_total, "
+        		+"			SUM(pay_charge_CNY) sum_pay_charge_CNY,SUM(pay_charge_USD) sum_pay_charge_USD,SUM(pay_charge_JPY) sum_pay_charge_JPY ,SUM(pay_charge_HKD)  "
+        		+"			sum_pay_charge_HKD,SUM(pay_charge_total) sum_pay_charge_total, "
+        		+"			SUM(cost_CNY) sum_cost_CNY,SUM(cost_USD) sum_cost_USD,SUM(cost_JPY) sum_cost_JPY ,SUM(cost_HKD) sum_cost_HKD,"
+        		+ "         SUM(cost_total) sum_cost_total "
+        		+" from( "
+        		+"		SELECT jo.id,jo.order_no,jo.customer_id,jos.mbl_no,jo.order_export_date,ul.c_name user_name,p.abbr,cs.royalty_rate,(SELECT contract_no from customer_contract ccon "
+        		+ "		LEFT JOIN customer_contract_location ccl on ccon.id = ccl.contract_id"
+        		+ "		WHERE ccon.type = jo.type and ccon.customer_id = jo.customer_id and ccon.trans_clause = jo.trans_clause"
+        		+ "		and ccon.trade_type = jo.trade_type and ccl.pol_id = jos.pol and ccl.pod_id = jos.pod "
+        		+ "		and (jo.order_export_date BETWEEN ccon.contract_begin_time and ccon.contract_end_time)) contract_no, "
+        		+"		if(cy.code='CNY' AND joa.order_type='charge',joa.total_amount,0) charge_CNY, "
+        		+"		if(cy.code='USD' AND joa.order_type='charge',joa.total_amount,0) charge_USD, "
+        		+"		if(cy.code='JPY' AND joa.order_type='charge',joa.total_amount,0) charge_JPY, "
+        		+"		if(cy.code='HKD' AND joa.order_type='charge',joa.total_amount,0) charge_HKD, "
+        		+"		if(joa.order_type='charge',joa.currency_total_amount,0) charge_total, "
+        		+"		if(cy.code='CNY' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_CNY, "
+        		+"		if(cy.code='USD' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_USD, "
+        		+"		if(cy.code='JPY' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_JPY, "
+        		+"		if(cy.code='HKD' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_HKD, "
+        		+"		if(joa.order_type='charge' AND joa.pay_flag='Y',joa.currency_total_amount,0) pay_charge_total, "
+        		+"		if(cy.code='CNY' AND joa.order_type='cost',joa.total_amount,0) cost_CNY, "
+        		+"		if(cy.code='USD' AND joa.order_type='cost',joa.total_amount,0) cost_USD, "
+        		+"		if(cy.code='JPY' AND joa.order_type='cost',joa.total_amount,0) cost_JPY, "
+        		+"		if(cy.code='HKD' AND joa.order_type='cost',joa.total_amount,0) cost_HKD, "
+        		+"		if(joa.order_type='cost',joa.currency_total_amount,0) cost_total "
+        		+"		from job_order jo  "
+        		+"		LEFT JOIN job_order_arap joa on joa.order_id = jo.id "
+        		+"		LEFT JOIN currency cy on cy.id = joa.currency_id "
+        		+"		LEFT JOIN job_order_shipment jos on jos.order_id = jo.id "
+        		+"		LEFT JOIN party p on p.id = jo.customer_id "
+        		+"		LEFT JOIN customer_salesman cs on cs.party_id =  jo.customer_id "
+        		+"		LEFT JOIN user_login ul on ul.id = cs.salesman_id "
+        		+"		WHERE jo.office_id = "+office_id
+        		+" ) A  where 1= 1"+condition
+        		+" GROUP BY A.order_no "
+        		+ " ORDER BY order_export_date desc";
 		
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         long total = rec.getLong("total");
-        List<Record> orderList = Db.find(sql);
+        List<Record> orderList = Db.find(sql+sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

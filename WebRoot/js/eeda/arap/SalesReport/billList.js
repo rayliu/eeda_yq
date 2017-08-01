@@ -4,123 +4,177 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       var dataTable = eeda.dt({
           id: 'eeda_table',
           colReorder: true,
-          paging: false,
+          paging: true,
           serverSide: true, //不打开会出现排序不对 
           ajax: "/salesBillReport/list",
           initComplete:function(settings){
     	  cssTd();
           },
           columns: [
-      			{ "data": "ABBR", "width": "120px","className":"abbr"},
-      			{ "data": "CHARGE_CNY", "width": "100px","className":"charge_cny",
+      			{ "data": "ORDER_NO", "width": "80px","className":"order_no"},
+      			{ "data": "MBL_NO", "width": "100px","className":"mbl_no"},
+	            { "data": "ORDER_EXPORT_DATE", "width": "80px" ,"className":"order_export_date"},
+	            { "data": "USER_NAME", "width": "100px","className":"user_name"},
+	            { "data": "ABBR", "width": "100px","className":"abbr"},
+	            { "data": "CONTRACT_NO", "width": "80px","className":"contract_no"},
+	            { "width": "100px","className":"charge",
 	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
+		            	    var str = '';
+		            	    var sum_charge_CNY='';
+
+		            	    if(full.SUM_CHARGE_CNY){
+		            	    	sum_charge_CNY = 'CNY: '+eeda.numFormat(full.SUM_CHARGE_CNY.toFixed(2),3)+'<br>';
+		            	    }
+		            	    var sum_charge_USD='';
+		            	    if(full.SUM_CHARGE_USD){
+		            	    	sum_charge_USD = 'USD: '+eeda.numFormat(full.SUM_CHARGE_USD.toFixed(2),3)+'<br>';
+		            	    }
+		            	    var sum_charge_JPY='';
+		            	    if(full.SUM_CHARGE_JPY){
+		            	    	sum_charge_JPY = 'JPY: '+eeda.numFormat(full.SUM_CHARGE_JPY.toFixed(2),3)+'<br>';
+		            	    }
+		            	    var sum_charge_HKD='';
+		            	    if(full.SUM_CHARGE_HKD){
+		            	    	sum_charge_HKD = 'HKD: '+eeda.numFormat(full.SUM_CHARGE_HKD.toFixed(2),3)+'<br>';
+		            	    }
+		            	    str = sum_charge_CNY+sum_charge_USD+sum_charge_JPY+sum_charge_HKD;
+		            	    return str;
 				  }
 	            },
-	            { "data": "CHARGE_USD", "width": "100px" ,"className":"charge_usd" ,
+	            { "data": "SUM_CHARGE_TOTAL", "width": "100px"  ,"className":"sum_charge_total",
 	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
+		            	    if(!data){
+		            	    	return '';
+		            	     }
+							return eeda.numFormat(data.toFixed(2),3);
+					}
+	            },
+	            {  "width": "100px","className":"pay_charge",
+	            	"render": function(data, type, full, meta) {
+		            		var str = '';
+		            	    var sum_pay_charge_CNY='';
+	
+		            	    if(full.SUM_PAY_CHARGE_CNY){
+		            	    	sum_pay_charge_CNY = 'CNY: '+eeda.numFormat(full.SUM_PAY_CHARGE_CNY.toFixed(2),3)+'<br>';
+		            	    }
+		            	    var sum_pay_charge_USD='';
+		            	    if(full.SUM_PAY_CHARGE_USD){
+		            	    	sum_pay_charge_USD = 'USD: '+eeda.numFormat(full.SUM_PAY_CHARGE_USD.toFixed(2),3)+'<br>';
+		            	    }
+		            	    var sum_pay_charge_JPY='';
+		            	    if(full.SUM_PAY_CHARGE_JPY){
+		            	    	sum_pay_charge_JPY = 'JPY: '+eeda.numFormat(full.SUM_PAY_CHARGE_JPY.toFixed(2),3)+'<br>';
+		            	    }
+		            	    var sum_pay_charge_HKD='';
+		            	    if(full.SUM_PAY_CHARGE_HKD){
+		            	    	sum_pay_charge_HKD = 'HKD: '+eeda.numFormat(full.SUM_PAY_CHARGE_HKD.toFixed(2),3)+'<br>';
+		            	    }
+		            	    str = sum_pay_charge_CNY+sum_pay_charge_USD+sum_pay_charge_JPY+sum_pay_charge_HKD;
+		            	    return str;
 				  }
 	            },
-	            { "data": "CHARGE_JPY", "width": "100px","className":"charge_jpy",
+	            { "data": "SUM_PAY_CHARGE_TOTAL", "width": "100px","className":"sum_pay_charge_total",
 	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
+		            	    if(!data){
+		            	    	return '';
+		            	    }
+							return eeda.numFormat(data.toFixed(2),3);
 				  }
 	            },
-	            { "data": "CHARGE_HKD", "width": "100px","className":"charge_hkd",
+	            {  "width": "100px","class":"cost",
 	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
+		            		var str = '';
+		            	    var sum_cost_CNY='';
+	
+		            	    if(full.SUM_COST_CNY){
+		            	    	sum_cost_CNY = 'CNY: '+eeda.numFormat(full.SUM_COST_CNY.toFixed(2),3)+'<br>';
+		            	    }
+		            	    var sum_cost_USD='';
+		            	    if(full.SUM_COST_USD){
+		            	    	sum_cost_USD = 'USD: '+eeda.numFormat(full.SUM_COST_USD.toFixed(2),3)+'<br>';
+		            	    }
+		            	    var sum_cost_JPY='';
+		            	    if(full.SUM_COST_JPY){
+		            	    	sum_cost_JPY = 'JPY: '+eeda.numFormat(full.SUM_COST_JPY.toFixed(2),3)+'<br>';
+		            	    }
+		            	    var sum_cost_HKD='';
+		            	    if(full.SUM_COST_HKD){
+		            	    	sum_cost_HKD = 'HKD: '+eeda.numFormat(full.SUM_COST_HKD.toFixed(2),3)+'<br>';
+		            	    }			            	    
+		             	    str = sum_cost_CNY+sum_cost_USD+sum_cost_JPY+sum_cost_HKD;
+		             	    return str;
 				  }
 	            },
-	            { "data": "CHARGE_RMB", "width": "120px","className":"charge_rmb",
+	            { "data": "SUM_COST_TOTAL", "width": "100px"  ,"className":"sum_pay_cost_total",
 	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
+		            	    if(!data){
+		            	    	return '';
+		            	    }
+							return eeda.numFormat(data.toFixed(2),3);
 				  }
 	            },
-	            { "data": "UNCHARGE_CNY", "width": "100px","className":"uncharge_cny",
+	            {  "width": "100px","className":"gross_profit",
 	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
+		            		var str=0;
+		            		
+		            		var sum_charge_total=0;
+		            		var sum_cost_total=0;
+		            		if(full.SUM_CHARGE_TOTAL){
+		            			sum_charge_total=full.SUM_CHARGE_TOTAL;
+		            		}
+		            		if(full.SUM_COST_TOTAL){
+		            			sum_cost_total=full.SUM_COST_TOTAL;
+		            		}
+		            		str = sum_charge_total-sum_cost_total;
+		            	    if(str<0){
+		            	    	return '<span style="color:red;">'+eeda.numFormat(str.toFixed(2),3)+'</span>';
+		            	    }
+							return eeda.numFormat(str.toFixed(2),3);
 				  }
 	            },
-	            { "data": "UNCHARGE_USD", "width": "100px"  ,"className":"uncharge_usd",
+	            { "width": "100px","className":"current_profit",
 	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
+		            		var str=0;
+		            		
+		            		var sum_pay_charge_total=0;
+		            		var sum_cost_total=0;
+		            		if(full.SUM_PAY_CHARGE_TOTAL){
+		            			sum_pay_charge_total=full.SUM_PAY_CHARGE_TOTAL;
+		            		}
+		            		if(full.SUM_COST_TOTAL){
+		            			sum_cost_total=full.SUM_COST_TOTAL;
+		            		}
+		            		str = sum_pay_charge_total-sum_cost_total;
+		            	    if(str<0){
+		            	    	return '<span style="color:red;">'+eeda.numFormat(str.toFixed(2),3)+'</span>';
+		            	    }
+							return eeda.numFormat(str.toFixed(2),3);
 				  }
 	            },
-	            { "data": "UNCHARGE_JPY", "width": "100px","className":"uncharge_jpy",
-	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
-				  }
-	            },
-	            { "data": "UNCHARGE_HKD", "width": "100px","className":"uncharge_hkd",
-	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
-				  }
-	            },
-	            { "data": "UNCHARGE_RMB", "width": "120px","class":"uncharge_rmb",
-	            	"render": function(data, type, full, meta) {
-					return '<span style="color:red;">'+eeda.numFormat(data,3)+'</span>';
-				  }
-	            },
-	            { "data": "UNCHARGE_USD", "width": "100px"  ,"className":"uncharge_usd",
-	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
-				  }
-	            },
-	            { "data": "UNCHARGE_JPY", "width": "100px","className":"uncharge_jpy",
-	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
-				  }
-	            },
-	            { "data": "UNCHARGE_HKD", "width": "100px","className":"uncharge_hkd",
-	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
-				  }
-	            },
-	            { "data": "UNCHARGE_RMB", "width": "120px","class":"uncharge_rmb",
-	            	"render": function(data, type, full, meta) {
-					return '<span style="color:red;">'+eeda.numFormat(data,3)+'</span>';
-				  }
-	            },
-	            {
+	            { "data": "ROYALTY_RATE", "width": "80px","class":"royalty_rate"},
+	            { "width": "100px","className":"commission_money",
 					"render": function(data, type, full, meta) {
-						return ((parseFloat((full.CHARGE_RMB-full.UNCHARGE_RMB) / full.CHARGE_RMB).toFixed(4))*100).toFixed(2);
+							var str=0;
+		            		
+		            		var sum_pay_charge_total=0;
+		            		var sum_cost_total=0;
+		            		if(full.SUM_PAY_CHARGE_TOTAL){
+		            			sum_pay_charge_total=full.SUM_PAY_CHARGE_TOTAL;
+		            		}
+		            		if(full.SUM_COST_TOTAL){
+		            			sum_cost_total=full.SUM_COST_TOTAL;
+		            		}
+		            		str = sum_pay_charge_total-sum_cost_total;
+		            		
+		            		var royalty_rate = 0;
+		            		if(full.ROYALTY_RATE){
+		            			royalty_rate = full.ROYALTY_RATE;
+		            		}
+		            		var commission_money = str*royalty_rate;
+		            		if(commission_money<0){
+		            	    	return '<span style="color:red;">'+eeda.numFormat(commission_money.toFixed(2),3)+'</span>';
+		            	    }
+							return eeda.numFormat(commission_money.toFixed(2),3);
 					}
 				}
 	            
@@ -153,25 +207,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       
       var cssTd=function(){
     	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
-    	  $("#eeda_table td:nth-child(11)").css('background-color','#f5f5dc');
+    	  $("#eeda_table td:nth-child(14)").css('background-color','#f5f5dc');
       }
       
       
 	
      var searchData=function(){
-          var sp_id = $("#sp_id").val();
-          var abbr_name=$('#sp_id_input').val();
+          var customer_id = $("#customer_id").val();
+          var abbr_name=$('#customer_id_input').val();
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
-          var employee_name = $("#employee_id_input").val().trim(); 
-          var employee_id = $("#employee_id").val();
+          var user_name = $("#user_id_input").val();
           
           
         //合计字段
           $.post('salesBillReport/listTotal',{
-        	  sp_id:sp_id,
-        	  employee_name:employee_name,
-        	  employee_id:employee_id,
+//        	  sp_id:sp_id,
+//        	  employee_name:employee_name,
+//        	  employee_id:employee_id,
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
           },function(data){
@@ -196,7 +249,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  $('#JPY_uncharge_tatol').text(eeda.numFormat(uncharge_jpy,3)).css('color','red');
         	  $('#HKD_uncharge_tatol').text(eeda.numFormat(uncharge_hkd,3)).css('color','red');
         	  $('#total_uncharge').text(eeda.numFormat(total_uncharge,3)).css('color','red');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=order_no]').html('共'+total+'项汇总：');
         	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_cny]').html("应收CNY:<br>"+eeda.numFormat(charge_cny,3));
         	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_usd]').html("应收USD:<br>"+eeda.numFormat(charge_usd,3));
         	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_jpy]').html("应收JPY:<br>"+eeda.numFormat(charge_jpy,3));
@@ -225,14 +278,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/salesBillReport/list?sp="+sp_id
+          var url = "/salesBillReport/list?customer_id="+customer_id
           				+"&abbr_equals="+abbr_name
-          				+"&employee_name_equals="+employee_name  
-        				+"&employee_id="+employee_id
+          				+"&user_name_equals="+user_name  
           				+"&order_export_date_begin_time="+order_export_date_begin_time
 				        +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load();
       };
-      searchData();
+//      searchData();
   });
 });
