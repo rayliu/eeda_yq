@@ -15,10 +15,10 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     }, 
 	                     { "data": "C_NAME", "width":"60px",
 	                    	 "render":function (data,type,full,meta){
-	                    		 return "<a href='/WebAdmin/biz/reminder/edit?id="+full.ID+"'>"+data+"</a>"
+	                    		 return "<a href='/WebAdmin/biz/reminder/edit?creator="+full.CREATOR+"'>"+data+"</a>"
 	                    	 }
 	                     },
-	                     { "data": "TARDE_TYPE", "width":"60px"},
+	                     { "data": "TRADE_TYPE", "width":"60px"},
 	                     { "data": "ID", "width":"60px"},
 	                     { "data": "STATUS", "width":"60px",
 	                    	"render":function(data,type,full,meta){	

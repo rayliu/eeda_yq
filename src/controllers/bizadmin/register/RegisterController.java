@@ -90,6 +90,7 @@ public class RegisterController extends Controller {
 		re.set("create_time", df.format(new Date()));
 		re.set("contact", contact);
 		re.set("telephone", telephone);
+		re.set("shop_telephone", shop_telephone);
 		re.set("trade_type", trade_type);
 		re.set("province", shop_province);
 		re.set("city", shop_city);

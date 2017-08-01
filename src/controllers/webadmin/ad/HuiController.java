@@ -76,8 +76,8 @@ public class HuiController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
 
-        String sql="select ul.c_name productor,wah.* from wc_ad_hui wah "
-        		+ "LEFT JOIN user_login ul on wah.creator=ul.id "
+        String sql="select wc.c_name productor,wah.* from wc_ad_hui wah "
+        		+ "LEFT JOIN wc_company wc on wah.creator=wc.creator "
         		+ " "+sLimit;
     	
     	String condition = DbUtils.buildConditions(getParaMap());

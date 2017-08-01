@@ -93,8 +93,8 @@ public class VideoController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
   
-    	String sql = " SELECT vc.*, ul.c_name productor "
-    			+ " FROM video_case vc LEFT JOIN user_login ul ON vc.creator = ul.id  ";
+    	String sql = " SELECT vc.*, wc.c_name productor "
+    			+ " FROM video_case vc LEFT JOIN wc_company wc ON vc.creator = wc.creator  ";
 
     	String condition = DbUtils.buildConditions(getParaMap());
 

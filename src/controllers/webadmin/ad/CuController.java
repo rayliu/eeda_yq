@@ -88,8 +88,8 @@ public class CuController extends Controller {
         }
          
 
-        String sql="select ul.c_name productor,wab.* from wc_ad_cu wab "
-        		+ "LEFT JOIN user_login ul on wab.creator=ul.id  "+sLimit;
+        String sql="select wc.c_name productor,wab.* from wc_ad_cu wab "
+        		+ "LEFT JOIN wc_company wc on wab.creator=wc.creator  "+sLimit;
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 

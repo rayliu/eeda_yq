@@ -92,8 +92,8 @@ public class BannerApplicationController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
          
-    	String sql = "select ul.c_name productor,wab.* from wc_ad_banner wab "
-    					+ "LEFT JOIN user_login ul on ul.id=wab.creator order by create_time desc";
+    	String sql = "select wc.c_name productor,wab.* from wc_ad_banner wab "
+    					+ "LEFT JOIN wc_company wc on wc.creator = wab.creator order by create_time desc";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 

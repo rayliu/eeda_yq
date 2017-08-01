@@ -44,10 +44,16 @@ public class AccountController extends Controller {
 	public void modify_info(){
         Long userId = LoginUserController.getLoginUserId(this);
         
-        Record rec = Db.findFirst("select * from wc_company where creator=?", userId);
-        String province = rec.getStr("province");
-        String city = rec.getStr("city");
-        String district = rec.getStr("district");
+        Record rec = Db.findFirst("select * from wc_company where creator =?", userId);
+        String province = "";
+        String city = "";
+        String district = "";
+        if(rec != null){
+        	  province = rec.getStr("province");
+              city = rec.getStr("city");
+              district = rec.getStr("district");
+        }
+        
         String p_c_d = null;
         String p_c_d_name = null;
         if(StringUtils.isNotBlank(district)){
@@ -66,7 +72,6 @@ public class AccountController extends Controller {
         setAttr("p_c_d", p_c_d);
         setAttr("p_c_d_name", p_c_d_name);
         setAttr("company", rec);
-        
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	

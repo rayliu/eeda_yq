@@ -38,9 +38,9 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		 var result = confirm(info);
 		 if(result){
 			 self.attr('disabled',true);
-			 var id = $("#user_id").val(); 
+			 var creator = $("#user_creator").val(); 
 			 var status=$("#pass").val();
-			 $.post('/WebAdmin/biz/reminder/pass',{id:id,status:status},function(data){
+			 $.post('/WebAdmin/biz/reminder/pass',{creator:creator,status:status},function(data){
 				 if(data){
 					 $.scojs_message('处理成功', $.scojs_message.TYPE_OK);
 					 window.location.href = "/WebAdmin/biz/reminder";

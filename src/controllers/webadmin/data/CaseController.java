@@ -117,8 +117,8 @@ public class CaseController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = " select ul.c_name productor,wc.* from wc_case wc "
-        				+ "left join user_login ul on wc.creator=ul.id ";
+        String sql = " select wco.c_name productor,wc.* from wc_case wc "
+        				+ "left join wc_company wco on wc.creator=wco.creator ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 

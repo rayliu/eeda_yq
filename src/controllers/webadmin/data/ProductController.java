@@ -97,8 +97,8 @@ public class ProductController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
 
-        String sql = "select ul.c_name productor,wp.* from wc_product wp "
-        		+ "LEFT JOIN user_login ul on ul.id = wp.creator order by create_time asc ";
+        String sql = "select wc.c_name productor,wp.* from wc_product wp "
+        		+ "LEFT JOIN wc_company wc on wc.creator = wp.creator order by create_time asc ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
