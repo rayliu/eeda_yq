@@ -20,9 +20,8 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     },
 	                     { "data": "TARDE_TYPE", "width":"60px"},
 	                     { "data": "ID", "width":"60px"},
-	                     { "data": "PASS", "width":"60px",
-	                    	"render":function(data,type,full,meta){
-	                    				
+	                     { "data": "STATUS", "width":"60px",
+	                    	"render":function(data,type,full,meta){	
 	                    			return data;
 	                    	} 
 	                     }

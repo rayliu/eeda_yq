@@ -30,9 +30,10 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 	  init();
 	  
 	  $("#delButton").on('click',function(){
-		 $(this).attr('disabled',true);
+		var self=$(this);
 		 var result = confirm(info);
 		 if(result){
+			 $(this).attr('disabled',true);
 			 var id = $("#user_id").val();
 			 $.post("/WebAdmin/biz/delete",{id:id},function(data){
 				 if(data){

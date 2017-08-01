@@ -5,7 +5,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             id: 'eeda_table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/WebAdmin/biz/reminder/list",
+            ajax: "/WebAdmin/biz/list",
             columns: [
 	                     { "data":"ID","width": "80px"},
 	                     { "data": "C_NAME", "width":"60px",

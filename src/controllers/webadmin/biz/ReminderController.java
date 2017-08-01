@@ -58,7 +58,7 @@ public class ReminderController extends Controller {
 	public void pass(){
 		String id = getPara("id");
 		String status = getPara("status");
-		String sql="update user_login set pass = '"+status+"' where id = "+id;
+		String sql="update user_login set status = '"+status+"' where id = "+id;
 		Db.update(sql);
 		renderJson(true);
 	}
@@ -104,7 +104,7 @@ public class ReminderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-    	String sql="select * from user_login";
+    	String sql="select * from user_login where status != '通过' ";
     	String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ ") B";

@@ -16,9 +16,10 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 	  init();
 	  
 	  $("#delButton").on('click',function(){
-		 $(this).attr('disabled',true);
-		 var result = confirm(info);
+		 self = $(this);
+		 var result = confirm('你确定要删除这个商家吗？');
 		 if(result){
+			 self.attr('disabled',true);
 			 var id = $("#user_id").val();
 			 $.post("/WebAdmin/biz/reminder/delete",{id:id},function(data){
 				 if(data){
@@ -33,9 +34,10 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 	  
 	  
 	 $('#pass').on('click',function(){
-		 $(this).attr('disabled',true);
-		 var result = confirm("你确定要让这个商家入驻吗？");
+		 self = $(this);
+		 var result = confirm(info);
 		 if(result){
+			 self.attr('disabled',true);
 			 var id = $("#user_id").val(); 
 			 var status=$("#pass").val();
 			 $.post('/WebAdmin/biz/reminder/pass',{id:id,status:status},function(data){
