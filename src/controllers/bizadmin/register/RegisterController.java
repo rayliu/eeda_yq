@@ -11,9 +11,11 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
 
@@ -26,19 +28,20 @@ public class RegisterController extends Controller {
 		render(getRequest().getRequestURI()+"/index.html");
 	}
     
+	@Before(Tx.class)
 	public void info(){
-		Record user = new Record();
 		String login_name = getPara("login_name");
 		String phone = getPara("phone");
 		String password = getPara("password");
-		user.set("login_name", login_name);
-		user.set("phone", phone);
-		user.set("password", password);
-		setAttr("userInfo",user);
+		Record re = new Record();
+		re.set("user_name", login_name);
+		re.set("phone", phone);
+		re.set("password", password);
+		re.set("is_stop", 1);
+		Db.save("user_login", re);
+		setAttr("creator",re.get("id"));
 		List<Record> cateList = Db.find("select * from category");
 		setAttr("cateList", cateList);
-		
-		
 		render(getRequest().getRequestURI()+"/index.html");
 	}
 	
@@ -55,7 +58,7 @@ public class RegisterController extends Controller {
 		renderJson(result);
 	}
 	
-	
+	@Before(Tx.class)
 	public void done(){
 		String jsonStr=getPara("jsonStr");
 		Gson gson=new Gson();
@@ -72,34 +75,36 @@ public class RegisterController extends Controller {
 			re.set("company_pic", company_pic);
 			re.set("c_name", c_name);
 		}
-		String login_name = (String) dto.get("login_name");
-		String phone = (String) dto.get("phone");
 		String telephone = (String) dto.get("telephone");
-		String password = (String) dto.get("password");
 		String contact = (String) dto.get("contact");
 		String shop_address = (String) dto.get("shop_address");
 		String shop_telephone = (String) dto.get("shop_telephone");
 		String about = (String)dto.get("about");
 		String shop_city = (String) dto.get("shop_city");
+		String shop_province = (String) dto.get("shop_province");
+		String shop_district = (String) dto.get("shop_district");
 		String trade_type = (String) dto.get("trade_type");
 		String qq = (String) dto.get("qq");
 		String logo = (String) dto.get("logo");
+		String creator = (String) dto.get("creator");
 		re.set("create_time", df.format(new Date()));
-		re.set("user_name", login_name);
 		re.set("contact", contact);
-		re.set("is_stop", 1);
-		re.set("password", password);
-		re.set("phone", phone);
 		re.set("telephone", telephone);
-		re.set("tarde_type", trade_type);
+		re.set("trade_type", trade_type);
+		re.set("province", shop_province);
+		re.set("city", shop_city);
+		re.set("district", shop_district);
 		re.set("address", shop_address);
 		re.set("qq", qq);
+		re.set("user_type", type);
 		re.set("about", about);
 		re.set("logo", logo);
-		Db.save("user_login", re);
+		re.set("creator", creator);
+		Db.save("wc_company", re);
         render(getRequest().getRequestURI()+"/index.html");
     }
 	
+	@Before(Tx.class)
 	public void saveFile(){
     	Record re = new Record();
     	try {

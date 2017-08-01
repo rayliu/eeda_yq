@@ -28,19 +28,20 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 				user.company_name=$(":input[name=company_name]").val()
 				
 			}
-			user.login_name=$(":input[name=login_name]").val();
-			user.phone = $(":input[name=phone]").val();
-			user.password = $(":input[name=password]").val();
+			user.creator = $("#creator_id").val(); 
 			user.contact = $(":input[name=contact_"+type+"]").val();
 			user.telephone = $(":input[name=telephone_"+type+"]").val();
 			user.trade_type = $(":input[name=trade_type_"+type+"]").val();
-			user.shop_province = $(":input[name=shop_province_"+type+"]").val();
-			user.shop_city = $("#shop_city_"+type+"").text();
 			user.shop_address = $(":input[name=shop_address_"+type+"]").val();
 			user.shop_telephone = $(":input[name=shop_telephone_"+type+"]").val();
 			user.qq = $(":input[name=qq_"+type+"]").val();
 			user.about = $(":input[name=about_"+type+"]").val();
 			user.logo = $("#img_logo_"+type+"").val();
+			var p_c_d = $("#p_c_d_"+type+"").val();
+			var address = p_c_d.split('-'); 
+			user.shop_province = address[0];
+			user.shop_city = address[1];
+			user.shop_district = address[2];
 			window.location.href="/BusinessAdmin/register/done?jsonStr="+JSON.stringify(user);
 		})
 		  //定义id选择器

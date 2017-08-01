@@ -36,9 +36,7 @@
 </style></head><div id="ok_frame_wrapper"><iframe id="ok_frame" src="chrome-extension://bicdefpoleoohkhgcbbhambpghigfeid/build/extension.html" class="MC40MzY5Mjk4OTE3MzgyMzgyNk9LMTQ5OTIzNTUxNTQ1MQ MC4wMTg3ODk1OTk3MjQzMzkyNDVPSyBDb21wb25lbnRzIDE0OTkyMzU1MTU0NTE" style="display:none"></iframe><fp-div id="okmemo_overlay" class="MC4wMTg3ODk1OTk3MjQzMzkyNDVPSyBDb21wb25lbnRzIDE0OTkyMzU1MTU0NTE"><fp-div class="okmemo-nav"></fp-div><fp-div class="okmemo-current okmemo-tag" style="height:584px;"><fp-div class="okmemo-current-mark"><fp-div class="okmemo-con" id="okmemo_current_tag"><fp-span class="public-collection">全部</fp-span><fp-span class="collect-success">正在保存</fp-span></fp-div><fp-div class="okmemo-description">拖拽至此处以完成收集</fp-div></fp-div><fp-div class="okmemo-tmp-note"><fp-div class="okmemo-note-title"><fp-h2><fp-span id="okmemo_note_title"></fp-span></fp-h2></fp-div><fp-div class="okmemo-note-content"><fp-div class="okmemo-padding-con" id="okmemo_note_content"></fp-div></fp-div></fp-div></fp-div><fp-div class="okmemo-bottom-btn"><fp-div class="okmemo-bottom-area okmemo-no-tag okmemo-tag"><fp-div class="okmemo-con">待分类</fp-div></fp-div></fp-div><fp-div class="okmemo-others-wrapper" id="okmemo_others_wrapper"><fp-div class="okmemo-other okmemo-private okmemo-tag"><fp-div class="okmemo-con">私密</fp-div></fp-div></fp-div></fp-div></div>
 <body class="reg_header">
 
-<input type="hidden" name="login_name" value="${userInfo.login_name!''}">
-<input type="hidden" name="phone" value="${userInfo.phone!''}">
-<input type="hidden" name="password" value="${userInfo.password!''}">
+<input type="hidden" name="creator_id" id ="creator_id" value="${creator!''}">
 <input type="hidden" name="register_type"  id="register_type" value="1">
 <div class="bodywrapper">
     <!--topheader-->
@@ -124,7 +122,7 @@
 		              <div class="row">
 		                  <%include("/eeda/component/form/inputLocationField.html", 
 		                  {
-		                      id:'p_c_d', 
+		                      id:'p_c_d_1', 
 		                      label:'店铺地址', 
 		                      value: p_c_d!'',
 		                      display_value: p_c_d_name!''
@@ -272,7 +270,7 @@
                         <div class="row">
 		                  <%include("/eeda/component/form/inputLocationField.html", 
 		                  {
-		                      id:'p_c_d2', 
+		                      id:'p_c_d_2', 
 		                      label:'店铺地址', 
 		                      value: '',
 		                      display_value: ''
