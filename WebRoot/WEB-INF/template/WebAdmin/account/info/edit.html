@@ -1,0 +1,110 @@
+<%layout("/WebAdmin/layout.html"){%>
+    <div class="pageheader notab">
+      <h1 class="pagetitle">修改公司资料</h1>
+    </div>
+    <input type="hidden" id="user_id" name="user_id" value="${user.id!''}"/>
+    <div class="pageheader notab">
+     <div class="registered " id="login-content" >
+     	<form id="orderForm">
+          <dl>
+            <dt>
+              <div class="fm-label-wrap ">
+                <label for="fm-login-id">负责人姓名：</label>
+              </div>
+            </dt>
+            <dd>
+              <div class="textin">
+                <input type="text" id="contact" name="contact" value="${user.contact!''}" required/>
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt class="fm-label">
+              <div class="fm-label-wrap ">
+                <label for="fm-login-password">联系电话：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+              <div class="textin">
+                <input type="text" id="phone" name="phone" value="${user.phone!''}" >
+              </div>
+            </dd>
+          </dl>
+          <dl>
+          	  <dt class="fm-label">
+	              <div class="fm-label-wrap">
+	                <label for="fm-login-password">店铺地址：</label>
+	              </div>
+              </dt>
+              <div class="row">
+                  <div class="textin" style="margin-left:90px;" >
+              	  	  <input type="text" id="address" name="address" value="${user.address!''}" placeholder=" 具体地址" >
+              	  </div>
+              </div>
+          </dl>
+          
+          <dl>
+            <dt class="fm-label">
+              <div class="fm-label-wrap ">
+                <label for="fm-login-password">店铺电话：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+              <div class="textin">
+                <input type="text" id="telephone" name="telephone" value="${user.telephone!''}" />
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt class="fm-label">
+              <div class="fm-label-wrap ">
+                <label for="fm-login-password">QQ：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+              <div class="textin">
+                <input type="text" id="qq" name="qq" value="${user.qq!''}" />
+              </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt class="fm-label">
+              <div class="fm-label-wrap ">
+                <label for="fm-login-password">公司简介：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+              <div class="textin" >
+                <textarea class="form-control" rows="5" id="about" name="intro">${user.about!''}</textarea>
+              </div>
+            </dd>
+          </dl>
+          <dl>
+              <dt class="fm-label">
+              		<div class="fm-label-wrap ">
+                	<label for="fm-login-password">公司Logo：</label>
+              </div>
+            </dt>
+            <dd class="fm-field" id="fm-login-password-wrap">
+                <div class="file">
+	                <input type="file" name="logo" id="logo" value="${user.logo!''}"/>
+	                选择图片
+                </div>
+                <span class="red">图片为JPG格式，小于1000kb</span> 
+                <div class="form-control" style="margin-left:100px">
+                	<img style='width: 300px;' class='shadow' src='/upload/${user.logo!"nophoto.png"}' value='${user.logo!""}' id="img_logo">      
+            	</div>
+            </dd>
+          </dl>
+          </form>
+          <div style="padding-left:10px; margin-top:10px;">
+            <button  id="updateBtn" class="btn btn_blue" style="width:200px;"/>修改</button>
+          </div>
+        </div>
+    </div>
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+         requirejs(['/js/WebAdmin/account/info/edit.js']);
+    });
+</script>
