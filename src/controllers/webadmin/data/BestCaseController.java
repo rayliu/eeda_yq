@@ -94,7 +94,7 @@ public class BestCaseController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql="select ul.c_name productor,wc.* from wc_case wc " 
-        		+  " LEFT JOIN user_login ul on wc.creator = ul.id ";
+        		+  " LEFT JOIN user_login ul on wc.creator = ul.id  where wc.flag=1";
     	String condition = DbUtils.buildConditions(getParaMap());
     	System.out.println(sql);
         String sqlTotal = "select count(1) total from ("+sql+") B";
@@ -109,22 +109,14 @@ public class BestCaseController extends Controller {
         renderJson(map); 
     	
     }
-    
-   
-    @Before(Tx.class)
-    public void delete(){
-	   String id = getPara("id");
-	   Db.deleteById("wc_case", id);
-	   renderJson(true);
-   }
    
    
    
    @Before(Tx.class)
-   public void updateFlag(){
+   public void delete(){
 	   String id = getPara("id");
 	   String flag = getPara("flag");
-	   String sql = "update wc_case set flag="+flag+" where id="+id;
+	   String sql = "update wc_case set flag = 0 where id="+id;
 	   Db.update(sql);
 	   renderJson(true);
    }

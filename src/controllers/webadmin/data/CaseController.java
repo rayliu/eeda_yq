@@ -135,6 +135,15 @@ public class CaseController extends Controller {
         renderJson(map); 
     }
     
+    @Before(Tx.class)
+    public void updateFlag(){
+    	String id = getPara("id");
+  	   	String flag = getPara("flag");
+  	   	String sql = "update wc_case set flag = "+flag+" where id="+id;
+  	   	Db.update(sql);
+  	   	renderJson(true);
+    }
+    
 	@Before(Tx.class)
 	public void saveFile(){
 		Record re = new Record();

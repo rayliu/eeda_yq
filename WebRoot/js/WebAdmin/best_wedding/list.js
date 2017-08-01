@@ -8,15 +8,6 @@ $(document).ready(function() {
 			serverSide: true, 
 			ajax: "/WebAdmin/best_wedding/list",
 			columns: [
-						{ "data": "ID" ,"width":"20px",
-							"render":function(data,type,full,meta){
-								var info = "";
-								if(full.FLAG == 1){
-									info = "checked";
-								}
-								return  "<input class='check' style='width:20px' type='checkBox' name='checkbox' data-id='"+data+"' "+info+">";
-							}
-						},
 				        { "data": "PRODUCTOR", "width":"100px"},
 				        { "data": "" , "width":"100px"},
 				        { "data": "NAME", "width":"100px"},
@@ -31,7 +22,7 @@ $(document).ready(function() {
 								if(full.FLAG == 1){
 									info = "checked";
 								}
-								return"<button class='btn btn-danger delBtn' data-id='"+data+"'>删除</button>";
+								return"<button class='btn btn-danger delBtn' data-id='"+data+"'>删除精选</button>";
 							}
 				        }
 					]
@@ -44,17 +35,17 @@ $(document).ready(function() {
 		 $("#eeda_table").on("click",".delBtn",function(){
 			 var self = this;
 			 var id = $(self).data("id");
-			 var del = confirm("你确定要删除吗")
+			 var del = confirm("你确定要删除精选吗")
 			 if(!del){
 				 return;
 			 }
-			 self.diabled = true;
+			 self.disabled = true;
 			 $.post("/WebAdmin/best_wedding/delete",{"id":id},function(data){
 				 if(data){
-					  $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+					  $.scojs_message('删除精选成功', $.scojs_message.TYPE_OK);
 					  refleshTable();
 				 }else{
-					 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+					 $.scojs_message('删除精选失败', $.scojs_message.TYPE_ERROR);
 				 }
 				 self.diabled = false;
 			 });

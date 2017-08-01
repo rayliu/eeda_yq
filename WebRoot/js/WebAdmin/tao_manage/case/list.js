@@ -20,14 +20,41 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	              }, 
 	              { "data": "ID", "width":"60px",
 	            	"render":function(data,type,full,meta){
-	            		data ="<button  class='modifibtn btn-blue  delete' " 
-       							+" data-id="+data+" >删除</button>" 
-       							+"&nbsp&nbsp&nbsp<button class = 'modifibtn btn-blue editBtn' data-id="+data+">编辑</button>";
+	            		var flag='';
+	            		if(full.FLAG == 1){
+	            			flag = 'checked';
+	            		}
+	            		
+	            		
+	            		data ="<button  class='modifibtn btn-blue  delete'  data-id="+data+" >删除</button>" 
+       							+"&nbsp&nbsp&nbsp<button class = 'modifibtn btn-blue editBtn' data-id="+data+">编辑</button>"
+       							+"&nbsp&nbsp&nbsp&nbsp精选<input class='check' style='width:20px' type='checkBox' name='checkbox' data-id='"+data+"' "+flag+">";
 	            		return data;
 	            	}  
 	              }
             ]
         });
+        
+        $("#eeda_table").on("change"," .check",function(){
+        	var self = $(this);
+        	self.attr('disabled',true);
+        	var flag = '';
+        	var id = self.data('id');
+        	if(self.is(":checked")){
+        		flag = 1;
+        	}else {
+        		flag = 0;
+        	}
+        	$.post("/WebAdmin/tao_manage/case/updateFlag",{id:id,flag:flag},function(data){
+        		if(data){
+        			$.scojs_message("精选成功",$.scojs_message.TYPE_OK);
+        			self.attr('disabled',false);
+        		}else{
+        			$.scojs_message("精选失败",$.scojs_message.TYPE_ERROR);
+        		}
+        	})
+        })
+
         
         //进入编辑页面
         $("#eeda_table").on("click"," .editBtn",function(){
@@ -45,12 +72,13 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             				$.scojs_message("删除成功",$.scojs_message.TYPE_OK);
             				refleshTable();
             		}else{
-            			$.scojs.message("操作失败",$.scojs_message.TYPE_OK);
+            			$.scojs.message("操作失败",$.scojs_message.TYPE_ERROR);
             		}
             	})
         	}
         });
-
+        
+   
      var searchData=function(){
           var creator = $.trim($("#creator").val()); 
           var start_date = $("#create_stamp_begin_time").val();
