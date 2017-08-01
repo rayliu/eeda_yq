@@ -7,11 +7,10 @@
                                 <a href='#' data-toggle="modal" data-target="#partyModal" class="btn btn_green">添加收发货人</a>
                                 <button class="btn btn_green" id="truckOrderPDF" disabled>生成散货派车单PDF</button> 
                                 
-                                
+                                <% if(shiro.hasPermission("jobOrder.cabinet_truck_SOPDF")){ %>
                                 <a href='#' data-toggle="modal" data-target="#cabinet_truck_detail">
                                     <button class="btn btn_green" id="cabinet_truck" disabled >生成柜货派车单PDF(SO)</button>
-                                </a>
-                                <% if(shiro.hasPermission("jobOrder.cabinet_truck_SOPDF")){ %>
+                                </a>                                
                                 <%}; %>
                                 <% if(shiro.hasPermission("jobOrder.cabinet_truck_MBLPDF")){ %>
                                 <a href="#" data-toggle="modal" data-target="#cabinet_truck_detail">
