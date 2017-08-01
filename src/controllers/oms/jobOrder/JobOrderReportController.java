@@ -238,8 +238,12 @@ public class JobOrderReportController extends Controller {
 		
 		Record rOcean =new Record();
 		rOcean =Db.findFirst("SELECT * from job_order_shipment WHERE order_id = ?",order_id);
-		rOcean.set("SONO", SONO);
-		rOcean.set("mbl_no", mbl_no);
+		if(StringUtils.isNotBlank(SONO)){
+			rOcean.set("SONO", SONO);
+		}
+		if(StringUtils.isNotBlank(mbl_no)){
+			rOcean.set("mbl_no", mbl_no);
+		}		
 		Db.update("job_order_shipment", rOcean);
 		Record r =new Record();
 		if (StringUtils.isNotEmpty(id)) {
