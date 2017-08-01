@@ -33,10 +33,10 @@ public class AccountController extends Controller {
 
 	public void index() {
 		  Long user_id = LoginUserController.getLoginUserId(this);
-		  String sql="select * from user_login where id="+user_id;
-		  Record user=Db.findFirst(sql);
+		  String sql = "select * from user_login where id="+user_id;
+		  Record user = Db.findFirst(sql);
 		  setAttr("user", user);
-		render(getRequest().getRequestURI()+"/pwd/edit.html");
+		  render(getRequest().getRequestURI()+"/pwd/edit.html");
 	}
 	
 	public void info(){
@@ -58,9 +58,9 @@ public class AccountController extends Controller {
 		String telephone = (String) dto.get("telephone");
 		String address = (String) dto.get("address");
 		String about = (String) dto.get("about");
-		String qq=(String) dto.get("qq");
-		String contact=(String) dto.get("contact");
-		String logo=(String) dto.get("logo");
+		String qq = (String) dto.get("qq");
+		String contact = (String) dto.get("contact");
+		String logo = (String) dto.get("logo");
 		Record re = null;
 		if(StringUtils.isNotBlank(user_id.toString())){
 			re=new Record();

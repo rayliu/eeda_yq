@@ -37,8 +37,8 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		 order.address = $('#address').val();
 		 order.telephone = $('#telephone').val();
 		 order.qq = $('#qq').val();
-		 order.about = $('#about').text();
-		 order.logo = $('#img_logo').val();
+		 order.about = $('#about').val();
+		 order.logo = $('#img_logo').attr('value');
 		 $(self).attr('disabled',true);
 		 $.post('/WebAdmin/account/updateInfo',{jsonStr:JSON.stringify(order)},function(data){
 			 if(data){
