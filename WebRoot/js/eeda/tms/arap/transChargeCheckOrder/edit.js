@@ -379,6 +379,13 @@ $(document).ready(function() {
         str=item.join(',');
          return str;
     }
+    
+    $('#deposit_bank_list').on('mousedown','a',function(){
+  	   $('#account_no').val( $(this).attr('account_no'));
+   	   $('#account_name').val( $(this).attr('account_name'));
+   	   
+      })
+    
   
 });
 });
