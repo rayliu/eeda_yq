@@ -11,7 +11,8 @@ define(['jquery', 'validate_cn',  'dataTablesBootstrap', 'sco', 'file_upload'], 
   			    dataType: 'json',
   		        done: function (e, data) {
   	        		if(data){
-  			    		$("#img_"+str).val(data.result.NAME);
+  			    		//$("#img_"+str).val(data.result.NAME);
+  			    		$("#img_"+str).attr('value',data.result.NAME);
   			    		var imgPre =Id("img_"+str);
   			  		    imgPre.src = '/upload/'+data.result.NAME;
   			    	}else{
@@ -138,10 +139,19 @@ define(['jquery', 'validate_cn',  'dataTablesBootstrap', 'sco', 'file_upload'], 
         	var product_id = $(row.find('[name=product]')).val();
         	var begin_date = $(row.find('[name=begin_date]')).val();
     		var end_date = $(row.find('[name=end_date]')).val();
-			var photo = $(row.find('.shadow')).val();
+			var photo = $(row.find('.shadow')).attr('value');
 			var index = $(row.find('[name=index]')).val();
 			var default_flag = $(row.find('[name=default]')).val();
-
+			if(product_id == ''){
+				alert('产品不能为空');
+				return false;
+			}else if(begin_date == ''){
+				alert('开始时间不能为空');
+				return false;
+			}else if (end_date == ''){
+				alert('结束时间不能为空');
+				return false;
+			}
 			self.diabled = true;
 			$.post('/WebAdmin/ad/tao/save',{user_id:user_id,product_id:product_id,begin_date:begin_date,end_date:end_date,
 				photo:photo,index:index,default_flag:default_flag},function(data){

@@ -78,30 +78,30 @@
 	      <input type="hidden" name="default" value="N"/>
 	      <div class="rowDiv">
 	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value=""/>
+	          <input type="text" class="input_text" name="user" value="${two.user_id!''}"/>
 	      </div>
 	      <div class="rowDiv">
 	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value=""/>
+	          <input type="text" class="input_text" name="product"  value="${two.product_id!''}"/>
 	      </div>
 	       <div class="rowDiv">
 	      		<label>开始时间：</label>
-	            <input type="date" class="input_text" name="begin_date"  value=""/>
+	            <input type="date" class="input_text" name="begin_date"  value="${two.begin_date!''}"/>
 	       </div>
 	       <div class="rowDiv">
 	       		<label>结束时间：</label>
-	            <input type="date" class="input_text" name="end_date"  value=""/>
+	            <input type="date" class="input_text" name="end_date"  value="${two.end_date!''}"/>
 	       </div> 
 	       <div>
 				<div class="file">
-		            <input type="file" name="file_photo" id="file_photo2" value="${company.logo!''}"/>
+		            <input type="file" name="file_photo" id="file_photo2" value=""/>
 		           	 选择图片
 	            </div>
 	            <span class="red">图片为JPG格式，小于1000kb</span> 
 	            <div class="form-control" style="margin-left:0px">
-	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo2">      
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${two.photo!"nophoto.png"}' value='${two.photo!""}' id="img_photo2">      
 	       	    </div>
-	      </div>
+	      </div>    
 	      <div class="rowDiv">
 	      	  <br>
 	      	  <button  name="saveBtn" class="stdbtn btn_blue" style="width:200px;"/>保存</button>
@@ -116,28 +116,28 @@
 	      <input type="hidden" name="default" value="N"/>
 	      <div class="rowDiv">
 	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value=""/>
+	          <input type="text" class="input_text" name="user" value="${three.user_id!''}"/>
 	      </div>
 	      <div class="rowDiv">
 	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value=""/>
+	          <input type="text" class="input_text" name="product"  value="${three.product_id!''}"/>
 	      </div>
 	       <div class="rowDiv">
 	      		<label>开始时间：</label>
-	            <input type="date" class="input_text" name="begin_date"  value=""/>
+	            <input type="date" class="input_text" name="begin_date"  value="${three.begin_date!''}"/>
 	       </div>
 	       <div class="rowDiv">
 	       		<label>结束时间：</label>
-	            <input type="date" class="input_text" name="end_date"  value=""/>
+	            <input type="date" class="input_text" name="end_date"  value="${three.end_date!''}"/>
 	       </div> 
 	       <div>
 				<div class="file">
-		            <input type="file" name="file_photo" id="file_photo3" value="${company.logo!''}"/>
+		            <input type="file" name="file_photo" id="file_photo3" value=""/>
 		           	 选择图片
 	            </div>
 	            <span class="red">图片为JPG格式，小于1000kb</span> 
 	            <div class="form-control" style="margin-left:0px">
-	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo3">      
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${three.photo!"nophoto.png"}' value='${three.photo!""}' id="img_photo3">      
 	       	    </div>
 	      </div>    
 	      <div class="rowDiv">
@@ -153,30 +153,30 @@
 	      <div class="mh_list mt10">
 	      <input type="hidden" name="index" value="4"/>
 	      <input type="hidden" name="default" value="N"/>
-	     <div class="rowDiv">
+	   	  <div class="rowDiv">
 	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value=""/>
+	          <input type="text" class="input_text" name="user" value="${four.user_id!''}"/>
 	      </div>
 	      <div class="rowDiv">
 	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value=""/>
+	          <input type="text" class="input_text" name="product"  value="${four.product_id!''}"/>
 	      </div>
 	       <div class="rowDiv">
 	      		<label>开始时间：</label>
-	            <input type="date" class="input_text" name="begin_date"  value=""/>
+	            <input type="date" class="input_text" name="begin_date"  value="${four.begin_date!''}"/>
 	       </div>
 	       <div class="rowDiv">
 	       		<label>结束时间：</label>
-	            <input type="date" class="input_text" name="end_date"  value=""/>
+	            <input type="date" class="input_text" name="end_date"  value="${four.end_date!''}"/>
 	       </div> 
 	       <div>
 				<div class="file">
-		            <input type="file" name="file_photo" id="file_photo4" value="${company.logo!''}"/>
+		            <input type="file" name="file_photo" id="file_photo4" value=""/>
 		           	 选择图片
 	            </div>
 	            <span class="red">图片为JPG格式，小于1000kb</span> 
 	            <div class="form-control" style="margin-left:0px">
-	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo4">      
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${four.photo!"nophoto.png"}' value='${four.photo!""}' id="img_photo4">      
 	       	    </div>
 	      </div>    
 	      <div class="rowDiv">
@@ -197,20 +197,20 @@
 	      <input type="hidden" name="default" value="Y"/>
 	      <div class="rowDiv">
 	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value=""/>
+	          <input type="text" class="input_text" name="user" value="${one.default_user_id!''}"/>
 	      </div>
 	      <div class="rowDiv">
 	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value=""/>
-	      </div> 
+	          <input type="text" class="input_text" name="product"  value="${one.default_product_id!''}"/>
+	      </div>
 	       <div>
 				<div class="file">
-		            <input type="file" name="file_photo" id="file_photo5" value="${company.logo!''}"/>
+		            <input type="file" name="file_photo" id="file_photo5" value=""/>
 		           	 选择图片
 	            </div>
 	            <span class="red">图片为JPG格式，小于1000kb</span> 
 	            <div class="form-control" style="margin-left:0px">
-	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo5">      
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${one.default_photo!"nophoto.png"}' value='${one.default_photo!""}' id="img_photo5">      
 	       	    </div>
 	      </div>    
 	      <div class="rowDiv">
@@ -227,20 +227,20 @@
 	      <input type="hidden" name="default" value="Y"/>
 	      <div class="rowDiv">
 	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value=""/>
+	          <input type="text" class="input_text" name="user" value="${two.default_user_id!''}"/>
 	      </div>
 	      <div class="rowDiv">
 	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value=""/>
+	          <input type="text" class="input_text" name="product"  value="${two.default_product_id!''}"/>
 	      </div>
 	       <div>
 				<div class="file">
-		            <input type="file" name="file_photo" id="file_photo6" value="${company.logo!''}"/>
+		            <input type="file" name="file_photo" id="file_photo6" value=""/>
 		           	 选择图片
 	            </div>
 	            <span class="red">图片为JPG格式，小于1000kb</span> 
 	            <div class="form-control" style="margin-left:0px">
-	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo6">      
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${two.default_photo!"nophoto.png"}' value='${two.default_photo!""}' id="img_photo6">      
 	       	    </div>
 	      </div>    
 	      <div class="rowDiv">
@@ -257,20 +257,20 @@
 	      <input type="hidden" name="default" value="Y"/>
 	      <div class="rowDiv">
 	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value=""/>
+	          <input type="text" class="input_text" name="user" value="${three.default_user_id!''}"/>
 	      </div>
 	      <div class="rowDiv">
 	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value=""/>
+	          <input type="text" class="input_text" name="product"  value="${three.default_product_id!''}"/>
 	      </div>
 	       <div>
 				<div class="file">
-		            <input type="file" name="file_photo" id="file_photo7" value="${company.logo!''}"/>
+		            <input type="file" name="file_photo" id="file_photo7" value=""/>
 		           	 选择图片
 	            </div>
 	            <span class="red">图片为JPG格式，小于1000kb</span> 
 	            <div class="form-control" style="margin-left:0px">
-	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo7">      
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${three.default_photo!"nophoto.png"}' value='${three.default_photo!""}' id="img_photo7">      
 	       	    </div>
 	      </div>    
 	      <div class="rowDiv">
@@ -286,22 +286,22 @@
 	      <div class="mh_list mt10">
 	      <input type="hidden" name="index" value="4"/>
 	      <input type="hidden" name="default" value="Y"/>
-	     <div class="rowDiv">
+	      <div class="rowDiv">
 	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value=""/>
+	          <input type="text" class="input_text" name="user" value="${four.default_user_id!''}"/>
 	      </div>
 	      <div class="rowDiv">
 	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value=""/>
+	          <input type="text" class="input_text" name="product"  value="${four.default_product_id!''}"/>
 	      </div>
 	       <div>
 				<div class="file">
-		            <input type="file" name="file_photo" id="file_photo8" value="${company.logo!''}"/>
+		            <input type="file" name="file_photo" id="file_photo8" value=""/>
 		           	 选择图片
 	            </div>
 	            <span class="red">图片为JPG格式，小于1000kb</span> 
 	            <div class="form-control" style="margin-left:0px">
-	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo8">      
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${four.default_photo!"nophoto.png"}' value='${four.default_photo!""}' id="img_photo8">      
 	       	    </div>
 	      </div>    
 	      <div class="rowDiv">

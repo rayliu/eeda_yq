@@ -11,6 +11,7 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -117,23 +118,35 @@ public class TaoController extends Controller {
     		order.set("ad_index", index);
     		if("Y".equals(default_flag)){
     			order.set("default_photo", photo);
-    			order.set("default_user_id", user_id);
-        		order.set("default_product_id", product_id);
+    			if(StringUtils.isNotBlank(user_id)){
+    				order.set("default_user_id", user_id);
+    			}
+    			if(StringUtils.isNotBlank(product_id)){
+    				order.set("default_product_id", product_id);
+    			}
     	    }else{
     	    	order.set("photo", photo);
-    	    	order.set("user_id", user_id);
-        		order.set("product_id", product_id);
-        		order.set("begin_date", begin_date);
-        		order.set("end_date", end_date);
+    	    	if(StringUtils.isNotBlank(user_id)){
+    				order.set("user_id", user_id);
+    			}
+    			if(StringUtils.isNotBlank(product_id)){
+    				order.set("product_id", product_id);
+    			}
+    			if(StringUtils.isNotBlank(begin_date)){
+    				order.set("begin_date", begin_date);
+    			}
+    			if(StringUtils.isNotBlank(end_date)){
+    				order.set("end_date", end_date);
+    			}
     	    }
     		order.set("creator", LoginUserController.getLoginUserId(this));
     		order.set("create_time", new Date());
     		Db.save("wc_ad_banner_photo", order);
     	}else{
     		if("Y".equals(default_flag)){
-    			order.set("defaut_photo", photo);
-    			order.set("defaut_user_id", user_id);
-        		order.set("defaut_product_id", product_id);
+    			order.set("default_photo", photo);
+    			order.set("default_user_id", user_id);
+        		order.set("default_product_id", product_id);
     	    }else{
     	    	order.set("photo", photo);
     	    	order.set("user_id", user_id);
