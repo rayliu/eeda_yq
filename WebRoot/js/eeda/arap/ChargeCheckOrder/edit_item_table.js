@@ -55,7 +55,7 @@ $(document).ready(function() {
             		return str;
 			          }
             },
-            {"width":"90px",
+            {"width":"50px",
               "render": function ( data, type, full, meta ) {
                     var str = '';
                      if($("#status").val()=='已确认'){
@@ -63,7 +63,7 @@ $(document).ready(function() {
                          
                      }else{                    	
                         str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px" >删除</button>&nbsp'
-                        	str += '<button type="button" class="itemEidt btn table_btn btn_green btn-xs" style="width:40px" >编辑</button>';
+                        	str += '<button type="button" class="itemEidt btn table_btn btn_green btn-xs" style="width:40px;display:none"  >编辑</button>';
                      }
                     return str;
                 }
@@ -862,6 +862,23 @@ $(document).ready(function() {
   		chargeTable.ajax.url(url).load();
   		$("#charge_editBtn").click();
   	});
+  	
+    //整数自动补零
+    itemOrder.returnFloat = function(value){
+    	 var xsd=value.toString().split(".");
+    	 if(xsd.length==1){
+    	 value=value.toString()+".00";
+    	 return value;
+    	 }
+    	 if(xsd.length>1){
+    	 if(xsd[1].length<2){
+    	 value=value.toString()+"0";
+    	 }
+    	 return value;
+    	 }
+    	}  	
+  	
+  	
 	
   //数量和单价自动补零
     $('#charge_table').on('blur','[name=price],[name=amount]',function(){
@@ -870,12 +887,54 @@ $(document).ready(function() {
     		$(this).val(itemOrder.returnFloat(amount));
     	}
     })
-    //输入单价时计算对账金额
-  	$("#charge_table").keyup(function(){    
-	  		var price = $("input[name='price']").val();
-	  		var amount = $("input[name='amount']").val();
-	  		$("input[name='total_amount']").val(price*amount);
-	     });  
+    
+  	//输入 数量*单价的时候，计算金额
+    $('#charge_table').on('keyup','[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate],[name=exchange_currency_rate_rmb]',function(){
+    	var row = $(this).parent().parent();
+    	var price = $(row.find('[name=price]')).val();
+    	var amount = $(row.find('[name=amount]')).val();
+    	var exchange_rate = $(row.find('[name=exchange_rate]')).val();
+    	var exchange_currency_rate = $(row.find('[name=exchange_currency_rate]')).val();
+        var exchange_currency_rate_rmb = $(row.find('[name=exchange_currency_rate_rmb]')).val();
+    	if(price==''||amount==''){
+    		$(row.find('[name=total_amount]')).val('');
+    		$(row.find('[name=currency_total_amount]')).val('');
+    		$(row.find('[name=exchange_total_amount]')).val('');
+            $(row.find('[name=exchange_total_amount_rmb]')).val('');
+            $(row.find('[name=rmb_difference]')).val('');
+    	}
+    	if(price!=''&&amount!=''&&!isNaN(price)&&!isNaN(amount)){
+    		var total_amount = parseFloat(price)*parseFloat(amount);
+    		$(row.find('[name=total_amount]')).val(total_amount);
+    		if(exchange_rate==''){
+    			$(row.find('[name=currency_total_amount]')).val('');
+    		}
+    		if(exchange_rate!=''&&!isNaN(exchange_rate)){
+    			$(row.find('[name=currency_total_amount]')).val((total_amount*parseFloat(exchange_rate)).toFixed(2));
+    			if(exchange_currency_rate==''){
+        			$(row.find('[name=exchange_total_amount]')).val('');
+                    $(row.find('[name=exchange_total_amount_rmb]')).val('');
+                     $(row.find('[name=rmb_difference]')).val('');
+        		}
+    			if(exchange_currency_rate!=''&&!isNaN(exchange_currency_rate)){
+                    $(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate)).toFixed(2));
+        		      if(exchange_currency_rate_rmb==''){
+                         $(row.find('[name=exchange_total_amount_rmb]')).val('');
+                         $(row.find('[name=rmb_difference]')).val('');
+                    }
+                    if(exchange_currency_rate_rmb!=''&&!isNaN(exchange_currency_rate_rmb)){
+                        var exchange_total_amount = parseFloat($(row.find('[name=exchange_total_amount]')).val());
+                        var currency_total_amount = parseFloat($(row.find('[name=currency_total_amount]')).val());
+                        $(row.find('[name=exchange_total_amount_rmb]')).val((exchange_total_amount*parseFloat(exchange_currency_rate_rmb)).toFixed(2));
+                        var exchange_total_amount_rmb = parseFloat($(row.find('[name=exchange_total_amount_rmb]')).val());
+                        $(row.find('[name=rmb_difference]')).val((parseFloat(exchange_total_amount_rmb-currency_total_amount)).toFixed(2));
+                      }
+                }
+    		}
+    	}
+    });
+    
+    
   	//编辑按钮里面的保存
   	$("#charge_saveBtn").click(function(){
   		var order = {}
