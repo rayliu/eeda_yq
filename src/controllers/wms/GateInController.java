@@ -72,6 +72,7 @@ public class GateInController extends Controller {
         }
 
         String jsonStr = getPara("jsonStr");
+        String orderBy = " order by gi.id desc";
     	if(StringUtils.isNotBlank(jsonStr)){
     		Gson gson = new Gson(); 
             Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class);  
@@ -80,6 +81,15 @@ public class GateInController extends Controller {
             String item_name = dto.get("item_name");
             String part_name = dto.get("part_name");
             String part_no = dto.get("part_no");
+            String order_type = getPara("order_type");
+            
+            if(StringUtils.isNotBlank(order_type)){
+            	if("gateOut".equals(order_type)){
+            		condition += " and gi.out_flag = 'Y' ";
+            	}else{
+            		condition += " and gi.out_flag = 'N' ";
+            	}
+            }
             
             if(StringUtils.isNotBlank(item_no)){
             	condition += " and pro.item_no like '%"+item_no+"%'";
@@ -91,10 +101,12 @@ public class GateInController extends Controller {
             
             if(StringUtils.isNotBlank(part_name)){
             	condition += " and pro.part_name like '%"+part_name+"%'";
+            	orderBy = " order by gi.qr_code";
             }
             
             if(StringUtils.isNotBlank(part_no)){
             	condition += " and gi.part_no like '%"+part_no+"%'";
+            	orderBy = " order by gi.qr_code";
             }
             
             
@@ -122,7 +134,6 @@ public class GateInController extends Controller {
 			+ " select gi.id from gate_in gi "
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
-			+ out_flag
 			+ error_flag
 			+ inv_flag
 			+ condition
@@ -133,7 +144,6 @@ public class GateInController extends Controller {
 			+ " left join user_login u on u.id = gi.creator"
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
-			+ out_flag
 			+ error_flag
 			+ inv_flag
 			+ condition
@@ -143,7 +153,7 @@ public class GateInController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ "order by gi.id desc "+sLimit);
+        List<Record> orderList = Db.find(sql + orderBy + sLimit);
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
@@ -176,6 +186,15 @@ public class GateInController extends Controller {
             String item_name = dto.get("item_name");
             String part_name = dto.get("part_name");
             String part_no = dto.get("part_no");
+            String order_type = getPara("order_type");
+            
+            if(StringUtils.isNotBlank(order_type)){
+            	if("gateOut".equals(order_type)){
+            		condition += " and gi.out_flag = 'Y' ";
+            	}else{
+            		condition += " and gi.out_flag = 'N' ";
+            	}
+            }
             
             if(StringUtils.isNotBlank(item_no)){
             	condition += " and pro.item_no like '%"+item_no+"%'";

@@ -59,7 +59,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
-                },
+                }
             ]
         });
         
@@ -144,7 +144,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
-                },
+                }
             ]
         });
       

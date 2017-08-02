@@ -51,6 +51,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				{ "data": "QUANTITY", "width": "50px"},
 				{ "data": "SHELVES", "width": "80px"},
 				{ "data": "CREATE_TIME", "width": "180px"},
+				{ "data": "OUT_TIME", "width": "180px"},
 				{ "data": "CREATOR_NAME", "width": "80px"},
                 { "data": "QR_CODE", "width": "580px"}, 
                 { "width": "30px", visible: false,
@@ -152,7 +153,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
-                },
+                }
             ]
         });
         
@@ -187,7 +188,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       return '<button type="button" class="btn table_btn delete_btn btn-xs" disabled>'+
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
-                },
+                }
             ]
         });
       
@@ -211,6 +212,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	          		item[name] = value;
 	          	}
 	      	}
+	      	item.order_type = $('[name=orderType]:checked').val();
 	        return item;
         };
         

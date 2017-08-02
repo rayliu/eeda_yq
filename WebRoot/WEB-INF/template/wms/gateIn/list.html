@@ -35,7 +35,20 @@
                         	}){}%>
                         </div>
                         <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                            {   id: 'part_name', 
+                                label: '组件名称', 
+                                value: ''
+                            }){}%>
                             
+                        </div>
+                        <div class="col-lg-4">
+	                        <label class="radio-inline">
+						        <input type="radio" name="orderType" id="" value="gateIn" checked> 入库记录
+						    </label>
+						    <label class="radio-inline">
+						        <input type="radio" name="orderType" id=""  value="gateOut"> 出库记录
+						    </label>
                         </div>
                     </div>
                     <div class="form-group button-bar" >
@@ -80,7 +93,8 @@
 	                        '组件名称',
 	                        '数量',
 	                        '货架',
-	                        '操作时间',
+	                        '入库时间',
+	                        '出库时间',
 	                        '操作人',
                             'QR code',
                             '']
