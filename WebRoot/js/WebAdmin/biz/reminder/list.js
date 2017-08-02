@@ -7,7 +7,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             serverSide: true, //不打开会出现排序不对
             ajax: "/WebAdmin/biz/reminder/list",
             columns: [
-	                     { "data":"ID","width": "80px"},
+	                     { "data":"UID","width": "80px"},
 	                     { "data": "USER_TYPE", "width":"120px",
 	                    	 "render":function(data,type,full,meta){
 	                    		 return data;
@@ -15,7 +15,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     }, 
 	                     { "data": "C_NAME", "width":"60px",
 	                    	 "render":function (data,type,full,meta){
-	                    		 return "<a href='/WebAdmin/biz/reminder/edit?creator="+full.CREATOR+"'>"+data+"</a>"
+	                    		 return "<a href='/WebAdmin/biz/reminder/edit?id="+full.UID+"'>"+data+"</a>"
 	                    	 }
 	                     },
 	                     { "data": "TRADE_TYPE", "width":"60px"},

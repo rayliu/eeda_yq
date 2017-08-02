@@ -36,7 +36,7 @@ $(document).ready(function() {
 								if(full.FLAG == 1){
 									info = "checked";
 								}
-								return"<button class='btn btn-danger delBtn' data-id='"+data+"'>删除精选</button>";
+								return"<button class='delete-btn delBtn' data-id='"+data+"'>删除精选</button>";
 							}
 				        }
 					]

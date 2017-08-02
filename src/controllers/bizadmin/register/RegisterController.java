@@ -38,6 +38,7 @@ public class RegisterController extends Controller {
 		re.set("phone", phone);
 		re.set("password", password);
 		re.set("is_stop", 1);
+		re.set("create_time",new Date());
 		Db.save("user_login", re);
 		setAttr("creator",re.get("id"));
 		List<Record> cateList = Db.find("select * from category");

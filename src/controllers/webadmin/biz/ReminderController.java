@@ -39,9 +39,9 @@ public class ReminderController extends Controller {
 	
 
 	public void edit(){
-        String creator = getPara("creator");
-        String sql="select ul.user_name,ul.phone ,wc.* from wc_company wc "
-        			+ "left join user_login ul on wc.creator = ul.id  where wc.creator = "+creator;
+        String id = getPara("id");
+        String sql = "select ul.id uid,ul.user_name,ul.phone ,wc.* from user_login ul "
+        			+ "left join wc_company wc on wc.creator = ul.id  where ul.id = "+id;
         Record re=Db.findFirst(sql);
         setAttr("user",re);
         render(getRequest().getRequestURI()+".html");
@@ -59,9 +59,9 @@ public class ReminderController extends Controller {
 	
 	@Before(Tx.class)
 	public void pass(){
-		String creator = getPara("creator");
+		String id = getPara("id");
 		String status = getPara("status");
-		String sql="update user_login set status = '"+status+"' where id = "+creator;
+		String sql="update user_login set status = '"+status+"' where id = "+id;
 		Db.update(sql);
 		renderJson(true);
 	}
@@ -107,7 +107,8 @@ public class ReminderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-    	String sql = "select ul.status,wc.* from wc_company wc  LEFT JOIN user_login ul on wc.creator = ul.id  where ul.status != '通过' ";
+    	String sql = "select ul.id uid,ul.status,wc.* from user_login ul  "
+    			+ "LEFT JOIN wc_company wc on wc.creator = ul.id  where ul.status != '通过' ";
     	String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ ") B";

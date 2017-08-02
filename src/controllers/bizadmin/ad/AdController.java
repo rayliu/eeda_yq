@@ -55,6 +55,12 @@ public class AdController extends Controller {
             rec.set("is_active", getPara("is_active"));
             rec.set("discount", getPara("discount"));
             Db.update("wc_ad_hui", rec);
+        }else {
+        	rec = new Record();
+        	rec.set("is_active",getPara("is_active"));
+        	rec.set("discount", getPara("discount"));
+        	rec.set("creator", userId);
+        	Db.save("wc_ad_hui", rec);
         }
         
         renderJson(rec);
@@ -132,7 +138,6 @@ public class AdController extends Controller {
 		String total_price = (String)dto.get("total_price");
 		String phone = (String)dto.get("phone");
 		String remark = (String)dto.get("remark");
-		
 		if(StringUtils.isNotBlank(order_id)){
 			Record order = Db.findById("wc_ad_mobile_promotion", order_id);
 			order.set("amount", amount);
@@ -141,8 +146,7 @@ public class AdController extends Controller {
 			order.set("total_price",total_price);
 			order.set("phone",phone);
 			order.set("remark",remark);
-			
-			Db.save("wc_ad_mobile_promotion", order);
+			Db.update("wc_ad_mobile_promotion", order);
 		}else{
 			Record order = new Record();
 			DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");

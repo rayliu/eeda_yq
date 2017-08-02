@@ -35,7 +35,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	              },
 	              { "data": "YOUKU_URL", "width":"90px",
 	            	"render":function(data,type,full,meta){
-	            		data="<button  class='modifibtn btn-blue  delete' " +
+	            		data="<button  class='delete-btn  delete' " +
        					" data-id="+full.ID+" >删除</button>";
 	            		return data
 	            	}  

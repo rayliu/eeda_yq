@@ -28,24 +28,20 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data": "ID", "width":"60px"},
 	                     { "data": "ID", "width":"60px"},
 	                     { "data": "STATUS", "width":"60px",
-	                    	 "render":function(data,type,full,meta){
-	                    		 return "已经"+data;
-	                    	 }
-	                     },
-	                     { "data": "STATUS", "width":"60px",
 	                    	 render: function(data,type,full,meta){
 	     	            		var status = "";
 	     	            		var info = ""
 	     	            		var button = "";
 	     	            		if(full.STATUS=="关闭"){
+	     	            			button = "modifibtn btn-blue";
 	     	            			status="toUp";
 	     	            			info = '开启'; 
 	     	            		}else if(full.STATUS=='开启'){
-	     	            			button="style='color:black;background:red;'"
+	     	            			button="delete-btn"
 	     	            			status='toDown'
 	     	            			info = "关闭";
 	     	            		}
-	     	            		data =  "<button "+button+" class='modifibtn btn-blue  wherether_carriage' " +
+	     	            		data =  "<button  class='"+button+" wherether_carriage' " +
 	     	              					" data-id="+full.ID+" href='#begin_date' status="+status+">"+info+"</button>";
 	     	            		return data;
 	     	            	} 

@@ -39,7 +39,7 @@ public class SpController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	 public void edit(){ 
 		String id = getPara("id");
-        String sql_user = "select * from wc_company where creator = "+id;
+        String sql_user = "select ul.id uid,ul.user_name,wc.* from user_login ul left join wc_company wc on wc.creator = ul.id where ul.id = "+id;
         String sql_dimond = "select if(DATEDIFF(max(end_date),now())>0,'Y','N') whether,DATEDIFF(max(end_date),"
         					+ "now()) leave_days,max(end_date) last_date from wc_ad_dimond where status = '已开通' and creator = "+id;
         String sql_cu =	"SELECT if(DATEDIFF(max(end_date),now())>0,cast(DATEDIFF(max(end_date),now()) as char),'0') leave_days,max(end_date) end_date FROM `wc_ad_cu` where status='开启' and creator ="+id;
@@ -65,11 +65,11 @@ public class SpController extends Controller {
     	String sql=	"SELECT id,'cu' type,"
     			+" create_time,order_no, cast(CONCAT(begin_date, '-', end_date) as char) duringday,"
     			+" if(DATEDIFF(end_date,begin_date)<0,'over time',cast(DATEDIFF(end_date,begin_date) as char)) total_day, price "
-    			+" FROM  wc_ad_cu  WHERE id = "+id
+    			+" FROM  wc_ad_cu  WHERE creator = "+id
     			+" UNION ALL"
     			+" SELECT id, 'dimond' type, create_time, order_no, cast(CONCAT(begin_date, '-', end_date) as char) duringday,"
     			+" if(DATEDIFF(end_date,begin_date)<0,'over time',cast(DATEDIFF(end_date,begin_date) as char)) total_day, total_price  price"
-    			+" FROM wc_ad_dimond WHERE id = "+ id;
+    			+" FROM wc_ad_dimond WHERE creator = "+ id;
     	String sqlTotal = "select count(1) total from ("+sql+ ") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
@@ -174,8 +174,8 @@ public class SpController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-    	String sql="select ul.id uid,ul.user_name,ul.phone,wc.* from  wc_company wc "
-    			+ "left join  user_login ul ON wc.creator = ul.id where ul.status = '通过'";
+    	String sql="select ul.id uid,ul.user_name,ul.phone,wc.* from user_login ul  "
+    			+ "left join  wc_company wc ON wc.creator = ul.id where ul.status = '通过'";
     	String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ ") B";

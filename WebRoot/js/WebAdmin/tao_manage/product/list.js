@@ -31,18 +31,18 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	     	            		var info = ""
 	     	            		var button = "";
 	     	            		if(full.IS_ACTIVE=="N"){
+	     	            			button='modifibtn btn-red'
 	     	            			status="toUp";
 	     	            			info = '上架'; 
 	     	            		}else if(full.IS_ACTIVE=='Y'){
-	     	            			button="style='color:black;background:red;'"
+	     	            			button='delete-btn'
 	     	            			status='toDown'
 	     	            			info = "下架";
 	     	            		}
-	     	            	data =  "<button "+button+" class='modifibtn btn-red  wherether_carriage' " +
-	     	              					" data-id="+full.ID+" href='#begin_date' status="+status+">"+info+"</button>"
+	     	            	data =  "<button class=' "+button+" wherether_carriage' " +
+	     	              			" data-id="+full.ID+" href='#begin_date' status="+status+">"+info+"</button>"
 	     	            			+"&nbsp&nbsp&nbsp<button class = 'modifibtn btn-red editBtn' data-id="+data+">编辑</button>" 
-	     	            			+'<input class="stdbtn btn_red delete" type="button" value="删除" >';
-                    		 
+	     	            			+'<input class="delete-btn delete" type="button" value="删除" >';
                     		 return data;
                     	 }
                      }

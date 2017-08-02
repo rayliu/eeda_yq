@@ -26,7 +26,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	            		}
 	            		
 	            		
-	            		data ="<button  class='modifibtn btn-blue  delete'  data-id="+data+" >删除</button>" 
+	            		data ="<button  class='delete-btn  delete'  data-id="+data+" >删除</button>" 
        							+"&nbsp&nbsp&nbsp<button class = 'modifibtn btn-blue editBtn' data-id="+data+">编辑</button>"
        							+"&nbsp&nbsp&nbsp&nbsp精选<input class='check' style='width:20px' type='checkBox' name='checkbox' data-id='"+data+"' "+flag+">";
 	            		return data;

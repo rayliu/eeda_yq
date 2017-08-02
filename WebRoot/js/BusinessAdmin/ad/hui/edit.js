@@ -6,12 +6,18 @@ define(['jquery', 'sco'], function ($, metisMenu) {
 		  if(status == 'B'){
 			 $("#saveBtn").attr("disabled",true).css({'background':'#e4e4e4'});
 			  $("#ban_tip").text("优惠操作已经被关闭，请联系管理员恢复 ")
+		  }else if($("input[name='DiscountOpen']:checked").val()==null){
+			  $("#saveBtn").attr("disabled",true);
+		  }else{
+			  $("#saveBtn").attr("disabled",false);
 		  }
 		  
 	  };
 	  
 	  init();
-	
+	  $("input[name='DiscountOpen']").change(function(){
+		  init();
+	  })
       $('#saveBtn').click(function() {
     	  var slef = this;
     	  slef.disabled = true;

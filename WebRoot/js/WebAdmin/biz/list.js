@@ -7,9 +7,12 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             serverSide: true, //不打开会出现排序不对
             ajax: "/WebAdmin/biz/list",
             columns: [
-	                     { "data":"ID","width": "80px"},
+	                     { "data":"UID","width": "80px"},
 	                     { "data": "C_NAME", "width":"60px",
 	                    	 "render":function(data,type,full,meta){
+	                    		 if(data==null){
+	                    			 data='暂无名称';
+	                    		 }
 	                    		 return "<a href='/WebAdmin/biz/edit?id="+full.UID+"'>"+data+"</a>";
 	                    	 }
 	                     },
