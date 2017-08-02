@@ -3436,7 +3436,7 @@ public class JobOrderController extends Controller {
     	//搜索此陆运相关的应收费用，用来打印debit_note
     	String order_id = getPara("order_id");
     	String land_item_id = getPara("land_item_id");
-	    String itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
+	    String itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,u.name unit_name,c.name currency_name,"
     				+ " c1.name exchange_currency_id_name"
     				+ " from job_order_arap jor "
     		        + " left join party pr on pr.id=jor.sp_id"
