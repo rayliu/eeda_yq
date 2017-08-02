@@ -10,18 +10,18 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data":"ID","width": "80px"},
 	                     { "data": "C_NAME", "width":"60px",
 	                    	 "render":function(data,type,full,meta){
-	                    		 return "<a href='/WebAdmin/biz/edit?id="+full.ID+"'>"+data+"</a>";
+	                    		 return "<a href='/WebAdmin/biz/edit?id="+full.UID+"'>"+data+"</a>";
 	                    	 }
 	                     },
 	                     { "data": "USER_NAME", "width":"60px"},
 	                     { "data": "CONTACT", "width":"60px"},
-	                     { "data": "TELEPHONE", "width":"60px"},
-	                     { "data": "TARDE_TYPE", "width":"120px",
+	                     { "data": "PHONE", "width":"60px"},
+	                     { "data": "TRADE_TYPE", "width":"120px",
 	                    	 "render":function(data,type,full,meta){
 	                    		 return data;
 	                    	 }
 	                     }, 
-	                     { "data": "PHONE", "width":"60px"},
+	                     { "data": "TELEPHONE", "width":"60px"},
 	                     { "data": "CITY", "width":"60px"},
 	                     { "data": "CREATE_TIME", "width":"60px"},
 	                     { "data": "LEAVL", "width":"60px"},

@@ -40,7 +40,8 @@ public class ReminderController extends Controller {
 
 	public void edit(){
         String creator = getPara("creator");
-        String sql="select * from wc_company where creator = "+creator;
+        String sql="select ul.user_name,ul.phone ,wc.* from wc_company wc "
+        			+ "left join user_login ul on wc.creator = ul.id  where wc.creator = "+creator;
         Record re=Db.findFirst(sql);
         setAttr("user",re);
         render(getRequest().getRequestURI()+".html");
@@ -49,8 +50,10 @@ public class ReminderController extends Controller {
 	@Before(Tx.class)
 	public void delete(){
 		String id = getPara("id");
-		String sql = "delete from user_login where id = "+id;
-		Db.update(sql);
+		String sql_company = "delete from wc_company where creator = "+id;
+		Db.update(sql_company);
+		String sql_user = "delete from user_login where id = "+id;
+		Db.update(sql_user);
 		renderJson(true);
 	}
 	

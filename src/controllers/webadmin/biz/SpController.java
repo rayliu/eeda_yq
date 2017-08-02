@@ -39,7 +39,7 @@ public class SpController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	 public void edit(){ 
 		String id = getPara("id");
-        String sql_user = "select * from user_login where id = "+id;
+        String sql_user = "select * from wc_company where creator = "+id;
         String sql_dimond = "select if(DATEDIFF(max(end_date),now())>0,'Y','N') whether,DATEDIFF(max(end_date),"
         					+ "now()) leave_days,max(end_date) last_date from wc_ad_dimond where status = '已开通' and creator = "+id;
         String sql_cu =	"SELECT if(DATEDIFF(max(end_date),now())>0,cast(DATEDIFF(max(end_date),now()) as char),'0') leave_days,max(end_date) end_date FROM `wc_ad_cu` where status='开启' and creator ="+id;
@@ -174,7 +174,8 @@ public class SpController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-    	String sql="select * from user_login where status = '通过'";
+    	String sql="select ul.id uid,ul.user_name,ul.phone,wc.* from  wc_company wc "
+    			+ "left join  user_login ul ON wc.creator = ul.id where ul.status = '通过'";
     	String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ ") B";

@@ -20,7 +20,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		 var result = confirm('你确定要删除这个商家吗？');
 		 if(result){
 			 self.attr('disabled',true);
-			 var id = $("#user_id").val();
+			 var id = $("#user_creator").val();
 			 $.post("/WebAdmin/biz/reminder/delete",{id:id},function(data){
 				 if(data){
 					 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);

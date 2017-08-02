@@ -9,11 +9,25 @@ $(document).ready(function() {
 			ajax: "/WebAdmin/best_wedding/list",
 			columns: [
 				        { "data": "PRODUCTOR", "width":"100px"},
-				        { "data": "" , "width":"100px"},
+				        { "data": "DISTRICT" , "width":"100px",
+				        	"render":function(data,type,full,meta){
+				        		var address='';
+				        		if(full.CISTRICT!=null){
+				        			address = full.DISTRICT;
+				        		}else if(full.CITY!=null){
+				        			address = full.CITY;
+				        		}else if(full.PROVINCE!=null){
+				        			address = full.PROVINCE;
+				        		}else{
+				        			address = '暂无';
+				        		}
+				        		return address;
+				        	}
+				        },
 				        { "data": "NAME", "width":"100px"},
 				        { "data": "PICTURE_NAME" ,"width":"120px",
 				        	  "render":function(data){
-				        		  return"<img src='/upload/"+data+"' style='width:120px; height:90px'/><a>查看更多 </a>"
+				        		  return"<img src='/upload/"+data+"' style='width:120px; height:90px'/>"
 				        	  }
 				        },
 				        { "data": "ID" ,"width":"50px",
