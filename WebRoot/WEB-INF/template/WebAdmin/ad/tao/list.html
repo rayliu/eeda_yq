@@ -2,90 +2,314 @@
     <div class="pageheader notab overhide">
       <h3>修改淘婚品广告价格</h3>
       <div class="bdgray mt10">
-	        <div><span class="pdr10">第一张广告</span> <input type="text" style="width:80px;" class="mh_txt" id="first_ad" value="${first_price!''}"/>元/每天            <input class="modifibtn update" type="button" value="修改"   loc="first" id="update_first"/></div>
-	        <div class="mt10"><span class="pdr10">第二张广告</span> <input type="text" style="width:80px;" class="mh_txt" id="second_ad" value="${second_price!''}" />元/每天 <input class="modifibtn update" type="button" loc="second" value="修改" id="update_second"/></div>
-	    	<div class="mt10"><span class="pdr10">第三张广告</span> <input type="text" style="width:80px;" class="mh_txt" id="third_ad" value="${third_price!''}" />元/每天 <input class="modifibtn update" type="button"  loc="third" value="修改" id="update_third"/></div>
-	    	<div class="mt10"><span class="pdr10">第四张广告</span> <input type="text" style="width:80px;" class="mh_txt" id="fourth_ad" value="${fourth_price!''}"/>元/每天 <input class="modifibtn update" type="button"  loc="fourth" value="修改" id="update_fourth"/></div>
+	        <div class = "line">
+	        	<span class="pdr10">第一张广告</span> 
+	        	<input type="text" style="width:80px;" class="input_text" id="first_ad" value="${first_price!''}"/>元/每天            
+	        	<input class="modifibtn update" type="button" value="修改"   loc="first" id="update_first"/>
+	        </div>
+	        <div class = "line">
+	        	<span class="pdr10">第二张广告</span> 
+	        	<input type="text" style="width:80px;" class="input_text" id="second_ad" value="${second_price!''}" />元/每天 
+	        	<input class="modifibtn update" type="button" loc="second" value="修改" id="update_second"/>
+	        </div>
+	    	<div class = "line">
+	    		<span class="pdr10">第三张广告</span> 
+	    		<input type="text" style="width:80px;" class="input_text" id="third_ad" value="${third_price!''}" />元/每天 
+	    		<input class="modifibtn update" type="button"  loc="third" value="修改" id="update_third"/>
+	    	</div>
+	    	<div class = "line">
+	    		<span class="pdr10">第四张广告</span> 
+	    		<input type="text" style="width:80px;" class="input_text" id="fourth_ad" value="${fourth_price!''}"/>元/每天 
+	    		<input class="modifibtn update" type="button"  loc="fourth" value="修改" id="update_fourth"/>
+	    	</div>
       </div>
-      <div class="mt10">
+<!--       <div class="mt10">
       	<%include("/eeda/component/form/detailTable.html", 
 	          {
 	              id:'eeda_table', 
 	             headers:['商家','联系电话','广告位置','开始时间','结束时间','单价','投放天数','结算金额','状态']
 	      }){} %> 
-      </div>     
-      <hr/>
-      <div class="overhide_np">
-      <div class="no_1ad">
-       <!--第一张广告-->  
-      <h4 class="mt10">第一张广告</h4>  
-      <div class="mh_list mt10">
-        <ul class="hb_list">
-		          <li><strong>广告内容</strong><br/>
-		     	 商家：<span class="orangeboldlink">珠海维多利亚婚礼高级会所</span><br/>
-		      		<input name="button42" type="button" class="" value="编辑广告内容"  onclick="window.location.href='business-tao-edit.php'"/> 
-		      	状态：
-		      		<span class="mt10">
-		      	显示      </span></li>
-		            
-				            <li><strong>默认显示广告</strong><br/>
-				 商家：<span class="orangeboldlink">珠海幸福礼</span><br/>
-				<span class="greenfont"><span  class="ui-state-error">
-				<input name="button3" type="button" class="" value="编辑" onclick="window.location.href='business-tao-edit.php'" />
-				</span></span></li>
-		 </ul>
+      </div>   -->
+      <br/>
+      <div class="overhide_np bdgray" >
+      <div class="no_1ad" >
+	       <!--第一张广告-->  
+	      <h4 class="mt10">第一张广告</h4>  
+	      <div class="mh_list mt10">
+	      <input type="hidden" name="index" value="1"/>
+	      <input type="hidden" name="default" value="N"/>
+	      <div class="rowDiv">
+	      	  <label>商家：</label>
+	          <input type="text" class="input_text" name="user" value="${one.user_id!''}"/>
+	      </div>
+	      <div class="rowDiv">
+	      	  <label>产品：</label>
+	          <input type="text" class="input_text" name="product"  value="${one.product_id!''}"/>
+	      </div>
+	       <div class="rowDiv">
+	      		<label>开始时间：</label>
+	            <input type="date" class="input_text" name="begin_date"  value="${one.begin_date!''}"/>
+	       </div>
+	       <div class="rowDiv">
+	       		<label>结束时间：</label>
+	            <input type="date" class="input_text" name="end_date"  value="${one.end_date!''}"/>
+	       </div> 
+	       <div>
+				<div class="file">
+		            <input type="file" name="file_photo" id="file_photo1" value=""/>
+		           	 选择图片
+	            </div>
+	            <span class="red">图片为JPG格式，小于1000kb</span> 
+	            <div class="form-control" style="margin-left:0px">
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${one.photo!"nophoto.png"}' value='${one.photo!""}' id="img_photo1">      
+	       	    </div>
+	      </div>    
+	      <div class="rowDiv">
+	      	  <br>
+	      	  <button  name="saveBtn" class="stdbtn btn_blue" style="width:200px;"/>保存</button>
+	      </div>
+	      </div>  
       </div>  
+      <div class="no_1ad" >
+	       <!--第一张广告-->  
+	      <h4 class="mt10">第二张广告</h4>  
+	      <div class="mh_list mt10">
+	      <input type="hidden" name="index" value="2"/>
+	      <input type="hidden" name="default" value="N"/>
+	      <div class="rowDiv">
+	      	  <label>商家：</label>
+	          <input type="text" class="input_text" name="user" value=""/>
+	      </div>
+	      <div class="rowDiv">
+	      	  <label>产品：</label>
+	          <input type="text" class="input_text" name="product"  value=""/>
+	      </div>
+	       <div class="rowDiv">
+	      		<label>开始时间：</label>
+	            <input type="date" class="input_text" name="begin_date"  value=""/>
+	       </div>
+	       <div class="rowDiv">
+	       		<label>结束时间：</label>
+	            <input type="date" class="input_text" name="end_date"  value=""/>
+	       </div> 
+	       <div>
+				<div class="file">
+		            <input type="file" name="file_photo" id="file_photo2" value="${company.logo!''}"/>
+		           	 选择图片
+	            </div>
+	            <span class="red">图片为JPG格式，小于1000kb</span> 
+	            <div class="form-control" style="margin-left:0px">
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo2">      
+	       	    </div>
+	      </div>
+	      <div class="rowDiv">
+	      	  <br>
+	      	  <button  name="saveBtn" class="stdbtn btn_blue" style="width:200px;"/>保存</button>
+	      </div>    
+	      </div>  
       </div>  
-      <div class="no_2ad">
-       <!--第二张广告-->  
-      <h4 class="mt10">第二张广告</h4>  
-      <div class="mh_list mt10">
-        <ul class="hb_list"><li><strong>广告内容</strong><br/>
-		            商家：<span class="orangeboldlink">珠海维多利亚婚礼高级会所</span><br/>
-		            <input name="button422" type="button" class="" value="编辑广告内容"  onclick="window.location.href='business-tao-edit.php'"/>
-		            状态： <span class="mt10"> 不显示 </span></li>
-		          <li><strong>默认显示广告</strong><br/>
-		            商家：<span class="orangeboldlink">珠海幸福礼</span><br/>
-		            <span class="ui-state-error">
-		            <input name="button32" type="button" class="" value="编辑" onclick="window.location.href='business-tao-edit.php'" />
-		            </span></li>
-        </ul>
-      </div>
-      </div>
-    <div class="no_2ad">
-       <!--第三张广告-->  
-     	 <h4 class="mt10">第三张广告</h4>  
-      	<div class="mh_list mt10">
-        	<ul class="hb_list"><li><strong>广告内容</strong><br/>
-         	  	 商家：<span class="orangeboldlink">珠海维多利亚婚礼高级会所</span><br/>
-            <input name="button423" type="button" class="" value="编辑广告内容"  onclick="window.location.href='business-tao-edit.php'"/>
-        		    状态： <span class="mt10"> 不显示 </span></li>
-          <li><strong>默认显示广告</strong><br/>
-            	商家：<span class="orangeboldlink">珠海幸福礼</span><br/>
-           			 <span class="ui-state-error">
-            	<input name="button33" type="button" class="" value="编辑" onclick="window.location.href='business-tao-edit.php'" />
-            </span></li>
-        </ul>
-      </div>
-    </div>
+    <div class="no_1ad" >
+	       <!--第一张广告-->  
+	      <h4 class="mt10">第三张广告</h4>  
+	      <div class="mh_list mt10">
+	      <input type="hidden" name="index" value="3"/>
+	      <input type="hidden" name="default" value="N"/>
+	      <div class="rowDiv">
+	      	  <label>商家：</label>
+	          <input type="text" class="input_text" name="user" value=""/>
+	      </div>
+	      <div class="rowDiv">
+	      	  <label>产品：</label>
+	          <input type="text" class="input_text" name="product"  value=""/>
+	      </div>
+	       <div class="rowDiv">
+	      		<label>开始时间：</label>
+	            <input type="date" class="input_text" name="begin_date"  value=""/>
+	       </div>
+	       <div class="rowDiv">
+	       		<label>结束时间：</label>
+	            <input type="date" class="input_text" name="end_date"  value=""/>
+	       </div> 
+	       <div>
+				<div class="file">
+		            <input type="file" name="file_photo" id="file_photo3" value="${company.logo!''}"/>
+		           	 选择图片
+	            </div>
+	            <span class="red">图片为JPG格式，小于1000kb</span> 
+	            <div class="form-control" style="margin-left:0px">
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo3">      
+	       	    </div>
+	      </div>    
+	      <div class="rowDiv">
+	      	  <br>
+	      	  <button  name="saveBtn" class="stdbtn btn_blue" style="width:200px;"/>保存</button>
+	      </div>
+	      </div>  
+      </div>  
     
-    <div class="no_2ad">
-       <!--第四张广告-->  
-      <h4 class="mt10">第四张广告</h4>  
-      <div class="mh_list mt10">
-        <ul class="hb_list">
-		          <li><strong>广告内容</strong><br/>
-		            商家：<span class="orangeboldlink">珠海维多利亚婚礼高级会所</span><br/>
-		            <input name="button424" type="button" class="" value="编辑广告内容"  onclick="window.location.href='business-tao-edit.php'"/>
-		            状态： <span class="mt10"> 显示 </span></li>
-		          <li><strong>默认显示广告</strong><br/>
-		            商家：<span class="orangeboldlink">珠海幸福礼</span><br/>
-		            <span class="ui-state-error">
-		            <input name="button34" type="button" class="" value="编辑" onclick="window.location.href='business-tao-edit.php'" />
-		            </span></li>
-       			 </ul>
-     		 </div>
-    	</div>
+    <div class="no_1ad" >
+	       <!--第一张广告-->  
+	      <h4 class="mt10">第四张广告</h4>  
+	      <div class="mh_list mt10">
+	      <input type="hidden" name="index" value="4"/>
+	      <input type="hidden" name="default" value="N"/>
+	     <div class="rowDiv">
+	      	  <label>商家：</label>
+	          <input type="text" class="input_text" name="user" value=""/>
+	      </div>
+	      <div class="rowDiv">
+	      	  <label>产品：</label>
+	          <input type="text" class="input_text" name="product"  value=""/>
+	      </div>
+	       <div class="rowDiv">
+	      		<label>开始时间：</label>
+	            <input type="date" class="input_text" name="begin_date"  value=""/>
+	       </div>
+	       <div class="rowDiv">
+	       		<label>结束时间：</label>
+	            <input type="date" class="input_text" name="end_date"  value=""/>
+	       </div> 
+	       <div>
+				<div class="file">
+		            <input type="file" name="file_photo" id="file_photo4" value="${company.logo!''}"/>
+		           	 选择图片
+	            </div>
+	            <span class="red">图片为JPG格式，小于1000kb</span> 
+	            <div class="form-control" style="margin-left:0px">
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo4">      
+	       	    </div>
+	      </div>    
+	      <div class="rowDiv">
+	      	  <br>
+	      	  <button  name="saveBtn" class="stdbtn btn_blue" style="width:200px;"/>保存</button>
+	      </div>
+	      </div>  
+      </div>  
+ 	</div>  
+ 	
+ 	<br/>
+ 	<div class="overhide_np bdgray" >
+      <div class="no_1ad" >
+	       <!--第一张广告-->  
+	      <h4 class="mt10">默认第一张广告</h4>  
+	      <div class="mh_list mt10">
+	      <input type="hidden" name="index" value="1"/>
+	      <input type="hidden" name="default" value="Y"/>
+	      <div class="rowDiv">
+	      	  <label>商家：</label>
+	          <input type="text" class="input_text" name="user" value=""/>
+	      </div>
+	      <div class="rowDiv">
+	      	  <label>产品：</label>
+	          <input type="text" class="input_text" name="product"  value=""/>
+	      </div> 
+	       <div>
+				<div class="file">
+		            <input type="file" name="file_photo" id="file_photo5" value="${company.logo!''}"/>
+		           	 选择图片
+	            </div>
+	            <span class="red">图片为JPG格式，小于1000kb</span> 
+	            <div class="form-control" style="margin-left:0px">
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo5">      
+	       	    </div>
+	      </div>    
+	      <div class="rowDiv">
+	      	  <br>
+	      	  <button  name="saveBtn" class="stdbtn btn_blue" style="width:200px;"/>保存</button>
+	      </div>
+	      </div>  
+      </div>  
+      <div class="no_1ad" >
+	       <!--第一张广告-->  
+	      <h4 class="mt10">默认第二张广告</h4>  
+	      <div class="mh_list mt10">
+	       <input type="hidden" name="index" value="2"/>
+	      <input type="hidden" name="default" value="Y"/>
+	      <div class="rowDiv">
+	      	  <label>商家：</label>
+	          <input type="text" class="input_text" name="user" value=""/>
+	      </div>
+	      <div class="rowDiv">
+	      	  <label>产品：</label>
+	          <input type="text" class="input_text" name="product"  value=""/>
+	      </div>
+	       <div>
+				<div class="file">
+		            <input type="file" name="file_photo" id="file_photo6" value="${company.logo!''}"/>
+		           	 选择图片
+	            </div>
+	            <span class="red">图片为JPG格式，小于1000kb</span> 
+	            <div class="form-control" style="margin-left:0px">
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo6">      
+	       	    </div>
+	      </div>    
+	      <div class="rowDiv">
+	      	  <br>
+	      	  <button  name="saveBtn" class="stdbtn btn_blue" style="width:200px;"/>保存</button>
+	      </div>
+	      </div>  
+      </div>  
+    <div class="no_1ad" >
+	       <!--第一张广告-->  
+	      <h4 class="mt10">默认第三张广告</h4>  
+	      <div class="mh_list mt10">
+	      <input type="hidden" name="index" value="3"/>
+	      <input type="hidden" name="default" value="Y"/>
+	      <div class="rowDiv">
+	      	  <label>商家：</label>
+	          <input type="text" class="input_text" name="user" value=""/>
+	      </div>
+	      <div class="rowDiv">
+	      	  <label>产品：</label>
+	          <input type="text" class="input_text" name="product"  value=""/>
+	      </div>
+	       <div>
+				<div class="file">
+		            <input type="file" name="file_photo" id="file_photo7" value="${company.logo!''}"/>
+		           	 选择图片
+	            </div>
+	            <span class="red">图片为JPG格式，小于1000kb</span> 
+	            <div class="form-control" style="margin-left:0px">
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo7">      
+	       	    </div>
+	      </div>    
+	      <div class="rowDiv">
+	      	  <br>
+	      	  <button  name="saveBtn" class="stdbtn btn_blue" style="width:200px;"/>保存</button>
+	      </div>
+	      </div>  
+      </div>  
+    
+    <div class="no_1ad" >
+	       <!--第一张广告-->  
+	      <h4 class="mt10">默认第四张广告</h4>  
+	      <div class="mh_list mt10">
+	      <input type="hidden" name="index" value="4"/>
+	      <input type="hidden" name="default" value="Y"/>
+	     <div class="rowDiv">
+	      	  <label>商家：</label>
+	          <input type="text" class="input_text" name="user" value=""/>
+	      </div>
+	      <div class="rowDiv">
+	      	  <label>产品：</label>
+	          <input type="text" class="input_text" name="product"  value=""/>
+	      </div>
+	       <div>
+				<div class="file">
+		            <input type="file" name="file_photo" id="file_photo8" value="${company.logo!''}"/>
+		           	 选择图片
+	            </div>
+	            <span class="red">图片为JPG格式，小于1000kb</span> 
+	            <div class="form-control" style="margin-left:0px">
+	           		<img style='width: 200px; height:150px' class='shadow' src='/upload/${company.logo!"nophoto.png"}' value='${company.logo!""}' id="img_photo8">      
+	       	    </div>
+	      </div>    
+	      <div class="rowDiv">
+	      	  <br>
+	      	  <button  name="saveBtn" class="stdbtn btn_blue" style="width:200px;"/>保存</button>
+	      </div>
+	      </div>  
+      </div>  
  	</div>  
  </div>
 		

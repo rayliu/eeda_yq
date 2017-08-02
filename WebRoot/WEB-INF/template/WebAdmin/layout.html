@@ -48,9 +48,9 @@
 function checkMessage(){
 	$.post('/WebAdmin/getLoginUser',function(data){
 		if(data){
-			var banner = data.banner;
-			var mobile = data.mobile;
-			var nopass = data.nopass;
+			var banner = data.BANNER;
+			var mobile = data.MOBILE;
+			var nopass = data.NOPASS;
 			if(nopass > 0){
 				$("#rm_page").text(nopass).show();
 				
@@ -62,6 +62,9 @@ function checkMessage(){
 			if(banner > 0){
 				$("#banner_page").text(banner).show();
 			}
+            $('.login_name').text(data.USER.C_NAME);
+            $('#email').text(data.USER.USER_NAME);
+
 		}
 	});
 }

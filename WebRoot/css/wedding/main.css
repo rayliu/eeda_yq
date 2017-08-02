@@ -100,8 +100,18 @@
   display:none;
 }
 
-input{
-	autocomplete:off;
-	color:red;
+.line{
+	padding:0;
+	margin:3px 3px 3px 3px;
+}
+
+.rowDiv{
+	margin:10px 10px 10px 0px;
+}
+
+
+.rowDiv lable{
+	font-weight:bold;
+	margin-right:20px;
 }
 

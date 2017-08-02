@@ -230,21 +230,19 @@ public class WebAdminController extends Controller {
     public void getLoginUser(){
     	UserLogin ul = LoginUserController.getLoginUser(this);
     	//商家入驻申请
-    	String sql_nopass="select * from user_login where status != '通过' ";
+    	String sql_nopass = "select * from user_login where status = '新建' ";
     	//横幅广告申请
-    	String sql_banner = "select * from wc_ad_banner where status  not like '已%'";
+    	String sql_banner = "select * from wc_ad_banner where status =  '新建'";
     	//手机推送申请
-    	String sql_mobile = "select * from wc_ad_mobile_promotion where status  not like '已%'";
-    	List nopass=Db.find(sql_nopass);
-    	List banner=Db.find(sql_banner);
-    	List mobile=Db.find(sql_mobile);
-    	setAttr("nopass",nopass.size());
-    	setAttr("banner",banner.size());
-    	setAttr("mobile",mobile.size());
-    	Map data= new HashMap();
-    	data.put("nopass", nopass.size());
-    	data.put("banner", banner.size());
-    	data.put("mobile", mobile.size());
+    	String sql_mobile = "select * from wc_ad_mobile_promotion where status = '新建'";
+    	List<Record> nopass = Db.find(sql_nopass);
+    	List<Record> banner = Db.find(sql_banner);
+    	List<Record> mobile = Db.find(sql_mobile);
+    	Record data = new Record();
+    	data.set("nopass", nopass.size());
+    	data.set("banner", banner.size());
+    	data.set("mobile", mobile.size());
+    	data.set("user", ul);
     	renderJson(data);
     }
 

@@ -1,5 +1,33 @@
-define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) { 
+define(['jquery', 'validate_cn',  'dataTablesBootstrap', 'sco', 'file_upload'], function ($, metisMenu) { 
     $(document).ready(function() {
+    	
+    	$("[name=file_photo]").on('click',function(){
+		  var fileid = this.id;
+  		  var str = fileid.substring(5,20);
+  		  $(this).fileupload({
+  				validation: {allowedExtensions: ['*']},
+  				autoUpload: true, 
+  			    url: '/BusinessAdmin/account/saveFile',
+  			    dataType: 'json',
+  		        done: function (e, data) {
+  	        		if(data){
+  			    		$("#img_"+str).val(data.result.NAME);
+  			    		var imgPre =Id("img_"+str);
+  			  		    imgPre.src = '/upload/'+data.result.NAME;
+  			    	}else{
+  			    		$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+  			    	}
+  			     },error: function () {
+  		            alert('上传的时候出现了错误！');
+  		        }
+  		   });
+  	  })
+    	 
+    	 //定义id选择器
+	   	function Id(id){
+	   		return document.getElementById(id);
+	   	}
+    
     	//datatable, 动态处理
     	var dataTable = eeda.dt({
              id: 'eeda_table',
@@ -100,33 +128,37 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         	})
         	
         })
-        //是否审批
-        $("#eeda_table").on("click"," .wherether_approve",function(){
-        	var result = confirm("确定要这样做吗？");
-        	var self = $(this);
-        	var id = self.data('id');
-        	var status = self.attr("status");
-        	if(result){
-        		$.post("/WebAdmin/ad/tao/whetherApprove",{id:id,status:status},function(data){
-            		if(data){
-            			if(status == "Y"){
-            				$.scojs_message("审批成功",$.scojs_message.TYPE_OK);
-            			}
-            			if(status == "N"){
-            				$.scojs_message("已拒绝",$.scojs_message.TYPE_OK);
-            			}
-            			refleshTable();
-            		}else{
-            			$.scojs.message("审批失败",$.scojs_message.TYPE_OK);
-            		}
-            	})
-        	}
+
+        
+        $('[name=saveBtn]').click(function(){
+        	
+        	var self = this;
+        	var row = $(self).parent().parent().parent();
+        	var user_id = $(row.find('[name=user]')).val();
+        	var product_id = $(row.find('[name=product]')).val();
+        	var begin_date = $(row.find('[name=begin_date]')).val();
+    		var end_date = $(row.find('[name=end_date]')).val();
+			var photo = $(row.find('.shadow')).val();
+			var index = $(row.find('[name=index]')).val();
+			var default_flag = $(row.find('[name=default]')).val();
+
+			self.diabled = true;
+			$.post('/WebAdmin/ad/tao/save',{user_id:user_id,product_id:product_id,begin_date:begin_date,end_date:end_date,
+				photo:photo,index:index,default_flag:default_flag},function(data){
+				if(data){
+					$.scojs_message("保存成功",$.scojs_message.TYPE_OK);
+				}else{
+					$.scojs.message("保存失败",$.scojs_message.TYPE_ERROR);
+				}
+				self.diabled = false;
+			});
+        	
         });
 
         
- 	 var refleshTable = function(){
-   	  dataTable.ajax.url("/WebAdmin/ad/tao/list").load();
-    }
+ 	    var refleshTable = function(){
+ 	    	dataTable.ajax.url("/WebAdmin/ad/tao/list").load();
+ 	    }
      
 
 		var DateDiff = function  DateDiff(sDate1,sDate2){   //sDate1和sDate2是2006-12-18格式  

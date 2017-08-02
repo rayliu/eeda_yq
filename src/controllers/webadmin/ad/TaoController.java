@@ -78,6 +78,15 @@ public class TaoController extends Controller {
         }else{
         	setAttr("fourth_price",re4.get("price"));
         }
+		
+		Record one = Db.findFirst("select * from wc_ad_banner_photo where ad_index = 1");
+        Record two = Db.findFirst("select * from wc_ad_banner_photo where ad_index = 2");
+        Record three = Db.findFirst("select * from wc_ad_banner_photo where ad_index = 3");
+        Record four = Db.findFirst("select * from wc_ad_banner_photo where ad_index = 4");
+        setAttr("one", one);
+        setAttr("two", two);
+        setAttr("three", three);
+        setAttr("four", four);
         
 		render(getRequest().getRequestURI()+"/list.html");
 	}
@@ -85,31 +94,59 @@ public class TaoController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	 public void edit(){
 	        String id = getPara("id");
-//	      String title = getPara("edit_radioTitle");
-//	      String content = getPara("edit_radioContent");
-//	      Record r= Db.findById("msg_board", id);
-//	      r.set("title", title);
-//	      r.set("content", content);
-//	      r.set("update_stamp", new Date());
-//	      r.set("updator", LoginUserController.getLoginUserId(this));
-//	      Db.update("msg_board", r);
+	       
 	        render(getRequest().getRequestURI()+"/edit.html");
 	    }
+	
+	
+
 	 
     @Before(Tx.class)
    	public void save() throws Exception {
-    	String title = getPara("radioTitle");
-    	String content = getPara("radioContent");
-    	UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id=user.getLong("office_id");
-    	Record r= new Record();
-        r.set("title", title);
-        r.set("content", content);
-        r.set("office_id", office_id);
-        r.set("create_stamp", new Date());
-        r.set("creator", LoginUserController.getLoginUserId(this));
-        Db.save("msg_board", r);
-        redirect("/");
+    	String user_id = getPara("user_id");
+    	String product_id = getPara("product_id");
+    	String begin_date = getPara("begin_date");
+    	String end_date = getPara("end_date");
+    	String photo = getPara("photo");
+    	String index = getPara("index");
+    	String default_flag = getPara("default_flag");
+    	
+    	Record order = Db.findFirst("select * from wc_ad_banner_photo where ad_index =?", index);
+    	if(order == null){
+    		order = new Record();
+    		order.set("ad_index", index);
+    		if("Y".equals(default_flag)){
+    			order.set("default_photo", photo);
+    			order.set("default_user_id", user_id);
+        		order.set("default_product_id", product_id);
+    	    }else{
+    	    	order.set("photo", photo);
+    	    	order.set("user_id", user_id);
+        		order.set("product_id", product_id);
+        		order.set("begin_date", begin_date);
+        		order.set("end_date", end_date);
+    	    }
+    		order.set("creator", LoginUserController.getLoginUserId(this));
+    		order.set("create_time", new Date());
+    		Db.save("wc_ad_banner_photo", order);
+    	}else{
+    		if("Y".equals(default_flag)){
+    			order.set("defaut_photo", photo);
+    			order.set("defaut_user_id", user_id);
+        		order.set("defaut_product_id", product_id);
+    	    }else{
+    	    	order.set("photo", photo);
+    	    	order.set("user_id", user_id);
+        		order.set("product_id", product_id);
+        		order.set("begin_date", begin_date);
+        		order.set("end_date", end_date);
+    	    }
+    		order.set("update_by", LoginUserController.getLoginUserId(this));
+    		order.set("update_time", new Date());
+    		Db.update("wc_ad_banner_photo", order);
+    	}
+
+        renderJson(true);
    	}
     
     @Before(Tx.class)
