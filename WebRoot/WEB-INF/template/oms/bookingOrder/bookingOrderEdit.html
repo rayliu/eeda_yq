@@ -81,16 +81,14 @@
 		</div>
 	</div><br>
     
-    <div class="panel-body">
-	    <div class="simple_search_div" style="width:380px;height:215px;float:left;margin-left:-13px;">
+    <div class="panel-body row">
+	    <div class="simple_search_div three_tab" style="margin-right:2%;">
 	    	<div class="panel-body">发布人信息Shipper
 	    		<div style="margin-left:25px;margin-top:15px;">
 		    		<div>
 	                	<%include("/eeda/component/form/inputSpField.html", 
 	                                    	{   id: 'consignor', 
 	                                    		label:'发货公司',
-	                                    		style:'width:200px',
-	                                    		labelStyle:'width:80px',
 	                                            value: ''
 	                                        }){}%>
 	                </div>
@@ -98,8 +96,6 @@
 		    			<%include("/eeda/component/form/inputField.html", 
 		                                                {   id:'contacts', 
 		                                                    label:'联系人',
-		                                                    style:'width:200px',
-		                                                    labelStyle:'width:80px',
 		                                                    value:order.order_no!''
 		                                                }){}%>
 		    		</div>
@@ -107,27 +103,23 @@
 		    			<%include("/eeda/component/form/inputField.html", 
 		                                                {   id:'contacts_phone', 
 		                                                    label:'联系电话',
-		                                                    style:'width:200px',
-		                                                    labelStyle:'width:80px',
 		                                                    value:order.order_no!''
 		                                                }){}%>
 		    		</div>
 		    		<div><br>
-		    			<label style="width:82px;position:relative;bottom:30px;">地址</label><textarea rows="3" style="width:200px;"></textarea>
+		    			<label class="search-label" style="position:relative;bottom:45px;">地址</label><textarea rows="3" class="form-control search-control"></textarea>
 		    		</div>
 	    		</div>
 	    	</div>
 	    </div>
 	    
-	    <div class="simple_search_div" style="width:380px;height:220px;float:left;margin-left:32px;">
+	    <div class="simple_search_div three_tab" style="margin-right:2%;">
 			<div class="panel-body">收货人信息Shipper
 	    		<div style="margin-left:25px;margin-top:15px;">
 		    		<div>
 	                	<%include("/eeda/component/form/inputSpField.html", 
 	                                    	{   id: 'consignee', 
 	                                    		label:'收货公司',
-	                                    		style:'width:200px',
-	                                    		labelStyle:'width:80px',
 	                                            value: ''
 	                                        }){}%>
 	                </div>
@@ -135,8 +127,6 @@
 		    			<%include("/eeda/component/form/inputField.html", 
 		                                                {   id:'联系人', 
 		                                                    label:'联系人',
-		                                                    style:'width:200px',
-		                                                    labelStyle:'width:80px',
 		                                                    value:order.order_no!''
 		                                                }){}%>
 		    		</div>
@@ -144,27 +134,23 @@
 		    			<%include("/eeda/component/form/inputField.html", 
 		                                                {   id:'', 
 		                                                    label:'联系电话',
-		                                                    style:'width:200px',
-		                                                    labelStyle:'width:80px',
 		                                                    value:order.order_no!''
 		                                                }){}%>
 		    		</div>
 		    		<div><br>
-		    			<label style="width:82px;position:relative;bottom:30px;">地址</label><textarea rows="3" style="width:200px;"></textarea>
+		    			<label class="search-label" style="position:relative;bottom:45px;">地址</label> <textarea rows="3" class="form-control search-control"></textarea>
 		    		</div>
 	    		</div>
 	    	</div>
 	    </div>
 	    
-	    <div class="simple_search_div" style="width:380px;height:220px;float:left;margin-left:33px;padding-right:-50px;">
+	    <div class="simple_search_div three_tab">
 	    	<div class="panel-body">通知人信息Shipper
 	    		<div style="margin-left:25px;margin-top:15px;">
 		    		<div>
 	                	<%include("/eeda/component/form/inputSpField.html", 
 	                                    	{   id: 'customer', 
 	                                    		label:'通知人公司',
-	                                    		style:'width:200px',
-	                                    		labelStyle:'width:80px',
 	                                            value: ''
 	                                        }){}%>
 	                </div>
@@ -172,8 +158,6 @@
 		    			<%include("/eeda/component/form/inputField.html", 
 		                                                {   id:'', 
 		                                                    label:'联系人',
-		                                                    style:'width:200px',
-		                                                    labelStyle:'width:80px',
 		                                                    value:order.order_no!''
 		                                                }){}%>
 		    		</div>
@@ -181,13 +165,11 @@
 		    			<%include("/eeda/component/form/inputField.html", 
 		                                                {   id:'', 
 		                                                    label:'联系电话',
-		                                                    style:'width:200px',
-		                                                    labelStyle:'width:80px',
 		                                                    value:order.order_no!''
 		                                                }){}%>
 		    		</div>
 		    		<div><br>
-		    			<label style="width:82px;position:relative;bottom:30px;">地址</label><textarea rows="3" style="width:200px;"></textarea>
+		    			<label class="search-label" style="position:relative;bottom:45px;">地址</label> <textarea rows="3" class="form-control search-control"></textarea>
 		    		</div>
 	    		</div>
 	    	</div>
