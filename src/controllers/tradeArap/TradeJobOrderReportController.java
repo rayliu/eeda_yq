@@ -383,6 +383,26 @@ public class TradeJobOrderReportController extends Controller {
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
+	
+	//打印应付申请单PDF
+	public void chargeApplicationBill(){
+		String order_id = getPara("order_id");
+		String fileName = "/report/tradeCheckOrder/tradeChargeApplicationBill.jasper";
+		String outFileName = "/download/应收申请单PDF";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_id;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+	
+	
+	
+	
+	
+	
+	
 	//报关申请单页面中，打印货物报关单PDF
 	public void printCargoCustomOrder(){
 		String order_id = getPara("id");
