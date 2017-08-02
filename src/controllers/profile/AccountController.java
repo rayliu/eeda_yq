@@ -12,7 +12,6 @@ import models.eeda.profile.Account;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
@@ -101,7 +100,7 @@ public class AccountController extends Controller {
     }
 
     // 列出金融账户信息
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_LIST})
+//    @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_LIST})
     public void list() {
         String sLimit = "";
         String pageIndex = getPara("sEcho");
