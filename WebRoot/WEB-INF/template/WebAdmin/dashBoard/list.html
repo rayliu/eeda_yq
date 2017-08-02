@@ -34,7 +34,7 @@
         	</div>
         	
         	<div class="baseinfo-list">
-                <h3>地区管理</h3>
+                <h3>分类管理</h3>
                 <div style="margin:5px 0 0 0">
                 	<button class="modifibtn" id="add_category">添加分类</button>
                 </div>
@@ -45,90 +45,24 @@
 		              headers:['分类','操作']
 		          }){} %>
         	</div>
-<!--         <div class="baseinfo-list">
-             <h3>分类管理</h3>
-      
-             <table cellspacing="0" cellpadding="0" border="0" class="stdtable mt10">
-                    <colgroup>
-                        <col class="con0">
-                        <col class="con1">
-                        <col class="con0">
-                        <col class="con1">
-                        <col class="con0">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th width="11%" class="head0">粉类</th>
-                            <th width="89%" class="head1"><input name="button" type="button" class="modifibtn" value="增加分类"></th>
-                        </tr>
-                    </thead>                    
-                    <tbody>
-                        <tr>
-                            <td>摄楼</td>
-                            <td><input type="button" class="modifibtn" value="删除"  /></td>
-                        </tr>
-                        <tr>
-                            <td> 婚礼策划 </td>
-                            <td><input type="button" class="modifibtn" value="删除"  /></td>
-                        </tr>
-                        <tr>
-                          <td> 跟拍摄影 </td>
-                          <td><input type="button" class="modifibtn" value="删除"></td>
-                        </tr>
-                        <tr>
-                          <td> 跟拍摄像 </td>
-                          <td><input type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                        <tr>
-                          <td> 化妆 </td>
-                          <td><input name="button2" type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                        <tr>
-                          <td> 主持 </td>
-                          <td><input name="button3" type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                        <tr>
-                          <td> 花店 </td>
-                          <td><input name="button4" type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                        <tr>
-                          <td> 婚品 </td>
-                          <td><input name="button5" type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                        <tr>
-                          <td> 甜品 </td>
-
-                          <td><input name="button6" type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                        <tr>
-                          <td> 租车 </td>
-                          <td><input name="button7" type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                        <tr>
-                          <td> 礼服 </td>
-                          <td><input name="button8" type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                        <tr>
-                          <td> 蜜月旅游 </td>
-                          <td><input name="button9" type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                        <tr>
-                          <td> 烟酒 </td>
-                          <td><input name="button10" type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                        <tr>
-                          <td> 珠宝 </td>
-                          <td><input name="button11" type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                        <tr>
-                          <td> 酒店 </td>
-                          <td><input name="button12" type="button" class="modifibtn" value="删除" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-        </div> -->
     </div>
-
+	　　	<div id="layer"></div>
+    	<div class="pop" id="pop_loc">
+    			<label>请选择你要添加的地区</label>
+                <%include("/eeda/component/form/inputLocationField.html", 
+                {
+                    id:'address', 
+                    label:'address', 
+                    value: address!'',
+                    display_value: address!''
+                }){} %>
+		      <button class="modifibtn" id="sure_add_loc">确定添加</button>
+		            
+    	</div>
+    	<div class='pop' id='pop_category'>
+    	<label>分類的名字</label><input type="text" id='category_name'/>
+    	<button class="modifibtn"  id = "sure_add_category">确定添加</button>
+    	</div>
 <%}%>
 <script>
 	requirejs(['/js/eeda/eeda-common.js'], function (common) {

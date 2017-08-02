@@ -41,6 +41,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.profile.LoginUserController;
+import controllers.util.DbUtils;
 import controllers.util.EedaCommonHandler;
 import controllers.util.MD5Util;
 import controllers.util.ParentOffice;
@@ -244,6 +245,100 @@ public class WebAdminController extends Controller {
     	data.set("mobile", mobile.size());
     	data.set("user", ul);
     	renderJson(data);
+    }
+    
+    public void listLocation(){
+    	String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+        Long userId = LoginUserController.getLoginUserId(this);
+        String sql = "select * from location_management";
+        String sqlTotal = "select count(1) total from ("+sql+") B";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        List<Record> orderList = Db.find(sql+" " +sLimit);
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map);
+    }
+    
+    @Before(Tx.class)
+    public void addLocation(){
+    	String address = getPara("address");
+    	String[] detail = address.split("\\-");
+    	String provice = "";
+    	String city = "";
+    	String district = "";
+    	String location="";
+    	Record re = new Record();
+    	re.set("code", detail[detail.length-1]);
+    	for(int i=0;i<detail.length;i++){
+    		if(i==0){
+    			provice = Db.findFirst("select * from location where code = "+detail[i]).getStr("name");
+    		}
+    		if(i==1){
+    			city = "-"+Db.findFirst("select * from location where code = "+detail[i]).getStr("name");
+    		}
+    		if(i==2){
+    			district = "-"+Db.findFirst("select * from location where code = "+detail[i]).getStr("name");
+    		}
+    	}
+    	location = provice+city+district;
+    	re.set("name", location);
+    	re.set("is_active", 1);
+    	re.set("create_time", new Date());
+    	Db.save("location_management", re);
+    	renderJson(true);
+    }
+    
+    @Before(Tx.class)
+    public void addCategory(){
+    	String name = getPara("name");
+    	Record re = new Record();
+    	re.set("name", name);
+    	Db.save("category", re);
+    }
+    
+    @Before(Tx.class)
+    public void deleteLocation(){
+    	String id = getPara("id");
+    	String sql = "delete from location_management where id = "+id;
+    	Db.update(sql);
+    	renderJson(true);
+    }
+    
+    @Before(Tx.class)
+    public void deleteCategory(){
+    	String id = getPara("id");
+    	String sql = "delete from category where id = "+id;
+    	Db.update(sql);
+    	renderJson(true);
+    }
+    
+    
+    public void listCategory(){
+    	String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+        Long userId = LoginUserController.getLoginUserId(this);
+        String sql = "select * from category";
+        String sqlTotal = "select count(1) total from ("+sql+") B";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        List<Record> orderList = Db.find(sql+" " +sLimit);
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map);
     }
 
 }

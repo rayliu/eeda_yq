@@ -12,16 +12,16 @@ define(['jquery', 'sco', 'dataTablesBootstrap' , 'validate_cn'], function ($, me
 	        locTable.row(tr).remove().draw();
 	    }); 
 	   
-	    var locTable = eeda.dt({
+	    var loc_table = eeda.dt({
           id: 'loc_table',
           paging: false,
           serverSide: false, 
-          ajax: "/BusinessAdmin/ad/cu/list",
+          ajax: "/WebAdmin/listLocation",
           columns: [
-	            { "data": "ORDER_NO","width":"100px" },
-	            { "data": null,
+	            { "data": "NAME","width":"100px" },
+	            { "data": "ID",
 	            	render: function(data,type,full,meta){
-	            		return "<button class='modifibtn delete' id='"+full.ID+"' >删除</button>";
+	            		return "<button class='modifibtn delete_loc' data-id='"+full.ID+"' >删除</button>";
 	            	}
 	            }
           ]
@@ -31,67 +31,114 @@ define(['jquery', 'sco', 'dataTablesBootstrap' , 'validate_cn'], function ($, me
 	          id: 'category_table',
 	          paging: false,
 	          serverSide: false, 
-	          ajax: "/BusinessAdmin/ad/cu/list_category",
+	          ajax: "/WebAdmin/listCategory",
 	          columns: [
 		            { "data": "NAME","width":"100px" },
-		            { "data": "PARENT_ID","width":"100px" },
-		            { "data": "CUSTOMER_ID","width":"100px" },
-		            { "data": null,
+		            { "data": "ID",
 		            	render: function(data,type,full,meta){
-		            		return "<button class='modifibtn delete' id='"+full.ID+"' >删除</button>";
+		            		return "<button class='modifibtn delete_cat' data-id='"+full.ID+"' >删除</button>";
 		            	}
 		            }
 	          ]
 			});
 	    
 	    $('#add_loc').on('click', function(){
-	        var item={};
-	        locTable.row.add(item).draw(true);
+	    	showlayer($("#pop_loc"));
 	    });
-		
-		 var refleshTable = function(){
-	    	  dataTable.ajax.url("/BusinessAdmin/ad/cu/list").load();
-	     }
-    	
-	  
-	    $('#save_btn').click(function(event) {
-	    	var self = this;
-	    	$(self).attr('disabled',true);
-    	  
-	    	var order = {};
-	    	order.id = $('#order_id').val();
-	    	order.name = $('#name').val();
-	    	order.category = $('#category').val();
-	    	order.price_type = $('[name=price_type]:checked').val();
-	    	if(order.price_type=='人民币'){
-	    		order.price = $('#price').val();
-	    	}else{
-	    		order.price = 0.00;
-	    	}
-	    	order.unit = $('[name=unit]:checked').val();
-	    	order.content = $('#content').val();
-	    	order.cover = $('#img_cover').val();
-	    	order.photo1 = $('#img_photo1').val();
-	    	order.photo2 = $('#img_photo2').val();
-	    	order.photo3 = $('#img_photo3').val();
-	    	order.photo4 = $('#img_photo4').val();
-	    	order.photo5 = $('#img_photo5').val();
-	    	order.photo6 = $('#img_photo6').val();
-	    	order.photo7 = $('#img_photo7').val();
-	    	order.photo8 = $('#img_photo8').val();
-	    	order.photo9 = $('#img_photo9').val();
-	    	order.photo10 = $('#img_photo10').val();
-	    	
- 		  
-	    	$.post('/BusinessAdmin/product/save',{jsonStr:JSON.stringify(order)}, function(data, textStatus, xhr) {
+	    
+	    $("#add_category").on('click',function(){
+	    	showlayer($("#pop_category"));
+	    })
+	    
+	    $("#sure_add_loc").click(function(){
+	    	hidelayer();
+	    	var address = $("#address").val();
+	        if(address == ''){
+	        	return false;
+	        }
+	    	$.post("/WebAdmin/addLocation",{address:address},function(data){
 	    		if(data){
-	    			eeda.refreshUrl('edit?id='+data.ID)
 	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+	    			refleshTable(loc_table,"/WebAdmin/listLocation");
 	    		}else{
 	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 	    		}
-	    		$(self).attr('disabled',false);
-	    	});
-	    });
+	    	})
+	    })
+	    
+	    $("#sure_add_category").click(function(){
+	    	hidelayer();
+	    	var name = $("#category_name").val();
+	        if(name == ''){
+	        	return false;
+	        }
+	    	$.post("/WebAdmin/addCategory",{name:name},function(data){
+	    		if(data){
+	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+	    			refleshTable(category_table,"/WebAdmin/listCategory");
+	    		}else{
+	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+	    		}
+	    	})
+	    })
+	    
+	    $("#loc_table").on("click",".delete_loc",function(){
+	    	var self = $(this);
+	    	var id = self.data('id');
+	    	var result = confirm("你確定要删除 ?");
+	    	if(result){
+	    		$.post("/WebAdmin/deleteLocation",{id:id},function(data){
+	    			if(data){
+		    			$.scojs_message('刪除成功', $.scojs_message.TYPE_OK);
+		    			refleshTable(loc_table,"/WebAdmin/listLocation");
+		    		}else{
+		    			$.scojs_message('刪除失败', $.scojs_message.TYPE_ERROR);
+		    		}
+	    		})
+	    	}
+	    	
+	    })
+	    
+	      $("#category_table").on("click",".delete_cat",function(){
+	    	var self = $(this);
+	    	var id = self.data('id');
+	    	var result = confirm("你確定要删除 ?");
+	    	if(result){
+	    		$.post("/WebAdmin/deleteCategory",{id:id},function(data){
+	    			if(data){
+		    			$.scojs_message('刪除成功', $.scojs_message.TYPE_OK);
+		    			refleshTable(category_table,"/WebAdmin/listCategory");
+		    		}else{
+		    			$.scojs_message('刪除失败', $.scojs_message.TYPE_ERROR);
+		    		}
+	    		})
+	    	}
+	    	
+	    })
+		
+		 var refleshTable = function(table,url){
+	    	  table.ajax.url(url).load();
+	     }
+	  
+
+	    $("#layer").click(function(){
+	    	hidelayer();
+	    })
+	    
+	    function hidelayer(){
+	    	$("#layer").hide();
+	    	$(".pop").hide();
+	    }
+	    
+	    function showlayer(pop_object){
+	        var bh=$(window).height();//获取屏幕高度
+	        var bw=$(window).width();//获取屏幕宽度
+	        $("#layer").css({
+	            height:bh,
+	            width:bw,
+	            display:"block"
+	        });
+	        pop_object.show();
+	    }
 	});
 });

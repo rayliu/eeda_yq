@@ -114,4 +114,30 @@
 	font-weight:bold;
 	margin-right:20px;
 }
+#layer{
+     background-color:gray; 
+      left:0; 
+      opacity:0.5; 
+      position:fixed; 
+      top:0; 
+      z-index:3; 
+      filter:alpha(opacity=50); 
+      -moz-opacity:0.5; 
+      -khtml-opacity:0.5; 
+      display:none
+}
+
+.pop{
+      text-align:center; 
+       background-color:#fff; 
+       height:200px; 
+       left:30%; 
+       padding:1px; 
+       position:fixed; 
+       top:50%; 
+       width:360px; 
+       z-index:5; 
+       border-radius:6px; 
+       display:none; 
+ }
 
