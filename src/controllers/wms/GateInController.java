@@ -81,13 +81,11 @@ public class GateInController extends Controller {
             String item_name = dto.get("item_name");
             String part_name = dto.get("part_name");
             String part_no = dto.get("part_no");
-            String order_type = getPara("order_type");
+            String order_type = dto.get("order_type");
             
             if(StringUtils.isNotBlank(order_type)){
             	if("gateOut".equals(order_type)){
             		condition += " and gi.out_flag = 'Y' ";
-            	}else{
-            		condition += " and gi.out_flag = 'N' ";
             	}
             }
             
@@ -174,8 +172,6 @@ public class GateInController extends Controller {
         String error_flag = getPara("error_flag");
         if(StringUtils.isNotBlank(error_flag)){
         	error_flag = " and error_flag = '"+error_flag+"'";
-        }else{
-        	error_flag = "";
         }
 
         String jsonStr = getPara("jsonStr");
@@ -186,13 +182,11 @@ public class GateInController extends Controller {
             String item_name = dto.get("item_name");
             String part_name = dto.get("part_name");
             String part_no = dto.get("part_no");
-            String order_type = getPara("order_type");
+            String order_type = dto.get("order_type");
             
             if(StringUtils.isNotBlank(order_type)){
             	if("gateOut".equals(order_type)){
             		condition += " and gi.out_flag = 'Y' ";
-            	}else{
-            		condition += " and gi.out_flag = 'N' ";
             	}
             }
             
@@ -225,19 +219,19 @@ public class GateInController extends Controller {
             	end_time = end_time +" 23:59:59";
             }
             
-            condition += " and go.create_time between '"+begin_time+"' and '"+end_time+"'";
+            condition += " and gi.create_time between '"+begin_time+"' and '"+end_time+"'";
             
     	}
 
     	sql = "SELECT sum(A.quantity) totalPiece from("
     		+ " select "
-    		+ " go.quantity "
-			+ " from gate_in go "
-			+ " left join wmsproduct pro on pro.part_no = go.part_no"
-			+ " where go.office_id="+office_id
+    		+ " gi.quantity "
+			+ " from gate_in gi "
+			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+			+ " where gi.office_id="+office_id
 			+ error_flag
 			+ condition
-			+ " group by go.id ) A";
+			+ " group by gi.id ) A";
 
         Record re = Db.findFirst(sql);
 
