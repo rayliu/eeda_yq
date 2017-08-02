@@ -485,7 +485,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <button id="saveBtn" class="btn  btn_green" >保存</button>
-                    <button id="confirmCompleted" class="btn btn_green" disabled>提交</button>
+                    <% if(shiro.hasPermission("customPlanOrder.submit")){%>
+                    	<button id="confirmCompleted" class="btn btn_green" disabled>提交</button>
+                    <%}%>
                     <% if(shiro.hasPermission("customPlanOrder.audit")){%>
                     <button id="passBtn" class="btn btn_green" disabled>审核通过</button>
                     <button id="cancelAuditBtn" class="btn btn-danger btn-xs" style="display: none;background-color:#d9534f">取消审核</button>
