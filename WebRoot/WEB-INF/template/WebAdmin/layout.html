@@ -53,18 +53,19 @@ function checkMessage(){
 			var nopass = data.NOPASS;
 			if(nopass > 0){
 				$("#rm_page").text(nopass).show();
-				
-				$("#rm_page")
+			}else{
+				$("#rm_page").text(nopass).hide();
 			}
 			if(mobile > 0 ){
 				$("#mobile_page").text(mobile).show();
+			}else{
+				$("#mobile_page").text(mobile).hide();
 			}
 			if(banner > 0){
 				$("#banner_page").text(banner).show();
+			}else{
+				$("#banner_page").text(banner).hide();
 			}
-            $('.login_name').text(data.USER.C_NAME);
-            $('#email').text(data.USER.USER_NAME);
-
 		}
 	});
 }
