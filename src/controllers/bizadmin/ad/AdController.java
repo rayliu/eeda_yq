@@ -241,6 +241,7 @@ public class AdController extends Controller {
     }
 	public void banner_save(){
 		String advantage = getPara("jsonStr");
+		DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
 		Long user_id = LoginUserController.getLoginUserId(this);
         Gson gson = new Gson();  
         Map<String, ?> dto = gson.fromJson(advantage, HashMap.class);
@@ -271,6 +272,7 @@ public class AdController extends Controller {
 		}else{
 			//create
 			order = new Record();
+			order.set("order_no", format.format(new Date()));
 	    	order.set("begin_date", begin_date);
 	    	order.set("end_date", end_date);
 	    	order.set("phone", telephone);
