@@ -30,7 +30,7 @@ $(document).ready(function() {
                 	 if(full.HEDGE_FLAG){
                 		 other = ' <span class="badge">冲</span>';
                	  	}
-                    return "<a href='/costRequest/edit?id="+full.ID+"'target='_self'>"+data+other+"</a>";
+                    return "<a href='/tradeCostRequest/edit?id="+full.ID+"'target='_self'>"+data+other+"</a>";
              }
             },
             {"data":"BILL_TYPE",
