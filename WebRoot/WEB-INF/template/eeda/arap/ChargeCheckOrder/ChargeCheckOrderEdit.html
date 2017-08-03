@@ -283,12 +283,13 @@
 		<div class="col-lg-12">
 			<br>
 			<button id='saveBtn' class="btn  btn_green" disabled >保存</button> 
-		<% if(shiro.hasPermission("chargeCheckOrder.confirm")){%>
-                        <button id="confirmBtn" type="button" class="btn btn_green" disabled>确认</button>
+			<% if(shiro.hasPermission("chargeCheckOrder.confirm")){%>
+            	<button id="confirmBtn" type="button" class="btn btn_green" disabled>确认</button>
             <%}%>
             <button id="cancelConfirmBtn" type="button" class="btn btn_green" disabled>取消确认</button>
-                        <button id="printBtn" type="button" class="btn  btn_white"  >生成对账单PDF(明细)</button>
+            <button id="printBtn" type="button" class="btn  btn_white"  >生成对账单PDF(明细)</button>
 			<button id="printTotaledBtn" type="button" class="btn  btn_white"  >生成对账单PDF(合计)</button>
+			<button id="exportTotaledExcel" type="button" class="btn  btn_white"  >导出excel对账单</button>
 			<a class="btn  btn_white" href="/chargeCheckOrder">返回</a>
 			<a href="/chargeRequest/create" class="btn btn_green" type="button" >创建申请单</a>
 		</div>

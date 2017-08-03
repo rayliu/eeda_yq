@@ -59,11 +59,11 @@ $(document).ready(function() {
               "render": function ( data, type, full, meta ) {
                     var str = '';
                      if($("#status").val()=='已确认'){
-                    	 str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width: :40px" >编辑</button>';	 
-                         
+                    	 str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px;" disabled >删除</button>&nbsp'
+                         str += '<button type="button" class="itemEidt btn table_btn btn_green btn-xs" style="width:40px;" disabled >编辑</button>';                         
                      }else{                    	
                         str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px" >删除</button>&nbsp'
-                        	str += '<button type="button" class="itemEidt btn table_btn btn_green btn-xs" style="width:40px;"  >编辑</button>';
+                        str += '<button type="button" class="itemEidt btn table_btn btn_green btn-xs" style="width:40px;"  >编辑</button>';
                      }
                     return str;
                 }

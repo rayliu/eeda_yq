@@ -677,7 +677,7 @@ public class CmsChargeCheckOrderController extends Controller {
 			String order_id = getPara("id");
 			String sp_name = getPara("sp_name");
 //			String sql = list();
-			String sql_fin_name =" SELECT GROUP_CONCAT(DISTINCT f. NAME,':',f.id)  fin_name_id "
+			String sql_fin_name =" SELECT CAST(GROUP_CONCAT(DISTINCT f. NAME,':',f.id) AS char)  fin_name_id "
 					+" FROM  custom_plan_order_arap cpoa "
 					+" LEFT JOIN custom_arap_charge_item caci ON caci.ref_order_id = cpoa.id  "
 					+" LEFT JOIN custom_plan_order cpo ON cpo.id = cpoa.order_id "
@@ -703,7 +703,8 @@ public class CmsChargeCheckOrderController extends Controller {
 				 				 
 			     list_name.add(fin_name_id_separate[0]);
 	 
-				 list.add("SUM("+fin_name_id_separate[1]+"_total_amount) SUM_"+fin_name_id_separate[1]+"_total_amount");
+				 list.add("cast(IF(SUM("+fin_name_id_separate[1]+"_total_amount)!=0,convert(SUM("+fin_name_id_separate[1]+"_total_amount),decimal),'') as char)"
+				 		+ " SUM_"+fin_name_id_separate[1]+"_total_amount");
 				 list_id.add("SUM_"+fin_name_id_separate[1]+"_total_amount");
 				 
 			}

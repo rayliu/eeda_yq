@@ -125,6 +125,7 @@ $(document).ready(function() {
     			 $('#saveBtn').attr('disabled', true);
                  $('#printBtn').attr('disabled', false);
                  $('.delete').attr('disabled', true);
+                 $('.itemEidt').attr('disabled', true);
                  $('#add_charge').attr('disabled', true);
 
                  $("#status").val('已确认');
@@ -141,28 +142,45 @@ $(document).ready(function() {
     })
     
     
-    //打印应收对账明细
+    //生成应收对账明细
     $('#printBtn').click(function(){
     	var order_id = $('#order_id').val();
     	$.post('/jobOrderReport/printReceiveDetailPDF',{order_id:order_id},function(data){
     		if(data){
+    			$.scojs_message('生成应收对账单PDF成功', $.scojs_message.TYPE_OK);
     			window.open(data);
     		}else{
     			$.scojs_message('生成应收对账单PDF失败',$.scojs_message.TYPE_ERROR);
     		}
     	});
     });
-    //打印应收对账明细
+    //生成应收对账明细
     $('#printTotaledBtn').click(function(){
     	var order_id = $('#order_id').val();
     	var company_name = $('#company_name').val();
     	$.post('/jobOrderReport/printTotaledReceiveDetailPDF',{order_id:order_id,company_name:company_name},function(data){
     		if(data){
+    			$.scojs_message('生成应收对账单PDF成功', $.scojs_message.TYPE_OK);
     			window.open(data);
     		}else{
     			$.scojs_message('生成应收对账单PDF失败',$.scojs_message.TYPE_ERROR);
     		}
     	});
+    });
+    
+    //导出excel对账单
+    $('#exportTotaledExcel').click(function(){
+        $(this).attr('disabled', true);
+        var id = $('#order_id').val();
+        var sp_name = $('#company_name').val();
+        $.post('/chargeCheckOrder/downloadExcelList', {id:id,sp_name:sp_name}, function(data){
+            $('#exportTotaledExcel').prop('disabled', false);
+            $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+            window.open(data);
+        }).fail(function() {
+            $('#exportTotaledExcel').prop('disabled', false);
+            $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+        });
     });
     
 
@@ -189,12 +207,12 @@ $(document).ready(function() {
     			$('#printBtn').attr('disabled', false);
     			$('#add_charge').attr('disabled', false);
     			$('.delete').attr('disabled', false);
+    			$('.itemEidt').attr('disabled', false);
     		}else{
     			$.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
     		}
     	})
-    });
-   
+    });   
   
 });
 });
