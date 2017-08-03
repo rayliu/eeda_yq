@@ -31,7 +31,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
         //contentType:"application/x-www-form-urlencoded;charset=utf-8",
         error: function (xhr, e) {
             if(xhr.responseText.indexOf('忘记密码')>0){
-              alert( 'error: 您未登录或超时15分钟未操作, 请重新登录.' );
+              alert( 'error: 您未登录或超过15分钟未操作, 请重新登录.' );
               window.location.href="/";
             }
             // if (x.status == 403) {
@@ -41,7 +41,7 @@ define(['jquery', 'dataTablesBootstrap'], function($){
         complete:function(XMLHttpRequest, textStatus){
            //console.log("ajaxSetup textStatus:"+textStatus);
            if(XMLHttpRequest.responseText.indexOf('忘记密码')>0){
-              alert( '您未登录或超时15分钟未操作, 请重新登录.' );
+              alert( '您未登录或超过15分钟未操作, 请重新登录.' );
               window.location.href="/";
             }
            // var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头，sessionstatus，  
