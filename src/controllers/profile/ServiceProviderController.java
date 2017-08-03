@@ -734,7 +734,7 @@ public class ServiceProviderController extends Controller {
     	String d = sf.format(new Date());
     	List<Record> recs = null;
     	
-    	String sql = "select * from fin_account fa where fa.bank_name!='现金' and office_id="+office_id;
+    	String sql = "select * from fin_account fa where fa.bank_name!='现金' and (fa.is_stop is null or fa.is_stop !=1) and office_id="+office_id;
     	if(!StringUtils.isBlank(input)){
     		sql+=" and (fa.bank_name like '%" + input + "%') ";
     	}
