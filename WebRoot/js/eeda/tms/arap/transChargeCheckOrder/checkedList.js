@@ -18,13 +18,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			           	  }
 			          },
 					  { "data": "CREATE_STAMP", "width": "100px"},  
-					  { "data": "STATUS", "width": "50px",
+					  { "data": "TOSTATUS", "width": "50px",
 						  "render": function ( data, type, full, meta ) {
-			           		  if(full.AUDIT_STATUS=='已收款'){
-			           			  return data=full.AUDIT_STATUS;
-			           		  }else{
-			           			  return data;
-			           		  }
+								  return data;
 			           	  }
 					  },
 					  { "data": "SP_NAME", "width": "80px"}, 
@@ -67,8 +63,74 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             ]
         });
    	           
+        $('.complex_search').click(function(event) {
+            if($('.search_single').is(':visible')){
+              $('.search_single').hide();
+            }else{
+              $('.search_single').show();
+            }
+        });
+        
+      //简单查询
+        $('#selected_field').change(function(event) {
+  	      var selectField = $('#selected_field').val();
+  	      if(selectField=='order_no'){
+  	    	  $("#public_text").val("");
+  	    	  $("#single_sp1_id_input").hide();
+  	    	  $("#single_status").hide();
+  	    	  $("#single_create_stamp1_show").hide();
+  	    	  $("#public_text").show();
+  	      }
+  	      if(selectField=='sp_id'){
+  	    	  $("#single_sp1_id_input").val("");
+  	    	  $("#single_status").hide();
+  	    	  $("#single_create_stamp1_show").hide();
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp1_id_input").show();
+  	      }
+  	      if(selectField=='toStatus_equals'){
+  	    	  $("#single_status").val("");
+  	    	  $("#single_create_stamp1_show").hide();
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp1_id_input").hide();
+  	    	  $("#single_status").show();
+  	      }
+  	      if(selectField=='create_stamp1'){
+  	    	  $("#single_create_stamp1_begin_time").val("");
+  	    	  $("#single_create_stamp1_end_time").val("");
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp1_id_input").hide();
+  	    	  $("#single_status").hide();
+  	    	  $("#single_create_stamp1_show").show();
+  	      }
+       });
+        
+        $("#singleSearchBtn").click(function(){
+      	  var selectField = $('#selected_field').val();
+      	  var selectValue = "";
+	      if(selectField=='order_no'){
+	    	  selectValue = $("#public_text").val();
+	      }
+	      if(selectField=='sp_id'){
+	    	  selectValue = $("#single_sp1_id").val();
+	      }
+	      if(selectField=='toStatus_equals'){
+	    	  selectValue = $("#single_status").val();
+	      }
+	      if(selectField=='create_stamp1'){
+	    	  var create_stamp1_begin = $("#single_create_stamp1_begin_time").val();
+	    	  var create_stamp1_end = $("#single_create_stamp1_end_time").val();
+	      }
+  	      
+  	      //增加出口日期查询
+            var url = "/transChargeCheckOrder/checkedList?"+selectField+"="+selectValue
+                 +"&create_stamp_begin_time="+create_stamp1_begin
+                 +"&create_stamp_end_time="+create_stamp1_end;
+            dataTable.ajax.url(url).load();
+        });
+        
       $('#resetBtn1').click(function(e){
-          $("#orderSearchForm")[0].reset();
+          $("#orderForm")[0].reset();
       });
 
       $('#searchBtn1').click(function(){
@@ -81,6 +143,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
           var status = $("#status").val();
+          
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -92,7 +155,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
                +"&sp_name="+sp_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
-               +"&status="+status;
+               +"&toStatus_equals="+status;
 
           dataTable.ajax.url(url).load();
        }

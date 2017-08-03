@@ -263,7 +263,7 @@ public class TransChargeCheckOrderController extends Controller {
         		+" IFNULL(aco.cny, 0) total_amount_cny, "
 			    +" (SELECT IFNULL(SUM(t.receive_cny), 0) FROM trans_arap_charge_receive_item t WHERE t. charge_order_id=aco.id) total_receive_cny, "
 			    +" (aco.cny-(SELECT IFNULL(SUM(t.receive_cny), 0)  FROM trans_arap_charge_receive_item t WHERE t.charge_order_id=aco.id)) total_RESIDUAL_CNY, "
-			    + " p.abbr sp_name,CAST(CONCAT(begin_time,'到',end_time) AS CHAR) service_stamp,u.c_name confirm_name"
+			    + " p.abbr sp_name,CAST(CONCAT(begin_time,'到',end_time) AS CHAR) service_stamp,u.c_name confirm_name,IFNULL(aco.audit_status,aco.status) toStatus"
 				+ " from trans_arap_charge_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " LEFT JOIN user_login u ON u.id = aco.confirm_by "

@@ -136,7 +136,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
 	      if(selectField=='order_no'||selectField=='customer_code_like'||selectField=='container_no'){
-	    	  $("#single_sp_id_input").val("");
+	    	  $("#public_text").val("");
 	    	  $("#single_customer").hide();
 	    	  $("#single_status").hide();
 	    	  $("#single_cabinet_type").hide();
