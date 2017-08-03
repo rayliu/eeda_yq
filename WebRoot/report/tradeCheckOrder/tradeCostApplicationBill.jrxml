@@ -242,14 +242,14 @@ ORDER BY
 				<textElement textAlignment="Center">
 					<font fontName="宋体" size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[珠海横琴远桥供应链管理有限公司]]></text>
+				<text><![CDATA[珠海远桥商贸有限公司]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="109" y="38" width="361" height="23" uuid="dda69d07-58ec-4217-a6cd-e533cdf37552"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="16" isBold="true" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD]]></text>
+				<text><![CDATA[ZHUHAI ENKYO TRADE CO.,LTD]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="61" width="555" height="1" uuid="8a15dbcd-dc70-4142-991e-aa1b9b132ce3"/>
@@ -310,10 +310,6 @@ ORDER BY
 				</textElement>
 				<text><![CDATA[86-756-3225900]]></text>
 			</staticText>
-			<image>
-				<reportElement x="0" y="-11" width="109" height="34" uuid="d7c0123f-4c00-4bb2-b117-c27a6b980223"/>
-				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="61" y="62" width="240" height="17" uuid="e649dff3-3baa-4977-adf8-212ae3953cd7"/>
 				<textElement>
@@ -338,6 +334,10 @@ ORDER BY
 				</textElement>
 				<text><![CDATA[www.yq-scm.com]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="-12" width="109" height="34" uuid="a536933b-342b-4225-89d8-c0ae102695fe"/>
+				<imageExpression><![CDATA["tradeENKYO.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>
