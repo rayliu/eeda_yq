@@ -41,7 +41,7 @@ public class AccountController extends Controller {
 	
 	public void info(){
 		Long user_id = LoginUserController.getLoginUserId(this);
-		String sql = "select * from user_login where id="+user_id;
+		String sql = "select * from wc_company where creator = "+user_id;
 		Record user = Db.findFirst(sql);
 		setAttr("user", user);
 		render(getRequest().getRequestURI()+"/edit.html");
@@ -63,15 +63,15 @@ public class AccountController extends Controller {
 		String logo = (String) dto.get("logo");
 		Record re = null;
 		if(StringUtils.isNotBlank(user_id.toString())){
-			re=new Record();
-			re.set("id", user_id);
-			re.set("phone", phone);
-			re.set("telephone", telephone);
+			re=Db.findFirst("select * from wc_company where creator = "+userId);
+			re.set("telephone", phone);
+			re.set("shop_telephone", telephone);
 			re.set("about", about);
+			re.set("address", address);
 			re.set("qq", qq);
 			re.set("contact", contact);
 			re.set("logo", logo);
-			Db.update("user_login",re);
+			Db.update("wc_company",re);
 		}	
 		renderJson(re);
 	}

@@ -52,14 +52,17 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         //删除 
         $('#eeda_table').on('click','.delete',function(){
       	  var id = $(this).parent().parent().attr('id');
-      	  $.post('/WebAdmin/tao_manage/product/deleteProduct',{id:id},function(data){
-      		  if(data){
-      			  $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
-      			  refleshTable();
-   			  }else{
-   				 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR); 
-      		  }
-      	  });
+      	  var result = confirm("您确定要删除这个商品吗？");
+      	  if(result){
+      		  $.post('/WebAdmin/tao_manage/product/deleteProduct',{id:id},function(data){
+          		  if(data){
+          			  $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+          			  refleshTable();
+       			  }else{
+       				 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR); 
+          		  }
+          	  });
+      	  }
         });
         
         //进入编辑页面

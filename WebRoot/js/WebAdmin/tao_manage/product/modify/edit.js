@@ -126,7 +126,7 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 	  	})
 	  
 	  	$("#back_btn").click(function(event){
-	  		window.history.back();
+	  		window.location.href="/WebAdmin/tao_manage/product";
 	  	})
 
 	    $('#save_btn').click(function(event) {

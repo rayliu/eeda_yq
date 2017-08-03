@@ -26,11 +26,23 @@
             </dt>
             <dd class="fm-field" id="fm-login-password-wrap">
               <div class="textin">
-                <input type="text" id="phone" name="phone" value="${user.phone!''}" >
+                <input type="text" id="phone" name="phone" value="${user.telephone!''}" >
               </div>
             </dd>
           </dl>
           <dl>
+    			<!-- <dt class="fm-label">
+	              <div class="fm-label-wrap">
+	                <label for="fm-login-password">店铺地址：</label>
+	              </div>
+              </dt>
+                <%include("/eeda/component/form/inputLocationField.html", 
+                {
+                    id:'p_c_d', 
+                    label:'address', 
+                    value: address!'',
+                    display_value: address!''
+                }){} %> -->
           	  <dt class="fm-label">
 	              <div class="fm-label-wrap">
 	                <label for="fm-login-password">店铺地址：</label>
@@ -51,7 +63,7 @@
             </dt>
             <dd class="fm-field" id="fm-login-password-wrap">
               <div class="textin">
-                <input type="text" id="telephone" name="telephone" value="${user.telephone!''}" />
+                <input type="text" id="telephone" name="telephone" value="${user.shop_telephone!''}" />
               </div>
             </dd>
           </dl>
