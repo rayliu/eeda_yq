@@ -1,101 +1,167 @@
 <%layout("/eeda/layout.html"){%>
-        <div id="page-wrapper">
-           <div class="row simple_search_div">
-                <div class="col-lg-12">
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                                <form id="orderForm">
-                                    <div class="row"><!--  第1行  -->
-                                        <div class="col-lg-4"><!--  三列排版  -->
-                                            <%include("/eeda/component/form/inputField.html", 
-                                                                {   id: 'order_no', 
-                                                                    label: '工作单号', 
-                                                                    value: ''
-                                                                }){}%>
-                                        </div>
-                                        <div class="col-lg-4"><!--  三列排版  -->
-                                            <%include("/eeda/component/form/inputDateQueryField.html", 
-                                                                {   id: 'cabinet_date', 
-                                                                    label: '提柜时间', 
-                                                                    value: ''
-                                                                }){}%>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <%include("/eeda/component/form/inputDateQueryField.html", 
-                                            {	id:'charge_time', 
-                                            	label:'结算时间', 
-                                            	value:''
-                                            }){} %>
-                                        </div><!-- /.col-lg-4 -->
-                                    </div><!-- /.row-->
-                                    <div class="row">
-                                    	<div class="col-lg-4">
-                                             <%include("/eeda/component/form/selectField.html", 
-                                                    {   id:'status', 
-                                                        label:'状态', 
-                                                        value: '',
-                                                        value_list:[
-                                                            {code:'', value:''},
-                                                            {code:'新建', value:'新建'},
-                                                            {code:'已完成', value:'已完成'}
-                                                        ]
-                                                    }
-                                                 ){} %>
-                                        </div>
-                                        <div class="col-lg-4">
-                                          <%include("/eeda/component/form/inputField.html", 
-                                                              {   id: 'customer_code', 
-                                                                  label: '客户代码', 
-                                                                  value: ''
-                                                              }){}%>
-                                        </div>
-                                        <div class="col-lg-4">
-                                          <%include("/eeda/component/form/inputField.html", 
-                                                              {   id: 'customer_name', 
-                                                                  label: '客户名称', 
-                                                                  value: ''
-                                                              }){}%>
-                                        </div>
-                                     </div>
-                                     <div class="row">
-                                        <div class="col-lg-4">
-							               <%include("/eeda/component/form/selectField.html", 
-							                  			  {   id:'cabinet_type', 
-							                      			  label:'柜型', 
-							                     		      value:order.cabinet_type!'',
-							                        	   	  value_list:[
-							                        	   	  	  {code:'', value:''},
-						                                          {code:'40HQ', value:'40HQ'},
-									                              {code:'20GP', value:'20GP'},
-									                              {code:'40GP', value:'40GP'}, 
-									                              {code:'45GP', value:'45GP'}
-							                        		  ]
-							                   			  }){}%>
-							              </div>
-							              <div class="col-lg-4">
-                                            <%include("/eeda/component/form/inputDateQueryField.html", 
-                                            {	id:'create_stamp', 
-                                            	label:'创建时间', 
-                                            	value:''
-                                            }){} %>
-                                        </div>
-                                        <div class="col-lg-4">
-                            			  <%include("/eeda/component/form/inputField.html", 
-								                          	  {   id:'container_no', 
-								                                  label:'柜号',
-								                                  value: order.container_no!''
-								                              }){}%>
-                        				</div>
-                                  </div>
-                                </form>
-
-                            <div class="form-group button-bar" >
-                                <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
-                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
-                                <a href="/transJobOrder/create" class="btn btn_green" type="button">创建工作单</a>
-                                <button class="btn btn_green" type="button">导入excel生成工作单</button>
+<div id="page-wrapper">
+<div class="row simple_search_div">
+    	<div class="panel panel-default">
+        	<div class="panel-heading">
+            	<div class="row"><!--  第1行  -->
+                	<div class="three_tab" ><!--  三列排版  -->
+                    	<div class="search_single">
+                        	<select id="selected_field" name="selected_field" class="form-control search-label">
+	                        	<option value="order_no">工作单号</option>
+	                            <option value="customer_name_like">客户名称</option>
+	                            <option value="customer_code_like">客户代码</option>
+	                            <option value="container_no">柜号</option>	
+	                            <option value="cabinet_type">柜型</option>
+	                            <option value="status">状态</option>	
+	                            <option value="cabinet_date">提柜时间</option>
+	                            <option value="charge_time">结算时间</option>
+	                            <option value="create_time">创建时间</option>	 
+                            </select>
+							
+							<input type="text" id="public_text" class="form-control search-control"/>
+                            <div  style="display:none;position:absolute;left:34%;bottom:-5px;" id="single_customer">
+                            	<%include("/eeda/component/form/inputSpField.html", 
+                                          {   id: 'single_customer_name', 
+                                              style:'width:150%',
+                                              value: ''
+                                          }){}%>
                             </div>
-                            <ul id="orderTabs" class="nav nav-tabs"  style="display:none;">
+                            <div style="display:none;position:absolute;left:34%;bottom:-5px;" id="public_time">
+		                    	<%include("/eeda/component/form/inputDateQueryField.html", 
+								          {   id:'single_public_time',
+								              style:'width:230px',
+								              begin_style:'width:90px',
+								              end_style:'width:90px',  
+								              value:''
+											}){} %>
+		                    </div>
+		                    <select id="single_status" class="form-control search-control" style="display: none;">
+		                    	<option value=""></option>
+	                        	<option value="新建">新建</option>
+	                            <option value="完成">完成</option>
+                            </select>
+                            <select id="single_cabinet_type" class="form-control search-control" style="display: none;">
+                            	<option value=""></option>
+	                        	<option value="40HQ">40HQ</option>
+	                            <option value="20GP">20GP</option>
+	                            <option value="40GP">40GP</option>
+	                            <option value="45GP">45GP</option>
+                            </select>
+						</div>
+					</div>
+                    <div class="three_tab"><!--  三列排版  -->
+                    	<div class="search_single">
+                    		<button id="singleSearchBtn" class="btn btn_grey" type="button" style="float:left;">查询</button>
+                    	</div>
+					</div>
+                	<div class="three_tab"><!--  三列排版  -->
+               			<h4 class="panel-title pull-right" style="padding-top: 5px;">
+                			<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
+                				<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
+                			</a>
+                		</h4>
+					</div>
+				</div>
+			</div>
+        	<div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+        		<div class="panel-body" id="ChargeDiv">
+        			<div class="col-lg-12">
+        				<form id="orderForm" method="post" action="">	
+							<div class="row">
+								<div class="col-lg-4">
+					           		<%include("/eeda/component/form/inputField.html", 
+					                	{   id:'order_no', 
+					                    	label:'工作单号',	                                                    
+					                        value:jobOrder.order_no!order.order_no!''
+					            		}){}%>
+					           	</div>
+								<div class="col-lg-4" id="month" style="display:block;">        
+		                    		<%include("/eeda/component/form/inputDateQueryField.html",
+		                    			{	id:'cabinet_date',
+		                    				label:'提柜时间',
+		                    				value:''
+		                    			}){} %>
+								</div>
+								<div class="col-lg-4" id="month" style="display:block;">        
+		                    		<%include("/eeda/component/form/inputDateQueryField.html",
+		                    			{	id:'charge_time',
+		                    				label:'结算时间',
+		                    				value:''
+		                    			}){} %>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+	                                  <%include("/eeda/component/form/selectField.html", 
+	                                    {   id:'status', 
+	                                        label:'状态', 
+	                                        value:order.trade_type!'',
+	                                        value_list:[
+	                                            {code:'新建', value:'新建'},
+	                                            {code:'已完成', value:'已完成'},
+	                                            {code:'', value:''}
+	                                        ]
+	                                    }){}%>
+	                			</div>
+                				<div class="col-lg-4">
+					           		<%include("/eeda/component/form/inputField.html", 
+					                	{   id:'customer_code', 
+					                    	label:'客户代码',	                                                    
+					                        value:jobOrder.customer_code!order.customer_code!'',
+					                        placeholder:'请输入客户代码'
+					            		}){}%>
+					           	</div>
+								<div class="col-lg-4">
+									<%include("/eeda/component/form/inputSpField.html",
+										{	id:'customer_name',
+											label:'客户名称',
+											value: ''
+										}){} %>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-lg-4">
+	                                  <%include("/eeda/component/form/selectField.html", 
+	                                    {   id:'cabinet_type', 
+	                                        label:'柜型', 
+	                                        value:order.cabinet_type!'',
+	                                        value_list:[
+	                                        	{code:'', value:''},
+	                                            {code:'40HQ', value:'40HQ'},
+	                                            {code:'20GP', value:'20GP'},
+	                                            {code:'40GP', value:'40GP'},
+	                                            {code:'45GP', value:'45GP'}
+	                                        ]
+	                                    }){}%>
+	                			</div>
+	                			<div class="col-lg-4" id="month" style="display:block;">        
+		                    		<%include("/eeda/component/form/inputDateQueryField.html",
+		                    			{	id:'create_time',
+		                    				label:'创建时间',
+		                    				value:''
+		                    			}){} %>
+								</div>
+								<div class="col-lg-4">
+					           		<%include("/eeda/component/form/inputField.html", 
+					                	{   id:'container_no', 
+					                    	label:'柜号',	                                                    
+					                        value:jobOrder.container_no!order.container_no!''
+					            		}){}%>
+					           	</div>
+	                		</div>
+							<div class="form-group button-bar" >
+		                		<button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+		                		<button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+		                		<a href="/transJobOrder/create" class="btn btn_green" type="button">创建工作单</a>
+		                	</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><br>
+	<div>
+		<ul id="orderTabs" class="nav nav-tabs"  style="display:none;">
                                 <li class="active">
                                     <a id='allTab' href="#docDetail" data-toggle="tab">全部</a>
                                 </li>
@@ -131,12 +197,8 @@
                                         '创建时间',
                                         '状态']
                                 }){} %>
-                       
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-          
-        </div><!-- end of  .page-wrapper-->
+	</div>
+</div> <!-- end of  .page-wrapper-->
         
         <!-- 删除单据的原因 -->
         <a data-target='#deleteReasonDetail' data-toggle='modal'>
@@ -165,6 +227,7 @@
             </div>
         </div>
       </div>
+      
     </div>
 
 

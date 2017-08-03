@@ -124,7 +124,108 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           ]
       });
       
-
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+      
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='order_no'||selectField=='customer_code_like'||selectField=='container_no'){
+	    	  $("#single_sp_id_input").val("");
+	    	  $("#single_customer").hide();
+	    	  $("#single_status").hide();
+	    	  $("#single_cabinet_type").hide();
+	    	  $("#public_time").hide();
+	    	  $("#public_text").show();
+	      }
+	      if(selectField=='customer_name_like'){
+	    	  $("#single_status").hide();
+	    	  $("#single_cabinet_type").hide();
+	    	  $("#public_time").hide();
+	    	  $("#public_text").hide();
+	    	  $("#single_customer").show();
+	      }
+	      if(selectField=='cabinet_type'){
+	    	  $("#single_status").hide();
+	    	  $("#public_time").hide();
+	    	  $("#public_text").hide();
+	    	  $("#single_customer").hide();
+	    	  $("#single_cabinet_type").show();
+	      }
+	      if(selectField=='status'){
+	    	  $("#public_time").hide();
+	    	  $("#public_text").hide();
+	    	  $("#single_customer").hide();
+	    	  $("#single_cabinet_type").hide();
+	    	  $("#single_status").show();
+	      }
+	      if(selectField=='cabinet_date'){
+	    	  $("#public_text").hide();
+	    	  $("#single_customer").hide();
+	    	  $("#single_cabinet_type").hide();
+	    	  $("#single_status").hide();
+	    	  $("#public_time").show();
+	      }
+	      if(selectField=='charge_time'){
+	    	  $("#public_text").hide();
+	    	  $("#single_customer").hide();
+	    	  $("#single_cabinet_type").hide();
+	    	  $("#single_status").hide();
+	    	  $("#public_time").show();
+	      }
+	      if(selectField=='create_time'){
+	    	  $("#public_text").hide();
+	    	  $("#single_customer").hide();
+	    	  $("#single_cabinet_type").hide();
+	    	  $("#single_status").hide();
+	    	  $("#public_time").show();
+	      }
+     });
+      
+      $("#singleSearchBtn").click(function(){
+    	  var selectField = $('#selected_field').val();
+    	  var selectValue = "";
+	      if(selectField=='order_no'||selectField=='customer_code_like'||selectField=='container_no'){
+	    	  selectValue = $("#public_text").val();
+	      }
+	      if(selectField=='customer_name_like'){
+	    	  selectValue = $("#single_customer_name_input").val();
+	      }
+	      if(selectField=='cabinet_type'){
+	    	  var single_cabinet_type = $("#single_cabinet_type").val();
+	      }
+	      if(selectField=='status'){
+	    	  selectValue = $("#status").val();
+	      }
+	      if(selectField=='cabinet_date'){
+	    	  var cabinet_date_begin = $("#single_public_time_begin_time").val();
+	    	  var cabinet_date_end = $("#single_public_time_end_time").val();
+	      }
+	      if(selectField=='charge_time'){
+	    	 var charge_time_begin = $("#single_public_time_begin_time").val();
+	    	 var charge_time_end = $("#single_public_time_end_time").val();
+	      }
+	      if(selectField=='create_time'){
+	    	  var create_time_begin = $("#single_public_time_begin_time").val();
+	    	  var create_time_end = $("#single_public_time_end_time").val();
+	      }
+	      
+	      //增加出口日期查询
+          var url = "/transJobOrder/list?"+selectField+"="+selectValue
+               +"&charge_time_begin_time="+charge_time_begin
+               +"&charge_time_end_time="+charge_time_end
+          	   +"&cabinet_date_begin_time="+cabinet_date_begin
+          	   +"&cabinet_date_end_time="+cabinet_date_end   
+          	   +"&cabinet_type="+single_cabinet_type
+          	   +"&status="+status;
+          dataTable.ajax.url(url).load();
+      });
+      
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
@@ -141,7 +242,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var cabinet_date_end_time = $("#cabinet_date_end_time").val();
           var status = $('#status').val();
           var customer_code = $("#customer_code").val().trim();
-          var customer_name = $("#customer_name").val().trim();
+          var customer_name = $("#customer_name_input").val().trim();
           var cabinet_type=$("#cabinet_type").val().trim();
           var container_no= $.trim($("#container_no").val());
           //增加出口日期查询
