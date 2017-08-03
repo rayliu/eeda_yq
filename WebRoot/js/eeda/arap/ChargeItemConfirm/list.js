@@ -12,7 +12,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       var dataTable = eeda.dt({
           id: 'eeda_table',
           paging: true,
-          serverSide: true, //不打开会出现排序不对 
+          serverSide: true, //不打开会出现排序不对
+          initComplete: function (settings) {
+              eeda.dt_float_header('eeda_table');
+          },
           ajax: "/chargeConfirmList/list",
           columns: [
 			{ "width": "10px",

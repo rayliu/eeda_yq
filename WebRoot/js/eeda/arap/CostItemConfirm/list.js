@@ -4,32 +4,32 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           id: 'eeda_table',
           colReorder: true,
           serverSide: true, //不打开会出现排序不对 
-//          paging: true,
-//          length:500,
-//          ajax: "/costConfirmList/list?audit_flag="+$("#audit_flag").val(),
+          initComplete: function (settings) {
+              eeda.dt_float_header('eeda_table');
+          },
           columns: [
-			{ "width": "10px",
-				    "render": function ( data, type, full, meta ) {
-				    	if(full.AUDIT_FLAG != 'Y')
-				    		return '<input type="checkbox" class="checkBox">';
-				    	else 
-				    		return '<input type="checkbox" disabled>';
-				    }
-			},
-			{ "data": "ORDER_NO", "width": "100px",
-		    	  "render": function ( data, type, full, meta ) {
-                    return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
-                }
-			},
-			{ "data": "ORDER_EXPORT_DATE", "width": "100px"},
-            { "data": "CREATE_STAMP", "width": "100px"},
-            { "data": "AUDIT_FLAG", "width": "60px",
-            	"render": function ( data, type, full, meta ) {
-			    	if(data != 'Y')
-			    		return '未确认';
-			    	else 
-			    		return '已确认';
-			    }
+      			{ "width": "10px",
+      				    "render": function ( data, type, full, meta ) {
+      				    	if(full.AUDIT_FLAG != 'Y')
+      				    		return '<input type="checkbox" class="checkBox">';
+      				    	else 
+      				    		return '<input type="checkbox" disabled>';
+      				    }
+      			},
+      			{ "data": "ORDER_NO", "width": "100px",
+      		    	  "render": function ( data, type, full, meta ) {
+                          return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+                      }
+      			},
+      			{ "data": "ORDER_EXPORT_DATE", "width": "100px"},
+                  { "data": "CREATE_STAMP", "width": "100px"},
+                  { "data": "AUDIT_FLAG", "width": "60px",
+                  	"render": function ( data, type, full, meta ) {
+      			    	if(data != 'Y')
+      			    		return '未确认';
+      			    	else 
+      			    		return '已确认';
+      			    }
             },
             { "data": "CUSTOMER_NAME", "width": "100px"},
             { "data": "TYPE", "width": "60px"},
@@ -48,6 +48,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "REMARK", "width": "180px"}
           ]
       });
+
+
+              
     //base on config hide cols
       dataTable.columns().eq(0).each( function(index) {
           var column = dataTable.column(index);

@@ -16,6 +16,9 @@ $(document).ready(function() {
             flash();
             uncheckedCostCheckOrder();
         },
+        initComplete: function (settings) {
+            eeda.dt_float_header('application_table');
+        },
         serverSide: true, 
         ajax: "/chargeRequest/applicationList?status=新建",
           columns: [

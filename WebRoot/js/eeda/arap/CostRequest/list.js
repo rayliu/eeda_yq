@@ -16,6 +16,9 @@ $(document).ready(function() {
         drawCallback: function( settings ) {
             uncheckedCostCheckOrder();
         },
+        initComplete: function (settings) {
+            eeda.dt_float_header('application_table');
+        },
         serverSide: true, 
     	ajax: "/costRequest/applicationList?status=新建",
 		  columns: [

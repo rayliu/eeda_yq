@@ -147,6 +147,7 @@ $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) {
     	throw message;
     }
 };
+
 //dataTables builder for 1.10
 eeda.dt = function(opt){
     var option = {
@@ -219,6 +220,42 @@ eeda.showCols=function(dataTable, cols_config){
             }
         });
     });
+};
+
+eeda.dt_float_header =  function(table_id){
+  var table = $('#'+table_id);//表格的id
+  var bar_head = $("#"+table_id+"_head");//表头
+  eeda.is_in_fix= false;
+
+  //处理浏览器的竖向滚动条
+  $(window).scroll(function(){
+      var scroll_top = $('body').scrollTop() - table.offset().top;//判断是否到达窗口顶部
+
+      console.log('scroll_top='+scroll_top);
+      var scroll_bottom =$('body').scrollTop() - $("#"+table_id+"_info").offset().top+50 ;
+      //debugger;
+      var tbody_left = $("#"+table_id+" tbody").offset().left
+
+      if (scroll_top > 0 && scroll_bottom < 0 ) {
+        is_in_fix= true;
+        bar_head.css({'z-index':'1','border-radius':'15px 15px 0 0','position':'fixed','top':'0', 'left': tbody_left, 'width':table.width()});
+      }else {
+        is_in_fix= false;
+        bar_head.css({'z-index':'auto', 'position':'static', 'top':'auto', 'left':tbody_left, 'width':table.width() });
+        console.log('left='+tbody_left);
+        bar_head.offset().left = tbody_left;
+        //$("#"+table_id).DataTable().draw();
+      }
+  });
+
+  //处理table的横向滚动条
+  $(".dataTables_scrollBody").scroll(function(e) {
+    horizontal = e.currentTarget.scrollLeft;
+    // console.log('horizontal='+horizontal);
+    
+    var left = 176 - horizontal;
+    bar_head.offset({ left: left });
+  });
 };
 
 eeda.hidePopList=function(){
