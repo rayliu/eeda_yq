@@ -3,6 +3,7 @@ package controllers.webadmin.data;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,18 @@ public class VideoController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		render(getRequest().getRequestURI()+"/list.html");
+	}
+	
+	public boolean deletePicture(String pic_name){
+		String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\"+pic_name;
+		File file = new File(filePath);
+		boolean result = false;
+		if(file.exists()&&file.isFile()){
+			result = file.delete();
+			result = true;
+		}
+		return result;
 	}
 	
 	@Before(EedaMenuInterceptor.class)
@@ -116,6 +129,7 @@ public class VideoController extends Controller {
     @Before(Tx.class)
     public void delete(){
     	String id = getPara("id");
+    	deletePicture(Db.findFirst("select * from video_case where id = "+id).getStr("title_img"));
     	Db.deleteById("video_case", id);
     	renderJson(true);
     }

@@ -1,5 +1,6 @@
 package controllers.bizadmin.video;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +62,18 @@ public class VideoController extends Controller {
         renderJson(map);
 	}
 	
+	public boolean deletePicture(String pic_name){
+		String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\"+pic_name;
+		File file = new File(filePath);
+		boolean result = false;
+		if(file.exists()&&file.isFile()){
+			result = file.delete();
+			result = true;
+		}
+		return result;
+	}
+	
 	@Before(Tx.class)
 	public void saveFile(){
 		Record re = new Record();
@@ -93,6 +106,7 @@ public class VideoController extends Controller {
 	public void delete(){
 		String id=getPara("id");
 		String sql="delete from video_case where id="+id;
+		deletePicture(Db.findFirst("select * from video_case where id = "+id).getStr("title_img"));
 		Db.update(sql);
 		renderJson(true);
 	}
