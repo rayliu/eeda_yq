@@ -55,7 +55,7 @@ $(document).ready(function() {
             		return str;
 			          }
             },
-            {"width":"50px",
+            {"width":"90px",
               "render": function ( data, type, full, meta ) {
                     var str = '';
                      if($("#status").val()=='已确认'){
@@ -63,7 +63,7 @@ $(document).ready(function() {
                          
                      }else{                    	
                         str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px" >删除</button>&nbsp'
-                        	str += '<button type="button" class="itemEidt btn table_btn btn_green btn-xs" style="width:40px;display:none"  >编辑</button>';
+                        	str += '<button type="button" class="itemEidt btn table_btn btn_green btn-xs" style="width:40px;"  >编辑</button>';
                      }
                     return str;
                 }
@@ -953,13 +953,14 @@ $(document).ready(function() {
   		order.exchange_total_amount_rmb = $("input[name='exchange_total_amount_rmb']").val();
   		order.rmb_difference = $("input[name='rmb_difference']").val();
   		order.remark = $("input[name='remark']").val();
+  		order.order_id = $("#order_id").val();
   		
   		$.post("/chargeCheckOrder/chargeSave",{params:JSON.stringify(order)},function(data){
-  				itemOrder.refleshTable($('#order_id').val().toString());
-                $('#cny').val((parseFloat(data.CNY)).toFixed(2));
-                $('#usd').val((parseFloat(data.USD)).toFixed(2));
-                $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
-                $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
+	  			itemOrder.refleshTable(data.chargeOrderId.toString());
+	            $('#cny').val((parseFloat(data.CNY)).toFixed(2));
+	            $('#usd').val((parseFloat(data.USD)).toFixed(2));
+	            $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
+	            $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
   				$.scojs_message('编辑成功', $.scojs_message.TYPE_OK);
   			},'json').fail(function() {
                 $.scojs_message('编辑失败', $.scojs_message.TYPE_ERROR);

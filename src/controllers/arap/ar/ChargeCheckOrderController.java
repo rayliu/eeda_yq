@@ -762,16 +762,17 @@ public class ChargeCheckOrderController extends Controller {
     
     public void chargeSave(){
     	String jsonStr = getPara("params");
+    	
     	Gson gson = new Gson();
     	Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
     	JobOrderArap joa = new JobOrderArap().findById(dto.get("jor_id"));
-    	
+    	String chargeOrderId=(String)dto.get("order_id");
     	String price = (String)dto.get("price");
     	if(price.isEmpty()){
     		joa.set("price",0);
     	}else{
     		joa.set("price",price);
-    	}
+    	}    	
     	
     	String amount = (String)dto.get("amount");
     	if(amount.isEmpty()){
@@ -813,7 +814,7 @@ public class ChargeCheckOrderController extends Controller {
     	if(exchange_total_amount_rmb.isEmpty()){
     		joa.set("exchange_total_amount_rmb",0);
     	}else{
-    		joa.set("exchange_currency_rate_rmb",exchange_currency_rate_rmb);
+    		joa.set("exchange_total_amount_rmb",exchange_total_amount_rmb);
     	}
     	joa.set("sp_id",(String)dto.get("sp_id"));
     	joa.set("charge_id",(String)dto.get("charge_id"));
@@ -822,6 +823,10 @@ public class ChargeCheckOrderController extends Controller {
     	joa.set("rmb_difference",(String)dto.get("rmb_difference"));
     	joa.set("remark",(String)dto.get("remark"));
     	joa.update();
-    	renderJson(joa);
+    	//计算结算汇总
+    	Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);
+		exchangeTotalMap.put("chargeOrderId", Double.parseDouble(chargeOrderId));
+		
+    	renderJson(exchangeTotalMap);
     }
 }
