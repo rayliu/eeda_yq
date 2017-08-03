@@ -77,22 +77,22 @@
   joa.order_type='charge',
 	joa.exchange_total_amount,
 	(0 - joa.exchange_total_amount)
-) from job_order_arap joa WHERE joa.exchange_currency_id = 6 and joa.id = caol.job_order_arap_id ) usd,
+) from trade_job_order_arap joa WHERE joa.exchange_currency_id = 6 and joa.id = caol.job_order_arap_id ) usd,
 (SELECT IF (
   joa.order_type='charge',
 	joa.exchange_total_amount,
 	(0 - joa.exchange_total_amount)
-) from job_order_arap joa WHERE joa.exchange_currency_id = 3 and joa.id = caol.job_order_arap_id ) cny,
+) from trade_job_order_arap joa WHERE joa.exchange_currency_id = 3 and joa.id = caol.job_order_arap_id ) cny,
 (SELECT IF (
   joa.order_type='charge',
 	joa.exchange_total_amount,
 	(0 - joa.exchange_total_amount)
-) from job_order_arap joa WHERE joa.exchange_currency_id = 8 and joa.id = caol.job_order_arap_id ) jpy,
+) from trade_job_order_arap joa WHERE joa.exchange_currency_id = 8 and joa.id = caol.job_order_arap_id ) jpy,
 (SELECT IF (
   joa.order_type='charge',
 	joa.exchange_total_amount,
 	(0 - joa.exchange_total_amount)
-) from job_order_arap joa WHERE joa.exchange_currency_id = 9 and joa.id = caol.job_order_arap_id ) hkd,
+) from trade_job_order_arap joa WHERE joa.exchange_currency_id = 9 and joa.id = caol.job_order_arap_id ) hkd,
 acao.begin_time,
 acao.end_time,
 	fi. NAME fy_name,

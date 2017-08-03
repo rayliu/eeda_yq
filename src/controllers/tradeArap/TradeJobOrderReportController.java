@@ -360,7 +360,7 @@ public class TradeJobOrderReportController extends Controller {
 	//打印应付申请单PDF
 	public void costApplicationBill(){
 		String order_id = getPara("order_id");
-		String fileName = "/report/trade/costApplicationBill.jasper";
+		String fileName = "/report/tradeCheckOrder/tradeCostApplicationBill.jasper";
 		String outFileName = "/download/应付申请单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
