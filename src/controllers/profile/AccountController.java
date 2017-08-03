@@ -83,8 +83,8 @@ public class AccountController extends Controller {
 
     // 删除金融账户
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_DELETE})
-    public void del() {
-        String id = getPara();
+    public void delete() {
+        String id = getPara("selfId");
         if (id != null) {
             /*Db.deleteById("fin_account", id);*/
         	Account account = Account.dao.findById(id);
@@ -96,7 +96,7 @@ public class AccountController extends Controller {
              }
              account.update();
         }
-        render("/profile/account/list.html");
+        renderJson("{\"result\":true}");
     }
 
     // 列出金融账户信息

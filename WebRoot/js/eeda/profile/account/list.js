@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
 	
 	var dataTable = eeda.dt({
         id: 'eeda-table',
@@ -42,16 +42,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                             "</a> ";
                     }
                     if(Account.isDel){
-                        if(full.STATUS != "inactive"){
-                            str += "<a class='btn btn-danger  btn-sm' href='/account/delete/"+full.ID+"'>"+
+                        if(!full.IS_STOP){
+                            str += "<button class='delete btn btn-danger  btn-sm' >"+
                                     "<i class='fa fa-trash-o fa-fw'></i>"+ 
                                     "停用"+
-                                "</a>";
+                                "</button>";
                         }else{
-                            str += "<a class='btn btn-success  btn-sm' href='/account/delete/"+full.ID+"'>"+
+                            str += "<button class='delete btn btn-success  btn-sm' >"+
                                     "<i class='fa fa-trash-o fa-fw'></i>"+ 
                                     "启用"+
-                                "</a>";
+                                "</button>";
                         }
                     }
                     str+="</nobr>";
@@ -67,6 +67,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 
     $('#searchBtn').click(function(){
         searchData(); 
+    });
+    //停用按钮控制
+    $("#eeda-table").on('click', '.delete', function(e){
+    	var selfId = $(this).parent().parent().parent().attr('id');
+    	$.post('/account/delete',{selfId:selfId},function(data){
+    		if(data){
+	    			var url = "/account/list";
+	                dataTable.ajax.url(url).load();
+	                $.scojs_message('成功', $.scojs_message.TYPE_OK);
+                }
+    		},'json').fail(function() {
+                $.scojs_message('失败', $.scojs_message.TYPE_ERROR);
+        });
     });
 
     var searchData=function(){
