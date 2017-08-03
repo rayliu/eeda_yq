@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.ArapChargeOrder;
 import models.ArapCostItem;
 import models.ArapCostOrder;
 import models.RateContrast;
@@ -34,6 +33,7 @@ import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
+import controllers.util.PoiUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -739,5 +739,65 @@ public class CostCheckOrderController extends Controller {
     			exchangeTotalMap.put("costOrderId", Double.parseDouble(costOrderId));
     	    	renderJson(exchangeTotalMap);
     }
-     
-}
+    
+    //导出excel对账单
+	public void downloadExcelList(){
+		String order_id = getPara("id");
+		String sp_name = getPara("sp_name");
+		
+		String sqlExport = " SELECT l. NAME pod,l1. NAME pol,aco.begin_time,aco.end_time,o.eng_office_name,p.company_name,p.abbr sp_abbr,p.contact_person,p.phone,p.fax,p1.abbr customer_abbr,  "
+				+" jo.order_export_date,jo.order_no,jo.type, "
+				+"  jos.mbl_no MBL, jos.hbl_no HBL,jos.SONO so_no, "
+				+" fi.name fee_name,cur. NAME currency_name,joa.amount,joa.price,ut.name unit_name, "
+				+" if(joa.order_type='cost', "
+				+" 	(0-joa.total_amount), "
+				+" 	joa.total_amount "
+				+" 	) total_amount, "
+				+" (SELECT IF ( "
+				+"   joa.order_type='cost', "
+				+" 	joa.total_amount, "
+				+" 	(0 - joa.total_amount) "
+				+" ) from job_order_arap joa WHERE joa.currency_id = 3 and joa.id = aci.ref_order_id ) cny, "
+				+" (SELECT IF ( "
+				+"   joa.order_type='cost', "
+				+" 	joa.total_amount, "
+				+" 	(0 - joa.total_amount) "
+				+" ) from job_order_arap joa WHERE joa.currency_id = 6 and joa.id = aci.ref_order_id ) usd, "
+				+"  "
+				+" (SELECT IF ( "
+				+"   joa.order_type='cost', "
+				+" 	joa.total_amount, "
+				+" 	(0 - joa.total_amount) "
+				+" ) from job_order_arap joa WHERE joa.currency_id = 8 and joa.id = aci.ref_order_id ) jpy, "
+				+" (SELECT IF ( "
+				+"   joa.order_type='cost', "
+				+" 	joa.total_amount, "
+				+" 	(0 - joa.total_amount) "
+				+" ) from job_order_arap joa WHERE joa.currency_id = 9 and joa.id = aci.ref_order_id ) hkd, "
+				+" GROUP_CONCAT(josi.container_no) container_no, "
+				+" GROUP_CONCAT(josi.container_type) container_amount "
+				+" from arap_cost_order aco "
+				+" left join party p on p.id=aco.sp_id "
+				+" LEFT JOIN office o on o.id = aco.office_id "
+				+" left join arap_cost_item aci on aci.cost_order_id = aco.id "
+				+" left join job_order_arap joa on joa.id = aci.ref_order_id "
+				+" LEFT JOIN currency cur ON cur.id = joa.currency_id "
+				+" LEFT JOIN job_order_shipment_item josi ON josi.order_id = joa.order_id "
+				+" LEFT JOIN fin_item fi on fi.id = joa.charge_id "
+				+" LEFT JOIN unit ut on ut.id = joa.unit_id "
+				+" left join job_order jo on jo.id = joa.order_id "
+				+" LEFT JOIN party p1 ON p1.id = jo.customer_id"
+				+" left join job_order_shipment jos on jos.order_id = jo.id "
+				+" LEFT JOIN location l ON l.id = jos.pod "
+				+" LEFT JOIN location l1 ON l1.id = jos.pol"
+				+" where aco.id ="+order_id
+				+" GROUP BY aci.id" ;
+		String total_name_header = "申请单号, 出货日期, 客户, 结算公司, 类型, 提单号(MBL), 提单号(HBL), SO号, 起运港,目的港, 箱号, 箱量类型, 费用名称, 币制, 金额";// 目的港,体积,件数,毛重,发票号,
+		String[] headers = total_name_header.split(",");
+		
+		String head_id_sql_total = "ORDER_NO, ORDER_EXPORT_DATE, CUSTOMER_ABBR, SP_ABBR, TYPE, MBL, HBL, SO_NO, POL, POD, CONTAINER_NO, CONTAINER_AMOUNT, FEE_NAME, CURRENCY_NAME, TOTAL_AMOUNT";// 目的港,体积,件数,毛重,发票号,
+		String[] fields = {"ORDER_NO", "ORDER_EXPORT_DATE", "CUSTOMER_ABBR", "SP_ABBR", "TYPE", "MBL", "HBL", "SO_NO", "POL", "POD", "CONTAINER_NO", "CONTAINER_AMOUNT", "FEE_NAME", "CURRENCY_NAME", "TOTAL_AMOUNT"};
+		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,sp_name);
+		renderText(fileName);
+	}     
+ }

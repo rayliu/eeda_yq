@@ -146,6 +146,24 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
         	
         });
         
+      //导出excel对账单
+        $('#exportTotaledExcel').click(function(){
+            $(this).attr('disabled', true);
+            var id = $('#order_id').val();
+            var sp_name = $('#sp_name').val();
+            $.post('/costCheckOrder/downloadExcelList', {id:id,sp_name:sp_name}, function(data){
+                $('#exportTotaledExcel').prop('disabled', false);
+                $.scojs_message('生成Excel对账单成功', $.scojs_message.TYPE_OK);
+                window.open(data);
+            }).fail(function() {
+                $('#exportTotaledExcel').prop('disabled', false);
+                $.scojs_message('生成Excel对账单失败', $.scojs_message.TYPE_ERROR);
+            });
+        });
+        
+        
+        
+        
         $("#cancelConfirmBtn").click(function(){
         	var order_id = $("#order_id").val();
         	$.post("/costCheckOrder/cancelConfirm",{order_id:order_id},function(data){
