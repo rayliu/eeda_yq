@@ -3,6 +3,7 @@ package controllers.webadmin.data;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -101,9 +102,22 @@ public class CaseController extends Controller {
     	redirect("/msgBoard");
     }
     
+	public boolean deletePicture(String pic_name){
+		String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\"+pic_name;
+		File file = new File(filePath);
+		boolean result = false;
+		if(file.exists()&&file.isFile()){
+			result = file.delete();
+			result = true;
+		}
+		return result;
+	}
+    
 	@Before(Tx.class)
 	public void deletePicture(){
 		String id=getPara("id");
+		deletePicture(Db.findById("wc_case_item",id).getStr("photo"));
 		Db.deleteById("wc_case_item", id);
 		renderJson(true);
 	}
@@ -175,7 +189,13 @@ public class CaseController extends Controller {
     	boolean result=false;
     	if(StringUtils.isNotBlank(id)){
 	    	String sql = "delete from wc_case_item where order_id = "+id; 
-			Db.update(sql);
+	    	List<Record> pictures = Db.find("select * from wc_case_item where order_id = "+id);
+			for(Record re : pictures){
+				String picture_name = re.getStr("photo");
+				deletePicture(picture_name);
+			}
+			boolean res = deletePicture(Db.findById("wc_case", id).getStr("picture_name"));
+	    	Db.update(sql);
 	    	Db.deleteById("wc_case", id);
 	    	result=true;
     	}

@@ -3,6 +3,7 @@ package controllers.webadmin.data;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -85,6 +86,18 @@ public class ProductController extends Controller {
     	redirect("/msgBoard");
     }
     
+	public boolean deletePicture(String pic_name){
+		String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\"+pic_name;
+		File file = new File(filePath);
+		boolean result = false;
+		if(file.exists()&&file.isFile()){
+			result = file.delete();
+			result = true;
+		}
+		return result;
+	}
+    
     public void list(){
     	
     	UserLogin user = LoginUserController.getLoginUser(this);
@@ -135,6 +148,12 @@ public class ProductController extends Controller {
 		String id = getPara("id");
 		boolean result = false;
 		if(StringUtils.isNotBlank(id)){
+			List<Record> pictures = Db.find("select * from wc_product_pic where order_id = "+id);
+			for(Record re : pictures){
+				String picture_name = re.getStr("photo");
+				deletePicture(picture_name);
+			}
+			boolean res = deletePicture(Db.findById("wc_product", id).getStr("cover"));
 			Db.update("delete from wc_product_pic where order_id = ?",id);
 			
 			Db.update("delete from wc_product where id = ?",id);
@@ -227,6 +246,7 @@ public class ProductController extends Controller {
 	@Before(Tx.class)
 	public void deletePicture(){
 		String id=getPara("id");
+		deletePicture(Db.findById("wc_product_pic",id).getStr("photo"));
 		Db.deleteById("wc_product_pic", id);
 		renderJson(true);
 	}

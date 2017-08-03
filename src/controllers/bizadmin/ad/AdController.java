@@ -1,5 +1,6 @@
 package controllers.bizadmin.ad;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -313,6 +314,21 @@ public class AdController extends Controller {
    		map.put("data", orderList);
     	renderJson(map);
     }
+    
+	public boolean deletePicture(String pic_name){
+		String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\"+pic_name;
+		File file = new File(filePath);
+		boolean result = false;
+		if(file.exists()&&file.isFile()){
+			result = file.delete();
+			result = true;
+		}
+		return result;
+	}
+	
+
+    
     
     public void saveFile() throws Exception{
     	Record re = new Record();
