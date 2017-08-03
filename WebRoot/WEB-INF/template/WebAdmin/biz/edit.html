@@ -5,18 +5,20 @@
       <h4>商家详细</h4>
       <input type="hidden" value="${user.uid!''}" id="user_id"/>
       <p class="bd">
-      				<span>${user.c_name!''}</span> <span>暂无</span>  <span>${user.trade_type}</span>  
-      				<span>${user.user_type!''}</span>  <span>钻石商家</span> <span>剩余30天</span>
+      				<span>商家名称：${user.c_name!''}</span> <span>商家行业：${user.trade_name!''}</span>  
+      				<span>注册类型：<%if(user.user_type!''==2){%>个人<%}else {%>公司<%}%></span>
+      				 <span>商家性质：<%if(dimond.whether!''=='Y') {%> 钻石会员 <%}else {%>普通商家<% }%></span>
+      				  
       				<input type="button" value="删除商家" id="delButton"  class="red-deletbtn">
       </p>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="userdetailtable bdtable mt10">
         <tbody><tr>
           <td>账号资料</td>
-          <td><span>用户名：${user.user_name!''}</span>  <span>负责人：${user.contact!''}</span> <span>联系电话:${user.phone!''}</span></td>
+          <td><span>用户名：${user.user_name!''}</span>  <span>负责人：${user.contact!''}</span> <span>联系电话:${user.telephone!''}</span></td>
         </tr>
         <tr>
           <td rowspan="3">商铺资料</td>
-          <td><span>电话：${user.telephone!''}</span> <span>QQ：${user.qq!''}</span>    <span> 注册时间：${user.create_time!''}</span> </td>
+          <td><span>电话：${user.shop_telephone!''}</span> <span>QQ：${user.qq!''}</span>    <span> 注册时间：${user.create_time!''}</span> </td>
         </tr>
         <tr>
           <td><span>地址：${user.address!''}</span></td>

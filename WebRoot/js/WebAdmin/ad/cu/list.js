@@ -9,24 +9,12 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             columns: [
 	                     { "data":"ORDER_NO","width": "80px" },
 	                     { "data":"TITLE","width": "80px" },
-	                     { "data": "PRODUCTOR", "width":"120px"},
-	                     { "data": "TOTAL_DAY", "width":"90px"}, 
-	                     { "data": "ID", "width":"60px",
-	                    	 "render":function(data,type,full,meta){
-	                    		 var   d=new   Date(Date.parse(full.END_DATE .replace(/-/g,"/")));
-	                    		 if(d<new Date){
-	                    			 return "已经过期"
-	                    		 }
-	                    		 var index=full.END_DATE.indexOf(" ");
-	                    		 var endday=full.END_DATE.substring(0,index);
-	                    		 var nowday=new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate();
-	                    		
-                    		 return DateDiff(nowday,endday);
-	                     	}
-	                     }, 
+	                     { "data": "C_NAME", "width":"120px"},
+	                     { "data": "TOTAL_DAYS", "width":"90px"}, 
+	                     { "data": "LEAVE_DAYS", "width":"60px"}, 
 	                     { "data": "END_DATE", "width":"60px"},
-	                     { "data": "ID", "width":"60px"},
-	                     { "data": "ID", "width":"60px"},
+	                     { "data": "LOC_NAME", "width":"60px"},
+	                     { "data": "REMARK", "width":"60px"},
 	                     { "data": "STATUS", "width":"60px",
 	                    	 render: function(data,type,full,meta){
 	     	            		var status = "";

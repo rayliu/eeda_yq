@@ -3,6 +3,8 @@ package controllers.webadmin.biz;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +41,10 @@ public class SpController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	 public void edit(){ 
 		String id = getPara("id");
-        String sql_user = "select ul.id uid,ul.user_name,wc.* from user_login ul left join wc_company wc on wc.creator = ul.id where ul.id = "+id;
+        String sql_user = "select ca.name trade_name,ul.id uid,ul.user_name,wc.* from user_login ul "
+			        		+ "left join wc_company wc on wc.creator = ul.id "
+			        		+"left join category ca on ca.id=wc.trade_type "
+			        		+ "where ul.id = "+id;
         String sql_dimond = "select if(DATEDIFF(max(end_date),now())>0,'Y','N') whether,DATEDIFF(max(end_date),"
         					+ "now()) leave_days,max(end_date) last_date from wc_ad_dimond where status = '已开通' and creator = "+id;
         String sql_cu =	"SELECT if(DATEDIFF(max(end_date),now())>0,cast(DATEDIFF(max(end_date),now()) as char),'0') leave_days,max(end_date) end_date FROM `wc_ad_cu` where status='开启' and creator ="+id;
@@ -62,12 +67,12 @@ public class SpController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-    	String sql=	"SELECT id,'cu' type,"
+    	String sql=	"SELECT id,'促销' type,"
     			+" create_time,order_no, cast(CONCAT(begin_date, '-', end_date) as char) duringday,"
     			+" if(DATEDIFF(end_date,begin_date)<0,'over time',cast(DATEDIFF(end_date,begin_date) as char)) total_day, price "
     			+" FROM  wc_ad_cu  WHERE creator = "+id
     			+" UNION ALL"
-    			+" SELECT id, 'dimond' type, create_time, order_no, cast(CONCAT(begin_date, '-', end_date) as char) duringday,"
+    			+" SELECT id, '钻石会员' type, create_time, order_no, cast(CONCAT(begin_date, '-', end_date) as char) duringday,"
     			+" if(DATEDIFF(end_date,begin_date)<0,'over time',cast(DATEDIFF(end_date,begin_date) as char)) total_day, total_price  price"
     			+" FROM wc_ad_dimond WHERE creator = "+ id;
     	String sqlTotal = "select count(1) total from ("+sql+ ") B";
@@ -84,10 +89,12 @@ public class SpController extends Controller {
 	
 	@Before(Tx.class)
 	public void updateDimond(){
+		DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
 		String id = getPara("id");
 		String endDate = getPara("end_date");
 		String beginDate = (String) (getPara("begin_date").equals("begin_date")?new Date():getPara("begin_date"));
 		Record re = new Record();
+		re.set("order_no", "A"+format.format(new Date()));
 		re.set("begin_date", beginDate);
 		re.set("end_date", endDate);
 		re.set("status", "已开通");
@@ -101,10 +108,12 @@ public class SpController extends Controller {
 	
 	@Before(Tx.class)
 	public void updateCu(){
+		DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
 		String id = getPara("id");
 		String endDate = getPara("end_date");
 		String beginDate = getPara("begin_date");
 		Record re = new Record();
+		re.set("order_no", "A"+format.format(new Date()));
 		re.set("begin_date", beginDate);
 		re.set("end_date", endDate);
 		re.set("status", "开启");
@@ -128,6 +137,8 @@ public class SpController extends Controller {
 	@Before(Tx.class)
 	public void delete(){
 		String id = getPara("id");
+		String sql_delcompany="delete from wc_company where creator = "+id;
+		Db.update(sql_delcompany);
 		String sql = "delete from user_login where id = "+id;
 		Db.update(sql);
 		renderJson(true);

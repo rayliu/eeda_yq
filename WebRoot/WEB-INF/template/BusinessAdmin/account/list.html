@@ -20,24 +20,34 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>钻石商家</td>
-                                <td><span class="fail-verify">剩余30天 至 2016-1-1</span>&nbsp;&nbsp;</td>
-                              <td><input type="button" value="开通广告" class="stdbtn btn_red" onclick="window.location.href='ad-buy-3.inc.php'" /></td>
+                                <td><%if(diamond.leave_days>0){%>钻石商家<%} else{%>普通商家<%}%></td>
+                                <td><span class="fail-verify"><%if(diamond.leave_days>0){%>剩余${diamond.leave_days!''}天<%}%></span>&nbsp;&nbsp;</td>
+                             <td><a style="color:white;text-decoration:none;" type="button" class=" stdbtn btn_red" href='/BusinessAdmin/ad/dimond' >开通钻石</a></td>
                             </tr>
                         <tr>
                             <td>APP横幅广告服务</td>
-                            <td><span class="anchorbutton">影响力可以对兑此服务，详情咨询客服。</span>&nbsp;</td>
-                          <td><input name="button" type="button" class="stdbtn btn_red" value="开通广告" onclick="window.location.href='ad-buy-2.inc.php'"/></td>
+                            <td><span class="fail-verify">影响力可以对兑此服务，详情咨询客服。</span>&nbsp;</td>
+                           <td><a style="color:white;text-decoration:none;" type="button" class=" stdbtn btn_red" href='/BusinessAdmin/ad/banner' >开通横幅广告</a></td>
                         </tr>
                         <tr>
                             <td>“促”销广告</td>
-                            <td><span class="fail-verify">剩余3天  至 2016-1-1</span>&nbsp;</td>
-                            <td><input type="button" value="开通广告" class="stdbtn btn_red" onclick="window.location.href='ad-buy-1.inc.php'" /></td>
+                            <td><span class="fail-verify">你有${cu.count_cu!'0'}个促销广告有效，请到促销管理查看 </span>&nbsp;</td>
+                            <td><a style="color:white;text-decoration:none;" type="button" class=" stdbtn btn_red" href='/BusinessAdmin/ad/cu' >开通促销</a></td>
                         </tr>
                         <tr>
                             <td>优“惠“广告服务</td>
-                            <td><span class="anchorbutton">状态：关闭</span></td>
-                            <td><input type="button" value="免费开通" class="stdbtn btn_yellow" onclick="window.location.href='ad-manage-hui.php'"/></td>
+                            <%
+                            	var status = hui.is_active;
+                            	if(status == 'B'){
+                            		status = "禁止";
+                            	}else if(status == 'Y'){
+                            		status = "开启";
+                            	}else if(status == 'N'){
+                            		status = "关闭";
+                            	}
+                            %>
+                            <td><span class="fail-verify">状态：${status!'无'}</span></td>
+                            <td><a style="color:white;text-decoration:none;" class="stdbtn btn_yellow" href='/BusinessAdmin/ad/hui'>免费开通</a></td>
                         </tr>
                         <tr>
                             <td>商店浏览次数</td>

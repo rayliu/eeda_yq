@@ -148,6 +148,7 @@ public class ProductController extends Controller {
         			re.set("photo", (String) dto.get("photo"+i));
             		re.set("seq", i);
             		re.set("order_id", order.get("id"));
+            		re.set("create_time", new Date());
                 	Db.save("wc_product_pic", re);
         		}
     		}
@@ -170,6 +171,7 @@ public class ProductController extends Controller {
         		orderItem.set("photo", (String) dto.get("photo"+i));
         		orderItem.set("seq", i);
         		orderItem.set("order_id", order.get("id"));
+        		orderItem.set("create_time", new Date());
             	Db.save("wc_product_pic", orderItem);
     		}
         }

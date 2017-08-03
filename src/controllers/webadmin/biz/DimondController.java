@@ -57,7 +57,7 @@ public class DimondController extends Controller {
         }
          
 
-        String sql="select wc.c_name creator_name,DATEDIFF(dim.end_date,now()) less_days,dim.* from wc_ad_dimond dim "
+        String sql="select wc.c_name,DATEDIFF(dim.end_date,dim.begin_date) days,dim.* from wc_ad_dimond dim "
         		+ "LEFT JOIN wc_company wc on dim.creator = wc.creator ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());

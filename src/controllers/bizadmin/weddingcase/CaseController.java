@@ -1,5 +1,6 @@
 package controllers.bizadmin.weddingcase;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -103,6 +104,7 @@ public class CaseController extends Controller {
         			re.set("photo", (String) dto.get("photo"+i));
             		re.set("seq", i);
             		re.set("order_id", id);
+            		re.set("create_time", new Date());
                 	Db.save("wc_case_item", re);
         		}
     		}
@@ -119,12 +121,24 @@ public class CaseController extends Controller {
 	            	orderItem.set("photo", (String) dto.get("photo"+i));
 	            	orderItem.set("seq", i);
 	            	orderItem.set("order_id",example.get("id"));
+	            	orderItem.set("create_time",new Date());
 	            	Db.save("wc_case_item", orderItem);
         		}
         }
         renderJson(example);
 	}
 	
+	public boolean deletePicture(String pic_name){
+		String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\"+pic_name;
+		File file = new File(filePath);
+		boolean result = false;
+		if(file.exists()&&file.isFile()){
+			result = file.delete();
+			result = true;
+		}
+		return result;
+	}
 	
 	@Before(Tx.class)
 	public void delete(){
@@ -132,10 +146,16 @@ public class CaseController extends Controller {
 		boolean result=false;
 		if(StringUtils.isNotBlank(id)){
 			String sql = "delete from wc_case_item where order_id = "+id; 
+			List<Record> pictures = Db.find("select * from wc_case_item where order_id = "+id);
+			for(Record re : pictures){
+				String picture_name = re.getStr("photo");
+				deletePicture(picture_name);
+			}
+			boolean res = deletePicture(Db.findById("wc_case", id).getStr("picture_name"));
 			Db.update(sql);
+			Db.deleteById("wc_case", id);
 			result=true;
 		}
-		Db.deleteById("wc_case", id);
 		renderJson(result);
 	}
 }

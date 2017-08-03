@@ -7,28 +7,20 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             serverSide: true, //不打开会出现排序不对
             ajax: "/WebAdmin/biz/dimond/list",
             columns: [
-	                     { "data":"ORDER_NO","width": "80px" },
-	                     { "data": "CREATOR_NAME", "width":"120px"},
-	                     { "data": "PUT_IN_DAYS", "width":"90px"}, 
-	                     { "data": "LESS_DAYS", "width":"90px"}, 
-	                     { "data": "END_DATE", "width":"60px"},
-	                     { "data": "TOTAL_PRICE", "width":"60px"},
-	                     { "data": "STATUS", "width":"60px",
-	                    	 "render":function(data,type,full,meta){
-	                    		 if(data == '新建'){
-	                    			 data = '待处理'
-	                    		 }
-	                    		 
-	                    		 return data;
-	                    	 }
-	                     },
-	                     { "data": "STATUS", "width":"60px",
+	                     { "data":"ORDER_NO","width": "20%" },
+	                     { "data": "C_NAME", "width":"15%"},
+	                     { "data": "DAYS", "width":"5%"}, 
+	                     { "data": "BEGIN_DATE", "width":"10%"},
+	                     { "data": "END_DATE", "width":"10%"},
+	                     { "data": "TOTAL_PRICE", "width":"5%"},
+	                     { "data": "REMARK", "width":"20%"},
+	                     { "data": "STATUS", "width":"15%",
 	                    	 render: function(data,type,full,meta){
 	                    		 var result = '';
 	                    		 if(data == '新建'){
 	                    			 result = "<button class='modifibtn open' data-id='"+full.ID+"'>开通会员</button>";
 	                    		 }else{
-	                    			 result = "<button class='delete-btn' data-id='"+full.ID+"'>开通会员</button>";
+	                    			 result = "<button class='delete-btn' disabled data-id='"+full.ID+"'>已开通</button>";
 	                    		 }
 	     	            		return result;
 	     	            	 } 
@@ -40,42 +32,18 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         $("#eeda_table").on("click",".open",function(){
         	var self= this;
         	var order_id = $(self).data("id");
-        	
-        	$.post("/WebAdmin/biz/dimond/updateStatus",{order_id:order_id},function(data){
-        		if(data){
-        			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
-        			refleshTable();
-        		}else{
-        			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
-        		}
-        	});
-        });
-        
-/*        //更新状态 
-        $("#eeda_table").on("click"," .wherether_carriage",function(){
-        	var result = confirm("确定要这样做吗？");
-        	var self = $(this);
-        	var id = self.data('id');
-        	var status = self.attr("status");
+        	var result = confirm("你确定为该商家开通钻石会员吗？");
         	if(result){
-        		$.post("/WebAdmin/ad/cu/whetherCarriage",{id:id,status:status},function(data){
+        		$.post("/WebAdmin/biz/dimond/updateStatus",{order_id:order_id},function(data){
             		if(data){
-            			if(status == "toUp"){
-            				$.scojs_message("上架成功",$.scojs_message.TYPE_OK);
-                			
-            			}
-            			if(status == "toDown"){
-            				$.scojs_message("已下架",$.scojs_message.TYPE_OK);
-            			}
+            			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
             			refleshTable();
             		}else{
-            			$.scojs.message("操作失败",$.scojs_message.TYPE_OK);
+            			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
             		}
-            	})
+            	});
         	}
-        });*/
-        
-
+        });
         
          $("#updateBtn").click(function(){
         	var self = this;
@@ -91,7 +59,6 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         		self.disabled = false;
         	});
         });
-        
         
         var refleshTable = function(){
         	 dataTable.ajax.url("/WebAdmin/biz/dimond/list").load();

@@ -15,6 +15,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data": "PRICE", "width":"60px"}, 
 	                     { "data": "TOTAL_DAY", "width":"60px"},
 	                     { "data": "TOTAL_PRICE", "width":"60px"},
+	                     { "data": "REMARK", "width":"60px"},
 	                     { "data": "STATUS", "width":"60px",
 	                    	 render: function(data,type,full,meta){
 	     	            		var data = "";
@@ -46,7 +47,6 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             		if(data){
             			if(status == "Y"){
             				$.scojs_message("审批成功",$.scojs_message.TYPE_OK);
-                			
             			}
             			if(status == "N"){
             				$.scojs_message("已拒绝",$.scojs_message.TYPE_OK);
