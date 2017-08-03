@@ -89,7 +89,112 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 		    $("#AllCheck").prop("checked",$(".checkBox").length == $(".checkBox:checked").length ? true : false);
       });
       
-      
+        $('.complex_search').click(function(event) {
+            if($('.search_single').is(':visible')){
+              $('.search_single').hide();
+            }else{
+              $('.search_single').show();
+            }
+        });
+        
+      //简单查询
+        $('#selected_field').change(function(event) {
+  	      var selectField = $('#selected_field').val();
+  	      if(selectField=='order_no'||selectField=='customer_code_like'||selectField=='container_no'){
+  	    	  $("#public_text").val("");
+  	    	  $("#single_audit_flag").hide();
+  	    	  $("#single_cabinet_type").hide();
+  	    	  $("#public_time").hide();
+  	    	  $("#single_sp").hide();
+  	    	  $("#public_text").show();
+  	      }
+  	      if(selectField=='sp_id'){
+  	    	  $("#single_sp_id_input").val("");
+  	    	  $("#single_audit_flag").hide();
+  	    	  $("#single_cabinet_type").hide();
+  	    	  $("#public_time").hide();
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp").show();
+  	      }
+  	      if(selectField=='cabinet_type'){
+  	    	  $("#single_cabinet_type").val("");
+  	    	  $("#single_audit_flag").hide();
+  	    	  $("#public_time").hide();
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp").hide();
+  	    	  $("#single_cabinet_type").show();
+  	      }
+  	      if(selectField=='audit_flag'){
+  	    	  $("#single_audit_flag").val("");
+  	    	  $("#public_time").hide();
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp").hide();
+  	    	  $("#single_cabinet_type").hide();
+  	    	  $("#single_audit_flag").show();
+  	      }
+  	      if(selectField=='cabinet_date'){
+  	    	  $("#single_public_time_begin_time").val("");
+  	    	  $("#single_public_time_end_time").val("");
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp").hide();
+  	    	  $("#single_cabinet_type").hide();
+  	    	  $("#single_audit_flag").hide();
+  	    	  $("#public_time").show();
+  	      }
+  	      if(selectField=='charge_time'){
+  	    	  $("#single_public_time_begin_time").val("");
+	    	  $("#single_public_time_end_time").val("");
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp").hide();
+  	    	  $("#single_cabinet_type").hide();
+  	    	  $("#single_audit_flag").hide();
+  	    	  $("#public_time").show();
+  	      }
+  	      if(selectField=='create_time'){
+  	    	  $("#single_public_time_begin_time").val("");
+	    	  $("#single_public_time_end_time").val("");
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp").hide();
+  	    	  $("#single_cabinet_type").hide();
+  	    	  $("#single_audit_flag").hide();
+  	    	  $("#public_time").show();
+  	      }
+       });
+        
+        $("#singleSearchBtn").click(function(){
+      	  var selectField = $('#selected_field').val();
+      	  var selectValue = "";
+  	      if(selectField=='order_no'){
+  	    	  selectValue = $("#public_text").val();
+  	      }
+  	      if(selectField=='sp_id'){
+  	    	  selectValue = $("#single_sp_id").val();
+  	      }
+  	      if(selectField=='cabinet_type'){
+  	    	  var single_cabinet_type = $("#single_cabinet_type").val();
+  	      }
+  	      if(selectField=='audit_flag'){
+  	    	selectValue = $("#single_audit_flag").val();
+  	      }
+  	      if(selectField=='cabinet_date'){
+  	    	  var cabinet_date_begin = $("#single_public_time_begin_time").val();
+  	    	  var cabinet_date_end = $("#single_public_time_end_time").val();
+  	      }
+  	      if(selectField=='charge_time'){
+  	    	 var charge_time_begin = $("#single_public_time_begin_time").val();
+  	    	 var charge_time_end = $("#single_public_time_end_time").val();
+  	      }
+  	      
+  	      //增加出口日期查询
+            var url = "/transChargeConfirm/list?"+selectField+"="+selectValue
+                 +"&charge_time_begin_time="+charge_time_begin
+                 +"&charge_time_end_time="+charge_time_end
+            	   +"&cabinet_date_begin_time="+cabinet_date_begin
+            	   +"&cabinet_date_end_time="+cabinet_date_end   
+            	   +"&cabinet_type="+single_cabinet_type;
+            dataTable.ajax.url(url).load();
+        });
+        
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
@@ -102,7 +207,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
           var order_no = $.trim($("#order_no").val()); 
 //          var customer = $("#customer").val();
 //          var customer_name = $("#customer_input").val(); 
-          var sp_name = $("#sp_input").val(); 
+          var sp_id = $("#sp_id").val(); 
           var sp = $("#sp").val(); 
           var start_date = $("#charge_time_begin_time").val();
           var end_date = $("#charge_time_end_time").val();
@@ -115,12 +220,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 //			           +"&customer_id="+customer
 //			           +"&customer_name_like="+customer_name
 //			           +"&sp_id="+sp
-			           +"&sp_name_like="+sp_name
+			           +"&sp_id="+sp_id
 		               +"&charge_time_begin_time="+start_date
 		               +"&charge_time_end_time="+end_date
 		               +"&cabinet_date_begin_time="+cabinet_date_begin_time
 		          	   +"&cabinet_date_end_time="+cabinet_date_end_time
-          			   +"&audit_flag_notequals="+audit_flag
+          			   +"&audit_flag="+audit_flag
           			   +"&cabinet_type="+cabinet_type;
 
           dataTable.ajax.url(url).load();
