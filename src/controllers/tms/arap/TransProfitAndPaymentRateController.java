@@ -84,8 +84,8 @@ public class TransProfitAndPaymentRateController extends Controller {
 	
 	public void listTotal() {
 		String spid =(String) getPara("sp_id");
-		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
-		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
+		String charge_time_begin_time =(String) getPara("charge_time_begin_time");
+		String charge_time_end_time =(String) getPara("charge_time_end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
@@ -94,19 +94,18 @@ public class TransProfitAndPaymentRateController extends Controller {
 		if(" and sp_id=".equals(sp_id)){
 			sp_id="";
 		}
-		if(order_export_date_begin_time==null){
-			order_export_date_begin_time="";
+		if(charge_time_begin_time==null){
+			charge_time_begin_time="1970-01-01";
 		}
-		if(order_export_date_end_time==null){
-			order_export_date_end_time="";
+		if(charge_time_end_time==null){
+			charge_time_end_time="2037-12-31";
 		}
 		
-		String order_export_date =  " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
-
-		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
-			order_export_date="";
+		String charge_time =  " and (charge_time between '"+charge_time_begin_time+"' and '"+charge_time_end_time+"')";
+		if(charge_time_begin_time==""||charge_time_end_time==""){
+			charge_time="";
 		}
-		String condition = sp_id+order_export_date;
+		String condition = sp_id+charge_time;
 		
 		String sql=" SELECT "
 			+"	(SELECT "

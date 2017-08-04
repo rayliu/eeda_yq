@@ -1,43 +1,83 @@
 <%layout("/eeda/layout.html"){%>
 <div id="page-wrapper">
-    <div class="row simple_search_div">
-  	  <div class="panel panel-default">
-      	<div class="panel-heading">
-                 <h4 class="panel-title">
-                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
-                     <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件                                       </a>
-                 </h4>
-           </div>
-	        <div id="collapseChargeInfo" class="panel-collapse collapse in" aria-expanded="false" style="height: auto;">
-	           <div class="panel-body" id="ChargeDiv">
-            	<div class="col-lg-12">
-            			<form id="orderForm">
-                	
-                                        <div class="row">
+	<div class="row simple_search_div">
+    	<div class="panel panel-default">
+        	<div class="panel-heading">
+            	<div class="row"><!--  第1行  -->
+                	<div class="three_tab" ><!--  三列排版  -->
+                    	<div class="search_single">
+                        	<select id="selected_field" name="selected_field" class="form-control search-label">
+	                            <option value="sp_id">结算公司</option>
+	                            <option value="charge_time">出货时间</option>	 
+                            </select>
+							
+                            <div  style="position:absolute;left:34%;bottom:-5px;" id="sp_id_show">
+	                            <%include("/eeda/component/form/inputSpField.html", 
+                                                                    {   id: 'sp_id',
+                                                                     	style:'width:160%', 
+                                                                        value: ''
+                                                                    }){}%>
+                            </div>
+                            <div style="display:none;position:absolute;left:34%;bottom:-5px;" id="charge_time_show">
+		                    	<%include("/eeda/component/form/inputDateQueryField.html", 
+								          {   id:'single_charge_time',
+								              style:'width:230px',
+								              begin_style:'width:90px',
+								              end_style:'width:90px',  
+								              value:''
+											}){} %>
+		                    </div>
+						</div>
+					</div>
+                    <div class="three_tab"><!--  三列排版  -->
+                    	<div class="search_single">
+                    		<button id="singleSearchBtn" class="btn btn_grey" type="button" style="float:left;">查询</button>
+                    	</div>
+					</div>
+                	<div class="three_tab"><!--  三列排版  -->
+               			<h4 class="panel-title pull-right" style="padding-top: 5px;">
+                			<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
+                				<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
+                			</a>
+                		</h4>
+					</div>
+				</div>
+			</div>
+        	<div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+        		<div class="panel-body" id="ChargeDiv">
+        			<div class="col-lg-12">
+        				<form id="orderForm" method="post" action="">	
+							 <div class="row">
                                             <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputSpField.html", 
+                                                 <%include("/eeda/component/form/inputSpField.html", 
                                                                     {   id: 'sp_id', 
                                                                         label: '结算公司', 
                                                                         value: ''
                                                                     }){}%>
                                             </div>
                                             <div class="col-lg-4">
-                                                 
 	                             				<%include("/eeda/component/form/inputDateQueryField.html",
-	                             									 {   id:'order_export_date', 
-	                             									 	 label:'出货时间',
+	                             									 {   id:'charge_time', 
+	                             									 	 label:'结算时间',
 	                             									     value:''
 	                             									  }){} %>
                                             </div>
-                                        </div>
-
-                                    <div class="form-group button-bar" >
-                                        <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
-                                        <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
-                                    </div><br>
-                                    
-	                                    <div class="form-group" >
-		                                    <label>应收对账金额合计：<span style="color:#AAAAAA"></span></label>
+                             </div>
+							
+							<div class="form-group button-bar" >
+		                		<button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+		                		<button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+		                	</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="panel-body">
+										<div class="form-group" >
+		                                   <label>应收对账金额合计：<span style="color:#AAAAAA"></span></label>
 		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">USD:<span id="USD_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
@@ -60,13 +100,10 @@
 		                                    <label>利润(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
 		                                    <label style="color:#AAAAAA"><span id="total_profit" style="color:black"></span></label><nbsp><nbsp>
 	                                    </div><br>
-	                                    
-		          	</form>  
-		          </div>
-	            </div><!-- /.row 查询条件 结束--> 
-	         </div>
-	      </div>
-	  </div> 
+
+    	</div>
+	</div>
+	  
 	                <div class="row simple_list_div">               
                                      <%include("/eeda/component/form/detailTableWithFoot.html", 
                                         {
