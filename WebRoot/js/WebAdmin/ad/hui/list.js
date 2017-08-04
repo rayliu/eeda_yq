@@ -21,16 +21,8 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                    	 }
 	                     }, 
 	                     { "data": "DISCOUNT", "width":"60px"}, 
-	                     { "data": "ID", "width":"60px",
-	                    	 "render":function(data,type,full,meta){
-	                    		 return"暂无"
-	                    	 }
-	                     },
-	                     { "data": "ID", "width":"60px",
-	                    	 "render":function(data,type,full,meta){
-	                    		 return "暂无 ";
-	                    	 }
-	                     },
+	                     { "data": "LOCATION", "width":"60px"},
+	                     { "data": "TRADE_TYPE_NAME", "width":"60px"},
 	                     { "data": "ID", "width":"60px",
 	                    	 "render":function(data,type,full,meta){
 	                    		 
@@ -69,7 +61,18 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         });
         
 
-        
+        //按地区过滤
+        $("#location").change(function(){
+        	var self = $(this);
+        	var location = self.select().val();
+        	dataTable.ajax.url("/WebAdmin/ad/hui/list?location="+location).load();
+        })
+        //按商家类型过滤
+           $("#category").change(function(){
+        	var self = $(this);
+        	var category = self.select().val();
+        	dataTable.ajax.url("/WebAdmin/ad/hui/list?category="+category).load();
+        })
         
         $("#eeda_table").on("click",".open",function(){
         	var self=$(this);
@@ -120,17 +123,6 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         var refleshTable = function(){
         	dataTable.ajax.url("/WebAdmin/ad/hui/list").load();
  	 	}
-     
-
-		var DateDiff = function  DateDiff(sDate1,sDate2){   //sDate1和sDate2是2006-12-18格式  
-			var  aDate,  oDate1,  oDate2,  iDays  ;
-			aDate  =  sDate1.split("-")  
-			oDate1  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])    //转换为12-18-2006格式  
-			aDate  =  sDate2.split("-")  
-			oDate2  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])  
-			iDays  =  parseInt(Math.abs(oDate1  -  oDate2)  /  1000  /  60  /  60  /24)    //把相差的毫秒数转换为天数  
-			return  iDays  
-		}  
     	
 });
 });

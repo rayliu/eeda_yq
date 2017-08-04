@@ -125,7 +125,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 	    		if(data){
 	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 	    			itemOrder.refleshTable();
-	    			window.location.href="http://localhost:8080/BusinessAdmin/ad/banner";
+	    			window.location.href="/BusinessAdmin/ad/banner";
 	    		}else{
 	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 	    		}

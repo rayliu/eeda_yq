@@ -5,7 +5,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             id: 'eeda_table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/WebAdmin/biz/dimond/list",
+            ajax: "/WebAdmin/biz/diamond/list",
             columns: [
 	                     { "data":"ORDER_NO","width": "20%" },
 	                     { "data": "C_NAME", "width":"15%"},
@@ -34,7 +34,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         	var order_id = $(self).data("id");
         	var result = confirm("你确定为该商家开通钻石会员吗？");
         	if(result){
-        		$.post("/WebAdmin/biz/dimond/updateStatus",{order_id:order_id},function(data){
+        		$.post("/WebAdmin/biz/diamond/updateStatus",{order_id:order_id},function(data){
             		if(data){
             			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
             			refleshTable();
@@ -49,7 +49,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         	var self = this;
         	var price = $("#price").val();
         	self.disabled = true;
-        	$.post("/WebAdmin/biz/dimond/updatePrice",{price,price},function(data){
+        	$.post("/WebAdmin/biz/diamond/updatePrice",{price,price},function(data){
         		if(data){
 	    			$.scojs_message('更新成功', $.scojs_message.TYPE_OK);
 	    			$("#cu_price").text(price);
@@ -61,7 +61,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         });
         
         var refleshTable = function(){
-        	 dataTable.ajax.url("/WebAdmin/biz/dimond/list").load();
+        	 dataTable.ajax.url("/WebAdmin/biz/diamond/list").load();
         }
      
 

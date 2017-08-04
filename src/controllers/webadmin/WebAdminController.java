@@ -96,8 +96,8 @@ public class WebAdminController extends Controller {
         	Record ad_hui = Db.findFirst("select count(1) total from wc_ad_hui group by creator");//全部（不管是否上架）
         	setAttr("ad_hui", ad_hui);
         	//钻石商家数
-        	Record dimond = Db.findFirst("select count(1) total from wc_ad_dimond group by creator");//全部（不管是否上架）
-        	setAttr("dimond", dimond);
+        	Record diamond = Db.findFirst("select count(1) total from wc_ad_diamond group by creator");//全部（不管是否上架）
+        	setAttr("diamond", diamond);
         	//上传案例数
         	Record wccase = Db.findFirst("select count(1) total from wc_case");//所有
         	setAttr("wccase", wccase);
@@ -276,7 +276,8 @@ public class WebAdminController extends Controller {
     	String district = "";
     	String location="";
     	Record re = new Record();
-    	re.set("code", detail[detail.length-1]);
+    	String code = detail.length>=1?detail[1]:detail[0];
+    	re.set("code", code);
     	for(int i=0;i<detail.length;i++){
     		if(i==0){
     			provice = Db.findFirst("select * from location where code = "+detail[i]).getStr("name");

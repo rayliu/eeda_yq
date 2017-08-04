@@ -107,8 +107,11 @@ public class ReminderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-    	String sql = "select ul.id uid,ul.status,wc.* from user_login ul  "
-    			+ "LEFT JOIN wc_company wc on wc.creator = ul.id  where ul.status != '通过' ";
+    	String sql = "select ca.name trade_type_name,ifnull(loc.name,'暂无') location,ul.id uid,ul.status,if(wc.user_type=2,'企业','个人') user_type_name,wc.* from user_login ul  "
+    				+ "LEFT JOIN wc_company wc on wc.creator = ul.id "
+    				+" LEFT JOIN category ca on ca.id = ul.id "
+    				+" left join location loc on loc.code = ifnull(wc.city,wc.province)"
+    				+" where ul.status != '通过' ";
     	String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ ") B";

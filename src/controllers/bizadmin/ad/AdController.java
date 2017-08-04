@@ -67,7 +67,7 @@ public class AdController extends Controller {
         renderJson(rec);
     }
 	
-	public void dimond(){
+	public void diamond(){
 		String sql="select * from price_maintain where type = '钻石会员'";
 		Record re = Db.findFirst(sql);
 		if(re != null){
@@ -78,7 +78,7 @@ public class AdController extends Controller {
     }
 	
 	@Before(Tx.class)
-	public void dimond_save(){
+	public void diamond_save(){
 		String jsonStr = getPara("jsonStr");
         Long userId = LoginUserController.getLoginUserId(this);
         Gson gson = new Gson();  
@@ -103,7 +103,7 @@ public class AdController extends Controller {
 		order.set("creator", userId);
 		order.set("create_time", new Date());
 		order.set("remark", remark);
-		Db.save("wc_ad_dimond", order);
+		Db.save("wc_ad_diamond", order);
 		renderJson(order);
 	}
 	
@@ -111,10 +111,10 @@ public class AdController extends Controller {
 
         Long userId = LoginUserController.getLoginUserId(this);
         String sql="";
-		String is_diamond="select * from wc_ad_dimond where creator = "+userId;
+		String is_diamond="select * from wc_ad_diamond where creator = "+userId;
 		if(Db.find(is_diamond).size()!=0){
 			sql="select * from price_maintain where type = '钻石商家'";
-			setAttr("dimond_tip","您是尊贵的钻石商家，已经为您提供了优惠");
+			setAttr("diamond_tip","您是尊贵的钻石商家，已经为您提供了优惠");
 		}else{
 			sql="select * from price_maintain where type = '推送广告'";
 		}

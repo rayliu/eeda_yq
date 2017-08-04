@@ -37,6 +37,19 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
                      ]
         });
         
+        //按地区过滤
+        $("#location").change(function(){
+        	var self = $(this);
+        	var location = self.select().val();
+        	dataTable.ajax.url("/WebAdmin/ad/cu/list?location="+location).load();
+        })
+        //按商家类型过滤
+           $("#category").change(function(){
+        	var self = $(this);
+        	var category = self.select().val();
+        	dataTable.ajax.url("/WebAdmin/ad/cu/list?category="+category).load();
+        })
+        
         //更新状态 
         $("#eeda_table").on("click"," .wherether_carriage",function(){
         	var result = confirm("确定要这样做吗？");

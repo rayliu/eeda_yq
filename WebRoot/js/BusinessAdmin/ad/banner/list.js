@@ -34,7 +34,7 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
               				" remark="+full.REMARK+
               				" total_price="+full.TOTAL_PRICE+
               				" picture="+full.PICTURE+
-              				" href='#begin_date'>编辑</a>";
+              				" href='#pageheader'>编辑</a>";
             	  	}else{
             	  		data = full.STATUS;
             	  	}

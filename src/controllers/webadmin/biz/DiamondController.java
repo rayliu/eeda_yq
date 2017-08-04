@@ -27,9 +27,9 @@ import controllers.util.DbUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class DimondController extends Controller {
+public class DiamondController extends Controller {
 
-	private Logger logger = Logger.getLogger(DimondController.class);
+	private Logger logger = Logger.getLogger(DiamondController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
 	@Before(EedaMenuInterceptor.class)
@@ -57,7 +57,7 @@ public class DimondController extends Controller {
         }
          
 
-        String sql="select wc.c_name,DATEDIFF(dim.end_date,dim.begin_date) days,dim.* from wc_ad_dimond dim "
+        String sql="select wc.c_name,DATEDIFF(dim.end_date,dim.begin_date) days,dim.* from wc_ad_diamond dim "
         		+ "LEFT JOIN wc_company wc on dim.creator = wc.creator ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
@@ -101,7 +101,7 @@ public class DimondController extends Controller {
     @Before(Tx.class)
     public void updateStatus(){
     	String order_id = getPara("order_id");
-    	String sql="update wc_ad_dimond set status = '已开通' where id ='"+ order_id+"'";
+    	String sql="update wc_ad_diamond set status = '已开通' where id ='"+ order_id+"'";
     	Db.update(sql);
     	renderJson(true);
     }

@@ -1,19 +1,28 @@
 <%layout("/WebAdmin/layout.html"){%>
     <div class="pageheader notab overhide">
             <p>
-                <strong>用户列表</strong>
-                <select class="ml10">
-                    <option>全国</option>
-                    <option>珠海</option>
+                <h3><strong>用户列表</strong></h3>
+                <select class=" select_text" id="location">
+                    <option value=''>全国</option>
+                    <%
+                    	
+                    	for(location in locations!)
+                    	{ 
+                    %>
+                    	<option value='${location.code!''}'>${location.city!''}</option>
+                   
+                    <%
+                    	}
+                    %>
                 </select>
-                <select class="ml10">
-                    <option>普通商家</option>
-                    <option>钻石商家</option>
-                    <option>全部</option>
+                <select class="select_text" id="user_type">
+               		<option value = "0">全部</option>
+                    <option value = "1">普通商家</option>
+                    <option value = "2">钻石商家</option>
                 </select>
             </p>
             <br />
-            <input type="button" class="delete-btn" value="全部" onclick="GoTradeType(0);" />
+<!--             <input type="button" class="delete-btn" value="全部" onclick="GoTradeType(0);" />
                         <input type="button" class="delete-btn" value="影楼" onclick="GoTradeType(1);">
                         <input type="button" class="delete-btn" value="婚礼策划" onclick="GoTradeType(2);">
                         <input type="button" class="delete-btn" value="跟拍摄影" onclick="GoTradeType(3);">
@@ -28,11 +37,11 @@
                         <input type="button" class="delete-btn" value="蜜月旅游" onclick="GoTradeType(12);">
                         <input type="button" class="delete-btn" value="烟酒" onclick="GoTradeType(13);">
                         <input type="button" class="delete-btn" value="珠宝" onclick="GoTradeType(14);">
-                        <input type="button" class="delete-btn" value="酒店" onclick="GoTradeType(15);">
+                        <input type="button" class="delete-btn" value="酒店" onclick="GoTradeType(15);"> -->
              <%include("/eeda/component/form/detailTable.html", 
           {
               id:'eeda_table', 
-              headers:['序号', '商家', '用户名','负责人','联系电话','分类','店铺电话','城 市','注册时间','级别','钻石剩余时间']
+              headers:['序号', '商家', '用户名','负责人','联系电话','分类','店铺电话','地区','注册时间','级别','钻石剩余时间']
           }){} %>
         </div>
 

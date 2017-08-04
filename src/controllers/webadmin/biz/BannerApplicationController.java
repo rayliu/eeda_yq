@@ -92,16 +92,16 @@ public class BannerApplicationController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
          
-    	String sql = "select wc.c_name productor,wab.* from wc_ad_banner wab "
-    					+ "LEFT JOIN wc_company wc on wc.creator = wab.creator order by create_time desc";
-    	
+    	String sql = "select loc.name location,wc.c_name productor,wab.* from wc_ad_banner wab "
+    				+ "LEFT JOIN wc_company wc on wc.creator = wab.creator  "
+    				+ "LEFT join location loc on loc.code = ifnull(wc.city,wc.province) ";
     	String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+" "+sLimit);
+        List<Record> orderList = Db.find(sql+" order by create_time "+sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

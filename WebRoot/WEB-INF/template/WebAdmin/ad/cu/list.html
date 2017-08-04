@@ -1,37 +1,35 @@
 <%layout("/WebAdmin/layout.html"){%>
     <div class="pageheader notab overhide">
             <h3>“促”广告管理</h3>
-            <div class="bdgray mt10">
-                <div>
-                    <span class="pdr10">"促"广告价格设定:</span>
-                    <input type="text" class="mh_txt" style="width:70px" value="${order.price!''}" id="price"/>元/每天
-                    <input type="button" value="修改" class="modifibtn" id="update_cu" />
-                </div>
-            </div>
-            <div class="mt10">
-                <select>
-                    <option>全国</option>
-                    <option>珠海</option>
+       <div class="mt10">
+           <select class="ml10" id="location">
+                    <option value=''>全国</option>
+                    <%
+                    	
+                    	for(location in locations!)
+                    	{ 
+                    %>
+                    	<option value='${location.code!''}'>${location.city!''}</option>
+                   
+                    <%
+                    	}
+                    %>
                 </select>
-                <select>
-                    <option value="0">行业分类</option>
-                                        <option value="1">影楼</option>
-                                        <option value="2">婚礼策划</option>
-                                        <option value="3">跟拍摄影</option>
-                                        <option value="4">跟拍摄像</option>
-                                        <option value="5">化妆</option>
-                                        <option value="6">主持</option>
-                                        <option value="7">花店</option>
-                                        <option value="8">婚品</option>
-                                        <option value="9">甜品</option>
-                                        <option value="10">租车</option>
-                                        <option value="11">礼服</option>
-                                        <option value="12">蜜月旅游</option>
-                                        <option value="13">烟酒</option>
-                                        <option value="14">珠宝</option>
-                                        <option value="15">酒店</option>
-                                    </select>
-            </div>
+        <select  id ="category">
+          <option value = "">行业分类</option>
+            	<%
+                    	
+                    	for(category in categorys!)
+                    	{ 
+                    %>
+                    	<option value='${category.id!''}'>${category.name!''}</option>
+                   
+                    <%
+                    	}
+                    %>
+        </select>
+      </div>  
+             
             <div class="row">
 				<%include("/eeda/component/form/detailTable.html", 
 		          {

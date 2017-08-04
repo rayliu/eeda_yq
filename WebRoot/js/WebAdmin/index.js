@@ -18,8 +18,8 @@ define(['jquery', 'sco', 'dataTablesBootstrap' , 'validate_cn'], function ($, me
           serverSide: false, 
           ajax: "/WebAdmin/listLocation",
           columns: [
-	            { "data": "NAME","width":"100px" },
-	            { "data": "ID",
+	            { "data": "NAME","width":"30%" },
+	            { "data": "ID","width":"70%",
 	            	render: function(data,type,full,meta){
 	            		return "<button class='modifibtn delete_loc' data-id='"+full.ID+"' >删除</button>";
 	            	}
@@ -33,8 +33,8 @@ define(['jquery', 'sco', 'dataTablesBootstrap' , 'validate_cn'], function ($, me
 	          serverSide: false, 
 	          ajax: "/WebAdmin/listCategory",
 	          columns: [
-		            { "data": "NAME","width":"100px" },
-		            { "data": "ID",
+		            { "data": "NAME","width":"30%" },
+		            { "data": "ID","width":"70%",
 		            	render: function(data,type,full,meta){
 		            		return "<button class='modifibtn delete_cat' data-id='"+full.ID+"' >删除</button>";
 		            	}

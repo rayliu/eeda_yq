@@ -17,7 +17,9 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
             { "data": null, "width": "60px",
             	render: function(data,type,full,meta){
             		if(full.STATUS == '新建'){
-            			return "<a class='stdbtn btn_blue editBtn' id='"+full.ID+"' amount='"+full.AMOUNT+"' put_in_time='"+full.PUT_IN_TIME+"' total_price='"+full.TOTAL_PRICE+"' phone='"+full.PHONE+"'  remark='"+full.REMARK+"' href='#put_in_time'>编辑</a>";
+            			return "<a class='stdbtn btn_blue editBtn' id='"+full.ID+"' " +
+            					"amount='"+full.AMOUNT+"' put_in_time='"+full.PUT_IN_TIME+"' total_price='"+
+            					full.TOTAL_PRICE+"' phone='"+full.PHONE+"'  remark='"+full.REMARK+"' href='#contentwrapper'>编辑</a>";
             		}else{
             			return full.STATUS;
             		}

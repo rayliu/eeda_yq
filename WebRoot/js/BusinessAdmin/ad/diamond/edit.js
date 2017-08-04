@@ -40,9 +40,8 @@ define(['jquery', 'sco', 'jquery_ui', 'validate_cn'], function ($) {
 		  order.total_price = $("#total_price").text();
 		  order.remark = $("#remark").val();
 		  order.status = "新建";
-		 
 		  self.disabled = true;
-		  $.post("/BusinessAdmin/ad/dimond_save",{jsonStr:JSON.stringify(order)},function(data){
+		  $.post("/BusinessAdmin/ad/diamond_save",{jsonStr:JSON.stringify(order)},function(data){
 			  if(data){
 				  $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 			  }else{

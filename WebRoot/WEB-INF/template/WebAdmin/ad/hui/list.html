@@ -2,14 +2,31 @@
     <div class="pageheader notab overhide">
       <h3>"惠"广告管理</h3>
       <div class="mt10">
-        <select>
-          <option>全国</option>
-          <option>珠海</option>
-        </select>
-        <select>
-          <option>行业分类</option>
-          <option>影楼</option>
-          <option>婚礼跟拍</option>
+           <select class="ml10" id="location">
+                    <option value=''>全国</option>
+                    <%
+                    	
+                    	for(location in locations!)
+                    	{ 
+                    %>
+                    	<option value='${location.code!''}'>${location.city!''}</option>
+                   
+                    <%
+                    	}
+                    %>
+                </select>
+        <select  id ="category">
+          <option value = "">行业分类</option>
+            	<%
+                    	
+                    	for(category in categorys!)
+                    	{ 
+                    %>
+                    	<option value='${category.id!''}'>${category.name!''}</option>
+                   
+                    <%
+                    	}
+                    %>
         </select>
       </div>     
       <div>

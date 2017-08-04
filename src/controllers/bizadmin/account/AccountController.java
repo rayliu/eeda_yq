@@ -35,7 +35,7 @@ public class AccountController extends Controller {
 	public void index() {
 	    Record noticeRec = Db.findFirst("select * from wc_notice order by id desc;");
 	    Long userId = LoginUserController.getLoginUserId(this);
-	    String sql_diamond = "select DATEDIFF(max(end_date),now())leave_days from wc_ad_dimond where creator = "+userId;
+	    String sql_diamond = "select DATEDIFF(max(end_date),now())leave_days from wc_ad_diamond where creator = "+userId;
 	    Record re_diamond = Db.findFirst(sql_diamond);
 	    setAttr("diamond",re_diamond);
 	    String sql_cu = "select count(*) count_cu from wc_ad_cu where DATEDIFF(end_date,now())>0 and creator = "+userId;

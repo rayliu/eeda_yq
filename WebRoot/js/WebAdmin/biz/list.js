@@ -19,85 +19,46 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data": "USER_NAME", "width":"60px"},
 	                     { "data": "CONTACT", "width":"60px"},
 	                     { "data": "PHONE", "width":"60px"},
-	                     { "data": "TRADE_TYPE", "width":"120px",
+	                     { "data": "TRADE_TYPE_NAME", "width":"120px",
 	                    	 "render":function(data,type,full,meta){
 	                    		 return data;
 	                    	 }
 	                     }, 
 	                     { "data": "TELEPHONE", "width":"60px"},
-	                     { "data": "CITY", "width":"60px"},
+	                     { "data": "LOCATION", "width":"60px"},
 	                     { "data": "CREATE_TIME", "width":"60px"},
-	                     { "data": "LEAVL", "width":"60px"},
-	                     { "data": "LEAVE_TIME", "width":"60px"}
+	                     { "data": "LEAVE_DAYS", "width":"60px"
+	                    	 		
+	                     },
+	                     { "data": "LEAVE_DAYS", "width":"60px",
+	                    	 "render":function(data,type,full,meta){
+	                    		 if(data<0){
+	                    			 data = "已过期";
+	                    		 }
+	                    		 return data;
+	                    	 }
+	                     }
                      ]
         });
         
-        
-        $("#updateDiamond, #updateMobile").click(function(){
-        	var self = this;	
-        	var btn_id = self.id;
-        	var price = $($(self).parent().parent().find('input')).val();
-        	self.disabled = true;
-        	$.post("/WebAdmin/biz/mobilePush/"+btn_id, {price,price},function(data){
-        		if(data){
-	    			$.scojs_message('更新成功', $.scojs_message.TYPE_OK);
-	    		}else{
-	    			$.scojs_message('更新失败', $.scojs_message.TYPE_ERROR);
-	    		}
-        		self.disabled = false;
-        	});
+        //按地区过滤
+        $("#location").change(function(){
+        	var self = $(this);
+        	var location = self.select().val();
+        	dataTable.ajax.url("/WebAdmin/biz/list?location="+location).load();
         });
         
-        $('#eeda_table').on('click','.action',function(){
-    		var self = this;	
-
-    		var sid = $(self).data("id");
-    		self.disabled = true;
-    		return;
-    	  	$.post("/WebAdmin/biz/mobilePush/exam",{id:sid},function(data){
-    	  		if(data){
-	    			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
-	    			refleshTable();
-	    		}else{
-	    			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
-	    		}
-    	  	});
+        //按商家类型过滤
+        $("#user_type").change(function(){
+        	var self = $(this);
+        	var user_type = self.select().val();
+        	dataTable.ajax.url("/WebAdmin/biz/list?user_type="+user_type).load();
         });
         
-       
+        
         var refleshTable = function(){
-        	dataTable.ajax.url("/WebAdmin/biz/mobilePush/list").load();
+        	dataTable.ajax.url("/WebAdmin/biz/list").load();
         }
-     
-        $('#eeda_table').on('click','.action',function(){
-    		var self = this;	
 
-    		var sid = $(self).data("id");
-    		self.disabled = true;
-    	  	$.post("/WebAdmin/biz/mobilePush/exam",{id:sid},function(data){
-    	  		if(data){
-	    			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
-	    			refleshTable();
-	    		}else{
-	    			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
-	    		}
-    	  	});
-        });
-        
-        $('#eeda_table').on('click','.rollback',function(){
-    		var self = this;	
-
-    		var sid = $(self).data("id");
-    		self.disabled = true;
-    	  	$.post("/WebAdmin/biz/mobilePush/rollBack",{id:sid},function(data){
-    	  		if(data){
-	    			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
-	    			refleshTable();
-	    		}else{
-	    			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
-	    		}
-    	  	});
-        });
-    	
     });
 });
