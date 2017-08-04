@@ -520,7 +520,6 @@ $(document).ready(function() {
 	     		 +"&status="+status;
 	     application_table.ajax.url(url).load();
 	     totalMoney();
-	     saveConditions();
 	}
 
     //查询动作
