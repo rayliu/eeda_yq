@@ -8,7 +8,7 @@
                     	<div class="search_single">
                         	<select id="selected_field" name="selected_field" class="form-control search-label">
 	                            <option value="car_id">结算车牌</option>
-	                            <option value="order_export_date">出货时间</option>	 
+	                            <option value="charge_time">结算时间</option>	 
                             </select>
 							
                             <div  style="position:absolute;left:34%;bottom:-5px;" id="car_id_show">
@@ -18,9 +18,9 @@
 	                                                    value: ''
 	                                                }){}%>
                             </div>
-                            <div style="display:none;position:absolute;left:34%;bottom:-5px;" id="order_export_date_show">
+                            <div style="display:none;position:absolute;left:34%;bottom:-5px;" id="charge_time_show">
 		                    	<%include("/eeda/component/form/inputDateQueryField.html", 
-								          {   id:'single_order_export_date',
+								          {   id:'single_charge_time',
 								              style:'width:230px',
 								              begin_style:'width:90px',
 								              end_style:'width:90px',  
@@ -57,8 +57,8 @@
                                             </div>
                                             <div class="col-lg-4">
 	                             				<%include("/eeda/component/form/inputDateQueryField.html",
-	                             									 {   id:'order_export_date', 
-	                             									 	 label:'出货时间',
+	                             									 {   id:'charge_time', 
+	                             									 	 label:'结算时间',
 	                             									     value:''
 	                             									  }){} %>
                                             </div>
