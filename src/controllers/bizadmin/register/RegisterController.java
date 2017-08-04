@@ -37,10 +37,7 @@ public class RegisterController extends Controller {
 		re.set("user_name", login_name);
 		re.set("phone", phone);
 		re.set("password", password);
-		re.set("is_stop", 1);
-		re.set("create_time",new Date());
-		Db.save("user_login", re);
-		setAttr("creator",re.get("id"));
+		setAttr("creator",re);
 		List<Record> cateList = Db.find("select * from category");
 		setAttr("cateList", cateList);
 		render(getRequest().getRequestURI()+"/index.html");
@@ -64,9 +61,18 @@ public class RegisterController extends Controller {
 		String jsonStr=getPara("jsonStr");
 		Gson gson=new Gson();
 		Map<String,?> dto = gson.fromJson(jsonStr, HashMap.class);
+		Record user = new Record();
 		Record re=new Record();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String type=(String)dto.get("type");
+		String user_name = (String) dto.get("user_name");
+		String password = (String) dto.get("password");
+		String phone = (String) dto.get("phone");
+		user.set("user_name", user_name);
+		user.set("password", password);
+		user.set("phone", phone);
+		user.set("is_stop", 1);
+		Db.save("user_login", user);
 		if(type.equals("1")){
 			String id_card = (String) dto.get("id_card");
 			re.set("id_card", id_card);

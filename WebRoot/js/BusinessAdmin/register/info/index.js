@@ -28,7 +28,10 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 				user.company_name=$(":input[name=company_name]").val()
 				
 			}
-			user.creator = $("#creator_id").val(); 
+			//user.creator = $("#creator_id").val();
+			user.user_name = $("#user_name").val();
+			user.password = $("#user_pass").val();
+			user.phone = $("#user_phone").val();
 			user.contact = $(":input[name=contact_"+type+"]").val();
 			user.telephone = $(":input[name=telephone_"+type+"]").val();
 			user.trade_type = $(":input[name=trade_type_"+type+"]").val();
