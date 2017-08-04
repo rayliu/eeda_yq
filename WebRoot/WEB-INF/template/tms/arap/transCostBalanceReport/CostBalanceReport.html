@@ -1,15 +1,59 @@
 <%layout("/eeda/layout.html"){%>
-        <div id="page-wrapper">
-           <div class="row simple_search_div">
-            	<div class="col-lg-12">
-                                     <form id="orderForm">
-                                        <div class="row">
+<div id="page-wrapper">
+	<div class="row simple_search_div">
+    	<div class="panel panel-default">
+        	<div class="panel-heading">
+            	<div class="row"><!--  第1行  -->
+                	<div class="three_tab" ><!--  三列排版  -->
+                    	<div class="search_single">
+                        	<select id="selected_field" name="selected_field" class="form-control search-label">
+	                            <option value="car_id">结算车牌</option>
+	                            <option value="order_export_date">出货时间</option>	 
+                            </select>
+							
+                            <div  style="position:absolute;left:34%;bottom:-5px;" id="car_id_show">
+	                            <%include("/eeda/component/form/inputCarInfoField.html", 
+	                                                {   id: 'single_car_id', 
+	                                                    label: '结算车牌', 
+	                                                    value: ''
+	                                                }){}%>
+                            </div>
+                            <div style="display:none;position:absolute;left:34%;bottom:-5px;" id="order_export_date_show">
+		                    	<%include("/eeda/component/form/inputDateQueryField.html", 
+								          {   id:'single_order_export_date',
+								              style:'width:230px',
+								              begin_style:'width:90px',
+								              end_style:'width:90px',  
+								              value:''
+											}){} %>
+		                    </div>
+						</div>
+					</div>
+                    <div class="three_tab"><!--  三列排版  -->
+                    	<div class="search_single">
+                    		<button id="singleSearchBtn" class="btn btn_grey" type="button" style="float:left;">查询</button>
+                    	</div>
+					</div>
+                	<div class="three_tab"><!--  三列排版  -->
+               			<h4 class="panel-title pull-right" style="padding-top: 5px;">
+                			<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
+                				<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
+                			</a>
+                		</h4>
+					</div>
+				</div>
+			</div>
+        	<div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+        		<div class="panel-body" id="ChargeDiv">
+        			<div class="col-lg-12">
+        				<form id="orderForm" method="post" action="">	
+							 <div class="row">
                                             <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputSpField.html", 
-                                                                    {   id: 'sp_id', 
-                                                                        label: '结算公司', 
-                                                                        value: ''
-                                                                    }){}%>
+                                                 <%include("/eeda/component/form/inputCarInfoField.html", 
+	                                                {   id: 'car_id', 
+	                                                    label: '结算车牌', 
+	                                                    value: ''
+	                                                }){}%>
                                             </div>
                                             <div class="col-lg-4">
 	                             				<%include("/eeda/component/form/inputDateQueryField.html",
@@ -18,10 +62,21 @@
 	                             									     value:''
 	                             									  }){} %>
                                             </div>
-                                        </div>
-                                    </form><br>
-                                    
-                                    <div class="form-group" >
+                             </div>
+							
+							<div class="form-group button-bar" >
+		                		<button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+		                		<button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+		                	</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="panel-body">
+										<div class="form-group" >
 		                                   <label>应付对账金额合计：<span style="color:#AAAAAA"></span></label>
 		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">USD:<span id="USD_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
@@ -39,22 +94,21 @@
 		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_uncost_tatol" style="color:black"></span></label><nbsp><nbsp><br>
 		                                   <label>未付对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
 		                                   <label style="color:#AAAAAA"><span id="total_uncost" style="color:black"></span></label><nbsp><nbsp>
+		                                   <span style="margin-left:50%;color:#AAAAAA">* 注：付款率 = 确认付款金额 / 应付金额
 	                                    </div><br>
 
-                                    <div class="form-group button-bar" >
-                                        <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询q</button>
-                                        <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
-                                        <span style="margin-left:50%;color:#AAAAAA">* 注：付款率 = 确认付款金额 / 应付金额
-                                    </div>
-                                     <%include("/eeda/component/form/detailTableWithFoot.html", 
-                                        {
-                                            id:'eeda_table', 
-                                            headers:['结算公司','结算车牌','应付CNY','应付USD','应付JPY','应付HKD','折合应付(CNY)','未付CNY','未付USD','未付JPY','未付HKD','折合未付(CNY)','付款率（%）'
-                                            ]
-                                        }){} %>
-                </div> <!-- /.col-lg-12 -->
-            </div> <!-- /.simple_search_div -->
-        </div><!-- end of  .page-wrapper-->
+    	</div>
+	</div>
+	<div class="row simple_list_div">
+    	<%include("/eeda/component/form/detailTableWithFoot.html", 
+        	{
+            	id:'eeda_table', 
+            	headers:['结算公司','结算车牌','应付CNY','应付USD','应付JPY','应付HKD','折合应付(CNY)','未付CNY','未付USD','未付JPY','未付HKD','折合未付(CNY)','付款率（%）'
+                ]
+            }){} %>
+        }){} %>
+    </div>
+</div><!-- end of  .page-wrapper-->
 
 <%}%>
 <script>

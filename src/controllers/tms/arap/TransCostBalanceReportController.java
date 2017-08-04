@@ -95,16 +95,16 @@ public class TransCostBalanceReportController extends Controller {
 	}
 	
 	public void listTotal() {
-		String spid =(String) getPara("sp_id");
+		String carid =(String) getPara("car_id");
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
-		String sp_id =" and sp_id="+spid;
-		if(" and sp_id=".equals(sp_id)){
-			sp_id="";
+		String car_id =" and car_id="+carid;
+		if(" and car_id=".equals(car_id)){
+			car_id="";
 		}
 		if(order_export_date_begin_time==null){
 			order_export_date_begin_time="";
@@ -118,7 +118,7 @@ public class TransCostBalanceReportController extends Controller {
 		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
 			order_export_date="";
 		}
-		String condition = sp_id+order_export_date;
+		String condition = car_id+order_export_date;
 		
 		String sql=" SELECT "
 			+"	(SELECT "

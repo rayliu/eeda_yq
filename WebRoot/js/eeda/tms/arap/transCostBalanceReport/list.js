@@ -115,6 +115,95 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
       });
       
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+      
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='"car_id"'){
+	    	  $("#single_car_id_input").val("");
+	    	  $("#order_export_date_show").hide();
+	    	  $("#car_id_show").show();
+	      }
+	      if(selectField=='order_export_date'){
+	    	  $("#single_order_export_date_begin_time").val("");
+	    	  $("#single_order_export_date_end_time").val("");
+	    	  $("#order_export_date_show").show();
+	    	  $("#car_id_show").hide();
+	      }
+     });
+      
+      $("#singleSearchBtn").click(function(){
+    	  var selectField = $('#selected_field').val();
+    	  if(selectField=='car_id'){
+	    	 var car_id = $("#single_car_id").val();
+	      }
+	      if(selectField=='order_export_date'){
+	    	 var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
+	    	 var order_export_date_end_time = $("#single_order_export_date_end_time").val();
+	      }
+	      
+	      
+	    //合计字段
+	         $.post('transCostBalanceReport/listTotal',{
+	        	 car_id:car_id,
+	       	  order_export_date_begin_time:order_export_date_begin_time,
+	       	  order_export_date_end_time:order_export_date_end_time
+	         },function(data){
+	       	  var cost_cny = parseFloat(data.COST_CNY).toFixed(2);
+	       	  var cost_usd = parseFloat(data.COST_USD).toFixed(2);
+	       	  var cost_jpy = parseFloat(data.COST_JPY).toFixed(2);
+	       	  var cost_hkd = parseFloat(data.COST_HKD).toFixed(2);
+	       	  var total_cost = parseFloat(data.TOTAL_COST).toFixed(2);
+	       	  var uncost_cny = parseFloat(data.UNCOST_CNY).toFixed(2);
+	       	  var uncost_usd = parseFloat(data.UNCOST_USD).toFixed(2);
+	       	  var uncost_jpy = parseFloat(data.UNCOST_JPY).toFixed(2);
+	       	  var uncost_hkd = parseFloat(data.UNCOST_HKD).toFixed(2);
+	       	  var total_uncost = parseFloat(data.TOTAL_UNCOST).toFixed(2);
+	       	  $('#CNY_cost_tatol').text(eeda.numFormat(cost_cny,3));
+	       	  $('#USD_cost_tatol').text(eeda.numFormat(cost_usd,3));
+	       	  $('#JPY_cost_tatol').text(eeda.numFormat(cost_jpy,3));
+	       	  $('#HKD_cost_tatol').text(eeda.numFormat(cost_hkd,3));
+	       	  $('#total_cost').text(eeda.numFormat(total_cost,3));
+	       	  $('#CNY_uncost_tatol').text(eeda.numFormat(uncost_cny,3)).css('color','red');
+	       	  $('#USD_uncost_tatol').text(eeda.numFormat(uncost_usd,3)).css('color','red');
+	       	  $('#JPY_uncost_tatol').text(eeda.numFormat(uncost_jpy,3)).css('color','red');
+	       	  $('#HKD_uncost_tatol').text(eeda.numFormat(uncost_hkd,3)).css('color','red');
+	       	  $('#total_uncost').text(eeda.numFormat(total_uncost,3)).css('color','red');
+	       	 var total=parseFloat(data.TOTAL);
+	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
+	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_cny]').html("CNY:"+eeda.numFormat(cost_cny,3));
+	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_usd]').html("USD:"+eeda.numFormat(cost_usd,3));
+	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_jpy]').html("JPY:"+eeda.numFormat(cost_jpy,3));
+	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_hkd]').html("HKD:"+eeda.numFormat(cost_hkd,3));
+	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_rmb]').html("应付折合(CNY):"+eeda.numFormat(total_cost,3));
+	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_cny]').html("CNY:"+eeda.numFormat(uncost_cny,3)).css('color','red');
+	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_usd]').html("USD:"+eeda.numFormat(uncost_usd,3)).css('color','red');
+	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_jpy]').html("JPY:"+eeda.numFormat(uncost_jpy,3)).css('color','red');
+	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_hkd]').html("HKD:"+eeda.numFormat(uncost_hkd,3)).css('color','red');
+	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_rmb]').html("未付折合(CNY):"+eeda.numFormat(total_uncost,3)).css('color','red');
+	       	  
+	       	  var total_profit=parseFloat(total_cost-total_uncost).toFixed(2);
+	       	  if(total_profit<0){
+	       		  $('#total_profit').text(total_profit).css('color','red');
+	       	  }else(
+	       		  $('#total_profit').text(total_profit)
+	       	  )
+
+	         });
+	      
+          var url = "/transCostBalanceReport/list?car_id="+car_id
+               +"&charge_time_begin_time="+order_export_date_begin_time
+               +"&charge_time_end_time="+order_export_date_end_time
+          dataTable.ajax.url(url).load(cssTd);
+      });
+      
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
@@ -129,8 +218,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       }
 
      var searchData=function(){
-    	 var sp_id = $("#sp_id").val();
-         var abbr_name=$('#sp_id_input').val();
+    	 var car_id = $("#single_car_id").val();
          var order_export_date_begin_time = $("#order_export_date_begin_time").val();
          var order_export_date_end_time = $("#order_export_date_end_time").val();
          
@@ -138,7 +226,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
          
        //合计字段
          $.post('transCostBalanceReport/listTotal',{
-       	  sp_id:sp_id,
+        	 car_id:car_id,
        	  order_export_date_begin_time:order_export_date_begin_time,
        	  order_export_date_end_time:order_export_date_end_time
          },function(data){
@@ -190,8 +278,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               *_status =
               时间字段需成双定义  *_begin_time *_end_time   between
           */
-          var url = "/transCostBalanceReport/list?sp="+sp_id
-          				+"&abbr_equals="+abbr_name
+          var url = "/transCostBalanceReport/list?car_id="+car_id
           				+"&order_export_date_begin_time="+order_export_date_begin_time
 				        +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load(cssTd);
