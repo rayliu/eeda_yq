@@ -867,20 +867,20 @@ $(document).ready(function() {
     itemOrder.returnFloat = function(value){
     	 var xsd=value.toString().split(".");
     	 if(xsd.length==1){
-    	 value=value.toString()+".00";
-    	 return value;
-    	 }
+    		 value=value.toString()+".00";
+    		 return value;
+    	 	}
     	 if(xsd.length>1){
-    	 if(xsd[1].length<2){
-    	 value=value.toString()+"0";
-    	 }
-    	 return value;
-    	 }
+    		 if(xsd[1].length<2){
+    			 value=value.toString()+"0";
+    		 }
+    		 return value;
+    	 	}
     	}  	
   	
   	
 	
-  //数量和单价自动补零
+    //数量和单价自动补零
     $('#charge_table').on('blur','[name=price],[name=amount]',function(){
     	var amount = $(this).val();
     	if(amount!=''&&!isNaN(amount)){

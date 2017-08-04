@@ -751,8 +751,8 @@ public class ChargeCheckOrderController extends Controller {
     		        + " left join unit u on u.id=jor.unit_id"
     		        + " left join currency c on c.id=jor.currency_id"
     		        + " left join currency c1 on c1.id=jor.exchange_currency_id"
-    		        + " where order_type=? and jor.id=? order by jor.id";
-	    List<Record> list = Db.find(itemSql,"charge",jor_id);
+    		        + " where jor.id=? order by jor.id";
+	    List<Record> list = Db.find(itemSql,jor_id);
 		Map map = new HashMap();
 		map.put("sEcho",1);
 		map.put("iTotalRecords", list.size());
