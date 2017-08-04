@@ -18,7 +18,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
            	  }
             },
             { "data": "CREATE_STAMP"},
-            { "data": "STATUS"},
+            { "data": "TOSTATUS"},
             { "data": "SP_NAME"},
             { "data": "TOTAL_AMOUNT","visible":false},
             { "data": "CNY",
@@ -72,7 +72,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#create_stamp1_show").hide();
 	    	  $("#sp_name_show").show();
 	      }
-	      if(selectField=="status"){
+	      if(selectField=="toStatus_equals"){
 	    	$("#single_status").val("");
 	    	  $("#single_order_no1").hide();
 	    	  $("#create_stamp1_show").hide();
@@ -96,7 +96,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	      if(selectField=='sp_name'){
 	    	  selectFieldValue = $("#single_sp_name_input").val();
 	      }
-	      if(selectField=="status"){
+	      if(selectField=="toStatus_equals"){
 	    	  selectFieldValue = $("#single_status").val();
 	      }
 	      if(selectField=="create_stamp"){
@@ -140,7 +140,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		               +"&create_stamp_end_time="+end_date
 		               +"&order_export_date_begin_time="+order_export_date_begin_time
 		               +"&order_export_date_end_time="+order_export_date_end_time
-          			   +"&status="+status;
+          			   +"&toStatus_equals="+status;
 
           dataTable.ajax.url(url).load();
       };

@@ -202,7 +202,7 @@
                               		<select id="selected_field" name="selected_field" class="form-control search-label">
                               			<option value="sp_name">结算公司</option>
                               			<option value="order_no">对账单号</option>
-	                                	<option value="status">状态</option>
+	                                	<option value="toStatus_equals">状态</option>
 	                                	<option value="create_stamp">创建时间</option>	 
                             		</select>
 
@@ -217,9 +217,10 @@
                                     <select id="single_status" class="form-control search-control" style="display: none;">
 		    											<option></option>
 		    											<option value="新建">新建</option>
-		    											<option value="已确认">已确认</option>
-		    											<option value="部分申请付款中">部分申请付款中</option>
-		    											<option value="全额申请付款中">全额申请付款中</option>
+		    											<option value="已复核">已复核</option>
+		    											<option value="付款申请中">付款申请中</option>
+		    											<option value="部分已付款">部分已付款</option>
+		    											<option value="已付款">已付款</option>
 		    						</select>
                                     <div style="display: none;float:right;" id="create_stamp1_show">
 		                                        <%include("/eeda/component/form/inputDateQueryField.html", 
@@ -276,9 +277,10 @@
 								                        value_list:[
 								                            {code:'', value:''},
 								                            {code:'新建', value:'新建'},
-								                            {code:'已确认', value:'已确认'},
-								                            {code:'部分申请付款中', value:'部分申请付款中'},
-								                            {code:'全额申请付款中', value:'全额申请付款中'}
+								                            {code:'已复核', value:'已复核'},
+								                            {code:'付款申请中', value:'付款申请中'},
+								                            {code:'部分已付款', value:'部分已付款'},
+								                            {code:'已付款', value:'已付款'}
 								                        ]
 								                    }){}%>
 								            </div>
