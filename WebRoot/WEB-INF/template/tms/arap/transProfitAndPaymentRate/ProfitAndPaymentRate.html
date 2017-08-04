@@ -8,12 +8,12 @@
                     	<div class="search_single">
                         	<select id="selected_field" name="selected_field" class="form-control search-label">
 	                            <option value="sp_id">结算公司</option>
-	                            <option value="charge_time">出货时间</option>	 
+	                            <option value="charge_time">结算时间</option>	 
                             </select>
 							
                             <div  style="position:absolute;left:34%;bottom:-5px;" id="sp_id_show">
 	                            <%include("/eeda/component/form/inputSpField.html", 
-                                                                    {   id: 'sp_id',
+                                                                    {   id: 'single_sp_id',
                                                                      	style:'width:160%', 
                                                                         value: ''
                                                                     }){}%>

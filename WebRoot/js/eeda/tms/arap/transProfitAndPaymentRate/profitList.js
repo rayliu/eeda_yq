@@ -56,6 +56,95 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	          ]
 	      });
 
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+      
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='customer_id'){
+	    	  $("#customer_id_input").val("");
+	    	  $("#charge_time_show").hide();
+	    	  $("#customer_id_show").show();
+	      }
+	      if(selectField=='charge_time'){
+	    	  $("#single_charge_time_begin_time").val("");
+	    	  $("#single_charge_time_end_time").val("");
+	    	  $("#charge_time_show").show();
+	    	  $("#customer_id_show").hide();
+	      }
+     });
+      
+      $("#singleSearchBtn").click(function(){
+    	  var selectField = $('#selected_field').val();
+    	  if(selectField=='customer_id'){
+	    	 var customer = $("#customer_id").val();
+	      }
+	      if(selectField=='charge_time'){
+	    	 var single_charge_time_begin_time = $("#single_charge_time_begin_time").val();
+	    	 var single_charge_time_end_time = $("#single_charge_time_end_time").val();
+	      }
+	      
+	      
+	    //合计字段
+          $.post('transProfit/listTotal',{
+        	  customer:customer,
+        	  charge_time_begin_time:single_charge_time_begin_time,
+        	  charge_time_end_time:single_charge_time_end_time
+          },function(data){
+        	  var charge_cny = parseFloat(data.CHARGE_CNY).toFixed(2);
+        	  var charge_usd = parseFloat(data.CHARGE_USD).toFixed(2);
+        	  var charge_jpy = parseFloat(data.CHARGE_JPY).toFixed(2);
+        	  var charge_hkd = parseFloat(data.CHARGE_HKD).toFixed(2);
+        	  var total_charge = parseFloat(data.TOTAL_CHARGE).toFixed(2);
+        	  var cost_cny = parseFloat(data.COST_CNY).toFixed(2);
+        	  var cost_usd = parseFloat(data.COST_USD).toFixed(2);
+        	  var cost_jpy = parseFloat(data.COST_JPY).toFixed(2);
+        	  var cost_hkd = parseFloat(data.COST_HKD).toFixed(2);
+        	  var total_cost = parseFloat(data.TOTAL_COST).toFixed(2);
+        	  $('#CNY_charge_tatol').text(charge_cny);
+        	  $('#USD_charge_tatol').text(charge_usd);
+        	  $('#JPY_charge_tatol').text(charge_jpy);
+        	  $('#HKD_charge_tatol').text(charge_hkd);
+        	  $('#total_charge').text(total_charge);
+        	  $('#CNY_cost_tatol').text(cost_cny);
+        	  $('#USD_cost_tatol').text(cost_usd);
+        	  $('#JPY_cost_tatol').text(cost_jpy);
+        	  $('#HKD_cost_tatol').text(cost_hkd);
+        	  $('#total_cost').text(total_cost);
+        	  
+        	  
+        	  var total_profit=parseFloat(total_charge-total_cost).toFixed(2);
+        	  var average_profit_rate = parseFloat((total_profit/total_cost)*100).toFixed(2);
+        	  if(total_profit<0){
+        		  $('#total_profit').text(total_profit).css('color','red');
+        	  }else(
+        		  $('#total_profit').text(total_profit)
+        	  )
+        	  var total=parseFloat(data.TOTAL);
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(1).html("折合应收(CNY):"+eeda.numFormat(total_charge,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("折合应付(CNY):"+eeda.numFormat(total_cost,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("平均利润率(%)："+average_profit_rate);
+        	  if(total_profit<0){
+        		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(CNY):"+eeda.numFormat(total_profit,3)).css('color','red');
+        	  }else(
+        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(CNY):"+eeda.numFormat(total_profit,3))
+        	  )
+        	  
+
+          });
+	      
+          var url = "/transProfit/list?customer_id="+customer
+               +"&charge_time_begin_time="+single_charge_time_begin_time
+               +"&charge_time_end_time="+single_charge_time_end_time
+          dataTable.ajax.url(url).load(cssTd);
+      });
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
@@ -67,8 +156,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var customer = $("#customer").val(); 
-          var order_export_date_begin_time = $("#order_export_date_begin_time").val();
-          var order_export_date_end_time = $("#order_export_date_end_time").val();
+          var charge_time_begin_time = $("#charge_time_begin_time").val();
+          var charge_time_end_time = $("#charge_time_end_time").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -80,8 +169,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           //合计字段
           $.post('transProfit/listTotal',{
         	  customer:customer,
-        	  order_export_date_begin_time:order_export_date_begin_time,
-        	  order_export_date_end_time:order_export_date_end_time
+        	  charge_time_begin_time:charge_time_begin_time,
+        	  charge_time_end_time:charge_time_end_time
           },function(data){
         	  var charge_cny = parseFloat(data.CHARGE_CNY).toFixed(2);
         	  var charge_usd = parseFloat(data.CHARGE_USD).toFixed(2);
@@ -126,23 +215,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
           });
           
-          var cssTd=function(){
-        	  $("#eeda_table th:eq(6)").css('background-color','#f5f5dc');
-        	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
-        	  $("#eeda_table td:nth-child(7)").css('background-color','#f5f5dc');
-        	  $("#eeda_table td:nth-child(8)").css('background-color','#f5f5dc');
-        	  $("#eeda_table td:nth-child(9)").css('background-color','#f5f5dc');
-          }
-         
-          
           var url = "/transProfit/list?customer_id="+customer
-				          +"&order_export_date_begin_time="+order_export_date_begin_time
-				          +"&order_export_date_end_time="+order_export_date_end_time;
+				          +"&charge_time_begin_time="+charge_time_begin_time
+				          +"&charge_time_end_time="+charge_time_end_time;
           dataTable.ajax.url(url).load(cssTd);
           
          
           
       };
+      var cssTd=function(){
+    	  $("#eeda_table th:eq(6)").css('background-color','#f5f5dc');
+    	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
+    	  $("#eeda_table td:nth-child(7)").css('background-color','#f5f5dc');
+    	  $("#eeda_table td:nth-child(8)").css('background-color','#f5f5dc');
+    	  $("#eeda_table td:nth-child(9)").css('background-color','#f5f5dc');
+      }
       searchData();
   });
 });

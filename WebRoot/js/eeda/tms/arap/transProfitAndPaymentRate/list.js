@@ -142,7 +142,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $("#singleSearchBtn").click(function(){
     	  var selectField = $('#selected_field').val();
     	  if(selectField=='sp_id'){
-	    	 var sp_id = $("#sp_id").val();
+	    	 var sp_id = $("#single_sp_id").val();
 	      }
 	      if(selectField=='charge_time'){
 	    	 var single_charge_time_begin_time = $("#single_charge_time_begin_time").val();
@@ -214,8 +214,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var sp_id = $("#sp_id").val(); 
-          var single_charge_time_begin_time = $("#single_charge_time_begin_time").val();
-          var single_charge_time_end_time = $("#single_charge_time_end_time").val();
+          var charge_time_begin_time = $("#charge_time_begin_time").val();
+          var charge_time_end_time = $("#charge_time_end_time").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -227,8 +227,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           //合计字段
           $.post('transProfitAndPaymentRate/listTotal',{
         	  sp_id:sp_id,
-        	  charge_time_begin_time:single_charge_time_begin_time,
-        	  charge_time_end_time:single_charge_time_end_time
+        	  charge_time_begin_time:charge_time_begin_time,
+        	  charge_time_end_time:charge_time_end_time
           },function(data){
         	  var charge_cny = parseFloat(data.CHARGE_CNY).toFixed(2);
         	  var charge_usd = parseFloat(data.CHARGE_USD).toFixed(2);
@@ -273,8 +273,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
           
           var url = "/transProfitAndPaymentRate/list?sp_id="+sp_id
-				          +"&charge_time_begin_time="+single_charge_time_begin_time
-				          +"&charge_time_end_time="+single_charge_time_end_time;
+				          +"&charge_time_begin_time="+charge_time_begin_time
+				          +"&charge_time_end_time="+charge_time_end_time;
           dataTable.ajax.url(url).load(cssTd);
       };
       var cssTd=function(){
