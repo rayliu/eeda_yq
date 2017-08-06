@@ -20,7 +20,7 @@ $(document).ready(function() {
             eeda.dt_float_header('application_table');
         },
         serverSide: true, 
-        ajax: "/chargeRequest/applicationList?status=新建",
+        ajax: "/chargeRequest/applicationList?status="+encodeURI('新建'),
           columns: [
           { "width": "10px", "orderable": false,
             "render": function ( data, type, full, meta ) {
@@ -517,7 +517,7 @@ $(document).ready(function() {
 		var status = $("#status").val();
 	    var url = "/chargeRequest/applicationList?sp_id="+sp_id
 	     		 +"&service_stamp_between="+service_stamp
-	     		 +"&status="+status;
+	     		 +"&status="+encodeURI(status);
 	     application_table.ajax.url(url).load();
 	     totalMoney();
 	}
@@ -555,7 +555,7 @@ $(document).ready(function() {
            +"&payee_company_equals="+payee_company  
             +"&charge_order_no="+charge_order_no
             +"&application_order_no="+applicationOrderNo
-            +"&status="+status2
+            +"&status="+encodeURI(status2)
             +"&fee_type="+fee_type
             +"&service_stamp_between="+service_stamp
 
