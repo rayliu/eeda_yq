@@ -1,4 +1,4 @@
-define(['jquery', 'dataTablesBootstrap'], function($){
+define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
   
     var url = window.location;
     
@@ -29,6 +29,11 @@ define(['jquery', 'dataTablesBootstrap'], function($){
     //全局的ajax访问，处理ajax请求时sesion超时, 跳转到登录页面
     $.ajaxSetup({
         //contentType:"application/x-www-form-urlencoded;charset=utf-8",
+        beforeSend: function(jqXHR, settings){
+          $.blockUI({ 
+            message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/></h4>' 
+        });
+        },
         error: function (xhr, e) {
             if(xhr.responseText.indexOf('忘记密码')>0){
               alert( 'error: 您未登录或超过15分钟未操作, 请重新登录.' );
@@ -44,6 +49,8 @@ define(['jquery', 'dataTablesBootstrap'], function($){
               alert( '您未登录或超过15分钟未操作, 请重新登录.' );
               window.location.href="/";
             }
+
+            $.unblockUI();
            // var sessionstatus=XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头，sessionstatus，  
            // if(sessionstatus=="timeout"){
            //     //如果超时就处理 ，指定要跳转的页面
