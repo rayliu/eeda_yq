@@ -17,7 +17,7 @@ var checkIds=[];
                     	if($.inArray(full.ID.toString(),itemOrder.checkIds)!='-1'){
                     		checkedVal = "checked"
                     	}
-                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" '+checkedVal+' style="width:30px">';
+                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" '+checkedVal+' style="width:30px" checked>';
                         return str;
                     }
                 },
