@@ -106,13 +106,20 @@ $(document).ready(function() {
     		$('#printBtn').attr('disabled', false);  
     	}else if(status=='已确认'){
             $('#printTotaledBtn').attr('disabled', false);
-            $("#cancelConfirmBtn").attr('disabled', false);
+            $("#").attr('disabled', false);
             $("#printBtn").attr('disabled', false);
+            $('#add_charge').attr("disabled",true);
         }else if(status=='取消确认'){
         	$('#saveBtn').attr('disabled', false);
     		$('#confirmBtn').attr('disabled', false);
     		$('#printTotaledBtn').attr('disabled', false);
     		$('#printBtn').attr('disabled', false);
+        }else{
+        	$('#add_charge').attr("disabled",true);
+            $('.delete').attr("disabled",true);
+            $('.itemEdit').attr("disabled",true);
+            $('#cancelConfirmBtn').attr('disabled', true);
+            $('#printBtn').attr('disabled', false);
         }
     }
     
@@ -207,7 +214,7 @@ $(document).ready(function() {
     			$('#printBtn').attr('disabled', false);
     			$('#add_charge').attr('disabled', false);
     			$('.delete').attr('disabled', false);
-    			$('.itemEidt').attr('disabled', false);
+    			$('.itemEdit').attr('disabled', false);
     		}else{
     			$.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
     		}

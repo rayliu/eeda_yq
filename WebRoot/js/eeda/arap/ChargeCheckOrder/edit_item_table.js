@@ -60,10 +60,10 @@ $(document).ready(function() {
                     var str = '';
                      if($("#status").val()=='已确认'){
                     	 str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px;" disabled >删除</button>&nbsp'
-                         str += '<button type="button" class="itemEidt btn table_btn btn_green btn-xs" style="width:40px;" disabled >编辑</button>';                         
+                         str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;" disabled >编辑</button>';                         
                      }else{                    	
                         str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px" >删除</button>&nbsp'
-                        str += '<button type="button" class="itemEidt btn table_btn btn_green btn-xs" style="width:40px;"  >编辑</button>';
+                        str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;"  >编辑</button>';
                      }
                     return str;
                 }
@@ -628,7 +628,7 @@ $(document).ready(function() {
             }
         }
     });
-      $('#cny_duizhang').html(cny_totalAmount.toFixed(2));
+       $('#cny_duizhang').html(cny_totalAmount.toFixed(2));
        $('#usd_duizhang').html(usd_totalAmount.toFixed(2));
        $('#hkd_duizhang').html(hkd_totalAmount.toFixed(2));
        $('#jpy_duizhang').html(jpy_totalAmount.toFixed(2));
@@ -855,7 +855,7 @@ $(document).ready(function() {
     }
   
   	//编辑
-  	$("#eeda-table").on('click','.itemEidt',function(){
+  	$("#eeda-table").on('click','.itemEdit',function(){
   		var jor_id = $(this).parent().parent().attr('id');
   		$("#jor_id").val(jor_id);
   		var url = "/chargeCheckOrder/chargeEdit?jor_id="+jor_id;
