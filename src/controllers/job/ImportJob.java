@@ -14,6 +14,7 @@ import java.util.Map;
 import models.UserLogin;
 
 import com.jfinal.aop.Before;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Record;
@@ -27,7 +28,7 @@ public class ImportJob implements Runnable{
 	public void run() {
 		System.out.println("------------job------------------");
 		
-		String filepath = "C:/Users/Administrator/Desktop/job文件测试";
+		String filepath = PropKit.get("bom_ftp_folder");
 		File file = new File(filepath);
 		if (file.isDirectory()) {
             String[] filelist = file.list();

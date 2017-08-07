@@ -49,6 +49,11 @@
             <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-fk" overwrite="true"/>
             <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-fk" overwrite="true"/> 
         </target>
+
+	<target name="copy_fk_uat_config" >
+        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-fk-uat" overwrite="true"/>
+        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-fk-uat" overwrite="true"/> 
+    </target>
     
 	<target name="generate_js_version" >
 		<copy tofile="WebRoot/WEB-INF/template/eeda/component/form/commonJs.html"
