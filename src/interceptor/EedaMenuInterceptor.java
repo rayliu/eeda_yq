@@ -2,12 +2,14 @@ package interceptor;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import models.UserLogin;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Interceptor;
@@ -23,33 +25,54 @@ public class EedaMenuInterceptor implements Interceptor {
     //这个map 作为登录用户的cahce, 免得每次都查很多次DB，消耗connection
     public static Map<Long, List<Record>> menuCache = null;
     
+    //这个map 作为登录用户的url cahce, 用于判断用户是否可以访问该URL模块
+    public static Map<Long, List<String>> menuUrlCache = null;
+    
     @Override
     public void intercept(Invocation ai) {
+        
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.isAuthenticated()) {
-            loadMenu(ai.getController());
+            UserLogin user = UserLogin.getCurrentUser();
+            loadMenu(ai.getController(), user);
+            
+            //判断用户是否可以访问该URL模块
+            if(menuUrlCache.get(user.getLong("id"))!=null){
+                List<String> userUrlList = menuUrlCache.get(user.getLong("id"));
+                String actionKey = ai.getActionKey();
+                String key = "/"+actionKey.split("/")[1];
+                logger.debug("action key: "+key);
+                if(!"/".equals(ai.getActionKey()) && !userUrlList.contains(key)){//actionKey是否存在于授权模块中？
+                    ai.getController().renderError(403);
+                }
+            }
+            
         }
+        
+        
         ai.invoke();
     }
 
     /*
      * 这个如果不放这里,那么每个controller的index凡是要render HTML的地方都要写调用
      */
-    private void loadMenu(Controller controller) {
+    private void loadMenu(Controller controller, UserLogin user) {
         logger.debug("EedaInterceptor loadMenu...");
-        UserLogin user = UserLogin.getCurrentUser();
+        
         Long user_id = user.getLong("id");
         Long office_id = user.getLong("office_id");
         
         List<Record> modules = Collections.EMPTY_LIST;
         if(menuCache == null){
             menuCache = new HashMap<Long, List<Record>>();
+            menuUrlCache = new HashMap<Long, List<String>>();
             modules = buildMenu(user, user_id, office_id);
         }else{
             if(menuCache.get(user_id)==null){
                 modules = buildMenu(user, user_id, office_id);
             }else{
                 modules = menuCache.get(user_id);
+                
                 logger.debug("EedaInterceptor loadMenu from cache...");
             }
         }
@@ -71,7 +94,7 @@ public class EedaMenuInterceptor implements Interceptor {
                     + " and m.parent_id=module.id and m.office_id=? and u.user_name=?"
                 + " ) order by seq";
         List<Record> modules = Db.find(sql, office_id, username);
-        getNextLevelModules(office_id, username, modules);//获取第二层的菜单
+        getNextLevelModules(office_id, username, modules, user_id);//获取第二层的菜单
         
         if (modules == null){
             modules = Collections.EMPTY_LIST;
@@ -83,7 +106,8 @@ public class EedaMenuInterceptor implements Interceptor {
 
     //获取第二层的菜单
     private void getNextLevelModules(Long office_id, String username,
-            List<Record> modules) {
+            List<Record> modules, Long user_id) {
+        List<String> modulesUrl = new LinkedList<String>();
         String sql;
         for (Record module : modules) {
             sql = "SELECT "
@@ -120,16 +144,22 @@ public class EedaMenuInterceptor implements Interceptor {
             //logger.debug("EedaInterceptor module_id:"+module.get("id")+", office_id:"+office_id+", username:"+username);
             List<Record> orders = Db.find(sql, module.get("id"), office_id,
                     username);
+            
+            
             for (Record order : orders) {//再查一层单据
                 String urlStr = order.getStr("url");
                 if(!urlStr.startsWith("http")){
                     order.set("url", "/"+urlStr);
                 }
+                modulesUrl.add("/"+urlStr);
             }
             if(orders.size()==1){
                 module.set("is_one_module", "Y");
             }
+            
             module.set("orders", orders);
-        }
+        }//end of for
+        menuUrlCache.put(user_id, modulesUrl);
     }
-}
+    
+}//~
