@@ -8,7 +8,7 @@
               <div class="panel panel-default">
             	<div class="panel-heading">
                   <div class="row"><!--  第1行  -->
-                      <div class="col-lg-4"><!--  三列排版  -->
+                      <div class="three_tab"><!--  三列排版  -->
                           <div class="search_single">
                             <select id="selected_field" name="selected_field" class="form-control search-label">
                             	<option value="sp_name">被委托方</option>
@@ -18,38 +18,38 @@
                             </select>
 
                             <input type="text" class="form-control search-control" id="single_order_no" name="single_order_no" style="display: none;">
-                            <select id="single_order_status_list" name="single_order_status_list" class="form-control search-control" style="display: none;">
+                            <select id="single_order_status_list" name="single_order_status_list" class="form-control" style="display:none;width:63%;">
                                 <option value="新建">新建</option>
                                 <option value="已完成">已完成</option>
                             </select>
                            	 
-                           	 <div style="float:right;" id="sp_name_show"><!--  三列排版  -->
+                           	 <div style="position:absolute;left:34%;bottom:-5px;" id="sp_name_show"><!--  三列排版  -->
                               <%include("/eeda/component/form/inputSpField.html", 
                                                   {   id: 'single_sp_name', 
-                                                      style:'width:245px',
+                                                      style:'width:150%',
                                                       value: ''
                                                   }){}%>
                           	</div>
                           	
-                          	<div style="display: none;float:right;" id="create_stamp_show">        
+                          	<div style="display:none;position:absolute;left:34%;bottom:-5px;" id="create_stamp_show">        
                                 <%include("/eeda/component/form/inputDateQueryField.html",
                                 				  {id:'single_create_stamp',
-                                				   style:'width:245px',
-								                   begin_style:'width:90px',
-								                   end_style:'width:90px',  
+                                				   style:'width:120%',
+								                   begin_style:'width:30%',
+								                   end_style:'width:30%',  
                                 				   value:''
                                 				  }){} %>
                             </div>
                           </div>
                       </div>
-                      <div class="col-lg-4"><!--  三列排版  -->
+                      <div class="three_tab"><!--  三列排版  -->
                           <div class="search_single">
-                            <button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
+                            <nobr><button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
                             <a class="btn btn_green" href="/planOrder/create">新增计划订单</a>
                           </div>
                           
                       </div>
-                      <div class="col-lg-4"><!--  三列排版  -->
+                      <div class="three_tab"><!--  三列排版  -->
                           <h4 class="panel-title pull-right" style="padding-top: 5px;">
                               <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
                                 <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
