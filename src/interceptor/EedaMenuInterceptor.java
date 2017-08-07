@@ -40,7 +40,11 @@ public class EedaMenuInterceptor implements Interceptor {
             if(menuUrlCache.get(user.getLong("id"))!=null){
                 List<String> userUrlList = menuUrlCache.get(user.getLong("id"));
                 String actionKey = ai.getActionKey();
-                String key = "/"+actionKey.split("/")[1];
+                
+                String key = "/";
+                if(actionKey.split("/").length > 0){
+                    key = "/"+actionKey.split("/")[1];
+                }
                 logger.debug("action key: "+key);
                 if(!"/".equals(ai.getActionKey()) && !userUrlList.contains(key)){//actionKey是否存在于授权模块中？
                     ai.getController().renderError(403);
