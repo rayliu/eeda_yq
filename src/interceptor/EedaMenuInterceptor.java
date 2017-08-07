@@ -40,11 +40,18 @@ public class EedaMenuInterceptor implements Interceptor {
             if(menuUrlCache.get(user.getLong("id"))!=null){
                 List<String> userUrlList = menuUrlCache.get(user.getLong("id"));
                 String actionKey = ai.getActionKey();
+<<<<<<< HEAD
                 
                 String key = "/";
                 if(actionKey.split("/").length > 0){
                     key = "/"+actionKey.split("/")[1];
                 }
+=======
+                if("/".equals(actionKey)){
+                	actionKey = "/dashBoard";
+                }
+                String key = "/"+actionKey.split("/")[1];
+>>>>>>> 车队：托运工作单查询条件加一个结算车牌
                 logger.debug("action key: "+key);
                 if(!"/".equals(ai.getActionKey()) && !userUrlList.contains(key)){//actionKey是否存在于授权模块中？
                     ai.getController().renderError(403);

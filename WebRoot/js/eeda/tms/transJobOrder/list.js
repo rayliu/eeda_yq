@@ -135,12 +135,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     //简单查询
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
-	      if(selectField=='order_no'||selectField=='customer_code_like'||selectField=='container_no'){
+	      if(selectField=='order_no'||selectField=='container_no'){
 	    	  $("#public_text").val("");
 	    	  $("#single_customer").hide();
 	    	  $("#single_status").hide();
 	    	  $("#single_cabinet_type").hide();
 	    	  $("#public_time").hide();
+	    	  $("#car_id_show").hide();
 	    	  $("#public_text").show();
 	      }
 	      if(selectField=='customer_name_like'){
@@ -148,13 +149,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_cabinet_type").hide();
 	    	  $("#public_time").hide();
 	    	  $("#public_text").hide();
+	    	  $("#car_id_show").hide();
 	    	  $("#single_customer").show();
+	      }
+	      if(selectField=='car_id'){
+	    	  $("#single_status").hide();
+	    	  $("#single_cabinet_type").hide();
+	    	  $("#public_time").hide();
+	    	  $("#public_text").hide();
+	    	  $("#single_customer").hide();
+	    	  $("#car_id_show").show();
 	      }
 	      if(selectField=='cabinet_type'){
 	    	  $("#single_status").hide();
 	    	  $("#public_time").hide();
 	    	  $("#public_text").hide();
 	    	  $("#single_customer").hide();
+	    	  $("#car_id_show").hide();
 	    	  $("#single_cabinet_type").show();
 	      }
 	      if(selectField=='status'){
@@ -162,6 +173,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#public_text").hide();
 	    	  $("#single_customer").hide();
 	    	  $("#single_cabinet_type").hide();
+	    	  $("#car_id_show").hide();
 	    	  $("#single_status").show();
 	      }
 	      if(selectField=='cabinet_date'){
@@ -169,6 +181,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_customer").hide();
 	    	  $("#single_cabinet_type").hide();
 	    	  $("#single_status").hide();
+	    	  $("#car_id_show").hide();
 	    	  $("#public_time").show();
 	      }
 	      if(selectField=='charge_time'){
@@ -176,6 +189,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_customer").hide();
 	    	  $("#single_cabinet_type").hide();
 	    	  $("#single_status").hide();
+	    	  $("#car_id_show").hide();
 	    	  $("#public_time").show();
 	      }
 	      if(selectField=='create_time'){
@@ -183,6 +197,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_customer").hide();
 	    	  $("#single_cabinet_type").hide();
 	    	  $("#single_status").hide();
+	    	  $("#car_id_show").hide();
 	    	  $("#public_time").show();
 	      }
      });
@@ -190,11 +205,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $("#singleSearchBtn").click(function(){
     	  var selectField = $('#selected_field').val();
     	  var selectValue = "";
-	      if(selectField=='order_no'||selectField=='customer_code_like'||selectField=='container_no'){
+	      if(selectField=='order_no'||selectField=='container_no'){
 	    	  selectValue = $("#public_text").val();
 	      }
 	      if(selectField=='customer_name_like'){
 	    	  selectValue = $("#single_customer_name_input").val();
+	      }
+	      if(selectField=='car_id'){
+	    	  selectValue = $("#single_car_id").val();
 	      }
 	      if(selectField=='cabinet_type'){
 	    	  var single_cabinet_type = $("#single_cabinet_type").val();
@@ -241,14 +259,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
           var cabinet_date_end_time = $("#cabinet_date_end_time").val();
           var status = $('#status').val();
-          var customer_code = $("#customer_code").val().trim();
+          var car_id = $("#car_id").val().trim();
           var customer_name = $("#customer_name_input").val().trim();
           var cabinet_type=$("#cabinet_type").val().trim();
           var container_no= $.trim($("#container_no").val());
           //增加出口日期查询
           var url = "/transJobOrder/list?order_no="+order_no
           	   +"&status="+status
-          	   +"&customer_code_like="+customer_code
+          	   +"&car_id="+car_id
                +"&customer_name_like="+customer_name
                +"&charge_time_begin_time="+start_date
                +"&charge_time_end_time="+end_date
