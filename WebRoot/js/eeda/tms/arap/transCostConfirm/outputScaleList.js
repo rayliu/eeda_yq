@@ -37,7 +37,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "data": "CABINET_TYPE", "width": "40px"},
               { "data": "COMBINE_UNLOAD_TYPE", "width": "80px"},
               { "data": "COMBINE_CAR_NO", "width": "70px"},
-              { "data": "null", "width": "40px"},
+              { "data": "OUTPUTSCALE","width": "40px","class":"outputScale",
+            	  "render":function(data,type,full,meta){
+        			  var cabinet_type= full.COMBINE_UNLOAD_TYPE;
+            		  if(cabinet_type=="全程"){
+            			  if(data){
+            				  return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
+            			  }
+            			  return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3);
+            		  }else{
+            			  if(data){
+            				  return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
+            			  }
+            			  return '<input type="text" value = "'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3);
+            		  }
+            	  }
+              },
               { "data": "FREIGHT","width":"60px",
                 "render": function ( data, type, full, meta ) {
                   if(data)
@@ -168,22 +183,34 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
        $('#export_outputTable').click(function(){
     	   $('#export_outputTable').attr('disabled',true);
            var car_no = $('#car_id_input').val().trim();
+           var car_id = $('#car_id').val();
            var driver = $('#driver').val().trim();
+           var order = {};
+           var itemjson = [];
            var itemIds=[];
            $('#eeda_table input[type="checkbox"]').each(function(){
         	   var checkbox = $(this).prop('checked');
         	   if(checkbox){
-        		   var itemId = $(this).parent().parent().attr('id');
+        		   var itemTr = $(this).parent().parent();
+        		   var itemId = itemTr.attr('id');
+        		   var outputScale = $(this).parent().parent().find('.outputScale input').val();
         		   if(itemId!=undefined){
+        			   var item={};
         			   itemIds.push(itemId);
+        			   item.id=itemId;
+        			   item.outputScale = outputScale;
+        			   item.car_id = car_id;
+        			   itemjson.push(item);
         		   }
+        		   
         	   }
            });
+           order.param = itemjson;
            if(car_no||driver){
         	   if(car_no||driver||itemIds){
         		   var order_id = $('#order_id').val();
         		   var company_name = $('#company_name').val();
-	               $.post('/outputScale/downloadList?itemIds='+itemIds,{car_no:car_no,driver:driver},function(data){
+	               $.post('/outputScale/downloadList?itemIds='+itemIds,{params:JSON.stringify(order),car_no:car_no,driver:driver},function(data){
 	            	   if(data){
 	            		   window.open(data);
 	            		   $.scojs_message('生成产值表PDF成功', $.scojs_message.TYPE_OK);

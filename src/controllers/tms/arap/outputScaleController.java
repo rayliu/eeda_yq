@@ -3,11 +3,13 @@ package controllers.tms.arap;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import models.UserLogin;
+import models.eeda.tms.TransJobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -15,6 +17,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
+import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
@@ -28,7 +31,7 @@ import controllers.util.PoiUtils;
 @Before(SetAttrLoginUserInterceptor.class)
 public class outputScaleController extends Controller {
 
-	private Logger logger = Logger.getLogger(outputScaleController.class);
+	private static Logger logger = Logger.getLogger(outputScaleController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 	private Object type;
 
@@ -62,7 +65,10 @@ public class outputScaleController extends Controller {
         		+" LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo1.id "
         		+" WHERE tjo.id = tjo1.id) combine_unload_type ,"
         		+ " (SELECT SUM(tjoa.currency_total_amount) FROM trans_job_order_arap tjoa WHERE tjoa.order_id = tjo.id AND tjoa.order_type = 'CHARGE' AND tjoa.charge_id = ( SELECT id FROM "
-        		+ " fin_item f WHERE f. NAME = '运费' AND f.office_id = 4) ) freight,tjol.export_flag,"
+        		+ " fin_item f WHERE f. NAME = '运费' AND f.office_id = "+office_id+") ) freight,"
+        		+ " (SELECT SUM(tjoa.currency_total_amount) FROM trans_job_order_arap tjoa WHERE tjoa.order_id = tjo.id AND tjoa.order_type = 'COST' AND tjoa.car_id = car.id  AND tjoa.charge_id = ( SELECT id FROM "
+        		+ " fin_item f WHERE f. NAME = '运费' AND f.office_id = "+office_id+") ) outputScale,"
+        		+ "tjol.export_flag,"
         		+ " cast(substring(tjo.charge_time, 1, 10) AS CHAR) charge_time"
         		+" from trans_job_order_land_item tjol  "
         		+" LEFT JOIN trans_job_order tjo on tjol.order_id = tjo.id "
@@ -91,9 +97,63 @@ public class outputScaleController extends Controller {
         return sql;
 		
 	}
-	
+		
 	
 	public void downloadList(){
+		String jsonStr=getPara("params");
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+        
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        
+        
+        Record reFee = Db.findFirst("SELECT	f.* FROM 	fin_item f 	WHERE	f.office_id = ? and f.name = '运费'",office_id);
+        Record reUnit = Db.findFirst("select * from unit WHERE type = 'charge' and name = 'B/L' ");
+		Record reCurrency = Db.findFirst("select * from currency WHERE  name = 'CNY' ");
+        
+        String charge_id = reFee.getLong("id").toString();//费用名称id        
+        String unit_id = reUnit.getLong("id").toString();//费用名称id
+		String currency_id = reCurrency.getLong("id").toString();//币制名称id
+		
+        String amount = "1";//获取数量
+        String exchange_rate = "1";
+        List<Map<String, String>> outputScale_detail = (ArrayList<Map<String, String>>)dto.get("param");
+		if(outputScale_detail!=null){
+	    	for (Map<String, String> rowMap : outputScale_detail) {//获取每一行			    		
+	    		String rowId = rowMap.get("id");
+	    		String car_id = rowMap.get("car_id");//获取结算车牌id
+	    		Record reland = Db.findById("trans_job_order_land_item", rowId);
+	    		String job_order_id = reland.getLong("order_id").toString();
+	    		TransJobOrderArap transJobArap = TransJobOrderArap.dao.findFirst("select * from trans_job_order_arap  where order_id = ? and  car_id = ? and charge_id = ?",job_order_id,car_id,charge_id);
+	    		String price = rowMap.get("outputScale");//获取产值		
+	    		Double total_amount = Double.parseDouble(price) * Double.parseDouble(amount);	    		
+	    		Double currency_total_amount = total_amount * Double.parseDouble(exchange_rate);	    		
+	    		if(transJobArap==null){	    			
+		    		String unload_type = reland.getStr("unload_type");    		
+	    			transJobArap =new TransJobOrderArap();
+	    			transJobArap.set("order_id", job_order_id);
+		    		transJobArap.set("type", unload_type);
+		    		transJobArap.set("order_type", "cost");
+		    		transJobArap.set("car_id", car_id);
+		    		transJobArap.set("charge_id", charge_id);
+		    		transJobArap.set("price", price);
+		    		transJobArap.set("amount", amount);
+		    		transJobArap.set("unit_id", unit_id);
+		    		transJobArap.set("total_amount", total_amount);
+		    		transJobArap.set("currency_id", currency_id);
+		    		transJobArap.set("exchange_rate", exchange_rate);
+		    		transJobArap.set("currency_total_amount", currency_total_amount);
+		    		transJobArap.save();
+	    		}else{
+	    			transJobArap.set("price", price);
+	    			transJobArap.set("total_amount", total_amount);
+	    			transJobArap.set("currency_total_amount", currency_total_amount);
+	    			transJobArap.update();
+	    		}
+	    	}
+		}
+        
 		String car_no = getPara("car_no");
 		String driver = getPara("driver");
 		String sql = list();
@@ -101,11 +161,7 @@ public class outputScaleController extends Controller {
 		String sql_driver ="";
 		String ids = getPara("itemIds");
 		String idAttr[] = ids.split(",");
-		for(int i=0 ; i<idAttr.length ; i++){
-			Record re = Db.findFirst("select * from trans_job_order_land_item tjol where id = ?",idAttr[i]);
-			long arapId = re.getLong("id");
-			Db.update("UPDATE trans_job_order_land_item SET export_flag = 'Y' WHERE id=?",arapId);
-		}
+		
 		if(StringUtils.isNotBlank(car_no)){
 			 sql_car_no = " and car_no='"+car_no+"'";
 		}
@@ -118,10 +174,17 @@ public class outputScaleController extends Controller {
 		String sqlExport = sql+sql_car_no+sql_driver;
 		String[] headers = new String[]{"提单号", "提/收柜日期", "客户", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌", "产值","运费",
 				"备注"};
-		String[] fields = new String[]{"LADING_NO", "C_DATE", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO", "",
+		String[] fields = new String[]{"LADING_NO", "C_DATE", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO", "OUTPUTSCALE",
 						"FREIGHT","REMARK"};
 		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,car_no);
 		renderText(fileName);
+		if(fileName!=null){
+			for(int i=0 ; i<idAttr.length ; i++){
+				Record re = Db.findFirst("select * from trans_job_order_land_item tjol where id = ?",idAttr[i]);
+				long arapId = re.getLong("id");
+				Db.update("UPDATE trans_job_order_land_item SET export_flag = 'Y' WHERE id=?",arapId);
+			}
+		}
 	}
 	
 	
