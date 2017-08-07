@@ -88,14 +88,17 @@ public class ReaderXlSX {
         for (int i = 1; i <= rowNum; i++) {
         	Map<String, String> rowData = new HashMap<String, String>();
             row = sheet.getRow(i);
-            int j = 0;
-            while (j < colNum) {
-        		//rowData.put(xlsxTitle[j], row.getCell((short) j).getStringCellValue().trim());
-        		rowData.put(xlsxTitle[j], getCellFormatValue(row.getCell((short) j),xlsxTitle[j]).trim());
-            	j++;
-            	
+            if(row != null){
+            	int j = 0;
+                while (j < colNum) {
+            		//rowData.put(xlsxTitle[j], row.getCell((short) j).getStringCellValue().trim());
+            		rowData.put(xlsxTitle[j], getCellFormatValue(row.getCell((short) j),xlsxTitle[j]).trim());
+                	j++;
+                	
+                }
+                xlsxContent.add(rowData);
             }
-            xlsxContent.add(rowData);
+            
         }
         
         int ss = xlsxContent.size()-1;

@@ -304,6 +304,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
         me.add("/employeeFiling",controllers.profile.EmployeeFilingController.class,contentPath);
         me.add("/createOffice", controllers.profile.CreateOfficeController.class, contentPath);
+        me.add("/importOrder", controllers.importOrder.ImportOrder.class, contentPath);
         
         
         

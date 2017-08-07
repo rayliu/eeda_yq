@@ -153,7 +153,9 @@
 		                		<button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
 		                		<button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
 		                		<a href="/transJobOrder/create" class="btn btn_green" type="button">创建工作单</a>
-		                		<button class="btn btn_green" type="button">导入excel生成工作单</button>
+		                		<button class="btn btn_green" id="importBtn" type="button">导入excel生成工作单</button>
+		                		<input type="file" id="fileUpload" name="files[]" 
+						     		style="position:absolute;;  opacity:0;" data-url="/importOrder?order_type=transJobOrder">
 		                	</div>
 						</form>
 					</div>
@@ -161,6 +163,21 @@
 			</div>
 		</div>
 	</div><br>
+	<div class="panel-heading">
+       <div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="false" data-backdrop="static">
+         <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-body pre-scrollable">
+               		<span id="msgLoad"></span>
+               </div>
+               <div class="modal-footer" id="footer" aria-hidden="true">
+               	<button type="button" class="btn  btn-primary" id="confirm" style="display:none">确认</button>
+ 				<button type="button" class="btn  btn-primary" data-dismiss="modal" id="cancel">关闭</button>
+				</div>
+               </div>
+             </div>
+           </div>
+       </div>
 	<div>
 		<ul id="orderTabs" class="nav nav-tabs"  style="display:none;">
                                 <li class="active">
