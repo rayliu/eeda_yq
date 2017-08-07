@@ -23,9 +23,9 @@
                	<div class="form-group button-bar" >
                     <button id="searchBtn" class="btn btn-default" type="button">查询</button>
                     <button id="resetBtn" class="btn btn-default" type="button">清空条件</button>
-                    <% if(shiro.hasPermission("wmsproduct.export")){ %>
+                    
                     <button id="uploadBtn" class="btn btn-default" type="button">导入</button>
-                    <% }%>
+                    
                     <input type="file" id="toFileUpload" name="files[]" 
 		     		style="position:absolute;  opacity:0;" data-url="/importOrder/importOrder?order_type=product">
                 </div>
