@@ -101,14 +101,21 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                 }else if(status=='已确认'){
                     $('#add_cost').attr("disabled",true);
                     $('.delete').attr("disabled",true);
+                    $('.itemEdit').attr("disabled",true);
                     $('#cancelConfirmBtn').attr('disabled', false);
                     $('#printBtn').attr('disabled', false);
-                    }else if(status=='取消确认'){
-                    	$('#saveBtn').attr('disabled', false);
-                		$('#confirmBtn').attr('disabled', false);
-                		$('#printTotaledBtn').attr('disabled', false);
-                		$('#printBtn').attr('disabled', false);
-                    }
+                }else if(status=='取消确认'){
+                	$('#saveBtn').attr('disabled', false);
+            		$('#confirmBtn').attr('disabled', false);
+            		$('#printTotaledBtn').attr('disabled', false);
+            		$('#printBtn').attr('disabled', false);
+                }else{
+                	$('#add_cost').attr("disabled",true);
+                    $('.delete').attr("disabled",true);
+                    $('.itemEdit').attr("disabled",true);
+                    $('#cancelConfirmBtn').attr('disabled', true);
+                    $('#printBtn').attr('disabled', false);
+                }
             }
         
         $('#confirmBtn').click(function(){
@@ -119,6 +126,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
 	    			 $('#saveBtn').attr('disabled', true);
                      $('#printBtn').attr('disabled', false);
                      $('.delete').attr('disabled', true);
+                     $('.itemEdit').attr('disabled', true);
                      $('#add_cost').attr('disabled', true);
                      $('#cancelConfirmBtn').attr('disabled', false);
                      $("#status").val(data.STATUS);
@@ -175,6 +183,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
         			$('#printBtn').attr('disabled', false);
         			$('#add_cost').attr('disabled', false);
         			$('.delete').attr('disabled', false);
+        			$('.itemEdit').attr('disabled', false);
         		}else{
         			$.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
         		}
