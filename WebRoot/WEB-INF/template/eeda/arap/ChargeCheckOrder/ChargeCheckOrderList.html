@@ -196,50 +196,54 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                     	<div class="row"><!--  第1行  -->
-                        	<div class="col-lg-4"><!--  三列排版  -->
-                            	<div class="search_single">
-                              		<select id="selected_field" name="selected_field" class="form-control search-label">
-                              			<option value="sp_name">结算公司</option>
-                              			<option value="order_no">对账单号</option>
-	                                	<option value="toStatus_equals">状态</option>
-	                                	<option value="create_stamp">创建时间</option>	 
-                            		</select>
-
-									<div  style="float:right;" id="sp_name_show">
-                                            <%include("/eeda/component/form/inputSpField.html", 
-                                                                {   id: 'single_sp_name', 
-                                                                    style:'width:245px',
-                                                                    value: ''
-                                                                }){}%>
-                                    </div>
-                            		<input type="text" class="form-control search-control" id="single_order_no1" style="display: none;">
-                                    <select id="single_status" class="form-control search-control" style="display: none;">
-		    											<option></option>
-		    											<option value="新建">新建</option>
-		    											<option value="已确认">已确认</option>
-		    											<option value="收款申请中">收款申请中</option>
-		    											<option value="已收款">已收款</option>
-		    		                                    <option value="坏账款">坏账款</option>
-		    						</select>
-                                    <div style="display: none;float:right;" id="create_stamp1_show">
-		                                        <%include("/eeda/component/form/inputDateQueryField.html", 
-								                                        {   id:'single_create_stamp1',
-								                                        	style:'width:245px',
-								                                        	begin_style:'width:90px',
-								                                        	end_style:'width:90px',  
-								                                            value:''
-								                                        }){} %>
-		                           </div>
-                          		</div>
+                        	<div class="three_tab"><!--  三列排版  -->
+                        		<nobr>
+	                            	<div class="search_single">
+	                              		<select id="selected_field" name="selected_field" class="form-control search-label">
+	                              			<option value="sp_name">结算公司</option>
+	                              			<option value="order_no">对账单号</option>
+		                                	<option value="toStatus_equals">状态</option>
+		                                	<option value="create_stamp">创建时间</option>	 
+	                            		</select>
+	
+										<div  style="position:absolute;left:34%;bottom:-5px;" id="sp_name_show">
+	                                            <%include("/eeda/component/form/inputSpField.html", 
+	                                                                {   id: 'single_sp_name', 
+	                                                                    style:'width:150%',
+	                                                                    value: ''
+	                                                                }){}%>
+	                                    </div>
+	                            		<input type="text" class="form-control search-control" id="single_order_no1" style="display: none;">
+	                                    <select id="single_status" class="form-control search-control" style="display: none;">
+			    											<option></option>
+			    											<option value="新建">新建</option>
+			    											<option value="已确认">已确认</option>
+			    											<option value="收款申请中">收款申请中</option>
+			    											<option value="已收款">已收款</option>
+			    		                                    <option value="坏账款">坏账款</option>
+			    						</select>
+	                                    <div style="display: none;position:absolute;left:34%;bottom:-5px;" id="create_stamp1_show">
+			                                        <%include("/eeda/component/form/inputDateQueryField.html", 
+									                                        {   id:'single_create_stamp1',
+									                                            style:'width:120%',
+									                   							begin_style:'width:30%',
+									                   							end_style:'width:30%', 
+									                                            value:''
+									                                        }){} %>
+			                           </div>
+	                          		</div>
+                          		</nobr>
                       		</div>
-                      <div class="col-lg-4"><!--  三列排版  -->
+                      <div class="three_tab"><!--  三列排版  -->
                           <div class="search_single">
+                            <nobr>
                             <button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
                             <a href="/chargeRequest/create" class="btn btn_green" type="button" >创建申请单</a>
+                            </nobr>
                           </div>
                           
                       </div>
-                      <div class="col-lg-4"><!--  三列排版  -->
+                      <div class="three_tab"><!--  三列排版  -->
                           <h4 class="panel-title pull-right" style="padding-top: 5px;">
                               <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo1" aria-expanded="false" class="complex_search collapsed">
                                 <i id="collapseChargeIcon1" class="fa fa-angle-double-down"></i> 高级查询
