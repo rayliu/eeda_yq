@@ -36,6 +36,10 @@ public class ProductController extends Controller {
 	private Logger logger = Logger.getLogger(ProductController.class);
 
 	public void index() {
+		Long userId = LoginUserController.getLoginUserId(this);
+		String sql = "select is_active from wc_ad_hui where creator = "+userId;
+		Record  re = Db.findFirst(sql);
+		setAttr("hui_status",re.get("is_active"));
 		render(getRequest().getRequestURI()+"/list.html");
 	}
 	
@@ -112,6 +116,23 @@ public class ProductController extends Controller {
         renderJson(result);
     }
 	
+	@Before(Tx.class)
+	public void updateProduct(){
+		String id = getPara("id");
+		String flag = getPara("flag");
+		String sql = "update wc_product set cu_flag = '"+flag+"' where id ="+id+"";
+		Db.update(sql);
+		renderJson(true);
+	}
+	
+	@Before(Tx.class)
+	public void openHui(){
+		Long userId = LoginUserController.getLoginUserId(this);
+		String flag = getPara("flag");
+		String sql = "update wc_ad_hui set is_active ='"+flag+"'";
+		Db.update(sql);
+		renderJson(true);
+	}
 	
 	public void edit(){
         String id = getPara("id");
@@ -198,6 +219,11 @@ public class ProductController extends Controller {
     		}
         }
         renderJson(order);
+	}
+	
+	//开通促销
+	public void cuOperation(){
+		
 	}
 	
 	//上传相关文档

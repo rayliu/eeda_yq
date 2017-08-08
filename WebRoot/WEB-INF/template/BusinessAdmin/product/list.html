@@ -6,7 +6,16 @@
             
       </div>
         <div class="pageheader notab">
-          <input type='checkbox' style="margin-left:10px;"> 惠
+        <%
+        	var flag_info="";
+        	var status = hui_status!'';
+        	if(status == "Y"){
+        		flag_info = "checked";
+        	}else if(status == "B"){
+        		flag_info = "disabled";
+        	}
+        %>
+          <input type='checkbox' style="margin-left:10px;" id = "update_hui" ${flag_info!''}> 惠
 
           <div class="product-table">
             <%include("/eeda/component/form/detailTable.html", 

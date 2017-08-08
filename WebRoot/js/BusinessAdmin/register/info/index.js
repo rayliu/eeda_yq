@@ -1,6 +1,24 @@
 define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], function ($, metisMenu) {
 	
 	$(document).ready(function() {
+		
+		//校验规则
+		$("#first_feorm").validate({
+			rules:{
+				phone:{
+					required:true,
+					isMobile:true
+				}
+			},
+			messages:{
+				login_name:{
+					remote:"用户名已存在"
+				},
+				phone:{
+					isMobile:"不合法手机号码"
+				}
+			}
+		})
 		$('.hornav a').click(function(){
 	        $('.hornav li').removeClass('current');
 	        $(this).parent().addClass('current');
@@ -16,6 +34,7 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 	            $("#register_type").val("2");
 	        }
 	    });
+		
 		//点击下一步
 		$("#nextBtn").click(function(){
 			var type=$("#register_type").val();
@@ -46,11 +65,13 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 			user.shop_city = address[1];
 			user.shop_district = address[2];
 			window.location.href="/BusinessAdmin/register/done?jsonStr="+JSON.stringify(user);
-		})
+		});
+		
 		  //定义id选择器
 		  function Id(id){
 			  return document.getElementById(id);
-		  }
+		  };
+		  
 		//保存图片
 		$(":input[type=file]").click(function(){
 			var id=$(this).attr("id");

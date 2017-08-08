@@ -33,8 +33,11 @@ public class AccountController extends Controller {
 	Subject currentUser = SecurityUtils.getSubject();
 
 	public void index() {
-	    Record noticeRec = Db.findFirst("select * from wc_notice order by id desc;");
+	    Record noticeRec = Db.findFirst("select * from wc_notice order by create_time desc;");
 	    Long userId = LoginUserController.getLoginUserId(this);
+	    String sql_user = "select * from user_login where id = "+userId;
+	    Record re_user = Db.findFirst(sql_user);
+	    setAttr("user",re_user);
 	    String sql_diamond = "select DATEDIFF(max(end_date),now())leave_days from wc_ad_diamond where creator = "+userId;
 	    Record re_diamond = Db.findFirst(sql_diamond);
 	    setAttr("diamond",re_diamond);

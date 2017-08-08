@@ -10,11 +10,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
                 {	"data":"PRODUCTOR",
                 	"width": "80px"
                 },
-                {	"data": null, "width":"120px",
-              	  "render": function ( data, type, full, meta ) {
-              		  return "暂无";
-              	  }
-                },
+                {	"data": "LOCATION", "width":"120px"},
 	              { "data": "NAME", "width":"90px"}, 
 	              { "data": "TITLE_IMG", "width":"60px",
 	            	  "render":function(data,type,full,meta){

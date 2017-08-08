@@ -34,10 +34,10 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
             },
             { "data": "CU_FLAG", "width": "100px",
               render:function(data,type,full,meta){
-                if(data && data == 'N'){
-                  return "<input type='checkbox'>";
+                if(data == 'Y'){
+                	return "<input type='checkbox' class = 'cu'  data-id="+full.ID+" checked>";
                 }else{
-                  return "<input type='checkbox' checked>";
+                	return "<input type='checkbox' class = 'cu' data-id="+full.ID+">";
                 }
               }
             },
@@ -69,9 +69,43 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
     	  });
       });
       
+      $("#update_hui").change(function(){
+    	  var self = $(this);
+    	  var flag = "";
+    		  if(self.prop("checked")){
+        		  flag = "Y"
+        	  }else {
+        		  flag = "N"
+        	  }
+    		  $.post("/BusinessAdmin/product/openHui",{flag:flag},function(data){
+	    			   if(data){
+	    				  $.scojs_message('操作成功', $.scojs_message.TYPE_OK);
+	    				  refleshTable();
+	 			  }else{
+	 				  	$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR); 
+	    		  }
+    		  })
+      })
       
-      $('#uploadBtn').on('click',function(){
-    	  window.location.href="/BusinessAdmin/product/edit";
+      
+      $('#eeda_table').on('change',".cu",function(){
+    	  var self = $(this);
+    	  var flag = "";
+    	  var id = self.data("id");
+    		  if(self.prop("checked")){
+    			  flag = "Y"
+    		  }else {
+    			  flag = "N";
+    		  }
+    		  $.post("/BusinessAdmin/product/updateProduct",{id:id,flag:flag},function(data){
+    			   if(data){
+    			  $.scojs_message('更新成功', $.scojs_message.TYPE_OK);
+    			  refleshTable();
+ 			  }else{
+ 				 $.scojs_message('更新失败', $.scojs_message.TYPE_ERROR); 
+    		  }
+    		  })
+    	  
       })
       
       $('#eeda_table').on('click','.delete',function(){

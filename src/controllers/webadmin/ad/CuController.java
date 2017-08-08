@@ -103,11 +103,12 @@ public class CuController extends Controller {
         }
 
      String sql="  select loc.name loc_name,wc.c_name, if(DATEDIFF(end_date,now())<0,'已经过期',cast(DATEDIFF(end_date,begin_date) as char) ) leave_days,"
-    		 	+" DATEDIFF(end_date,begin_date) total_days,wab.* from wc_ad_cu wab "
-    		 	+" LEFT JOIN wc_company wc ON wab.creator = wc.creator "
-    		 	+" left join category cat on cat.id = wc.trade_type"
-    		 	+" left join location loc on loc.code = ifnull(wc.city,wc.province)"
-    		 	+" where 1  = 1"	;
+    		 	+ " DATEDIFF(end_date,begin_date) total_days,wab.*"
+    		 	+ " from wc_ad_cu wab "
+    		 	+ " LEFT JOIN wc_company wc ON wab.creator = wc.creator "
+    		 	+ " left join category cat on cat.id = wc.trade_type"
+    		 	+ " left join location loc on loc.code = ifnull(wc.city,wc.province)"
+    		 	+ " where 1  = 1"	;
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);

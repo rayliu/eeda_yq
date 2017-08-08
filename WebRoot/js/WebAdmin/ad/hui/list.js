@@ -59,19 +59,13 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 		                  }
                      ]
         });
-        
-
-        //按地区过滤
-        $("#location").change(function(){
+ 
+          //过滤
+        $("#location,#category").change(function(){
         	var self = $(this);
-        	var location = self.select().val();
-        	dataTable.ajax.url("/WebAdmin/ad/hui/list?location="+location).load();
-        })
-        //按商家类型过滤
-           $("#category").change(function(){
-        	var self = $(this);
-        	var category = self.select().val();
-        	dataTable.ajax.url("/WebAdmin/ad/hui/list?category="+category).load();
+        	var location = $("#location").select().val();
+        	var category = $("#category").select().val();
+        	dataTable.ajax.url("/WebAdmin/ad/hui/list?location="+location+"&category="+category).load();
         })
         
         $("#eeda_table").on("click",".open",function(){
