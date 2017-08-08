@@ -29,11 +29,11 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
               				" phone="+full.PHONE+
               				" status="+full.STATUS+
               				" ad_location="+full.AD_LOCATION+
-              				" total_day="+full.TOTAL_DAY+
-              				" id="+full.ID+
-              				" remark="+full.REMARK+
-              				" total_price="+full.TOTAL_PRICE+
-              				" picture="+full.PICTURE+
+              				" total_day='"+full.TOTAL_DAY+"'"+
+              				" id='"+full.ID+"'"+
+              				" remark='"+full.REMARK+"'"+
+              				" total_price='"+full.TOTAL_PRICE+"'"+
+              				" picture='"+full.PICTURE+"'"+
               				" href='#pageheader'>编辑</a>";
             	  	}else{
             	  		data = full.STATUS;
