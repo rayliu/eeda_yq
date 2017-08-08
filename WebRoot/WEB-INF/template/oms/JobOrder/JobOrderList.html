@@ -1,73 +1,66 @@
 <%layout("/eeda/layout.html"){%>
-        <div id="page-wrapper">
+<div id="page-wrapper">
         <%
 	      //如果只有edit, 没指定特定的, 默认都有编辑权限
 	      var orderPermission = shiro.hasPermission("jobOrder.order");
 	      var boolOrder= orderPermission;
     	%>
-            <div class="row simple_search_div">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                    	<div class="row"><!--  第1行  -->
-                        	<div class="col-lg-4"><!--  三列排版  -->
-                            	<div class="search_single">
-                              		<select id="selected_field" name="selected_field" class="form-control search-label">
-                              			<option value="order_no">工作单号</option>
-	                            		<option value="sono_like">SO号</option>
-	                               		<option value="container_no">柜号</option>
-	                               		<option value="status">状态</option>	                                	
-	                                	<option value="old_order_no">旧工作单号</option>
-	                                	<option value="customer_name">客户名称</option>
-	                                	<option value="customer_code_like">客户代码</option>
-	                                	<option value="create_stamp">创建时间</option>
-	                                	<option value="sent_out_time">出货代码</option>
-                            		</select>
+	<div class="row simple_search_div">
+    	 <div class="panel panel-default">
+         	<div class="panel-heading">
+            	<div class="row"><!--  第1行  -->
+                	<div class="three_tab"><!--  三列排版  -->
+                    	<nobr>
+                        	<div class="search_single">
+                            	<select id="selected_field" name="selected_field" class="form-control search-label">
+                              		<option value="order_no">工作单号</option>
+	                            	<option value="sono_like">SO号</option>
+	                               	<option value="container_no">柜号</option>
+	                               	<option value="status">状态</option>	                                	
+	                                <option value="old_order_no">旧工作单号</option>
+	                                <option value="customer_name">客户名称</option>
+	                                <option value="customer_code_like">客户代码</option>
+	                                <option value="create_stamp">创建时间</option>
+	                                <option value="sent_out_time">出货时间</option>
+                            	</select>
 
+                            	<input type="text" class="form-control search-control" id="public_text" name="public_text">
                             		
-                            		<input type="text" class="form-control search-control" id="public_text" name="public_text">
-                            		
-                            		<select id="single_status_list" name="status_list" class="form-control search-control" style="display: none;">
-                                		<option value="新建">新建</option>
-                                		<option value="已完成">已完成</option>
-                            		</select>
+                            	<select id="single_status_list" name="status_list" class="form-control search-control" style="display: none;">
+                                	<option value="新建">新建</option>
+                                	<option value="已完成">已完成</option>
+                            	</select>
                            	 		
-	                           	 	<div style="display: none;float:right;" id="customer_name_show">
+	                           	 <div style="display: none;position:absolute;left:34%;bottom:-5px;" id="customer_name_show">
                                           <%include("/eeda/component/form/inputSpField.html", 
                                                               {   id: 'single_customer_name',
-                                                              	  style:'width:245px',
+                                                              	  style:'width:150%',
                                                                   value: ''
                                                               }){}%>
-                                    </div>
+                                 </div>
                                     
-                                    <div style="display: none;float:right;" id="sent_out_time_show">
+                                 <div style="display: none;position:absolute;left:34%;bottom:-5px;" id="public_time_show">
                                             <%include("/eeda/component/form/inputDateQueryField.html", 
-                                                                {   id: 'single_sent_out_time', 
-                                                                    style:'width:245px',
-								                                    begin_style:'width:90px',
-								                                    end_style:'width:90px', 
+                                                                {   id: 'public_time', 
+                                                                    style:'width:120%',
+								                   					begin_style:'width:30%',
+								                   					end_style:'width:30%',  
                                                                     value: ''
                                                                 }){}%>
-                                   </div>
-                                   
-                                   <div style="display: none;float:right;" id="create_stamp_show">
-                                            <%include("/eeda/component/form/inputDateQueryField.html", 
-                                            {   id:'single_create_stamp', 
-                                                style:'width:245px',
-								                begin_style:'width:90px',
-								                end_style:'width:90px', 
-                                                value:''
-                                            }){} %>
-                                   </div>
-                          		</div>
-                      		</div>
-                      <div class="col-lg-4"><!--  三列排版  -->
+                                 </div>
+                          	</div>
+                      	</nobr>
+                      </div>
+                      <div class="three_tab"><!--  三列排版  -->
                           <div class="search_single">
-                            <button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
-                           <a href="/jobOrder/create" class="btn btn_green" type="button">创建工作单</a>
+                          	<nobr>
+	                          	<button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
+	                          	<a href="/jobOrder/create" class="btn btn_green" type="button">创建工作单</a>
+	                        </nobr>
                           </div>
                           
                       </div>
-                      <div class="col-lg-4"><!--  三列排版  -->
+                      <div class="three_tab"><!--  三列排版  -->
                           <h4 class="panel-title pull-right" style="padding-top: 5px;">
                               <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
                                 <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询

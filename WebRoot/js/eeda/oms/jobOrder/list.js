@@ -213,33 +213,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 	    	  $('#public_text').val("");
 	    	  $('#customer_name_show').hide();
 	    	  $('#single_status_list').hide();
-	    	  $('#create_stamp_show').hide();
-	    	  $('#sent_out_time_show').hide();
+	    	  $('#public_time_show').hide();
 	    	  $('#public_text').show();
 	      }else if(selectField == 'status'){
 	    	  $('#customer_name_show').hide();
 	    	  $('#public_text').hide();
-	    	  $('#create_stamp_show').hide();
-	    	  $('#sent_out_time_show').hide();
+	    	  $('#public_time_show').hide();
 	    	  $('#single_status_list').show();
 	      }else if(selectField == 'customer_name'){
 	    	  $('#single_status_list').hide();
 	    	  $('#public_text').hide();
-	    	  $('#sent_out_time_show').hide();
-	    	  $('#create_stamp_show').hide();
+	    	  $('#public_time_show').hide();
 	    	  $('#customer_name_show').show();
-         }else if(selectField == 'create_stamp'){
-	    	  $('#single_status_list').hide();
-	    	  $('#public_text').hide();
-	    	  $('#customer_name_show').hide();
-	    	  $('#sent_out_time_show').hide();
-	    	  $('#create_stamp_show').show();
-         }else if(selectField == 'sent_out_time'){
+         }else if(selectField == 'sent_out_time'||selectField == 'create_stamp'){
+        	  $('#public_time_begin_time').val("");
+        	  $('#public_time_end_time').val("");
 	    	  $('#single_status_list').hide();
 	    	  $('#public_text').hide();
 	    	  $('#customer_name_show').hide();
 	    	  $('#create_stamp_show').hide();
-	    	  $('#sent_out_time_show').show();
+	    	  $('#public_time_show').show();
          }
      });
 	
@@ -253,11 +246,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 	      }else if(selectField == 'customer_name'){
 	    	  selectFieldValue = $("#single_customer_name_input").val();
           }else if(selectField == 'create_stamp'){
-        	  var start_date = $("#single_create_stamp_begin_time").val();
-              var end_date = $("#single_create_stamp_end_time").val();
+        	  var start_date = $("#public_time_begin_time").val();
+              var end_date = $("#public_time_end_time").val();
           }else if(selectField == 'sent_out_time'){
-              var sent_out_time_begin_time = $("#single_sent_out_time_begin_time").val();
-              var sent_out_time_end_time = $("#single_sent_out_time_end_time").val();
+              var sent_out_time_begin_time = $("#public_time_begin_time").val();
+              var sent_out_time_end_time = $("#public_time_end_time").val();
           }
 	     
      
