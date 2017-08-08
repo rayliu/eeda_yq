@@ -65,7 +65,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //简单查询
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
-	      if(selectField=='"plan_order_no"'||selectField=='job_order_no'||selectField=='charge_check_no'||selectField=='cost_check_no'||selectField=='charge_app_no'||selectField=='cost_app_no'){
+	      if(selectField=='plan_order_no'||selectField=='job_order_no'||selectField=='charge_check_no'||selectField=='cost_check_no'||selectField=='charge_app_no'||selectField=='cost_app_no'){
 	    	  $("#public_text").val("");
 	    	  $("#customer_name_show").hide();
 	    	  $("#public_text").show();
