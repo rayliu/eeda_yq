@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -56,6 +57,26 @@ public class RegisterController extends Controller {
 		renderJson(result);
 	}
 	
+    //生成随机数字和字母,  
+    public String getStringRandom(int length) {  
+          
+        String val = "";  
+        Random random = new Random();  
+          
+        //参数length，表示生成几位随机数  
+        for(int i = 0; i < length; i++) {  
+            //输出字母还是数字  
+            if( i<2 ) {  
+                //输出是大写字母还是小写字母  
+                int temp = random.nextInt(2) % 2 == 0 ? 65 : 97;  
+                val += (char)(random.nextInt(26) + temp);  
+            } else  {  
+                val += String.valueOf(random.nextInt(10));  
+            }  
+        }  
+        return val;  
+    } 
+	
 	@Before(Tx.class)
 	public void done(){
 		String jsonStr=getPara("jsonStr");
@@ -64,6 +85,7 @@ public class RegisterController extends Controller {
 		Record user = new Record();
 		Record re=new Record();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String invitation_code = getStringRandom(6);
 		String type=(String)dto.get("type");
 		String user_name = (String) dto.get("user_name");
 		String password = (String) dto.get("password");
@@ -72,6 +94,7 @@ public class RegisterController extends Controller {
 		user.set("password", password);
 		user.set("phone", phone);
 		user.set("is_stop", 1);
+		user.set("invitation_code", invitation_code);
 		Db.save("user_login", user);
 		if(type.equals("1")){
 			String id_card = (String) dto.get("id_card");

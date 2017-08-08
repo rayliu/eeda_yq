@@ -57,7 +57,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			  alert("请选择合适的更新日期！！")
 			  return;
 		  }
-		  $.post("/WebAdmin/biz/updateDimond",	{
+		  $.post("/WebAdmin/biz/updateDiamond",	{
 			  									id:id,begin_date:begin_date,end_date:update
 			  									},function(data){
 	      		if(data){

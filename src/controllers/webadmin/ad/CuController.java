@@ -98,7 +98,7 @@ public class CuController extends Controller {
         if(StringUtils.isNotBlank(location)){
         	condition += " and city = "+location+"";
         }
-        if(category != "" && category != null){
+        if(StringUtils.isNotBlank(category)){
         		condition += " and trade_type = "+category;
         }
 

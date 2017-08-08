@@ -46,13 +46,14 @@ public class SpController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	 public void edit(){ 
 		String id = getPara("id");
-        String sql_user = "select ca.name trade_name,ul.id uid,ul.user_name,wc.* from user_login ul "
+        String sql_user = "select ca.name trade_name,ul.id uid,ul.invitation_code,ul.user_name,wc.* from user_login ul "
 			        		+ "left join wc_company wc on wc.creator = ul.id "
 			        		+"left join category ca on ca.id=wc.trade_type "
 			        		+ "where ul.id = "+id;
         String sql_diamond = "select if(DATEDIFF(max(end_date),now())>0,'Y','N') whether,DATEDIFF(max(end_date),"
         					+ "now()) leave_days,max(end_date) last_date from wc_ad_diamond where status = '已开通' and creator = "+id;
-        String sql_cu =	"SELECT if(DATEDIFF(max(end_date),now())>0,cast(DATEDIFF(max(end_date),now()) as char),'0') leave_days,max(end_date) end_date FROM `wc_ad_cu` where status='开启' and creator ="+id;
+        String sql_cu  = "SELECT if(DATEDIFF(max(end_date),now())>0,cast(DATEDIFF(max(end_date),now()) as char),'0') leave_days,max(end_date) end_date FROM `wc_ad_cu` "
+        					+ "where status='开启' and creator ="+id;
         String sql_hui="select * from wc_ad_hui where creator = "+id;
         Record re_user = Db.findFirst(sql_user);
         Record re_diamond = Db.findFirst(sql_diamond);
@@ -93,7 +94,7 @@ public class SpController extends Controller {
 	}
 	
 	@Before(Tx.class)
-	public void updatediamond(){
+	public void updateDiamond(){
 		DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
 		String id = getPara("id");
 		String endDate = getPara("end_date");
