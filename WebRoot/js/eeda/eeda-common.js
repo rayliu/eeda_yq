@@ -30,9 +30,26 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
     $.ajaxSetup({
         //contentType:"application/x-www-form-urlencoded;charset=utf-8",
         beforeSend: function(jqXHR, settings){
+          var url = this.url;
+          //console.log(url);
+          if( url.indexOf('/customer/search')!=-1 
+              || url.indexOf('/serviceProvider/searchTruckCompany')!=-1 
+              || url.indexOf('/serviceProvider/searchCompany')!=-1 
+              || url.indexOf('/finItem/search')!=-1 
+              || url.indexOf('/serviceProvider/searchCurrency')!=-1 
+              || url.indexOf('/location/searchPort')!=-1 
+              || url.indexOf('/serviceProvider/searchUnit')!=-1 
+              || url.indexOf('/serviceProvider/searchTruckOut')!=-1
+              || url.indexOf('/serviceProvider/searchTruckIn')!=-1
+              || url.indexOf('/dockInfo/searchLoading')!=-1
+              || url.indexOf('/serviceProvider/searchChargeUnit')!=-1
+          ){
+            return;
+          }
+
           $.blockUI({ 
-            message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/></h4>' 
-        });
+              message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/></h4>' 
+          });
         },
         error: function (xhr, e) {
             if(xhr.responseText.indexOf('忘记密码')>0){
@@ -584,7 +601,7 @@ eeda.refreshUrl = refreshUrl;
 
 		  // 1 没选中客户，焦点离开，隐藏列表
 		  $(document).on('click', function(event){
-        console.log("tableFieldList.is(':visible') == "+tableFieldList.is(':visible'));
+        //console.log("tableFieldList.is(':visible') == "+tableFieldList.is(':visible'));
           if (tableFieldList.is(':visible') ){
               var clickedEl = $(this);
               var hiddenField = eeda._hiddenField;
@@ -1799,7 +1816,7 @@ eeda.refreshUrl = refreshUrl;
 
 			  // 1 没选中客户，焦点离开，隐藏列表
 			  $(document).on('click', function(event){
-	        console.log("tableFieldList.is(':visible') == "+tableFieldList.is(':visible'));
+	        //console.log("tableFieldList.is(':visible') == "+tableFieldList.is(':visible'));
 	          if (tableFieldList.is(':visible') ){
 	              var clickedEl = $(this);
 	              var hiddenField = eeda._hiddenField;
