@@ -4,85 +4,78 @@
         	<div class="panel panel-default">
             	<div class="panel-heading">
                 	<div class="row"><!--  第1行  -->
-                    	<div class="col-lg-4"><!--  三列排版  -->
-                        	<div class="search_single">
-                            	<select id="selected_field" name="selected_field" class="form-control search-label">
-	                            	<option value="receive_company_name">客户名称</option>
-	                               	<option value="order_no">申请单号</option>
-	                               	<option value="booking_no_equals">订舱号</option>
-	                               	<option value="status">单据状态</option>
-	                              	<option value="custom_state_equals">海关状态</option>
-	                                <option value="type_equals">类型</option>
-	                                <option value="date_custom">报关日期</option>
-	                                <option value="create_stamp">创建时间</option>	 
-                            	</select>
-								
-								<div  style="float:right;" id="customer_name_show">
-                                	<%include("/eeda/component/form/inputSpField.html", 
-                                    	{   id: 'single_customer_name', 
-                                            style:'width:245px',
-                                            value: ''
-                                        }){}%>
-                                </div>
-                                
-                            	<input type="text" class="form-control search-control" id="single_order_no" style="display: none;">
-                            	<input type="text" class="form-control search-control" id="single_booking_no" style="display: none;">
-                            	
-                            	<select id="single_status" class="form-control search-control" style="display: none;">
-		    						<option></option>
-		    						<option value="新建">新建</option>
-		    						<option value="待审核">待审核</option>
-		    						<option value="审核通过">审核通过</option>
-		    						<option value="审核不通过">审核不通过</option>
-		    					</select>
-		    					<select id="single_custom_state" class="form-control search-control" style="display: none;">
-		    						<option></option>
-		    						<option value="改单">改单</option>
-		    						<option value="复查">复查</option>
-		    						<option value="过磅">过磅</option>
-		    						<option value="查验">查验</option>
-		    						<option value="异常">异常</option>
-		    						<option value="异常待处理">异常待处理</option>
-		    						<option value="询价">询价</option>
-		    						<option value="商检">商检</option>
-		    						<option value="抽样">抽样</option>
-		    						<option value="补税">补税</option>
-		    						<option value="放行">放行</option>
-		    					</select>
-		    					<select id="single_type" class="form-control search-control" style="display: none;">
-		    						<option></option>
-		    						<option value="出口柜货">出口柜货</option>
-		    						<option value="出口散货">出口散货</option>
-		    						<option value="进口柜货">进口柜货</option>
-		    						<option value="进口散货">进口散货</option>
-		    					</select>
-                            	
-                                <div style="display: none;float:right;" id="date_custom_show">
-		                        	<%include("/eeda/component/form/inputDateQueryField.html", 
-								    	{   id:'single_date_custom',
-								            style:'width:245px',
-								            begin_style:'width:90px',
-								            end_style:'width:90px',  
-								            value:''
-								        }){} %>
-								</div>
-								<div style="display: none;float:right;" id="create_stamp_show">
-		                        	<%include("/eeda/component/form/inputDateQueryField.html", 
-								    	{   id:'single_create_stamp',
-								            style:'width:245px',
-								            begin_style:'width:90px',
-								            end_style:'width:90px',  
-								            value:''
-								        }){} %>
-								</div>
-                          	</div>
+                    	<div class="three_tab"><!--  三列排版  -->
+                    		<nobr>
+	                        	<div class="search_single">
+	                            	<select id="selected_field" name="selected_field" class="form-control search-label">
+		                            	<option value="receive_company_name">客户名称</option>
+		                               	<option value="order_no">申请单号</option>
+		                               	<option value="booking_no_equals">订舱号</option>
+		                               	<option value="status">单据状态</option>
+		                              	<option value="custom_state_equals">海关状态</option>
+		                                <option value="type_equals">类型</option>
+		                                <option value="date_custom">报关日期</option>
+		                                <option value="create_stamp">创建时间</option>	 
+	                            	</select>
+									
+									<div  style="position:absolute;left:34%;bottom:-5px;" id="customer_name_show">
+	                                	<%include("/eeda/component/form/inputSpField.html", 
+	                                    	{   id: 'single_customer_name', 
+	                                            style:'width:150%',
+	                                            value: ''
+	                                        }){}%>
+	                                </div>
+	                                
+	                            	<input type="text" class="form-control search-control" id="single_order_no" style="display: none;">
+	                            	<input type="text" class="form-control search-control" id="single_booking_no" style="display: none;">
+	                            	
+	                            	<select id="single_status" class="form-control search-control" style="display: none;">
+			    						<option></option>
+			    						<option value="新建">新建</option>
+			    						<option value="待审核">待审核</option>
+			    						<option value="审核通过">审核通过</option>
+			    						<option value="审核不通过">审核不通过</option>
+			    					</select>
+			    					<select id="single_custom_state" class="form-control search-control" style="display: none;">
+			    						<option></option>
+			    						<option value="改单">改单</option>
+			    						<option value="复查">复查</option>
+			    						<option value="过磅">过磅</option>
+			    						<option value="查验">查验</option>
+			    						<option value="异常">异常</option>
+			    						<option value="异常待处理">异常待处理</option>
+			    						<option value="询价">询价</option>
+			    						<option value="商检">商检</option>
+			    						<option value="抽样">抽样</option>
+			    						<option value="补税">补税</option>
+			    						<option value="放行">放行</option>
+			    					</select>
+			    					<select id="single_type" class="form-control search-control" style="display: none;">
+			    						<option></option>
+			    						<option value="出口柜货">出口柜货</option>
+			    						<option value="出口散货">出口散货</option>
+			    						<option value="进口柜货">进口柜货</option>
+			    						<option value="进口散货">进口散货</option>
+			    					</select>
+	                            	
+	                                <div style="display: none;position:absolute;left:34%;bottom:-5px;" id="public_time_show">
+			                        	<%include("/eeda/component/form/inputDateQueryField.html", 
+									    	{   id:'public_time',
+									             style:'width:120%',
+									             begin_style:'width:30%',
+									             end_style:'width:30%', 
+									            value:''
+									        }){} %>
+									</div>
+	                          	</div>
+                          	</nobr>
                       	</div>
-                     <div class="col-lg-4"><!--  三列排版  -->
+                     <div class="three_tab"><!--  三列排版  -->
                      	<div class="search_single">
                         	<button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
                      	</div>
                      </div>
-                     <div class="col-lg-4"><!--  三列排版  -->
+                     <div class="three_tab"><!--  三列排版  -->
                      	<h4 class="panel-title pull-right" style="padding-top: 5px;">
 	                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
 	                        	<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询

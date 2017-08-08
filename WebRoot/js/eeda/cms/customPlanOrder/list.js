@@ -169,8 +169,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
   	    	  $("#single_status").hide();
   	    	  $("#single_custom_state").hide();
   	    	  $("#single_type").hide();
-  	    	  $("#date_custom_show").hide();
-  	    	  $("#create_stamp_show").hide();
+  	    	  $("#public_time_show").hide();
   	    	  $("#customer_name_show").show();
   	      }
   	      if(selectField=='order_no'){
@@ -180,8 +179,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	    	  $("#single_status").hide();
 	    	  $("#single_custom_state").hide();
 	    	  $("#single_type").hide();
-	    	  $("#date_custom_show").hide();
-	    	  $("#create_stamp_show").hide();
+	    	  $("#public_time_show").hide();
 	    	  $("#customer_name_show").hide();
 	    	  $("#single_order_no").show();
   	      }
@@ -191,8 +189,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	    	  $("#single_status").hide();
 	    	  $("#single_custom_state").hide();
 	    	  $("#single_type").hide();
-	    	  $("#date_custom_show").hide();
-	    	  $("#create_stamp_show").hide();
+	    	  $("#public_time_show").hide();
 	    	  $("#customer_name_show").hide();
 	    	  $("#single_booking_no").show();
   	      }
@@ -202,8 +199,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	    	  $("#single_booking_no").hide();
 	    	  $("#single_custom_state").hide();
 	    	  $("#single_type").hide();
-	    	  $("#date_custom_show").hide();
-	    	  $("#create_stamp_show").hide();
+	    	  $("#public_time_show").hide();
 	    	  $("#customer_name_show").hide();
 	    	  $("#single_status").show();
   	      }
@@ -213,8 +209,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	    	  $("#single_booking_no").hide();
 	    	  $("#single_status").hide();
 	    	  $("#single_type").hide();
-	    	  $("#date_custom_show").hide();
-	    	  $("#create_stamp_show").hide();
+	    	  $("#public_time_show").hide();
 	    	  $("#customer_name_show").hide();
 	    	  $("#single_custom_state").show();
 	      }
@@ -224,30 +219,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	    	  $("#single_booking_no").hide();
 	    	  $("#single_status").hide();
 	    	  $("#single_custom_state").hide();
-	    	  $("#date_custom_show").hide();
-	    	  $("#create_stamp_show").hide();
+	    	  $("#public_time_show").hide();
 	    	  $("#customer_name_show").hide();
 	    	  $("#single_type").show();
 	      }
-  	      if(selectField=="date_custom"){
+  	      if(selectField=="create_stamp"||selectField=="date_custom"){
+  	    	  $("#public_time_begin_time").val("");
+  	    	  $("#public_time_end_time").val("");
   	    	  $("#single_order_no").hide();
 	    	  $("#single_booking_no").hide();
 	    	  $("#single_status").hide();
 	    	  $("#single_custom_state").hide();
 	    	  $("#single_type").hide();
-	    	  $("#create_stamp_show").hide();
 	    	  $("#customer_name_show").hide();
-	    	  $("#date_custom_show").show();
-  	      }
-  	      if(selectField=="create_stamp"){
-  	    	  $("#single_order_no").hide();
-	    	  $("#single_booking_no").hide();
-	    	  $("#single_status").hide();
-	    	  $("#single_custom_state").hide();
-	    	  $("#single_type").hide();
-	    	  $("#date_custom_show").hide();
-	    	  $("#customer_name_show").hide();
-	    	  $("#create_stamp_show").show();
+	    	  $("#public_time_show").show();
 	      }
        });
   	
@@ -277,12 +262,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
  	    	 selectFieldValue = $("#single_type").val();
  	     }
  	     if(selectField=="date_custom"){
- 	    	 var custom_start_date = $("#single_date_custom_begin_time").val();
- 	    	 var custom_end_date = $("#single_date_custom_end_time").val();
+ 	    	 var custom_start_date = $("#public_time_begin_time").val();
+ 	    	 var custom_end_date = $("#public_time_end_time").val();
  	     }
  	     if(selectField=="create_stamp"){
- 	    	 var start_date = $("#single_create_stamp_begin_time").val();
- 	    	 var end_date = $("#single_create_stamp_end_time").val();
+ 	    	 var start_date = $("#public_time_begin_time").val();
+ 	    	 var end_date = $("#public_time_end_time").val();
  	     }
  	     var confirmFee = "";
  	     if(paraStr=="未完成费用确认"){
