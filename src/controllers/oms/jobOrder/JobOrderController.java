@@ -61,6 +61,7 @@ import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.FileUploadUtil;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
@@ -2870,7 +2871,7 @@ public class JobOrderController extends Controller {
         long office_id=user1.getLong("office_id");
         
         //判断工作单与登陆用户的office_id是否一致
-//        if(job_office_id!=office_id){
+//        if(!OrderCheckOfficeUtil.checkOfficeEqual("job_order", Long.valueOf(id), office_id)){
 //        	renderError(403);// no permission
 //            return;
 //
