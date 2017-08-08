@@ -42,7 +42,7 @@ public class ImportJob implements Runnable{
             String[] filelist = file.list();
             System.out.println("child_fileName number:"+filelist.length);
             for (int i = 0; i < filelist.length; i++) {
-                File readfile = new File(filepath + "\\" + filelist[i]);
+                File readfile = new File(filepath + "/" + filelist[i]);
                 if (!readfile.isDirectory()) {
                 	long start = Calendar.getInstance().getTimeInMillis();
                 	String file_name = filelist[i];
