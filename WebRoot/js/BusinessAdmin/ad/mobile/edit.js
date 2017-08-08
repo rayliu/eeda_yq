@@ -49,7 +49,15 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
 			    }
 		    }
 	  });
-
+	  
+	  function getToday(){
+			var date = new Date();
+			var year = date.getFullYear();
+			var month = date.getMonth()+1;
+			var day = date.getDate();
+			return year+"-"+month+"-"+day;
+		};
+		
 	  jQuery.validator.addMethod("isMobile", function(value, element) { 
 		  var length = value.length; 
 		  var mobile = /^1(3|4|5|7|8)\d{9}$/; 
@@ -58,7 +66,7 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
 	  
 	  jQuery.validator.addMethod("afterToday", function(value, element) { 
 		  
-		  return new Date(value) > new Date(); 
+		  return new Date(value) >=new Date(getToday()); 
 	  }, "请选择今天之后的日期"); 
 	  
 	  

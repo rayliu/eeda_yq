@@ -92,21 +92,17 @@ public class InviteCodeController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
          
-    	String sql = "select * from ("
-    			+ " select m.*, u.c_name create_name, u1.c_name update_name"
-        		+ " from msg_board m "
-        		+ " left join user_login u on u.id = m.creator"
-        		+ " left join user_login u1 on u1.id = m.updator"
-        		+ " where m.office_id="+office_id
-        		+ " ) A where 1=1 ";
+        String sql = "select cat.name trade_type_name,wc.c_name,ul.* from user_login ul"
+        		+ " left join wc_company wc on wc.creator = ul.id"
+        		+ " left join category cat on wc.trade_type = cat.id";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        String sqlTotal = "select count(1) total from ("+sql+ ") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
+        List<Record> orderList = Db.find(sql +sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

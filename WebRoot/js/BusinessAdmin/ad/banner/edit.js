@@ -154,18 +154,20 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			var ad_location = self.attr("ad_location");
 			var total_day = self.attr("total_day");
 			var remark = self.attr("remark");
+			var price = self.attr("price");
 			var total_price = self.attr("total_price");
 			var picture = self.attr("picture");
 			$("#order_id").val(id);
 			var remark =(self.attr("remark")=='null'?"该订单暂时没备注！":self.attr("remark"));
 			$("#begin_date").val(begin_date);
 			$("#end_date").val(end_date);
+			$("#price").text(price);
 			$("#telphone").val(phone);
 			$("#ad_location").val(ad_location);
 			$("#total_day").text(total_day);
 			$("#total_price").text(total_price);
 			$("#img_logo").attr('src','/upload/'+picture);
-			$("#remark").text(remark)=='null'?"暂无备注":("#remark").text(remark);
+			$("#remark").val(remark);
 		});
 		
 		

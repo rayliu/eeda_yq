@@ -23,15 +23,23 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			}
 		})
 		
+		function getToday(){
+			var date = new Date();
+			var year = date.getFullYear();
+			var month = date.getMonth()+1;
+			var day = date.getDate();
+			return year+"-"+month+"-"+day;
+		}
+		
 		jQuery.validator.addMethod("afterBegin", function(value, element) { 
 				var begin = $("#begin_date").val();
 				var after = $("#end_date").val();
-			  return new Date(begin) < new Date(after); 
+			  return new Date(begin) <= new Date(after); 
 			}, "开始时间大于结束时间"); 
 		
 		  jQuery.validator.addMethod("afterToday", function(value, element) { 
-			  
-			  return new Date(value) > new Date(); 
+			 
+			  return new Date(value) >= new Date(getToday()); 
 		  }, "请选择今天之后的日期"); 
 		
 		

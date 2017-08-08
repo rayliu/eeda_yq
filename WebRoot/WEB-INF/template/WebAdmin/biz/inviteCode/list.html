@@ -4,40 +4,12 @@
         
         <br />
       <h4> 每月邀请码统计 2016-1-1 到 2016-1-30</h4>
-        <table class="userdetailtable mt10" width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="5%">每月邀请数量</td>
-            <td width="5%">分类</td>
-            <td width="18%">商家</td>
-            <td width="13%">邀请码</td>
-            <td width="13%">联系电话</td>
-            <td width="12%">&nbsp;</td>
-          </tr>
-          <tr>
-            <td>20</td>
-            <td>影楼</td>
-            <td><a href="business-remind-detail.html">珠海维多利亚</a></td>
-            <td>fdsfdsf</td>
-            <td>1345641512</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
-            <td>15</td>
-            <td>影楼</td>
-            <td><a href="#">珠海维多利亚</a></td>
-            <td>fdsfdsf</td>
-            <td>1345641512</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
-            <td>8</td>
-            <td>影楼</td>
-            <td><a href="#">珠海维多利亚</a></td>
-            <td>fdsfdsf</td>
-            <td>1345641512</td>
-            <td>&nbsp;</td>
-          </tr>
-        </table>
+      
+      <%include("/eeda/component/form/detailTable.html", 
+          {
+              id:'eeda_table', 
+              headers:['每月邀请量', '分类', '商家 ','邀请码','联系电话']
+          }){} %>
       </div>
     </div>
 
@@ -45,6 +17,6 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-    	 requirejs(['app/msgBoard/list']);
+    	 requirejs(['/js/WebAdmin/biz/inviteCode/list.js']);
     });
 </script>
