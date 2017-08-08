@@ -34,14 +34,19 @@ public class ImportJob implements Runnable{
 
 		String filepath = PropKit.get("bom_ftp_folder");
 		//String filepath = "C:/Users/Administrator/Desktop/job文件测试";
+		System.out.println("filepath:" + filepath);
 		File file = new File(filepath);
+		System.out.println("filename:" +file.getName());
 		if (file.isDirectory()) {
+			System.out.println("存在文件fileFolder");
             String[] filelist = file.list();
+            System.out.println("child_fileName number:"+filelist.length);
             for (int i = 0; i < filelist.length; i++) {
                 File readfile = new File(filepath + "\\" + filelist[i]);
                 if (!readfile.isDirectory()) {
                 	long start = Calendar.getInstance().getTimeInMillis();
                 	String file_name = filelist[i];
+                	System.out.println("child_fileName:"+file_name);
                 	Date begin_time = new Date();
                 	String path = readfile.getPath();
                 	Record result = importOrder(path);
