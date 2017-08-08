@@ -237,6 +237,16 @@ public class ImportOrder extends Controller {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
+		} finally {
+			try {
+				if (null != conn) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			} finally {
+				DbKit.getConfig().removeThreadLocalConnection();
+			}
 		}
 		renderJson(resultMap);
 	}
