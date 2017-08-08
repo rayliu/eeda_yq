@@ -9,7 +9,6 @@ import java.util.Map;
 import models.UserLogin;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Interceptor;
@@ -47,9 +46,12 @@ public class EedaMenuInterceptor implements Interceptor {
                 }
 
                 logger.debug("action key: "+key);
-                if(!"/".equals(ai.getActionKey()) && !userUrlList.contains(key)){//actionKey是否存在于授权模块中？
-                    ai.getController().renderError(403);
+                if(!"/module".equals(ai.getActionKey())){
+                	if(!"/".equals(ai.getActionKey()) && !userUrlList.contains(key)){//actionKey是否存在于授权模块中？
+                        ai.getController().renderError(403);
+                    }
                 }
+                
             }
             
         }
