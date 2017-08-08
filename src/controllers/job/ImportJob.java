@@ -82,8 +82,9 @@ public class ImportJob implements Runnable{
 		File file = new File(path);
 		String fileName = file.getName();
 		String strFile = file.getPath();
-		
+		System.out.println("进入import strFile:"+strFile);
 		Record resultMap = new Record();
+		resultMap.set("result", false);
 		try {
 			//exel格式区分
 			 conn = DbKit.getConfig().getDataSource().getConnection();
@@ -91,7 +92,9 @@ public class ImportJob implements Runnable{
 			 conn.setAutoCommit(false);// 自动提交变成false
 			 if (fileName.endsWith(".xlsx")) {
 				//导入前先清除掉表中数据
+				System.out.println("进入import xlsx");
 				if(file.exists()){
+					System.out.println("进入import xlsx 存在");
 					Db.update("delete from wmsproduct");
 					BigXlsxHandleUitl.processFile(strFile);
 					conn.commit();
