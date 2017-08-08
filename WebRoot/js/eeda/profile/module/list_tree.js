@@ -1,4 +1,4 @@
-define(['jquery','zTree'], function ($) {
+define(['jquery', 'bootstrap', 'zTree'], function ($) {
 
     $(document).ready(function() {
     	
