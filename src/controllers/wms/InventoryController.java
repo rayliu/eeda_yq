@@ -433,7 +433,7 @@ public class InventoryController extends Controller {
 			+ " union all"
 			+ " select pro.part_no,pro.part_name,0 quantity"
 			+ " from wmsproduct pro"
-			+ " where amount>0 and pro.office_id="+office_id
+			+ " where pro.office_id="+office_id
 			+ conditions 
 			+ " ) A group by A.part_no "; 
     	
