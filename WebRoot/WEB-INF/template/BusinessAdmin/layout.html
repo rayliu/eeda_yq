@@ -27,8 +27,7 @@
 $().ready(function(){
 	$.post('/BusinessAdmin/getLoginUser',function(data){
 		if(data){
-			$('.login_name').text(data.C_NAME);
-			$('#email').text(data.USER_NAME);
+			$('#head_name').text(data.USER_NAME);
 			$('#phone').text(data.PHONE);
 		}
 	});
@@ -49,7 +48,7 @@ $().ready(function(){
         </div>
         <!--left-->
         <div class="right">
-<div class="userinfo"> <img src="/images/thumbs/avatar.png" alt="" /> <span class="login_name"></span> </div>
+<div class="userinfo"> <img src="/images/thumbs/avatar.png" alt="" /> <span class="login_name" id="head_name"></span> </div>
 
 <div class="userinfodrop">
     <div class="avatar"> <a href=""><img src="/images/thumbs/avatarbig.png" alt="" /></a> </div>
@@ -65,7 +64,7 @@ $().ready(function(){
     </div>
     <div class="vernav2 iconmenu">
 <ul>    
-    <li><a href="/BusinessAdmin/account" class="calendar">账号信息</a></li>
+      <li><a href="/BusinessAdmin/account" class="calendar">账号信息</a></li>
       <li><a style="padding-left:30px;" href="/BusinessAdmin/account/modify_info" class="support">修改公司资料</a></li>
       <li><a style="padding-left:30px;" href="/BusinessAdmin/account/modify_pwd" class="typo">修改密码</a></li>
       <li><a href="/BusinessAdmin/product" class="tables">产品管理</a></li>

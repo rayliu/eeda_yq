@@ -101,6 +101,15 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 	      return url; 
 	  } 
 
+	  $("input[name=price_type]").change(function(){
+		  var self = $(this);
+		  if(self.val() == '面议'){
+			  $("#price").val("").attr("disabled",true);
+		  }else{
+			  $("#price").attr("disabled",false)
+		  }
+	  })
+	  
 	    $('#save_btn').click(function(event) {
 			if($("input[name=price_type]:checked").val()=="面议"){
 				$("input[name=price]").prop("required",false);
@@ -110,7 +119,6 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 			 }
 	    	var self = this;
 	    	$(self).attr('disabled',true);
-	    	
 	    	var order = {};
 	    	order.img_num = img_num;
 	    	order.id = $('#order_id').val();
@@ -120,7 +128,7 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 	    	if(order.price_type=='人民币'){
 	    		order.price = $('#price').val();
 	    	}else{
-	    		order.price = "0";
+	    		order.price = "-1";
 	    	}
 	    	order.unit = $('[name=unit]:checked').val();
 	    	order.content = $('#content').val();

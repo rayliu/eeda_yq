@@ -86,17 +86,23 @@ public class WebAdminController extends Controller {
         	//注册用户数
         	Record user = Db.findFirst("select count(1) total from user_login");
         	setAttr("user", user);
+        	//商家入驻数量
+        	Record passcompany = Db.findFirst("select count(1) total from user_login where is_stop ='0'");
+        	setAttr("passcompany",passcompany);
+        	//商家申请入驻数量
+        	Record unpasscompany = Db.findFirst("select count(1) total from user_login where is_stop ='1'");
+        	setAttr("unpasscompany",unpasscompany);
         	//上传产品
         	Record product = Db.findFirst("select count(1) total from wc_product");//全部（不管是否上架）
         	setAttr("product", product);
         	//“促”用户数
-        	Record ad_cu = Db.findFirst("select count(1) total from wc_ad_deal group by creator");//全部（不管是否上架）
+        	Record ad_cu = Db.findFirst("select count(1) total,sum(price) income from wc_ad_cu");//全部（不管是否上架）
         	setAttr("ad_cu", ad_cu);
         	//“惠”用户数
         	Record ad_hui = Db.findFirst("select count(1) total from wc_ad_hui group by creator");//全部（不管是否上架）
         	setAttr("ad_hui", ad_hui);
         	//钻石商家数
-        	Record diamond = Db.findFirst("select count(1) total from wc_ad_diamond group by creator");//全部（不管是否上架）
+        	Record diamond = Db.findFirst("select count(1) total,sum(total_price) income from wc_ad_diamond");//全部（不管是否上架）
         	setAttr("diamond", diamond);
         	//上传案例数
         	Record wccase = Db.findFirst("select count(1) total from wc_case");//所有
@@ -236,13 +242,21 @@ public class WebAdminController extends Controller {
     	String sql_banner = "select * from wc_ad_banner where status =  '新建'";
     	//手机推送申请
     	String sql_mobile = "select * from wc_ad_mobile_promotion where status = '新建'";
+    	//促广告提醒
+    	String sql_cu = "select * from wc_ad_cu where status = '关闭'";
+    	//钻石提醒
+    	String sql_diamond = "select * from wc_ad_diamond where status = '新建'";
     	List<Record> nopass = Db.find(sql_nopass);
     	List<Record> banner = Db.find(sql_banner);
     	List<Record> mobile = Db.find(sql_mobile);
+    	List<Record> cu = Db.find(sql_cu);
+    	List<Record> diamond = Db.find(sql_diamond);
     	Record data = new Record();
     	data.set("nopass", nopass.size());
     	data.set("banner", banner.size());
     	data.set("mobile", mobile.size());
+    	data.set("cu", cu.size());
+    	data.set("diamond", diamond.size());
     	data.set("user", ul);
     	renderJson(data);
     }

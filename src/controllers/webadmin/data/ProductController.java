@@ -51,6 +51,7 @@ public class ProductController extends Controller {
 //	      r.set("update_stamp", new Date());
 //	      r.set("updator", LoginUserController.getLoginUserId(this));
 //	      Db.update("msg_board", r);
+
 	        render(getRequest().getRequestURI()+"/edit.html");
 	    }
 	 
@@ -169,10 +170,13 @@ public class ProductController extends Controller {
     	String id = getPara("id");
     	String sql="select * from wc_product where id = "+id;
     	String pic="select * from wc_product_pic where order_id="+id;
+        String sql_cat = "select * from category ";
+    	List<Record> categorys = Db.find(sql_cat);
     	Record  re = Db.findFirst(sql);
     	List  pictures = Db.find(pic);
     	setAttr("product",re);
     	setAttr("pictures",pictures);
+    	setAttr("categorys",categorys);
     	render(getRequest().getRequestURI()+"/edit.html");
     }
     

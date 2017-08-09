@@ -37,9 +37,15 @@ public class ProductController extends Controller {
 
 	public void index() {
 		Long userId = LoginUserController.getLoginUserId(this);
-		String sql = "select is_active from wc_ad_hui where creator = "+userId;
-		Record  re = Db.findFirst(sql);
-		setAttr("hui_status",re.get("is_active"));
+		String sql_cu  = "SELECT if(DATEDIFF(max(end_date),now())>0,cast(DATEDIFF(max(end_date),now()) as char),'-1') leave_days,max(end_date) end_date "
+				+ "FROM `wc_ad_cu` "
+				+ "where status='开启' and creator ="+userId;
+		Record re_cu = Db.findFirst(sql_cu);
+		if(re_cu == null){
+			re_cu = new Record();
+			re_cu.set("leave_days", 0);
+		}
+		setAttr("cu",re_cu);
 		render(getRequest().getRequestURI()+"/list.html");
 	}
 	
@@ -51,13 +57,10 @@ public class ProductController extends Controller {
         }
         Long userId = LoginUserController.getLoginUserId(this);
         String sql = "select * from wc_product where creator = "+ userId;
-        
         String condition = DbUtils.buildConditions(getParaMap());
-
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
-        
         List<Record> orderList = Db.find(sql+ condition + " order by seq " +sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
@@ -135,17 +138,18 @@ public class ProductController extends Controller {
 	}
 	
 	public void edit(){
-        String id = getPara("id");
+    	String id = getPara("id");
+   		String sql_cat = "select * from category ";
+    	List<Record> categorys = Db.find(sql_cat);
+    	setAttr("categorys",categorys);
         if(StringUtils.isBlank(id)){
             render(getRequest().getRequestURI()+"/edit.html");
             setAttr("product", new Record());
         }else{
             Record rec = Db.findFirst("select * from wc_product where id = ?",id);
             setAttr("product", rec);
-            
             List<Record> productItem = Db.find("select * from wc_product_pic where order_id = ? order by seq asc ", id);
             setAttr("productItem", productItem);
-            
             render(getRequest().getRequestURI()+"/edit.html");
         }
         

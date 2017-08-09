@@ -76,7 +76,8 @@ $(function(){
         
         <div id="contentwrapper" class="contentwrapper">
 
-            <h3>您提交的资料已成功，我们会尽快审核并通知结果，谢谢。</h3>
+            <h3>您提交的资料已成功，我们会尽快审核并通知结果，谢谢。五秒后跳转至主页,若还没跳转请点击以下链接</h3>
+            	<h2 align="center"><a href="/">点击回主页</a></h2>
 
             
         </div>
@@ -89,7 +90,12 @@ $(function(){
 </form>
 
 </body>
-
+<script>
+	function toIndex(){
+		window.location.href = "/";
+	}
+	setTimeout(toIndex,5000)
+</script>
 
 
 

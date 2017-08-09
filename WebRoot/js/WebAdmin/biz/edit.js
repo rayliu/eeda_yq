@@ -22,7 +22,6 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
                    ]
       });
 	  
-	  var info = '你确定要让这个商家入驻吗？';
 	  //初始化页面js
 	  function init(){
 		 
@@ -31,7 +30,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 	  
 	  $("#delButton").on('click',function(){
 		var self=$(this);
-		 var result = confirm(info);
+		 var result = confirm("你确定要删除这个商家吗");
 		 if(result){
 			 $(this).attr('disabled',true);
 			 var id = $("#user_id").val();

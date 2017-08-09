@@ -15,6 +15,9 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     }, 
 	                     { "data": "C_NAME", "width":"60px",
 	                    	 "render":function (data,type,full,meta){
+	                    		 if(data == null){
+	                    			 data = full.USER_NAME
+	                    		 }
 	                    		 return "<a href='/WebAdmin/biz/reminder/edit?id="+full.UID+"'>"+data+"</a>"
 	                    	 }
 	                     },

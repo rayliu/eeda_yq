@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -18,6 +19,9 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
+
+import controllers.util.MD5Util;
+import freemarker.template.utility.StringUtil;
 
 
 public class RegisterController extends Controller {
@@ -82,29 +86,15 @@ public class RegisterController extends Controller {
 		String jsonStr=getPara("jsonStr");
 		Gson gson=new Gson();
 		Map<String,?> dto = gson.fromJson(jsonStr, HashMap.class);
-		Record user = new Record();
-		Record re=new Record();
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String invitation_code = getStringRandom(6);
+		//user
 		String type=(String)dto.get("type");
 		String user_name = (String) dto.get("user_name");
 		String password = (String) dto.get("password");
+		String sha1Pwd = MD5Util.encode("SHA1", password);
 		String phone = (String) dto.get("phone");
-		user.set("user_name", user_name);
-		user.set("password", password);
-		user.set("phone", phone);
-		user.set("is_stop", 1);
-		user.set("invitation_code", invitation_code);
-		Db.save("user_login", user);
-		if(type.equals("1")){
-			String id_card = (String) dto.get("id_card");
-			re.set("id_card", id_card);
-		}else{
-			String company_pic = (String)dto.get("company_pic");
-			String c_name = (String)dto.get("company_name");
-			re.set("company_pic", company_pic);
-			re.set("c_name", c_name);
-		}
+		//info
 		String telephone = (String) dto.get("telephone");
 		String contact = (String) dto.get("contact");
 		String shop_address = (String) dto.get("shop_address");
@@ -116,22 +106,48 @@ public class RegisterController extends Controller {
 		String trade_type = (String) dto.get("trade_type");
 		String qq = (String) dto.get("qq");
 		String logo = (String) dto.get("logo");
-		String creator = (String) dto.get("creator");
-		re.set("create_time", df.format(new Date()));
-		re.set("contact", contact);
-		re.set("telephone", telephone);
-		re.set("shop_telephone", shop_telephone);
-		re.set("trade_type", trade_type);
-		re.set("province", shop_province);
-		re.set("city", shop_city);
-		re.set("district", shop_district);
-		re.set("address", shop_address);
-		re.set("qq", qq);
-		re.set("user_type", type);
-		re.set("about", about);
-		re.set("logo", logo);
-		re.set("creator", creator);
-		Db.save("wc_company", re);
+		String company_pic = (String)dto.get("company_pic");
+		String c_name = (String)dto.get("company_name");
+		String id_card = (String) dto.get("id_card");
+		
+		//user_login
+		Record order = new Record();
+		order.set("user_name", user_name);
+		order.set("password", sha1Pwd);
+		order.set("phone", phone);
+		order.set("create_time", new Date());
+		order.set("is_stop", 1);
+		order.set("office_id", 1);
+		order.set("invitation_code", invitation_code);
+		Db.save("user_login", order);
+		//wc_company
+		Long creator_id = order.get("id");
+		if(StringUtils.isNotBlank(creator_id.toString())){
+			Record item = new Record();
+			if("1".equals(type)){
+				item.set("id_card", id_card);
+			}else{
+				item.set("company_pic", company_pic);
+				item.set("c_name", c_name);
+			}
+			
+			item.set("create_time", new Date());
+			item.set("contact", contact);
+			item.set("telephone", telephone);
+			item.set("shop_telephone", shop_telephone);
+			item.set("trade_type", trade_type);
+			item.set("province", shop_province);
+			item.set("city", shop_city);
+			item.set("district", shop_district);
+			item.set("address", shop_address);
+			item.set("qq", qq);
+			item.set("user_type", type);
+			item.set("about", about);
+			item.set("logo", logo);
+			item.set("creator", creator_id);
+			Db.save("wc_company", item);
+		}
+		
         render(getRequest().getRequestURI()+"/index.html");
     }
 	

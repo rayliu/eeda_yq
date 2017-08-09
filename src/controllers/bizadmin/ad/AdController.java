@@ -132,7 +132,7 @@ public class AdController extends Controller {
 		Long userId = LoginUserController.getLoginUserId(this);
 		Gson gson=new Gson();
 		Map<String,?> dto = gson.fromJson(jsonStr, HashMap.class);
-		String order_id = (String)dto.get("order_id");
+		String order_id = (String)dto.get("id");
 		String amount = (String)dto.get("amount");
 		String put_in_time = (String)dto.get("put_in_time");
 		String price = (String)dto.get("price");
@@ -146,6 +146,7 @@ public class AdController extends Controller {
 			order.set("price", price);
 			order.set("total_price",total_price);
 			order.set("phone",phone);
+			order.set("update_time",new Date());
 			order.set("remark",remark);
 			Db.update("wc_ad_mobile_promotion", order);
 		}else{

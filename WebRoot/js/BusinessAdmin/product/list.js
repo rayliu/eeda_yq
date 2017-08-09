@@ -1,5 +1,10 @@
 define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
+	  var  cu_leave_days = $("#cu_leave_days").val();
+	  var info=""
+    	  if(cu_leave_days<=0){
+    		  info = "disabled"
+    	  }
       var dataTable = eeda.dt({
           id: 'eeda_table',
           paging: false,
@@ -22,7 +27,14 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
                    return "<a href='/BusinessAdmin/product/edit?id="+full.ID+"'>"+data+"</a>";
               }
             },
-            { "data": "PRICE","width": "60px"},
+            { "data": "PRICE","width": "60px",
+            	"render":function(data,type,full,meta){
+            		if(data=="-1"){
+            			data = "面议"
+            		}
+            		return data;
+            	}
+            },
             { "data": "IS_ACTIVE","width": "150px",
               render:function(data,type,full,meta){
                 if(data && data == 'N'){
@@ -37,11 +49,10 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
                 if(data == 'Y'){
                 	return "<input type='checkbox' class = 'cu'  data-id="+full.ID+" checked>";
                 }else{
-                	return "<input type='checkbox' class = 'cu' data-id="+full.ID+">";
+                	return "<input type='checkbox' class = 'cu' data-id="+full.ID+" "+info+">";
                 }
               }
             },
-            { "data": "SEQ", "width": "60px"},
             { "data": null,
             	"render":function(data,type,full,meta){
 	            	   var str = '<input class="stdbtn btn_red delete" type="button" value="删除" >';
@@ -85,8 +96,7 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
 	 				  	$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR); 
 	    		  }
     		  })
-      })
-      
+      });
       
       $('#eeda_table').on('change',".cu",function(){
     	  var self = $(this);

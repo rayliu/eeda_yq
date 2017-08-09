@@ -40,8 +40,11 @@ public class ReminderController extends Controller {
 
 	public void edit(){
         String id = getPara("id");
-        String sql = "select ul.id uid,ul.user_name,ul.phone ,wc.* from user_login ul "
-        			+ "left join wc_company wc on wc.creator = ul.id  where ul.id = "+id;
+        String sql = "select cat.name trade_type_name,ul.invitation_code,loc.name location,ul.id uid,ul.user_name,ul.phone ,wc.* from user_login ul "
+        			+ "left join wc_company wc on wc.creator = ul.id  "
+        			+ "left join category cat on wc.trade_type = cat.id "
+        			+ "left join location loc on loc.code = wc.city"
+        			+ " where ul.id = "+id;
         Record re=Db.findFirst(sql);
         setAttr("user",re);
         render(getRequest().getRequestURI()+".html");
@@ -61,7 +64,7 @@ public class ReminderController extends Controller {
 	public void pass(){
 		String id = getPara("id");
 		String status = getPara("status");
-		String sql="update user_login set status = '"+status+"' where id = "+id;
+		String sql="update user_login set status = '"+status+"' ,is_stop = 0 where id = "+id;
 		Db.update(sql);
 		renderJson(true);
 	}
@@ -107,9 +110,10 @@ public class ReminderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-    	String sql = "select ca.name trade_type_name,ifnull(loc.name,'暂无') location,ul.id uid,ul.status,if(wc.user_type=2,'企业','个人') user_type_name,wc.* from user_login ul  "
+    	String sql = "select ul.user_name,ca.name trade_type_name,ifnull(loc.name,'暂无') location,ul.id uid,ul.status,if(wc.user_type=2,'企业','个人') user_type_name,wc.* "
+    				+ "from user_login ul  "
     				+ "LEFT JOIN wc_company wc on wc.creator = ul.id "
-    				+" LEFT JOIN category ca on ca.id = ul.id "
+    				+" LEFT JOIN category ca on ca.id = wc.trade_type "
     				+" left join location loc on loc.code = ifnull(wc.city,wc.province)"
     				+" where ul.status != '通过' ";
     	String condition = DbUtils.buildConditions(getParaMap());

@@ -14,7 +14,14 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
                     		 return "<img src='/upload/"+data+"' width='120' height='90'/>"
                     	 }
                      }, 
-                     {"data": "PRICE", "width":"60px"},
+                     {"data": "PRICE", "width":"60px",
+                    	 "render":function(data,full){
+                    		 if(data == "-1"){
+                    			 data = "面议"
+                    		 }
+                    		 return  data;
+                    	 }
+                     },
                      {"data": "IS_ACTIVE", "width":"60px",
                     	"render":function(data,full){
                     		if(data=="Y"){

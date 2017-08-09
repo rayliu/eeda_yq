@@ -101,8 +101,6 @@ public class BizAdminController extends Controller {
         HttpServletRequest request = getRequest();
         String serverName = request.getServerName();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
-       
-        
         
     	if (isAuthenticated()) {//如果已经登录, 跳转到管理平台首页
     		redirect("/BusinessAdmin");
@@ -207,8 +205,10 @@ public class BizAdminController extends Controller {
     }
     
     public void getLoginUser(){
-    	UserLogin ul = LoginUserController.getLoginUser(this);
-    	renderJson(ul);
+    	Long user_id = LoginUserController.getLoginUserId(this);
+    	String sql = "select * from user_login where id = "+user_id;
+    	Record re = Db.findFirst(sql);
+    	renderJson(re);
     }
 
 }

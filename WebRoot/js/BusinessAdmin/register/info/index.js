@@ -41,13 +41,12 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 			var user={};
 			user.type=type;
 			if(type=='1'){
-				user.id_card=$("#img_id_card").val();
+				user.id_card=$("#img_id_card").attr('value');
 			}else if(type=="2"){
-				user.company_pic=$("#img_company_pic_2").val()
+				user.company_pic=$("#img_company_pic_2").attr("value")
 				user.company_name=$(":input[name=company_name]").val()
 				
 			}
-			//user.creator = $("#creator_id").val();
 			user.user_name = $("#user_name").val();
 			user.password = $("#user_pass").val();
 			user.phone = $("#user_phone").val();
@@ -58,7 +57,7 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 			user.shop_telephone = $(":input[name=shop_telephone_"+type+"]").val();
 			user.qq = $(":input[name=qq_"+type+"]").val();
 			user.about = $(":input[name=about_"+type+"]").val();
-			user.logo = $("#img_logo_"+type+"").val();
+			user.logo = $("#img_logo_"+type+"").attr("value");
 			var p_c_d = $("#p_c_d_"+type+"").val();
 			var address = p_c_d.split('-'); 
 			user.shop_province = address[0];
@@ -84,7 +83,7 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 			        done: function (e, data) {
 		        		if(data){
 				    		$.scojs_message('已选择', $.scojs_message.TYPE_OK);
-				    		$("#img_"+id).val(data.result.NAME)
+				    		$("#img_"+id).attr('value',data.result.NAME)
 				    		var imgPre =Id("img_"+id+"");
 				  		    imgPre.src ='/upload/'+data.result.NAME; 
 				    	}else{

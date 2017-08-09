@@ -10,8 +10,8 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data":"UID","width": "80px"},
 	                     { "data": "C_NAME", "width":"60px",
 	                    	 "render":function(data,type,full,meta){
-	                    		 if(data==null){
-	                    			 data='暂无名称';
+	                    		 if(data == null){
+	                    			 data=full.USER_NAME;
 	                    		 }
 	                    		 return "<a href='/WebAdmin/biz/edit?id="+full.UID+"'>"+data+"</a>";
 	                    	 }

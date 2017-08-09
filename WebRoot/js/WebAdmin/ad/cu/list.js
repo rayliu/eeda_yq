@@ -56,7 +56,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             		if(data){
             			if(status == "toUp"){
             				$.scojs_message("开启成功",$.scojs_message.TYPE_OK);
-                			
+            				checkMessage();
             			}
             			if(status == "toDown"){
             				$.scojs_message("已关闭",$.scojs_message.TYPE_OK);

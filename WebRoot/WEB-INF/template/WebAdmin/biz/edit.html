@@ -6,7 +6,7 @@
       <input type="hidden" value="${user.uid!''}" id="user_id"/>
       <p class="bd">
       				<span>商家名称：${user.c_name!''}</span> <span>商家行业：${user.trade_name!''}</span>  
-      				<span>注册类型：<%if(user.user_type!''==2){%>个人<%}else {%>公司<%}%></span>
+      				<span>注册类型：<%if(user.user_type!''=='1'){%>个人<%}else {%>公司<%}%></span>
       				 <span>商家性质：<%if(diamond.whether!''=='Y') {%> 钻石会员 <%}else {%>普通商家<% }%></span>
       				  
       				<input type="button" value="删除商家" id="delButton"  class="red-deletbtn">
@@ -28,11 +28,11 @@
         </tr>
         <tr>
           <td>公司LOGO</td>
-          <td><img src="/upload/${user.logo!''}" style="width:300px;"></td>
+          <td><img src="/upload/${user.logo!''}" style="width:300px;height:200px"></td>
         </tr>
         <tr>
           <td>营业执照/身份证</td>
-          <td><img src="/upload/${user.company_pic!''}"  style="width:300px;"></td>
+          <td><img src="/upload/${user.company_pic!user.ID_CARD!''}"  style="width:300px;height:200px"></td>
         </tr>
         <tr>
           <td>公司简介</td>
@@ -62,7 +62,7 @@
       
       <div class="mt10 bdgray">
       <h4>”促“广告服务</h4>
-      <p class="bd"><span>状态：<%if(diamond.whether!''=='Y') {%>钻石会员<%}else {%>非钻石会员<% }%></span>  <span>促广告服务 剩余${cu.LEAVE_DAYS!'0'}天  至${cu.end_date!''}</span></p>
+      <p class="bd"><span>状态：<%if(diamond.whether!''=='Y') {%>钻石会员<%}else {%>非钻石会员<% }%></span>  <% if(cu.LEAVE_DAYS!'0'=='0'){%><span>暂无开通促广告</span><%} else {%><span>促广告服务 剩余${cu.LEAVE_DAYS!'0'}天  至${cu.end_date!''}</span><%}%></p>
       <div><span>设置结束时间</span> <input type="date" last_date="${cu.end_date!''}"  value="${cu.end_date!''}" id='cu_date'/><input type="button" class="modifibtn" style="width:130px; margin-left:10px;" value="开启/延期服务" id='update_cu'></div>
       </div>
       

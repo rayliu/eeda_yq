@@ -44,12 +44,22 @@
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin input_div">
                             <div style="padding-top:5px;">
-                                <select name="category" id="category">
+                              <!--   <select name="category" id="category">
                                     <option value ="摄楼" <% if(product.category!'摄楼'=='摄楼'){%>selected<%}%>>摄楼</option>
                                     <option value ="婚礼策划 " <% if(product.category!''=='婚礼策划'){%>selected<%}%>>婚礼策划 </option>
                                     <option value="跟拍摄影 " <% if(product.category!''=='跟拍摄影'){%>selected<%}%>>跟拍摄影 </option>
                                     <option value="跟拍摄像" <% if(product.category!''=='跟拍摄像'){%>selected<%}%>>跟拍摄像</option>
-                                </select>
+                                </select> -->
+                                 <select  class=" select_text" id ="category" value ="">
+							            		<%
+							                    	for(category in categorys!){ 
+							                    %>
+							                    	<option value='${category.id!''}' <% if(category.id==product.category){%> selected<%}%> >${category.name!''}</option>
+							                   
+							                    <%
+							                    	}
+							                    %>
+							        </select>
                             </div>    
                         </div>
                     </dd>
@@ -78,8 +88,8 @@
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="chose">
                             <label>
-                                <input type="radio" class="radio" name="price_type" value="人民币" <% if(product.price_type!'人民币'=='人民币'){%>checked<%}%>  />
-                                <input style="width:100px;" type="text" id="price" name="price" value="${product.price!''}" required/>人民币
+                                <input type="radio" class="radio" name="price_type" value="人民币" <% if(product.price_type!'人民币'=='人民币'){ var price = product.price!'';%>checked<%}%>  />
+                                <input style="width:100px;" type="text" id="price" name="price" value="${price!''}" required/>人民币
                             </label>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <label><input type="radio" class="radio" name="price_type" value="面议" <% if(product.price_type!''=='面议'){%>checked<%}%> />面议</label>
