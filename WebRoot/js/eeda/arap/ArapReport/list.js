@@ -145,17 +145,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     //简单查询
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
-	      if(selectField=='order_no'||selectField=='sp_name'||selectField=='fin_name'){
+	      if(selectField=='order_no'||selectField=='fin_name'){
 	    	  $("#public_text").val("");
 	    	  $("#customer_name").hide();
 	    	  $("#single_flag").hide();
 	    	  $("#export_date").hide();
+	    	  $("#sp_id").hide();
 	    	  $("#public_text").show();
+	      }
+	      if(selectField=='sp_id'){
+	    	  $("#public_text").hide();
+	    	  $("#customer_name").hide();
+	    	  $("#export_date").hide();
+	    	  $("#single_flag").hide();
+	    	  $("#sp_id").show();
 	      }
 	      if(selectField=='flag'){
 	    	  $("#public_text").hide();
 	    	  $("#customer_name").hide();
 	    	  $("#export_date").hide();
+	    	  $("#sp_id").hide();
 	    	  $("#single_flag").show();
 	      }
 	      if(selectField=="customer_name"){
@@ -163,12 +172,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#public_text").hide();
 	    	  $("#single_flag").hide();
 	    	  $("#export_date").hide();
+	    	  $("#sp_id").hide();
 	    	  $("#customer_name").show();
 	      }
 	      if(selectField=="order_export_date"){
 	    	  $("#public_text").hide();
 	    	  $("#single_flag").hide();
 	    	  $("#customer_name").hide();
+	    	  $("#sp_id").hide();
 	    	  $("#export_date").show();
 	      }
      });
@@ -176,9 +187,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	$('#singleSearchBtn').click(function(){
 	     var selectField = $('#selected_field').val();
 	     var selectFieldValue = '';
-	     if(selectField=='order_no'||selectField=='sp_name'||selectField=='fin_name'){
+	     if(selectField=='order_no'||selectField=='fin_name'){
 	    	 selectFieldValue = $("#public_text").val();
 	     }
+	     if(selectField=='sp_id'){
+	    	 selectFieldValue = $("#single_sp_id").val();
+	      }
 	     if(selectField=='flag'){
 	    	 selectFieldValue = $("#single_flag").val();
 	      }
@@ -194,5 +208,59 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	     		 +"&order_export_date_end_time="+export_date_end_date;
 	     dataTable.ajax.url(url).load();
 	});
+	
+	var order = {};
+	 //导出excel利润表
+    $("#singleExportTotaledExcel").click(function(){
+    	$(this).attr('disabled', true);
+  	  	var selectField = $('#selected_field').val();
+  	  	var selectFieldValue = '';
+  	  	if(selectField=='order_no'){
+  	  		order.order_no = $("#public_text").val();
+  	  	}
+  	  	if(selectField=='sp_id'){
+	  		order.sp_id = $("#single_sp_id").val();
+	  	}
+  	  	if(selectField=='fin_name'){
+	  		order.fin_item = $("#public_text").val();
+	  	}
+  	  	if(selectField=='flag'){
+  	  		order.flag = $("#single_flag").val();
+  	  	}
+  	  	if(selectField=="customer_name"){
+  	  		order.customer_id = $("#single_customer_name").val();
+  	  	}
+  	  	if(selectField=="order_export_date"){
+  	  		order.order_export_date_begin_time = $("#single_export_date_begin_time").val();
+  	  		order.order_export_date_end_time = $("#single_export_date_end_time").val();
+  	  	}
+  	  	
+        excel_method(order);
+    })
+    
+    //导出excel利润表
+    $('#exportTotaledExcel').click(function(){
+        $(this).attr('disabled', true);
+        order.order_no = $("#order_no").val();
+        order.customer_id = $("#customer").val();
+        order.sp_id = $("#sp").val();
+        order.fin_item = $("#fin_item").val();
+        order.flag = $("#flag").val();
+        order.order_export_date_begin_time = $("#order_export_date_begin_time").val();
+        order.order_export_date_end_time = $("#order_export_date_end_time").val();
+        excel_method(order);
+    });
+    
+    var excel_method = function(order){
+  	  $.post('/arapReport/downloadExcelList',{params:JSON.stringify(order)}, function(data){
+            $('#exportTotaledExcel').prop('disabled', false);
+            $('#singleExportTotaledExcel').prop('disabled', false);
+            $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+            window.open(data);
+        }).fail(function() {
+            $('#exportTotaledExcel').prop('disabled', false);
+            $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+        });
+    }
   });
 });

@@ -270,12 +270,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  $("#eeda_table td:nth-child(10)").css('background-color','#f5f5dc');
       }
       
+    //导出excel利润表
       $("#singlexportTotaledExcel").click(function(){
     	  $(this).attr('disabled', true);
     	  var customer_id = $("#single_customer").val();
           var begin_time = $("#single_order_export_date_begin_time").val();
           var end_time = $("#single_order_export_date_end_time").val();
-          excel_math(customer_id,begin_time,end_time);
+          excel_method(customer_id,begin_time,end_time);
       })
       
       //导出excel利润表
@@ -284,10 +285,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var customer_id = $("#customer").val();
           var begin_time = $("#order_export_date_begin_time").val();
           var end_time = $("#order_export_date_end_time").val();
-          excel_math(customer_id,begin_time,end_time);
+          excel_method(customer_id,begin_time,end_time);
       });
       
-      var excel_math = function(customer_id,begin_time,end_time){
+      var excel_method = function(customer_id,begin_time,end_time){
     	  $.post('/profit/downloadExcelList',{customer_id:customer_id,begin_time:begin_time,end_time:end_time}, function(data){
               $('#exportTotaledExcel').prop('disabled', false);
               $('#singlexportTotaledExcel').prop('disabled', false);
