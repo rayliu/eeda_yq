@@ -79,8 +79,7 @@ FROM
 			FROM
 				wmsproduct pro
 			WHERE
-				pro.amount > 0
-			AND pro.office_id = 1
+				 pro.office_id = 1
 			AND pro.item_no = $P{itemNo}
 	) A
 GROUP BY

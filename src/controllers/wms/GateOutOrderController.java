@@ -309,8 +309,7 @@ public class GateOutOrderController extends Controller {
     				+ "			FROM "
     				+ "				wmsproduct pro "
     				+ "			WHERE "
-    				+ "				pro.amount > 0 "
-    				+ "		and pro.office_id="+office_id
+    				+ "				 pro.office_id="+office_id
     				+ condition
     				+ "	) A "
     				+ " GROUP BY "

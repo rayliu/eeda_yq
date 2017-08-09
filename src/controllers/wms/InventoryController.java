@@ -203,7 +203,7 @@ public class InventoryController extends Controller {
 			+ condition 
 			+ " union"
 			+ " select pro.item_no from wmsproduct pro"
-			+ " where amount>0 and pro.office_id="+office_id
+			+ " where pro.office_id="+office_id
 			+ proCondition 
 			+ " ) A group by  A.item_no) B";
     	
@@ -216,7 +216,7 @@ public class InventoryController extends Controller {
 			+ condition 
 			+ " union"
 			+ " select pro.item_no,pro.item_name,'N' flag from wmsproduct pro"
-			+ " where amount>0 and pro.office_id="+office_id
+			+ " where pro.office_id="+office_id
 			+ proCondition 
 			+ " ) A "
 			+ " group by A.item_no";
@@ -287,7 +287,7 @@ public class InventoryController extends Controller {
 			+ " group by gi.id "
 			+ " union"
 			+ " select pro.id,pro.part_no from wmsproduct pro"
-			+ " where amount>0 and pro.office_id="+office_id
+			+ " where pro.office_id="+office_id
 			+ proCondition 
 			+ " ) A group by A.part_no) B";
         
@@ -305,7 +305,7 @@ public class InventoryController extends Controller {
 			+ " select pro.id,0 quantity,pro.part_no,pro.item_name,pro.item_no,pro.part_name,"
 			+ " (select GROUP_CONCAT(item_no SEPARATOR ' , ') from wmsproduct where part_no = pro.part_no) usefor"
 			+ " from wmsproduct pro"
-			+ " where amount>0 and pro.office_id="+office_id
+			+ " where pro.office_id="+office_id
 			+ proCondition 
 			+ " ) A group by A.part_no order by A.part_no";
     	
