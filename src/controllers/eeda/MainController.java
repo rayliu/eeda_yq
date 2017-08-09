@@ -35,6 +35,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.weixin.sdk.kit.IpKit;
 
 import controllers.profile.LoginUserController;
 import controllers.util.EedaCommonHandler;
@@ -201,12 +202,14 @@ public class MainController extends Controller {
             	render("/eeda/login.html");
             }else if(user.get("c_name") != null && !"".equals(user.get("c_name"))){
             	setAttr("userId", user.get("c_name"));
-            	/*setAttr("login_time",user.get("last_login"));*/
+            	
+            	setLoginLog(user);
+
             	redirect("/");
             	//render("/eeda/index.html");
             }else{
             	setAttr("userId",currentUser.getPrincipal());
-            	/*setAttr("login_time",user.get("last_login"));*/
+            	setLoginLog(user);
             	redirect("/");
             	//render("/eeda/index.html");
             };
@@ -217,6 +220,17 @@ public class MainController extends Controller {
             logger.debug(errMsg);
             render("/eeda/login.html");
         }
+    }
+    
+    private void setLoginLog(UserLogin user) {
+        Record rec = new Record();
+        rec.set("log_type", "登录");
+        rec.set("create_stamp", new Date());
+        rec.set("user_id", user.get("id"));
+        rec.set("ip", IpKit.getRealIp(getRequest()));
+        rec.set("office_id", user.getLong("office_id"));
+        
+        Db.save("sys_log", rec);
     }
 
 	private void setSysTitle() {
