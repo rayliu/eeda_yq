@@ -22,6 +22,7 @@ import com.jfinal.plugin.activerecord.Record;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.PoiUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -226,5 +227,58 @@ public class profitController extends Controller {
 		re.set("total", total);
 		renderJson(re);
 	}
+	
+	//导出excel对账单
+		public void downloadExcelList(){
+			UserLogin user = LoginUserController.getLoginUser(this);
+		    long office_id=user.getLong("office_id");
+			String customer_id = getPara("customer_id");
+			String order_export_date_begin_time = getPara("begin_time");
+			String order_export_date_end_time = getPara("end_time");
+			String customerId = "";
+			if(customer_id == ""||customer_id.equals("")){
+				customerId = "";
+			}else{
+				customerId = " and customer_id = "+customer_id;
+			}
+			
+			String order_export_date = "";
+			String exportName = "";
+			if(StringUtils.isNotBlank(order_export_date_begin_time)||StringUtils.isNotBlank(order_export_date_end_time)){
+				order_export_date = "  and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"' )";
+				exportName = order_export_date_begin_time+"~"+order_export_date_end_time;
+			}
+		    String condition = customerId+order_export_date;
+			
+			String sqlExport = " SELECT A.id,A.customer_id,A.abbr,A.user_name,A.royalty_rate,A.user_id,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
+	        		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb,(SUM(charge_rmb)-sum(cost_rmb)) profit,FORMAT((((SUM(charge_rmb)-sum(cost_rmb))/(sum(cost_rmb)))*100),2) profit_rate FROM ("
+	        		+" SELECT jo.id,jo.customer_id,jo.order_export_date,p.abbr,ul.c_name user_name,ul.id user_id,cs.royalty_rate,"
+	        		+" IF(joa.order_type='charge' and joa.exchange_currency_id = 3,exchange_total_amount,0) charge_cny,"
+	        		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 6,exchange_total_amount,0) charge_usd,"
+	        		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 8,exchange_total_amount,0) charge_jpy,"
+		    		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 9,exchange_total_amount,0) charge_hkd,"
+		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 3,exchange_total_amount,0) cost_cny,"
+		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 6,exchange_total_amount,0) cost_usd,"
+		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 8,exchange_total_amount,0) cost_jpy,"
+		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 9,exchange_total_amount,0) cost_hkd,"
+		    		+"	if(joa.order_type='charge',currency_total_amount,0) charge_rmb,"
+		    		+"	if(joa.order_type='cost',currency_total_amount,0) cost_rmb"
+	        		+"  from job_order jo "
+	        		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+	        		+"  LEFT JOIN party p on p.id = jo.customer_id"
+	        		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
+	        		+ " LEFT JOIN user_login ul on ul.id = cs.salesman_id"
+	        		+"  WHERE p.office_id ="+office_id+" "
+	        		+ " and jo.delete_flag = 'N'"
+	    			+" ) A where 1=1 "+condition+" GROUP BY A.customer_id  ORDER BY abbr";
+			
+			String total_name_header = "客户,业务员,应收折合(CNY),应付折合(CNY),利润(CNY),利润率(%),业务员提成";
+			String[] headers = total_name_header.split(",");
+			
+			
+			String[] fields = {"ABBR", "EMPLOYEE_NAME", "CHARGE_RMB", "COST_RMB", "PROFIT", "PROFIT_RATE", ""};
+			String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,exportName);
+			renderText(fileName);
+		} 
 	
 }

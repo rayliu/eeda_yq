@@ -35,7 +35,10 @@
  					</div>
 					<div class="three_tab"><!--  三列排版  -->
 						<div class="search_single">
-							<button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
+							<nobr>
+								<button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
+								<button id="singlexportTotaledExcel" type="button" class="btn  btn_white">导出excel对账单</button>
+							</nobr>
 						</div>
 					</div>
 					<div class="three_tab"><!--  三列排版  -->
@@ -85,6 +88,7 @@
 						</form><br>
 						<div class="form-group button-bar" >
                         	<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                        	<button id="exportTotaledExcel" type="button" class="btn  btn_white">导出excel对账单</button>
                         	<button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
 						</div><br>
 					</div>
@@ -122,7 +126,6 @@
                                         {
                                             id:'eeda_table', 
                                             fixedheader:true,
-                                            style: 'width:940px',
                                             headers:['客户','业务员','应收折合(CNY)','应付折合(CNY)','利润(CNY)','利润率(%)','业务员提成'
                                             ]
                                         }){} %>
