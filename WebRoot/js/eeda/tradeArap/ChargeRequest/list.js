@@ -492,7 +492,7 @@ $(document).ready(function() {
 		var sp_id = $("#single_sp_id").val();
 		var service_stamp = $("#service_stamp_n").val();
 		var status = $("#status").val();
-	    var url = "/chargeRequest/tradeChargeRequest?sp_id="+sp_id
+	    var url = "/tradeChargeRequest/applicationList?sp_id="+sp_id
 	     		 +"&service_stamp_between="+service_stamp
 	     		 +"&status="+encodeURI(status);
 	     application_table.ajax.url(url).load();

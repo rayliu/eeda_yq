@@ -17,7 +17,7 @@ var checkIds=[];
                     	if($.inArray(full.ID.toString(),itemOrder.checkIds)!='-1'){
                     		checkedVal = "checked"
                     	}
-                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" '+checkedVal+' style="width:30px">';
+                        str = '<input id="checkbox_'+full.ID+'" type="checkbox" '+checkedVal+' style="width:30px" class="step2_checkbox">';
                         return str;
                     }
                 },
@@ -214,6 +214,13 @@ var checkIds=[];
             }
     	}
         
+        $("#select_item_table").on("change",".step2_checkbox",function(){
+        	var self = $(this);
+        	if(self.attr('checked')){
+        		$('#createSave').attr('disabled',false);
+        	}
+        })
+
 
         var refleshSelectTable = function(order_ids, ids){
             //ids为选中的item id

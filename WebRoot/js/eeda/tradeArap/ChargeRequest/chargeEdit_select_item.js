@@ -27,7 +27,12 @@ var itemIds=[];
                           return str;
                       }
                 },
-                { "data": "ORDER_NO"},
+                { "data": "ORDER_NO",
+                	"render":function(data,type,full,meta){
+                			data = "<a href = '/trJobOrder/edit?id="+full.JOBID+"'>"+data+"</a>"
+                			return data;
+                	}
+                },
                 { "data": "TYPE"},
                 { "data": "CREATE_STAMP", visible: false},
                 { "data": "CUSTOMER_NAME"},

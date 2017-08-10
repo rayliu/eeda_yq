@@ -326,7 +326,7 @@
   		    selectContr.refleshSelectTable(idsArray);
   		    return;
       	}
-      	 $('#createSave').attr('disabled',false);
+      	 //$('#createSave').attr('disabled',false);
       	 $('#sp_id_input').val(sp_name);
       	 $('#sp_id').val(sp_id);
   		 $('#ids').val(idsArray);
