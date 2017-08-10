@@ -172,7 +172,7 @@
                        <div class="col-lg-4">
                                  <%include("/eeda/component/form/inputSelectArea.html", 
 				                                {   id:'receive_sent_consignee1', 
-				                                    label:'申请单企业',
+				                                    label:'申请企业',
 				                                    inline: false,
 				                                    display:false,
 				                                    display_value:order.receive_sent_consignee_input!'',
@@ -504,6 +504,8 @@
 <%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
+
+<%include("/cms/customPlanOrder/guide.html",{}){} %>
 
    <%
 	var hide_charge_col = shiro.hasPermission("customPlanOrder.fin_item_hide");

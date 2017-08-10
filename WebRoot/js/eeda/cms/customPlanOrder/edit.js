@@ -1,7 +1,9 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'pageguide',
         'datetimepicker_CN', './edit_doc_table', './edit_cost_table', './edit_charge_table', './edit_shipping_item_table'], function ($, metisMenu) { 
     $(document).ready(function() {
-
+        tl.pg.init({
+            pg_caption: '本页教程'
+        });
 
         var Tracking_no=$('#copyTracking_no').val();
         if(Tracking_no.length>0)
