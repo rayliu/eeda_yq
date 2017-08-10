@@ -14,6 +14,7 @@
 </ul>
 </div>
 <input id="${id}" style="display: none;" name="${id}" value="${value!''}"/>
+<input id="${id}_ref_office_id" style="display: none;" name="${id}_ref_office_id" value="${value_ref_office_id!''}"/>
 <script>
 
 $(document).ready(function() {
@@ -21,6 +22,7 @@ $(document).ready(function() {
 	var spList =$("#${id}_list");
 	var inputField = $('#${id}_input');
 	var hiddenField = $('#${id}');
+	var hiddenField_ref_office_id = $('#${id}_ref_office_id');
 	
 	//处理中文输入法, 没完成前不触发查询
 	
@@ -64,7 +66,7 @@ $(document).ready(function() {
 				spList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
 			}
 	        for(var i = 0; i < data.length; i++)
-	        	spList.append("<li><a tabindex='-1'  class='fromLocationItem' chargeType='"+data[i].CHARGE_TYPE+"' partyId='"+data[i].ID+"' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' spid='"+data[i].ID+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].NAME+"</a></li>");
+	        	spList.append("<li><a tabindex='-1'  class='fromLocationItem' chargeType='"+data[i].CHARGE_TYPE+"' ref_office_id = '"+data[i].REF_OFFICE_ID+"' partyId='"+data[i].ID+"' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' spid='"+data[i].ID+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].NAME+"</a></li>");
 	        spList.css({ 
 		    	left:$(me).position().left+"px", 
 		    	top:$(me).position().top+28+"px" 
@@ -75,15 +77,18 @@ $(document).ready(function() {
 			//当查询结果只有一个时，自动赋值到hiddenField
 			if(data.length==0){
 				hiddenField.val('');
+				hiddenField_ref_office_id.val('');
 			}
             if(data.length==1&&data[0].ID){
             	 hiddenField.val(data[0].ID);
+            	 hiddenField_ref_office_id.val(data[0].REF_OFFICE_ID);
             }
                
             	
             if(!inputStr){
             	if(data.length>1){
             		hiddenField.val('');
+            		hiddenField_ref_office_id.val('');
             	}     
             }
 		},'json');
@@ -95,6 +100,7 @@ $(document).ready(function() {
 		
 		if (inputField.val().trim().length ==0) {
 			hiddenField.val('');
+			hiddenField_ref_office_id.val('');
 		};	
 		
 		if(!list){
@@ -119,6 +125,7 @@ $(document).ready(function() {
 		//console.log($('#spList').is(":focus"));
 		inputField.val($(this).text());
 		hiddenField.val($(this).attr('partyId'));
+		hiddenField_ref_office_id.val($(this).attr('ref_office_id'));
 		spList.hide();
     });
 });
