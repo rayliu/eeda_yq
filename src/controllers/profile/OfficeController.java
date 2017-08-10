@@ -317,4 +317,26 @@ public class OfficeController extends Controller {
     	renderJson(re);
     }
     
+    public void searchEntrustAgent(){
+    	//获取office_id
+   		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+   		
+    	String officeName = getPara("officeName");
+    	String conditions = "";
+    	String sql = "SELECT o.* FROM entrust_agent eagent "
+    			+ " LEFT JOIN office o on o.id = eagent.to_office_id"
+    			+ " WHERE eagent.order_type = 'bookingOrder' and eagent.office_id ="+office_id;
+    	if(org.apache.commons.lang.StringUtils.isNotBlank("officeName")){
+    		conditions += " and office_name like '%"+officeName+"%'";
+    	}
+
+    	List<Record> re = Db.find(sql+conditions);
+    	
+    	renderJson(re);
+    }
+    
+    
+    
+    
 }

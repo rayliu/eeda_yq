@@ -582,11 +582,11 @@ public class ServiceProviderController extends Controller {
 		
 		List<Record> spList = Collections.EMPTY_LIST;
 		if(StrKit.isBlank(input)){//从历史记录查找
-            String sql = "select h.ref_id, p.id, p.abbr name from user_query_history h, party p "
+            String sql = "select h.ref_id, p.id, p.abbr name,p.ref_office_id from user_query_history h, party p "
                     + "where h.ref_id=p.id and h.type='ARAP_COM' and h.user_id=?";
             spList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
             if(spList.size()==0){
-                spList = Db.find(" select p.id,p.abbr name from party p, office o where o.id = p.office_id "
+                spList = Db.find(" select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "
                         + " and (p.company_name like '%"
                         + input
                         + "%' or p.abbr like '%"
@@ -600,7 +600,7 @@ public class ServiceProviderController extends Controller {
         }else{
             if (input !=null && input.trim().length() > 0) {
                 spList = Db
-                        .find(" select p.id,p.abbr name from party p, office o where o.id = p.office_id "
+                        .find(" select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "
                                 + " and (p.company_name like '%"
                                 + input
                                 + "%' or p.abbr like '%"
@@ -611,7 +611,7 @@ public class ServiceProviderController extends Controller {
                                 + " order by convert(p.abbr using gb2312) asc limit 25",parentID,parentID);
             } else {
                 spList = Db
-                        .find("select p.id,p.abbr name from party p, office o where o.id = p.office_id "
+                        .find("select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "
                                 + " and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?) "
                                 + " order by convert(p.abbr using gb2312) asc limit 25", parentID, parentID);
             }
