@@ -1173,7 +1173,7 @@ public class TrJobOrderController extends Controller {
 	        		  +" LEFT JOIN user_login ul on ul.id = jocd.uploader "
 	        		  +" LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id "	        		  
 	        		  +" where jocd.order_id ="+orderId
-	        		  + " and jocd.order_type = '"+office.get("type")+"'  and jocd.share_flag = 'Y' and cpo.delete_flag='N' "
+	        		  + " and jocd.order_type = '"+office.get("type")+"'  AND ifnull(cpo.delete_flag, 'N') = 'N' "
 	        		  +" union all "
 	        		  +" select cpo.ref_job_order_id, null id ,jod.doc_name,jod.upload_time, jod.remark,u.c_name, "
 	        		  +" jod.uploader,null share_flag, jod.cms_share_flag,null ,jod.new_flag cms_new_flag "
@@ -1181,7 +1181,7 @@ public class TrJobOrderController extends Controller {
 	        		  +" left join custom_plan_order cpo on cpo.id = jod.order_id "
 	        		  +" LEFT JOIN user_login u1 ON cpo.creator = u1.id"
 	        		  +" left join user_login u on jod.uploader=u.id  "
-	        		  +" where cpo.ref_job_order_id="+orderId+" and (u.office_id = "+office.getLong("id")+" or u1.office_id = "+office.getLong("id")+") and jod.cms_share_flag = 'Y' and cpo.delete_flag='N' ";
+	        		  +" where cpo.ref_job_order_id="+orderId+" and (u.office_id = "+office.getLong("id")+" or u1.office_id = "+office.getLong("id")+") and jod.cms_share_flag = 'Y' AND ifnull(cpo.delete_flag, 'N') = 'N' ";
 	    	itemList = Db.find(itemSql);
 	    }else if("custom_app".equals(type)){
 	    	itemSql = "SELECT"
