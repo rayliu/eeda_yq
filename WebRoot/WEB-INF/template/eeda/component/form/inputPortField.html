@@ -48,7 +48,7 @@ $(document).ready(function() {
         	return ;
         }else{
     	
-		$.get('/location/searchPort', {input:inputStr,para:'port'}, function(data){
+		$.get('/location/searchPort', {input:inputStr,para:"${port_type!'port'}"}, function(data){
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
 			}

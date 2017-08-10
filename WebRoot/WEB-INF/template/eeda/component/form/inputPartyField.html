@@ -30,7 +30,7 @@ $(document).ready(function() {
 
     	return ;
     }else{
-		$.get('/customer/searchParty', {partyName:inputStr, type: '${type}'}, function(data){
+		$.get('/customer/searchParty', {partyName:inputStr, type: '${type!''}'}, function(data){
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
 			}
@@ -65,7 +65,7 @@ $(document).ready(function() {
                 hiddenField.val('');
             if(data.length==1&&data[0].ID){
             	hiddenField.val(data[0].ID);
-            	$('#${id}_input').val(data[0].ABBR);
+//             	$('#${id}_input').val(data[0].ABBR);
             }
                 
             if(!inputStr){
