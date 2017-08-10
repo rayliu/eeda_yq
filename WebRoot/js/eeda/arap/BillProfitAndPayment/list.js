@@ -74,10 +74,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
 	      if(selectField=='customer_name'){
+	    	  $("#single_export_date_begin_time").val("");
+	    	  $("#single_export_date_end_time").val("");
 	    	  $("#export_date").hide();
 	    	  $("#customer_name").show();
 	      }
 	      if(selectField=='order_export_date'){
+	    	  $("#single_customer_name").val("");
+	    	  $("#single_customer_name_input").val("");
 	    	  $("#customer_name").hide();
 	    	  $("#export_date").show();
 	      }
@@ -127,5 +131,39 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           
           
       };
+      
+    //导出excel利润表
+      $("#singleExportTotaledExcel").click(function(){
+    	  $(this).attr('disabled', true);
+    	  var customer_id = $("#single_customer_name").val();
+          var begin_time = $("#single_export_date_begin_time").val();
+          var end_time = $("#single_export_date_end_time").val();
+          excel_method(customer_id,begin_time,end_time);
+      })
+      
+      //导出excel利润表
+      $('#exportTotaledExcel').click(function(){
+          $(this).attr('disabled', true);
+          var customer_id = $("#customer").val();
+          var begin_time = $("#order_export_date_begin_time").val();
+          var end_time = $("#order_export_date_end_time").val();
+          var checked = '';
+    	  if($('#checkboxNegative').prop('checked')==true){
+    		  checked = 'Y';
+    		  }
+          excel_method(customer_id,begin_time,end_time,checked);
+      });
+      
+      var excel_method = function(customer_id,begin_time,end_time,checked){
+    	  $.post('/billProfitAndPayment/downloadExcelList',{customer_id:customer_id,begin_time:begin_time,end_time:end_time,checked:checked}, function(data){
+              $('#exportTotaledExcel').prop('disabled', false);
+              $('#singleExportTotaledExcel').prop('disabled', false);
+              $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+              window.open(data);
+          }).fail(function() {
+              $('#exportTotaledExcel').prop('disabled', false);
+              $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+          });
+      }
   });
 });
