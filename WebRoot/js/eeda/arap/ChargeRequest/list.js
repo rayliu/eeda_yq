@@ -1,6 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'jq_blockui','dtColReorder', 'datetimepicker_CN'], function ($, metisMenu) {
 $(document).ready(function() {
 	
+//	var chargeRequestConfirm =  shiro.hasPermission("chargeRequest.confirmRequest");
+//	var chargeRequestChecked =  shiro.hasPermission("chargeRequest.checkedRequest");
+	
 	var flash = function(){    
         $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
      };
@@ -728,7 +731,10 @@ $(document).ready(function() {
                     $(row).css("background-color","#FFFFDF");
                     row.find('[type=checkbox]').prop('checked',false);
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
-                    row.remove();
+                    if(!chargeRequestChecked){
+                    	row.remove();
+                    }
+                    
                     $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
                     totalMoney();
                     $.unblockUI();
@@ -824,8 +830,9 @@ $(document).ready(function() {
                                  $(btn0).next().attr('disabled',false);
                                  $(btn0).parent().parent().parent().find('.status').html("已复核");
                                  $(rows[i]).css("background-color","#FFFFDF"); 
-                                 
-                                 $(rows[i]).remove();
+                                 if(!chargeRequestChecked){
+                                	 $(rows[i]).remove(); 
+                                 }
                                  $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
                             }
                         }
@@ -905,6 +912,7 @@ $(document).ready(function() {
                                                 }
                                             $(rows[i]).remove();
                                             $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+                                            $('#pay_remark').val('');
                                         }
                                     }
                                 }

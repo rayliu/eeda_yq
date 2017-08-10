@@ -720,7 +720,9 @@ $(document).ready(function() {
                     row.find('[type=checkbox]').prop('checked',false);
                     $(row).css("background-color","#FFFFDF");
                     $.scojs_message('复核成功', $.scojs_message.TYPE_OK);
-                    row.remove();
+                    if(!costRequestChecked){
+                    	row.remove();
+                    }
                     $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
                     totalMoney();
                     $.unblockUI();
@@ -824,8 +826,10 @@ $(document).ready(function() {
                                  $(btn0).next().attr('disabled',false);
                                  $(btn0).parent().parent().parent().find('.status').html("已复核");
                                  $(rows[i]).css("background-color","#FFFFDF"); 
+                                 if(!costRequestChecked){
+                                	 $(rows[i]).remove();
+                                 }
                                  
-                                 $(rows[i]).remove();
                                  $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
                             }
                         }
@@ -903,6 +907,7 @@ $(document).ready(function() {
                                                 }
                                             $(rows[i]).remove();
                                             $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+                                            $('#pay_remark').val('');
                                         }
                                     }
                                   }
