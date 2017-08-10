@@ -5,6 +5,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 
         var dataTable = eeda.dt({
             id: 'eeda_table',
+            autoWidth: false,
+            
+            initComplete: function (settings) {
+              eeda.dt_float_header('eeda_table');
+            },
             colReorder: true,
             // paging: true,
             serverSide: true, //不打开会出现排序不对 

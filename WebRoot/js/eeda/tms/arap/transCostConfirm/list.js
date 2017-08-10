@@ -3,6 +3,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   	
       var dataTable = eeda.dt({
           id: 'eeda_table',
+          autoWidth: false,
+          initComplete: function (settings) {
+            eeda.dt_float_header('eeda_table');
+          },
           serverSide: false, //不打开会出现排序不对 
           ajax: "/transCostConfirm/list?audit_flag_notequals="+$("#audit_flag").val(),
           columns: [
@@ -19,7 +23,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     return "<a href='/transJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
                 }
 			},
-           { "data": "CABINET_DATE", "width": "60px"},			
+           { "data": "CABINET_DATE", "width": "70px"},			
             { "data": "CREATE_STAMP", "width": "80px"},
             { "data": "CONTAINER_NO", "width": "80px"},
             { "data": "SO_NO", "width": "100px"},
