@@ -20,6 +20,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	     }
       var dataTable = eeda.dt({
           id: 'eeda_table',
+          autoWidth: false,
+          initComplete: function (settings) {
+            eeda.dt_float_header('eeda_table');
+          },
             colReorder: true,
           serverSide: true, //不打开会出现排序不对
           ajax:{
@@ -57,10 +61,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
              	    return '';
              	  }
              	},
-	            { "data": "CUSTOMER_NAME", "width": "100px"},
-	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
+	            { "data": "CUSTOMER_NAME", "width": "80px"},
+	            { "data": "SP_NAME", "width": "80px","class":"SP_NAME"},
 	            { "data": "CAR_NO", "width": "100px","class":"CAR_NO"},
-            	{ "data": "FEE_NAME", "width": "180px"},
+            	{ "data": "FEE_NAME", "width": "80px"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
@@ -71,7 +75,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            },
 	            { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
 	            { "data": "EXCHANGE_RATE", "width": "60px" },
-	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
+	            { "data": "AFTER_TOTAL", "width": "80px" ,'class':'AFTER_TOTAL',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='charge'){
 		            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
@@ -125,8 +129,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
           var sp_input = $("#sp_input").val().trim(); 
           var car_no_input = $("#car_no_input").val().trim();
-          if(!sp_input&&!car_no_input){
-              $.scojs_message('请选择结算公司或这结算车牌', $.scojs_message.TYPE_ERROR);
+          if(!car_no_input){
+              $.scojs_message('请选择结算车牌', $.scojs_message.TYPE_ERROR);
               return;
           }
           var type = $("#type").val(); 

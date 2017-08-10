@@ -22,8 +22,7 @@
                                                     {
                                                         id:'sp', 
                                                         label:'结算公司', 
-                                                        value: '',
-                                                        required: 'required'
+                                                        value: ''
                                                     }){} %>
                                             </div>
                                             <div class="col-lg-4">
@@ -47,6 +46,7 @@
                                                     {
                                                         id:'car_no', 
                                                         label:'结算车牌', 
+                                                        required: 'required',
                                                         value: ''
                                                     }){} %>
                                             </div>
@@ -133,18 +133,20 @@
                                     </div>
                                     
 		                            
-                                    <div class="row simple_list_div">
-                                     <span style="color:#AAAAAA">* 注：请输入查询条件获取已确认的费用明细数据，其中结算公司为必填</span>
-                                     <br/><br/>
-                                     <%include("/eeda/component/form/detailTable.html", 
-                                        {
-                                            id:'eeda_table', 
-                                            style: 'width:1700px',
-                                            headers:['<input type="checkbox" id="allCheck">','工作单号','创建时间','柜号','so号','提柜时间',
-                                                '客户','结算公司','结算车牌','费用名称',
-                                            '对账金额','对账币制','对人民币汇率','总金额（CNY）','备注'
-                                            ]
-                                        }){} %>
+                                    <div class="tab-content">
+             							<div class="tab-pane fade active in" id="unchecked">
+	                                    	<span style="color:#AAAAAA">* 注：请输入查询条件获取已确认的费用明细数据，其中结算公司为必填</span>
+	                                    	<br/><br/>
+		                                    <%include("/eeda/component/form/detailTable.html", 
+		                                        {
+		                                            id:'eeda_table', 
+		                                            style: 'width:1600px',
+		                                            headers:['<input type="checkbox" id="allCheck">','工作单号','创建时间','柜号','so号','提柜时间',
+		                                                '客户','结算公司','结算车牌','费用名称',
+		                                            '对账金额','对账币制','对人民币汇率','总金额（CNY）','备注'
+		                                            ]
+		                                        }){} %>
+	                                	</div>       
                                 	</div>
                             </div>
                             

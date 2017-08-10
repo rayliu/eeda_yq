@@ -17,6 +17,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         var exchange_jpy_totalAmount = 0.0;
         var dataTable = eeda.dt({
             id: 'uncheckedEeda-table',
+            autoWidth: false,
+            initComplete: function (settings) {
+              eeda.dt_float_header('uncheckedEeda-table');
+            },
             serverSide: true, //不打开会出现排序不对 
             drawCallback: function( settings ) {
           	    flash();
