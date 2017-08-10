@@ -2,28 +2,70 @@
 <div id="page-wrapper">
 	<div class="row simple_search_div">
     	<div class="panel panel-default">
-	    	<div class="panel-heading">
-	        	<h4 class="panel-title">
-	            	<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
-	                	<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件 
-	                </a>
-                </h4>
-	        </div>
-	    	<div id="collapseChargeInfo" class="panel-collapse collapse " aria-expanded="false" style="height: auto;">
-	        	<div class="panel-body" id="ChargeDiv">
-        			<div class="col-lg-12">
-						<form id="applicationForm" role="form" >
+        	<div class="panel-heading">
+            	<div class="row"><!--  第1行  -->
+            		<div class="search_single">
+	                	<div class="col-lg-3"><!--  三列排版  -->
+	                            	<div class="form-group"  id="sp_id_show">
+	                                            <%include("/eeda/component/form/inputSpField.html", 
+	                                                                {   id: 'single_sp_id', 
+	                                                                	label:'结算公司',
+	                                                                    value: ''
+	                                                                }){}%>
+			                   	 	</div>
+						</div>
+						<div class="col-lg-3"><!--  三列排版  -->
+							<div class="form-group">      
+		                     	<%include("/eeda/component/form/dateInputField.html",
+		                     		{	id:'service_stamp_n',
+		                     			label:'业务发生月',
+		                     			value:''
+		                     		}){} %>
+							</div>
+	                	</div>
+	                	
+						<div class="col-lg-3"><!--  三列排版  -->
+								<div class="form-group">
+										<label class="search-label">状态</label>
+										<select id="status" class="form-control search-control status">
+												<option value="新建">新建</option>
+												<option value="已复核">已复核</option>
+												<option value="复核不通过">复核不通过</option>
+												<option value="已收款">已收款</option>
+	                      						<option value="该笔为坏账">该笔为坏账</option>
+												<option value=""></option>
+										</select>
+								</div>
+	                	</div>
+	                	<div>
+	                    		<button id="singleSearchBtn" class="btn btn_grey" type="button" style="float:left;">查询</button>
+	                    </div>
+                    </div>
+	                <div id="" style="margin-right:15px;"><!--  三列排版  -->
+	                	<h4 class="panel-title pull-right" style="padding-top: 5px;">
+	                    	<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
+	                    		<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
+	                    	</a>
+	                    </h4>
+	                </div>
+				</div>
+			</div>
+		
+			<div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+				<div class="panel-body" id="ChargeDiv">
+            		<div class="col-lg-12">
+                		<form id="applicationForm" role="form">
 							<input id='back' name='back' type="hidden" value="${back!''}">
-                			<input id="confirmVal" type="hidden">
+	                		<input id="confirmVal" type="hidden">
 							<div class="row search_panel">
 								<div class="col-lg-4">
 									<input id="rowIndex" type="text" hidden>
-									<input id="table_id" type="text" hidden>
+	                                <input id="table_id" type="text" hidden>
 									<div class="form-group">
 										<%include("/eeda/component/form/inputSpField.html", { id:'sp_id', label:'结算公司',  value: '' }){} %>
 		                            </div>     
 	                                <div class="form-group">      
-	                                  	<%include("/eeda/component/form/inputField.html", {id:'orderNo', label:'业务单据号'}){} %>
+	                                    <%include("/eeda/component/form/inputField.html", {id:'orderNo', label:'业务单据号'}){} %>
 									</div>
 									<div class="form-group">
 										<label class="search-label">申请单号</label>
@@ -32,20 +74,19 @@
 									<div class="form-group">
 										<label class="search-label">状态</label>
 										<select id="status2" class="form-control search-control status2">
-											<option value="新建">新建</option>
-											<option value="已复核">已复核</option>
-											<option value="复核不通过">复核不通过</option>
-											<option value="已付款">已付款</option>
-	                     					<option value="该笔为坏账">该笔为坏账</option>
-											<option value=""></option>
-											</select>
+												<option value="新建">新建</option>
+												<option value="已复核">已复核</option>
+												<option value="复核不通过">复核不通过</option>
+												<option value="已收款">已收款</option>
+	                      						<option value="该笔为坏账">该笔为坏账</option>
+												<option value=""></option>
+										</select>
 									</div>
 								</div>
-								<!-- end of col-lg-6-->
 								<div class="col-lg-4">
-									<div class="form-group">      
-	                                   	<%include("/eeda/component/form/inputField.html", {id:'sp_code', label:'结算公司代码'}){} %>
-									</div>
+		                			<div class="form-group">      
+		                            	<%include("/eeda/component/form/inputField.html", {id:'sp_code', label:'结算公司代码'}){} %>
+		                  			</div>
 									<div class="form-group">
 										<label class="search-label">项目</label>
 										<select id="fee_type" class="form-control search-control ">
@@ -54,34 +95,31 @@
 											<option value="customFee">代理报关服务费</option>
 											<option value="consultFee">咨询服务费</option>
 											<option value="internationalFee">国际货代服务费</option>
-			                                <option value="transAndInsurance">货物运输保险费</option>
-			                                <option value="domesticPaymentFee" >国内货款</option>
-			                                <option value="otherFee">其他</option>
+											<option value="foreignFee">国外货款</option>
+											<option value="taxRefundFee">国税退税</option>
 										</select>
 									</div>
 									<div class="form-group">      
-			                   			<%include("/eeda/component/form/dateInputField.html", {id:'service_stamp', label:'业务发生月', value:''}){} %>
-									</div>
-										
-								</div>
-							<div class="col-lg-4">
-								<div class="form-group">      
-	                            		<%include("/eeda/component/form/inputDateQueryField.html", {id:'check_begin_date', label:'复核时间', value:''}){} %>
-									</div>
-									<div class="form-group">      
-	                            		<%include("/eeda/component/form/inputDateQueryField.html", {id:'confirmBegin_date', label:'付款时间', value:''}){} %>
-									</div>
-									<div class="form-group">      
-	                            		<%include("/eeda/component/form/inputDateQueryField.html", {id:'begin_date', label:'创建时间', value:''}){} %>
+		                     			<%include("/eeda/component/form/dateInputField.html", {id:'service_stamp', label:'业务发生月', value:''}){} %>
 									</div>
 								</div>
-								
+								<div class="col-lg-4">
+									<div class="form-group">      
+                            			<%include("/eeda/component/form/inputDateQueryField.html", {id:'check_begin_date', label:'复核时间', value:''}){} %>
+									</div>
+									<div class="form-group">      
+                                		<%include("/eeda/component/form/inputDateQueryField.html", {id:'confirmBegin_date', label:'收款时间', value:''}){} %>
+									</div>
+									<div class="form-group">      
+                                		<%include("/eeda/component/form/inputDateQueryField.html", {id:'begin_date', label:'创建时间', value:''}){} %>
+									</div>
+								</div>
 							</div>
-								<button id="searchBtn1" class="btn btn_grey" type="button">查询</button>
-                    			<button id="resetBtn1" class="btn btn_white" type="button">清空条件</button>
+							<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                    		<button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
 						</form>
 					</div>
-		 		</div>
+				</div>
 			</div>
 		</div>
 	</div>

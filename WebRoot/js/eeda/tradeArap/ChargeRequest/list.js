@@ -476,6 +476,29 @@ $(document).ready(function() {
        saveConditions();
     };
     
+    $('.complex_search').click(function(event) {
+        if($('.search_single').is(':visible')){
+          $('.search_single').hide();
+        }else{
+          $('.search_single').show();
+        }
+    });
+  //简单查询
+    $('#singleSearchBtn').click(function(){
+    	$('#checked_application_table').empty();
+    	singleSearchData();
+    });
+	var singleSearchData = function(){ 
+		var sp_id = $("#single_sp_id").val();
+		var service_stamp = $("#service_stamp_n").val();
+		var status = $("#status").val();
+	    var url = "/chargeRequest/tradeChargeRequest?sp_id="+sp_id
+	     		 +"&service_stamp_between="+service_stamp
+	     		 +"&status="+encodeURI(status);
+	     application_table.ajax.url(url).load();
+	     totalMoney();
+	}
+    
     //查询条件处理
     var loadConditions=function(){
         if(!!window.localStorage){//查询条件处理
