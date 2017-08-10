@@ -672,6 +672,32 @@ $(document).ready(function() {
             },'json');
         });
 
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+      
+      //简单查询
+      $('#singleSearchBtn').click(function(){
+      	$('#checked_application_table').empty();
+      	singleSearchData();
+      });
+      
+  	var singleSearchData = function(){ 
+  		var sp_id = $("#single_sp_id").val();
+  		var service_stamp = $("#service_stamp_n").val();
+  		var status = $("#status").val();
+  	    var url = "/tradeCostRequest/applicationList?sp_id="+sp_id
+  	     		 +"&service_stamp_between="+service_stamp
+  	     		 +"&status="+encodeURI(status);
+  	     application_table.ajax.url(url).load();
+  	     totalMoney();
+  	}
+      
+      
     //弹出下拉框 确认付款时间
       $("#application_table").on('click','.confirmBtn',function(){
             $('#cost_table_msg_btn').click();
