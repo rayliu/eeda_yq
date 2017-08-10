@@ -1,8 +1,16 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',], function ($, metisMenu) {
   $(document).ready(function() {
-	  $('#AllCheck').attr('disabled',true);
-      var dataTable = eeda.dt({
+	$('#AllCheck').attr('disabled',true);
+    var dataTable = eeda.dt({
       id: 'eeda_table',
+      autoWidth: false,
+      //scrollY: 530,
+      //scrollCollapse: true,
+      //paging: true,
+      
+      initComplete: function (settings) {
+        eeda.dt_float_header('eeda_table');
+      },
       serverSide: false, //不打开会出现排序不对 
       ajax: '/outputScale/list?export_flag='+$("#export_flag").val(),
       columns:[
@@ -95,7 +103,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var c_date_begin_time = $("#c_date_begin_time").val();
           var c_date_end_time = $("#c_date_end_time").val();
           var customer = $("#customer").val();
-          var customer_name = $("#customer_input").val().trim(); 
+          //var customer_name = $("#customer_input").val().trim(); 
 //        var sp = $("#sp").val(); 
           var car_id = $("#car_id").val();
           var car_no = $("#car_id_input").val().trim();
@@ -112,8 +120,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var url = "/outputScale/list?order_no="+order_no
           			   +"&c_date_begin_time="+c_date_begin_time
           			   +"&c_date_end_time="+c_date_end_time
-			           +"&customer="+customer
-			           +"&customer_name="+customer_name
+			           +"&customer_id="+customer
+			          // +"&customer_name="+customer_name
 //			           +"&sp_id="+sp
                        +"&car_id="+car_id
                        +"&car_no="+car_no
