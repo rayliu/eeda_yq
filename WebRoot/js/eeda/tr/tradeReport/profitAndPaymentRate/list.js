@@ -121,26 +121,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('.search_single').show();
           }
       });
-    //简单查询
+      //简单查询
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
-	      if(selectField=='sp_id'){
-	    	  $("#single_sp_id_input").val("");
-	    	  $("#order_export_date_show").hide();
-	    	  $("#employee_id_show").hide();
-	    	  $("#sp_id_show").show();
-	      }
-	      if(selectField=='employee_id'){
-	    	  $("#employee_id_show").val("");
-	    	  $("#sp_id_show").hide();
-	    	  $("#order_export_date_show").hide();
-	    	  $("#employee_id_show").show();
-	      }
-	      if(selectField=="order_export_date"){
-	    	  $("#employee_id_show").hide();
-	    	  $("#sp_id_show").hide();
+	      if(selectField=='order_export_date'){
+	    	  $("#single_customer_input").val("");
+	    	  $("#user_id_show").hide();
+	    	  $("#sp_customer_show").hide();
 	    	  $("#order_export_date_show").show();
-	      }
+		  }
+		  if(selectField=='customer'){
+			  $("#single_order_export_date_begin_time").val("");
+	    	  $("#single_order_export_date_end_time").val("");
+			  $("#user_id_show").hide();
+	    	  $("#order_export_date_show").hide();
+			  $("#sp_customer_show").show();
+		  }
+		  if(selectField=="user_id"){
+			  $("#user_id_show").val("");
+			  $("#sp_customer_show").hide();
+			  $("#order_export_date_show").hide();
+			  $("#user_id_show").show();
+		  }
      });
 	
 	$('#singleSearchBtn').click(function(){
@@ -155,10 +157,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
 			  var order_export_date_end_time = $("#single_order_export_date_end_time").val();
 	      }
-	      
+	      if(selectField=='customer'){
+		    	 var customer = $("#single_customer").val();
+		    }
 	      
 	      
 	      var url = "/tradeProfitAndPaymentRate/list?sp_id="+sp_id
+	      	+"&customer_id="+customer
 	      	+"&employee_id="+employee_id
 			+"&order_export_date_begin_time="+order_export_date_begin_time
 	        +"&order_export_date_end_time="+order_export_date_end_time;
