@@ -161,6 +161,36 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	 
 	}); 
 	
+	  //导出excel利润表
+    $("#singlexportTotaledExcel").click(function(){
+  	  $(this).attr('disabled', true);
+  	  var customer_id = $("#single_customer").val();
+        var begin_time = $("#single_order_export_date_begin_time").val();
+        var end_time = $("#single_order_export_date_end_time").val();
+        excel_method(customer_id,begin_time,end_time);
+    })
+	
+    //导出excel利润表
+    $('#exportTotaledExcel').click(function(){
+        $(this).attr('disabled', true);
+        var customer_id = $("#customer").val();
+        var begin_time = $("#order_export_date_begin_time").val();
+        var end_time = $("#order_export_date_end_time").val();
+        excel_method(customer_id,begin_time,end_time);
+    });
+    
+    var excel_method = function(customer_id,begin_time,end_time){
+  	  $.post('/tradeProfit/downloadExcelList',{customer_id:customer_id,begin_time:begin_time,end_time:end_time}, function(data){
+            $('#exportTotaledExcel').prop('disabled', false);
+            $('#singlexportTotaledExcel').prop('disabled', false);
+            $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+            window.open(data);
+        }).fail(function() {
+            $('#exportTotaledExcel').prop('disabled', false);
+            $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+        });
+    }
+	
 	 var cssTd=function(){
    	  $("#eeda_table th:eq(6)").css('background-color','#f5f5dc');
    	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
