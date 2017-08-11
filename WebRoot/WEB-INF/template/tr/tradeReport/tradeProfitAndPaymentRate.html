@@ -3,7 +3,53 @@
     <div class="row simple_search_div">
   	  <div class="panel panel-default">
       	<div class="panel-heading">
-                    	<div class="row"><!--  第1行  -->
+      			<div class="row"><!--  第1行  -->
+                	<div class="three_tab"><!--  三列排版  -->
+                		<nobr>
+	                    	<div class="search_single">
+	                        	<select id="selected_field" name="selected_field" class="form-control search-label">
+	                            	<option value="order_export_date">出货时间</option>
+	                            	<option value="customer">客户</option>
+		                            <option value="user_id">业务员</option>
+	                            </select>
+	
+	                            <div style="display:none;position:absolute;left:34%;bottom:-5px;" id="sp_customer_show">
+	                                 	<%include("/eeda/component/form/inputSpField.html", 
+	                                                                 {   id: 'single_customer', 
+	                                                                 	 style:'width:150%',
+	                                                                     value: ''
+	                                                                 }){}%>
+									</div>
+			                    <input type="text" id="user_id_show" style="display:none;" class="form-control search-control"/>
+	                        	<div style="position:absolute;left:34%;bottom:-5px;;" id="order_export_date_show">        
+			                            	<%include("/eeda/component/form/inputDateQueryField.html",
+			                                	{	id:'single_order_export_date',
+			                                		style:'width:120%',
+									                begin_style:'width:30%',
+									                end_style:'width:30%', 
+			                                        value:''
+			                                	}){} %>
+			                	</div>
+							</div>
+						</nobr>
+ 					</div>
+					<div class="three_tab"><!--  三列排版  -->
+						<div class="search_single">
+							<nobr>
+								<button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
+								<button id="singlexportTotaledExcel" type="button" class="btn  btn_white">导出excel对账单</button>
+							</nobr>
+						</div>
+					</div>
+					<div class="three_tab"><!--  三列排版  -->
+                    	<h4 class="panel-title pull-right" style="padding-top: 5px;">
+                        	<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
+                            	<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
+                            </a>
+						</h4>
+					</div>
+				</div>
+                    <div class="row"><!--  第1行  -->
                 	<div class="three_tab"><!--  三列排版  -->
                 		<nobr>
 	                    	<div class="search_single">
