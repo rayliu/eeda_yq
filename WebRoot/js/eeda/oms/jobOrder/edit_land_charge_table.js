@@ -333,14 +333,14 @@ $(document).ready(function() {
                 	var str="<nobr>";
                 	if(full.ID&&full.AUDIT_FLAG == 'Y'){
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" disabled>删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:60px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="btn btn_green" style="width:60px"  disabled>确认</button> '; 
                 		}
                 	else if(full.ID){
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px" >删除</button>&nbsp';
-                		str+= '<button type="button" class="chargeConfirm btn btn-success btn-xs" style="width:60px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class="chargeConfirm btn btn_green" style="width:60px" value="'+full.ID+'" >确认</button> ';		
                 	}else{
                 		str+= '<button type="button" class="delete btn btn-default btn-xs" style="width:60px">删除</button>&nbsp';
-                		str+= '<button type="button" class="btn btn-success btn-xs" style="width:60px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="btn btn_green" style="width:60px"  disabled>确认</button> ';
                 	}
                 	str +="</nobr>";
                     return str;
@@ -399,6 +399,7 @@ $(document).ready(function() {
                   }
                 }
             },
+            
             { "data": "CHARGE_ID", "width": "180px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
@@ -437,7 +438,7 @@ $(document).ready(function() {
         					{
         				id: 'CHARGE_ENG_ID',
         				value: data,
-        				display_value: full.CHARGE_NAME_ENG,
+        				display_value: full.CHARGE_ENG_NAME,
         				style:'width:200px',
         				disabled:'disabled'
         					}
