@@ -47,6 +47,7 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.IndexController;
+import controllers.alipay.AlipayController;
 import controllers.app.AppControllerForMobile;
 import controllers.bizadmin.BizAdminController;
 import controllers.bizadmin.account.AccountController;
@@ -185,6 +186,9 @@ public class EedaConfig extends JFinalConfig {
         
         //地址
         me.add("/serviceProvider", LocationController.class);
+        
+        
+        me.add("/alipay", AlipayController.class);
         
         //后台
         /*
