@@ -3,7 +3,7 @@
     <div class="row simple_search_div">
   	  <div class="panel panel-default">
       	<div class="panel-heading">
-                <div class="row"><!--  第1行  -->
+               <div class="row"><!--  第1行  -->
                 	<div class="three_tab"><!--  三列排版  -->
                     	<div class="search_single">
                         	<select id="selected_field" name="selected_field" class="form-control search-label">
@@ -67,7 +67,19 @@
                                         </div>
                                     </form><br>
                                     
-                                    <div class="form-group" >
+                               
+                                    
+					</div>
+				</div>
+									<div class="form-group button-bar" >
+                                        <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+                                        <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+                                        <span style="margin-left:50%;color:#AAAAAA">* 注：回款率 = 确认收款金额 / 应收金额
+                                    </div>
+			</div>
+		</div>
+		<div>
+				     <div class="form-group" >
 		                                    <label>应收对账金额合计：<span style="color:#AAAAAA"></span></label>
 		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">USD:<span id="USD_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
@@ -87,15 +99,7 @@
 		                                   <label style="color:#AAAAAA"><span id="total_uncharge" style="color:black"></span></label><nbsp><nbsp>
 	                                    </div><br>
 
-                                    <div class="form-group button-bar" >
-                                        <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
-                                        <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
-                                        <span style="margin-left:50%;color:#AAAAAA">* 注：回款率 = 确认收款金额 / 应收金额
-                                    </div>
                                     
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 		 <div class="row simple_list_div">
