@@ -1,18 +1,15 @@
 package controllers.webadmin.account;
 
+import interceptor.SetAttrLoginUserInterceptor;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import freemarker.template.utility.StringUtil;
-import interceptor.SetAttrLoginUserInterceptor;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
-
-import sun.swing.StringUIClientPropertyKey;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
