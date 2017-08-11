@@ -267,7 +267,7 @@ $(document).ready(function() {
 				}else{
 					$("#confirmBtn").attr("disabled", false);
 					$("#badBtn").attr("disabled", false);
-					$.scojs_message('确认失败', $.scojs_message.TYPE_FALSE);
+					$.scojs_message('收款失败', $.scojs_message.TYPE_FALSE);
 				}
 			},'json');
 		});

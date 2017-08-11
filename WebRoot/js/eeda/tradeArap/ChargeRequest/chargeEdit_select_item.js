@@ -29,7 +29,7 @@ var itemIds=[];
                 },
                 { "data": "ORDER_NO",
                 	"render":function(data,type,full,meta){
-                			data = "<a href = '/trJobOrder/edit?id="+full.JOBID+"'>"+data+"</a>"
+                			data = "<a href = '/tradeChargeCheckOrder/edit?id="+full.ID+"'>"+data+"</a>"
                 			return data;
                 	}
                 },
