@@ -114,6 +114,120 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
       });
       
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='sp_id'){
+	    	  $("#single_sp_id_input").val("");
+	    	  $("#order_export_date_show").hide();
+	    	  $("#employee_id_show").hide();
+	    	  $("#sp_id_show").show();
+	      }
+	      if(selectField=='employee_id'){
+	    	  $("#employee_id_show").val("");
+	    	  $("#sp_id_show").hide();
+	    	  $("#order_export_date_show").hide();
+	    	  $("#employee_id_show").show();
+	      }
+	      if(selectField=="order_export_date"){
+	    	  $("#employee_id_show").hide();
+	    	  $("#sp_id_show").hide();
+	    	  $("#order_export_date_show").show();
+	      }
+     });
+	
+	$('#singleSearchBtn').click(function(){
+	     var selectField = $('#selected_field').val();
+	     if(selectField=='sp_id'){
+	    	 var sp_id = $("#single_sp_id").val();
+	      }
+	      if(selectField=='employee_id'){
+	    	 var employee_id = $("#single_employee_id").val();
+	      }
+	      if(selectField=="order_export_date"){
+	    	 var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
+	    	 var order_export_date_end_time = $("#single_order_export_date_end_time").val();
+	      }
+	     var url = "/tradeChargeBalanceReport/list?sp_id="+sp_id
+			+"&employee_id="+employee_id
+			+"&order_export_date_begin_time="+order_export_date_begin_time
+	        +"&order_export_date_end_time="+order_export_date_end_time;
+	     dataTable.ajax.url(url).load(tableStyle);
+	     
+	   //合计字段
+         $.post('tradeChargeBalanceReport/listTotal',{
+       	  sp_id:sp_id,
+       	  employee_id:employee_id,
+       	  order_export_date_begin_time:order_export_date_begin_time,
+       	  order_export_date_end_time:order_export_date_end_time
+         },function(data){
+       	  var charge_cny = parseFloat(data.CHARGE_CNY).toFixed(2);
+       	  var charge_usd = parseFloat(data.CHARGE_USD).toFixed(2);
+       	  var charge_jpy = parseFloat(data.CHARGE_JPY).toFixed(2);
+       	  var charge_hkd = parseFloat(data.CHARGE_HKD).toFixed(2);
+       	  var total_charge = parseFloat(data.TOTAL_CHARGE).toFixed(2);
+       	  var uncharge_cny = parseFloat(data.UNCHARGE_CNY).toFixed(2);
+       	  var uncharge_usd = parseFloat(data.UNCHARGE_USD).toFixed(2);
+       	  var uncharge_jpy = parseFloat(data.UNCHARGE_JPY).toFixed(2);
+       	  var uncharge_hkd = parseFloat(data.UNCHARGE_HKD).toFixed(2);
+       	  var total_uncharge = parseFloat(data.TOTAL_UNCHARGE).toFixed(2);
+       	  var total=parseFloat(data.TOTAL);
+       	  $('#CNY_charge_tatol').text(eeda.numFormat(charge_cny,3));
+       	  $('#USD_charge_tatol').text(eeda.numFormat(charge_usd,3));
+       	  $('#JPY_charge_tatol').text(eeda.numFormat(charge_jpy,3));
+       	  $('#HKD_charge_tatol').text(eeda.numFormat(charge_hkd,3));
+       	  $('#total_charge').text(eeda.numFormat(total_charge,3));
+       	  $('#CNY_uncharge_tatol').text(eeda.numFormat(uncharge_cny,3)).css('color','red');
+       	  $('#USD_uncharge_tatol').text(eeda.numFormat(uncharge_usd,3)).css('color','red');
+       	  $('#JPY_uncharge_tatol').text(eeda.numFormat(uncharge_jpy,3)).css('color','red');
+       	  $('#HKD_uncharge_tatol').text(eeda.numFormat(uncharge_hkd,3)).css('color','red');
+       	  $('#total_uncharge').text(eeda.numFormat(total_uncharge,3)).css('color','red');
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_cny]').html("应收CNY:<br>"+eeda.numFormat(charge_cny,3));
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_usd]').html("应收USD:<br>"+eeda.numFormat(charge_usd,3));
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_jpy]').html("应收JPY:<br>"+eeda.numFormat(charge_jpy,3));
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_hkd]').html("应收HKD:<br>"+eeda.numFormat(charge_hkd,3));
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_rmb]').html("应收折合(CNY):<br>"+eeda.numFormat(total_charge,3));
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_cny]').html("未收CNY:<br>"+eeda.numFormat(uncharge_cny,3)).css('color','red');
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_usd]').html("未收USD:<br>"+eeda.numFormat(uncharge_usd,3)).css('color','red');
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_jpy]').html("未收JPY:<br>"+eeda.numFormat(uncharge_jpy,3)).css('color','red');
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_hkd]').html("未收HKD:<br>"+eeda.numFormat(uncharge_hkd,3)).css('color','red');
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_rmb]').html("未收折合(CNY):<br>"+eeda.numFormat(total_uncharge,3)).css('color','red');
+       	  
+       	  var total_profit=parseFloat(total_charge-total_uncharge).toFixed(2);
+       	  if(total_profit<0){
+       		  $('#total_profit').text(total_profit).css('color','red');
+       	  }else(
+       		  $('#total_profit').text(total_profit)
+       	  )
+
+         });
+	}); 
+	
+	  var tableStyle = function(){
+    	  $('.oneRow').css('line-height','30px');
+    	  $('.doubleRow').css('text-align','center');
+    	  
+    	  var tableName = "eeda_table";
+    	  //格式【合成表头的第一列位置，合成的列数，颜色】
+    	  var array= [[2,5,'#f8fff0'],[7,5,'#eeffff']];
+    	  for (var i = 0; i < array.length; i++) {
+    		  var firstChild = array[i][0];
+        	  var cols = array[i][1];
+        	  var bgColor = array[i][2];
+        	  for (var j = firstChild; j < (firstChild+cols); j++) {
+        		  $("#"+tableName+" td:nth-child("+j+")").css('background-color',bgColor);
+        	  }
+		  }
+      }
+      
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
