@@ -248,7 +248,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         };
         
         //海运货品件数
-        $("input[name='pieces']").change(function(){
+        $("#ocean_cargo_table input[name='pieces']").change(function(){
         	pieces_total = 0;
         	$("#ocean_cargo_table tr input[name='pieces']").each(function(){
         		pieces_total = ($(this).val())*1+pieces_total;
@@ -261,7 +261,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         }
         
         //海运货品毛重
-        $("input[name='gross_weight']").change(function(){
+        $("#ocean_cargo_table input[name='gross_weight']").change(function(){
         	gross_weight_total = 0;
         	$("#ocean_cargo_table tr input[name='gross_weight']").each(function(){
         		gross_weight_total = ($(this).val())*1+gross_weight_total;
@@ -274,7 +274,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         }
         
       //海运货品体积
-        $("input[name='volume']").change(function(){
+        $("#ocean_cargo_table input[name='volume']").change(function(){
         	volume_total = 0;
         	$("#ocean_cargo_table tr input[name='volume']").each(function(){
         		volume_total = ($(this).val())*1+volume_total;
