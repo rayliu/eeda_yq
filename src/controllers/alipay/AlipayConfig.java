@@ -1,4 +1,4 @@
-﻿package controllers.alipay;
+package controllers.alipay;  
 
 import java.io.FileWriter;
 import java.io.IOException;
