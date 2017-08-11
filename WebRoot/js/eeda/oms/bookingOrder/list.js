@@ -25,7 +25,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           colReorder: true,
           paging: true,
           serverSide: true, //不打开会出现排序不对
-          ajax: "/bookOrder/list?type="+type,
+          ajax: "/bookingOrder/list?type="+type,
           columns: [
               { "width": "30px",
                   "render": function ( data, type, full, meta ) {
@@ -34,7 +34,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
               },
               
-              { "data": "ORDER_NO", 
+              { "data": "BOOKING_NO", 
                   "render": function ( data, type, full, meta ) {
                     var str='';
                     if(full.NEW_COUNT>0){
@@ -119,7 +119,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var sent_out_time_k_begin_time = $('#sent_out_time_k_begin_time').val();
           	var sent_out_time_k_end_time = $('#sent_out_time_k_end_time').val();
             }
-          var url = "/bookOrder/list?"+selectField+"="+selectFieldValue
+          var url = "/bookingOrder/list?"+selectField+"="+selectFieldValue
                    +"&order_status="+orderStatus
                    +"&create_stamp_begin_time="+create_stamp_k_begin_time
                    +"&create_stamp_end_time="+create_stamp_k_end_time
@@ -154,7 +154,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_status = order_status;
           
           //增加出口日期查询
-          var url = "/bookOrder/list?order_no="+order_no
+          var url = "/bookingOrder/list?order_no="+order_no
           	   //+"&status="+status
           	   +"&order_status="+order_status
           	   //+"&customer_code_like="+customer_code
@@ -194,7 +194,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	   var id = $('#delete_id').val();
            var deleteReason = $('#deleteReason').val();
            var tr = $('#'+id+'');
-          $.post('/bookOrder/deleteOrder', {id:id,delete_reason:deleteReason}, function(data){
+          $.post('/bookingOrder/deleteOrder', {id:id,delete_reason:deleteReason}, function(data){
         	  $('#deleteReasonDetail .return').click();
         	  tr.hide();
         	  $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
