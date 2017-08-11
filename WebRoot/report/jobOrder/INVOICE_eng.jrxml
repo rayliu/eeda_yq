@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="INVOICE_ENG" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="255"/>
+	<property name="ireport.y" value="254"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -71,7 +71,7 @@ GROUP BY c.id) a
 	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
 
 (select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
-			CONCAT(c.name,': ',sum(exchange_total_amount)) total
+			CONCAT(c.name,': ',convert(sum(exchange_total_amount),decimal(10,2))) total
 		FROM
 			job_order_arap joa
 		LEFT JOIN currency c ON c.id = joa.exchange_currency_id
