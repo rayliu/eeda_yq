@@ -114,10 +114,14 @@ jos.mbl_no MBL, jos.hbl_no HBL,
 
 	) ins
 
-from job_order_arap joa
+from arap_charge_order aco
+left join arap_charge_item aci on aco.id = aci.charge_order_id
+left join job_order_arap joa on joa.id = aci.ref_order_id
+
+LEFT JOIN office o on o.id = aco.office_id
+
 left join job_order jo on jo.id = joa.order_id
-left join arap_charge_item aci on aci.ref_order_id = joa.id
-left join arap_charge_order aco on aco.id = aci.charge_order_id
+
 left join job_order_shipment jos on jos.order_id = jo.id
 left join job_order_shipment_item josi on josi.order_id = jo.id
 left join job_order_air_item joai on joai.order_id = jo.id
@@ -126,7 +130,7 @@ left join location l on l.id = jos.fnd
 left join location l1 on l1.id = joai.destination
 left join party p on p.id=aco.sp_id
 left join party p1 on p1.id=joli.consignee
-left join user_login u on u.id = $P{login_user_id}
+left join user_login u on u.id = 30
 left join currency_rate cr on cr.currency_id = joa.currency_id
 where aco.id = $P{order_id}
 GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
