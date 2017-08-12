@@ -18,7 +18,9 @@ public class AlipayConfig {
 //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 	// 应用ID,您的APPID，收款账号既是您的APPID对应支付宝账号
-	public static String app_id = "2016022401159400";//"2016082000295782";//
+    //test 2016082000295782
+    //2016022401159400
+	public static String app_id = "2016082000295782";
 	
 	// 商户私钥，您的PKCS8格式RSA2私钥
     public static String merchant_private_key = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCzSFOEzGj+W6lK"+
@@ -49,14 +51,15 @@ public class AlipayConfig {
             "alQOKE0DoPtPXjWhPQo9YQ==";
 	
 	// 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
-    public static String alipay_public_key =  //"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAviQlu+eD/UoM+l0n6IZsbrDEGzGiZ4C1Abk7JPQctdkmWI0R9bnPEtof55u+R5p0QP+5GjPrFanIBNg5kZ4r5qT7OHLE/9wC9ONPEuLW5/U3msykacHQYLnrWtgpPG0L+UXXw5CVQ4tVTIfhuxNeIohvdoYzDbuJxtSVim1JkU+/FvWU3xwTnj4VEr/+LeOcMVqMRJgHgAUoongQ929XYac4CAELJhnLyWw8XBoHa9mUyaRWIoFNzhkxbQZt4poKPVSUe7F5yEccDaH2xYVy7IH5h6RySkEbrX+N9F/JApg2WpP7+zEpvjW79p/ffCIOPnCu/dkWIWLU6+Qi0eGI6QIDAQAB";  
-            "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhWV2Zf8EP1T6ojbEhsGt+MDgHaS1PpmgiBFBLi4fh+Itnwz+rKgOWe4mwZxQSBmDjJgtCgsTw2Y8xTw8QcJb8fuFMbjYbJRodIJfyzxAvsrsjej9G4f7pXL9ZYRZyrGhu35sly8I4Uix5GEOgKAdLmwLC30DiSYO7uiHyG/Gs8NA9t+Y5DRg6l4Q9HtdUBOr5a1DwJX4fDrrq7i4G6fJMLq556kvM2HNhtMHaDsZeu3+SlgkSbkSU4Bd5o9R/LsbRTWX1yJj7GQIVvNf1FldPnetj09G22iUy/Ygiv9jJr2LT5gVymltJw44FudmiOduwMmdSlMExG8tU/N9GEiUDwIDAQAB";
+    //test 
+    public static String alipay_public_key =  "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAviQlu+eD/UoM+l0n6IZsbrDEGzGiZ4C1Abk7JPQctdkmWI0R9bnPEtof55u+R5p0QP+5GjPrFanIBNg5kZ4r5qT7OHLE/9wC9ONPEuLW5/U3msykacHQYLnrWtgpPG0L+UXXw5CVQ4tVTIfhuxNeIohvdoYzDbuJxtSVim1JkU+/FvWU3xwTnj4VEr/+LeOcMVqMRJgHgAUoongQ929XYac4CAELJhnLyWw8XBoHa9mUyaRWIoFNzhkxbQZt4poKPVSUe7F5yEccDaH2xYVy7IH5h6RySkEbrX+N9F/JApg2WpP7+zEpvjW79p/ffCIOPnCu/dkWIWLU6+Qi0eGI6QIDAQAB";  
+            //"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhWV2Zf8EP1T6ojbEhsGt+MDgHaS1PpmgiBFBLi4fh+Itnwz+rKgOWe4mwZxQSBmDjJgtCgsTw2Y8xTw8QcJb8fuFMbjYbJRodIJfyzxAvsrsjej9G4f7pXL9ZYRZyrGhu35sly8I4Uix5GEOgKAdLmwLC30DiSYO7uiHyG/Gs8NA9t+Y5DRg6l4Q9HtdUBOr5a1DwJX4fDrrq7i4G6fJMLq556kvM2HNhtMHaDsZeu3+SlgkSbkSU4Bd5o9R/LsbRTWX1yJj7GQIVvNf1FldPnetj09G22iUy/Ygiv9jJr2LT5gVymltJw44FudmiOduwMmdSlMExG8tU/N9GEiUDwIDAQAB";
 
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
 	public static String notify_url = "http://www.iwedclub.com/alipay/notify";//"http://工程公网访问地址/alipay.trade.page.pay-JAVA-UTF-8/notify_url.jsp";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String return_url = "http://www.iwedclub.com/alipay/notify";//"http://工程公网访问地址/alipay.trade.page.pay-JAVA-UTF-8/return_url.jsp";
+	public static String return_url = "http://www.iwedclub.com/alipay/return";//"http://工程公网访问地址/alipay.trade.page.pay-JAVA-UTF-8/return_url.jsp";
 
 	// 签名方式
 	public static String sign_type = "RSA2";
