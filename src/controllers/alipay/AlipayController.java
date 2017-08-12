@@ -13,5 +13,11 @@ public class AlipayController extends Controller {
         renderJsp("/alipay/index.jsp");
     }
 
+    public void ali_notify(){
+        renderText("notify...");
+    }
     
+    public void ali_return(){
+        renderText("return...");
+    }
 }
