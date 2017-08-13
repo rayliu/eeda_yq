@@ -9,6 +9,7 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -116,7 +117,7 @@ public class SalesBillReportController extends Controller {
         long office_id=user.getLong("office_id");
 		
 		String sp_id =" and sp_id="+spid;
-		if(" and sp_id=".equals(sp_id)){
+		if(StringUtils.isBlank(spid)){
 			sp_id="";
 		}
 		if(order_export_date_begin_time==null){
@@ -133,89 +134,22 @@ public class SalesBillReportController extends Controller {
 		}
 		String condition = sp_id+order_export_date;
 		
-		String sql=" SELECT "
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
-			+"	  and joa.order_type = 'charge' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) charge_cny,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
-			+"	  and joa.order_type = 'charge' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) charge_usd,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
-			+"	  and joa.order_type = 'charge' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) charge_jpy,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
-			+"	  and joa.order_type = 'charge' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) charge_hkd,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
-			+"	  and joa.order_type = 'charge' and pay_flag!='Y'  "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) uncharge_cny,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
-			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) uncharge_usd,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
-			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) uncharge_jpy,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  WHERE jo.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
-			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) uncharge_hkd, "
-			+"	(SELECT "
-			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
-			+"	FROM  job_order jo "
-			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
-			+"	WHERE 	jo.office_id = "+office_id
-			+"	AND joa.order_type = 'charge' "+condition+""
-			+ " and jo.delete_flag = 'N'"
-			+ ") total_charge,"
-			+"	(SELECT "
-			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
-			+"	FROM  job_order jo "
-			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
-			+"	WHERE 	jo.office_id = "+office_id
-			+"	AND joa.order_type = 'charge' and pay_flag!='Y' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+") total_uncharge";
-		
-		
+		String sql=" SELECT ( "
+				+" 		SELECT "
+				+" 			IFNULL( "
+				+" 				SUM(joa.currency_total_amount), "
+				+" 				0 "
+				+" 			) "
+				+" 		FROM "
+				+" 			job_order jo "
+				+" 		LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
+				+" 		WHERE "
+				+" 			jo.office_id = "+office_id
+				+" 		AND joa.order_type = 'charge'"+condition
+				+" 		AND jo.delete_flag = 'N' "
+				+" 		AND jo.customer_id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') "
+				+" 	) sum_charge_total ";
+
 		Record re = Db.findFirst(sql);
 		long total=list();
 		re.set("total", total);

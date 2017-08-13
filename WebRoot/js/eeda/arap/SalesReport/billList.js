@@ -6,7 +6,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           colReorder: true,
           paging: true,
           serverSide: true, //不打开会出现排序不对 
-          ajax: "/salesBillReport/list",
+//          ajax: "/salesBillReport/list",
           initComplete:function(settings){
     	  cssTd();
           },
@@ -21,9 +21,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "USER_NAME", "width": "100px","className":"user_name"},
 	            { "data": "ABBR", "width": "100px","className":"abbr"},
 	            { "data": "CONTRACT_NO", "width": "80px","className":"contract_no"},
-	            { "data": "POL_NAME", "width": "80px","className":"contract_no"},
-	            { "data": "POD_NAME", "width": "80px","className":"contract_no"},
-	            { "data": "FEE_COUNT", "width": "80px","className":"contract_no"},
+	            { "data": "POL_NAME", "width": "80px","className":"pol_name"},
+	            { "data": "POD_NAME", "width": "80px","className":"pod_name"},
+	            { "data": "FEE_COUNT", "width": "80px","className":"fee_count"},
 	            { "width": "100px","className":"charge",
 	            	"render": function(data, type, full, meta) {
 		            	    var str = '';
@@ -177,10 +177,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		            		if(full.ROYALTY_RATE){
 		            			royalty_rate = full.ROYALTY_RATE;
 		            		}
-		            		var commission_money = str*royalty_rate;
+		            		var commission_money = (str*royalty_rate)/100;
 		            		if(commission_money<0){
 		            	    	return '<span style="color:red;">'+eeda.numFormat(commission_money.toFixed(2),3)+'</span>';
 		            	    }
+		            		
 							return eeda.numFormat(commission_money.toFixed(2),3);
 					}
 				}
@@ -235,45 +236,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
           },function(data){
-        	  var charge_cny = parseFloat(data.CHARGE_CNY).toFixed(2);
-        	  var charge_usd = parseFloat(data.CHARGE_USD).toFixed(2);
-        	  var charge_jpy = parseFloat(data.CHARGE_JPY).toFixed(2);
-        	  var charge_hkd = parseFloat(data.CHARGE_HKD).toFixed(2);
-        	  var total_charge = parseFloat(data.TOTAL_CHARGE).toFixed(2);
-        	  var uncharge_cny = parseFloat(data.UNCHARGE_CNY).toFixed(2);
-        	  var uncharge_usd = parseFloat(data.UNCHARGE_USD).toFixed(2);
-        	  var uncharge_jpy = parseFloat(data.UNCHARGE_JPY).toFixed(2);
-        	  var uncharge_hkd = parseFloat(data.UNCHARGE_HKD).toFixed(2);
-        	  var total_uncharge = parseFloat(data.TOTAL_UNCHARGE).toFixed(2);
+      	  
+        	  var sum_charge_total = parseFloat(data.SUM_CHARGE_TOTAL).toFixed(2);
+
         	  var total=parseFloat(data.TOTAL);
-        	  $('#CNY_charge_tatol').text(eeda.numFormat(charge_cny,3));
-        	  $('#USD_charge_tatol').text(eeda.numFormat(charge_usd,3));
-        	  $('#JPY_charge_tatol').text(eeda.numFormat(charge_jpy,3));
-        	  $('#HKD_charge_tatol').text(eeda.numFormat(charge_hkd,3));
-        	  $('#total_charge').text(eeda.numFormat(total_charge,3));
-        	  $('#CNY_uncharge_tatol').text(eeda.numFormat(uncharge_cny,3)).css('color','red');
-        	  $('#USD_uncharge_tatol').text(eeda.numFormat(uncharge_usd,3)).css('color','red');
-        	  $('#JPY_uncharge_tatol').text(eeda.numFormat(uncharge_jpy,3)).css('color','red');
-        	  $('#HKD_uncharge_tatol').text(eeda.numFormat(uncharge_hkd,3)).css('color','red');
-        	  $('#total_uncharge').text(eeda.numFormat(total_uncharge,3)).css('color','red');
+
         	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=order_no]').html('共'+total+'项汇总：');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_cny]').html("应收CNY:<br>"+eeda.numFormat(charge_cny,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_usd]').html("应收USD:<br>"+eeda.numFormat(charge_usd,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_jpy]').html("应收JPY:<br>"+eeda.numFormat(charge_jpy,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_hkd]').html("应收HKD:<br>"+eeda.numFormat(charge_hkd,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_rmb]').html("应收折合(CNY):<br>"+eeda.numFormat(total_charge,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_cny]').html("未收CNY:<br>"+eeda.numFormat(uncharge_cny,3)).css('color','red');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_usd]').html("未收USD:<br>"+eeda.numFormat(uncharge_usd,3)).css('color','red');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_jpy]').html("未收JPY:<br>"+eeda.numFormat(uncharge_jpy,3)).css('color','red');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_hkd]').html("未收HKD:<br>"+eeda.numFormat(uncharge_hkd,3)).css('color','red');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_rmb]').html("未收折合(CNY):<br>"+eeda.numFormat(total_uncharge,3)).css('color','red');
-        	  
-        	  var total_profit=parseFloat(total_charge-total_uncharge).toFixed(2);
-        	  if(total_profit<0){
-        		  $('#total_profit').text(total_profit).css('color','red');
-        	  }else(
-        		  $('#total_profit').text(total_profit)
-        	  )
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_charge_total]').html("折合应收CNY:<br>"+eeda.numFormat(sum_charge_total,3));
 
           });
           
@@ -292,6 +261,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				        +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load();
       };
-//      searchData();
+      searchData();
   });
 });
