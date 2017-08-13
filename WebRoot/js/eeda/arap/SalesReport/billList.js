@@ -11,12 +11,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  cssTd();
           },
           columns: [
-      			{ "data": "ORDER_NO", "width": "80px","className":"order_no"},
+      			{ "data": "ORDER_NO", "width": "80px","className":"order_no",
+      				"render":function(data,type,full,meta){
+      					return "<a href = '/jobOrder/edit?id="+full.ID+" 'target='_blank'>"+data+"</a>";      					
+      				}
+      			},
       			{ "data": "MBL_NO", "width": "100px","className":"mbl_no"},
 	            { "data": "ORDER_EXPORT_DATE", "width": "80px" ,"className":"order_export_date"},
 	            { "data": "USER_NAME", "width": "100px","className":"user_name"},
 	            { "data": "ABBR", "width": "100px","className":"abbr"},
 	            { "data": "CONTRACT_NO", "width": "80px","className":"contract_no"},
+	            { "data": "POL_NAME", "width": "80px","className":"contract_no"},
+	            { "data": "POD_NAME", "width": "80px","className":"contract_no"},
+	            { "data": "FEE_COUNT", "width": "80px","className":"contract_no"},
 	            { "width": "100px","className":"charge",
 	            	"render": function(data, type, full, meta) {
 		            	    var str = '';
@@ -206,8 +213,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       })
       
       var cssTd=function(){
-    	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
-    	  $("#eeda_table td:nth-child(14)").css('background-color','#f5f5dc');
+//    	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
+//    	  $("#eeda_table td:nth-child(14)").css('background-color','#f5f5dc');
       }
       
       

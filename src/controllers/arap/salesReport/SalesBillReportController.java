@@ -53,7 +53,8 @@ public class SalesBillReportController extends Controller {
         		+"			SUM(cost_CNY) sum_cost_CNY,SUM(cost_USD) sum_cost_USD,SUM(cost_JPY) sum_cost_JPY ,SUM(cost_HKD) sum_cost_HKD,"
         		+ "         SUM(cost_total) sum_cost_total "
         		+" from( "
-        		+"		SELECT jo.id,jo.order_no,jo.customer_id,jos.mbl_no,jo.order_export_date,ul.c_name user_name,p.abbr,cs.royalty_rate,(SELECT contract_no from customer_contract ccon "
+        		+"		SELECT jo.id,jo.order_no,jo.fee_count,jo.customer_id,jos.mbl_no,jo.order_export_date,IFNULL(locean1.name,lair1.name) pol_name,"
+        		+ "		IFNULL(locean2.name,lair2.name) pod_name,ul.c_name user_name,p.abbr,cs.royalty_rate,(SELECT contract_no from customer_contract ccon "
         		+ "		LEFT JOIN customer_contract_location ccl on ccon.id = ccl.contract_id"
         		+ "		WHERE ccon.type = jo.type and ccon.customer_id = jo.customer_id and ccon.trans_clause = jo.trans_clause"
         		+ "		and ccon.trade_type = jo.trade_type and ccl.pol_id = jos.pol and ccl.pod_id = jos.pod "
@@ -77,10 +78,15 @@ public class SalesBillReportController extends Controller {
         		+"		LEFT JOIN job_order_arap joa on joa.order_id = jo.id "
         		+"		LEFT JOIN currency cy on cy.id = joa.currency_id "
         		+"		LEFT JOIN job_order_shipment jos on jos.order_id = jo.id "
+        		+"		LEFT JOIN job_order_air_item joai on joai.order_id = jo.id "
+        		+"		LEFT JOIN location locean1 on locean1.id = jos.pol "
+        		+"		LEFT JOIN location locean2 on locean2.id = jos.pod "
+        		+"		LEFT JOIN location lair1 on lair1.id = joai.start_from "
+        		+"		LEFT JOIN location lair2 on lair2.id = joai.destination "
         		+"		LEFT JOIN party p on p.id = jo.customer_id "
         		+"		LEFT JOIN customer_salesman cs on cs.party_id =  jo.customer_id "
         		+"		LEFT JOIN user_login ul on ul.id = cs.salesman_id "
-        		+"		WHERE jo.office_id = "+office_id
+        		+"		WHERE jo.office_id = "+office_id+" and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"')"
         		+" ) A  where 1= 1"+condition
         		+" GROUP BY A.order_no "
         		+ " ORDER BY order_export_date desc";
