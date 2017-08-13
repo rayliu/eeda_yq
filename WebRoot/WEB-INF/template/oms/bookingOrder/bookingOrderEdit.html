@@ -84,104 +84,37 @@
     
     <div class="panel-body row">
     	<input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
-	    <div class="simple_search_div three_tab" style="margin-right:2%;">
-	    	<div class="panel-body">发货人信息Shipper
-	    		<div style="margin-left:25px;margin-top:15px;">
-		    		<div>
-	                	<%include("/eeda/component/form/inputOfficeField.html", 
-	                                    	{   id: 'office_id', 
-	                                    		label:'发货公司',
-	                                            value:office.id!order.office_id!'',
-	                                            disabled:'disabled',
-	                                            display_value:office.office_name!order.office_name!''
-	                                        }){}%>
-	                </div>
-		    		<div><br/>
-		    			<%include("/eeda/component/form/inputField.html", 
-                                            {   id:'consignor_man', 
-                                                label:'联系人',
-                                                value:order.consignor_man!''
-                                            }){}%>
-		    		</div>
-		    		<div><br/>
-		    			<%include("/eeda/component/form/inputField.html", 
-	                                        {   id:'consignor_phone', 
-	                                            label:'联系电话',
-	                                            value:order.consignor_phone!''
-	                                        }){}%>
-		    		</div>
-		    		<div><br>
-		    			<label class="search-label" style="position:relative;bottom:45px;">地址</label>
-		    			<textarea id="consignor_address" name="consignor_address" rows="3" class="form-control search-control">${order.consignor_address!''}</textarea>
-		    		</div>
-	    		</div>
-	    	</div>
+	    <div class="simple_search_div three_tab" style="margin-right:2%;">    		
+		    		<%include("/eeda/component/form/inputSelectArea.html", 
+					                    {   id:'ocean_MBLshippe', 
+					                        label:'发货人MBLShipper', 
+					                        display_value:office.office_name!order.office_name!'',
+					                        value:office.id!order.office_id!'',
+					                        textarea_value:shipment.MBLshipper_info!'',
+					                        disabled:'disabled'
+					                    }){}%>
 	    </div>
 	    
 	    <div class="simple_search_div three_tab" style="margin-right:2%;">
-			<div class="panel-body">收货人信息Consignee
-	    		<div style="margin-left:25px;margin-top:15px;">
-		    		<div>
-	                	<%include("/eeda/component/form/inputSpField.html", 
-	                                    	{   id: 'consignee', 
-	                                    		label:'收货公司',
-	                                            value:order.consignee!'',
-	                                            display_value:order.consignee_name!''
-	                                        }){}%>
-	                </div>
-		    		<div><br/>
-		    			<%include("/eeda/component/form/inputField.html", 
-                                            {   id:'consignee_man', 
-                                                label:'联系人',
-                                                value:order.consignee_man!''
-                                            }){}%>
-		    		</div>
-		    		<div><br/>
-		    			<%include("/eeda/component/form/inputField.html", 
-                                            {   id:'consignee_phone', 
-                                                label:'联系电话',
-                                                value:order.consignee_phone!''
-                                            }){}%>
-		    		</div>
-		    		<div><br>
-		    			<label class="search-label" style="position:relative;bottom:45px;">地址</label> 
-		    			<textarea id = "consignee_address" name="consignee_address" rows="3" class="form-control search-control">${order.consignee_address!''}</textarea>
-		    		</div>
-	    		</div>
-	    	</div>
+		    		<%include("/eeda/component/form/inputPartySelectArea.html", 
+				                    {   id:'ocean_HBLconsignee', 
+				                        label:'收货人HBLConsignee', 
+				                        display_value:order.HBLconsigneeAbbr!'',
+				                        value:order.HBLconsignee!'',
+				                        textarea_value:order.HBLconsignee_info!''
+				                    }){}%>
 	    </div>
 	    
 	    <div class="simple_search_div three_tab">
-	    	<div class="panel-body">通知人信息NotifyParty
-	    		<div style="margin-left:25px;margin-top:15px;">
-		    		<div>
-	                	<%include("/eeda/component/form/inputSpField.html", 
-	                                    	{   id: 'notify', 
-	                                    		label:'通知人公司',
-	                                            value:order.notify!'',
-	                                            display_value:order.notify_name!''
-	                                        }){}%>
-	                </div>
-		    		<div><br/>
-		    			<%include("/eeda/component/form/inputField.html", 
-		                                    {   id:'notify_man', 
-		                                        label:'联系人',
-		                                        value:order.notify_man!''
-		                                    }){}%>
-		    		</div>
-		    		<div><br/>
-		    			<%include("/eeda/component/form/inputField.html", 
-                                            {   id:'notify_phone', 
-                                                label:'联系电话',
-                                                value:order.notify_phone!''
-                                            }){}%>
-		    		</div>
-		    		<div><br>
-		    			<label class="search-label" style="position:relative;bottom:45px;">地址</label> 
-		    			<textarea id="notify_address" name="notify_address" rows="3" class="form-control search-control">${order.notify_address!''}</textarea>
-		    		</div>
-	    		</div>
-	    	</div>
+	    	<%include("/eeda/component/form/inputPartySelectArea.html", 
+				                    {
+				                        id:'ocean_MBLnotify_party', 
+				                        label:'通知人MBLNotifyParty', 
+				                        lable_msg:'<nbsp><input id="copy_consignee" style="margin-left:20px;padding-top:5px" type="checkbox">SAME AS CONSIGNEE<nbsp>',
+				                        display_value:shipment.MBLnotify_partyAbbr!'',
+				                        value:shipment.MBLnotify_party!'',
+				                        textarea_value:shipment.MBLnotify_party_info!''
+				                    }){} %>
 	    </div>
     </div>
     <br>
@@ -938,6 +871,7 @@
 <%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
+
 
 <div class="blockUI" style="display:none"></div>
 <div class="blockUI blockOverlay" style="z-index: 1000; border: none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(0, 0, 0); opacity: 0.6; cursor: wait; position: fixed;"></div>

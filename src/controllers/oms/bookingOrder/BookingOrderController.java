@@ -1183,7 +1183,8 @@ public class BookingOrderController extends Controller {
     			+" 		(SELECT COUNT(truck_type)  FROM  job_order_land_item joli2  "
     			+" 									 WHERE joli2.order_id =jo.id  ) truck_count "
     			+" 	FROM "
-    			+" 		job_order jo "
+    			+" booking_order border "
+    			+" LEFT JOIN job_order jo on jo.id = border.to_order_id "
     			+" LEFT JOIN job_order_shipment jos ON jos.order_id = jo.id "
     			+" LEFT JOIN job_order_air_item joai ON joai.order_id = jo.id "
     			+" left join party p4 on p4.id=jos.carrier "
@@ -1193,8 +1194,7 @@ public class BookingOrderController extends Controller {
     			+" LEFT JOIN location lo1 ON lo1.id = jos.pol "
     			+" LEFT JOIN location lo2 ON lo2.id = jos.pod "
     			+" WHERE  "
-    			+" 	jo.plan_order_item_id = '' "//+plan_order_id
-    			+"  AND jo.delete_flag = 'N' "
+    			+" jo.delete_flag = 'N' and border.id ="+id
     			+ " )B";
     	Record re = Db.findFirst(sqlString);
     	if(re != null){
@@ -2080,7 +2080,7 @@ public class BookingOrderController extends Controller {
             if(entrust_office != null){
             	entrust_officeNo = entrust_office.getLong("id");
             }else{
-            	String err = "不存在该代理";
+            	String err = "系统不存在该代理";
 				renderText(err);
 				return ;
             }
@@ -2163,6 +2163,7 @@ public class BookingOrderController extends Controller {
 	                if(take_land==null){
 	                	take_land  = new JobOrderLandItem();
 	                	if(reLand.get("take_eta")!=null){
+	                		take_land.set("order_id", to_order_id);
 	                		take_land.set("eta", reLand.get("take_eta"));
 	                	}	                	
 	                	take_land.save();
