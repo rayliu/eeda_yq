@@ -72,6 +72,14 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn',
             ]
         });
     	
+        $('.complex_search').click(function(event) {
+            if($('.search_single').is(':visible')){
+              $('.search_single').hide();
+            }else{
+              $('.search_single').show();
+            }
+        });
+        
         //base on config hide cols
         dataTable.columns().eq(0).each( function(index) {
             var column = dataTable.column(index);
@@ -99,6 +107,17 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn',
           		+"&address_like="+ADDRESS+"&code_like="+code;
           	dataTable.ajax.url(url).load();
           });
+    	
+    	  //简单查询
+        $('#singleSearchBtn').click(function(){
+        	$('#checked_application_table').empty();
+        	singleSearchData();
+        });
+    	var singleSearchData = function(){ 
+    		var company_name = $("#single_company_name").val();
+    	    var url = "/customer/list?company_name_like="+company_name
+    	    dataTable.ajax.url(url).load();
+    	}
     	
     	//清空查询条件
     	$('#resetBtn').click(function(e){
