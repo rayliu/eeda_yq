@@ -132,11 +132,10 @@ define(['jquery', 'validate_cn',  'dataTablesBootstrap', 'sco', 'file_upload'], 
 
         
         $('[name=saveBtn]').click(function(){
-        	
         	var self = this;
         	var row = $(self).parent().parent().parent();
-        	var user_id = $(row.find('[name=user]')).val();
-        	var product_id = $(row.find('[name=product]')).val();
+        	var user_id = $(row.find('[name=user_id]')).val();
+        	var product_id = $(row.find('[name=product_id]')).val();
         	var begin_date = $(row.find('[name=begin_date]')).val();
     		var end_date = $(row.find('[name=end_date]')).val();
 			var photo = $(row.find('.shadow')).attr('value');

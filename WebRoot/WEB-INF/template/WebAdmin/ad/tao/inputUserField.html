@@ -1,0 +1,87 @@
+<div class="form-group">
+	<input type="hidden" id="${id}_hidden" value="${value!''}"/>
+	<label>${label!''}</label>
+	<input type="text" class="input_text" id="${id}_input" AUTOCOMPLETE="off" placeholder="${placeholder!'请选择商家'}"  value="${display_value!''}">
+	<ul id=${id}_list class="pull-right dropdown-menu default dropdown-scroll"  tabindex="-1" style="top: 35%; left: 2%;">
+	
+	</ul>
+</div>
+<input id="${id}" style="display: none;" name="user_id" value="${value!''}"/>
+<script>
+$(document).ready(function() {
+	var userList = $("#${id}_list");
+	var inputField = $("#${id}_input");
+	var hiddenField = $('#${id}');
+	
+	//处理中文输入法, 没完成前不触发查询
+	var cpLock = false;
+    inputField.on('compositionstart', function () {
+        cpLock = true;
+    });
+    inputField.on('compositionend', function () {
+        cpLock = false;
+    });
+    
+	//文本域改变事件与单击事件
+	inputField.on('keyup click',function(){
+    	var me = this;
+    	var inputStr = inputField.val();
+    	var idvalue = '${id}'.replace('user','product');
+    	$("#"+idvalue+"_input").val("");
+    	
+    	if(cpLock)
+	    	return;
+		if (event.keyCode == 40) {
+			userList.find('li').first().focus();
+            return false;
+        }
+		
+    	$.post('/WebAdmin/ad/tao/searchUser',{input:inputStr},function(data){
+    		userList.empty();
+			for(var i = 0; i < data.length; i++){
+				userList.append("<a tabindex='-1' class='fromLocationItem' userId='"+data[i].ID+"'><li>"+data[i].USER_NAME+"</li></a>");
+			}
+			userList.css({ 
+		    	left:$(me).position().left+"px", 
+		    	top:$(me).position().top+28+"px" 
+		    });	 
+		    eeda.hidePopList();
+		    userList.show();
+		    $(".fromLocationItem li").mouseover(function(){
+				  $(this).css("background-color","yellow");
+			});
+		    $(".fromLocationItem li").mouseout(function(){
+				  $(this).css("background-color","");
+			});
+		},'json');
+    });
+	
+	// 没选中商家，焦点离开，隐藏列表
+	inputField.on('blur', function(){
+		if (inputField.val().trim().length == 0) {
+			hiddenField.val('');
+		};
+		userList.hide();
+ 	});
+	
+	//当用户只点击了滚动条，没选商家，再点击页面别的地方时，隐藏列表
+	userList.on('blur', function(){
+		userList.hide();
+ 	});
+
+	userList.on('mousedown', function(){
+		return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+	});
+		
+	// 选中商家
+	userList.on('mousedown', '.fromLocationItem', function(e){
+		inputField.val($(this).text());
+		hiddenField.val($(this).attr('userId'));
+		userList.hide();
+		$("#${id}_list").val($(this).attr('userId'));
+		$("#${id}_hidden").val($(this).attr('userId'));
+    });
+	
+	
+});
+</script>

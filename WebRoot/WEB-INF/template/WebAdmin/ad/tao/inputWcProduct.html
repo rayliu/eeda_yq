@@ -1,0 +1,84 @@
+<div class="form-group">
+	<label>${label!''}</label>
+	
+	<input type="text" class="input_text" id="${id}_input" AUTOCOMPLETE="off" placeholder="${placeholder!'请选择产品'}"  value="${display_value!''}">
+	<ul id=${id}_list class="pull-right dropdown-menu default dropdown-scroll"  tabindex="-1" style="top: 35%; left: 2%;">
+	
+	</ul>
+</div>
+<input id="${id}" style="display: none;" name="product_id" value="${value!''}"/>
+<script>
+$(document).ready(function() {
+	var productList = $("#${id}_list");
+	var inputField = $("#${id}_input");
+	var hiddenField = $('#${id}');
+	
+	//处理中文输入法, 没完成前不触发查询
+	var cpLock = false;
+    inputField.on('compositionstart', function () {
+        cpLock = true;
+    });
+    inputField.on('compositionend', function () {
+        cpLock = false;
+    });
+    
+    
+	//文本域改变事件与单击事件
+	inputField.on('keyup click',function(){
+    	var me = this;
+    	var inputStr = inputField.val();
+    	var idvalue = '${id}'.replace('product','user');
+    	var user_id = $('#'+idvalue+'_hidden').val();
+    	if(cpLock)
+	    	return;
+		if (event.keyCode == 40) {
+			productList.find('li').first().focus();
+            return false;
+        }
+		
+    	$.post('/WebAdmin/ad/tao/searchProduct',{input:inputStr,user_id:user_id},function(data){
+    		productList.empty();
+			for(var i = 0; i < data.length; i++){
+				productList.append("<a tabindex='-1' class='fromLocationItem' productId='"+data[i].ID+"'><li>"+data[i].NAME+"</li></a>");
+			}
+			productList.css({ 
+		    	left:$(me).position().left+"px", 
+		    	top:$(me).position().top+28+"px" 
+		    });	 
+		    eeda.hidePopList();
+		    productList.show();
+		    $(".fromLocationItem li").mouseover(function(){
+				  $(this).css("background-color","yellow");
+			});
+		    $(".fromLocationItem li").mouseout(function(){
+				  $(this).css("background-color","");
+			});
+		},'json');
+    });
+	
+	// 没选中产品，焦点离开，隐藏列表
+	inputField.on('blur', function(){
+		if (inputField.val().trim().length == 0) {
+			hiddenField.val('');
+		};
+		productList.hide();
+ 	});
+	
+	//当用户只点击了滚动条，没选产品，再点击页面别的地方时，隐藏列表
+	productList.on('blur', function(){
+		productList.hide();
+ 	});
+
+	productList.on('mousedown', function(){
+		return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+	});
+		
+	// 选中产品
+	productList.on('mousedown', '.fromLocationItem', function(e){
+		inputField.val($(this).text());
+		hiddenField.val($(this).attr('productId'));
+		$("#${id}_list").val($(this).attr('productId'));
+		productList.hide();
+    });
+});
+</script>

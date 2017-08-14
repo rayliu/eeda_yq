@@ -39,12 +39,22 @@
 	      <input type="hidden" name="index" value="1"/>
 	      <input type="hidden" name="default" value="N"/>
 	      <div class="rowDiv">
-	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value="${one.user_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputUserField.html", 
+	                    {
+	                        id:'user1', 
+	                        label:'商家:', 
+	                        display_value: one.user_name!'',
+	                        value:one.user_id!''
+	                    }){} %>
 	      </div>
 	      <div class="rowDiv">
-	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value="${one.product_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
+	                    {
+	                        id:'product1', 
+	                        label:'产品:', 
+	                        display_value: one.product_name!'',
+	                        value:one.product_id!''
+	                    }){} %>
 	      </div>
 	       <div class="rowDiv">
 	      		<label>开始时间：</label>
@@ -71,18 +81,28 @@
 	      </div>  
       </div>  
       <div class="no_1ad" >
-	       <!--第一张广告-->  
+	       <!--第二张广告-->  
 	      <h4 class="mt10">第二张广告</h4>  
 	      <div class="mh_list mt10">
 	      <input type="hidden" name="index" value="2"/>
 	      <input type="hidden" name="default" value="N"/>
 	      <div class="rowDiv">
-	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value="${two.user_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputUserField.html", 
+	                    {
+	                        id:'user2', 
+	                        label:'商家:', 
+	                        display_value: two.user_name!'',
+	                        value:two.user_id!''
+	                    }){} %>
 	      </div>
 	      <div class="rowDiv">
-	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value="${two.product_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
+	                    {
+	                        id:'product2', 
+	                        label:'产品:', 
+	                        display_value: two.product_name!'',
+	                        value: two.product_id!''
+	                    }){} %>
 	      </div>
 	       <div class="rowDiv">
 	      		<label>开始时间：</label>
@@ -109,18 +129,28 @@
 	      </div>  
       </div>  
     <div class="no_1ad" >
-	       <!--第一张广告-->  
+	       <!--第三张广告-->  
 	      <h4 class="mt10">第三张广告</h4>  
 	      <div class="mh_list mt10">
 	      <input type="hidden" name="index" value="3"/>
 	      <input type="hidden" name="default" value="N"/>
 	      <div class="rowDiv">
-	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value="${three.user_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputUserField.html", 
+	                    {
+	                        id:'user3', 
+	                        label:'商家:', 
+	                        display_value: three.user_name!'',
+	                        value:three.user_id!''
+	                    }){} %>
 	      </div>
 	      <div class="rowDiv">
-	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value="${three.product_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
+	                    {
+	                        id:'product3', 
+	                        label:'产品:', 
+	                        display_value: three.product_name!'',
+	                        value:three.product_id!''
+	                    }){} %>
 	      </div>
 	       <div class="rowDiv">
 	      		<label>开始时间：</label>
@@ -148,18 +178,28 @@
       </div>  
     
     <div class="no_1ad" >
-	       <!--第一张广告-->  
+	       <!--第一四张广告-->  
 	      <h4 class="mt10">第四张广告</h4>  
 	      <div class="mh_list mt10">
 	      <input type="hidden" name="index" value="4"/>
 	      <input type="hidden" name="default" value="N"/>
 	   	  <div class="rowDiv">
-	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value="${four.user_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputUserField.html", 
+	                    {
+	                        id:'user4', 
+	                        label:'商家:', 
+	                        display_value: four.user_name!'',
+	                        value: four.user_id!''
+	                    }){} %>
 	      </div>
 	      <div class="rowDiv">
-	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value="${four.product_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
+	                    {
+	                        id:'product4', 
+	                        label:'产品:', 
+	                        display_value: four.product_name!'',
+	                        value: four.product_id!''
+	                    }){} %>
 	      </div>
 	       <div class="rowDiv">
 	      		<label>开始时间：</label>
@@ -196,12 +236,22 @@
 	      <input type="hidden" name="index" value="1"/>
 	      <input type="hidden" name="default" value="Y"/>
 	      <div class="rowDiv">
-	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value="${one.default_user_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputUserField.html", 
+	                    {
+	                        id:'user5', 
+	                        label:'商家:', 
+	                        display_value:one.default_user_name!'',
+	                        value:one.default_user_id!''
+	                    }){} %>
 	      </div>
 	      <div class="rowDiv">
-	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value="${one.default_product_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
+	                    {
+	                        id:'product5', 
+	                        label:'产品:', 
+	                        display_value: one.default_product_name!'',
+	                        value: one.default_product_id!''
+	                    }){} %>
 	      </div>
 	       <div>
 				<div class="file">
@@ -220,18 +270,28 @@
 	      </div>  
       </div>  
       <div class="no_1ad" >
-	       <!--第一张广告-->  
+	       <!--第二张广告-->  
 	      <h4 class="mt10">默认第二张广告</h4>  
 	      <div class="mh_list mt10">
 	       <input type="hidden" name="index" value="2"/>
 	      <input type="hidden" name="default" value="Y"/>
 	      <div class="rowDiv">
-	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value="${two.default_user_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputUserField.html", 
+	                    {
+	                        id:'user6', 
+	                        label:'商家:', 
+	                        display_value:two.default_user_name!'',
+	                        value:two.default_user_id!''
+	                    }){} %>
 	      </div>
 	      <div class="rowDiv">
-	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value="${two.default_product_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
+	                    {
+	                        id:'product6', 
+	                        label:'产品:', 
+	                        display_value:two.default_product_name!'',
+	                        value:two.default_product_id!''
+	                    }){} %>
 	      </div>
 	       <div>
 				<div class="file">
@@ -250,18 +310,28 @@
 	      </div>  
       </div>  
     <div class="no_1ad" >
-	       <!--第一张广告-->  
+	       <!--第三张广告-->  
 	      <h4 class="mt10">默认第三张广告</h4>  
 	      <div class="mh_list mt10">
 	      <input type="hidden" name="index" value="3"/>
 	      <input type="hidden" name="default" value="Y"/>
 	      <div class="rowDiv">
-	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value="${three.default_user_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputUserField.html", 
+	                    {
+	                        id:'user7', 
+	                        label:'商家:', 
+	                        display_value:three.default_user_name!'',
+	                        value:three.default_user_id!''
+	                    }){} %>
 	      </div>
 	      <div class="rowDiv">
-	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value="${three.default_product_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
+	                    {
+	                        id:'product7', 
+	                        label:'产品:', 
+	                        display_value: three.default_product_name!'',
+	                        value: three.default_product_id!''
+	                    }){} %>
 	      </div>
 	       <div>
 				<div class="file">
@@ -281,18 +351,28 @@
       </div>  
     
     <div class="no_1ad" >
-	       <!--第一张广告-->  
+	       <!--第四张广告-->  
 	      <h4 class="mt10">默认第四张广告</h4>  
 	      <div class="mh_list mt10">
 	      <input type="hidden" name="index" value="4"/>
 	      <input type="hidden" name="default" value="Y"/>
 	      <div class="rowDiv">
-	      	  <label>商家：</label>
-	          <input type="text" class="input_text" name="user" value="${four.default_user_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputUserField.html", 
+	                    {
+	                        id:'user8', 
+	                        label:'商家:', 
+	                        display_value:four.default_user_name!'',
+	                        value:four.default_user_id!''
+	                    }){} %>
 	      </div>
 	      <div class="rowDiv">
-	      	  <label>产品：</label>
-	          <input type="text" class="input_text" name="product"  value="${four.default_product_id!''}"/>
+	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
+	                    {
+	                        id:'product8', 
+	                        label:'产品:', 
+	                        display_value: four.default_product_name!'',
+	                        value: four.default_product_id!''
+	                    }){} %>
 	      </div>
 	       <div>
 				<div class="file">

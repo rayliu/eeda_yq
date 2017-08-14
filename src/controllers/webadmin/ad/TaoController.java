@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -80,10 +82,26 @@ public class TaoController extends Controller {
         	setAttr("fourth_price",re4.get("price"));
         }
 		
-		Record one = Db.findFirst("select * from wc_ad_banner_photo where ad_index = 1");
-        Record two = Db.findFirst("select * from wc_ad_banner_photo where ad_index = 2");
-        Record three = Db.findFirst("select * from wc_ad_banner_photo where ad_index = 3");
-        Record four = Db.findFirst("select * from wc_ad_banner_photo where ad_index = 4");
+		Record one = Db.findFirst("select *,ul.user_name user_name,wcp.name product_name,ul2.user_name default_user_name,wcp2.name default_product_name from wc_ad_banner_photo wabp"
+					+ " LEFT JOIN user_login ul2 on ul2.id=wabp.default_user_id"
+					+ " LEFT JOIN wc_product wcp2 on wcp2.id=wabp.default_product_id "
+					+ " LEFT JOIN wc_product wcp on wabp.product_id=wcp.id "
+					+ " LEFT JOIN user_login ul on ul.id=wabp.user_id where ad_index = 1");
+        Record two = Db.findFirst("select *,ul.user_name user_name,wcp.name product_name,ul2.user_name default_user_name,wcp2.name default_product_name from wc_ad_banner_photo wabp "
+        			+ " LEFT JOIN user_login ul2 on ul2.id=wabp.default_user_id"
+        			+ " LEFT JOIN wc_product wcp2 on wcp2.id=wabp.default_product_id "
+					+ " LEFT JOIN wc_product wcp on wabp.product_id=wcp.id "
+					+ " LEFT JOIN user_login ul on ul.id=wabp.user_id where ad_index = 2");
+        Record three =Db.findFirst("select *,ul.user_name user_name,wcp.name product_name,ul2.user_name default_user_name,wcp2.name default_product_name from wc_ad_banner_photo wabp "
+        			+ " LEFT JOIN user_login ul2 on ul2.id=wabp.default_user_id"
+        			+ " LEFT JOIN wc_product wcp2 on wcp2.id=wabp.default_product_id "
+					+ " LEFT JOIN wc_product wcp on wabp.product_id=wcp.id "
+					+ " LEFT JOIN user_login ul on ul.id=wabp.user_id where ad_index = 3");
+        Record four = Db.findFirst("select *,ul.user_name user_name,wcp.name product_name,ul2.user_name default_user_name,wcp2.name default_product_name from wc_ad_banner_photo wabp "
+        			+ " LEFT JOIN user_login ul2 on ul2.id=wabp.default_user_id"
+        			+ " LEFT JOIN wc_product wcp2 on wcp2.id=wabp.default_product_id "
+					+ " LEFT JOIN wc_product wcp on wabp.product_id=wcp.id "
+					+ " LEFT JOIN user_login ul on ul.id=wabp.user_id where ad_index = 4");
         setAttr("one", one);
         setAttr("two", two);
         setAttr("three", three);
@@ -227,4 +245,78 @@ public class TaoController extends Controller {
     	renderJson(r);
     }
     
+    //查询商家下拉
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+//    public void searchUser(){
+//    	String input = getPara("input");
+//    	long userId = LoginUserController.getLoginUserId(this);	
+//		Long parentID = pom.getParentOfficeId();
+//		
+//		List<Record> spList = Collections.EMPTY_LIST;
+//		if(StrKit.isBlank(input)){//从历史记录查找
+//            String sql = "select h.ref_id, p.id, p.abbr name,p.ref_office_id from user_query_history h, party p "
+//                    + "where h.ref_id=p.id and h.type='ARAP_COM' and h.user_id=?";
+//            spList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
+//            if(spList.size()==0){
+//                spList = Db.find(" select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "
+//                        + " and (p.company_name like '%"
+//                        + input
+//                        + "%' or p.abbr like '%"
+//                        + input
+//                        + "%' or p.code like '%"
+//                        + input
+//                        + "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) "
+//                        + " order by convert(p.abbr using gb2312) asc limit 25", parentID, parentID);
+//            }
+//            renderJson(spList);
+//        }else{
+//            if (input !=null && input.trim().length() > 0) {
+//                spList = Db
+//                        .find(" select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "
+//                                + " and (p.company_name like '%"
+//                                + input
+//                                + "%' or p.abbr like '%"
+//                                + input
+//                                + "%' or p.code like '%"
+//                                + input
+//                                + "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) "
+//                                + " order by convert(p.abbr using gb2312) asc limit 25",parentID,parentID);
+//            } else {
+//                spList = Db
+//                        .find("select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "
+//                                + " and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?) "
+//                                + " order by convert(p.abbr using gb2312) asc limit 25", parentID, parentID);
+//            }
+//            renderJson(spList);
+//        }
+//    }
+    public void searchUser(){
+    	//String input = getPara("input");
+    	List<Record> userList = new ArrayList<Record>();
+    	
+    	userList = Db.find("select id,user_name from user_login");
+    	
+    	renderJson(userList);
+    }
+    
+    public void searchProduct(){
+    	//String input = getPara("input");
+    	String user_id = getPara("user_id");
+    	List<Record> userList = new ArrayList<Record>();
+    	String sql = "select wcp.id,wcp.name from wc_product wcp";
+    	String condition = " where creator = "+user_id;
+    	if(StringUtils.isBlank(user_id)){
+    		condition = "";
+    	}
+    	sql = sql+condition;
+    	userList = Db.find(sql);
+    	renderJson(userList);
+    }
+    
+    public void searchWcCompany(){
+    	String user_id = getPara("user_id");
+    	String sql = "select wcp.name from wc_product wcp left join user_login ul on ul.id = wcp.creator where ul.id="+user_id;
+    	Record re = Db.findFirst(sql);
+    	renderJson(re);
+    }
 }
