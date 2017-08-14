@@ -22,6 +22,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 }
             ]
         });
+        
+        $('.complex_search').click(function(event) {
+            if($('.search_single').is(':visible')){
+              $('.search_single').hide();
+            }else{
+              $('.search_single').show();
+            }
+        });
+      //简单查询
+        $('#singleSearchBtn').click(function(){
+        	$('#checked_application_table').empty();
+        	singleSearchData();
+        });
+    	var singleSearchData = function(){ 
+    		  var code = $("#single_code").val().trim();
+              var name = "";
+              var name_eng = "";
+              
+              var url = "/finItem/list?name="+name+"&code="+code+"&name_eng="+name_eng;
+              dataTable.ajax.url(url).load();
+    	}
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
