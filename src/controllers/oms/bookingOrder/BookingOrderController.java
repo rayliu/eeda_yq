@@ -1155,47 +1155,69 @@ public class BookingOrderController extends Controller {
     			+ "  WHERE border.id = ?",id);
 //    	Long plan_order_id = bookOrder.getLong("plan_item_id");
     	
-    	String sqlString=" SELECT *,IFNULL(vessel_voyage,air_flight_no_voyage_no)vessel_voyage_or_flight_no_voyage_no "
-    			+ " ,IFNULL(abbr,air_company) carrier_or_air_company FROM ("
-    			+ " SELECT "
-    			+" 	jo.id,jo.order_no,jo.order_export_date,jo.pieces,jo.gross_weight, "
-    			+" 	jo.volume, "
-    			+" 	CONCAT(lo1. NAME, ' -', lo1. CODE) pol_name, "
-    			+" 	CONCAT(lo2. NAME, ' -', lo2. CODE) pod_name, "
-    			+ " CONCAT_WS('-',jos.vessel,jos.voyage) vessel_voyage,"
-    			+" 	p9.abbr HBLconsignee_name,p4.abbr, "
-    			+" 	IFNULL(CONCAT_WS('-',jos.vessel,jos.voyage), "
-    			+" 			GROUP_CONCAT(CONCAT_WS('-',joai.flight_no,joai.voyage_no) )) vessel_voyage_or_air_info, "
-    			+ " (SELECT GROUP_CONCAT(pa.abbr )  FROM  job_order_air_item joai2 "
-    			+ "								left join party pa on pa.id=joai2.air_company "
-    			+ "		        		 WHERE joai2.order_id =jo.id ) air_company, "
-    			+" 	(SELECT GROUP_CONCAT(CONCAT_WS('-',joai2.flight_no,joai2.voyage_no) )  FROM  job_order_air_item joai2  "
-    			+" 		        		 WHERE joai2.order_id =jo.id ) air_flight_no_voyage_no, "
-    			+" 	(SELECT GROUP_CONCAT(josi2.container_no )  FROM  job_order_shipment_item josi2  "
-    			+" 									 WHERE josi2.order_id =jo.id ) ship_container_no, "
-    			+" 	(SELECT GROUP_CONCAT(josi2.seal_no )  FROM  job_order_shipment_item josi2  "
-    			+" 									 WHERE josi2.order_id =jo.id ) ship_seal_no, "
-    			+" 	jos.closing_date,jos.etd,jos.eta, "
-    			+" 	(SELECT GROUP_CONCAT(joli2.take_address )  FROM  job_order_land_item joli2  "
-    			+" 									 WHERE joli2.order_id =jo.id ) take_address, "
-    			+" 	(SELECT GROUP_CONCAT(joli2.truck_type )  FROM  job_order_land_item joli2  "
-    			+" 									 WHERE joli2.order_id =jo.id ) truck_type, "
-    			+" 		(SELECT COUNT(truck_type)  FROM  job_order_land_item joli2  "
-    			+" 									 WHERE joli2.order_id =jo.id  ) truck_count "
-    			+" 	FROM "
-    			+" booking_order border "
-    			+" LEFT JOIN job_order jo on jo.id = border.to_order_id "
-    			+" LEFT JOIN job_order_shipment jos ON jos.order_id = jo.id "
-    			+" LEFT JOIN job_order_air_item joai ON joai.order_id = jo.id "
-    			+" left join party p4 on p4.id=jos.carrier "
-    			+" left join party p9 on p9.id= jos.HBLconsignee "
-    			+" LEFT JOIN job_order_shipment_item josi on josi.order_id = jo.id "
-    			+" LEFT JOIN job_order_land_item joli on joli.order_id = jo.id "
-    			+" LEFT JOIN location lo1 ON lo1.id = jos.pol "
-    			+" LEFT JOIN location lo2 ON lo2.id = jos.pod "
-    			+" WHERE  "
-    			+" jo.delete_flag = 'N' and border.id ="+id
-    			+ " )B";
+    	String sqlString=" SELECT "
+    			+" 	*, IFNULL(vessel_voyage, air_flight_no_voyage_no ) vessel_voyage_or_flight_no_voyage_no"
+    			+" FROM  ( "
+    			+" 		SELECT jo.id, jo.order_no, jo.order_export_date,jo.pieces,jo.volume,jo.gross_weight,jo.type,jo.trade_type,jo.trans_clause, "
+    			+" 			jo.job_unit,CONCAT(ut.name,ut.name_eng) job_unit_name,jos.MBLshipper,jos.MBLnotify_party, "
+    			+" 			jos.MBLconsignee,jos.HBLshipper,jos.HBLconsignee,jos.HBLnotify_party,jos.MBLshipper_info, "
+    			+" 			jos.MBLconsignee_info,jos.MBLnotify_party_info,jos.HBLshipper_info, "
+    			+" 			jos.HBLconsignee_info,jos.HBLnotify_party_info,jos.cargo_desc,jos.etd,jos.eta,jos.ata,jos.atd, "
+    			+" 			jos.closing_date,jos.vessel,jos.voyage,jos.pol,jos.pod,p4.abbr carrier_name,jos.carrier, "
+    			+" 			pMBLShipper.company_name MBLconsignor_name,pMBLconsignee.company_name MBLconsignee_name,pMBLnotify_party.company_name MBLnotify_name, "
+    			+" 			pHBLshipper.company_name HBLconsignor_name,p9.abbr HBLconsignee_name,pHBLnotify_party.company_name HBLnotify_name, "
+    			+" 			CONCAT(lo1. NAME, ' -', lo1. CODE) pol_name,CONCAT(lo2. NAME, ' -', lo2. CODE) pod_name, "
+    			+" 			CONCAT(loAir1. NAME, ' -', loAir1. CODE) air_pol_name,CONCAT(loAir2. NAME, ' -', loAir2. CODE) air_pod_name, "
+    			+" 			pAir.abbr air_company_name, joai.air_company,joai.eta air_eta,joai.etd air_etd,joai.start_from, "
+    			+" 			joai.destination,dock1.dock_name take_address_name,dock2.dock_name delivery_address_name, "
+    			+" 			joli.delivery_address,joli.eta land_eta,joli.consignee, "
+    			+" 			pLandConsigee.company_name land_consigee_name,joli.consignee_contact_man land_consignee_contact_man, "
+    			+" 			joli.consignee_phone land_consignee_phone,joli.driver,joli.driver_tel,			 "
+    			+" 			CONCAT_WS('-', jos.vessel, jos.voyage) vessel_voyage, "
+    			+" 			IFNULL( CONCAT_WS('-', jos.vessel, jos.voyage),GROUP_CONCAT( CONCAT_WS( ' / ', joai.flight_no,joai.voyage_no) "
+    			+" 				) "
+    			+" 			) vessel_voyage_or_air_info, ( SELECT GROUP_CONCAT( CONCAT_WS( '-', joai2.flight_no,joai2.voyage_no )) "
+    			+" 				FROM job_order_air_item joai2 "
+    			+ "             WHERE joai2.order_id = jo.id ) air_flight_no_voyage_no, "
+    			+" 			( SELECT GROUP_CONCAT(CONCAT(josi2.container_no,' / ',josi2.seal_no) SEPARATOR ';')  "
+    			+" 				FROM job_order_shipment_item josi2 "
+    			+" 				WHERE josi2.order_id = jo.id ) ship_container_no_seal_no, "
+    			+" 			( SELECT GROUP_CONCAT(josi2.seal_no) "
+    			+" 				FROM job_order_shipment_item josi2 "
+    			+" 				WHERE josi2.order_id = jo.id ) ship_seal_no, "
+    			+" 			( SELECT GROUP_CONCAT(joli2.take_address) "
+    			+" 				FROM job_order_land_item joli2 "
+    			+" 				WHERE joli2.order_id = jo.id ) take_address, "
+    			+" 			( SELECT GROUP_CONCAT(joli2.truck_type) "
+    			+" 				FROM job_order_land_item joli2 "
+    			+" 				WHERE joli2.order_id = jo.id ) truck_type, "
+    			+" 			( SELECT COUNT(truck_type) "
+    			+" 				FROM job_order_land_item joli2 "
+    			+" 				WHERE joli2.order_id = jo.id ) truck_count "
+    			+" 		FROM booking_order border "
+    			+" 		LEFT JOIN job_order jo ON jo.id = border.to_order_id "
+    			+" 		LEFT JOIN unit ut on ut.id = jo.job_unit "
+    			+" 		LEFT JOIN job_order_shipment jos ON jos.order_id = jo.id "
+    			+" 		LEFT JOIN job_order_air_item joai ON joai.order_id = jo.id "
+    			+" 		LEFT JOIN party pMBLShipper on pMBLShipper.id = jos.MBLshipper "
+    			+" 		LEFT JOIN party pMBLconsignee on pMBLconsignee.id = jos.MBLconsignee "
+    			+" 		LEFT JOIN party pMBLnotify_party on pMBLnotify_party.id = jos.MBLnotify_party "
+    			+" 		LEFT JOIN party pHBLshipper on pHBLshipper.id = jos.HBLshipper "
+    			+" 		LEFT JOIN party p9 ON p9.id = jos.HBLconsignee "
+    			+" 		LEFT JOIN party pHBLnotify_party on pHBLnotify_party.id = jos.HBLnotify_party "
+    			+" 		LEFT JOIN party p4 ON p4.id = jos.carrier "
+    			+" 		LEFT JOIN job_order_shipment_item josi ON josi.order_id = jo.id "
+    			+" 		LEFT JOIN location loAir1 on loAir1.id = joai.start_from "
+    			+" 		LEFT JOIN location loAir2 on loAir2.id = joai.destination "
+    			+" 		LEFT JOIN party pAir on pAir.id = joai.air_company "
+    			+" 		LEFT JOIN job_order_land_item joli ON joli.order_id = jo.id "
+    			+" 		LEFT JOIN dockinfo dock1 on dock1.id = joli.take_address "
+    			+" 		LEFT JOIN dockinfo dock2 on dock2.id = joli.delivery_address "
+    			+" 		LEFT JOIN party pLandConsigee on pLandConsigee.id = joli.consignee  "
+    			+" 		LEFT JOIN location lo1 ON lo1.id = jos.pol "
+    			+" 		LEFT JOIN location lo2 ON lo2.id = jos.pod  "
+    			+" 		WHERE jo.delete_flag = 'N' AND border.id = "+id
+    			+" 	) B ";
     	Record re = Db.findFirst(sqlString);
     	if(re != null){
     		setAttr("jobOrder", re);
@@ -1221,11 +1243,30 @@ public class BookingOrderController extends Controller {
 	    	
 	    	
 	    	Record jobcustom = Db.findFirst("select * from job_order_custom_china_self_item where order_id = ?",job_order_id);
-	    	if(jobcustom != null){
-	    		String custom_order_no = jobcustom.getStr("custom_order_no");
-	    		String status = jobcustom.getStr("status");
+
+	    	Record planCustom = Db.findFirst("SELECT cjo.id,cjo.order_no custom_plan_no,o.office_name custom_bank,cjo. STATUS applybill_status,	cjo.ref_no custom_order_no, "
+	    			+"	cjo.custom_state custom_status,	ul.c_name creator,cjo.create_stamp,ul2.c_name fill_name,cjo.fill_stamp,	cjo.customs_billCode,SUBSTR(cjo.date_custom,1,10) date_custom"
+	    			+" FROM 	custom_plan_order cjo "
+	    			+" LEFT JOIN user_login ul ON ul.id = cjo.creator "
+	    			+" LEFT JOIN user_login ul2 ON ul2.id = cjo.fill_by "
+	    			+" LEFT JOIN office o ON o.id = cjo.to_office_id "
+	    			+" WHERE cjo.ref_job_order_id = ? "
+	    			+" AND ul.office_id = ?  AND cjo.delete_flag = 'N' ",job_order_id,re.get("office_id"));
+	    	
+	    	if(planCustom != null){
+	    		String custom_order_no = planCustom.getStr("customs_billCode");
+	    		String status = planCustom.getStr("custom_status");
+	    		String create_stamp = planCustom.getStr("date_custom");
 	    		setAttr("job_custom_order_no", custom_order_no);
 	    		setAttr("job_status", status);
+	    		setAttr("date_custom", create_stamp);
+	    	}else if(jobcustom != null){  		
+	    		String custom_order_no = jobcustom.getStr("custom_order_no");
+	    		String status = jobcustom.getStr("status");
+	    		String create_stamp = jobcustom.getStr("create_stamp");
+	    		setAttr("job_custom_order_no", custom_order_no);
+	    		setAttr("job_status", status);
+	    		setAttr("date_custom", create_stamp);
 	    	}
 	    	
 	    	//上船时间
