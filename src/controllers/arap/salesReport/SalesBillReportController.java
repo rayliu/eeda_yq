@@ -135,7 +135,7 @@ public class SalesBillReportController extends Controller {
 		String condition = sp_id+order_export_date;
 		
 		String sql=" SELECT *,SUM(foot_charge_total) sum_foot_charge_total,SUM(foot_cost_total) sum_foot_cost_total,(SUM(foot_charge_total)-SUM(foot_cost_total)) sum_foot_gross_profit,  "
-				+" SUM(foot_pay_charge_total) sum_foot_pay_charge_total, (SUM(foot_pay_charge_total)- SUM(foot_charge_total))  sum_foot_current_profit, "
+				+" SUM(foot_pay_charge_total) sum_foot_pay_charge_total, (SUM(foot_pay_charge_total)- SUM(foot_cost_total))  sum_foot_current_profit, "
 				+" CONVERT(SUM(commission_money),decimal(10,2)) foot_commission_money from ( "
 				+" SELECT *,SUM(charge_total) foot_charge_total,SUM(pay_charge_total) foot_pay_charge_total,SUM(cost_total) foot_cost_total,"
 				+ "(((SUM(charge_total)-SUM(cost_total))*royalty_rate)/100) commission_money from ( "

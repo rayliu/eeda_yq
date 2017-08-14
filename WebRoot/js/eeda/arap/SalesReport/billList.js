@@ -254,7 +254,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  if(sum_foot_current_profit<0){
         		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","red");
         	  }else{
-        		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)); 
+        		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","");; 
         	  }
         	  
         	  
