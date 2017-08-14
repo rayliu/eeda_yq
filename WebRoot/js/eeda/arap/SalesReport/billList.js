@@ -112,7 +112,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		             	    return str;
 				  }
 	            },
-	            { "data": "SUM_COST_TOTAL", "width": "100px"  ,"className":"sum_pay_cost_total",
+	            { "data": "SUM_COST_TOTAL", "width": "100px"  ,"className":"sum_cost_total",
 	            	"render": function(data, type, full, meta) {
 		            	    if(!data){
 		            	    	return '';
@@ -163,15 +163,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					"render": function(data, type, full, meta) {
 							var str=0;
 		            		
-		            		var sum_pay_charge_total=0;
+		            		var sum_charge_total=0;
 		            		var sum_cost_total=0;
-		            		if(full.SUM_PAY_CHARGE_TOTAL){
-		            			sum_pay_charge_total=full.SUM_PAY_CHARGE_TOTAL;
+		            		if(full.SUM_CHARGE_TOTAL){
+		            			sum_charge_total=full.SUM_CHARGE_TOTAL;
 		            		}
 		            		if(full.SUM_COST_TOTAL){
 		            			sum_cost_total=full.SUM_COST_TOTAL;
 		            		}
-		            		str = sum_pay_charge_total-sum_cost_total;
+		            		str = sum_charge_total-sum_cost_total;
 		            		
 		            		var royalty_rate = 0;
 		            		if(full.ROYALTY_RATE){
@@ -237,13 +237,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  order_export_date_end_time:order_export_date_end_time
           },function(data){
       	  
-        	  var sum_charge_total = parseFloat(data.SUM_CHARGE_TOTAL).toFixed(2);
+        	  var sum_foot_charge_total = parseFloat(data.SUM_FOOT_CHARGE_TOTAL).toFixed(2);
+        	  var sum_foot_cost_total = parseFloat(data.SUM_FOOT_COST_TOTAL).toFixed(2);
+        	  var sum_foot_gross_profit = parseFloat(data.SUM_FOOT_GROSS_PROFIT).toFixed(2);
+        	  var sum_foot_pay_charge_total = parseFloat(data.SUM_FOOT_PAY_CHARGE_TOTAL).toFixed(2);
+        	  var sum_foot_current_profit = parseFloat(data.SUM_FOOT_CURRENT_PROFIT).toFixed(2);
+        	  var foot_commission_money = parseFloat(data.FOOT_COMMISSION_MONEY).toFixed(2);
 
         	  var total=parseFloat(data.TOTAL);
 
         	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=order_no]').html('共'+total+'项汇总：');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_charge_total]').html("折合应收CNY:<br>"+eeda.numFormat(sum_charge_total,3));
-
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_charge_total]').html("折合应收CNY:<br>"+eeda.numFormat(sum_foot_charge_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_pay_charge_total]').html("折合实收CNY:<br>"+eeda.numFormat(sum_foot_pay_charge_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_cost_total]').html("折合应付CNY:<br>"+eeda.numFormat(sum_foot_cost_total,3));
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=gross_profit]').html("毛利润CNY:<br>"+eeda.numFormat(sum_foot_gross_profit,3));
+        	  if(sum_foot_current_profit<0){
+        		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","red");
+        	  }else{
+        		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)); 
+        	  }
+        	  
+        	  
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=commission_money]').html("提成金额CNY:<br>"+eeda.numFormat(foot_commission_money,3));
           });
           
           

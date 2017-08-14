@@ -116,7 +116,7 @@ public class SalesBillReportController extends Controller {
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
-		String sp_id =" and sp_id="+spid;
+		String sp_id =" and p.id="+spid;
 		if(StringUtils.isBlank(spid)){
 			sp_id="";
 		}
@@ -134,21 +134,29 @@ public class SalesBillReportController extends Controller {
 		}
 		String condition = sp_id+order_export_date;
 		
-		String sql=" SELECT ( "
-				+" 		SELECT "
-				+" 			IFNULL( "
-				+" 				SUM(joa.currency_total_amount), "
-				+" 				0 "
-				+" 			) "
-				+" 		FROM "
-				+" 			job_order jo "
-				+" 		LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
-				+" 		WHERE "
-				+" 			jo.office_id = "+office_id
-				+" 		AND joa.order_type = 'charge'"+condition
-				+" 		AND jo.delete_flag = 'N' "
-				+" 		AND jo.customer_id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') "
-				+" 	) sum_charge_total ";
+		String sql=" SELECT *,SUM(foot_charge_total) sum_foot_charge_total,SUM(foot_cost_total) sum_foot_cost_total,(SUM(foot_charge_total)-SUM(foot_cost_total)) sum_foot_gross_profit,  "
+				+" SUM(foot_pay_charge_total) sum_foot_pay_charge_total, (SUM(foot_pay_charge_total)- SUM(foot_charge_total))  sum_foot_current_profit, "
+				+" CONVERT(SUM(commission_money),decimal(10,2)) foot_commission_money from ( "
+				+" SELECT *,SUM(charge_total) foot_charge_total,SUM(pay_charge_total) foot_pay_charge_total,SUM(cost_total) foot_cost_total,"
+				+ "(((SUM(charge_total)-SUM(cost_total))*royalty_rate)/100) commission_money from ( "
+				+" SELECT 	cs.royalty_rate,jo.order_no,jo.order_export_date, "
+				+" IF ( joa.order_type = 'charge',joa.currency_total_amount,0) charge_total, "
+				+" IF ( joa.order_type = 'charge' AND joa.pay_flag = 'Y',joa.currency_total_amount,0) pay_charge_total, "
+				+" IF ( joa.order_type = 'cost',joa.currency_total_amount,0) cost_total "
+				+" FROM job_order jo "
+				+" LEFT JOIN job_order_arap joa ON joa.order_id = jo.id "
+				+" LEFT JOIN party p ON p.id = jo.customer_id "
+				+" LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id "
+				+" LEFT JOIN user_login ul ON ul.id = cs.salesman_id "
+				+" WHERE "
+				+" 	jo.office_id ="+office_id
+				+" AND p.id IN ( 	SELECT  customer_id "
+				+" 	FROM user_customer "
+				+" 	WHERE user_name = '"+currentUser.getPrincipal()+"' )  "+condition
+				+" ) A "
+				+" WHERE  	1 = 1  GROUP BY  	A.order_no  ORDER BY  	order_export_date desc "
+				+"  "
+				+" ) B  ";
 
 		Record re = Db.findFirst(sql);
 		long total=list();
