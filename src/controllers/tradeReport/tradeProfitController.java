@@ -85,11 +85,12 @@ public class tradeProfitController extends Controller {
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
-		
-		String sp_id =" and customer_id="+customer_id;
-		if(" and customer_id=".equals(sp_id)){
-			sp_id="";
-		}
+		String sp_id = "";
+        if(customer_id==null||StringUtils.isBlank(customer_id)){
+        	sp_id="";
+        }else{
+    		sp_id =" and customer_id="+customer_id;
+        }
 		if(order_export_date_begin_time==null){
 			order_export_date_begin_time="";
 		}
