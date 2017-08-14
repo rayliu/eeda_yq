@@ -21,6 +21,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorde
                	  },
             ]
         });
+        
+        $('.complex_search').click(function(event) {
+            if($('.search_single').is(':visible')){
+              $('.search_single').hide();
+            }else{
+              $('.search_single').show();
+            }
+        });
+        //简单查询
+        $('#singleSearchBtn').click(function(){
+        	$('#checked_application_table').empty();
+        	singleSearchData();
+        });
+    	var singleSearchData = function(){ 
+    		var code = $("#single_code").val() ;
+    		var name = "";
+    		var name_eng = "";
+    		var url = "/unit/list?name="+name+"&code="+code+"&name_eng="+name_eng;
+    	    dataTable.ajax.url(url).load() ;
+    	}
+        
       //base on config hide cols
         dataTable.columns().eq(0).each( function(index) {
             var column = dataTable.column(index);
