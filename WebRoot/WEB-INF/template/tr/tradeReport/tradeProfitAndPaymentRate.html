@@ -83,9 +83,8 @@
 	            </div><!-- /.row 查询条件 结束--> 
 	         </div>
 	      </div>
-	                                        
-                                    
-	                                    <div class="form-group" >
+	             <div class="row">
+	             		  <div class="form-group col-lg-6" >
 		                                    <label>应收对账金额合计：<span style="color:#AAAAAA"></span></label>
 		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">USD:<span id="USD_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
@@ -95,7 +94,7 @@
 		                                   <label style="color:#AAAAAA"><span id="total_charge" style="color:black"></span></label><nbsp><nbsp>
 	                                    </div><br>
 	                                
-	                                    <div class="form-group" >
+	                                    <div class="form-group col-lg-6" >
 		                                   <label>应付对账金额合计：<span style="color:#AAAAAA"></span></label>
 		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
 		                                   <label style="color:#AAAAAA">USD:<span id="USD_cost_tatol" style="color:black"></span></label><nbsp><nbsp>
@@ -104,6 +103,9 @@
 		                                   <label>应付对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
 		                                   <label style="color:#AAAAAA"><span id="total_cost" style="color:black"></span></label><nbsp><nbsp>
 	                                    </div><br>
+	             </div>                  
+                                    
+	                                  
 	                                    
 	                                    <div class="form-group " style="display:none" >
 		                                    <label>利润(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
@@ -112,11 +114,14 @@
 	      
 	  </div> 
 	                <div class="row simple_list_div">               
-                                     <%include("/eeda/component/form/detailTableWithFoot.html", 
+                                     <%include("/eeda/component/form/doubleTableHead.html", 
                                         {
+                                        
                                             id:'eeda_table', 
-                                            
-                                            headers:['结算公司',
+                                            fixedheader:true,
+					                       	top_headers:[['结算公司','rowspan="2" class="oneRow"'],['应收费用','colspan="5" class="doubleRow"'],
+					                       				 ['未收费用','colspan="5" class="doubleRow"']],
+                                            headers:[
                                             		'应收(CNY)',
                                             		'应收(USD)',
                                             		'应收(JPY)',
