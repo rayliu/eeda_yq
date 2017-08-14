@@ -142,19 +142,13 @@ $(document).ready(function() {
         order.to_office_id = $('#to_office_id').val();
 
         order.consignor = $('#consignor').val();     
-        order.consignor_man = $('#consignor_man').val();
-        order.consignor_phone = $('#consignor_phone').val();
-        order.consignor_address = $('#consignor_address').val();
+        order.consignor_info = $('#consignor_info').val();
 
         order.consignee = $('#consignee').val();     
-        order.consignee_man = $('#consignee_man').val();
-        order.consignee_phone = $('#consignee_phone').val();
-        order.consignee_address = $('#consignee_address').val();
+        order.consignee_info = $('#consignee_info').val();
         
         order.notify = $('#notify').val();     
-        order.notify_man = $('#notify_man').val();
-        order.notify_phone = $('#notify_phone').val();
-        order.notify_address = $('#notify_address').val();
+        order.notify_info = $('#notify_info').val();
         
         order.transport_type = transport_type_str;
         order.booking_no = $('#booking_no').val();

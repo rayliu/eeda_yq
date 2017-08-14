@@ -86,34 +86,34 @@
     	<input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
 	    <div class="simple_search_div three_tab" style="margin-right:2%;">    		
 		    		<%include("/eeda/component/form/inputSelectArea.html", 
-					                    {   id:'ocean_MBLshippe', 
-					                        label:'发货人MBLShipper', 
-					                        display_value:office.office_name!order.office_name!'',
-					                        value:office.id!order.office_id!'',
-					                        textarea_value:shipment.MBLshipper_info!'',
+					                    {   id:'consignor', 
+					                        label:'发货人consignor', 
+					                        display_value:office.office_name!order.office_name!order.consignor_name!'',
+					                        value:office.id!order.consignor!'',
+					                        textarea_value:order.consignor_info!'',
 					                        disabled:'disabled'
 					                    }){}%>
 	    </div>
 	    
 	    <div class="simple_search_div three_tab" style="margin-right:2%;">
 		    		<%include("/eeda/component/form/inputPartySelectArea.html", 
-				                    {   id:'ocean_HBLconsignee', 
-				                        label:'收货人HBLConsignee', 
-				                        display_value:order.HBLconsigneeAbbr!'',
-				                        value:order.HBLconsignee!'',
-				                        textarea_value:order.HBLconsignee_info!''
+				                    {   id:'consignee', 
+				                        label:'收货人consignee', 
+				                        display_value:order.consignee_name!'',
+				                        value:order.consignee!'',
+				                        textarea_value:order.consignee_info!''
 				                    }){}%>
 	    </div>
 	    
 	    <div class="simple_search_div three_tab">
 	    	<%include("/eeda/component/form/inputPartySelectArea.html", 
 				                    {
-				                        id:'ocean_MBLnotify_party', 
-				                        label:'通知人MBLNotifyParty', 
+				                        id:'notify', 
+				                        label:'通知人notify', 
 				                        lable_msg:'<nbsp><input id="copy_consignee" style="margin-left:20px;padding-top:5px" type="checkbox">SAME AS CONSIGNEE<nbsp>',
-				                        display_value:shipment.MBLnotify_partyAbbr!'',
-				                        value:shipment.MBLnotify_party!'',
-				                        textarea_value:shipment.MBLnotify_party_info!''
+				                        display_value:order.notify_name!'',
+				                        value:order.notify!'',
+				                        textarea_value:order.notify_info!''
 				                    }){} %>
 	    </div>
     </div>

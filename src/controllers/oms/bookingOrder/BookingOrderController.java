@@ -1142,7 +1142,7 @@ public class BookingOrderController extends Controller {
     public void edit() {
     	String id = getPara("id");
     	BookingOrder bookingOrder = BookingOrder.dao.findFirst(
-    			" SELECT border.*,p1.abbr consignor_name,p2.abbr consignee_name,p3.abbr notify_name,"
+    			" SELECT border.*,p1.abbr consignor_name,p2.abbr consignee_name,p3.abbr notify_name,o.office_name,"
     			+ " p4.abbr entrust_name,p4.ref_office_id entrust_ref_office_id,o.office_name,ul.c_name creator_name,CONCAT(ut.name,ut.name_eng) order_unit_input"
     			+ " from booking_order border "
     			+ " LEFT JOIN office o on o.id =  border.office_id "
@@ -1957,31 +1957,24 @@ public class BookingOrderController extends Controller {
     	
     	
     	//booking主表信息
-    	String consignor_man = booking.getStr("consignor_man");
-    	String consignor_phone = booking.getStr("consignor_phone");
-    	String consignor_address = booking.getStr("consignor_address");
+    	String consignor_man = booking.getStr("consignor_info");
     	String consignee = null;
     	if(booking.get("consignee")!=null){
     		consignee = booking.get("consignee").toString();
     	}
-    	String consignee_man = booking.getStr("consignee_man");
-    	String consignee_phone = booking.getStr("consignee_phone");
-    	String consignee_address = booking.getStr("consignee_address");
+    	String consignee_man = booking.getStr("consignee_info");
     	
     	
     	String notify=null;
     	if(booking.get("notify")!=null){
     		notify = booking.get("notify").toString();
     	}
-    	String notify_man = booking.getStr("notify_man");
-    	String notify_phone = booking.getStr("notify_phone");
-    	String notify_address = booking.getStr("notify_address");
+    	String notify_man = booking.getStr("notify_info");
     	
     	
     	String transport_type = booking.getStr("transport_type");
     	String booking_no = booking.getStr("booking_no");
     	String outer_order_no = booking.getStr("outer_order_no");
-    	String relation_no = booking.getStr("relation_no");
     	String order_unit = booking.getStr("order_unit");
     	String gargo_name = booking.getStr("gargo_name");
     	Date order_export_date = booking.get("order_export_date");
@@ -2111,8 +2104,7 @@ public class BookingOrderController extends Controller {
 	                order.set("from_order_type", "booking");
 	                order.set("from_order_id", booking_id);
 	                order.set("from_order_no", booking_no);
-	                order.set("old_order_no", outer_order_no);
-	                order.set("relation_no", relation_no);	                
+	                order.set("old_order_no", outer_order_no);                
 	                order.set("job_unit", order_unit);	                
 	                                
 	                order.set("trans_clause", (trans_clause==null?air_trans_clause:trans_clause));
@@ -2171,6 +2163,7 @@ public class BookingOrderController extends Controller {
 
 	                booking.set("to_order_id", to_order_id);
 	                booking.set("to_order_type", "forwarderJobOrder");
+	                booking.set("relation_no", order_no);
 	                booking.set("booking_submit_flag", "Y");
 	                booking.set("status", "已提交");
 	                booking.update();
