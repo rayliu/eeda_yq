@@ -111,7 +111,7 @@ GROUP BY c.id) a
 	) total,CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
 
 (select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
-			CONCAT(c.name,': ',FORMAT(sum(exchange_total_amount),2)) total
+			CONCAT(c.name,': ',convert(sum(exchange_total_amount),decimal(10,2))) total
 		FROM
 			job_order_arap joa
 		LEFT JOIN currency c ON c.id = joa.exchange_currency_id
