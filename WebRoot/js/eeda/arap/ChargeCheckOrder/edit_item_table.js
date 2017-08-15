@@ -153,10 +153,10 @@ $(document).ready(function() {
             columns:[
             { "width": "10px", "orderable": false,
             "render": function ( data, type, full, meta ) {
-                  var strcheck='<input type="checkbox" class="checkBox" value="'+full.ID+'">';
+                  var strcheck='<input type="checkbox" class="checkBox" name="check_box" value="'+full.ID+'">';
                 for(var i=0;i<itemIds.length;i++){
                            if(itemIds[i]==full.ID){
-                             strcheck= '<input type="checkbox" class="checkBox" checked="checked" value="'+full.ID+'">';
+                             strcheck= '<input type="checkbox" class="checkBox" name="check_box" checked="checked" value="'+full.ID+'">';
                            }
                        }
                 return strcheck;
@@ -1034,7 +1034,7 @@ $(document).ready(function() {
 
           var order_id=$('#order_id').val();
            var charge_itemlist=[];
-          $('#eeda_charge_table input[name=order_check_box]:checked').each(function(){
+          $('#eeda_charge_table input[name=check_box]:checked').each(function(){
                 var id=$(this).val();
                 charge_itemlist.push(id);
           });
@@ -1047,6 +1047,7 @@ $(document).ready(function() {
                  $('#usd').val((parseFloat(data.USD)).toFixed(2));
                  $('#hkd').val((parseFloat(data.HKD)).toFixed(2));
                  $('#jpy').val((parseFloat(data.JPY)).toFixed(2));
+                 $.scojs_message('添加成功', $.scojs_message.TYPE_OK);
           },'json').fail(function() {
                $.scojs_message('添加失败', $.scojs_message.TYPE_ERROR);
           });
@@ -1057,12 +1058,12 @@ $(document).ready(function() {
           var itemIds=[];
           
           if($(this).prop('checked')){
-            $("#eeda_charge_table input[name=order_check_box]").prop('checked',true);
+            $("#eeda_charge_table input[name=check_box]").prop('checked',true);
           }else{
-             $("#eeda_charge_table input[name=order_check_box]").prop('checked',false);
+             $("#eeda_charge_table input[name=check_box]").prop('checked',false);
           }
          if($(this).prop('checked')){
-                 $("#eeda_charge_table input[name=order_check_box]:checked").each(function(){                     
+                 $("#eeda_charge_table input[name=check_box]:checked").each(function(){                     
                      itemIds.push($(this).val());
                   });
                  $('#add_charge_item').attr('disabled',false);
@@ -1071,9 +1072,9 @@ $(document).ready(function() {
            }
      });
 
-      $('#eeda_charge_table').on('click',"input[name='order_check_box']",function () {
+      $('#eeda_charge_table').on('click',"input[name='check_box']",function () {
         var  flag=0;
-          $("input[name='order_check_box']").each(function(){
+          $("input[name='check_box']").each(function(){
               if($(this).prop('checked')){
                 flag++;
               }
