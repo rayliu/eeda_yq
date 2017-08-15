@@ -141,9 +141,9 @@ $(document).ready(function() {
         order.office_id = $('#office_id').val();
         order.to_office_id = $('#to_office_id').val();
 
-        order.consignor = $('#consignor').val();     
-        order.consignor_info = $('#consignor_info').val();
-
+        order.shipper = $('#shipper').val();     
+        order.shipper_info = $('#shipper_info').val();
+        
         order.consignee = $('#consignee').val();     
         order.consignee_info = $('#consignee_info').val();
         

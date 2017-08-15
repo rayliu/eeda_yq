@@ -86,19 +86,18 @@
     	<input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
 	    <div class="simple_search_div three_tab" style="margin-right:2%;">    		
 		    		<%include("/eeda/component/form/inputSelectArea.html", 
-					                    {   id:'consignor', 
-					                        label:'发货人consignor', 
-					                        display_value:office.office_name!order.office_name!order.consignor_name!'',
-					                        value:office.id!order.consignor!'',
-					                        textarea_value:jobOrder.HBLshipper_info!jobOrder.MBLshipper_info!order.consignor_info!'',
-					                        disabled:'disabled'
+					                    {   id:'shipper', 
+					                        label:'发货人Shipper', 
+					                        display_value:jobOrder.HBLshipper_name!self.abbr!order.shipper_name!'',
+					                        value:jobOrder.HBLshipper!self.id!order.Shipper!'',
+					                        textarea_value:jobOrder.HBLshipper_info!jobOrder.MBLshipper_info!order.shipper_info!self_info!''
 					                    }){}%>
 	    </div>
 	    
 	    <div class="simple_search_div three_tab" style="margin-right:2%;">
 		    		<%include("/eeda/component/form/inputPartySelectArea.html", 
 				                    {   id:'consignee', 
-				                        label:'收货人consignee', 
+				                        label:'收货人Consignee', 
 				                        display_value:jobOrder.HBLconsignee_name!jobOrder.MBLconsignee_name!order.consignee_name!'',
 				                        value:jobOrder.HBLconsignee!jobOrder.MBLconsignee!order.consignee!'',
 				                        textarea_value:jobOrder.HBLconsignee_info!jobOrder.MBLconsignee_info!order.consignee_info!''
@@ -109,7 +108,7 @@
 	    	<%include("/eeda/component/form/inputPartySelectArea.html", 
 				                    {
 				                        id:'notify', 
-				                        label:'通知人notify', 
+				                        label:'通知人NotifyParty', 
 				                        lable_msg:'<nbsp><input id="copy_consignee" style="margin-left:20px;padding-top:5px" type="checkbox">SAME AS CONSIGNEE<nbsp>',
 				                        display_value:jobOrder.HBLnotify_party_info!jobOrder.MBLnotify_party_info!order.notify_name!'',
 				                        value:jobOrder.HBLnotify_party!jobOrder.MBLnotify_party!order.notify!'',

@@ -24,6 +24,7 @@ import models.eeda.oms.bookOrder.BookOrderSendMail;
 import models.eeda.oms.bookOrder.BookOrderSendMailTemplate;
 import models.eeda.oms.bookOrder.BookingOrder;
 import models.eeda.oms.jobOrder.JobOrder;
+import models.eeda.oms.jobOrder.JobOrderAir;
 import models.eeda.oms.jobOrder.JobOrderAirItem;
 import models.eeda.oms.jobOrder.JobOrderDoc;
 import models.eeda.oms.jobOrder.JobOrderLandItem;
@@ -86,12 +87,43 @@ public class BookingOrderController extends Controller {
    		Office office = Office.dao.findById(office_id);
    		setAttr("office", office);
    		
-   		Record re = Db.findFirst("select * from party where type='SP' and ref_office_id is not null and office_id = ?",office_id);
+   		Record re = Db.findFirst("select * from party where ref_office_id =? and office_id = ?",office_id,office_id);
    		if(re!=null){
+   			String address = re.getStr("address");
+   			String contact_person = re.getStr("contact_person");
+   			String phone = re.getStr("phone");
+   			String fax = re.getStr("fax");
+   			String zip_code = re.getStr("zip_code");
+   			if(StringUtils.isEmpty(address)){
+   				address="";
+   			}
+   			if(contact_person==""||contact_person=="undefined"||contact_person==null){
+                contact_person="";
+	        }else{
+	         	contact_person="ATTN:"+contact_person+'\r';
+	        }
+   			if(phone==""||phone=="undefined"||phone==null){
+                phone="";
+   			}else{
+   				phone = "TEL:"+phone+" ";
+   			}
+   			if(fax==""||fax=="undefined"||fax==null){
+   	            fax="";
+   	        }else{
+   	        	fax = "FAX:"+fax;
+   	        }
+   			if(zip_code==""||zip_code=="undefined"||zip_code==null){
+   	        	zip_code="";
+   	        }else{
+   	        	zip_code = "ZIP CODE:"+zip_code+'\r';
+   	        }
+   			String system_info=address+'\r'+zip_code+contact_person+phone+fax;
    			Long ref_office_id = re.getLong("ref_office_id");
    	   		Office ref_office = Office.dao.findById(ref_office_id);
    	   		setAttr("ref_office", ref_office);
+   	   		setAttr("self_info", system_info);
    		}
+   		setAttr("self", re);
    		
    		render("/oms/bookingOrder/bookingOrderEdit.html");
         
@@ -1142,12 +1174,12 @@ public class BookingOrderController extends Controller {
     public void edit() {
     	String id = getPara("id");
     	BookingOrder bookingOrder = BookingOrder.dao.findFirst(
-    			" SELECT border.*,p1.abbr consignor_name,p2.abbr consignee_name,p3.abbr notify_name,o.office_name,"
+    			" SELECT border.*,p1.abbr shipper_name,p2.abbr consignee_name,p3.abbr notify_name,o.office_name,"
     			+ " p4.abbr entrust_name,p4.ref_office_id entrust_ref_office_id,o.office_name,ul.c_name creator_name,CONCAT(ut.name,ut.name_eng) order_unit_input"
     			+ " from booking_order border "
     			+ " LEFT JOIN office o on o.id =  border.office_id "
     			+ " LEFT JOIN unit ut on ut.id =  border.order_unit "
-    			+ " LEFT JOIN party p1 on p1.id = border.consignor"
+    			+ " LEFT JOIN party p1 on p1.id = border.shipper"
     			+ " LEFT JOIN party p2 on p2.id = border.consignee"
     			+ " LEFT JOIN party p3 on p3.id = border.notify"
     			+ " LEFT JOIN party p4 on p4.id = border.entrust"
@@ -1164,8 +1196,8 @@ public class BookingOrderController extends Controller {
     			+" 			jos.MBLconsignee_info,jos.MBLnotify_party_info,jos.HBLshipper_info, "
     			+" 			jos.HBLconsignee_info,jos.HBLnotify_party_info,jos.cargo_desc,jos.etd,jos.eta,jos.ata,jos.atd, "
     			+" 			jos.closing_date,jos.vessel,jos.voyage,jos.pol,jos.pod,p4.abbr carrier_name,jos.carrier, "
-    			+" 			pMBLShipper.company_name MBLconsignor_name,pMBLconsignee.company_name MBLconsignee_name,pMBLnotify_party.company_name MBLnotify_name, "
-    			+" 			pHBLshipper.company_name HBLconsignor_name,p9.abbr HBLconsignee_name,pHBLnotify_party.company_name HBLnotify_name, "
+    			+" 			pMBLShipper.company_name MBLshipper_name,pMBLconsignee.company_name MBLconsignee_name,pMBLnotify_party.company_name MBLnotify_name, "
+    			+" 			pHBLshipper.company_name HBLshipper_name,p9.abbr HBLconsignee_name,pHBLnotify_party.company_name HBLnotify_name, "
     			+" 			CONCAT(lo1. NAME, ' -', lo1. CODE) pol_name,CONCAT(lo2. NAME, ' -', lo2. CODE) pod_name, "
     			+" 			CONCAT(loAir1. NAME, ' -', loAir1. CODE) air_pol_name,CONCAT(loAir2. NAME, ' -', loAir2. CODE) air_pod_name, "
     			+" 			pAir.abbr air_company_name, joai.air_company,joai.eta air_eta,joai.etd air_etd,joai.start_from, "
@@ -1256,14 +1288,14 @@ public class BookingOrderController extends Controller {
 	    	if(planCustom != null){
 	    		String custom_order_no = planCustom.getStr("customs_billCode");
 	    		String status = planCustom.getStr("custom_status");
-	    		String create_stamp = planCustom.getStr("date_custom");
+	    		Date create_stamp = planCustom.get("date_custom");
 	    		setAttr("job_custom_order_no", custom_order_no);
 	    		setAttr("job_status", status);
 	    		setAttr("date_custom", create_stamp);
 	    	}else if(jobcustom != null){  		
 	    		String custom_order_no = jobcustom.getStr("custom_order_no");
 	    		String status = jobcustom.getStr("status");
-	    		String create_stamp = jobcustom.getStr("create_stamp");
+	    		Date create_stamp = jobcustom.get("create_stamp");
 	    		setAttr("job_custom_order_no", custom_order_no);
 	    		setAttr("job_status", status);
 	    		setAttr("date_custom", create_stamp);
@@ -1998,19 +2030,24 @@ public class BookingOrderController extends Controller {
     	
     	
     	//booking主表信息
-    	String consignor_man = booking.getStr("consignor_info");
+    	String shipper = null;
+    	if(booking.get("shipper")!=null){
+    		shipper = booking.get("shipper").toString();
+    	}
+    	String shipper_info = booking.getStr("shipper_info");
+    	
     	String consignee = null;
     	if(booking.get("consignee")!=null){
     		consignee = booking.get("consignee").toString();
     	}
-    	String consignee_man = booking.getStr("consignee_info");
+    	String consignee_info = booking.getStr("consignee_info");
     	
     	
     	String notify=null;
     	if(booking.get("notify")!=null){
     		notify = booking.get("notify").toString();
     	}
-    	String notify_man = booking.getStr("notify_info");
+    	String notify_info = booking.getStr("notify_info");
     	
     	
     	String transport_type = booking.getStr("transport_type");
@@ -2037,8 +2074,12 @@ public class BookingOrderController extends Controller {
     		}
     		trans_clause = reOcean.getStr("trans_clause");
        		trade_type = reOcean.getStr("trade_type");
-    	   	pol_id = reOcean.getLong("pol_id").toString();
-        	pod_id = reOcean.getLong("pod_id").toString();
+       		if(reOcean.get("pol_id")!=null){
+       			pol_id = reOcean.getLong("pol_id").toString();
+       		}
+       		if(reOcean.get("pod_id")!=null){
+       			pod_id = reOcean.getLong("pod_id").toString();
+       		}
     	}
     	
     	//booking空运信息
@@ -2054,8 +2095,12 @@ public class BookingOrderController extends Controller {
     		}
     		air_trans_clause = reAir.getStr("air_trans_clause");
        		air_trade_type = reAir.getStr("air_trade_type");
-    	   	air_pol_id = reAir.getLong("air_pol_id").toString();
-    	   	air_pod_id = reAir.getLong("air_pod_id").toString();
+       		if(reAir.get("air_pol_id")!=null){
+       			air_pol_id = reAir.get("air_pol_id").toString();
+    		}
+       		if(reAir.get("air_pod_id")!=null){
+       			air_pod_id = reAir.get("air_pod_id").toString();
+    		}
     	}
     	
     	//booking陆运信息
@@ -2108,7 +2153,10 @@ public class BookingOrderController extends Controller {
    		
     	if("统一".equals(entrust_type)){
     		Party entrust_agent = Party.dao.findById(booking.getLong("entrust"));
-    		Office entrust_office = Office.dao.findById(entrust_agent.getLong("ref_office_id"));    		
+    		if(entrust_agent!=null){
+    			Office entrust_office = Office.dao.findById(entrust_agent.getLong("ref_office_id")); 
+    		
+    		   		
     		//entrust_office信息
         	Long entrust_officeNo = null;//生成单号要用到的office_id
             if(entrust_office != null){
@@ -2171,37 +2219,63 @@ public class BookingOrderController extends Controller {
 	                order.save();
 	                
 	                Long to_order_id = order.getLong("id");
-	                
-	                JobOrderShipment ocean  = JobOrderShipment.dao.findFirst("select * from job_order_shipment where order_id = ? ",to_order_id);
-	                if(ocean==null){
-	                	ocean  = new JobOrderShipment();
-	                	ocean.set("order_id", to_order_id);
-	                	ocean.set("pol", pol_id);
-	                	ocean.set("pod", pod_id);
-	                	ocean.set("cargo_desc", gargo_name);
-	                	ocean.save();
+	                if(transport_type.contains("ocean")){
+	                	JobOrderShipment ocean  = JobOrderShipment.dao.findFirst("select * from job_order_shipment where order_id = ? ",to_order_id);
+		                if(ocean==null){
+		                	ocean  = new JobOrderShipment();
+		                	ocean.set("order_id", to_order_id);
+		                	
+		                	ocean.set("HBLshipper", shipper);
+		                	ocean.set("HBLshipper_info", shipper_info);
+		                	
+		                	ocean.set("HBLconsignee", consignee);
+		                	ocean.set("HBLconsignee_info", consignee_info);
+		                	
+		                	ocean.set("HBLnotify_party", notify);
+		                	ocean.set("HBLnotify_party_info", notify_info);
+		                	
+		                	ocean.set("pol", pol_id);
+		                	ocean.set("pod", pod_id);
+		                	ocean.set("cargo_desc", gargo_name);
+		                	ocean.save();
+		                }
 	                }
 	                
-	                JobOrderAirItem air  = JobOrderAirItem.dao.findFirst("select * from job_order_air_item where order_id = ? ",to_order_id);
-	                if(air==null){
-	                	air  = new JobOrderAirItem();
-	                	air.set("order_id", to_order_id);
-	                	air.set("start_from", air_pol_id);
-	                	air.set("destination", air_pod_id);
-	                	air.save();
+	                if(transport_type.contains("air")){
+		                JobOrderAirItem air  = JobOrderAirItem.dao.findFirst("select * from job_order_air_item where order_id = ? ",to_order_id);
+		                JobOrderAir airDetail  = JobOrderAir.dao.findFirst("select * from job_order_air where order_id = ? ",to_order_id);
+		                if(airDetail==null){
+		                	airDetail  = new JobOrderAir();
+		                	airDetail.set("order_id", to_order_id);
+		                	airDetail.set("shipper", shipper);
+		                	airDetail.set("shipper_info", shipper_info);
+		                	airDetail.set("consignee", consignee);
+		                	airDetail.set("consignee_info", consignee_info);
+		                	airDetail.set("notify_party", notify);
+		                	airDetail.set("notify_party_info", notify_info);
+		                	airDetail.save();
+		                }
+		                if(air==null){
+		                	air  = new JobOrderAirItem();
+		                	air.set("order_id", to_order_id);
+		                	air.set("start_from", air_pol_id);
+		                	air.set("destination", air_pod_id);
+		                	air.save();
+		                }
 	                }
-	                
 	                //提货
-	                JobOrderLandItem take_land  = JobOrderLandItem.dao.findFirst("select * from job_order_land_item where order_id = ? ",to_order_id);
-	                if(take_land==null){
-	                	take_land  = new JobOrderLandItem();
-	                	if(reLand.get("take_eta")!=null){
-	                		take_land.set("order_id", to_order_id);
-	                		take_land.set("eta", reLand.get("take_eta"));
-	                	}	                	
-	                	take_land.save();
+	                if(transport_type.contains("land")){
+		                JobOrderLandItem take_land  = JobOrderLandItem.dao.findFirst("select * from job_order_land_item where order_id = ? ",to_order_id);
+		                if(take_land==null){
+		                	take_land  = new JobOrderLandItem();
+		                	if(reLand.get("take_eta")!=null){
+		                		take_land.set("order_id", to_order_id);
+		                		take_land.set("eta", reLand.get("take_eta"));
+		                		take_land.set("truck_type", truck_type);
+		                	}	                	
+		                	take_land.save();
+		                }
 	                }
-
 	                booking.set("to_order_id", to_order_id);
 	                booking.set("to_order_type", "forwarderJobOrder");
 	                booking.set("relation_no", order_no);
@@ -2220,7 +2294,14 @@ public class BookingOrderController extends Controller {
     		}else if("tradeCompany".equals(system_type)){
     			TradeJobOrder order  = TradeJobOrder.dao.findFirst("select * from trade_job_order where from_order_id = ? and from_order_type = 'booking' ",booking_id);
     		}
-    	}
+		}else{
+	    	String err = "提交失败，委托公司为空";
+			renderText(err);
+			return ;
+	    }
+     }
+			
+    }
    		
 //        	if(StringUtils.isNotBlank(truct_type)){
 //        		if(StringUtils.isBlank(transport_type)){
@@ -2286,7 +2367,7 @@ public class BookingOrderController extends Controller {
 //        	}
 
     
-    }
+    
 
 
 }
