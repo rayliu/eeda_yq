@@ -76,7 +76,8 @@ $(document).ready(function() {
                 $('#saveBtn').attr('disabled', false);
                 $('#confirmBtn').attr('disabled', false);
                 $('#printTotaledBtn').attr('disabled', false);
-                $('#printBtn').attr('disabled', false);                 
+                $('#printBtn').attr('disabled', false);
+                $('#add_charge').attr('disabled', false);    
                 //异步刷新明细表
                 itemOrder.refleshTable(order.ID);
             }else{
@@ -98,6 +99,7 @@ $(document).ready(function() {
 		$('#confirmBtn').attr('disabled', true);
     	$('#printTotaledBtn').attr('disabled', true);
 		$('#printBtn').attr('disabled', true);
+		$('#add_charge').attr('disabled', true);
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
