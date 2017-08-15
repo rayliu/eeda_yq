@@ -76,35 +76,38 @@
 		</div>
 		
 		<div class="panel-body">
-										<div class="form-group" >
-		                                   <label>应收对账金额合计：<span style="color:#AAAAAA"></span></label>
-		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">USD:<span id="USD_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_charge_tatol" style="color:black"></span></label><nbsp><nbsp><br>
-		                                   <label>应收对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
-		                                   <label style="color:#AAAAAA"><span id="total_charge" style="color:black"></span></label><nbsp><nbsp>
-	                                    </div><br>
-	                                
-	                                    <div class="form-group" >
-		                                   <label>未收对账金额合计：<span style="color:#AAAAAA"></span></label>
-		                                   <label style="color:#AAAAAA">CNY:<span id="CNY_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">USD:<span id="USD_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">JPY:<span id="JPY_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp>
-		                                   <label style="color:#AAAAAA">HKD:<span id="HKD_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp><br>
-		                                   <label>未收对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
-		                                   <label style="color:#AAAAAA"><span id="total_uncharge" style="color:black"></span></label><nbsp><nbsp>
-	                                    </div><br>
+		
+		<div class = "row">
+			<div class="form-group col-lg-6" >
+		              <label>应收对账金额合计：<span style="color:#AAAAAA"></span></label>
+		               <label style="color:#AAAAAA">CNY:<span id="CNY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		               <label style="color:#AAAAAA">USD:<span id="USD_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
+		               <label style="color:#AAAAAA">JPY:<span id="JPY_charge_tatol" style="color:black"></span></label><nbsp><nbsp>
+                       <label style="color:#AAAAAA">HKD:<span id="HKD_charge_tatol" style="color:black"></span></label><nbsp><nbsp><br>
+		                <label>应收对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
+		             <label style="color:#AAAAAA"><span id="total_charge" style="color:black"></span></label><nbsp><nbsp>
+	         </div><br>             
+	          <div class="form-group col-lg-6" >
+                        <label>未收对账金额合计：<span style="color:#AAAAAA"></span></label>
+                        <label style="color:#AAAAAA">CNY:<span id="CNY_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp>
+                        <label style="color:#AAAAAA">USD:<span id="USD_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp>
+                        <label style="color:#AAAAAA">JPY:<span id="JPY_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp>
+                        <label style="color:#AAAAAA">HKD:<span id="HKD_uncharge_tatol" style="color:black"></span></label><nbsp><nbsp><br>
+                        <label>未收对账金额(折合人民币)合计：<span style="color:#AAAAAA"></span></label>
+                        <label style="color:#AAAAAA"><span id="total_uncharge" style="color:black"></span></label><nbsp><nbsp>
+	          </div><br>
+		</div>
+										
     	</div>
 	</div>
     
 		 <div class="row simple_list_div">
-                                     <%include("/eeda/component/form/detailTableWithFoot.html", 
+                                     <%include("/eeda/component/form/doubleTableHead.html", 
                                         {
                                             id:'eeda_table', 
-                                           
-                                            headers:['结算公司','CNY','USD','JPY','HKD','折合应收(CNY)','CNY','USD','JPY','HKD','折合未收(CNY)','回款率（%）'
-                                            ]
+                                           	fixedheader:true,
+                       						top_headers:[['结算公司','rowspan="2"'],['应收费用','colspan="5"'],['未收费用','colspan="5"'],['回款率','rowspan="2"']],
+                                            headers:['CNY','USD','JPY','HKD','折合应收(CNY)','CNY','USD','JPY','HKD','折合未收(CNY)']
                                         }){} %>
                
             </div>
