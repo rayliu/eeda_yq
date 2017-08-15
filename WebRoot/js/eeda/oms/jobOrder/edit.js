@@ -99,6 +99,20 @@ $(document).ready(function() {
         }
         
         
+        //结算金额汇总取两位小数
+        var refleshNum = function(numValue){
+    		var numbleValue = parseFloat(numValue).toFixed(2);
+    		return numbleValue;
+    	}
+    	var currency=new Array('net_weight','gross_weight','volume','hkd')
+    		for(var i=0;i<currency.length;i++){
+    			var cujh=currency[i];
+    			var stringNum=cujh;
+    			var cujh= $('#'+stringNum).val();
+    			$('#'+stringNum).val(refleshNum(cujh));
+    		}
+        
+        
  
         //币制为必填字段
         var CURRENCY_ID = 0;
@@ -431,6 +445,20 @@ $(document).ready(function() {
 	        }
 	    })
     }
+    
+    //结算金额汇总取两位小数
+    var refleshNum = function(numValue){
+		var numbleValue = parseFloat(numValue).toFixed(2);
+		return numbleValue;
+	}
+	var currency=new Array('cny','usd','fee_count','volume'，'net_weight')
+		for(var i=0;i<currency.length;i++){
+			var cujh=currency[i];
+			var stringNum=cujh;
+			var cujh= $('#'+stringNum).val();
+			$('#'+stringNum).val(refleshNum(cujh));
+		}
+    
     
   //checkbox回显,supplier_contract_type是用js拿值
     var supplier_checkArray = supplier_contract_type_hidden.split(",");

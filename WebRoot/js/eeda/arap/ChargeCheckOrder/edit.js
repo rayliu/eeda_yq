@@ -45,6 +45,19 @@ $(document).ready(function() {
     	return items_array;
     }
     
+    //结算金额汇总取两位小数
+    var refleshNum = function(numValue){
+		var numbleValue = parseFloat(numValue).toFixed(2);
+		return numbleValue;
+	}
+	var currency=new Array('cny','usd','jpy','hkd')
+		for(var i=0;i<currency.length;i++){
+			var cujh=currency[i];
+			var stringNum=cujh;
+			var cujh= $('#'+stringNum).val();
+			$('#'+stringNum).val(refleshNum(cujh));
+		}
+    
     //------------save
     $('#saveBtn').click(function(e){
         //阻止a 的默认响应行为，不需要跳转
