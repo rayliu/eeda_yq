@@ -8,75 +8,131 @@
 	<div class="row simple_search_div">
     	<div class="col-lg-12" style="margin:5px 0 15px 0;">
         	<div style="width:10%;float:left;text-align:center;">
-				<h4 <% if(order.create_stamp!''!=''){%>style="color:green;"<%}%>>
-                	<img src="/images/booking.png" style="width: 50px;"> <span>Booking</span>
-                	</h4>
-				<% if(order.create_stamp!'' != null && order.create_stamp!'' !=''){%>
-              		<span style="color:green;">${order.create_stamp!''}创建</span>
-           		<%}%>
+                <% if(order.create_stamp!'' != null && order.create_stamp!''!=''){%>
+                    <h4 style="color:green;">
+                    <img src="/images/booking_green.png" style="width: 30px;"> <span>Booking</span>
+                    </h4>
+                    <span style="color:green;">${order.create_stamp!''}创建</span>
+                <%} else {%>
+				    <h4>
+                        <img src="/images/booking.png" style="width: 30px; color:#d8d8d8;"> <span>Booking</span>
+                    </h4>
+                    <span style="color:#d8d8d8;">${order.create_stamp!''}创建</span>
+                <%}%>
+				
 			</div>
 	    	<div style="width:8%;float:left;text-align:center;">
-	        	<div class="booking_line"></div>
+                <% if(job_eta!''!=''){%>
+	        	      <img src="/images/line_arrow_green.png" style="width: 100%;padding-top: 20%;">
+                <%} else{ %>
+                    <img src="/images/line_arrow.png" style="width: 100%;padding-top: 20%;">
+                <%}%>
 			</div>
 					
 	    	<div style="width:10%;float:left;text-align:center;">
-	        	<h4 style="padding-top:5px;" <% if(job_eta!''!=''){%>style="color:green;"<%}%>>
-                	<img src="/images/货车装车.png" style="width: 50px;margin-top:-10px;"> <span <% if(job_eta!''!=''){%>style="color:green;"<%}%>>提货</span>
-                </h4>
-	        	<% if(job_eta!'' != null && job_eta!'' !=''){%>
-	            	<span id="sendCar" style="color:green;">预计${job_eta!''}到厂</span>
-	        	<%}%>
+                <% if(job_eta!''!=''){%>
+                    <h4 style="padding-top:5px; color:green;">
+                        <img src="/images/货车装车_green.png" style="width: 50px;margin-top:-10px;"> <span style="color:green;">提货</span>
+                    </h4>
+                    <span id="sendCar" style="color:green;">预约${job_eta!''}到厂</span>
+                <%} else {%>
+                    <h4 style="padding-top:5px;color:#d8d8d8;">
+                        <img src="/images/货车装车.png" style="width: 50px;margin-top:-10px;"> <span style="color:#d8d8d8;">提货</span>
+                    </h4>
+                    <span id="sendCar" style="color:#d8d8d8;">预约${job_eta!''}到厂</span>
+                <%}%>
 			</div>
 	        <div style="width:8%;float:left;text-align:center;">
-	        	<div class="booking_line"></div>
+	        	<% if(job_status!''!=''){%>
+                      <img src="/images/line_arrow_green.png" style="width: 100%;padding-top: 20%;">
+                <%} else{ %>
+                    <img src="/images/line_arrow.png" style="width: 100%;padding-top: 20%;">
+                <%}%>
 			</div>
 	              		
 	        <div style="width:10%;float:left;text-align:center;">
-				<h4 <% if(job_status!''!=''){%>style="color:green;"<%}%>>
-                	<img src="/images/报关.png" style="width: 50px;"> 报关
-            	</h4>
+                <% if(job_status!''!=''){%>
+    				<h4 style="color:green;">
+                    	<img src="/images/报关_green.png" style="width: 30px;"> 报关
+                	</h4>
+                <%} else{ %>
+                    <h4 style="color:#d8d8d8;">
+                        <img src="/images/报关.png" style="width: 30px;"> 报关
+                    </h4>
+                <%}%>
 				<% if(job_custom_order_no!'' != null && job_custom_order_no!'' !=''){%>
 					<label id="custom" style="color:green;>报关单号：</label>${job_custom_order_no!''}
 				<%}%>
 				<% if(job_status!'' != null && job_status!'' !=''){%>
-					<br/>
-					<label id="custom" style="color:green;">状态：</label>${job_status!''}
+					<label id="custom" style="color:green;">状态：${job_status!''}</label>
 				<%}%>
 			</div>
 	        <div style="width:8%;float:left;text-align:center;">
-	        	<div class="booking_line"></div>
+	        	<% if(job_atd!''!=''){%>
+                      <img src="/images/line_arrow_green.png" style="width: 100%;padding-top: 20%;">
+                <%} else{ %>
+                    <img src="/images/line_arrow.png" style="width: 100%;padding-top: 20%;">
+                <%}%>
 			</div>
 	              		
 	        <div style="width:10%;float:left;text-align:center;">
-				<h4 style="padding-top: 10px;"<% if(job_atd!''!=''){%>style="color:green;"<%}%>>
-                	<img src="/images/轮船.png" style="width: 50px;" > 
-                	<span <% if(job_eta!''!=''){%>style="color:green;"<%}%>>离港</span>
-                </h4>
+                <% if(job_atd!''!=''){%>
+    				<h4 style="padding-top: 10px; color:green;">
+                    	<img src="/images/轮船_green.png" style="width: 50px;" > 
+                    	<span style="color:green;">离港</span>
+                    </h4>
+                <%} else{%>
+                    <h4 style="padding-top: 10px;color:#d8d8d8;">
+                        <img src="/images/轮船.png" style="width: 50px;" > 
+                        <span>离港</span>
+                    </h4>
+                <%}%>
 				<% if(job_atd!'' != null && job_atd!'' !=''){%>
 	            	<span id="boarding" style="color:green;">${job_atd!''}开船</span>
 	            <%}%>
 			</div>
 	        <div style="width:8%;float:left;text-align:center;">
-	            <div class="booking_line"></div>
+	            <% if(job_ata!''!=''){%>
+                      <img src="/images/line_arrow_green.png" style="width: 100%;padding-top: 20%;">
+                <%} else{ %>
+                    <img src="/images/line_arrow.png" style="width: 100%;padding-top: 20%;">
+                <%}%>
 			</div>
 	              		
-	        <div style="width:10%;float:left;text-align:center;">
-				<h4 <% if(job_ata!''!=''){%>style="color:green;"<%}%>>
-                	<img src="/images/check.png" style="width: 50px;"> 到港
-                </h4>
+	        <div style="width:10%;float:left;text-align:center;padding-top: 10px;">
+                <% if(job_ata!''!=''){%>
+    				<h4 style="color:green;">
+                    	<img src="/images/check_green.png" style="width: 30px;"> 到港
+                    </h4>
+                <%} else{ %>
+                    <h4 style="color:#d8d8d8;">
+                        <img src="/images/check.png" style="width: 30px;"> 到港
+                    </h4>
+                <% }%>
 				<% if(job_ata!'' != null && job_ata!'' !=''){%>
 	              	<span id="arrival" style="color:green;">${job_ata!''}到港</span>
 	            <%}%>
 			</div>
 			<div style="width:8%;float:left;text-align:center;">
-	            <div class="booking_line"></div>
+	            <% if(job_atd!''!=''){%>
+                      <img src="/images/line_arrow_green.png" style="width: 100%;padding-top: 20%;">
+                <%} else{ %>
+                    <img src="/images/line_arrow.png" style="width: 100%;padding-top: 20%;">
+                <%}%>
 			</div>
 					
 			<div style="width:10%;float:left;text-align:center;">
-				<h4 style="padding-top: 10px;"<% if(job_atd!''!=''){%>style="color:green;"<%}%>>
-                	<img src="/images/货车装车.png" style="width: 50px;margin-top:-10px;"> 
-                	<span <% if(job_eta!''!=''){%>style="color:green;"<%}%>>送货</span>
-                </h4>
+                <% if(job_atd!''!=''){%>
+    				<h4 style="padding-top: 10px;color:green;">
+                    	<img src="/images/货车装车_green.png" style="width: 50px;margin-top:-10px;"> 
+                    	<span <% if(job_eta!''!=''){%>style="color:green;"<%}%>>送货</span>
+                    </h4>
+                <%}else{%>
+                    <h4 style="padding-top: 10px;color:#d8d8d8;">
+                        <img src="/images/货车装车.png" style="width: 50px;margin-top:-10px;"> 
+                        送货
+                    </h4>
+                <%}%>
 				<% if(job_atd!'' != null && job_atd!'' !=''){%>
 	              	<span id="boarding" style="color:green;">${job_ata!''}送货</span>
 	            <%}%>
