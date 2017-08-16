@@ -97,6 +97,103 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	            
     	          ]
     	      });
+      
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='sp_id'){
+	    	  $("#single_sp_id_input").val("");
+	    	  $("#order_export_date_show").hide();
+	    	  $("#employee_id_show").hide();
+	    	  $("#sp_id_show").show();
+	      }
+	      if(selectField=='employee_id'){
+	    	  $("#employee_id_show").val("");
+	    	  $("#sp_id_show").hide();
+	    	  $("#order_export_date_show").hide();
+	    	  $("#employee_id_show").show();
+	      }
+	      if(selectField=="order_export_date"){
+	    	  $("#employee_id_show").hide();
+	    	  $("#sp_id_show").hide();
+	    	  $("#order_export_date_show").show();
+	      }
+     });
+	
+	$('#singleSearchBtn').click(function(){
+		var selectField = $("#selected_field").val();
+		  if(selectField=='sp_id'){
+			  var sp_id = $("#single_sp_id").val();
+	      }
+	      if(selectField=='employee_id'){
+	    	  var employee_id = $("#employee_id_show").val();
+	      }
+	      if(selectField=="order_export_date"){
+	    	  var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
+			  var order_export_date_end_time = $("#single_order_export_date_end_time").val();
+	      }
+	      
+	      
+	      
+	      var url = "/customCostBalanceReport/list?sp_id="+sp_id
+	      	+"&employee_id="+employee_id
+			+"&order_export_date_begin_time="+order_export_date_begin_time
+	        +"&order_export_date_end_time="+order_export_date_end_time;
+	      	dataTable.ajax.url(url).load(tableStyle);
+	      	
+	      //合计字段
+	         $.post('customCostBalanceReport/listTotal',{
+	       	  sp_id:sp_id,
+	       	  order_export_date_begin_time:order_export_date_begin_time,
+	       	  order_export_date_end_time:order_export_date_end_time
+	         },function(data){
+	       	  var cost_cny = parseFloat(data.COST_CNY).toFixed(2);
+	       	  var cost_usd = parseFloat(data.COST_USD).toFixed(2);
+	       	  var cost_jpy = parseFloat(data.COST_JPY).toFixed(2);
+	       	  var cost_hkd = parseFloat(data.COST_HKD).toFixed(2);
+	       	  var total_cost = parseFloat(data.TOTAL_COST).toFixed(2);
+	       	  var uncost_cny = parseFloat(data.UNCOST_CNY).toFixed(2);
+	       	  var uncost_usd = parseFloat(data.UNCOST_USD).toFixed(2);
+	       	  var uncost_jpy = parseFloat(data.UNCOST_JPY).toFixed(2);
+	       	  var uncost_hkd = parseFloat(data.UNCOST_HKD).toFixed(2);
+	       	  var total_uncost = parseFloat(data.TOTAL_UNCOST).toFixed(2);
+	       	  $('#CNY_cost_tatol').text(eeda.numFormat(cost_cny,3));
+	       	  $('#USD_cost_tatol').text(eeda.numFormat(cost_usd,3));
+	       	  $('#JPY_cost_tatol').text(eeda.numFormat(cost_jpy,3));
+	       	  $('#HKD_cost_tatol').text(eeda.numFormat(cost_hkd,3));
+	       	  $('#total_cost').text(eeda.numFormat(total_cost,3));
+	       	  $('#CNY_uncost_tatol').text(eeda.numFormat(uncost_cny,3)).css('color','red');
+	       	  $('#USD_uncost_tatol').text(eeda.numFormat(uncost_usd,3)).css('color','red');
+	       	  $('#JPY_uncost_tatol').text(eeda.numFormat(uncost_jpy,3)).css('color','red');
+	       	  $('#HKD_uncost_tatol').text(eeda.numFormat(uncost_hkd,3)).css('color','red');
+	       	  $('#total_uncost').text(eeda.numFormat(total_uncost,3)).css('color','red');
+	         });
+	}); 
+	
+    var tableStyle = function(){
+  	  $('.oneRow').css('line-height','30px');
+  	  $('.doubleRow').css('text-align','center');
+  	  
+  	  var tableName = "eeda_table";
+  	  //格式【合成表头的第一列位置，合成的列数，颜色】
+  	  var array= [[2,5,'#f8fff0'],[7,5,'#eeffff']];
+  	  for (var i = 0; i < array.length; i++) {
+  		  var firstChild = array[i][0];
+      	  var cols = array[i][1];
+      	  var bgColor = array[i][2];
+      	  for (var j = firstChild; j < (firstChild+cols); j++) {
+      		  $("#"+tableName+" td:nth-child("+j+")").css('background-color',bgColor);
+      	  }
+		  }
+    }
+      
       //base on config hide cols
       dataTable.columns().eq(0).each( function(index) {
           var column = dataTable.column(index);
