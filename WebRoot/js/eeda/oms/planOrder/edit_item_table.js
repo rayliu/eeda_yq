@@ -105,10 +105,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             columns:[
 				{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
-				    	if(full.CONFIRM_SHIPMENT == 'N')
-				    		return '<input type="checkbox" confirm_shipment="'+full.CONFIRM_SHIPMENT+'" class="checkBox">';
-				    	else 
+				    	if(full.CONFIRM_SHIPMENT == 'N'){				    		
+				    		return '<input type="checkbox" confirm_shipment="'+full.CONFIRM_SHIPMENT+'"  class="checkBox">';
+				    	}else{
 				    		return '<input type="checkbox" confirm_shipment="'+full.CONFIRM_SHIPMENT+'" class="checkBox" disabled>';
+				    	} 	
 				    }
 				},
 	            {"width": "10px",
@@ -133,9 +134,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                		str=' style="display:none;"';
 						 }
 	                	if(full.CONFIRM_SHIPMENT == 'Y'){
-	                		return '<button type="button" class="btn table_btn btn_green btn-xs confirm_shipment" '+str+' disabled>确认出货</button>';
+	                			return '<button type="button" class="btn table_btn btn_green btn-xs confirm_shipment" '+str+' disabled>确认出货</button>';
 	                	}else{
-	                		return '<button type="button" class="btn table_btn btn_green btn-xs confirm_shipment"'+str+' >确认出货</button> ';
+	                		if(full.SUBMIT_FLAG!='Y'){
+	                			return '<button type="button" class="btn table_btn btn_green btn-xs confirm_shipment"'+str+' disabled >确认出货</button> ';
+				    		}else{
+				    			return '<button type="button" class="btn table_btn btn_green btn-xs confirm_shipment" '+str+' >确认出货</button>';
+				    		}
 	                	}
 	                }
 	            },
@@ -290,6 +295,18 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    if(!data)
 	                        data='';
 	                   return '<input style="width:120px" type="text" '+show+' name="CARGO_NAME" value="'+data+'" class="form-control search-control" />';
+	                }
+	            },
+	            { "data": "CUSTOMS_TYPE","width": "60px",
+	                "render": function ( data, type, full, meta ) {
+	                   if(!data)
+	                	   data='';
+	                   var str= '<select style="width:80px" '+show+' name="customs_type" class="form-control search-control">'
+	                	   	 	+'<option></option>'
+			                   +'<option value="代理报关" '+ (data=='代理报关'?'selected':'') +'>代理报关</option>'
+			                   +'<option value="自理报关" '+ (data=='自理报关'?'selected':'') +'>自理报关</option>'
+			                   +'</select>';
+			           return str;
 	                }
 	            },
 	            { "data": "CARRIER","width": "60px",
@@ -460,18 +477,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return field_html;
 	                }
 	            },
-	            { "data": "CUSTOMS_TYPE","width": "60px",
-	                "render": function ( data, type, full, meta ) {
-	                   if(!data)
-	                	   data='';
-	                   var str= '<select style="width:80px" name="customs_type" '+((full.CONFIRM_SHIPMENT=='Y' || $('#login_office_type').val()!='forwarderCompany')?'disabled':'')+' class="form-control search-control">'
-	                	   	 	+'<option></option>'
-			                   +'<option value="代理报关" '+ (data=='代理报关'?'selected':'') +'>代理报关</option>'
-			                   +'<option value="自理报关" '+ (data=='自理报关'?'selected':'') +'>自理报关</option>'
-			                   +'</select>';
-			           return str;
-	                }
-	            },
+	            
 	            { "data": "CUSTOMS_DATA","width": "60px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
@@ -541,6 +547,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                }
 	            },
 	            { "data": "BOOK_ORDER_ID", "visible": false,
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
+	            },
+	            { "data": "SUBMIT_FLAG", "visible": false,
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';

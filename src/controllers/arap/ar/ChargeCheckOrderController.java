@@ -557,7 +557,7 @@ public class ChargeCheckOrderController extends Controller {
 		Long ex_currency_id = c.getLong("id");
 		String rate = getPara("rate");
 		Db.update("update job_order_arap set exchange_currency_id="+ex_currency_id+" , exchange_currency_rate="+rate+","
-				+ " exchange_total_amount=truncate(("+rate+"*total_amount),3)  where id in ("+ids+") and total_amount!=''");
+				+ " exchange_total_amount=truncate(("+rate+"*total_amount),4)  where id in ("+ids+") and total_amount!=''");
 		
 		//计算结算汇总
 		Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);

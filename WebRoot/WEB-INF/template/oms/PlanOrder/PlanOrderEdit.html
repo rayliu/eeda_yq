@@ -5,7 +5,7 @@
         <div id="page-wrapper">
             <div class="row simple_search_div" style="padding-top: 5px;">
                 <div class="col-lg-12">
-                	<input id="submit_flag" type="hidden" name="submit_flag" value="${order.submit_flag!''}"/>
+                	<input id="submit_flag"  name="submit_flag" value="${order.submit_flag!''}"/>
                     <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
                     <input id="login_office_type" type="hidden" name="login_office_type" value="${login_office.type!''}"/>
                    <form id="orderForm">
@@ -68,22 +68,28 @@
            
             <div class="simple_order_list_div">
 	            <div class="col-lg-6">
-	            	<%include("/eeda/component/form/inputOfficeField.html",
-											{   id:'entrusted_id', 
+	            	<%include("/eeda/component/form/inputCustomerField.html",
+											{   id:'self_party_id', 
 												label:'委托方',  
-												value:entrusted.id!office.id,
-												display_value:entrusted.office_name!office.office_name!,
-												'disabled':'disabled'
+												value:self_party.id!entrusted.id!office.id!'',
+												display_value:self_party.abbr!entrusted.office_name!office.office_name!'',
+												disabled: 'disabled'
 											}){} %>
 	             </div>
             	
-           		<div class="col-lg-6">
-           			<%include("/eeda/component/form/inputOfficeField.html",
-											{   id:'to_entrusted_id', 
+           		<div class="col-lg-6">           			
+           			<%	var dis='';
+           				if(order.submit_flag!''=='Y'){
+           				dis='disabled';
+           				}
+           			%>
+           			
+           			<%include("/eeda/component/form/inputSpField.html",
+											{   id:'to_party_id', 
 												label:'被委托方',  
-												value:toEntrusted.id!ref_office.id!,
-												display_value:toEntrusted.office_name!ref_office.office_name!,
-												'disabled':'disabled'
+												value:to_party.id!toEntrusted.id!'',
+												display_value:to_party.abbr!toEntrusted.office_name!'',
+												disabled:dis												
 											}){} %>
                 </div>  
                    
@@ -101,13 +107,13 @@
                                     {
                                         id:'cargo_table',
                                         style:'width:2700px',
-                                        headers:['<input type="checkBox" class="allCheck">','','','Booking单号','出货类型','出货时间','纳期','提货地点', '启运港POL','目的港POD','件数','毛重(KG)','体积(CBM)','柜型','柜量','车型车量','货物名称',
+                                        headers:['<input type="checkBox" class="allCheck">','','','Booking单号','出货类型','出货时间','纳期','提货地点', '启运港POL','目的港POD','件数','毛重(KG)','体积(CBM)','柜型','柜量','车型车量','货物名称','报关类型',
                                         			'船公司', '船名vessel', '航次voyage','ETA','ETD','SO号码','运输方式', '负载方式','单位','净重(KG)','总重量(KG)','送货地点','收货港POR',  
-                                                 '截关日期',  '报关类型','报关日期', 'por_name', 'pol_name', 'pod_name', 'carrier_name', 'is_gen_job','unit_name','confirm_shipment','book_order_id'],
+                                                 '截关日期',  '报关日期', 'por_name', 'pol_name', 'pod_name', 'carrier_name', 'is_gen_job','unit_name','confirm_shipment','book_order_id','submit_flag'],
                                         field_list:['id','','','book_order_no','job_order_type','factory_loading_time','delivery','pickup_addr','pol','pod','pieces','gross_weight','volume', 
-                                        'container_type','container_amount','truck_type','cargo_name','carrier', 'vessel', 'voyage', 'eta','etd','so_number', 'transport_type','load_type',    
-                                        'unit_id', 'net_weight','vgm','dilvery_addr','por','cls', 'customs_type','customs_data', 'por_name', 'pol_name', 'pod_name', 'carrier_name', 'is_gen_job','unit_name',
-                                        'confirm_shipment','book_order_id'],
+                                        'container_type','container_amount','truck_type','cargo_name', 'customs_type','carrier', 'vessel', 'voyage', 'eta','etd','so_number', 'transport_type','load_type',    
+                                        'unit_id', 'net_weight','vgm','dilvery_addr','por','cls','customs_data', 'por_name', 'pol_name', 'pod_name', 'carrier_name', 'is_gen_job','unit_name',
+                                        'confirm_shipment','book_order_id','submit_flag'],
                                         value_list: itemList![]
                                     }){} %>
 

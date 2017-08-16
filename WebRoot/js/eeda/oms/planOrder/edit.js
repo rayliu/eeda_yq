@@ -68,6 +68,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',
                 begin_plan_time: $('#plan_time_begin_time').val(),
                 end_plan_time: $('#plan_time_end_time').val(),
                 to_entrusted_id: $('#to_entrusted_id').val(),
+                
+                self_party_id: $('#self_party_id').val(),
+                to_party_id: $('#to_party_id').val(),
+                
                 status: $('#status').val()==''?'新建':$('#status').val(),
                 item_list:items_array
                 

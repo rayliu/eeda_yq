@@ -16,6 +16,7 @@ import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.bookOrder.BookOrder;
+import models.eeda.oms.bookOrder.BookingOrder;
 import models.eeda.oms.jobOrder.JobOrder;
 
 import org.apache.commons.lang.StringUtils;
@@ -67,13 +68,17 @@ public class PlanOrderController extends Controller {
    		Office office = Office.dao.findById(office_id);
    		setAttr("office", office);
    		
-   		Record re = Db.findFirst("select * from party where type='SP' and ref_office_id is not null and office_id = ?",office_id);
+   		Record re = Db.findFirst("select * from party where ref_office_id =? and office_id = ?",office_id,office_id);
    		if(re!=null){
-   			Long ref_office_id = re.getLong("ref_office_id");
-   	   		Office ref_office = Office.dao.findById(ref_office_id);
-   	   		setAttr("ref_office", ref_office);
+   	   		setAttr("self_party", re);
    		}
-		
+   		
+   		Record party_amount = Db.findFirst("select count(1) amount from party where ref_office_id is not null and ref_office_id!=? and office_id =?",office_id,office_id);
+   		Long amount = party_amount.get("amount");
+   		if(amount==1){
+   			Record to_party = Db.findFirst("select * from party where ref_office_id is not null and ref_office_id!=? and office_id =?",office_id,office_id);
+   	   		setAttr("to_party", to_party);
+   		}
         render("/oms/PlanOrder/PlanOrderEdit.html");
     }
     
@@ -140,10 +145,65 @@ public class PlanOrderController extends Controller {
     @Before(Tx.class)
     public void createBookOrder(PlanOrderItem item,String id){
     	Long item_id = item.getLong("id");
-    	BookOrder order  = BookOrder.dao.findFirst("select * from book_order where plan_item_id = ? ",item_id);
-    	
     	UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
+   		String job_order_type =item.getStr("job_order_type");
+   		Date delivery = item.get("delivery");
+   		String pickup_addr = item.get("pickup_addr");
+   		Long pol_id = item.get("pol");
+   		
+   		Long pod_id = item.get("pod");
+   		String container_type = item.get("container_type");
+   		Long truck_type = item.get("truck_type");
+   		
+   		String cargo_name = item.get("cargo_name");
+   		String customs_type = item.get("customs_type");
+//   		if(){
+//   			
+//   		}
+   		String transport_type = "";
+   		
+   		//新booking
+   		BookingOrder bookingOrder  = BookingOrder.dao.findFirst("select * from booking_order where plan_item_id = ? ",item_id);
+   		if(bookingOrder==null){
+    		PlanOrder re = PlanOrder.dao.findById(id);
+    		bookingOrder  = new BookingOrder();
+    		bookingOrder.set("booking_no", OrderNoGenerator.getNextOrderNo("BK", office_id));
+    		bookingOrder.set("creator", user.getLong("id"));
+    		bookingOrder.set("create_stamp", new Date());
+    		bookingOrder.set("updator", user.getLong("id"));
+    		bookingOrder.set("update_stamp", new Date());
+    		bookingOrder.set("office_id", office_id);
+    		bookingOrder.set("type", job_order_type);
+    		bookingOrder.set("order_export_date", item.get("factory_loading_time"));
+    		bookingOrder.set("transport_type", item.getStr("transport_type"));
+    		bookingOrder.set("plan_order_no", re.getStr("order_no"));
+    		bookingOrder.set("plan_order_id", id);
+    		bookingOrder.set("plan_item_id", item_id);
+    		bookingOrder.set("customer_id", re.getLong("customer_id"));
+    		bookingOrder.set("plan_item_id", item.getLong("id"));
+    		bookingOrder.set("pieces", item.get("pieces"));
+    		bookingOrder.set("net_weight", item.get("net_weight"));
+    		bookingOrder.set("gross_weight", item.get("gross_weight"));
+    		bookingOrder.set("volume", item.get("volume"));
+    		bookingOrder.save();
+    	}else{
+    		bookingOrder.set("updator", user.getLong("id"));
+    		bookingOrder.set("update_stamp", new Date());
+    		bookingOrder.set("office_id", office_id);
+    		bookingOrder.set("type", item.getStr("job_order_type"));
+    		bookingOrder.set("order_export_date", item.get("factory_loading_time"));
+    		bookingOrder.set("transport_type", item.getStr("transport_type"));
+    		bookingOrder.set("pieces", item.get("pieces"));
+    		bookingOrder.set("net_weight", item.get("net_weight"));
+    		bookingOrder.set("gross_weight", item.get("gross_weight"));
+    		bookingOrder.set("volume", item.get("volume"));
+            
+    		bookingOrder.update();
+    	}
+   		
+   		//旧booking逻辑
+   		BookOrder order  = BookOrder.dao.findFirst("select * from book_order where plan_item_id = ? ",item_id);
     	if(order==null){
     		PlanOrder re = PlanOrder.dao.findById(id);
        		order  = new BookOrder();
@@ -185,9 +245,10 @@ public class PlanOrderController extends Controller {
 
     
     private List<Record> getPlanOrderItems(String orderId) {
-        String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name,u.name unit_name,bor.id book_order_id,bor.order_no book_order_no,"
-                + " p.abbr carrier_name "
-                + " from plan_order_item pi "
+        String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name,u.name unit_name,bor.id book_order_id,"
+        		+ "bor.order_no book_order_no,pl.submit_flag, p.abbr carrier_name "
+                + " from plan_order pl "
+                + " LEFT JOIN plan_order_item pi  on pl.id = pi.order_id "
                 +" left join location l_por on pi.por=l_por.id"
                 +" left join location l_pol on pi.pol=l_pol.id"
                 +" left join location l_pod on pi.pod=l_pod.id"
@@ -216,6 +277,11 @@ public class PlanOrderController extends Controller {
     	setAttr("entrusted", entrusted);
     	Office toEntrusted = Office.dao.findById(planOrder.getLong("to_entrusted_id"));
     	setAttr("toEntrusted", toEntrusted);
+    	
+    	Party self_party = Party.dao.findById(planOrder.getLong("self_party_id"));
+    	setAttr("self_party", self_party);
+    	Party to_party = Party.dao.findById(planOrder.getLong("to_party_id"));
+    	setAttr("to_party", to_party);
 
     	
     	//用户信息
@@ -378,8 +444,7 @@ public class PlanOrderController extends Controller {
     		createBookOrder(item,item.getLong("order_id").toString());
     		createJobOrder(item);
 		}
-    	
-    	
+
     	renderJson("{\"result\":true}");
     }
     
