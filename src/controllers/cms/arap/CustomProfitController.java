@@ -9,6 +9,7 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -40,8 +41,12 @@ public class CustomProfitController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        String rsc = getPara("receive_sent_consignee");
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
+        if(StringUtils.isNotBlank(rsc)){
+        	condition = " and receive_sent_consignee = "+rsc;
+        }
         String sql = " SELECT A.id,A.receive_sent_consignee,A.abbr,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
         		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb FROM ("
         		+" SELECT jo.id,jo.receive_sent_consignee,p.abbr,"
@@ -194,8 +199,6 @@ public class CustomProfitController extends Controller {
 			+") total_cost";
 		
 		Record re = Db.findFirst(sql);
-		long total=list();
-		re.set("total", total);
 		renderJson(re);
 	}
 	
