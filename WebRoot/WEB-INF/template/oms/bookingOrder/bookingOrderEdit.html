@@ -21,7 +21,7 @@
 					
 	    	<div style="width:10%;float:left;text-align:center;">
 	        	<h4 style="padding-top:5px;" <% if(job_eta!''!=''){%>style="color:green;"<%}%>>
-                	<img src="/images/货车装车.png" style="width: 50px;margin-top:-10px;"> <span>提货</span>
+                	<img src="/images/货车装车.png" style="width: 50px;margin-top:-10px;"> <span <% if(job_eta!''!=''){%>style="color:green;"<%}%>>提货</span>
                 </h4>
 	        	<% if(job_eta!'' != null && job_eta!'' !=''){%>
 	            	<span id="sendCar" style="color:green;">预计${job_eta!''}到厂</span>
@@ -49,7 +49,8 @@
 	              		
 	        <div style="width:10%;float:left;text-align:center;">
 				<h4 style="padding-top: 10px;"<% if(job_atd!''!=''){%>style="color:green;"<%}%>>
-                	<img src="/images/轮船.png" style="width: 50px;"> 离港
+                	<img src="/images/轮船.png" style="width: 50px;" > 
+                	<span <% if(job_eta!''!=''){%>style="color:green;"<%}%>>离港</span>
                 </h4>
 				<% if(job_atd!'' != null && job_atd!'' !=''){%>
 	            	<span id="boarding" style="color:green;">${job_atd!''}开船</span>
@@ -73,10 +74,11 @@
 					
 			<div style="width:10%;float:left;text-align:center;">
 				<h4 style="padding-top: 10px;"<% if(job_atd!''!=''){%>style="color:green;"<%}%>>
-                	<img src="/images/货车装车.png" style="width: 50px;margin-top:-10px;"> <span>送货</span>
+                	<img src="/images/货车装车.png" style="width: 50px;margin-top:-10px;"> 
+                	<span <% if(job_eta!''!=''){%>style="color:green;"<%}%>>送货</span>
                 </h4>
 				<% if(job_atd!'' != null && job_atd!'' !=''){%>
-	              	<span id="boarding" style="color:green;">${job_atd!''}开船</span>
+	              	<span id="boarding" style="color:green;">${job_ata!''}送货</span>
 	            <%}%>
 			</div>
 		</div>
