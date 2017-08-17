@@ -3,6 +3,8 @@ package controllers.eeda;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -252,11 +254,19 @@ public class MainController extends Controller {
     }
     
     private void setLoginLog(UserLogin user) {
+    	InetAddress ia = null;
+		try {
+			ia = ia.getLocalHost();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String localip=ia.getHostAddress();
         Record rec = new Record();
         rec.set("log_type", "登录");
         rec.set("create_stamp", new Date());
         rec.set("user_id", user.get("id"));
-        rec.set("ip", IpKit.getRealIp(getRequest()));
+        rec.set("ip", localip);
         rec.set("office_id", user.getLong("office_id"));
         
         Db.save("sys_log", rec);
@@ -467,6 +477,6 @@ public class MainController extends Controller {
     }
     
     public void testAdd(){
-        EedaConfig.routes.add("/module", ModuleController.class);
+        //EedaConfig.routes.add("/module", ModuleController.class);
     }
 }
