@@ -61,7 +61,6 @@ import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.FileUploadUtil;
-import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
@@ -3794,19 +3793,25 @@ public class JobOrderController extends Controller {
     	jobOrderDoc.update();
     	
     	Record re = Db.findFirst("select * from book_order where plan_item_id = ?",plan_order_item_id);
+    	if(re!=null){
+    		Record bookDoc = new Record();
+        	bookDoc.set("order_id", re.getLong("id"));
+        	bookDoc.set("type", jobOrderDoc.getStr("type"));
+        	bookDoc.set("uploader", jobOrderDoc.getLong("uploader"));
+        	bookDoc.set("doc_name", jobOrderDoc.getStr("doc_name"));
+        	bookDoc.set("upload_time", jobOrderDoc.get("upload_time"));
+        	bookDoc.set("remark", jobOrderDoc.getStr("remark"));
+        	bookDoc.set("sender", jobOrderDoc.getLong("sender"));
+        	bookDoc.set("send_time", jobOrderDoc.get("send_time"));
+        	bookDoc.set("send_status", jobOrderDoc.getStr("send_status"));
+        	bookDoc.set("ref_doc_id", id);
+        	Db.save("book_order_doc", bookDoc);
+    	}else{
+    		String err = "err";
+    		renderText(err);
+    		return;
+    	}
     	
-    	Record bookDoc = new Record();
-    	bookDoc.set("order_id", re.getLong("id"));
-    	bookDoc.set("type", jobOrderDoc.getStr("type"));
-    	bookDoc.set("uploader", jobOrderDoc.getLong("uploader"));
-    	bookDoc.set("doc_name", jobOrderDoc.getStr("doc_name"));
-    	bookDoc.set("upload_time", jobOrderDoc.get("upload_time"));
-    	bookDoc.set("remark", jobOrderDoc.getStr("remark"));
-    	bookDoc.set("sender", jobOrderDoc.getLong("sender"));
-    	bookDoc.set("send_time", jobOrderDoc.get("send_time"));
-    	bookDoc.set("send_status", jobOrderDoc.getStr("send_status"));
-    	bookDoc.set("ref_doc_id", id);
-    	Db.save("book_order_doc", bookDoc);
       
         renderJson(jobOrderDoc);
     }

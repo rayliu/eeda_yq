@@ -55,14 +55,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             var self = this;
             var tr = $(this).parent().parent();
             var id = tr.attr('id');
-            this.disabled = true;
+            this.disabled = true; 
              $.post('/jobOrder/downloadDoc', {docId:id}, function(data){
             	 if(data){
             		 $.scojs_message('下载完成!', $.scojs_message.TYPE_OK);
             		 self.disabled = false;
             		 itemOrder.refleshOneDocTable(data.ORDER_ID);
-            	 }
-            	 
+            	 }            	 
              },'json').fail(function() {
                  $.scojs_message('后台报错!', $.scojs_message.TYPE_ERROR);
              }); 
@@ -269,7 +268,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             var plan_order_item_id = $('#plan_order_item_id').val();
             this.disabled = true;
              $.post('/jobOrder/confirmSend', {docId:id,plan_order_id:plan_order_id,plan_order_item_id:plan_order_item_id}, function(data){
-            	 if(data){
+            	 if(data=="err"){
+               		$.scojs_message('发送失败，不存在关联的booking!', $.scojs_message.TYPE_ERROR);
+               	 }else if(data){
             		 $.scojs_message('发送成功!', $.scojs_message.TYPE_OK);
             		 itemOrder.refleshTwoDocTable(data.ORDER_ID);
             	 }
@@ -509,7 +510,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             var plan_order_item_id = $('#plan_order_item_id').val();
             this.disabled = true;
              $.post('/jobOrder/confirmSend', {docId:id,plan_order_id:plan_order_id,plan_order_item_id:plan_order_item_id}, function(data){
-            	 if(data){
+            	 if(data=="err"){
+               		$.scojs_message('发送失败，不存在关联的booking!', $.scojs_message.TYPE_ERROR);
+               	 }else if(data){
             		 $.scojs_message('发送成功!', $.scojs_message.TYPE_OK);
             		 itemOrder.refleshFourDocTable(data.ORDER_ID);
             	 }
@@ -606,11 +609,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               var plan_order_item_id = $('#plan_order_item_id').val();
               this.disabled = true;
                $.post('/jobOrder/confirmSend', {docId:id,plan_order_id:plan_order_id,plan_order_item_id:plan_order_item_id}, function(data){
-              	 if(data){
+              	 if(data=="err"){
+              		$.scojs_message('发送失败，不存在关联的booking!', $.scojs_message.TYPE_ERROR);
+              	 }else if(data){
               		 $.scojs_message('发送成功!', $.scojs_message.TYPE_OK);
               		 itemOrder.refleshTwoDocTable(data.ORDER_ID);
               	 }
-               },'json').fail(function() {
+               }).fail(function() {
                    $.scojs_message('后台报错!', $.scojs_message.TYPE_ERROR);
                });
           }); 

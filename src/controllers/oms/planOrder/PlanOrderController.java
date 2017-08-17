@@ -588,6 +588,8 @@ public class PlanOrderController extends Controller {
    		
     	if(order==null){
     		PlanOrder re = PlanOrder.dao.findById(plan_order_id);
+    		BookingOrder bookingOrder = BookingOrder.dao.findById(plan_order_id);
+    		
        		order  = new JobOrder();
        		
             String newDateStr = "";
@@ -620,6 +622,8 @@ public class PlanOrderController extends Controller {
             order.set("office_id", office_id);
             
             Long to_party_id = re.getLong("to_party_id");
+            Long booking_id = bookingOrder.getLong("id");
+            String booking_no = bookingOrder.getStr("booking_no");
             if(StringUtils.isNotBlank(to_party_id.toString())){
             	Record to_party = Db.findFirst("select * from party where id = ? ",to_party_id);
             	Long to_ref_office_id = null ;
@@ -632,7 +636,9 @@ public class PlanOrderController extends Controller {
                  	}
             	}
             }
-            
+            order.set("from_order_type", "booking");
+            order.set("from_order_id", booking_id);
+            order.set("from_order_no", booking_no);
             order.set("type", item.getStr("job_order_type"));
             order.set("order_export_date", item.get("factory_loading_time"));
             order.set("transport_type", item.getStr("transport_type"));
