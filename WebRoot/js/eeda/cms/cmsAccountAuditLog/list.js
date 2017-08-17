@@ -46,6 +46,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         });
         
         
+        var refleshNum = function(numValue){
+    		var numbleValue = parseFloat(numValue).toFixed(2);
+    		return numbleValue;
+    	}
         //上
         var accountTable = eeda.dt({
             id: 'account-table',
@@ -62,22 +66,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 {"data":"DATE"},
                 {"data": "INIT_AMOUNT",   //期初
                     "render": function(data, type, full, meta) {
-                        return eeda.numFormat(data,3);
+                    	return refleshNum(data)
                     }
                 },
                 {"data": "TOTAL_CHARGE", //本期收入
                     "render": function(data, type, full, meta) {
-                        return eeda.numFormat(data,3);
+                        //return eeda.numFormat(data,3);
+                    	return refleshNum(data)
                     }
                 }, 
                 {"data":"TOTAL_COST",  //本期支出
                     "render": function(data, type, full, meta) {
-                        return eeda.numFormat(data,3);
+                    	return refleshNum(data)
                     }
                 },  
                 {"data":"BALANCE_AMOUNT",   //期末结余    
                     "render": function(data, type, full, meta) {
-                        return eeda.numFormat(data,3);
+                    	return refleshNum(data)
                     }
                 }
             ]
