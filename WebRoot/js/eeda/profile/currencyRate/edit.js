@@ -10,12 +10,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         if(!$("#accountFrom").valid()){
             return;
         }
-        
         $(this).attr('disabled', true);
-
+        
         var order = {
             id: $('#id').val(),
-            currency_code: $('#currency_code').val(),
+            currency_code: $('#cost_currency_input').val(),
+            currency_id: $('#cost_currency').val(),
             rate: $('#rate').val(),
             from_stamp: $('#peroid_begin_time').val(),
             to_stamp: $('#peroid_end_time').val(),
@@ -38,7 +38,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('#saveBtn').attr('disabled', false);
           });
     });
-
+	
+/*	$("#cost_currency_list").on("mousedown",function(){
+		self = $(this);
+		debugger
+		var currency_id = $("#cost_currency").val();
+		$.post("/currencyRate/searchCurrency",{currency_id:currency_id},function(data){
+			result = data;
+			if(result !=false){
+				$("#rate").val(result.RATE);
+				$("#peroid_begin_time").val(result.FROM_STAMP);
+				$("#peroid_end_time").val(result.TO_STAMP);
+				$("#remark").val(result.REMARK);
+			}
+		})
+		
+	})*/
+	
 	$('#accountFrom').validate({
         rules: {
 

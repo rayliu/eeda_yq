@@ -92,10 +92,29 @@ public class CurrencyRateController extends Controller {
         CurrencyRate currency = null;
         if (id != null) {
         	currency = CurrencyRate.dao.findById(id);
-        	currency.set("status", "del");
+        	String is_stop = currency.getStr("is_stop");
+        	if("Y".equals(is_stop)){
+        		currency.set("is_stop", "N");
+        	}else{
+        		currency.set("is_stop", "Y");
+        	}
         	currency.update(); 
         }
         renderJson(currency);
+    }
+    
+    //查找相关货币的信息
+    public void searchCurrency(){
+    	String currency_id = getPara("currency_id");
+    	if(StringUtils.isNotBlank(currency_id)){
+    		String sql = "select * from currency_rate where currency_id = "+currency_id+" "
+    				+ "and to_stamp in ( select max(to_stamp) "
+    				+ "from currency_rate GROUP BY currency_id)";
+    		Record re = Db.findFirst(sql);
+    		renderJson(re);
+    	}else{
+    		renderJson(false);
+    	}
     }
 
     // 列出

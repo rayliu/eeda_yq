@@ -2,6 +2,7 @@
 	<label class="search-label">${label!''}</label>
 	<input type="text" class="form-control search-control" 
 	id="${id}_input" 
+	 autocomplete="off"
 	placeholder="${placeholder!'请选择'}"  value="${display_value!''}">
 	<ul id='${id}_list' class="pull-right dropdown-menu default dropdown-scroll" tabindex="-1" style="top: 35%; left: 2%;">
 </ul>
@@ -14,7 +15,7 @@ $(document).ready(function() {
 	var spList =$("#${id}_list");
 	var inputField = $('#${id}_input');
 	var hiddenField = $('#${id}');
-	
+	var result = [];
 	//供应商查询
     //获取供应商的list，选中信息在下方展示其他信息
     inputField.on('input click', function(){
@@ -22,34 +23,57 @@ $(document).ready(function() {
 		var inputStr = inputField.val();
 		
 		$.get('/serviceProvider/searchCurrency', {input:inputStr}, function(data){
+			result = data;
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
 			}
 			spList.empty();
 			for(var i = 0; i < data.length; i++){
-				spList.append("<li><a tabindex='-1' class='fromLocationItem' id='"+data[i].ID+"' rate='"+data[i].RATE+"'>"+data[i].NAME+"</a></li>");
+				    var info = "<li><a tabindex='-1' class='fromLocationItem' id ='"+data[i].ID+"' rate='"+data[i].RATE+"' "
+							  +" remark='"+data[i].REMARK+"' to_stamp='"+data[i].TO_STAMP+"' from_stamp='"+data[i].FROM_STAMP+"'>"+data[i].NAME+"</a></li>";
+							
+							  spList.append(info)
 			}
+			
+			
 			spList.css({ 
 	        	left:$(me).position().left+"px", 
 	        	top:$(me).position().top+28+"px" 
 	        }); 
 			
+			
+			
 			eeda.hidePopList();
 			spList.show();
 			//当查询结果只有一个时，自动赋值到hiddenField
-            if(data.length==0)
+           if(data.length==0)
                 hiddenField.val('');
             if(data.length==1&&data[0].ID)
                 hiddenField.val(data[0].ID);
             if(!inputStr){
             	if(data.length>1)
                     hiddenField.val('');
-            }
+            } 
             
 		},'json');
     });
+    $("#${id}_list").on("mousedown",".fromLocationItem",function(){
+		var self = $(this);
+		var rate = self.attr("rate")=="null"?"":self.attr("rate")
+		var to_stamp = self.attr("to_stamp")=="null"?"":self.attr("to_stamp")
+		var index = to_stamp.indexOf(" ")
+		to_stamp = to_stamp.substring(0,index);
+		var from_stamp = self.attr("from_stamp")
+		index = from_stamp.indexOf(" ")
+		from_stamp = from_stamp.substring(0,index);
+		var remark = self.attr("remark")=="null"?"":self.attr("remark")
+		$("#rate").val(rate);
+		$("#peroid_begin_time").val(to_stamp);
+		$("#peroid_end_time").val(from_stamp);
+		$("#remark").val(remark);
+	})
     
-    // 没选中供应商，焦点离开，隐藏列表
+     // 没选中供应商，焦点离开，隐藏列表
 	inputField.on('blur', function(){
 		if (inputField.val().trim().length ==0) {
 			hiddenField.val('');
@@ -58,7 +82,7 @@ $(document).ready(function() {
             inputField.val('');
         };
 		spList.hide();
- 	});
+ 	}); 
 
 	//当用户只点击了滚动条，没选供应商，再点击页面别的地方时，隐藏列表
 	spList.on('blur', function(){

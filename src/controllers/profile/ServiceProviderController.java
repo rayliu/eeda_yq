@@ -717,12 +717,17 @@ public class ServiceProviderController extends Controller {
     	List<Record> recs = null;
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
-    	String sql = "select cr.office_id,c.id,c.code,c.name,cast( if(cr.from_stamp<'"+d+"' and cr.to_stamp>'"+d+"',cr.rate,'') as char ) rate from currency c"
-    			+ " left join currency_rate cr on cr.currency_code = c.code  where 1=1 and cr.office_id= "+office_id;
-    	if(!StringUtils.isBlank(input)){
+    	/*String sql = "select cr.office_id,c.id,c.code,c.name,cast( if(cr.from_stamp<'"+d+"' and cr.to_stamp>'"+d+"',cr.rate,'') as char ) rate from currency c"
+    			+ " left join currency_rate cr on cr.currency_code = c.code  where 1=1 and cr.office_id= "+office_id+" group by name";*/
+    	String sql = "SELECT A.to_stamp,A.from_stamp,A.remark,c.id,c. CODE,c. NAME,A.rate"
+    			+ " FROM "
+    			+ " currency c"
+    			+ " left join (select * from currency_rate crr where to_stamp in ( select max(to_stamp) from currency_rate where office_id = "+office_id+" GROUP BY currency_id)  and crr.is_stop = 'Y' ) A  on A.currency_id = c.id "
+    			+ "where 1 = 1 and name is not null ";
+        if(!StringUtils.isBlank(input)){
     		sql+=" and (c.name like '%" + input + "%' or c.english_name like '%" + input + "%' or c.code like '%" + input + "%') ";
     	}
-    	recs = Db.find(sql);
+    	recs = Db.find(sql+" group by name");
     	renderJson(recs);
     }
     

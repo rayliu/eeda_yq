@@ -2879,9 +2879,15 @@ public class JobOrderController extends Controller {
         Date today = new Date();  
         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
         String date=parseFormat.format(today);
-        
+        String sql = "SELECT to_stamp FROM currency_rate"
+        		+ " WHERE"
+        		+ " office_id ="+office_id+" and "
+        		+ " to_stamp IN ("
+        		+ "SELECT max(to_stamp) as to_stamp FROM"
+        		+ " currency_rate  GROUP BY office_id HAVING MAX(to_stamp) > now() )";
     	//获取汇率日期信息
-    	Record r = Db.findFirst("SELECT * from ( SELECT min(to_stamp) min_stamp,office_id FROM currency_rate where office_id=?) A WHERE min_stamp >= ? ",office_id,date);
+    	Record r = Db.findFirst(sql);
+    
     	if(r==null){
     		setAttr("rateExpired", "Y");
     	}

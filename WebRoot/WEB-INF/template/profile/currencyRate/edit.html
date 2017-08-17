@@ -17,13 +17,14 @@
 							<input id="id" name="id" type="hidden" value="${order.id!''}">
 							<div class="form-group">
 								<div class="form-group">
-									<div class="col-lg-4"><!--  三列排版  -->
-									<%include("/eeda/component/form/inputField.html", 
-	                                    {   id:'currency_code', 
-	                                        label:'币制', 
-	                                        value:order.currency_code!'',
-	                                        required:'required'
-	                                    }){}%></div>
+									<div class="col-lg-4">
+                            <%include("/eeda/component/form/inputCurrencyField.html", 
+                                {   id:'cost_currency', 
+                                    label:'币制', 
+                                    value:trade.cost_currency!'',
+                                    display_value:order.currency_code!''
+                                }){}%>
+                        	</div>
 		                            <div class="col-lg-4"><!--  三列排版  -->
 		                                <%include("/eeda/component/form/inputField.html", 
 		                                    {   id:'rate', 
@@ -54,7 +55,7 @@
                         </div>
 		         		<div>
 			            	<a style="display:none" id ="style"><i class='fa fa-check'></i></a>
-			            	<button id="saveBtn" class="btn  btn-primary btn-sm" >保存</button>
+			            	<button id="saveBtn" class="btn  btn_green" >保存</button>
 			             	<a class="btn btn-default btn-sm" href="/currencyRate">返回</a>
 			            </div>
             		</div>

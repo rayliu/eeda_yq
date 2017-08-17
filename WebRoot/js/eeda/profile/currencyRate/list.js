@@ -6,9 +6,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
         columns:[
             {  "data": "CURRENCY_CODE", 
                 "render": function ( data, type, full, meta ) {
-                    if(currencyRate.isUpdate){
-                        return "<a  href='/currencyRate/edit?id="+full.ID+"' target='_blank'>" + data + "</a>";
-                    }else{
+
+                	if(new Date(full.TO_STAMP)>new Date()){
+                		return "<a  href='/currencyRate/edit?id="+full.ID+"' target='_blank'>" + data + "</a>";
+                	}else{
                         return data;
                     }
                 }
@@ -23,6 +24,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
             {"data":"TO_STAMP",
             	"render":function(data,type,full,meta){
             		
+            		
             		return '<span>'+data.substr(0, 10)+'</>';
             	}
             },
@@ -33,18 +35,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
                 "data": null,
                 "render": function ( data, type, full, meta )  {  
                     var str="<nobr>";
+                    var status = "";
+                    
+                    if(new Date(full.TO_STAMP)<new Date()){
+                    	status = " disabled ";
+                    }
                     if(currencyRate.isUpdate){
-                        str += "<a class='btn  btn-primary btn-sm' href='/currencyRate/edit?id="+full.ID+"' target='_blank'>"+
+                        str += "<a class='btn  btn-primary btn-sm "+status+"'  href='/currencyRate/edit?id="+full.ID+"' target='_blank'>"+
                             "<i class='fa fa-edit fa-fw'></i>"+
                             "编辑"+
                             "</a> ";
                     }
                     if(currencyRate.isDel){
-                        if(full.STATUS != "inactive"){
+                        if(full.IS_STOP == "Y"){
                             str += "<a class='btn btn-danger  btn-sm' "+
                                     "<i class='fa fa-trash-o fa-fw'></i>"+ 
-                                    "删除"+
+                                    "停用"+
                                 "</a>";
+                        }else{
+                        	str += "<a class='btn btn-success  btn-sm' "+
+                            "<i class='fa fa-trash-o fa-fw'></i>"+ 
+                            "启用"+
+                        "</a>";
                         }
                     }
                     str+="</nobr>";
@@ -55,11 +67,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
     });
 
 	//删除功能
-	$('#eeda-table').on('click','.btn-danger',function(){
+	$('#eeda-table').on('click','.btn-danger,.btn-success',function(){
 		var id = $(this).parent().parent().parent().attr('id');
 		$.post('/currencyRate/delete',{id:id},function(data){
 			if(data.ID){
-				$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+				$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
 				searchData();
 			}
 		})
