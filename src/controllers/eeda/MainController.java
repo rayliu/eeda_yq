@@ -29,7 +29,9 @@ import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
+import com.jfinal.config.JFinalConfig;
 import com.jfinal.core.Controller;
+import com.jfinal.core.JFinal;
 import com.jfinal.ext.plugin.shiro.ShiroKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
@@ -37,6 +39,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.weixin.sdk.kit.IpKit;
 
+import config.EedaConfig;
 import controllers.profile.LoginUserController;
 import controllers.util.EedaCommonHandler;
 import controllers.util.MD5Util;
@@ -152,6 +155,10 @@ public class MainController extends Controller {
     	if (isAuthenticated()) {
     		redirect("/");
     	}
+    	
+    	//获取子系统的名字,显示在登陆页面
+    	handleLoginSubtitle();
+    	
         String username = getPara("username");
         
         setSysTitle();
@@ -218,8 +225,30 @@ public class MainController extends Controller {
         } else {
             setAttr("errMsg", errMsg);
             logger.debug(errMsg);
+            
             render("/eeda/login.html");
         }
+    }
+    
+    private void handleLoginSubtitle(){
+        String systemName = "检单供应链管理系统";
+        StringBuffer url = getRequest().getRequestURL();
+        String prefix = url.toString().substring(7).split("\\.")[0];
+        logger.debug("prefix:"+prefix);
+        if("customer".equals(prefix)){
+            systemName = "检单-客户管理系统";
+        }else if("forwarder".equals(prefix)){
+             systemName = "检单-货代管理系统";
+        }else if("custom".equals(prefix)){
+            systemName = "检单-关务管理系统";
+        }else if("trans".equals(prefix)){
+            systemName = "检单-运输管理系统";
+        }else if("trade".equals(prefix)){
+            systemName = "检单-贸易管理系统";
+        }
+           
+        setAttr("system_name", systemName);
+        
     }
     
     private void setLoginLog(UserLogin user) {
@@ -437,4 +466,7 @@ public class MainController extends Controller {
         renderJson(map);
     }
     
+    public void testAdd(){
+        EedaConfig.routes.add("/module", ModuleController.class);
+    }
 }
