@@ -17,11 +17,7 @@ import models.Party;
 import models.UserCustomer;
 import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
-import models.eeda.oms.bookOrder.BookOrder;
-import models.eeda.oms.bookOrder.BookOrderArap;
 import models.eeda.oms.bookOrder.BookOrderDoc;
-import models.eeda.oms.bookOrder.BookOrderSendMail;
-import models.eeda.oms.bookOrder.BookOrderSendMailTemplate;
 import models.eeda.oms.bookOrder.BookingOrder;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderAir;
@@ -33,21 +29,15 @@ import models.eeda.tms.TransJobOrder;
 import models.eeda.tr.tradeJoborder.TradeJobOrder;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.EmailAttachment;
-import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
-import sun.misc.BASE64Encoder;
-
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
@@ -243,14 +233,10 @@ public class BookingOrderController extends Controller {
    			bookingOrder.set("office_id", office_id);
    			bookingOrder.save();
    			id = bookingOrder.getLong("id").toString();
-   		}
-//   		long customerId = Long.valueOf(dto.get("customer_id").toString());
-//   		saveCustomerQueryHistory(customerId);
-	
+   		}	
 
 //		//记录结算费用使用历史  
 //		saveFinItemQueryHistory(charge_list);
-//		saveFinItemQueryHistory(chargeCost_list);
 		
    		//海运信息写入表
 		List<Map<String, String>> ocean_detail = (ArrayList<Map<String, String>>)dto.get("ocean_detail");
@@ -285,431 +271,6 @@ public class BookingOrderController extends Controller {
    		renderJson(r);
    	}
     
-    
-    /**
-     * 保存费用模板
-     * @param shipment_detail
-     */
-    public void saveArapTemplate(String order_type,String customer_id,
-    		List<Map<String, String>> charge_list,List<Map<String, String>> cost_list,
-    		List<Map<String, String>> charge_list_all,List<Map<String, String>> cost_list_all){
-        if((charge_list==null||charge_list.size()<=0) && (cost_list==null||cost_list.size()<=0) )
-            return;
-
-        Gson gson = new Gson();
-        String chargeObject = gson.toJson(charge_list);
-        String costObject = gson.toJson(cost_list);
-        String chargeObjectAll = gson.toJson(charge_list_all);
-        String costObjectAll = gson.toJson(cost_list_all);
-        
-    	Long creator_id = LoginUserController.getLoginUserId(this);
-    	
-    	String chargeSql = "select parent_id from book_order_arap_template where"
-                + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
-                + " and  json_value = '"+chargeObject+"' and parent_id is not null";
-    	String costSql = "select parent_id from book_order_arap_template where"
-                + " arap_type = 'cost' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
-                + " and  json_value = '"+costObject+"' and parent_id is not null ";
-
-        Record chargeRec = Db.findFirst(chargeSql);
-        Record costRec = Db.findFirst(costSql);
-
-        if(chargeRec == null){
-        	if(!(charge_list==null||charge_list.size()<=0)){
-        		//保存全部信息
-                Record all= new Record();
-                all.set("creator_id", creator_id);
-                all.set("customer_id", customer_id);
-                all.set("arap_type", "charge");
-                all.set("order_type", order_type);
-                all.set("json_value", chargeObjectAll);          
-                Db.save("book_order_arap_template", all);  
-        		
-                //保存局部信息
-        		Record r= new Record();
-                r.set("creator_id", creator_id);
-                r.set("customer_id", customer_id);
-                r.set("arap_type", "charge");
-                r.set("order_type", order_type);
-                r.set("json_value", chargeObject);
-                r.set("parent_id", all.getLong("id"));
-                Db.save("book_order_arap_template", r);  
-       		}
-        }else{
-        	Long parent_id = chargeRec.getLong("parent_id");
-        	Db.update("update book_order_arap_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
-        }
-        
-        if(costRec == null){
-        	if(!(cost_list==null||cost_list.size()<=0)){
-        		//保存全部信息
-                Record all = new Record();
-                all.set("creator_id", creator_id);
-                all.set("customer_id", customer_id);
-                all.set("arap_type", "cost");
-                all.set("order_type", order_type);
-                all.set("json_value", costObjectAll);
-                Db.save("book_order_arap_template", all);  
-                
-        		//保存局部信息
-        		Record r= new Record();
-                r.set("creator_id", creator_id);
-                r.set("customer_id", customer_id);
-                r.set("arap_type", "cost");
-                r.set("order_type", order_type);
-                r.set("json_value", costObject);
-                r.set("parent_id",  all.getLong("id"));
-                Db.save("book_order_arap_template", r);  
-       		}
-        }else{
-        	Long parent_id = costRec.getLong("parent_id");
-        	Db.update("update book_order_arap_template set json_value = ? where id = ?",costObjectAll,parent_id);
-        }
-    }
-    
-    /**
-     * 保存费用模板
-     * @param shipment_detail
-     */
-    public void saveLandArapTemplate(String order_type,String customer_id,
-    		List<Map<String, String>> charge_list,List<Map<String, String>> cost_list,
-    		List<Map<String, String>> charge_list_all,List<Map<String, String>> cost_list_all){
-        if((charge_list==null||charge_list.size()<=0) && (cost_list==null||cost_list.size()<=0) )
-            return;
-
-        Gson gson = new Gson();
-        String chargeObject = gson.toJson(charge_list);
-//        String costObject = gson.toJson(cost_list);
-        String chargeObjectAll = gson.toJson(charge_list_all);
-//        String costObjectAll = gson.toJson(cost_list_all);
-        
-    	Long creator_id = LoginUserController.getLoginUserId(this);
-    	
-    	String chargeSql = "select parent_id from book_order_land_arap_template where"
-                + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
-                + " and  json_value = '"+chargeObject+"' and parent_id is not null";
-//    	String costSql = "select parent_id from book_order_land_arap_template where"
-//                + " arap_type = 'cost' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
-//                + " and  json_value = '"+costObject+"' and parent_id is not null ";
-
-        Record chargeRec = Db.findFirst(chargeSql);
-//        Record costRec = Db.findFirst(costSql);
-
-        if(chargeRec == null){
-        	if(!(charge_list==null||charge_list.size()<=0)){
-        		//保存全部信息
-                Record all= new Record();
-                all.set("creator_id", creator_id);
-                all.set("customer_id", customer_id);
-                all.set("arap_type", "charge");
-                all.set("order_type", order_type);
-                all.set("json_value", chargeObjectAll);          
-                Db.save("book_order_land_arap_template", all);  
-        		
-                //保存局部信息
-        		Record r= new Record();
-                r.set("creator_id", creator_id);
-                r.set("customer_id", customer_id);
-                r.set("arap_type", "charge");
-                r.set("order_type", order_type);
-                r.set("json_value", chargeObject);
-                r.set("parent_id", all.getLong("id"));
-                Db.save("book_order_land_arap_template", r);  
-       		}
-        }else{
-        	Long parent_id = chargeRec.getLong("parent_id");
-        	Db.update("update book_order_land_arap_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
-        }
-        
-//        if(costRec == null){
-//        	if(!(cost_list==null||cost_list.size()<=0)){
-//        		//保存全部信息
-//                Record all = new Record();
-//                all.set("creator_id", creator_id);
-//                all.set("customer_id", customer_id);
-//                all.set("arap_type", "cost");
-//                all.set("order_type", order_type);
-//                all.set("json_value", costObjectAll);
-//                Db.save("book_order_land_arap_template", all);  
-//                
-//        		//保存局部信息
-//        		Record r= new Record();
-//                r.set("creator_id", creator_id);
-//                r.set("customer_id", customer_id);
-//                r.set("arap_type", "cost");
-//                r.set("order_type", order_type);
-//                r.set("json_value", costObject);
-//                r.set("parent_id",  all.getLong("id"));
-//                Db.save("book_order_land_arap_template", r);  
-//       		}
-//        }else{
-//        	Long parent_id = costRec.getLong("parent_id");
-//        	Db.update("update book_order_land_arap_template set json_value = ? where id = ?",costObjectAll,parent_id);
-//        }
-    }
-    /**
-     * 保存费用模板
-     * @param shipment_detail
-     */
-    public void saveTradeServiceTemplate(String order_type,String customer_id,
-    		List<Map<String, String>> charge_list,List<Map<String, String>> charge_list_all){
-        if((charge_list==null||charge_list.size()<=0) )
-            return;
-
-        Gson gson = new Gson();
-        String chargeObject = gson.toJson(charge_list);
-        String chargeObjectAll = gson.toJson(charge_list_all);
-        
-    	Long creator_id = LoginUserController.getLoginUserId(this);
-    	
-    	String chargeSql = "select parent_id from book_order_trade_service_template where"
-                + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
-                + " and  json_value = '"+chargeObject+"' and parent_id is not null";
-        Record chargeRec = Db.findFirst(chargeSql);
-
-        if(chargeRec == null){
-        	if(!(charge_list==null||charge_list.size()<=0)){
-        		//保存全部信息
-                Record all= new Record();
-                all.set("creator_id", creator_id);
-                all.set("customer_id", customer_id);
-                all.set("arap_type", "charge");
-                all.set("order_type", order_type);
-                all.set("json_value", chargeObjectAll);          
-                Db.save("book_order_trade_service_template", all);  
-        		
-                //保存局部信息
-        		Record r= new Record();
-                r.set("creator_id", creator_id);
-                r.set("customer_id", customer_id);
-                r.set("arap_type", "charge");
-                r.set("order_type", order_type);
-                r.set("json_value", chargeObject);
-                r.set("parent_id", all.getLong("id"));
-                Db.save("book_order_trade_service_template", r);  
-       		}
-        }else{
-        	Long parent_id = chargeRec.getLong("parent_id");
-        	Db.update("update book_order_trade_service_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
-        }
-        
-    }
-    //常用贸易
-    /**
-     * 保存费用模板
-     * @param shipment_detail
-     */
-    public void saveTradeSaleTemplate(String order_type,String customer_id,
-    		List<Map<String, String>> charge_list, List<Map<String, String>> charge_list_all){
-        if((charge_list==null||charge_list.size()<=0) )
-            return;
-
-        Gson gson = new Gson();
-        String chargeObject = gson.toJson(charge_list);
-        String chargeObjectAll = gson.toJson(charge_list_all);
-        
-    	Long creator_id = LoginUserController.getLoginUserId(this);
-    	
-    	String chargeSql = "select parent_id from book_order_trade_sale_template where"
-                + " arap_type = 'charge' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
-                + " and  json_value = '"+chargeObject+"' and parent_id is not null";
-
-        Record chargeRec = Db.findFirst(chargeSql);
-
-        if(chargeRec == null){
-        	if(!(charge_list==null||charge_list.size()<=0)){
-        		//保存全部信息
-                Record all= new Record();
-                all.set("creator_id", creator_id);
-                all.set("customer_id", customer_id);
-                all.set("arap_type", "charge");
-                all.set("order_type", order_type);
-                all.set("json_value", chargeObjectAll);          
-                Db.save("book_order_trade_sale_template", all);  
-        		
-                //保存局部信息
-        		Record r= new Record();
-                r.set("creator_id", creator_id);
-                r.set("customer_id", customer_id);
-                r.set("arap_type", "charge");
-                r.set("order_type", order_type);
-                r.set("json_value", chargeObject);
-                r.set("parent_id", all.getLong("id"));
-                Db.save("book_order_trade_sale_template", r);  
-       		}
-        }else{
-        	Long parent_id = chargeRec.getLong("parent_id");
-        	Db.update("update book_order_trade_sale_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
-        }
-    }
-    
-    //保存常用邮箱模版
-    public void saveEmailTemplate(){
-    	String email = getPara("email");
-    	String ccEmail = getPara("ccEmail");
-    	String bccEmail = getPara("bccEmail");
-    	String remark = getPara("remark");
-    	String regex = "\\s+|,|，|;|；";//以空格或 ， ,；;分割
-    	
-    	//验证邮箱合法性
-    	String[] arr = email.split(regex);
-    	String reg = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
-    	for(int i=0;i<arr.length;i++){
-    		if(!arr[i].matches(reg)){
-    			renderJson("{\"result\":\"添加失败，收件人含有不合法邮箱\"}");
-    			return;
-    		}
-    	}
-    	if(StringUtils.isNotEmpty(ccEmail)){
-	    	String[] arr1 = ccEmail.split(regex);
-	    	for(int i=0;i<arr1.length;i++){
-	    		if(!arr1[i].matches(reg)){
-	    			renderJson("{\"result\":\"添加失败，抄送人含有不合法邮箱\"}");
-	    			return;
-	    		}
-	    	}
-    	}
-    	if(StringUtils.isNotEmpty(bccEmail)){
-	    	String[] arr2 = bccEmail.split(regex);
-	    	for(int i=0;i<arr2.length;i++){
-	    		if(!arr2[i].matches(reg)){
-	    			renderJson("{\"result\":\"添加失败，密送人含有不合法邮箱\"}");
-	    			return;
-	    		}
-	    	}
-    	}
-    	BookOrderSendMailTemplate order = new BookOrderSendMailTemplate();
-    	order.set("receive_mail", email);
-    	order.set("cc_mail", ccEmail);
-    	order.set("bcc_mail", bccEmail);
-    	order.set("remark", remark);
-    	order.set("creator", LoginUserController.getLoginUserId(this));
-    	order.save();
-    	renderJson("{\"result\":true}");
-    }
-    
-    //保存海运填写模板
-    public void saveOceanTemplate(List<Map<String, String>> shipment_detail){
-        if(shipment_detail==null||shipment_detail.size()<=0)
-            return;
-        
-        Map<String, String> recMap=shipment_detail.get(0);
-    	
-    	Long creator_id = LoginUserController.getLoginUserId(this);
-    	String MBLshipper = recMap.get("MBLshipper");
-    	String MBLconsignee = recMap.get("MBLconsignee");
-    	String MBLnotify_party = recMap.get("MBLnotify_party");
-    	String HBLshipper = recMap.get("HBLshipper");
-    	String HBLconsignee = recMap.get("HBLconsignee");
-    	String HBLnotify_party = recMap.get("HBLnotify_party");
-    	String por = recMap.get("por");
-    	String pol = recMap.get("pol");
-    	String pod = recMap.get("pod");
-    	String fnd = recMap.get("fnd");
-    	String booking_agent = recMap.get("booking_agent");
-    	String carrier = recMap.get("carrier");
-    	String head_carrier = recMap.get("head_carrier");
-    	String oversea_agent = recMap.get("oversea_agent");
-    	String release_type = recMap.get("release_type");
-    	String cargo_desc = recMap.get("cargo_desc");
-    	String shipping_mark = recMap.get("shipping_mark");
-        
-        if(por!=null&&!"".equals(por)){
-        	 savePortQueryHistory(por);
-        }
-        if(pol!=null&&!"".equals(pol)){
-        	 savePortQueryHistory(pol);
-        }
-        if(pod!=null&&!"".equals(pod)){
-        	 savePortQueryHistory(pod);
-        }
-        if(fnd!=null&&!"".equals(fnd)){
-        	 savePortQueryHistory(fnd);
-        }
-        String content = MBLshipper+MBLconsignee+MBLnotify_party+HBLshipper+HBLconsignee+HBLnotify_party+por+pol+pod+fnd+booking_agent+carrier+head_carrier+oversea_agent;
-        if("".equals(content)){
-        	return;
-        }
-        
-        String sql = "select 1 from book_order_ocean_template where"
-                + " creator_id = "+creator_id;
-        if(StringUtils.isNotEmpty(MBLshipper)){
-        	sql+=" and MBLshipper='"+MBLshipper+"'";
-        }
-        if(StringUtils.isNotEmpty(MBLconsignee)){
-        	sql+=" and MBLconsignee= '"+MBLconsignee+"'";
-        }
-        if(StringUtils.isNotEmpty(MBLnotify_party)){
-        	sql+=" and MBLnotify_party= '"+MBLnotify_party+"'";
-        }
-        if(StringUtils.isNotEmpty(HBLshipper)){
-        	sql+=" and HBLshipper= '"+HBLshipper+"'";
-        }
-        if(StringUtils.isNotEmpty(HBLconsignee)){
-        	sql+=" and HBLconsignee= '"+HBLconsignee+"'";
-        }
-        if(StringUtils.isNotEmpty(HBLnotify_party)){
-        	sql+=" and HBLnotify_party= '"+HBLnotify_party+"'";
-        }
-        if(StringUtils.isNotEmpty(por)){
-        	sql+=" and por="+por;
-        }
-        if(StringUtils.isNotEmpty(pol)){
-        	sql+=" and pol="+pol;
-        }
-        if(StringUtils.isNotEmpty(pod)){
-        	sql+=" and pod="+pod;
-        }
-        if(StringUtils.isNotEmpty(fnd)){
-        	sql+=" and fnd="+fnd;
-        }
-        if(StringUtils.isNotEmpty(booking_agent)){
-        	sql+=" and booking_agent="+booking_agent;
-        }
-        if(StringUtils.isNotEmpty(carrier)){
-        	sql+=" and carrier="+carrier;
-        }
-        if(StringUtils.isNotEmpty(head_carrier)){
-        	sql+=" and head_carrier="+head_carrier;
-        }
-        if(StringUtils.isNotEmpty(oversea_agent)){
-        	sql+=" and oversea_agent="+oversea_agent;
-        }
-        if(StringUtils.isNotEmpty(release_type)){
-        	sql+=" and release_type='"+release_type+"'";
-        }
-        if(StringUtils.isNotEmpty(cargo_desc)){
-        	sql+=" and cargo_desc='"+cargo_desc+"'";
-        }
-        if(StringUtils.isNotEmpty(shipping_mark)){
-        	sql+=" and shipping_mark='"+shipping_mark+"'";
-        }
-      
-        Record checkRec = Db.findFirst(sql);
-        if(checkRec==null){
-            Record r= new Record();
-            r.set("creator_id", creator_id);
-            r.set("MBLshipper", MBLshipper);
-            r.set("MBLconsignee", MBLconsignee);
-            r.set("MBLnotify_party", MBLnotify_party);
-            r.set("HBLshipper", HBLshipper);
-            r.set("HBLconsignee", HBLconsignee);
-            r.set("HBLnotify_party", HBLnotify_party);
-            r.set("por", por);
-            r.set("pol", pol);
-            r.set("pod", pod);
-            r.set("fnd", fnd);
-            r.set("booking_agent", booking_agent);
-            r.set("carrier", carrier);
-            r.set("head_carrier", head_carrier);
-            r.set("oversea_agent", oversea_agent);
-            r.set("release_type", release_type);
-            r.set("cargo_desc", cargo_desc);
-            r.set("shipping_mark", shipping_mark);
-            Db.save("book_order_ocean_template", r);
-        }
-    }
-    
     private void savePortQueryHistory(String portId){
         Long userId = LoginUserController.getLoginUserId(this);
         Record rec = Db.findFirst("select * from user_query_history where type='port' and ref_id=? and user_id=?", portId, userId);
@@ -726,33 +287,6 @@ public class BookingOrderController extends Controller {
         }
     }
     
-    //记录费用使用历史
-    private void saveFinItemQueryHistory(List<Map<String, String>> list) throws InstantiationException, IllegalAccessException{
-        Long userId = LoginUserController.getLoginUserId(this);
-        
-        for (Map<String, String> rowMap : list) {//获取每一行
-            String accComId = rowMap.get("CHARGE_ID");
-            if(StringUtils.isNotEmpty(accComId)){
-                addHistoryRecord(userId, accComId, "ARAP_FIN");
-            }
-        }
-    }
-
-
-    private void addHistoryRecord(long userId, String partyId, String type) {
-        Record rec = Db.findFirst("select * from user_query_history where type='"+type+"' and ref_id=? and user_id=?", partyId, userId);
-        if(rec==null){
-            rec = new Record();
-            rec.set("ref_id", partyId);
-            rec.set("type", type);
-            rec.set("user_id", userId);
-            rec.set("query_stamp", new Date());
-            Db.save("user_query_history", rec);
-        }else{
-            rec.set("query_stamp", new Date());
-            Db.update("user_query_history", rec);
-        }
-    }
     
     private void saveCustomerQueryHistory(long customerId){
         Long userId = LoginUserController.getLoginUserId(this);
@@ -769,58 +303,7 @@ public class BookingOrderController extends Controller {
             Db.update("user_query_history", rec);
         }
     }
-    //保存空运填写模板
-    public void saveAirTemplate(List<Map<String, String>> detail){
-    	if(detail==null||detail.size()<=0)
-    		return;
-    	
-    	Map<String, String> recMap=detail.get(0);
-    	Long creator_id = LoginUserController.getLoginUserId(this);
-    	
-    	String shipper = recMap.get("shipper");
-    	String consignee = recMap.get("consignee");
-    	String notify_party = recMap.get("notify_party");
-    	String booking_agent = recMap.get("booking_agent");
-    	String goods_mark = recMap.get("goods_mark");
-    	String shipping_mark = recMap.get("shipping_mark");
-    	
-    	String content = shipper+consignee+notify_party+booking_agent+shipping_mark+goods_mark;
-        if("".equals(content)){
-        	return;
-        }
-    	String sql = "select 1 from book_order_air_template where"
-                + " creator_id = "+creator_id;
-        if(StringUtils.isNotEmpty(shipper)){
-        	sql+=" and shipper= '"+shipper+"'";
-        }
-        if(StringUtils.isNotEmpty(consignee)){
-        	sql+=" and consignee= '"+consignee+"'";
-        }
-        if(StringUtils.isNotEmpty(notify_party)){
-        	sql+=" and notify_party= '"+notify_party+"'";
-        }
-        if(StringUtils.isNotEmpty(booking_agent)){
-        	sql+=" and booking_agent= '"+booking_agent+"'";
-        }
-        if(StringUtils.isNotEmpty(goods_mark)){
-        	sql+=" and goods_mark= '"+goods_mark+"'";
-        }
-        if(StringUtils.isNotEmpty(shipping_mark)){
-        	sql+=" and shipping_mark= '"+shipping_mark+"'";
-        }
-    	Record checkRec = Db.findFirst(sql);
-    	if(checkRec==null){
-    		Record r= new Record();
-    		r.set("creator_id", creator_id);
-    		r.set("shipper", shipper);
-    		r.set("consignee", consignee);
-    		r.set("notify_party", notify_party);
-    		r.set("booking_agent", booking_agent);
-    		r.set("shipping_mark", shipping_mark);
-    		r.set("goods_mark", goods_mark);
-    		Db.save("book_order_air_template", r);
-    	}
-    }
+
     
     //上传相关文档
     @Before(Tx.class)
@@ -895,29 +378,6 @@ public class BookingOrderController extends Controller {
         }
     }
     
-    //上传陆运签收文件描述
-    @Before(Tx.class)
-    public void uploadSignDesc() throws Exception{
-        try {
-            String id = getPara("id");
-            List<UploadFile> fileList = getFiles("doc");
-            Long userId = LoginUserController.getLoginUserId(this);
-            
-            FileUploadUtil.uploadFile(fileList, id, userId, "book_order_land_doc", false);
-            
-            renderJson("{\"result\":true}");
-        } catch (Exception e) {
-            String msg = e.getMessage();
-            Record rec = new Record();
-            rec.set("result", false);
-            if(msg.indexOf("Posted content")>0){
-                rec.set("errMsg", "文件不能大于10M.");
-            }else{
-                rec.set("errMsg", msg);
-            }
-            renderJson(rec);
-        }
-    }
     
     //删除相关文档
     @Before(Tx.class)
@@ -963,43 +423,7 @@ public class BookingOrderController extends Controller {
     	}
     	renderJson(resultMap);
     }
-    
-    //删除陆运签收文件
-    @Before(Tx.class)
-    public void deleteSignDesc(){
-    	String id = getPara("id");
-    	String path = getRequest().getServletContext().getRealPath("/")+"\\upload\\doc\\";
-    	
-    	String sql = "select GROUP_CONCAT(doc_name) doc_name from book_order_land_doc where land_id=?";
-    	Record r = Db.findFirst(sql, id);
-    	String fileName = r.getStr("doc_name");
-    	String[] arr = fileName.split(",");
-    	for (int i = 0; i < arr.length; i++) {
-	    	File file = new File(path+arr[i]);
-	    	if (file.exists() && file.isFile()) {
-	    		file.delete();
-	    		Db.update("delete from book_order_land_doc where land_id=?", id);
-	    	}else{
-	    		Db.update("delete from book_order_land_doc where land_id=?", id);
-	    	}
-    	}
-    	renderJson("{\"result\":true}");
-    }
-    //删除一个陆运签收文件
-    @Before(Tx.class)
-    public void deleteOneSignDesc(){
-    	String id = getPara("id");
-    	String name = getPara("name");
-    	String path = getRequest().getServletContext().getRealPath("/")+"\\upload\\doc\\";
-    	File file = new File(path+name);
-		if (file.exists() && file.isFile()) {
-			file.delete();
-			Db.update("delete from book_order_land_doc where id = ?", id);
-		}else{
-			Db.update("delete from book_order_land_doc where id = ?", id);
-		}
-    	renderJson("{\"result\":true}");
-    }
+
 
     //返回对象	
     private Record getItemDetail(String id,String type){
@@ -1314,6 +738,21 @@ public class BookingOrderController extends Controller {
 	    			setAttr("job_ata", ata);
 	    		}
 	    	}
+	    	
+	    	//空运时间
+	    	Record jobAir = Db.findFirst("select * from job_order_air_item where order_id = ?",job_order_id);
+	    	if(jobAir != null){
+	    		if(jobAir.get("etd")!=null){
+	    			String etd = jobAir.get("etd").toString();
+	    			setAttr("air_etd", etd);
+	    		}
+	    		
+	    		if(jobAir.get("eta")!=null){
+	    			String eta = jobAir.get("eta").toString();
+	    			setAttr("air_eta", eta);
+	    		}
+	    	}
+
     	}
 //    	Record re = Db.findFirst("");
     	
@@ -1335,212 +774,13 @@ public class BookingOrderController extends Controller {
     	setAttr("land", getDetail(id,"land"));
     	//报关信息回显
     	setAttr("custom", getDetail(id,"custom"));
-    	//邮件记录
-    	setAttr("mailList", getItems(id,"mail"));
-    	setAttr("emailTemplateInfo", getEmailTemplateInfo());
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
 
     	  
         render("/oms/bookingOrder/bookingOrderEdit.html");
     }
-    
-    //常用邮箱模版
-    public List<Record> getEmailTemplateInfo(){
-    	List<Record> list = Db.find("select t.* from book_order_sendmail_template t"
-                + " where t.creator=?", LoginUserController.getLoginUserId(this));
-        return list;
-    }
-    
-    
-    /**
-     * 获取应收模板信息
-     */
-    public void getArapTemplate(){
-    	String order_type = getPara("order_type");
-    	String customer_id = getPara("customer_id");
-    	String arap_type = getPara("arap_type");
-    	List<Record> list = Db.find("select * from book_order_arap_template "
-    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
-    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
-    	renderJson(list);
-    }
-    /**
-     * 获取陆运常用费用模板信息
-     */
-    public void getLandArapTemplate(){
-    	String order_type = getPara("order_type");
-    	String customer_id = getPara("customer_id");
-    	String arap_type = getPara("arap_type");
-    	List<Record> list = Db.find("select * from book_order_land_arap_template "
-    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
-    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
-    	renderJson(list);
-    }
-    //常用贸易信息
-    public void getTradeServiceTemplate(){
-    	String order_type = getPara("order_type");
-    	String customer_id = getPara("customer_id");
-    	String arap_type = getPara("arap_type");
-    	List<Record> list = Db.find("select * from book_order_trade_service_template "
-    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
-    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
-    	renderJson(list);
-    }
-    public void getTradeSaleTemplate(){
-    	String order_type = getPara("order_type");
-    	String customer_id = getPara("customer_id");
-    	String arap_type = getPara("arap_type");
-    	List<Record> list = Db.find("select * from book_order_trade_sale_template "
-    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
-    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
-    	renderJson(list);
-    }
-    
-    //常用海运信息
-    public List<Record> getUsedOceanInfo(){
-        List<Record> list = Db.find("select t.*,"
-                + " p1.abbr MBLshipperAbbr , "
-                + " concat(ifnull(p1.address_eng, p1.address), '\r', ifnull(p1.contact_person_eng, p1.contact_person), '\r', ifnull(p1.phone,'')) MBLshipper_info,"
-                + " p2.abbr MBLconsigneeAbbr,"
-                + " concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) MBLconsignee_info,"
-                + " p3.abbr MBLnotify_partyAbbr,"
-                + " concat(ifnull(p3.address_eng, p3.address), '\r', ifnull(p3.contact_person_eng, p3.contact_person), '\r', ifnull(p3.phone,'')) MBLnotify_info,"
-                + " p8.abbr HBLshipperAbbr , "
-                + " concat(ifnull(p8.address_eng, p8.address), '\r', ifnull(p8.contact_person_eng, p8.contact_person), '\r', ifnull(p8.phone,'')) HBLshipper_info,"
-                + " p9.abbr HBLconsigneeAbbr,"
-                + " concat(ifnull(p9.address_eng, p9.address), '\r', ifnull(p9.contact_person_eng, p9.contact_person), '\r', ifnull(p9.phone,'')) HBLconsignee_info,"
-                + " p10.abbr HBLnotify_partyAbbr,"
-                + " concat(ifnull(p10.address_eng, p10.address), '\r', ifnull(p10.contact_person_eng, p10.contact_person), '\r', ifnull(p10.phone,'')) HBLnotify_info,"
-                + " p4.abbr carrier_name,p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name,"
-                + " concat(ifnull(p6.address_eng, p6.address), '\r', ifnull(p6.contact_person_eng, p6.contact_person), '\r', ifnull(p6.phone,'')) oversea_agent_info,"
-                + " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name from book_order_ocean_template t "
-                + " left join party p1 on p1.id= t.MBLshipper"
-                + " left join party p2 on p2.id= t.MBLconsignee"
-                + " left join party p3 on p3.id= t.MBLnotify_party"
-                + " left join party p4 on p4.id=t.carrier"
-        		+ " left join party p5 on p5.id=t.head_carrier"
-        		+ " left join party p6 on p6.id=t.oversea_agent"
-        		+ " left join party p7 on p7.id=t.booking_agent"
-                + " LEFT JOIN location lo on lo.id = t.por"
-                + " LEFT JOIN location lo1 on lo1.id = t.pol"
-                + " LEFT JOIN location lo2 on lo2.id = t.pod"
-                + " LEFT JOIN location lo3 on lo3.id = t.fnd"
-                + " left join party p8 on p8.id= t.HBLshipper"
-                + " left join party p9 on p9.id= t.HBLconsignee"
-                + " left join party p10 on p10.id= t.HBLnotify_party"
-                + " where t.creator_id=? order by t.id", LoginUserController.getLoginUserId(this));
-        return list;
-    }
-    //常用空运信息
-    public List<Record> getUsedAirInfo(){
-    	List<Record> list = Db.find("select t.*,"
-    			+ " p1.abbr shipperAbbr , "
-    			+ " concat(ifnull(p1.address_eng, p1.address), '\r', ifnull(p1.contact_person_eng, p1.contact_person), '\r', ifnull(p1.phone,'')) shipper_info,"
-    			+ " p2.abbr consigneeAbbr,"
-    			+ " concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) consignee_info,"
-    			+ " p3.abbr notify_partyAbbr,"
-    			+ " concat(ifnull(p3.address_eng, p3.address), '\r', ifnull(p3.contact_person_eng, p3.contact_person), '\r', ifnull(p3.phone,'')) notify_info,"
-    			+ " p7.abbr booking_agent_name from book_order_air_template t "
-    			+ " left join party p1 on p1.id= t.shipper"
-    			+ " left join party p2 on p2.id= t.consignee"
-    			+ " left join party p3 on p3.id= t.notify_party"
-    			+ " left join party p7 on p7.id=t.booking_agent"
-    			+ " where t.creator_id=? order by t.id", LoginUserController.getLoginUserId(this));
-    	return list;
-    }
-    
-    //使用common-email, javamail
-    @Before(Tx.class)
-    public void sendMail() throws Exception {
-    	String order_id = getPara("order_id");
-    	String userEmail = getPara("email");
-    	String ccEmail = getPara("ccEmail");
-    	String bccEmail = getPara("bccEmail");
-    	String mailTitle = getPara("mailTitle");
-    	String mailContent = getPara("mailContent");
-    	String docs = getPara("docs");
-    	String regex = "\\s+|,|，|;|；";//以空格或 ， ,；;分割
-    	
-        MultiPartEmail email = new MultiPartEmail();  
-        /*smtp.exmail.qq.com*/
-        email.setHostName("smtp.mxhichina.com");
-        email.setSmtpPort(465);
-        
-        /*输入公司的邮箱和密码*/
-        email.setAuthenticator(new DefaultAuthenticator("info@yq-scm.com", "Enkyo123"));        
-        email.setSSLOnConnect(true);
-        email.setFrom("info@yq-scm.com","Enkyo珠海远桥");//设置发信人
-        //设置收件人，邮件标题，邮件内容
-        if(StringUtils.isNotEmpty(userEmail)){
-        	String[] arr = userEmail.split(regex);
-        	for(int i=0;i<arr.length;i++){
-        		email.addTo(arr[i]);
-        	}
-        }
-        if(StringUtils.isNotEmpty(mailTitle)){
-	        email.setSubject(mailTitle);
-        }
-        if(StringUtils.isNotEmpty(mailContent)){
-	        email.setMsg(mailContent);
-        }
-        
-        //抄送
-        if(StringUtils.isNotEmpty(ccEmail)){
-        	String[] arr = ccEmail.split(regex);
-        	for(int i=0;i<arr.length;i++){
-        		email.addCc(arr[i]);
-        	}
-        }
-       //密送
-        if(StringUtils.isNotEmpty(bccEmail)){
-        	String[] arr = bccEmail.split(regex);
-        	for(int i=0;i<arr.length;i++){
-        		email.addBcc(arr[i]);
-        	}
-        }
-        
-        //添加附件
-        if(StringUtils.isNotEmpty(docs)){
-    		String strAry[] = docs.split(",");
-	        for(int i=0;i<strAry.length;i++){
-	        	
-	        	String filePath = getRequest().getServletContext().getRealPath("/")+"/upload/doc/"+strAry[i];
-	            File file = new File(filePath);
-	            if (file.exists() && file.isFile()) {
-	            	EmailAttachment attachment = new EmailAttachment();
-	            	attachment.setPath(filePath);  
-	            	attachment.setDisposition(EmailAttachment.ATTACHMENT); 
-	            	 
-	                //设置附件的中文乱码问题，解决附件的中文名称 乱码问题
-	                BASE64Encoder enc = new BASE64Encoder();
-	                String fileName= strAry[i];
-	            	attachment.setName("=?GBK?B?"+enc.encode(fileName.getBytes())+"?="); 
-	            	email.attach(attachment);
-	            }
-	        }
-        }
-        try{
-        	email.setCharset("UTF-8"); 
-        	email.send();
-        	BookOrderSendMail jsm = new BookOrderSendMail();
-        	jsm.set("order_id", order_id);
-        	jsm.set("mail_title", mailTitle);
-        	jsm.set("doc_name", docs.replace(",", "  "));
-        	jsm.set("receive_mail", userEmail);
-        	jsm.set("cc_mail", ccEmail);
-        	jsm.set("bcc_mail", bccEmail);
-        	jsm.set("sender", LoginUserController.getLoginUserName(this));
-        	jsm.set("send_time", new Date());
-        	jsm.save();
-        	renderJson("{\"result\":true}");
-        }catch(Exception e){
-        	e.printStackTrace();
-        	renderJson("{\"result\":false}");
-        }
-       
-    }
-     
+
     public void list() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
@@ -1585,7 +825,7 @@ public class BookingOrderController extends Controller {
                 + " ) to_do";
         
         sql = "SELECT * from (select bo.*,"
-     		+ " ifnull(u.c_name, u.user_name) creator_name,o.office_name sp_name,"
+     		+ " ifnull(u.c_name, u.user_name) creator_name,ifnull(o.office_name,p.abbr) sp_name,"
      		+ " (SELECT  count(jod0.id) FROM book_order_doc jod0 WHERE  jod0.order_id =bo.id and (jod0.type='zero' or jod0.type='two' or jod0.type='four')  and   jod0.send_status='已发送' ) new_count,"
      		+ " (CASE"
      		+ " WHEN jos.ata is not null"
@@ -1608,6 +848,7 @@ public class BookingOrderController extends Controller {
      		+ " LEFT JOIN job_order_shipment jos on jos.order_id = jor.id "
      		+ "	LEFT JOIN plan_order po on po.id = bo.plan_order_id"
      		+ "	LEFT JOIN office o on o.id = po.to_entrusted_id"
+     		+ "	LEFT JOIN party p on p.id = bo.entrust"
 //     		+ " left join office oe1 on oe1.id  = bo.ref_office_id"
      		+ "	left join user_login u on u.id = bo.creator"
      		+ "	where bo.office_id="+office_id
@@ -1647,32 +888,6 @@ public class BookingOrderController extends Controller {
         renderJson(map); 
     }
     
-    //异步刷新字表
-    public void tableListOfLandCharge(){
-    	
-    	//搜索此陆运相关的应收费用，用来打印debit_note
-    	String order_id = getPara("order_id");
-    	String land_item_id = getPara("land_item_id");
-	    String itemSql = "select jor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
-    				+ " c1.name exchange_currency_id_name"
-    				+ " from book_order_arap jor "
-    		        + " left join party pr on pr.id=jor.sp_id"
-    		        + " left join fin_item f on f.id=jor.charge_id"
-    		        + " left join unit u on u.id=jor.unit_id"
-    		        + " left join currency c on c.id=jor.currency_id"
-    		        + " left join currency c1 on c1.id=jor.exchange_currency_id"
-    		        + " where order_id=? and order_type=? and land_item_id=? order by jor.id";
-	    List<Record> list = Db.find(itemSql, order_id,"charge",land_item_id);
-	    
-    	
-    	Map map = new HashMap();
-    	map.put("sEcho", 1);
-    	map.put("iTotalRecords", list.size());
-    	map.put("iTotalDisplayRecords", list.size());
-    	map.put("aaData", list);
-    	renderJson(map); 
-    }
-    
     @Before(Tx.class)
     public void saveParty(){
     	String jsonStr=getPara("params");
@@ -1701,51 +916,8 @@ public class BookingOrderController extends Controller {
    		}
    		renderJson(order);
     }
-   
-    //确认已完成工作单
-    @Before(Tx.class)
-    public void confirmCompleted(){
-    	String id = getPara("id");
-    	BookOrder order = BookOrder.dao.findById(id);
-    	order.set("status", "已完成");
-    	order.update();
-    	renderJson("{\"result\":true}");
-    }
-    
-    //费用应收打印debite_note PDF前保存
-    @Before(Tx.class)
-    public void saveDebitNote(){
-    	String ids = getPara("itemIds");
-    	String invoiceNo = getPara("invoiceNo");
-    	Db.update("update book_order_arap set invoice_no ='"+invoiceNo+"' where id in ("+ids+")");
-    	renderJson("{\"result\":true}");
-    }
-    
-    //陆运打印Invoice(分单)前保存hbl_no
-    @Before(Tx.class)
-    public void saveDebitNoteOfLand(){
-    	String ids = getPara("landIds");
-    	String invoice_land_hbl_no = getPara("invoice_land_hbl_no");
-    	String land_ref_no = getPara("land_ref_no");
-    	Db.update("update book_order_arap set invoice_land_hbl_no='"+invoice_land_hbl_no+"',land_ref_no='"+land_ref_no+"'  where land_item_id in ("+ids+")");
-    	
-     	renderJson("{\"result\":true}");
-    }
-    
-    //删除费用明细常用信息模版
-    @Before(Tx.class)
-    public void deleteArapTemplate(){
-    	String id = getPara("id");
-    	Db.update("delete from book_order_arap_template where id = ? or parent_id = ?",id,id);
-    	renderJson("{\"result\":true}");
-    }
-    //删除陆运费用明细常用信息模版
-    @Before(Tx.class)
-    public void deleteLandArapTemplate(){
-    	String id = getPara("id");
-    	Db.update("delete from book_order_land_arap_template where id = ? or parent_id = ?",id,id);
-    	renderJson("{\"result\":true}");
-    }
+
+
   //删除常用模版
     @Before(Tx.class)
     public void deleteTradeSaleTemplate(){
@@ -1753,63 +925,6 @@ public class BookingOrderController extends Controller {
     	Db.update("delete from book_order_trade_sale_template where id = ?",id);
     	renderJson("{\"result\":true}");
     }
-  //删除常用模版
-    @Before(Tx.class)
-    public void deleteTradeServiceTemplate(){
-    	String id = getPara("id");
-    	Db.update("delete from book_order_trade_service_template where id = ?",id);
-    	renderJson("{\"result\":true}");
-    }
-    //删除海运常用信息模版
-    @Before(Tx.class)
-    public void deleteOceanTemplate(){
-    	String id = getPara("id");
-    	Db.update("delete from book_order_ocean_template where id = ?",id);
-    	renderJson("{\"result\":true}");
-    }
-    //删除空运常用信息模版
-    @Before(Tx.class)
-    public void deleteAirTemplate(){
-    	String id = getPara("id");
-    	Db.update("delete from book_order_air_template where id = ?",id);
-    	renderJson("{\"result\":true}");
-    }
-    //删除邮箱常用模版
-    @Before(Tx.class)
-    public void deleteEmailTemplate(){
-    	String id = getPara("id");
-    	Db.update("delete from book_order_sendmail_template where id = ?",id);
-    	renderJson("{\"result\":true}");
-    }
-    
-    //费用明细确认
-    @Before(Tx.class)
-    public void feeConfirm(){
-		String id = getPara("id");
-		if (id != null) {
-        	BookOrderArap joa = BookOrderArap.dao.findFirst("select * from book_order_arap where id = ?",id);
-           		joa.set("audit_flag", "Y");
-        	   	joa.update();
-        }
-		//Db.update("update book_order_arap set audit_flag = 'Y' where id = ?", id);
-		Record re = Db.findFirst("select * from book_order_arap where id = ?",id);
-		renderJson(re);
-	 }
-  //费用明细取消确认，
-    @Before(Tx.class)
-    public void feeCancelConfirm(){
-		String id = getPara("id");
-		if (id != null) {
-        	BookOrderArap joa = BookOrderArap.dao.findFirst("select * from book_order_arap where id = ?",id);
-        	if( joa.get("audit_flag").equals("Y")&&joa.get("bill_flag").equals("N")){
-        		joa.set("audit_flag", "N");
-        	}
-        	joa.update();
-        }
-		//Db.update("update book_order_arap set audit_flag = 'Y' where id = ?", id);
-		Record re = Db.findFirst("select * from book_order_arap where id = ?",id);
-		renderJson(re);
-	 }
     
     @Before(Tx.class)
     public void updateShare(){
@@ -1848,45 +963,7 @@ public class BookingOrderController extends Controller {
     			+ " delete_reason='"+delete_reason+"' where id = ?  ",id);
     	renderJson("{\"result\":true}");
     }
-    
-    
-    //保存陆运相关的应收费用
-    @Before(Tx.class)
-    public void saveLandCharge() throws InstantiationException, IllegalAccessException{
-    	
-    	String jsonStr=getPara("params");
-       	Gson gson = new Gson();  
-        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
-        String order_id = (String) dto.get("order_id");
-        String land_item_id = (String) dto.get("land_item_id");
-    	
-        List<Map<String, String>> land_charge_item = (ArrayList<Map<String, String>>)dto.get("land_charge_item");
-        Model<?> model = (Model<?>) BookOrderArap.class.newInstance();
-        for(int i=0;i<land_charge_item.size();i++){
-        	Map<String, String> map=land_charge_item.get(i);
-        	
-        	DbUtils.setModelValues(map,model);
-        	model.set("land_item_id", land_item_id);
-        	model.set("order_id", order_id);
-        	if("UPDATE".equals(map.get("action"))){
-        		model.update();
-        	}else if("DELETE".equals(map.get("action"))){
-        		model.delete();
-        	}else{
-        		model.save();
-        	}
-        }
-      //保存陆运费用模版
-        String type = (String) dto.get("type");//根据工作单类型生成不同前缀
-        String customer_id = (String)dto.get("customer_id");
-   		List<Map<String, String>> land_charge_template = (ArrayList<Map<String, String>>)dto.get("land_charge_template");
-		List<Map<String, String>> land_cost_template = (ArrayList<Map<String, String>>)dto.get("land_cost_template");
-		List<Map<String, String>> land_allCharge_template = (ArrayList<Map<String, String>>)dto.get("land_allCharge_template");
-		List<Map<String, String>> land_allCost_template = (ArrayList<Map<String, String>>)dto.get("land_allCost_template");
-		saveLandArapTemplate(type,customer_id,land_charge_template,land_cost_template,land_allCharge_template,land_allCost_template);
-   		
-        renderJson("{\"result\":true}");
-    }
+
     
     //新文档上传标记
     @Before(Tx.class)
@@ -1900,21 +977,7 @@ public class BookingOrderController extends Controller {
    		}
     	renderJson("{\"result\":true}");
     }
-    
-    
-    //商品名名称下拉列表
-    public void searchCommodity(){
-    	String input = getPara("input");
-    	List<Record> recs = null;
-    	UserLogin user = LoginUserController.getLoginUser(this);
-   		long office_id = user.getLong("office_id");
-    	String sql = "select * from trade_item where 1=1 and office_id = "+office_id;
-    	if(StringUtils.isNotEmpty(input)){
-    		sql+=" and commodity_name like '%"+ input +"%' ";
-    	}
-    	recs = Db.find(sql);
-    	renderJson(recs);
-    }
+
     
     //确认发送文档
     @Before(Tx.class)
@@ -2302,72 +1365,4 @@ public class BookingOrderController extends Controller {
      }
 			
     }
-   		
-//        	if(StringUtils.isNotBlank(truct_type)){
-//        		if(StringUtils.isBlank(transport_type)){
-//        			transport_type += "land";
-//        		}else{
-//        			transport_type += ",land";
-//        		}
-//        	}
-//        	if(StringUtils.isNotBlank(container_type)){
-
-//        		else{
-//        			transport_type += ",ocean";
-//        		}
-//        	}
-
-            //从表默认选项
-//            if(StringUtils.isNotBlank(container_type)){
-//            	String[] array = container_type.split(",");
-//            	for (int i = 0; i < array.length; i++) {
-//            		String[] ctypeMsg = array[i].split("X");
-//            		String con_type = ctypeMsg[0];
-//            		String number = ctypeMsg[1];
-//            		for (int j = 0; j < Integer.parseInt(number); j++) {
-//            			Record landItem = new Record();
-//            			landItem.set("order_id", order.get("id"));
-//            			landItem.set("container_type", con_type);
-//            			Db.save("job_order_shipment_item", landItem);
-//					}
-//            		
-//            	}
-//        		
-//        		
-//        		
-//        	}
-//        	if(StringUtils.isNotBlank(truct_type)){
-//        		String[] array = truct_type.split(",");
-//            	for (int i = 0; i < array.length; i++) {
-//            		String[] ctypeMsg = array[i].split("X");
-//            		String tr_type = ctypeMsg[0];
-//            		String number = ctypeMsg[1];
-//            		for (int j = 0; j < Integer.parseInt(number); j++) {
-//            			Record oceanItem = new Record();
-//            			oceanItem.set("order_id", order.get("id"));
-//            			oceanItem.set("status", "待发车");
-//            			oceanItem.set("truck_type", tr_type);
-//            			Db.save("job_order_land_item", oceanItem);
-//					}
-//            	}
-//            	
-//            	Record oceanDetail = new Record();
-//            	oceanDetail.set("order_id", order.get("id"));
-//            	oceanDetail.set("pol", item.get("pol"));
-//            	oceanDetail.set("pod", item.get("pod"));
-//            	
-//            	oceanDetail.set("carrier", item.get("carrier"));
-//            	oceanDetail.set("vessel", item.get("vessel"));
-//            	oceanDetail.set("voyage", item.get("voyage"));
-//            	oceanDetail.set("eta", item.get("eta"));
-//            	oceanDetail.set("etd", item.get("etd"));
-//            	//oceanDetail.set("SONO", item.get("SONO"));
-//    			Db.save("job_order_shipment", oceanDetail);
-//            	
-//        	}
-
-    
-    
-
-
 }

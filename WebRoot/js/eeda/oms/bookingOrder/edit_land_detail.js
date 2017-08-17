@@ -5,9 +5,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             switch (service){
                 case 'land_take':
                     $('#land_take').show();
+                    $('#land_take_status').show();
                     break;
                 case 'land_delivery':
                     $('#land_delivery').show();
+                    $('#land_delivery_status').show();
                     break;                         
             }
         };
@@ -16,9 +18,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             switch (service){
                 case 'land_take':
                     $('#land_take').hide();
+                    $('#land_take_status').hide();
                     break;
                 case 'land_delivery':
                     $('#land_delivery').hide();
+                    $('#land_delivery_status').hide();
                     break;                           
             }
         };

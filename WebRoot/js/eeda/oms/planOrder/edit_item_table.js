@@ -151,7 +151,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                		return "<span style='width:90'></span>";
 	                	}  
 	                  // return '<input type="text" disabled name="book_order_no" value="'+data+'" class="form-control search-control" />';
-	                	return "<a style='width:90'  href='/bookOrder/edit?id="+full.BOOK_ORDER_ID+"'target='_blank'>"+data+"</a>";
+	                	return "<a style='width:90'  href='/bookingOrder/edit?id="+full.BOOK_ORDER_ID+"'target='_blank'>"+data+"</a>";
 	                }
 	            },
 	            { "data": "JOB_ORDER_TYPE","width": "60px",

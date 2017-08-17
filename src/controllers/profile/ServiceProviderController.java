@@ -577,6 +577,11 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchCompany(){
     	String input = getPara("input");
+    	String type = getPara("type");
+    	String sql_type = "and p.type='"+type+"'";
+    	if(StringUtils.isEmpty(type)){
+    		sql_type="";
+    	}
     	long userId = LoginUserController.getLoginUserId(this);	
 		Long parentID = pom.getParentOfficeId();
 		
@@ -586,7 +591,7 @@ public class ServiceProviderController extends Controller {
                     + " where h.ref_id=p.id and h.type='ARAP_COM' and h.user_id=?";
             spList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
             if(spList.size()==0){
-            	String sql2 = "select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "
+            	String sql2 = "select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "+sql_type
                         + " and (p.abbr like '%"
                         + input
                         + "%' or p.code like '%"
@@ -598,7 +603,7 @@ public class ServiceProviderController extends Controller {
             renderJson(spList);
         }else{
             if (input !=null && input.trim().length() > 0) {
-            	String sql = " select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "
+            	String sql = " select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "+sql_type
                                 + " and (p.abbr like '%"+input+"%' or p.code like '%"+ input
                                 + "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) ";
                 spList = Db.find(sql+ " order by convert(p.abbr using gb2312) asc limit 25",parentID,parentID);
@@ -606,16 +611,10 @@ public class ServiceProviderController extends Controller {
                 if(spList.size()==0){
                 	String err = "无记录";
                 	renderText(err);
-                	return;
-                }else{
-                	 sql+= " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
-                	 spList = Db.find(sql+ " order by convert(p.abbr using gb2312) asc limit 25",parentID,parentID);
-                	 renderJson(spList);
-                	 return;
+                	return;                
                 }
             } else {
-                spList = Db
-                        .find("select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "
+                spList = Db.find("select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "+sql_type
                                 + " and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?) "
                                 + " order by convert(p.abbr using gb2312) asc limit 25", parentID, parentID);
             }

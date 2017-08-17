@@ -223,6 +223,8 @@ public class PlanOrderController extends Controller {
     		bookingOrder.set("gross_weight", item.get("gross_weight"));
     		bookingOrder.set("volume", item.get("volume"));
     		bookingOrder.set("gargo_name", cargo_name);
+    		bookingOrder.set("booking_submit_flag", "Y");
+    		bookingOrder.set("status", "已提交");
     		bookingOrder.save();
     		
     		Long order_id = bookingOrder.getLong("id");
@@ -257,13 +259,16 @@ public class PlanOrderController extends Controller {
                 	take_land.set("order_id", order_id);               	
                 	take_land.set("take_address", pickup_addr);
                 	take_land.set("land_type", land_type);
-                	String[] array = truck_type.split(",");
-                	for (int i = 0; i < array.length; i++) {
-                		String[] ctypeMsg = array[i].split("X");
-                		String tr_type = ctypeMsg[0];
-                		String number = ctypeMsg[1];
-                		take_land.set("truck_type", tr_type);
-                	}                	
+                	if(StringUtils.isNotEmpty(truck_type)){
+                		String[] array = truck_type.split(",");
+                    	for (int i = 0; i < array.length; i++) {
+                    		String[] ctypeMsg = array[i].split("X");
+                    		String tr_type = ctypeMsg[0];
+                    		String number = ctypeMsg[1];
+                    		take_land.set("truck_type", tr_type);
+                    	}
+                	}
+                	                	
                 	Db.save("booking_land_detail", take_land);
                 }
             }
@@ -334,13 +339,13 @@ public class PlanOrderController extends Controller {
     
     private List<Record> getPlanOrderItems(String orderId) {
         String itemSql = "select pi.*, l_por.name por_name, l_pol.name pol_name, l_pod.name pod_name,u.name unit_name,bor.id book_order_id,"
-        		+ "bor.order_no book_order_no,pl.submit_flag, p.abbr carrier_name "
+        		+ "bor.booking_no book_order_no,pl.submit_flag, p.abbr carrier_name "
                 + " from plan_order pl "
                 + " LEFT JOIN plan_order_item pi  on pl.id = pi.order_id "
                 +" left join location l_por on pi.por=l_por.id"
                 +" left join location l_pol on pi.pol=l_pol.id"
                 +" left join location l_pod on pi.pod=l_pod.id"
-                + " left join book_order bor on bor.plan_item_id = pi.id"
+                + " left join booking_order bor on bor.plan_item_id = pi.id"
                 +" left join party p on pi.carrier=p.id"
                 +" left join unit u on u.id=pi.unit_id"
                 +" where order_id=?";
@@ -450,10 +455,11 @@ public class PlanOrderController extends Controller {
         			+ " (select count(1) from plan_order_item where order_id = po.id and confirm_shipment = 'Y')=0,"
         			+ " '新建','处理中')) order_status,"
         			+ " (GROUP_CONCAT((poi.job_order_type) SEPARATOR '<br>')) job_order_type,"
-        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name ,o.office_abbr sp_name"
+        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name ,ifnull(o.office_abbr,p.abbr) sp_name"
     			+ " from plan_order po "
     			+ " LEFT JOIN plan_order_item poi on poi.order_id = po.id"
     			+ " LEFT JOIN office o ON o.id = po.to_entrusted_id "
+    			+ " LEFT JOIN party p ON p.id = po.to_party_id "
     			+ " left join user_login u on u.id = po.creator"
     			+ " where (po.office_id="+office_id
     			+ " or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y')) and po.delete_flag = 'N'"
@@ -548,8 +554,10 @@ public class PlanOrderController extends Controller {
    		String transport_type = "";
     	String truct_type = item.getStr("truck_type");
     	String container_type = item.getStr("container_type");
+    	String customs_type = item.getStr("customs_type");
+    	String pickup_addr = item.get("pickup_addr");
     	if(StringUtils.isNotBlank(truct_type)){
-    		if(StringUtils.isBlank(transport_type)){
+    		if(StringUtils.isBlank(transport_type)||StringUtils.isNotEmpty(pickup_addr)){
     			transport_type += "land";
     		}else{
     			transport_type += ",land";
@@ -562,6 +570,21 @@ public class PlanOrderController extends Controller {
     			transport_type += ",ocean";
     		}
     	}
+    	if(StringUtils.isNotBlank(container_type)||StringUtils.isNotEmpty((String) item.get("pol"))||StringUtils.isNotEmpty((String) item.get("pod"))){
+    		if(StringUtils.isBlank(transport_type)){
+    			transport_type += "ocean";
+    		}else{
+    			transport_type += ",ocean";
+    		}
+    	}
+    	
+    	if("代理报关".equals(customs_type)){
+   			if(StringUtils.isEmpty(transport_type)){
+   				transport_type+="custom";
+   			}else{
+   				transport_type+=",custom";
+   			}
+   		}
    		
     	if(order==null){
     		PlanOrder re = PlanOrder.dao.findById(plan_order_id);
@@ -637,32 +660,41 @@ public class PlanOrderController extends Controller {
             		String con_type = ctypeMsg[0];
             		String number = ctypeMsg[1];
             		for (int j = 0; j < Integer.parseInt(number); j++) {
-            			Record landItem = new Record();
-            			landItem.set("order_id", order.get("id"));
-            			landItem.set("container_type", con_type);
-            			Db.save("job_order_shipment_item", landItem);
+            			Record oceanItem = new Record();
+            			oceanItem.set("order_id", order.get("id"));
+            			oceanItem.set("container_type", con_type);
+            			Db.save("job_order_shipment_item", oceanItem);
 					}
             		
             	}
-        		
-        		
-        		
         	}
-        	if(StringUtils.isNotBlank(truct_type)){
-        		String[] array = truct_type.split(",");
-            	for (int i = 0; i < array.length; i++) {
-            		String[] ctypeMsg = array[i].split("X");
-            		String tr_type = ctypeMsg[0];
-            		String number = ctypeMsg[1];
-            		for (int j = 0; j < Integer.parseInt(number); j++) {
-            			Record oceanItem = new Record();
-            			oceanItem.set("order_id", order.get("id"));
-            			oceanItem.set("status", "待发车");
-            			oceanItem.set("truck_type", tr_type);
-            			Db.save("job_order_land_item", oceanItem);
-					}
-            	}
-            	
+            
+        	if(StringUtils.isNotBlank(truct_type)||StringUtils.isNotEmpty(pickup_addr)){
+        		if(StringUtils.isNotBlank(truct_type)){
+        			String[] array = truct_type.split(",");
+                	for (int i = 0; i < array.length; i++) {
+                		String[] ctypeMsg = array[i].split("X");
+                		String tr_type = ctypeMsg[0];
+                		String number = ctypeMsg[1];
+                		for (int j = 0; j < Integer.parseInt(number); j++) {
+                			Record landItem = new Record();
+                			landItem.set("order_id", order.get("id"));
+                			landItem.set("status", "待发车");
+                			landItem.set("truck_type", tr_type);
+                			landItem.set("take_address", pickup_addr);
+                			Db.save("job_order_land_item", landItem);
+    					}
+                	}
+        		}else{
+        			Record landItem = new Record();
+        			landItem.set("order_id", order.get("id"));
+        			landItem.set("status", "待发车");
+        			landItem.set("take_address", pickup_addr);
+        			Db.save("job_order_land_item", landItem);
+        		}
+        		
+        	}	
+            if(StringUtils.isNotEmpty((String) item.get("pol"))||StringUtils.isNotEmpty((String) item.get("pod"))){
             	Record oceanDetail = new Record();
             	oceanDetail.set("order_id", order.get("id"));
             	oceanDetail.set("pol", item.get("pol"));
@@ -675,8 +707,7 @@ public class PlanOrderController extends Controller {
             	oceanDetail.set("etd", item.get("etd"));
             	//oceanDetail.set("SONO", item.get("SONO"));
     			Db.save("job_order_shipment", oceanDetail);
-            	
-        	}
+            }
     	}
     }
     

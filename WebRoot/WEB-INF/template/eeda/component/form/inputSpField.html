@@ -46,7 +46,7 @@ $(document).ready(function() {
 			spList.find('li').first().focus();
             return false;
         }
-		$.get('/serviceProvider/searchCompany', {input:inputStr}, function(data){
+		$.get('/serviceProvider/searchCompany', {input:inputStr,type:"${type!''}"}, function(data){
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
 			}

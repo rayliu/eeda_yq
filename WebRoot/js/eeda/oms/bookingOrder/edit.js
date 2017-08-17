@@ -28,11 +28,6 @@ $(document).ready(function() {
 			$('#saveBtn').attr('disabled', true);
 		}
     }
-    
-    
-    
-    
-     
 	
 	//已完成工作单确认
 	$('#confirmCompleted').click(function(){
@@ -57,15 +52,18 @@ $(document).ready(function() {
         switch (service){
             case 'ocean':
                 $('#oceanDetail').show();
+                $('#ocean_status').show();
                 break;
             case 'air':
                 $('#airDetail').show();
+                $('#air_status').show();
                 break;
             case 'land':
                 $('#landDetail').show();
                 break;
             case 'custom':
                 $('#customDetail').show();
+                $('#custom_status').show();
                 break;            
         }
     };
@@ -74,15 +72,18 @@ $(document).ready(function() {
         switch (service){
             case 'ocean':
                 $('#oceanDetail').hide();
+                $('#ocean_status').hide();
                 break;
             case 'air':
                 $('#airDetail').hide();
+                $('#air_status').hide();
                 break;
             case 'land':
                 $('#landDetail').hide();
                 break;
             case 'custom':
                 $('#customDetail').hide();
+                $('#custom_status').hide();
                 break;            
         }
     };
