@@ -56,22 +56,25 @@ $(document).ready(function() {
 				}else{
 					companyList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
 				}
-			}else if(data.length==0){
-				companyList.append('<span class="search_hint">无记录或是您没有获取该公司的权限</span>');
-			}else if(inputStr.length>0 && data.length==10){
+			}else if(data=="无记录"){
+				companyList.append('<span class="search_hint">您没有该客户记录,<a href="/customer/add"  target="_blank">点击此处</a>去设置</span>');
+			}else if(inputStr.length>0 && data.length==25){
 				companyList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+			}else if(data.length==0){
+				companyList.append('<span class="search_hint">您没有该客户的权限,请联系管理员</span>');
 			}
 
-	        for(var i = 0; i < data.length; i++){
-	        	var code = data[i].CODE;
-	        	if(!code){
-	        		code="";
-	        	}else{
-	        		code=" - "+data[i].CODE;
-	        	}
-	        	companyList.append("<li tabindex='"+i+"'><a class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' partyId='"+data[i].ID+"' partyCode='"+data[i].CODE+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+code +"</a></li>");
+	        if(data!="无记录"){
+	        	for(var i = 0; i < data.length; i++){
+		        	var code = data[i].CODE;
+		        	if(!code){
+		        		code="";
+		        	}else{
+		        		code=" - "+data[i].CODE;
+		        	}
+		        	companyList.append("<li tabindex='"+i+"'><a class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' partyId='"+data[i].ID+"' partyCode='"+data[i].CODE+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+code +"</a></li>");
+		        }
 	        }
-	            
 	            
 	        companyList.css({ 
 		    	left:$(me).position().left+"px", 
@@ -93,7 +96,7 @@ $(document).ready(function() {
             if(!inputStr && data.length>1){
                 hiddenField.val('');
             }   
-	    },'json');
+	    });
 	});
 	
 	companyList.on('click', '.fromLocationItem', function(e){

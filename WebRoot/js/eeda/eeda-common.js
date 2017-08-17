@@ -523,9 +523,19 @@ eeda.refreshUrl = refreshUrl;
                 tableFieldList.append('<span style="font-size: 10px;color: gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
               }
             }else if(data.length==0){
-              tableFieldList.append('<span style="font-size: 10px;color: gray;">无记录</span>');
+            	if(url=="/serviceProvider/searchCompany"){
+            		tableFieldList.append('<span class="search_hint">您没有该结算公司的权限,请联系管理员</span>');
+            	}if(url=="/serviceProvider/searchChargeUnit"){
+            		tableFieldList.append('<span class="search_hint">没有此单位记录，请设置<a href="/unit/create" target="_blank">点击此处</a></span>');
+            	}else{
+            		tableFieldList.append('<span style="font-size: 10px;color: gray;">无记录</span>');
+            	}
             }else if(inputStr.length>0 && data.length==10){
               tableFieldList.append('<span style="font-size: 10px;color: gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+            }else if(data=="无记录"){
+            	if(url=="/serviceProvider/searchCompany"){
+            		tableFieldList.append('<span class="search_hint">搜索无记录<a href="/customer/add"  target="_blank">点击设置客户</a> - <a href="/customer/add"  target="_blank">点击设置供应商</a></span>');
+            	}
             }
 
             if(para == 'air_port' || para == 'port'){
@@ -533,9 +543,11 @@ eeda.refreshUrl = refreshUrl;
                     tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID+"' >"+data[i].NAME+" -"+data[i].CODE+"</a></li>"); 
                 }
             }else{
-                for(var i = 0; i < data.length; i++){
-                    tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID+"' dataName='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
-                }
+            	if(data!="无记录"){
+            		for(var i = 0; i < data.length; i++){
+                        tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID+"' dataName='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
+                    }
+            	}
             }
 
 		        tableFieldList.css({ 
@@ -556,7 +568,7 @@ eeda.refreshUrl = refreshUrl;
 	                hiddenField.val('');
             }
             //tableFieldList;
-  	    },'json');
+  	    });
         }
 		  });
 
@@ -654,6 +666,9 @@ eeda.refreshUrl = refreshUrl;
 					  return;
 				  }
 				  tableFieldList.empty();
+				  if(data.length==0){
+					  tableFieldList.append('<span class="search_hint">没有此币制记录，请设置<a href="/currency/create" target="_blank">点击此处</a></span>');
+				  }
 				  for(var i = 0; i < data.length; i++)
 					  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
 							  +"' dataName='"+data[i].NAME+"' currency_rate='"+data[i].RATE+"' >"+data[i].NAME+"</a></li>");
@@ -1556,12 +1571,24 @@ eeda.refreshUrl = refreshUrl;
 					  if(!data[i].CODE){
 						  fin_code="";
 					  }
-					  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
-							  +"' charge_name='"+data[i].NAME+"' currency_id='"+data[i].CURRENCY_ID
-							  +"' charge_name_eng='"+data[i].NAME_ENG
-							  +"' currency_code='"+data[i].CURRENCY_CODE+"' currency_rate='"+data[i].RATE+"' >"+data[i].NAME+fin_code+"</a></li>");
 				  }
-					  
+				  if(inputStr=='' && data.length>0){
+					  if(data[0].REF_ID){
+						  tableFieldList.append('<span style="font-size:10px;color:gray;">您曾经使用过的'+data.length+'行记录, 需要别的数据请输入查询条件</span>');
+					  }else{
+						  tableFieldList.append('<span style="font-size:10px;color:gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+					  }
+				}else if(data.length==0){
+					tableFieldList.append('<span style="font-size:10px;color:gray;">没有此费用记录，请设置<a href="/finItem/create" target="_blank">点击此处</a></span>');
+				}else if(inputStr.length>0 && data.length==10){
+					tableFieldList.append('<span style="font-size:10px;color:gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+				}
+				  for(var i = 0; i < data.length; i++){
+				  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
+						  +"' charge_name='"+data[i].NAME+"' currency_id='"+data[i].CURRENCY_ID
+						  +"' charge_name_eng='"+data[i].NAME_ENG
+						  +"' currency_code='"+data[i].CURRENCY_CODE+"' currency_rate='"+data[i].RATE+"' >"+data[i].NAME+fin_code+"</a></li>");
+				  }
 				  		
 				  tableFieldList.css({ 
 					  left:$(me).offset().left+"px", 
@@ -1579,7 +1606,7 @@ eeda.refreshUrl = refreshUrl;
 	            	   if(data.length>1)
 		                   hiddenField.val('');
 		              }
-			  },'json');
+			  });
 		  });
 		  
 		  tableFieldList.on('click', '.fromLocationItem', function(e){

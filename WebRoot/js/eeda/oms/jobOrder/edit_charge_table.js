@@ -390,6 +390,7 @@ $(document).ready(function() {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
                             data='';
+                		debugger;
                         var field_html = template('table_dropdown_template',
                             {
                                 id: 'SP_ID',
