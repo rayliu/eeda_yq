@@ -148,20 +148,55 @@ public class PlanOrderController extends Controller {
     	UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
    		String job_order_type =item.getStr("job_order_type");
-   		Date delivery = item.get("delivery");
+   		String delivery = item.get("delivery");
    		String pickup_addr = item.get("pickup_addr");
-   		Long pol_id = item.get("pol");
+   		String pol_id = item.get("pol");
    		
-   		Long pod_id = item.get("pod");
+   		String pod_id = item.get("pod");
    		String container_type = item.get("container_type");
-   		Long truck_type = item.get("truck_type");
+   		String truck_type = item.get("truck_type");
    		
    		String cargo_name = item.get("cargo_name");
    		String customs_type = item.get("customs_type");
-//   		if(){
-//   			
-//   		}
    		String transport_type = "";
+   		if(job_order_type.contains("出口柜货")||job_order_type.contains("出口散货")){
+   			if(pol_id!=null||pod_id!=null){
+	   			if(StringUtils.isEmpty(transport_type)){
+	   				transport_type+="ocean";
+	   			}else{
+	   				transport_type+=",ocean";
+	   			}
+   			}
+   		}
+   		if(job_order_type.contains("空运")){
+   			if(pol_id!=null||pod_id!=null){
+   				if(StringUtils.isEmpty(transport_type)){
+	   				transport_type+="air";
+	   			}else{
+	   				transport_type+=",air";
+	   			}
+   			}
+   		}
+   		String land_type ="";
+   		if(StringUtils.isNotEmpty(pickup_addr)){
+   			if(StringUtils.isEmpty(transport_type)){
+   				transport_type+="land";
+   			}else{
+   				transport_type+=",land";
+   			}
+   			if(StringUtils.isEmpty(land_type)){
+   				land_type+="land_take";
+   			}else{
+   				land_type+=",land_take";
+   			}	
+   		}
+   		if("代理报关".equals(customs_type)){
+   			if(StringUtils.isEmpty(transport_type)){
+   				transport_type+="custom";
+   			}else{
+   				transport_type+=",custom";
+   			}
+   		}
    		
    		//新booking
    		BookingOrder bookingOrder  = BookingOrder.dao.findFirst("select * from booking_order where plan_item_id = ? ",item_id);
@@ -170,23 +205,69 @@ public class PlanOrderController extends Controller {
     		bookingOrder  = new BookingOrder();
     		bookingOrder.set("booking_no", OrderNoGenerator.getNextOrderNo("BK", office_id));
     		bookingOrder.set("creator", user.getLong("id"));
+    		bookingOrder.set("transport_type", transport_type);
     		bookingOrder.set("create_stamp", new Date());
     		bookingOrder.set("updator", user.getLong("id"));
     		bookingOrder.set("update_stamp", new Date());
     		bookingOrder.set("office_id", office_id);
     		bookingOrder.set("type", job_order_type);
     		bookingOrder.set("order_export_date", item.get("factory_loading_time"));
-    		bookingOrder.set("transport_type", item.getStr("transport_type"));
     		bookingOrder.set("plan_order_no", re.getStr("order_no"));
     		bookingOrder.set("plan_order_id", id);
     		bookingOrder.set("plan_item_id", item_id);
-    		bookingOrder.set("customer_id", re.getLong("customer_id"));
+    		bookingOrder.set("entrust", re.getLong("to_party_id"));
+    		bookingOrder.set("shipper", re.getLong("self_party_id"));
     		bookingOrder.set("plan_item_id", item.getLong("id"));
     		bookingOrder.set("pieces", item.get("pieces"));
     		bookingOrder.set("net_weight", item.get("net_weight"));
     		bookingOrder.set("gross_weight", item.get("gross_weight"));
     		bookingOrder.set("volume", item.get("volume"));
+    		bookingOrder.set("gargo_name", cargo_name);
     		bookingOrder.save();
+    		
+    		Long order_id = bookingOrder.getLong("id");
+    		if(transport_type.contains("ocean")){
+            	Record ocean_detail  = Db.findFirst("select * from booking_ocean_detail where order_id = ? ",order_id);
+                if(ocean_detail==null){
+                	ocean_detail = new Record();
+                	ocean_detail.set("order_id", order_id);
+                	ocean_detail.set("eta", delivery);             	
+                	ocean_detail.set("pol_id", pol_id);
+                	ocean_detail.set("pod_id", pod_id);
+                	
+                	Db.save("booking_ocean_detail", ocean_detail);
+                }
+            }
+    		if(transport_type.contains("air")){
+            	Record air_detail  = Db.findFirst("select * from booking_air_detail where order_id = ? ",order_id);
+                if(air_detail==null){
+                	air_detail = new Record();
+                	air_detail.set("order_id", order_id);
+                	air_detail.set("air_eta", delivery); 
+                	air_detail.set("air_pol_id", pol_id);
+                	air_detail.set("air_pod_id", pod_id);
+                	Db.save("booking_air_detail", air_detail);
+                }
+            }
+    		//提货
+            if(transport_type.contains("land")){
+            	Record take_land  = Db.findFirst("select * from booking_land_detail where order_id = ? ",order_id);
+                if(take_land==null){
+                	take_land = new Record();
+                	take_land.set("order_id", order_id);               	
+                	take_land.set("take_address", pickup_addr);
+                	take_land.set("land_type", land_type);
+                	String[] array = truck_type.split(",");
+                	for (int i = 0; i < array.length; i++) {
+                		String[] ctypeMsg = array[i].split("X");
+                		String tr_type = ctypeMsg[0];
+                		String number = ctypeMsg[1];
+                		take_land.set("truck_type", tr_type);
+                	}                	
+                	Db.save("booking_land_detail", take_land);
+                }
+            }
+    		
     	}else{
     		bookingOrder.set("updator", user.getLong("id"));
     		bookingOrder.set("update_stamp", new Date());
@@ -198,7 +279,6 @@ public class PlanOrderController extends Controller {
     		bookingOrder.set("net_weight", item.get("net_weight"));
     		bookingOrder.set("gross_weight", item.get("gross_weight"));
     		bookingOrder.set("volume", item.get("volume"));
-            
     		bookingOrder.update();
     	}
    		
@@ -213,13 +293,21 @@ public class PlanOrderController extends Controller {
         	order.set("updator", user.getLong("id"));
         	order.set("update_stamp", new Date());
             order.set("office_id", office_id);
+            Long to_party_id = re.getLong("to_party_id");
+            Long to_ref_office_id = null ;
+            if(StringUtils.isNotBlank(to_party_id.toString())){
+            	Record to_party = Db.findFirst("select * from party where id = ? ",to_party_id);
+            	if(to_party.getLong("ref_office_id")!=null){
+            		 to_ref_office_id = to_party.getLong("ref_office_id");
+            	}
+            }
+            order.set("ref_office_id", to_ref_office_id);
             order.set("type", item.getStr("job_order_type"));
             order.set("order_export_date", item.get("factory_loading_time"));
             order.set("transport_type", item.getStr("transport_type"));
             order.set("plan_order_no", re.getStr("order_no"));
             order.set("plan_order_id", id);
-            order.set("plan_item_id", item_id);
-            order.set("customer_id", re.getLong("customer_id"));
+            order.set("plan_item_id", item_id);            
             order.set("plan_item_id", item.getLong("id"));
             order.set("pieces", item.get("pieces"));
             order.set("net_weight", item.get("net_weight"));
@@ -508,12 +596,17 @@ public class PlanOrderController extends Controller {
         	order.set("update_stamp", new Date());
             order.set("office_id", office_id);
             
-            Long entrusted_id = re.getLong("entrusted_id");
-            if(StringUtils.isNotBlank(entrusted_id.toString())){
-            	Record customer = Db.findFirst("select * from party where type='CUSTOMER' and ref_office_id = ? ",entrusted_id);
-            	if(customer!=null){
-            		Long customer_id = customer.getLong("id");
-            		order.set("customer_id", customer_id);
+            Long to_party_id = re.getLong("to_party_id");
+            if(StringUtils.isNotBlank(to_party_id.toString())){
+            	Record to_party = Db.findFirst("select * from party where id = ? ",to_party_id);
+            	Long to_ref_office_id = null ;
+            	if(to_party.getLong("ref_office_id")!=null){
+            		 to_ref_office_id = to_party.getLong("ref_office_id");
+            		 Record customer_party = Db.findFirst("select * from party where office_id = ? and ref_office_id=? ",to_ref_office_id,office_id);
+                 	if(customer_party!=null){
+                 		Long customer_id = customer_party.getLong("id");
+                 		order.set("customer_id", customer_id);
+                 	}
             	}
             }
             
