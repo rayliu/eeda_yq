@@ -100,7 +100,8 @@ public class outputScaleController extends Controller {
 		
 	
 	public void downloadList(){
-		String jsonStr=getPara("params");
+		String jsonStr = getPara("params");
+		String sign = getPara("sign");
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
         
@@ -153,36 +154,40 @@ public class outputScaleController extends Controller {
 	    		}
 	    	}
 		}
-        
-		String car_no = getPara("car_no");
-		String driver = getPara("driver");
-		String sql = list();
-		String sql_car_no ="";
-		String sql_driver ="";
-		String ids = getPara("itemIds");
-		String idAttr[] = ids.split(",");
-		
-		if(StringUtils.isNotBlank(car_no)){
-			 sql_car_no = " and car_no='"+car_no+"'";
-		}
-		if(StringUtils.isNotBlank(driver)){
-			 sql_driver = " and driver='"+driver+"'";
-		}
-		if(StringUtils.isBlank(car_no)){
-			car_no=driver;
-		}
-		String sqlExport = sql+sql_car_no+sql_driver;
-		String[] headers = new String[]{"提单号", "提/收柜日期", "客户", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌", "产值","运费",
-				"备注"};
-		String[] fields = new String[]{"LADING_NO", "C_DATE", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO", "OUTPUTSCALE",
-						"FREIGHT","REMARK"};
-		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,car_no);
-		renderText(fileName);
-		if(fileName!=null){
-			for(int i=0 ; i<idAttr.length ; i++){
-				Record re = Db.findFirst("select * from trans_job_order_land_item tjol where id = ?",idAttr[i]);
-				long arapId = re.getLong("id");
-				Db.update("UPDATE trans_job_order_land_item SET export_flag = 'Y' WHERE id=?",arapId);
+        if(StringUtils.isBlank(sign)){
+        	sign="";
+        }
+		if(sign=="导出"||sign.equals("导出")){
+			String car_no = getPara("car_no");
+			String driver = getPara("driver");
+			String sql = list();
+			String sql_car_no ="";
+			String sql_driver ="";
+			String ids = getPara("itemIds");
+			String idAttr[] = ids.split(",");
+			
+			if(StringUtils.isNotBlank(car_no)){
+				 sql_car_no = " and car_no='"+car_no+"'";
+			}
+			if(StringUtils.isNotBlank(driver)){
+				 sql_driver = " and driver='"+driver+"'";
+			}
+			if(StringUtils.isBlank(car_no)){
+				car_no=driver;
+			}
+			String sqlExport = sql+sql_car_no+sql_driver;
+			String[] headers = new String[]{"提单号", "提/收柜日期", "客户", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌", "产值","运费",
+					"备注"};
+			String[] fields = new String[]{"LADING_NO", "C_DATE", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO", "OUTPUTSCALE",
+							"FREIGHT","REMARK"};
+			String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,car_no);
+			renderText(fileName);
+			if(fileName!=null){
+				for(int i=0 ; i<idAttr.length ; i++){
+					Record re = Db.findFirst("select * from trans_job_order_land_item tjol where id = ?",idAttr[i]);
+					long arapId = re.getLong("id");
+					Db.update("UPDATE trans_job_order_land_item SET export_flag = 'Y' WHERE id=?",arapId);
+				}
 			}
 		}
 	}

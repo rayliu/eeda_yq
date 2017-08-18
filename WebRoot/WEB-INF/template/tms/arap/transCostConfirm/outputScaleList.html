@@ -1,99 +1,212 @@
 <%layout("/eeda/layout.html"){%>
-        <div id="page-wrapper">
-        	<div class="row simple_search_div">
-	            <div class="col-lg-12">
-	                <form id="orderForm"><br/>
-	                    <div class="row">
-	                        <div class="col-lg-4" >
-	                            <%include("/eeda/component/form/inputCustomerField.html", 
-	                                                {   id: 'customer', 
-	                                                    label: '客户', 
-	                                                    value: ''
-	                                                }){}%>
-	                        </div>
-	                        <div class="col-lg-4" style="display:none">
-	                            <%include("/eeda/component/form/inputSpField.html", 
-	                                {
-	                                    id:'sp', 
-	                                    label:'结算公司', 
-	                                    value: '',
-	                                    required: 'required'
-	                                }){} %>
-	                        </div>
-	                        <div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputCarInfoField.html", 
-	                                                {   id: 'car_id', 
-	                                                    label: '结算车牌', 
-	                                                    value: ''
-	                                                }){}%>
-	                        </div>
-	                         <div class="col-lg-4">
-				               <%include("/eeda/component/form/selectField.html", 
-				                   {   id:'export_flag', 
-				                       label:'导出状态', 
-				                       value_list:[
-				                           {code:'N', value:'未导出'},
-				                           {code:'Y', value:'已导出'},
-				                           {code:'', value:''}
-				                       ]
-				                   }){}%>
-					         </div>
-	                      </div>
-	                      <div class="row">
-	                        <div class="col-lg-4">
-	                        	 <%include("/eeda/component/form/inputField.html", 
-	                                {   id:'driver', 
-	                                    label:'司机'
-	                                }){} %>
-	                        </div>
-	                        <div class="col-lg-4">
-	                        	 <%include("/eeda/component/form/inputDateQueryField.html", 
-	                                {   id:'c_date', 
-	                                    label:'提/收柜时间'
-	                                }){} %>
-	                        </div>
-	                        <div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputDateQueryField.html", 
-	                            {	id:'charge_time', 
-	                            	label:'结算时间', 
-	                            	value:''
-	                            }){} %>
-	                        </div>
-	                    </div>
-	                    <div class="row">	
-	                    	<div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputField.html", 
-	                                                {   id: 'order_no', 
-	                                                    label: '工作单号', 
-	                                                    value: ''
-	                                                }){}%>
-	                        </div>
-	                    </div>
-	                    <div class="form-group button-bar" >
-                            <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
-                            <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
-                            <button id="confirmBtn" class="btn btn_green" type="button" disabled style = "display:none">确认</button>
-                            <button id="export_outputTable" class="btn btn_green" type="button"  disabled>导出产值表</button>
-                        </div>
-	                </form>
-	             </div>
-	         </div>
-	             
-             <div class="tab-content">
-             	<div class="tab-pane fade active in" id="unchecked">
-                   <%include("/eeda/component/form/detailTable.html", 
-                       {
-                           id:'eeda_table', 
-                           style:'width:1500px',
-                           headers:['<input type="checkbox" id="AllCheck"  >','工作单号','提单号','提/收柜时间','结算时间','客户','类型','导出状态','拖柜地址','柜号','柜型',
-                                   '提柜类型','结算车牌','产值','运费','压夜费','备注','创建时间']
-                       }){} %>
-             	</div>
-             </div>
-         </div>
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active" >
+                    <a href="#whole" data-toggle="tab">全部</a>
+                </li>
+                <li role="presentation">
+                    <a href="#exported" data-toggle="tab">已导出</a>
+                </li>
+            </ul>
+            
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane fade active in" id="whole">
+					<div class="row simple_search_div">
+						<div class="panel panel-default">
+							<div class="col-lg-12"><br>
+								<form id="orderForm"><br/>
+									<div class="row">
+										<div class="col-lg-4" >
+										    <%include("/eeda/component/form/inputCustomerField.html", 
+										                        {   id: 'customer', 
+										                            label: '客户', 
+										                            value: ''
+										                        }){}%>
+										</div>
+										<div class="col-lg-4" style="display:none">
+										    <%include("/eeda/component/form/inputSpField.html", 
+										        {
+										            id:'sp', 
+										            label:'结算公司', 
+										            value: '',
+										            required: 'required'
+										        }){} %>
+										</div>
+										<div class="col-lg-4">
+											<%include("/eeda/component/form/inputCarInfoField.html", 
+												{   id: 'car_id', 
+												    label: '结算车牌', 
+												    value: ''
+											}){}%>
+										</div>
+										<div class="col-lg-4">
+											<%include("/eeda/component/form/selectField.html", 
+												{   id:'export_flag', 
+												    label:'导出状态', 
+												    value_list:[
+												        {code:'N', value:'未导出'},
+												        {code:'Y', value:'已导出'},
+												        {code:'', value:''}
+												    ]
+											}){}%>
+										</div>
+									</div>
+									<div class="row">
+							            <div class="col-lg-4">
+							            	 <%include("/eeda/component/form/inputField.html", 
+							                    {   id:'driver', 
+							                        label:'司机'
+							                    }){} %>
+							            </div>
+										<div class="col-lg-4">
+											 <%include("/eeda/component/form/inputDateQueryField.html", 
+										        {   id:'c_date', 
+										            label:'提/收柜时间'
+										        }){} %>
+										</div>
+						                <div class="col-lg-4">
+						                    <%include("/eeda/component/form/inputDateQueryField.html", 
+						                    {	id:'charge_time', 
+						                    	label:'结算时间', 
+						                    	value:''
+						                    }){} %>
+						                </div>
+									</div>
+						            <div class="row">	
+						            	<div class="col-lg-4">
+						                    <%include("/eeda/component/form/inputField.html", 
+						                                        {   id: 'order_no', 
+						                                            label: '工作单号', 
+						                                            value: ''
+						                                        }){}%>
+						                </div>
+						            </div>
+									<div class="form-group button-bar" >
+										<button id="searchBtn" class="btn btn_grey" type="button">查询<tton>
+										<button id="resetBtn" class="btn btn_white" type="button">清空条件<tton>
+										<button id="saveBtn" class="btn btn_green" type="button" disabled>保存<tton>
+										<button id="confirmBtn" class="btn btn_green" type="button" disabled style = "display:none">确认<tton>
+										<button id="export_outputTable" class="btn btn_green" type="button"  disabled>导出产值表<tton>
+									</div>
+								</form>
+							</div>
+      					</div>
+						<div class="tab-content">
+							<div class="tab-pane fade active in" id="unchecked">
+							     <%include("/eeda/component/form/detailTable.html", 
+							         {
+							             id:'eeda_table', 
+							             style:'width:1600px',
+							             headers:['<input type="checkbox" id="AllCheck"  >','工作单号','提单号','提/收柜时间','结算时间','客户','类型','导出状态','拖柜地址','柜号','柜型',
+							                     '提柜类型','结算车牌','产值','运费','压夜费','备注','创建时间']
+							         }){} %>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div role="tabpanel" class="tab-pane fade in" id="exported">
+					<div class="row simple_search_div">
+						<div class="panel panel-default">
+							<div class="col-lg-12"><br>
+								<form id="orderForm_exported"><br/>
+									<div class="row">
+										<div class="col-lg-4" >
+										    <%include("/eeda/component/form/inputCustomerField.html", 
+										                        {   id: 'customer_exported', 
+										                            label: '客户', 
+										                            value: ''
+										                        }){}%>
+										</div>
+										<div class="col-lg-4" style="display:none">
+										    <%include("/eeda/component/form/inputSpField.html", 
+										        {
+										            id:'sp_exported', 
+										            label:'结算公司', 
+										            value: '',
+										            required: 'required'
+										        }){} %>
+										</div>
+										<div class="col-lg-4">
+											<%include("/eeda/component/form/inputCarInfoField.html", 
+												{   id: 'car_id_exported', 
+												    label: '结算车牌', 
+												    value: ''
+											}){}%>
+										</div>
+										<div class="col-lg-4">
+											<%include("/eeda/component/form/selectField.html", 
+												{   id:'export_flag_exported', 
+												    label:'导出状态', 
+												    value_list:[
+												        {code:'Y', value:'已导出'}
+												    ]
+											}){}%>
+										</div>
+									</div>
+									<div class="row">
+							            <div class="col-lg-4">
+							            	 <%include("/eeda/component/form/inputField.html", 
+							                    {   id:'driver_exported', 
+							                        label:'司机'
+							                    }){} %>
+							            </div>
+										<div class="col-lg-4">
+											 <%include("/eeda/component/form/inputDateQueryField.html", 
+										        {   id:'c_date_exported', 
+										            label:'提/收柜时间'
+										        }){} %>
+										</div>
+						                <div class="col-lg-4">
+						                    <%include("/eeda/component/form/inputDateQueryField.html", 
+						                    {	id:'charge_time_exported', 
+						                    	label:'结算时间', 
+						                    	value:''
+						                    }){} %>
+						                </div>
+									</div>
+						            <div class="row">	
+						            	<div class="col-lg-4">
+						                    <%include("/eeda/component/form/inputField.html", 
+						                                        {   id: 'order_no_exported', 
+						                                            label: '工作单号', 
+						                                            value: ''
+						                                        }){}%>
+						                </div>
+						            </div>
+									<div class="form-group button-bar" >
+										<button id="searchBtn_exported" class="btn btn_grey" type="button">查询<tton>
+										<button id="resetBtn_exported" class="btn btn_white" type="button">清空条件<tton>
+										<button id="saveBtn_exported" class="btn btn_green" type="button" disabled>保存<tton>
+										<button id="confirmBtn_exported" class="btn btn_green" type="button" disabled style = "display:none">确认<tton>
+										<button id="export_outputTable_exported" class="btn btn_green" type="button"  disabled>导出产值表<tton>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="tab-content">
+							<div class="tab-pane fade active in" id="unchecked_exported">
+							     <%include("/eeda/component/form/detailTable.html", 
+							         {
+							             id:'eeda_table_exported', 
+							             style:'width:1500px',
+							             headers:['<input type="checkbox" id="AllCheck_exported"  >','工作单号','提单号','提/收柜时间','结算时间','客户','类型','导出状态','拖柜地址','柜号','柜型',
+							                     '提柜类型','结算车牌','产值','运费','压夜费','备注','创建时间']
+							         }){} %>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
 <%}%>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
-        requirejs(['app/tms/arap/transCostConfirm/outputScaleList']);
+        requirejs(['app/tms/arap/transCostConfirm/outputScaleList','app/tms/arap/transCostConfirm/outputScaleExportedList']);
     });
 </script>
