@@ -588,8 +588,8 @@ public class PlanOrderController extends Controller {
    		
     	if(order==null){
     		PlanOrder re = PlanOrder.dao.findById(plan_order_id);
-    		BookingOrder bookingOrder = BookingOrder.dao.findById(plan_order_id);
-    		
+    		//BookingOrder bookingOrder = BookingOrder.dao.findById(plan_order_id);
+    		BookingOrder bookingOrder = BookingOrder.dao.findFirst("select * from booking_order where plan_item_id = ?",plan_order_item_id);
        		order  = new JobOrder();
        		
             String newDateStr = "";
