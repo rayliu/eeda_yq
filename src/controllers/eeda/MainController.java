@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import models.ParentOfficeModel;
 import models.UserLogin;
 import models.eeda.OfficeConfig;
@@ -254,14 +256,8 @@ public class MainController extends Controller {
     }
     
     private void setLoginLog(UserLogin user) {
-    	InetAddress ia = null;
-		try {
-			ia = ia.getLocalHost();
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String localip=ia.getHostAddress();
+
+		String localip = getIpAddr(this.getRequest());
         Record rec = new Record();
         rec.set("log_type", "登录");
         rec.set("create_stamp", new Date());
@@ -271,6 +267,25 @@ public class MainController extends Controller {
         
         Db.save("sys_log", rec);
     }
+    
+    public static String getIpAddr(HttpServletRequest request) {  
+        String ip = request.getHeader("X-Real-IP");  
+        if (ip!= null && !"".equals(ip) && !"unknown".equalsIgnoreCase(ip)) {  
+            return ip;  
+        }  
+        ip = request.getHeader("X-Forwarded-For");  
+        if (ip!= null && !"".equals(ip)  && !"unknown".equalsIgnoreCase(ip)) {  
+            // 多次反向代理后会有多个IP值，第一个为真实IP。  
+            int index = ip.indexOf(',');  
+            if (index != -1) {  
+                return ip.substring(0, index);  
+            } else {  
+                return ip;  
+            }  
+        } else {  
+            return request.getRemoteAddr();  
+        }  
+    }  
 
 	private void setSysTitle() {
 		String serverName = getRequest().getServerName();
