@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import models.ParentOfficeModel;
@@ -257,7 +258,7 @@ public class MainController extends Controller {
     
     private void setLoginLog(UserLogin user) {
 
-		String localip = getIPAddress(this.getRequest());
+		String localip = getIpAddress(this.getRequest());
         Record rec = new Record();
         rec.set("log_type", "登录");
         rec.set("create_stamp", new Date());
@@ -268,30 +269,40 @@ public class MainController extends Controller {
         Db.save("sys_log", rec);
     }
     
-    public static String getIPAddress(HttpServletRequest request) {
-    	String ip = null;
-    	String ipAddresses = request.getHeader("X-Forwarded-For");
-    	if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
-    		ipAddresses = request.getHeader("Proxy-Client-IP");
-    	}
-    	if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
-    		ipAddresses = request.getHeader("WL-Proxy-Client-IP");
-    	}
-    	if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
-    		ipAddresses = request.getHeader("HTTP_CLIENT_IP");
-    	}
-    	if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
-    		ipAddresses = request.getHeader("X-Real-IP");
-    	}
-    	if (ipAddresses != null && ipAddresses.length() != 0) {
-    		ip = ipAddresses.split(",")[0];
-    	}
-    	if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
-    		ip = request.getRemoteAddr();
-    	}
-    	return ip;
+    public static String getIpAddress(HttpServletRequest request){   
+         String ipAddress = request.getHeader("x-forwarded-for");
+          
+         if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
+              ipAddress = request.getHeader("Proxy-Client-IP");
+         }
+         if (ipAddress == null || ipAddress.length() == 0 || "unknow".equalsIgnoreCase(ipAddress)) {
+              ipAddress = request.getHeader("WL-Proxy-Client-IP");
+         }
+         if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
+             ipAddress = request.getRemoteAddr();
+             
+            if(ipAddress.equals("127.0.0.1") || ipAddress.equals("0:0:0:0:0:0:0:1")){
+                 //根据网卡获取本机配置的IP地址
+                 InetAddress inetAddress = null;
+                 try {
+                     inetAddress = InetAddress.getLocalHost();
+                 } catch (UnknownHostException e) {
+                     e.printStackTrace();
+                 }
+                 ipAddress = inetAddress.getHostAddress();
+             }
+         }
+         
+         //对于通过多个代理的情况，第一个IP为客户端真实的IP地址，多个IP按照','分割
+         if(null != ipAddress && ipAddress.length() > 15){
+             //"***.***.***.***".length() = 15
+             if(ipAddress.indexOf(",") > 0){
+                 ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
+             }
+         }
+         return ipAddress;
     }
-
+    
 	private void setSysTitle() {
 		String serverName = getRequest().getServerName();
         String basePath = getRequest().getScheme()+"://"+getRequest().getServerName()+":"+getRequest().getServerPort()+"/";
