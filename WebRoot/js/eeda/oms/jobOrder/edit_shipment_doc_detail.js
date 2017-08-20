@@ -49,7 +49,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
              });
         }); 
         
-        //文件下载-----工作单
+        //接收文件-----工作单
         $("#one_doc_table").on('click', '.downloadDoc', function(e){
             e.preventDefault();
             var self = this;
@@ -58,7 +58,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             this.disabled = true; 
              $.post('/jobOrder/downloadDoc', {docId:id}, function(data){
             	 if(data){
-            		 $.scojs_message('下载完成!', $.scojs_message.TYPE_OK);
+            		 $.scojs_message('接收成功!', $.scojs_message.TYPE_OK);
             		 self.disabled = false;
             		 itemOrder.refleshOneDocTable(data.ORDER_ID);
             	 }            	 
@@ -95,7 +95,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 { "width": "50px",
                     "render": function ( data, type, full, meta ) {
                     	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>'
-                    	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">文件下载</a></button>';
+                    	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">接收文件</a></button>';
                     }
                 },
                 { "width": "50px",
@@ -265,9 +265,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             var tr = $(this).parent().parent();
             var id = tr.attr('id');
             var plan_order_id = $('#plan_order_id').val();
+            var booking_order_id = $('#booking_order_id').val();
             var plan_order_item_id = $('#plan_order_item_id').val();
             this.disabled = true;
-             $.post('/jobOrder/confirmSend', {docId:id,plan_order_id:plan_order_id,plan_order_item_id:plan_order_item_id}, function(data){
+             $.post('/jobOrder/confirmSend', {docId:id,plan_order_id:plan_order_id,plan_order_item_id:plan_order_item_id,
+            	 								booking_order_id:booking_order_id}, function(data){
             	 if(data=="err"){
                		$.scojs_message('发送失败，不存在关联的booking!', $.scojs_message.TYPE_ERROR);
                	 }else if(data){
@@ -288,7 +290,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         
         
         //---------------three
-        //文件下载-----工作单
+        //接收文件-----工作单
         $("#three_doc_table").on('click', '.downloadDoc', function(e){
             e.preventDefault();
             var self = this;
@@ -297,7 +299,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             this.disabled = true;
              $.post('/jobOrder/downloadDoc', {docId:id}, function(data){
             	 if(data){
-            		 $.scojs_message('下载完成!', $.scojs_message.TYPE_OK);
+            		 $.scojs_message('接收成功!', $.scojs_message.TYPE_OK);
             		 self.disabled = false;
             		 itemOrder.refleshThreeDocTable(data.ORDER_ID);
             	 }
@@ -342,7 +344,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 { "width": "50px",
                     "render": function ( data, type, full, meta ) {
                     	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>'
-                    	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">文件下载</a></button>';
+                    	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">接收文件</a></button>';
                     }
                 },
                 { "width": "50px",
@@ -508,8 +510,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             var id = tr.attr('id');
             var plan_order_id = $('#plan_order_id').val();
             var plan_order_item_id = $('#plan_order_item_id').val();
+            var booking_order_id = $('#booking_order_id').val();
             this.disabled = true;
-             $.post('/jobOrder/confirmSend', {docId:id,plan_order_id:plan_order_id,plan_order_item_id:plan_order_item_id}, function(data){
+             $.post('/jobOrder/confirmSend', {docId:id,plan_order_id:plan_order_id,plan_order_item_id:plan_order_item_id
+            	 							,booking_order_id:booking_order_id}, function(data){
             	 if(data=="err"){
                		$.scojs_message('发送失败，不存在关联的booking!', $.scojs_message.TYPE_ERROR);
                	 }else if(data){
@@ -607,8 +611,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               var id = tr.attr('id');
               var plan_order_id = $('#plan_order_id').val();
               var plan_order_item_id = $('#plan_order_item_id').val();
+              var booking_order_id = $('#booking_order_id').val();
               this.disabled = true;
-               $.post('/jobOrder/confirmSend', {docId:id,plan_order_id:plan_order_id,plan_order_item_id:plan_order_item_id}, function(data){
+               $.post('/jobOrder/confirmSend', {docId:id,plan_order_id:plan_order_id,plan_order_item_id:plan_order_item_id
+            	   								,booking_order_id:booking_order_id	}, function(data){
               	 if(data=="err"){
               		$.scojs_message('发送失败，不存在关联的booking!', $.scojs_message.TYPE_ERROR);
               	 }else if(data){

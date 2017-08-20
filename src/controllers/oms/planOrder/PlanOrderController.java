@@ -556,8 +556,8 @@ public class PlanOrderController extends Controller {
     	String container_type = item.getStr("container_type");
     	String customs_type = item.getStr("customs_type");
     	String pickup_addr = item.get("pickup_addr");
-    	if(StringUtils.isNotBlank(truct_type)){
-    		if(StringUtils.isBlank(transport_type)||StringUtils.isNotEmpty(pickup_addr)){
+    	if(StringUtils.isNotBlank(truct_type)||StringUtils.isNotEmpty(pickup_addr)){
+    		if(StringUtils.isBlank(transport_type)){
     			transport_type += "land";
     		}else{
     			transport_type += ",land";
@@ -657,6 +657,11 @@ public class PlanOrderController extends Controller {
             order.set("trade_type", "FOB");
 
             order.save();
+            
+            if(bookingOrder!=null){
+            	bookingOrder.set("to_order_id", order.get("id"));
+            	bookingOrder.update();
+            }
             
             //从表默认选项
             if(StringUtils.isNotBlank(container_type)){

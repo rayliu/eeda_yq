@@ -21,6 +21,7 @@ import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.bookOrder.BookOrderDoc;
+import models.eeda.oms.bookOrder.BookingOrderDoc;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderAir;
 import models.eeda.oms.jobOrder.JobOrderAirCargoDesc;
@@ -3748,12 +3749,21 @@ public class JobOrderController extends Controller {
     	jobOrderDoc.update();
     	
     	Long ref_doc_id = jobOrderDoc.getLong("ref_doc_id");
+    	//旧booking
     	BookOrderDoc bookOrderDoc = BookOrderDoc.dao.findById(ref_doc_id);
     	if(bookOrderDoc!=null){
     		bookOrderDoc.set("receiver", LoginUserController.getLoginUserId(this));
     		bookOrderDoc.set("receive_time", new Date());
     		bookOrderDoc.set("send_status", "已接收");
     		bookOrderDoc.update();
+    	}
+    	//新booking
+    	BookingOrderDoc bookingOrderDoc = BookingOrderDoc.dao.findById(ref_doc_id);
+    	if(bookingOrderDoc!=null){
+    		bookingOrderDoc.set("receiver", LoginUserController.getLoginUserId(this));
+    		bookingOrderDoc.set("receive_time", new Date());
+    		bookingOrderDoc.set("send_status", "已接收");
+    		bookingOrderDoc.update();
     	}
         renderJson(jobOrderDoc);
     }
@@ -3785,6 +3795,7 @@ public class JobOrderController extends Controller {
     public void confirmSend(){
     	String id = getPara("docId");
     	String plan_order_item_id = getPara("plan_order_item_id");
+    	String booking_order_id = getPara("booking_order_id");
     	String plan_order_id = getPara("plan_order_id");
     	JobOrderDoc jobOrderDoc = JobOrderDoc.dao.findById(id);
     	jobOrderDoc.set("sender", LoginUserController.getLoginUserId(this));
@@ -3793,6 +3804,7 @@ public class JobOrderController extends Controller {
     	jobOrderDoc.update();
     	
     	Record re = Db.findFirst("select * from book_order where plan_item_id = ?",plan_order_item_id);
+    	Record bookingRe = Db.findFirst("select * from booking_order where id = ?",booking_order_id);
     	if(re!=null){
     		Record bookDoc = new Record();
         	bookDoc.set("order_id", re.getLong("id"));
@@ -3806,13 +3818,25 @@ public class JobOrderController extends Controller {
         	bookDoc.set("send_status", jobOrderDoc.getStr("send_status"));
         	bookDoc.set("ref_doc_id", id);
         	Db.save("book_order_doc", bookDoc);
+    	}
+    	if(bookingRe!=null){
+    		Record bookingDoc = new Record();
+    		bookingDoc.set("order_id", bookingRe.getLong("id"));
+    		bookingDoc.set("type", jobOrderDoc.getStr("type"));
+    		bookingDoc.set("uploader", jobOrderDoc.getLong("uploader"));
+    		bookingDoc.set("doc_name", jobOrderDoc.getStr("doc_name"));
+    		bookingDoc.set("upload_time", jobOrderDoc.get("upload_time"));
+    		bookingDoc.set("remark", jobOrderDoc.getStr("remark"));
+    		bookingDoc.set("sender", jobOrderDoc.getLong("sender"));
+    		bookingDoc.set("send_time", jobOrderDoc.get("send_time"));
+    		bookingDoc.set("send_status", jobOrderDoc.getStr("send_status"));
+    		bookingDoc.set("ref_doc_id", id);
+        	Db.save("booking_order_doc", bookingDoc);
     	}else{
     		String err = "err";
     		renderText(err);
     		return;
     	}
-    	
-      
         renderJson(jobOrderDoc);
     }
 

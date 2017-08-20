@@ -1,5 +1,5 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN',
-        	'jq_blockui','./edit_ocean_detail','./edit_land_detail','./edit_custom_detail','./edit_air_detail'], function ($, metisMenu) {
+        	'jq_blockui','./edit_ocean_detail','./edit_land_detail','./edit_custom_detail','./edit_air_detail','./edit_doc_table'], function ($, metisMenu) {
 $(document).ready(function() {
 
     

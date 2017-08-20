@@ -16,14 +16,13 @@ $(document).ready(function() {
         
         var table_id = $($(this).parent().parent().parent().parent()).prop('id');
 
-         $.post('/bookOrder/deleteDoc', {docId:id}, function(data){
+         $.post('/bookingOrder/deleteDoc', {docId:id}, function(data){
         	 if(data.result==true){
         		 if(table_id=='one_doc_table'){
         			oneTable.row(tr).remove().draw();
     	         }else {
     	        	threeTable.row(tr).remove().draw();
     	         }
-        		 table.row(tr).remove().draw();
 	        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
         	 }else if(data.result==false){
         		 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
@@ -47,7 +46,7 @@ $(document).ready(function() {
         var id = tr.attr('id');
         var job_order_id = $('#job_order_id').val();
         this.disabled = true;
-         $.post('/bookOrder/confirmSend', {docId:id,job_order_id:job_order_id}, function(data){
+         $.post('/bookingOrder/confirmSend', {docId:id,job_order_id:job_order_id}, function(data){
         	 if(data){
         		 $.scojs_message('发送成功!', $.scojs_message.TYPE_OK);
         		 itemOrder.refleshOneDocTable(data.ORDER_ID);
@@ -66,7 +65,11 @@ $(document).ready(function() {
         columns:[
 			{ "data":"ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
-			    	return '<button type="button" class="delete btn table_btn delete_btn btn-xs">删除</button>';
+			    	if(full.SEND_STATUS=="已接收"){
+			    		return '<button type="button" class="delete btn table_btn delete_btn btn-xs disabled">删除</button>';
+			    	}else{
+			    		return '<button type="button" class="delete btn table_btn delete_btn btn-xs">删除</button>';
+			    	}
 			    }
 			},
             { "width": "50px",
@@ -129,7 +132,7 @@ $(document).ready(function() {
 
     //刷新明细表
     itemOrder.refleshOneDocTable = function(order_id){
-    	var url = "/bookOrder/docTableList?order_id="+order_id+"&type=one";
+    	var url = "/bookingOrder/docTableList?order_id="+order_id+"&type=one";
     	oneTable.ajax.url(url).load();
     }
 
@@ -143,8 +146,14 @@ $(document).ready(function() {
         columns:[
                  { "width": "50px",
                      "render": function ( data, type, full, meta ) {
-                     	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>'
-                     	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">下载</a></button>';
+                    	 var btn_str = "";
+                  	     btn_str= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>';
+                     	if(full.REMARK=='自动生成'){
+                     		btn_str+='<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/download/doc/'+full.DOC_NAME+'"  target="_blank">接收</a></button>';
+                      }else{
+                      	btn_str+='<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">接收</a></button>';
+                      }
+                     	return btn_str;
                      }
                  },
                  { "width": "50px",
@@ -235,9 +244,9 @@ $(document).ready(function() {
         var tr = $(this).parent().parent();
         var id = tr.attr('id');
         this.disabled = true;
-         $.post('/bookOrder/downloadDoc', {docId:id}, function(data){
+         $.post('/bookingOrder/downloadDoc', {docId:id}, function(data){
         	 if(data){
-        		 $.scojs_message('下载完成!', $.scojs_message.TYPE_OK);
+        		 $.scojs_message('接收成功!', $.scojs_message.TYPE_OK);
         		 self.disabled = false;
         		 itemOrder.refleshTwoDocTable(data.ORDER_ID);
         	 }
@@ -254,7 +263,7 @@ $(document).ready(function() {
         var tr = $(this).parent().parent();
         var id = tr.attr('id');
         this.disabled = true;
-         $.post('/bookOrder/confirmDoc', {docId:id}, function(data){
+         $.post('/bookingOrder/confirmDoc', {docId:id}, function(data){
         	 if(data){
         		 $.scojs_message('确认成功!', $.scojs_message.TYPE_OK);
         		 itemOrder.refleshTwoDocTable(data.ORDER_ID);
@@ -268,7 +277,7 @@ $(document).ready(function() {
 
     //刷新明细表
     itemOrder.refleshTwoDocTable = function(order_id){
-    	var url = "/bookOrder/docTableList?order_id="+order_id+"&type=two";
+    	var url = "/bookingOrder/docTableList?order_id="+order_id+"&type=two";
     	twoTable.ajax.url(url).load();
     }
 
@@ -282,7 +291,7 @@ $(document).ready(function() {
         var id = tr.attr('id');
         var job_order_id = $('#job_order_id').val();
         this.disabled = true;
-         $.post('/bookOrder/confirmSend', {docId:id,job_order_id:job_order_id}, function(data){
+         $.post('/bookingOrder/confirmSend', {docId:id,job_order_id:job_order_id}, function(data){
         	    if(data){
         			 $.scojs_message('发送成功!', $.scojs_message.TYPE_OK);
         			 itemOrder.refleshThreeDocTable(data.ORDER_ID);
@@ -301,7 +310,11 @@ $(document).ready(function() {
         columns:[
 			{ "data":"ID","width": "10px",
 			    "render": function ( data, type, full, meta ) {
-			    	return '<button type="button" class="delete btn table_btn delete_btn btn-xs">删除</button>';
+			    	if(full.SEND_STATUS=="已接收"){
+			    		return '<button type="button" class="delete btn table_btn delete_btn btn-xs disabled">删除</button>';
+			    	}else{
+			    		return '<button type="button" class="delete btn table_btn delete_btn btn-xs">删除</button>';
+			    	}
 			    }
 			},
             { "width": "50px",
@@ -364,7 +377,7 @@ $(document).ready(function() {
     
   //刷新明细表
     itemOrder.refleshThreeDocTable = function(order_id){
-    	var url = "/bookOrder/docTableList?order_id="+order_id+"&type=three";
+    	var url = "/bookingOrder/docTableList?order_id="+order_id+"&type=three";
     	threeTable.ajax.url(url).load();
     }
 
@@ -379,8 +392,14 @@ $(document).ready(function() {
         columns:[
                  { "width": "50px",
                      "render": function ( data, type, full, meta ) {
-                     	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>'
-                     	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">下载</a></button>';
+                    	 var btn_str = "";
+                  	     btn_str= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>';
+                     	  if(full.REMARK=='自动生成'){
+                     		btn_str+='<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/download/doc/'+full.DOC_NAME+'"  target="_blank">接收</a></button>';
+	                      }else{
+	                      	btn_str+='<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">接收</a></button>';
+	                      }
+	                     	return btn_str;
                      }
                  },
                  { "width": "50px",
@@ -471,9 +490,9 @@ $(document).ready(function() {
         var tr = $(this).parent().parent();
         var id = tr.attr('id');
         this.disabled = true;
-         $.post('/bookOrder/downloadDoc', {docId:id}, function(data){
+         $.post('/bookingOrder/downloadDoc', {docId:id}, function(data){
         	 if(data){
-        		 $.scojs_message('下载完成!', $.scojs_message.TYPE_OK);
+        		 $.scojs_message('接收成功!', $.scojs_message.TYPE_OK);
         		 self.disabled = false;
         		 itemOrder.refleshFourDocTable(data.ORDER_ID);
         	 }
@@ -490,7 +509,7 @@ $(document).ready(function() {
         var tr = $(this).parent().parent();
         var id = tr.attr('id');
         this.disabled = true;
-         $.post('/bookOrder/confirmDoc', {docId:id}, function(data){
+         $.post('/bookingOrder/confirmDoc', {docId:id}, function(data){
         	 if(data){
         		 $.scojs_message('确认成功!', $.scojs_message.TYPE_OK);
         		 itemOrder.refleshFourDocTable(data.ORDER_ID);
@@ -503,7 +522,7 @@ $(document).ready(function() {
     
     
     itemOrder.refleshFourDocTable = function(order_id){
-    	var url = "/bookOrder/docTableList?order_id="+order_id+"&type=four";
+    	var url = "/bookingOrder/docTableList?order_id="+order_id+"&type=four";
     	fourTable.ajax.url(url).load();
     }
     
@@ -517,8 +536,14 @@ $(document).ready(function() {
           columns:[
                    { "width": "50px",
                        "render": function ( data, type, full, meta ) {
-                       	return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>'
-                       	+'<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">下载</a></button>';
+                    	   var btn_str = "";
+                    	   btn_str= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="display:none">删除</button>';
+                       	if(full.REMARK=='自动生成'){
+                       		btn_str+='<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/download/doc/'+full.DOC_NAME+'"  target="_blank">接收</a></button>';
+                        }else{
+                        	btn_str+='<button type="button" class="downloadDoc btn table_btn delete_btn btn-xs"><a  href="/upload/doc/'+full.DOC_NAME+'"  target="_blank">接收</a></button>';
+                        }
+                       	return btn_str;
                        }
                    },
                    { "width": "50px",
@@ -613,9 +638,9 @@ $(document).ready(function() {
           window.open(href);
           var id = tr.attr('id');
           this.disabled = true;
-           $.post('/bookOrder/downloadDoc', {docId:id}, function(data){
+           $.post('/bookingOrder/downloadDoc', {docId:id}, function(data){
           	 if(data){
-          		 $.scojs_message('下载完成!', $.scojs_message.TYPE_OK);
+          		 $.scojs_message('接收成功!', $.scojs_message.TYPE_OK);
           		 self.disabled = false;
           		 itemOrder.refleshFourDocTable(data.ORDER_ID);
           	 }
@@ -632,7 +657,7 @@ $(document).ready(function() {
           var tr = $(this).parent().parent();
           var id = tr.attr('id');
           this.disabled = true;
-           $.post('/bookOrder/confirmDoc', {docId:id}, function(data){
+           $.post('/bookingOrder/confirmDoc', {docId:id}, function(data){
           	 if(data){
           		 $.scojs_message('确认成功!', $.scojs_message.TYPE_OK);
           		 itemOrder.refleshZeroDocTable(data.ORDER_ID);
@@ -645,7 +670,7 @@ $(document).ready(function() {
       
       
       itemOrder.refleshZeroDocTable = function(order_id){
-      	var url = "/bookOrder/docTableList?order_id="+order_id+"&type=zero";
+      	var url = "/bookingOrder/docTableList?order_id="+order_id+"&type=zero";
       	zeroTable.ajax.url(url).load();
       }
 

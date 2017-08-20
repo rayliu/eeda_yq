@@ -23,7 +23,6 @@ $(document).ready(function() {
     	         }else {
     	        	threeTable.row(tr).remove().draw();
     	         }
-        		 table.row(tr).remove().draw();
 	        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
         	 }else if(data.result==false){
         		 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);

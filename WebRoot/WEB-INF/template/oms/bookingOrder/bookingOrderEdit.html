@@ -199,6 +199,7 @@
     <div class="panel-body row">
     	<input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
     	<input id="booking_submit_flag" type="hidden" name="booking_submit_flag" value="${order.booking_submit_flag!''}"/>
+    	<input id="job_order_id" type="hidden" name="job_order_id" value="${jobOrder.id!''}"/>
 	    <div class="simple_search_div three_tab" style="margin-right:2%;">    		
 		    		<%include("/eeda/component/form/inputSelectArea.html", 
 					                    {   id:'shipper', 
@@ -1086,7 +1087,7 @@
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/oms/bookingOrder/edit']);
-        requirejs(['app/oms/bookingOrder/edit_doc_table','app/oms/bookingOrder/edit_file_upload']); 
+        requirejs(['app/oms/bookingOrder/edit_file_upload']); 
     });
 
 </script>

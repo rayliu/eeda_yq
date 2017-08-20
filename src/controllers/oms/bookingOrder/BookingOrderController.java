@@ -19,6 +19,7 @@ import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.oms.bookOrder.BookOrderDoc;
 import models.eeda.oms.bookOrder.BookingOrder;
+import models.eeda.oms.bookOrder.BookingOrderDoc;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderAir;
 import models.eeda.oms.jobOrder.JobOrderAirItem;
@@ -311,10 +312,10 @@ public class BookingOrderController extends Controller {
     	try {
             String order_id = getPara("order_id");
             List<UploadFile> fileList = getFiles("doc");
-            String type = getPara("type");
+            String type = getPara("docType");
             Long userId = LoginUserController.getLoginUserId(this);
             
-            uploadFile(fileList, order_id, userId, type , "book_order_doc", false);
+            uploadFile(fileList, order_id, userId, type , "booking_order_doc", false);
             
             renderJson("{\"result\":true}");
         } catch (Exception e) {
@@ -383,8 +384,8 @@ public class BookingOrderController extends Controller {
     @Before(Tx.class)
     public void deleteDoc(){
     	String id = getPara("docId");
-    	BookOrderDoc bookOrderDoc = BookOrderDoc.dao.findById(id);
-    	String fileName = bookOrderDoc.getStr("doc_name");
+    	BookingOrderDoc bookingOrderDoc = BookingOrderDoc.dao.findById(id);
+    	String fileName = bookingOrderDoc.getStr("doc_name");
     	Map<String,Object> resultMap = new HashMap<String,Object>();
     	
     	String path = getRequest().getServletContext().getRealPath("/");
@@ -393,10 +394,10 @@ public class BookingOrderController extends Controller {
         File file = new File(filePath);
         if (file.exists() && file.isFile()) {
             boolean result = file.delete();
-            bookOrderDoc.delete();
+            bookingOrderDoc.delete();
             resultMap.put("result", result);
         }else{
-        	bookOrderDoc.delete();
+        	bookingOrderDoc.delete();
         	resultMap.put("result", "文件不存在可能已被删除!");
         }
         renderJson(resultMap);
@@ -984,26 +985,26 @@ public class BookingOrderController extends Controller {
     public void confirmSend(){
     	String id = getPara("docId");
     	String job_order_id = getPara("job_order_id");
-    	BookOrderDoc bookOrderDoc = BookOrderDoc.dao.findById(id);
-    	bookOrderDoc.set("sender", LoginUserController.getLoginUserId(this));
-    	bookOrderDoc.set("send_time", new Date());
-    	bookOrderDoc.set("send_status", "已发送");
-    	bookOrderDoc.update();
+    	BookingOrderDoc bookingOrderDoc = BookingOrderDoc.dao.findById(id);
+    	bookingOrderDoc.set("sender", LoginUserController.getLoginUserId(this));
+    	bookingOrderDoc.set("send_time", new Date());
+    	bookingOrderDoc.set("send_status", "已发送");
+    	bookingOrderDoc.update();
     	
     	Record jobDoc = new Record();
     	jobDoc.set("order_id", job_order_id);
-    	jobDoc.set("type", bookOrderDoc.getStr("type"));
-    	jobDoc.set("uploader", bookOrderDoc.getLong("uploader"));
-    	jobDoc.set("doc_name", bookOrderDoc.getStr("doc_name"));
-    	jobDoc.set("upload_time", bookOrderDoc.get("upload_time"));
-    	jobDoc.set("remark", bookOrderDoc.getStr("remark"));
-    	jobDoc.set("sender", bookOrderDoc.getLong("sender"));
-    	jobDoc.set("send_time", bookOrderDoc.get("send_time"));
-    	jobDoc.set("send_status", bookOrderDoc.getStr("send_status"));
+    	jobDoc.set("type", bookingOrderDoc.getStr("type"));
+    	jobDoc.set("uploader", bookingOrderDoc.getLong("uploader"));
+    	jobDoc.set("doc_name", bookingOrderDoc.getStr("doc_name"));
+    	jobDoc.set("upload_time", bookingOrderDoc.get("upload_time"));
+    	jobDoc.set("remark", bookingOrderDoc.getStr("remark"));
+    	jobDoc.set("sender", bookingOrderDoc.getLong("sender"));
+    	jobDoc.set("send_time", bookingOrderDoc.get("send_time"));
+    	jobDoc.set("send_status", bookingOrderDoc.getStr("send_status"));
     	jobDoc.set("ref_doc_id", id);
     	Db.save("job_order_doc", jobDoc);
       
-        renderJson(bookOrderDoc);
+        renderJson(bookingOrderDoc);
     }
     
     
@@ -1026,11 +1027,11 @@ public class BookingOrderController extends Controller {
     public List<Record> getDocItems(String orderId,String type){
     	String  itemSql = "";
     	itemSql = "SELECT * ,"
-    			+ " (SELECT  count(jod0.id) FROM book_order_doc jod0 WHERE "
+    			+ " (SELECT  count(jod0.id) FROM booking_order_doc jod0 WHERE "
     			+ " jod0.order_id ="+orderId+" 	AND jod0.type ='"+type+"' and   jod0.send_status='已发送' ) new_count"
     			+ " FROM("
     			+ " select jod.*,u.c_name,u1.c_name sender_name "
-    			+ " from book_order_doc jod "
+    			+ " from booking_order_doc jod "
     			+ " left join user_login u on jod.uploader=u.id "
     			+ " LEFT JOIN user_login u1 ON jod.SENDER = u1.id "
         			+ " where jod.order_id="+orderId+" and jod.type='"+type+"' order by jod.id"
@@ -1045,7 +1046,7 @@ public class BookingOrderController extends Controller {
     @Before(Tx.class)
     public void downloadDoc(){
     	String id = getPara("docId");
-    	BookOrderDoc order = BookOrderDoc.dao.findById(id);
+    	BookingOrderDoc order = BookingOrderDoc.dao.findById(id);
     	order.set("receiver", LoginUserController.getLoginUserId(this));
     	order.set("receive_time", new Date());
     	order.set("send_status", "已接收");
@@ -1066,7 +1067,7 @@ public class BookingOrderController extends Controller {
     @Before(Tx.class)
     public void confirmDoc(){
     	String id = getPara("docId");
-    	BookOrderDoc order = BookOrderDoc.dao.findById(id);
+    	BookingOrderDoc order = BookingOrderDoc.dao.findById(id);
     	order.set("confirm", LoginUserController.getLoginUserId(this));
     	order.set("confirm_time", new Date());
     	order.set("send_status", "已确认");

@@ -7,7 +7,7 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 			$('#oneUpload').fileupload({
 					validation: {allowedExtensions: ['doc','docx']},
 					autoUpload: true, 
-				    url: '/bookOrder/saveDocFile?order_id='+order_id+"&type=one",
+				    url: '/bookingOrder/saveDocFile?order_id='+order_id+"&docType=one",
 				    dataType: 'json',
 			        done: function (e, data) {
 		        		if(data.result.result){
@@ -31,7 +31,7 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 			$('#threeUpload').fileupload({
 					validation: {allowedExtensions: ['doc','docx']},
 					autoUpload: true, 
-				    url: '/bookOrder/saveDocFile?order_id='+order_id+"&type=three",
+				    url: '/bookingOrder/saveDocFile?order_id='+order_id+"&docType=three",
 				    dataType: 'json',
 			        done: function (e, data) {
 		        		if(data.result.result){

@@ -82,6 +82,7 @@ import models.eeda.oms.bookOrder.BookOrderShipment;
 import models.eeda.oms.bookOrder.BookOrderShipmentHead;
 import models.eeda.oms.bookOrder.BookOrderShipmentItem;
 import models.eeda.oms.bookOrder.BookingOrder;
+import models.eeda.oms.bookOrder.BookingOrderDoc;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderAir;
 import models.eeda.oms.jobOrder.JobOrderAirCargoDesc;
@@ -543,6 +544,7 @@ public class EedaConfig extends JFinalConfig {
         
         
         arp.addMapping("booking_order", BookingOrder.class);
+        arp.addMapping("booking_order_doc", BookingOrderDoc.class);
         
         
         

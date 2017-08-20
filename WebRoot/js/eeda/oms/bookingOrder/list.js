@@ -70,7 +70,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //简单查询下拉列表控制
       $("#selected_field").change(function(event){
     	  var selected_field = $("#selected_field").val();
-    	  if(selected_field == "order_no"||selected_field == "creator_name"||selected_field == "sp_name"){
+    	  if(selected_field == "booking_no"||selected_field == "creator_name"||selected_field == "sp_name"){
     		  $("#public_text").val("");
     		  $("#single_sp_name").hide();
     		  $("#single_create_stamp").hide();
@@ -105,7 +105,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           if(orderStatus=='全部'){
     		  orderStatus = "";
     	  }
-          if(selectField == "order_no"||selectField == "creator_name"||selectField == 'sp_name'){
+          if(selectField == "booking_no"||selectField == "creator_name"||selectField == 'sp_name'){
             selectFieldValue = $('#public_text').val();
           }
           /*if(selectField == 'sp_name'){
@@ -141,7 +141,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       })
       
      var searchData=function(order_status){
-          var order_no = $.trim($("#order_no").val()); 
+          var booking_no = $.trim($("#booking_no").val()); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var sent_out_time_begin_time = $("#sent_out_time_begin_time").val();
@@ -154,7 +154,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_status = order_status;
           
           //增加出口日期查询
-          var url = "/bookingOrder/list?order_no="+order_no
+          var url = "/bookingOrder/list?booking_no="+booking_no
           	   //+"&status="+status
           	   +"&order_status="+order_status
           	   //+"&customer_code_like="+customer_code
