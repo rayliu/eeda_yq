@@ -10,6 +10,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           ajax: "/transChargeBalanceReport/list",
           initComplete:function(settings){
     	  cssTd();
+          tableStyle();
           },
           columns: [
       			{ "data": "ABBR", "width": "120px","className":"abbr"},
@@ -177,7 +178,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $('#JPY_uncharge_tatol').text(eeda.numFormat(uncharge_jpy,3)).css('color','red');
 	    	  $('#HKD_uncharge_tatol').text(eeda.numFormat(uncharge_hkd,3)).css('color','red');
 	    	  $('#total_uncharge').text(eeda.numFormat(total_uncharge,3)).css('color','red');
-	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
+	    	  
+	    /*	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_cny]').html("CNY:"+eeda.numFormat(charge_cny,3));
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_usd]').html("USD:"+eeda.numFormat(charge_usd,3));
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_jpy]').html("JPY:"+eeda.numFormat(charge_jpy,3));
@@ -187,7 +189,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_usd]').html("USD:"+eeda.numFormat(uncharge_usd,3)).css('color','red');
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_jpy]').html("JPY:"+eeda.numFormat(uncharge_jpy,3)).css('color','red');
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_hkd]').html("HKD:"+eeda.numFormat(uncharge_hkd,3)).css('color','red');
-	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_rmb]').html("未收折合(CNY):"+eeda.numFormat(total_uncharge,3)).css('color','red');
+	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_rmb]').html("未收折合(CNY):"+eeda.numFormat(total_uncharge,3)).css('color','red');*/
 	    	  
 	    	  var total_profit=parseFloat(total_charge-total_uncharge).toFixed(2);
 	    	  if(total_profit<0){
@@ -249,7 +251,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $('#JPY_uncharge_tatol').text(eeda.numFormat(uncharge_jpy,3)).css('color','red');
 	    	  $('#HKD_uncharge_tatol').text(eeda.numFormat(uncharge_hkd,3)).css('color','red');
 	    	  $('#total_uncharge').text(eeda.numFormat(total_uncharge,3)).css('color','red');
-	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
+	    	  
+	    	  /*$($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_cny]').html("CNY:"+eeda.numFormat(charge_cny,3));
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_usd]').html("USD:"+eeda.numFormat(charge_usd,3));
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_jpy]').html("JPY:"+eeda.numFormat(charge_jpy,3));
@@ -259,7 +262,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_usd]').html("USD:"+eeda.numFormat(uncharge_usd,3)).css('color','red');
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_jpy]').html("JPY:"+eeda.numFormat(uncharge_jpy,3)).css('color','red');
 	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_hkd]').html("HKD:"+eeda.numFormat(uncharge_hkd,3)).css('color','red');
-	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_rmb]').html("未收折合(CNY):"+eeda.numFormat(total_uncharge,3)).css('color','red');
+	    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_rmb]').html("未收折合(CNY):"+eeda.numFormat(total_uncharge,3)).css('color','red');*/
 	    	  
 	    	  var total_profit=parseFloat(total_charge-total_uncharge).toFixed(2);
 	    	  if(total_profit<0){
@@ -282,5 +285,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       };
       
       searchData();
+      
+      //td列背景颜色
+      var tableStyle = function(){
+    	  $('.oneRow').css('line-height','30px');
+    	  $('.doubleRow').css('text-align','center');
+    	  
+    	  var tableName = "eeda_table";
+    	  //格式【合成表头的第一列位置，合成的列数，颜色】
+    	  var array= [[2,5,'#f8fff0'],[7,5,'#eeffff']];
+    	  for (var i = 0; i < array.length; i++) {
+    		  var firstChild = array[i][0];
+        	  var cols = array[i][1];
+        	  var bgColor = array[i][2];
+        	  for (var j = firstChild; j < (firstChild+cols); j++) {
+        		  $("#"+tableName+" td:nth-child("+j+")").css('background-color',bgColor);
+        	  }
+		  }
+      }
   });
 });
