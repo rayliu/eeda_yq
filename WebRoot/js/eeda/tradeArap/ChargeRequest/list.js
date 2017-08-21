@@ -847,10 +847,13 @@ $(document).ready(function() {
                                 $(td[rowIndex]).attr('disabled',true);
                                 $(td[rowIndex]).parent().parent().parent().find('.status').html(data.STATUS);
                             }
+                            $('#table_id').val('');
                             $.scojs_message('收款成功', $.scojs_message.TYPE_OK);                            
                             totalMoney();
                             $('#rowIndex').val('');
-                             $('#confirmed').attr('disabled',true);
+                            $('#confirmed').attr('disabled',true);
+                            $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+                            $('#uncheckedCostCheckOrder').html('未已选中明细  '+($('#application_table tr:has(td)').size()));
                         }else{
                             $("#checked_application_table .confirmBtn").attr("disabled", false);
                             $.scojs_message('收款失败', $.scojs_message.TYPE_FALSE);
