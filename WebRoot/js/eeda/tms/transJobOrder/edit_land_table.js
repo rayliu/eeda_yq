@@ -146,7 +146,7 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    var str= '<select name="unload_type" class="form-control search-control"  style="width:70px">'
+                    var str= '<select name="unload_type" class="form-control search-control ttype"  style="width:70px">'
             	   	 		   +'<option></option>'
 			                   +'<option value="提吉柜" '+ (data=='提吉柜'?'selected':'') +'>提吉柜</option>'
 			                   +'<option value="移柜" '+ (data=='移柜'?'selected':'') +'>移柜</option>'
@@ -158,13 +158,18 @@ $(document).ready(function() {
             },
             { "data": "CABINET_DATE", "width": "100px",
             	"render": function ( data, type, full, meta ) {
+            		var info = "";
             		if(!data)
                         data='';
+            		if(full.UNLOAD_TYPE=="收重柜" || full.UNLOAD_TYPE=="移柜"){
+            			info ="disabled"
+            		}
                     var field_html = template('table_date_field_template',
 	                    {
 	                        id: 'CABINET_DATE',
 	                        value: data.substr(0,19),
-	                        style:'width:120px'
+	                        style:'width:120px',
+	                        disabled:info
 	                    }
 	                );
                     return field_html;
@@ -172,13 +177,19 @@ $(document).ready(function() {
             },
             { "data": "CLOSING_DATE", "width": "100px",
             	"render": function ( data, type, full, meta ) {
+            		var info = "";
+            		
             		if(!data)
                         data='';
+            		if(full.UNLOAD_TYPE=="提吉柜" || full.UNLOAD_TYPE=="移柜"){
+            			info ="disabled"
+            		}
                     var field_html = template('table_date_field_template',
 	                    {
 	                        id: 'CLOSING_DATE',
 	                        value: data.substr(0,10),
-	                        style:'width:120px'
+	                        style:'width:120px',
+	                        disabled:info
 	                    }
 	                );
                     return field_html;
@@ -499,6 +510,26 @@ $(document).ready(function() {
 	         	 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
 	     });
     })
+    //选项测试
+    $("#land_table").on("change",".ttype",function(){
+    	self  = $(this)
+    	var selected = self.val();    	
+    	if(selected =="提吉柜"){
+    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",true)
+    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",false)
+    	}else if(selected == "收重柜"){
+    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",true)
+    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",false)
+    	}else if(selected == "移柜"){
+    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",true)
+    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",true)
+    	}else{
+    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",false)
+    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",false)
+    	}
+    
+    })
+    
 	//上传签收文件
     $("#land_table").on('click', '.upload', function(){
 		var id = $(this).parent().parent().parent().attr('id');
