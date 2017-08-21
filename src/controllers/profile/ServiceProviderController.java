@@ -605,7 +605,7 @@ public class ServiceProviderController extends Controller {
             if (input !=null && input.trim().length() > 0) {
             	String sql = " select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "+sql_type
                                 + " and (p.abbr like '%"+input+"%' or p.code like '%"+ input
-                                + "%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) ";
+                                + "%' or p.quick_search_code like '%"+input+"%')  and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office=?) ";
                 spList = Db.find(sql+ " order by convert(p.abbr using gb2312) asc limit 25",parentID,parentID);
                 
                 if(spList.size()==0){
