@@ -172,7 +172,8 @@ define(['jquery', 'bootstrap', 'zTree'], function ($) {
                         ID: permission.ID,
                         CODE: permission.CODE,
                         NAME: permission.NAME,
-                        URL: permission.URL
+                        URL: permission.URL,
+                        TEMPLATE_PATH: permission.TEMPLATE_PATH
                     };
 
                     permission_dataTable.row.add(permissionItem).draw(false);

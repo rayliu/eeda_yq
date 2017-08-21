@@ -27,6 +27,9 @@ public class EedaMenuInterceptor implements Interceptor {
     //这个map 作为登录用户的url cahce, 用于判断用户是否可以访问该URL模块
     public static Map<Long, List<String>> menuUrlCache = null;
     
+    //这个map 作为登录用户的url对应模板的 cahce, 用于判断用户是否可以访问该URL模板
+    public static Map<Long, Map<String, String>> menuUrlTemplateCache = null;
+    
     @Override
     public void intercept(Invocation ai) {
         
@@ -39,15 +42,19 @@ public class EedaMenuInterceptor implements Interceptor {
             if(menuUrlCache.get(user.getLong("id"))!=null){
                 List<String> userUrlList = menuUrlCache.get(user.getLong("id"));
                 String actionKey = ai.getActionKey();
-
+                String para0 = ai.getController().getPara(0);
+                String actionUrl = actionKey + "/"+ para0;
                 String key = "/";
                 if(actionKey.split("/").length > 0){
                     key = "/"+actionKey.split("/")[1];
                 }
 
                 logger.debug("action key: "+key);
-                if(!"/module".equals(ai.getActionKey())){
-                	if(!"/".equals(ai.getActionKey()) && !userUrlList.contains(key)){//actionKey是否存在于授权模块中？
+                if("/query".equals(ai.getActionKey()) || "/form".equals(ai.getActionKey())){
+                    
+                }else if(!"/module".equals(ai.getActionKey())){
+                	if(!"/".equals(ai.getActionKey()) && !userUrlList.contains(key) 
+                	        && !userUrlList.contains(actionUrl)){//actionKey是否存在于授权模块中？
                         ai.getController().renderError(403);
                     }
                 }
@@ -73,6 +80,7 @@ public class EedaMenuInterceptor implements Interceptor {
         if(menuCache == null){
             menuCache = new HashMap<Long, List<Record>>();
             menuUrlCache = new HashMap<Long, List<String>>();
+            menuUrlTemplateCache = new HashMap<Long, Map<String, String>>();
             modules = buildMenu(user, user_id, office_id);
         }else{
             if(menuCache.get(user_id)==null){
@@ -115,6 +123,7 @@ public class EedaMenuInterceptor implements Interceptor {
     private void getNextLevelModules(Long office_id, String username,
             List<Record> modules, Long user_id) {
         List<String> modulesUrl = new LinkedList<String>();
+        Map<String, String> urlTemplateMap = new HashMap<String, String>();
         String sql;
         for (Record module : modules) {
             sql = "SELECT "
@@ -123,7 +132,7 @@ public class EedaMenuInterceptor implements Interceptor {
                     +"    u.user_name,"
                     +"    GROUP_CONCAT(DISTINCT r. NAME) role_name,"
                     +"    ur.role_id,"
-                    
+                    +"    p.template_path,"
                     +"    m.id module_id,"
                     +"    p.code permission_code,"
                     +"    p.name permission_name,"
@@ -159,6 +168,7 @@ public class EedaMenuInterceptor implements Interceptor {
                     order.set("url", "/"+urlStr);
                 }
                 modulesUrl.add("/"+urlStr);
+                urlTemplateMap.put("/"+urlStr, order.getStr("template_path"));
             }
             if(orders.size()==1){
                 module.set("is_one_module", "Y");
@@ -167,6 +177,7 @@ public class EedaMenuInterceptor implements Interceptor {
             module.set("orders", orders);
         }//end of for
         menuUrlCache.put(user_id, modulesUrl);
+        menuUrlTemplateCache.put(user_id, urlTemplateMap);
     }
     
 }//~

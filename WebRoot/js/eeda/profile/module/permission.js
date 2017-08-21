@@ -84,11 +84,18 @@ define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
                         return '<input type="text" name="name" value="'+data+'" class="form-control"/>';
                     }
                 },
-                { "data": "URL", width: '60%',
+                { "data": "URL", width: '20%',
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
                         return '/<input type="text" name="url" value="'+data+'" class="form-control"/>';
+                    }
+                },
+                { "data": "TEMPLATE_PATH", width: '60%',
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return '<input type="text" name="template_path" value="'+data+'" class="form-control" style="width: 100%;"/>';
                     }
                 }
             ]

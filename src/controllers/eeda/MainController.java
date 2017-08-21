@@ -507,7 +507,6 @@ public class MainController extends Controller {
         renderJson(map);
     }
     
-    public void testAdd(){
-        //EedaConfig.routes.add("/module", ModuleController.class);
-    }
+    
+  
 }
