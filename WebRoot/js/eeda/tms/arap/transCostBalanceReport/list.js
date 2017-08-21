@@ -11,6 +11,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           initComplete:function(settings){
         	  cssTd();
         	  tableStyle();
+        	  hideColumn();
               },
           columns: [
           			{ "data": "ABBR", "width": "120px","class":"abbr"},
@@ -305,6 +306,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		  $("#"+tableName+" td:nth-child("+j+")").css('background-color',bgColor);
         	  }
 		  }
+      }
+      
+      var hideColumn = function(){         	
+       	//隐藏对usd和jpy列
+          	var dataTable = $('#eeda_table').dataTable();
+          	dataTable.fnSetColumnVis(3, false);
+          	dataTable.fnSetColumnVis(4, false);
+          	dataTable.fnSetColumnVis(8, false);
+          	dataTable.fnSetColumnVis(9, false);
       }
   });
 });

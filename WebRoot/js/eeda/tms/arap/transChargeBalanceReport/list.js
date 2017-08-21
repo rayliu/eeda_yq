@@ -11,10 +11,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           initComplete:function(settings){
     	  cssTd();
           tableStyle();
+          hideColumn();
           },
           columns: [
-      			{ "data": "ABBR", "width": "120px","className":"abbr"},
-      			{ "data": "CHARGE_CNY", "width": "100px","className":"charge_cny",
+      			{ "data": "ABBR", "className":"abbr"},
+      			{ "data": "CHARGE_CNY", "className":"charge_cny",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -22,7 +23,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "CHARGE_USD", "width": "100px" ,"className":"charge_usd" ,
+	            { "data": "CHARGE_USD","className":"charge_usd" ,
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -30,7 +31,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "CHARGE_JPY", "width": "100px","className":"charge_jpy",
+	            { "data": "CHARGE_JPY","className":"charge_jpy",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -38,7 +39,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "CHARGE_HKD", "width": "100px","className":"charge_hkd",
+	            { "data": "CHARGE_HKD","className":"charge_hkd",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -46,7 +47,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "CHARGE_RMB", "width": "120px","className":"charge_rmb",
+	            { "data": "CHARGE_RMB","className":"charge_rmb",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -54,7 +55,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "UNCHARGE_CNY", "width": "100px","className":"uncharge_cny",
+	            { "data": "UNCHARGE_CNY","className":"uncharge_cny",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -62,7 +63,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "UNCHARGE_USD", "width": "100px"  ,"className":"uncharge_usd",
+	            { "data": "UNCHARGE_USD","className":"uncharge_usd",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -70,7 +71,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "UNCHARGE_JPY", "width": "100px","className":"uncharge_jpy",
+	            { "data": "UNCHARGE_JPY","className":"uncharge_jpy",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -78,7 +79,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "UNCHARGE_HKD", "width": "100px","className":"uncharge_hkd",
+	            { "data": "UNCHARGE_HKD", "className":"uncharge_hkd",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -86,7 +87,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
-	            { "data": "UNCHARGE_RMB", "width": "120px","class":"uncharge_rmb",
+	            { "data": "UNCHARGE_RMB","class":"uncharge_rmb",
 	            	"render": function(data, type, full, meta) {
 					return '<span style="color:red;">'+eeda.numFormat(data,3)+'</span>';
 				  }
@@ -303,5 +304,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  }
 		  }
       }
+      
+      var hideColumn = function(){         	
+         	//隐藏对usd和jpy列
+            	var dataTable = $('#eeda_table').dataTable();
+            	dataTable.fnSetColumnVis(3, false);
+            	dataTable.fnSetColumnVis(5, false);
+            	dataTable.fnSetColumnVis(9, false);
+            	dataTable.fnSetColumnVis(10, false);
+        }
   });
 });
