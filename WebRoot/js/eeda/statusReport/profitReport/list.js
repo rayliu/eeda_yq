@@ -181,6 +181,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var customer_id = $("#customer_id").val();
           var customer_name = $("#customer_name_input").val();
           var date_type = $('[name=type]:checked').val();
+          var type = $("#type").val()
           var begin_date = '';
           var end_date = '';
           if(date_type=='year'){
@@ -189,9 +190,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           }else if(date_type=='season'){
         	  begin_date = $("#season_begin_time").val();
               end_date = $("#season_end_time").val();
-          }else{
+          }else if(date_type=='month'){
         	  begin_date = $("#month_begin_time").val();
               end_date = $("#month_end_time").val();
+          }else{
+        	  begin_date = $("#day_begin_time").val()
+        	  end_date = $("#day_end_time").val()
           }
           
           
@@ -199,8 +203,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           $.post('profitReport/listTotal',{
         	  customer_id:customer_id,
         	  date_type:date_type,
+        	  begin_date:begin_date,
         	  end_date:end_date,
-        	  end_date:end_date
+        	  type:type
           },function(data){
         	  var pieces_total = parseFloat(data.PIECES_TOTAL);
         	  var gross_weight_total = parseFloat(data.GROSS_WEIGHT_TOTAL);
@@ -231,7 +236,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           	    +"&customer_name_like="+customer_name
           	    +"&date_type="+date_type
           		+"&begin_date="+begin_date
-          		+"&end_date="+end_date;
+          		+"&end_date="+end_date
+          		+"&type="+type;
 
           dataTable.ajax.url(url).load();
       };
@@ -242,15 +248,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  if(value=='year'){
     		  $('#year').show();
     		  $('#month').hide();
+    		  $('#day').hide();
     		  $('#season').hide();
     	  }else if(value=='season'){
     		  $('#year').hide();
+    		  $('#day').hide();
     		  $('#month').hide();
     		  $('#season').show();
-    	  }else{
+    	  }else if(value=='month'){
     		  $('#year').hide();
     		  $('#month').show();
+    		  $('#day').hide();    		  
     		  $('#season').hide();
+    	  }else {
+    		  $('#year').hide();
+    		  $('#month').hide();
+    		  $('#season').hide();
+    		  $("#day").show()
     	  }
       })
       searchData();

@@ -50,7 +50,7 @@ public class ProfitReportController extends Controller {
         String begin_date = getPara("begin_date");
         String end_date = getPara("end_date");
         String date_type = getPara("date_type");
-        
+        String type = getPara("type");
         String condition = "";
         String group_condition="";
         if(StringUtils.isNotEmpty(customer_id)){
@@ -71,7 +71,7 @@ public class ProfitReportController extends Controller {
             }
             
             group_condition = " cast(year(jo.order_export_date) as char)";
-        }else {
+        }else if(!"day".equals(date_type)){
         	if(StringUtils.isNotEmpty(begin_date)){
             	begin_date = begin_date+"-01 00:00:00";
             }else{
@@ -106,7 +106,9 @@ public class ProfitReportController extends Controller {
         }
         
         condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
-        
+        if(StringUtils.isNotBlank(type)){
+        	condition+=" and jo.type = '"+type+"'";
+        }
         
     	String sql = "select B.*, "
     	        + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '40HQ') hq40_count, "
@@ -184,11 +186,14 @@ public class ProfitReportController extends Controller {
         String begin_date = getPara("begin_date");
         String end_date = getPara("end_date");
         String date_type = getPara("date_type");
-        
+        String type = getPara("type");
         String condition = "";
         String group_condition="";
         if(StringUtils.isNotEmpty(customer_id)){
         	condition += " and jo.customer_id = "+customer_id;
+        }
+        if(StringUtils.isNotBlank(type)){
+        	condition+=" and jo.type = '"+type+"'";
         }
         
         if("year".equals(date_type)){
@@ -205,7 +210,7 @@ public class ProfitReportController extends Controller {
             }
             
             group_condition = " cast(year(jo.order_export_date) as char)";
-        }else {
+        }else if(!"day".equals(date_type)) {
         	if(StringUtils.isNotEmpty(begin_date)){
             	begin_date = begin_date+"-01 00:00:00";
             }else{
@@ -241,7 +246,7 @@ public class ProfitReportController extends Controller {
         
         condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
         
-        String sql = "  SELECT "
+  /*      String sql = "  SELECT "
         		+" 	SUM(gross_weight) gross_weight_total,SUM(pieces) pieces_total,SUM(volume) volume_total,SUM(ocean_fcl_bill) ocean_fcl_bill_total, "
         		+" 	SUM(ocean_lcl_bill) ocean_lcl_bill_total,SUM(ari_kg_bill) ari_kg_bill_total,SUM(ocean_fcl_teu) ocean_fcl_teu_total,SUM(ocean_lcl_cbm)  "
         		+" ocean_lcl_cbm_total,SUM(ari_kg) ari_kg_total "
@@ -286,7 +291,61 @@ public class ProfitReportController extends Controller {
  				+ " ) A where 1=1"
     			+ " GROUP BY A.order_export_date,A.customer_id"
     			+ " )B ORDER BY B.customer_id , B.order_export_date"
-    			+ "  ";
+    			+ "  ";*/
+        
+    	String sql = " select sum(gross_weight) gross_weight_total,sum(volume) volume_total,sum(ocean_fcl_teu) ocean_fcl_teu_total,sum(ocean_fcl_bill) ocean_fcl_bill_total,sum(ocean_lcl_cbm) ocean_lcl_cbm_total,sum(ocean_lcl_bill) ocean_lcl_bill_total,sum(ari_kg) ari_kg_total,sum(ari_kg_bill) ari_kg_bill_total,sum(pieces) pieces_total"
+    			+ " from ("
+    			+ " select B.*, "
+    	        + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '40HQ') hq40_count, "
+    	        + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '40GP') gp40_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '20GP') gp20_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '1.5T') t1p5_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '3T') t3_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '5T') t5_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '8T') t8_count,"
+                + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '10T') t10_count "  //get_truck_type(B.truck_order_ids)''
+    	        + " from (select order_export_date,customer_id,"
+    			+ " sum(ifnull(pieces,0)) pieces,"
+    			+ " sum(ifnull(gross_weight,0)) gross_weight, "
+    			+ " sum(ifnull(volume,0)) volume, "
+    			+ " SUM(IFNULL(ocean_fcl_bill, 0)) ocean_fcl_bill, "
+    			+ " SUM(IFNULL(ocean_lcl_bill, 0)) ocean_lcl_bill, "
+    			+ " SUM(IFNULL(ari_kg_bill, 0)) ari_kg_bill, "
+    			+ " customer_name,"
+    			+ " SUM(IFNULL(ocean_fcl_teu, 0)) ocean_fcl_teu,"
+    			+ " SUM(IFNULL(ocean_lcl_cbm, 0)) ocean_lcl_cbm,"
+    			+ " SUM(IFNULL(ari_kg, 0)) ari_kg,"
+    			+ " group_concat(CAST(id as CHAR) separator ', ' ) truck_order_ids"
+    			+ " from ("
+    			+ " select "+group_condition+" order_export_date, jo.customer_id, jo.pieces,"
+    			+ " jo.gross_weight, jo.volume,p.abbr customer_name,"
+    			+ " (select ("
+    			+ "    count(case when container_type = '20''GP' then container_type end) +"
+    			+ "    count(case when container_type = '40''GP' then container_type end)*2 +"
+    			+ "    count(case when container_type = '45''GP' then container_type end)*2 +"
+    			+ "    count(case when container_type = '40''HQ' then container_type end)*2) gp20"
+    			+ " from job_order_shipment_item josi where josi.load_type='FCL'and josi.order_id =jo.id "
+    			+ "    and jo.type in('出口柜货', '进口柜货')"
+    			+ " ) ocean_fcl_teu,"
+    			+ " (SELECT   COUNT(container_type) FROM job_order_shipment_item josi WHERE "
+    			+ "	josi.load_type = 'FCL' AND josi.order_id = jo.id and container_type is not null "
+    			+ "	AND jo.type IN ('出口柜货','进口柜货') ) ocean_fcl_bill, "
+    			+ " (SELECT count(volume) FROM job_order jo1 WHERE jo1.id = jo.id and volume is NOT null "
+    			+ "	 AND jo1.type IN ('出口散货','进口散货')) ocean_lcl_bill, "
+    			+ " (select sum(volume) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口散货', '进口散货')) ocean_lcl_cbm,"
+    			+ " (select sum(gross_weight) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口空运', '进口空运')) ari_kg,"
+    			+ " (SELECT	count(gross_weight) FROM job_order jo1 WHERE jo1.id = jo.id and jo1.gross_weight is not null "
+    			+ "	 AND jo1.type IN ('出口空运','进口空运')) ari_kg_bill, "
+    			+ " jo.id "
+    			+ " from job_order jo"
+    			+ " left join party p on p.id = jo.customer_id"
+    			+ " WHERE jo.office_id="+office_id
+    			+ condition
+    			 + " and jo.delete_flag = 'N'"
+ 				+ " ) A where 1=1"
+    			+ " GROUP BY A.order_export_date,A.customer_id"
+    			+ " )B "
+    			+ "  )C";
         
           Record rec = Db.findFirst(sql);
           
