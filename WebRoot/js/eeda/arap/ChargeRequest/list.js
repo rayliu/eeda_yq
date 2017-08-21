@@ -751,9 +751,8 @@ $(document).ready(function() {
             var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
             $('#table_id').val($(this).parent().parent().parent().parent().parent().attr("id"));
             $('#rowIndex').val(checkbox1.val());
-            $('#confirmBtn').attr('disabled',true);
+            $('#total_confirmBtn').attr('disabled',true);
             $('#receive_time').val('');
-             
         });
       //复核
       $("#checked_application_table").on('click','.checkBtn',function(){
@@ -785,7 +784,7 @@ $(document).ready(function() {
             var checkbox1=$(this).parent().parent().parent().find('[type=checkbox]');
             $('#table_id').val($(this).parent().parent().parent().parent().parent().attr("id"));
             $('#rowIndex').val(checkbox1.val());
-            $('#confirmBtn').attr('disabled',true);
+            $('#total_confirmBtn').attr('disabled',true);
             $('#receive_time').val('');
              
         });
@@ -797,9 +796,9 @@ $(document).ready(function() {
       }).on('changeDate', function(ev){
             $(".bootstrap-datetimepicker-widget").hide();
              if($('#receive_time').val()!=''){
-                $('#confirmBtn').attr("disabled",false);
+                $('#total_confirmBtn').attr("disabled",false);
             }else{
-                $('#confirmBtn').attr("disabled",true);
+                $('#total_confirmBtn').attr("disabled",true);
             }
         });
   //多条复核 /chargeRequest/checkOrder
@@ -853,13 +852,13 @@ $(document).ready(function() {
         $('#confirmVal').val($(this).text());
 
         $('#chargeRe_table_msg_btn').click();
-        $('#confirmBtn').attr('disabled',true);
+        $('#total_confirmBtn').attr('disabled',true);
         $('#receive_time').val('');
         $('#pay_remark').val('');
     });
 
     //收款确认
-     $("#confirmBtn").on('click',function(){
+     $("#total_confirmBtn").on('click',function(){
         //单条确认，多条确认 
         var application_ids=[];
         var rowIndex=$('#rowIndex').val();
@@ -879,7 +878,8 @@ $(document).ready(function() {
         if(rowIndex){
             application_ids.push(rowIndex);
         }else{
-            for(var i=0;i<rows.length;i++){
+        	
+           for(var i=0;i<rows.length;i++){
            if($(rows[i]).find('[type=checkbox]').prop('checked')){
                var checkBox = $(rows[i]).find('[type=checkbox]');
                 id=checkBox.val();
@@ -916,6 +916,7 @@ $(document).ready(function() {
                                         }
                                     }
                                 }
+                                $('#table_id').val('');//table_id
                                 if(confirmVal=="坏账确认"){
                                      $("#status").val('该笔为坏账');
                                      $.scojs_message('确认坏账成功', $.scojs_message.TYPE_OK);
@@ -924,10 +925,12 @@ $(document).ready(function() {
                                 } 
                             }
                                                   
-                            totalMoney();
-                            $('#rowIndex').val('');
+                             totalMoney();
+                             $('#rowIndex').val('');
                              $('#confirmed').attr('disabled',true);
                              $('#badBtn').attr('disabled',true);
+                             $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+                             $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
                         }else{
                             $("#checked_application_table .confirmBtn").attr("disabled", false);
                             $.scojs_message('收款失败', $.scojs_message.TYPE_FALSE);

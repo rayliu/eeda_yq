@@ -911,6 +911,7 @@ $(document).ready(function() {
                                         }
                                     }
                                   }
+                                $('#table_id').val('');//table_id
                                 if(confirmVal=="坏账确认"){
                                     $("#status").val('该笔为坏账');
                                     $.scojs_message('确认坏账成功', $.scojs_message.TYPE_OK);
@@ -923,6 +924,8 @@ $(document).ready(function() {
                             $('#rowIndex').val('');
                             $('#confirmed').attr('disabled',true);
                             $('#badBtn').attr('disabled',true);
+                            $('#checkedCostCheckOrder').html('已选中明细  '+($('#checked_application_table tr:has(td)').size()));
+                            $('#uncheckedCostCheckOrder').html('未选中明细  '+($('#application_table tr:has(td)').size()));
 			            }else{
                             
                             $.scojs_message('付款失败', $.scojs_message.TYPE_FALSE);
