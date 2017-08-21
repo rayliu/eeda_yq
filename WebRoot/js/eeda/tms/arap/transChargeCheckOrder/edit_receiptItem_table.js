@@ -43,7 +43,13 @@ $(document).ready(function() {
         { "data": "CURRENCY_NAME", "width": "100px"},
         { "data": "TOTAL_AMOUNT", "width": "180px"},
         { "data": "RECEIVE_CNY", "width": "120px"},
-        { "data": "RESIDUAL_CNY", "width": "200px"},
+        { "data": "RESIDUAL_CNY", "width": "200px",
+        	"render": function(data){
+        		  if(data!=0.0)
+      			  return "<span style='color:red;'>"+data.substr(0,10)+"</span>";
+      		  return data;
+          	}
+        },
         { "data": "RECEIVE_TIME", "width": "80px",
         	"render": function(data){
       		  if(data)

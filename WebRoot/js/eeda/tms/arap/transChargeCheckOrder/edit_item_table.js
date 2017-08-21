@@ -60,7 +60,7 @@ $(document).ready(function() {
               "render": function ( data, type, full, meta ) {
                     var str = '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>';
                      if($("#status").val()!='新建'){
-                        return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>';
+                        return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px">删除</button>';
                      }
                     return str;
                 }

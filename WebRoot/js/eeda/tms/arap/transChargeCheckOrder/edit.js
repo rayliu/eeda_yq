@@ -134,16 +134,17 @@ $(document).ready(function() {
                  $('.delete').attr('disabled', true);
                  $('#add_charge').attr('disabled', true);
                  $('#cancelConfirmBtn').attr('disabled', false);
-                 $("#status").val('已确认');
+                 $('#charge_confirmBtn').attr('disabled',false);
+                 $('#printTotaledBtn').attr('disabled', false);
+                 
                  $('#confirmOrder_div').show();
                  $('#costCheckreceipt').show();
                  //赋值给本次付款，收款余额
                  var cny=$('#cny').val().trim();
                  $('#receive_cny').val(cny);
                  $('#residual_cny').val(cny);
-                 $('#charge_confirmBtn').attr('disabled',false);
-
-                 $('#printTotaledBtn').attr('disabled', false);
+                 
+                
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
 
@@ -151,7 +152,8 @@ $(document).ready(function() {
                  $("#receive_cny").val($('#cny').val());
                  $("#residual_cny").val($('#cny').val());
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
- 			 
+    			 $('#status').val('已确认');
+                 charge_confirmBtn('已确认');
     		 }
          },'json').fail(function() {
         	 $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
@@ -350,7 +352,12 @@ $(document).ready(function() {
            $('#charge_confirmBtn').attr('disabled',true);
            $('#add_charge').attr('disabled', false);
        }else if(status=='已确认'){
-           $('#charge_confirmBtn').attr('disabled',false);
+           var residual_cny = $("#residual_cny").val();
+           if(residual_cny=="0.00"||residual_cny=="0.0"){
+ 	    	  $("#charge_confirmBtn").prop('disabled',true );
+           }else{
+           	$("#charge_confirmBtn").prop('disabled',false );
+           }
            $('#add_charge').attr('disabled', true);
            $('#confirmOrder_div').show();
            $('#costCheckreceipt').show();
