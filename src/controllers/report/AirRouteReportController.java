@@ -50,7 +50,7 @@ public class AirRouteReportController extends Controller {
         String begin_date = getPara("begin_date");
         String end_date = getPara("end_date");
         String date_type = getPara("date_type");
-        
+        String type = getPara("type");
         String condition = "";
         String group_condition="";
         if(StringUtils.isNotEmpty(customer_id)){
@@ -71,7 +71,7 @@ public class AirRouteReportController extends Controller {
             }
             
             group_condition = " cast(year(jo.order_export_date) as char)";
-        }else {
+        }else if(!"day".equals(date_type)){
             if(StringUtils.isNotEmpty(begin_date)){
                 begin_date = begin_date+"-01 00:00:00";
             }else{
@@ -106,13 +106,15 @@ public class AirRouteReportController extends Controller {
         }
         
         condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
-        
+        if(StringUtils.isNotBlank(type)){
+        	condition+=" and jo.type = '"+type+"'";
+        }
         
         String sql = " SELECT "
                 + "     order_export_date,"
                 + "     customer_id,"
                 + "     customer_name,"
-                + "     route,"
+                + "     cast(route as char) route,"
                 + "     SUM(IFNULL(pieces, 0)) pieces,"
                 + "     SUM(IFNULL(gross_weight, 0)) gross_weight,"
                 + "     SUM(IFNULL(volume, 0)) volume,"
@@ -165,7 +167,7 @@ public class AirRouteReportController extends Controller {
         String begin_date = getPara("begin_date");
         String end_date = getPara("end_date");
         String date_type = getPara("date_type");
-        
+        String type = getPara("type");
         String condition = "";
         String group_condition="";
         if(StringUtils.isNotEmpty(customer_id)){
@@ -186,7 +188,7 @@ public class AirRouteReportController extends Controller {
             }
             
             group_condition = " cast(year(jo.order_export_date) as char)";
-        }else {
+        }else if(!"day".equals(date_type)){
             if(StringUtils.isNotEmpty(begin_date)){
                 begin_date = begin_date+"-01 00:00:00";
             }else{
@@ -221,7 +223,9 @@ public class AirRouteReportController extends Controller {
         }
         
         condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
-        
+        if(StringUtils.isNotBlank(type)){
+        	condition+=" and jo.type = '"+type+"'";
+        }
         
         String sql = "select SUM(pieces) pieces_total,SUM(gross_weight) gross_weight_total,SUM(volume) volume_total, "
         		+ " SUM(ari_kg) ari_kg_total from ( SELECT "
