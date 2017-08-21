@@ -107,7 +107,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
           var order_no = $.trim($("#order_no").val()); 
 //          var customer = $("#customer").val();
 //          var customer_name = $("#customer_input").val(); 
-          var sp_id = $("#sp_id").val(); 
+          var sp_name = $("#sp_id_input").val(); 
           var start_date = $("#charge_time_begin_time").val();
           var end_date = $("#charge_time_end_time").val();
           var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
@@ -119,7 +119,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 //			           +"&customer_id="+customer
 //			           +"&customer_name_like="+customer_name
 //			           +"&sp_id="+sp
-			           +"&sp_id="+sp_id
+			           +"&sp_name="+sp_name
 		               +"&charge_time_begin_time="+start_date
 		               +"&charge_time_end_time="+end_date
 		               +"&cabinet_date_begin_time="+cabinet_date_begin_time
