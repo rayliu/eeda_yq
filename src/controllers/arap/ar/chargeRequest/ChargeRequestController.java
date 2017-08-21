@@ -250,7 +250,7 @@ public class ChargeRequestController extends Controller {
         		+" WHERE "
         		+" 	( "
         		+" 		(ifnull(usd, 0)-paid_usd > 0.02) "
-        		+" 		OR (ifnull(cny, 0)-paid_cny > 0.01) "
+        		+" 		OR (ifnull(cny, 0)-paid_cny > 0.02) "
         		+" 		OR (ifnull(hkd, 0)-paid_hkd > 0.01) "
         		+" 		OR (ifnull(jpy, 0)-paid_jpy > 0.01) "
         		+" 	) ";
