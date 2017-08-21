@@ -546,14 +546,14 @@ public class JobOrderController extends Controller {
    			saveJobLandCustomerContractConditions(jobOrder);
    		}
 
-   		//空运带出合同费用信息(供应商)
+/*   		//空运带出合同费用信息(供应商)
    		saveJobAirSpContractConditions(jobOrder);
    		//陆运带出合同费用信息(供应商)
    		saveJobLandSpContractConditions(jobOrder);
    		//空运带出合同费用信息(客户)
    		saveJobAirCustomerContractConditions(jobOrder);
    		//陆运带出合同费用信息(客户)
-   		saveJobLandCustomerContractConditions(jobOrder);
+   		saveJobLandCustomerContractConditions(jobOrder);*/
    		
    	    //费用明细，应收应付
 		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
@@ -1509,7 +1509,7 @@ public class JobOrderController extends Controller {
     			+ " from customer_contract_location ccl"
     			+ " LEFT JOIN customer_contract cc on cc.id = ccl.contract_id"
     			//+ " LEFT JOIN customer_contract_item cci on cci.customer_loc_id = ccl.id"
-    			+ " LEFT JOIN customer_contract_item cci on cci.contract_id = cc.id"
+    			+ " LEFT JOIN customer_contract_item cci ON cci.customer_loc_id = ccl.id"
     			+ " where "
     			+ " ifnull(cc.customer_id,'') = '"+customer_id+"' and ifnull(cc.type,'') = '"+type+"'"
     			+ " and ifnull(cc.trans_clause,'') = '"+trans_clause+"' and ifnull(cc.trade_type,'') = '"+trade_type+"'"
@@ -1859,7 +1859,8 @@ public class JobOrderController extends Controller {
         			+ " LEFT JOIN dockinfo dc_t on dc_t.id = scl.pod_id"
         			+ " LEFT JOIN customer_contract sc on sc.id = scl.contract_id"
         			//+ " LEFT JOIN supplier_contract_item sci on sci.supplier_loc_id = scl.id"
-        			+ " LEFT JOIN customer_contract_item sci on sci.contract_id = sc.id"
+        			//+ " LEFT JOIN customer_contract_item sci on sci.contract_id = sc.id"
+        			+ " LEFT JOIN customer_contract_item sci on sci.customer_loc_id = scl.id "
         			+ " where "
         			+ " ifnull(sc.customer_id,'') = '"+customer_id+"' "
         			+ " and ('"+order_export_date+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
@@ -2908,7 +2909,6 @@ public class JobOrderController extends Controller {
     	setAttr("trade_cost_list", getItems(id,"trade_cost"));
     	setAttr("trade_charge_service_list", getItems(id,"trade_service"));
     	setAttr("trade_charge_sale_list", getItems(id,"trade_sale"));
-
     	//报关
     	setAttr("customItemList",getItems(id, "custom_app"));
     	setAttr("custom",Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china"));
