@@ -109,16 +109,18 @@ public class SalesBillReportController extends Controller {
 	}
 	
 	public void listTotal() {
-		String spid =(String) getPara("sp_id");
+		String spid =(String) getPara("customer_id");
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
-		String sp_id =" and p.id="+spid;
+        String sp_id = "";
 		if(StringUtils.isBlank(spid)){
 			sp_id="";
+		}else{
+			sp_id =" and p.id="+spid;
 		}
 		if(order_export_date_begin_time==null){
 			order_export_date_begin_time="";
