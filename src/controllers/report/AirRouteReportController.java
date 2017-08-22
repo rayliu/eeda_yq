@@ -227,8 +227,8 @@ public class AirRouteReportController extends Controller {
         	condition+=" and jo.type = '"+type+"'";
         }
         
-        String sql = "select SUM(pieces) pieces_total,SUM(gross_weight) gross_weight_total,SUM(volume) volume_total, "
-        		+ " SUM(ari_kg) ari_kg_total from ( SELECT "
+        String sql = "select ifnull(SUM(pieces),0) pieces_total,ifnull(SUM(gross_weight),0) gross_weight_total,ifnull(SUM(volume),0) volume_total, "
+        		+ " ifnull(SUM(ari_kg),0) ari_kg_total from ( SELECT "
                 + "     order_export_date,"
                 + "     customer_id,"
                 + "     customer_name,"

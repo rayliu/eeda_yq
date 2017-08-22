@@ -293,7 +293,7 @@ public class ProfitReportController extends Controller {
     			+ " )B ORDER BY B.customer_id , B.order_export_date"
     			+ "  ";*/
         
-    	String sql = " select sum(gross_weight) gross_weight_total,sum(volume) volume_total,sum(ocean_fcl_teu) ocean_fcl_teu_total,sum(ocean_fcl_bill) ocean_fcl_bill_total,sum(ocean_lcl_cbm) ocean_lcl_cbm_total,sum(ocean_lcl_bill) ocean_lcl_bill_total,sum(ari_kg) ari_kg_total,sum(ari_kg_bill) ari_kg_bill_total,sum(pieces) pieces_total"
+    	String sql = " select ifnull(sum(gross_weight),0) gross_weight_total,ifnull(sum(volume),0) volume_total,ifnull(sum(ocean_fcl_teu),0) ocean_fcl_teu_total,ifnull(sum(ocean_fcl_bill),0) ocean_fcl_bill_total,ifnull(sum(ocean_lcl_cbm),0) ocean_lcl_cbm_total,ifnull(sum(ocean_lcl_bill),0) ocean_lcl_bill_total,ifnull(sum(ari_kg),0) ari_kg_total,ifnull(sum(ari_kg_bill),0) ari_kg_bill_total,ifnull(sum(pieces),0) pieces_total"
     			+ " from ("
     			+ " select B.*, "
     	        + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '40HQ') hq40_count, "

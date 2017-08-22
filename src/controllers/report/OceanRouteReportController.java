@@ -238,8 +238,8 @@ public class OceanRouteReportController extends Controller {
         	condition+=" and jo.type = '"+type+"'";
         }
         
-        String sql = "select SUM(pieces) pieces_total,SUM(gross_weight) gross_weight_total,SUM(volume) volume_total,"
-        		+ "  SUM(ocean_fcl_teu) ocean_fcl_teu_total,SUM(ocean_lcl_cbm) ocean_lcl_cbm_total"
+        String sql = "select ifnull(SUM(pieces),0) pieces_total,ifnull(SUM(gross_weight),0) gross_weight_total,ifnull(SUM(volume),0) volume_total,"
+        		+ "  ifnull(SUM(ocean_fcl_teu),0) ocean_fcl_teu_total,ifnull(SUM(ocean_lcl_cbm),0) ocean_lcl_cbm_total"
         		+ " from (SELECT  "
                 + "        order_export_date, "
                 + "        customer_id, "
@@ -285,7 +285,6 @@ public class OceanRouteReportController extends Controller {
                 + " ORDER BY A.customer_id , A.order_export_date"
                 + " )B";
         Record rec = Db.findFirst(sql);
-        
         long total=list();
         rec.set("total", total);
         renderJson(rec);
