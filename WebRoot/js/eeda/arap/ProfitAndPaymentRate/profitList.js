@@ -147,6 +147,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  if(!average_profit_rate){
         		  average_profit_rate=0.00;
         	  }
+        	  if(isNaN(average_profit_rate)){
+        		  average_profit_rate = 0.00;
+        	  }
         	  if(total_profit<0){
         		  $('#total_profit').text(total_profit).css('color','red');
         	  }else(
