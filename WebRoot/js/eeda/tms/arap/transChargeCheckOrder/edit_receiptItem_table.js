@@ -40,24 +40,39 @@ $(document).ready(function() {
     var reciveitemTable = eeda.dt({
         id: 'receip-table',
         columns:[
-        { "data": "CURRENCY_NAME", "width": "100px"},
-        { "data": "TOTAL_AMOUNT", "width": "180px"},
-        { "data": "RECEIVE_CNY", "width": "120px"},
-        { "data": "RESIDUAL_CNY", "width": "200px",
+        { "data": "CURRENCY_NAME"},
+        { "data": "TOTAL_AMOUNT"},
+        { "data": "RECEIVE_CNY"},
+        { "data": "RESIDUAL_CNY",
         	"render": function(data){
         		  if(data!=0.0)
       			  return "<span style='color:red;'>"+data.substr(0,10)+"</span>";
       		  return data;
           	}
         },
-        { "data": "RECEIVE_TIME", "width": "80px",
+        { "data": "RECEIVE_TIME",
         	"render": function(data){
       		  if(data)
     			  return data.substr(0,10);
     		  return '';
         	}
         },
-        { "data": "RECEIVE_NAME", "width": "80px"}
+        { "data": "RECEIVE_NAME"},
+        { "data": "PAYMENT_METHOD",
+        	"render": function(data){
+        		  if(data=="cash"){
+        			  return "现金";
+        		  }else if(data=="transfers"){
+        			  return "转账";
+        		  }else if(data=="checkTransfers"){
+        			  return "支票转账";
+        		  }
+      		  return '';
+          	}
+        },
+        { "data": "DEPOSIT_BANK_INPUT"},
+        { "data": "ACCOUNT_NO"},
+        { "data": "ACCOUNT_NAME"}
         ]
     }); 
        

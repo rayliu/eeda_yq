@@ -184,7 +184,6 @@ $(document).ready(function() {
                  $("#receive_cny").val("");
                  $("#residual_cny").val("");
     			 $.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
- 			 
     		 }
          },'json').fail(function() {
         	 $.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
@@ -243,9 +242,22 @@ $(document).ready(function() {
             $('#transfers_massage_pay').show();
         }
     })
+    
 
       //收款确认
       $("#charge_confirmBtn,#badBtn").on('click',function(){
+    	  var payment_method = $("#payment_method").val();
+    	  var receive_time = $("#receive_time").val();
+    	  if(payment_method==""||receive_time==""){
+    		  $.scojs_message('收款方式和收款时间不能为空', $.scojs_message.TYPE_ERROR);
+    		  return;
+    	  }else if(payment_method=="transfers"||payment_method=="checkTransfers"){
+    		  var deposit_bank_input = $("#deposit_bank_input").val();
+    		  if(deposit_bank_input==""){
+    			  $.scojs_message('开户行和收款时间不能为空', $.scojs_message.TYPE_ERROR);
+    			  return;
+    		  }
+    	  }
             var confirmVal =$(this).text();
             if(confirmVal=='坏账确认'){
                 var pay_remark =$('#pay_remark').val()+'\n 这笔为坏账'
@@ -322,6 +334,8 @@ $(document).ready(function() {
     var buildConfirmFormOrder = function(){
         var item = {};
         item.charge_order_id = $('#order_id').val();
+        var date=new Date();
+        item.create_stamp = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
         item.total_amount=$('#cny').val();
         item.confirm_by=$('#user_id').val();
         // item.selected_ids = $('#selected_ids').val();
@@ -371,6 +385,12 @@ $(document).ready(function() {
            $('#add_charge').attr('disabled',true );
            $('#confirmOrder_div').show();
            $('#costCheckreceipt').show();
+       }
+       
+       if($("#payment_method").val()=="transfers"||$("#payment_method").val()=="checkTransfers"){
+    	   $('#transfers_massage').show();
+           $('#receive_type_massage').show();
+           $('#transfers_massage_pay').show();
        }
     }
 

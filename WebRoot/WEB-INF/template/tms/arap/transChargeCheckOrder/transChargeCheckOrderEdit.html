@@ -199,8 +199,8 @@
 		                                	<select id="payment_method" class="form-control search-control payment_method" name="payment_method" >
 		                                    <option value=""></option>
 		                                    <option value="cash" <% if(order.payment_method!'cash'=='cash'){%>selected<% }%>>现金</option>
-		                                    <option value="transfers" <% if(order.payment_method!''=='transfers'){%>selected<% }%>>转账</option>
-		                                    <option value="checkTransfers" <% if(order.payment_method!''=='checkTransfers'){%>selected<% }%>>支票转账</option>
+		                                    <option value="transfers" <% if(order.payment_method!'transfers'=='transfers'){%>selected<% }%>>转账</option>
+		                                    <option value="checkTransfers" <% if(order.payment_method!'transfers'=='checkTransfers'){%>selected<% }%>>支票转账</option>
 		                                    </select>
 		                                </div>
 			                             <div id="transfers_massage" <% if(order.payment_method!'cash'=='cash'){%>style="display:none"<% }%>>
@@ -208,7 +208,8 @@
 				                            { id:'deposit_bank',
 											label:'开户行',
 										    value:order.deposit_bank!'',
-										    display_value:order.deposit_bank_input
+										    display_value:order.deposit_bank_input,
+										    required:'required'
 											}){}%>
 											
 											<%include("/eeda/component/form/inputField.html", 
@@ -344,9 +345,8 @@
 						<%include("/eeda/component/form/detailTable.html", 
                             {
                                 id:'receip-table', 
-                                style:'width:700px',
-                               headers:['币制','应收总金额','上次收款金额','剩余应收金额','收款时间','确认收款人'],
-								field_list:['currency_name','total_amount','receive_cny','residual_cny','receive_time','receive_name'], 
+                               headers:['币制','应收总金额','上次收款金额','剩余应收金额','收款时间','确认收款人','收款方式','开户行','收款账号','账户名'],
+								field_list:['currency_name','total_amount','receive_cny','residual_cny','receive_time','receive_name','payment_method','deposit_bank_input','account_no','account_name'], 
 								value_list: order.receive_itemList!receive_itemList![] 
 							}){} %>
 			    </div>

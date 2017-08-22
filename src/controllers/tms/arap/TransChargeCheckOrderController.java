@@ -518,6 +518,9 @@ public class TransChargeCheckOrderController extends Controller {
 				 +" LEFT JOIN trans_arap_charge_receive_item tacri on aco.id=tacri.charge_order_id "
 				 +" WHERE aco.id ="+id+" ORDER BY tacri.id DESC ";
 		Record rec2 = Db.findFirst(sqlString);
+		
+		Record rec3 = Db.findFirst("SELECT tacri.id,tacri.deposit_bank_input,tacri.receive_time,fa.account_name,fa.account_no from trans_arap_charge_receive_item tacri "
+				+ " LEFT JOIN fin_account fa on fa.id=tacri.deposit_bank where create_stamp=(SELECT max(create_stamp)FROM trans_arap_charge_receive_item where charge_order_id = ?)",id);
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));
 		rec.set("phone", rec.get("phone"));
@@ -526,6 +529,10 @@ public class TransChargeCheckOrderController extends Controller {
 		rec.set("company_id", rec.get("company_id"));
 		rec.set("company_abbr", rec.get("company_abbr"));
 		rec.set("receive_itemList", getReceiveItemList(id));
+		rec.set("deposit_bank_input", rec3.get("deposit_bank_input"));
+		rec.set("receive_time", rec3.get("receive_time"));
+		rec.set("account_name", rec3.get("account_name"));
+		rec.set("account_no", rec3.get("account_no"));
 		if(rec2!=null){
 			rec.set("residual_cny", rec2.get("residual_cny"));
 		}
@@ -816,7 +823,7 @@ public class TransChargeCheckOrderController extends Controller {
 		   	        	deposit_bank = rec.getLong("id").toString();
 		   	        }
 		   		}
-		   			DbUtils.setModelValues(dto, cacritem); 
+		   		DbUtils.setModelValues(dto, cacritem); 
 		   			//保存每次收款记录
 		   			cacritem.save();
                 
