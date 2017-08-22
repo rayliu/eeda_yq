@@ -716,6 +716,42 @@ public class ServiceProviderController extends Controller {
     	String d = sf.format(new Date());
     	List<Record> recs = null;
     	UserLogin user = LoginUserController.getLoginUser(this);
+        String condition = "";
+    	long office_id = user.getLong("office_id");
+    	/*String sql = "select cr.office_id,c.id,c.code,c.name,cast( if(cr.from_stamp<'"+d+"' and cr.to_stamp>'"+d+"',cr.rate,'') as char ) rate from currency c"
+    			+ " left join currency_rate cr on cr.currency_code = c.code  where 1=1 and cr.office_id= "+office_id+" group by name";*/
+		
+       if(!StringUtils.isBlank(input)){
+    	   	condition+=" and (c.name like '%" + input + "%' or c.english_name like '%" + input + "%' or c.code like '%" + input + "%') ";
+       }
+        String sql = "SELECT"
+    			+ "	to_stamp,"
+    			+ "	from_stamp,"
+    			+ "	cr.remark,"
+    			+ "	cr.id,"
+    			+ "	currency_code CODE,"
+    			+ "	cr.NAME ,"
+    			+ "	rate"
+    			+ " FROM"
+    			+ "	currency_rate c"
+    			+ " left join currency cr on cr.code = c.currency_code"
+    			+ " WHERE"
+    			+ " 	1 = 1"
+    			+ " AND NAME IS NOT NULL and c.is_stop = 'Y' and c.office_id = "+office_id+" and c.to_stamp in (select max(to_stamp) to_stamp "
+    			+ " from currency_rate  where office_id="+office_id+" GROUP BY currency_code)"
+    			+ "";
+
+    	recs = Db.find(sql);
+    	renderJson(recs);
+    }
+    
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+    public void searchCurrency_create(){
+    	String input = getPara("input");
+    	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    	String d = sf.format(new Date());
+    	List<Record> recs = null;
+    	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
     	/*String sql = "select cr.office_id,c.id,c.code,c.name,cast( if(cr.from_stamp<'"+d+"' and cr.to_stamp>'"+d+"',cr.rate,'') as char ) rate from currency c"
     			+ " left join currency_rate cr on cr.currency_code = c.code  where 1=1 and cr.office_id= "+office_id+" group by name";*/
@@ -730,6 +766,7 @@ public class ServiceProviderController extends Controller {
     	recs = Db.find(sql+" group by name");
     	renderJson(recs);
     }
+    
     
     
   //查询银行账户名下拉列表

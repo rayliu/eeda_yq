@@ -16,13 +16,19 @@ $(document).ready(function() {
 	var inputField = $('#${id}_input');
 	var hiddenField = $('#${id}');
 	var result = [];
+	var method = 'searchCurrency'
+	var flag = '${flag!''}';
+	if(flag=="Y"){
+		method = 'searchCurrency_create'
+	}
+	
 	//供应商查询
     //获取供应商的list，选中信息在下方展示其他信息
     inputField.on('input click', function(){
     	var me = this;
 		var inputStr = inputField.val();
 		
-		$.get('/serviceProvider/searchCurrency', {input:inputStr}, function(data){
+		$.get('/serviceProvider/'+method+'', {input:inputStr}, function(data){
 			result = data;
 			if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
