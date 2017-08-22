@@ -748,27 +748,59 @@ eeda.refreshUrl = refreshUrl;
                   var $a = $(this).find('a');
                   var dataId = $a.attr('dataId');
                   hiddenField.val(dataId);//id
-
                   //datatable里按照   币制，汇率，转换后金额 相邻排列
                   var td = inputField.parent().parent();
+                  
+                  var exchange_currency_rate = 1.000000;
+    			  td.parent().find('.cny_to_other input').val($(this).text());
+    			  td.parent().find('[name=exchange_currency_id]').val(dataId);
+                  
                   var class_name = td.attr('class');
                   var currency_rate = $a.attr('currency_rate');
 
-                  var nextTdInput = td.next().children();
-                  nextTdInput.val(currency_rate);//选择币制则填入汇率
-                  nextTdInput.focus();
-
-                  if(class_name=='cny_to_other'){
-                	  var total = td.parent().find('.cny_total_amount input').val();
-                  }else{
-                	  var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
-                  }
-                  if(currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
-                	  if(class_name==' cny_to_other'){
-                		  td.next().next().children().val((total/currency_rate).toFixed(3));//转换后的金额
+                  td.next().children().val(currency_rate);//选择币制则填入汇率
+                  td.parent().find('.exchange_currency_rate_rmb input').val(currency_rate);
+                  if(class_name==' cny_to_other'&&td.parent().find('[name=CURRENCY_ID_input]').val()!=$(this).text()){
+                	   td.parent().find('.exchange_currency_rate input').val('');
+                	   td.parent().find('.exchange_total_amount input').val('');
+                     td.parent().find('.exchange_total_amount_rmb input').val('');
+                     td.parent().find('.rmb_difference input').val('');
+                	   exchange_currency_rate='';
+                	   
                 	  }else{
-                		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
+                	   td.parent().find('[name=exchange_currency_rate]').val(exchange_currency_rate); 
                 	  }
+
+                	  var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
+                  if(exchange_currency_rate!=''&&currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
+                	  if(class_name==' cny_to_other'){
+                		  td.next().next().children().val((total*exchange_currency_rate).toFixed(3));//转换后的金额
+                	   }else{
+                		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
+                		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(3));
+                	  }
+                     var exchange_total = td.parent().find('.exchange_total_amount input').val();//此币种的金额
+                    td.parent().find('.exchange_total_amount_rmb input').val((exchange_total*currency_rate).toFixed(3));
+                    var  cny_total_amount=parseFloat(td.parent().find('.cny_total_amount input').val());
+                    var exchange_total_amount_rmb=parseFloat(td.parent().find('.exchange_total_amount_rmb input').val());
+                    td.parent().find('.rmb_difference input').val((exchange_total_amount_rmb-cny_total_amount).toFixed(3));
+                  }
+                  
+                  var row = td.parent();
+                  var colCount = row.find('td').length;
+                  
+                  var nextTdInput, nextTd=td;
+                  var index = 0;
+                  while(!nextTdInput && index<colCount){
+                      nextTd = nextTd.next();
+                      index = nextTd.index();
+                      nextTdInput = nextTd.find('input:last');
+                      if(nextTdInput && !nextTdInput.prop('disabled')){
+                          nextTdInput.focus();
+                          break;
+                      }else{
+                          nextTdInput=null;
+                      }
                   }
               }
           });
@@ -1547,6 +1579,27 @@ eeda.refreshUrl = refreshUrl;
           }).find('li').first().focus();
       };
       
+      //跳转到下一个按下enter键input
+      skipNextInput=function(td){
+          var row = td.parent();
+          var colCount = row.find('td').length;
+
+          var nextTdInput, nextTd=td;
+          var index = 0;
+          while(!nextTdInput && index<colCount){
+              nextTd = nextTd.next();
+              index = nextTd.index();
+              nextTdInput = nextTd.find('input:last');
+              if(nextTdInput && !nextTdInput.prop('disabled')){
+                  nextTdInput.focus();
+                  break;
+              }else{
+                  nextTdInput=null;
+              }
+          }
+      }
+      
+      
       eeda.bindTableFieldChargeId = function(table_id, el_name,url,para) {
 		  var tableFieldList = $('#table_fin_item_field_list');
 		  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
@@ -1647,36 +1700,46 @@ eeda.refreshUrl = refreshUrl;
 		  tableFieldList.on('keydown', 'li', function(e){
               if (e.keyCode == 13) {
                   var inputField = eeda._inputField;
-                  var hiddenField = eeda._hiddenField;
-                  inputField.val($(this).text());//名字
-                  tableFieldList.hide();
+                  var hiddenField = eeda._hiddenField;                  
                   var $a = $(this).find('a');
+                  
+                  inputField.val($a.attr('charge_name'));//名字
+                  tableFieldList.hide();
                   var dataId = $a.attr('dataId');
                   hiddenField.val(dataId);//id
 
-                  //datatable里按照   币制，汇率，转换后金额 相邻排列
-                  var td = inputField.parent().parent();
-                  var class_name = td.attr('class');
-                  var currency_rate = $a.attr('currency_rate');
+                  //某条费用对应某币制			  
+    			  var td = inputField.parent().parent();
 
-                  var nextTdInput = td.next().children();
-                  nextTdInput.val(currency_rate);//选择币制则填入汇率
-                  nextTdInput.focus();
-
-                  if(class_name=='cny_to_other'){
-                	  var total = td.parent().find('.cny_total_amount input').val();
-                  }else{
-                	  var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
-                  }
-                  if(currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
-                	  if(class_name==' cny_to_other'){
-                		  td.next().next().children().val((total/currency_rate).toFixed(3));//转换后的金额
-                	  }else{
-                		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
-                	  }
-                  }
+    			  var charge_id = $(this).attr('dataId');
+    			  var charge_name = $(this).attr('charge_name');
+    			  var charge_name_eng = $(this).attr('charge_name_eng');
+    			  var currency_id = $(this).attr('currency_id');
+    			  var currency_code = $(this).attr('currency_code');
+    			  var currency_rate = $(this).attr('currency_rate');
+    			  td.parent().find('input[name=CHARGE_ID] ').val(charge_id);
+    			  td.parent().find('input[name=CHARGE_ID_input] ').val(charge_name);
+    			  td.parent().find('input[name=CHARGE_ENG_ID] ').val(charge_id);
+    			  td.parent().find('input[name=CHARGE_ENG_ID_input] ').val(charge_name_eng);
+    			  if(currency_id!='undefined' && currency_id!='null'){
+    				  td.parent().find('input[name=CURRENCY_ID] ').val(currency_id);	
+    				  td.parent().find('input[name=CURRENCY_ID_input] ').val(currency_code);
+    				  td.parent().find('input[name=exchange_currency_id] ').val(currency_id);
+    				  td.parent().find('input[name=exchange_currency_id_input] ').val(currency_code);
+    			  }
+    			  if(currency_rate!='undefined' && currency_rate!='null'){
+    				  td.parent().find('input[name=exchange_rate] ').val(currency_rate);
+    				  td.parent().find('input[name= exchange_currency_rate] ').val(1.000000);
+    				  td.parent().find('input[name= exchange_currency_rate_rmb] ').val(currency_rate);
+    			  }
+                  
+                  skipNextInput(td);
+                  
               }
           });
+		  
+		  
+		  
 		  
 		  // 1 没选中客户，焦点离开，隐藏列表
 		  $(document).on('click', function(event){
@@ -1710,6 +1773,8 @@ eeda.refreshUrl = refreshUrl;
 			  }
 		  }).find('li').first().focus();
 	  };
+	  
+	  
 	  
 	  
 	  eeda.bindTableAddressField = function(table_id, el_name,url,para) {
