@@ -2,33 +2,19 @@ package controllers.util;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ss.formula.FormulaParseException;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Comment;
-import org.apache.poi.ss.usermodel.Hyperlink;
-import org.apache.poi.ss.usermodel.RichTextString;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Record;
 @SuppressWarnings({"rawtypes","unused","deprecation"})
 public class ReaderXlSX {
     private XSSFWorkbook wb;
@@ -92,7 +78,8 @@ public class ReaderXlSX {
             	int j = 0;
                 while (j < colNum) {
             		//rowData.put(xlsxTitle[j], row.getCell((short) j).getStringCellValue().trim());
-            		rowData.put(xlsxTitle[j], getCellFormatValue(row.getCell((short) j),xlsxTitle[j]).trim());
+                	System.out.println(xlsxTitle[j]);
+            		rowData.put(xlsxTitle[j], (row.getCell((short) j))==null?"":(row.getCell((short) j)).toString().trim());
                 	j++;
                 	
                 }

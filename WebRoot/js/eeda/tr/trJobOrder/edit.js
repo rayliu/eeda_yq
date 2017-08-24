@@ -511,6 +511,10 @@ $(document).ready(function() {
                 });
             });
         })
+        $('#reflesh_tradeItem').click(function(){
+        	var order_id = $('#order_id').val();
+        	itemOrder.refleshTradeCostItemTable(order_id);
+        });
         
     
 });

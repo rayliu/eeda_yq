@@ -9,9 +9,7 @@
         </div>
              <div class="row">
                     <div class="col-lg-12">
-                        <h3>贸易商品信息</h3> 
-                        <button class="btn btn_green" type="button" id="add_tradeItem" style="float:right;margin-bottom:15px;">添加贸易商品条目</button> 
-                      
+                        <h3>贸易商品信息</h3>
                     </div>
              </div>
                     <div class="row">
@@ -67,7 +65,14 @@
                             <div class="col-lg-12">
                             <input type="hidden" id="total_difference" value="${trade.total_difference!''}"  >
                             <input type="hidden" id="price_difference" value="${trade.price_difference!''}">
-                                <button class="btn btn_green" type="button" id="add_trade_cost_table">添加明细</button><br><br>
+                                <button class="btn btn_green" type="button" id="add_trade_cost_table">添加明细</button>
+                                <button class="btn btn_green" type="button" id="import_tradeItem" margin-bottom:15px;">导入贸易商品信息</button>
+                                <button class="btn btn_green" type="button" id="reflesh_tradeItem" margin-bottom:15px;">导入后，刷新</button>
+                        <input type="file" id="importFileUpload" name="files[]"	style="position:absolute;  opacity:0;" >
+						<a class="btn btn_green" id="dowmloadBtn" type="button" href="/download/tradeJobOrder/贸易商品信息.xlsx">下载导入模板</a>
+                         
+                        <button class="btn btn_green" type="button" id="add_tradeItem" style="float:right;margin-bottom:15px;">添加贸易商品条目</button> 
+                                <br><br>                                
                                 <font size="3px">(客户退税金额总额 - 应收服务费用总额 + 应付服务费总额)总价差异：<span id="total_difference_span" name="total_difference" text="${trade.total_difference!''}" ></span></font>&nbsp&nbsp
                                 <font size="3px">(总价差异 / 总数量)单价差异：<span id="price_difference_span" name="price_difference" text="${trade.price_difference!''}"></span></font>
                                 <br>
@@ -312,3 +317,18 @@
                             </div>
             </div><!-- /.row -->
             </form>
+            <div class="panel-heading">
+		       <div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="false" data-backdrop="static">
+		         <div class="modal-dialog">
+		           <div class="modal-content">
+		               <div class="modal-body pre-scrollable">
+		               		<span id="msgLoad"></span>
+		               </div>
+		               <div class="modal-footer" id="footer" aria-hidden="true">
+		               	<button type="button" class="btn  btn-primary" id="confirm" style="display:none">确认</button>
+		 				<button type="button" class="btn  btn-primary" data-dismiss="modal" id="cancel">关闭</button>
+					  </div>
+		            </div>
+		          </div>
+		        </div>
+		    </div>

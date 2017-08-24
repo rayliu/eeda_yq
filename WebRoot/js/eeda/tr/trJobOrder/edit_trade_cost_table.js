@@ -62,6 +62,262 @@ $(document).ready(function() {
         deletedTableIds = [];
         return cargo_items_array;
     };
+    
+    
+    cost_table=function(self){
+    	var this_input = $(self).attr('name');
+    	
+    	var row = $(self).parent().parent();
+    	var price = parseFloat($(row.find('[name=price]')).val());
+    	var number = parseFloat($(row.find('[name=number]')).val());
+    	var domestic_price = parseFloat($(row.find('[name=domestic_price]')).val());
+    	var tax_refund_rate = parseFloat($(row.find('[name=tax_refund_rate]')).val());
+    	var tax_refund_rate_customer = parseFloat($(row.find('[name=tax_refund_rate_customer]')).val());
+    	
+    	var agency_rate = parseFloat($(row.find('[name=agency_rate]')).val());
+    	var agency_amount_cny = parseFloat($(row.find('[name=agency_amount_cny]')).val());
+    	
+    	
+    		//计算国内货值
+	    	var total ;
+	    	var calcPrice ;
+	    	var calcNumber;
+	    	if(this_input=='number'){
+	    		if(!isNaN(price) && !isNaN(number)){
+	    			total = parseFloat(price*number);
+		    		calcPrice = price;
+	    		}else if(!isNaN(domestic_price) && !isNaN(number) && isNaN(price) ){
+	    			calcPrice = parseFloat(domestic_price/number);
+	    			total = domestic_price;
+	    		}
+	    		calcNumber = number;
+	    	}else if(this_input=='price'){
+	    		if(!isNaN(price) && !isNaN(number) ){
+	    			total = parseFloat(price*number);
+	    			calcNumber = number;
+	    		}else if(!isNaN(price) && !isNaN(domestic_price) && isNaN(number) ){
+	    			calcNumber = parseFloat(domestic_price/price);
+	    			total = domestic_price;
+	    		}
+	    		calcPrice = price;
+	    	} else if(this_input=='domestic_price'){
+	    		if(!isNaN(price) && !isNaN(domestic_price)){
+	    			calcNumber = parseFloat(domestic_price/price);
+	    			calcPrice = price;
+	    		}else if(isNaN(price) && !isNaN(number) && !isNaN(domestic_price) ){
+	    			calcPrice = parseFloat(domestic_price/number);
+	    			calcNumber = number;
+	    		}
+	    		total = domestic_price;
+	    	}
+	    	if(!isNaN(calcNumber))
+    			$(row.find('[name=number]')).val(calcNumber);
+    		if(!isNaN(calcPrice))
+    			$(row.find('[name=price]')).val(calcPrice);
+    		if(!isNaN(total)){
+    			$(row.find('[name=domestic_price]')).val(total.toFixed(3));
+            }
+
+	    	
+	    	//计算代理费
+	    	var agency_total ;
+	    	var agency_calcPrice ;
+	    	var agency_calcNumber;
+	    	if(this_input=='domestic_price'){
+	    		if(!isNaN(domestic_price) && !isNaN(agency_rate)){
+	    			agency_total = parseFloat(domestic_price*agency_rate)/100;
+	    			agency_calcPrice = agency_rate;
+	    		}else if(!isNaN(domestic_price) && !isNaN(agency_rate) && isNaN(agency_amount_cny) ){
+	    			agency_rate = parseFloat(agency_amount_cny/domestic_price)*100;
+	    			agency_total = agency_amount_cny;
+	    		}
+	    		agency_calcNumber = domestic_price;
+	    	}else if(this_input=='agency_rate'){
+	    		if(!isNaN(agency_rate) && !isNaN(domestic_price) ){
+	    			agency_total = parseFloat(agency_rate*domestic_price)/100;
+	    			agency_calcNumber = domestic_price;
+	    		
+	    			agency_calcPrice = agency_rate;
+	    	   } 
+	    	}else if(this_input=='agency_amount_cny'){
+	    		 if(!isNaN(agency_amount_cny) && !isNaN(domestic_price) ){
+	    			 agency_calcPrice = parseFloat(agency_amount_cny/domestic_price)*100;
+	    			 agency_calcNumber = domestic_price;
+	    		}
+	    		 agency_total = agency_amount_cny;
+	    	}
+	    		if(!isNaN(agency_calcPrice))
+	    			$(row.find('[name=agency_rate]')).val(agency_calcPrice.toFixed(3));
+	    		if(!isNaN(agency_total))
+	    			$(row.find('[name=agency_amount_cny]')).val(agency_total.toFixed(3));
+
+    		
+    		var total = 0;
+    		$('#trade_cost_table [name=domestic_price]').each(function(){
+    			var a = this.value;
+    			if(a!=''&&!isNaN(a)){
+    				total+=parseFloat(a);
+    			}
+    		});
+    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html(total.toFixed(3));
+    		
+    		
+    		if(tax_refund_rate_customer==0){
+        		$(row.find('[name=adjusted_tax_refund_amount]')).val(0);
+        	}else if(!isNaN(tax_refund_rate_customer)){
+        		var value_added_tax = parseFloat($(row.find('[name=value_added_tax]')).val());
+        		var adjusted_tax_refund_amount = parseFloat(domestic_price*tax_refund_rate_customer/(1+value_added_tax));
+        		
+        		$(row.find('[name=adjusted_tax_refund_amount]')).val(adjusted_tax_refund_amount.toFixed(3));
+        	}
+    		
+    		
+    		var total = 0;
+    		$('#trade_cost_table [name=adjusted_tax_refund_amount]').each(function(){
+    			var a = this.value;
+    			if(a!=''&&!isNaN(a)){
+    				total+=parseFloat(a);
+    			}
+    		});
+    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(11).html(total.toFixed(3));
+    
+    	if(price==''){
+    		$(row.find('[name=adjusted_unit_price]')).val(0);
+    		$(row.find('[name=adjusted_total_price]')).val(0);
+    	}else if(!isNaN(price)){
+    		
+    		var price_difference = itemOrder.count_difference();
+    		
+
+
+            if(tax_refund_rate==''){
+                $(row.find('[name=tax_refund_amount]')).val(0);
+            }else if(!isNaN(tax_refund_rate)){
+                var value_added_tax = parseFloat($(row.find('[name=value_added_tax]')).val());
+                var adjusted_total_price = parseFloat($(row.find('[name=adjusted_total_price]')).val());
+                var tax_refund_amount = parseFloat(adjusted_total_price*tax_refund_rate/(1+value_added_tax));
+                
+                $(row.find('[name=tax_refund_amount]')).val(tax_refund_amount.toFixed(3));                
+            }
+            
+            var total = 0;
+            $('#trade_cost_table [name=tax_refund_amount]').each(function(){
+                var a = this.value;
+                if(a!=''&&!isNaN(a)){
+                    total+=parseFloat(a);
+                }
+            });
+            $($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html(total.toFixed(3));
+            
+
+	        if(domestic_price==''||agency_rate==''){
+	            $(row.find('[name=agency_amount_cny]')).val('');
+	        }else if(!isNaN(domestic_price)&&!isNaN(agency_rate)){
+	            var total = 0;
+	            $('#trade_cost_table [name=agency_amount_cny]').each(function(){
+	                var a = this.value;
+	                if(a!=''&&!isNaN(a)){
+	                    total+=parseFloat(a);
+	                }
+	            })
+	            $($('.dataTables_scrollFoot tr')[0]).find('th').eq(21).html(total.toFixed(3));
+	        }
+    	}
+    }
+    	
+    //总价差异、单价差异计算
+    itemOrder.count_difference =function(){
+    	var total_adjusted_tax_refund_amount = 0;
+		var total_service_fee = 0;
+		var total_cost_service_fee = 0;
+		var total_count = 0;
+		$('#trade_cost_table [name=adjusted_tax_refund_amount]').each(function(){
+			var a = this.value;
+			if(a!=''&&!isNaN(a)){
+				total_adjusted_tax_refund_amount+=parseFloat(a);
+			}
+		});
+		$('#charge_service_table [name=currency_total_amount]').each(function(){
+			var a = this.value;
+			if(a!=''&&!isNaN(a)){
+				total_service_fee+=parseFloat(a);
+			}
+		})
+		
+		$('#cost_service_table [name=currency_total_amount]').each(function(){
+			var a = this.value;
+			if(a!=''&&!isNaN(a)){
+				total_cost_service_fee+=parseFloat(a);
+			}
+		})
+		
+    	$('#trade_cost_table tr').find('[name=number]:eq(0)').each(function(){
+    		var a = this.value;
+			if(a!=''&&!isNaN(a)){
+    			total_count+=parseInt(a);
+    		}
+		});
+    	var total_difference = total_adjusted_tax_refund_amount-total_service_fee+total_cost_service_fee;
+		var price_difference = total_difference/total_count;
+    	$('#total_difference').val(total_difference.toFixed(3));
+	    $('#price_difference').val(price_difference.toFixed(3));
+	    $('#total_difference_span').text(total_difference.toFixed(3));
+	    $('#price_difference_span').text(price_difference.toFixed(3));
+	    
+	    $("#trade_cost_table [name=price]").each(function(){
+			var price = $(this).val();
+			if(isNaN(price)){
+				$(this).parent().parent().find('[name=adjusted_unit_price]').val('0');
+			}else{
+				var adjusted_unit_price = (parseFloat(price_difference)+parseFloat(price))
+				$(this).parent().parent().find('[name=adjusted_unit_price]').val(adjusted_unit_price);
+				var number=$(this).parent().parent().find('[name=number]').val();
+				if(isNaN(number)){
+					$(this).parent().parent().find('[name=number]').val('0');
+				}else{
+					var adjusted_total_price = parseFloat(adjusted_unit_price)*parseFloat(number);
+					$(this).parent().parent().find('[name=adjusted_total_price]').val(adjusted_total_price);
+				}
+			}
+			
+		});
+	    var total = 0;
+		$('#trade_cost_table [name=adjusted_unit_price]').each(function(){
+			var a = this.value;
+			if(a!=''&&!isNaN(a)){
+				total+=parseFloat(a);
+			}
+		});
+		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(12).html(total.toFixed(3));
+		
+	    var total = 0;
+		$('#trade_cost_table [name=adjusted_total_price]').each(function(){
+			var a = this.value;
+			if(a!=''&&!isNaN(a)){
+				total+=parseFloat(a);
+			}
+		});
+		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(13).html(total.toFixed(3));
+	    
+	    return price_difference;
+    }
+    
+    //调用函数使用
+    $('#trade_cost_table').on('blur', '[name=number], [name=price], [name=tax_refund_rate],[name=agency_rate],[name=domestic_price],[name=value_added_tax],[name=tax_refund_rate_customer],[name=agency_rate],[name=agency_amount_cny]', function(){
+    	cost_table(this);
+    	
+    })
+    
+    var trade_cost_table_fucntion =function(){
+    	$('#trade_cost_table [name=price]').each(function(){
+        	cost_table(this);
+        });
+    }  
+    
+    
+    
+    
+    
 
 
     //------------事件处理
@@ -84,6 +340,7 @@ $(document).ready(function() {
 	    drawCallback: function( settings ) {
             bindFieldEvent();
             $.unblockUI();
+            trade_cost_table_fucntion();
         },
 	    columns:[
             { "width": "5px"},
@@ -451,248 +708,8 @@ $(document).ready(function() {
         }
     })
 
-    $('#trade_cost_table').on('blur', '[name=number], [name=price], [name=tax_refund_rate],[name=agency_rate],[name=domestic_price],[name=value_added_tax],[name=tax_refund_rate_customer],[name=agency_rate],[name=agency_amount_cny]', function(){
-    	var this_input = $(this).attr('name');
-    	
-    	var row = $(this).parent().parent();
-    	var price = parseFloat($(row.find('[name=price]')).val());
-    	var number = parseFloat($(row.find('[name=number]')).val());
-    	var domestic_price = parseFloat($(row.find('[name=domestic_price]')).val());
-    	var tax_refund_rate = parseFloat($(row.find('[name=tax_refund_rate]')).val());
-    	var tax_refund_rate_customer = parseFloat($(row.find('[name=tax_refund_rate_customer]')).val());
-    	
-    	var agency_rate = parseFloat($(row.find('[name=agency_rate]')).val());
-    	var agency_amount_cny = parseFloat($(row.find('[name=agency_amount_cny]')).val());
-    	
-    	
-    		//计算国内货值
-	    	var total ;
-	    	var calcPrice ;
-	    	var calcNumber;
-	    	if(this_input=='number'){
-	    		if(!isNaN(price) && !isNaN(number)){
-	    			total = parseFloat(price*number);
-		    		calcPrice = price;
-	    		}else if(!isNaN(domestic_price) && !isNaN(number) && isNaN(price) ){
-	    			calcPrice = parseFloat(domestic_price/number);
-	    			total = domestic_price;
-	    		}
-	    		calcNumber = number;
-	    	}else if(this_input=='price'){
-	    		if(!isNaN(price) && !isNaN(number) ){
-	    			total = parseFloat(price*number);
-	    			calcNumber = number;
-	    		}else if(!isNaN(price) && !isNaN(domestic_price) && isNaN(number) ){
-	    			calcNumber = parseFloat(domestic_price/price);
-	    			total = domestic_price;
-	    		}
-	    		calcPrice = price;
-	    	} else if(this_input=='domestic_price'){
-	    		if(!isNaN(price) && !isNaN(domestic_price)){
-	    			calcNumber = parseFloat(domestic_price/price);
-	    			calcPrice = price;
-	    		}else if(isNaN(price) && !isNaN(number) && !isNaN(domestic_price) ){
-	    			calcPrice = parseFloat(domestic_price/number);
-	    			calcNumber = number;
-	    		}
-	    		total = domestic_price;
-	    	}
-	    	if(!isNaN(calcNumber))
-    			$(row.find('[name=number]')).val(calcNumber);
-    		if(!isNaN(calcPrice))
-    			$(row.find('[name=price]')).val(calcPrice);
-    		if(!isNaN(total)){
-    			$(row.find('[name=domestic_price]')).val(total.toFixed(3));
-            }
-
-
-
-	    	
-	    	
-	    	//计算代理费
-	    	var agency_total ;
-	    	var agency_calcPrice ;
-	    	var agency_calcNumber;
-	    	if(this_input=='domestic_price'){
-	    		if(!isNaN(domestic_price) && !isNaN(agency_rate)){
-	    			agency_total = parseFloat(domestic_price*agency_rate)/100;
-	    			agency_calcPrice = agency_rate;
-	    		}else if(!isNaN(domestic_price) && !isNaN(agency_rate) && isNaN(agency_amount_cny) ){
-	    			agency_rate = parseFloat(agency_amount_cny/domestic_price)*100;
-	    			agency_total = agency_amount_cny;
-	    		}
-	    		agency_calcNumber = domestic_price;
-	    	}else if(this_input=='agency_rate'){
-	    		if(!isNaN(agency_rate) && !isNaN(domestic_price) ){
-	    			agency_total = parseFloat(agency_rate*domestic_price)/100;
-	    			agency_calcNumber = domestic_price;
-	    		
-	    			agency_calcPrice = agency_rate;
-	    	   } 
-	    	}else if(this_input=='agency_amount_cny'){
-	    		 if(!isNaN(agency_amount_cny) && !isNaN(domestic_price) ){
-	    			 agency_calcPrice = parseFloat(agency_amount_cny/domestic_price)*100;
-	    			 agency_calcNumber = domestic_price;
-	    		}
-	    		 agency_total = agency_amount_cny;
-	    	}
-	    		if(!isNaN(agency_calcPrice))
-	    			$(row.find('[name=agency_rate]')).val(agency_calcPrice.toFixed(3));
-	    		if(!isNaN(agency_total))
-	    			$(row.find('[name=agency_amount_cny]')).val(agency_total.toFixed(3));
-
-    		
-    		var total = 0;
-    		$('#trade_cost_table [name=domestic_price]').each(function(){
-    			var a = this.value;
-    			if(a!=''&&!isNaN(a)){
-    				total+=parseFloat(a);
-    			}
-    		});
-    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html(total.toFixed(3));
-    		
-    		
-    		if(tax_refund_rate_customer==0){
-        		$(row.find('[name=adjusted_tax_refund_amount]')).val(0);
-        	}else if(!isNaN(tax_refund_rate_customer)){
-        		var value_added_tax = parseFloat($(row.find('[name=value_added_tax]')).val());
-        		var adjusted_tax_refund_amount = parseFloat(domestic_price*tax_refund_rate_customer/(1+value_added_tax));
-        		
-        		$(row.find('[name=adjusted_tax_refund_amount]')).val(adjusted_tax_refund_amount.toFixed(3));
-        	}
-    		
-    		
-    		var total = 0;
-    		$('#trade_cost_table [name=adjusted_tax_refund_amount]').each(function(){
-    			var a = this.value;
-    			if(a!=''&&!isNaN(a)){
-    				total+=parseFloat(a);
-    			}
-    		});
-    		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(11).html(total.toFixed(3));
     
-    	if(price==''){
-    		$(row.find('[name=adjusted_unit_price]')).val(0);
-    		$(row.find('[name=adjusted_total_price]')).val(0);
-    	}else if(!isNaN(price)){
-    		
-    		var price_difference = itemOrder.count_difference();
-    		
 
-
-            if(tax_refund_rate==''){
-                $(row.find('[name=tax_refund_amount]')).val(0);
-            }else if(!isNaN(tax_refund_rate)){
-                var value_added_tax = parseFloat($(row.find('[name=value_added_tax]')).val());
-                var adjusted_total_price = parseFloat($(row.find('[name=adjusted_total_price]')).val());
-                var tax_refund_amount = parseFloat(adjusted_total_price*tax_refund_rate/(1+value_added_tax));
-                
-                $(row.find('[name=tax_refund_amount]')).val(tax_refund_amount.toFixed(3));                
-            }
-            
-            var total = 0;
-            $('#trade_cost_table [name=tax_refund_amount]').each(function(){
-                var a = this.value;
-                if(a!=''&&!isNaN(a)){
-                    total+=parseFloat(a);
-                }
-            });
-            $($('.dataTables_scrollFoot tr')[0]).find('th').eq(10).html(total.toFixed(3));
-            
-
-	        if(domestic_price==''||agency_rate==''){
-	            $(row.find('[name=agency_amount_cny]')).val('');
-	        }else if(!isNaN(domestic_price)&&!isNaN(agency_rate)){
-	            var total = 0;
-	            $('#trade_cost_table [name=agency_amount_cny]').each(function(){
-	                var a = this.value;
-	                if(a!=''&&!isNaN(a)){
-	                    total+=parseFloat(a);
-	                }
-	            })
-	            $($('.dataTables_scrollFoot tr')[0]).find('th').eq(21).html(total.toFixed(3));
-	        }
-    	}
-    	
-    })
-
-    //总价差异、单价差异计算
-    itemOrder.count_difference =function(){
-    	var total_adjusted_tax_refund_amount = 0;
-		var total_service_fee = 0;
-		var total_cost_service_fee = 0;
-		var total_count = 0;
-		$('#trade_cost_table [name=adjusted_tax_refund_amount]').each(function(){
-			var a = this.value;
-			if(a!=''&&!isNaN(a)){
-				total_adjusted_tax_refund_amount+=parseFloat(a);
-			}
-		});
-		$('#charge_service_table [name=currency_total_amount]').each(function(){
-			var a = this.value;
-			if(a!=''&&!isNaN(a)){
-				total_service_fee+=parseFloat(a);
-			}
-		})
-		
-		$('#cost_service_table [name=currency_total_amount]').each(function(){
-			var a = this.value;
-			if(a!=''&&!isNaN(a)){
-				total_cost_service_fee+=parseFloat(a);
-			}
-		})
-		
-    	$('#trade_cost_table tr').find('[name=number]:eq(0)').each(function(){
-    		var a = this.value;
-			if(a!=''&&!isNaN(a)){
-    			total_count+=parseInt(a);
-    		}
-		});
-    	var total_difference = total_adjusted_tax_refund_amount-total_service_fee+total_cost_service_fee;
-		var price_difference = total_difference/total_count;
-    	$('#total_difference').val(total_difference.toFixed(3));
-	    $('#price_difference').val(price_difference.toFixed(3));
-	    $('#total_difference_span').text(total_difference.toFixed(3));
-	    $('#price_difference_span').text(price_difference.toFixed(3));
-	    
-	    $("#trade_cost_table [name=price]").each(function(){
-			var price = $(this).val();
-			if(isNaN(price)){
-				$(this).parent().parent().find('[name=adjusted_unit_price]').val('0');
-			}else{
-				var adjusted_unit_price = (parseFloat(price_difference)+parseFloat(price))
-				$(this).parent().parent().find('[name=adjusted_unit_price]').val(adjusted_unit_price);
-				var number=$(this).parent().parent().find('[name=number]').val();
-				if(isNaN(number)){
-					$(this).parent().parent().find('[name=number]').val('0');
-				}else{
-					var adjusted_total_price = parseFloat(adjusted_unit_price)*parseFloat(number);
-					$(this).parent().parent().find('[name=adjusted_total_price]').val(adjusted_total_price);
-				}
-			}
-			
-		});
-	    var total = 0;
-		$('#trade_cost_table [name=adjusted_unit_price]').each(function(){
-			var a = this.value;
-			if(a!=''&&!isNaN(a)){
-				total+=parseFloat(a);
-			}
-		});
-		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(12).html(total.toFixed(3));
-		
-	    var total = 0;
-		$('#trade_cost_table [name=adjusted_total_price]').each(function(){
-			var a = this.value;
-			if(a!=''&&!isNaN(a)){
-				total+=parseFloat(a);
-			}
-		});
-		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(13).html(total.toFixed(3));
-	    
-	    return price_difference;
-    }
-    
     
 
     

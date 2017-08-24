@@ -512,8 +512,8 @@ public class CheckOrder extends Controller {
 	   			}
 				
 				for (int i = 0; i < arapList.size(); i++) {
-					Double price = ((Record)list.get(i)).getDouble("price");
-					Long charge_id = ((Record)list.get(i)).getLong("charge_id");
+					String price = ((Record)arapList.get(i)).get("price").toString();
+					Long charge_id = ((Record)arapList.get(i)).getLong("charge_id");
 					
 					Record arap = new Record();
 					arap.set("order_type", "charge");

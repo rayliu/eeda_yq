@@ -20,6 +20,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
+import controllers.tr.joborder.TrJobOrderController;
 import controllers.util.ReaderXLS;
 import controllers.util.ReaderXlSX;
 
@@ -33,6 +34,7 @@ public class ImportOrder extends Controller {
 	// 导入出库单
 	public void index() {
 		String order_type = getPara("order_type");
+		String order_id = getPara("order_id");
 		
 		UploadFile uploadFile = getFile();
 		File file = uploadFile.getFile();
@@ -69,6 +71,15 @@ public class ImportOrder extends Controller {
 						// 内容开始导入
 						if(resultMap.get("result")){
 							resultMap = checkOrder.importTJValue(content, userId, officeId);
+						}
+					}else if("tradeJobOrder".equals(order_type)){
+						// 内容校验
+						resultMap = checkOrder.importTJCheck(content);
+						
+						// 内容开始导入
+						if(resultMap.get("result")){
+							TrJobOrderController tradeJobOrder = new TrJobOrderController();
+							resultMap = tradeJobOrder.importTJValue(content, order_id, officeId);
 						}
 					}
 				} else {

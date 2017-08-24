@@ -4,6 +4,8 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +46,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -1767,6 +1770,115 @@ public class TrJobOrderController extends Controller {
     	recs = Db.find(sql);
     	renderJson(recs);
     }
+    
+    
+    //贸易商品信息导入
+	@Before(Tx.class)
+	public Record importTJValue( List<Map<String, String>> lines, String order_id, long office_id) {
+		Connection conn = null;
+		Record result = new Record();
+		result.set("result",true);
+
+		int rowNumber = 1;
+		
+		try {
+			conn = DbKit.getConfig().getDataSource().getConnection();
+			DbKit.getConfig().setThreadLocalConnection(conn);
+			conn.setAutoCommit(false);// 自动提交变成false
+			
+			for (Map<String, String> line :lines) {
+				String commodity_name = line.get("商品名称").trim();
+				String number = line.get("数量").trim();
+				String legal_unit = line.get("单位").trim();
+				String price = line.get("单价(CNY)").trim();
+				String value_added_tax = line.get("增值税率").trim();
+				String tax_refund_rate = line.get("国税退税率").trim();
+				String tax_refund_rate_customer = line.get("客户退税率").trim();
+				String custom_price = line.get("报关单价").trim();
+				String custom_number = line.get("数量").trim();
+				String custom_currency = line.get("报关币制").trim();
+				String custom_rate = line.get("报关汇率").trim();
+				//String  unload_type = line.get("提柜类型").trim();
+				String agency_rate = line.get("代理费百分比(%)").trim();
+
+
+	   			
+	   			Long commodity_id = null;
+	   			Record commodity = Db.findFirst("select * from trade_item where commodity_name = ? and office_id = ?",commodity_name,office_id);
+	   			if(commodity != null){
+	   				commodity_id = commodity.getLong("id");
+	   			}
+	   			
+	   			Long custom_currency_id = null;
+	   			Record currency_rate = Db.findFirst("select * from currency_rate  where currency_code = ? and  office_id=?",custom_currency,office_id);
+	   			if(currency_rate != null){
+	   				custom_currency_id = currency_rate.getLong("currency_id");
+	   			}
+	   			
+	   			Double domestic_price = Double.parseDouble(price)*Double.parseDouble(number);
+	   			Double custom_amount = Double.parseDouble(custom_price)*Double.parseDouble(number);
+	   			Double custom_amount_cny = custom_amount*Double.parseDouble(custom_rate);
+	   			Double agency_amount_cny = (domestic_price*Double.parseDouble(agency_rate))/100;
+	   			
+	   			Double adjusted_tax_refund_amount = (domestic_price/(1+Double.parseDouble(value_added_tax)))*Double.parseDouble(tax_refund_rate_customer);
+	   			
+
+	   			Record order = new Record();
+	   			order.set("commodity_id", commodity_id);
+	   			order.set("commodity_name", commodity_name);
+	   			order.set("number", number);
+	   			order.set("legal_unit", legal_unit);
+	   			order.set("price", price);
+	   			order.set("value_added_tax", value_added_tax);
+	   			order.set("tax_refund_rate", tax_refund_rate);
+	   			order.set("tax_refund_rate_customer", tax_refund_rate_customer);
+	   			order.set("custom_price", custom_price);
+	   			order.set("custom_currency", custom_currency_id);
+	   			order.set("custom_rate", custom_rate);
+	   			order.set("agency_rate", agency_rate);
+	   			order.set("order_id", order_id);
+	   			order.set("domestic_price", domestic_price);
+	   			order.set("custom_amount", custom_amount);
+	   			order.set("custom_amount_cny", custom_amount_cny);
+	   			order.set("agency_amount_cny", agency_amount_cny);
+	   			order.set("adjusted_tax_refund_amount", adjusted_tax_refund_amount);  			
+	   			
+	   			Db.save("trade_job_order_trade_cost", order);
+				rowNumber++;
+			}
+			conn.commit();
+			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！");
+		} catch (Exception e) {
+			System.out.println("导入操作异常！");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			try {
+				if (null != conn)
+					conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+
+			result.set("result", false);
+			
+			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber)
+						+ "行时出现异常:" + e.getMessage() + "<br/>导入数据已取消！");
+			
+		} finally {
+			try {
+				if (null != conn) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			} finally {
+				DbKit.getConfig().removeThreadLocalConnection();
+			}
+		}
+		
+		return result;
+	}
 
 
 }
