@@ -3,20 +3,11 @@ package controllers.eeda;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
-import models.ParentOfficeModel;
 import models.UserLogin;
-import models.eeda.OfficeConfig;
 
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
@@ -26,14 +17,10 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
-import com.jfinal.weixin.sdk.kit.IpKit;
 
 import controllers.oms.jobOrder.JobOrderController;
-import controllers.oms.jobOrder.JobOrderService;
+//import controllers.oms.jobOrder.JobOrderService;
 import controllers.profile.LoginUserController;
-import controllers.util.MD5Util;
-import controllers.util.ParentOffice;
-import controllers.util.getCurrentPermission;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)

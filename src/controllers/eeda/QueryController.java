@@ -7,15 +7,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import models.UserLogin;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
-
-import cache.EedaServiceCache;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -65,7 +61,7 @@ public class QueryController extends Controller {
             Class c= loader.loadClass(serviceClass);//Class.forName(serviceClass);
             
             logger.debug("load service: "+serviceClass);
-            serviceInstance = EedaServiceCache.getServiceInstance(serviceClass);
+//            serviceInstance = EedaServiceCache.getServiceInstance(serviceClass);
              
             //必须将request 传给service, 否则getPara 会取不到值
             setHttpSevletRequest(c, serviceInstance);

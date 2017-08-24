@@ -15,8 +15,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
-import cache.EedaServiceCache;
-
+//import cache.EedaServiceCache;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
@@ -71,7 +70,7 @@ public class FormController extends Controller {
         Object serviceInstance = null;
         try {
             Class c= Class.forName(serviceClass);
-            serviceInstance = EedaServiceCache.getServiceInstance(serviceClass);
+//            serviceInstance = EedaServiceCache.getServiceInstance(serviceClass);
             
             //必须将request 传给service, 否则getPara 会取不到值
             setHttpSevletRequest(c, serviceInstance);
