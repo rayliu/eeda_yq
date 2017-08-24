@@ -17,7 +17,6 @@
     </path>
 
 	<target name="mysql">
-		<copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
 		<copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-mysql" overwrite="true"/>
 		<copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-mysql" overwrite="true"/>
        

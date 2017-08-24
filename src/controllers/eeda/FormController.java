@@ -3,6 +3,7 @@ package controllers.eeda;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -46,7 +47,7 @@ public class FormController extends Controller {
         //以下为表单的标准 action
         //add 跳转到新增页面; 
         //doAdd 新增动作
-        //edit 跳转到编辑页面; 
+        //update 跳转到编辑页面; 
         //doUpdate 编辑的保存动作
         //doDelete 表单删除的动作
         String action = getPara(1);  
@@ -99,13 +100,12 @@ public class FormController extends Controller {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private void setHttpSevletRequest(Class c, Object o)
             throws NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException {
-        Class<HttpServletRequest>[] paramRequest = new Class[1];
-        paramRequest[0] = HttpServletRequest.class;
+            InvocationTargetException, NoSuchFieldException, SecurityException {
+        Class superClass = c.getSuperclass();
         
-        Method setRequestMethod = c.getMethod("setHttpServletRequest", HttpServletRequest.class);//获取继承的父类中的方法
-        setRequestMethod.setAccessible(true);
-        setRequestMethod.invoke(o, this.getRequest());
+        Field privateStringField =  superClass.getDeclaredField("request");
+        privateStringField.setAccessible(true);
+        privateStringField.set(o, this.getRequest());
     }
 
 	
