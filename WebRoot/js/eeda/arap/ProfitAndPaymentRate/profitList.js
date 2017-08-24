@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	  
+
+      eeda.hideSideBar();//打开报表时自动收起左边菜单
+
       var dataTable = eeda.dt({
           id: 'eeda_table',
           colReorder: true,
@@ -16,7 +18,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           },
           columns: [
       			{ "data": "ABBR", "width": "220px"},
-      			{ "data": "EMPLOYEE_NAME", "width": "120px"},
+      			
 	            { "data": "CHARGE_RMB", "width": "120px", 
 	            	"render": function(data, type, full, meta) {
             	    if(!data){
@@ -27,45 +29,46 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            },
 	            { "data": "COST_RMB", "width": "120px", 
 	            	"render": function(data, type, full, meta) {
-            	    if(!data){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data.toFixed(2),3);
-				  }
+                  	    if(!data){
+                  	    	return '';
+                  	    }
+      					 return eeda.numFormat(data.toFixed(2),3);
+      				  }
 	            },
 	            { "width": "120px",
-					"render": function(data, type, full, meta) {
-	            	    var profit = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
-	            	    if(profit<0){
-	            	    	return '<span style="color:red;width:120px">'+eeda.numFormat(profit,3)+'</span>';
-	            	    }
-						return eeda.numFormat(profit,3);
-					}
-				},
+      					"render": function(data, type, full, meta) {
+      	            	    var profit = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
+      	            	    if(profit<0){
+      	            	    	return '<span style="color:red;width:120px">'+eeda.numFormat(profit,3)+'</span>';
+      	            	    }
+      						return eeda.numFormat(profit,3);
+      					}
+      				},
 	            { "width": "120px",
 	            	"render": function(data, type, full, meta) {
-					    var profit_rate=parseFloat(((full.CHARGE_RMB - full.COST_RMB)/full.COST_RMB)*100).toFixed(2);
-	            		if(!full.COST_RMB){
-	            			return "";
-	            		}
-	            		if(profit_rate<0){
-	            			return '<span style="color:red;">'+profit_rate+'</span>';
-	            		}
-	            		return profit_rate;
-					}
+      					    var profit_rate=parseFloat(((full.CHARGE_RMB - full.COST_RMB)/full.COST_RMB)*100).toFixed(2);
+      	            		if(!full.COST_RMB){
+      	            			return "";
+      	            		}
+      	            		if(profit_rate<0){
+      	            			return '<span style="color:red;">'+profit_rate+'</span>';
+      	            		}
+      	            		return profit_rate;
+      					}
 	            },
+              { "data": "EMPLOYEE_NAME", "width": "120px"},
 	            {"width": "120px",
-					"render": function(data, type, full, meta) {
-	            	    var profit = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
-	            	    var profit = ((profit*full.ROYALTY_RATE)/100).toFixed(2);
-	            	    if(profit<0){
-	            	    	return '<span style="color:red;width:120px">'+eeda.numFormat(profit,3)+'</span>';
-	            	    }else if(profit=="0.00"){
-	            	    	return '';
-	            	    }
-						return eeda.numFormat(profit,3);
-					}
-				}
+					     "render": function(data, type, full, meta) {
+      	            	    var profit = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
+      	            	    var profit = ((profit*full.ROYALTY_RATE)/100).toFixed(2);
+      	            	    if(profit<0){
+      	            	    	return '<span style="color:red;width:120px">'+eeda.numFormat(profit,3)+'</span>';
+      	            	    }else if(profit=="0.00"){
+      	            	    	return '';
+      	            	    }
+      						return eeda.numFormat(profit,3);
+      					}
+				      }
 	          ]
 	      });
       

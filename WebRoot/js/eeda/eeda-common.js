@@ -328,6 +328,16 @@ eeda.refreshUrl = refreshUrl;
     var path = window.location.host+window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')+1);
     refreshUrl( http+ "//" + path +str+"-"+id);
  };
+
+ eeda.hideSideBar=function(){
+          $('#left_side_bar').hide();
+
+        $('#page-wrapper').css('margin', '0');
+        $('#hide_menu_btn').css('left', '0px');
+            $('.breadcrumb').css('margin-left', '0px');
+        $('#hide_menu_icon').removeClass('fa-angle-double-left');
+          $('#hide_menu_icon').addClass('fa-angle-double-right');
+        };
  
  eeda.getUrlByNo= function(id, orderNo) {
 	 	var str = "";
