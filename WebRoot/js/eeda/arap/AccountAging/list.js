@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
   	  
+      eeda.hideSideBar();//打开报表时自动收起左边菜单
+      
   	  var cny_total = 0.0;
   	  var hkd_total = 0.0;
   	  var usd_total = 0.0;
