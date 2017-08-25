@@ -39,12 +39,12 @@
 								</div>
 	                	</div>
 	                	<div>
-	                    		<button id="singleSearchBtn" class="btn btn_grey" type="button" style="float:left;">查询</button>
+	                    		<button id="singleSearchBtn" class="btn btn_grey guide_target1" type="button" style="float:left;">查询</button>
 	                    </div>
                     </div>
 	                <div id="" style="margin-right:15px;"><!--  三列排版  -->
 	                	<h4 class="panel-title pull-right" style="padding-top: 5px;">
-	                    	<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
+	                    	<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed guide_target2">
 	                    		<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
 	                    	</a>
 	                    </h4>
@@ -125,18 +125,19 @@
 		</div>
 	</div>
 		<div class="simple_row_div">
+            <span class="guide_target3">
 					<span class="badge" style='margin-top:12px;'> CNY总额: <span id="cny_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
 					<span class="badge" style='margin-top:12px;'> USD总额: <span id="usd_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
 					<span class="badge" style='margin-top:12px;'> JPY总额: <span id="jpy_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
 					<span class="badge" style='margin-top:12px;'> HKD总额: <span id="hkd_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
 					<button id="totalZero" class="badge"  style='display:none;margin-top:12px;background-color: #005BAC;'>金额清零</button>&nbsp;&nbsp;
-					
+			</span>
 					<% if(shiro.hasPermission("chargeRequest.checkedRequest")){%>
- 		              <button id="checked" class="btn  btn btn_green" style="margin-top:12px;"  disabled>复核</button>
+ 		              <button id="checked" class="btn  btn btn_green guide_target4" style="margin-top:12px;"  disabled>复核</button>
  		            <%}%>					
 					
 					<% if(shiro.hasPermission("chargeRequest.confirmRequest")){%>
-						<button id="confirmed" class="btn btn btn_green" style="margin-top:12px;"  disabled>收款确认</button>
+						<button id="confirmed" class="btn btn btn_green guide_target5" style="margin-top:12px;"  disabled>收款确认</button>
 					<%}%>
                     
 					
@@ -261,6 +262,8 @@
     </div>
 </div>
 <%}%>
+
+<%include("/oms/ChargeRequest/list_guide.html",{}){} %>
 <script> 
 
 	<%
