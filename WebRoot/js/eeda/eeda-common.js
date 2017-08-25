@@ -464,7 +464,7 @@ eeda.refreshUrl = refreshUrl;
    };
    
     //表格中，凡是按enter自动跳到右边下一个input
-    $(document).on('keydown', 'table input:not([name$="_input"])', function(e) {
+    $(document).on('keydown', 'table input:not([name$="_input"]),select', function(e) {
       if (e.keyCode == 13) {//enter
           var inputField = $(this);
 
@@ -477,7 +477,7 @@ eeda.refreshUrl = refreshUrl;
           while(!nextTdInput && index<colCount){
               nextTd = nextTd.next();
               index = nextTd.index();
-              nextTdInput = nextTd.find('input:last');
+              nextTdInput = nextTd.find('input:last ,select:last');
               if(nextTdInput && !nextTdInput.prop('disabled')){
                   nextTdInput.focus();
                   break;
