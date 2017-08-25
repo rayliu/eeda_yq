@@ -597,6 +597,10 @@ $(document).ready(function() {
             $(this).keyup();
         });
         itemOrder.count_difference();
+        
+        $("#trade_cost_table [name=tax_refund_rate_customer]").each(function(){
+            $(this).blur();
+        });
     })
 
            //贸易常用模板
