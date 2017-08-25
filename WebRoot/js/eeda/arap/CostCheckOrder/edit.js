@@ -1,7 +1,10 @@
-define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBootstrap', 'validate_cn', 'sco', 'datetimepicker_CN', 'pageguide'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-    	  
+    	tl.pg.init({
+            pg_caption: '本页教程'
+        });
+        
         var order_no = $('#order_no').val();
         
         var buildCurJson = function(){
