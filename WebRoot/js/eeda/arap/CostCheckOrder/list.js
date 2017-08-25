@@ -1,6 +1,10 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder', 'pageguide'], function ($, metisMenu) {
   $(document).ready(function() {
  
+        tl.pg.init({
+            pg_caption: '本页教程'
+        });
+        
 	  	var cnames = [];
 		var itemIds=[];
 	    var totalAmount = 0.0;
