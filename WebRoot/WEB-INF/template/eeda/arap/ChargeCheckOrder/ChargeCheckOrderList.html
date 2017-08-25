@@ -27,7 +27,7 @@
                             	<div class="col-lg-12">
                                  <form id="orderForm">
                                     <div class="row">
-                                        <div class="col-lg-4">
+                                        <div class="col-lg-4 guide_target1">
                                             <%include("/eeda/component/form/inputSpField.html", 
                                                 {
                                                     id:'sp', 
@@ -142,6 +142,7 @@
 		                                	<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
 		                                	<button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
 		                                	&nbsp&nbsp<input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red">(红色为应付)</span>
+                                      <button id="createBtn" disabled type="button" class="btn btn_green guide_target4" >创建对账单</button>
 		                               </div>
                                 	</form>
                                 </div>
@@ -162,15 +163,15 @@
                                         <input id="exchange_usd_totalAmount" name="exchange_usd_totalAmount"  type="hidden">
                                         <input id="exchange_hkd_totalAmount" name="exchange_hkd_totalAmount"  type="hidden">
                                         <input id="exchange_jpy_totalAmount" name="exchange_jpy_totalAmount"  type="hidden">
-                                		<button id="createBtn" disabled type="button" class="btn btn_green" >创建对账单</button>
+                                		
                                     </form>
-                                    <b >对账总额：</b>
+                                    <b class="guide_target2">对账总额：</b>
 									<span class="badge" style='margin-top:12px;'> CNY总额: <span id="cny_totalAmountSpan">0</span></span>&nbsp;&nbsp;
 									<span class="badge" style='margin-top:12px;'> USD总额: <span id="usd_totalAmountSpan">0</span></span>&nbsp;&nbsp;
 									<span class="badge" style='margin-top:12px;'> HKD总额: <span id="hkd_totalAmountSpan">0</span></span>&nbsp;&nbsp;
 									<span class="badge" style='margin-top:12px;'> JPY总额: <span id="jpy_totalAmountSpan">0</span></span>&nbsp;&nbsp;
                                     <br/>
-                                     <b >结账总额：</b>
+                                     <b class="guide_target3">结算总额：</b>
                                     <span class="badge" style='margin-top:12px;'> CNY总额: <span id="exchange_cny_totalAmountSpan">0</span></span>&nbsp;&nbsp;
                                     <span class="badge" style='margin-top:12px;'> USD总额: <span id="exchange_usd_totalAmountSpan">0</span></span>&nbsp;&nbsp;
                                     <span class="badge" style='margin-top:12px;'> HKD总额: <span id="exchange_hkd_totalAmountSpan">0</span></span>&nbsp;&nbsp;
@@ -331,6 +332,9 @@
         </div>
     </div>
 <%}%>
+
+<%include("/eeda/arap/ChargeCheckOrder/guide.html",{}){} %>
+
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/arap/ChargeCheckOrder/list', 'app/arap/ChargeCheckOrder/checkedList']);
