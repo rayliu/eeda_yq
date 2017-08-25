@@ -10,7 +10,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
-                            <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件   <span style="color:#AAAAAA">
+                            <i id="collapseChargeIcon" class="fa fa-angle-double-down guide_target1"></i> 查询条件   <span style="color:#AAAAAA">
                             * 注：请输入锁单条件，点击查询显示明细 </span>     </a>
                         </h4>
                     </div>
@@ -108,8 +108,8 @@
                 
             </div><!-- /.row 查询条件 结束-->
             <div class="simple_row_div" >
-            	<button id="lockBtn" class="btn btn_green" style="margin-top:12px;margin-left:12px;" type="button" disabled>工作单锁单</button>
-            	<button id="unLockBtn" class="btn btn_green" style="margin-top:12px;" type="button" disabled>工作单解锁</button>
+            	<button id="lockBtn" class="btn btn_green guide_target2" style="margin-top:12px;margin-left:12px;" type="button" disabled>工作单锁单</button>
+            	<button id="unLockBtn" class="btn btn_green guide_target3" style="margin-top:12px;" type="button" disabled>工作单解锁</button>
             </div>
             <div class="row simple_list_div">
                 
@@ -191,6 +191,8 @@
     </div>
 
 <%}%>
+
+<%include("/oms/JobOrder/lock_guide.html",{}){} %>
 
 <script>
       var type = "${type!''}";

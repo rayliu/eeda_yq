@@ -1,5 +1,11 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
+   'dtColReorder', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
+
+    tl.pg.init({
+        pg_caption: '本页教程'
+    });
+
 	  var final_status = '';
   	  if(type!=""){
   		  $('#orderTabs').css('display','none');
@@ -38,7 +44,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                   "render": function ( data, type, full, meta ) {
                 	  var other = '';
                 	  if(full.OTHER_FLAG=='other'){
-                		  other = ' <span class="badge">外</span>';
+                		  other = ' <span class=""><img src="/images/order_from_outside.png" style="height:15px;" title="Outside Order"></span>';
                 	  }
                       return "<a href='/jobOrder/edit?id="+full.ID+"'target='_blank'>"+data+other+"</a>";
                   }
