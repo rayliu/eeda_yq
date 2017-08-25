@@ -1,8 +1,10 @@
-define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table',  'dataTablesBootstrap','sco','pageguide','validate_cn'], function ($, metisMenu) { 
 
 $(document).ready(function() {
     
-    
+    tl.pg.init({
+        pg_caption: '本页教程'
+    });
     //构造主表json
     var buildOrder = function(){
     	var item = {};
