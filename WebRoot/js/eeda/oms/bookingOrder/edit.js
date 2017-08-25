@@ -193,10 +193,18 @@ $(document).ready(function() {
             	$('#saveBtn').attr('disabled', false);
             	$('#confirmCompleted').attr('disabled', false);
                 $("#order_id").val(server_back_order.ID);
-                $("#ocean_id").val(server_back_order.OCEAN.ID);
-                $("#air_id").val(server_back_order.AIR.ID);
-                $("#land_id").val(server_back_order.LAND.ID); 
-                $("#custom_id").val(server_back_order.CUSTOM.ID);
+                if(server_back_order.OCEAN != null){
+                	$("#ocean_id").val(server_back_order.OCEAN.ID);
+                }
+                if(server_back_order.AIR != null){
+                	$("#air_id").val(server_back_order.AIR.ID);
+                }
+                if(server_back_order.LAND != null){
+                	$("#land_id").val(server_back_order.LAND.ID); 
+                }
+                if(server_back_order.CUSTOM != null){
+                	$("#custom_id").val(server_back_order.CUSTOM.ID);
+                }
                 $("#booking_no").val(server_back_order.BOOKING_NO);
                 $("#creator_name").val(server_back_order.CREATOR_NAME);
                 
