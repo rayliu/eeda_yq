@@ -40,21 +40,27 @@
 		                                    <option value="HKINVbill" <% if(order.bill_type!''=='HKINVbill'){%>selected<%}%>>HK INV</option>
 	                                    </select>
 	                            </div>
-	                            <%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
-											label:'业务发生月', 
-											begin_value:order.begin_time!'', 
-											end_value:order.end_time!'', 
-											disabled: 'disabled',
-											required:'required' 
-											}){}%>
+                                <div class="guide_target3">
+                                    <%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
+                                            label:'业务发生月', 
+                                            begin_value:order.begin_time!'', 
+                                            end_value:order.end_time!'', 
+                                            disabled: 'disabled',
+                                            required:'required' 
+                                            }){}%>
+                                </div>
+	                            
                             </div>
                             <div class="col-lg-4">
-	                            <%include("/eeda/component/form/inputSpField.html",
-										{ id:'sp_id', 
-										label:'结算公司',  
-										value:party.id!'',
-										display_value:party.company_name!''
-										}){} %>
+                                <div class="guide_target1">
+                                    <%include("/eeda/component/form/inputSpField.html",
+                                        { id:'sp_id', 
+                                        label:'结算公司',  
+                                        value:party.id!'',
+                                        display_value:party.company_name!''
+                                        }){} %>
+                                </div>
+	                            
 								<div id="projectFee">
 		                            <div class="form-group">
 		                                    <label class="search-label">项目</label>
@@ -74,7 +80,7 @@
 	                            </div>
                             </div>
                             <div class="col-lg-4">
-                            	<div class="form-group">
+                            	<div class="form-group guide_target2">
                                     <label class="search-label">付款方式</label>
                                     <input type="hidden" id="payment_method_show" value="${order.payment_method!''}"/>
                                 	<select id="payment_method" class="form-control search-control payment_method" name="payment_method" >
@@ -195,10 +201,10 @@
 								label:'	确认付款人', value:order.confirm_name!'',disabled:'disabled'
 								}){}%>
 					       </div>
-					       <div class="col-lg-4">
+					       <div class="col-lg-4 guide_target4">
 	                            <%include("/eeda/component/form/dateInputField.html",
 				                        {    id:'receive_time', 
-				                             label:'付款时间',
+				                             label:'付款日期',
 				                             required:'required',
 				                             value:order.receive_time!''
 	                              }){} %>
@@ -236,11 +242,10 @@
 	                    </div>  
 	                  </div>
 	                         
-                        <div class=".tooltip-demo">
-                            <hr/>
-                            <button id="confirmBtn" type="button" class="btn  btn_green" data-toggle="modal" disabled="disabled"  data-target=".bs-example-modal-sm">付款确认</button>
+                        <div class="button-bar">
+                            <button id="confirmBtn" type="button" class="btn  btn_green guide_target5" data-toggle="modal" disabled="disabled"  data-target=".bs-example-modal-sm">付款确认</button>
                             <a class="btn  btn_white" href="/costRequest?back=confirmTrue">返回</a>
-                   			<button id="badBtn" type="button" class="btn btn-danger btn-xs" style="background-color:#d9534f;"  disabled="disabled	" >坏账确认</button>
+                   			<button id="badBtn" type="button" class="btn btn-danger btn-xs guide_target6" style="background-color:#d9534f;"  disabled="disabled	" >坏账确认</button>
                             <button id="returnConfirmBtn" type="button" class="btn  btn-primary" style="display:none" >撤回</button>
                         </div>
            		 </div>
@@ -255,7 +260,7 @@
 									<h4>申请结算汇总金额</h4>
 								</div>
 						</div>
-                        <div class="row" style="margin-top: 15px;">
+                        <div class="row guide_target7" style="margin-top: 15px;">
                             <div class="col-lg-3">
                                 <%include("/eeda/component/form/inputField.html", { id:'modal_cny',
 	                                label:'CNY', value:order.modal_cny!'',disabled:'disabled'
@@ -376,11 +381,11 @@
        				     <div class="button-bar" >
                         		<a style="display:none" id ="style"><i class="fa fa-check"></i></a>
                         		<button id="saveBtn" type="button" disabled="disabled" class="btn  btn_green" >保存</button> 
-                            	<button id="printBtn" type="button" disabled="disabled" class="btn  btn_white" >打印申请单</button>
+                            	<button id="printBtn" type="button" disabled="disabled" class="btn  btn_white guide_target9" >打印</button>
                             	<a class="btn  btn_white" href="/costRequest?back=true">返回</a>
                             	<% if(shiro.hasPermission("chargeRequest.checkedRequest")){%>
-	                            	<button id="checkBtn" type="button" disabled="disabled" class="btn  btn_green" >复核</button>
-	                            	<button id="cancelcheckBtn" class="btn btn-danger btn-xs" style="background-color:#d9534f">复核不通过</button>
+	                            	<button id="checkBtn" type="button" disabled="disabled" class="btn  btn_green guide_target10" >复核</button>
+	                            	<button id="cancelcheckBtn" class="btn btn-danger btn-xs guide_target11" style="background-color:#d9534f">复核不通过</button>
                             	<%}%>
                             	<button id="returnBtn" type="button" disabled="disabled" class="btn  btn-primary"  style="display:none" >退回</button>
                             	<button id="deleteBtn" type="button" class="btn  btn-danger"  style="display:none"  >撤销</button>
@@ -457,6 +462,8 @@
 </div>
 
 <%}%>
+
+<%include("/oms/CostRequest/edit_guide.html",{}){} %>
 <script>
     var itemOrder = {};
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
