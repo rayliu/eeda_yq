@@ -1,7 +1,11 @@
 ﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './chargeEdit_select_item','dataTablesBootstrap', 
-        'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
+        'validate_cn', 'sco', 'pageguide'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
 
+	tl.pg.init({
+        pg_caption: '本页教程'
+    });
+    
     $('#receive_time').val(eeda.getDate());
     $('.hide_add_charge').hide();
 
