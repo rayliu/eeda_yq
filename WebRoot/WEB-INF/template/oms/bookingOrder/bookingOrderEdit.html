@@ -167,6 +167,35 @@
 		            <%}%>
 				</div>
 			</div>
+			
+			<div id = "arrive_custom_status" style="display:none">
+		        <div style="width:8%;float:left;text-align:center;">
+		        	<% if(arrive_job_status!''!=''){%>
+	                      <img src="/images/line_arrow_green.png" style="width: 100%;padding-top: 20%;">
+	                <%} else{ %>
+	                    <img src="/images/line_arrow.png" style="width: 100%;padding-top: 20%;">
+	                <%}%>
+				</div>
+		              		
+		        <div style="width:10%;float:left;text-align:center;">
+	                <% if(arrive_job_status!''!=''){%>
+	    				<h4 style="color:green;">
+	                    	<img src="/images/报关_green.png" style="width: 30px;"> 报关
+	                	</h4>
+	                <%} else{ %>
+	                    <h4 style="color:#d8d8d8;">
+	                        <img src="/images/报关.png" style="width: 30px;"> 报关
+	                    </h4>
+	                <%}%>
+					<% if(arrive_job_custom_order_no!'' != null && job_custom_order_no!'' !=''){%>
+						<label id="custom" style="color:green;>报关单号：</label>${arrive_job_custom_order_no!''}
+					<%}%>
+					<% if(arrive_job_status!'' != null && job_status!'' !=''){%>
+						<label id="custom" style="color:green;">状态：${arrive_job_status!''}</label>
+					<%}%>
+				</div>
+			</div>
+			
 			<div id = "land_delivery_status" style="display:none">
 				<div style="width:8%;float:left;text-align:center;">
 		            <% if(job_atd!''!=''){%>
@@ -897,67 +926,145 @@
      <div class="row simple_search_div" id = "customDetail" style="margin-top:30px;display:none">
         <div class="panel-body" >
         	<input id="custom_id" type="hidden" name="custom_id" value="${custom.id!''}"/>
-        	<strong>报关信息</strong>
+        	<div class="row">
+        		<div class="col-lg-4">
+        			<div id = "custom_type">
+        				<label class="search-label" style="margin-right:25px;"><strong>报关信息</strong></label>
+	        			<label class="checkbox-inline">
+		        			<input type="checkBox" value = "leave_port">离港前报关
+		        		</label>
+		        		<label class="checkbox-inline">
+		        			<input type="checkBox" value = "arrive_port">到港后报关
+		        		</label>   
+        			</div>    			
+        		</div>
+        	</div>
+        	
         	<div style="margin-left:25px;">
-        	<div class="row"><br/>
-				<div class="col-lg-4">
-					<%include("/eeda/component/form/inputSpField.html", 
-								{   id:'custom_broker', 
-									label:'报关公司', 
-									value:custom.custom_broker!'',
-									value_ref_office_id:custom.custom_broker_ref_office_id!'',
-									display_value:custom.custom_broker_name!''
-								}){}%>
+        	  <div id = "custom_leave_port" style="display:none;">
+	        	<div class="row"><br/>
+					<div class="col-lg-4">
+						<%include("/eeda/component/form/inputSpField.html", 
+									{   id:'custom_broker', 
+										label:'报关公司(离港前)', 
+										value:custom.custom_broker!'',
+										value_ref_office_id:custom.custom_broker_ref_office_id!'',
+										display_value:custom.custom_broker_name!''
+									}){}%>
+					</div>
+					<div class="col-lg-4">
+						<%include("/eeda/component/form/inputField.html", 
+									{   id:'custom_bill_code', 
+									 	label:'报关单号', 
+										value:job_custom_order_no!custom.custom_bill_code!''
+									}){}%>
+					</div>
+					<div class="col-lg-4">
+			        	<%include("/eeda/component/form/dateInputField.html",  
+					            	{   id:'date_custom', 
+					                	label:'报关日期', 
+					                	value:date_custom!custom.date_custom!''
+					                }){}%>
+					</div>
 				</div>
-				<div class="col-lg-4">
-					<%include("/eeda/component/form/inputField.html", 
-								{   id:'custom_bill_code', 
-								 	label:'报关单号', 
-									value:job_custom_order_no!custom.custom_bill_code!''
-								}){}%>
-				</div>
-				<div class="col-lg-4">
-		        	<%include("/eeda/component/form/dateInputField.html",  
-				            	{   id:'date_custom', 
-				                	label:'报关日期', 
-				                	value:date_custom!custom.date_custom!''
-				                }){}%>
-				</div>
+				
+				<div class="row">
+					<div class="col-lg-4">
+			            <button id="singleSearchBtn" class="btn btn_grey" type="button">添加报关申请单</button>
+		            </div>
+					<div class="col-lg-4">
+		            	<%include("/eeda/component/form/selectField.html",  
+			                        {   id:'custom_state', 
+			                            label:'报关状态', 
+			                            value:job_status!custom.custom_state!,
+					                    value_list:[
+							                       {code:'', value:''},
+	                                               {code:'改单', value:'改单'},
+	                                               {code:'复查', value:'复查'},
+	                                               {code:'过磅', value:'过磅'},
+	                                               {code:'查验', value:'查验'},
+	                                               {code:'异常', value:'异常'},
+	                                               {code:'异常待处理', value:'异常待处理'},
+	                                               {code:'询价', value:'询价'},
+	                                               {code:'商检', value:'商检'},
+	                                               {code:'抽样', value:'抽样'},
+	                                               {code:'补税', value:'补税'},
+	                                               {code:'放行', value:'放行'}
+							                   ]
+		        		}){}%>
+		            </div>
+		            <div class="col-lg-4">
+						<%include("/eeda/component/form/inputField.html", 
+									{   id:'custom_abnormal', 
+									 	label:'异常', 
+										value:custom.custom_abnormal!''
+									}){}%>
+		            </div>
+				 </div>
+				 <br><br><br>
 			</div>
 			
-			<div class="row">
-				<div class="col-lg-4">
-		            <button id="singleSearchBtn" class="btn btn_grey" type="button">添加报关申请单</button>
-	            </div>
-				<div class="col-lg-4">
-	            	<%include("/eeda/component/form/selectField.html",  
-		                        {   id:'custom_state', 
-		                            label:'报关状态', 
-		                            value:job_status!custom.custom_state!,
-				                    value_list:[
-						                       {code:'', value:''},
-                                               {code:'改单', value:'改单'},
-                                               {code:'复查', value:'复查'},
-                                               {code:'过磅', value:'过磅'},
-                                               {code:'查验', value:'查验'},
-                                               {code:'异常', value:'异常'},
-                                               {code:'异常待处理', value:'异常待处理'},
-                                               {code:'询价', value:'询价'},
-                                               {code:'商检', value:'商检'},
-                                               {code:'抽样', value:'抽样'},
-                                               {code:'补税', value:'补税'},
-                                               {code:'放行', value:'放行'}
-						                   ]
-	        		}){}%>
-	            </div>
-	            <div class="col-lg-4">
-					<%include("/eeda/component/form/inputField.html", 
-								{   id:'custom_abnormal', 
-								 	label:'异常', 
-									value:custom.custom_abnormal!''
-								}){}%>
-	            </div>
-			</div>
+			<div id = "custom_arrive_port" style="display:none;">
+				 <div class="row"><br/>
+					<div class="col-lg-4">
+						<%include("/eeda/component/form/inputSpField.html", 
+									{   id:'arrive_custom_broker', 
+										label:'报关公司(到港后)', 
+										value:custom.arrive_custom_broker!'',
+										value_ref_office_id:arrive_custom.custom_broker_ref_office_id!'',
+										display_value:custom.arrive_custom_broker_name!''
+									}){}%>
+					</div>
+					<div class="col-lg-4">
+						<%include("/eeda/component/form/inputField.html", 
+									{   id:'arrive_custom_bill_code', 
+									 	label:'报关单号', 
+										value:arrive_job_custom_order_no!custom.arrive_custom_bill_code!''
+									}){}%>
+					</div>
+					<div class="col-lg-4">
+			        	<%include("/eeda/component/form/dateInputField.html",  
+					            	{   id:'arrive_date_custom', 
+					                	label:'报关日期', 
+					                	value:arrive_date_custom!custom.arrive_date_custom!''
+					                }){}%>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-lg-4">
+			            <button id="singleSearchBtn" class="btn btn_grey" type="button">添加报关申请单</button>
+		            </div>
+					<div class="col-lg-4">
+		            	<%include("/eeda/component/form/selectField.html",  
+			                        {   id:'arrive_custom_state', 
+			                            label:'报关状态', 
+			                            value:arrive_job_status!custom.arrive_custom_state!,
+					                    value_list:[
+							                       {code:'', value:''},
+	                                               {code:'改单', value:'改单'},
+	                                               {code:'复查', value:'复查'},
+	                                               {code:'过磅', value:'过磅'},
+	                                               {code:'查验', value:'查验'},
+	                                               {code:'异常', value:'异常'},
+	                                               {code:'异常待处理', value:'异常待处理'},
+	                                               {code:'询价', value:'询价'},
+	                                               {code:'商检', value:'商检'},
+	                                               {code:'抽样', value:'抽样'},
+	                                               {code:'补税', value:'补税'},
+	                                               {code:'放行', value:'放行'}
+							                   ]
+		        		}){}%>
+		            </div>
+		            <div class="col-lg-4">
+						<%include("/eeda/component/form/inputField.html", 
+									{   id:'arrive_custom_abnormal', 
+									 	label:'异常', 
+										value:custom.arrive_custom_abnormal!''
+									}){}%>
+		            </div>
+				 </div>
+			   </div>
 			</div>
         </div>
      </div><br>
@@ -1082,6 +1189,7 @@
     //委托类型
     var transport_type_hidden = "${order.transport_type!''}";
     var land_type_hidden = "${land.land_type!''}";
+    var custom_type_hidden = "${custom.custom_type!''}";
     var itemOrder = {};
 </script>
 <script>

@@ -63,7 +63,7 @@ $(document).ready(function() {
                 break;
             case 'custom':
                 $('#customDetail').show();
-                $('#custom_status').show();
+//                $('#custom_status').show();
                 break;            
         }
     };

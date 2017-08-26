@@ -152,9 +152,11 @@ public class BookingOrderController extends Controller {
 					+ " WHERE order_id = ?";
 			re = Db.findFirst(sql,id);
 		}else if("custom".equals(type)){
-			sql ="SELECT bcd.*,p.abbr custom_broker_name,p.ref_office_id custom_broker_ref_office_id "
+			sql ="SELECT bcd.*,p.abbr custom_broker_name,p.ref_office_id custom_broker_ref_office_id"
+					+ " ,p1.ref_office_id arrive_custom_broker_ref_office_id,p1.abbr arrive_custom_broker_name "
 					+ " from booking_custom_detail bcd"
 					+ " LEFT JOIN party p on p.id = bcd.custom_broker"
+					+ " LEFT JOIN party p1 on p1.id = bcd.arrive_custom_broker"
 					+ " WHERE order_id =?";
 			re = Db.findFirst(sql,id);
 		}
