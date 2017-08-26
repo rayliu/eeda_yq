@@ -1,7 +1,11 @@
 
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN','jq_blockui','dtColReorder'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN','jq_blockui','dtColReorder', 'pageguide'], function ($, metisMenu) {
 $(document).ready(function() {
 	
+    tl.pg.init({
+        pg_caption: '本页教程'
+    });
+    
 	var flash = function(){    
 	 	 $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
 	  };

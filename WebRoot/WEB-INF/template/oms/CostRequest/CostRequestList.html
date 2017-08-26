@@ -39,11 +39,11 @@
 								</div>
 	                	</div>
 	                	<div>
-	                    		<button id="singleSearchBtn" class="btn btn_grey" type="button" style="float:left;">查询</button>
+	                    		<button id="singleSearchBtn" class="btn btn_grey guide_target1" type="button" style="float:left;">查询</button>
 	                    </div>
                     </div>
 	                <div id="" style="margin-right:15px;"><!--  三列排版  -->
-	                	<h4 class="panel-title pull-right" style="padding-top: 5px;">
+	                	<h4 class="panel-title pull-right guide_target2" style="padding-top: 5px;">
 	                    	<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
 	                    		<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
 	                    	</a>
@@ -126,18 +126,21 @@
 	</div>
 				  
 				  <div class="simple_row_div">
-					<span class="badge" style='margin-top:12px;margin-right:5px;'> CNY总额: <span id="cny_totalAmountSpan">0</span></span>
-					<span class="badge" style='margin-top:12px;margin-right:5px;'> USD总额: <span id="usd_totalAmountSpan">0</span></span>
-					<span class="badge" style='margin-top:12px;margin-right:5px;'> JPY总额: <span id="jpy_totalAmountSpan">0</span></span>
-					<span class="badge" style='margin-top:12px;margin-right:10px;'> HKD总额: <span id="hkd_totalAmountSpan">0</span></span>
-					<button id="totalZero" class="badge" style='display:none;margin-top:12px;margin-right:10px;background-color: #005BAC;'>金额清零</button>
+                    <span class="guide_target3">
+                        <span class="badge" style='margin-top:12px;margin-right:5px;'> CNY总额: <span id="cny_totalAmountSpan">0</span></span>
+                        <span class="badge" style='margin-top:12px;margin-right:5px;'> USD总额: <span id="usd_totalAmountSpan">0</span></span>
+                        <span class="badge" style='margin-top:12px;margin-right:5px;'> JPY总额: <span id="jpy_totalAmountSpan">0</span></span>
+                        <span class="badge" style='margin-top:12px;margin-right:10px;'> HKD总额: <span id="hkd_totalAmountSpan">0</span></span>
+                        <button id="totalZero" class="badge" style='display:none;margin-top:12px;margin-right:10px;background-color: #005BAC;'>金额清零</button>
+                    </span>
+					
 					
 					<% if(shiro.hasPermission("costRequest.checkedRequest")){%>
-                    	<button id="checked" class="btn  btn_green" style="margin-top:12px;"  disabled>复核</button>
+                    	<button id="checked" class="btn  btn_green guide_target4" style="margin-top:12px;"  disabled>复核</button>
                    	<%}%>					
 					
 					<% if(shiro.hasPermission("costRequest.confirmRequest")){%>
-						<button id="confirmed" class="btn btn_green" style="margin-top:12px;"  disabled>付款确认</button>					
+						<button id="confirmed" class="btn btn_green guide_target5" style="margin-top:12px;"  disabled>付款确认</button>					
 					<%}%>
 				  </div>
 					<div class="row simple_list_div">
@@ -247,8 +250,8 @@
                         <div class="col-lg-8">
                             <label>备注</label>
                            <textarea id='pay_remark' class="form-control" rows="1" name="pay_remark">${order.pay_remark!''}</textarea>
-                        </div>                    
-                 </div>  
+                        </div>
+                 </div>
                    <div class="row" style="margin-top:15px;">
 	                     <div class="col-lg-6">
 	                      	 <button id="confirmBtn"  type="button" class="btn btn_green save" data-dismiss="modal">确定</button>
@@ -263,6 +266,8 @@
     </div>
 </div>
 <%}%>
+
+<%include("/oms/CostRequest/list_guide.html",{}){} %>
 <script>
 
 	<%
