@@ -1,103 +1,161 @@
-<%layout("/eeda/layout.html"){%>
-        
-        <div id="page-wrapper">
-            <div class="row">
-            	<div class="col-lg-12">
-            	<div class="btn-header"></div>
-                    <div class="panel-body">
-                        <%
-			                var title = SYS_CONFIG.system_title!'易达物流';
-			                var show = 'none';
-			                if(title=='易达物流'){
-			                    show = 'block';
-			                }
-			            %>  
-			            
-			            <div class="row head_style"><div class="font_style">To-do List 待办事项</div></div>
-			            <div class="row simple_title_div">
-			            	<div class="col-xs-12">
-			            	注：<span style="line-height:200%"">下面图标：左边数字为相应待办的数量，右边的文字是待办事项的提醒条件</span>
-			            		<div class="row">
-			            		<%
-				                  var alertItems = [
-				                    { id: 'planOrderTodoCount', name: 'Booking待处理',title:'距离Booking出货时间少于5天,且没转化为工作单的Booking', url:'/planOrder?type=todo',row:'1'},
-				                    { id: 'SOTodoCount', name: 'SO待更新',title:'类型是出口柜货，且没有so号的工作单', url:'/jobOrder?type=sowait'},
-				                    { id: 'truckOrderTodoCount', name: '派车单待处理',title:'距离陆运预约到达时间少于3天，且没有点击已完成派车按钮', url:'/jobOrder?type=truckorderwait',row:'1'},
-				                    { id: 'SITodoCount', name: 'SI待更新',title:'出货时间等于今天，且还没有生成SI PDF的工作单', url:'/jobOrder?type=siwait'},
-				                    { id: 'MBLTodoCount', name: '未确认MBL',title:'生成了SI PDF，但没有点击确认MBL的工作单', url:'/jobOrder?type=mblwait',row:'1'},
-				                    { id: 'waitCustomTodoCountPlan', name: '计划单待报关',title:'Booking货品明细，报关类型为自理报关，且没有转化为工作单的Booking', url:'/planOrder?type=customwaitPlan'},
-				                    { id: 'waitCustomTodoCount', name: '工作单待报关',title:'服务类型勾上了报关，且报关信息的Tab中，报关行的信息为空的工作单', url:'/jobOrder?type=customwait',row:'1'},
-				                    { id: 'waitBuyInsuranceTodoCount', name: '待买保险',title:'服务类型勾上了保险，且保险信息的Tab中的投保单号为空', url:'/jobOrder?type=insurancewait'},
-				                    { id: 'waitOverseaCustomTodoCount', name: '待海外系统申报',title:'勾选待海外申报,且距离ETD的时间少于48小时提醒,点击已AFR/AMS结束提醒', url:'/jobOrder?type=overseacustomwait',row:'1'},
-				                    { id: 'TlxOrderTodoCount', name: '待电放提单',title:'ETD时间等于当天提醒，点击已电放结束提醒。', url:'/jobOrder?type=tlxOrderwait'}
-				                  ];
-				                for(info in alertItems![]){%>
-						                    <div class="interval">
-						                    	
-						                        <div class="panel <% if(info.row=='1'){%>panel-blue<%}else{%>panel-gray<%}%> li">
-						                            <div class="panel-heading">
-						                                <div class="row">
-						                                	<div class="col-xs-8">
-						                                		<a href='${info.url}' style="<% if(info.row=='1'){%>color:white<%}%>">
-						                                			<div class="huge" id="${info.id}" style="font-size:55px;"></div>
-						                                        	<div style="font-size:12px;">${info.name}</div>
-						                                		</a>
-						                                    </div>
-						                                    <div style="font-size:10px;line-height:115%">${info.title}</div>
-						                                    
-						                                </div>
-						                            </div>
-						                        </div>
-						                    </div>
-						         <%}%>
-						         </div>
-						   </div>            
-						</div>
-			            
-                    <div class="row">
-                        <div class="col-lg-12">
-                        	<div >
-                                <%include("/eeda/index/msgPanel.html",{}){} %>
-                            </div>
-                        </div>
-	                     <!--div class="col-lg-6">   
-		                     <div class="row head_style"><div class="font_style">工作周报</div></div>
-					         <div class="row simple_title_div">
-		                        <div class="col-xs-12">
-		                            <div class="panel panel-default">
-		                                <div class="panel-body">
-		                                    <div id="line_chart" style="height:400px"></div>
-		                                </div>
-		                            </div>
-		                        </div>
-		                   	</div>
-                   		</div-->
-                   	</div>
-			            <div class="row">
-			                <div class="col-lg-12">
-			                    <div class="panel panel-default" style="display: none;">
-			                        <div class="panel-heading">
-			                            <i class="fa fa-bar-chart-o fa-fw"></i> 单据状态
-			                        </div>
-			                        <!-- /.panel-heading -->
-			                        <div class="panel-body">
-			                            <div id="main" style="height:400px"></div>
-			                        </div>
-			                        <!-- /.panel-body -->
-			                    </div>
-			                    <!-- /.panel -->
-			                    
-			                </div>
-			            </div>
-			           </div>
-			     </div>
-			</div>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta property="qc:admins" content="1621525725152022123671306654" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  
+    <title>${_res.pageTitle}</title>
+	
+	<link rel="shortcut icon" href="/yh/img/eeda_logo.ico">
+	
+
+    <!-- Core CSS - Include with every page -->
+    <link href="/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/sb-admin.css" rel="stylesheet">
+    <link href="/css/simple.css" rel="stylesheet">
+</head>
+
+<body>
+    <section class="login_back_top">
+        <div class="login_logo">
         </div>
-        <!-- /#page-wrapper test-->
+        <div class="login_slogan">
+        </div>
+        <div class="login_langs">
+            <button class="simple_btn active">中文</button>
+            <button class="simple_btn">日语</button>
+            <button class="simple_btn">English</button>
+        </div>
+    </section>
+    <section class="login_back_middle">
+        <div class="row">
+            <div>
+                <div class="index_circle">
+                    <a href="http://booking.esimplev.com/login">
+                        <img src="/images/BookingSystem.png">
+                    </a>
+                </div>
+                <div class="index_circle">
+                    <a href="http://trade.esimplev.com/login">
+                        <img src="/images/TradeSystem.png">
+                    </a>
+                </div>
+                <div class="index_circle">
+                    <a href="http://forwarder.esimplev.com/login">
+                        <img src="/images/ForwarderSystem.png">
+                    </a>
+                </div class="index_circle">
+                <div class="index_circle">
+                    <a href="http://custom.esimplev.com/login">
+                        <img src="/images/CustomSystem.png">
+                    </a>
+                </div>
+                <div class="index_circle">
+                    <a href="http://trans.esimplev.com/login">
+                        <img src="/images/TransSystem.png">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="login_back_half_down">
+        <div class="login_half_down_icons">
+            <div class="icon">
+                <img src="/images/simple/login_icon1.png">
+                <p>
+                    Shared Resource
+                </p>
+                <p>
+                    资源共享
+                </p>
+            </div>
+            <div class="icon">
+                <img src="/images/simple/login_icon2.png">
+                <p>
+                    Full Controllable
+                </p>
+                <p>
+                    全程可控
+                </p>
+            </div>
+            <div class="icon">
+                <img src="/images/simple/login_icon3.png">
+                <p>
+                    Professional & Efficient
+                </p>
+                <p>
+                    专业高效
+                </p>
+            </div>
+        </div>
+        
+    </section>
+    <section class="login_back_footer">
+        Copyright © 2017-2027 ESIMPLEV
+    </section>
 
-<%}%>
+    <!-- Core Scripts - Include with every page 
+    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101116610" data-redirecturi="http://56.eeda123.com" charset="utf-8"></script>
+    -->
+    <script src="/js/lib/jquery/jquery-1.10.2.js" type="text/javascript"></script>
+    <script src="/js/lib/validate/jquery.validate.min.js"></script>
+    <script src="/js/lib/validate/jvalidate.messages_cn.js"></script>
+    <script src="/js/lib/jquery/jquery.cookie.js"></script> 
+
+
 <script>
-    requirejs(['app/index/main'], function () {
+    $(document).ready(function() {
+    
+        //QC.Login({
+          // btnId:"qqLoginBtn"    //插入按钮的节点id
+        //});
+
+        $('#loginForm').validate({
+            rules: {
+            username: {//form 中company_name为必填, 注意input 中定义的id, name都要为company_name
+                required: true
+              },
+              password:{//form 中 name为必填
+                required: true
+              }
+            },
+            messages:{
+              	username:"请输入用户名",
+              	password:"请输入用户密码"
+              },
+            highlight: function(element) {
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function(element) {
+                element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
+            }
+        }); 
+        
+      //按照状态读取是否显示昵称
+      var COOKIE_NAME = 'username'; 
+      if( $.cookie(COOKIE_NAME) ){ 
+    	  	$("#username").val( $.cookie(COOKIE_NAME) );
+    	  	$("#remUserSelect").attr("checked",true) 
+    	  	$.cookie(COOKIE_NAME, $("#username").val() , { path: '/', expires: 365 });
+    	}
+      $("#remUserSelect").click(function(){ 
+    	  if(this.checked){ 
+    		  $.cookie(COOKIE_NAME, $("#username").val() , { path: '/', expires: 365 }); 
+    	  }else{ 
+    		  $.cookie(COOKIE_NAME, null, { path: '/' }); //删除cookie 
+    		  } 
+      });
+      
+      
     });
 </script>
+<script>
+	$('button[type=submit]').focus();
+</script>
+</body>
+
+</html>

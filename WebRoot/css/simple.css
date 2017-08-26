@@ -25,9 +25,29 @@ body ::-webkit-scrollbar-corner {
     background: #000;
 }
 
+.login_back_middle{
+    padding-top: 50px;
+    padding-left: 15%;
+}
+
 .login_back_half_up{
     height: 40%;
     background-color: #fff;
+}
+.login_back_top{
+    height: 20%;
+    background-color: #fff;
+}
+
+.login_back_middle{
+    background-color: #DAE000;
+}
+
+.index_circle{
+    float: left;
+    height: 150px;
+    width: 150px;
+    margin-right: 5%;
 }
 
 .login_logo{

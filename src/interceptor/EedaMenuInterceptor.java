@@ -50,7 +50,8 @@ public class EedaMenuInterceptor implements Interceptor {
                 }
 
                 logger.debug("action key: "+key);
-                if("/query".equals(ai.getActionKey()) || "/form".equals(ai.getActionKey())){
+                if("/query".equals(ai.getActionKey()) || "/form".equals(ai.getActionKey())
+                        || "/home".equals(ai.getActionKey())){
                     
                 }else if(!"/module".equals(ai.getActionKey())){
                 	if(!"/".equals(ai.getActionKey()) && !userUrlList.contains(key) 

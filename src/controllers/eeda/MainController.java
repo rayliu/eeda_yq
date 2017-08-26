@@ -85,8 +85,12 @@ public class MainController extends Controller {
     	
         return true;
     }
-    @Before(EedaMenuInterceptor.class)
+    
     public void index() {
+        render("/eeda/index.html");
+    }
+    @Before(EedaMenuInterceptor.class)
+    public void home() {
         setSysTitle();
         if (isAuthenticated()) {
         	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=?", currentUser.getPrincipal());
@@ -158,7 +162,7 @@ public class MainController extends Controller {
     public void login() {
 
     	if (isAuthenticated()) {
-    		redirect("/");
+    		redirect("/home");
     	}
     	
     	//获取子系统的名字,显示在登陆页面
@@ -217,12 +221,12 @@ public class MainController extends Controller {
             	
             	setLoginLog(user);
 
-            	redirect("/");
+            	redirect("/home");
             	//render("/eeda/index.html");
             }else{
             	setAttr("userId",currentUser.getPrincipal());
             	setLoginLog(user);
-            	redirect("/");
+            	redirect("/home");
             	//render("/eeda/index.html");
             };
           
@@ -240,8 +244,8 @@ public class MainController extends Controller {
         StringBuffer url = getRequest().getRequestURL();
         String prefix = url.toString().substring(7).split("\\.")[0];
         logger.debug("prefix:"+prefix);
-        if("customer".equals(prefix)){
-            systemName = "检单-客户管理系统";
+        if("booking".equals(prefix)){
+            systemName = "检单-Booking管理系统";
         }else if("forwarder".equals(prefix)){
              systemName = "检单-货代管理系统";
         }else if("custom".equals(prefix)){
@@ -507,6 +511,8 @@ public class MainController extends Controller {
         renderJson(map);
     }
     
-    
+    public void layui() {
+        render("/larrycms/admin/index.html");
+    }
   
 }
