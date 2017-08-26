@@ -496,4 +496,10 @@ li{
 	  
 }
 
+#join_table.table>tbody>tr>td{
+    padding: 0px;
+}
+#join_table.table>tbody>tr>td input{
+    width: 100%;
+}
 /* ray added */
