@@ -1,5 +1,6 @@
 <%layout("/eeda/layout.html"){%>
 <% var orderPermission = shiro.hasPermission("planOrder.order");
+   var primaryInformation = shiro.hasPermission("bookingOrder.primaryInformation");
    var boolOrder = orderPermission;
    %>
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
@@ -224,7 +225,15 @@
 			</div>
 		</div>
 	</div><br>
-    
+	<div class="row simple_search_div">
+	    <div class="panel-heading">
+		      <h4 class="panel-title">
+		          <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
+		          <i id="collapseChargeIcon" class="fa fa-angle-double-down guide_target1"></i> 查看单据信息     </a>
+		      </h4>
+	    </div>
+	 </div>
+<div id="collapseChargeInfo" class="panel-collapse collapse <% if(!primaryInformation){%>in<%}%>" aria-expanded="false" style="height: auto;">
     <div class="panel-body row">
     	<input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
     	<input id="booking_submit_flag" type="hidden" name="booking_submit_flag" value="${order.booking_submit_flag!''}"/>
@@ -320,7 +329,7 @@
         		</div>
         		
         	</div>
-        	
+        	<%if(!primaryInformation){%>
         	<div class="row">
         		<div class="col-lg-4">
 	            	<%include("/eeda/component/form/selectField.html",  
@@ -1170,6 +1179,13 @@
                         <a class="btn btn_green" href="/bookingOrder/create">创建新booking</a>
               </div><br>
      </div>
+     <%}%>
+     <%if(primaryInformation){%>
+     			</div>
+     		</div>
+    	</div>
+     <%}%>
+   </div>
   </form>
 </div>
 
