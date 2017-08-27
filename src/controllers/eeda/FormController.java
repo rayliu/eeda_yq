@@ -8,13 +8,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import models.UserLogin;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
+
+import cache.EedaServiceCache;
 
 //import cache.EedaServiceCache;
 import com.jfinal.aop.Before;
@@ -66,35 +66,56 @@ public class FormController extends Controller {
             return;
         }
         
-        
-        Map jsonMap = null;
+        String err = "";
+        Object returnObject = null;
         Object serviceInstance = null;
         try {
             Class c= Class.forName(serviceClass);
-//            serviceInstance = EedaServiceCache.getServiceInstance(serviceClass);
+            serviceInstance = EedaServiceCache.getServiceInstance(serviceClass);
             
             //必须将request 传给service, 否则getPara 会取不到值
             setHttpSevletRequest(c, serviceInstance);
             
             Method method = c.getDeclaredMethod(action);//获取本类中的方法
-            method.invoke(serviceInstance);//调用o对象的方法
+            returnObject =  method.invoke(serviceInstance);//调用o对象的方法
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        String url = "form/"+module_name+"-"+action;
-        Record recTemplate = Db.findFirst("select p.* from permission p, eeda_modules m where "
-                + "p.module_id = m.id and m.office_id=? and p.url=?", office_id, url);
-        if(recTemplate ==null){
-            redirect("/");
-            return;
+            err = ex.getMessage();
         }
         
-        String templatePath = recTemplate.getStr("template_path");
-        if(StrKit.isBlank(templatePath)){
-            redirect("/");
-            return;
+        if(action.indexOf("do") == 0){
+            if(err.length()==0){
+                renderJson((Record)returnObject);
+                return;
+            }else{
+                renderText(err);
+                return;
+            }
         }
-        render(templatePath);
+        if("query".equals(action)){
+            if(err.length()==0){
+                renderJson((Map)returnObject);
+                return;
+            }else{
+                renderText(err);
+                return;
+            }
+        }
+            String url = "form/"+module_name+"-"+action;
+            Record recTemplate = Db.findFirst("select p.* from permission p, eeda_modules m where "
+                    + "p.module_id = m.id and m.office_id=? and p.url=?", office_id, url);
+            if(recTemplate ==null){
+                redirect("/");
+                return;
+            }
+            
+            String templatePath = recTemplate.getStr("template_path");
+            if(StrKit.isBlank(templatePath)){
+                redirect("/");
+                return;
+            }
+            render(templatePath);
+        
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
