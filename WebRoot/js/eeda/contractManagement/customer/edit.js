@@ -1,8 +1,11 @@
-define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 
+define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'pageguide',
 	'./oceanEdit_charge','./airEdit_charge','./landEdit_charge', './edit_charge_trade', './edit_charge_tour'], function ($, metisMenu) { 
 
     $(document).ready(function() {
 
+    	tl.pg.init({
+	        pg_caption: '本页教程'
+	    });
 	  //主表构造json
 	  var buildOrder = function(){
 		  var item = {};
