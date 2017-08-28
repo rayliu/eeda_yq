@@ -45,7 +45,7 @@ public class YqDashBoardController extends Controller {
                 + " order by create_stamp desc"
                 + " LIMIT 0,8 ";
         setAttr("msgBoardInfo",Db.find(sql));
-	    render("/eeda/index.html");
+	    render("/eeda/home.html");
 	}
 	
     @Before(Tx.class)
