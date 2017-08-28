@@ -29,13 +29,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	
     	
     	//委托类型checkbox回显,land_type是用js拿值
+        if(land_type_hidden.indexOf("land_take")>-1){
+        	showServiceTab("land_take");
+        }
+        if(land_type_hidden.indexOf("land_delivery")>-1){
+        	showServiceTab("land_delivery");
+        }
+        
         var checkArray = land_type_hidden.split(",");
         for(var i=0;i<checkArray.length;i++){
     	    $('#land_type input[type="checkbox"]').each(function(){
     	        var checkValue=$(this).val();
     	        if(checkArray[i]==checkValue){
     	        	this.checked = true;
-                    showServiceTab(checkValue);
     	        }
     	    })
         }

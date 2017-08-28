@@ -28,15 +28,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             }
         };
     	
-    	
-    	//委托类型checkbox回显,land_type是用js拿值
+        
+        //委托类型checkbox回显,custom_type是用js拿值
+        if(custom_type_hidden.indexOf("leave_port")>-1){
+        	showServiceTab("leave_port");
+        }
+        if(custom_type_hidden.indexOf("arrive_port")>-1){
+        	showServiceTab("arrive_port");
+        }
+        
         var checkArray = custom_type_hidden.split(",");
         for(var i=0;i<checkArray.length;i++){
     	    $('#custom_type input[type="checkbox"]').each(function(){
     	        var checkValue=$(this).val();
     	        if(checkArray[i]==checkValue){
     	        	this.checked = true;
-                    showServiceTab(checkValue);
     	        }
     	    })
         }

@@ -94,7 +94,7 @@
 	                    </h4>
 	                <%}%>
 					<% if(job_atd!'' != null && job_atd!'' !=''){%>
-		            	<span id="boarding" style="color:green;">${job_atd!''}开船</span>
+		            	<span id="boarding" style="color:green;">${pol_name!''}<br>${job_atd!''}开船</span>
 		            <%}%>
 				</div>
 		        <div style="width:8%;float:left;text-align:center;">
@@ -115,8 +115,8 @@
 	                        <img src="/images/check.png" style="width: 30px;"> 到港
 	                    </h4>
 	                <% }%>
-					<% if(job_ata!'' != null && job_ata!'' !=''){%>
-		              	<span id="arrival" style="color:green;">${job_ata!''}到港</span>
+					<% if(pod_name!''!= null && pod_name!'' !=''){%>
+		              	<span id="arrival" style="color:green;">${pod_name!''}<br>${job_ata!''}到港</span>
 		            <%}%>
 				</div>
 			</div>

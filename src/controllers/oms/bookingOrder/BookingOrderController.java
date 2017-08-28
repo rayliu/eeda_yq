@@ -729,16 +729,27 @@ public class BookingOrderController extends Controller {
 	    	}
 	    	
 	    	//上船时间
-	    	Record jobShip = Db.findFirst("select * from job_order_shipment where order_id = ?",job_order_id);
+	    	String sql_Ship = "select jos.*,l.name pol_name,l1.name pod_name  from job_order_shipment jos"
+	    			+ " LEFT JOIN location l on l.id = jos.pol"
+	    			+ " LEFT JOIN location l1 on l1.id = jos.pod"
+	    			+ " where order_id = ?";
+	    	Record jobShip = Db.findFirst(sql_Ship,job_order_id);
 	    	if(jobShip != null){
 	    		if(jobShip.get("atd")!=null){
 	    			String atd = jobShip.get("atd").toString();
 	    			setAttr("job_atd", atd);
 	    		}
-	    		
 	    		if(jobShip.get("ata")!=null){
 	    			String ata = jobShip.get("ata").toString();
 	    			setAttr("job_ata", ata);
+	    		}
+	    		if(jobShip.get("pol_name")!=null){
+	    			String pol_name = jobShip.get("pol_name").toString();
+	    			setAttr("pol_name", pol_name);
+	    		}
+	    		if(jobShip.get("pod_name")!=null){
+	    			String pod_name = jobShip.get("pod_name").toString();	    			
+	    			setAttr("pod_name", pod_name);
 	    		}
 	    	}
 	    	
