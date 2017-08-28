@@ -157,7 +157,11 @@ public class ChargeCheckOrderController extends Controller {
         String pageIndex = getPara("draw");
         String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
         String sColumn =  getPara("order[0][column]");
-        String sName =  getPara("columns["+sColumn+"][data]")==null?"order_export_date":getPara("columns["+sColumn+"][data]") ;
+        String sName =  getPara("columns["+sColumn+"][data]")==null?"order_export_date,order_no":getPara("columns["+sColumn+"][data]") ;
+        if("0".equals(sName)){
+        	sName = "order_export_date,order_no";
+        	sort ="desc";
+        }
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
