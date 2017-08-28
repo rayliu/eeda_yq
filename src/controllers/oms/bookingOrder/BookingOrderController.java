@@ -790,6 +790,8 @@ public class BookingOrderController extends Controller {
     	setAttr("custom", getDetail(id,"custom"));
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUserName(this));
+    	//应付费用明细回显
+    	setAttr("costList",getCostItems(id));
 
     	  
         render("/oms/bookingOrder/bookingOrderEdit.html");
@@ -1036,6 +1038,16 @@ public class BookingOrderController extends Controller {
         renderJson(map); 
     }
     
+    public List<Record> getCostItems(String orderId){
+    	String  itemSql = "";
+    	itemSql = "SELECT f.name charge_name,f.name_eng charge_name_eng,jor.price price,jor.amount amount,u.name unit_name,jor.total_amount,c.name currency_name FROM job_order_arap jor "
+    			+ " LEFT JOIN party pr ON pr.id = jor.sp_id "
+    			+ " LEFT JOIN fin_item f ON f.id = jor.charge_id "
+    			+ " LEFT JOIN unit u ON u.id = jor.unit_id "
+    			+ " LEFT JOIN currency c ON c.id = jor.currency_id where jor.audit_flag='Y' and jor.order_type='charge'";
+    	List<Record> itemList = Db.find(itemSql);
+    	return itemList;
+    }
     
     public List<Record> getDocItems(String orderId,String type){
     	String  itemSql = "";
@@ -1379,4 +1391,5 @@ public class BookingOrderController extends Controller {
      }
 			
     }
+    
 }
