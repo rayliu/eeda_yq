@@ -496,6 +496,17 @@
                </div>
            </div>
            <div class="row">
+           	   <div class="col-lg-4">
+                 <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'closing_date', 
+                           label:'CL',
+                           value:shipment.closing_date!planOrderItem.cls!''
+                       }){}%>
+                 <%}else{%>
+              		   <label class="search-label">CL</label> <span class='search-control'>${shipment.closing_date!planOrderItem.cls!''}</span>
+                 <%}%>
+               </div>
                <div class="col-lg-4">
                  <% if(boolOcean){ %>
                    <%include("/eeda/component/form/dateInputField.html", 
@@ -528,17 +539,6 @@
                    <%}else{%>
               		   <label class="search-label">SO NO</label> <span class='search-control'>${shipment.SONO!''}</span>
                    <%}%>
-               </div>
-               <div class="col-lg-4">
-                 <% if(boolOcean){ %>
-                   <%include("/eeda/component/form/dateInputField.html", 
-                       {   id:'closing_date', 
-                           label:'截关日期',
-                           value:shipment.closing_date!planOrderItem.cls!''
-                       }){}%>
-                 <%}else{%>
-              		   <label class="search-label">截关日期</label> <span class='search-control'>${shipment.closing_date!planOrderItem.cls!''}</span>
-                 <%}%>
                </div>
                <div class="col-lg-4">
                   <input type="hidden" id="hidden_wait_overseaCustom" value="${shipment.wait_overseaCustom!''}">
