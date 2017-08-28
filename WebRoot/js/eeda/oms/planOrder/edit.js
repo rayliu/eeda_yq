@@ -1,14 +1,15 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
         'validate_cn', 'sco', 'datetimepicker_CN', 'jq_blockui', 'dtColReorder'], function ($, metisMenu) { 
-    // $.blockUI({ 
-    //     message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/></h4>' 
-    // });
+    
     
 
     $(document).ready(function() {
 
-
-      //按钮状态
+        tl.pg.init({
+            pg_caption: '本页教程'
+        });
+        
+        //按钮状态
     	var id = $('#order_id').val();
     	var status = $('#status').val();
     	var submit_flag = $('#submit_flag').val();
