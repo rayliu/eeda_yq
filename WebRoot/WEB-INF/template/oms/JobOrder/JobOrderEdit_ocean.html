@@ -358,6 +358,17 @@
            
         </div>
         <div class="row">
+        	<div class="col-lg-4">
+              <% if(boolOcean){ %>
+                <%include("/eeda/component/form/inputField.html", 
+                    {   id:'SONO', 
+                        label:'SO NO', 
+                        value:shipment.SONO!''
+                    }){}%>
+                <%}else{%>
+           		   <label class="search-label">SO NO</label> <span class='search-control'>${shipment.SONO!''}</span>
+                <%}%>
+            </div>
             <div class="col-lg-4">
               <% if(boolOcean){ %>   
                 <%include("/eeda/component/form/inputField.html", 
@@ -370,15 +381,15 @@
               <%}%>
             </div>
             <div class="col-lg-4">
-            <% if(boolOcean){ %>
-                <%include("/eeda/component/form/inputField.html", 
-                    {   id:'mbl_no', 
-                        label:'MBL号码', 
-                        value:shipment.mbl_no!''
-                    }){}%>
-              <%}else{%>
-              		<label class="search-label">MBL号码 </label> <span class='search-control'>${shipment.mbl_no!''}</span>
-              <%}%>
+	            <% if(boolOcean){ %>
+	                <%include("/eeda/component/form/inputField.html", 
+	                    {   id:'mbl_no', 
+	                        label:'MBL号码', 
+	                        value:shipment.mbl_no!''
+	                    }){}%>
+	              <%}else{%>
+	              		<label class="search-label">MBL号码 </label> <span class='search-control'>${shipment.mbl_no!''}</span>
+	              <%}%>
             </div>
             <div class="col-lg-4">
                 <div class="form-group" id="release_radio_div">
@@ -529,17 +540,7 @@
               		   <label class="search-label">ETA</label> <span class='search-control'>${shipment.eta!planOrderItem.eta!''}</span>
                    <%}%>
                </div>
-               <div class="col-lg-4">
-                 <% if(boolOcean){ %>
-                   <%include("/eeda/component/form/inputField.html", 
-                       {   id:'SONO', 
-                           label:'SO NO', 
-                           value:shipment.SONO!''
-                       }){}%>
-                   <%}else{%>
-              		   <label class="search-label">SO NO</label> <span class='search-control'>${shipment.SONO!''}</span>
-                   <%}%>
-               </div>
+               
                <div class="col-lg-4">
                   <input type="hidden" id="hidden_wait_overseaCustom" value="${shipment.wait_overseaCustom!''}">
                   <label class="checkbox-inline">
