@@ -612,6 +612,7 @@ $(document).ready(function() {
 		
 			var debit_note = $('input[name=debit_note]:checked').val();
 	    	var invoiceNo = $('#invoiceNo').val();
+	    	var order_type = $('#type').val();
 	      	var itemIds=[];
 	      	$('#charge_table input[type="checkbox"]:checked').each(function(){
       			var itemId = $(this).parent().parent().attr('id');
@@ -621,7 +622,7 @@ $(document).ready(function() {
 	      	var itemIdsStr = itemIds.toString();
 	    	 $.post('/jobOrder/saveDebitNote', {itemIds:itemIdsStr,invoiceNo:invoiceNo}, function(data){
 	    		 if(data.result==true){
-			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIdsStr,order_no:order_no}, function(data){
+			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIdsStr,order_no:order_no,order_type:order_type}, function(data){
 			    		   $('#printDebitNoteBtn').attr('disabled', false);
 			                window.open(data);
 			    	}).fail(function() { 
