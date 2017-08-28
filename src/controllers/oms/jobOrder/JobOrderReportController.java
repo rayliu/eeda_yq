@@ -320,7 +320,7 @@ public class JobOrderReportController extends Controller {
 		String outFileName;
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		if("debitNote".equals(debit_note)){
-			if("A".equals(order_no.substring(5,6))){
+			if(order_no.contains("A")){
 				fileName = "/report/jobOrder/AIR_debitNote.jasper";
 				outFileName = "/download/AIR_debitNote中文";
 			}else{
@@ -328,7 +328,7 @@ public class JobOrderReportController extends Controller {
 				outFileName = "/download/debitNote中文";			
 			}
 		}else if ("debit_note_eng".equals(debit_note)){
-			if("A".equals(order_no.substring(4,5))){
+			if(order_no.contains("A")){
 				fileName = "/report/jobOrder/AIR_debitNote_eng.jasper";
 				outFileName = "/download/AIR_debitNote_eng英文";
 			}else{
@@ -336,7 +336,7 @@ public class JobOrderReportController extends Controller {
 				outFileName = "/download/debitNote英文";			
 			}
 		}else if ("invoice".equals(debit_note)){
-			if("A".equals(order_no.substring(0,3))){
+			if(order_no.contains("A")){
 				fileName = "/report/jobOrder/AIR_INVOICE.jasper";
 				outFileName = "/download/AIR_Invoice中文";
 			}else{
@@ -344,7 +344,7 @@ public class JobOrderReportController extends Controller {
 				outFileName = "/download/Invoice中文";				
 			}
 		}else if ("invoice_eng".equals(debit_note)){
-			if("A".equals(order_no.substring(4,5))){
+			if(order_no.contains("A")){
 				fileName = "/report/jobOrder/AIR_INVOICE_eng.jasper";
 				outFileName = "/download/AIR_Invoice_eng英文";
 			}else{
