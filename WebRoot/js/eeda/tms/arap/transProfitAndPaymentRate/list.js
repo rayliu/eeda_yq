@@ -176,18 +176,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	       	  $('#JPY_uncost_tatol').text(eeda.numFormat(uncost_jpy,3)).css('color','red');
 	       	  $('#HKD_uncost_tatol').text(eeda.numFormat(uncost_hkd,3)).css('color','red');
 	       	  $('#total_uncost').text(eeda.numFormat(total_uncost,3)).css('color','red');
-	       	 var total=parseFloat(data.TOTAL);
-	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
-	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_cny]').html("CNY:"+eeda.numFormat(cost_cny,3));
-	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_usd]').html("USD:"+eeda.numFormat(cost_usd,3));
-	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_jpy]').html("JPY:"+eeda.numFormat(cost_jpy,3));
-	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_hkd]').html("HKD:"+eeda.numFormat(cost_hkd,3));
-	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_rmb]').html("应付折合(CNY):"+eeda.numFormat(total_cost,3));
-	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_cny]').html("CNY:"+eeda.numFormat(uncost_cny,3)).css('color','red');
-	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_usd]').html("USD:"+eeda.numFormat(uncost_usd,3)).css('color','red');
-	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_jpy]').html("JPY:"+eeda.numFormat(uncost_jpy,3)).css('color','red');
-	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_hkd]').html("HKD:"+eeda.numFormat(uncost_hkd,3)).css('color','red');
-	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_rmb]').html("未付折合(CNY):"+eeda.numFormat(total_uncost,3)).css('color','red');
+//	       	 var total=parseFloat(data.TOTAL);
+//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
+//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_cny]').html("CNY:"+eeda.numFormat(cost_cny,3));
+//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_usd]').html("USD:"+eeda.numFormat(cost_usd,3));
+//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_jpy]').html("JPY:"+eeda.numFormat(cost_jpy,3));
+//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_hkd]').html("HKD:"+eeda.numFormat(cost_hkd,3));
+//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_rmb]').html("应付折合(CNY):"+eeda.numFormat(total_cost,3));
+//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_cny]').html("CNY:"+eeda.numFormat(uncost_cny,3)).css('color','red');
+//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_usd]').html("USD:"+eeda.numFormat(uncost_usd,3)).css('color','red');
+//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_jpy]').html("JPY:"+eeda.numFormat(uncost_jpy,3)).css('color','red');
+//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_hkd]').html("HKD:"+eeda.numFormat(uncost_hkd,3)).css('color','red');
+//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_rmb]').html("未付折合(CNY):"+eeda.numFormat(total_uncost,3)).css('color','red');
 	       	  
 	       	  var total_profit=parseFloat(total_cost-total_uncost).toFixed(2);
 	       	  if(total_profit<0){
@@ -250,18 +250,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  $('#JPY_cost_tatol').text(cost_jpy);
         	  $('#HKD_cost_tatol').text(cost_hkd);
         	  $('#total_cost').text(total_cost);
-        	  var total=parseFloat(data.TOTAL);
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_cny]').html("应收CNY"+eeda.numFormat(charge_cny,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_usd]').html("应收USD"+eeda.numFormat(charge_usd,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_jpy]').html("应收JPY"+eeda.numFormat(charge_jpy,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_hkd]').html("应收HKD"+eeda.numFormat(charge_hkd,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_cny]').html("应付CNY"+eeda.numFormat(total_charge,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_usd]').html("应付USD"+eeda.numFormat(cost_cny,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_jpy]').html("应付JPY"+eeda.numFormat(cost_usd,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_hkd]').html("应付HKD"+eeda.numFormat(cost_jpy,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_rmb]').html("折合应收(RMB)"+eeda.numFormat(cost_hkd,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_rmb]').html("折合应付(RMB)"+eeda.numFormat(total_cost,3));
+//        	  var total=parseFloat(data.TOTAL);
+//        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
+//        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_cny]').html("应收CNY"+eeda.numFormat(charge_cny,3));
+//        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_usd]').html("应收USD"+eeda.numFormat(charge_usd,3));
+//        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_jpy]').html("应收JPY"+eeda.numFormat(charge_jpy,3));
+//        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_hkd]').html("应收HKD"+eeda.numFormat(charge_hkd,3));
+//        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_cny]').html("应付CNY"+eeda.numFormat(total_charge,3));
+//        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_usd]').html("应付USD"+eeda.numFormat(cost_cny,3));
+//        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_jpy]').html("应付JPY"+eeda.numFormat(cost_usd,3));
+//        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_hkd]').html("应付HKD"+eeda.numFormat(cost_jpy,3));
+//        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_rmb]').html("折合应收(RMB)"+eeda.numFormat(cost_hkd,3));
+//        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_rmb]').html("折合应付(RMB)"+eeda.numFormat(total_cost,3));
         	  
         	  var total_profit=parseFloat(total_charge-total_cost).toFixed(2);
         	  if(total_profit<0){
