@@ -453,9 +453,9 @@ $(document).ready(function() {
                     else
                     	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                    	return '<input type="text" name="price" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
+                    	return '<input type="number" name="price" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
                      }else{
-	                    return '<input type="text" name="price" style="width:120px" value="'+str+'" class="form-control notsave" />';
+	                    return '<input type="number" name="price" style="width:120px" value="'+str+'" class="form-control notsave" />';
 	                 }
                   }
             },
@@ -464,9 +464,10 @@ $(document).ready(function() {
                 	if(!data)
                         data='';
                 	if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control notsave" disabled/>';
+                        return '<input type="number" name="amount" min="0" style="width:80px" value="'+data+'" class="form-control notsave" disabled/>';
                      }else{
-	                    return '<input type="text" name="amount" style="width:80px" value="'+data+'" class="form-control notsave"/>';
+                    	 
+	                    return '<input type="number" name="amount" min="0" style="width:80px" value="'+data+'" class="form-control notsave"/>';
 	                }
                 }
             },
