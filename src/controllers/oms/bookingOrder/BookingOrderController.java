@@ -1044,7 +1044,10 @@ public class BookingOrderController extends Controller {
     			+ " LEFT JOIN party pr ON pr.id = jor.sp_id "
     			+ " LEFT JOIN fin_item f ON f.id = jor.charge_id "
     			+ " LEFT JOIN unit u ON u.id = jor.unit_id "
-    			+ " LEFT JOIN currency c ON c.id = jor.currency_id where jor.audit_flag='Y' and jor.order_type='charge'";
+    			+ " LEFT JOIN currency c ON c.id = jor.currency_id "
+    			+ " LEFT JOIN job_order jo ON jo.id = jor.order_id "
+    			+ " LEFT JOIN booking_order bo ON bo.id = jo.from_order_id "
+    			+ " where jor.audit_flag='Y' and jor.order_type='charge' and jo.from_order_id = "+orderId;
     	List<Record> itemList = Db.find(itemSql);
     	return itemList;
     }
@@ -1145,10 +1148,19 @@ public class BookingOrderController extends Controller {
     	String order_unit = booking.getStr("order_unit");
     	String gargo_name = booking.getStr("gargo_name");
     	Date order_export_date = booking.get("order_export_date");
-    	String pieces = booking.get("pieces").toString();
     	String type =booking.getStr("type");
-    	String gross_weight = booking.get("gross_weight").toString();
-    	String volume = booking.get("volume").toString();
+    	String pieces = null;
+    	if(booking.get("pieces")!=null){
+    		pieces = booking.get("pieces").toString();
+    	}
+    	String gross_weight = null;
+    	if(booking.get("gross_weight")!=null){
+    		gross_weight = booking.get("gross_weight").toString();
+    	}
+    	String volume = null;
+    	if(booking.get("volume")!=null){
+    		volume = booking.get("volume").toString();
+    	}
     	
     	//booking海运信息
     	String ocean_party_id = null;
@@ -1261,6 +1273,7 @@ public class BookingOrderController extends Controller {
     			return;
     		}else if("forwarderCompany".equals(system_type)){
     			JobOrder order  = JobOrder.dao.findFirst("select * from job_order where from_order_id = ? and from_order_type = 'booking' ",booking_id);
+    			String order_no = "";
     			if(order==null){
     	       		order  = new JobOrder();
 
@@ -1269,7 +1282,7 @@ public class BookingOrderController extends Controller {
 	                Date date= booking.get("order_export_date");
 	                newDateStr=sdf.format(date);
 
-	           		String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, entrust_officeNo==null?customer_office_id:entrust_officeNo);
+	           		order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, entrust_officeNo==null?customer_office_id:entrust_officeNo);
 	       			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
 	       			sb.insert(5, JobOrderController.generateJobPrefix(booking.getStr("type")));//在指定的位置1，插入指定的字符串
 	       			order_no = sb.toString();
@@ -1372,7 +1385,7 @@ public class BookingOrderController extends Controller {
 	                booking.set("status", "已提交");
 	                booking.update();
     			}
-    			renderJson("{\"result\":true}");	        	
+    			renderJson("order_no",order_no);	        	
     	       	
     		}else if("landCompany".equals(system_type)){
     			TransJobOrder order  = TransJobOrder.dao.findFirst("select * from trans_job_order where from_order_id = ? and from_order_type = 'booking' ",booking_id);

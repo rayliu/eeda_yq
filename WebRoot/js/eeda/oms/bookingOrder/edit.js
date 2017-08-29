@@ -238,9 +238,9 @@ $(document).ready(function() {
 	$('#submitBtn').click(function(){
 			var order_id = $('#order_id').val();
 			$.post('/bookingOrder/submitBooking',{order_id:order_id},function(data){
-				if(data.result){
+				if(data.order_no){
 				    $.scojs_message('提交成功', $.scojs_message.TYPE_OK);
-				    //异步刷新明细表
+				    $("#relation_no").val(data.order_no);
 	                $('#submitBtn').attr('disabled',true);
 	                $('#saveBtn').attr('disabled',true);
 			    }else if(data){
@@ -261,5 +261,7 @@ $(document).ready(function() {
 		$('#submitBtn').attr('disabled',true);
         $('#saveBtn').attr('disabled',true);
 	}
+	
+	
   });
 });
