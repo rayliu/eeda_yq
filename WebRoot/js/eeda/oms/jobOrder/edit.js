@@ -35,9 +35,13 @@ $(document).ready(function() {
                     $('#saveBtn').css('display',"none");
                     // $('#add_charge').attr('disabled', true);
                     // $('#add_charge_cost').attr('disabled', true);
-                    $('input').attr('disabled',true);
+                    $('input').not("#charge_table input:checkbox").attr('disabled',true);
                     $('select').attr('disabled',true);
-                    $('button').attr('disabled',true);
+                    $('textarea').attr('disabled',true);
+                    $('#AllCheckOfChargeTable').attr('disabled',false);
+                    $("#land_table input:checkbox").attr('disabled',false);
+                    $("#doc_table input:checkbox").attr('disabled',false);
+                    $('#allCheckOfDoc').attr('disabled',false);
                 }
             }
      })
