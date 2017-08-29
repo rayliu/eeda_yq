@@ -941,7 +941,7 @@ NON-NEGOTIABLE]]></text>
 				<reportElement x="412" y="2" width="1" height="21" uuid="a83b3ec2-017c-4ee4-b614-cad0addecc36"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="17" y="285" width="131" height="16" uuid="4efec50a-c420-4e9b-868e-897a90b2d39b"/>
+				<reportElement x="17" y="285" width="137" height="16" uuid="4efec50a-c420-4e9b-868e-897a90b2d39b"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>

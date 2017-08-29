@@ -101,12 +101,12 @@ $(document).ready(function() {
 	    		}
 	    		calcPrice = price;
 	    	} else if(this_input=='domestic_price'){
-	    		if(!isNaN(price) && !isNaN(domestic_price)){
-	    			calcNumber = parseFloat(domestic_price/price);
-	    			calcPrice = price;
-	    		}else if(isNaN(price) && !isNaN(number) && !isNaN(domestic_price) ){
+	    		 if(!isNaN(number) && !isNaN(domestic_price) ){
 	    			calcPrice = parseFloat(domestic_price/number);
 	    			calcNumber = number;
+	    		}else if(!isNaN(price) && !isNaN(domestic_price)){
+	    			calcNumber = parseFloat(domestic_price/price);
+	    			calcPrice = price;
 	    		}
 	    		total = domestic_price;
 	    	}
@@ -309,7 +309,7 @@ $(document).ready(function() {
     })
     
     var trade_cost_table_fucntion =function(){
-    	$('#trade_cost_table [name=price]').each(function(){
+    	$('#trade_cost_table [name=domestic_price]').each(function(){
         	cost_table(this);
         });
     }  
