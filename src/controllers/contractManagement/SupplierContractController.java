@@ -346,7 +346,7 @@ public class SupplierContractController extends Controller {
 
     	String sql = "";
     		sql = " SELECT cci.*, fi.name fee_name, "
-    		        + " CONCAT(u.name,u.name_eng) uom_name,c.name currency_name,p.company_name air_company_name"
+    		        + " u.name uom_name,c.name currency_name,p.company_name air_company_name"
 					+" from supplier_contract_item cci"
 					+ " left join supplier_contract_location ccl on ccl.id = cci.supplier_loc_id"
 					+" left join party p on p.id = ccl.air_company"
