@@ -41,23 +41,58 @@
     	<div id="displayDiv" style="display: none;">
     		<div class="btn-header">
 		    	<div id="addProductDiv" style="display: block;">
-		    		<h3>权限</h3>
+		    		<h3>模块定义 </h3>
+
+		    		<div>
+		    			<input type="radio" name="form_type" value="form" checked>表单
+			    		<input type="radio" name="form_type" value="report">报表
+		    		</div>
+			    		
+
+		    		
 				</div>
 			</div>
 			<div>
 				  <!-- Nav tabs -->
 				  <ul class="nav nav-tabs" role="tablist">
-				  	 <li role="presentation" class="active" >
+				    <li role="presentation" class="active" >
+				 	 	<a href="#info" aria-controls="permission" role="tab" data-toggle="tab">基本信息</a>
+				 	 </li>
+				 	 <li role="presentation" >
+				 	 	<a href="#fields" aria-controls="permission" role="tab" data-toggle="tab">字段</a>
+				 	 </li>
+				 	 <li role="presentation" >
+				 	 	<a href="#template" aria-controls="permission" role="tab" data-toggle="tab">表单模板</a>
+				 	 </li>
+				 	 <li role="presentation">
+				 	 	<a href="#buttons" aria-controls="permission" role="tab" data-toggle="tab">工具栏按钮</a>
+				 	 </li>
+				 	 <li role="presentation">
+				 	 	<a href="#formular" aria-controls="permission" role="tab" data-toggle="tab">回写公式</a>
+				 	 </li>
+				  	 <li role="presentation">
 				 	 	<a href="#permission" aria-controls="permission" role="tab" data-toggle="tab">权限</a>
 				 	 </li>
 				 	 <li role="presentation">
 				 	 	<a href="#role_permission" aria-controls="role_permission" role="tab" data-toggle="tab">岗位-权限</a>
 				 	 </li>
+				 	 <li role="presentation">
+				 	 	<a href="#print_template" aria-controls="role_permission" role="tab" data-toggle="tab">打印模板</a>
+				 	 </li>
 				  </ul>
 
 				  <!-- Tab panes -->
 				  <div class="tab-content">
-				  	<div role="tabpanel" class="tab-pane active" id="permission">
+				  	<div class="tab-pane fade in active" id="info">
+                        <%include("/profile/module/edit_tab_info.html", {}){} %>
+                    </div>
+                    <div class="tab-pane" id="fields">
+                        <%include("/profile/module/edit_tab_fields.html", {}){} %>
+                    </div>
+                    <div class="tab-pane" id="template">
+                        <%include("/profile/module/edit_tab_template.html", {}){} %>
+                    </div>
+				  	<div role="tabpanel" class="tab-pane " id="permission">
 				    	<div class="form-group">
 				    		<div class="col-lg-12">
 							    <section class=''>
@@ -114,10 +149,15 @@
 				    </div>
 				  </div>
 
-				  <div class="form-group button-bar" >
-				    	<button id="saveBtn" type="button" class="btn btn-success">保存</button>
-				    	<!--button id="stopBtn" type="button" class="btn btn-default">停用</button-->
-				  </div>
+					<div class="row" >
+						<div class="col-lg-12">
+							<div class="form-group button-bar" >
+						    	<button id="saveBtn" type="button" class="btn btn-success">保存</button>
+						    	<!--button id="stopBtn" type="button" class="btn btn-default">停用</button-->
+						  	</div>
+						 </div>
+					</div>
+				  
 					<div class="row">
 		                <div class="col-lg-8">
 		                    <div class="panel panel-yellow">
@@ -159,7 +199,6 @@
     var Module={};
 </script>
 
-<link href="/yh/css/productTree.css" rel="stylesheet" />
 <style type="text/css">
 	.ztree li span.button.add {
 		margin-left:2px; 
@@ -171,29 +210,12 @@
 </style>
 
 <link rel="stylesheet" href="/js/lib/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
-<!--script type="text/javascript" src="/js/lib/zTree_v3/js/jquery.ztree.core-3.5.js"></script>
-<script type="text/javascript" src="/js/lib/zTree_v3/js/jquery.ztree.excheck-3.5.js"></script>
-<script type="text/javascript" src="/js/lib/zTree_v3/js/jquery.ztree.exedit-3.5.js"></script>
-
-<script src="/js/lib/datatables-1.10.9/js/jquery.dataTables.js"></script>
-<script src="/js/lib/datatables-1.10.9/js/dataTables.bootstrap.js"></script>
-
-<script src="/js/lib/sco/js/sco.message.js"></script>
-
-<script src="/js/lib/aui-artTemplate-3/template.js"></script>
-
-<script src="/js/eeda/eeda-common.js"></script>
-
-<script src="/js/eeda/module/list_tree.js"></script>
-<script src="/js/eeda/module/permission.js"></script>
-<script src="/js/eeda/module/auth.js"></script>
-<script src="/yh/js/profile/module/fields_add_btn_type.js"></script>
-<script src="/yh/js/profile/module/action.js"></script>
-<script src="/yh/js/profile/module/action_btn_visible.js"></script-->
 
 <script>
+	window.UEDITOR_HOME_URL = "/js/lib/ueditor/";
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/profile/module/list_tree', 
+        	'app/profile/module/template', 
         	'app/profile/module/permission',
         	'app/profile/module/auth']);
     });

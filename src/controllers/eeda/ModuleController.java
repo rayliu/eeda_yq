@@ -508,7 +508,8 @@ public class ModuleController extends Controller {
                 module_id);
         String sys_only = module.getStr("sys_only");
 
-        List<Record> structure_list = null;// getStructureRecs(module_id);
+        List<Record> structure_list = null;//getStructureRecs(module_id);
+        Record formRec = getForm(module_id);
         // List<Record> action_list = getActionList(module_id);
         // List<Record> event_list = getEventList(module_id);
         List<Record> permission_list = getPermissionList(module_id);
@@ -517,6 +518,7 @@ public class ModuleController extends Controller {
 
         Record rec = new Record();
         rec.set("module_id", module_id);
+        rec.set("form", formRec);
         rec.set("module_version", module.get("version"));
         rec.set("sys_only", sys_only);
         rec.set("module_name", module.get("module_name"));
@@ -526,6 +528,11 @@ public class ModuleController extends Controller {
         rec.set("permission_list", permission_list);
         rec.set("auth_list", auth_list);
         // rec.set("search_obj", search_obj);
+        return rec;
+    }
+    
+    private Record getForm(String module_id) {
+        Record rec = Db.findFirst("select * from eeda_form_define where module_id=?", module_id);
         return rec;
     }
 

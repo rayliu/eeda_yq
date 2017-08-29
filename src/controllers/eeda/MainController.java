@@ -80,6 +80,7 @@ public class MainController extends Controller {
     	
         return true;
     }
+    @SuppressWarnings("unchecked")
     @Before(EedaMenuInterceptor.class)
     public void index() {
     	setSysTitle();
@@ -95,18 +96,9 @@ public class MainController extends Controller {
             setAttr("user_login_id", currentUser.getPrincipal());
             setAttr("login_time",user.get("last_login"));
             setAttr("lastIndex",user.get("last_index") == null ? "pastOneDay" : user.get("last_index"));
-            //公告
+            
             UserLogin u = LoginUserController.getLoginUser(this);
             long office_id=u.getLong("office_id");
-            String sql = "select m.id, m.create_stamp, u.c_name,"
-            		+ " (case when length(m.title)>50 then CONCAT(substr(m.title,1,70),'....') else m.title end) title,"
-            		+ " (case when length(m.content)>50 then CONCAT(substr(m.content,1,75),'....') else m.content end) content"
-            		+ " from msg_board m "
-            		+ " left join user_login u on u.id = m.creator "
-            		+ " WHERE m.office_id="+office_id
-            		+ " order by create_stamp desc"
-            		+ " LIMIT 0,8 ";
-    		setAttr("msgBoardInfo",Db.find(sql));
     		
 
             //更新当前用户最后一次登陆的时间
@@ -136,7 +128,7 @@ public class MainController extends Controller {
                         List<Record> orderList = (List<Record>)moduleList.get(0).get("orders");
                         Record firstModule = (Record)orderList.get(0);
                         
-                        redirect("/"+firstModule.getStr("url"));
+                        redirect("/form/"+firstModule.get("module_id").toString()+"-list");
                     };
             	}else{
             		render(rec.getStr("index_page_path"));//显示不同URL对应的不同的login页面
@@ -261,6 +253,7 @@ public class MainController extends Controller {
         	of.set("system_title", "易达物流");
         	of.set("logo", "/eeda/img/eeda_logo.ico");
         }
+        
         UserOffice uo = UserOffice.dao.findFirst("select * from user_office where user_name ='"+currentUser.getPrincipal()+"' and is_main=1");
         if(uo != null){
             Office office = Office.dao.findById(uo.get("office_id"));

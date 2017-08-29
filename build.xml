@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Eeda-yq" basedir="." default="mysql">
+<project name="Eeda-lego" basedir="." default="mysql">
 	<property environment="env" />
 	<tstamp>
 	    <format property="touch.time" pattern="yyMMdd.hhmm" />
@@ -24,36 +24,26 @@
     </target>
 	
 	<target name="copy_prod_config" >
-		<copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-yq-prod" overwrite="true"/>
-		<copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-yq-prod" overwrite="true"/>
+		<copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-lego-prod" overwrite="true"/>
+		<copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-lego-prod" overwrite="true"/>
     </target>
 	 
 	<target name="uat" depends="clean, compile">
 		<copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
-        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-uat" overwrite="true"/>
-        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-uat" overwrite="true"/>
-    </target>
-    
-	<target name="fk" depends="clean, compile, generate_js_version">
-		<copy tofile="${project.classpath}/job.properties" file="WebRoot/WEB-INF/config/job.properties" overwrite="true"/>
-        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-fk" overwrite="true"/>
-        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-fk" overwrite="true"/>
+        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-lego-uat" overwrite="true"/>
+        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-lego-uat" overwrite="true"/>
     </target>
 
 	<target name="prod" depends="clean, compile, generate_js_version">
-        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-prod" overwrite="true"/>
-        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-prod" overwrite="true"/>
+        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-lego-prod" overwrite="true"/>
+        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-lego-prod" overwrite="true"/>
     </target>
 	
-    <target name="copy_eeda_fk_config" >
-            <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-fk" overwrite="true"/>
-            <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-fk" overwrite="true"/> 
+    <target name="copy_uat_config" >
+            <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-lego-uat" overwrite="true"/>
+            <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-lego-uat" overwrite="true"/> 
         </target>
 
-	<target name="copy_fk_uat_config" >
-        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-fk-uat" overwrite="true"/>
-        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-fk-uat" overwrite="true"/> 
-    </target>
     
 	<target name="generate_js_version" >
 		<copy tofile="WebRoot/WEB-INF/template/eeda/component/form/commonJs.html"
@@ -83,21 +73,6 @@
     	    <fileset dir="src"
     	             includes="**/*.properties" />
     	</copy>	
-    </target>
-	
-	<target name="copyToTms" >
-        <copy todir="/var/tms/WebRoot/yh/js">
-            <fileset dir="/root/.jenkins/jobs/TMS-DailyBuild/workspace/WebRoot/yh/js" includes="**/*.js, **/*.css" />
-        </copy>
-		<copy todir="/var/tms/WebRoot/js">
-            <fileset dir="/root/.jenkins/jobs/TMS-DailyBuild/workspace/WebRoot/js" includes="**/*.js, **/*.css" />
-        </copy>
-        <copy todir="/var/tms/WebRoot/WEB-INF/template">
-            <fileset dir="/root/.jenkins/jobs/TMS-DailyBuild/workspace/WebRoot/WEB-INF/template" includes="**/*.html" />
-        </copy>
-        <copy todir="/var/tms/WebRoot/WEB-INF/classes">
-            <fileset dir="/root/.jenkins/jobs/TMS-DailyBuild/workspace/WebRoot/WEB-INF/classes" includes="**/*.class" />
-        </copy>
     </target>
 
 </project>

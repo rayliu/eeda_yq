@@ -150,6 +150,14 @@ define(['jquery','zTree'], function ($) {
                 console.log(json);
                 module_obj = json;
 
+                $('#form_code').val(module_obj.FORM.CODE);
+                $('#form_name').val(module_obj.FORM.NAME);
+
+                var ue = UE.getEditor('container');
+                ue.setContent(module_obj.FORM.TEMPLATE_CONTENT);
+
+
+
                 var permission_dataTable = $('#permission_table').DataTable();
                 permission_dataTable.clear().draw();
                 for (var i = 0; i < json.PERMISSION_LIST.length; i++) {
