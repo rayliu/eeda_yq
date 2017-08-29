@@ -1,8 +1,10 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN',
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'pageguide',
         	'jq_blockui','./edit_ocean_detail','./edit_land_detail','./edit_custom_detail','./edit_air_detail','./edit_doc_table','./cost_table_edit'], function ($, metisMenu) {
 $(document).ready(function() {
 
-    
+    tl.pg.init({
+        pg_caption: '本页教程'
+    });
     $('#collapseGoodsInfo').on('show.bs.collapse', function () {
         $('#collapseGoodsIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
     });

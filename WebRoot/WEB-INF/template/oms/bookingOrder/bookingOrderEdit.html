@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
 <div id="page-wrapper">
    <form id="orderForm">
-	<div class="row simple_search_div">
+	<div class="row simple_search_div guide_target1">
     	<div class="col-lg-12" style="margin:5px 0 15px 0;">
         	<div style="width:10%;float:left;text-align:center;" >
                 <% if(order.create_stamp!'' != null && order.create_stamp!''!=''){%>
@@ -310,7 +310,7 @@
                                                     disabled:'disabled'
                                                 }){}%>
                  </div>
-	             <div class="col-lg-8">
+	             <div class="col-lg-8 guide_target2">
                 	<div class="form-group" id="transport_type">
                                     <label class="search-label" >所需服务项目<span style="color:red;display:initial;">*</span></label>
                                     <label class="checkbox-inline">
@@ -378,7 +378,7 @@
 	            </div>
         	</div>
         	<div class="row">
-        		<div class="col-lg-4">
+        		<div class="col-lg-4 guide_target3">
 	            	<%include("/eeda/component/form/inputField.html", 
                                                 {   id:'gargo_name', 
                                                     label:'货物名称',
@@ -406,7 +406,7 @@
         	</div>
         	
         	<div class="row">
-        		<div class="col-lg-4">
+        		<div class="col-lg-4 guide_target4">
 	            	<%include("/eeda/component/form/dateInputField.html",  
                                                 {   id:'order_export_date', 
                                                     label:'出货时间',
@@ -1217,6 +1217,7 @@
 <%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
 
+<%include("/oms/bookingOrder/edit_guide.html",{}){} %>
 
 <div class="blockUI" style="display:none"></div>
 <div class="blockUI blockOverlay" style="z-index: 1000; border: none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(0, 0, 0); opacity: 0.6; cursor: wait; position: fixed;"></div>
