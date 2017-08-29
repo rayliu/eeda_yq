@@ -3,6 +3,8 @@ package controllers.eeda;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,10 +15,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import models.Office;
 import models.ParentOfficeModel;
 import models.UserLogin;
-import models.UserOffice;
 import models.eeda.profile.OfficeConfig;
 
 import org.apache.commons.lang.StringUtils;
@@ -76,14 +76,17 @@ public class MainController extends Controller {
         }
         setAttr("userId", currentUser.getPrincipal());
         // timeout:-1000ms 这样设置才能永不超时 
-    	currentUser.getSession().setTimeout(-1000L);
+    	//currentUser.getSession().setTimeout(-1000L);
     	
         return true;
     }
-    @SuppressWarnings("unchecked")
-    @Before(EedaMenuInterceptor.class)
+    
     public void index() {
-    	setSysTitle();
+        render("/eeda/index.html");
+    }
+    @Before(EedaMenuInterceptor.class)
+    public void home() {
+        setSysTitle();
         if (isAuthenticated()) {
         	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=?", currentUser.getPrincipal());
         	
@@ -97,8 +100,6 @@ public class MainController extends Controller {
             setAttr("login_time",user.get("last_login"));
             setAttr("lastIndex",user.get("last_index") == null ? "pastOneDay" : user.get("last_index"));
             
-            UserLogin u = LoginUserController.getLoginUser(this);
-            long office_id=u.getLong("office_id");
     		
 
             //更新当前用户最后一次登陆的时间
@@ -110,13 +111,12 @@ public class MainController extends Controller {
             String savedRequestUrl = this.getSessionAttr(ShiroKit.getSavedRequestKey());
             if(savedRequestUrl!=null){
             	setSessionAttr(ShiroKit.getSavedRequestKey(), null);
-            	int index = savedRequestUrl.indexOf("/edit");
-                if(index>0){
+                if(savedRequestUrl.split("/").length>2){
+                    int index = savedRequestUrl.lastIndexOf("/");
                     savedRequestUrl = savedRequestUrl.substring(0, index);
                 }
             	redirect(savedRequestUrl);
             }else{
-                System.out.println("2222");
             	String officeConfig="select oc.index_page_path from office_config oc "
             			+ " where oc.office_id =?";
             	Record rec = Db.findFirst(officeConfig, user.getLong("office_id"));
@@ -128,10 +128,10 @@ public class MainController extends Controller {
                         List<Record> orderList = (List<Record>)moduleList.get(0).get("orders");
                         Record firstModule = (Record)orderList.get(0);
                         
-                        redirect("/form/"+firstModule.get("module_id").toString()+"-list");
+                        redirect(firstModule.getStr("url"));
                     };
             	}else{
-            		render(rec.getStr("index_page_path"));//显示不同URL对应的不同的login页面
+            		render(rec.getStr("index_page_path"));
             	}
             }
         }
@@ -155,33 +155,20 @@ public class MainController extends Controller {
 	}
 
     public void login() {
-        
-        String strLoginPagePath = "/eeda/login.html";
-        
-        HttpServletRequest request = getRequest();
-        String serverName = request.getServerName();
-        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
-        
-        logger.debug("Current host path:"+basePath);
-        OfficeConfig of = OfficeConfig.dao.findFirst("select * from office_config where domain like '"
-                +serverName +"%' or domain like '%"+serverName +"%'");
-        if(of==null){//没有配置公司的login信息, 不知道显示那个系统的login页面, 跳到公司首页
-            redirect("/");
-        }else{
-            if(StringUtils.isNotEmpty(of.getStr("index_page_path")))
-                strLoginPagePath = of.getStr("index_page_path");
-        }
 
-                
-    	if (isAuthenticated()) {//如果已经登录, 跳转到系统管理平台首页
-    		redirect("/");
+    	if (isAuthenticated()) {
+    		redirect("/home");
     	}
+    	
+    	//获取子系统的名字,显示在登陆页面
+    	handleLoginSubtitle();
+    	
         String username = getPara("username");
         
         setSysTitle();
         
         if (username == null) {
-            render(strLoginPagePath);
+            render("/eeda/login.html");
             return;
         }
         String sha1Pwd = MD5Util.encode("SHA1", getPara("password"));
@@ -193,10 +180,10 @@ public class MainController extends Controller {
         String errMsg = "";
         try {
             currentUser.login(token);
-            if (getPara("remember") != null && "Y".equals(getPara("remember"))){
-                // timeout:-1000ms 这样设置才能永不超时 
-            	currentUser.getSession().setTimeout(-1000L);
-            }
+//            if (getPara("remember") != null && "Y".equals(getPara("remember"))){
+//                // timeout:-1000ms 这样设置才能永不超时 
+//            	currentUser.getSession().setTimeout(-1000L);
+//            }
 
         } catch (UnknownAccountException uae) {
             errMsg = "用户名不存在";
@@ -216,32 +203,105 @@ public class MainController extends Controller {
 
         if (errMsg.length()==0) {
         	
-        	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=? and (is_stop = 0 or is_stop is null)",currentUser.getPrincipal());
+        	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=? and (is_stop = 0 or is_stop is null)", username);
         	
         	
         	if(user==null){
             	errMsg = "用户名不存在或已被停用";
             	setAttr("errMsg", errMsg);
-            	render(strLoginPagePath);
+            	logger.debug(errMsg);
+            	render("/eeda/login.html");
             }else if(user.get("c_name") != null && !"".equals(user.get("c_name"))){
             	setAttr("userId", user.get("c_name"));
-            	/*setAttr("login_time",user.get("last_login"));*/
-            	redirect("/");
+            	
+            	setLoginLog(user);
+
+            	redirect("/home");
             	//render("/eeda/index.html");
             }else{
             	setAttr("userId",currentUser.getPrincipal());
-            	/*setAttr("login_time",user.get("last_login"));*/
-            	redirect("/");
+            	setLoginLog(user);
+            	redirect("/home");
             	//render("/eeda/index.html");
             };
           
             
         } else {
             setAttr("errMsg", errMsg);
-            render(strLoginPagePath);
+            logger.debug(errMsg);
+            
+            render("/eeda/login.html");
         }
     }
+    
+    private void handleLoginSubtitle(){
+        String systemName = "检单供应链管理系统";
+        StringBuffer url = getRequest().getRequestURL();
+        String prefix = url.toString().substring(7).split("\\.")[0];
+        logger.debug("prefix:"+prefix);
+        if("booking".equals(prefix)){
+            systemName = "检单-Booking管理系统";
+        }else if("forwarder".equals(prefix)){
+             systemName = "检单-货代管理系统";
+        }else if("custom".equals(prefix)){
+            systemName = "检单-关务管理系统";
+        }else if("trans".equals(prefix)){
+            systemName = "检单-运输管理系统";
+        }else if("trade".equals(prefix)){
+            systemName = "检单-贸易管理系统";
+        }
+           
+        setAttr("system_name", systemName);
+        
+    }
+    
+    private void setLoginLog(UserLogin user) {
 
+		String localip = getIpAddress(this.getRequest());
+        Record rec = new Record();
+        rec.set("log_type", "登录");
+        rec.set("create_stamp", new Date());
+        rec.set("user_id", user.get("id"));
+        rec.set("ip", localip);
+        rec.set("office_id", user.getLong("office_id"));
+        
+        Db.save("sys_log", rec);
+    }
+    
+    public static String getIpAddress(HttpServletRequest request){   
+         String ipAddress = request.getHeader("x-forwarded-for");
+          
+         if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
+              ipAddress = request.getHeader("Proxy-Client-IP");
+         }
+         if (ipAddress == null || ipAddress.length() == 0 || "unknow".equalsIgnoreCase(ipAddress)) {
+              ipAddress = request.getHeader("WL-Proxy-Client-IP");
+         }
+         if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
+             ipAddress = request.getRemoteAddr();
+             
+            if(ipAddress.equals("127.0.0.1") || ipAddress.equals("0:0:0:0:0:0:0:1")){
+                 //根据网卡获取本机配置的IP地址
+                 InetAddress inetAddress = null;
+                 try {
+                     inetAddress = InetAddress.getLocalHost();
+                 } catch (UnknownHostException e) {
+                     e.printStackTrace();
+                 }
+                 ipAddress = inetAddress.getHostAddress();
+             }
+         }
+         
+         //对于通过多个代理的情况，第一个IP为客户端真实的IP地址，多个IP按照','分割
+         if(null != ipAddress && ipAddress.length() > 15){
+             //"***.***.***.***".length() = 15
+             if(ipAddress.indexOf(",") > 0){
+                 ipAddress = ipAddress.substring(0, ipAddress.indexOf(","));
+             }
+         }
+         return ipAddress;
+    }
+    
 	private void setSysTitle() {
 		String serverName = getRequest().getServerName();
         String basePath = getRequest().getScheme()+"://"+getRequest().getServerName()+":"+getRequest().getServerPort()+"/";
@@ -253,12 +313,11 @@ public class MainController extends Controller {
         	of.set("system_title", "易达物流");
         	of.set("logo", "/eeda/img/eeda_logo.ico");
         }
-        
-        UserOffice uo = UserOffice.dao.findFirst("select * from user_office where user_name ='"+currentUser.getPrincipal()+"' and is_main=1");
-        if(uo != null){
-            Office office = Office.dao.findById(uo.get("office_id"));
-            setAttr("office_name", office.get("office_name"));
-        }
+//        UserOffice uo = UserOffice.dao.findFirst("select * from user_office where user_name ='"+userName+"' and is_main=1");
+//        if(uo != null){
+//            Office office = Office.dao.findById(uo.get("office_id"));
+//            setAttr("office_name", office.get("office_name"));
+//        }
         setAttr("SYS_CONFIG", of);
 	}
 
@@ -447,4 +506,8 @@ public class MainController extends Controller {
         renderJson(map);
     }
     
+    public void layui() {
+        render("/larrycms/admin/index.html");
+    }
+  
 }
