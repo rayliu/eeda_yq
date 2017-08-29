@@ -15,6 +15,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
                 //url: "/chargeCheckOrder/list",
                 type: 'POST'
             },
+            initComplete: function (settings) {
+                eeda.dt_float_header('uncheckedEeda-table');
+            },
             columns:[
 			      { "width": "10px", "orderable": false,
 				    "render": function ( data, type, full, meta ) {
