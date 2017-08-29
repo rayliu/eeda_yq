@@ -29,6 +29,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           drawCallback: function( settings ) {
         	  flash();
   	      },
+  	      initComplete: function (settings) {
+              eeda.dt_float_header('eeda_table');
+          },
           columns: [
       			{ "width": "10px","orderable": false,
       				    "render": function ( data, type, full, meta ) {

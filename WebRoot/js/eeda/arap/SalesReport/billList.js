@@ -9,6 +9,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 //          ajax: "/salesBillReport/list",
           initComplete:function(settings){
     	  cssTd();
+    	  eeda.dt_float_header('eeda_table');
           },
           columns: [
       			{ "data": "ORDER_NO", "width": "80px","className":"order_no",
