@@ -1,18 +1,20 @@
 define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu, template) {
     $(document).ready(function() {
-    	var pieces_total = 0;
-    	var gross_weight_total = 0;
-    	var volume_total = 0;
+    	var pieces_total = "";
+    	var gross_weight_total = "";
+    	var volume_total = "";
     	var deletedTableIds=[];
         //删除一行
         $("#ocean_cargo_table").on('click', '.delete', function(e){
             e.preventDefault();
             var tr = $(this).parent().parent();
             deletedTableIds.push(tr.attr('id'))
-            
             cargoTable.row(tr).remove().draw();
+            calculate_pieces();
+            calculate_gross_weight();
+            calculate_volume();
         }); 
-
+        
         itemOrder.buildOceanItem = function(){
             var cargo_table_rows = $("#ocean_cargo_table tr");
             var cargo_items_array=[];
@@ -128,7 +130,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        pieces_total = data*1+pieces_total;
                         return '<input type="text" name="pieces" value="'+data+'" class="form-control" style="width:100px"/>';
                     }
                 },
@@ -158,7 +159,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        gross_weight_total = gross_weight_total+data*1;
                         return '<input type="text" name="gross_weight" value="'+data+'" class="form-control" style="width:100px"/>';
                     }
                 },
@@ -166,7 +166,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        volume_total = volume_total+data*1;
                         return '<input type="text" name="volume" value="'+data+'" class="form-control" style="width:100px"/>';
                     }
                 },
@@ -247,14 +246,22 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             };
         };
         
-        //海运货品件数
+        //海运货品件数改变事件
         $("#ocean_cargo_table").on('input','input[name="pieces"]',function(){
+        	calculate_pieces();
+        });
+        //海运货品件数计算方法
+        var calculate_pieces = function(){
         	pieces_total = 0;
         	$("#ocean_cargo_table tr input[name='pieces']").each(function(){
         		pieces_total = ($(this).val())*1+pieces_total;
         	})
-        	$("#pieces").val(pieces_total);
-        });
+        	if(pieces_total!=0){
+        		$("#pieces").val(pieces_total);
+        	}else{
+        		$("#pieces").val("");
+        	}
+        }
         var pieces = $("#pieces").val();
         if(pieces==null||pieces==""){
         	$("#pieces").val(pieces_total);
@@ -262,12 +269,20 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         
         //海运货品毛重
         $("#ocean_cargo_table").on('input', "input[name='gross_weight']",function(){
+        	calculate_gross_weight();
+        });
+        //海运货品毛重计算方法
+        var  calculate_gross_weight = function(){
         	gross_weight_total = 0;
         	$("#ocean_cargo_table tr input[name='gross_weight']").each(function(){
         		gross_weight_total = ($(this).val())*1+gross_weight_total;
         	})
-        	$("#gross_weight").val(gross_weight_total);
-        });
+        	if(gross_weight_total!=0){
+        		$("#gross_weight").val(gross_weight_total);
+        	}else{
+        		$("#gross_weight").val("");
+        	}
+        }
         var gross_weight = $("#gross_weight").val();
         if(gross_weight==null||gross_weight==""){
         	$("#gross_weight").val(gross_weight_total);
@@ -275,15 +290,28 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         
       //海运货品体积
         $("#ocean_cargo_table").on('input',"input[name='volume']",function(){
+        	calculate_volume();
+        });
+      //海运货品体积计算方法
+        var  calculate_volume = function(){
         	volume_total = 0;
         	$("#ocean_cargo_table tr input[name='volume']").each(function(){
         		volume_total = ($(this).val())*1+volume_total;
         	})
-        	$("#volume").val(volume_total);
-        });
+        	if(volume_total!=0){
+        		$("#volume").val(volume_total);
+        	}else{
+        		$("#volume").val("");
+        	}
+        }
         var volume = $("#volume").val();
         if(volume==null||volume==""){
         	$("#volume").val(volume_total);
         }
+        
+        
+        calculate_pieces();
+        calculate_gross_weight();
+        calculate_volume();
     });
 });
