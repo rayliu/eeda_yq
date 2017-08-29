@@ -1,6 +1,10 @@
-define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table','./edit_receiptItem_table', 'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin','pageguide','./edit_item_table','./edit_receiptItem_table', 'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
 
 $(document).ready(function() {
+	
+	tl.pg.init({
+        pg_caption: '本页教程'
+    });
     
     $(function(){
       if(!$('#receive_cny').val()){

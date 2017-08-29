@@ -15,7 +15,7 @@
 					id:'order_no', label:'对账单号', value:order.order_no!'', disabled:
 					'disabled' }){}%>
 				</div>
-				<div class="col-lg-4">
+				<div class="col-lg-4 guide_status">
 					<%include("/eeda/component/form/inputField.html", { id:'status',
 					label:'单据状态', value:order.status!'新建', disabled: 'disabled' }){}%>
 				</div>
@@ -75,7 +75,7 @@
 					label:'电话', value:order.phone!'',disabled:'disabled'
 					}){}%>
 				</div>
-				<div class="col-lg-4">	
+				<div class="col-lg-4 guide_check_time">	
 					<%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
 					label:'对账时间', begin_value:order.begin_time!'', end_value:order.end_time!'', disabled: 'disabled' 
 					}){}%>
@@ -92,7 +92,7 @@
 					<div class="col-lg-12">
 						<div class="btn-header" style="font-size: 18px">结算金额汇总</div>
 					</div>
-				   <div class="col-lg-6">
+				   <div class="col-lg-6 guide_total_amount" >
 					<%include("/eeda/component/form/inputField.html", { id:'total_amount',
 					label:'应收人民币总额', value:order.total_amount!'',disabled:'disabled'
 					}){}%>
@@ -103,7 +103,7 @@
 	</div>
 	<!-- /.row -->
 		<div class="row simple_search_div" style = "margin-top:10px">
-			<div class="panel-heading">
+			<div class="panel-heading guide_total_confirmBtn ">
 	              <h4 class="panel-title">
 	                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
 	                  <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 收款确认                                       </a>
@@ -120,7 +120,7 @@
 		                              </div>
 		                            <div class="col-lg-4">
 		                            	<div class="form-group">
-		                                    <label class="search-label">收款方式</label>
+		                                    <label class="search-label guide_payment_method">收款方式</label>
 		                                    <input type="hidden" id="payment_method_show" value="${order.payment_method!''}"/>
 		                                	<select id="payment_method" class="form-control search-control payment_method" name="payment_method" >
 		                                    <option value=""></option>
@@ -242,7 +242,7 @@
 		<br>
 	         <div class="tab-content">
                 <div class="tab-pane fade active in" id="unchecked">
-                	<div class="table_btn_bar">
+                	<div class="table_btn_bar guide_add_charge">
 			        	<button class="btn btn_blue" id="add_charge">添加明细</button> 
 			        </div><br/>
 						<%include("/eeda/component/form/detailTable.html", 
@@ -274,13 +274,13 @@
 
 		<div class="button-bar" >
 			<button id='saveBtn' class="btn  btn_green" disabled >保存</button> 
-			<button id='confrimBtn' class="btn  btn_green" disabled >确认</button> 
+			<button id='confrimBtn' class="btn  btn_green guide_confrimBtn" disabled >确认</button> 
 			<a class="btn  btn_white" href="/cmsChargeCheckOrder">返回</a>
 			<%if(shiro.hasPermission("cmsChargeCheckOrder.exportPDF")){%>
             	<button id="printCustomOrderBtn" class="btn   btn_green" >生成PDF对账单</button>
             <%}%>
             <%if(shiro.hasPermission("cmsChargeCheckOrder.exportExcel")){%>
-            	<button id="exportCustomOrderExcel" class="btn   btn_green" >导出excel对账单</button>
+            	<button id="exportCustomOrderExcel" class="btn   btn_green guide_exportCustomOrderExcel" >导出excel对账单</button>
             <%}%>
 		</div>
 	</div>
