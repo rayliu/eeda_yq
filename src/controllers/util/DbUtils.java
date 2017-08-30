@@ -80,6 +80,12 @@ public class DbUtils {
             		continue;
             	}
 			}
+        	if(beginTime.length()==10){
+        	    beginTime += " 00:00:00";
+        	}
+        	if(endTime.length()==10){
+        	    endTime += " 23:59:59";
+            }
         	condition += " and (" + key + " between '" + beginTime + "' and '" + endTime+ "' )";
         }
         logger.debug("condition: "+condition);
@@ -313,6 +319,16 @@ public class DbUtils {
 		}
 	}
 	
-	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+    public static Map<String, ?> buildReturnMap(String pageIndex, long recordsTotal, 
+            List<Record> orderList) {
+        Map orderListMap = new HashMap();
+        orderListMap.put("draw", pageIndex);
+        orderListMap.put("recordsTotal", recordsTotal);
+        orderListMap.put("recordsFiltered", recordsTotal);
+
+        orderListMap.put("data", orderList);
+        return orderListMap;
+    }
 	
 }

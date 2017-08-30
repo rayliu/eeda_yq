@@ -317,7 +317,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/createOffice", controllers.profile.CreateOfficeController.class, contentPath);
         me.add("/importOrder", controllers.importOrder.ImportOrder.class, contentPath);
         
-        
+        me.add("/loginLog", controllers.profile.LoginLogController.class, contentPath);
         
         me.add("/customer", controllers.profile.CustomerController.class, contentPath);
         me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);
@@ -480,7 +480,7 @@ public class EedaConfig extends JFinalConfig {
         me.add(cp);
 
         arp = new ActiveRecordPlugin(cp);
-//        arp.setShowSql(false);// 控制台打印Sql
+//        arp.setShowSql(true);// 控制台打印Sql
 //        SqlReporter.setLog(true);// log4j 打印Sql
         me.add(arp);
 
