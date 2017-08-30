@@ -231,7 +231,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
     			self.val(parseFloat(data).toFixed(5))
     		}
     	})
-    	$('#ocean_cargo_table').on("focus","[name=pieces],[name=gross_weight],[name=volume]",function(){
+    	$('#ocean_cargo_table').on("focus","[name=pieces],[name=gross_weight],[name=volume],[name=vgm]",function(){
     		self = $(this)
     		self.parent().find("span").remove()
     	})
