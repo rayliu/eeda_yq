@@ -125,11 +125,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
 	      if(selectField=='sp_id'){
-	    	  $("#single_sp_id_input").val("");
+	    	  $("#single_order_export_date_begin_time").val("");
+	    	  $("#single_order_export_date_end_time").val("");
 	    	  $("#order_export_date_show").hide();
 	    	  $("#sp_id_show").show();
 	      }
 	      if(selectField=="order_export_date"){
+	    	  $("#single_sp_id_input").val("");
+	    	  $("#single_sp_id").val("");
 	    	  $("#sp_id_show").hide();
 	    	  $("#order_export_date_show").show();
 	      }
@@ -291,7 +294,34 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		  }
       }
       
-
+      //导出excel
+      $('#exportTotaledExcel1').click(function(){
+    	  $(this).attr('disabled', true);
+          var sp_id = $("#single_sp_id").val();
+          var begin_time = $("#single_order_export_date_begin_time").val();
+          var end_time = $("#single_order_export_date_end_time").val();
+          excel_method(sp_id,begin_time,end_time);
+      });
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+          var sp_id = $("#sp_id").val();
+          var begin_time = $("#order_export_date_begin_time").val();
+          var end_time = $("#order_export_date_end_time").val();
+          excel_method(sp_id,begin_time,end_time);
+      });
+      var excel_method = function(sp_id,begin_time,end_time){
+		  $.post('/profitAndPaymentRate/downloadExcelList',{sp_id:sp_id,begin_time:begin_time,end_time:end_time}, function(data){
+	          $('#exportTotaledExcel1').prop('disabled', false);
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $('#singlexportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      }
+      
     //表头浮动
 	  $(function(){
           var scroll_bar = $("#eeda_table");//表格的id
