@@ -91,7 +91,7 @@ define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
                         return '/<input type="text" name="url" value="'+data+'" class="form-control"/>';
                     }
                 },
-                { "data": "TEMPLATE_PATH", width: '60%',
+                { "data": "TEMPLATE_PATH", width: '60%',  visible: false,
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
