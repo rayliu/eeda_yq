@@ -35,6 +35,10 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
             //阻止a 的默认响应行为，不需要跳转
             e.preventDefault();
             
+            if(!$('#costCheckOrderForm').valid()){
+            	return ;
+            }
+            
             $(this).attr('disabled', true);
 
             var order = {
