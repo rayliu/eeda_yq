@@ -193,41 +193,31 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
     	$('#ocean_cargo_table').on("blur","[name=pieces]",function(){
     		self = $(this)
     		data = self.val()
+    		len = $.trim(data).length
     		re = /^\d{0,11}$/g
-    		if(!re.test(data)){   
-    			self.parent().append("<span style='color:red'>请输入11位以内的数字！！！</span>")
+    		if(!re.test(data)&&len!=0){   
+    			self.parent().append("<span style='color:red' class='error_span'>请输入11位以内的数字！！！</span>")
     		}
     	})
-    	$('#ocean_cargo_table').on("blur","[name=gross_weight]",function(){
+    	$('#ocean_cargo_table').on("blur","[name=gross_weight],[name=volume]",function(){
     		self = $(this)
     		data = self.val()
-    		len = data.length
+    		len = $.trim(data).length
     		re = /^\d{0,11}\.?\d{0,11}$/g
-    		if(len>11||!re.test(data)){
-    			self.parent().append("<span style='color:red'>请输入11位以内的数字！！！</span>")
-    		}else{
-    			self.val(parseFloat(data).toFixed(4))
-    		}
-    	})
-    	$('#ocean_cargo_table').on("blur","[name=volume]",function(){
-    		self = $(this)
-    		data = self.val()
-    		len = data.length
-    		re = /^\d{0,11}\.?\d{0,11}$/g
-    		if(len>11||!re.test(data)){
-    			self.parent().append("<span style='color:red'>请输入11位以内的数字！！！</span>")
-    		}else{
+    		if(len>11&&len!=0||!re.test(data)&&len!=0){
+    			self.parent().append("<span style='color:red' class='error_span'>请输入11位以内的数字！！！</span>")
+    		}else if (len != 0 ){
     			self.val(parseFloat(data).toFixed(4))
     		}
     	})
     	$('#ocean_cargo_table').on("blur","[name=vgm]",function(){
     		self = $(this)
     		data = self.val()
-    		len = data.length
+    		len = $.trim(data).length
     		re = /^\d{0,11}\.?\d{0,11}$/g
-    		if(len>11||!re.test(data)){
-    			self.parent().append("<span style='color:red'>请输入11位以内的数字！！！</span>")
-    		}else{
+    		if(len>11&&len!=0||!re.test(data)&&len!=0){
+    			self.parent().append("<span style='color:red' class='error_span'>请输入11位以内的数字！！！</span>")
+    		}else if (len != 0 ){
     			self.val(parseFloat(data).toFixed(5))
     		}
     	})
@@ -298,7 +288,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         var calculate_pieces = function(){
         	pieces_total = 0;
         	$("#ocean_cargo_table tr input[name='pieces']").each(function(){
-        		pieces_total = ($(this).val())*1+pieces_total;
+        		if(!isNaN($(this).val())){
+        			pieces_total = ($(this).val())*1+pieces_total;
+        		}
         	})
         	if(pieces_total!=0){
         		$("#pieces").val(pieces_total);
@@ -319,7 +311,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         var  calculate_gross_weight = function(){
         	gross_weight_total = 0;
         	$("#ocean_cargo_table tr input[name='gross_weight']").each(function(){
-        		gross_weight_total = ($(this).val())*1+gross_weight_total;
+        		if(!isNaN($(this).val())){
+        			gross_weight_total = ($(this).val())*1+gross_weight_total;        			
+        		}
         	})
         	if(gross_weight_total!=0){
         		$("#gross_weight").val(gross_weight_total);

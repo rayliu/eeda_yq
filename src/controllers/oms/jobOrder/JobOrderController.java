@@ -2572,7 +2572,7 @@ public class JobOrderController extends Controller {
             List<UploadFile> fileList = getFiles("doc");
             Long userId = LoginUserController.getLoginUserId(this);
             
-            FileUploadUtil.uploadFile(fileList, id, userId, "job_order_land_doc", false);
+            FileUploadUtil.uploadFile(fileList, id, userId, "job_order_land_doc", true);
             
             renderJson("{\"result\":true}");
         } catch (Exception e) {

@@ -470,6 +470,30 @@ $(document).ready(function() {
         ]
     });
 	 
+		$('#land_table').on("blur","[name=driver_tel],[name=consignor_phone],[name=consignee_phone]",function(){
+			self = $(this)
+			data = self.val()
+			data = $.trim(data)
+			var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+			
+			if(!mobile.test(data)&&data!=''){   
+				self.parent().append("<span style='color:red' class='error_span'>请输入正确的电话号码！！！</span>")
+			}
+		})
+		$('#land_table').on("blur","[name=pieces],[name=gross_weight],[name=volume]",function(){
+			self = $(this)
+			data = self.val()
+			data = $.trim(data)
+			if(isNaN(parseFloat(data))&&data!=''){   
+				self.parent().append("<span style='color:red' class='error_span'>请输入数字！！！</span>")
+			}
+		})
+		
+		$('#land_table').on("focus","[name=driver_tel],[name=consignor_phone],[name=pieces],[name=gross_weight],[name=volume],[name=consignee_phone]",function(){
+	    		self = $(this)
+	    		self.parent().find("span").remove()
+	    })
+	    
 	 
 
     //刷新明细表

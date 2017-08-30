@@ -453,9 +453,9 @@ $(document).ready(function() {
                     else
                     	str = '';
                 	if(full.AUDIT_FLAG == 'Y'){
-                    	return '<input type="number" name="price" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
+                    	return '<input type="text" name="price" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
                      }else{
-	                    return '<input type="number" name="price" style="width:120px" value="'+str+'" class="form-control notsave" />';
+	                    return '<input type="text" name="price" style="width:120px" value="'+str+'" class="form-control notsave" />';
 	                 }
                   }
             },
@@ -464,10 +464,10 @@ $(document).ready(function() {
                 	if(!data)
                         data='';
                 	if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="number" name="amount" min="0" style="width:80px" value="'+data+'" class="form-control notsave" disabled/>';
+                        return '<input type="text" name="amount" min="0" style="width:80px" value="'+data+'" class="form-control notsave" disabled/>';
                      }else{
                     	 
-	                    return '<input type="number" name="amount" min="0" style="width:80px" value="'+data+'" class="form-control notsave"/>';
+	                    return '<input type="text" name="amount" min="0" style="width:80px" value="'+data+'" class="form-control notsave"/>';
 	                }
                 }
             },
@@ -678,6 +678,21 @@ $(document).ready(function() {
         ]
     });
 	
+	$('#land_charge_table').on("blur","[name=price],[name=amount],[name=exchange_rate],[name=EXCHANGE_CURRENCY_RATE]",function(){
+		self = $(this)
+		data = self.val()
+		data = $.trim(data)
+		if(isNaN(data)){   
+			self.parent().append("<span style='color:red'>请输入数字！！！</span>")
+		}
+	})
+	
+	$('#land_charge_table').on("focus","[name=price],[name=amount],[name=volume],[name=vgm]",function(){
+    		self = $(this)
+    		self.parent().find("span").remove()
+    })
+    
+    
     $('#land_charge_table_msg').on('click','.save',function(){
     	$(this).attr('disabled', true);
     	var order_id = $('#order_id').val();

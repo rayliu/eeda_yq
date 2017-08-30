@@ -494,14 +494,14 @@ eeda.refreshUrl = refreshUrl;
 
       //处理中文输入法, 没完成前不触发查询
       var cpLock = false;
+      var isEmpty = 0;
       $('#'+table_id+' input[name='+el_name+'_input]').on('compositionstart', function () {
           cpLock = true;
       }).on('compositionend', function () {
           cpLock = false;
       });
-
+      
 		  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
-
 			  var me = this;
 			  var inputField = $(this);
 			  var hiddenField = $(this).parent().find('input[name='+el_name+']');
@@ -514,6 +514,9 @@ eeda.refreshUrl = refreshUrl;
             tableFieldList.find('li').first().focus();
             return false;
         }
+        
+        
+        
         if(event.keyCode==8){
         	if(inputStr==''){
         		hiddenField.val('');
@@ -540,6 +543,7 @@ eeda.refreshUrl = refreshUrl;
             	}else{
             		tableFieldList.append('<span style="font-size: 10px;color: gray;">无记录</span>');
             	}
+            	isEmpty = 1;
             }else if(inputStr.length>0 && data.length==10){
               tableFieldList.append('<span style="font-size: 10px;color: gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
             }else if(data=="无记录"){
@@ -631,6 +635,12 @@ eeda.refreshUrl = refreshUrl;
                   hiddenField.val('');
               };
               tableFieldList.hide();
+              
+              if(isEmpty == 1){
+            	  hiddenField.val('');
+            	  inputField.val('');
+            	  isEmpty = 0;
+              }
           }
 		  });
 		  
@@ -653,7 +663,7 @@ eeda.refreshUrl = refreshUrl;
               $this.prev().focus();
               return false;
           }
-      }).find('li').first().focus();
+      }).find('li').first().focus();  
 	  };
 	  
 		  

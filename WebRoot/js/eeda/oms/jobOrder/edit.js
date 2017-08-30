@@ -7,7 +7,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     './edit_arap_detail','./edit_shipment_doc_detail'], function ($, metisMenu) {
 
 $(document).ready(function() {
-
+	
     $("#orderForm").validate({
     	rules:{
     		gross_weight:{
@@ -67,7 +67,6 @@ $(document).ready(function() {
     $("#shipmentForm").validate({
     	rules:{
     		hbl_no:{
-    			number:true,
     			maxlength:50
     		},
     		mbl_no:{
@@ -100,6 +99,29 @@ $(document).ready(function() {
     		}
     	}
     })
+    $("#partyForm").validate({
+    	rules:{
+    		company_name:{
+    			maxlength:100
+    		},
+    		abbr:{
+    			maxlength:60
+    		},
+    		contact_person:{
+    			maxlength:100
+    		},
+    		phone:{
+    			isMobile:true
+    		},
+    		address:{
+    			maxlength:255
+    		},
+    		contact_person_eng:{
+    			maxlength:100
+    		}
+    	}
+    })
+    
     $("#vgm").blur(function(){
     	self = $(this)
     	if(! $.trim(self.val()) == ""&&!isNaN(parseInt(self.val()))){
@@ -107,9 +129,15 @@ $(document).ready(function() {
     		$("#vgm").val((value).toFixed(4))
     	}
     })
-	tl.pg.init({
-        pg_caption: '本页教程'
-    });
+		   // 手机号码验证
+		jQuery.validator.addMethod("isMobile", function(value, element) {
+		    var length = value.length;
+		    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+		    return this.optional(element) || (length == 11 && mobile.test(value));
+		}, "请正确填写您的手机号码");
+			tl.pg.init({
+		        pg_caption: '本页教程'
+		    });
 
 	var loadOrderToLocalstorage=function(order_id){
         if(!!window.localStorage){//查询条件处理
@@ -174,8 +202,12 @@ $(document).ready(function() {
         		formRequired++;
             }
         })
-        if(formRequired>0){
-        	$.scojs_message('客户和出货时间为必填字段', $.scojs_message.TYPE_ERROR);
+        errorlength = $("[class=error_span]").length;
+        var loc_id = $($(".error_span").get(0)).parent().parent().parent().parent().attr('id');
+        
+        if(formRequired>0||errorlength>0){
+        	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+        	location.hash="#"+loc_id;
         	return;
         }
         //费用的结算公司必填
@@ -607,4 +639,7 @@ $(document).ready(function() {
 		var self_val = $("#order_export_date").val();
         $("#sailing_date").val(self_val);
 	});
+	
+	
+	//window.location.hash="#land_table";
 });
