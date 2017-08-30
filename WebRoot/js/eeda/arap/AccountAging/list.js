@@ -107,12 +107,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       		
           }
       };
-
+      
+      $('.collapsed').click(function(event) {
+          if($('#exportTotaledExcel1').is(':visible')){
+            $('#exportTotaledExcel1').hide();
+          }else{
+            $('#exportTotaledExcel1').show();
+          }
+      });
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
-      
 
       $('#searchBtn').click(function(){
     	$('#cny_totalAmountSpan').html(0);
@@ -137,12 +143,47 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		  type="";
     	  }
     	   
-          var customer = $("#customer").val(); 
+          var sp_id = $("#sp").val(); 
           var service_stamp_between = $("#service_stamp").val();
 
-          var url = "/accountAging/list?sp_id="+customer
+          var url = "/accountAging/list?sp_id="+sp_id
 		               +"&service_stamp_between="+service_stamp_between+"&type="+type;
           dataTable.ajax.url(url).load(false);
       };
+      
+      //导出excel利润表
+      $('#exportTotaledExcel').click(function(){
+          excel_method();
+      });
+      $('#exportTotaledExcel1').click(function(){
+          excel_method();
+      });
+      
+      var excel_method = function(){
+    	  $(this).attr('disabled', true);
+          var sp_id = $("#sp").val();
+          if(sp_id==""){
+        	  $.post('/accountAging/downloadExcelList', function(data){
+                  $('#exportTotaledExcel').prop('disabled', false);
+                  $('#singlexportTotaledExcel').prop('disabled', false);
+                  $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+                  window.open(data);
+              }).fail(function() {
+                  $('#exportTotaledExcel').prop('disabled', false);
+                  $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+              });
+          }else{
+        	  $.post('/accountAging/downloadExcelList',{sp_id:sp_id}, function(data){
+                  $('#exportTotaledExcel').prop('disabled', false);
+                  $('#singlexportTotaledExcel').prop('disabled', false);
+                  $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+                  window.open(data);
+              }).fail(function() {
+                  $('#exportTotaledExcel').prop('disabled', false);
+                  $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+              });
+          }
+    	 
+      }
   });
 });
