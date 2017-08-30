@@ -2255,8 +2255,8 @@ public class JobOrderController extends Controller {
     	String pol = recMap.get("pol");
     	String pod = recMap.get("pod");
     	String fnd = recMap.get("fnd");
-    	String booking_agent = recMap.get("booking_agent");
-    	String carrier = recMap.get("carrier");
+//    	String booking_agent = recMap.get("booking_agent");
+//    	String carrier = recMap.get("carrier");
     	String head_carrier = recMap.get("head_carrier");
     	String oversea_agent = recMap.get("oversea_agent");
     	String release_type = recMap.get("release_type");
@@ -2275,7 +2275,7 @@ public class JobOrderController extends Controller {
         if(fnd!=null&&!"".equals(fnd)){
         	 savePortQueryHistory(fnd);
         }
-        String content = MBLshipper+MBLconsignee+MBLnotify_party+HBLshipper+HBLconsignee+HBLnotify_party+por+pol+pod+fnd+booking_agent+carrier+head_carrier+oversea_agent;
+        String content = MBLshipper+MBLconsignee+MBLnotify_party+HBLshipper+HBLconsignee+HBLnotify_party+por+pol+pod+fnd+head_carrier+oversea_agent;
         if("".equals(content)){
         	return;
         }
@@ -2312,12 +2312,12 @@ public class JobOrderController extends Controller {
         if(StringUtils.isNotEmpty(fnd)){
         	sql+=" and fnd="+fnd;
         }
-        if(StringUtils.isNotEmpty(booking_agent)){
-        	sql+=" and booking_agent="+booking_agent;
-        }
-        if(StringUtils.isNotEmpty(carrier)){
-        	sql+=" and carrier="+carrier;
-        }
+//        if(StringUtils.isNotEmpty(booking_agent)){
+//        	sql+=" and booking_agent="+booking_agent;
+//        }
+//        if(StringUtils.isNotEmpty(carrier)){
+//        	sql+=" and carrier="+carrier;
+//        }
         if(StringUtils.isNotEmpty(head_carrier)){
         	sql+=" and head_carrier="+head_carrier;
         }
@@ -2348,8 +2348,8 @@ public class JobOrderController extends Controller {
             r.set("pol", pol);
             r.set("pod", pod);
             r.set("fnd", fnd);
-            r.set("booking_agent", booking_agent);
-            r.set("carrier", carrier);
+//            r.set("booking_agent", booking_agent);
+//            r.set("carrier", carrier);
             r.set("head_carrier", head_carrier);
             r.set("oversea_agent", oversea_agent);
             r.set("release_type", release_type);

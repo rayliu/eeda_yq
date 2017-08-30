@@ -148,10 +148,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('#pod').val(li.attr('pod_id'));
             $('#fnd_input').val(li.attr('fnd_name'));
             $('#fnd').val(li.attr('fnd_id'));
-            $('#ocean_booking_agent').val(li.attr('booking_agent'));
-            $('#ocean_booking_agent_input').val(li.attr('booking_agent_name'));
-            $('#carrier').val(li.attr('carrier'));
-            $('#carrier_input').val(li.attr('carrier_name'));
+//            $('#ocean_booking_agent').val(li.attr('booking_agent'));
+//            $('#ocean_booking_agent_input').val(li.attr('booking_agent_name'));
+//            $('#carrier').val(li.attr('carrier'));
+//            $('#carrier_input').val(li.attr('carrier_name'));
             $('#head_carrier').val(li.attr('head_carrier'));
             $('#head_carrier_input').val(li.attr('head_carrier_name'));
             $('#oversea_agent').val(li.attr('oversea_agent'));

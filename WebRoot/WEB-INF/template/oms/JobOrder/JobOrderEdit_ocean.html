@@ -174,15 +174,11 @@
                         pol_name="${userInfo.pol_name}" 
                         pod_name="${userInfo.pod_name}" 
                         fnd_name="${userInfo.fnd_name}" 
-                        carrier="${userInfo.carrier}" 
-                        carrier_name="${userInfo.carrier_name}" 
                         head_carrier="${userInfo.head_carrier}" 
                         head_carrier_name="${userInfo.head_carrier_name}" 
                         oversea_agent="${userInfo.oversea_agent}" 
                         oversea_agent_name="${userInfo.oversea_agent_name}" 
                         oversea_agent_info="${userInfo.oversea_agent_info}" 
-                        booking_agent="${userInfo.booking_agent}" 
-                        booking_agent_name="${userInfo.booking_agent_name}" 
                         release_type="${userInfo.release_type}" 
                         shipping_mark="${userInfo.shipping_mark}" 
                         cargo_desc="${userInfo.cargo_desc}" 
@@ -193,7 +189,7 @@
                             <input type="radio" value="1" name="usedOceanInfo" style="margin-top: 0px;">
                             <span>MBLshipper:${userInfo.MBLshipperAbbr}, MBLconsignee:${userInfo.MBLconsigneeAbbr}, MBLnotifyParty: ${userInfo.MBLnotify_partyAbbr}</span><br>
                             <span>HBLshipper:${userInfo.HBLshipperAbbr}, HBLconsignee:${userInfo.HBLconsigneeAbbr}, HBLnotifyParty: ${userInfo.HBLnotify_partyAbbr}</span><br>
-                            <span class="port">订舱代理：${userInfo.booking_agent_name}, 船公司：${userInfo.carrier_name}, 头程船公司：${userInfo.head_carrier_name}, POR:${userInfo.por_name}, POL:${userInfo.pol_name}, POD:${userInfo.pod_name}, FND:${userInfo.fnd_name}, 海外代理：${userInfo.oversea_agent_name}</span> 
+                            <span class="port"> 头程船公司：${userInfo.head_carrier_name}, POR:${userInfo.por_name}, POL:${userInfo.pol_name}, POD:${userInfo.pod_name}, FND:${userInfo.fnd_name}, 海外代理：${userInfo.oversea_agent_name}</span> 
                         </label>
                       </div>
                    </li>
