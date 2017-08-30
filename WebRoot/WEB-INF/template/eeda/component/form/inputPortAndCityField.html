@@ -80,6 +80,16 @@ $(document).ready(function() {
 		hiddenField.val($(this).attr('portId'));
 		spList.hide();
     });
+    // 没选中供应商，焦点离开，隐藏列表
+	inputField.on('blur', function(){
+		if (inputField.val().trim().length ==0) {
+			hiddenField.val('');
+		};
+		if (hiddenField.val().trim().length ==0) {
+            inputField.val('');
+        };
+		spList.hide();
+ 	});
 	//回车处理
  	spList.on('keydown', 'li', function(e){
         if (e.keyCode == 13) {

@@ -8,7 +8,106 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
 $(document).ready(function() {
 
-    tl.pg.init({
+    $("#orderForm").validate({
+    	rules:{
+    		gross_weight:{
+    			number:true,
+    			maxlength:30
+    		},
+    		old_order_no:{
+    			maxlength:30
+    		},
+    		ref_no:{
+    			maxlength:30
+    		},
+    		pieces:{
+    			number:true
+    		},
+    		net_weight:{
+    			number:true,
+    			maxlength:11
+    		},
+    		volume:{
+    			number:true,
+    			maxlength:11
+    		},
+    		fee_count:{
+    			number:true,
+    			maxlength:11
+    		},
+    		amount_20gp:{
+    			number:true,
+    			min:0,
+    			maxlength:11
+    		},
+    		amount_40gp:{
+    			number:true,
+    			min:0,
+    			maxlength:11
+    		},
+    		amount_40hq:{
+    			number:true,
+    			min:0,
+    			maxlength:11
+    		},
+    		amount_45gp:{
+    			number:true,
+    			min:0,
+    			maxlength:11
+    		},
+    		amount_45hp:{
+    			number:true,
+    			min:0,
+    			maxlength:11
+    		}
+    		
+    	}
+    })
+    
+    $("#shipmentForm").validate({
+    	rules:{
+    		hbl_no:{
+    			number:true,
+    			maxlength:50
+    		},
+    		mbl_no:{
+    			number:true,
+    			maxlength:50
+    		},
+    		vessel:{
+    			maxlength:50
+    		},
+    		voyage:{
+    			maxlength:50
+    		},
+    		route:{
+    			maxlength:50
+    		},
+    		SONO:{
+    			maxlength:50
+    		},
+    		ocean_shipping_mark:{
+    			maxlength:1000
+    		},
+    		ocean_cargo_desc:{
+    			maxlength:1000
+    		},
+    		ocean_booking_mark:{
+    			maxlength:2000
+    		},
+    		vgm:{
+    			number:true
+    		}
+    	}
+    })
+    $("#vgm").blur(function(){
+    	self = $(this)
+    	if(! $.trim(self.val()) == ""&&!isNaN(parseInt(self.val()))){
+    		value = parseFloat($("#vgm").val());
+    		$("#vgm").val((value).toFixed(4))
+    	}
+    })
+	tl.pg.init({
         pg_caption: '本页教程'
     });
 
