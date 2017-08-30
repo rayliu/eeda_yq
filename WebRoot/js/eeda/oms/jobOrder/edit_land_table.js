@@ -170,27 +170,7 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "TRANS_NO", "width": "80px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="trans_no" value="'+data+'" class="form-control" style="width:100px" />';
-                }
-            },
-            { "data": "DRIVER", "width": "80px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="driver" value="'+data+'" class="form-control" style="width:100px" />';
-                }
-            },
-            { "data": "DRIVER_TEL", "width": "80px",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                        data='';
-                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:100px" />';
-                }
-            },
+           
             { "data": "TRUCK_TYPE", "width": "50px",
                 "render": function ( data, type, full, meta ) {
                 	if(!data)
@@ -396,6 +376,27 @@ $(document).ready(function() {
             			data='';
             		return '<input type="text" name="required_time_remark" value="'+data+'" class="form-control" style="width:150px"/>';
             	}
+            },
+            { "data": "TRANS_NO", "width": "80px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="trans_no" value="'+data+'" class="form-control" style="width:100px" />';
+                }
+            },
+            { "data": "DRIVER", "width": "80px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="driver" value="'+data+'" class="form-control" style="width:100px" />';
+                }
+            },
+            { "data": "DRIVER_TEL", "width": "80px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:100px" />';
+                }
             },
             { "data":"ID","width": "80px",
             	"render": function ( data, type, full, meta ) {
