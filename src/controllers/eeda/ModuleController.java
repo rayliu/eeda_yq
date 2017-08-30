@@ -218,11 +218,38 @@ public class ModuleController extends Controller {
 
         Db.update(" update eeda_modules set url = ? where id=?", url, module_id);
 
+        //handle info
+        String tempalteContent = dto.get("template_content").toString();
+        Map<String, String> infoMap = (Map) dto.get("info");
+        Record formRec = Db.findFirst("select * from eeda_form_define where module_id=?", module_id);
+        if(formRec!=null){
+            formRec.set("name", infoMap.get("name"));
+            formRec.set("code", infoMap.get("code"));
+            formRec.set("template_content", tempalteContent);
+            Db.update("eeda_form_define", formRec);
+        }else{
+            Record form = new Record();
+            formRec.set("name", infoMap.get("name"));
+            formRec.set("code", infoMap.get("code"));
+            formRec.set("template_content", tempalteContent);
+            Db.save("eeda_form_define", formRec);
+        }
+        
+        
+        
+        
         List<Map<String, String>> permission_list = (ArrayList<Map<String, String>>) dto
                 .get("permission_list");
         DbUtils.handleList(permission_list, module_id, Permission.class,
                 "module_id");
 
+        handleAuth(dto, module_id);
+        
+        Record orderRec = Db.findById("eeda_modules", module_id);
+        renderJson(orderRec);
+    }
+
+    private void handleAuth(Map<String, ?> dto, String module_id) {
         List<Map<String, ?>> auth_list = (ArrayList<Map<String, ?>>) dto
                 .get("auth_list");
         for (Map<String, ?> map : auth_list) {
@@ -309,8 +336,6 @@ public class ModuleController extends Controller {
             }
 
         }
-        Record orderRec = Db.findById("eeda_modules", module_id);
-        renderJson(orderRec);
     }
 
     private void searchHandle(Map<String, ?> dto, String module_id) {

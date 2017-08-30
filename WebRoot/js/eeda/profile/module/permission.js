@@ -232,8 +232,14 @@ define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
         var saveAction=function(btn, is_start){
             is_start = is_start || false; 
 
+            var ue = UE.getEditor('container');
             var dto = {
                 module_id: $('#module_id').text(),
+                info:{
+                    name: $('#form_name').val(),
+                    code: $('#form_code').val(),
+                },
+                template_content: ue.getContent(),
                 permission_list: eeda.buildTableDetail('permission_table', deletedPermisstionTableIds),
                 auth_list: buildAuthTableDetail()
             };
