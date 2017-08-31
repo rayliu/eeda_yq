@@ -284,8 +284,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             var item={};
             cargoTable.row.add(item).draw(true);
         });
-        
-        
         //刷新明细表
         itemOrder.refleshOceanItemTable = function(contract_id){
         	var url = "/supplierContract/tableList?contract_id="+contract_id+"&type=ocean";
@@ -303,7 +301,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         //------------事件处理
         var locationTable = eeda.dt({
             id: 'ocean_location_table',
-            autoWidth: false,
+            autoWidth: true,
             paging: false,
             info: false,
             drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
@@ -400,6 +398,20 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                          style:'width:150px'
                         });
                         return field_html; 
+                    }
+                },
+                { "data": "REMARK", "width": "130px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return "<input type='text' name='remark' value="+data+">";
+                    }
+                },
+                { "data": "SUM_PRICE", "width": "130px",
+                    "render": function ( data, type, full, meta ) {
+                        if(!data)
+                            data='';
+                        return "<span>"+data+"</span>";
                     }
                 },
                 { "data": "TYPE", "width": "150px", "visible": false,

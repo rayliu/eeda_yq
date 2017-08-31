@@ -165,7 +165,9 @@ public class SupplierContractController extends Controller {
                         + " CONCAT(l.name,' -', l.code) pol_name, "
                         + " CONCAT(l1.name,' -', l1.code) pod_name,"
                         + " CONCAT(l2.name,' -', l2.code) hub_name,"
-                        + " CONCAT(l3.name,' -', l3.code) por_name"
+                        + " CONCAT(l3.name,' -', l3.code) por_name,"
+                        + " ifnull((select sum(sci.price) from supplier_contract_item sci"
+                        + " where supplier_loc_id = ccl.id),0) sum_price"
                         +" from supplier_contract_location ccl"
                         +" left join party air_p on air_p.id = ccl.air_company"
                         +" LEFT JOIN location l on l.id = ccl.pol_id"
@@ -173,6 +175,7 @@ public class SupplierContractController extends Controller {
                         +" LEFT JOIN location l2 on l2.id = ccl.hub_id"
                         +" LEFT JOIN location l3 on l3.id = ccl.por_id"
                         +" left join party p on p.id = ccl.carrier_id"
+                        +" left join supplier_contract_item sci on sci.supplier_loc_id = ccl.id"
                         +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' ";	
     	}else if("trade".equals(type)){
             sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
