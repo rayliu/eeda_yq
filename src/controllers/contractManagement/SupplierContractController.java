@@ -175,7 +175,6 @@ public class SupplierContractController extends Controller {
                         +" LEFT JOIN location l2 on l2.id = ccl.hub_id"
                         +" LEFT JOIN location l3 on l3.id = ccl.por_id"
                         +" left join party p on p.id = ccl.carrier_id"
-                        +" left join supplier_contract_item sci on sci.supplier_loc_id = ccl.id"
                         +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' ";	
     	}else if("trade".equals(type)){
             sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"

@@ -72,7 +72,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                 item.id = id;
                 for(var i = 0; i < row.childNodes.length; i++){
                 	var name = $(row.childNodes[i]).find('input,select').attr('name');
-                	if(name == 'checkRoute'){
+                	if(name == 'selectRoute'){
                 		var check = $($(row.childNodes[i]).find('input')).prop('checked');
                      	if(check){
                      		item.is_select = 'Y';
@@ -301,7 +301,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         //------------事件处理
         var locationTable = eeda.dt({
             id: 'ocean_location_table',
-            autoWidth: true,
+            autoWidth: false,
             paging: false,
             info: false,
             drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
@@ -315,7 +315,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 				    	if(data == 'Y'){
 				    		select = "checked";
 				    	}
-				        return '<input type="radio" '+select+' name="checkRoute" style="margin-right:20px;" />';
+				        return '<input  name="selectRoute"  type="radio" '+select+' style="margin-right:20px;" />';;
 				    }
 				},
 				{  "width": "30px",
@@ -472,7 +472,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 
         
         //根据radioButton显示对应路线费用
-        $('#ocean_location_table').on('click','[name=checkRoute]', function(){
+        $('#ocean_location_table').on('click','[name=selectRoute]', function(){
         	var self = this;
         	var order_id = $('#contract_id').val();
         	if(order_id == '')
