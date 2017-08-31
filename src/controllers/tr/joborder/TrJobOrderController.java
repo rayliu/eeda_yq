@@ -1792,19 +1792,18 @@ public class TrJobOrderController extends Controller {
 				String commodity_name = line.get("商品名称").trim();
 				String number = line.get("数量").trim();
 				String legal_unit = line.get("单位").trim();
-				String price = line.get("单价(CNY)").trim();
+				String price = line.get("单价(CNY)")==null?null:line.get("单价(CNY)").trim();
+				String total_price = line.get("总价(CNY)")==null?null:line.get("总价(CNY)").trim();
 				String value_added_tax = line.get("增值税率").trim();
 				String tax_refund_rate = line.get("国税退税率").trim();
 				String tax_refund_rate_customer = line.get("客户退税率").trim();
-				String custom_price = line.get("报关单价").trim();
-				String custom_number = line.get("数量").trim();
+				String custom_price = line.get("报关单价")==null?null:line.get("报关单价").trim();
+				String custom_total_price = line.get("报关总价")==null?null:line.get("报关总价").trim();
 				String custom_currency = line.get("报关币制").trim();
 				String custom_rate = line.get("报关汇率").trim();
 				//String  unload_type = line.get("提柜类型").trim();
 				String agency_rate = line.get("代理费百分比(%)").trim();
 
-
-	   			
 	   			Long commodity_id = null;
 	   			Record commodity = Db.findFirst("select * from trade_item where commodity_name = ? and office_id = ?",commodity_name,office_id);
 	   			if(commodity != null){
@@ -1817,8 +1816,22 @@ public class TrJobOrderController extends Controller {
 	   				custom_currency_id = currency_rate.getLong("currency_id");
 	   			}
 	   			
-	   			Double domestic_price = Double.parseDouble(price)*Double.parseDouble(number);
-	   			Double custom_amount = Double.parseDouble(custom_price)*Double.parseDouble(number);
+	   			Double domestic_price = 0.00;
+	   			if(StringUtils.isNotBlank(price) && StringUtils.isBlank(total_price)){
+	   				domestic_price = Double.parseDouble(price)*Double.parseDouble(number);
+	   			}else if(StringUtils.isNotBlank(total_price)){
+	   				domestic_price = Double.parseDouble(total_price);
+	   				price = String.valueOf(Double.parseDouble(total_price)/Double.parseDouble(number));
+	   			}
+	   			
+	   			Double custom_amount = 0.00;
+	   			if(StringUtils.isNotBlank(custom_price) && StringUtils.isBlank(custom_total_price)){
+	   				custom_amount = Double.parseDouble(custom_price)*Double.parseDouble(number);
+	   			}else if(StringUtils.isNotBlank(custom_total_price)){
+	   				custom_amount = Double.parseDouble(custom_total_price);
+	   				custom_price = String.valueOf(Double.parseDouble(custom_total_price)/Double.parseDouble(number));
+	   			}
+	   			
 	   			Double custom_amount_cny = custom_amount*Double.parseDouble(custom_rate);
 	   			Double agency_amount_cny = (domestic_price*Double.parseDouble(agency_rate))/100;
 	   			
