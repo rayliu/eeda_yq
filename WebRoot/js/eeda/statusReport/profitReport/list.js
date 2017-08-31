@@ -268,6 +268,40 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  }
       })
       searchData();
+      
+    //导出excel
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+          var customer_id = $("#customer_id").val();
+          var customer_name = $("#customer_name_input").val();
+          var date_type = $('[name=type]:checked').val();
+          var type = $("#type").val()
+          var begin_date = '';
+          var end_date = '';
+          if(date_type=='year'){
+        	  begin_date = $("#year_begin_time").val();
+              end_date = $("#year_end_time").val();
+          }else if(date_type=='season'){
+        	  begin_date = $("#season_begin_time").val();
+              end_date = $("#season_end_time").val();
+          }else if(date_type=='month'){
+        	  begin_date = $("#month_begin_time").val();
+              end_date = $("#month_end_time").val();
+          }else{
+        	  begin_date = $("#day_begin_time").val()
+        	  end_date = $("#day_end_time").val()
+          }
+       
+		  $.post('/profitReport/downloadExcelList',{customer_id:customer_id,date_type:date_type,type:type,begin_date:begin_date,end_date:end_date}, function(data){
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $('#singlexportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      });
 
   });
 });
