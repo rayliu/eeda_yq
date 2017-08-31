@@ -7,9 +7,8 @@
                 	<div class="three_tab"><!--  三列排版  -->
                     	<div class="search_single">
                         	<select id="selected_field" name="selected_field" class="form-control search-label">
-                            	<option value="order_export_date">出货时间</option>
+                            	<option value="date_custom">报关时间</option>
                             	<option value="sp_id">结算公司</option>
-	                            <option value="employee_id">业务员</option>
                             </select>
 
                             <div style="display:none;position:absolute;left:34%;bottom:-5px;" id="sp_id_show">
@@ -20,9 +19,9 @@
                                                                  }){}%>
 								</div>
 		                    <input type="text" id="employee_id_show" style="display:none;" class="form-control search-control"/>
-                        	<div style="position:absolute;left:34%;bottom:-5px;" id="order_export_date_show";>        
+                        	<div style="position:absolute;left:34%;bottom:-5px;" id="date_custom_show";>        
 		                            	<%include("/eeda/component/form/inputDateQueryField.html",
-		                                	{	id:'single_order_export_date',
+		                                	{	id:'single_date_custom',
 		                                		style:'width:120%',
 								                begin_style:'width:30%',
 								                end_style:'width:30%',  
@@ -34,6 +33,7 @@
 					<div class="three_tab"><!--  三列排版  -->
 						<div class="search_single">
 							<button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
+							<button id="exportTotaledExcel1" type="button" class="btn btn_green">导出Excel</button>
 						</div>
 					</div>
 					<div class="three_tab"><!--  三列排版  -->
@@ -59,8 +59,8 @@
                                             </div>
                                             <div class="col-lg-4">
 	                             				<%include("/eeda/component/form/inputDateQueryField.html",
-	                             									 {   id:'order_export_date', 
-	                             									 	 label:'出货时间',
+	                             									 {   id:'date_custom', 
+	                             									 	 label:'报关时间',
 	                             									     value:''
 	                             									  }){} %>
                                             </div>
@@ -71,6 +71,7 @@
 
                                     <div class="form-group button-bar" >
                                         <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                                        <button id="exportTotaledExcel" type="button" class="btn btn_green">导出Excel</button>
                                         <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                                         <span style="margin-left:50%;color:#AAAAAA">* 注：回款率 = 确认收款金额 / 应收金额
                                     </div>
