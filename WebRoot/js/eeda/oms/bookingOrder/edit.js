@@ -125,8 +125,9 @@ $(document).ready(function() {
         		formRequired++;
             }
         })
+        
         if(formRequired>0){
-        	$.scojs_message('货物名称和出货时间为必填字段', $.scojs_message.TYPE_ERROR);
+        	$.scojs_message('有红色 *符为必填字段', $.scojs_message.TYPE_ERROR);
         	return;
         }
 

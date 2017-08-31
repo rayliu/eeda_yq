@@ -36,7 +36,8 @@
 	                    <h4 style="padding-top:5px; color:green;">
 	                        <img src="/images/货车装车_green.png" style="width: 50px;margin-top:-10px;"> <span style="color:green;">提货</span>
 	                    </h4>
-	                    <span id="sendCar" style="color:green;">预约${job_eta!''}到厂</span>
+	                    <span id="sendCar" style="color:green;">预约:${job_eta!''}</span>
+	                    <span style="color:green;">到厂</span>
 	                <%} else {%>
 	                    <h4 style="padding-top:5px;color:#d8d8d8;">
 	                        <img src="/images/货车装车.png" style="width: 50px;margin-top:-10px;"> <span style="color:#d8d8d8;">提货</span>
@@ -74,7 +75,7 @@
 			</div>
 			<div id = "ocean_status" style="display:none">
 		        <div style="width:5%;float:left;text-align:center;">
-		        	<% if(job_atd!''!=''){%>
+		        	<% if(ocean_job_atd!''!=''){%>
 	                      <img src="/images/line_arrow_green.png" style="width: 100%;padding-top: 30%;">
 	                <%} else{ %>
 	                    <img src="/images/line_arrow.png" style="width: 100%;padding-top: 30%;">
@@ -82,7 +83,7 @@
 				</div>
 		              		
 		        <div style="width:10%;float:left;text-align:center;">
-	                <% if(job_atd!''!=''){%>
+	                <% if(ocean_job_atd!''!=''){%>
 	    				<h4 style="padding-top: 10px; color:green;">
 	                    	<img src="/images/轮船_green.png" style="width: 50px;" > 
 	                    	<span style="color:green;">离港</span>
@@ -93,12 +94,16 @@
 	                        <span>离港</span>
 	                    </h4>
 	                <%}%>
-					<% if(job_atd!'' != null && job_atd!'' !=''){%>
-		            	<span id="boarding" style="color:green;">${pol_name!''}<br>${job_atd!''}开船</span>
+					<% if(ocean_job_atd!'' != null && ocean_job_atd!'' !=''){%>
+		            	<span id="boarding" style="color:green;">${pol_name!''}<br></span>
+		            	<span id="boarding_etd" style="color:green;">ETD:${ocean_job_etd!''}</span><br>
+		            	<span id="boarding_atd" style="color:green;">ATD:${ocean_job_atd!''}</span>
+		            <%}else if(ocean_job_etd!''!=null && ocean_job_etd!''!=''){%>
+		            	<span  >ETD:${ocean_job_etd!''}</span>
 		            <%}%>
 				</div>
 		        <div style="width:5%;float:left;text-align:center;">
-		            <% if(job_ata!''!=''){%>
+		            <% if(ocean_job_ata!''!=''){%>
 	                      <img src="/images/line_arrow_green.png" style="width: 100%;padding-top: 30%;">
 	                <%} else{ %>
 	                    <img src="/images/line_arrow.png" style="width: 100%;padding-top: 30%;">
@@ -106,7 +111,7 @@
 				</div>
 		              		
 		        <div style="width:10%;float:left;text-align:center;padding-top: 10px;">
-	                <% if(job_ata!''!=''){%>
+	                <% if(ocean_job_ata!''!=''){%>
 	    				<h4 style="color:green;">
 	                    	<img src="/images/check_green.png" style="width: 30px;"> 到港
 	                    </h4>
@@ -115,8 +120,12 @@
 	                        <img src="/images/check.png" style="width: 30px;"> 到港
 	                    </h4>
 	                <% }%>
-					<% if(pod_name!''!= null && pod_name!'' !=''){%>
-		              	<span id="arrival" style="color:green;">${pod_name!''}<br>${job_ata!''}到港</span>
+					<% if(ocean_job_ata!''!= null && ocean_job_ata!'' !=''){%>
+		              	<span id="arrival" style="color:green;">${pod_name!''}<br></span>
+		              	<span id="arrival_eta" style="color:green;">ETA:${ocean_job_eta!''}<br></span>
+		              	<span id="arrival_ata" style="color:green;">ATA:${ocean_job_ata!''}<br></span>
+		            <%}else if(ocean_job_eta!''!=null && ocean_job_eta!''!=''){%>
+		            	<span >ETA:${ocean_job_eta!''}<br></span>
 		            <%}%>
 				</div>
 			</div>
@@ -456,7 +465,8 @@
                 <div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputPortField.html", 
                                                 {   id:'pol_id', 
-                                                    label:'启运港POL',	                                                   
+                                                    label:'启运港POL',
+                                                    required:'required',	                                                   
                                                     value:jobOrder.pol!ocean.pol_id!'',
                                                     display_value:jobOrder.pol_name!ocean.pol_name!''
                                                 }){}%>
@@ -464,7 +474,8 @@
 	           	<div class="col-lg-4">
 	                            <%include("/eeda/component/form/inputPortField.html", 
                                                 {   id:'pod_id', 
-                                                    label:'目的港POD',	                                                    
+                                                    label:'目的港POD',
+                                                    required:'required',	                                                    
                                                     value:jobOrder.pod!ocean.pod_id!'',
                                                     display_value:jobOrder.pod_name!ocean.pod_name!''
                                                 }){}%>
@@ -475,7 +486,8 @@
      			<div class="col-lg-4">
                    <%include("/eeda/component/form/selectField.html", 
 						                     {   id:'trade_type', 
-						                         label:'贸易类型', 
+						                         label:'贸易类型',
+						                         required:'required', 
 						                         value:jobOrder.trade_type!ocean.trade_type!'',
 						                         value_list:[
 						                             {code:'FOB', value:'FOB'},
@@ -491,6 +503,7 @@
                    <%include("/eeda/component/form/selectField.html", 
 					                       {   id:'trans_clause', 
 					                           label:'运输条款', 
+					                           required:'required',
 					                           value:jobOrder.trans_clause!ocean.trans_clause!'',
 					                           value_list:[
 					                           	{code:'CY-CY', value:'CY-CY'},
@@ -602,6 +615,7 @@
 	                            <%include("/eeda/component/form/inputPortField.html", 
                                                 {   id:'air_pol_id', 
                                                     label:'POL',
+                                                    required:'required',
                                                     port_type:'air_port',	                                                   
                                                     value:jobOrder.start_from!air.air_pol_id!'',
                                                     display_value:jobOrder.air_pol_name!air.air_pol_name!''
@@ -611,6 +625,7 @@
 	                            <%include("/eeda/component/form/inputPortField.html", 
                                                 {   id:'air_pod_id', 
                                                     label:'POD',
+                                                    required:'required',
                                                     port_type:'air_port',		                                                    
                                                     value:jobOrder.destination!air.air_pod_id!'',
                                                     display_value:jobOrder.air_pod_name!air.air_pod_name!''
@@ -622,7 +637,8 @@
      			<div class="col-lg-4">
                    <%include("/eeda/component/form/selectField.html", 
 						                     {   id:'air_trade_type', 
-						                         label:'贸易类型', 
+						                         label:'贸易类型',
+						                         required:'required', 
 						                         value:jobOrder.trade_type!air.air_trade_type!'',
 						                         value_list:[
 						                             {code:'FOB', value:'FOB'},
@@ -637,7 +653,8 @@
                 <div class="col-lg-4">
                    <%include("/eeda/component/form/selectField.html", 
 					                       {   id:'air_trans_clause', 
-					                           label:'运输条款', 
+					                           label:'运输条款',
+					                           required:'required', 
 					                           value:jobOrder.trans_clause!air.air_trans_clause!'',
 					                           value_list:[
 					                           	{code:'CY-CY', value:'CY-CY'},

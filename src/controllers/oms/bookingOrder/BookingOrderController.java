@@ -680,7 +680,7 @@ public class BookingOrderController extends Controller {
     	
 	    	//获取预约到达时间
 	    	Long job_order_id = re.getLong("id");
-	    	Record jobland = Db.findFirst("select * from job_order_land_item where order_id = ?",job_order_id);
+	    	Record jobland = Db.findFirst("select SUBSTR(eta,1,12) eta from job_order_land_item where order_id = ?",job_order_id);
 	    	if(jobland!=null){
 	    		if(jobland.get("eta")==null){
 	        		Record joblandcab = Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",job_order_id);
@@ -726,19 +726,27 @@ public class BookingOrderController extends Controller {
 	    	}
 	    	
 	    	//上船时间
-	    	String sql_Ship = "select jos.*,l.name pol_name,l1.name pod_name  from job_order_shipment jos"
+	    	String sql_Ship = "select SUBSTR(etd,1,10) etd_date,jos.*,l.name pol_name,l1.name pod_name  from job_order_shipment jos"
 	    			+ " LEFT JOIN location l on l.id = jos.pol"
 	    			+ " LEFT JOIN location l1 on l1.id = jos.pod"
 	    			+ " where order_id = ?";
 	    	Record jobShip = Db.findFirst(sql_Ship,job_order_id);
 	    	if(jobShip != null){
+	    		if(jobShip.get("etd_date")!=null){
+	    			String atd = jobShip.get("etd_date").toString();
+	    			setAttr("ocean_job_etd", atd);
+	    		}
+	    		if(jobShip.get("eta")!=null){
+	    			String ata = jobShip.get("eta").toString();
+	    			setAttr("ocean_job_eta", ata);
+	    		}
 	    		if(jobShip.get("atd")!=null){
 	    			String atd = jobShip.get("atd").toString();
-	    			setAttr("job_atd", atd);
+	    			setAttr("ocean_job_atd", atd);
 	    		}
 	    		if(jobShip.get("ata")!=null){
 	    			String ata = jobShip.get("ata").toString();
-	    			setAttr("job_ata", ata);
+	    			setAttr("ocean_job_ata", ata);
 	    		}
 	    		if(jobShip.get("pol_name")!=null){
 	    			String pol_name = jobShip.get("pol_name").toString();
