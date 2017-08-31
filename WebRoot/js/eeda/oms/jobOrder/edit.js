@@ -7,7 +7,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     './edit_arap_detail','./edit_shipment_doc_detail'], function ($, metisMenu) {
 
 $(document).ready(function() {
-	
+	//主工作单的校验
     $("#orderForm").validate({
     	rules:{
     		gross_weight:{
@@ -63,7 +63,7 @@ $(document).ready(function() {
     		
     	}
     })
-    
+    //海运工作单的校验
     $("#shipmentForm").validate({
     	rules:{
     		hbl_no:{
@@ -99,6 +99,7 @@ $(document).ready(function() {
     		}
     	}
     })
+    //陆运增加联系人的校验
     $("#partyForm").validate({
     	rules:{
     		company_name:{
@@ -119,6 +120,31 @@ $(document).ready(function() {
     		contact_person_eng:{
     			maxlength:100
     		}
+    	}
+    })
+    //空运表单的校验 
+    $("#airForm").validate({
+    	rules:{
+    		air_net_weight:{
+    			number:true
+    		},
+    		air_gross_weight:{
+    			number:true
+    		},
+    		air_volume:{
+    			number:true
+    		},
+    		shipping_mark:{
+    			maxlength:1000
+    		},
+    		goods_mark:{
+    			maxlength:1000
+    		},
+    		booking_mark:{
+    			maxlength:2000
+    		},
+    		
+    		
     	}
     })
     
