@@ -298,11 +298,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  $.post('/profit/downloadExcelList',{customer_id:customer_id,begin_time:begin_time,end_time:end_time}, function(data){
               $('#exportTotaledExcel').prop('disabled', false);
               $('#singlexportTotaledExcel').prop('disabled', false);
-              $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+              $.scojs_message('导出利润表excel文件成功', $.scojs_message.TYPE_OK);
               window.open(data);
           }).fail(function() {
               $('#exportTotaledExcel').prop('disabled', false);
-              $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+              $.scojs_message('导出利润表excel文件失败', $.scojs_message.TYPE_ERROR);
           });
       }
   });
