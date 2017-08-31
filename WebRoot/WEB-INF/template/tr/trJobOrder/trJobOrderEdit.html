@@ -38,6 +38,8 @@
                         <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
                         <input id="plan_order_id" type="hidden" name="plan_order_id" value="${planOrder.id!''}"/>
                         <input id="plan_order_item_id" type="hidden" value="${planOrderItem.id!''}"/>
+                        <input id="from_order_id"  type="hidden" value="${order.from_order_id!bookingOrder.id!''}"/>
+                        <input id="from_order_type" type="hidden"  value="<%if(bookingOrder.id!''!=''){%>bookingOrder<%}else{%>${order.from_order_type!''}<%}%>"/>
                         <input id="updator_id" type="hidden" name="updator_id" value="${order.updator!''}"/>
                         <input id="update_stamp" type="hidden" name="update_stamp" value="${order.update_stamp!''}"/>
                         <input id="rateExpired" type="hidden"  name="rateExpired" value="${rateExpired!''}"/>
@@ -55,7 +57,7 @@
                                 <%include("/eeda/component/form/selectField.html", 
                                     {   id:'type', 
                                         label:'类型', 
-                                        value:order.type!planOrderItem.JOB_ORDER_TYPE!'',
+                                        value:order.type!planOrderItem.JOB_ORDER_TYPE!bookingOrder.type!'',
                                         value_list:[
                                             {code:'出口柜货', value:'出口柜货'},
                                             {code:'进口柜货', value:'进口柜货'}, 
@@ -87,10 +89,15 @@
                            </div>
                         </div>
                         <div class="row"><!--  第4行  -->
-                            <div class="col-lg-4">
-                                
-                            </div><!-- /.col-lg-4 -->
-                            <div class="col-lg-12" >
+                            <div class="col-lg-4"><!--  三列排版  -->
+                                <%include("/eeda/component/form/inputField.html", 
+                                    {   id:'ref_no', 
+                                        label:'关联单号', 
+                                        value:order.ref_no!bookingOrder.booking_no!'',
+                                        disabled: 'disabled'
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-8" >
                                 <div class="form-group" id="transport_type">
                                     <label class="search-label">服务项目</label>
                                     
@@ -139,7 +146,7 @@
                                <%include("/eeda/component/form/dateInputField.html", 
                                    {   id:'order_export_date', 
                                        label:'出货日期', 
-                                       value:order.order_export_date!'',
+                                       value:order.order_export_date!bookingOrder.order_export_date!'',
                                        required:'required'
                                    }){}%>
                             </div>

@@ -154,6 +154,8 @@ $(document).ready(function() {
         order.trade_type = $("#trade_type").val();
         order.land_export_date = $('#land_export_date').val();
         order.order_export_date = $('#order_export_date').val();
+        order.from_order_id = $('#from_order_id').val();
+        order.from_order_type = $('#from_order_type').val();
         //报关类型
         order.custom_type = custom_type_str;
         //自理报关还是委托报关

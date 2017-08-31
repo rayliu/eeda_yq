@@ -16,6 +16,7 @@ import models.UserLogin;
 import models.eeda.cms.CustomPlanOrder;
 import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.cms.CustomPlanOrderItem;
+import models.eeda.oms.bookOrder.BookingOrder;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.tr.tradeJoborder.TradeJobOrder;
 
@@ -63,6 +64,7 @@ public class CustomPlanOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
     public void create() {
         String jobId = getPara("jobOrderId");
+        String bookingId = getPara("bookingId");
         
         String login_id = getPara("login_id");
         String type = "";
@@ -80,6 +82,9 @@ public class CustomPlanOrderController extends Controller {
         if("tradeCompany".equals(type)){
         	TradeJobOrder jo = TradeJobOrder.dao.findById(jobId);
         	setAttr("tradeJobOrder", jo);
+        }else if(StringUtils.isNotEmpty(bookingId)){
+        	BookingOrder booking = BookingOrder.dao.findById(bookingId);
+        	setAttr("bookingOrder", booking);
         }else{
         	JobOrder jo = JobOrder.dao.findById(jobId);
         	setAttr("jobOrder", jo);

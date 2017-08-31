@@ -16,7 +16,6 @@ import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
 import models.UserLogin;
-import models.eeda.cms.CustomPlanOrder;
 import models.eeda.oms.bookOrder.BookOrderDoc;
 import models.eeda.oms.bookOrder.BookingOrder;
 import models.eeda.oms.bookOrder.BookingOrderDoc;
@@ -26,8 +25,6 @@ import models.eeda.oms.jobOrder.JobOrderAirItem;
 import models.eeda.oms.jobOrder.JobOrderDoc;
 import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.eeda.oms.jobOrder.JobOrderShipment;
-import models.eeda.tms.TransJobOrder;
-import models.eeda.tr.tradeJoborder.TradeJobOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -768,6 +765,10 @@ public class BookingOrderController extends Controller {
 	    	}
 
     	}
+    	//贸易单据回显
+    	Record tradeOrder = Db.findFirst("select * from trade_job_order where from_order_id=? and from_order_type=?",id,"bookingOrder");
+    	setAttr("tradeOrder", tradeOrder);
+    	
 //    	Record re = Db.findFirst("");
     	
     	String create_stamp = bookingOrder.get("create_stamp").toString();
@@ -1118,9 +1119,7 @@ public class BookingOrderController extends Controller {
     	String entrust_type = booking.getStr("entrust_type");
     	UserLogin user = LoginUserController.getLoginUser(this);
     	Long customer_office_id = user.getLong("office_id");
-    	
-    	
-    	
+
     	//booking主表信息
     	String shipper = null;
     	if(booking.get("shipper")!=null){
@@ -1387,20 +1386,159 @@ public class BookingOrderController extends Controller {
     			}
     			renderJson("order_no",order_no);	        	
     	       	
-    		}else if("landCompany".equals(system_type)){
-    			TransJobOrder order  = TransJobOrder.dao.findFirst("select * from trans_job_order where from_order_id = ? and from_order_type = 'booking' ",booking_id);
-    	    	
-    		}else if("customCompany".equals(system_type)){
-    			CustomPlanOrder order  = CustomPlanOrder.dao.findFirst("select * from custom_plan_order where from_order_id = ? and from_order_type = 'booking' ",booking_id);
-    	    	
-    		}else if("tradeCompany".equals(system_type)){
-    			TradeJobOrder order  = TradeJobOrder.dao.findFirst("select * from trade_job_order where from_order_id = ? and from_order_type = 'booking' ",booking_id);
     		}
 		}else{
 	    	String err = "提交失败，委托公司为空";
 			renderText(err);
 			return ;
 	    }
+     }else{
+    	
+    	Party ocean_agent = Party.dao.findById(booking.getLong("ocean_party_id"));
+    	
+    	Party air_agent = Party.dao.findById(booking.getLong("air_party_id"));
+ 		if(ocean_agent!=null||air_agent!=null){
+ 			Office ocean_agent_office = Office.dao.findById(ocean_agent.getLong("ref_office_id"));
+ 			Office air_agent_office = Office.dao.findById(air_agent.getLong("ref_office_id")); 
+ 		//entrust_office信息
+     	Long ocean_officeNo = null;//生成单号要用到的office_id
+     	Long air_officeNo = null;//生成单号要用到的office_id
+         if(ocean_agent_office != null){
+        	 ocean_officeNo = ocean_agent_office.getLong("id");
+         }else{
+        	 String err = "系统不存在该海运代理";
+				renderText(err);
+				return ;
+         } 
+        if(air_agent_office!=null){
+       	 	air_officeNo = air_agent_office.getLong("id");
+        }else{
+       	 	String err = "系统不存在该空运代理";
+			renderText(err);
+			return ;
+        }
+ 			JobOrder oceanOrder  = JobOrder.dao.findFirst("select * from job_order where from_order_id = ? and from_order_type = 'booking' and office_id=? ",booking_id,ocean_officeNo);
+ 			JobOrder airOrder  = JobOrder.dao.findFirst("select * from job_order where from_order_id = ? and from_order_type = 'booking' and office_id=? ",booking_id,ocean_officeNo);
+ 			String order_no = "";
+ 			if(oceanOrder==null){ 				
+ 				oceanOrder  = new JobOrder();
+ 				oceanOrder.set("creator", user.getLong("id"));
+ 				oceanOrder.set("create_stamp", new Date());
+ 				oceanOrder.set("updator", user.getLong("id"));
+ 				oceanOrder.set("update_stamp", new Date());
+ 				oceanOrder.set("from_order_type", "booking");
+ 				oceanOrder.set("from_order_id", booking_id);
+ 				oceanOrder.set("from_order_no", booking_no);
+ 				oceanOrder.set("old_order_no", outer_order_no);                
+ 				oceanOrder.set("job_unit", order_unit);                      
+ 				oceanOrder.set("trans_clause", (trans_clause==null?air_trans_clause:trans_clause));
+ 				oceanOrder.set("trade_type", (trade_type==null?air_trade_type:trade_type));
+ 				oceanOrder.set("type", type);
+ 				oceanOrder.set("order_export_date", order_export_date);
+ 				oceanOrder.set("pieces", pieces);
+ 				oceanOrder.set("gross_weight", gross_weight);
+ 				oceanOrder.set("volume", volume);
+ 				oceanOrder.set("transport_type", transport_type);
+	                //-----------默认
+ 				oceanOrder.set("billing_method", "perWeight");
+            	if(StringUtils.isNotBlank(customer_office_id.toString())){
+                	Record customer = Db.findFirst("select * from party where type='CUSTOMER' and ref_office_id = ? and office_id =? ",customer_office_id,ocean_officeNo);
+                	if(customer!=null){
+                		Long customer_id = customer.getLong("id");
+                		oceanOrder.set("customer_id", customer_id);
+                	}
+                }
+            	order_no = OrderNoGenerator.getOrderNo("jobOrder",ocean_officeNo);
+            	oceanOrder.set("order_no", order_no);
+            	oceanOrder.set("office_id", ocean_officeNo);
+            	oceanOrder.save();
+                Long to_order_id = oceanOrder.getLong("id");
+                if(transport_type.contains("ocean")){
+                	JobOrderShipment ocean  = JobOrderShipment.dao.findFirst("select * from job_order_shipment where order_id = ? ",to_order_id);
+	                if(ocean==null){
+	                	ocean  = new JobOrderShipment();
+	                	ocean.set("order_id", to_order_id);
+	                	
+	                	ocean.set("HBLshipper", shipper);
+	                	ocean.set("HBLshipper_info", shipper_info);
+	                	
+	                	ocean.set("HBLconsignee", consignee);
+	                	ocean.set("HBLconsignee_info", consignee_info);
+	                	
+	                	ocean.set("HBLnotify_party", notify);
+	                	ocean.set("HBLnotify_party_info", notify_info);
+	                	
+	                	ocean.set("pol", pol_id);
+	                	ocean.set("pod", pod_id);
+	                	ocean.set("cargo_desc", gargo_name);
+	                	ocean.save();
+	                }
+                }
+ 			}
+ 			if(airOrder!=null){
+ 				airOrder  = new JobOrder();
+ 				airOrder.set("creator", user.getLong("id"));
+ 				airOrder.set("create_stamp", new Date());
+ 				airOrder.set("updator", user.getLong("id"));
+ 				airOrder.set("update_stamp", new Date());
+ 				airOrder.set("from_order_type", "booking");
+ 				airOrder.set("from_order_id", booking_id);
+ 				airOrder.set("from_order_no", booking_no);
+ 				airOrder.set("old_order_no", outer_order_no);                
+ 				airOrder.set("job_unit", order_unit);                      
+ 				airOrder.set("trans_clause", (trans_clause==null?air_trans_clause:trans_clause));
+ 				airOrder.set("trade_type", (trade_type==null?air_trade_type:trade_type));
+ 				airOrder.set("type", type);
+ 				airOrder.set("order_export_date", order_export_date);
+ 				airOrder.set("pieces", pieces);
+ 				airOrder.set("gross_weight", gross_weight);
+ 				airOrder.set("volume", volume);
+ 				airOrder.set("transport_type", transport_type);
+	                //-----------默认
+ 				airOrder.set("billing_method", "perWeight");
+            	if(StringUtils.isNotBlank(customer_office_id.toString())){
+                	Record customer = Db.findFirst("select * from party where type='CUSTOMER' and ref_office_id = ? and office_id =? ",customer_office_id,air_officeNo);
+                	if(customer!=null){
+                		Long customer_id = customer.getLong("id");
+                		airOrder.set("customer_id", customer_id);
+                	}
+            	order_no = OrderNoGenerator.getOrderNo("jobOrder",air_officeNo);
+            	airOrder.set("order_no", order_no);
+            	airOrder.set("office_id", air_officeNo);
+            	airOrder.save();
+            }
+            	Long to_order_id = oceanOrder.getLong("id");
+            	if(transport_type.contains("air")){
+	                JobOrderAirItem air  = JobOrderAirItem.dao.findFirst("select * from job_order_air_item where order_id = ? ",to_order_id);
+	                JobOrderAir airDetail  = JobOrderAir.dao.findFirst("select * from job_order_air where order_id = ? ",to_order_id);
+	                if(airDetail==null){
+	                	airDetail  = new JobOrderAir();
+	                	airDetail.set("order_id", to_order_id);
+	                	airDetail.set("shipper", shipper);
+	                	airDetail.set("shipper_info", shipper_info);
+	                	airDetail.set("consignee", consignee);
+	                	airDetail.set("consignee_info", consignee_info);
+	                	airDetail.set("notify_party", notify);
+	                	airDetail.set("notify_party_info", notify_info);
+	                	airDetail.save();
+	                }
+	                if(air==null){
+	                	air  = new JobOrderAirItem();
+	                	air.set("order_id", to_order_id);
+	                	air.set("start_from", air_pol_id);
+	                	air.set("destination", air_pod_id);
+	                	air.save();
+	                }
+                }	
+ 			}
+ 			
+ 			renderJson("order_no",order_no);
+		}else{
+	    	String err = "提交失败，委托公司为空";
+			renderText(err);
+			return ;
+	    }
+  
      }
 			
     }

@@ -912,10 +912,10 @@ $(document).ready(function() {
     		$('#print_debit_note').attr('disabled',true);
     	}
     });
-    $('#print_debit_note').click(function(){
-    	buildSpList();
-    	$('#invoiceNo').val($('#ref_no').val());
-    })
+//    $('#print_debit_note').click(function(){
+//    	buildSpList();
+//    	$('#invoiceNo').val($('#ref_no').val());
+//    })
   
     
   //选择是否是同一结算公司

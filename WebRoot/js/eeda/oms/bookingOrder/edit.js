@@ -55,6 +55,7 @@ $(document).ready(function() {
             case 'ocean':
                 $('#oceanDetail').show();
                 $('#ocean_status').show();
+                $('#itemDetailTab').show();
                 break;
             case 'air':
                 $('#airDetail').show();
@@ -75,6 +76,7 @@ $(document).ready(function() {
             case 'ocean':
                 $('#oceanDetail').hide();
                 $('#ocean_status').hide();
+                $('#itemDetailTab').hide();
                 break;
             case 'air':
                 $('#airDetail').hide();
@@ -230,11 +232,6 @@ $(document).ready(function() {
         });
     	
 	});
-	$.unblockUI();
-
-    
-    
-	
 	$('#submitBtn').click(function(){
 			var order_id = $('#order_id').val();
 			$.post('/bookingOrder/submitBooking',{order_id:order_id},function(data){
@@ -261,7 +258,55 @@ $(document).ready(function() {
 		$('#submitBtn').attr('disabled',true);
         $('#saveBtn').attr('disabled',true);
 	}
+	//委托类型控制
+	var entrust_type_control=function(selfVal){
+		if(selfVal=="统一"){
+			$("#entrust_input").attr('disabled',false);
+			$("#ocean_agent_input").attr('disabled',true);
+			$("#air_agent_input").attr('disabled',true);			
+			$("#land_take_agent_input").attr('disabled',true);
+			$("#land_delivery_agent_input").attr('disabled',true);
+			$("#custom_broker_input").attr('disabled',false);
+			$("#arrive_custom_broker_input").attr('disabled',true);
+		}else if(selfVal=="各自委托"){
+			$("#entrust_input").attr('disabled',true);
+			$("#ocean_agent_input").attr('disabled',false);
+			$("#air_agent_input").attr('disabled',false);			
+			$("#land_take_agent_input").attr('disabled',false);
+			$("#land_delivery_agent_input").attr('disabled',false);
+			$("#custom_broker_input").attr('disabled',false);
+			$("#arrive_custom_broker_input").attr('disabled',false);
+		}
+	}
 	
+	var trade_order_id = $('#trade_order_id').val();
+	if(trade_order_id!=''){
+		$('#createTradeOrder').attr('disabled',true);
+	}
+
+	
+	$('#entrust_type').change(function(){
+		var selfVal = $(this).val();
+		entrust_type_control(selfVal);
+	});
+	entrust_type_control($('#entrust_type').val());
+	$("#createTradeOrder").click(function(){
+		var order_id = $('#order_id').val();
+		
+		if(trade_order_id==''){
+			if(order_id!=''){
+	        	window.open("/trJobOrder/create?bookingId="+order_id, '_blank');
+	        }else{
+	        	 $.scojs_message('请先保存单据', $.scojs_message.TYPE_ERROR);
+	        }
+		}else{
+			 $.scojs_message('该booking已经创建过工作单了', $.scojs_message.TYPE_ERROR);
+		}
+	});
+		
+		
+		
+	$.unblockUI();
 	
   });
 });

@@ -83,6 +83,8 @@ public class TrJobOrderController extends Controller {
     public void create() {
     	
     	String order_id=getPara("order_id");
+    	String bookingId=getPara("bookingId");
+    	
     	String itemIds=getPara("itemIds");
     	if(StringUtils.isNotEmpty(order_id)){
     		//查询plan_order 里的计划单号
@@ -92,7 +94,6 @@ public class TrJobOrderController extends Controller {
         	Party party = Party.dao.findById(planOrder.get("customer_id"));
         	setAttr("party", party);
     	}
-
     	if(StringUtils.isNotEmpty(itemIds)){
     		
     		String strAry[] = itemIds.split(",");
@@ -130,13 +131,42 @@ public class TrJobOrderController extends Controller {
 				    			+" where joi.id = ?";
 	    	setAttr("portCreate",Db.findFirst(port_sql,id));
     	}
-    	setAttr("usedOceanInfo", getUsedOceanInfo());
-    	setAttr("usedAirInfo", getUsedAirInfo());
-    	setAttr("emailTemplateInfo", getEmailTemplateInfo());
-    	setAttr("loginUser",LoginUserController.getLoginUserName(this));
-    	setAttr("login_id", LoginUserController.getLoginUserId(this));
-        render("/tr/trJobOrder/trJobOrderEdit.html");
+    	
+    	if(StringUtils.isNotEmpty(bookingId)){
+    		Record tradeOrder = Db.findFirst("select * from trade_job_order where from_order_id=? and from_order_type=?",bookingId,"bookingOrder");
+    		if(tradeOrder==null){
+    			Record bookingOrder = Db.findFirst("select * from booking_order where id = ?",bookingId);
+        		String transport_type = bookingOrder.getStr("transport_type");
+        		if(StringUtils.isNotEmpty(transport_type)){
+        			if(transport_type.contains("custom")){
+            			transport_type="custom,trade";
+            		}else{
+            			transport_type ="trade";
+            		}
+        		}
+        		
+        		
+        		setAttr("bookingOrder",bookingOrder);
+        		setAttr("transport_type",transport_type);
+        		Record reOcean = Db.findFirst("select * from booking_ocean_detail where order_id = ?",bookingId);
+        		if(reOcean!=null){
+        			setAttr("reOcean",reOcean);
+        		}
+        		setAttr("usedOceanInfo", getUsedOceanInfo());
+            	setAttr("usedAirInfo", getUsedAirInfo());
+            	setAttr("emailTemplateInfo", getEmailTemplateInfo());
+            	setAttr("loginUser",LoginUserController.getLoginUserName(this));
+            	setAttr("login_id", LoginUserController.getLoginUserId(this));
+                render("/tr/trJobOrder/trJobOrderEdit.html");
+    		}else{
+    			String trade_order_id = tradeOrder.get("id").toString();
+    			redirect("/trJobOrder/edit?id=" + trade_order_id);
+    		}    		
+    	}else{
+    		renderError(403);
+    	}
     }
+	
     
     //插入动作MBL标识符
     public void mblflag(){

@@ -89,6 +89,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           $('#collapseOceanIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
         });
         
+        $('#singleSearchBtn').click(function(event) {
+            var id = $('#order_id').val();
+            var custom_broker = $('#custom_broker_ref_office_id').val();
+            
+            if(custom_broker.trim()==''){
+            	$.scojs_message('请先选中报关行', $.scojs_message.TYPE_ERROR);
+            }else{
+            	if(id!=''){
+                	window.open("/customPlanOrder/create?bookingId="+id+"&to_office_id="+custom_broker, '_blank');
+                }else{
+                	 $.scojs_message('请先保存单据', $.scojs_message.TYPE_ERROR);
+                }
+            }
+        });
+        
+        
         
     });
 });
