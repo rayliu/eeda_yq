@@ -255,6 +255,7 @@ define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
                 console.log(order);
                 if(order.ID>0){
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+                    refreshTables(dto.module_id);
                     btn.attr('disabled', false);
                 }else{
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
@@ -293,5 +294,39 @@ define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
 
             saveAction($(this), true);
         });
+
+        var refreshTables= function(module_id){
+            $.post('/module/getOrderStructure', {module_id: module_id}, function(json){
+                module_obj = json;
+
+                var permission_dataTable = $('#permission_table').DataTable();
+                permission_dataTable.clear().draw();
+                for (var i = 0; i < json.PERMISSION_LIST.length; i++) {
+                    var permission = json.PERMISSION_LIST[i];
+                    var permissionItem ={
+                        ID: permission.ID,
+                        CODE: permission.CODE,
+                        NAME: permission.NAME,
+                        URL: permission.URL
+                    };
+
+                    permission_dataTable.row.add(permissionItem).draw(false);
+                }
+
+                var auth_dataTable = $('#auth_table').DataTable();
+                auth_dataTable.clear().draw();
+                for (var i = 0; i < json.AUTH_LIST.length; i++) {
+                    var auth = json.AUTH_LIST[i];
+                    var authItem ={
+                        ID: auth.ID,
+                        ROLE_ID: auth.ROLE_ID,
+                        ROLE_PERMISSION: auth.PERMISSION_LIST
+                    };
+
+                    auth_dataTable.row.add(authItem).draw(false);
+                }
+
+            }, 'json');
+        }
     });
  });
