@@ -181,13 +181,6 @@ public class SupplierContractController extends Controller {
                     +" LEFT JOIN unit u on u.id = cci.uom"
                     +" LEFT JOIN currency c on c.id= cci.currency_id"
                     +" WHERE cci.contract_id = ?  and cci.contract_type='trade'";
-        }else if("tour".equals(type)){
-            sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
-                    +" from supplier_contract_item cci"
-                    +" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
-                    +" LEFT JOIN unit u on u.id = cci.uom"
-                    +" LEFT JOIN currency c on c.id= cci.currency_id"
-                    +" WHERE cci.contract_id = ?  and cci.contract_type='tour'";
         }else {  
     		sql = " SELECT cci.*,fi.name fee_name, "
     		        + "u.name uom_name,c.name currency_name"
@@ -322,10 +315,21 @@ public class SupplierContractController extends Controller {
         List<Map<String,String>> charge_trade_items = (ArrayList<Map<String, String>>) dto.get("itemTradeList");
         DbUtils.handleList(charge_trade_items, "supplier_contract_item", id,"contract_id");
         
-        List<Map<String,String>> charge_tour_items = (ArrayList<Map<String, String>>) dto.get("itemTourList");
-        DbUtils.handleList(charge_tour_items, "supplier_contract_item", id,"contract_id");
+//        List<Map<String,String>> charge_tour_items = (ArrayList<Map<String, String>>) dto.get("itemTourList");
+//        DbUtils.handleList(charge_tour_items, "supplier_contract_item", id,"contract_id");
+//        List<Map<String,String>> tourLocs = (ArrayList<Map<String, String>>) dto.get("itemTourLocList");
+//        DbUtils.handleList(tourLocs, "supplier_contract_location", id,"contract_id");
+        
+        //园区路线、费用明细保存
         List<Map<String,String>> tourLocs = (ArrayList<Map<String, String>>) dto.get("itemTourLocList");
         DbUtils.handleList(tourLocs, "supplier_contract_location", id,"contract_id");
+        
+        Record reTour = Db.findFirst("select * from supplier_contract_location where contract_id = ? and type ="
+                + "  'tour_loc' and is_select = 'Y' ",id);
+		if(reTour != null){
+			List<Map<String,String>> charge_tour_items = (ArrayList<Map<String, String>>) dto.get("itemTourList");
+			DbUtils.handleList(charge_tour_items, "supplier_contract_item", reTour.get("id").toString(),"supplier_loc_id");
+		}
    		
    		Record rcon = new Record();
    		rcon= Db.findFirst("select * from supplier_contract joc where id = ? ",id);

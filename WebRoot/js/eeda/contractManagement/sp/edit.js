@@ -70,6 +70,10 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        	
 	        	itemOrder.refleshLandLocTable(data.ID);
 	        	itemOrder.refleshLandItemTable(data.ID);
+	        	
+	        	itemOrder.refleshTourLocTable(data.ID);
+	        	itemOrder.refleshTourItemTable(data.ID);
+	        	
 	        },'json').fail(function() {
 	            $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 	            $('#saveBtn').attr('disabled', false);

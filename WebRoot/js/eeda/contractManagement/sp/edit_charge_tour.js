@@ -25,18 +25,74 @@ $(document).ready(function() {
             var item = items[i];
             item.contract_type = "tour";
         }
-        return items;
-    };
-
-    itemOrder.buildTourLocItem=function(){
-        var items = eeda.buildTableDetail("tour_location_table", deletedLoactionTableIds);
-        for (var i = 0; i < items.length; i++) {
-            var item = items[i];
-            item.type = "tour_loc";
-        }
+        deletedTableIds = [];
         return items;
     };
     
+    
+    itemOrder.buildTourLocItem=function(){
+    	var table_id = 'tour_location_table';
+    	var deletedTableIds = deletedLoactionTableIds;
+
+    	var item_table_rows = $("#"+table_id+" tr:visible");
+        var items_array=[];
+        for(var index=0; index<item_table_rows.length; index++){
+            if(index==0)
+                continue;
+
+            var row = item_table_rows[index];
+            var empty = $(row).find('.dataTables_empty').text();
+            if(empty)
+              continue;
+            
+            var id = $(row).attr('id');
+            if(!id){
+                id='';
+            }
+            
+            var item={}
+            item.id = id;
+            for(var i = 0; i < row.childNodes.length; i++){
+            	var name = $(row.childNodes[i]).find('input,select').attr('name');
+            	if(name == 'checkRoute'){
+            		var check = $($(row.childNodes[i]).find('input')).prop('checked');
+                 	if(check){
+                 		item.is_select = 'Y';
+                 	}else{
+                 		item.is_select = 'N';
+                 	}
+            	}else{
+                    var value = $(row.childNodes[i]).find('input,select').val();
+                    if(name){
+                        item[name] = value;
+                    }
+            	}
+            }
+            item.action = id.length > 0?'UPDATE':'CREATE';
+            item.type = "tour_loc";
+    		if(item_table_rows.length == 2){
+            	item.is_select = 'Y';
+            }
+    		
+            items_array.push(item);
+        }
+
+        //add deleted items
+        if(deletedTableIds!=''){
+        	
+        	for(var index=0; index<deletedTableIds.length; index++){
+        		var id = deletedTableIds[index];
+        		var item={
+        				id: id,
+        				action: 'DELETE'
+        		};
+        		items_array.push(item);
+        	}
+        	deletedLoactionTableIds = [];
+        }
+        return items_array;
+    };
+
 
     var bindFieldEvent=function(){
         eeda.bindTableFieldChargeId('charge_tour_table','FEE_ID','/finItem/search','');
@@ -153,9 +209,15 @@ $(document).ready(function() {
     });
     
     //刷新明细表
-    itemOrder.refleshLandItemTable = function(contract_id){
+    itemOrder.refleshTourItemTable = function(contract_id){
     	var url = "/supplierContract/tableList?contract_id="+contract_id+"&type=tour";
     	cargoTable.ajax.url(url).load();
+    }
+    
+    //刷新明细表
+    itemOrder.refleshTourLocTable = function(contract_id){
+    	var url = "/supplierContract/tableList?contract_id="+contract_id+"&type=tour_loc";
+    	locationTable.ajax.url(url).load();
     }
 
         var bindLocationFieldEvent=function(){
@@ -173,6 +235,16 @@ $(document).ready(function() {
                 bindLocationFieldEvent();
             },
             columns:[
+				{"data": "IS_SELECT",  
+					"width": "30px",
+				    "render": function ( data, type, full, meta ) {
+				    	var select = "";
+				    	if(data == 'Y'){
+				    		select = "checked";
+				    	}
+				        return '<input type="radio" '+select+' name="checkRoute" style="margin-right:20px;" />';
+				    }
+				},
                 {  "width": "50px",
                     "render": function ( data, type, full, meta ) {
                         return '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>';
@@ -227,6 +299,21 @@ $(document).ready(function() {
         $('#add_tour_location').on('click', function(){
             var item={};
             locationTable.row.add(item).draw(true);
+        });
+        
+        
+        //根据radioButton显示对应路线费用
+        $('#tour_location_table').on('click','[name=checkRoute]', function(){
+        	var self = this;
+        	var order_id = $('#contract_id').val();
+        	if(order_id == '')
+        		return;
+            var item_id = $(this).parent().parent().attr('id');
+            if(item_id==undefined){
+            	item_id = "";
+            }
+            var url = "/supplierContract/clickItem?contract_id="+order_id+"&type=tour&supplier_loc_id="+item_id;
+        	cargoTable.ajax.url(url).load();
         });
 });
 });
