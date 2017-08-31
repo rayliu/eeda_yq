@@ -214,6 +214,96 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
       });
       
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='customer_id'){
+	    	  $("#single_user_id").val("");
+	    	  $("#single_user_id_input").val("");
+	    	  $("#single_order_export_date_begin_time").val("");
+	    	  $("#single_order_export_date_end_time").val("");
+	    	  $("#order_export_date_show").hide();
+	    	  $("#user_id_show").hide();
+	    	  $("#customer_id_show").show();
+	      }
+	      if(selectField=="user_id"){
+	    	  $("#single_customer_id").val("");
+	    	  $("#single_customer_id_input").val("");
+	    	  $("#single_order_export_date_begin_time").val("");
+	    	  $("#single_order_export_date_end_time").val("");
+	    	  $("#customer_id_show").hide();
+	    	  $("#order_export_date_show").hide();
+	    	  $("#user_id_show").show();
+	      }
+	      if(selectField=="order_export_date"){
+	    	  $("#single_customer_id").val("");
+	    	  $("#single_customer_id_input").val("");
+	    	  $("#single_user_id").val("");
+	    	  $("#single_user_id_input").val("");
+	    	  $("#customer_id_show").hide();
+	    	  $("#user_id_show").hide();
+	    	  $("#order_export_date_show").show();
+	      }
+     });
+	
+	$('#singleSearchBtn').click(function(){
+	    var selectField = $('#selected_field').val();
+		if(selectField=='customer_id'){
+			var customer_id = $("#single_customer_id").val();
+		}
+		if(selectField=='user_id'){
+			var user_name = $("#single_user_id_input").val();
+		}
+		if(selectField=="order_export_date"){
+			var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
+			var order_export_date_end_time = $("#single_order_export_date_end_time").val();
+		}
+		
+		//合计字段
+        $.post('salesBillReport/listTotal',{
+        	customer_id:customer_id,
+        	user_name:user_name,
+      		order_export_date_begin_time:order_export_date_begin_time,
+      		order_export_date_end_time:order_export_date_end_time
+        },function(data){
+    	  
+      	  var sum_foot_charge_total = parseFloat(data.SUM_FOOT_CHARGE_TOTAL).toFixed(2);
+      	  var sum_foot_cost_total = parseFloat(data.SUM_FOOT_COST_TOTAL).toFixed(2);
+      	  var sum_foot_gross_profit = parseFloat(data.SUM_FOOT_GROSS_PROFIT).toFixed(2);
+      	  var sum_foot_pay_charge_total = parseFloat(data.SUM_FOOT_PAY_CHARGE_TOTAL).toFixed(2);
+      	  var sum_foot_current_profit = parseFloat(data.SUM_FOOT_CURRENT_PROFIT).toFixed(2);
+      	  var foot_commission_money = parseFloat(data.FOOT_COMMISSION_MONEY).toFixed(2);
+
+      	  var total=parseFloat(data.TOTAL);
+
+      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=order_no]').html('共'+total+'项汇总：');
+      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_charge_total]').html("折合应收CNY:<br>"+eeda.numFormat(sum_foot_charge_total,3));
+      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_pay_charge_total]').html("折合实收CNY:<br>"+eeda.numFormat(sum_foot_pay_charge_total,3));
+      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_cost_total]').html("折合应付CNY:<br>"+eeda.numFormat(sum_foot_cost_total,3));
+      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=gross_profit]').html("毛利润CNY:<br>"+eeda.numFormat(sum_foot_gross_profit,3));
+      	  if(sum_foot_current_profit<0){
+      		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","red");
+      	  }else{
+      		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","");; 
+      	  }
+      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=commission_money]').html("提成金额CNY:<br>"+eeda.numFormat(foot_commission_money,3));
+        });
+		
+	     var url = "/salesBillReport/list?customer_id="+customer_id
+	     	+"&user_name="+user_name
+			+"&order_export_date_begin_time="+order_export_date_begin_time
+	        +"&order_export_date_end_time="+order_export_date_end_time;
+	     dataTable.ajax.url(url).load();
+	     
+	}); 
+      
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
@@ -230,12 +320,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       
 	
      var searchData=function(){
-          var customer_id = $("#customer_id").val();
-          var abbr_name=$('#customer_id_input').val();
-          var order_export_date_begin_time = $("#order_export_date_begin_time").val();
-          var order_export_date_end_time = $("#order_export_date_end_time").val();
-          var user_name = $("#user_id_input").val();
-          
+     	var customer_id = $("#customer_id").val();
+     	var order_export_date_begin_time = $("#order_export_date_begin_time").val();
+     	var order_export_date_end_time = $("#order_export_date_end_time").val();
+     	var user_name = $("#user_id_input").val();
           
         //合计字段
           $.post('salesBillReport/listTotal',{
@@ -273,12 +361,42 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/salesBillReport/list?customer_id="+customer_id
-          				+"&abbr_equals="+abbr_name
           				+"&user_name_equals="+user_name  
           				+"&order_export_date_begin_time="+order_export_date_begin_time
 				        +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load();
       };
+      
       searchData();
+      
+    //导出excel
+      $('#exportTotaledExcel1').click(function(){
+    	  $(this).attr('disabled', true);
+          var customer_id = $("#single_customer_id").val();
+          var user_name = $("#single_user_id_input").val();
+          var begin_time = $("#single_order_export_date_begin_time").val();
+          var end_time = $("#single_order_export_date_end_time").val();
+          excel_method(customer_id,user_name,begin_time,end_time);
+      });
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+          var customer_id = $("#customer_id").val();
+          var user_name = $("#user_id_input").val();
+          var begin_time = $("#order_export_date_begin_time").val();
+          var end_time = $("#order_export_date_end_time").val();
+          excel_method(customer_id,user_name,begin_time,end_time);
+      });
+      var excel_method = function(customer_id,user_name,begin_time,end_time){
+		  $.post('/salesBillReport/downloadExcelList',{customer_id:customer_id,user_name:user_name,begin_time:begin_time,end_time:end_time}, function(data){
+	          $('#exportTotaledExcel1').prop('disabled', false);
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $('#singlexportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      }
   });
 });
