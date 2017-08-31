@@ -70,7 +70,6 @@ $(document).ready(function() {
     			maxlength:50
     		},
     		mbl_no:{
-    			number:true,
     			maxlength:50
     		},
     		vessel:{
