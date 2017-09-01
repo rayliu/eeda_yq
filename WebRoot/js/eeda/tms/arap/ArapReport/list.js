@@ -82,6 +82,82 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
       });
       
+      $('.complex_search').click(function(event) {
+          if($('.search_single').is(':visible')){
+            $('.search_single').hide();
+          }else{
+            $('.search_single').show();
+          }
+      });
+      
+    //简单查询
+      $('#selected_field').change(function(event) {
+	      var selectField = $('#selected_field').val();
+	      if(selectField=='order_no'){
+	    	  $("#public_text").val("");
+	    	  $("#single_sp_show").hide();
+	    	  $("#single_flag").hide();
+	    	  $("#single_customer_show").hide();
+	    	  $("#single_fin_item_show").hide();
+	    	  $("#public_text").show();
+	      }
+	      if(selectField=='sp_name'){
+	    	  $("#single_sp_input").val("");
+	    	  $("#single_flag").hide();
+	    	  $("#single_customer_show").hide();
+	    	  $("#single_fin_item_show").hide();
+	    	  $("#public_text").hide();
+	    	  $("#single_sp_show").show();
+	      }
+	      if(selectField=='fin_item_id'){
+	    	  $("#single_fin_item_input").val("");
+	    	  $("#single_flag").hide();
+	    	  $("#single_customer_show").hide();
+	    	  $("#public_text").hide();
+	    	  $("#single_sp_show").hide();
+	    	  $("#single_fin_item_show").show();
+	      }
+	      if(selectField=='flag_equals'){
+	    	  $("#single_flag").val("");
+	    	  $("#single_customer_show").hide();
+	    	  $("#public_text").hide();
+	    	  $("#single_sp_show").hide();
+	    	  $("#single_fin_item_show").hide();
+	    	  $("#single_flag").show();
+	      }
+	      if(selectField=='customer_name'){
+	    	  $("#single_customer_input").val("");
+	    	  $("#public_text").hide();
+	    	  $("#single_sp_show").hide();
+	    	  $("#single_fin_item_show").hide();
+	    	  $("#single_flag").hide();
+	    	  $("#single_customer_show").show();
+	      }
+     });
+      
+      $("#singleSearchBtn").click(function(){
+    	  var selectField = $('#selected_field').val();
+    	  var selectValue = "";
+	      if(selectField=='sp_name'){
+	    	  selectValue = $("#single_sp_input").val();
+	      }
+	      if(selectField=='order_no'){
+	    	  selectValue = $("#public_text").val();
+	      }
+	      if(selectField=='customer_name'){
+	    	  selectValue = $("#single_customer_input").val();
+	      }
+	      if(selectField=='fin_item_id'){
+	    	  selectValue = $("#single_fin_item").val();
+	      }
+	      if(selectField=='flag_equals'){
+	    	  selectValue = $("#single_flag").val();
+	      }
+
+	      var url = "/transArapReport/list?"+selectField+"="+selectValue
+          dataTable.ajax.url(url).load();
+      });
+      
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
       });
