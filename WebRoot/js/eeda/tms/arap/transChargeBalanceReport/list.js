@@ -317,8 +317,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#exportTotaledExcel1').click(function(){
     	  $(this).attr('disabled', true);
           var sp_id = $("#single_sp_id").val();
-          var begin_time = $("#single_date_custom_begin_time").val();
-          var end_time = $("#single_date_custom_end_time").val();
+          var begin_time = $("#single_charge_time_begin_time").val();
+          var end_time = $("#single_charge_time_end_time").val();
           excel_method(sp_id,begin_time,end_time);
       });
       $('#exportTotaledExcel').click(function(){
