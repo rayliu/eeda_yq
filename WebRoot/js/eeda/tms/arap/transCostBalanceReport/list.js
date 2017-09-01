@@ -129,15 +129,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
 	      if(selectField=='car_id'){
-	    	  $("#single_car_id_input").val("");
+	    	  $("#single_charge_time_begin_time").val("");
+	    	  $("#single_charge_time_end_time").val("");
 	    	  $("#charge_time_show").hide();
 	    	  $("#car_id_show").show();
 	      }
 	      if(selectField=='charge_time'){
-	    	  $("#single_charge_time_begin_time").val("");
-	    	  $("#single_charge_time_end_time").val("");
-	    	  $("#charge_time_show").show();
+	    	  $("#single_car_id_input").val("");
+	    	  $("#single_car_id").val("");
 	    	  $("#car_id_show").hide();
+	    	  $("#charge_time_show").show();
 	      }
      });
       
@@ -315,6 +316,34 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           	dataTable.fnSetColumnVis(4, false);
           	dataTable.fnSetColumnVis(8, false);
           	dataTable.fnSetColumnVis(9, false);
+      }
+      
+    //导出excel
+      $('#exportTotaledExcel1').click(function(){
+    	  $(this).attr('disabled', true);
+          var car_id = $("#single_car_id").val();
+          var begin_time = $("#single_charge_time_begin_time").val();
+          var end_time = $("#single_charge_time_end_time").val();
+          excel_method(car_id,begin_time,end_time);
+      });
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+          var car_id = $("#car_id").val();
+          var begin_time = $("#charge_time_begin_time").val();
+          var end_time = $("#charge_time_end_time").val();
+          excel_method(car_id,begin_time,end_time);
+      });
+      var excel_method = function(car_id,begin_time,end_time){
+		  $.post('/transCostBalanceReport/downloadExcelList',{car_id:car_id,begin_time:begin_time,end_time:end_time}, function(data){
+	          $('#exportTotaledExcel1').prop('disabled', false);
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $('#singlexportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
       }
   });
 });
