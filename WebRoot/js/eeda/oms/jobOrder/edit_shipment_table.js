@@ -348,8 +348,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         }
         
         
-        calculate_pieces();
-        calculate_gross_weight();
-        calculate_volume();
+//        calculate_pieces();
+//        calculate_gross_weight();
+//        calculate_volume();
     });
 });
