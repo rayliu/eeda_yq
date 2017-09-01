@@ -152,19 +152,20 @@ public class TrJobOrderController extends Controller {
         		if(reOcean!=null){
         			setAttr("reOcean",reOcean);
         		}
-        		setAttr("usedOceanInfo", getUsedOceanInfo());
-            	setAttr("usedAirInfo", getUsedAirInfo());
-            	setAttr("emailTemplateInfo", getEmailTemplateInfo());
-            	setAttr("loginUser",LoginUserController.getLoginUserName(this));
-            	setAttr("login_id", LoginUserController.getLoginUserId(this));
-                render("/tr/trJobOrder/trJobOrderEdit.html");
+        		
     		}else{
     			String trade_order_id = tradeOrder.get("id").toString();
     			redirect("/trJobOrder/edit?id=" + trade_order_id);
+    			return;
     		}    		
-    	}else{
-    		renderError(403);
     	}
+    	
+    	setAttr("usedOceanInfo", getUsedOceanInfo());
+    	setAttr("usedAirInfo", getUsedAirInfo());
+    	setAttr("emailTemplateInfo", getEmailTemplateInfo());
+    	setAttr("loginUser",LoginUserController.getLoginUserName(this));
+    	setAttr("login_id", LoginUserController.getLoginUserId(this));
+        render("/tr/trJobOrder/trJobOrderEdit.html");
     }
 	
     
