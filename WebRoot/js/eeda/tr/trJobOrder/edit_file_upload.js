@@ -36,7 +36,7 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 	    var errCustomerNoArr = [];
 		$('#importFileUpload').fileupload({
 	        dataType: 'json',
-	        url: '/importOrder?order_type=tradeJobOrder&order_id='+order_id,
+	        url: '/importOrder?order_type=tradeJobOrder&order_id='+$('#order_id').val(),
 	        done: function (e,data) {
 	        	$("#footer").show();
 	        	$("#msgLoad").empty().append('<h4>'+data.result.CAUSE+'</h4>');
