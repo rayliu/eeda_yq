@@ -112,11 +112,10 @@ public class SupplierContractController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
+        String signal = getPara("signal");
         UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
    		SupplierContract  supplierContract= new SupplierContract();
-        
-        
         setAttr("user", LoginUserController.getLoginUser(this));
         setAttr("charge_items", getItems(id,"ocean"));
         setAttr("ocean_locations", getItems(id,"ocean_loc"));
@@ -128,9 +127,52 @@ public class SupplierContractController extends Controller {
         setAttr("tour_charge_items", getItems(id,"tour"));
         setAttr("tour_locations", getItems(id,"tour_loc"));
         
-   		setAttr("order", Db.findFirst("select cc.*,p.abbr  from supplier_contract cc "
-   				+ " LEFT JOIN party p on p.id = cc.customer_id  where cc.id = ? ",id));
+   		 Record order=Db.findFirst("select cc.*,p.abbr  from supplier_contract cc "
+   				+ " LEFT JOIN party p on p.id = cc.customer_id  where cc.id = ? ",id);
+   		setAttr("order",order);
         render("/eeda/contractManagement/sp/edit.html");
+    }
+    @Before(Tx.class)
+    public void copyJobOrder(){
+    	String id = getPara("id");
+    	UserLogin user = LoginUserController.getLoginUser(this);
+     	long office_id = user.getLong("office_id");
+     	Record order = Db.findById("supplier_contract", id);
+     	order.set("id", null);
+     	order.set("contract_begin_time", null);
+     	order.set("contract_end_time", null);
+     	order.set("customer_id", null);
+     	//生成工作单号
+     	String newDateStr = "";
+        String newDateStrMM = "";
+        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
+        SimpleDateFormat sdfMM = new SimpleDateFormat("MM");//转换后的格式
+        newDateStr = sdf.format(new Date());
+        newDateStrMM = sdfMM.format(new Date());
+        String contract_no = OrderNoGenerator.getNextOrderNo("EK", newDateStr, office_id);
+		StringBuilder sb = new StringBuilder(contract_no);//构造一个StringBuilder对象
+		sb.insert(4, newDateStrMM);//在指定的位置，插入指定的字符串(月份)
+		contract_no = sb.toString();
+     	order.set("contract_no", contract_no);
+     	Db.save("supplier_contract", order);
+     	//loc表
+     	List<Record> locItems = Db.find("select * from supplier_contract_location where contract_id = "+id);
+     	for(Record loc : locItems){
+     		Long loc_id = loc.getLong("id");
+     		loc.set("id", null);
+     		loc.set("contract_id", order.getLong("id"));
+     		Db.save("supplier_contract_location", loc);
+     		List<Record> chargeItems = Db.find("select * from supplier_contract_item where supplier_loc_id = "+loc_id);
+     		for(Record charge : chargeItems){
+         		Long charge_id = loc.getLong("id");
+         		charge.set("id", null);
+         		charge.set("supplier_loc_id", loc.getLong("id"));
+         		charge.set("contract_id", order.getLong("id"));
+         		Db.save("supplier_contract_item", charge);
+     		}
+     	}
+     	redirect("/supplierContract/edit?id="+order.getLong("id"));
     }
     
     public void delete() {

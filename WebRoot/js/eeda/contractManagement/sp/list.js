@@ -10,6 +10,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             serverSide: true, //不打开会出现排序不对
             ajax: "/supplierContract/list",
             columns:[
+                {
+                	"width": "5%",
+				    "render": function ( data, type, full, meta ) {
+				        return '<a type="button"  class="copy btn table_btn delete_btn btn-xs" href="/supplierContract/copyJobOrder?id='+full.ID+'&signal=copy"> 复制</a>';
+				    }
+                },
                 { "data": "CONTRACT_NO","width": "10%",
                     "render": function ( data, type, full, meta ) {
                         return "<a href='/supplierContract/edit?id="+full.ID+"' target='_blank'>" + data+ "</a>";
@@ -17,7 +23,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 },
                 { "data": "TYPE", "width": "10%"}, 
                 { "data": "CUSTOMER_NAME", "width": "10%"}, 
-                { "data": "CONTRACT_PERIOD", "width": "15%"}, 
+                { "data": "CONTRACT_PERIOD", "width": "10%"}, 
                 { "data": "CREATOR_NAME", "width": "10%"}, 
                 { "data": "CREATE_DATE", "width": "10%"},
                 { "data": "STATUS" ,"width": "5%"},
@@ -48,7 +54,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
         //base on config hide cols
         eeda.showCols(dataTable, cols_config);
-
       //清空查询条件
     	$('#resetBtn').click(function(e){
             $("#orderForm")[0].reset();
