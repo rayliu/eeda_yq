@@ -8,7 +8,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           colReorder: true,
           paging: false,
           serverSide: true, //不打开会出现排序不对 
-          ajax: "/costBalanceReport/list",
+         // ajax: "/costBalanceReport/list",
           initComplete:function(settings){
         	  tableStyle();
               },
@@ -285,7 +285,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           
       };
       
-      searchData();
+     // searchData();
       
       //导出excel
       $('#exportTotaledExcel1').click(function(){

@@ -266,7 +266,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
          
           
       };
-      searchData();
+      //searchData();
       
       var cssTd=function(){
     	  $("#eeda_table th:eq(6)").css('background-color','#f5f5dc');

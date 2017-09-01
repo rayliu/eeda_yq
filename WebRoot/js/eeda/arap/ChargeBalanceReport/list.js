@@ -6,7 +6,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           colReorder: true,
           paging: false,
           serverSide: true, //不打开会出现排序不对 
-          ajax: "/chargeBalanceReport/list",
+         // ajax: "/chargeBalanceReport/list",
           initComplete:function(settings){
         	  tableStyle();
           },
@@ -286,7 +286,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				        +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load(tableStyle);
       };
-      searchData();
+      //searchData();
       
       
       var tableStyle = function(){

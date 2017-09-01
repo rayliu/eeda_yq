@@ -276,7 +276,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           
       };
       
-      searchData(); 
+    //  searchData(); 
       var tableStyle = function(){
     	  $('.oneRow').css('line-height','30px');
     	  $('.doubleRow').css('text-align','center');

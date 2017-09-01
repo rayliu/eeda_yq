@@ -13,7 +13,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 {
                 	"width": "5%",
 				    "render": function ( data, type, full, meta ) {
-				        return '<a type="button"  class="copy btn table_btn delete_btn btn-xs" href="/supplierContract/copyJobOrder?id='+full.ID+'&signal=copy"> 复制</a>';
+				        return '<a type="button"  class="copy btn table_btn delete_btn btn-xs" href="/supplierContract/copyJobOrder?id='+full.ID+'"> 复制</a>';
 				    }
                 },
                 { "data": "CONTRACT_NO","width": "10%",

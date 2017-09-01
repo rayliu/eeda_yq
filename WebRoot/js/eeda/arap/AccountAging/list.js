@@ -17,7 +17,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           drawCallback: function( settings ) {
         	  calc_amount();
           },
-          ajax: "/accountAging/list",
+         // ajax: "/accountAging/list",
           columns: [
       			{ "data": "ABBR_NAME", "width": "100px"},
 	            { "data": "CURRENCY_NAME" ,"width": "100px"},

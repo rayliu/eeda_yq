@@ -7,7 +7,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           colReorder: true,
           paging: true,
           serverSide: true, //不打开会出现排序不对
-          ajax: "/customReport/list",
+         // ajax: "/customReport/list",
           columns: [
               { "data": "SP_NAME"},
               { "data": "CREATE_STAMP"}, 
