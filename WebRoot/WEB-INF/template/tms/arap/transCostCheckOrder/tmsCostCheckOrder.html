@@ -153,61 +153,132 @@
                             
                             <div role="tabpanel" class="tab-pane fade in" id="cost_check_order">
                             	<div class="row simple_search_div"><br>
-                            		<div class="col-lg-12">
-                                    <form id="orderSearchForm">
-                                        <div class="row">
-                                            <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputSpField.html", 
+                            	<div class="panel panel-default">
+						   	<div class="panel-heading">
+						       	<div class="row"><!--  第1行  -->
+						        	<div class="three_tab" ><!--  三列排版  -->
+                            	<div class="search_single">
+						                	<select id="selected_field" name="selected_field" class="form-control search-label">
+						                		<option value="car_no_like">结算车牌</option>
+												<option value="sp_name_like">结算公司</option>
+												<option value="order_no">对账单号</option>
+												<option value="status_equals">状态</option>	
+												<option value="create_stamp">创建时间</option>	 
+											</select>
+		
+											<input type="text" id="public_text" class="form-control search-control" style="display:none;"/>
+						                    <div style="display:none;position:absolute;left:34%;bottom:-5px;" id="single_sp1_id_show">
+						                    	<%include("/eeda/component/form/inputSpField.html", 
+						                                  {   id: 'single_sp1_id', 
+						                                      style:'width:150%',
+						                                      value: ''
+						                                  }){}%>
+						                    </div>
+		                    				<div style="display:none;position:absolute;left:34%;bottom:-5px;" id="single_create_stamp1_show">
+							              	<%include("/eeda/component/form/inputDateQueryField.html", 
+												{   id:'single_create_stamp1',
+												    style:'width:230px',
+												    begin_style:'width:90px',
+												    end_style:'width:90px',  
+												    value:''
+												}){} %>
+											</div>
+											<div style="position:absolute;left:34%;bottom:-5px;" id="single_car_no1_show">
+                                                <%include("/eeda/component/form/inputCarInfoField.html", 
                                                     {
-                                                        id:'sp1', 
-                                                        label:'结算公司', 
+                                                        id:'single_car_no1', 
+                                                        style:'width:150%',
                                                         value: ''
                                                     }){} %>
                                             </div>
-                                            <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputField.html", 
-                                                                    {   id: 'order_no1', 
-                                                                        label: '对账单号', 
-                                                                        value: ''
-                                                                    }){}%>
-                                            </div>
-                                             <div class="col-lg-4">
-								                <%include("/eeda/component/form/selectField.html", 
-								                    {   id:'status', 
-								                        label:'状态', 
-								                        value_list:[
-								                            {code:'', value:''},
-								                            {code:'新建', value:'新建'},
-								                            {code:'已确认', value:'已确认'},
-								                            {code:'部分申请付款中', value:'部分申请付款中'},
-								                            {code:'全额申请付款中', value:'全额申请付款中'}
-								                        ]
-								                    }){}%>
-								            </div>
-                                        </div>
-                                        <div class="row">
-                                        	<div class="col-lg-4">
+											<select id="single_status1" class="form-control search-control" style="display: none;">
+												<option value=""></option>
+												<option value="新建">新建</option>
+												<option value="已确认">已确认</option>
+												<option value="付款申请中">付款申请中</option>
+												<option value="已付款">已付款</option>
+												<option value="坏账款">坏账款</option>
+											</select>
+										</div>
+									</div>
+									<div class="three_tab"><!--  三列排版  -->
+						            	<div class="search_single">
+						            		<button id="singleSearchBtn" class="btn btn_grey" type="button" style="float:left;">查询</button>
+						               	</div>
+									</div>
+		           					<div class="three_tab"><!--  三列排版  -->
+		       							<h4 class="panel-title pull-right" style="padding-top: 5px;">
+					             			<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
+					             				<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
+					             			</a>
+		             					</h4>
+									</div>
+								</div>
+							</div>
+							
+							<div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+		   						<div class="panel-body" id="ChargeDiv">
+		   							<div class="col-lg-12">
+		   								<form id="orderSearchForm" method="post" action="">	
+											<div class="row">
+								            	<div class="col-lg-4">
+								                	<%include("/eeda/component/form/inputSpField.html", 
+										                {   
+										                    id:'sp1',
+										                    label:'结算公司'
+									                }){}%>
+								                </div>
+											<div class="col-lg-4">
+												<%include("/eeda/component/form/inputField.html", 
+													{   
+													   id:'order_no1', 
+													   label:'对帐单号', 
+													   value:order.order_no!''
+												}){}%>
+											</div>  
+											<div class="col-lg-4">
+												<%include("/eeda/component/form/selectField.html", 
+													{   id:'status1', 
+													    label:'状态', 
+													    value_list:[
+													        {code:'', value:''},
+													        {code:'新建', value:'新建'},
+													        {code:'已确认', value:'已确认'},
+													        {code:'付款申请中', value:'付款申请中'},
+													        {code:'已付款', value:'已付款'},
+													        {code:'坏账款', value:'坏账款'}
+													    ]
+												}){}%>
+											</div>
+		                 				</div>
+				
+										<div class="row">
+											<div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputCarInfoField.html", 
                                                     {
-                                                        id:'car_no2', 
+                                                        id:'car_no1', 
                                                         label:'结算车牌', 
                                                         value: ''
                                                     }){} %>
                                             </div>
-                                            <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputDateQueryField.html", 
-                                                {   id:'create_stamp1', 
-                                                    label:'创建时间'
-                                                }){} %>
-                                            </div>
-                                        </div>
-                                    </form>
-
-                                    <div class="form-group button-bar" >
-                                        <button id="searchOrderBtn" class="btn btn_grey" type="button">查询</button>
-                                        <button id="resetOrderBtn" class="btn btn_white" type="button">清空条件</button>
-                                    </div>
-                                </div>
+											<div class="col-lg-4">
+												<%include("/eeda/component/form/inputDateQueryField.html", 
+													{    id:'create_stamp1', 
+													   	 label:'创建时间', 
+													   	 value:''
+												}){} %>
+											</div>  
+										</div>
+											<div class="form-group button-bar" >
+												<button id="searchOrderBtn" class="btn btn_grey" type="button">查询</button>
+												<button id="resetOrderBtn" class="btn btn_white" type="button">清空条件</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+                            		
                              </div>
                              
                               <div class="row simple_list_div">

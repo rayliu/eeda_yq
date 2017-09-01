@@ -48,7 +48,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       			},
       			{ "data": "ORDER_NO", "width": "100px",
 			    	  "render": function ( data, type, full, meta ) {
-	                      return "<a href='/jobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
+	                      return "<a href='/transJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
 	                  }
 	            },
 	            { "data": "CREATE_STAMP", "width": "100px"},
@@ -125,9 +125,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_no = $.trim($("#order_no").val()); 
           var customer = $("#customer").val(); 
           var customer_input = $("#customer_input").val().trim(); 
-          var sp = $("#sp").val().trim();
-
-          var sp_input = $("#sp_input").val().trim(); 
+          var sp_name = $("#sp_input").val().trim();
           var car_no_input = $("#car_no_input").val().trim();
           if(!car_no_input){
               $.scojs_message('请选择结算车牌', $.scojs_message.TYPE_ERROR);
@@ -152,10 +150,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var url = "/transCostCheckOrder/list?order_no="+order_no
           			   +"&checked="+checked
           			   +"&customer_id="+customer
-			           +"&customer_id="+customer
 			           +"&customer_name_like="+customer_input
-			           +"&sp_id="+sp
-			           +"&sp_name_like="+sp_input
+			           +"&sp_name_like="+sp_name
 		               +"&car_no_like="+car_no_input
 			           +"&type_equals="+type
 		               +"&create_stamp_begin_time="+start_date
