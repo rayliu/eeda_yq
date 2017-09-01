@@ -28,6 +28,11 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 		// 贸易商品信息表
 		var order_id = $('#order_id').val();
 	    $("#import_tradeItem").click(function(){
+	    	if($('#order_id').val() == ''){
+	    		$.scojs_message('先保存订单才可导入', $.scojs_message.TYPE_ERROR);
+	    		return false;
+	    	}
+	    	
 	    	$("#importFileUpload").click();
 	    	order_id = $('#order_id').val();
 	    });
