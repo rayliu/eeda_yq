@@ -68,13 +68,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
 	      if(selectField=='customer_id'){
-	    	  $("#customer_id_input").val("");
+	    	  $("#single_charge_time_begin_time").val("");
+	    	  $("#single_charge_time_end_time").val("");
 	    	  $("#charge_time_show").hide();
 	    	  $("#customer_id_show").show();
 	      }
 	      if(selectField=='charge_time'){
-	    	  $("#single_charge_time_begin_time").val("");
-	    	  $("#single_charge_time_end_time").val("");
+	    	  $("#customer_id_input").val("");
+	    	  $("#customer_id").val("");
 	    	  $("#charge_time_show").show();
 	    	  $("#customer_id_show").hide();
 	      }
@@ -230,6 +231,35 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  $("#eeda_table td:nth-child(8)").css('background-color','#f5f5dc');
     	  $("#eeda_table td:nth-child(9)").css('background-color','#f5f5dc');
       }
+      
       searchData();
+      
+    //导出excel
+      $('#exportTotaledExcel1').click(function(){
+    	  $(this).attr('disabled', true);
+          var customer_id = $("#customer_id").val();
+          var begin_time = $("#single_charge_time_begin_time").val();
+          var end_time = $("#single_charge_time_end_time").val();
+          excel_method(customer_id,begin_time,end_time);
+      });
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+          var customer_id = $("#customer").val();
+          var begin_time = $("#charge_time_begin_time").val();
+          var end_time = $("#charge_time_end_time").val();
+          excel_method(customer_id,begin_time,end_time);
+      });
+      var excel_method = function(customer_id,begin_time,end_time){
+		  $.post('/transProfit/downloadExcelList',{customer_id:customer_id,begin_time:begin_time,end_time:end_time}, function(data){
+	          $('#exportTotaledExcel1').prop('disabled', false);
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $('#singlexportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      }
   });
 });
