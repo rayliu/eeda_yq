@@ -332,7 +332,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/privilege", PrivilegeController.class, contentPath);
 		//oms管理系统
 		me.add("/planOrder", PlanOrderController.class, contentPath);
-		me.add("/bookingOrder", BookingOrderController.class, contentPath);
+		
 		me.add("/todo", TodoController.class, contentPath);
 		me.add("/jobOrder", JobOrderController.class, contentPath);
 		me.add("/bookOrder", BookOrderController.class, contentPath);
@@ -343,6 +343,11 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/truckOrder", TruckOrderController.class, contentPath);
 		me.add("/currency", CurrencyController.class, contentPath);
 		me.add("/currencyRate", CurrencyRateController.class, contentPath);
+		
+		
+		//booking管理
+		me.add("/bookingOrder", BookingOrderController.class, contentPath);
+		me.add("/bookingCostCheckOrder", controllers.oms.bookingOrder.BookingCostCheckOrderController.class, contentPath);
 		
 		
 		//cms 报关管理
@@ -551,9 +556,10 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("job_order_sendmail_template", JobOrderSendMailTemplate.class);
         arp.addMapping("job_order_express", JobOrderExpress.class);
         
-        
+        //booking
         arp.addMapping("booking_order", BookingOrder.class);
         arp.addMapping("booking_order_doc", BookingOrderDoc.class);
+        
         
         
         
