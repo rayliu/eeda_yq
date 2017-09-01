@@ -81,7 +81,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
   	    	  $("#single_create_stamp1_show").hide();
   	    	  $("#public_text").show();
   	      }
-  	      if(selectField=='sp_id'){
+  	      if(selectField=='sp_name'){
   	    	  $("#single_sp1_id_input").val("");
   	    	  $("#single_status").hide();
   	    	  $("#single_create_stamp1_show").hide();
@@ -111,8 +111,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	      if(selectField=='order_no'){
 	    	  selectValue = $("#public_text").val();
 	      }
-	      if(selectField=='sp_id'){
-	    	  selectValue = $("#single_sp1_id").val();
+	      if(selectField=='sp_name'){
+	    	  selectValue = $("#single_sp1_id_input").val();
 	      }
 	      if(selectField=='toStatus_equals'){
 	    	  selectValue = $("#single_status").val();

@@ -14,61 +14,6 @@
 			<div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade active in" id="unselected">
                     <div class="row simple_search_div">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-    							<div class="row"><!--  第1行  -->
-	        						<div class="three_tab" ><!--  三列排版  -->
-	             						<div class="search_single">
-	                 						<select id="selected_field0" name="selected_field" class="form-control search-label">
-												<option value="sp_id">结算公司</option>
-												<option value="order_no">对账单号</option>
-												<option value="toStatus_equals">状态</option>	
-												<option value="create_stamp1">创建时间</option>	 
-											</select>
-	
-											<input type="text" id="public_text0" class="form-control search-control" style="display:none;"/>
-						                    <div  style="position:absolute;left:34%;bottom:-5px;" id="single_sp1_id">
-						                    	<%include("/eeda/component/form/inputSpField.html", 
-						                                  {   id: 'single_sp0_id', 
-						                                      style:'width:150%',
-						                                      value: ''
-						                                  }){}%>
-						                    </div>
-	                    					<div style="display:none;position:absolute;left:34%;bottom:-5px;" id="single_create_stamp0_show">
-								              	<%include("/eeda/component/form/inputDateQueryField.html", 
-										         	 {   id:'single_create_stamp0',
-										              	 style:'width:230px',
-										             	 begin_style:'width:90px',
-										              	 end_style:'width:90px',  
-										              	 value:''
-													 }){} %>
-								            </div>
-											<select id="single_status0" class="form-control search-control" style="display: none;">
-												<option value=""></option>
-												<option value="新建">新建</option>
-												<option value="已确认">已确认</option>
-												<option value="收款申请中">收款申请中</option>
-												<option value="已收款">已收款</option>
-												<option value="坏账款">坏账款</option>
-											</select>
-										</div>
-									</div>
-	               					<div class="three_tab"><!--  三列排版  -->
-						            	<div class="search_single">
-						            		<button id="singleSearchBtn0" class="btn btn_grey" type="button" style="float:left;">查询</button>
-						               	</div>
-									</div>
-		           					<div class="three_tab"><!--  三列排版  -->
-			       						<h4 class="panel-title pull-right" style="padding-top: 5px;">
-				             				<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo1" aria-expanded="false" class="complex_search collapsed">
-				             					<i id="collapseChargeIcon1" class="fa fa-angle-double-down"></i> 高级查询
-				             				</a>
-			             				</h4>
-									</div>
-								</div>
-							</div> 
-			       			<div id="collapseChargeInfo1" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
-								<div class="panel-body" id="ChargeDiv">
 				        			<div class="col-lg-12"><br>
 										<form id="orderForm">
 		   									<div class="row">
@@ -150,8 +95,6 @@
 											</div>
 										</form>
 		                        	</div>
-								</div>
-							</div>
 						</div>
 						<div class="col-lg-12">
 			            	<form id="billForm" action="/transChargeCheckOrder/create" method="post">
@@ -179,7 +122,6 @@
 		                    <span class="badge" style='margin-top:12px;display:none;'> HKD总额: <span id="exchange_hkd_totalAmountSpan">0</span></span>&nbsp;&nbsp;
 		                    <span class="badge" style='margin-top:12px;display:none;'> JPY总额: <span id="exchange_jpy_totalAmountSpan">0</span></span>&nbsp;&nbsp;
 						</div>
-					</div>
 	
 		            <div class="tab-content">
 						<div class="tab-pane fade active in" id="unchecked">
@@ -202,7 +144,7 @@
 						        	<div class="three_tab" ><!--  三列排版  -->
 						             	<div class="search_single">
 						                	<select id="selected_field" name="selected_field" class="form-control search-label">
-												<option value="sp_id">结算公司</option>
+												<option value="sp_name">结算公司</option>
 												<option value="order_no">对账单号</option>
 												<option value="toStatus_equals">状态</option>	
 												<option value="create_stamp1">创建时间</option>	 

@@ -220,30 +220,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
       $('#searchBtn').click(function(){
           searchData(); 
       });
-      
-      $("#singleSearchBtn0").click(function(){
-    	  var selectField = $('#selected_field0').val();
-    	  var selectValue = "";
-	      if(selectField=='order_no'){
-	    	  selectValue = $("#public_text0").val();
-	      }
-	      if(selectField=='sp_id'){
-	    	  selectValue = $("#single_sp0_id").val();
-	      }
-	      if(selectField=='toStatus_equals'){
-	    	  selectValue = $("#single_status0").val();
-	      }
-	      if(selectField=='create_stamp1'){
-	    	  var create_stamp1_begin = $("#single_create_stamp0_begin_time").val();
-	    	  var create_stamp1_end = $("#single_create_stamp0_end_time").val();
-	      }
-	      
-	      //增加出口日期查询
-          var url = "/transChargeCheckOrder/list?"+selectField+"="+selectValue
-               +"&create_stamp_begin_time="+create_stamp1_begin
-               +"&create_stamp_end_time="+create_stamp1_end;
-          dataTable.ajax.url(url).load();
-      });
 
      var searchData=function(){
     	 var checked = '';
