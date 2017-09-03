@@ -13,6 +13,8 @@ import models.RolePermission;
 import models.UserLogin;
 import models.UserOffice;
 import models.UserRole;
+import models.eeda.Field;
+import models.eeda.FormBtn;
 import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
 import models.eeda.profile.OfficeConfig;
@@ -42,8 +44,6 @@ import controllers.app.AppControllerForMobile;
 import controllers.eeda.FormController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
-import controllers.oms.jobOrder.JobOrderControllerForMobile;
-import controllers.oms.planOrder.PlanOrderControllerForMobile;
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -115,8 +115,6 @@ public class EedaConfig extends JFinalConfig {
     
     private void setAppRoute(Routes me, String contentPath) {
         me.add("/app", AppControllerForMobile.class);
-        me.add("/app/jobOrder", JobOrderControllerForMobile.class);
-        me.add("/app/planOrder", PlanOrderControllerForMobile.class);
     }
 
 	private void setScmRoute(Routes me, String contentPath) {
@@ -198,7 +196,12 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("permission", Permission.class);
         arp.addMapping("user_role", UserRole.class);
         arp.addMapping("role_permission", RolePermission.class);
+        
         arp.addMapping("eeda_modules", Module.class);
+        
+        arp.addMapping("eeda_form_field", Field.class);
+        arp.addMapping("eeda_form_btn", FormBtn.class);
+        
         arp.addMapping("module_role", ModuleRole.class);
         arp.addMapping("office_config", OfficeConfig.class);
         

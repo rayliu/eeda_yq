@@ -12,6 +12,8 @@ import java.util.Map;
 import models.Permission;
 import models.RolePermission;
 import models.UserLogin;
+import models.eeda.Field;
+import models.eeda.FormBtn;
 import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
 
@@ -44,7 +46,9 @@ public class ModuleController extends Controller {
     @RequiresRoles("admin")
     @Before(EedaMenuInterceptor.class)
     public void index() {
-        List<UserLogin> users = UserLogin.dao.find("select * from user_login where office_id=?", LoginUserController.getLoginUser(this).get("office_id"));
+        List<UserLogin> users = UserLogin.dao.find(
+                "select * from user_login where office_id=?",
+                LoginUserController.getLoginUser(this).get("office_id"));
         setAttr("users", users);
         render("/profile/module/moduleList.html");
     }
@@ -212,44 +216,65 @@ public class ModuleController extends Controller {
 
         Gson gson = new Gson();
         Map<String, ?> dto = gson.fromJson(jsonStr, HashMap.class);
-        String module_id = (String) dto.get("module_id");
+        Long module_id = Long.valueOf(dto.get("module_id").toString());
         String url = (String) dto.get("url");
         UserLogin user = LoginUserController.getLoginUser(this);
 
         Db.update(" update eeda_modules set url = ? where id=?", url, module_id);
 
-        //handle info
-        String tempalteContent = dto.get("template_content").toString();
-        Map<String, String> infoMap = (Map) dto.get("info");
-        Record formRec = Db.findFirst("select * from eeda_form_define where module_id=?", module_id);
-        if(formRec!=null){
-            formRec.set("name", infoMap.get("name"));
-            formRec.set("code", infoMap.get("code"));
-            formRec.set("template_content", tempalteContent);
-            Db.update("eeda_form_define", formRec);
-        }else{
-            Record form = new Record();
-            formRec.set("name", infoMap.get("name"));
-            formRec.set("code", infoMap.get("code"));
-            formRec.set("template_content", tempalteContent);
-            Db.save("eeda_form_define", formRec);
-        }
-        
-        
-        
-        
+        // handle info
+        Long form_id = handleInfo(dto, module_id);
+        // handle fields and build/update table
+        List<Map<String, String>> field_list = (ArrayList<Map<String, String>>) dto
+                .get("fields");
+        DbUtils.handleList(field_list, form_id, Field.class, "form_id");
+        // 根据字段去建表
+        buildFormTable(form_id);
+        // 处理按钮
+        handleBtns(dto, form_id);
+        // 处理权限点
         List<Map<String, String>> permission_list = (ArrayList<Map<String, String>>) dto
                 .get("permission_list");
         DbUtils.handleList(permission_list, module_id, Permission.class,
                 "module_id");
-
+        // 处理岗位权限
         handleAuth(dto, module_id);
-        
+
         Record orderRec = Db.findById("eeda_modules", module_id);
         renderJson(orderRec);
     }
 
-    private void handleAuth(Map<String, ?> dto, String module_id) {
+    private void handleBtns(Map<String, ?> dto, Long form_id)
+            throws InstantiationException, IllegalAccessException {
+        List<Map<String, String>> btn_list = (ArrayList<Map<String, String>>) dto
+                .get("btns");
+        DbUtils.handleList(btn_list, form_id, FormBtn.class, "form_id");
+    }
+
+    @SuppressWarnings("null")
+    private Long handleInfo(Map<String, ?> dto, Long module_id) {
+        String tempalteContent = dto.get("template_content").toString();
+        Map<String, String> infoMap = (Map) dto.get("info");
+        Record formRec = Db.findFirst(
+                "select * from eeda_form_define where module_id=?", module_id);
+        if (formRec != null) {
+            formRec.set("name", infoMap.get("name"));
+            formRec.set("code", infoMap.get("code"));
+            formRec.set("template_content", tempalteContent);
+            formRec.set("module_id", module_id);
+            Db.update("eeda_form_define", formRec);
+        } else {
+            formRec = new Record();
+            formRec.set("name", infoMap.get("name"));
+            formRec.set("code", infoMap.get("code"));
+            formRec.set("template_content", tempalteContent);
+            formRec.set("module_id", module_id);
+            Db.save("eeda_form_define", formRec);
+        }
+        return formRec.getLong("id");
+    }
+
+    private void handleAuth(Map<String, ?> dto, Long module_id) {
         List<Map<String, ?>> auth_list = (ArrayList<Map<String, ?>>) dto
                 .get("auth_list");
         for (Map<String, ?> map : auth_list) {
@@ -338,7 +363,7 @@ public class ModuleController extends Controller {
         }
     }
 
-    private void searchHandle(Map<String, ?> dto, String module_id) {
+    private void searchHandle(Map<String, ?> dto, Long module_id) {
         String searchStr = (String) dto.get("search_obj");
         Map<String, ?> searchDto = new Gson()
                 .fromJson(searchStr, HashMap.class);
@@ -428,7 +453,7 @@ public class ModuleController extends Controller {
                 continue;
             String role_id = row.get("role_id").toString();
             logger.debug("role_id=" + role_id);
-            
+
             for (Map<String, ?> role_auth_map : role_auth) {
                 String permission_id = role_auth_map.get("id").toString();
                 if (StringUtils.isEmpty(permission_id)) {
@@ -459,67 +484,64 @@ public class ModuleController extends Controller {
     }
 
     @Before(Tx.class)
-    private void activateModule(String module_id) {
-        logger.debug("start to generate tables....");
-        Db.update(" update eeda_modules set status = '启用' where id=?",
-                module_id);
-        // module 运输单 id=13，那么table_name 生成： T_13
-        // find table record
-        String structureSql = "select * from eeda_structure where module_id=?";
-        List<Record> sList = Db.find(structureSql, module_id);
+    private void buildFormTable(Long form_id) {
+        // module 运输单 id=13，那么table_name 生成： form_13
+        String tableName = "form_" + form_id;
 
-        for (Record structure : sList) {
-            String structureId = structure.get("id").toString();
+        // 每个子表中默认有ID, PARENT_form_ID, eeda_delete字段，请勿添加同名字段。
+        String createTableSql = "CREATE TABLE if not exists `" + tableName
+                + "` (" + " `id` BIGINT(20) NOT NULL AUTO_INCREMENT,"
+                + " `parent_form_id` BIGINT(20) NULL,"
+                + " `eeda_delete` char(1) NOT NULL DEFAULT 'N',"
+                + "PRIMARY KEY (`id`))";
+        Db.update(createTableSql);
 
-            String tableName = "t_" + structureId;
-
-            // 每个子表中默认有ID, PARENT_ID两个字段，请勿添加同名字段。
-            String createTableSql = "CREATE TABLE if not exists `" + tableName
-                    + "` (" + " `id` BIGINT(20) NOT NULL AUTO_INCREMENT,"
-                    + " `parent_id` BIGINT(20) NULL,"
-                    + " `ref_t_id` BIGINT(20) NULL ,"
-                    + " `eeda_delete` char(1) NOT NULL DEFAULT 'N',"
-                    + "PRIMARY KEY (`id`))";
-            Db.update(createTableSql);
-
-            String fieldSql = "select * from eeda_field where structure_id=?";
-            List<Record> fieldList = Db.find(fieldSql, structureId);
-            for (Record field : fieldList) {
-                String fieldName = "F" + field.get("id").toString() + "_"
-                        + field.getStr("field_name");
-                String createField = "";
-                // 根据ID判断字段是否已存在
-                Record oldFieldRec = Db.findFirst("show columns from "
-                        + tableName + " like '" + "F"
-                        + field.get("id").toString() + "_%'");
-                if ("日期编辑框".equals(field.getStr("field_type"))) {
-                    if (oldFieldRec != null) {
-                        createField = "ALTER TABLE `" + tableName + "` "
-                                + "CHANGE COLUMN `"
-                                + oldFieldRec.getStr("field") + "` `"
-                                + fieldName
-                                + "` TIMESTAMP NULL DEFAULT NULL COMMENT ''";
-                    } else {
-                        createField = "ALTER TABLE `" + tableName
-                                + "` ADD COLUMN `" + fieldName
-                                + "` TIMESTAMP NULL COMMENT ''";
-                    }
+        String fieldSql = "select * from eeda_form_field where form_id=?";
+        List<Record> fieldList = Db.find(fieldSql, form_id);
+        for (Record field : fieldList) {
+            String fieldName = "f" + field.get("id").toString() + "_"
+                    + field.getStr("field_name");
+            String createField = "";
+            // 根据ID判断字段是否已存在
+            Record oldFieldRec = Db.findFirst("show columns from " + tableName
+                    + " like '" + "f" + field.get("id").toString() + "_%'");
+            if ("日期".equals(field.getStr("field_type"))) {
+                if (oldFieldRec != null) {
+                    createField = "ALTER TABLE `" + tableName + "` "
+                            + "CHANGE COLUMN `" + oldFieldRec.getStr("field")
+                            + "` `" + fieldName
+                            + "` date NULL DEFAULT NULL COMMENT ''";
                 } else {
-                    if (oldFieldRec != null) {
-                        createField = "ALTER TABLE `" + tableName + "` "
-                                + "CHANGE COLUMN `"
-                                + oldFieldRec.getStr("field") + "` `"
-                                + fieldName
-                                + "` VARCHAR(255) NULL DEFAULT NULL COMMENT ''";
-                    } else {
-                        createField = "ALTER TABLE `" + tableName
-                                + "` ADD COLUMN `" + fieldName
-                                + "` VARCHAR(255) NULL COMMENT ''";
-                    }
+                    createField = "ALTER TABLE `" + tableName
+                            + "` ADD COLUMN `" + fieldName
+                            + "` date NULL COMMENT ''";
                 }
-                Db.update(createField);
+            } else if ("日期时间".equals(field.getStr("field_type"))) {
+                if (oldFieldRec != null) {
+                    createField = "ALTER TABLE `" + tableName + "` "
+                            + "CHANGE COLUMN `" + oldFieldRec.getStr("field")
+                            + "` `" + fieldName
+                            + "` TIMESTAMP NULL DEFAULT NULL COMMENT ''";
+                } else {
+                    createField = "ALTER TABLE `" + tableName
+                            + "` ADD COLUMN `" + fieldName
+                            + "` TIMESTAMP NULL COMMENT ''";
+                }
+            } else {
+                if (oldFieldRec != null) {
+                    createField = "ALTER TABLE `" + tableName + "` "
+                            + "CHANGE COLUMN `" + oldFieldRec.getStr("field")
+                            + "` `" + fieldName
+                            + "` VARCHAR(255) NULL DEFAULT NULL COMMENT ''";
+                } else {
+                    createField = "ALTER TABLE `" + tableName
+                            + "` ADD COLUMN `" + fieldName
+                            + "` VARCHAR(255) NULL COMMENT ''";
+                }
             }
+            Db.update(createField);
         }
+
     }
 
     public void getOrderStructure() {
@@ -533,9 +555,9 @@ public class ModuleController extends Controller {
                 module_id);
         String sys_only = module.getStr("sys_only");
 
-        List<Record> structure_list = null;//getStructureRecs(module_id);
+        List<Record> structure_list = null;// getStructureRecs(module_id);
         Record formRec = getForm(module_id);
-        // List<Record> action_list = getActionList(module_id);
+        
         // List<Record> event_list = getEventList(module_id);
         List<Record> permission_list = getPermissionList(module_id);
         List<Record> auth_list = getAuthList(module_id);
@@ -543,7 +565,15 @@ public class ModuleController extends Controller {
 
         Record rec = new Record();
         rec.set("module_id", module_id);
-        rec.set("form", formRec);
+        if (formRec != null) {
+            rec.set("form", formRec);
+            rec.set("form_fields", getFormFields(formRec.getLong("id")));
+            
+            List<Record> btn_list_query = getFormBtns(formRec.getLong("id"), "list");
+            rec.set("btn_list_query", btn_list_query);
+            List<Record> btn_list_edit = getFormBtns(formRec.getLong("id"), "edit");
+            rec.set("btn_list_edit", btn_list_edit);
+        }
         rec.set("module_version", module.get("version"));
         rec.set("sys_only", sys_only);
         rec.set("module_name", module.get("module_name"));
@@ -555,12 +585,25 @@ public class ModuleController extends Controller {
         // rec.set("search_obj", search_obj);
         return rec;
     }
-    
+
     private Record getForm(String module_id) {
-        Record rec = Db.findFirst("select * from eeda_form_define where module_id=?", module_id);
+        Record rec = Db.findFirst(
+                "select * from eeda_form_define where module_id=?", module_id);
         return rec;
     }
 
+    private List<Record> getFormFields(Long formId) {
+        List<Record> recList = Db.find(
+                "select * from eeda_form_field where form_id=?", formId);
+        return recList;
+    }
+
+    private List<Record> getFormBtns(Long formId, String type) {
+        List<Record> recList = Db.find(
+                "select * from eeda_form_btn where form_id=? and type=?", formId, type);
+        return recList;
+    }
+    
     private String getSearchObj(String module_id) {
         Record rec = Db.findFirst(
                 "select * from eeda_module_customize_search where module_id=?",
@@ -690,8 +733,9 @@ public class ModuleController extends Controller {
     }
 
     private List<Record> getAuthList(String module_id) {
-        List<Record> authRecs = Db.find(
-                "select mr.*, r.code, r.name from module_role mr, role r where mr.module_id=? and mr.role_id=r.id", module_id);
+        List<Record> authRecs = Db
+                .find("select mr.*, r.code, r.name from module_role mr, role r where mr.module_id=? and mr.role_id=r.id",
+                        module_id);
         for (Record record : authRecs) {
             long module_role_id = record.getLong("id");
             List<Record> pRecs = Db

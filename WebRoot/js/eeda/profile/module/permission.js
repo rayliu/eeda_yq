@@ -1,6 +1,6 @@
 define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
-    $(document).ready(function(template) {
-    	document.title = '模块定义 | '+document.title;
+   
+    	
         
         //$('[data-toggle=tooltip]').tooltip();
         //-------------   子表的动态处理
@@ -175,108 +175,11 @@ define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
             $("#editField").modal('hide');
         });
 
-        eeda.deletedAuthTableIds=[];
+        
 
-        var buildAuthTableDetail=function(){
-            var item_table_rows = $("#auth_table tr");
-            var items_array=[];
-            for(var index=0; index<item_table_rows.length; index++){
-                if(index==0)
-                    continue;
+        
 
-                var row = item_table_rows[index];
-                var empty = $(row).find('.dataTables_empty').text();
-                if(empty)
-                  continue;
-                
-                var id = $(row).attr('id');
-                if(!id){
-                    id='';
-                }
-                
-                var item={}
-                item.id = id;
-                item.role_id = $(row).find('[name=role_id]').val();
-                item.role_code = $(row).find('[name=role_id] :selected').attr('code');
-                var box_array=[];
-                var checkBoxs = $(row).find('[type=checkbox]');
-                for(var i = 0; i < checkBoxs.length; i++){
-                    var boxEl= checkBoxs[i];
-                    var boxItem={
-                        id: $(boxEl).attr('row_id'),
-                        permission_id: $(boxEl).val(),
-                        permission_code: $(boxEl).attr('code'),
-                        permission_name: $(boxEl).attr('name'),
-                        is_authorize: $(boxEl).prop('checked')
-                    }
-                    box_array.push(boxItem);
-                }
-                item.permission_list = box_array;
-                item.action = id.length > 0?'UPDATE':'CREATE';
-                items_array.push(item);
-            }
-
-            //add deleted items
-            for(var index=0; index<eeda.deletedAuthTableIds.length; index++){
-                var id = eeda.deletedAuthTableIds[index];
-                var item={
-                    id: id,
-                    action: 'DELETE'
-                };
-                items_array.push(item);
-            }
-            eeda.deletedAuthTableIds = [];
-            return items_array;
-        };
-
-        var saveAction=function(btn, is_start){
-            is_start = is_start || false; 
-
-            var ue = UE.getEditor('container');
-            var dto = {
-                module_id: $('#module_id').text(),
-                info:{
-                    name: $('#form_name').val(),
-                    code: $('#form_code').val(),
-                },
-                template_content: ue.getContent(),
-                permission_list: eeda.buildTableDetail('permission_table', deletedPermisstionTableIds),
-                auth_list: buildAuthTableDetail()
-            };
-
-            console.log('saveBtn.click....');
-            console.log(dto);
-
-            //异步向后台提交数据
-            $.post('/module/saveStructure', {params:JSON.stringify(dto)}, function(data){
-                var order = data;
-                console.log(order);
-                if(order.ID>0){
-                    $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-                    btn.attr('disabled', false);
-                }else{
-                    $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-                    btn.attr('disabled', false);
-                }
-            },'json').fail(function() {
-                $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-                btn.attr('disabled', false);
-            });
-        };
-
-
-        $('#saveBtn').on('click', function(e){
-            $(this).attr('disabled', true);
-
-            //阻止a 的默认响应行为，不需要跳转
-            e.preventDefault();
-            //提交前，校验数据
-            // if(!$("#orderForm").valid()){
-            //     return;
-            // }
-
-            saveAction($(this));
-        });
+        
 
         //单据预览
         $('#previewBtn').click(function(){
@@ -291,5 +194,9 @@ define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
 
             saveAction($(this), true);
         });
-    });
+
+        return {
+            deletedPermisstionTableIds: deletedPermisstionTableIds
+        }; 
+    
  });

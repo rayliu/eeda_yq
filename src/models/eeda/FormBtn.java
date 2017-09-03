@@ -1,0 +1,1 @@
+package models.eeda;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class FormBtn extends Model<FormBtn> {	public static final FormBtn dao = new FormBtn();}

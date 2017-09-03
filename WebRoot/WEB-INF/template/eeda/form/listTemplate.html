@@ -1,0 +1,38 @@
+<%layout("/eeda/layout.html"){%>
+    <div id="page-wrapper">
+        <input type="hidden" id="module_id" value="${module_id!''}">
+        <input type="hidden" id="form_id" value="${form_id!''}">
+        <% include("/eeda/form/btnToolBar.html", 
+            {
+                btnList: btnList
+            }){} %>
+
+        <%
+            var headers=[''];
+
+            for(field in field_list){
+                array.add(headers, field.FIELD_DISPLAY_NAME);
+            }
+        %>
+        <%include("/eeda/component/form/detailTable.html", 
+            {
+                id:'list_table',
+                headers: headers
+            }){} %>
+    </div>
+<%}%>
+
+<textarea id="field_list_json" style="display: none;">
+    ${field_list_json!''}
+</textarea>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        <%if(action=='add'){%>
+            requirejs(['app/form/add/main']);
+        <%} else if(action=='edit'){%>
+            requirejs(['app/form/edit/main']);
+        <%} else if(action=='list'){%>
+            requirejs(['app/form/list/main']);
+        <%}%>
+    });
+</script>

@@ -68,6 +68,9 @@
 				 	 	<a href="#buttons" aria-controls="permission" role="tab" data-toggle="tab">工具栏按钮</a>
 				 	 </li>
 				 	 <li role="presentation">
+				 	 	<a href="#events" aria-controls="permission" role="tab" data-toggle="tab">事件响应</a>
+				 	 </li>
+				 	 <li role="presentation">
 				 	 	<a href="#formular" aria-controls="permission" role="tab" data-toggle="tab">回写公式</a>
 				 	 </li>
 				  	 <li role="presentation">
@@ -87,10 +90,13 @@
                         <%include("/profile/module/edit_tab_info.html", {}){} %>
                     </div>
                     <div class="tab-pane" id="fields">
-                        <%include("/profile/module/edit_tab_fields.html", {}){} %>
+                        <%include("/profile/module/fields/edit_tab_fields.html", {}){} %>
                     </div>
                     <div class="tab-pane" id="template">
                         <%include("/profile/module/edit_tab_template.html", {}){} %>
+                    </div>
+                    <div class="tab-pane" id="buttons">
+                        <%include("/profile/module/btns/edit_tab_btns.html", {}){} %>
                     </div>
 				  	<div role="tabpanel" class="tab-pane " id="permission">
 				    	<div class="form-group">
@@ -214,9 +220,6 @@
 <script>
 	window.UEDITOR_HOME_URL = "/js/lib/ueditor/";
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-        requirejs(['app/profile/module/list_tree', 
-        	'app/profile/module/template', 
-        	'app/profile/module/permission',
-        	'app/profile/module/auth']);
+        requirejs(['app/profile/module/main']);
     });
 </script>

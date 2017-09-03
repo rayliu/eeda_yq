@@ -1,5 +1,5 @@
 define(['jquery', 'template', 'dataTablesBootstrap', 'sco'], function ($, template) {
-    $(document).ready(function() {
+    
         
         var role_list_html;//提前获取rolelist
         var role_list=[];
@@ -220,5 +220,61 @@ define(['jquery', 'template', 'dataTablesBootstrap', 'sco'], function ($, templa
             auth_table.row(tr).remove().draw();
         });
 
-    });
+        var deletedAuthTableIds=[];
+        var buildAuthTableDetail=function(){
+            var item_table_rows = $("#auth_table tr");
+            var items_array=[];
+            for(var index=0; index<item_table_rows.length; index++){
+                if(index==0)
+                    continue;
+
+                var row = item_table_rows[index];
+                var empty = $(row).find('.dataTables_empty').text();
+                if(empty)
+                  continue;
+                
+                var id = $(row).attr('id');
+                if(!id){
+                    id='';
+                }
+                
+                var item={}
+                item.id = id;
+                item.role_id = $(row).find('[name=role_id]').val();
+                item.role_code = $(row).find('[name=role_id] :selected').attr('code');
+                var box_array=[];
+                var checkBoxs = $(row).find('[type=checkbox]');
+                for(var i = 0; i < checkBoxs.length; i++){
+                    var boxEl= checkBoxs[i];
+                    var boxItem={
+                        id: $(boxEl).attr('row_id'),
+                        permission_id: $(boxEl).val(),
+                        permission_code: $(boxEl).attr('code'),
+                        permission_name: $(boxEl).attr('name'),
+                        is_authorize: $(boxEl).prop('checked')
+                    }
+                    box_array.push(boxItem);
+                }
+                item.permission_list = box_array;
+                item.action = id.length > 0?'UPDATE':'CREATE';
+                items_array.push(item);
+            }
+
+            //add deleted items
+            for(var index=0; index<deletedAuthTableIds.length; index++){
+                var id = deletedAuthTableIds[index];
+                var item={
+                    id: id,
+                    action: 'DELETE'
+                };
+                items_array.push(item);
+            }
+            deletedAuthTableIds = [];
+            return items_array;
+        };
+
+        return {
+            deletedAuthTableIds: deletedAuthTableIds,
+            buildAuthTableDetail: buildAuthTableDetail
+        }; 
 });

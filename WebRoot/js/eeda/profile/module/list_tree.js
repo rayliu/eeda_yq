@@ -1,4 +1,4 @@
-define(['jquery','zTree'], function ($) {
+define(['jquery', 'zTree', './fields', './btns'], function ($, tree, fieldCont, btnsCont) {
 
     $(document).ready(function() {
     	
@@ -142,7 +142,7 @@ define(['jquery','zTree'], function ($) {
                 $("#displayDiv").hide();
             }
             $("#module_id").text(treeNode.id);
-            $("#order_name").val(treeNode.name);
+            $("#form_name").val(treeNode.name);
             $("#module_url").val(treeNode.url);
 
             $.post('/module/getOrderStructure', {module_id: treeNode.id}, function(json){
@@ -150,13 +150,38 @@ define(['jquery','zTree'], function ($) {
                 console.log(json);
                 module_obj = json;
 
-                $('#form_code').val(module_obj.FORM.CODE);
-                $('#form_name').val(module_obj.FORM.NAME);
-
+                //fields clear
+                fieldCont.dataTable.clear().draw();
                 var ue = UE.getEditor('container');
-                ue.setContent(module_obj.FORM.TEMPLATE_CONTENT);
+                ue.execCommand('cleardoc');//clear content
 
+                if(module_obj.FORM){
+                    $('#form_code').val(module_obj.FORM.CODE);
+                    $('#form_name').val(module_obj.FORM.NAME);
 
+                    ue.setContent(module_obj.FORM.TEMPLATE_CONTENT);
+
+                    var fields_dataTable = fieldCont.dataTable;//$('#fields_table').DataTable();
+                    
+                    for (var i = 0; i < json.FORM_FIELDS.length; i++) {
+                        var field = json.FORM_FIELDS[i];
+                        fields_dataTable.row.add(field).draw(false);
+                    }
+
+                    btnsCont.list_dataTable.clear().draw();
+                    var toolbar_list_table = btnsCont.list_dataTable;
+                    for (var i = 0; i < json.BTN_LIST_QUERY.length; i++) {
+                        var field = json.BTN_LIST_QUERY[i];
+                        toolbar_list_table.row.add(field).draw(false);
+                    }
+
+                    btnsCont.edit_dataTable.clear().draw();
+                    var toolbar_edit_table = btnsCont.edit_dataTable;
+                    for (var i = 0; i < json.BTN_LIST_EDIT.length; i++) {
+                        var field = json.BTN_LIST_EDIT[i];
+                        toolbar_edit_table.row.add(field).draw(false);
+                    }
+                }
 
                 var permission_dataTable = $('#permission_table').DataTable();
                 permission_dataTable.clear().draw();

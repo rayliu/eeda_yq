@@ -84,16 +84,17 @@ public class DbUtils {
 	}
 	
 	public static void handleList(List<Map<String, String>> itemList,
-	        String master_order_id, Class<?> clazz,
+	        Long master_order_id, Class<?> clazz,
 	        String master_col_name) 
 			throws InstantiationException, IllegalAccessException {
 		if(itemList!=null){
 	    	for (Map<String, String> rowMap : itemList) {//获取每一行
 	    		Model<?> model = (Model<?>) clazz.newInstance();
 	    		
-	    		String rowId = rowMap.get("id");
+ 	    		String rowId = (rowMap.get("id")==null?String.valueOf(rowMap.get("ID")):rowMap.get("id"));
+	    		
 	    		String action = rowMap.get("action");
-	    		if(StringUtils.isEmpty(rowId)){
+	    		if(StringUtils.isEmpty(rowId) || "null".equals(rowId)){
 	    			if(!"DELETE".equals(action)){
 						setModelValues(rowMap, model);
 		    			model.set(master_col_name, master_order_id);
@@ -213,15 +214,15 @@ public class DbUtils {
 			if(!key.endsWith("_list")){
             	String value = String.valueOf(entry.getValue()).trim();
             	//忽略  action 字段
-            	if(!"action".equals(key)){
+            	if(!"action".equals(key) && !"null".equals(value)){
             		logger.debug(key+":"+value);
             		if(StringUtils.isEmpty(value)){
                         value=null;
                     }
             		try {
                         model.set(key, value);
-                        if("Field".equals(modelName) && "field_display_name".equals(key)){//对field 的特殊处理
-                            model.set("field_name", PingYinUtil.getFirstSpell(value).toUpperCase());
+                        if("Field".equals(modelName) && "field_display_name".equals(key.toLowerCase())){//对field 的特殊处理
+                            model.set("field_name", PingYinUtil.getFirstSpell(value));
                             //需判断当前表是否有相同字段名
                         }
                     } catch (Exception e) {
@@ -229,25 +230,7 @@ public class DbUtils {
                     }
             	}
             }
-//			else{
-//                String modelClassName = key.substring(0, key.indexOf("_list"));
-//                try {
-//                    List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get(key);
-//                    Class c = Class.forName("models.yh.structure."+StringUtils.capitalize(modelClassName));
-//                   
-//                    Map<String, String> master_ref= new HashMap<String, String>();
-//                    master_ref.put("structure_id", model.get("id").toString());
-//                    handleList(itemList, c, master_ref);
-//                } catch (ClassNotFoundException e) {
-//                    e.printStackTrace();
-//                } catch (InstantiationException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                } catch (IllegalAccessException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//            }
+
 		}
 	}
 	

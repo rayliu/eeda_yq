@@ -531,4 +531,25 @@ li{
     color: #457ab7;
 }
 
+#fields_table td:hover {
+    cursor: pointer;
+}
+
+table tr{
+    height: 40px;
+}
+
+tbody .btn, tbody .btn-xs {
+    background-color: white;
+    border: solid 1px #ccc;
+}
+
+.table_btn_bar {
+    height: 40px;
+    padding-top: 8px;
+}
+
+.table_btn_bar hr{
+    margin: 0 0;
+}
 /* ray added */
