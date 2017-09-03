@@ -1,1 +1,0 @@
-package models;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class AppInvoiceDoc extends Model<AppInvoiceDoc> {	public static final AppInvoiceDoc dao = new AppInvoiceDoc();}

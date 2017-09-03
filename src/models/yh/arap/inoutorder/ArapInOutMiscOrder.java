@@ -1,1 +1,0 @@
-package models.yh.arap.inoutorder;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class ArapInOutMiscOrder extends Model<ArapInOutMiscOrder> {	public static final ArapInOutMiscOrder dao = new ArapInOutMiscOrder();}

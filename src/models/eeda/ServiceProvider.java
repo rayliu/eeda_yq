@@ -1,1 +1,0 @@
-package models.eeda;import com.jfinal.plugin.activerecord.Model;public class ServiceProvider extends Model<ServiceProvider> {	public static final ServiceProvider dao = new ServiceProvider();}

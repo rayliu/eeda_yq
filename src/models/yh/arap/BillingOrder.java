@@ -1,1 +1,0 @@
-package models.yh.arap;import com.jfinal.plugin.activerecord.Model;public class BillingOrder extends Model<BillingOrder> {    public static final BillingOrder dao = new BillingOrder();}

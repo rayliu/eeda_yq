@@ -1,1 +1,0 @@
-package models;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class SpStorage extends Model<SpStorage> {	public static final SpStorage dao = new SpStorage();}
