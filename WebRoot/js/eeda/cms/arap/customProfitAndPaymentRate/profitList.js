@@ -42,15 +42,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					}
 				},
 	            { 
-	            	"render": function(data, type, full, meta) {
-					    var profit_rate=parseFloat(((full.CHARGE_RMB - full.COST_RMB)/full.COST_RMB)*100).toFixed(2);
-	            		if(!full.COST_RMB){
-	            			return "";
-	            		}
-	            		if(profit_rate<0){
-	            			return '<span style="color:red;">'+profit_rate+'</span>';
-	            		}
-	            		return profit_rate;
+					"render": function(data, type, full, meta) {
+	            	    if(data==0){
+	            	    	return '';
+	            	    }
+						return full.PROFIT_RATE;
 					}
 	            }
 	          ]
@@ -65,46 +61,35 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //简单查询
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
-	      if(selectField=='order_export_date'){
+	      if(selectField=='date_custom'){
 	    	  $("#single_customer_input").val("");
-	    	  $("#user_id_show").hide();
+	    	  $("#single_customer").val("");
 	    	  $("#sp_customer_show").hide();
-	    	  $("#order_export_date_show").show();
+	    	  $("#date_custom_show").show();
 		  }
 		  if(selectField=='customer'){
-			  $("#single_order_export_date_begin_time").val("");
-	    	  $("#single_order_export_date_end_time").val("");
-			  $("#user_id_show").hide();
-	    	  $("#order_export_date_show").hide();
+			  $("#single_date_custom_begin_time").val("");
+	    	  $("#single_date_custom_end_time").val("");
+	    	  $("#date_custom_show").hide();
 			  $("#sp_customer_show").show();
-		  }
-		  if(selectField=="user_id"){
-			  $("#user_id_show").val("");
-			  $("#sp_customer_show").hide();
-			  $("#order_export_date_show").hide();
-			  $("#user_id_show").show();
 		  }
      });
       
   	$('#singleSearchBtn').click(function(){
 	     var selectField = $('#selected_field').val();
-	     if(selectField=='order_export_date'){
-	    	 var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
-	    	 var order_export_date_end_time = $("#single_order_export_date_end_time").val();
-	      }
-	      if(selectField=='customer'){
+	     if(selectField=='date_custom'){
+	    	 var begin_time = $("#single_date_custom_begin_time").val();
+	    	 var end_time = $("#single_date_custom_end_time").val();
+	     }
+	     if(selectField=='customer'){
 	    	 var customer = $("#single_customer").val();
-	      }
-	      if(selectField=="user_id"){
-	    	  var user_id = $("#single_user_id").val();
-	      }
+	     }
 	      
 	      //合计字段
          $.post('/customProfit/listTotal',{
        	  customer:customer,
-       	  user_id:user_id,
-       	  order_export_date_begin_time:order_export_date_begin_time,
-       	  order_export_date_end_time:order_export_date_end_time
+       	  begin_time:begin_time,
+       	  end_time:end_time
          },function(data){
        	  var charge_cny = parseFloat(data.CHARGE_CNY).toFixed(2);
        	  var charge_usd = parseFloat(data.CHARGE_USD).toFixed(2);
@@ -129,7 +114,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
        	  
        	  
        	  var total_profit=parseFloat(total_charge-total_cost).toFixed(2);
-       	  var average_profit_rate = parseFloat((total_profit/total_cost)*100).toFixed(2);
+       	  var average_profit_rate = parseFloat((total_profit/total_charge)*100).toFixed(2);
        	  if(!average_profit_rate){
        		  average_profit_rate=0.00;
        	  }
@@ -140,21 +125,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
        	  )
        	  var total=parseFloat(data.TOTAL);
        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("折合应收(CNY):<br>"+eeda.numFormat(total_charge,3));
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("折合应付(CNY):<br>"+eeda.numFormat(total_cost,3));
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("平均利润率(%):<br>"+average_profit_rate);
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(1).html("折合应收(CNY):<br>"+eeda.numFormat(total_charge,3));
+       	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("折合应付(CNY):<br>"+eeda.numFormat(total_cost,3));
+       	 
        	  if(total_profit<0){
-       		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("利润(CNY):<br>"+eeda.numFormat(total_profit,3)).css('color','red');
+       		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(CNY):<br>"+eeda.numFormat(total_profit,3)).css('color','red');
        	  }else(
-       		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("利润(CNY):<br>"+eeda.numFormat(total_profit,3))
+       		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(CNY):<br>"+eeda.numFormat(total_profit,3))
        	  )
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("提成");
+       	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("平均利润率(%):<br>"+average_profit_rate);
 
          });
          
-         var url = "/customProfit/list?receive_sent_consignee="+customer
-         +"&order_export_date_begin_time="+order_export_date_begin_time
-         +"&order_export_date_end_time="+order_export_date_end_time;
+         var url = "/customProfit/list?receive_sent_consignee_equals="+customer
+         +"&date_custom_begin_time="+begin_time
+         +"&date_custom_end_time="+end_time;
 			dataTable.ajax.url(url).load();
 	 
 	});
@@ -170,8 +155,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var customer = $("#customer").val(); 
-          var order_export_date_begin_time = $("#order_export_date_begin_time").val();
-          var order_export_date_end_time = $("#order_export_date_end_time").val();
+          var begin_time = $("#date_custom_begin_time").val();
+          var end_time = $("#date_custom_end_time").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -183,8 +168,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           //合计字段
           $.post('customProfit/listTotal',{
         	  customer:customer,
-        	  order_export_date_begin_time:order_export_date_begin_time,
-        	  order_export_date_end_time:order_export_date_end_time
+        	  begin_time:begin_time,
+        	  end_time:end_time
           },function(data){
         	  var charge_cny = parseFloat(data.CHARGE_CNY).toFixed(2);
         	  var charge_usd = parseFloat(data.CHARGE_USD).toFixed(2);
@@ -209,7 +194,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  
         	  
         	  var total_profit=parseFloat(total_charge-total_cost).toFixed(2);
-        	  var average_profit_rate = parseFloat((total_profit/total_cost)*100).toFixed(2);
+        	  var average_profit_rate = parseFloat((total_profit/total_charge)*100).toFixed(2);
         	  if(total_profit<0){
         		  $('#total_profit').text(total_profit).css('color','red');
         	  }else(
@@ -219,13 +204,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
         	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(1).html("折合应收(CNY):"+eeda.numFormat(total_charge,3));
         	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("折合应付(CNY):"+eeda.numFormat(total_cost,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("平均利润率(%)："+average_profit_rate);
         	  if(total_profit<0){
         		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(CNY):"+eeda.numFormat(total_profit,3)).css('color','red');
         	  }else(
         		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(CNY):"+eeda.numFormat(total_profit,3))
         	  )
-        	  
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("平均利润率(%)："+average_profit_rate);
 
           });
           
@@ -239,10 +223,38 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
          
           
           var url = "/customProfit/list?receive_sent_consignee="+customer
-				          +"&order_export_date_begin_time="+order_export_date_begin_time
-				          +"&order_export_date_end_time="+order_export_date_end_time;
+				          +"&date_custom_begin_time="+begin_time
+				          +"&date_custom_end_time="+end_time;
           				dataTable.ajax.url(url).load(cssTd);
       };
       searchData();
+      
+    //导出excel
+      $('#exportTotaledExcel1').click(function(){
+    	  $(this).attr('disabled', true);
+          var customer = $("#single_customer").val();
+          var begin_time = $("#single_date_custom_begin_time").val();
+          var end_time = $("#single_date_custom_end_time").val();
+          excel_method(customer,begin_time,end_time);
+      });
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+          var customer = $("#customer").val();
+          var begin_time = $("#date_custom_begin_time").val();
+          var end_time = $("#date_custom_end_time").val();
+          excel_method(customer,begin_time,end_time);
+      });
+      var excel_method = function(customer,begin_time,end_time){
+		  $.post('/customProfit/downloadExcelList',{customer:customer,begin_time:begin_time,end_time:end_time}, function(data){
+	          $('#exportTotaledExcel1').prop('disabled', false);
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $('#singlexportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      }
   });
 });
