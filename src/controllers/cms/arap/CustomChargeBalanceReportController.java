@@ -105,8 +105,8 @@ public class CustomChargeBalanceReportController extends Controller {
         long office_id=user.getLong("office_id");
 		
 		String sp_id =" and sp_id="+spid;
-		if(" and sp_id=".equals(sp_id)){
-			sp_id="";
+		if(StringUtils.isBlank(spid)){
+			sp_id = "";
 		}
 		if(date_custom_begin_time==null){
 			date_custom_begin_time="";

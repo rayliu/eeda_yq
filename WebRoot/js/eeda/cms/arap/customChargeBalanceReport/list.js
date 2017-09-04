@@ -157,7 +157,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	   //合计字段
          $.post('customChargeBalanceReport/listTotal',{
        	  sp_id:sp_id,
-       	  employee_id:employee_id,
        	  date_custom_begin_time:date_custom_begin_time,
        	  date_custom_end_time:date_custom_end_time
          },function(data){
