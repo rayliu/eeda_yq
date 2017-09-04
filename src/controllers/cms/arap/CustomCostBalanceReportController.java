@@ -9,6 +9,7 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -22,6 +23,7 @@ import com.jfinal.plugin.activerecord.Record;
 import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.PoiUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -207,4 +209,69 @@ public class CustomCostBalanceReportController extends Controller {
 		renderJson(re);
 	}
 
+	public void downloadExcelList(){
+		UserLogin user = LoginUserController.getLoginUser(this);
+		long office_id = user.getLong("office_id");
+		String sp_id = getPara("sp_id");
+		String begin_time = getPara("begin_time");
+		String end_time = getPara("end_time");
+		String spId = "";
+		String date_custom = "";
+		if (StringUtils.isBlank(sp_id)) {
+			spId = "";
+		} else {
+			spId = " and joa.sp_id = " + sp_id;
+		}
+		if (StringUtils.isBlank(begin_time)||StringUtils.isBlank(end_time)) {
+			date_custom = "";
+		} else {
+			date_custom =  " and (date_custom between '"+begin_time+"' and '"+end_time+"')";
+		}
+
+		String condition = spId+date_custom;
+
+		 String sql = " SELECT A.id,A.receive_sent_consignee,A.abbr,A.sp_id,sum(cost_cny) cost_cny,"
+	        		+ " SUM(cost_usd) cost_usd,SUM(cost_jpy) cost_jpy,sum(cost_hkd) cost_hkd,"
+	        		+ " SUM(uncost_cny) uncost_cny,SUM(uncost_usd) uncost_usd,sum(uncost_jpy) uncost_jpy,"
+	        		+ " SUM(uncost_hkd) uncost_hkd,SUM(cost_rmb) cost_rmb,sum(uncost_rmb) uncost_rmb,"
+	        		+ " round(((SUM(cost_rmb) - sum(uncost_rmb))/SUM(cost_rmb))*100,2)  payment_rate"
+	        		+ " FROM (SELECT jo.id,jo.receive_sent_consignee,p.abbr,joa.sp_id,IF (joa.order_type = 'cost'"
+	        		+ " AND joa.currency_id = 3,total_amount,0) cost_cny,"
+	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 6,"
+	        		+ " total_amount,0) cost_usd,IF (joa.order_type = 'cost'"
+	        		+ " AND joa.currency_id = 8,total_amount,0) cost_jpy,"
+	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 9,"
+	        		+ " total_amount,0) cost_hkd,"
+	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 3 AND pay_flag!='Y',"
+	        		+ " total_amount,0) uncost_cny,"
+	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 6 AND pay_flag!='Y',"
+	        		+ " total_amount,0) uncost_usd,"
+	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 8 AND pay_flag!='Y',"
+	        		+ " total_amount,0) uncost_jpy,"
+	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 9 AND pay_flag!='Y',"
+	        		+ " total_amount,0) uncost_hkd,"
+	        		+ " IF (joa.order_type = 'cost',total_amount,0) cost_rmb,"
+	        		+ " IF (joa.order_type = 'cost' AND pay_flag!='Y',total_amount,0) uncost_rmb"
+	        		+ " FROM custom_plan_order jo"
+	        		+ " LEFT JOIN custom_plan_order_arap joa ON jo.id = joa.order_id"
+	        		+ " LEFT JOIN party p ON p.id = joa.sp_id"
+	        		+ " WHERE jo.office_id =" +office_id+" "+condition
+	        		+ " and jo.delete_flag = 'N'"
+	    			+ " ) A"
+	        		+ " WHERE A.sp_id IS NOT NULL AND A.cost_rmb!=0"
+	        		+ " GROUP BY A.sp_id"
+	        		+ " ORDER BY uncost_rmb desc";
+
+        String sqlExport = sql;
+		String total_name_header = "结算公司,CNY(应收),USD(应收),JPY(应收),HKD(应收),折合CNY(应收),CNY(未收),USD(未收),JPY(未收),HKD(未收),折合CNY(未收),回款率";
+		String[] headers = total_name_header.split(",");
+
+		String[] fields = { "ABBR", "COST_CNY", "COST_USD", "COST_JPY",
+				"COST_HKD", "COST_RMB", "UNCOST_CNY","UNCOST_USD","UNCOST_JPY","UNCOST_HKD","UNCOST_RMB","PAYMENT_RATE"};
+		
+		String exportName = "";
+		
+		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,exportName);
+		renderText(fileName);
+	}
 }

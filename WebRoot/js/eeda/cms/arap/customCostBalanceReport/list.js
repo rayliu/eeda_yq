@@ -109,21 +109,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
 	      if(selectField=='sp_id'){
-	    	  $("#single_sp_id_input").val("");
-	    	  $("#order_export_date_show").hide();
-	    	  $("#employee_id_show").hide();
+	    	  $("#single_date_custom_begin_time").val("");
+	    	  $("#single_date_custom_end_time").val("");
+	    	  $("#date_custom_show").hide();
 	    	  $("#sp_id_show").show();
 	      }
-	      if(selectField=='employee_id'){
-	    	  $("#employee_id_show").val("");
+	      if(selectField=="date_custom"){
+	    	  $("#single_sp_id_input").val("");
+	    	  $("#single_sp_id").val("");
 	    	  $("#sp_id_show").hide();
-	    	  $("#order_export_date_show").hide();
-	    	  $("#employee_id_show").show();
-	      }
-	      if(selectField=="order_export_date"){
-	    	  $("#employee_id_show").hide();
-	    	  $("#sp_id_show").hide();
-	    	  $("#order_export_date_show").show();
+	    	  $("#date_custom_show").show();
 	      }
      });
 	
@@ -132,20 +127,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		  if(selectField=='sp_id'){
 			  var sp_id = $("#single_sp_id").val();
 	      }
-	      if(selectField=='employee_id'){
-	    	  var employee_id = $("#employee_id_show").val();
-	      }
-	      if(selectField=="order_export_date"){
-	    	  var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
-			  var order_export_date_end_time = $("#single_order_export_date_end_time").val();
+	      if(selectField=="date_custom"){
+	    	  var date_custom_begin_time = $("#single_date_custom_begin_time").val();
+			  var date_custom_end_time = $("#single_date_custom_end_time").val();
 	      }
 	      
 	      
 	      
 	      var url = "/customCostBalanceReport/list?sp_id="+sp_id
-	      	+"&employee_id="+employee_id
-			+"&order_export_date_begin_time="+order_export_date_begin_time
-	        +"&order_export_date_end_time="+order_export_date_end_time;
+			+"&date_custom_begin_time="+date_custom_begin_time
+	        +"&date_custom_end_time="+date_custom_end_time;
 	      	dataTable.ajax.url(url).load(tableStyle);
 	      	
 	      //合计字段
@@ -226,16 +217,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      var searchData=function(){
     	 var sp_id = $("#sp_id").val();
          var abbr_name=$('#sp_id_input').val();
-         var order_export_date_begin_time = $("#order_export_date_begin_time").val();
-         var order_export_date_end_time = $("#order_export_date_end_time").val();
+         var date_custom_begin_time = $("#date_custom_begin_time").val();
+         var date_custom_end_time = $("#date_custom_end_time").val();
          
          
          
        //合计字段
          $.post('customCostBalanceReport/listTotal',{
        	  sp_id:sp_id,
-       	  order_export_date_begin_time:order_export_date_begin_time,
-       	  order_export_date_end_time:order_export_date_end_time
+       	date_custom_begin_time:date_custom_begin_time,
+       	date_custom_end_time:date_custom_end_time
          },function(data){
        	  var cost_cny = parseFloat(data.COST_CNY).toFixed(2);
        	  var cost_usd = parseFloat(data.COST_USD).toFixed(2);
@@ -287,12 +278,40 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           */
           var url = "/customCostBalanceReport/list?sp="+sp_id
           				+"&abbr_equals="+abbr_name
-          				+"&order_export_date_begin_time="+order_export_date_begin_time
-				        +"&order_export_date_end_time="+order_export_date_end_time;
+          				+"&date_custom_begin_time="+date_custom_begin_time
+				        +"&date_custom_end_time="+date_custom_end_time;
           dataTable.ajax.url(url).load(cssTd);
           
       };
       
       searchData();
+      
+      //导出excel
+      $('#exportTotaledExcel1').click(function(){
+    	  $(this).attr('disabled', true);
+          var sp_id = $("#single_sp_id").val();
+          var begin_time = $("#single_date_custom_begin_time").val();
+          var end_time = $("#single_date_custom_end_time").val();
+          excel_method(sp_id,begin_time,end_time);
+      });
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+          var sp_id = $("#sp_id").val();
+          var begin_time = $("#date_custom_begin_time").val();
+          var end_time = $("#date_custom_end_time").val();
+          excel_method(sp_id,begin_time,end_time);
+      });
+      var excel_method = function(sp_id,begin_time,end_time){
+		  $.post('/customCostBalanceReport/downloadExcelList',{sp_id:sp_id,begin_time:begin_time,end_time:end_time}, function(data){
+	          $('#exportTotaledExcel1').prop('disabled', false);
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $('#singlexportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      }
   });
 });
