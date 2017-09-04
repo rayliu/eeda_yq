@@ -22,6 +22,7 @@ import com.jfinal.plugin.activerecord.Record;
 
 import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
+import controllers.util.PoiUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -68,10 +69,10 @@ public class TransAccountAgingController extends Controller {
         		+ " joa.sp_id ,joa.exchange_currency_id ,p.abbr abbr_name,cur. NAME currency_name, "
         		+ " joa.total_amount, "
         		+ " joa.currency_total_amount, "
-        		+ " IF (date_format(jor.land_export_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 0 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
-        		+ " IF (date_format(jor.land_export_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
-        		+ " IF (date_format(jor.land_export_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine, "
-        		+ " IF (date_format(jor.land_export_stamp,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) after_nine "
+        		+ " IF (date_format(jor.charge_time,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 0 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
+        		+ " IF (date_format(jor.charge_time,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
+        		+ " IF (date_format(jor.charge_time,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine, "
+        		+ " IF (date_format(jor.charge_time,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) after_nine "
         		+ " from trans_job_order_arap joa  "
         		+ " LEFT JOIN trans_job_order jor ON jor.id = joa.order_id "
         		+ " LEFT JOIN party p ON  p.id = joa.sp_id "
@@ -81,7 +82,7 @@ public class TransAccountAgingController extends Controller {
         		+ "  LEFT JOIN trans_arap_charge_receive_item cacri on cacri.charge_order_id=caco.id "
         		
         		+ " where joa.order_type = 'charge' and ifnull(caco.audit_status,'') !='已收款' "
-        		+ " and jor.office_id = "+office_id+"  and jor.land_export_stamp<date_format(curdate(),'%Y-%m')"
+        		+ " and jor.office_id = "+office_id+"  and jor.charge_time<date_format(curdate(),'%Y-%m')"
         		+ condition
         		+ " and jor.delete_flag = 'N'"
 				+ " GROUP BY joa.id "
@@ -105,9 +106,9 @@ public class TransAccountAgingController extends Controller {
         		+ " joa.sp_id ,joa.exchange_currency_id ,p.abbr abbr_name,cur. NAME currency_name, "
         		+ " joa.total_amount,joa.total_amount after_nine, "
         		+ " joa.currency_total_amount, "
-        		+ " IF (date_format(jor.land_export_stamp,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
-        		+ " IF (date_format(jor.land_export_stamp,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
-        		+ " IF (date_format(jor.land_export_stamp,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine "
+        		+ " IF (date_format(jor.charge_time,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
+        		+ " IF (date_format(jor.charge_time,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
+        		+ " IF (date_format(jor.charge_time,'%Y-%m')>=date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine "
         		+ " from trans_job_order_arap joa  "
         		+ " LEFT JOIN trans_job_order jor ON jor.id = joa.order_id "
         		+ " LEFT JOIN party p ON  p.id = joa.sp_id "
@@ -115,7 +116,7 @@ public class TransAccountAgingController extends Controller {
         		+ " LEFT JOIN charge_application_order_rel caor on caor.job_order_arap_id = joa.id and joa.create_flag = 'Y' "
         		+ " LEFT JOIN arap_charge_application_order acao on acao.id = caor.application_order_id "
         		+ " where joa.order_type = 'charge' and ifnull(acao.status,'') !='已收款' "
-        		+ " and jor.office_id = "+office_id+" and joa.type != '贸易' and jor.land_export_stamp<date_format(curdate(),'%Y-%m')"
+        		+ " and jor.office_id = "+office_id+" and joa.type != '贸易' and jor.charge_time<date_format(curdate(),'%Y-%m')"
         		+ condition
         		+ " and jor.delete_flag = 'N'"
 				+ " GROUP BY joa.id "
@@ -138,5 +139,70 @@ public class TransAccountAgingController extends Controller {
         renderJson(map); 
 		
 	}
+	
+	//导出Excel
+	public void downloadExcelList(){
+		UserLogin user = LoginUserController.getLoginUser(this);
+		long office_id = user.getLong("office_id");
+		String sp_id = getPara("sp_id");
+		String spId = "";
+		if (StringUtils.isBlank(sp_id)) {
+			spId = "";
+		} else {
+			spId = " and joa.sp_id = " + sp_id;
+		}
+
+		String condition = spId;
+
+		String sql =  " SELECT "
+        		+ " 	abbr_name, "
+        		+ " 	currency_name, "
+        		+ " 	sum(total_amount) total_amount, "
+        		+ " 	sum(currency_total_amount) currency_total_amount, "
+        		+ " 	sum(three) three, "
+        		+ " 	sum(six) six, "
+        		+ " 	sum(nine) nine,"
+        		+ "		after_nine "
+        		+ " FROM "
+        		+ " 	( "
+        		+ " 		select "
+        		+ " joa.sp_id ,joa.exchange_currency_id ,p.abbr abbr_name,cur. NAME currency_name, "
+        		+ " joa.total_amount, "
+        		+ " joa.currency_total_amount, "
+        		+ " IF (date_format(jor.charge_time,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 0 MONTH),'%Y-%m') , joa.total_amount, 0 ) three,  "
+        		+ " IF (date_format(jor.charge_time,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH),'%Y-%m') , joa.total_amount, 0 ) six, "
+        		+ " IF (date_format(jor.charge_time,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 2 MONTH),'%Y-%m') , joa.total_amount, 0 ) nine, "
+        		+ " IF (date_format(jor.charge_time,'%Y-%m')<date_format(DATE_SUB(curdate(), INTERVAL 3 MONTH),'%Y-%m') , joa.total_amount, 0 ) after_nine "
+        		+ " from trans_job_order_arap joa  "
+        		+ " LEFT JOIN trans_job_order jor ON jor.id = joa.order_id "
+        		+ " LEFT JOIN party p ON  p.id = joa.sp_id "
+        		+ " LEFT JOIN currency cur ON cur.id = joa.currency_id "
+        		+ " LEFT JOIN trans_arap_charge_item caci on caci.ref_order_id=joa.id "
+        		+ "  LEFT JOIN  trans_arap_charge_order caco on caco.id = caci.charge_order_id and caco.`status`='已确认' "
+        		+ "  LEFT JOIN trans_arap_charge_receive_item cacri on cacri.charge_order_id=caco.id "
+        		
+        		+ " where joa.order_type = 'charge' and ifnull(caco.audit_status,'') !='已收款' "
+        		+ " and jor.office_id = "+office_id+"  and jor.charge_time<date_format(curdate(),'%Y-%m')"
+        		+ condition
+        		+ " and jor.delete_flag = 'N'"
+				+ " GROUP BY joa.id "
+        		+ " 	) a "
+        		+ " GROUP BY "
+        		+ " 	sp_id, "
+        		+ " 	exchange_currency_id ";
+
+        String sqlExport = sql;
+		String total_name_header = "结算公司,币制,欠款金额,转化成人民币金额,<=30天,<=60天,<=90天,<=120天";
+		String[] headers = total_name_header.split(",");
+
+		String[] fields = { "ABBR_NAME", "CURRENCY_NAME", "TOTAL_AMOUNT", "TOTAL_AMOUNT",
+				"THREE", "SIX", "NINE","AFTER_NINE"};
+		
+		String exportName = "";
+		
+		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,exportName);
+		renderText(fileName);
+	}
+	
 	
 }
