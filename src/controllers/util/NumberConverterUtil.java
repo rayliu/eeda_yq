@@ -1,8 +1,11 @@
 package controllers.util;
+import net.sf.jasperreports.engine.JRDefaultScriptlet;
 
-import com.jfinal.kit.StrKit;
+import org.apache.commons.lang.StringUtils;
 
-public class NumberConverterUtil {
+
+
+public class NumberConverterUtil extends JRDefaultScriptlet {
 	/**
      * 数字金额大写转换，思想先写个完整的然后将如零拾替换成零
      * 要用到正则表达式
@@ -49,7 +52,7 @@ public class NumberConverterUtil {
         } else {
             str = ones[num];
         }
-        if (num >0 && !StrKit.isBlank(val.trim())) {
+        if (num >0 && !StringUtils.isBlank(val.trim())) {
             str += val;
         }
         return str;
