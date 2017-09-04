@@ -142,8 +142,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	      //合计字段
 	         $.post('customCostBalanceReport/listTotal',{
 	       	  sp_id:sp_id,
-	       	  order_export_date_begin_time:order_export_date_begin_time,
-	       	  order_export_date_end_time:order_export_date_end_time
+	       	date_custom_begin_time:date_custom_begin_time,
+	       	date_custom_end_time:date_custom_end_time
 	         },function(data){
 	       	  var cost_cny = parseFloat(data.COST_CNY).toFixed(2);
 	       	  var cost_usd = parseFloat(data.COST_USD).toFixed(2);

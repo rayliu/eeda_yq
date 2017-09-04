@@ -97,29 +97,29 @@ public class CustomCostBalanceReportController extends Controller {
 	
 	public void listTotal() {
 		String spid =(String) getPara("sp_id");
-		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
-		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
+		String date_custom_begin_time =(String) getPara("date_custom_begin_time");
+		String date_custom_end_time =(String) getPara("date_custom_end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
 		String sp_id =" and sp_id="+spid;
-		if(" and sp_id=".equals(sp_id)){
+		if(StringUtils.isBlank(spid)){
 			sp_id="";
 		}
-		if(order_export_date_begin_time==null){
-			order_export_date_begin_time="";
+		if(date_custom_begin_time==null){
+			date_custom_begin_time="";
 		}
-		if(order_export_date_end_time==null){
-			order_export_date_end_time="";
+		if(date_custom_end_time==null){
+			date_custom_end_time="";
 		}
 		
-		String order_export_date =  " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
+		String date_custom =  " and (date_custom between '"+date_custom_begin_time+"' and '"+date_custom_end_time+"')";
 
-		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
-			order_export_date="";
+		if(date_custom_begin_time==""||date_custom_end_time==""){
+			date_custom="";
 		}
-		String condition = sp_id+order_export_date;
+		String condition = sp_id+date_custom;
 		
 		String sql=" SELECT "
 			+"	(SELECT "
