@@ -48,7 +48,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
            
             var order = {
                 id: $('#id').val(),
-                commodity_name: $('#commodity_name').val(),                
+                commodity_name: $('#commodity_name').val(),
+                commodity_code: $('#commodity_code').val(),  
                 unit_name: $('#unit_name').val(),                
                 unit_name_eng: $('#unit_name_eng').val(),
                 VAT_rate: $('#VAT_rate').val(),                

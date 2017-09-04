@@ -11,7 +11,14 @@
                                                                     value: ''
                                                                 }){}%>
                                         </div>
-                                        
+                                         <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'commodity_code', 
+                                                                    label: '商品编码', 
+                                                                    placeholder:'如要查询多个商品请用逗号分隔',
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
                                     </div><!-- /.row-->
 
                             <div class="form-group button-bar" >
@@ -26,7 +33,7 @@
                             <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'eeda-table', 
-                                    headers:['商品名称','单位','增值税率','退税率','备注','']
+                                    headers:['商品名称','商品编码','单位','增值税率','退税率','备注','']
                                 }){} %>
                        
                 </div>

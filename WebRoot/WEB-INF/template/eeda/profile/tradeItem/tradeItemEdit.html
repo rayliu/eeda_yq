@@ -21,6 +21,16 @@
                                     value:order.commodity_name!''
                                 }){}%>
                         </div>
+                        
+                         <div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'commodity_code', 
+                                    label:'商品编码',
+                                    required:'required' ,
+                                    value:order.commodity_code!''
+                                }){}%>
+                        </div>
+                        
                         <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'unit_name', 
@@ -28,15 +38,16 @@
                                     value:order.unit_name!''
                                 }){}%>
                         </div>
-                        <div class="col-lg-4"><!--  三列排版  -->
+                        
+                    </div>
+                    <div class="row">
+                   		 <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'unit_name_eng', 
                                     label:'单位名称(英)', 
                                     value:order.unit_name_eng!''
                                 }){}%>
                         </div>
-                    </div>
-                    <div class="row">
                     	 <div class="col-lg-4"><!--  三列排版  -->
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'VAT_rate', 
@@ -53,6 +64,8 @@
                                     value:order.rebate_rate!''
                                 }){}%>
                         </div>
+                    </div>
+                    <div class="row">
                          <div class="col-lg-8">
                          <label>备注</label>
                          <textarea id='remark' class="form-control" rows="3" name="remark">${order.remark!''}</textarea>

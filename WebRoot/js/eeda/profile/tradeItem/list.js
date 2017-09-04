@@ -7,7 +7,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
             id: 'eeda-table',
             ajax: "/tradeItem/list",
             columns:[
-                 { "data": "COMMODITY_NAME","width":"100px"},          
+                 { "data": "COMMODITY_NAME","width":"100px"},  
+                 { "data": "COMMODITY_CODE","width":"100px"}, 
                  { "data": "UNIT_NAME"},                   
                  { "data": "VAT_RATE","width":"80px"},
                  { "data": "REBATE_RATE"},          
@@ -32,15 +33,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       })
 
      var searchData=function(){
-          var code = $("#code").val().trim();
-          var name = $("#name").val().trim();
-          var name_eng = $("#name_eng").val().trim();
-          
-          var url = "/finItem/list?name="+name+"&code="+code+"&name_eng="+name_eng;
+          var commodity_name = $("#commodity_name").val().trim();
+          var commodity_code = $("#commodity_code").val().trim();
+          var url = "/tradeItem/search?commodity_name="+commodity_name+"&commodity_code="+commodity_code;
           dataTable.ajax.url(url).load();
       };
-    	
-      
-      
     });
 });

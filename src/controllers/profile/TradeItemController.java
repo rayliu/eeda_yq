@@ -29,7 +29,7 @@ public class TradeItemController extends Controller {
     private Log logger = Log.getLog(TradeItemController.class);
     
     //查询费用中文名称
-    public void search() {
+    public void search() {/*
         String input = getPara("input");
         UserLogin user = LoginUserController.getLoginUser(this);
         long userId = user.getLong("id");
@@ -55,6 +55,49 @@ public class TradeItemController extends Controller {
             }
             renderJson(finItems);
         }
+    */
+    	
+    	  UserLogin user = LoginUserController.getLoginUser(this);
+          long userId = user.getLong("id");
+          Long officeId = user.getLong("office_id");
+          
+          String sLimit = "";
+          String pageIndex = getPara("sEcho");
+          if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
+              sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
+          }
+    		String name = getPara("commodity_name");
+    		String c = getPara("commodity_code");
+    		String[]codes = c.split(",");
+    		String condition = "";
+    		if(StringUtils.isNotBlank(name)){
+    			condition += "and commodity_name like '%"+name+"%' ";
+    		}
+    		if(codes.length > 0 && StringUtils.isNotBlank(c)){
+    			for (int i = 0; i < codes.length; i++){
+    				String code = codes[i];
+    				code = code.trim();
+    				if(i == 0){
+    					condition += "and ( commodity_code like '%"+code+"%' ";
+    				}else{
+    					condition += "or commodity_code like '%"+code+"%' ";
+    				}
+    			}
+    			condition += ")";
+    		}
+    		String sql = "select * from trade_item t where 1=1 and t.office_id="+officeId+" "+condition;
+    		   String sqlTotal = "select count(1) total from ("+sql+") B";
+    	        Record rec = Db.findFirst(sqlTotal);
+    	        logger.debug("total records:" + rec.getLong("total"));
+    	        List<Record> BillingOrders = Db.find(sql + " order by id desc " +sLimit);
+    	        Map BillingOrderListMap = new HashMap();
+    	        BillingOrderListMap.put("sEcho", pageIndex);
+    	        BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
+    	        BillingOrderListMap.put("iTotalDisplayRecords", rec.getLong("total"));
+
+    	        BillingOrderListMap.put("aaData", BillingOrders);
+
+    	        renderJson(BillingOrderListMap); 
     }
     
     //查询费用英文名称
@@ -168,6 +211,7 @@ public class TradeItemController extends Controller {
         
         String id = (String) dto.get("id");
         String commodity_name = (String) dto.get("commodity_name");
+        String commodity_code = (String) dto.get("commodity_code");
         String unit_name = (String) dto.get("unit_name");
         String unit_name_eng = (String) dto.get("unit_name_eng");
         String VAT_rate = (String) dto.get("VAT_rate");
@@ -177,6 +221,7 @@ public class TradeItemController extends Controller {
         if (StringUtils.isBlank(id)) {
         	r = new TradeItem();
         	r.set("commodity_name", commodity_name);
+        	r.set("commodity_code", commodity_code);
         	r.set("unit_name", unit_name);
             r.set("unit_name_eng", unit_name_eng);
             r.set("VAT_rate", VAT_rate);
@@ -187,6 +232,7 @@ public class TradeItemController extends Controller {
         } else {
         	r = TradeItem.dao.findById(id);
         	r.set("commodity_name", commodity_name);
+        	r.set("commodity_code", commodity_code);
         	r.set("unit_name", unit_name);
             r.set("unit_name_eng", unit_name_eng);
             r.set("VAT_rate", VAT_rate);
