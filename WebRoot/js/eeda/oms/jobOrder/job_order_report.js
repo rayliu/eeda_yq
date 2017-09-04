@@ -22,14 +22,8 @@ $(document).ready(function() {
 	$('#printOceanSI').click(function(){
 		//数据不足提示
     	var alert = '';
-    	if($('#ocean_MBLshipper_input').val()==''){
-    		alert+='发货人Shipper<br><br>';
-    	}
     	if($('#ocean_MBLshipper_info').val()==''){
     		alert+='发货人备注<br><br>';
-    	}
-    	if($('#ocean_MBLconsignee_input').val()==''){
-    		alert+='收货人Consignee<br><br>';
     	}
     	if($('#ocean_MBLconsignee_info').val()==''){
     		alert+='收货人备注<br><br>';
@@ -84,14 +78,8 @@ $(document).ready(function() {
 		$('#printOceanHBLSI').click(function(){
 		//数据不足提示
     	var alert = '';
-    	if($('#ocean_HBLshipper_input').val()==''){
-    		alert+='发货人Shipper<br><br>';
-    	}
     	if($('#ocean_HBLshipper_info').val()==''){
     		alert+='发货人备注<br><br>';
-    	}
-    	if($('#ocean_HBLconsignee_input').val()==''){
-    		alert+='收货人Consignee<br><br>';
     	}
     	if($('#ocean_HBLconsignee_info').val()==''){
     		alert+='收货人备注<br><br>';
