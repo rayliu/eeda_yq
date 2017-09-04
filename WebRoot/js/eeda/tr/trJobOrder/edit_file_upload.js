@@ -49,6 +49,8 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 		        done: function (e,data) {
 		        	$("#footer").show();
 		        	$("#msgLoad").empty().append('<h4>'+data.result.CAUSE+'</h4>');
+
+		        	itemOrder.refleshTradeCostItemTable(order_id);
 		        },  
 		        progressall: function (e, data) {//设置上传进度事件的回调函数  
 		        	str = null;
