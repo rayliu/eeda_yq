@@ -130,7 +130,7 @@ left join location l on l.id = jos.fnd
 left join location l1 on l1.id = joai.destination
 left join party p on p.id=aco.sp_id
 left join party p1 on p1.id=joli.consignee
-left join user_login u on u.id = 30
+left join user_login u on u.id = $P{login_user_id}
 left join currency_rate cr on cr.currency_id = joa.currency_id
 where aco.id = $P{order_id}
 GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
