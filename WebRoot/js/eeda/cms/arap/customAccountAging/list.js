@@ -135,12 +135,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		  type="";
     	  }
     	   
-          var customer = $("#customer").val(); 
+          var sp_id = $("#sp_id").val(); 
           var service_stamp_between = $("#service_stamp").val();
 
-          var url = "/customAccountAging/list?sp_id="+customer
+          var url = "/customAccountAging/list?sp_id="+sp_id
 		               +"&service_stamp_between="+service_stamp_between+"&type="+type;
           dataTable.ajax.url(url).load(false);
       };
+      
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+          var sp_id = $("#sp_id").val();
+          excel_method(sp_id);
+      });
+      var excel_method = function(sp_id){
+		  $.post('/customAccountAging/downloadExcelList',{sp_id:sp_id}, function(data){
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      }
   });
 });
