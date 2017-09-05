@@ -246,7 +246,7 @@ public class tradeProfitController extends Controller {
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1 "+condition+" GROUP BY A.customer_id  ORDER BY abbr";*/
 		String sqlExport = " SELECT A.id,A.customer_id,A.abbr,sum(charge_cny) charge_cny,(SUM(charge_rmb)-sum(cost_rmb)) profit,"
-				+ "((SUM(charge_rmb)-sum(cost_rmb))/sum(cost_rmb))*100 profit_rate,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,"
+				+ "ROUND(((SUM(charge_rmb)-sum(cost_rmb))/sum(cost_rmb))*100,2) profit_rate,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,"
 				+ "sum(charge_hkd) charge_hkd,"
 				+ "SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
         		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb FROM ("
@@ -268,11 +268,11 @@ public class tradeProfitController extends Controller {
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1 GROUP BY A.customer_id  ORDER BY abbr";
 	    
-		String total_name_header = "客户,折合应收(CNY),折合应付(CNY),利润，利润率 ";
+		String total_name_header = "客户,折合应收(CNY),折合应付(CNY),利润,利润率 ";
 		String[] headers = total_name_header.split(",");
 		
 		
-		String[] fields = { "ABBR","CHARGE_RMB", "COST_RMB","profit","profit_rate"};
+		String[] fields = { "ABBR","CHARGE_RMB", "COST_RMB","PROFIT","PROFIT_RATE"};
 		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,exportName);
 		renderText(fileName);
 	} 

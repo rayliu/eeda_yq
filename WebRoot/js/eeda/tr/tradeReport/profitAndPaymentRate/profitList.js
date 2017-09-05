@@ -61,22 +61,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	      var selectField = $('#selected_field').val();
 	      if(selectField=='order_export_date'){
 	    	  $("#single_customer_input").val("");
-	    	  $("#user_id_show").hide();
+	    	  $("#single_customer").val("");
 	    	  $("#sp_customer_show").hide();
 	    	  $("#order_export_date_show").show();
 		  }
 		  if(selectField=='customer'){
 			  $("#single_order_export_date_begin_time").val("");
 	    	  $("#single_order_export_date_end_time").val("");
-			  $("#user_id_show").hide();
 	    	  $("#order_export_date_show").hide();
 			  $("#sp_customer_show").show();
-		  }
-		  if(selectField=="user_id"){
-			  $("#user_id_show").val("");
-			  $("#sp_customer_show").hide();
-			  $("#order_export_date_show").hide();
-			  $("#user_id_show").show();
 		  }
      });
 	
@@ -89,25 +82,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	      if(selectField=='customer'){
 	    	 var customer = $("#single_customer").val();
 	      }
-	      if(selectField=="user_id"){
-	    	  var user_id = $("#single_user_id").val();
-	      }
 	      
-	      listTotalMoney(customer,user_id,order_export_date_begin_time,order_export_date_end_time);
+	      listTotalMoney(customer,order_export_date_begin_time,order_export_date_end_time);
           
           var url = "/tradeProfit/list?customer_id="+customer
-          				  +"&user_id="+user_id
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load(cssTd);
 	 
 	}); 
 	
-	 var listTotalMoney = function(customer,user_id,order_export_date_begin_time,order_export_date_end_time){
+	 var listTotalMoney = function(customer,order_export_date_begin_time,order_export_date_end_time){
 	      //合计字段
          $.post('/tradeProfit/listTotal',{
        	  customer:customer,
-       	  user_id:user_id,
        	  order_export_date_begin_time:order_export_date_begin_time,
        	  order_export_date_end_time:order_export_date_end_time
          },function(data){
@@ -158,7 +146,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
          });
 	 }
 	
-	  //导出excel利润表
+	  //导出excel
     $("#singlexportTotaledExcel").click(function(){
   	  $(this).attr('disabled', true);
   	  var customer_id = $("#single_customer").val();
@@ -167,7 +155,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         excel_method(customer_id,begin_time,end_time);
     })
 	
-    //导出excel利润表
+    //导出excel
     $('#exportTotaledExcel').click(function(){
         $(this).attr('disabled', true);
         var customer_id = $("#customer").val();
@@ -184,6 +172,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             window.open(data);
         }).fail(function() {
             $('#exportTotaledExcel').prop('disabled', false);
+            $('#singlexportTotaledExcel').prop('disabled', false);
             $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
         });
     }
