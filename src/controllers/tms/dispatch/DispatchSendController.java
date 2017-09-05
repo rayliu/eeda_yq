@@ -882,7 +882,7 @@ public class DispatchSendController extends Controller {
     	//海运头程资料
 //   		setAttr("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
 //   		setAttr("truckHead", Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",id)); 
-        render("/tms/dispatch/dispatchSendEdit.html");
+        render("/tms/Dispatch/dispatchSendEdit.html");
     }
     
     /**
