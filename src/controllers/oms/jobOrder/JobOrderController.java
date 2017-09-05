@@ -401,7 +401,7 @@ public class JobOrderController extends Controller {
 		}
 		List<Map<String, String>> shipment_item = (ArrayList<Map<String, String>>)dto.get("shipment_list");
 		DbUtils.handleList(shipment_item, id, JobOrderShipmentItem.class, "order_id");
-		//保存使用历史
+		//保存海运下拉使用历史
 		List<Record> oceanRes = new ArrayList<Record>();
 		oceanRes.add(new Record().set("type", "unit").set("param", "unit_id"));
 		saveItemParamHistory(shipment_item,oceanRes); 
@@ -415,10 +415,11 @@ public class JobOrderController extends Controller {
 		
 		List<Map<String, String>> air_item = (ArrayList<Map<String, String>>)dto.get("air_list");
 		DbUtils.handleList(air_item, id, JobOrderAirItem.class, "order_id");
-		//保存使用历史
+		//保存空运下拉使用历史
 		List<Record> airRes = new ArrayList<Record>();
 		airRes.add(new Record().set("type", "air_port").set("param", "start_from"));
 		airRes.add(new Record().set("type", "air_port").set("param", "destination"));
+		airRes.add(new Record().set("type", "air").set("param", "air_company"));
 		saveItemParamHistory(air_item,airRes); 
 		
 		//陆运
@@ -2457,7 +2458,7 @@ public class JobOrderController extends Controller {
         			if(map.get(param) != null){
         				String param_id = map.get(param);
         				if(paramlist.contains(param_id) || StringUtils.isBlank(param_id)){
-        					return;
+        					continue;
         				}
         					
         				Record rec = Db.findFirst("select * from user_query_history where type=? and ref_id=? and user_id=?",type, param_id, userId);

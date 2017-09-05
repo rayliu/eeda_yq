@@ -630,17 +630,32 @@ public class ServiceProviderController extends Controller {
     //查询航空公司下拉
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchAirCompany(){
-        UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id = user.getLong("office_id");
-    	String name = getPara("input");
+    	String input = getPara("input");
     	String sp_type = getPara("para");
-    	List<Record> recs = null;
-    	String sql = "select p.id,p.abbr name from party p where office_id="+office_id+" and p.type = 'SP' and p.sp_type like '%"+sp_type+"%' ";
-    	if(!StringUtils.isBlank(name)){
-    		sql+=" and (p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%') ";
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	long office_id = user.getLong("office_id");
+    	String conditions = "";
+    	if(StringUtils.isNotBlank(input)){
+    		conditions = " and (p.abbr like '%" + input + "%' or p.company_name like '%" + input + "%')";
     	}
-    	recs = Db.find(sql);
+    			
+    	String sql = "(SELECT p.id, p.abbr name "
+    				+ " FROM user_query_history uqh"
+    				+ " LEFT JOIN party p ON p.id = uqh.ref_id"
+    				+ " and uqh.type = UPPER('"+sp_type+"')"
+    				+ " WHERE uqh.type = UPPER('"+sp_type+"')"
+    				+ conditions
+    				+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
+    				+ " ORDER BY uqh.query_stamp desc)"
+    				+ " UNION "
+    				+ " (select p.id,p.abbr name from party p"
+    				+ " where office_id="+office_id+" and p.type = 'SP'"
+    				+ " and p.sp_type like '%"+sp_type+"%'"
+    				+ conditions+")";
+    	
+    	List<Record> recs = Db.find(sql);
     	renderJson(recs);
+    	
     }
     
     //查询运输公司下拉
@@ -692,7 +707,7 @@ public class ServiceProviderController extends Controller {
     	
     	String conditions = "";
     	if(StringUtils.isNotBlank(input)){
-    		conditions = " and u.name like '%" + input + "%' "+"or u.name_eng like '%"+input+"%'";
+    		conditions = " and (u.name like '%" + input + "%' "+"or u.name_eng like '%"+input+"%')";
     	}
     			
     	String sql = "(SELECT u.id, CONCAT(u. NAME, u.name_eng) NAME, u.name_eng"
