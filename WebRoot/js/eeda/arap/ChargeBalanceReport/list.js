@@ -190,7 +190,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	   //合计字段
          $.post('chargeBalanceReport/listTotal',{
        	  sp_id:sp_id,
-       	  employee_id:employee_id,
        	  order_export_date_begin_time:order_export_date_begin_time,
        	  order_export_date_end_time:order_export_date_end_time
          },function(data){
@@ -252,15 +251,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var abbr_name=$('#sp_id_input').val();
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
-          var employee_name = $("#employee_id_input").val(); 
-          var employee_id = $("#employee_id").val();
           
           
         //合计字段
           $.post('chargeBalanceReport/listTotal',{
         	  sp_id:sp_id,
-        	  employee_name:employee_name,
-        	  employee_id:employee_id,
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
           },function(data){
@@ -316,8 +311,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           */
           var url = "/chargeBalanceReport/list?sp="+sp_id
           				+"&abbr_equals="+abbr_name
-          				+"&employee_name_equals="+employee_name  
-        				+"&employee_id="+employee_id
           				+"&order_export_date_begin_time="+order_export_date_begin_time
 				        +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load(tableStyle);
