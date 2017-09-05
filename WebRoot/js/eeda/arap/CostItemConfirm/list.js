@@ -5,13 +5,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           colReorder: true,
           serverSide: true, //不打开会出现排序不对 
           initComplete: function (settings) {
-              eeda.dt_float_header('eeda_table');
+              eeda.dt_float_header('eeda_table');        
+              
           },
+          "drawCallback": function( settings ) {
+        	  if($('#AllCheck').prop("checked")){
+            	  $('#AllCheck').prop("checked",false)
+              }
+              $('#AllCheck').click();
+		  },
           columns: [
       			{ "width": "10px",
       				    "render": function ( data, type, full, meta ) {
       				    	if(full.AUDIT_FLAG != 'Y')
-      				    		return '<input type="checkbox" class="checkBox">';
+      				    		return '<input type="checkbox" checked class="checkBox">';
       				    	else 
       				    		return '<input type="checkbox" disabled>';
       				    }
@@ -33,13 +40,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             },
             { "data": "CUSTOMER_NAME", "width": "100px"},
             { "data": "TYPE", "width": "60px"},
-            { "data": "SP_NAME", "width": "100px"},
+            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
             { "data": "CHARGE_NAME", "width": "60px"},
-            { "data": "PRICE", "width": "60px"},
+            { "data": "PRICE", "width": "60px","class":"PRICE flag"},
             { "data": "AMOUNT","width": "60px"},
             { "data": "UNIT_NAME", "width": "60px"},
             { "data": "TOTAL_AMOUNT", "width": "60px"},
-            { "data": "CURRENCY_NAME", "width": "60px"},
+            { "data": "CURRENCY_NAME", "width": "60px","class":"CURRENCY_NAME"},
             { "data": "EXCHANGE_RATE", "width": "60px"},
             { "data": "CURRENCY_TOTAL_AMOUNT", "width": "60px"},
             { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
@@ -73,7 +80,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       });
 
       $('#searchBtn').click(function(){
-          searchData(); 
+    	  searchData()
       })
 
      var searchData=function(){
@@ -106,20 +113,61 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
           			   +"&audit_flag="+audit_flag;
-
-          dataTable.ajax.url(url).load();
+          	dataTable.ajax.url(url).load(false);
+          	$("#cny_totalAmountSpan").text(0.00)
+			$("#usd_totalAmountSpan").text(0.00)
+			$("#hkd_totalAmountSpan").text(0.00)
+			$("#jpy_totalAmountSpan").text(0.00)
       };
-      
-      
+     
+		var count_total = function(){
+			var sum_cny = 0.00;
+			var sum_usd = 0.00;
+			var sum_hkd = 0.00;
+			var sum_jpy = 0.00;
+			$("#eeda_table").find(".PRICE").each(function(){
+				self = $(this)
+				var price = parseFloat(self.text());
+				var currency_name = self.parent().find(".CURRENCY_NAME").text();
+				if(!isNaN(price)){
+					if(currency_name=='CNY'){
+						sum_cny += price;
+					}else if(currency_name=='USD'){
+						sum_usd += price;
+					}else if(currency_name=='HKD'){
+						sum_hkd += price;
+					}else if(currency_name=='JPY'){
+						sum_jpy += price;
+					}
+				}
+			})
+			$("#cny_totalAmountSpan").text(sum_cny.toFixed(2))
+			$("#usd_totalAmountSpan").text(sum_usd.toFixed(2))
+			$("#hkd_totalAmountSpan").text(sum_hkd.toFixed(2))
+			$("#jpy_totalAmountSpan").text(sum_jpy.toFixed(2))
+		}
+		
+		$("#eeda_table").on("change",".checkBox",function(){
+			self = $(this)
+			if(!self.prop("checked")){
+				self.parent().parent().find(".flag").removeClass('PRICE')
+			}else{
+				self.parent().parent().find(".flag").addClass('PRICE')
+			}
+			count_total()
+		})
       
       //全选
       $('#AllCheck').click(function(){
-	      	$(".checkBox").prop("checked",this.checked);
+    	  	$(".checkBox").prop("checked",this.checked);
 	      	if($('#AllCheck').prop('checked')){
         		$('#confirmBtn').attr('disabled',false);
+        		$(".flag").addClass("PRICE");
         	}else{
         		$('#confirmBtn').attr('disabled',true);
+        		$(".flag").removeClass("PRICE");
         	}
+	      	count_total();
       });
       
       $("#eeda_table").on('click','.checkBox',function(){
