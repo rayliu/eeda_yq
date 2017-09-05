@@ -35,7 +35,60 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 					  { "data": "CONFIRM_STAMP", "width": "80px"}
             ]
         });
-   	           
+   	         
+        $('.complex_search').click(function(event) {
+            if($('.search_single').is(':visible')){
+              $('.search_single').hide();
+            }else{
+              $('.search_single').show();
+            }
+        });
+        
+      //简单查询
+        $('#selected_field').change(function(event) {
+  	      var selectField = $('#selected_field').val();
+  	      if(selectField=='order_no'){
+  	    	  $("#public_text").val("");
+  	    	  $("#single_sp1_id_input").hide();
+  	    	  $("#single_create_stamp1_show").hide();
+  	    	  $("#public_text").show();
+  	      }
+  	      if(selectField=='sp_name'){
+  	    	  $("#single_sp1_id_input").val("");
+  	    	  $("#single_create_stamp1_show").hide();
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp1_id_input").show();
+  	      }
+  	      if(selectField=='create_stamp'){
+  	    	  $("#single_create_stamp1_begin_time").val("");
+  	    	  $("#single_create_stamp1_end_time").val("");
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp1_id_input").hide();
+  	    	  $("#single_create_stamp1_show").show();
+  	      }
+       });
+        
+        $("#singleSearchBtn").click(function(){
+      	  var selectField = $('#selected_field').val();
+      	  var selectValue = "";
+	      if(selectField=='order_no'){
+	    	  selectValue = $("#public_text").val();
+	      }
+	      if(selectField=='sp_name'){
+	    	  selectValue = $("#single_sp1_id_input").val();
+	      }
+	      if(selectField=='create_stamp'){
+	    	  var create_stamp1_begin = $("#single_create_stamp1_begin_time").val();
+	    	  var create_stamp1_end = $("#single_create_stamp1_end_time").val();
+	      }
+  	      
+  	      //增加出口日期查询
+            var url = "/cmsChargeCheckOrder/checkedList?"+selectField+"="+selectValue
+                 +"&create_stamp_begin_time="+create_stamp1_begin
+                 +"&create_stamp_end_time="+create_stamp1_end;
+            dataTable.ajax.url(url).load();
+        });  
+        
       $('#resetOrderBtn').click(function(e){
           $("#orderSearchForm")[0].reset();
       });
