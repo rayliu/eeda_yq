@@ -81,10 +81,25 @@ $(document).ready(function() {
             { "data": "TRACKING_NO", "width": "180px"},
             { "data": "ABBR_NAME", "width": "120px"},
             { "data": "FIN_NAME", "width": "200px"},
-            { "data": "AMOUNT", "width": "80px"},
+            { "data": "AMOUNT", "width": "80px",
+            	"render":function(data,type,full,meta){
+           		 data = (parseFloat(data)).toFixed(2)
+            	    if(isNaN(data)){
+            	    	data = "";
+            	    }
+					return data;
+           	}},
             { "data": "PRICE", "width": "80px"},
             { "data": "CURRENCY_NAME", "width": "100px"},
-            { "data": "TOTAL_AMOUNT", "width": "100px"},
+            { "data": "TOTAL_AMOUNT", "width": "100px",
+            	"render":function(data,type,full,meta){
+           		 data = (parseFloat(data)).toFixed(2)
+            	    if(isNaN(data)){
+            	    	data = "";
+            	    }
+					return data;
+           	}
+            },
             { "data": "REMARK", "width": "100px"},
             { "data": "CUSTOMS_BILLCODE", "width": "120px"},
             { "data": "CREATE_STAMP", "width": "100px"},

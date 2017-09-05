@@ -17,7 +17,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	    if(data==0){
                 	    	return '';
                 	    }
-    					return eeda.numFormat(data,3);
+                	    data = (parseFloat(data)).toFixed(2)
+                	    if(isNaN(data)){
+                	    	data = "";
+                	    }
+    					return data;
     				  }
     	            },
     	            { "data": "COST_USD", "width": "100px","class":"cost_usd"  ,
@@ -25,7 +29,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	    if(data==0){
                 	    	return '';
                 	    }
-    					return eeda.numFormat(data,3);
+                	    data = (parseFloat(data)).toFixed(2)
+                	    if(isNaN(data)){
+                	    	data = "";
+                	    }
+    					return data;
     				  }
     	            },
     	            { "data": "COST_JPY", "width": "100px","class":"cost_jpy",
@@ -33,7 +41,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	    if(data==0){
                 	    	return '';
                 	    }
-    					return eeda.numFormat(data,3);
+                	    data = (parseFloat(data)).toFixed(2)
+                	    if(isNaN(data)){
+                	    	data = "";
+                	    }
+    					return data;
     				  }
     	            },
     	            { "data": "COST_HKD", "width": "100px","class":"cost_hkd",
@@ -41,7 +53,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	    if(data==0){
                 	    	return '';
                 	    }
-    					return eeda.numFormat(data,3);
+                	    data = (parseFloat(data)).toFixed(2)
+                	    if(isNaN(data)){
+                	    	data = "";
+                	    }
+    					return data;
     				  }
     	            },
     	            { "data": "COST_RMB", "width": "100px","class":"cost_rmb",
@@ -49,7 +65,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	    if(data==0){
                 	    	return '';
                 	    }
-    					return eeda.numFormat(data,3);
+                	    data = (parseFloat(data)).toFixed(2)
+                	    if(isNaN(data)){
+                	    	data = "";
+                	    }
+    					return data;
     				  }
     	            },
     	            { "data": "UNCOST_CNY", "width": "100px","class":"uncost_cny",
@@ -57,7 +77,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	    if(data==0){
                 	    	return '';
                 	    }
-    					return eeda.numFormat(data,3);
+                	    data = (parseFloat(data)).toFixed(2)
+                	    if(isNaN(data)){
+                	    	data = "";
+                	    }
+    					return data;
     				  }
     	            },
     	            { "data": "UNCOST_USD", "width": "100px"  ,"class":"uncost_usd",
@@ -65,7 +89,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	    if(data==0){
                 	    	return '';
                 	    }
-    					return eeda.numFormat(data,3);
+                	    data = (parseFloat(data)).toFixed(2)
+                	    if(isNaN(data)){
+                	    	data = "";
+                	    }
+    					return data;
     				  }
     	            },
     	            { "data": "UNCOST_JPY", "width": "100px","class":"uncost_jpy",
@@ -73,7 +101,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	    if(data==0){
                 	    	return '';
                 	    }
-    					return eeda.numFormat(data,3);
+                	    data = (parseFloat(data)).toFixed(2)
+                	    if(isNaN(data)){
+                	    	data = "";
+                	    }
+    					return data;
     				  }
     	            },
     	            { "data": "UNCOST_HKD", "width": "100px","class":"uncost_hkd",
@@ -81,12 +113,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	    if(data==0){
                 	    	return '';
                 	    }
-    					return eeda.numFormat(data,3);
+                	    data = (parseFloat(data)).toFixed(2)
+                	    if(isNaN(data)){
+                	    	data = "";
+                	    }
+    					return data;
     				  }
     	            },
     	            { "data": "UNCOST_RMB", "width": "100px","class":"uncost_rmb",
     	            	"render": function(data, type, full, meta) {
-    					return '<span style="color:red;">'+eeda.numFormat(data,3)+'</span>';
+    	            		 data = (parseFloat(data)).toFixed(2)
+    	             	    if(isNaN(data)){
+    	             	    	data = "";
+    	             	    }
+    					return '<span style="color:red;">'+data+'</span>';
     				  }
     	            },
     	            {"width": "50px",

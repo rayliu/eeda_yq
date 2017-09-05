@@ -52,10 +52,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], functi
 					},
 					{ "data": "SP_NAME", "width": "100px"},
 					{ "data": "CHARGE_NAME", "width": "100px"},
-					{ "data": "PRICE", "width": "50px"},
+					{ "data": "PRICE", "width": "50px",
+						"render":function(data,type,full,meta){
+							 data = (parseFloat(data)).toFixed(2)
+			            	    if(isNaN(data)){
+			            	    	data = "";
+			            	    }
+								return data;
+							}
+						},
 					{ "data": "AMOUNT", "width": "50px"},
 					{ "data": "CURRENCY_NAME","width": "40px"},
-					{ "data": "TOTAL_AMOUNT", "width": "60px"},
+					{ "data": "TOTAL_AMOUNT", "width": "60px",
+						"render":function(data,type,full,meta){
+							 data = (parseFloat(data)).toFixed(2)
+			            	    if(isNaN(data)){
+			            	    	data = "";
+			            	    }
+								return data;
+							}
+					},
 					{ "data": "REMARK", "width": "60px"},
 					{ "data": "CREATE_STAMP", "width": "60px"}
             ]

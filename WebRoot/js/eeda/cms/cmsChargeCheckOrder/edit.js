@@ -30,8 +30,18 @@ $(document).ready(function() {
     	}
         return item;
     }
-    
-    
+    //小数处理
+	var dealPoint = function(ids){
+		var ids = ids.split(",")
+		for(x in ids){
+			id = $.trim(ids[x])
+			var num = parseFloat($("#"+id+"").val()).toFixed(2);
+			if(!isNaN(num)){
+				$("#"+id+"").val(num)
+			}
+		}
+	}
+    dealPoint("total_amount")
     
     //------------save
     $('#saveBtn').click(function(e){

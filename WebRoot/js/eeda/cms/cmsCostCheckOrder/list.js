@@ -39,23 +39,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            { "data": "DATE_CUSTOM", "width": "100px"},
 	            { "data": "TRACKING_NO", "width": "180px"},
 	            {"data":"RECEIVE_SENT_CONSIGNEE_INPUT","width":"120px"},
-	            { "data": "SP_NAME", "width": "120px","class":"SP_NAME"},            
+	            { "data": "SP_NAME", "width": "120px","class":"SP_NAME"},
 	            { "data": "FIN_NAME", "width": "200px"},
+	            { "data": "PRICE", "width": "80px",
+	            	"render":function(data,type,full,meta){
+	            		 data = (parseFloat(data)).toFixed(2)
+	             	    if(isNaN(data)){
+	             	    	data = "";
+	             	    }
+	 					return data;
+	            	}
+	            },
 	            { "data": "AMOUNT", "width": "80px"},
-	            { "data": "PRICE", "width": "80px"},
 	            { "data": "CURRENCY_NAME", "width": "100px"},
 	            { "data": "TOTAL_AMOUNT", "width": "100px","class":"TOTAL_AMOUNT",
 	            	"render": function ( data, type, full, meta ) {
-	            		if(data==null){
-	            			data = 0.0;
-	            		}
-	            		var str = '';
-	            		if(full.ORDER_TYPE=='charge'){
-	            			str='<span style="color:red">'+(0.0-parseFloat(data))+'</span>';
-	            		}else{
-	            			str = data;
-	            		}
-	                    return str
+	            		 data = (parseFloat(data)).toFixed(2)
+		             	    if(isNaN(data)){
+		             	    	data = "";
+		             	    }
+		 					return data;
 	            	}	
 	            },
 	            { "data": "REMARK", "width": "100px"},
