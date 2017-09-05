@@ -18,7 +18,7 @@ $(document).ready(function() {
     			maxlength:30
     		},
     		ref_no:{
-    			maxlength:30
+    			maxlength:255
     		},
     		pieces:{
     			number:true
