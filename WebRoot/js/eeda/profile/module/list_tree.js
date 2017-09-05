@@ -1,4 +1,5 @@
-define(['jquery', 'zTree', './fields', './btns'], function ($, tree, fieldCont, btnsCont) {
+define(['jquery', 'zTree', './fields', './btns', './events', './edit_events'], 
+    function ($, tree, fieldCont, btnsCont, evnetsCont, editEventCont) {
 
     $(document).ready(function() {
     	
@@ -128,6 +129,7 @@ define(['jquery', 'zTree', './fields', './btns'], function ($, tree, fieldCont, 
                 return false;
             });
         };
+
         function removeHoverDom(treeId, treeNode) {
             $("#addBtn_"+treeNode.tId).unbind().remove();
         };
@@ -142,6 +144,7 @@ define(['jquery', 'zTree', './fields', './btns'], function ($, tree, fieldCont, 
                 $("#displayDiv").hide();
             }
             $("#module_id").text(treeNode.id);
+
             $("#form_name").val(treeNode.name);
             $("#module_url").val(treeNode.url);
 
@@ -156,6 +159,7 @@ define(['jquery', 'zTree', './fields', './btns'], function ($, tree, fieldCont, 
                 ue.execCommand('cleardoc');//clear content
 
                 if(module_obj.FORM){
+                    $("#form_id").val(module_obj.FORM.ID);
                     $('#form_code').val(module_obj.FORM.CODE);
                     $('#form_name').val(module_obj.FORM.NAME);
 
@@ -167,7 +171,7 @@ define(['jquery', 'zTree', './fields', './btns'], function ($, tree, fieldCont, 
                         var field = json.FORM_FIELDS[i];
                         fields_dataTable.row.add(field).draw(false);
                     }
-
+                    //回显按钮列表
                     btnsCont.list_dataTable.clear().draw();
                     var toolbar_list_table = btnsCont.list_dataTable;
                     for (var i = 0; i < json.BTN_LIST_QUERY.length; i++) {
@@ -181,6 +185,9 @@ define(['jquery', 'zTree', './fields', './btns'], function ($, tree, fieldCont, 
                         var field = json.BTN_LIST_EDIT[i];
                         toolbar_edit_table.row.add(field).draw(false);
                     }
+                    //回显事件树的按钮列表
+                    evnetsCont.displayBtnTree();
+                    editEventCont.displayBtnTree();
                 }
 
                 var permission_dataTable = $('#permission_table').DataTable();

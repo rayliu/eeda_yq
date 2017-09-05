@@ -15,6 +15,7 @@ import models.UserOffice;
 import models.UserRole;
 import models.eeda.Field;
 import models.eeda.FormBtn;
+import models.eeda.FormEvent;
 import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
 import models.eeda.profile.OfficeConfig;
@@ -201,6 +202,7 @@ public class EedaConfig extends JFinalConfig {
         
         arp.addMapping("eeda_form_field", Field.class);
         arp.addMapping("eeda_form_btn", FormBtn.class);
+        arp.addMapping("eeda_form_event", FormEvent.class);
         
         arp.addMapping("module_role", ModuleRole.class);
         arp.addMapping("office_config", OfficeConfig.class);

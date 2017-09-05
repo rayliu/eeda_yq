@@ -1,0 +1,1 @@
+package models.eeda;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class FormEvent extends Model<FormEvent> {	public static final FormEvent dao = new FormEvent();}
