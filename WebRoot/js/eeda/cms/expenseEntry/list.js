@@ -39,7 +39,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			        	return strcheck;
 			        }
 	        	},
-	          { "data": "CREATE_STAMP", "width": "100px"},
+	          { "data": "DATE_CUSTOM", "width": "100px"},
 	          { "data": "COST_MSG", "width": "100px","visible":false},
 	          { "data": "CHARGE_MSG", "width": "100px","visible":false}
 	          ]
@@ -56,22 +56,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         //简单查询
         $('#selected_field').change(function(event) {
   	      var selectField = $('#selected_field').val();
-  	      if(selectField=='sp_id'){
-  	    	  $("#single_sp_id_input").val("");
-  	    	  $("#order_export_date_show").hide();
-  	    	  $("#employee_id_show").hide();
-  	    	  $("#sp_id_show").show();
+  	      if(selectField=='customer_name'){
+  	    	  $("#public_text").val("");
+	  	      $("#single_date_custom_begin_time").val("");
+	  	      $("#single_date_custom_end_time").val("");
+  	    	  $("#date_custom_show").hide();
+  	    	  $("#public_text").hide();
+  	    	  $("#customer_id_show").show();
   	      }
-  	      if(selectField=='employee_id'){
-  	    	  $("#employee_id_show").val("");
-  	    	  $("#sp_id_show").hide();
-  	    	  $("#order_export_date_show").hide();
-  	    	  $("#employee_id_show").show();
+  	      if(selectField=='order_no'||selectField=='tracking_no'){
+  	    	  $("#single_customer_id_input").val("");
+	  	      $("#single_date_custom_begin_time").val("");
+	  	      $("#single_date_custom_end_time").val("");
+  	    	  $("#date_custom_show").hide();
+	    	  $("#customer_id_show").hide();
+	    	  $("#public_text").show();
   	      }
-  	      if(selectField=="order_export_date"){
-  	    	  $("#employee_id_show").hide();
-  	    	  $("#sp_id_show").hide();
-  	    	  $("#order_export_date_show").show();
+  	      if(selectField=="date_custom"){
+	  	      $("#public_text").val("");
+	  	      $("#single_customer_id_input").val("");
+	    	  $("#public_text").hide();
+	    	  $("#customer_id_show").hide();
+	    	  $("#date_custom_show").show();
   	      }
        });
         
@@ -94,19 +100,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         
     	$('#singleSearchBtn').click(function(){
    	     var selectField = $('#selected_field').val();
-   	     if(selectField=='sp_id'){
-   	    	 var sp_id = $("#single_sp_id_input").val();
+   	     var selectValue = "";
+   	     if(selectField=='customer_name'){
+   	    	 selectValue = $("#single_customer_id_input").val();
    	      }
-   	      if(selectField=='employee_id'){
-   	    	 var employee_id = $("#single_employee_id").val();
+   	      if(selectField=='order_no'||selectField=='tracking_no'){
+   	    	 selectValue = $("#public_text").val();
    	      }
-   	      if(selectField=="order_export_date"){
-   	    	 var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
-   	    	 var order_export_date_end_time = $("#single_order_export_date_end_time").val();
+   	      if(selectField=="date_custom"){
+   	    	 var begin_time = $("#single_date_custom_begin_time").val();
+   	    	 var end_time = $("#single_date_custom_end_time").val();
    	      }
-   	   var url = "/expenseEntry/list?customer_name="+sp_id
-       +"&create_stamp_begin_time="+order_export_date_begin_time
-       +"&create_stamp_end_time="+order_export_date_end_time;
+   	   var url = "/expenseEntry/list?"+selectField+"="+selectValue
+       +"&date_custom_begin_time="+begin_time
+       +"&date_custom_end_time="+end_time;
    	   	dataTable.ajax.url(url).load();
    	}); 
 
@@ -123,14 +130,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
      var searchData=function(){
           var order_no = $("#order_no").val().trim(); 
           var customer_name = $('#customer_input').val().trim();
-          var start_date = $("#create_stamp_begin_time").val();
-          var end_date = $("#create_stamp_end_time").val();
+          var begin_time = $("#date_custom_begin_time").val();
+          var end_time = $("#date_custom_end_time").val();
           var tracking_no= $("#tracking_no").val().trim(); 
           var url = "/expenseEntry/list?order_no="+order_no
                +"&customer_name="+customer_name
                +"&tracking_no="+tracking_no
-	           +"&create_stamp_begin_time="+start_date
-	           +"&create_stamp_end_time="+end_date;
+	           +"&date_custom_begin_time="+begin_time
+	           +"&date_custom_end_time="+end_time;
 
           dataTable.ajax.url(url).load();
         }

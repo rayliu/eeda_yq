@@ -1,33 +1,36 @@
 <%layout("/eeda/layout.html"){%>
-        <div id="page-wrapper">
+<div id="page-wrapper">
+   <div class="row simple_search_div"><br>     	
             <div class="row ">
                 <div class="col-lg-12">
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active" >
                             <a href="#unselected" data-toggle="tab">报关费用明细</a>
                         </li>
-                    </ul>
+                    </ul><br>
               <div class="panel-heading">
             	<div class="row"><!--  第1行  -->
                 	<div class="three_tab"><!--  三列排版  -->
                 		<nobr>
 	                    	<div class="search_single">
 	                        	<select id="selected_field" name="selected_field" class="form-control search-label">
-	                            	<option value="order_export_date">时间</option>
-	                            	<option value="sp_id">客户</option>
+	                        		<option value="customer_name">客户</option>
+	                            	<option value="date_custom">报关时间</option>
+	                            	<option value="order_no">申请单号</option>
+	                            	<option value="tracking_no">提运单号</option>
 	                            </select>
 	
-	                            <div style="display:none;position:absolute;left:34%;bottom:-5px;" id="sp_id_show">
-	                                 	<%include("/eeda/component/form/inputSpField.html", 
-	                                                                 {   id: 'single_sp_id', 
+	                            <div style="position:absolute;left:34%;bottom:-5px;" id="customer_id_show">
+	                                 	<%include("/eeda/component/form/inputCustomerField.html", 
+	                                                                 {   id: 'single_customer_id', 
 	                                                                 	style:'width:150%',
 	                                                                     value: ''
 	                                                                 }){}%>
 									</div>
-			                    <input type="text" id="employee_id_show" style="display:none" class="form-control search-control"/>
-	                        	<div style="position:absolute;left:34%;bottom:-5px;" id="order_export_date_show">        
+			                    <input type="text" id="public_text" style="display:none" class="form-control search-control"/>
+	                        	<div style="display:none;position:absolute;left:34%;bottom:-5px;" id="date_custom_show">        
 			                            	<%include("/eeda/component/form/inputDateQueryField.html",
-			                                	{	id:'single_order_export_date',
+			                                	{	id:'single_date_custom',
 			                                		style:'width:120%',
 									                begin_style:'width:30%',
 									                end_style:'width:30%', 
@@ -73,8 +76,8 @@
                                         </div>     
                                         <div class="col-lg-4">
                                          <%include("/eeda/component/form/inputDateQueryField.html", 
-                                         {   id:'create_stamp', 
-                                             label:'创建日期', 
+                                         {   id:'date_custom', 
+                                             label:'报关时间', 
                                              value:''
                                          }){} %>
                                          </div>
@@ -106,7 +109,7 @@
 	                                        {
 	                                            id:'uncheckedEeda-table', 
 
-	                                            headers:['<input type="checkbox" id="allCheck">','提单号','客户','申请单号','费用','创建时间','',''
+	                                            headers:['<input type="checkbox" id="allCheck">','提单号','客户','申请单号','费用','报关时间','',''
 	                                            ]
 	                                        }){} %>
                                </div>
@@ -117,6 +120,7 @@
                 </div>
             </div>
         </div>
+</div>
 <%}%>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
