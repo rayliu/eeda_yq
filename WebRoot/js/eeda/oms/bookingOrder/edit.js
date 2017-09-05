@@ -304,8 +304,18 @@ $(document).ready(function() {
 			 $.scojs_message('该booking已经创建过工作单了', $.scojs_message.TYPE_ERROR);
 		}
 	});
-		
-		
+	//小数处理
+	var dealPoint = function(ids){
+		var ids = ids.split(",")
+		for(x in ids){
+			id = $.trim(ids[x])
+			var num = parseFloat($("#"+id+"").val()).toFixed(2);
+			if(!isNaN(num)){
+				$("#"+id+"").val(num)
+			}
+		}
+	}
+	dealPoint("volume,gross_weight")
 		
 	$.unblockUI();
 	

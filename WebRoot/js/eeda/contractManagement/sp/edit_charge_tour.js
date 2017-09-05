@@ -132,7 +132,10 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                 	 if(!data)
 	                        data='';
-	                    
+	                    data = (parseFloat(data)).toFixed(2)
+	                    if(isNaN(data)){
+	                    	data=""
+	                    }
 	                    return '<input type="text" style="width:100px" name="price" value = "'+data+'" class="form-control notsave" >';
                 }
             },

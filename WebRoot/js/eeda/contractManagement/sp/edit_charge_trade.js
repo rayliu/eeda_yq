@@ -54,8 +54,12 @@ $(document).ready(function() {
             },
             { "data": "PRICE", "width": "80px",
                 "render": function ( data, type, full, meta ) {
-                	if(!data)
+                	 if(!data)
 	                        data='';
+	                    data = (parseFloat(data)).toFixed(2)
+	                    if(isNaN(data)){
+	                    	data=""
+	                    }
 	                return '<input type="text" style="width:100px" name="price" value = "'+data+'" class="form-control notsave" >';
                 }
             },
