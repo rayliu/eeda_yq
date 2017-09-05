@@ -182,13 +182,13 @@ public class CmsCostCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.*, p.abbr party_name,ul.c_name creator_name,ul2.c_name confirm_name "
+        		+ " select aco.*, p.abbr sp_name,ul.c_name creator_name,ul2.c_name confirm_name "
 				+ " from custom_arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " left join user_login ul on ul.id = aco.create_by"
 				+ " left join user_login ul2 on ul2.id = aco.confirm_by"
 				+ " where aco.office_id = "+office_id
-				+ " group by aco.id) B where 1=1  ORDER BY CREATE_STAMP DESC ";
+				+ " group by aco.id) B where 1=1  ";
         String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";

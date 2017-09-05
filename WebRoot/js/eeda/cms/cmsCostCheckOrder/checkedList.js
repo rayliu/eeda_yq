@@ -36,11 +36,67 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
             ]
         });
    	           
-      $('#resetBtn1').click(function(e){
+        $('.complex_search').click(function(event) {
+            if($('.search_single').is(':visible')){
+              $('.search_single').hide();
+            }else{
+              $('.search_single').show();
+            }
+        });
+        
+      //简单查询
+        $('#selected_field').change(function(event) {
+  	      var selectField = $('#selected_field').val();
+  	      if(selectField=='order_no'){
+  	    	  $("#single_create_stamp1_begin_time").val("");
+	    	  $("#single_create_stamp1_end_time").val("");
+	    	  $("#single_sp1_id_input").val("");
+  	    	  $("#single_sp1_id_input").hide();
+  	    	  $("#single_create_stamp1_show").hide();
+  	    	  $("#public_text").show();
+  	      }
+  	      if(selectField=='sp_name'){
+  	    	  $("#public_text").val("");
+  	    	  $("#single_create_stamp1_begin_time").val("");
+	    	  $("#single_create_stamp1_end_time").val("");
+  	    	  $("#single_create_stamp1_show").hide();
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp1_id_input").show();
+  	      }
+  	      if(selectField=='create_stamp'){
+  	    	  $("#public_text").val("");
+  	    	  $("#single_sp1_id_input").val("");
+  	    	  $("#public_text").hide();
+  	    	  $("#single_sp1_id_input").hide();
+  	    	  $("#single_create_stamp1_show").show();
+  	      }
+       });
+        
+        $("#singleSearchBtn").click(function(){
+      	  var selectField = $('#selected_field').val();
+      	  var selectValue = "";
+	      if(selectField=='order_no'){
+	    	  selectValue = $("#public_text").val();
+	      }
+	      if(selectField=='sp_name'){
+	    	  selectValue = $("#single_sp1_id_input").val();
+	      }
+	      if(selectField=='create_stamp'){
+	    	  var create_stamp1_begin = $("#single_create_stamp1_begin_time").val();
+	    	  var create_stamp1_end = $("#single_create_stamp1_end_time").val();
+	      }
+  	      
+            var url = "/cmsCostCheckOrder/checkedList?"+selectField+"="+selectValue
+                 +"&create_stamp_begin_time="+create_stamp1_begin
+                 +"&create_stamp_end_time="+create_stamp1_end;
+            dataTable.ajax.url(url).load();
+        });    
+        
+      $('#resetOrderBtn').click(function(e){
           $("#orderSearchForm")[0].reset();
       });
 
-      $('#searchBtn1').click(function(){
+      $('#searchOrderBtn').click(function(){
           searchData(); 
       });
 
@@ -58,7 +114,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/cmsCostCheckOrder/checkedList?order_no="+order_no
-               +"&party_name="+sp_name
+               +"&sp_name="+sp_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 
