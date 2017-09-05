@@ -1,0 +1,308 @@
+
+            <input type="hidden" id="land_id" value="${land.id!''}">
+            <div class="form-group">  <!--  form row  -->
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-12"> 
+                                <button class="btn btn_green" id="truckOrderPDF">生成派车单PDF</button> 
+                                <a id="cabinet_truck" href='#' data-toggle="modal" data-target="#cabinet_truck_detail" class="btn btn_green">柜货派车单PDF</a>
+                                <br><br>
+                                
+              <ul id="orderLandTabs" class="nav nav-tabs">
+              		<li class="active">
+                        <a id='land_shipmentTab' href="#land_shipmentDetail" data-toggle="tab">柜货派车信息</a>
+                    </li>
+                   	<li>
+                 	 <a id='land_bulk_cargoTab' href="#land_bulk_cargoDetail" data-toggle="tab" >散货派车信息</a>
+                    </li>
+                    
+                </ul>
+                  
+                 <div class="tab-content">
+                    <div class="tab-pane fade active in" id="land_shipmentDetail">
+                       <div class="form-group">
+                           <div class="col-lg-12">   
+                           		<div class="col-lg-12">
+                           			* 注：<span style="color:#AAAAAA">填写上了日期，则表示该工作已完成。如：填上派车日期，则表示已派车</span> <br><br>
+                                	<button type='button' class="btn btn_green" id="add_land">添加车辆</button>                                	
+                                </div> 
+                                    	
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'land_table',
+                                        style:'width:2900px',
+                                        headers:[
+                                            '<input id="allCheckOfLand" type="checkbox" style="width:30px">',
+                                            '',
+                                            '',
+                                            '车牌',
+                                            '司机', 
+                                            '司机电话',
+                                            '提柜类型',
+                                            '派车日期',
+                                            '提柜日期',
+                                            '到达(厂)日期', 
+                                            '收重柜日期',
+                                            '装货地点1',
+                                            '装货地点2',
+                                            '装货平台',
+                                            '车型',
+                                            '拖卡重量',
+                                            '单位',
+                                            '拖头重量',
+                                            '单位',
+                                            '件数',
+                                            '体积(CBM)',
+                                            '发货人',
+                                            '发货人电话', 
+                                            '收货人',
+                                            '收货人电话', 
+                                            '货品描述',
+                                            '备注',
+                                            '签收文件描述', 
+                                            '签收状态',
+                                            '',
+                                            'TRANSPORT_COMPANY_NAME',
+                                            'CONSIGNOR_NAME', 
+                                            'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID','','','','',''],
+                                        field_list:[
+                                            'id',
+                                            '',
+                                            'doc_name',
+                                            'car_no',
+                                            'driver',
+                                            'driver_tel',
+                                            'unload_type',
+                                            'dispatch_date',
+                                            'cabinet_date',
+                                            'arrival_date',
+                                            'closing_date', 
+                                            'loading_wharf1',
+                                            'loading_wharf2',
+                                            'loading_platform',
+                                            'truck_type',
+                                            'toca_weight',
+                                            '单位',
+                                            'head_weight',
+                                            '',
+                                            'pieces',
+                                            'volume',
+                                            'consignor',
+                                            'consignor_phone',
+                                            'consignee',
+                                            'consignee_phone',
+                                            'cargo_desc',
+                                            'required_time_remark',
+                                            'doc_name',
+                                            'sign_status',
+                                            'id',
+                                            'TRANSPORT_COMPANY_NAME',
+                                            'CONSIGNOR_NAME', 
+                                            'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID','CAR_NO_NAME'
+                                            ,'TAKE_ADDRESS_NAME','DELIVERY_ADDRESS_NAME','LOADING_WHARF1_NAME','LOADING_WHARF2_NAME'],
+                                        value_list: landList![]
+                                    }){} %>
+                                    
+                                      </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-pane fade in" id="land_bulk_cargoDetail">
+                    	<div class="form-group">
+                           <div class="col-lg-12">
+                               <div class="col-lg-12" style="margin-top:15px;">
+	                                <div class="col-lg-4">
+	                                    <%include("/eeda/component/form/inputCarInfoField.html", 
+	                                        {   id:'car_no',
+	                                            label:'车牌', 
+	                                            value:landBulk.car_no!'',
+	                                            display_value:landBulk.car_no_name!''
+	                                        }){}%>
+	                                </div>
+	                                <div class="col-lg-4">
+	                                    <div class="form-group">
+			                                <label class="control-label">车型</label>
+			                                <select class="" id="cartype" name="cartype" style="width:130px;">
+			                                <%
+			                                    var cartype =landBulk.truck_type!'';
+			                                %>
+			                                  <option <%if(cartype==''){%>selected<%}%>></option>
+			                                  <option <%if(cartype=='40HQ'){%>selected<%}%>>40HQ</option>
+			                                  <option <%if(cartype=='40GP'){%>selected<%}%>>40GP</option>
+			                                  <option <%if(cartype=='20GP'){%>selected<%}%>>20GP</option>
+			                                  <option <%if(cartype=='40T'){%>selected<%}%>>40T</option>
+			                                  <option <%if(cartype=='20T'){%>selected<%}%>>20T</option>
+			                                  <option <%if(cartype=='10T'){%>selected<%}%>>10T</option>
+			                                  <option <%if(cartype=='8T'){%>selected<%}%>>8T</option>
+			                                  <option <%if(cartype=='5T'){%>selected<%}%>>5T</option>
+			                                  <option <%if(cartype=='3T'){%>selected<%}%>>3T</option>
+			                                  <option <%if(cartype=='1.5T'){%>selected<%}%>>1.5T</option>
+			                                  <option <%if(cartype=='21M'){%>selected<%}%>>21M</option>
+			                                  <option <%if(cartype=='18.5M'){%>selected<%}%>>18.5M</option>
+			                                  <option <%if(cartype=='18.0M'){%>selected<%}%>>18.0M</option>
+			                                  <option <%if(cartype=='17.8M'){%>selected<%}%>>17.8M</option>
+			                                  <option <%if(cartype=='17.5M'){%>selected<%}%>>17.5M</option>
+			                                  <option <%if(cartype=='17.0M'){%>selected<%}%>>17.0M</option>
+			                                  <option <%if(cartype=='16.0M'){%>selected<%}%>>16.0M</option>
+			                                  <option <%if(cartype=='15.0M'){%>selected<%}%>>15.0M</option>
+			                                  <option <%if(cartype=='14.5M'){%>selected<%}%>>14.5M</option>
+			                                  <option <%if(cartype=='13.5M'){%>selected<%}%>>13.5M</option>
+			                                  <option <%if(cartype=='13.0M'){%>selected<%}%>>13.0M</option>
+			                                  <option <%if(cartype=='12.5M'){%>selected<%}%>>12.5M</option>
+			                                  <option <%if(cartype=='9.6M'){%>selected<%}%>>9.6M</option>
+			                                  <option <%if(cartype=='8.6M'){%>selected<%}%>>8.6M</option>
+			                                  <option <%if(cartype=='8.0M'){%>selected<%}%>>8.0M</option>
+			                                  <option <%if(cartype=='7.6M'){%>selected<%}%>>7.6M</option>
+			                                  <option <%if(cartype=='7.2M'){%>selected<%}%>>7.2M</option>
+			                                  <option <%if(cartype=='6.8M'){%>selected<%}%>>6.8M</option>
+			                                  <option <%if(cartype=='6.5M'){%>selected<%}%>>6.5M</option>
+			                                  <option <%if(cartype=='5.3M'){%>selected<%}%>>5.3M</option>
+			                                  <option <%if(cartype=='4.3M'){%>selected<%}%>>4.3M</option>
+			                                  <option <%if(cartype=='4.2M'){%>selected<%}%>>4.2M</option>
+			                                  <option <%if(cartype=='2.6M'){%>selected<%}%>>2.6M</option>
+			                                </select>
+			                            </div>
+	                                </div> 
+                                </div>
+                                <button type='button' class="btn btn_green" id="add_land_bulk" style="margin-top:15px">添加散货</button> 	
+                                <%include("/eeda/component/form/detailTable.html", 
+                                    {
+                                        id:'land_bulk_cargo_table',
+                                        style:'width:950px',
+                                        headers:[
+                                            '<input id="allCheckOfLand2" type="checkbox" style="width:30px">',
+                                            '','', 
+                                            '提货时间','签收单号','装货地点',
+                                            '卸货地点',
+                                            '装货平台','吨数','体积','','' ],
+                                            field_list:[
+                                            'id',
+                                             '','doc_name',
+                                              'CABINET_DATE','land_receipt_no','loading_wharf1','loading_wharf2',
+                                            'loading_platform','tonnage','volume','LOADING_WHARF1_NAME','LOADING_WHARF2_NAME'
+                                            ],
+                                             value_list: landBulkList![]                                      
+                                    }){} %>
+                                    
+                                </div>
+                        </div>
+                    </div>
+                           </div>
+                             </div>
+                        </div>
+                    </div>
+            </div><!-- /.row -->
+            
+    <div class="modal fade" id="cabinet_truck_detail">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">生成柜货派车单PDF详情</div>
+            <div class="modal-body">
+            <input type="hidden" value="${truckHead.id!truckHeadId!''}" id="truckHeadId">
+            <form id = "truckHeadForm">
+                <div class="form-group">
+                        <div class="row">
+                           <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_end_place', 
+                                       label:'TO',
+                                       value:truckHead.head_end_place!''
+                                   }){}%>
+                           </div>
+                           <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_start_place', 
+                                       label:'FROM',
+                                       value:truckHead.head_start_place!''
+                                   }){}%>
+                           </div>
+                       </div>
+                        <div class="row">
+                           <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_attn', 
+                                       label:'ATTN',
+                                       value:truckHead.head_attn!''
+                                   }){}%>
+                           </div>
+                           <div class="col-lg-6">
+                                 <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_tel', 
+                                       label:'TEL',
+                                       value:truckHead.head_tel!'3225992'
+                                   }){}%>
+                           </div>
+                       </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_customerTel', 
+                                       label:'TEL',
+                                       value:truckHead.head_customerTel!''
+                                   }){}%>
+                           </div>
+                           <div class="col-lg-6">
+                                    <%include("/eeda/component/form/inputField.html", 
+                                       {   id:'truck_head_date',
+                                           label:'DATE',
+                                           disabled:'disabled',
+                                           value:truckHead.head_date!''
+                                       }){}%>
+                           </div>
+                       </div>
+                        <div class="row">
+                           <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_fax', 
+                                       label:'FAX',
+                                       value:truckHead.head_fax!''
+                                   }){}%>
+                           </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-lg-12">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_title', 
+                                       label:'标题',
+                                       value:truckHead.head_title!'1X40HQ FM ZHUHAI TO OSAKA'
+                                   }){}%>
+                           </div>
+                       </div>
+                       <div class="row">
+                           <div class="col-lg-12">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_remark',
+                                       label:'备注',
+                                       value:truckHead.head_remark!'请安排10/AUG 西域港报关出口'
+                                   }){}%>
+                           </div>
+                       </div>
+                       <div class="row">
+                            <div class="col-lg-6">
+                               <%include("/eeda/component/form/dateInputField.html", 
+                               {   id:'cabinet_arrive_date', 
+                                   label:'预约柜货到达时间', 
+                                   inline:false,
+                                   value:truckHead.cabinet_arrive_date!''
+                               }){}%>
+                           </div>
+                       </div>
+                       <div class="row">
+	                       <div class="col-lg-12"> 
+	                          <div class="form-group">
+	                               <label>柜货到达备注</label>
+	                               <textarea id='cabinet_arrive_remark' class="form-control" rows="3" name="cabinet_arrive_remark">${truckHead.cabinet_arrive_remark!''}</textarea>
+	                          </div>
+	                      </div>
+                       </div>
+                    
+                </div>   
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="printCabinetTruck" class="btn btn-primary" >确认打印PDF</button>
+                <button class="btn  btn-default" data-dismiss="modal" >返回</button>
+            </div>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,334 @@
+
+<%include("/eeda/component/form/mask.html", {}){}%>
+
+<%layout("/eeda/layout.html"){%>
+
+<link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
+        <div id="page-wrapper" style= "min-height: 0px;">
+        <a data-target='#pdfAlertDetail' data-toggle='modal'>
+        	<button id="pdfAlert" style="display:none"></button>
+		</a>
+		<div class="modal fade" id="pdfAlertDetail">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">生成PDF数据不足详情</div>
+		      	<div class="modal-body">
+		      	
+	      			<div class="alert alert-danger alert-dismissable">
+                        <div id="pdfAlertContent"></div> 
+                     </div>
+                     
+				</div>
+	       	  <div class="modal-footer">
+	            <button class="btn  btn-default" data-dismiss="modal">返回</button>
+	        </div>
+	    </div>
+	  </div>
+	</div>
+
+            <!-- /.row -->
+
+             <!--  form row  -->
+               <form id="orderForm" class="form-group">
+                <div class="row simple_small_title_div">
+                	<div class="col-lg-12">	
+                    <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>                                                                                    
+                    <input id="plan_order_id" type="hidden" name="plan_order_id" value="${planOrder.id!''}"/>                                                                                    
+                    <input id="plan_order_item_id" type="hidden" value="${planOrderItem.id!''}"/>
+                    <div class="row"><!--  第1行  -->
+                        <div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'order_no', 
+                                    label:'工作单号', 
+                                    value:order.order_no!'',
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'plan_order_no', 
+                                    label:'计划订单号', 
+                                    value: order.plan_order_no!planOrder.order_no!'',
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputCustomerField.html", 
+                                {
+                                    id:'customer_id', 
+                                    label:'客户', 
+                                    required:'required',
+                                    value:order.customer_id!planOrder.customer_id!'',
+                                    display_value:party.abbr!''
+                                }){} %>
+                       </div>
+                    </div>
+                    <div class="row"><!--  第2行  -->
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'status', 
+                                    label:'状态', 
+                                    value:order.status!'', 
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'creator_name', 
+                                    label:'创建人', 
+                                    value:user.c_name!'', 
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'create_stamp', 
+                                    label:'创建时间', 
+                                    value:order.create_stamp!'', 
+                                    disabled: 'disabled'
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row"><!--  第3行  -->
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/selectField.html", 
+                                {   id:'type', 
+                                    label:'类型', 
+                                    value:order.type!'',
+                                    value_list:[
+                                        {code:'出口柜货', value:'出口柜货'},
+                                        {code:'进口柜货', value:'进口柜货'}, 
+                                        {code:'出口散货', value:'出口散货'},
+                                        {code:'进口散货', value:'进口散货'},
+                                        {code:'出口空运', value:'出口空运'},
+                                        {code:'进口空运', value:'进口空运'},
+                                        {code:'内贸海运', value:'内贸海运'},
+                                        {code:'香港头程', value:'香港头程'},
+                                        {code:'香港游', value:'香港游'},
+                                        {code:'陆运', value:'陆运'},
+                                        {code:'报关', value:'报关'},
+                                        {code:'快递', value:'快递'},
+                                        {code:'加贸', value:'加贸'},
+                                        {code:'贸易', value:'贸易'},
+                                        {code:'园区游', value:'园区游'}
+                                    ]
+                                }){}%>
+                        </div><!-- /.col-lg-4 -->
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'container_no', 
+                                    label:'柜号',
+                                    required:'required', 
+                                    value: order.container_no!''
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'so_no', 
+                                    label:'SO号', 
+                                    required:'required',
+                                    value: order.so_no!''
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row">
+                    	<div class="col-lg-4">
+			                <%include("/eeda/component/form/selectField.html", 
+			                    {   id:'cabinet_type', 
+			                        label:'柜型', 
+			                        value:order.cabinet_type!'',
+			                        value_list:[
+                                        {code:'40HQ', value:'40HQ'},
+			                            {code:'20GP', value:'20GP'},
+			                            {code:'40GP', value:'40GP'}, 
+			                            {code:'45GP', value:'45GP'},
+                                        {code:'', value:''}
+			                        ]
+			                    }){}%>
+			            </div>
+			            <div class="col-lg-4">
+			                  <%include("/eeda/component/form/inputPartyField.html", 
+					                    {   id:'head_carrier',
+					                        type:'head_car',
+					                        label:'头程船公司', 
+                                            required:'required',
+					                        value: head.id!'',
+					                        display_value:head.abbr!''
+					                    }){}%>
+			           </div>
+                       <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'lading_no', 
+                                    label:'提单号', 
+                                    value: order.lading_no!''
+                                }){}%>
+                        </div>
+			        </div>
+			        <div class="row">
+			            <div class="col-lg-4">
+			                  <%include("/eeda/component/form/inputDockField.html", 
+			                    {   id:'take_wharf', 
+			                        label:'提柜码头', 
+                                     required:'required',
+			                        value:order.take_wharf!'',
+                                    display_value:order.take_wharf_name!''
+			                    }){}%>
+			            </div>
+			            <div class="col-lg-4">
+			                  <%include("/eeda/component/form/inputDockField.html", 
+			                    {   id:'back_wharf', 
+			                        label:'还柜码头', 
+                                    required:'required',
+			                        value:order.back_wharf!'',
+                                    display_value:order.back_wharf_name!''
+			                    }){}%>
+			            </div>
+                       <div class="col-lg-4">
+                              <%include("/eeda/component/form/selectField.html", 
+                                {   id:'trade_type', 
+                                    label:'贸易类型', 
+                                    value:order.trade_type!'',
+                                    value_list:[
+                                        {code:'FOB', value:'FOB'},
+                                        {code:'CIF', value:'CIF'},
+                                        {code:'CFR', value:'CFR'},
+                                        {code:'DDU', value:'DDU'},
+                                        {code:'DDP', value:'DDP'},
+                                        {code:'OTHER', value:'OTHER'}
+                                    ]
+                                }){}%>
+                        </div>
+			        </div>
+			        <div class="row">
+			            <div class="col-lg-4">
+			                  <%include("/eeda/component/form/dateInputField.html", 
+                                {   id:'land_export_stamp', 
+                                    label:'出货时间', 
+                                    value:order.land_export_stamp!''
+                                }){}%>
+			            </div>
+			            <div class="col-lg-4">
+			                  <%include("/eeda/component/form/inputField.html", 
+                                {   id:'contract_no', 
+                                    label:'合同号', 
+                                    value:order.contract_no!''
+                                }){}%>
+			            </div>
+			            <div class="col-lg-4">
+			                  <%include("/eeda/component/form/inputField.html", 
+                                {   id:'customer_salesman', 
+                                    label:'客户业务员', 
+                                    value:order.customer_salesman!''
+                                }){}%>
+			            </div>
+			        </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                              <%include("/eeda/component/form/inputField.html", 
+                                {   id:'toca_no', 
+                                    label:'拖卡号', 
+                                    value:order.toca_no!''
+                                }){}%>
+                        </div>
+			            <div class="col-lg-4">
+			                  <%include("/eeda/component/form/inputDockField.html", 
+			                    {   id:'cross_border_travel', 
+			                        label:'跨境', 
+			                        value:order.cross_border_travel!'',
+                                    display_value:order.cross_border_travel_name!''
+			                    }){}%>
+			            </div>
+                       	<div class="col-lg-4">
+			                  <%include("/eeda/component/form/dateInputField.html", 
+                                {   id:'charge_time', 
+                                    label:'结算时间', 
+                                    value:order.charge_time!''
+                                }){}%>
+			            </div>
+                    </div>
+                    <div class="form-group">
+	                 <label>发票信息及备注</label>
+	                 <textarea id='remark' class="form-control" rows="3" name="remark">${order.remark!''}</textarea>
+	            	</div>
+	            </div>
+                </div>
+             </form>
+            <!-- /.row -->
+            <div class="simple_order_list_div">
+			  <div class="row" style="margin-top:15px">
+				<div class="tab-content">
+
+                    <div class="tab-pane fade active in" id="domesticDetail">
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <%include("/tms/Dispatch/dispatchSendrEdit_land.html", {}){} %>
+                            </div>
+                        </div>
+                    </div>
+	            </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <button id="saveBtn" class="btn btn_green">保存</button>
+                    <button id="updateChaegeTime" class="btn btn_green" style="display:none">更新计算日期</button>
+                    <a class="btn  btn-default" href="/transJobOrder">返回</a>
+                    <a href="/transJobOrder/create" class="btn btn_green"  type="button">创建新工作单</a>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+         </div>
+
+</div><!--  form row  -->
+<!-- /#page-wrapper -->
+<%}%>
+
+
+
+<%include("/eeda/component/jsTemplate/tableInputTruckOutField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputTruckInField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
+
+<%include("/oms/JobOrder/party_create_modal.html", {}){} %>
+
+<%include("/eeda/component/jsTemplate/tableInputCarInfoField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputDockInfoField.js",{}){} %>
+
+<script>
+
+	//当前登陆用户名
+	var loginUserName = '${loginUser!''}';
+    var order_no = '${order.order_no!'订单编辑'}'; 
+    var itemOrder = {};
+    var transport_type_hidden = '${order.transport_type!planOrderItem.transport_type!''}';
+    
+    var custom_type_hidden = '${planOrderItem.customs_type!''}';
+    if(custom_type_hidden=="自理报关"){
+    	transport_type_hidden+=",custom";
+    }
+    var custom_type = '${order.custom_type!''}';
+    var custom_status_hidden = '${custom.status!''}';
+    var custom_self_status_hidden = '${customSelf.status!''}';
+    
+    var entrust_or_self_custom_str = '${order.entrust_or_self_custom!''}';
+</script>
+
+<script>
+var order = {};
+    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], 
+        function (common) {
+            requirejs(['app/tms/dispatchSend/edit']);
+        },
+        function(error) {
+            console.error('报错了: ',error);
+            //error.requireModules : is Array of all failed modules
+            var failedId = error.requireModules && error.requireModules[0];
+            console.error(failedId);
+            console.error(error.message);
+            window.location.reload();
+        });
+</script>
+

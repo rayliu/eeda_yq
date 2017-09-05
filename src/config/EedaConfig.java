@@ -197,6 +197,7 @@ import controllers.profile.TradeItemController;
 import controllers.profile.UnitController;
 import controllers.profile.mailConfig.MailConfigController;
 import controllers.report.OrderStatusController;
+import controllers.tms.dispatch.DispatchSendController;
 import controllers.tms.jobOrder.TransJobOrderController;
 import controllers.tms.jobOrder.TransOrderShortCutController;
 import controllers.tms.planOrder.TransPlanOrderController;
@@ -373,6 +374,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/transJobOrder", TransJobOrderController.class, contentPath);
 		me.add("/transPlanOrder", TransPlanOrderController.class, contentPath);
 		me.add("/transOrderShortCut", TransOrderShortCutController.class, contentPath);
+		me.add("/dispatchSend", DispatchSendController.class, contentPath);
 		
 		me.add("/transCostConfirm", controllers.tms.arap.TransCostConfirmController.class, contentPath);
 		me.add("/transCostCheckOrder", controllers.tms.arap.TransCostCheckOrderController.class, contentPath);
