@@ -689,14 +689,26 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchUnit(){
     	String input = getPara("input");
-    	String contion="";
-    	if(!StringUtils.isBlank(input)){
-    		contion=" and name like '%" + input + "%' "+"or name_eng like '%"+input+"%'";
-    	}
-    	List<Record> recs = null;
-    	String sql = "select * from(select id,CONCAT(name,name_eng) name,name_eng from unit where type='order' )A where 1=1  "+contion+" ";
     	
-    	recs = Db.find(sql);
+    	String conditions = "";
+    	if(StringUtils.isNotBlank(input)){
+    		conditions = " and u.name like '%" + input + "%' "+"or u.name_eng like '%"+input+"%'";
+    	}
+    			
+    	String sql = "(SELECT u.id, CONCAT(u. NAME, u.name_eng) NAME, u.name_eng"
+    				+ " FROM user_query_history uqh"
+    				+ " LEFT JOIN unit u ON u.id = uqh.ref_id"
+    				+ " and uqh.type = 'UNIT'"
+    				+ " WHERE uqh.type = 'UNIT'"
+    				+ conditions
+    				+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
+    				+ " ORDER BY uqh.query_stamp desc)"
+    				+ " UNION "
+    				+ " (SELECT id, CONCAT(NAME, name_eng) NAME, name_eng"
+    				+ " FROM unit u WHERE u.type = 'order'"
+    				+ conditions+")";
+    	
+    	List<Record> recs = Db.find(sql);
     	renderJson(recs);
     }
     
