@@ -89,7 +89,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return '<span style="color:red;">'+eeda.numFormat(data,3)+'</span>';
 				  }
 	            },
-	            {
+	            { "width": "50px",
 					"render": function(data, type, full, meta) {
 						return ((parseFloat((full.CHARGE_RMB-full.UNCHARGE_RMB) / full.CHARGE_RMB).toFixed(4))*100).toFixed(2);
 					}
@@ -125,19 +125,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
 	      if(selectField=='sp_id'){
-	    	  $("#single_sp_id_input").val("");
+	    	  $("#single_order_export_date_begin_time").val("");
+	    	  $("#single_order_export_date_end_time").val("");
 	    	  $("#order_export_date_show").hide();
-	    	  $("#employee_id_show").hide();
 	    	  $("#sp_id_show").show();
 	      }
-	      if(selectField=='employee_id'){
-	    	  $("#employee_id_show").val("");
-	    	  $("#sp_id_show").hide();
-	    	  $("#order_export_date_show").hide();
-	    	  $("#employee_id_show").show();
-	      }
 	      if(selectField=="order_export_date"){
-	    	  $("#employee_id_show").hide();
+	    	  $("#single_sp_id_input").val("");
+	    	  $("#single_sp_id").val("");
 	    	  $("#sp_id_show").hide();
 	    	  $("#order_export_date_show").show();
 	      }
@@ -311,8 +306,37 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           				+"&abbr_equals="+abbr_name
           				+"&order_export_date_begin_time="+order_export_date_begin_time
 				        +"&order_export_date_end_time="+order_export_date_end_time;
-          dataTable.ajax.url(url).load();
+          dataTable.ajax.url(url).load(tableStyle);
       };
+      
       searchData();
+      
+    //导出excel
+      $('#exportTotaledExcel1').click(function(){
+    	  $(this).attr('disabled', true);
+          var sp_id = $("#single_sp_id").val();
+          var begin_time = $("#single_order_export_date_begin_time").val();
+          var end_time = $("#single_order_export_date_end_time").val();
+          excel_method(sp_id,begin_time,end_time);
+      });
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+          var sp_id = $("#sp_id").val();
+          var begin_time = $("#order_export_date_begin_time").val();
+          var end_time = $("#order_export_date_end_time").val();
+          excel_method(sp_id,begin_time,end_time);
+      });
+      var excel_method = function(sp_id,begin_time,end_time){
+		  $.post('/tradeChargeBalanceReport/downloadExcelList',{sp_id:sp_id,begin_time:begin_time,end_time:end_time}, function(data){
+	          $('#exportTotaledExcel1').prop('disabled', false);
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $('#singlexportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      }
   });
 });
