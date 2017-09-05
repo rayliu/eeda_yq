@@ -9,17 +9,16 @@
 	                    	<div class="search_single">
 	                        	<select id="selected_field" name="selected_field" class="form-control search-label">
 	                            	<option value="order_export_date">出货时间</option>
-	                            	<option value="customer">客户</option>
-		                            <option value="user_id">业务员</option>
+	                            	<option value="sp_id">结算公司</option>
 	                            </select>
 	
-	                            <div style="display:none;position:absolute;left:34%;bottom:-5px;" id="sp_customer_show">
+	                            <div style="display:none;position:absolute;left:34%;bottom:-5px;" id="sp_id_show">
 	                                 	<%include("/eeda/component/form/inputSpField.html", 
-	                                                                 {   id: 'single_customer', 
-	                                                                 	 style:'width:150%',
+	                                                                 {   id: 'single_sp_id', 
+	                                                                 	style:'width:150%',
 	                                                                     value: ''
 	                                                                 }){}%>
-									</div>
+								</div>
 			                    <input type="text" id="user_id_show" style="display:none;" class="form-control search-control"/>
 	                        	<div style="position:absolute;left:34%;bottom:-5px;;" id="order_export_date_show">        
 			                            	<%include("/eeda/component/form/inputDateQueryField.html",
@@ -37,7 +36,7 @@
 						<div class="search_single">
 							<nobr>
 								<button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
-								<button id="singlexportTotaledExcel" type="button" class="btn  btn_white">导出excel对账单</button>
+								<button id="exportTotaledExcel1" type="button" class="btn btn_green">导出</button>
 							</nobr>
 						</div>
 					</div>
@@ -74,7 +73,8 @@
                                         </div>
 
 								  <div class="form-group button-bar" >
-                                        <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+                                        <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                                        <button id="exportTotaledExcel" type="button" class="btn btn_green">导出</button>
                                         <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                                     </div><br>
 	                                    
@@ -127,11 +127,11 @@
                                             		'应收(USD)',
                                             		'应收(JPY)',
                                             		'应收(HKD)',
+                                            		'折合应收(RMB)',
                                             		'应付(CNY)',
                                             		'应付(USD)',
                                             		'应付(JPY)',
                                             		'应付(HKD)',
-                                            		'折合应收(RMB)',
                                             		'折合应付(RMB)']
                                         }){} %>
                                 

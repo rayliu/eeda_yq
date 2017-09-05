@@ -87,53 +87,57 @@ public class TradeProfitAndPaymentRateController extends Controller {
 	//导出excel对账单
 	public void downloadExcelList(){
 		UserLogin user = LoginUserController.getLoginUser(this);
-	    long office_id=user.getLong("office_id");
-		String customer_id = getPara("customer_id");
-		String order_export_date_begin_time = getPara("begin_time");
-		String order_export_date_end_time = getPara("end_time");
-		String customerId = "";
-		if(customer_id == ""||customer_id.equals("")){
-			customerId = "";
-		}else{
-			customerId = " and customer_id = "+customer_id;
-		}
-		
+		long office_id = user.getLong("office_id");
+		String sp_id = getPara("sp_id");
+		String begin_time = getPara("begin_time");
+		String end_time = getPara("end_time");
+		String spId = "";
 		String order_export_date = "";
-		String exportName = "";
-		if(StringUtils.isNotBlank(order_export_date_begin_time)||StringUtils.isNotBlank(order_export_date_end_time)){
-			order_export_date = "  and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"' )";
-			exportName = order_export_date_begin_time+"~"+order_export_date_end_time;
+		if (StringUtils.isBlank(sp_id)) {
+			spId = "";
+		} else {
+			spId = " and joa.sp_id = " + sp_id;
 		}
-	    String condition = customerId+order_export_date;
-		String sqlExport = " SELECT A.id,A.customer_id,A.abbr,A.sp_id,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
-        		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb FROM ("
-        		+" SELECT jo.id,jo.customer_id,p.abbr,joa.sp_id,"
-        		+" IF(joa.order_type='charge' and joa.exchange_currency_id = 3,exchange_total_amount,0) charge_cny,"
-        		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 6,exchange_total_amount,0) charge_usd,"
-        		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 8,exchange_total_amount,0) charge_jpy,"
-	    		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 9,exchange_total_amount,0) charge_hkd,"
-	    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 3,exchange_total_amount,0) cost_cny,"
-	    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 6,exchange_total_amount,0) cost_usd,"
-	    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 8,exchange_total_amount,0) cost_jpy,"
-	    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 9,exchange_total_amount,0) cost_hkd,"
-	    		+"	if(joa.order_type='charge',currency_total_amount,0) charge_rmb,"
-	    		+"	if(joa.order_type='cost',currency_total_amount,0) cost_rmb"
-        		+"  from trade_job_order jo "
-        		+"  LEFT JOIN trade_job_order_arap joa on jo.id = joa.order_id "
-        		+"  LEFT JOIN party p ON p.id = joa.sp_id"
-        		+"  WHERE jo.office_id ="+office_id+" "+condition
-        		+ " and jo.delete_flag = 'N'"
-    			+" ) A where A.sp_id is NOT NULL GROUP BY A.sp_id  ORDER BY abbr";
-	    
-		String total_name_header = "结算公司,应收(CNY),应收(USD),应收(jpy),应收(hkd),"
-									+ "应收(CNY),应收(USD),应收(jpy),应收(hkd),折合应收(RMB),折合应付(RMB)";
+		if (StringUtils.isBlank(begin_time)||StringUtils.isBlank(end_time)) {
+			order_export_date = "";
+		} else {
+			order_export_date =  " and (order_export_date between '"+begin_time+"' and '"+end_time+"')";
+		}
+
+		String condition = spId+order_export_date;
+
+		 String sql = " SELECT A.id,A.customer_id,A.abbr,A.sp_id,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
+	        		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb FROM ("
+	        		+" SELECT jo.id,jo.customer_id,p.abbr,joa.sp_id,"
+	        		+" IF(joa.order_type='charge' and joa.exchange_currency_id = 3,exchange_total_amount,0) charge_cny,"
+	        		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 6,exchange_total_amount,0) charge_usd,"
+	        		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 8,exchange_total_amount,0) charge_jpy,"
+		    		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 9,exchange_total_amount,0) charge_hkd,"
+		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 3,exchange_total_amount,0) cost_cny,"
+		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 6,exchange_total_amount,0) cost_usd,"
+		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 8,exchange_total_amount,0) cost_jpy,"
+		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 9,exchange_total_amount,0) cost_hkd,"
+		    		+"	if(joa.order_type='charge',currency_total_amount,0) charge_rmb,"
+		    		+"	if(joa.order_type='cost',currency_total_amount,0) cost_rmb"
+	        		+"  from trade_job_order jo "
+	        		+"  LEFT JOIN trade_job_order_arap joa on jo.id = joa.order_id "
+	        		+"  LEFT JOIN party p ON p.id = joa.sp_id"
+	        		+"  WHERE jo.office_id ="+office_id+" "+condition
+	        		+ " and jo.delete_flag = 'N'"
+	    			+" ) A where A.sp_id is NOT NULL GROUP BY A.sp_id  ORDER BY abbr";
+
+        String sqlExport = sql;
+		String total_name_header = "结算公司,CNY(应收),USD(应收),JPY(应收),HKD(应收),折合CNY(应收),CNY(应付),USD(应付),JPY(应付),HKD(应付),折合CNY(应付)";
 		String[] headers = total_name_header.split(",");
+
+		String[] fields = { "ABBR", "CHARGE_CNY", "CHARGE_USD", "CHARGE_JPY",
+				"CHARGE_HKD", "CHARGE_RMB", "COST_CNY","COST_USD","COST_JPY","COST_HKD","COST_RMB"};
 		
+		String exportName = "";
 		
-		String[] fields = { "ABBR","CHARGE_CNY", "CHARGE_USD","CHARGE_JPY","CHARGE_HKD","COST_CNY","COST_USD","COST_JPY","COST_HKD","CHARGE_RMB","COST_RMB"};
 		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,exportName);
 		renderText(fileName);
-	} 
+	}
 	
 	public void listTotal() {
 		String spid =(String) getPara("sp_id");
@@ -143,7 +147,7 @@ public class TradeProfitAndPaymentRateController extends Controller {
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		String sp_id = "";
-		if(spid==null||StringUtils.isBlank(sp_id)){
+		if(StringUtils.isBlank(spid)){
 			sp_id="";
 		}else {
 			 sp_id =" and sp_id="+spid;

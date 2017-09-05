@@ -48,6 +48,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					return eeda.numFormat(data,3);
 				  }
 	            },
+	            { "data": "CHARGE_RMB", "width": "120px","class":"charge_rmb",
+	            	"render": function(data, type, full, meta) {
+            	    if(data==0){
+            	    	return '';
+            	    }
+					return eeda.numFormat(data,3);
+				  }
+	            },
 	            { "data": "COST_CNY", "width": "100px" ,"class":"cost_cny",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
@@ -73,14 +81,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				  }
 	            },
 	            { "data": "COST_HKD", "width": "100px","class":"cost_hkd",
-	            	"render": function(data, type, full, meta) {
-            	    if(data==0){
-            	    	return '';
-            	    }
-					return eeda.numFormat(data,3);
-				  }
-	            },
-	            { "data": "CHARGE_RMB", "width": "120px","class":"charge_rmb",
 	            	"render": function(data, type, full, meta) {
             	    if(data==0){
             	    	return '';
@@ -125,23 +125,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
 	      if(selectField=='order_export_date'){
-	    	  $("#single_customer_input").val("");
-	    	  $("#user_id_show").hide();
-	    	  $("#sp_customer_show").hide();
+	    	  $("#single_sp_id_input").val("");
+	    	  $("#single_sp_id").val("");
+	    	  $("#sp_id_show").hide();
 	    	  $("#order_export_date_show").show();
 		  }
-		  if(selectField=='customer'){
+		  if(selectField=='sp_id'){
 			  $("#single_order_export_date_begin_time").val("");
 	    	  $("#single_order_export_date_end_time").val("");
-			  $("#user_id_show").hide();
 	    	  $("#order_export_date_show").hide();
-			  $("#sp_customer_show").show();
-		  }
-		  if(selectField=="user_id"){
-			  $("#user_id_show").val("");
-			  $("#sp_customer_show").hide();
-			  $("#order_export_date_show").hide();
-			  $("#user_id_show").show();
+			  $("#sp_id_show").show();
 		  }
      });
 	
@@ -150,21 +143,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		  if(selectField=='sp_id'){
 			  var sp_id = $("#single_sp_id").val();
 	      }
-	      if(selectField=='employee_id'){
-	    	  var employee_id = $("#employee_id_show").val();
-	      }
 	      if(selectField=="order_export_date"){
 	    	  var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
 			  var order_export_date_end_time = $("#single_order_export_date_end_time").val();
 	      }
-	      if(selectField=='customer'){
-		    	 var customer = $("#single_customer").val();
-		    }
-	      
 	      
 	      var url = "/tradeProfitAndPaymentRate/list?sp_id="+sp_id
-	      	+"&customer_id="+customer
-	      	+"&employee_id="+employee_id
 			+"&order_export_date_begin_time="+order_export_date_begin_time
 	        +"&order_export_date_end_time="+order_export_date_end_time;
 	      	dataTable.ajax.url(url).load(tableStyle);
@@ -256,34 +240,32 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           searchData(); 
       })
       
-	  //导出excel利润表
-      $("#singlexportTotaledExcel").click(function(){
+      //导出excel
+      $('#exportTotaledExcel1').click(function(){
     	  $(this).attr('disabled', true);
-    	  var customer_id = $("#single_customer").val();
+          var sp_id = $("#single_sp_id").val();
           var begin_time = $("#single_order_export_date_begin_time").val();
           var end_time = $("#single_order_export_date_end_time").val();
-          excel_method(customer_id,begin_time,end_time);
-      })
-  	
-      //导出excel利润表
+          excel_method(sp_id,begin_time,end_time);
+      });
       $('#exportTotaledExcel').click(function(){
-          $(this).attr('disabled', true);
-          var customer_id = $("#customer").val();
+    	  $(this).attr('disabled', true);
+          var sp_id = $("#sp_id").val();
           var begin_time = $("#order_export_date_begin_time").val();
           var end_time = $("#order_export_date_end_time").val();
-          excel_method(customer_id,begin_time,end_time);
+          excel_method(sp_id,begin_time,end_time);
       });
-      
-      var excel_method = function(customer_id,begin_time,end_time){
-    	  $.post('/tradeProfitAndPaymentRate/downloadExcelList',{customer_id:customer_id,begin_time:begin_time,end_time:end_time}, function(data){
-              $('#exportTotaledExcel').prop('disabled', false);
-              $('#singlexportTotaledExcel').prop('disabled', false);
-              $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
-              window.open(data);
-          }).fail(function() {
-              $('#exportTotaledExcel').prop('disabled', false);
-              $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
-          });
+      var excel_method = function(sp_id,begin_time,end_time){
+		  $.post('/tradeProfitAndPaymentRate/downloadExcelList',{sp_id:sp_id,begin_time:begin_time,end_time:end_time}, function(data){
+	          $('#exportTotaledExcel1').prop('disabled', false);
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $('#singlexportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
       }
       
      var searchData=function(){
@@ -302,19 +284,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           
       	listTotalMoney(sp_id,order_export_date_begin_time,order_export_date_end_time)
           
-          var cssTd=function(){
-        	  $("#eeda_table th:eq(6)").css('background-color','#f5f5dc');
-        	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
-        	  $("#eeda_table td:nth-child(7)").css('background-color','#f5f5dc');
-        	  $("#eeda_table td:nth-child(8)").css('background-color','#f5f5dc');
-        	  $("#eeda_table td:nth-child(9)").css('background-color','#f5f5dc');
-          }
+      	var cssTd=function(){
+      	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');
+      	  $("#eeda_table td:nth-child(11)").css('background-color','#f5f5dc');
+        }
          
           
           var url = "/tradeProfitAndPaymentRate/list?sp_id="+sp_id
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
-          dataTable.ajax.url(url).load(cssTd);
+          dataTable.ajax.url(url).load(tableStyle);
           
          
           
