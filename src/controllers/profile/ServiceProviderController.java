@@ -653,7 +653,7 @@ public class ServiceProviderController extends Controller {
     				+ " and p.sp_type like '%"+sp_type+"%'"
     				+ conditions+")";
     	
-    	List<Record> recs = Db.find(sql);
+    	List<Record> recs = Db.find("select A.* from ("+sql+") A limit 0,25");
     	renderJson(recs);
     	
     }
