@@ -265,7 +265,7 @@ public class TransCostBalanceReportController extends Controller {
         		+ " ORDER BY uncost_rmb desc";
 
         String sqlExport = sql;
-		String total_name_header = "结算公司,结算车牌,CNY应付),HKD(应付),折合CNY(应付),CNY(未付),HKD(未收),折合CNY(未付),付款率";
+		String total_name_header = "结算公司,结算车牌,CNY应付),HKD(应付),折合CNY(应付),CNY(未付),HKD(未付),折合CNY(未付),付款率";
 		String[] headers = total_name_header.split(",");
 
 		String[] fields = { "ABBR","CAR_NO_NAME","COST_CNY", "COST_HKD","COST_RMB","UNCOST_CNY","UNCOST_HKD","UNCOST_RMB","PAYMENT_RATE"};

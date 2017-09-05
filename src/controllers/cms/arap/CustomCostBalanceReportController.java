@@ -263,7 +263,7 @@ public class CustomCostBalanceReportController extends Controller {
 	        		+ " ORDER BY uncost_rmb desc";
 
         String sqlExport = sql;
-		String total_name_header = "结算公司,CNY(应收),USD(应收),JPY(应收),HKD(应收),折合CNY(应收),CNY(未收),USD(未收),JPY(未收),HKD(未收),折合CNY(未收),回款率";
+		String total_name_header = "结算公司,CNY(应付),USD(应付),JPY(应付),HKD(应付),折合CNY(应付),CNY(未付),USD(未付),JPY(未付),HKD(未付),折合CNY(未付),回款率";
 		String[] headers = total_name_header.split(",");
 
 		String[] fields = { "ABBR", "COST_CNY", "COST_USD", "COST_JPY",
