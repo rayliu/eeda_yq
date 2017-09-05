@@ -135,12 +135,31 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		  type="";
     	  }
     	   
-          var customer = $("#customer").val(); 
+          var sp_id = $("#sp_id").val(); 
           var service_stamp_between = $("#service_stamp").val();
 
-          var url = "/tradeAccountAging/list?sp_id="+customer
+          var url = "/tradeAccountAging/list?sp_id="+sp_id
 		               +"&service_stamp_between="+service_stamp_between+"&type="+type;
           dataTable.ajax.url(url).load(false);
       };
+      
+    //导出excel
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+          var sp_id = $("#sp_id").val();
+          var begin_time = $("#order_export_date_begin_time").val();
+          var end_time = $("#order_export_date_end_time").val();
+          excel_method(sp_id,begin_time,end_time);
+      });
+      var excel_method = function(sp_id,begin_time,end_time){
+		  $.post('/tradeAccountAging/downloadExcelList',{sp_id:sp_id,begin_time:begin_time,end_time:end_time}, function(data){
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      }
   });
 });

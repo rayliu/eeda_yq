@@ -21,12 +21,12 @@
                                                                     }){}%>
                                              </div>
                                             <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputCustomerField.html", 
-                                                                    {   id: 'customer', 
-                                                                        label: '客户', 
-                                                                        value: ''
-                                                                    }){}%>
-                                            </div>
+				                                <%include("/eeda/component/form/inputSpField.html", 
+				                                                    {   id: 'sp_id', 
+				                                                        label: '结算公司', 
+				                                                        value: ''
+				                                                    }){}%>
+				                            </div>
                                             <div class="col-lg-4" style="display:none">
                                                  
 	                             				<%include("/eeda/component/form/dateInputField.html",
@@ -40,6 +40,7 @@
 
                                     <div class="form-group button-bar" >
                                         <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                                        <button id="exportTotaledExcel" type="button" class="btn btn_green">导出</button>
                                         <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                                         <button id="oldSearchBtn" class="btn btn-default btn-sm" type="button" style="display:none">旧式查询</button>
                                         
@@ -62,7 +63,7 @@
                                      <%include("/eeda/component/form/detailTable.html", 
                                         {
                                             id:'eeda_table', 
-                                            headers:['结算客户','币制','欠款金额','转化成人民币金额','<=30天','<=60天','<=90天','<=120天'
+                                            headers:['结算公司','币制','欠款金额','转化成人民币金额','<=30天','<=60天','<=90天','<=120天'
                                             ]
                                         }){} %>
             	</div> 
