@@ -90,7 +90,7 @@ public class TradeArapReportController extends Controller {
          		+ " jo.id jobid,jo.order_no,jo.order_export_date,jo.create_stamp,jo.customer_id, "
          		+ " p.abbr sp_name,p1.abbr customer_name, "
          		+ " f.name fin_name,cur1.name exchange_currency_name, "
-         		+ " cur.name currency_name "
+         		+ " cur.name currency_name,f.name fin_item "
  				+ " from trade_job_order_arap joa "
  				+ " left join trade_job_order jo on jo.id=joa.order_id "
  				+ " left join party p on p.id=joa.sp_id "
