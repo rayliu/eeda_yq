@@ -322,12 +322,13 @@ public class DispatchSendController extends Controller {
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
 		DbUtils.handleList(doc_list, id, TransJobOrderDoc.class, "order_id");
 		//更新车辆状态
-		Record re_car_no = Db.findFirst("select GROUP_CONCAT(car_no) count_carId from trans_job_order_land_item where order_id = ?",id);
+		Record re_car_no = Db.findFirst("select GROUP_CONCAT(CONCAT(car_no,':',unload_type)) count_carId from trans_job_order_land_item where order_id = ?",id);
 		if(re_car_no!=null){
 			String count_carId = null;
 			if(re_car_no.getStr("count_carId")!=null){
 				count_carId =re_car_no.getStr("count_carId");
 			}
+			
 				for(int i=0;i<carId_list.size();i++){
 					String car_id= carId_list.get(i);
 					updateCarStatus(count_carId,car_id,id);
@@ -361,28 +362,68 @@ public class DispatchSendController extends Controller {
     private void updateCarStatus(String count_carId,String car_id,String id){
     	Carinfo re_car = Carinfo.dao.findById(car_id);
 		if(re_car!=null){
-			if(count_carId.contains(car_id)){
-				Record re_land_car = Db.findFirst("select * from trans_job_order_land_item where order_id = ? and car_no=?",id,car_id);
-				if(re_land_car.get("dispatch_date")!=null){
-					re_car.set("dispatch_status","Y");
+			Record re_land_car = Db.findFirst("select * from trans_job_order_land_item where order_id = ? and car_no=?",id,car_id);
+			if(re_land_car!=null){
+				if(count_carId.contains("提吉柜")){				
+					if(count_carId.contains(car_id)){					
+						if(re_land_car.get("dispatch_date")!=null){
+							re_car.set("dispatch_status","Y");
+						}
+						if(re_land_car.get("cabinet_date")!=null){
+							re_car.set("cabinet_status","Y");
+						}
+						if(re_land_car.get("arrival_date")!=null){
+							re_car.set("dispatch_status","N");
+							re_car.set("cabinet_status","N");
+							re_car.set("arrival_status","N");
+						}
+					 }
 				}
-				if(re_land_car.get("cabinet_date")!=null){
-					re_car.set("cabinet_status","Y");
+				if(count_carId.contains("收重柜")){				
+					if(count_carId.contains(car_id)){					
+						if(re_land_car.get("dispatch_date")!=null){
+							re_car.set("dispatch_status","Y");
+						}
+						if(re_land_car.get("arrival_date")!=null){
+							re_car.set("arrival_status","Y");
+						}
+						if(re_land_car.get("closing_date")!=null){
+							re_car.set("dispatch_status","N");
+							re_car.set("cabinet_status","N");
+							re_car.set("arrival_status","N");
+							re_car.set("closing_status","N");
+						}
+					 }
 				}
-				if(re_land_car.get("arrival_date")!=null){
-					re_car.set("arrival_status","Y");
+				
+				if(count_carId.contains("全程")){				
+					if(count_carId.contains(car_id)){					
+						if(re_land_car.get("dispatch_date")!=null){
+							re_car.set("dispatch_status","Y");
+						}
+						if(re_land_car.get("cabinet_date")!=null){
+							re_car.set("cabinet_status","Y");
+						}
+						if(re_land_car.get("arrival_date")!=null){
+							re_car.set("arrival_status","Y");
+						}
+						if(re_land_car.get("closing_date")!=null){
+							re_car.set("dispatch_status","N");
+							re_car.set("cabinet_status","N");
+							re_car.set("arrival_status","N");
+							re_car.set("closing_status","N");
+						}
+					 }
 				}
-				if(re_land_car.get("closing_date")!=null){
-					re_car.set("closing_status","Y");
-				}
-			}else {
+			}else{
 				re_car.set("dispatch_status","N");
 				re_car.set("cabinet_status","N");
 				re_car.set("arrival_status","N");
-				re_car.set("closing_status","N");
+				re_car.set("closing_status","N");	
 			}
-			re_car.update();
+			re_car.update();				
 		}
+		
     }
     
     
