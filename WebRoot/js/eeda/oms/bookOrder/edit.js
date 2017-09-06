@@ -27,7 +27,20 @@ $(document).ready(function() {
 			$('#saveBtn').attr('disabled', true);
 		}
     }
-     
+     //两位小数处理
+	var dealPoint = function(ids){
+		var ids = ids.split(",")
+		for(x in ids){
+			id = $.trim(ids[x])
+			var num = parseFloat($("#"+id+"").val()).toFixed(2);
+			if(!isNaN(num)){
+				$("#"+id+"").val(num)
+			}
+		}
+	}
+	
+	dealPoint("gross_weight,volume");
+
 	
 	//已完成工作单确认
 	$('#confirmCompleted').click(function(){
