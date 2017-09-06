@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'sco','dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'file_upload' ,'sco','dataTablesBootstrap'], function ($, metisMenu) { 
 
     $(document).ready(function() {
 
@@ -54,5 +54,46 @@ define(['jquery', 'metisMenu', 'sb_admin',  'sco','dataTablesBootstrap'], functi
           var url = "/tradeItem/search?commodity_name="+commodity_name+"&commodity_code="+commodity_code;
           dataTable.ajax.url(url).load();
       };
+      
+      $("#import_tradeItem").click(function(){
+	    	order_id = $('#order_id').val();
+	    	fileUpload(order_id);
+	    	if($('#order_id').val() == ''){
+	    		$.scojs_message('先保存订单才可导入', $.scojs_message.TYPE_ERROR);
+	    		return false;
+	    	}
+	    	
+	    	$("#importFileUpload").click();
+	    	
+	    });
+      
+      
+      
+      var fileUpload = function(order_id){
+	    	var str = null;
+		    var errCustomerNo = null;
+		    var errCustomerNoArr = [];
+			$('#importFileUpload').fileupload({
+		        dataType: 'json',
+		        url: '/importOrder?order_type=trade_item',
+		        done: function (e,data) {
+		        	$("#footer").show();
+		        	$("#msgLoad").empty().append('<h4>'+data.result.CAUSE+'</h4>');
+		        	searchData();
+		        },  
+		        progressall: function (e, data) {//设置上传进度事件的回调函数  
+		        	str = null;
+		            errCustomerNo = null;
+		            errCustomerNoArr = [];
+		        	$('#msgLoad').empty().append('<center><img src="/yh/image/loading5.gif" width="20%"><h4>导入过程可能需要一点时间，请勿退出页面！</h4></center>');
+		        	$('#myModal').modal('show');
+		        	$("#footer").hide();
+		        } 
+		    },'json').error(function (jqXHR, textStatus, errorThrown) {
+		        alert("出错了，请刷新页面重新尝试。")
+		        console.log(errorThrown);
+		    });
+	    }
+      
     });
 });

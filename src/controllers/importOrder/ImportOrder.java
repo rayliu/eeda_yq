@@ -20,6 +20,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
+import controllers.profile.TradeItemController;
 import controllers.tr.joborder.TrJobOrderController;
 import controllers.util.ReaderXLS;
 import controllers.util.ReaderXlSX;
@@ -31,7 +32,7 @@ public class ImportOrder extends Controller {
 	private Logger logger = Logger.getLogger(ImportOrder.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
-	// 导入出库单
+
 	public void index() {
 		String order_type = getPara("order_type");
 		String order_id = getPara("order_id");
@@ -67,7 +68,6 @@ public class ImportOrder extends Controller {
 					if("transJobOrder".equals(order_type)){
 						// 内容校验
 						//resultMap = checkOrder.importTJCheck(content);
-						
 						// 内容开始导入
 						if(true){
 							resultMap = checkOrder.importTJValue(content, userId, officeId);
@@ -75,11 +75,18 @@ public class ImportOrder extends Controller {
 					}else if("tradeJobOrder".equals(order_type)){
 						// 内容校验
 						//resultMap = checkOrder.importTJCheck(content);
-						
 						// 内容开始导入
 						if(true){
 							TrJobOrderController tradeJobOrder = new TrJobOrderController();
 							resultMap = tradeJobOrder.importTJValue(content, order_id, officeId);
+						}
+					}else if("trade_item".equals(order_type)){
+						// 内容校验
+						//resultMap = checkOrder.importTJCheck(content);
+						// 内容开始导入
+						if(true){
+							TradeItemController tradeItem = new TradeItemController();
+							resultMap = tradeItem.importValue(content, order_id, officeId);
 						}
 					}
 				} else {

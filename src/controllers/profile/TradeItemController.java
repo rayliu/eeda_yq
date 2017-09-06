@@ -3,6 +3,8 @@ package controllers.profile;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +23,9 @@ import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.util.PoiUtils;
 
@@ -337,6 +341,83 @@ public class TradeItemController extends Controller {
     	}
     	renderJson(ifExist);
     }
+    
+    //贸易商品信息导入
+	@Before(Tx.class)
+	public Record importValue( List<Map<String, String>> lines, String order_id, long office_id) {
+		Connection conn = null;
+		Record result = new Record();
+		result.set("result",true);
+
+		int rowNumber = 1;
+		
+		try {
+			conn = DbKit.getConfig().getDataSource().getConnection();
+			DbKit.getConfig().setThreadLocalConnection(conn);
+			conn.setAutoCommit(false);// 自动提交变成false
+			
+			for (Map<String, String> line :lines) {
+				String commodity_name = line.get("商品名称").trim();
+				String commodity_code = line.get("商品编码").trim();
+				String legal_unit = line.get("单位").trim();
+				String vat_rate = line.get("增值税率").trim();
+				String rebate_rate = line.get("退税率").trim();
+				String remark = line.get("备注").trim();
+	   			Long commodity_id = null;
+	   			Record commodity = Db.findFirst("select * from trade_item where commodity_name = ? and office_id = ?",commodity_name,office_id);
+	   			Record order = new Record();
+	   			if(commodity != null){
+	   				commodity_id = commodity.getLong("id");
+	   				commodity.set("unit_name", legal_unit);
+	   				commodity.set("VAT_rate", vat_rate);
+	   				commodity.set("rebate_rate", rebate_rate);
+	   				commodity.set("remark", remark);
+	   				commodity.set("office_id", office_id);
+		   			Db.update("trade_item", commodity);
+	   			}else{
+		   			order.set("commodity_name", commodity_name);
+		   			order.set("unit_name", legal_unit);
+		   			order.set("VAT_rate", vat_rate);
+		   			order.set("rebate_rate", rebate_rate);
+		   			order.set("remark", remark);  
+		   			order.set("office_id", office_id);
+		   			Db.save("trade_item", order);
+	   			}
+				rowNumber++;
+			}
+			conn.commit();
+			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！");
+		} catch (Exception e) {
+			System.out.println("导入操作异常！");
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
+			try {
+				if (null != conn)
+					conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+
+			result.set("result", false);
+			
+			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber)
+						+ "行时出现异常:" + e.getMessage() + "<br/>导入数据已取消！");
+			
+		} finally {
+			try {
+				if (null != conn) {
+					conn.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			} finally {
+				DbKit.getConfig().removeThreadLocalConnection();
+			}
+		}
+		
+		return result;
+	}
     
     
 }
