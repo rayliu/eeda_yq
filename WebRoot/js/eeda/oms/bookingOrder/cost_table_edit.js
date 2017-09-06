@@ -64,5 +64,15 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 			        }
 			        ]
 				});
+		//两位小数处理
+		$("#cost_table").find("tr").each(function(){
+			self = $(this)
+			self.find("td:eq(2),td:eq(5)").each(function(){
+				var num = (parseFloat($(this).text())).toFixed(2)
+				if(!isNaN(num)){
+					$(this).text(num)					
+				}
+			})
+		})
 	});
 });
