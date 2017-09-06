@@ -639,21 +639,21 @@ public class ServiceProviderController extends Controller {
     		conditions = " and (p.abbr like '%" + input + "%' or p.company_name like '%" + input + "%')";
     	}
     			
-    	String sql = "(SELECT p.id, p.abbr name "
+    	String sql = "select * from (SELECT p.id, p.abbr name "
     				+ " FROM user_query_history uqh"
     				+ " LEFT JOIN party p ON p.id = uqh.ref_id"
     				+ " and uqh.type = UPPER('"+sp_type+"')"
     				+ " WHERE uqh.type = UPPER('"+sp_type+"')"
     				+ conditions
     				+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
-    				+ " ORDER BY uqh.query_stamp desc)"
+    				+ " ORDER BY uqh.query_stamp desc limit 0,25) A"
     				+ " UNION "
     				+ " (select p.id,p.abbr name from party p"
     				+ " where office_id="+office_id+" and p.type = 'SP'"
     				+ " and p.sp_type like '%"+sp_type+"%'"
-    				+ conditions+")";
+    				+ conditions+") limit 0,25";
     	
-    	List<Record> recs = Db.find("select A.* from ("+sql+") A limit 0,25");
+    	List<Record> recs = Db.find(sql);
     	renderJson(recs);
     	
     }
@@ -661,17 +661,32 @@ public class ServiceProviderController extends Controller {
     //查询运输公司下拉
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchTruckCompany(){
-        UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id = user.getLong("office_id");
-    	String name = getPara("input");
+    	String input = getPara("input");
     	String sp_type = getPara("para");
-    	List<Record> rec = null;
-    	String sql = "select p.id,p.abbr name from party p where office_id="+office_id+" and p.type = 'SP' and p.sp_type like '%"+sp_type+"%' ";
-    	if(!StringUtils.isBlank(name)){
-    		sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	long office_id = user.getLong("office_id");
+    	String conditions = "";
+    	if(StringUtils.isNotBlank(input)){
+    		conditions = " and (p.abbr like '%" + input + "%' or p.company_name like '%" + input + "%')";
     	}
-    	rec = Db.find(sql);
-    	renderJson(rec);
+    			
+    	String sql = "select * from (SELECT p.id, p.abbr name "
+    				+ " FROM user_query_history uqh"
+    				+ " LEFT JOIN party p ON p.id = uqh.ref_id"
+    				+ " and uqh.type = UPPER('"+sp_type+"')"
+    				+ " WHERE uqh.type = UPPER('"+sp_type+"')"
+    				+ conditions
+    				+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
+    				+ " ORDER BY uqh.query_stamp desc limit 0,25) A"
+    				+ " UNION "
+    				+ " (select p.id,p.abbr name from party p"
+    				+ " where office_id="+office_id+" and p.type = 'SP'"
+    				+ " and p.sp_type like '%"+sp_type+"%'"
+    				+ conditions+") limit 0,25";
+    	
+    	List<Record> recs = Db.find(sql);
+    	renderJson(recs);
+    	
     }
     
     // 获取指定运输公司
@@ -710,18 +725,18 @@ public class ServiceProviderController extends Controller {
     		conditions = " and (u.name like '%" + input + "%' "+"or u.name_eng like '%"+input+"%')";
     	}
     			
-    	String sql = "(SELECT u.id, CONCAT(u. NAME, u.name_eng) NAME, u.name_eng"
+    	String sql = "select  * from(SELECT u.id, CONCAT(u. NAME, u.name_eng) NAME, u.name_eng"
     				+ " FROM user_query_history uqh"
     				+ " LEFT JOIN unit u ON u.id = uqh.ref_id"
     				+ " and uqh.type = 'UNIT'"
     				+ " WHERE uqh.type = 'UNIT'"
     				+ conditions
     				+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
-    				+ " ORDER BY uqh.query_stamp desc)"
+    				+ " ORDER BY uqh.query_stamp desc limit 0,25) A"
     				+ " UNION "
     				+ " (SELECT id, CONCAT(NAME, name_eng) NAME, name_eng"
     				+ " FROM unit u WHERE u.type = 'order'"
-    				+ conditions+")";
+    				+ conditions+") limit 0,25";
     	
     	List<Record> recs = Db.find(sql);
     	renderJson(recs);
@@ -849,12 +864,39 @@ public class ServiceProviderController extends Controller {
         long office_id = user.getLong("office_id");
         String name = getPara("input");
         String addressInputStr = getPara("addressInputStr");
-        String addStr="";
+        String addStr = "";
+        String conditon = "";
         if(StringUtils.isNotEmpty(addressInputStr)){
         	addStr=" and dock_name like '%"+addressInputStr+"%' ";
         }
+        
+        if(addressInputStr!=null){
+        	conditon = "  and ( p.abbr ='" + name + "' or p.company_name = '" + name + "' ) ";
+        }else{
+        	if(!StringUtils.isBlank(name)){
+        		conditon = "  and ( p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ) ";
+            }
+        }
+        
         List<Record> rec = null;
-        String sql = " SELECT "
+        String sql = "select  * from(SELECT p.id, p.abbr NAME,p.phone, "
+        		+" 	p.address, "
+        		+" 	p.contact_person, "
+        		+" 	CONCAT( "
+        		+" 		CONCAT(IFNULL(p.address, ''),':',IFNULL(p.contact_person, ''),':',IFNULL(p.phone, '')), "
+        		+" 		',',IFNULL((SELECT GROUP_CONCAT(CONCAT(ifnull(di.dock_name,''),':',ifnull(di.land_contacts,''),':',ifnull(di.land_contact_phone,'')))"
+        		+ " from dockinfo di WHERE di.party_id=p.id "+addStr+"),'') "
+        		+" 	) dock_names "
+    			+ " FROM user_query_history uqh"
+    			+ " LEFT JOIN party p ON p.id = uqh.ref_id"
+    			+ " WHERE uqh.type = 'TRUCKOUT'"
+    			+ conditon
+    			+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
+    			+ " ORDER BY uqh.query_stamp desc ) A"
+    			
+    			+ " UNION"
+    			
+    			+ " (SELECT "
         		+" 	p.id,p.abbr NAME,p.phone, "
         		+" 	p.address, "
         		+" 	p.contact_person, "
@@ -863,18 +905,11 @@ public class ServiceProviderController extends Controller {
         		+" 		',',IFNULL((SELECT GROUP_CONCAT(CONCAT(ifnull(di.dock_name,''),':',ifnull(di.land_contacts,''),':',ifnull(di.land_contact_phone,'')))"
         		+ " from dockinfo di WHERE di.party_id=p.id "+addStr+"),'') "
         		+" 	) dock_names "
-        		
-        		+" FROM "
-        		+" 	party p "
+        		+" FROM party p "
         		+" WHERE "
-        		+" 	p.office_id ="+office_id;
-        if(addressInputStr!=null){
-        	sql+="  and ( p.abbr ='" + name + "' or p.company_name = '" + name + "' ) ";
-        }else{
-        	if(!StringUtils.isBlank(name)){
-                sql+="  and ( p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ) ";
-            }
-        }
+        		+" p.office_id ="+office_id
+        		+ conditon+")";
+        
         
         rec = Db.find(sql);
         renderJson(rec);
@@ -883,16 +918,29 @@ public class ServiceProviderController extends Controller {
     //查询收货人下拉列表
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchTruckIn(){
-        UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id = user.getLong("office_id");
-        String name = getPara("input");
-        List<Record> rec = null;
-        String sql = "select p.id,p.abbr name, p.phone, p.address,p.contact_person from party p where office_id="+office_id;
-        if(!StringUtils.isBlank(name)){
-            sql+=" and (p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%')";
-        }
-        rec = Db.find(sql);
-        renderJson(rec);
+    	String input = getPara("input");
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	long office_id = user.getLong("office_id");
+    	String conditions = "";
+    	if(StringUtils.isNotBlank(input)){
+    		conditions = " and (p.abbr like '%" + input + "%' or p.company_name like '%" + input + "%')";
+    	}
+    			
+    	String sql = "select * from (SELECT p.id, p.abbr name, p.phone, p.address,p.contact_person  "
+    				+ " FROM user_query_history uqh"
+    				+ " LEFT JOIN party p ON p.id = uqh.ref_id"
+    				+ " WHERE uqh.type = UPPER('TruckIn')"
+    				+ conditions
+    				+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
+    				+ " ORDER BY uqh.query_stamp desc ) A"
+    				+ " UNION "
+    				+ " (select p.id,p.abbr name, p.phone, p.address,p.contact_person from party p"
+    				+ " where office_id="+office_id
+    				+ conditions+")";
+    	
+    	List<Record> recs = Db.find(sql);
+    	renderJson(recs);
+    	
     }
     
     //查询贸易方式下拉列表

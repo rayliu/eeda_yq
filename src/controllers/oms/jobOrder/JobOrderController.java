@@ -430,7 +430,14 @@ public class JobOrderController extends Controller {
 		DbUtils.handleList(land_item, id, JobOrderLandItem.class, "order_id");
 		List<Map<String, String>> land_shipment_item = (ArrayList<Map<String, String>>)dto.get("land_shipment_list");
 		DbUtils.handleList(land_shipment_item, id, JobOrderLandItem.class, "order_id");
-		
+		//保存陆运下拉使用历史
+		List<Record> landRes = new ArrayList<Record>();
+		landRes.add(new Record().set("type", "truck").set("param", "TRANSPORT_COMPANY"));
+		landRes.add(new Record().set("type", "truckout").set("param", "CONSIGNOR"));
+		landRes.add(new Record().set("type", "truckin").set("param", "CONSIGNEE"));
+		landRes.add(new Record().set("type", "unit").set("param", "UNIT_ID"));
+		saveItemParamHistory(land_item,landRes); 
+				
 		//快递
 		List<Map<String, String>> express_detail = (ArrayList<Map<String, String>>)dto.get("express_detail");
 		DbUtils.handleList(express_detail, id, JobOrderExpress.class, "order_id");
