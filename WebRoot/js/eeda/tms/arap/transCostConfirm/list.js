@@ -39,13 +39,37 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "SP_NAME", "width": "80px"},
             { "data": "CAR_NO", "width": "80px"},
             { "data": "CHARGE_NAME", "width": "60px"},
-            { "data": "PRICE", "width": "40px"},
+            { "data": "PRICE", "width": "40px",
+            	"render":function(data,type,full,meta){
+            		  data = (parseFloat(data)).toFixed(2)
+            		   if(isNaN(data)){
+            		         data = "";
+            		    }
+            		  return data;
+            	}
+            },
             { "data": "AMOUNT","width": "40px"},
             { "data": "UNIT_NAME", "width": "60px"},
-            { "data": "TOTAL_AMOUNT", "width": "60px"},
+            { "data": "TOTAL_AMOUNT", "width": "60px",
+            	"render":function(data,type,full,meta){
+          		  data = (parseFloat(data)).toFixed(2)
+          		   if(isNaN(data)){
+          		         data = "";
+          		    }
+          		  return data;
+            	}
+            },
             { "data": "CURRENCY_NAME", "width": "60px"},
             { "data": "EXCHANGE_RATE", "width": "60px"},
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "80px"},
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "80px",
+            	"render":function(data,type,full,meta){
+            		  data = (parseFloat(data)).toFixed(2)
+            		   if(isNaN(data)){
+            		         data = "";
+            		    }
+            		  return data;
+              	}
+            },
             { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px"},
             { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px" },
             { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px",

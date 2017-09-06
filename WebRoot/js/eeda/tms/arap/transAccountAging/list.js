@@ -20,8 +20,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
       			{ "data": "ABBR_NAME", "width": "100px"},
 	            { "data": "CURRENCY_NAME" ,"width": "100px"},
-	            { "data": "TOTAL_AMOUNT","width": "100px"},
-	            { "data": "TOTAL_AMOUNT","width": "100px"},
+	            { "data": "TOTAL_AMOUNT","width": "100px",
+	            	"render":function(data,type,full,meta){
+
+	            		  data = (parseFloat(data)).toFixed(2)
+	            		                    if(isNaN(data)){
+	            		                    	data = "";
+	            		                    }
+	            		  return data
+	            	}
+	            },
+	            { "data": "TOTAL_AMOUNT","width": "100px",
+	            	"render":function(data,type,full,meta){
+
+	            		  data = (parseFloat(data)).toFixed(2)
+	            		                    if(isNaN(data)){
+	            		                    	data = "";
+	            		                    }
+	            		  return data
+	            	}
+	            },
 	            { "data": "THREE", "width": "100px"},
 	            { "data": "SIX", "width": "100px"},
 	            { "data": "NINE", "width": "100px",

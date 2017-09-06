@@ -49,13 +49,37 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 					{ "data": "CUSTOMER", "width": "70px"},
 					{ "data": "SP_NAME", "width": "70px"},
 					{ "data": "CHARGE_NAME", "width": "60px"},
-					{ "data": "PRICE", "width": "40px"},
+					{ "data": "PRICE", "width": "40px",
+						"render":function(data,type,full,meta){
+							  data = (parseFloat(data)).toFixed(2)
+			                    if(isNaN(data)){
+			                    	data = "";
+			                    }
+							  return data;
+						}
+					},
 					{ "data": "AMOUNT","width": "40px"},
 					{ "data": "UNIT_NAME", "width": "40px"},
-					{ "data": "TOTAL_AMOUNT", "width": "60px","class":"total_amount"},
+					{ "data": "TOTAL_AMOUNT", "width": "60px","class":"total_amount",
+						"render":function(data,type,full,meta){
+							  data = (parseFloat(data)).toFixed(2)
+			                    if(isNaN(data)){
+			                    	data = "";
+			                    }
+							  return data;
+						}
+					},
 					{ "data": "CURRENCY_NAME", "width": "60px","class":"currency_name"},
 					{ "data": "EXCHANGE_RATE", "width": "60px"},
-					{ "data": "CURRENCY_TOTAL_AMOUNT", "width": "70px"},
+					{ "data": "CURRENCY_TOTAL_AMOUNT", "width": "70px",
+						"render":function(data,type,full,meta){
+							  data = (parseFloat(data)).toFixed(2)
+			                    if(isNaN(data)){
+			                    	data = "";
+			                    }
+							  return data;
+						}
+					},
 					{ "data": "REMARK", "width": "60px"},
             ]
         });

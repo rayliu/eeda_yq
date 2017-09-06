@@ -20,7 +20,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+            	    data = (parseFloat(data)).toFixed(2)
+                      if(isNaN(data)){
+                      	data = "";
+                      }
+            	    return data
 				  }
 	            },
 	            { "data": "CHARGE_USD","className":"charge_usd" ,
@@ -28,7 +32,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+            	    data = (parseFloat(data)).toFixed(2)
+                    if(isNaN(data)){
+                    	data = "";
+                    }
+            	    return data
 				  }
 	            },
 	            { "data": "CHARGE_JPY","className":"charge_jpy",
@@ -36,7 +44,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+            	    data = (parseFloat(data)).toFixed(2)
+                    if(isNaN(data)){
+                    	data = "";
+                    }
+            	    return data
 				  }
 	            },
 	            { "data": "CHARGE_HKD","className":"charge_hkd",
@@ -44,7 +56,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+            	    data = (parseFloat(data)).toFixed(2)
+                    if(isNaN(data)){
+                    	data = "";
+                    }
+            	    return data
 				  }
 	            },
 	            { "data": "CHARGE_RMB","className":"charge_rmb",
@@ -52,7 +68,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+            	    data = (parseFloat(data)).toFixed(2)
+                    if(isNaN(data)){
+                    	data = "";
+                    }
+            	    return data
 				  }
 	            },
 	            { "data": "UNCHARGE_CNY","className":"uncharge_cny",
@@ -60,7 +80,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+            	    data = (parseFloat(data)).toFixed(2)
+                    if(isNaN(data)){
+                    	data = "";
+                    }
+            	    return data
 				  }
 	            },
 	            { "data": "UNCHARGE_USD","className":"uncharge_usd",
@@ -68,7 +92,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+            	    data = (parseFloat(data)).toFixed(2)
+                    if(isNaN(data)){
+                    	data = "";
+                    }
+            	    return data
 				  }
 	            },
 	            { "data": "UNCHARGE_JPY","className":"uncharge_jpy",
@@ -76,7 +104,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+            	    data = (parseFloat(data)).toFixed(2)
+                    if(isNaN(data)){
+                    	data = "";
+                    }
+            	    return data
 				  }
 	            },
 	            { "data": "UNCHARGE_HKD", "className":"uncharge_hkd",
@@ -84,12 +116,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+            	    data = (parseFloat(data)).toFixed(2)
+                    if(isNaN(data)){
+                    	data = "";
+                    }
+            	    return data
 				  }
 	            },
 	            { "data": "UNCHARGE_RMB","class":"uncharge_rmb",
 	            	"render": function(data, type, full, meta) {
-					return '<span style="color:red;">'+eeda.numFormat(data,3)+'</span>';
+	            		 data = (parseFloat(data)).toFixed(2)
+	                     if(isNaN(data)){
+	                     	data = "";
+	                     }
+					return '<span style="color:red;">'+data+'</span>';
 				  }
 	            },
 	            {

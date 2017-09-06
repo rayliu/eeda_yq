@@ -265,6 +265,10 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
+                    data = (parseFloat(data)).toFixed(2)
+                    if(isNaN(data)){
+                    	data = "";
+                    }
                     return '<input type="text" name="toca_weight" value="'+data+'" class="form-control toca_weight" style="width:80px" />';
                 }
             },
@@ -277,6 +281,10 @@ $(document).ready(function() {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
+                    data = (parseFloat(data)).toFixed(2)
+                    if(isNaN(data)){
+                    	data = "";
+                    }
                     return '<input type="text" name="head_weight" value="'+data+'" class="form-control head_weight" style="width:80px" />';
                 }
             },

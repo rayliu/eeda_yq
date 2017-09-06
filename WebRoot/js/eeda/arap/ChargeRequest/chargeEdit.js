@@ -122,6 +122,17 @@ $(document).ready(function() {
 	if($("#order_id").val()!=''){
 		$("#printBtn").attr('disabled',false);
 	}
+	var dealPoint = function(ids){
+		var ids = ids.split(",")
+		for(x in ids){
+			id = $.trim(ids[x])
+			var num = parseFloat($("#"+id+"").val()).toFixed(2);
+			if(!isNaN(num)){
+				$("#"+id+"").val(num)
+			}
+		}
+	}
+	dealPoint("modal_cny,modal_usd,modal_jpy,modal_hkd");
 	
     //打印
 	 $("#printBtn").on('click',function(){
