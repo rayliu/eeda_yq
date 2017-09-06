@@ -30,6 +30,7 @@ import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
@@ -529,10 +530,13 @@ public class TransChargeCheckOrderController extends Controller {
 		rec.set("company_id", rec.get("company_id"));
 		rec.set("company_abbr", rec.get("company_abbr"));
 		rec.set("receive_itemList", getReceiveItemList(id));
-		rec.set("deposit_bank_input", rec3.get("deposit_bank_input"));
-		rec.set("receive_time", rec3.get("receive_time"));
-		rec.set("account_name", rec3.get("account_name"));
-		rec.set("account_no", rec3.get("account_no"));
+		if(rec3!=null){
+			rec.set("deposit_bank_input", rec3.get("deposit_bank_input"));
+			rec.set("receive_time", rec3.get("receive_time"));
+			rec.set("account_name", rec3.get("account_name"));
+			rec.set("account_no", rec3.get("account_no"));
+		}
+		
 		if(rec2!=null){
 			rec.set("residual_cny", rec2.get("residual_cny"));
 		}
@@ -800,10 +804,10 @@ public class TransChargeCheckOrderController extends Controller {
    	@Before(Tx.class)
  	public void confirmOrder(){
 		   		 UserLogin user = LoginUserController.getLoginUser(this);
-		   		String jsonStr=getPara("params");
+		   		 String jsonStr=getPara("params");
 		  
-		        	Gson gson = new Gson();  
-		         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+		         Gson gson = new Gson();  
+		         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class); 
 		         String id=(String)dto.get("charge_order_id");
 			   	 String itemids= (String) dto.get("itemids");
 		   		
