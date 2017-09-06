@@ -1717,7 +1717,7 @@ eeda.refreshUrl = refreshUrl;
                          
 		  });
 		  
-		  tableFieldList.on('keydown', 'li', function(e){
+		  tableFieldList.on('keydown', 'li', function(e){debugger
               if (e.keyCode == 13) {
                   var inputField = eeda._inputField;
                   var hiddenField = eeda._hiddenField;                  
@@ -1731,12 +1731,12 @@ eeda.refreshUrl = refreshUrl;
                   //某条费用对应某币制			  
     			  var td = inputField.parent().parent();
 
-    			  var charge_id = $(this).attr('dataId');
-    			  var charge_name = $(this).attr('charge_name');
-    			  var charge_name_eng = $(this).attr('charge_name_eng');
-    			  var currency_id = $(this).attr('currency_id');
-    			  var currency_code = $(this).attr('currency_code');
-    			  var currency_rate = $(this).attr('currency_rate');
+    			  var charge_id = $a.attr('dataId');
+    			  var charge_name = $a.attr('charge_name');
+    			  var charge_name_eng = $a.attr('charge_name_eng');
+    			  var currency_id = $a.attr('currency_id');
+    			  var currency_code = $a.attr('currency_code');
+    			  var currency_rate = $a.attr('currency_rate');
     			  td.parent().find('input[name=CHARGE_ID] ').val(charge_id);
     			  td.parent().find('input[name=CHARGE_ID_input] ').val(charge_name);
     			  td.parent().find('input[name=CHARGE_ENG_ID] ').val(charge_id);
