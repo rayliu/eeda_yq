@@ -433,7 +433,9 @@ public class CostRequestController extends Controller {
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id=user.getLong("office_id");
    		
+   		String action_type = "add";
    		if (StringUtils.isNotEmpty(id)) {
+   		    action_type = "update";
    			//update
    			order = ArapCostApplication.dao.findById(id);
    			DbUtils.setModelValues(dto, order); 
@@ -495,7 +497,7 @@ public class CostRequestController extends Controller {
 		  Db.update(ySql);
 	}
    		
-		
+   		saveLog(jsonStr, id, user, action_type);
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);
 		Record r = order.toRecord();
@@ -504,6 +506,20 @@ public class CostRequestController extends Controller {
    		r.set("idsArray", ids);
    		renderJson(r);
 	}
+    
+  	private void saveLog(String json, String order_id, UserLogin user, String action_type) {
+        Record rec = new Record();
+        rec.set("log_type", "action");
+        rec.set("operation_obj", "付款申请单");
+        rec.set("action_type", action_type);
+        rec.set("create_stamp", new Date());
+        rec.set("user_id", user.get("id"));
+        rec.set("order_id", order_id);
+        rec.set("json", json);
+        rec.set("sys_type", "forwarder");
+        rec.set("office_id", user.getLong("office_id"));
+        Db.save("sys_log", rec);
+    }
   	
   	@Before(EedaMenuInterceptor.class)
   	public void edit() throws ParseException {

@@ -463,7 +463,9 @@ public class CostCheckOrderController extends Controller {
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
    		
+   		String action_type = "add";
    		if (StringUtils.isNotEmpty(id)) {
+   		    action_type = "update";
    			//update
    			aco = ArapCostOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, aco);
@@ -531,14 +533,30 @@ public class CostCheckOrderController extends Controller {
 			}	
 		}
    		
+		saveLog(jsonStr, id, user, action_type);
+		
    		String sql = " select aco.*, p.company_name company_name, u.c_name creator_name from arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by"
    				+ " where aco.id = ? ";
-   		
    		Record r = Db.findFirst(sql,id);
    		renderJson(r);
 	}
+	
+	private void saveLog(String json, String order_id, UserLogin user, String action_type) {
+        Record rec = new Record();
+        rec.set("log_type", "action");
+        rec.set("operation_obj", "应付对账单");
+        rec.set("action_type", action_type);
+        rec.set("create_stamp", new Date());
+        rec.set("user_id", user.get("id"));
+        rec.set("order_id", order_id);
+        rec.set("json", json);
+        rec.set("sys_type", "forwarder");
+        rec.set("office_id", user.getLong("office_id"));
+        logger.debug("save log...");
+        Db.save("sys_log", rec);
+    }
 	
 	@Before(EedaMenuInterceptor.class)
 	public void edit(){
