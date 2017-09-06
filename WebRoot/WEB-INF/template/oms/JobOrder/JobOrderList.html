@@ -16,7 +16,7 @@
                               		<option value="order_no">工作单号</option>
 	                            	<option value="sono_like">SO号</option>
 	                               	<option value="container_no">柜号</option>
-	                               	<option value="status">状态</option>	                                	
+	                               	<option value="type">出货类型</option>	                                	
 	                                <option value="old_order_no">旧工作单号</option>
 	                                <option value="customer_name">客户名称</option>
 	                                <option value="customer_code_like">客户代码</option>
@@ -26,9 +26,23 @@
 
                             	<input type="text" class="form-control search-control" id="public_text" name="public_text">
                             		
-                            	<select id="single_status_list" name="status_list" class="form-control search-control" style="display: none;">
-                                	<option value="新建">新建</option>
-                                	<option value="已完成">已完成</option>
+                            	<select id="single_export_type_list" name="export_type_list" class="form-control search-control" style="display: none;">
+                                	<option value=""></option>
+                                	<option value="出口柜货">出口柜货</option>
+                                	<option value="进口柜货">进口柜货</option>
+                                	<option value="出口散货">出口散货</option>
+                                	<option value="进口散货">进口散货</option>
+                                	<option value="出口空运">出口空运</option>
+                                	<option value="进口空运">进口空运</option>
+                                	<option value="内贸海运">内贸海运</option>
+                                	<option value="香港头程">香港头程</option>
+                                	<option value="香港游">香港游</option>
+                                	<option value="陆运">陆运</option>
+                                	<option value="报关">报关</option>
+                                	<option value="快递">快递</option>
+                                	<option value="加贸">加贸</option>
+                                	<option value="贸易">贸易</option>
+                                	<option value="园区游">园区游</option>
                             	</select>
                            	 		
 	                           	 <div style="display: none;position:absolute;left:34%;bottom:-5px;" id="customer_name_show">
@@ -75,24 +89,25 @@
                             <div class="col-lg-12">
                                 <form id="orderForm">
                                     <div class="row"><!--  第1行  -->
-                                        <div class="col-lg-4"><!--  三列排版  -->
-                                            <%include("/eeda/component/form/inputField.html", 
-                                                                {   id: 'sono', 
-                                                                    label: 'SO号', 
-                                                                    value: ''
-                                                                }){}%>
+                                    	<div class="col-lg-4">
+                                          <%include("/eeda/component/form/inputSpField.html", 
+                                                              {   id: 'customer_name', 
+                                                                  label: '客户名称',
+                                                                  list:'list', 
+                                                                  value: ''
+                                                              }){}%>
+                                        </div>
+                                        <div class="col-lg-4">
+                                          <%include("/eeda/component/form/inputField.html", 
+                                                              {   id: 'customer_code', 
+                                                                  label: '客户代码', 
+                                                                  value: ''
+                                                              }){}%>
                                         </div>
                                         <div class="col-lg-4"><!--  三列排版  -->
-                                            <%include("/eeda/component/form/inputField.html", 
-                                                                {   id: 'container_no', 
-                                                                    label: '柜号', 
-                                                                    value: ''
-                                                                }){}%>
-                                        </div>
-                                        <div class="col-lg-4"><!--  三列排版  -->
-                                            <%include("/eeda/component/form/inputField.html", 
-                                                                {   id: 'old_order_no', 
-                                                                    label: '旧工作单号', 
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                                                {   id: 'sent_out_time', 
+                                                                    label: '出货时间', 
                                                                     value: ''
                                                                 }){}%>
                                         </div>
@@ -106,9 +121,9 @@
                                                                 }){}%>
                                         </div>
                                         <div class="col-lg-4"><!--  三列排版  -->
-                                            <%include("/eeda/component/form/inputDateQueryField.html", 
-                                                                {   id: 'sent_out_time', 
-                                                                    label: '出货时间', 
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'old_order_no', 
+                                                                    label: '旧工作单号', 
                                                                     value: ''
                                                                 }){}%>
                                         </div>
@@ -121,33 +136,45 @@
                                         </div><!-- /.col-lg-2 -->
                                     </div><!-- /.row-->
                                     <div class="row">
+                                    	<div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'container_no', 
+                                                                    label: '柜号', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'sono', 
+                                                                    label: 'SO号', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
                                         <div class="col-lg-4">
                                              <%include("/eeda/component/form/selectField.html", 
-                                                    {   id:'status', 
-                                                        label:'状态', 
+                                                    {   id:'type', 
+                                                        label:'出货类型', 
                                                         value: '',
                                                         value_list:[
-                                                            {code:'', value:''},
-                                                            {code:'新建', value:'新建'},
-                                                            {code:'已完成', value:'已完成'}
-                                                        ]
+                                                        		{code:'', value:''},
+					                                            {code:'出口柜货', value:'出口柜货'},
+					                                            {code:'进口柜货', value:'进口柜货'}, 
+					                                            {code:'出口散货', value:'出口散货'},
+					                                            {code:'进口散货', value:'进口散货'},
+					                                            {code:'出口空运', value:'出口空运'},
+					                                            {code:'进口空运', value:'进口空运'},
+					                                            {code:'内贸海运', value:'内贸海运'},
+					                                            {code:'香港头程', value:'香港头程'},
+					                                            {code:'香港游', value:'香港游'},
+					                                            {code:'陆运', value:'陆运'},
+					                                            {code:'报关', value:'报关'},
+					                                            {code:'快递', value:'快递'},
+					                                            {code:'加贸', value:'加贸'},
+					                                            {code:'贸易', value:'贸易'},
+					                                            {code:'园区游', value:'园区游'}
+					                                        ]
                                                     }
                                                  ){} %>
-                                        </div>
-                                        <div class="col-lg-4">
-                                          <%include("/eeda/component/form/inputField.html", 
-                                                              {   id: 'customer_code', 
-                                                                  label: '客户代码', 
-                                                                  value: ''
-                                                              }){}%>
-                                        </div>
-                                        <div class="col-lg-4">
-                                          <%include("/eeda/component/form/inputSpField.html", 
-                                                              {   id: 'customer_name', 
-                                                                  label: '客户名称',
-                                                                  list:'list', 
-                                                                  value: ''
-                                                              }){}%>
                                         </div>
                                     </div>
                                     <div class="form-group table_btn_bar" >

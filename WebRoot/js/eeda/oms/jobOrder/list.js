@@ -213,23 +213,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 	      if(selectField == 'sono_like'||selectField == 'container_no'||selectField == 'old_order_no'||selectField == 'order_no'||selectField == 'customer_code_like'){
 	    	  $('#public_text').val("");
 	    	  $('#customer_name_show').hide();
-	    	  $('#single_status_list').hide();
+	    	  $('#single_export_type_list').hide();
 	    	  $('#public_time_show').hide();
 	    	  $('#public_text').show();
-	      }else if(selectField == 'status'){
+	      }else if(selectField == 'type'){
 	    	  $('#customer_name_show').hide();
 	    	  $('#public_text').hide();
 	    	  $('#public_time_show').hide();
-	    	  $('#single_status_list').show();
+	    	  $('#single_export_type_list').show();
 	      }else if(selectField == 'customer_name'){
-	    	  $('#single_status_list').hide();
+	    	  $('#single_export_type_list').hide();
 	    	  $('#public_text').hide();
 	    	  $('#public_time_show').hide();
 	    	  $('#customer_name_show').show();
          }else if(selectField == 'sent_out_time'||selectField == 'create_stamp'){
         	  $('#public_time_begin_time').val("");
         	  $('#public_time_end_time').val("");
-	    	  $('#single_status_list').hide();
+	    	  $('#single_export_type_list').hide();
 	    	  $('#public_text').hide();
 	    	  $('#customer_name_show').hide();
 	    	  $('#create_stamp_show').hide();
@@ -242,8 +242,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 	     var selectFieldValue = '';
 	     if(selectField == 'sono_like'||selectField == 'container_no'||selectField == 'old_order_no'||selectField == 'order_no'||selectField == 'customer_code_like'){
 	    	  selectFieldValue = $("#public_text").val();
-	      }else if(selectField == 'status'){
-	    	  selectFieldValue = $("#single_status_list").val();
+	      }else if(selectField == 'type'){
+	    	  selectFieldValue = $("#single_export_type_list").val();
+	    	  selectField="type_equals";
 	      }else if(selectField == 'customer_name'){
 	    	  selectFieldValue = $("#single_customer_name_input").val();
           }else if(selectField == 'create_stamp'){
@@ -288,7 +289,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           var end_date = $("#create_stamp_end_time").val();
           var sent_out_time_begin_time = $("#sent_out_time_begin_time").val();
           var sent_out_time_end_time = $("#sent_out_time_end_time").val();
-          var status = $('#status').val();
+          var export_type = $('#type').val();
           var customer_code = $("#customer_code").val().trim();
           var customer_name = $("#customer_name_input").val().trim();
           var sono = $("#sono").val().trim();
@@ -297,7 +298,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           //增加出口日期查询
           var url = "/jobOrder/list?order_no="+order_no
                +"&old_order_no="+old_order_no
-          	   +"&status="+status
+          	   +"&type_equals="+export_type
                +"&sono_like="+sono
                +"&container_no="+container_no
           	   +"&transport_type_like="+transport_type
