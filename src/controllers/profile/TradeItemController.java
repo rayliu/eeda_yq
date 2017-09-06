@@ -23,6 +23,8 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.util.PoiUtils;
+
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
 public class TradeItemController extends Controller {
@@ -242,6 +244,49 @@ public class TradeItemController extends Controller {
         }
         renderJson(r);
     }
+    
+	public void downloadExcelList(){
+  	  UserLogin user = LoginUserController.getLoginUser(this);
+      long userId = user.getLong("id");
+      Long officeId = user.getLong("office_id");
+      
+      String sLimit = "";
+      String pageIndex = getPara("sEcho");
+      if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
+          sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
+      }
+		String name = getPara("commodity_name");
+		String c = getPara("commodity_code");
+		String[]codes = c.split(",");
+		String condition = "";
+		if(StringUtils.isNotBlank(name)){
+			condition += "and commodity_name like '%"+name+"%' ";
+		}
+		if(codes.length > 0 && StringUtils.isNotBlank(c)){
+			for (int i = 0; i < codes.length; i++){
+				String code = codes[i];
+				code = code.trim();
+				if(i == 0){
+					condition += "and ( commodity_code like '%"+code+"%' ";
+				}else{
+					condition += "or commodity_code like '%"+code+"%' ";
+				}
+			}
+			condition += ")";
+		}
+		String sql = "select * from trade_item t where 1=1 and t.office_id="+officeId+" "+condition;
+        
+		String sqlExport = sql;
+		String total_name_header = "商品名称,商品编码,单位,增值税率,退税率,备注";
+		String[] headers = total_name_header.split(",");
+
+		String[] fields = {"COMMODITY_NAME","COMMODITY_CODE","UNIT_NAME","VAT_RATE","REBATE_RATE","REMARK"};
+		
+		String exportName = "";
+		
+		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,exportName);
+		renderText(fileName);
+	}
     
     //校验是否存在此商品名称
     public void checkCommodityNameExist(){

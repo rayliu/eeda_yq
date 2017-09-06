@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'sco','dataTablesBootstrap'], function ($, metisMenu) { 
 
     $(document).ready(function() {
 
@@ -31,7 +31,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
       $('#searchBtn').click(function(){
           searchData(); 
       })
-
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+          var commodity_name = $("#commodity_name").val();
+          var commodity_code = $("#commodity_code").val();
+          excel_method(commodity_name,commodity_code);
+      });
+      var excel_method = function(commodity_name,commodity_code){
+		  $.post('/tradeItem/downloadExcelList',{commodity_name:commodity_name,commodity_code:commodity_code}, function(data){
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      }
+      
      var searchData=function(){
           var commodity_name = $("#commodity_name").val().trim();
           var commodity_code = $("#commodity_code").val().trim();
