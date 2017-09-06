@@ -1,8 +1,10 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'jq_blockui',
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'jq_blockui','pageguide',
     './edit_land_table','./edit_land_bulk_cargo_table', './edit_charge_table','./edit_cost_table','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
     './edit_arap_detail'], function ($, metisMenu) {
 $(document).ready(function() {
-	
+	  tl.pg.init({
+          pg_caption: '本页教程'
+      });
 	var container_no=$('#container_no').val();
 
 	 //柜号限制输入位为11位数，

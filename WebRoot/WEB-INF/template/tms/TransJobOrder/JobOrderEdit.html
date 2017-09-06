@@ -52,7 +52,7 @@
                                     disabled: 'disabled'
                                 }){}%>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="customerClass col-lg-4">
                             <%include("/eeda/component/form/inputCustomerField.html", 
                                 {
                                     id:'customer_id', 
@@ -554,8 +554,6 @@
 <!-- /#page-wrapper -->
 <%}%>
 
-
-
 <%include("/eeda/component/jsTemplate/tableInputTruckOutField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputTruckInField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
@@ -567,7 +565,7 @@
 
 <%include("/eeda/component/jsTemplate/tableInputCarInfoField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputDockInfoField.js",{}){} %>
-
+<%include("/tms/TransJobOrder/guideEdit.html",{}){} %>
 <script>
 
 	//当前登陆用户名
