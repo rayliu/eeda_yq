@@ -1,6 +1,8 @@
-define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN'], function ($, metisMenu,template) {
+define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','pageguide','datetimepicker_CN'], function ($, metisMenu,template) {
   $(document).ready(function() {
-  	  
+	  tl.pg.init({
+          pg_caption: '本页教程'
+      });
       var deletedTableIds=[];
         var bindFieldEvent=function(){
        	    $('table .date').datetimepicker({  
