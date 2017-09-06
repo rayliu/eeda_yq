@@ -497,17 +497,32 @@ public class CustomerController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
         
-        List<Record> partyList = Collections.EMPTY_LIST;
-        String sql = "select p.id, p.abbr,p.abbr name, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                + " ifnull(p.address_eng, p.address) address, p.phone,p.bill_of_lading_info"
-                + " from party p where sp_type like '%"+type+"%' ";
-        if(!"carrier".equals(type)){
-            sql += "and office_id="+office_id;
+   		String officeConditon = "";
+   		if(!"carrier".equals(type)){
+   			officeConditon = " and office_id="+office_id;
         }
+   		
+   		String condition = "";
         if (partyName.trim().length() > 0) {
-            sql +=" and (p.abbr like '%" + partyName + "%' or p.quick_search_code like '%" + partyName.toUpperCase() + "%') ";
+        	condition = " and (p.abbr like '%" + partyName + "%' or p.quick_search_code like '%" + partyName.toUpperCase() + "%') ";
         }
-        partyList = Db.find(sql);
+
+        String sql = "select  * from(SELECT p.id, p.abbr,p.abbr name, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                + " ifnull(p.address_eng, p.address) address, p.phone,p.bill_of_lading_info"
+				+ " FROM user_query_history uqh"
+				+ " LEFT JOIN party p ON p.id = uqh.ref_id"
+				+ " and uqh.type = upper('"+type+"')"
+				+ " WHERE uqh.type = upper('"+type+"')"
+				+ condition
+				+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
+				+ " ORDER BY uqh.query_stamp desc ) A"
+				+ " UNION "
+				+ " (select p.id, p.abbr,p.abbr name, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
+                + " ifnull(p.address_eng, p.address) address, p.phone,p.bill_of_lading_info"
+                + " from party p where sp_type like '%"+type+"%' "
+                + condition+officeConditon+")";
+        
+        List<Record>  partyList = Db.find(sql);
 
         renderJson(partyList);
     }

@@ -449,6 +449,11 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> chinaCustom_self_item = (ArrayList<Map<String, String>>)dto.get("chinaCustom_self_item");
 		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
 		DbUtils.handleList(chinaCustom_self_item, "job_order_custom_china_self_item", id, "order_id");
+		//保存报关下拉使用历史
+		List<Record> customRes = new ArrayList<Record>();
+		customRes.add(new Record().set("type", "broker").set("param", "CUSTOM_BANK"));
+		saveItemParamHistory(chinaCustom_self_item,customRes); 
+		
 		DbUtils.handleList(abroadCustom, id, JobOrderCustom.class, "order_id");
 		DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "order_id");
 		
