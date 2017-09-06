@@ -2444,7 +2444,7 @@ public class JobOrderController extends Controller {
     //常用明细列表字段保存进入历史记录
     @Before(Tx.class)
     private void saveItemParamHistory(List<Map<String, String>> list,List<Record> listRes){
-    	if(list.size() > 0){
+    	if(list != null){
     		for(Record listRe : listRes){
     			String type = listRe.getStr("type");
     			String param = listRe.getStr("param");
