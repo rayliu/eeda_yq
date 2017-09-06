@@ -1,7 +1,8 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
-
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validate_cn','pageguide'], function ($, metisMenu) { 
     $(document).ready(function() {
-    	
+    	tl.pg.init({
+            pg_caption: '本页教程'
+        });
     	//datatable, 动态处理
 		var cnames = [];
 		var itemIds=[];
