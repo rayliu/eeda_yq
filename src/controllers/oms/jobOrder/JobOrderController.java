@@ -259,7 +259,9 @@ public class JobOrderController extends Controller {
     	
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
-        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+        
+        
         String id = (String) dto.get("id");
         String planOrderItemID = (String) dto.get("plan_order_item_id");
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
@@ -288,8 +290,9 @@ public class JobOrderController extends Controller {
         }
         logger.debug("工作单出货日期："+newDateStr);
         
-        
+        String action_type = "add";
    		if (StringUtils.isNotEmpty(id)) {
+   		    action_type = "update";
    			//update
    			jobOrder = JobOrder.dao.findById(id);
    			//版本(时间戳)校验，不对的话就不让更新保存
@@ -580,9 +583,25 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> allChargeSale_template = (ArrayList<Map<String, String>>)dto.get("allChargeSale_template");
    		saveTradeSaleTemplate(type,customer_id,chargeSale_template,allChargeSale_template);
    	   	   		
-	
+   		saveLog(jsonStr, id, user, action_type);
    		renderJson(r);
    	}
+    private void saveLog(String json, String order_id, UserLogin user, String action_type) {
+
+        
+        Record rec = new Record();
+        rec.set("log_type", "action");
+        rec.set("operation_obj", "工作单");
+        rec.set("action_type", action_type);
+        rec.set("create_stamp", new Date());
+        rec.set("user_id", user.get("id"));
+        rec.set("order_id", order_id);
+        rec.set("json", json);
+        rec.set("sys_type", "forwarder");
+        rec.set("office_id", user.getLong("office_id"));
+        logger.debug("save log...");
+        Db.save("sys_log", rec);
+    }
     
     /**
      * 客户合同条件
