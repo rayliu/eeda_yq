@@ -53,7 +53,7 @@ public class CmsChargeConfirmController extends Controller {
 //        }
      
         String sql = "select * from( "
-        		+"  select cpoa.*,cpo.order_no,cpo.receive_sent_consignee_input,cpo.id cpobid,cpo.create_stamp,p1.company_name sp_name,cpo.type job_type,f.name charge_name,"
+        		+"  select cpoa.*,cpo.order_no,cpo.receive_sent_consignee_input,cpo.id cpobid,cpo.create_stamp,p1.abbr sp_name,cpo.type job_type,f.name charge_name,"
         		+"  cpo.date_custom,c.name currency_name  "
 				+" 	from custom_plan_order_arap cpoa  "
 				+" 	right join custom_plan_order cpo on cpo.id=cpoa.order_id  "

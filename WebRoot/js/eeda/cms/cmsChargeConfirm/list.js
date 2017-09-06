@@ -1,6 +1,10 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','pageguide'], function ($, metisMenu) { 
 
     $(document).ready(function() {
+    	 tl.pg.init({
+             pg_caption: '本页教程'
+         });
+    	 
     	document.title = '应收费用明细确认 | '+document.title;
 
     	$('#menu_charge').addClass('active').find('ul').addClass('in');

@@ -1,7 +1,4 @@
-
-
 <%layout("/eeda/layout.html"){%>
-
         <div id="page-wrapper">
         	<div class="row simple_search_div">
              <div class="panel panel-default">
@@ -23,12 +20,11 @@
                                                                     value: ''
                                                                 }){}%>
                                         </div>
-                                        <div class="col-lg-4">
+                                        <div class="spClass col-lg-4">
                                             <%include("/eeda/component/form/inputSpField.html", 
                                                 {
                                                     id:'sp', 
                                                     label:'结算公司',
-                                                    list:'list', 
                                                     value: ''
                                                 }){} %>
                                         </div>
@@ -93,6 +89,7 @@
         </div><!-- end of  .page-wrapper-->
 
 <%}%>
+<%include("/eeda/cmsArap/cmsChargeConfirm/guide.html",{}){} %>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {    	
         requirejs(['app/cms/cmsChargeConfirm/list']);
