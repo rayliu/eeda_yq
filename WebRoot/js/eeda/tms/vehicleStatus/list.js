@@ -78,29 +78,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       })
 
      var searchData=function(){
-          var order_no = $.trim($("#order_no").val()); 
-          var start_date = $("#charge_time_begin_time").val();
-          var end_date = $("#charge_time_end_time").val();
-          var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
-          var cabinet_date_end_time = $("#cabinet_date_end_time").val();
-          var status = $('#status').val();
-          var car_id = $("#car_id").val().trim();
-          var customer_name = $("#customer_name_input").val().trim();
-          var cabinet_type=$("#cabinet_type").val().trim();
-          var container_no= $.trim($("#container_no").val());
+          var car_no = $.trim($("#car_id_input").val()); 
+          var vehicle_status = $("#vehicle_status").val();
+          var monitor_status = $("#monitor_status").val();
           //增加出口日期查询
-          var url = "/dispatchSend/list?order_no="+order_no
-          	   +"&status="+status
-          	   +"&car_id="+car_id
-               +"&customer_name_like="+customer_name
-               +"&charge_time_begin_time="+start_date
-               +"&charge_time_end_time="+end_date
-          	   +"&cabinet_date_begin_time="+cabinet_date_begin_time
-          	   +"&cabinet_date_end_time="+cabinet_date_end_time
-          	   +"&cabinet_type="+cabinet_type
-          	   +"&container_no="+container_no;
+          var url = "/vehicleStatus/list?car_no="+car_no
+          	   +"&vehicle_status="+vehicle_status
+          	   +"&monitor_status="+monitor_status
           dataTable.ajax.url(url).load();
       };
+      
+      
     //监控按钮控制
       $("#eeda-table").on('click', '.monitor', function(e){
       	var selfId = $(this).parent().parent().parent().attr('id');

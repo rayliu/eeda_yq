@@ -168,9 +168,9 @@ public class VehicleStatusController extends Controller {
         if("sowait".equals(type)){
         	sql=" ";        	
         }else{
-		         sql = "SELECT *,CASE WHEN dispatch_status='N' and  cabinet_status ='N' and arrival_status='N' "
+		         sql = "select * from( SELECT *,CASE WHEN dispatch_status='N' and  cabinet_status ='N' and arrival_status='N' "
 		         		+ "and closing_status = 'N' THEN '待命车辆' ELSE ' 已启动车辆' END vehicle_status"
-		         		+ " from carinfo WHERE office_id ="+office_id;
+		         		+ " from carinfo WHERE office_id ="+office_id+") A where 1=1";
          }
         
         String condition = DbUtils.buildConditions(getParaMap());

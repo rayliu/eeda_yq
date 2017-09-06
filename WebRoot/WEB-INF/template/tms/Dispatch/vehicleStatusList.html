@@ -31,8 +31,8 @@
 	                                        label:'监控状态', 
 	                                        value_list:[
 	                                        	{code:'', value:''},
-	                                            {code:'受监控车辆', value:'受监控车辆'},
-	                                            {code:'不受监控车辆', value:'不受监控车辆'}
+	                                            {code:'Y', value:'受监控车辆'},
+	                                            {code:'N', value:'不受监控车辆'}
 	                                            
 	                                        ]
 	                                    }){}%>
@@ -62,38 +62,6 @@
                                 }){} %>
 	</div>
 </div> <!-- end of  .page-wrapper-->
-        
-        <!-- 删除单据的原因 -->
-        <a data-target='#deleteReasonDetail' data-toggle='modal'>
-            <button id="deleteReasonDetailAlert" style="display:none"></button>
-        </a>
-        <div class="modal fade" id="deleteReasonDetail">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">请填写删除原因</div>
-                <div class="modal-body">
-                    <input id="delete_id" type="hidden">
-                    <form id="deleteReasonDetailForm">
-                     <div class="form-group">
-                     <select class="form-control search-control deleteReason">
-                     <option>单据重复</option>                   
-                     <option>单据作废</option>
-                     <option>单据信息错误太多，不要了</option>                     
-                     </select><br/><br/>
-                     <textarea id='deleteReason' name="deleteReason" class="form-control" rows="3" required></textarea>
-                     </div>
-                     </form>
-                </div>
-              <div class="modal-footer">
-                <button class="btn  btn-default return" data-dismiss="modal">返回</button>
-                <button class="btn btn-primary confirm" >确定删除</button>
-            </div>
-        </div>
-      </div>
-      
-    </div>
-
-
 <%}%>
 
 <script>
