@@ -742,7 +742,7 @@ $(document).ready(function() {
 	        $('.chargeHKD').text("HKD "+eeda.numFormat(parseFloat(0).toFixed(2),3));  
 	     }
 
-	    calcCurrency();
+	    window.calcCurrency();
     }
     getTotalCharge();
     
