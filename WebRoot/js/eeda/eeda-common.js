@@ -1639,12 +1639,6 @@ eeda.refreshUrl = refreshUrl;
 					  return;
 				  }
 				  tableFieldList.empty();
-				  for(var i = 0; i < data.length; i++){
-					  var fin_code =  " - "+data[i].CODE 
-					  if(!data[i].CODE){
-						  fin_code="";
-					  }
-				  }
 				  if(inputStr=='' && data.length>0){
 					  if(data[0].REF_ID){
 						  tableFieldList.append('<span style="font-size:10px;color:gray;">您曾经使用过的'+data.length+'行记录, 需要别的数据请输入查询条件</span>');
@@ -1657,8 +1651,13 @@ eeda.refreshUrl = refreshUrl;
 					tableFieldList.append('<span style="font-size:10px;color:gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
 				}
 				  for(var i = 0; i < data.length; i++){
+					  var fin_code =  " - "+data[i].CODE 
+					  if(!data[i].CODE){
+						  fin_code="";
+					  }
 				  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID
 						  +"' charge_name='"+data[i].NAME+"' currency_id='"+data[i].CURRENCY_ID
+						  
 						  +"' charge_name_eng='"+data[i].NAME_ENG
 						  +"' currency_code='"+data[i].CURRENCY_CODE+"' currency_rate='"+data[i].RATE+"' >"+data[i].NAME+fin_code+"</a></li>");
 				  }
