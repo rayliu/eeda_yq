@@ -1,7 +1,9 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColReorder'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColReorder','pageguide'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-
+    	tl.pg.init({
+            pg_caption: '本页教程'
+        });
 
         var dataTable = eeda.dt({
             id: 'eeda_table',
