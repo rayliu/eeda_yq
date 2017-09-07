@@ -70,19 +70,19 @@
 	            <div class="col-lg-6 guide_target2">
 	            	<% 
 		                var party_name='';
-		                if(has(self_party) && (null != self_party.abbr!)){
-		                    party_name = self_party.abbr;
-		                }else if(has(entrusted) && (null != entrusted.office_name!)){
-		                    party_name = entrusted.office_name;
-		                }else if(has(office) && (null != office.office_name!)){
-		                    party_name = office.office_name;
+		                if(has(self_party) && (null != self_party.ABBR!)){
+		                    party_name = self_party.ABBR;
+		                }else if(has(entrusted) && (null != entrusted.OFFICE_NAME!)){
+		                    party_name = entrusted.OFFICE_NAME;
+		                }else if(has(office) && (null != office.OFFICE_NAME!)){
+		                    party_name = office.OFFICE_NAME;
 		                }
 		            %>
 	            	<%include("/eeda/component/form/inputCustomerField.html",
 											{   id:'self_party_id', 
 												label:'委托方',  
 												value:self_party.ID!entrusted.ID!office.ID!'',
-												display_value:party_name,
+												display_value:party_name!'',
 												disabled: 'disabled'
 											}){} %>
 	             </div>
