@@ -30,7 +30,6 @@ import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
@@ -777,9 +776,10 @@ public class TransChargeCheckOrderController extends Controller {
         		 +" FROM trans_arap_charge_order taco "
         		 +" LEFT JOIN trans_arap_charge_item taci ON taco.id = taci.charge_order_id  "
         		 +" LEFT JOIN trans_job_order_arap tjoa ON taci.ref_order_id = tjoa.id "
-        		 +" LEFT JOIN party py ON py.id = tjoa.sp_id "
+        		
         		 +" LEFT JOIN currency cy ON cy.id = tjoa.currency_id "
         		 +" LEFT JOIN trans_job_order tjo ON tjo.id = tjoa.order_id "
+        		 +" LEFT JOIN party py ON py.id = tjo.customer_id "
         		 +" LEFT JOIN dockinfo d ON d.id = tjo.take_wharf "
         		 +" WHERE "
         		 +" 	tjoa.id = taci.ref_order_id "
