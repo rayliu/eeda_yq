@@ -371,7 +371,7 @@ public class PlanOrderController extends Controller {
     	Office toEntrusted = Office.dao.findById(planOrder.getLong("to_entrusted_id"));
     	setAttr("toEntrusted", toEntrusted);
     	
-    	Party self_party = Party.dao.findById(planOrder.getLong("self_party_id"));
+    	Record self_party = Db.findFirst("select * from party where id = ?",planOrder.getLong("self_party_id"));
     	setAttr("self_party", self_party);
     	Party to_party = Party.dao.findById(planOrder.getLong("to_party_id"));
     	setAttr("to_party", to_party);
