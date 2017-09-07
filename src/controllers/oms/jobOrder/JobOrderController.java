@@ -391,8 +391,7 @@ public class JobOrderController extends Controller {
    			
    		}
    		long customerId = Long.valueOf(dto.get("customer_id").toString());
-   		//常用客户保存进入历史记录
-   		saveCustomerQueryHistory(customerId);
+   		
 		//海运
 		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
 		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");
@@ -404,10 +403,7 @@ public class JobOrderController extends Controller {
 		}
 		List<Map<String, String>> shipment_item = (ArrayList<Map<String, String>>)dto.get("shipment_list");
 		DbUtils.handleList(shipment_item, id, JobOrderShipmentItem.class, "order_id");
-		//保存海运下拉使用历史
-		List<Record> oceanRes = new ArrayList<Record>();
-		oceanRes.add(new Record().set("type", "unit").set("param", "unit_id"));
-		saveItemParamHistory(shipment_item,oceanRes); 
+		
 		
 		//空运
 		List<Map<String, String>> air_detail = (ArrayList<Map<String, String>>)dto.get("air_detail");
@@ -418,26 +414,13 @@ public class JobOrderController extends Controller {
 		
 		List<Map<String, String>> air_item = (ArrayList<Map<String, String>>)dto.get("air_list");
 		DbUtils.handleList(air_item, id, JobOrderAirItem.class, "order_id");
-		//保存空运下拉使用历史
-		List<Record> airRes = new ArrayList<Record>();
-		airRes.add(new Record().set("type", "air_port").set("param", "start_from"));
-		airRes.add(new Record().set("type", "air_port").set("param", "destination"));
-		airRes.add(new Record().set("type", "air").set("param", "air_company"));
-		saveItemParamHistory(air_item,airRes); 
 		
 		//陆运
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
 		DbUtils.handleList(land_item, id, JobOrderLandItem.class, "order_id");
 		List<Map<String, String>> land_shipment_item = (ArrayList<Map<String, String>>)dto.get("land_shipment_list");
 		DbUtils.handleList(land_shipment_item, id, JobOrderLandItem.class, "order_id");
-		//保存陆运下拉使用历史
-		List<Record> landRes = new ArrayList<Record>();
-		landRes.add(new Record().set("type", "truck").set("param", "TRANSPORT_COMPANY"));
-		landRes.add(new Record().set("type", "truckout").set("param", "CONSIGNOR"));
-		landRes.add(new Record().set("type", "truckin").set("param", "CONSIGNEE"));
-		landRes.add(new Record().set("type", "unit").set("param", "UNIT_ID"));
-		saveItemParamHistory(land_item,landRes); 
-				
+		
 		//快递
 		List<Map<String, String>> express_detail = (ArrayList<Map<String, String>>)dto.get("express_detail");
 		DbUtils.handleList(express_detail, id, JobOrderExpress.class, "order_id");
@@ -449,10 +432,6 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> chinaCustom_self_item = (ArrayList<Map<String, String>>)dto.get("chinaCustom_self_item");
 		DbUtils.handleList(chinaCustom, id, JobOrderCustom.class, "order_id");
 		DbUtils.handleList(chinaCustom_self_item, "job_order_custom_china_self_item", id, "order_id");
-		//保存报关下拉使用历史
-		List<Record> customRes = new ArrayList<Record>();
-		customRes.add(new Record().set("type", "broker").set("param", "CUSTOM_BANK"));
-		saveItemParamHistory(chinaCustom_self_item,customRes); 
 		
 		DbUtils.handleList(abroadCustom, id, JobOrderCustom.class, "order_id");
 		DbUtils.handleList(hkCustom, id, JobOrderCustom.class, "order_id");
@@ -472,6 +451,47 @@ public class JobOrderController extends Controller {
 		//记录结算费用使用历史  
 		saveFinItemQueryHistory(charge_list);
 		saveFinItemQueryHistory(chargeCost_list);
+		
+		//常用客户保存进入历史记录
+   		saveCustomerQueryHistory(customerId);
+   		//保存海运下拉使用历史
+		List<Record> oceanRes = new ArrayList<Record>();
+		oceanRes.add(new Record().set("type", "unit").set("param", "UNIT_ID"));
+		saveItemParamHistory(shipment_item,oceanRes); 
+		
+		List<Record> oceanDetailRes = new ArrayList<Record>();
+		oceanDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "MBLshipper"));
+		oceanDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "consignee"));
+		oceanDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "notify_party"));
+		oceanDetailRes.add(new Record().set("type", "booking_agent").set("param", "booking_agent"));
+		saveItemParamHistory(shipment_detail,oceanDetailRes); 
+		
+		//保存空运下拉使用历史
+		List<Record> airRes = new ArrayList<Record>();
+		airRes.add(new Record().set("type", "air_port").set("param", "START_FROM"));
+		airRes.add(new Record().set("type", "air_port").set("param", "DESTINATION"));
+		airRes.add(new Record().set("type", "air").set("param", "AIR_COMPANY"));
+		saveItemParamHistory(air_item,airRes); 
+		//保存陆运下拉使用历史
+		List<Record> landRes = new ArrayList<Record>();
+		landRes.add(new Record().set("type", "truck").set("param", "TRANSPORT_COMPANY"));
+		landRes.add(new Record().set("type", "truckout").set("param", "CONSIGNOR"));
+		landRes.add(new Record().set("type", "truckin").set("param", "CONSIGNEE"));
+		landRes.add(new Record().set("type", "unit").set("param", "UNIT_ID"));
+		saveItemParamHistory(land_item,landRes); 
+		//保存报关下拉使用历史
+		List<Record> customRes = new ArrayList<Record>();
+		customRes.add(new Record().set("type", "broker").set("param", "CUSTOM_BANK"));
+		saveItemParamHistory(chinaCustom_self_item,customRes); 
+		//保存表单下拉列表使用历史
+		List<Record> orderRes = new ArrayList<Record>();
+		orderRes.add(new Record().set("type", "unit").set("param", "job_unit"));
+//		orderRes.add(new Record().set("type", "").set("param", ""));
+//		orderRes.add(new Record().set("type", "").set("param", ""));
+//		orderRes.add(new Record().set("type", "").set("param", ""));
+//		orderRes.add(new Record().set("type", "").set("param", ""));
+		saveParamHistory(dto,orderRes); 
+				
 		
 		//相关文档
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
@@ -2491,6 +2511,46 @@ public class JobOrderController extends Controller {
         }
     }
     
+    //常用字段保存进入历史记录（非明细表）
+    @Before(Tx.class)
+    private void saveParamHistory(Map<String, ?> dto,List<Record> listRes){
+    	if(dto != null ){
+    		if(dto.size() <= 0){
+    			return;
+    		}
+    		List<String> paramlist = new ArrayList<String>();//缓存到本地的数据，校验是否重复，是则跳过校验
+    		for(Record listRe : listRes){
+    			String type = listRe.getStr("type");//保存到user_query_history的类型
+    			String param = listRe.getStr("param");//表单中对应字段的ID
+    			
+    			Long userId = LoginUserController.getLoginUserId(this);
+        		type = type.toUpperCase();
+        		//param = param.toUpperCase();
+        		
+    			if(dto.get(param) != null){
+    				String param_id = (String)dto.get(param);
+    				if(paramlist.contains(param_id) || StringUtils.isBlank(param_id)){
+    					continue;
+    				}
+    					
+    				Record rec = Db.findFirst("select * from user_query_history where type=? and ref_id=? and user_id=?",type, param_id, userId);
+    		        if(rec == null){
+    		            rec = new Record();
+    		            rec.set("ref_id", param_id);
+    		            rec.set("type", type);
+    		            rec.set("user_id", userId);
+    		            rec.set("query_stamp", new Date());
+    		            Db.save("user_query_history", rec);
+    		        }else{
+    		            rec.set("query_stamp", new Date());
+    		            Db.update("user_query_history", rec);
+    		        }
+    		        paramlist.add(param_id);
+    			}
+    		}
+    	}
+    }
+    
     //常用明细列表字段保存进入历史记录
     @Before(Tx.class)
     private void saveItemParamHistory(List<Map<String, String>> list,List<Record> listRes){
@@ -2504,7 +2564,7 @@ public class JobOrderController extends Controller {
     			
     			Long userId = LoginUserController.getLoginUserId(this);
         		type = type.toUpperCase();
-        		param = param.toUpperCase();
+        		//param = param.toUpperCase();
         		
         		List<String> paramlist = new ArrayList<String>();
         		for(Map<String, String> map : list){
