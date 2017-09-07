@@ -7,14 +7,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           id: 'eeda_table',
           colReorder: true,
           paging: false,
-          serverSide: true, //不打开会出现排序不对 
+          serverSide: false, //不打开会出现排序不对 
 //          ajax: "/profitAndPaymentRate/list",
-          ajax:{
+/*          ajax:{
               //url: "/chargeCheckOrder/list",
               type: 'POST'
-          },
+          },*/
           initComplete:function(settings){
-        	  
+        	  tableStyle()
           },
           columns: [
       			{ "data": "ABBR", "width": "220px"},
@@ -79,6 +79,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('.search_single').show();
           }
       });
+      var tableStyle = function(){
+    	  $('.oneRow').css('line-height','30px');
+    	  $('.doubleRow').css('text-align','center');
+    	  
+    	  var tableName = "eeda_table";
+    	  //格式【合成表头的第一列位置，合成的列数，颜色】
+    	  var array= [[2,5,'#f8fff0'],[7,5,'#eeffff']];
+    	  for (var i = 0; i < array.length; i++) {
+    		  var firstChild = array[i][0];
+        	  var cols = array[i][1];
+        	  var bgColor = array[i][2];
+        	  for (var j = firstChild; j < (firstChild+cols); j++) {
+        		  $("#"+tableName+" td:nth-child("+j+")").css('background-color',bgColor);
+        	  }
+		  }
+      }
     //简单查询
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();

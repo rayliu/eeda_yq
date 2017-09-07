@@ -6,7 +6,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           id: 'eeda-table',
           colReorder: true,
           paging: true,
-          serverSide: true, //不打开会出现排序不对
+          serverSide: false, //不打开会出现排序不对
          // ajax: "/customReport/list",
           columns: [
               { "data": "SP_NAME"},

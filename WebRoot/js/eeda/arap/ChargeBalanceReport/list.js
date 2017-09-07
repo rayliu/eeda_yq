@@ -5,7 +5,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           id: 'eeda_table',
           colReorder: true,
           paging: false,
-          serverSide: true, //不打开会出现排序不对 
+          serverSide: false, //不打开会出现排序不对 
          // ajax: "/chargeBalanceReport/list",
           initComplete:function(settings){
         	  tableStyle();

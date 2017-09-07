@@ -6,12 +6,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           id: 'eeda_table',
           colReorder: true,
           paging: false,
-          serverSide: true, //不打开会出现排序不对 
-//          ajax: "/profitAndPaymentRate/list",
+          serverSide: false, //不打开会出现排序不对 
+/*//          ajax: "/profitAndPaymentRate/list",
           ajax:{
               //url: "/chargeCheckOrder/list",
               type: 'POST'
-          },
+          },*/
           initComplete:function(settings){
         	  tableStyle();
           },
