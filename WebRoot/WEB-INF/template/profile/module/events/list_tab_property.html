@@ -1,0 +1,47 @@
+<div class="form-group">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-6">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id: type+'_event_name', 
+                                                label:'事件名称',
+                                                value:order.name!''
+                                            }){}%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <%include("/eeda/component/form/selectField.html", 
+                            {   id: type+'_event_type', 
+                                label:'操作类型', 
+                                value:order.type!'',
+                                value_list:[
+                                    {code:'open', value:'打开表单'},
+                                    {code:'check', value:'检查表单'},
+                                    {code:'setValue', value:'赋值'},
+                                    {code:'save', value:'保存'},
+                                    {code:'new', value:'新建表单'},
+                                    {code:'delete', value:'删除表单'},
+                                    {code:'openUrl', value:'打开网页'},
+                                    {code:'print', value:'打印'}
+                                ]
+                            }){}%>
+            </div>
+        </div>
+        <h4>操作公式</h4>
+        <div class="row" id="open_form_div">
+            <%include("/profile/module/events/formular/formular_open_form.html", {type: type}){} %>
+        </div>
+        <div class="row" id="check_form_div" style="display: none;">
+            <%include("/profile/module/events/formular/formular_check_form.html", {}){} %>
+        </div>
+        <div class="row" id="assign_form_div" style="display: none;">
+            <%include("/profile/module/events/formular/formular_assign_form.html", {}){} %>
+        </div>
+        <div class="row">
+            <div class="form-group button-bar" >
+                <button type="button" class="btn btn-success" id="${type}EventConfirmBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

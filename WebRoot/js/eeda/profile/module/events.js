@@ -1,4 +1,4 @@
-define(['jquery', 'zTree'], function ($) {
+define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
     
     //---------------tree handle
     var setting = {
@@ -123,7 +123,7 @@ define(['jquery', 'zTree'], function ($) {
     
     var zTreeObj; 
 
-    $('#listEventcomfirmBtn').click(function(event) {
+    $('#listEventConfirmBtn').click(function(event) {
          var type=$('#list_event_type').val();
          currentNode.name = $('#list_event_name').val();
          currentNode.type = type;

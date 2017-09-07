@@ -1,4 +1,4 @@
-define(['jquery'], function ($) {
+define(['jquery', '../btns'], function ($) {
         document.title = '查询 | ' + document.title;
 
         var module_id=$('#module_id').val();
@@ -28,10 +28,15 @@ define(['jquery'], function ($) {
         var dataTable = eeda.dt({
             id: 'list_table',
             paging: true,
+            serverSide: false,
             columns: colsSetting
         });
 
         var url = '/form/'+$('#form_id').val()+'-doQuery';
 
+
+        console.log('doQuery.................');
         dataTable.ajax.url(url).load();
+
+        
 });

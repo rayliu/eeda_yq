@@ -1,0 +1,29 @@
+<div class="form-group">
+    <div class="col-lg-2">
+        <div class='treeListDiv'>
+            <ul id="editEventTree" class="ztree"></ul>
+        </div>
+    </div>
+    <div class="col-lg-10">
+        <section class='left'>
+            <row>
+                <p>
+                    在左边树中添加操作类型, 在下面的属性中编辑"事件名称, "操作类型"和"公式"".
+                </p>
+            </row>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active" >
+                    <a href="#events_property" aria-controls="permission" role="tab" data-toggle="tab">事件属性</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="events_property">
+                    <%include("/profile/module/events/list_tab_property.html", {type:'edit'}){} %>
+                </div>
+                <div class="tab-pane" id="events_formular">
+                    <%include("/profile/module/events/formular/formular_open_form.html", {}){} %>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

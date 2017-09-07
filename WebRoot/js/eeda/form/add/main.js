@@ -1,5 +1,5 @@
-define(['jquery'], function ($) {
-        document.title = 'add | ' + document.title;
+define(['jquery', '../btns'], function ($) {
+        document.title = '新增 | ' + document.title;
 
         
 });

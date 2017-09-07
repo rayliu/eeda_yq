@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import models.UserLogin;
 
@@ -22,6 +23,11 @@ import org.beetl.core.resource.StringTemplateResourceLoader;
 
 
 
+
+
+
+
+import com.google.gson.Gson;
 //import cache.EedaServiceCache;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -74,6 +80,8 @@ public class FormController extends Controller {
         
         //doDelete 表单删除的动作
         
+        //click 表单按钮的动作
+        
         setAttr("action", action);
         setAttr("module_id", module_id);
         
@@ -93,13 +101,25 @@ public class FormController extends Controller {
         }
         Long form_id = formRec.getLong("id");
         logger.debug("-------------Eeda module:"+module_id+", form_id:"+form_id+", action: "+action+"---------------");
-        if(action.indexOf("do") == -1){
+        
+        if("click".equals(action)){
+            Long btn_id = order_id;
+            List<Record> recList = Db.find("select * from eeda_form_event where "
+                    + " btn_id=?", btn_id);
+            for (Record event : recList) {
+                if("open".equals(event.getStr("type"))){
+                    Record rec = Db.findFirst("select * from eeda_form_event_open where event_id=?", event.getInt("id"));
+                    event.set("open", rec);
+                }
+            }
+            renderJson(recList);
+        }else if(!action.startsWith("do")){
             if("edit".equals(action)){
                 edit(form_id, order_id, formRec);
             }else if("view".equals(action)){
                 
             }else if("add".equals(action)){
-                
+                edit(form_id, -1l, formRec);
             }else if("list".equals(action)){
                 list(form_id);
                 render("/eeda/form/listTemplate.html");
@@ -112,11 +132,41 @@ public class FormController extends Controller {
             if("doGet".equals(action)){
                 rec = getForm(form_id, order_id);
                 renderJson(rec);
-            } 
+            }else if ("doAdd".equals(action)){
+                rec = saveForm();
+                renderJson(rec);
+            }
             
         }
     }
     
+    private Record saveForm(){
+        Record rec = new Record();
+        String jsonStr=getPara("data");
+        
+        Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+        String module_id = (String) dto.get("module_id");
+        Record formRec = Db.findFirst("select * from eeda_form_define where "
+                + " module_id=?", module_id);
+        if(formRec ==null){
+            logger.debug("-------------form 没有定义!---------------");
+            redirect("/");
+            return rec;
+        }
+        Long form_id = formRec.getLong("id");
+        for (Entry<String, ?> entry : dto.entrySet()) { 
+            String key = entry.getKey();
+            if(key.startsWith("form_"+form_id)){
+                String colName = key.split("-")[1];
+                String value = String.valueOf(entry.getValue()).trim();
+                rec.set(colName, value);
+            }
+        }
+        Db.save("form_"+form_id, rec);
+        
+        return rec;
+    }
     private List<Record> list(Long form_id){
         setAttr("btnList", getFormBtns(form_id, "list"));
         
@@ -177,7 +227,7 @@ public class FormController extends Controller {
             String fieldDisplayName=fieldRec.getStr("field_display_name");
             String fieldName=fieldRec.getStr("field_name");
             String replaceNameOrigin = "#{"+form_name+"."+fieldDisplayName+"}";
-            String replaceNameDest = "<input type='text' id='form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase()+"'>";
+            String replaceNameDest = "<input type='text' name='form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase()+"'>";
             template_content = template_content.replace(replaceNameOrigin, replaceNameDest);
         }
         
