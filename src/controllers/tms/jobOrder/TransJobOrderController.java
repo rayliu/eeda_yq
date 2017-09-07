@@ -318,7 +318,7 @@ public class TransJobOrderController extends Controller {
 		Party party = Party.dao.findById(customer_id);		
 		String charge_company_id = null;
 		if(party.get("charge_company_id")!=null){
-			charge_company_id=party.get("charge_company_id");
+			charge_company_id=party.get("charge_company_id").toString();
 		}else{
 			charge_company_id=customer_id;
 		}		

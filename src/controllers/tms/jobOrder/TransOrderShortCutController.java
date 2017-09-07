@@ -212,10 +212,10 @@ public class TransOrderShortCutController extends Controller {
 			 String loading_wharf1,String loading_wharf2) {
 		 	
 		 
-				String	takeWharf="";
-				String	backWharf="";
-				String	loadingWharf1="";
-				String	loadingWharf2="";
+				String	takeWharf=" and pq.take_wharf is null";
+				String	backWharf=" and pq.back_wharf is null";
+				String	loadingWharf1=" and pq.loading_wharf1 is null";
+				String	loadingWharf2=" and pq.loading_wharf2 is null";
 		 		if(!"".equals(take_wharf)){
 		 				takeWharf=" and pq.take_wharf= "+take_wharf;
 		        }
@@ -312,7 +312,8 @@ public class TransOrderShortCutController extends Controller {
 						record.set("take_wharf", take_wharf);
 					}
 					if(!"".equals(back_wharf)){
-						record.set("back_wharf", back_wharf);					}
+						record.set("back_wharf", back_wharf);
+					}
 					
 					if(!"".equals(loading_wharf1)){
 						record.set("loading_wharf1", loading_wharf1);
