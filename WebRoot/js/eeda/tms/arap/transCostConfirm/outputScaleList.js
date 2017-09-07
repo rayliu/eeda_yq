@@ -1,5 +1,8 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','pageguide'], function ($, metisMenu) {
 	$(document).ready(function() {
+		tl.pg.init({
+	        pg_caption: '本页教程'
+	    });
 		$('#AllCheck').attr('disabled',true);
 		var dataTable = eeda.dt({
 			id: 'eeda_table',
@@ -16,9 +19,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			         	{	"width": "10px",
 			         		"render": function ( data, type, full, meta ) {
 			         			if(full.EXPORT_FLAG != 'Y')
-			         				return '<input type="checkbox" class="checkBox" disabled>';
+			         				return '<input type="checkbox" class="checkBox" name="check_box" disabled>';
 		         				else 
-		         					return '<input type="checkbox" disabled>';
+		         					return '<input type="checkbox" name="check_box" disabled>';
 			         		}
 			         	},
 		         		{	"data": "ORDER_NO", "width": "80px",
@@ -49,14 +52,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         				var cabinet_type= full.COMBINE_UNLOAD_TYPE;
 		         				if(cabinet_type=="全程"){
 		         					if(data){
-		         						return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
+		         						return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
 		         					}
-		         					return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3);
+		         					return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3);
 		         				}else{
 		         					if(data){
-		         						return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
+		         						return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
 		         					}
-		         					return '<input type="text" value = "'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3);
+		         					return '<input type="text" class="output_scale" value = "'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3);
 		         				}
 		         			}
 		         		},
@@ -92,7 +95,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			var export_flag=$("#export_flag").val();
 			if((driver == null || driver == "") && (car_no == null || car_no == "") || (export_flag == "Y")){
 				$('#AllCheck').attr('disabled',true);
-				$('#eeda_table input[type="checkbox"]').each(function(){
+				$('#eeda_table input[name="check_box"]').each(function(){
 					$(this).attr('disabled',true);
 				});
 				return;
@@ -143,7 +146,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		var allCheck = function(){
 			$('#AllCheck').attr('disabled',false);
 			$('#AllCheck').click(function(){
-				$("input[type='checkbox']").prop("checked",this.checked);
+				$('input[name="check_box"]').prop("checked",this.checked);
 				if($('#AllCheck').prop('checked')){
 					$('#export_outputTable').attr('disabled',false);
 					$('#saveBtn').attr('disabled',false);
@@ -154,14 +157,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			});
 		}
 		$("#eeda_table").on('click','.checkBox',function(){
-			$("#AllCheck").prop("checked",$("input[type='checkbox']").length == $("input[type='checkbox']:checked").length ? true : false);
+			$("#AllCheck").prop("checked",$("input[name='check_box']").length == $("input[name='check_box']:checked").length ? true : false);
 		});
 
 		//checkbox选中则button可点击
 		var click_checkbox = function(){
-			$('#eeda_table').on('click','input[type="checkbox"]',function(){
+			$('#eeda_table').on('click','input[name="check_box"]',function(){
 				var hava_check = 0;
-				$('#eeda_table input[type="checkbox"]').each(function(){	
+				$('#eeda_table input[name="check_box"]').each(function(){	
 					var checkbox = $(this).prop('checked');
 					if(checkbox){
 						hava_check = 1;
@@ -192,7 +195,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				$('#export_outputTable').attr('disabled',false);
 				$('#saveBtn').attr('disabled',false);
 				$('#AllCheck').prop('checked',true);
-				$('#eeda_table input[type="checkbox"]').each(function(){
+				$('#eeda_table input[name="check_box"]').each(function(){
 					$(this).attr('disabled',false);
 					$(this).attr('checked',true);
 				});
@@ -207,7 +210,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			var order = {};
 			var itemjson = [];
 			var itemIds=[];
-			$('#eeda_table input[type="checkbox"]').each(function(){
+			$('#eeda_table input[name="check_box"]').each(function(){
 				var checkbox = $(this).prop('checked');
 				if(checkbox){
 					var itemTr = $(this).parent().parent();
@@ -243,7 +246,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			var order = {};
 			var itemjson = [];
 			var itemIds=[];
-			$('#eeda_table input[type="checkbox"]').each(function(){
+			$('#eeda_table input[name="check_box"]').each(function(){
 				var checkbox = $(this).prop('checked');
 				if(checkbox){
 					var itemTr = $(this).parent().parent();

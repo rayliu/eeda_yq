@@ -34,7 +34,7 @@
 										            required: 'required'
 										        }){} %>
 										</div>
-										<div class="col-lg-4">
+										<div class="car_id_course col-lg-4">
 											<%include("/eeda/component/form/inputCarInfoField.html", 
 												{   id: 'car_id', 
 												    label: '结算车牌', 
@@ -205,6 +205,7 @@
 	</div>
 </div>
 <%}%>
+<%include("/tms/arap/transCostConfirm/guideList.html",{}){}%>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/tms/arap/transCostConfirm/outputScaleList','app/tms/arap/transCostConfirm/outputScaleExportedList']);
