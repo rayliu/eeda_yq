@@ -109,7 +109,10 @@ public class CustomerController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
-        Party party = Party.dao.findById(id);
+        Party party = Party.dao.findFirst("select p.*,p1.abbr charge_company_abbr from party p "
+        		+ " LEFT JOIN party p1 on p1.id = p.charge_company_id"
+        		+ " where p.id=?",id);
+        
         setAttr("party", party);
         String sql = "select jod.*,u.c_name from party_doc jod left join user_login u on jod.uploader=u.id "
     			+ " where party_id=? order by jod.id";
@@ -205,6 +208,15 @@ public class CustomerController extends Controller {
             }
             
         }
+        
+        //回填charge_company_id
+        if(party.get("charge_company_id")==null){
+        	party.set("charge_company_id", id);
+        	party.update();
+        }
+        
+        
+        
         //文档上传保存
         List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("docItem");
 		DbUtils.handleList(itemList, "party_doc", id, "party_id");
@@ -223,6 +235,10 @@ public class CustomerController extends Controller {
 		//客户的工厂地点dock
 		List<Map<String, String>> dock_Item = (ArrayList<Map<String, String>>)dto.get("dock_Item");
 		DbUtils.handleList(dock_Item,  "dockinfo", id, "party_id");
+		
+		party = Party.dao.findFirst("select p.*,p1.abbr charge_company_abbr from party p "
+        		+ " LEFT JOIN party p1 on p1.id = p.charge_company_id"
+        		+ " where p.id=?",id);
     	renderJson(party);
     }
 

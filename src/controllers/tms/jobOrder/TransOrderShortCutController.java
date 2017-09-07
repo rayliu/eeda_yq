@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.ParentOfficeModel;
+import models.Party;
 import models.UserLogin;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderLandItem;
@@ -105,10 +106,17 @@ public class TransOrderShortCutController extends Controller {
 			id = transJobOrder.getLong("id").toString();
 			ids+=id+',';
 			System.out.println("test: "+ id);
-			
+			//获取结算公司id：charge_company_id
+			Party party = Party.dao.findById(customer_id);		
+			String charge_company_id = null;
+			if(party.get("charge_company_id")!=null){
+				charge_company_id=party.get("charge_company_id");
+			}else{
+				charge_company_id=customer_id;
+			}
 			
 			//调用生成合同费用方法
-			checkCustomerQuotation(office_id,id,customer_id,cabinet_type,take_wharf,back_wharf,loading_wharf1,loading_wharf2);
+			checkCustomerQuotation(office_id,id,customer_id,charge_company_id,cabinet_type,take_wharf,back_wharf,loading_wharf1,loading_wharf2);
 			
 			//陆运 SHOUZHONGGUI_CAR_NO	TIJIGUI_CAR_NO	
 			if(StringUtils.isNotEmpty(itemMap.get("TIJIGUI_CAR_NO"))){
@@ -200,7 +208,7 @@ public class TransOrderShortCutController extends Controller {
    		renderJson(r);
     }
 	@Before(Tx.class)
-	 public static void checkCustomerQuotation(long office_id,String order_id,String customer_id,String cabinet_type,String take_wharf,String back_wharf,
+	 public static void checkCustomerQuotation(long office_id,String order_id,String customer_id,String charge_company_id,String cabinet_type,String take_wharf,String back_wharf,
 			 String loading_wharf1,String loading_wharf2) {
 		 	
 		 
@@ -234,7 +242,7 @@ public class TransOrderShortCutController extends Controller {
 		        
 		        String sqlRer = "SELECT * FROM trans_job_contract_relation pq "
 		        		+ " WHERE order_id="+order_id
-		        		+ " and sp_id ="+customer_id
+		        		+ " and sp_id ="+charge_company_id
 		        		+" and pq.truck_type= '"+cabinet_type+"'"
 		        		+ takeWharf
 						+ backWharf
@@ -268,7 +276,7 @@ public class TransOrderShortCutController extends Controller {
 		        
 		        String sqlOrderId = "SELECT * FROM trans_job_contract_relation pq "
 		        		+ " WHERE order_id="+order_id
-		        		+ " and sp_id ="+customer_id;
+		        		+ " and sp_id ="+charge_company_id;
 		        rerOrderId = Db.findFirst(sqlOrderId);
 		        if(rerOrderId!=null&&rer==null){
 		        	long Arap_id = rerOrderId.get("arap_id");
@@ -283,7 +291,7 @@ public class TransOrderShortCutController extends Controller {
 					rec.set("order_id", order_id);
 					rec.set("order_type", "charge");
 					rec.set("type", "陆运");
-					rec.set("sp_id", customer_id);
+					rec.set("sp_id", charge_company_id);
 					rec.set("charge_id", charge_id);
 					rec.set("price", freight);
 					rec.set("amount", 1);
@@ -298,7 +306,7 @@ public class TransOrderShortCutController extends Controller {
 					Record record = new Record();
 					record.set("order_id", order_id);
 					record.set("arap_charge_id", charge_id);
-					record.set("sp_id", customer_id);
+					record.set("sp_id", charge_company_id);
 					
 					if(!"".equals(take_wharf)){
 						record.set("take_wharf", take_wharf);

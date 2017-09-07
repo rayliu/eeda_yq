@@ -314,9 +314,17 @@ public class TransJobOrderController extends Controller {
 		if(!"".equals(loadingWharf2)){
 			saveLoadingWharfQueryHistory(loadingWharf2);
 		}
-
+		//获取结算公司id：charge_company_id
+		Party party = Party.dao.findById(customer_id);		
+		String charge_company_id = null;
+		if(party.get("charge_company_id")!=null){
+			charge_company_id=party.get("charge_company_id");
+		}else{
+			charge_company_id=customer_id;
+		}		
+		
 		//获取合同费用
-		TransOrderShortCutController.checkCustomerQuotation(office_id,id,customer_id,truckType,
+		TransOrderShortCutController.checkCustomerQuotation(office_id,id,customer_id,charge_company_id,truckType,
 				takeWharf,backWharf,loadingWharf1,loadingWharf2);
 		
 		//相关文档

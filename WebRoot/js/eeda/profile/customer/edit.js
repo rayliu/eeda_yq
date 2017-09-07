@@ -227,6 +227,8 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.last_year_salesamount = $("#last_year_salesamount").val();
             order.beforelast_year_salesamount = $("#beforelast_year_salesamount").val();
             order.bill_of_lading_info = $("#bill_of_lading_info").val();
+            order.charge_company_id = $("#charge_company_id").val();
+            
             order.docItem = buildDocItem();
             		
             order.customer_quotationItem=itemOrder.buildCustomerQuotationDetail();
@@ -244,6 +246,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
         		$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
         		$('#partyId').val(data.ID);
         		$('#code').val(data.CODE);
+        		$('#charge_company_id_input').val(data.CHARGE_COMPANY_ABBR);
         		$('#saveBtn').attr('disabled', false);
         		$("#fileuploadSpan").show();
         		
