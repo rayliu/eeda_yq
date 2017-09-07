@@ -159,5 +159,33 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
           dataTable.ajax.url(url).load();
       };
+      
+      //导出excel
+      $('#exportTotaledExcel1').click(function(){
+    	  $(this).attr('disabled', true);
+    	   var sp_id = $("#single_sp_id").val();
+           var create_time_begin_time = $("#create_time_begin_time").val();
+           var create_time_end_time = $("#create_time_end_time").val();
+          excel_method(sp_id,create_time_begin_time,create_time_end_time);
+      });
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+    	   var sp_id = $("#sp_id").val();
+           var create_time_begin_time = $("#create_time_begin_time").val();
+           var create_time_end_time = $("#create_time_end_time").val();
+          excel_method(sp_id,create_time_begin_time,create_time_end_time);
+      });
+      var excel_method = function(sp_id,create_time_begin_time,create_time_end_time){
+		  $.post('/customReport/downloadExcelList',{sp_id:sp_id,create_time_begin_time:create_time_begin_time,create_time_end_time:create_time_end_time}, function(data){
+	          $('#exportTotaledExcel1').prop('disabled', false);
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      }
+      
   });
 });

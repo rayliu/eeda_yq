@@ -62,7 +62,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  begin_date = $("#month_begin_time").val();
               end_date = $("#month_end_time").val();
           }
-         
+          
+
           
 
           //增加出口日期查询
@@ -81,6 +82,67 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           }
       };
       
+      $('.collapsed').click(function(event) {
+          if($('#exportTotaledExcel1').is(':visible')){
+            $('#exportTotaledExcel1').hide();
+          }else{
+            $('#exportTotaledExcel1').show();
+          }
+      });
+      
+      //导出excel
+      $('#exportTotaledExcel1').click(function(){
+    	  $(this).attr('disabled', true);
+    	    var date_type = $('[name=type]:checked').val();
+            var balance = $('[name=balance]:checked').val();
+            var sp_names = $("#sp_names").val();
+            var begin_date = '';
+            var end_date = '';
+            if(date_type=='year'){
+          	  begin_date = $("#year_begin_time").val();
+                end_date = $("#year_end_time").val();
+            }else if(date_type=='season'){
+          	  begin_date = $("#season_begin_time").val();
+                end_date = $("#season_end_time").val();
+            }else{
+          	  begin_date = $("#month_begin_time").val();
+                end_date = $("#month_end_time").val();
+            }
+            
+          excel_method(sp_names,begin_date,end_date,balance,date_type);
+      });
+      $('#exportTotaledExcel').click(function(){
+    	  $(this).attr('disabled', true);
+    	    var date_type = $('[name=type]:checked').val();
+            var balance = $('[name=balance]:checked').val();
+            var sp_names = $("#sp_names").val();
+            var begin_date = '';
+            var end_date = '';
+            if(date_type=='year'){
+          	  begin_date = $("#year_begin_time").val();
+                end_date = $("#year_end_time").val();
+            }else if(date_type=='season'){
+          	  begin_date = $("#season_begin_time").val();
+                end_date = $("#season_end_time").val();
+            }else{
+          	  begin_date = $("#month_begin_time").val();
+                end_date = $("#month_end_time").val();
+            }
+          excel_method(sp_names,begin_date,end_date,balance,date_type);
+      });
+      var excel_method = function(sp_names,begin_date,end_date,balance,date_type){
+		  $.post('/balanceReport/downloadExcelList',{sp_names:sp_names,
+			  											begin_date:begin_date,end_date:end_date
+			  											,balance:balance,date_type:date_type}, function(data){
+	          $('#exportTotaledExcel1').prop('disabled', false);
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          window.open(data);
+	      }).fail(function() {
+	          $('#exportTotaledExcel').prop('disabled', false);
+	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	      });
+      }
       
       var showCol = function(sp_names){
     	  var table = $('#eeda-table').dataTable();

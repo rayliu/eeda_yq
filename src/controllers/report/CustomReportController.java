@@ -27,6 +27,7 @@ import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PermissionConstant;
+import controllers.util.PoiUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -77,4 +78,33 @@ public class CustomReportController extends Controller {
         orderListMap.put("data", orderList);
         renderJson(orderListMap); 
     }
+    
+	public void downloadExcelList(){
+	    UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+    	String sql = "select * from(select p.abbr sp_name,date(jor.create_stamp) create_stamp,joa.sp_id sp_id,joa.order_type,ifnull(joa.currency_total_amount,0) total_amount,"
+    			+ " (select GROUP_CONCAT(custom_order_no SEPARATOR '/n') from job_order_custom where order_id = joa.order_id) custom_order_no"
+    			+ " from job_order_arap joa"
+    			+ " LEFT JOIN party p on p.id = joa.sp_id"
+    			+ " LEFT JOIN job_order jor on jor.id = joa.order_id" 
+    			+ " where joa.type = '报关' "
+    			+ " and jor.office_id="+office_id
+    			 + " and jor.delete_flag = 'N'"
+ 				+ " )A where 1=1" ;
+    	
+    	String condition = DbUtils.buildConditions(getParaMap());
+        
+        String sqlExport = sql+condition;
+		String total_name_header = "公司名称,日期,提单号,报关单号,报关代理费,报关+报检单录入费,上传费,商检费,消毒费,入闸费,"
+                                    +"综合费,单证更改费,港建费,码头费,堆存/电费/港务费,DOC/THC费,代理运费,合计（元）";
+		String[] headers = total_name_header.split(",");
+
+		String[] fields = { "SP_NAME", "CREATE_STAMP", "CHARGE_USD", "CHARGE_JPY",
+				"CHARGE_HKD", "CHARGE_RMB", "COST_CNY","COST_USD","COST_JPY","COST_HKD","TOTAL_AMOUNT"};
+		
+		String exportName = "";
+		
+		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,exportName);
+		renderText(fileName);
+	}
 }
