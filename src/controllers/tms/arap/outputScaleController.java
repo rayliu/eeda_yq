@@ -119,41 +119,7 @@ public class outputScaleController extends Controller {
 		
         String amount = "1";//获取数量
         String exchange_rate = "1";
-        List<Map<String, String>> outputScale_detail = (ArrayList<Map<String, String>>)dto.get("param");
-		if(outputScale_detail!=null){
-	    	for (Map<String, String> rowMap : outputScale_detail) {//获取每一行			    		
-	    		String rowId = rowMap.get("id");
-	    		String car_id = rowMap.get("car_id");//获取结算车牌id
-	    		Record reland = Db.findById("trans_job_order_land_item", rowId);
-	    		String job_order_id = reland.getLong("order_id").toString();
-	    		TransJobOrderArap transJobArap = TransJobOrderArap.dao.findFirst("select * from trans_job_order_arap  where order_id = ? and  car_id = ? and charge_id = ?",job_order_id,car_id,charge_id);
-	    		String price = rowMap.get("outputScale");//获取产值		
-	    		Double total_amount = Double.parseDouble(price) * Double.parseDouble(amount);	    		
-	    		Double currency_total_amount = total_amount * Double.parseDouble(exchange_rate);	    		
-	    		if(transJobArap==null){	    			
-		    		String unload_type = reland.getStr("unload_type");    		
-	    			transJobArap =new TransJobOrderArap();
-	    			transJobArap.set("order_id", job_order_id);
-		    		transJobArap.set("type", unload_type);
-		    		transJobArap.set("order_type", "cost");
-		    		transJobArap.set("car_id", car_id);
-		    		transJobArap.set("charge_id", charge_id);
-		    		transJobArap.set("price", price);
-		    		transJobArap.set("amount", amount);
-		    		transJobArap.set("unit_id", unit_id);
-		    		transJobArap.set("total_amount", total_amount);
-		    		transJobArap.set("currency_id", currency_id);
-		    		transJobArap.set("exchange_rate", exchange_rate);
-		    		transJobArap.set("currency_total_amount", currency_total_amount);
-		    		transJobArap.save();
-	    		}else{
-	    			transJobArap.set("price", price);
-	    			transJobArap.set("total_amount", total_amount);
-	    			transJobArap.set("currency_total_amount", currency_total_amount);
-	    			transJobArap.update();
-	    		}
-	    	}
-		}
+        
         if(StringUtils.isBlank(sign)){
         	sign="";
         }
@@ -163,6 +129,7 @@ public class outputScaleController extends Controller {
 			String sql = list();
 			String sql_car_no ="";
 			String sql_driver ="";
+			String sql_id ="";
 			String ids = getPara("itemIds");
 			String idAttr[] = ids.split(",");
 			
@@ -175,7 +142,26 @@ public class outputScaleController extends Controller {
 			if(StringUtils.isBlank(car_no)){
 				car_no=driver;
 			}
-			String sqlExport = sql+sql_car_no+sql_driver;
+			for(int i = 0;i<idAttr.length;i++){
+				if(sql_id==""){
+					sql_id+= " and id = "+idAttr[i];
+				}else{
+					sql_id+=" or id = "+idAttr[i];
+				}
+			}
+//			if(outputScale_detail!=null){
+//				for (Map<String, String> rowMap : outputScale_detail) {//获取每一行	
+//					String rowId = rowMap.get("id");
+//					if(sql_id==""){
+//						sql_id+= " and id = "+rowId;
+//					}else{
+//						sql_id+=" or id = "+rowId;
+//					}
+//					
+//				}
+//		    	
+//		    }
+			String sqlExport = sql+sql_car_no+sql_driver+sql_id;
 			String[] headers = new String[]{"提单号", "提/收柜日期", "客户", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌", "产值","运费",
 					"备注"};
 			String[] fields = new String[]{"LADING_NO", "C_DATE", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO", "OUTPUTSCALE",
@@ -188,6 +174,44 @@ public class outputScaleController extends Controller {
 					long arapId = re.getLong("id");
 					Db.update("UPDATE trans_job_order_land_item SET export_flag = 'Y' WHERE id=?",arapId);
 				}
+			}
+		}else{
+			List<Map<String, String>> outputScale_detail = (ArrayList<Map<String, String>>)dto.get("param");
+			if(outputScale_detail!=null){
+		    	for (Map<String, String> rowMap : outputScale_detail) {//获取每一行			    		
+		    		String rowId = rowMap.get("id");
+		    		String car_id = rowMap.get("car_id");//获取结算车牌id
+		    		Record reland = Db.findById("trans_job_order_land_item", rowId);
+		    		String job_order_id = reland.getLong("order_id").toString();
+		    		TransJobOrderArap transJobArap = TransJobOrderArap.dao.findFirst("select * from trans_job_order_arap  where order_id = ? and car_id = ? and charge_id = ?",job_order_id,car_id,charge_id);
+		    		String price = rowMap.get("outputScale");//获取产值		
+		    		Double total_amount = Double.parseDouble(price) * Double.parseDouble(amount);	    		
+		    		Double currency_total_amount = total_amount * Double.parseDouble(exchange_rate);	    		
+		    		if(transJobArap==null){	    			
+			    		String unload_type = reland.getStr("unload_type");    		
+		    			transJobArap =new TransJobOrderArap();
+		    			transJobArap.set("order_id", job_order_id);
+			    		transJobArap.set("type", unload_type);
+			    		transJobArap.set("order_type", "cost");
+			    		if(StringUtils.isNotBlank(car_id)){
+			    			transJobArap.set("car_id", car_id);
+			    		}
+			    		transJobArap.set("charge_id", charge_id);
+			    		transJobArap.set("price", price);
+			    		transJobArap.set("amount", amount);
+			    		transJobArap.set("unit_id", unit_id);
+			    		transJobArap.set("total_amount", total_amount);
+			    		transJobArap.set("currency_id", currency_id);
+			    		transJobArap.set("exchange_rate", exchange_rate);
+			    		transJobArap.set("currency_total_amount", currency_total_amount);
+			    		transJobArap.save();
+		    		}else{
+		    			transJobArap.set("price", price);
+		    			transJobArap.set("total_amount", total_amount);
+		    			transJobArap.set("currency_total_amount", currency_total_amount);
+		    			transJobArap.update();
+		    		}
+		    	}
 			}
 		}
 	}

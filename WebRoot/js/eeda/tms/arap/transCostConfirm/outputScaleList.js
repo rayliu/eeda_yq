@@ -143,7 +143,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		var allCheck = function(){
 			$('#AllCheck').attr('disabled',false);
 			$('#AllCheck').click(function(){
-				$(".checkBox").prop("checked",this.checked);
+				$("input[type='checkbox']").prop("checked",this.checked);
 				if($('#AllCheck').prop('checked')){
 					$('#export_outputTable').attr('disabled',false);
 					$('#saveBtn').attr('disabled',false);
@@ -154,12 +154,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			});
 		}
 		$("#eeda_table").on('click','.checkBox',function(){
-			$("#AllCheck").prop("checked",$(".checkBox").length == $(".checkBox:checked").length ? true : false);
+			$("#AllCheck").prop("checked",$("input[type='checkbox']").length == $("input[type='checkbox']:checked").length ? true : false);
 		});
 
 		//checkbox选中则button可点击
 		var click_checkbox = function(){
-			$('#eeda_table').on('click','.checkBox',function(){
+			$('#eeda_table').on('click','input[type="checkbox"]',function(){
 				var hava_check = 0;
 				$('#eeda_table input[type="checkbox"]').each(function(){	
 					var checkbox = $(this).prop('checked');
@@ -249,6 +249,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 					var itemTr = $(this).parent().parent();
 					var itemId = itemTr.attr('id');
 					var outputScale = $(this).parent().parent().find('.outputScale input').val();
+					outputScale = outputScale.replace(/,/g,'');
 					if(itemId!=undefined){
 						var item={};
 						itemIds.push(itemId);
