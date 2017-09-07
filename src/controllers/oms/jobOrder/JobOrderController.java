@@ -455,23 +455,44 @@ public class JobOrderController extends Controller {
 		//常用客户保存进入历史记录
    		saveCustomerQueryHistory(customerId);
    		//保存海运下拉使用历史
+   		//表内容
 		List<Record> oceanRes = new ArrayList<Record>();
 		oceanRes.add(new Record().set("type", "unit").set("param", "UNIT_ID"));
 		saveItemParamHistory(shipment_item,oceanRes); 
-		
+		//单据内容
 		List<Record> oceanDetailRes = new ArrayList<Record>();
 		oceanDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "MBLshipper"));
-		oceanDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "consignee"));
-		oceanDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "notify_party"));
+		oceanDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "MBLconsignee"));
+		oceanDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "MBLnotify_party"));
+		oceanDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "HBLshipper"));
+		oceanDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "HBLconsignee"));
+		oceanDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "HBLnotify_party"));
 		oceanDetailRes.add(new Record().set("type", "booking_agent").set("param", "booking_agent"));
+		oceanDetailRes.add(new Record().set("type", "carrier").set("param", "carrier"));
+		oceanDetailRes.add(new Record().set("type", "head_car").set("param", "head_carrier"));
+		oceanDetailRes.add(new Record().set("type", "port").set("param", "por"));
+		oceanDetailRes.add(new Record().set("type", "port").set("param", "pol"));
+		oceanDetailRes.add(new Record().set("type", "port").set("param", "hub"));
+		oceanDetailRes.add(new Record().set("type", "port").set("param", "pod"));
+		oceanDetailRes.add(new Record().set("type", "port").set("param", "fnd"));
+		oceanDetailRes.add(new Record().set("type", "oversea_agent").set("param", "oversea_agent"));
 		saveItemParamHistory(shipment_detail,oceanDetailRes); 
 		
 		//保存空运下拉使用历史
+		//表内容
 		List<Record> airRes = new ArrayList<Record>();
 		airRes.add(new Record().set("type", "air_port").set("param", "START_FROM"));
 		airRes.add(new Record().set("type", "air_port").set("param", "DESTINATION"));
 		airRes.add(new Record().set("type", "air").set("param", "AIR_COMPANY"));
 		saveItemParamHistory(air_item,airRes); 
+		//单据内容
+		List<Record> airDetailRes = new ArrayList<Record>();
+		airDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "shipper"));
+		airDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "consignee"));
+		airDetailRes.add(new Record().set("type", "CUSTOMER").set("param", "notify_party"));;
+		airDetailRes.add(new Record().set("type", "booking_agent").set("param", "booking_agent"));
+		saveItemParamHistory(air_detail,airDetailRes); 
+		
 		//保存陆运下拉使用历史
 		List<Record> landRes = new ArrayList<Record>();
 		landRes.add(new Record().set("type", "truck").set("param", "TRANSPORT_COMPANY"));
