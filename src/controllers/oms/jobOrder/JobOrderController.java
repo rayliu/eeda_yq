@@ -583,23 +583,27 @@ public class JobOrderController extends Controller {
    		r.set("insurance", getItemDetail(id,"insure"));
    		
    		//保存海运填写模板，港口进入历史记录
-   		Map<String, String> recMap=shipment_detail.get(0);
-   		String por = recMap.get("por");
-    	String pol = recMap.get("pol");
-    	String pod = recMap.get("pod");
-    	String fnd = recMap.get("fnd");
-   		if(por!=null&&!"".equals(por)){
-       	 savePortQueryHistory(por);
-        }
-        if(pol!=null&&!"".equals(pol)){
-       	 savePortQueryHistory(pol);
-        }
-        if(pod!=null&&!"".equals(pod)){
-       	 savePortQueryHistory(pod);
-        }
-        if(fnd!=null&&!"".equals(fnd)){
-       	 savePortQueryHistory(fnd);
-        }
+   		if(shipment_detail!=null){
+   			Map<String, String> recMap=shipment_detail.get(0);
+   			String por = recMap.get("por");
+   	    	String pol = recMap.get("pol");
+   	    	String pod = recMap.get("pod");
+   	    	String fnd = recMap.get("fnd");
+   	    	if(por!=null&&!"".equals(por)){
+   	       	 savePortQueryHistory(por);
+   	        }
+   	        if(pol!=null&&!"".equals(pol)){
+   	       	 savePortQueryHistory(pol);
+   	        }
+   	        if(pod!=null&&!"".equals(pod)){
+   	       	 savePortQueryHistory(pod);
+   	        }
+   	        if(fnd!=null&&!"".equals(fnd)){
+   	       	 savePortQueryHistory(fnd);
+   	        }
+   		}
+   		
+   		
    		//保存空运填写模板
    		saveAirTemplate(air_detail);
    		
