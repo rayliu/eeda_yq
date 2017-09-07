@@ -507,11 +507,16 @@ public class JobOrderController extends Controller {
 		//保存表单下拉列表使用历史
 		List<Record> orderRes = new ArrayList<Record>();
 		orderRes.add(new Record().set("type", "unit").set("param", "job_unit"));
-//		orderRes.add(new Record().set("type", "").set("param", ""));
-//		orderRes.add(new Record().set("type", "").set("param", ""));
-//		orderRes.add(new Record().set("type", "").set("param", ""));
-//		orderRes.add(new Record().set("type", "").set("param", ""));
 		saveParamHistory(dto,orderRes); 
+		
+		//保存费用明细表下拉使用历史
+		List<Record> chargeRes = new ArrayList<Record>();
+		chargeRes.add(new Record().set("type", "ARAP_FIN").set("param", "CHARGE_ID"));
+		saveItemParamHistory(charge_list,chargeRes); 
+		List<Record> costRes = new ArrayList<Record>();
+		costRes.add(new Record().set("type", "ARAP_FIN").set("param", "CHARGE_ID"));
+		saveItemParamHistory(chargeCost_list,costRes); 
+		
 				
 		
 		//相关文档
