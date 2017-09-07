@@ -483,7 +483,7 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> trade_cost_list = (ArrayList<Map<String, String>>)dto.get("trade_cost");
 		DbUtils.handleList(trade_cost_list,"job_order_trade_cost",id,"order_id");
 		
-		Model<?> model = (Model<?>) JobOrderArap.class.newInstance();
+		Model<?> model = JobOrderArap.class.newInstance();
 		List<Map<String, String>> trade_service_list = (ArrayList<Map<String, String>>)dto.get("trade_service");
 		
 		List<Map<String, String>> trade_sale_list = (ArrayList<Map<String, String>>)dto.get("trade_sale");
@@ -541,8 +541,24 @@ public class JobOrderController extends Controller {
     	r.set("express", getItemDetail(id,"express"));
    		r.set("insurance", getItemDetail(id,"insure"));
    		
-   		//保存海运填写模板
-   		saveOceanTemplate(shipment_detail);
+   		//保存海运填写模板，港口进入历史记录
+   		Map<String, String> recMap=shipment_detail.get(0);
+   		String por = recMap.get("por");
+    	String pol = recMap.get("pol");
+    	String pod = recMap.get("pod");
+    	String fnd = recMap.get("fnd");
+   		if(por!=null&&!"".equals(por)){
+       	 savePortQueryHistory(por);
+        }
+        if(pol!=null&&!"".equals(pol)){
+       	 savePortQueryHistory(pol);
+        }
+        if(pod!=null&&!"".equals(pod)){
+       	 savePortQueryHistory(pod);
+        }
+        if(fnd!=null&&!"".equals(fnd)){
+       	 savePortQueryHistory(fnd);
+        }
    		//保存空运填写模板
    		saveAirTemplate(air_detail);
    		
@@ -643,7 +659,7 @@ public class JobOrderController extends Controller {
     	List<Record> oseanItem = Db.find("SELECT count(1) count,container_type FROM `job_order_shipment_item`"
     			+ "  where order_id = ? GROUP BY container_type;",order_id);
     	
-    	List jArray = new ArrayList();
+    	List<Record> jArray = new ArrayList<Record>();
     	for(Record re :oseanItem){
     		String container_type = re.getStr("container_type");
     		String count = re.get("count").toString();
@@ -710,7 +726,7 @@ public class JobOrderController extends Controller {
      * @return
      * @throws JSONException 
      */
-    private void getOceanCustomerContractMsg(String order_id,String jsonStr,List jArray,String order_export_date){
+    private void getOceanCustomerContractMsg(String order_id,String jsonStr,List<Record> jArray,String order_export_date){
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
@@ -727,7 +743,7 @@ public class JobOrderController extends Controller {
     	String container_types = "''";
     	for (int i = 0; i < jArray.size(); i++) {
     		Record map=new Record();  
-    		map = (Record) jArray.get(i);
+    		map = jArray.get(i);
     		String container_type = (String)map.get("container_type");
     		if(i==0){
     			container_types = "'"+container_type+"'";
@@ -758,7 +774,7 @@ public class JobOrderController extends Controller {
     		String thsi_container_type = re.getStr("container_type");
     		for (int i = 0; i < jArray.size(); i++) {
     			Record map=new Record();  
-        		map = (Record) jArray.get(i);
+        		map = jArray.get(i);
         		String json_container_type = (String)map.get("container_type");
         		String json_amount = (String)map.get("count");
         		if(json_container_type.equals(thsi_container_type)){
@@ -853,7 +869,7 @@ public class JobOrderController extends Controller {
     	List<Record> oseanItem = Db.find("SELECT count(1) count,container_type FROM `job_order_shipment_item`"
     			+ "  where order_id = ? GROUP BY container_type;",order_id);
     	
-    	List jArray = new ArrayList();
+    	List<Record> jArray = new ArrayList<Record>();
     	for(Record re :oseanItem){
     		String container_type = re.getStr("container_type");
     		String count = re.get("count").toString();
@@ -918,7 +934,7 @@ public class JobOrderController extends Controller {
      * @param jArray
      * @param sailing_date
      */
-    private void getOceanGHSpContractMsg(String order_id,String jsonStr,List jArray,String sailing_date){
+    private void getOceanGHSpContractMsg(String order_id,String jsonStr,List<Record> jArray,String sailing_date){
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
@@ -933,7 +949,7 @@ public class JobOrderController extends Controller {
     	String container_types = "''";
     	for (int i = 0; i < jArray.size(); i++) {
     		Record map=new Record();  
-    		map = (Record) jArray.get(i);
+    		map = jArray.get(i);
     		String container_type = (String)map.get("container_type");
     		if(i==0){
     			container_types = "'"+container_type+"'";
@@ -966,7 +982,7 @@ public class JobOrderController extends Controller {
     		String thsi_container_type = re.getStr("container_type");
     		for (int i = 0; i < jArray.size(); i++) {
     			Record map=new Record();  
-        		map = (Record) jArray.get(i);
+        		map = jArray.get(i);
         		String json_container_type = (String)map.get("container_type");
         		String json_amount = (String)map.get("count");
         		if(json_container_type.equals(thsi_container_type)){
@@ -1636,7 +1652,7 @@ public class JobOrderController extends Controller {
     	String order_export_date = order.get("order_export_date").toString();//出货日期
     	
     	List<Record> itemReList = Db.find("select * from job_order_land_item where order_id = ? order by id",order_id);
-    	List jArray = new ArrayList();
+    	List<Record> jArray = new ArrayList<Record>();
     	for(Record re :itemReList){
     		String transport_company = null;  //运输公司
     		String truck_type = null;         //车型
@@ -1709,7 +1725,7 @@ public class JobOrderController extends Controller {
      * @param jsonStr
      * @param atd
      */
-    private void getLandSpContractMsg(String order_id,String jsonStr,List jArray){
+    private void getLandSpContractMsg(String order_id,String jsonStr,List<Record> jArray){
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
@@ -1719,7 +1735,7 @@ public class JobOrderController extends Controller {
     	String container_types = "''";
     	for (int i = 0; i < jArray.size(); i++) {
     		Record map=new Record();  
-    		map = (Record) jArray.get(i);
+    		map = jArray.get(i);
     		String transport_company = (String)map.get("TRANSPORT_COMPANY")==null?"":dto.getStr("TRANSPORT_COMPANY");
     		String truck_type = (String)map.get("TRUCK_TYPE")==null?"":dto.getStr("TRUCK_TYPE");
     		String take_address = (String)map.get("TAKE_ADDRESS")==null?"":dto.getStr("TAKE_ADDRESS");
@@ -1811,7 +1827,7 @@ public class JobOrderController extends Controller {
     	String order_export_date = order.get("ORDER_EXPORT_DATE").toString();//出货日期
     	
     	List<Record> itemReList = Db.find("select * from job_order_land_item where order_id = ? order by id",order_id);
-    	List jArray = new ArrayList();
+    	List<Record> jArray = new ArrayList<Record>();
     	for(Record re :itemReList){
     		String truck_type = null;         //车型
     		String take_address = null;       //发货地址
@@ -1880,7 +1896,7 @@ public class JobOrderController extends Controller {
      * @param jsonStr
      * @param atd
      */
-    private void getLandCustomerContractMsg(String order_id,String jsonStr,List jArray){
+    private void getLandCustomerContractMsg(String order_id,String jsonStr,List<Record> jArray){
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
@@ -1890,7 +1906,7 @@ public class JobOrderController extends Controller {
     	
     	for (int i = 0; i < jArray.size(); i++) {
     		Record map=new Record();  
-    		map = (Record) jArray.get(i);
+    		map = jArray.get(i);
     		String truck_type = (String)map.get("TRUCK_TYPE")==null?"":dto.getStr("TRUCK_TYPE");
     		String take_address = (String)map.get("TAKE_ADDRESS")==null?"":dto.getStr("TAKE_ADDRESS");
     		String delivery_address = (String)map.get("DELIVERY_ADDRESS")==null?"":dto.getStr("DELIVERY_ADDRESS");
@@ -2279,6 +2295,20 @@ public class JobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
+    
+    @SuppressWarnings("unchecked")
+	@Before(Tx.class)
+    public void saveOceanTemplet(){
+    	String jsonStr=getPara("params");
+       	Gson gson = new Gson();  
+		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+
+		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("oceanTemplet");
+        saveOceanTemplate(shipment_detail);
+        renderJson("{\"result\":true}");
+    }
+    
+    
     //保存海运填写模板
     public void saveOceanTemplate(List<Map<String, String>> shipment_detail){
         if(shipment_detail==null||shipment_detail.size()<=0)
@@ -2305,18 +2335,7 @@ public class JobOrderController extends Controller {
     	String cargo_desc = recMap.get("cargo_desc");
     	String shipping_mark = recMap.get("shipping_mark");
         
-        if(por!=null&&!"".equals(por)){
-        	 savePortQueryHistory(por);
-        }
-        if(pol!=null&&!"".equals(pol)){
-        	 savePortQueryHistory(pol);
-        }
-        if(pod!=null&&!"".equals(pod)){
-        	 savePortQueryHistory(pod);
-        }
-        if(fnd!=null&&!"".equals(fnd)){
-        	 savePortQueryHistory(fnd);
-        }
+        
         String content = MBLshipper+MBLconsignee+MBLnotify_party+HBLshipper+HBLconsignee+HBLnotify_party+por+pol+pod+fnd+head_carrier+oversea_agent;
         if("".equals(content)){
         	return;
@@ -3066,7 +3085,7 @@ public class JobOrderController extends Controller {
     	List<Record> list = null;
     	list = getDocItems(order_id,type);
     	
-    	Map map = new HashMap();
+    	Map<String, Object> map = new HashMap<String, Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());
@@ -3499,7 +3518,7 @@ public class JobOrderController extends Controller {
         
         List<Record> orderList = Db.find(sql+ condition + " order by " + sName +" "+ sort +sLimit);
         System.out.println(sql+ condition + " order by " + sName +" "+ sort +sLimit);
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -3515,7 +3534,7 @@ public class JobOrderController extends Controller {
     	List<Record> list = null;
     	list = getItems(order_id,type);
     	
-    	Map map = new HashMap();
+    	Map<String, Object> map = new HashMap<String, Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());
@@ -3541,7 +3560,7 @@ public class JobOrderController extends Controller {
 	    List<Record> list = Db.find(itemSql, order_id,"charge",land_item_id);
 	    
     	
-    	Map map = new HashMap();
+    	Map<String, Object> map = new HashMap<String, Object>();
     	map.put("sEcho", 1);
     	map.put("iTotalRecords", list.size());
     	map.put("iTotalDisplayRecords", list.size());
@@ -3767,7 +3786,7 @@ public class JobOrderController extends Controller {
         String land_item_id = (String) dto.get("land_item_id");
     	
         List<Map<String, String>> land_charge_item = (ArrayList<Map<String, String>>)dto.get("land_charge_item");
-        Model<?> model = (Model<?>) JobOrderArap.class.newInstance();
+        Model<?> model = JobOrderArap.class.newInstance();
         for(int i=0;i<land_charge_item.size();i++){
         	Map<String, String> map=land_charge_item.get(i);
         	

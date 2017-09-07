@@ -27,6 +27,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             return arrays;
         };
         
+      //保存海运模板
+        $('#oceanBtnTemplet').click(function(){
+        	var oceanOrderTemplet={};
+        	oceanOrderTemplet.oceanTemplet=itemOrder.buildShipmentDetail();
+        	$.post('/jobOrder/saveOceanTemplet',{params:JSON.stringify(oceanOrderTemplet)},function(data){
+        		$.scojs_message('海运信息模板保存保存成功', $.scojs_message.TYPE_OK);
+        	});
+        	
+        });
+        
+        
         //放货方式radio回显
         var radioVal = $('#hidden_release_type').val();
         $('#shipmentForm input[type="radio"]').each(function(){
