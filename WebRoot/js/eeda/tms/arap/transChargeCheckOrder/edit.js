@@ -1,7 +1,9 @@
-define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table','./edit_receiptItem_table',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin','./edit_item_table','./edit_receiptItem_table',  'dataTablesBootstrap','sco','validate_cn','pageguide'], function ($, metisMenu) { 
 
 $(document).ready(function() {
-
+	tl.pg.init({
+        pg_caption: '本页教程'
+    });
     $(function(){
             var status=$('#status').val();
             charge_confirmBtn(status);
