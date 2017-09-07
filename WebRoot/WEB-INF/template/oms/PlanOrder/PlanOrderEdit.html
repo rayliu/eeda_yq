@@ -92,13 +92,19 @@
            				if(order.submit_flag!''=='Y'){
            				dis='disabled';
            				}
+           				var to_party_id_enter='';
+		                if(has(to_party) && (null != to_party.ID!)){
+		                    to_party_id_enter = to_party.ID;
+		                }else if(has(toEntrusted) && (null != toEntrusted.ID!)){
+		                    to_party_id_enter = toEntrusted.ID;
+		                }
            			%>
            			
            			<%include("/eeda/component/form/inputSpField.html",
 											{   id:'to_party_id', 
 												label:'被委托方',
 												type:'SP',  
-												value:to_party.ID!toEntrusted.ID!'',
+												value:to_party_id_enter!'',
 												display_value:to_party.ABBR!toEntrusted.OFFICE_NAME!'',
 												disabled:dis												
 											}){} %>
