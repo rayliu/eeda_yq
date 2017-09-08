@@ -227,7 +227,36 @@ public class FormController extends Controller {
             String fieldDisplayName=fieldRec.getStr("field_display_name");
             String fieldName=fieldRec.getStr("field_name");
             String replaceNameOrigin = "#{"+form_name+"."+fieldDisplayName+"}";
-            String replaceNameDest = "<input type='text' name='form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase()+"'>";
+            String fieldType = fieldRec.getStr("field_type");
+            String replaceNameDest ="";
+            String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
+            
+            if("编码".equals(fieldType)){
+                replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
+                        + "<input type='text' name='"+inputId+"' class='form-control' disabled placeholder='系统自动生成'>";
+            }else if("文本".equals(fieldType)){
+                replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
+                        + "<input type='text' name='"+inputId+"' class='form-control'>";
+            }else if("日期".equals(fieldType)){
+                replaceNameDest = "<div id='"+inputId+"_div'>"
+                        + " <label class='search-label'>"+fieldDisplayName+"</label>"
+                        + "<span class='add-on'>"
+                        + " <i class='fa fa-calendar' data-time-icon='icon-time' data-date-icon='icon-calendar'></i>"
+                        +"</span> "
+                        + " <input id='"+inputId+"' name='"+inputId+"' class='form-control' type='text' data_type='date'/>"
+                        + "</div> ";
+            }else if("日期时间".equals(fieldType)){
+                replaceNameDest = "<div id='"+inputId+"_div'>"
+                        + " <label class='search-label'>"+fieldDisplayName+"</label>"
+                        + "<span class='add-on'>"
+                        + " <i class='fa fa-calendar' data-time-icon='icon-time' data-date-icon='icon-calendar'></i>"
+                        +"</span> "
+                        + " <input id='"+inputId+"' name='"+inputId+"' class='form-control' type='text' data_type='date_time'/>"
+                        + "</div> ";
+            }else{
+                replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
+                        + "<input type='text' name='"+inputId+"' class='form-control'>";
+            }
             template_content = template_content.replace(replaceNameOrigin, replaceNameDest);
         }
         
