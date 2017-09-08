@@ -76,9 +76,9 @@
 					label:'电话', value:order.phone!'',disabled:'disabled'
 					}){}%>
 				</div>
-				<div class="col-lg-4">	
+				<div class="guide_target1 col-lg-4">	
 					<%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
-					label:'对账时间', begin_value:order.begin_time!'', end_value:order.end_time!'', disabled: 'disabled' 
+					label:'对账日期', begin_value:order.begin_time!'', end_value:order.end_time!'', disabled: 'disabled' 
 					}){}%>
 				</div>
 			</div>
@@ -237,7 +237,7 @@
                 </div>
 	        </div>
 	        <div class="table_btn_bar">
-	        	<button class="btn btn_blue" id="add_charge">添加明细</button> 
+	        	<button class="guide_target2 btn btn_blue" id="add_charge">添加明细</button> 
 	        </div><br/>
 
 	        </div>
@@ -282,7 +282,7 @@
 			<br>
 			<button id='saveBtn' class="btn  btn_green" disabled >保存</button> 
 			<% if(shiro.hasPermission("tradeChargeCheckOrder.confirm")){%>
-                        <button id="confirmBtn" type="button" class="btn btn_green" disabled>确认</button>
+                        <button id="confirmBtn" type="button" class="guide_target3 btn btn_green" disabled>确认</button>
             <%}%>
 			<button id="printBtn" type="button" class="btn  btn_white" disabled >打印</button>
 			<button id="printTotaledBtn" type="button" class="btn  btn_white" disabled >打印(合计版本)</button>			
@@ -360,6 +360,7 @@
 </div>
 </div>
 <%}%>
+<%include("/tradeArap/ChargeCheckOrder/guideEdit.html",{}){} %>
 <script> 
     var itemOrder = {};
 </script>
