@@ -31,6 +31,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.eeda.SysInfoController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
@@ -59,9 +60,9 @@ public class CmsCostCheckOrderController extends Controller {
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
-   		
+   		String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {
-   			//update
+   		    action_type="update";
    			order = CustomArapCostOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, order);
    			
@@ -96,7 +97,7 @@ public class CmsCostCheckOrderController extends Controller {
 				Db.update("update custom_plan_order_arap set bill_flag = 'Y' where id = ?",item.get("id"));
 			}
    		}
-		
+   		SysInfoController.saveLog(jsonStr, id, user, action_type, "应付对账单", "custom");
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);
 		Record r = order.toRecord();
