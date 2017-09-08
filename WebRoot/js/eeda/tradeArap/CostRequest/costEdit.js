@@ -1,7 +1,9 @@
 ﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './costEdit_select_item', './edit_doc_table','dataTablesBootstrap', 
-        'validate_cn', 'sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
+        'validate_cn', 'pageguide','sco'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
-	
+	tl.pg.init({
+        pg_caption: '本页教程'
+    });
     if($('#receive_time').val()==""){
 //    	$('#receive_time').val(eeda.getDate());
     }

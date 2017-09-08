@@ -1,7 +1,9 @@
 
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'dtColReorder'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','datetimepicker_CN', 'dtColReorder','pageguide'], function ($, metisMenu) {
 $(document).ready(function() {
-	
+	 tl.pg.init({
+	        pg_caption: '本页教程'
+	    });
                 
     var application_table = eeda.dt({
     	id: 'application_table',

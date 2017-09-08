@@ -38,13 +38,13 @@
 								</div>
 	                	</div>
 	                	<div>
-	                    		<button id="singleSearchBtn" class="btn btn_grey" type="button" style="float:left;">查询</button>
+	                    		<button id="singleSearchBtn" class="btn btn_grey guide_target1" type="button" style="float:left;">查询</button>
 	                    </div>
                     </div>
 	                <div id="" style="margin-right:15px;"><!--  三列排版  -->
 	                	<h4 class="panel-title pull-right" style="padding-top: 5px;">
 	                    	<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
-	                    		<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
+	                    		<i id="collapseChargeIcon" class="fa fa-angle-double-down guide_target2"></i> 高级查询
 	                    	</a>
 	                    </h4>
 	                </div>
@@ -128,12 +128,14 @@
 	<!-- /.col-lg-12 -->
 	</div>
 				  <div class="simple_row_div">
-					<span class="badge" style='margin-top:12px;margin-right:5px;'> CNY总额: <span id="cny_totalAmountSpan">0.00</span></span>
-					<span class="badge" style='margin-top:12px;margin-right:5px;'> USD总额: <span id="usd_totalAmountSpan">0.00</span></span>
-					<span class="badge" style='margin-top:12px;margin-right:5px;'> JPY总额: <span id="jpy_totalAmountSpan">0.00</span></span>
-					<span class="badge" style='margin-top:12px;margin-right:10px;'> HKD总额: <span id="hkd_totalAmountSpan">0.00</span></span>
-					<button id="checked" class="badge  btn btn_green" style="margin-top:12px;"  disabled>复核</button>
-					<button id="confirmed" class="badge btn btn_green" style="margin-top:12px;"  disabled>付款确认</button>
+				  	<span class="guide_target3">
+						<span class="badge" style='margin-top:12px;margin-right:5px;'> CNY总额: <span id="cny_totalAmountSpan">0.00</span></span>
+						<span class="badge" style='margin-top:12px;margin-right:5px;'> USD总额: <span id="usd_totalAmountSpan">0.00</span></span>
+						<span class="badge" style='margin-top:12px;margin-right:5px;'> JPY总额: <span id="jpy_totalAmountSpan">0.00</span></span>
+						<span class="badge" style='margin-top:12px;margin-right:10px;'> HKD总额: <span id="hkd_totalAmountSpan">0.00</span></span>
+					</span>
+					<button id="checked" class="badge  btn btn_green guide_target4" style="margin-top:12px;"  disabled>复核</button>
+					<button id="confirmed" class="badge btn btn_green guide_target5" style="margin-top:12px;"  disabled>付款确认</button>
 				  </div>
 					<div class="row simple_list_div">
 						<div class="form-group">
@@ -240,6 +242,7 @@
     </div>
 </div>
 <%}%>
+<%include("/tradeArap/CostRequest/guideList.html",{}){} %>
 <script>
 var itemOrder={};
 </script>
