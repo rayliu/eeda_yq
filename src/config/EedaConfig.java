@@ -450,6 +450,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/tradeProfitAndPaymentRate",controllers.tradeReport.TradeProfitAndPaymentRateController.class, contentPath);
         me.add("/tradeAccountAging",controllers.tradeReport.TradeAccountAgingController.class, contentPath);
         me.add("/tradeProfit",controllers.tradeReport.tradeProfitController.class, contentPath);
+        me.add("/tradeBillProfitAndPayment",controllers.tradeReport.tradeBillProfitAndPaymentController.class, contentPath);
         
         //合同管理
         me.add("/supplierContract", controllers.contractManagement.SupplierContractController.class, contentPath);
