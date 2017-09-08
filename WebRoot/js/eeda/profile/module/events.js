@@ -139,6 +139,8 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
 
     var buildTreeNodes=function(){
       var node_list=[];
+      
+      zTreeObj = $.fn.zTree.getZTreeObj("listEventTree");
       var toolBarNodes = zTreeObj.getNodes()[0].children;
       for(var i = 0;i<toolBarNodes.length;i++){
         var eventNodes = toolBarNodes[i].children;

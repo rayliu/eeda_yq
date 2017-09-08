@@ -268,7 +268,6 @@ label.error {
 }
 
 .date .add-on{
-	position: absolute;
     right: 8%;
     margin-top: 10px;
 }
@@ -556,4 +555,13 @@ tbody .btn, tbody .btn-xs {
 #formular_edit_modal .col-lg-4 .panel-body{
     height: 450px;
 }
+
+#module_form table{
+    width: 100%;
+}
+
+#module_form table td{
+    padding: 10px;
+}
+
 /* ray added */

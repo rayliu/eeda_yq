@@ -32,11 +32,14 @@ define(['jquery'], function ($) {
             current_tr_index = dataTable.row( this ).index();
             var data = dataTable.row( this ).data();
             
-            $('#field_display_name').val(data.FIELD_DISPLAY_NAME);
-            $('#field_type').val(data.FIELD_TYPE);
-            $('#sort_type').val(data.SORT_TYPE);
-            $('#default_value').val(data.DEFAULT_VALUE);
-            $('#seq').val(data.SEQ);
+            if(data){
+              $('#field_display_name').val(data.FIELD_DISPLAY_NAME);
+              $('#field_type').val(data.FIELD_TYPE);
+              $('#sort_type').val(data.SORT_TYPE);
+              $('#default_value').val(data.DEFAULT_VALUE);
+              $('#seq').val(data.SEQ);
+            }
+            
         } );
 
         var buildFieldsDetail = function(){
@@ -56,7 +59,7 @@ define(['jquery'], function ($) {
         });
         
         //回写到table
-        $('#comfirmFieldBtn').click(function(){
+        $('#confirmFieldBtn').click(function(){
             var item = dataTable.rows(current_tr_index).data()[0];
             item.FIELD_DISPLAY_NAME=$('#field_display_name').val();
             item.FIELD_TYPE=$('#field_type').val();

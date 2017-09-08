@@ -285,7 +285,7 @@ public class ModuleController extends Controller {
         Record eventOpen = Db.findFirst("select * from eeda_form_event_open where event_id=?", id);
         if(eventOpen!=null){
             eventOpen.set("condition", openDto.get("condition")==null?openDto.get("CONDITION"):openDto.get("condition"));
-            eventOpen.set("module_name", openDto.get("module_name")==null?openDto.get("MODULE_NAME"):openDto.get("condition"));
+            eventOpen.set("module_name", openDto.get("module_name")==null?openDto.get("MODULE_NAME"):openDto.get("module_name"));
             eventOpen.set("open_type", openDto.get("open_type")==null?openDto.get("OPEN_TYPE"):openDto.get("open_type"));
             Db.update("eeda_form_event_open", eventOpen);
         }else{
