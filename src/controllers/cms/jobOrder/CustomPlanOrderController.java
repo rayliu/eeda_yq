@@ -38,6 +38,7 @@ import com.jfinal.upload.UploadFile;
 
 import config.ShiroExt;
 import controllers.eeda.ListConfigController;
+import controllers.eeda.SysInfoController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
@@ -121,7 +122,9 @@ public class CustomPlanOrderController extends Controller {
 //   		if(StringUtils.isNotEmpty(to_office_id)){
 //   			office_id =Long.parseLong(to_office_id);
 //   		}
+   		String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {
+            action_type="udpate";
    			//update
    			customPlanOrder = CustomPlanOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, customPlanOrder);
@@ -187,14 +190,15 @@ public class CustomPlanOrderController extends Controller {
 		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
 		List<Map<String, String>> allCost_template = (ArrayList<Map<String, String>>)dto.get("allCost_template");
    		saveArapTemplate(type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);
-		   		
+		
+   		SysInfoController.saveLog(jsonStr, id, user, action_type, "报关申请单", "custom");
+   		
 		long creator = customPlanOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
 		Record r = customPlanOrder.toRecord();
    		r.set("creator_name", user_name);
    		renderJson(r);
    	}
-    
     
      //保存报关单模板
       public void saveCustomTemplate(Map<String, ?> dto){
