@@ -589,7 +589,7 @@ $(document).ready(function() {
     $("#cost_table").on('click', '.cancelCostConfirm', function(){
     	var id = $(this).parent().parent().parent().attr('id');
     	$.post('/customPlanOrder/feeCancelConfirm',{id:id},function(data){
-    		if(data.BILL_FLAG == 'Y'){
+    		if(data == 'N'){
     			$.scojs_message('该单据已生成对账单，不能取消确认', $.scojs_message.TYPE_ERROR);
     		}
     		else{

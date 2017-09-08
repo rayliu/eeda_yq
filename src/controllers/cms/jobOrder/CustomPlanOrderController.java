@@ -876,16 +876,26 @@ public class CustomPlanOrderController extends Controller {
     @Before(Tx.class)
     public void feeCancelConfirm(){
 		String id = getPara("id");
+		String result = "N";
 		if (id != null) {
 			CustomPlanOrderArap cjoa = CustomPlanOrderArap.dao.findFirst("select * from custom_plan_order_arap where id = ?",id);
         	if( cjoa.get("audit_flag").equals("Y")&&cjoa.get("bill_flag").equals("N")){
         		cjoa.set("audit_flag", "N");
+        		result = "Y";
+        	}else if(cjoa.get("audit_flag").equals("Y")&&cjoa.get("bill_flag").equals("Y")){
+        		String sql = " select apoa.* from custom_plan_order_arap apoa"
+        				+ " LEFT JOIN custom_arap_charge_item caci on caci.ref_order_id = apoa.id and apoa.bill_flag = 'Y'"
+        				+ " LEFT JOIN custom_arap_charge_order cac on cac.id = caci.custom_charge_order_id"
+        				+ " where cac.status ='已退单' and apoa.id = "+id+"";
+        		Record re = Db.findFirst(sql);
+        		if(re != null){
+        			cjoa.set("audit_flag", "N");
+        			result = "Y";
+        		}
         	}
         	cjoa.update();
         }
-		//Db.update("update job_order_arap set audit_flag = 'Y' where id = ?", id);
-		Record re = Db.findFirst("select * from custom_plan_order_arap where id = ?",id);
-		renderJson(re);
+		renderJson(result);
 	 }
     
   //删除工作单据，把offfice_ID改成开发账号offfice_ID

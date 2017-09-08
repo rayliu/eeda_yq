@@ -675,6 +675,21 @@ public class CmsChargeCheckOrderController extends Controller {
 
     }
 	
+
+    //退掉单据
+    @Before(Tx.class)
+    public void returnOrder(){
+        String id = getPara("id");
+        String delete_reason = getPara("delete_reason");
+        CustomArapChargeOrder caco = CustomArapChargeOrder.dao.findById(id);
+        caco.set("status","已退单");
+        caco.set("update_stamp", new Date());
+        caco.set("return_reason", delete_reason);
+        caco.set("update_by", LoginUserController.getLoginUserId(this));
+        caco.update();
+        renderJson("{\"result\":true}");
+    }
+	
 	//导出excel对账单
 		public void downloadExcelList(){
 			String order_id = getPara("id");

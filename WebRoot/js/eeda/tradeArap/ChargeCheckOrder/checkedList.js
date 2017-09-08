@@ -52,7 +52,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
-					  }
+					  },
+					  { "data": "RETURN_REASON", "width": "60px"}
             ]
         });
         

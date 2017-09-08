@@ -198,6 +198,35 @@ $(document).ready(function() {
                   $('#confirmBtn').attr('disabled',true);
               }
     	  }
+      var audit_status = $("#audit_status").val()
+      if(status == "已退单"||status == "已确认"){
+          $('#refuseBtn').attr('disabled', true);
+      }
+      
+      //删除按钮动作
+      $("#refuseBtn").click(function(){
+          var id = $('#order_id').val();
+          $('#delete_id').val(id);
+          $('#deleteReasonDetailAlert').click();
+      }) 
+      $("#deleteReasonDetail").on('click', '.deleteReason', function(){
+          $('#deleteReason').val($(this).val());
+      })
+       $("#deleteReasonDetail").on('click', '.confirm', function(){
+           if(!$("#deleteReasonDetailForm").valid()){
+               return;
+           }
+           var id = $('#delete_id').val();
+           var deleteReason = $('#deleteReason').val();
+          $.post('/cmsChargeCheckOrder/returnOrder', {id:id,delete_reason:deleteReason}, function(data){
+              $('#deleteReasonDetail .return').click();
+              $.scojs_message('退单成功', $.scojs_message.TYPE_OK);
+              $('#confirmBtn').attr('disabled',true);
+              $('#refuseBtn').attr('disabled', true);
+          },'json').fail(function() {
+              $.scojs_message('退单失败', $.scojs_message.TYPE_ERROR);
+          });
+      });
             
     //付款方式回显（1）
     $('#payment_method').change(function(){

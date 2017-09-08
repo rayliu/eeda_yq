@@ -282,6 +282,7 @@
 		<div class="button-bar" >
 			<button id='saveBtn' class="btn  btn_green" disabled >保存</button> 
 			<button id='confrimBtn' class="btn  btn_green guide_confrimBtn" disabled >确认</button> 
+			 <button id='refuseBtn' class="btn  btn_red guide_confrimBtn" >退单</button> 
 			<a class="btn  btn_white" href="/cmsCostCheckOrder">返回</a>
 		</div>
 	</div>
@@ -345,6 +346,37 @@
 		        </div>
 		    </div>
 		</div>
+					  <!-- begin fade -->
+        <a data-target='#deleteReasonDetail' data-toggle='modal'>
+            <button id="deleteReasonDetailAlert" style="display:none"></button>
+        </a>
+                 <div class="modal fade" id="deleteReasonDetail">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">请填写退单原因</div>
+                        <div class="modal-body">
+                            <input id="delete_id" type="hidden">
+                            <form id="deleteReasonDetailForm">
+                             <div class="form-group">
+                             <select class="form-control search-control deleteReason">
+                             <option>金额不对</option>                   
+                             <option>单据重复</option>                   
+                             <option>单据作废</option>
+                             <option>单据信息错误太多，不要了</option>                     
+                             </select><br/><br/>
+                             <textarea id='deleteReason' name="deleteReason" class="form-control" rows="3" required></textarea>
+                             </div>
+                             </form>
+                        </div>
+                      <div class="modal-footer">
+                        <button class="btn  btn-default return" data-dismiss="modal">返回</button>
+                        <button class="btn btn-primary confirm" >确定退单</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+    <!-- end of fade -->
+		
 <%}%>
 <%include("/eeda/cmsArap/cmsCostCheckOrder/guide.html",{}){} %>
 <script> 

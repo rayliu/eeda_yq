@@ -284,6 +284,7 @@
 			<% if(shiro.hasPermission("tradeChargeCheckOrder.confirm")){%>
                         <button id="confirmBtn" type="button" class="guide_target3 btn btn_green" disabled>确认</button>
             <%}%>
+             <button id='refuseBtn' class="btn  btn_red guide_confrimBtn" >退单</button> 
 			<button id="printBtn" type="button" class="btn  btn_white" disabled >打印</button>
 			<button id="printTotaledBtn" type="button" class="btn  btn_white" disabled >打印(合计版本)</button>			
 			<a class="btn  btn_white" href="/tradeChargeCheckOrder">返回</a>
@@ -293,6 +294,37 @@
 		<br/>
 	</div>
 	</div>
+	
+				  <!-- begin fade -->
+        <a data-target='#deleteReasonDetail' data-toggle='modal'>
+            <button id="deleteReasonDetailAlert" style="display:none"></button>
+        </a>
+                 <div class="modal fade" id="deleteReasonDetail">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">请填写退单原因</div>
+                        <div class="modal-body">
+                            <input id="delete_id" type="hidden">
+                            <form id="deleteReasonDetailForm">
+                             <div class="form-group">
+                             <select class="form-control search-control deleteReason">
+                             <option>金额不对</option>  
+                             <option>单据重复</option>                   
+                             <option>单据作废</option>
+                             <option>单据信息错误太多，不要了</option>                     
+                             </select><br/><br/>
+                             <textarea id='deleteReason' name="deleteReason" class="form-control" rows="3" required></textarea>
+                             </div>
+                             </form>
+                        </div>
+                      <div class="modal-footer">
+                        <button class="btn  btn-default return" data-dismiss="modal">返回</button>
+                        <button class="btn btn-primary confirm" >确定退单</button>
+                    </div>
+                </div>
+              </div>
+            </div>
+    <!-- end of fade -->
 
 	 <a id='charge_table_msg_btn' data-target='#charge_table_msg' data-toggle='modal' style='display:none'></a>
   <div class="modal fade" id="charge_table_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

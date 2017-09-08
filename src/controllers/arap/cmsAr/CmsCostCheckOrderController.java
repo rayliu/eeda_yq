@@ -14,6 +14,7 @@ import models.CustomArapCostItem;
 import models.CustomArapCostOrder;
 import models.Party;
 import models.UserLogin;
+import models.eeda.cms.CustomArapChargeOrder;
 import models.eeda.cms.CustomArapCostReceiveItem;
 import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.profile.Currency;
@@ -315,6 +316,21 @@ public class CmsCostCheckOrderController extends Controller {
 		setAttr("order",rec);
 		render("/eeda/cmsArap/cmsCostCheckOrder/cmsCostCheckOrderEdit.html");
 	} 
+    
+    //退掉单据
+    @Before(Tx.class)
+    public void returnOrder(){
+        String id = getPara("id"); 
+        String delete_reason = getPara("delete_reason");
+        CustomArapCostOrder order = CustomArapCostOrder.dao.findById(id);
+        order.set("status","已退单");
+        order.set("update_stamp", new Date());
+        order.set("return_reason", delete_reason);
+        order.set("update_by", LoginUserController.getLoginUserId(this));
+        order.update();
+        renderJson("{\"result\":true}");
+    }
+	
 
     
     @Before(Tx.class)

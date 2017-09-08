@@ -32,7 +32,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 					  { "data": "CREATOR_NAME", "width": "80px"}, 
 					  { "data": "CREATE_STAMP", "width": "80px"}, 
 					  { "data": "CONFIRM_NAME", "width": "80px"}, 
-					  { "data": "CONFIRM_STAMP", "width": "80px"}
+					  { "data": "CONFIRM_STAMP", "width": "80px"},
+					  { "data": "RETURN_REASON", "width": "80px"}
             ]
         });
    	         

@@ -14,6 +14,7 @@ import models.eeda.tr.tradeJoborder.TradeArapChargeOrder;
 import models.RateContrast;
 import models.UserLogin;
 import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
+import models.eeda.cms.CustomArapChargeOrder;
 import models.eeda.profile.Currency;
 
 import org.apache.commons.lang.StringUtils;
@@ -608,6 +609,20 @@ public class TradeChargeCheckOrderController extends Controller {
 		Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);
 		renderJson(exchangeTotalMap);
 	}
+    
+    //退掉单据
+    @Before(Tx.class)
+    public void returnOrder(){
+        String id = getPara("id");
+        String delete_reason = getPara("delete_reason");
+        TradeArapChargeOrder order = TradeArapChargeOrder.dao.findById(id);
+        order.set("status","已退单");
+        order.set("update_stamp", new Date());
+        order.set("return_reason", delete_reason);
+        order.set("update_by", LoginUserController.getLoginUserId(this));
+       // order.update();
+        renderJson("{\"result\":true}");
+    }
     
     private Map<String, Double> updateExchangeTotal(String chargeOrderId) {
         String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
