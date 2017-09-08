@@ -351,6 +351,15 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/bookingOrder", BookingOrderController.class, contentPath);
 		me.add("/bookingCostCheckOrder", controllers.oms.bookingOrder.BookingCostCheckOrderController.class, contentPath);
 		
+		//booking报表
+		me.add("/bookingProfitReport", controllers.report.booking.BookingProfitReportController.class, contentPath);
+		me.add("/bookingOceanRouteReport", controllers.report.booking.BookingOceanRouteReportController.class, contentPath);
+		me.add("/bookingAirRouteReport", controllers.report.booking.BookingAirRouteReportController.class, contentPath);
+		me.add("/bookingLandRouteReport", controllers.report.booking.BookingLandProfitReportController.class, contentPath);
+		me.add("/bookingChargeBalanceReport", controllers.report.booking.BookingChargeBalanceReportController.class, contentPath);
+		me.add("/bookingPaymentRate", controllers.report.booking.BookingProfitAndPaymentRateController.class, contentPath);
+		
+		
 		
 		//cms 报关管理
 		me.add("/customJobOrder", CustomJobOrderController.class, contentPath);

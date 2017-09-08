@@ -2368,11 +2368,17 @@ public class JobOrderController extends Controller {
     	
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	String MBLshipper = recMap.get("MBLshipper");
+    	String MBLshipper_info = recMap.get("MBLshipper_info");    	
     	String MBLconsignee = recMap.get("MBLconsignee");
+    	String MBLconsignee_info = recMap.get("MBLconsignee_info");
     	String MBLnotify_party = recMap.get("MBLnotify_party");
+    	String MBLnotify_party_info = recMap.get("MBLnotify_party_info");
     	String HBLshipper = recMap.get("HBLshipper");
+    	String HBLshipper_info = recMap.get("HBLshipper_info");
     	String HBLconsignee = recMap.get("HBLconsignee");
+    	String HBLconsignee_info = recMap.get("HBLconsignee_info");
     	String HBLnotify_party = recMap.get("HBLnotify_party");
+    	String HBLnotify_party_info = recMap.get("HBLnotify_party_info");
     	String por = recMap.get("por");
     	String pol = recMap.get("pol");
     	String pod = recMap.get("pod");
@@ -2450,11 +2456,17 @@ public class JobOrderController extends Controller {
             Record r= new Record();
             r.set("creator_id", creator_id);
             r.set("MBLshipper", MBLshipper);
+            r.set("MBLshipper_info", MBLshipper_info);
             r.set("MBLconsignee", MBLconsignee);
+            r.set("MBLconsignee_info", MBLconsignee_info);
             r.set("MBLnotify_party", MBLnotify_party);
+            r.set("MBLnotify_party_info", MBLnotify_party_info);
             r.set("HBLshipper", HBLshipper);
+            r.set("HBLshipper_info", HBLshipper_info);
             r.set("HBLconsignee", HBLconsignee);
+            r.set("HBLconsignee_info", HBLconsignee_info);
             r.set("HBLnotify_party", HBLnotify_party);
+            r.set("HBLnotify_party_info", HBLnotify_party_info);
             r.set("por", por);
             r.set("pol", pol);
             r.set("pod", pod);
@@ -2633,8 +2645,11 @@ public class JobOrderController extends Controller {
     	Long creator_id = LoginUserController.getLoginUserId(this);
     	
     	String shipper = recMap.get("shipper");
+    	String shipper_info = recMap.get("shipper_info");
     	String consignee = recMap.get("consignee");
+    	String consignee_info = recMap.get("consignee_info");
     	String notify_party = recMap.get("notify_party");
+    	String notify_party_info = recMap.get("notify_party_info");
     	String booking_agent = recMap.get("booking_agent");
     	String goods_mark = recMap.get("goods_mark");
     	String shipping_mark = recMap.get("shipping_mark");
@@ -2666,10 +2681,13 @@ public class JobOrderController extends Controller {
     	Record checkRec = Db.findFirst(sql);
     	if(checkRec==null){
     		Record r= new Record();
-    		r.set("creator_id", creator_id);
+    		r.set("creator_id", creator_id);    		
     		r.set("shipper", shipper);
+    		r.set("shipper_info", shipper_info);
     		r.set("consignee", consignee);
+    		r.set("consignee_info", consignee_info);
     		r.set("notify_party", notify_party);
+    		r.set("notify_party_info", notify_party_info);
     		r.set("booking_agent", booking_agent);
     		r.set("shipping_mark", shipping_mark);
     		r.set("goods_mark", goods_mark);
@@ -3239,19 +3257,12 @@ public class JobOrderController extends Controller {
     public List<Record> getUsedOceanInfo(){
         List<Record> list = Db.find("select t.*,"
                 + " p1.abbr MBLshipperAbbr , "
-                + " concat(ifnull(p1.address_eng, p1.address), '\r', ifnull(p1.contact_person_eng, p1.contact_person), '\r', ifnull(p1.phone,'')) MBLshipper_info,"
                 + " p2.abbr MBLconsigneeAbbr,"
-                + " concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) MBLconsignee_info,"
                 + " p3.abbr MBLnotify_partyAbbr,"
-                + " concat(ifnull(p3.address_eng, p3.address), '\r', ifnull(p3.contact_person_eng, p3.contact_person), '\r', ifnull(p3.phone,'')) MBLnotify_info,"
                 + " p8.abbr HBLshipperAbbr , "
-                + " concat(ifnull(p8.address_eng, p8.address), '\r', ifnull(p8.contact_person_eng, p8.contact_person), '\r', ifnull(p8.phone,'')) HBLshipper_info,"
                 + " p9.abbr HBLconsigneeAbbr,"
-                + " concat(ifnull(p9.address_eng, p9.address), '\r', ifnull(p9.contact_person_eng, p9.contact_person), '\r', ifnull(p9.phone,'')) HBLconsignee_info,"
                 + " p10.abbr HBLnotify_partyAbbr,"
-                + " concat(ifnull(p10.address_eng, p10.address), '\r', ifnull(p10.contact_person_eng, p10.contact_person), '\r', ifnull(p10.phone,'')) HBLnotify_info,"
                 + " p4.abbr carrier_name,p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name,"
-                + " concat(ifnull(p6.address_eng, p6.address), '\r', ifnull(p6.contact_person_eng, p6.contact_person), '\r', ifnull(p6.phone,'')) oversea_agent_info,"
                 + " lo.name por_name,lo1.name pol_name,lo2.name pod_name, lo3.name fnd_name from job_order_ocean_template t "
                 + " left join party p1 on p1.id= t.MBLshipper"
                 + " left join party p2 on p2.id= t.MBLconsignee"
@@ -3274,11 +3285,8 @@ public class JobOrderController extends Controller {
     public List<Record> getUsedAirInfo(){
     	List<Record> list = Db.find("select t.*,"
     			+ " p1.abbr shipperAbbr , "
-    			+ " concat(ifnull(p1.address_eng, p1.address), '\r', ifnull(p1.contact_person_eng, p1.contact_person), '\r', ifnull(p1.phone,'')) shipper_info,"
     			+ " p2.abbr consigneeAbbr,"
-    			+ " concat(ifnull(p2.address_eng, p2.address), '\r', ifnull(p2.contact_person_eng, p2.contact_person), '\r', ifnull(p2.phone,'')) consignee_info,"
     			+ " p3.abbr notify_partyAbbr,"
-    			+ " concat(ifnull(p3.address_eng, p3.address), '\r', ifnull(p3.contact_person_eng, p3.contact_person), '\r', ifnull(p3.phone,'')) notify_info,"
     			+ " p7.abbr booking_agent_name from job_order_air_template t "
     			+ " left join party p1 on p1.id= t.shipper"
     			+ " left join party p2 on p2.id= t.consignee"

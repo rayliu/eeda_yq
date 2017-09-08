@@ -8,6 +8,7 @@
             <i id='collapseAirIcon' class="fa 
             <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用空运信息
             </a>
+            <button id ="airBtnTemplet" class="btn btn_green" style="margin-left:15px">存为模板</button>
         </h4>
     </div>
     <div id="collapseAirInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
@@ -23,7 +24,7 @@
                         consignee_info="${userInfo.consignee_info}"
                         notify_id="${userInfo.notify_party}"
                         notify_abbr="${userInfo.notify_partyAbbr}"
-                        notify_info="${userInfo.notify_info}"
+                        notify_info="${userInfo.notify_party_info}"
                         booking_agent="${userInfo.booking_agent}" 
                         booking_agent_name="${userInfo.booking_agent_name}" 
                         shipping_mark="${userInfo.shipping_mark}" 
