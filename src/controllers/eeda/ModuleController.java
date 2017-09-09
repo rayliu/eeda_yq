@@ -14,7 +14,6 @@ import models.RolePermission;
 import models.UserLogin;
 import models.eeda.Field;
 import models.eeda.FormBtn;
-import models.eeda.FormEvent;
 import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
 
@@ -25,15 +24,14 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.JsonKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.module.ModuleService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 
@@ -229,7 +227,10 @@ public class ModuleController extends Controller {
         // handle fields and build/update table
         List<Map<String, String>> field_list = (ArrayList<Map<String, String>>) dto
                 .get("fields");
-        DbUtils.handleList(field_list, form_id, Field.class, "form_id");
+        //DbUtils.handleList(field_list, form_id, Field.class, "form_id");
+        ModuleService ms = new ModuleService(this);
+        ms.processFieldType(field_list, form_id);
+        
         // 根据字段去建表
         buildFormTable(form_id);
         // 处理按钮
@@ -673,7 +674,22 @@ public class ModuleController extends Controller {
 
     private List<Record> getFormFields(Long formId) {
         List<Record> recList = Db.find(
-                "select * from eeda_form_field where form_id=?", formId);
+               "select * from eeda_form_field where form_id=?", formId);
+        //获取字段类型的对应record
+        for (Record field : recList) {
+            String type=field.getStr("field_type");
+            if("复选框".equals(type)){
+                Record checkBox = Db.findFirst(
+                        "select * from eeda_form_field_type_checkbox where field_id=?", field.get("id"));
+                
+                List<Record> list = Db.find(
+                        "select * from eeda_form_field_type_checkbox_item where field_id=?", field.get("id"));
+                if(list.size()>0)
+                    checkBox.set("item_list", list);
+                
+                field.set("CHECK_BOX", checkBox);
+            }
+        }
         return recList;
     }
 

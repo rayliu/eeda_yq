@@ -14,30 +14,18 @@ import models.UserLogin;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
-import org.beetl.core.Template;
 import org.beetl.core.resource.StringTemplateResourceLoader;
-
-
-
-
-
-
-
-
-
-
 
 import com.google.gson.Gson;
 //import cache.EedaServiceCache;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.json.Json;
 import com.jfinal.kit.JsonKit;
-import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.form.FormService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 
@@ -253,6 +241,9 @@ public class FormController extends Controller {
                         +"</span> "
                         + " <input id='"+inputId+"' name='"+inputId+"' class='form-control' type='text' data_type='date_time'/>"
                         + "</div> ";
+            }else if("复选框".equals(fieldType)){
+                FormService fs = new FormService(this);
+                replaceNameDest = fs.processFieldType_checkbox(fieldRec, fieldRec.getLong("id"));
             }else{
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + "<input type='text' name='"+inputId+"' class='form-control'>";

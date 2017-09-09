@@ -137,13 +137,15 @@ eeda.dt = function(opt){
     var option = {
         processing: opt.processing || true,
         searching: opt.searching || false,
-        paging: opt.paging || true,
-        info:  opt.info || false,
+
+        paging: opt.paging || false,
+
+        info: opt.info || false,
         lengthChange: opt.lengthChange || true,
         serverSide: opt.serverSide || false, 
         
-        scrollX: opt.scrollX || true,
-        scrollY: opt.scrollY || true, //"300px",
+        // scrollX: opt.scrollX || true,
+        // scrollY: opt.scrollY || true, 
         scrollCollapse: opt.scrollCollapse || true,
 
         responsive:opt.responsive || true,
