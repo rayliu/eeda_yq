@@ -35,11 +35,11 @@ public class WxController extends Controller {
     			+ " where gi.office_id=1"
     			+ " and gi.out_flag = 'N' and gi.error_flag = 'N'"
     			+ " and pro.item_no like '%"+item_no+"%'" 
-    			+ " union"
-    			+ " select pro.id,pro.item_no,pro.item_name,'N' hav"
-    			+ " from wmsproduct pro"
-    			+ " where amount>0 and pro.office_id=1"
-    			+ " and pro.item_no like '%"+item_no+"%'" 
+//    			+ " union"
+//    			+ " select pro.id,pro.item_no,pro.item_name,'N' hav"
+//    			+ " from wmsproduct pro"
+//    			+ " where amount>0 and pro.office_id=1"
+//    			+ " and pro.item_no like '%"+item_no+"%'" 
     			+ " ) A group by A.item_no");
     	
 //    	sql = "select * from(select pro.item_no,pro.item_name,'Y' flag "
@@ -85,11 +85,11 @@ public class WxController extends Controller {
         			+ " and gi.out_flag = 'N' and gi.error_flag = 'N'"
         			+ " and gi.office_id = 1 "
         			+ " group by gi.id"
-        			+ " union"
-        			+ " select id, part_no,part_name,0 quantity "
-        			+ " from wmsproduct"
-        			+ " where office_id = 1 "
-        			+ " and part_no like '%"+order_no+"%'"
+//        			+ " union"
+//        			+ " select id, part_no,part_name,0 quantity "
+//        			+ " from wmsproduct"
+//        			+ " where office_id = 1 "
+//        			+ " and part_no like '%"+order_no+"%'"
         			+ " ) A group by A.part_no ");
     	}
     	

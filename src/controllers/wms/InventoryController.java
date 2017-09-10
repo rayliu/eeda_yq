@@ -200,11 +200,11 @@ public class InventoryController extends Controller {
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
 			+ " and out_flag = 'N' and error_flag = 'N'"
-			+ condition 
-			+ " union"
-			+ " select pro.item_no from wmsproduct pro"
-			+ " where pro.office_id="+office_id
-			+ proCondition 
+//			+ condition 
+//			+ " union"
+//			+ " select pro.item_no from wmsproduct pro"
+//			+ " where pro.office_id="+office_id
+//			+ proCondition 
 			+ " ) A group by  A.item_no) B";
     	
         
@@ -214,12 +214,11 @@ public class InventoryController extends Controller {
 			+ " where gi.office_id="+office_id
 			+ " and out_flag = 'N' and error_flag = 'N'"
 			+ condition 
-			+ " union"
-			+ " select pro.item_no,pro.item_name,'N' flag from wmsproduct pro"
-			+ " where pro.office_id="+office_id
-			+ proCondition 
-			+ " ) A "
-			+ " group by A.item_no";
+//			+ " union"
+//			+ " select pro.item_no,pro.item_name,'N' flag from wmsproduct pro"
+//			+ " where pro.office_id="+office_id
+//			+ proCondition 
+			+ " ) A   group by A.item_no";
     	
         
         
