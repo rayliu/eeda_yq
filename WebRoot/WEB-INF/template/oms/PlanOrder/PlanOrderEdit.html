@@ -89,15 +89,15 @@
             	
            		<div class="col-lg-6 guide_target3">           			
            			<%	var dis='';
-           				var to_party_id_enter='';
-           				if(order.submit_flag!''=='Y'){
-           				dis='disabled';
-           				}           				
+           				var to_party_id_enter='';        				
 		                if(has(to_party) && (null != to_party.ID!)){
 		                    to_party_id_enter = to_party.ID;
 		                }else if(has(toEntrusted) && (null != toEntrusted.ID!)){
 		                    to_party_id_enter = toEntrusted.ID;
 		                }
+		                if(order.submit_flag!''=='Y'){
+           				dis='disabled';
+           				} 
            			%>
            			
            			<%include("/eeda/component/form/inputSpField.html",
