@@ -341,7 +341,7 @@ ORDER BY jo.order_no]]>
 			<textField>
 				<reportElement x="61" y="96" width="239" height="17" uuid="987236ab-ccb1-42b2-8a27-ee83e9b506f1"/>
 				<textElement>
-					<font pdfFontName=""/>
+					<font pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{homepage}]]></textFieldExpression>
 			</textField>
