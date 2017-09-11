@@ -25,7 +25,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         		},
 		         		{ "data": "LADING_NO", "width": "60px"},			
 		         		{ "data": "C_DATE", "width": "80px"},
-		         		{ "data": "CHARGE_TIME", "width": "120px"},
+		         		{ "data": "CHARGE_TIME", "width": "80px"},
 		         		{ "data": "CUSTOMER_NAME", "width": "80px"},
 		         		{ "data": "TYPE", "width": "60px"},
 		         		{ "data": "EXPORT_FLAG", "width": "60px",
@@ -40,10 +40,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         		{ "data": "CONTAINER_NO", "width": "80px"},
 		         		{ "data": "CABINET_TYPE", "width": "40px"},
 		         		{ "data": "COMBINE_UNLOAD_TYPE", "width": "80px"},
-		         		{ "data": "COMBINE_CAR_NO", "width": "70px"},
+		         		{ "data": "COMBINE_CAR_NO", "width": "75px"},
 		         		{ "data": "OUTPUTSCALE","width": "40px","class":"outputScale",
 		         			"render":function(data,type,full,meta){
 		         				var cabinet_type= full.COMBINE_UNLOAD_TYPE;
+		         				debugger;
 		         				if(cabinet_type=="全程"){
 		         					if(data){
 		         						return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
@@ -73,7 +74,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         					return '';
 		         			}
 		         		},
-		         		{ "data": "REMARK", "width": "200px"},
+		         		{ "data": "REMARK", "width": "170px"},
 		         		{ "data": "CREATE_STAMP","width": "80px"}
 		         	]
 		});
