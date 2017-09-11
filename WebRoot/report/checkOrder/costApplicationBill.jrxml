@@ -368,7 +368,7 @@ ORDER BY
 			<textField>
 				<reportElement x="109" y="37" width="361" height="22" uuid="2302bd03-d593-446e-8f9d-341b929ffc99"/>
 				<textElement textAlignment="Center">
-					<font fontName="黑体" size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" size="16" isBold="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
 			</textField>
