@@ -207,6 +207,8 @@ import controllers.tradeArap.TradeChargeCheckOrderController;
 import controllers.tradeArap.TradeChargeRequestController;
 import controllers.tradeArap.TradeCostCheckOrderController;
 import controllers.tradeArap.TradeCostRequestController;
+import controllers.tradeArap.TradeItemChargeConfirmController;
+import controllers.tradeArap.TradeItemCostConfirmController;
 import controllers.tradeArap.TradeJobOrderReportController;
 
 
@@ -414,6 +416,11 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/tradeAccountAuditLog", TradeAccountAuditLogController.class, contentPath);
 		me.add("/tradeJobOrderReport", TradeJobOrderReportController.class, contentPath);
 		me.add("/tradeArapReport", controllers.tr.arap.TradeArapReportController.class, contentPath);
+		
+		//贸易应收明细确认
+		me.add("/tradeItemChargeConfirm", TradeItemChargeConfirmController.class, contentPath);
+		//贸易应付明细确认
+		me.add("/tradeItemCostConfirm", TradeItemCostConfirmController.class, contentPath);
 		
 		//ar= account revenue  应收条目处理
 		me.add("/chargeRequest", controllers.arap.ar.chargeRequest.ChargeRequestController.class, contentPath);
