@@ -6,17 +6,22 @@
 	<parameter name="order_id" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="login_user_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
+	oe.logo_path,
+	oe.office_name,
 	jos.order_id,
 	josi.order_id,
 	jos.mbl_no,
 	jos.hbl_no,
 	josi.container_type,
 	josi.container_no,
-	lo. NAME pol_name,
-	lo1. NAME fnd_name,
-  CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
+	CONCAT(lo. NAME,'-',lo.code) pol_name,
+	CONCAT(lo1. NAME,'-',lo1.code) fnd_name,
+ 	CONCAT(jos.vessel,'/',jos.voyage) vessel_voyage,
 	IFNULL(p.company_name_eng,p.company_name) HBLshipperName,
 	IFNULL(p1.company_name_eng,p1.company_name) HBLconsigneeName
 FROM
@@ -26,8 +31,16 @@ LEFT JOIN location lo ON lo.id = jos.pol
 LEFT JOIN location lo1 ON lo1.id = jos.fnd
 LEFT JOIN party p ON p.id = jos.HBLshipper
 LEFT JOIN party p1 ON p1.id = jos.HBLconsignee
+LEFT JOIN user_login ul on ul.id = $P{login_user_id}
+LEFT JOIN office oe ON oe.id = ul.office_id
 where jos.order_id = $P{order_id}]]>
 	</queryString>
+	<field name="logo_path" class="java.lang.String">
+		<fieldDescription><![CDATA[logo路径]]></fieldDescription>
+	</field>
+	<field name="office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="order_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -64,14 +77,14 @@ where jos.order_id = $P{order_id}]]>
 		<band height="800" splitType="Stretch">
 			<image>
 				<reportElement x="2" y="12" width="190" height="50" uuid="078e4bfb-2c1d-4929-9773-6039b06c66c4"/>
-				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="16" y="82" width="263" height="20" uuid="1d1a2949-2f5c-4de3-8eea-3d4c5c3290a0"/>
+				<reportElement x="16" y="82" width="32" height="20" uuid="1d1a2949-2f5c-4de3-8eea-3d4c5c3290a0"/>
 				<textElement>
 					<font size="14" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[致：珠海横琴远桥供应链管理有限公司]]></text>
+				<text><![CDATA[致：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="62" y="124" width="455" height="35" uuid="f447883f-2496-4532-96cc-db8b948a7649"/>
@@ -232,6 +245,13 @@ where jos.order_id = $P{order_id}]]>
 					<font size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="44" y="83" width="507" height="20" uuid="64f8da47-f3b6-48cc-a844-47f06100feca"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
