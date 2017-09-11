@@ -644,7 +644,7 @@ ORDER BY jo.order_no]]>
 			</staticText>
 			<staticText>
 				<reportElement x="132" y="0" width="35" height="20" uuid="59ee6d97-120e-430c-b3e3-6033e7b9e299"/>
-				<text><![CDATA[CNY：]]></text>
+				<text><![CDATA[CNY:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="230" y="0" width="32" height="20" uuid="c7bb92bb-c69e-4173-9380-bd28991d85bd"/>
