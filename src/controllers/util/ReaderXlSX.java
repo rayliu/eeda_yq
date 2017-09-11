@@ -77,11 +77,15 @@ public class ReaderXlSX {
             if(row != null){
             	int j = 0;
                 while (j < colNum) {
-            		//rowData.put(xlsxTitle[j], row.getCell((short) j).getStringCellValue().trim());
                 	System.out.println(xlsxTitle[j]);
-            		rowData.put(xlsxTitle[j], (row.getCell((short) j))==null?"":(row.getCell((short) j)).toString().trim());
+                	if (xlsxTitle[j].indexOf("日期") >= 0 || xlsxTitle[j].indexOf("时间") >= 0) {
+                        Date date = (row.getCell((short) j)).getDateCellValue();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        rowData.put(xlsxTitle[j],sdf.format(date));
+                    }else{
+                    	rowData.put(xlsxTitle[j], (row.getCell((short) j))==null?"":(row.getCell((short) j)).toString().trim());
+                    }
                 	j++;
-                	
                 }
                 xlsxContent.add(rowData);
             }
