@@ -165,7 +165,7 @@ ORDER BY
 		<fieldDescription><![CDATA[公司主页]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
 	</field>
 	<field name="office_tel" class="java.lang.String">
 		<fieldDescription><![CDATA[公司电话]]></fieldDescription>
@@ -372,7 +372,7 @@ ORDER BY
 			<textField>
 				<reportElement x="61" y="96" width="239" height="17" uuid="19bd5e03-6fa6-42ac-a8b7-b0cbbbd605b2"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{homepage}]]></textFieldExpression>
 			</textField>
