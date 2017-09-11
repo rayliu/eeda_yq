@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -79,9 +80,13 @@ public class ReaderXlSX {
                 while (j < colNum) {
                 	System.out.println(xlsxTitle[j]);
                 	if (xlsxTitle[j].indexOf("日期") >= 0 || xlsxTitle[j].indexOf("时间") >= 0) {
-                        Date date = (row.getCell((short) j)).getDateCellValue();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        rowData.put(xlsxTitle[j],sdf.format(date));
+                		if("".equals(row.getCell((short) j).toString())){
+                			rowData.put(xlsxTitle[j],"");
+                		}else{
+                			Date date = (row.getCell((short) j)).getDateCellValue();
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                            rowData.put(xlsxTitle[j],sdf.format(date));
+                		}
                     }else{
                     	rowData.put(xlsxTitle[j], (row.getCell((short) j))==null?"":(row.getCell((short) j)).toString().trim());
                     }
