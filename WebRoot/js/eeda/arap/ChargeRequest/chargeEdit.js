@@ -511,6 +511,9 @@ $(document).ready(function() {
 //    	itemTable.ajax.url(url).load();
 //	})
 	
+	  //因挡住了下拉列表的下拉箭头功能，所以略作调整
+
+    	$('#tlyPageGuideToggles').css("margin-top","-12px");
 
 });
 });
