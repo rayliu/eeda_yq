@@ -1686,16 +1686,25 @@ public class TrJobOrderController extends Controller {
     @Before(Tx.class)
     public void feeCancelConfirm(){
 		String id = getPara("id");
+		boolean result = false;
 		if (id != null) {
         	TradeJobOrderArap joa = TradeJobOrderArap.dao.findFirst("select * from trade_job_order_arap where id = ?",id);
         	if( joa.get("audit_flag").equals("Y")&&joa.get("bill_flag").equals("N")){
         		joa.set("audit_flag", "N");
+        	 } else if(joa.get("audit_flag").equals("Y")&&joa.get("bill_flag").equals("Y")){
+        		String sql = " select apoa.* from trade_job_order_arap apoa"
+        				+ " LEFT JOIN trade_arap_charge_item caci on caci.ref_order_id = apoa.id and apoa.bill_flag = 'Y'"
+        				+ " LEFT JOIN trade_arap_charge_order cac on cac.id = caci.charge_order_id"
+        				+ " where cac.status ='已退单' and apoa.id = "+id+"";
+        		Record re = Db.findFirst(sql);
+        		if(re != null){
+        			joa.set("audit_flag", "N");
+        			result = true;
+        		}
         	}
         	joa.update();
         }
-		//Db.update("update trade_job_order_arap set audit_flag = 'Y' where id = ?", id);
-		Record re = Db.findFirst("select * from trade_job_order_arap where id = ?",id);
-		renderJson(re);
+		renderJson(result);
 	 }
     
     @Before(Tx.class)

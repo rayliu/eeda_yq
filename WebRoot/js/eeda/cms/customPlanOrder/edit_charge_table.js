@@ -695,17 +695,14 @@ $(document).ready(function() {
     $("#charge_table").on('click', '.cancelChargeConfirm', function(){
     	var id = $(this).parent().parent().parent().attr('id');
     	$.post('/customPlanOrder/feeCancelConfirm',{id:id},function(data){
-    		if(data.BILL_FLAG == 'Y'){
+    		if(data==false){
     			$.scojs_message('该单据已生成对账单，不能取消确认', $.scojs_message.TYPE_ERROR);
-    		}
-    		else{
+    		}else{
 	    		var order_id = $('#order_id').val();
 	    		salesOrder.refleshChargeTable(order_id);   		
 	    		$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
     		}
-    	},'json').fail(function() {
-            $.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
-       });
+    	})
     });
   
     

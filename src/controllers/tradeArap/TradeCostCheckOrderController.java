@@ -12,6 +12,7 @@ import java.util.Map;
 import models.RateContrast;
 import models.UserLogin;
 import models.eeda.profile.Currency;
+import models.eeda.tr.tradeJoborder.TradeArapChargeOrder;
 import models.eeda.tr.tradeJoborder.TradeArapCostItem;
 import models.eeda.tr.tradeJoborder.TradeArapCostOrder;
 import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
@@ -505,6 +506,20 @@ public class TradeCostCheckOrderController extends Controller {
 		setAttr("order", order);
 		render("/tradeArap/CostCheckOrder/CostCheckOrderEdit.html");
 	}
+	
+    //退掉单据
+    @Before(Tx.class)
+    public void returnOrder(){
+        String id = getPara("id");
+        String delete_reason = getPara("delete_reason");
+        TradeArapCostOrder order = TradeArapCostOrder.dao.findById(id);
+        order.set("status","已退单");
+        order.set("last_modified_stamp", new Date());
+        order.set("return_reason", delete_reason);
+        order.set("last_modified_by", LoginUserController.getLoginUserId(this));
+       // order.update();
+        renderJson("{\"result\":true}");
+    }
 	
 	@Before(Tx.class)
 	public void exchange_currency(){

@@ -122,6 +122,37 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
 	           });
         })
         
+        
+        var status = $("#status").val()
+        if(status == "已收款"||status == "已确认"){
+            $('#refuseBtn').attr('disabled', true);
+        }
+        
+            //删除按钮动作
+    $("#refuseBtn").click(function(){
+        var id = $('#order_id').val();
+        $('#delete_id').val(id);
+        $('#deleteReasonDetailAlert').click();
+    }) 
+    $("#deleteReasonDetail").on('click', '.deleteReason', function(){
+        $('#deleteReason').val($(this).val());
+    })
+     $("#deleteReasonDetail").on('click', '.confirm', function(){
+         if(!$("#deleteReasonDetailForm").valid()){
+             return;
+         }
+         var id = $('#delete_id').val();
+         var deleteReason = $('#deleteReason').val();
+        $.post('/tradeCostCheckOrder/returnOrder', {id:id,delete_reason:deleteReason}, function(data){
+            $('#deleteReasonDetail .return').click();
+            $.scojs_message('退单成功', $.scojs_message.TYPE_OK);
+            $('#confirmBtn').attr('disabled',true);
+            $('#refuseBtn').attr('disabled', true);
+        },'json').fail(function() {
+            $.scojs_message('退单失败', $.scojs_message.TYPE_ERROR);
+        });
+    });
+        
         //应付对账单打印明细
         $('#printBtn').click(function(){
         	var order_id = $('#order_id').val();

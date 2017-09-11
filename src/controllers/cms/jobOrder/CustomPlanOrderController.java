@@ -876,12 +876,12 @@ public class CustomPlanOrderController extends Controller {
     @Before(Tx.class)
     public void feeCancelConfirm(){
 		String id = getPara("id");
-		String result = "N";
+		boolean result = false;
 		if (id != null) {
 			CustomPlanOrderArap cjoa = CustomPlanOrderArap.dao.findFirst("select * from custom_plan_order_arap where id = ?",id);
         	if( cjoa.get("audit_flag").equals("Y")&&cjoa.get("bill_flag").equals("N")){
         		cjoa.set("audit_flag", "N");
-        		result = "Y";
+        		result = true;
         	}else if(cjoa.get("audit_flag").equals("Y")&&cjoa.get("bill_flag").equals("Y")){
         		String sql = " select apoa.* from custom_plan_order_arap apoa"
         				+ " LEFT JOIN custom_arap_charge_item caci on caci.ref_order_id = apoa.id and apoa.bill_flag = 'Y'"
@@ -890,7 +890,7 @@ public class CustomPlanOrderController extends Controller {
         		Record re = Db.findFirst(sql);
         		if(re != null){
         			cjoa.set("audit_flag", "N");
-        			result = "Y";
+        			result = true;
         		}
         	}
         	cjoa.update();
