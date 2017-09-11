@@ -32,7 +32,7 @@
 
         <div style="margin-left:12px;margin-right:12px">
             <form id="orderForm" class="form-group">
-            	<div class="row small_head"><div class="font_style">贸易工作单</div></div>
+            	<div class="row small_head first_element_to_target"><div class="font_style">贸易工作单</div></div>
                 <div class="row simple_small_title_div">
                 	<div class="col-lg-12">
                         <input id="order_id" type="hidden" name="order_id" value="${order.id!''}"/>
@@ -99,7 +99,7 @@
                             </div>
                             <div class="col-lg-8" >
                                 <div class="form-group" id="transport_type">
-                                    <label class="search-label">服务项目</label>
+                                    <label class="search-label second_element_to_target">服务项目</label>
                                     
                                     <label class="checkbox-inline">
                                         <input type="checkbox" value='trade' checked>贸易
@@ -190,7 +190,7 @@
                 
             
             <div class="simple_order_list_div">
-                <ul id="orderTabs" class="nav nav-tabs">
+                <ul id="orderTabs" class="nav nav-tabs fourth_element_to_target">
                     <li>
                         <a id='oceanDetailTab' href="#oceanDetail" data-toggle="tab" style="display: none;">海运信息</a>
                     </li>
@@ -612,8 +612,7 @@
 <%include("/tr/trJobOrder/party_create_modal.html", {}){} %>
 <%include("/eeda/component/jsTemplate/inputLocationField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputFinItemField.js",{}){} %>
-
-
+<%include("/tr/trJobOrder/guideEdit.html",{}){} %>
 <script>
 
 	//当前登陆用户名

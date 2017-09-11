@@ -2,10 +2,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      './edit_charge_table','./edit_cost_table', './edit_custom_china_self_table','./edit_custom_detail','./edit_custom_doc_table',
     './edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report','./edit_trade_cost_table', 
     './edit_trade_charge_sale_table', './edit_trade_charge_service_table','./edit_trade_detail','./edit_trade_cost_service_table',
-    './edit_arap_detail'], function ($, metisMenu) {
+    './edit_arap_detail','pageguide'], function ($, metisMenu) {
 $(document).ready(function() {
-
-	
+	tl.pg.init({
+        pg_caption: '本页教程'
+    });
     
 	var loadOrderToLocalstorage=function(order_id){
         if(!!window.localStorage){//查询条件处理
