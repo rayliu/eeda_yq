@@ -203,60 +203,182 @@ public class CheckOrder extends Controller {
 	 * @return
 	 */
 	@Before(Tx.class)
-	public Record importTJCheck( List<Map<String, String>> lines) {
+	public Record importTJCheck( List<Map<String, String>> lines, long office_id) {
 		Record result = new Record();
 		result.set("result",true);
-		//importResult = validatingOrderNo(lines);校验是否存在隔单
 		//if ("true".equals(importResult.get("result"))) {
-			int rowNumber = 1;
+			int rowNumber = 2;//最左边的编码行
+			String error_msg = "";
 			try {
 				for (Map<String, String> line :lines) {
-//					String upc = line.get("商品条码（UPC）").trim();
-//					String cargo_name = line.get("中文名称").trim();
-//					String amount = line.get("商品数量").trim();
-//					String consignee = line.get("收货人姓名").trim();
-//					String consignee_telephone = line.get("收货人电话").trim();
-//					String consignee_address = line.get("收货人详细地址").trim();
-//					String location = line.get("收货人地区编码").trim();
-//					String order_no = line.get("订单编号").trim();
-//					
-//					
-//					if(StringUtils.isNotEmpty(amount)){
-//						if(!checkDouble(amount)){
-//							throw new Exception("【商品数量】("+amount+")格式类型有误");
-//						}
-//					}else{
-//						throw new Exception("【商品数量】不能为空");
-//					}
-//					
-//					if(StringUtils.isNotEmpty(upc)){
-//						if(!checkUpc(upc)){
-//							throw new Exception("【商品条码（UPC）】("+upc+")有误，系统产品信息不存在此upc");
-//						}
-//					}else{
-//						throw new Exception("【商品条码(UPC)】不能为空");
-//					}
-//					
-//		
-//					if(StringUtils.isEmpty(consignee)){
-//						throw new Exception("【收货人姓名】不能为空");
-//					}
-//					if(StringUtils.isEmpty(consignee_telephone)){
-//						throw new Exception("【收货人电话】不能为空");			
-//					}
+					String customer_name = line.get("客户简称").trim();
+					String type = line.get("类型").trim();
+					String container_no = line.get("柜号").trim();
+					String so_no = line.get("SO号").trim();
+					String cabinet_type = line.get("柜型").trim();
+					String head_carrier_name = line.get("头程船公司").trim();
+					String lading_no = line.get("提单号").trim();
+					String customer_salesman = line.get("客户业务员").trim();
+					String contract_no = line.get("合同号").trim();
+					String toca_no = line.get("拖卡号").trim();
+					String cross_border_travel_name = line.get("跨境").trim();
+					String take_wharf_name = line.get("提柜码头").trim();
+					String back_wharf_name = line.get("还柜码头").trim();
+					String charge_time = line.get("结算时间").trim();
+					String loading_wharf1_name = line.get("装货地点1").trim();
+					String loading_wharf2_name = line.get("装货地点2").trim();
+					String loading_platform = line.get("装货平台").trim();
+					String cabinet_date = line.get("提柜/货日期").trim();
+					String closing_date = line.get("收柜日期").trim();
+					String tj_car_no = line.get("提吉车牌（含 拖卡重量、拖头重量、司机、司机电话）").trim();
+					String all_car_no = line.get("全程车牌").trim();
+					String yg_car_no = line.get("移柜车牌").trim();
+					String sz_car_no = line.get("收重车牌").trim();
+					String trans_fee = line.get("运费").trim();
+					String call_fee = line.get("打单费").trim();
+					String weighing_fee = line.get("过磅费").trim();
+					String high_speed_fee = line.get("高速费").trim();
+					String remark = line.get("备注").trim();
 					
+					if(StringUtils.isNotBlank(customer_name)){
+						Record customer = Db.findFirst("select * from party where abbr = ?  and type = 'CUSTOMER'  and office_id = ?",customer_name,office_id);
+			   			if(customer == null){
+			   				error_msg += "第"+rowNumber+"行【客户简称】，系统无此数据，请核对是否有误<br/>";
+			   			}
+					}else{
+						error_msg += "第"+rowNumber+"行【客户简称】，字段不能为空<br/>";
+					}
 					
+					if(StringUtils.isNotBlank(head_carrier_name)){
+						Record carrier = Db.findFirst("select * from party where abbr = ? and type = 'SP'  and office_id = ?",head_carrier_name,office_id);
+			   			if(carrier == null){
+			   				error_msg += "第"+rowNumber+"行【头程船公司】，系统无此数据，请核对是否有误<br/>";
+			   			}
+					}else{
+						error_msg += "第"+rowNumber+"行【头程船公司】，字段不能为空<br/>";
+					}
+		   			
+					if(StringUtils.isNotBlank(back_wharf_name)){
+			   			Record bf = Db.findFirst("select p.* from dockinfo p where p.dock_name = ? and  p.office_id=?",back_wharf_name,office_id);
+			   			if(bf == null){
+			   				error_msg += "第"+rowNumber+"行【还柜码头】，系统无此数据，请核对是否有误<br/>";
+			   			}
+					}else{
+						error_msg += "第"+rowNumber+"行【还柜码头】，字段不能为空<br/>";
+					}
+		   			
+					if(StringUtils.isNotBlank(take_wharf_name)){
+						Record tw = Db.findFirst("select p.* from dockinfo p where p.dock_name = ? and  p.office_id=?",take_wharf_name,office_id);
+			   			if(tw == null){
+			   				error_msg += "第"+rowNumber+"行【提柜码头】，系统无此数据，请核对是否有误<br/>";
+			   			}
+					}else{
+						error_msg += "第"+rowNumber+"行【提柜码头】，字段不能为空<br/>";
+					}
+		   			
+					if(StringUtils.isNotBlank(cross_border_travel_name)){
+			   			Record cbt = Db.findFirst("select p.* from dockinfo p where p.dock_name = ? and  p.office_id=?",cross_border_travel_name,office_id);
+			   			if(cbt == null){
+			   				error_msg += "第"+rowNumber+"行【跨境】，系统无此数据，请核对是否有误<br/>";
+			   			}
+					}
+
+					if(StringUtils.isNotBlank(loading_wharf1_name)){
+			   			Record lw1 = Db.findFirst("select p.* from dockinfo p where p.dock_name = ? and  p.office_id=?",loading_wharf1_name,office_id);
+			   			if(lw1 == null){
+			   				error_msg += "第"+rowNumber+"行【装货地点1】，系统无此数据，请核对是否有误<br/>";
+			   			}
+					}
+		   			
+					if(StringUtils.isNotBlank(loading_wharf2_name)){
+			   			Record lw2 = Db.findFirst("select p.* from dockinfo p where p.dock_name = ? and  p.office_id=?",loading_wharf2_name,office_id);
+			   			if(lw2 == null){
+			   				error_msg += "第"+rowNumber+"行【装货地点2】，系统无此数据，请核对是否有误<br/>";
+			   			}
+					}
+					
+					if(StringUtils.isNotBlank(tj_car_no)){
+						Record car = Db.findFirst("select c.*,p.abbr sp_name from carinfo c left join party p on p.id=c.parent_id "
+								+ " where c.type='OWN' and c.office_id = ? and c.car_no = ? ", office_id,tj_car_no);
+			   			if(car == null){
+			   				error_msg += "第"+rowNumber+"行【提吉车牌（含 拖卡重量、拖头重量、司机、司机电话）】，系统无此数据，请核对是否有误<br/>";
+			   			}
+					}
+					
+					if(StringUtils.isNotBlank(all_car_no)){
+						Record car = Db.findFirst("select c.*,p.abbr sp_name from carinfo c left join party p on p.id=c.parent_id "
+								+ " where c.type='OWN' and c.office_id = ? and c.car_no = ? ", office_id,all_car_no);
+			   			if(car == null){
+			   				error_msg += "第"+rowNumber+"行【全程车牌】，系统无此数据，请核对是否有误<br/>";
+			   			}
+					}
+					
+					if(StringUtils.isNotBlank(yg_car_no)){
+						Record car = Db.findFirst("select c.*,p.abbr sp_name from carinfo c left join party p on p.id=c.parent_id "
+								+ " where c.type='OWN' and c.office_id = ? and c.car_no = ? ", office_id,yg_car_no);
+			   			if(car == null){
+			   				error_msg += "第"+rowNumber+"行【移柜车牌】，系统无此数据，请核对是否有误<br/>";
+			   			}
+					}
+					
+					if(StringUtils.isNotBlank(sz_car_no)){
+						Record car = Db.findFirst("select c.*,p.abbr sp_name from carinfo c left join party p on p.id=c.parent_id "
+								+ " where c.type='OWN' and c.office_id = ? and c.car_no = ? ", office_id,sz_car_no);
+			   			if(car == null){
+			   				error_msg += "第"+rowNumber+"行【收重车牌】，系统无此数据，请核对是否有误<br/>";
+			   			}
+					}
+		   			
+					if(StringUtils.isNotBlank(charge_time)){
+						if(!checkDate(charge_time)){
+							error_msg += "第"+rowNumber+"行【结算时间】，日期格式不正确<br/>";
+						}
+					}
+					
+					if(StringUtils.isNotBlank(cabinet_date)){
+						if(!checkDate(cabinet_date)){
+							error_msg += "第"+rowNumber+"行【提柜/货日期】，日期格式不正确<br/>";
+						}
+					}
+					
+					if(StringUtils.isNotBlank(closing_date)){
+						if(!checkDate(closing_date)){
+							error_msg += "第"+rowNumber+"行【收柜日期】，日期格式不正确<br/>";
+						}
+					}
+					
+					if(StringUtils.isNotBlank(trans_fee)){
+						if(!checkDouble(trans_fee)){
+							error_msg += "第"+rowNumber+"行【运费】，数字格式不正确<br/>";
+						}
+					}
+					
+					if(StringUtils.isNotBlank(call_fee)){
+						if(!checkDouble(call_fee)){
+							error_msg += "第"+rowNumber+"行【打单费】，数字格式不正确<br/>";
+						}
+					}
+					
+					if(StringUtils.isNotBlank(weighing_fee)){
+						if(!checkDouble(weighing_fee)){
+							error_msg += "第"+rowNumber+"行【过磅费】，数字格式不正确<br/>";
+						}
+					}
+					
+					if(StringUtils.isNotBlank(high_speed_fee)){
+						if(!checkDouble(high_speed_fee)){
+							error_msg += "第"+rowNumber+"行【高速费】，数字格式不正确<br/>";
+						}
+					}
 					rowNumber++;
 				}
+				
+				if(StringUtils.isNotBlank(error_msg)){
+					throw new Exception();
+				}
 			} catch (Exception e) {
-				System.out.println("导入操作异常！");
-				System.out.println(e.getMessage());
-
 				result.set("result", false);
-				
-				result.set("cause", "校验失败<br/>"+"数据校验至第" + (rowNumber)
-							+ "行时出现异常:" + e.getMessage() );
-				
+				result.set("cause", error_msg);
 				return result;
 			} 
 		return result;
@@ -357,7 +479,13 @@ public class CheckOrder extends Controller {
 	   			
 	   			order.set("order_no", order_no);
 	   			order.set("type", type);
+	   			if(StringUtils.isBlank(container_no)){
+	   				container_no = "无";
+	   			}
 	   			order.set("container_no", container_no);
+	   			if(StringUtils.isBlank(so_no)){
+	   				so_no = "无";
+	   			}
 	   			order.set("so_no", so_no);
 	   			order.set("cabinet_type", cabinet_type);
 	   			order.set("lading_no", lading_no);

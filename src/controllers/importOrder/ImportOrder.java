@@ -67,9 +67,9 @@ public class ImportOrder extends Controller {
 				if (true) {
 					if("transJobOrder".equals(order_type)){
 						// 内容校验
-						//resultMap = checkOrder.importTJCheck(content);
+						resultMap = checkOrder.importTJCheck(content , officeId);
 						// 内容开始导入
-						if(true){
+						if(resultMap.getBoolean("result")){
 							resultMap = checkOrder.importTJValue(content, userId, officeId);
 						}
 					}else if("tradeJobOrder".equals(order_type)){
