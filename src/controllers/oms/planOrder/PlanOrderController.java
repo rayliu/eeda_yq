@@ -128,8 +128,13 @@ public class PlanOrderController extends Controller {
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		DbUtils.handleList(itemList, id, PlanOrderItem.class, "order_id");
 		
-		//保存空运下拉使用历史
-		//表内容
+		//保存下拉列表使用历史
+		//主单据
+		List<Record> orderRes = new ArrayList<Record>();
+		orderRes.add(new Record().set("type", "ARAP_COM").set("param", "to_party_id"));
+		saveParamHistory(dto,orderRes); 
+		
+		//明细表内容
 		List<Record> planRes = new ArrayList<Record>();
 		planRes.add(new Record().set("type", "port").set("param", "POL"));
 		planRes.add(new Record().set("type", "port").set("param", "POD"));
