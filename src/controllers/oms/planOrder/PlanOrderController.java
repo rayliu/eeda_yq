@@ -128,11 +128,15 @@ public class PlanOrderController extends Controller {
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
 		DbUtils.handleList(itemList, id, PlanOrderItem.class, "order_id");
 		
-		
-//		List<PlanOrderItem> reList = PlanOrderItem.dao.find("select * from plan_order_item where order_id = ?",id);
-//		for(PlanOrderItem item:reList){
-//			createBookOrder(item,id);
-//		}
+		//保存空运下拉使用历史
+		//表内容
+		List<Record> planRes = new ArrayList<Record>();
+		planRes.add(new Record().set("type", "port").set("param", "POL"));
+		planRes.add(new Record().set("type", "port").set("param", "POD"));
+		planRes.add(new Record().set("type", "carrier").set("param", "CARRIER"));
+		planRes.add(new Record().set("type", "UNIT").set("param", "UNIT_ID"));
+		planRes.add(new Record().set("type", "port").set("param", "POR"));
+		saveItemParamHistory(itemList,planRes); 
 		
 
 		long creator = planOrder.getLong("creator");
@@ -719,6 +723,88 @@ public class PlanOrderController extends Controller {
             	//oceanDetail.set("SONO", item.get("SONO"));
     			Db.save("job_order_shipment", oceanDetail);
             }
+    	}
+    }
+    
+    //常用字段保存进入历史记录（非明细表）
+    @Before(Tx.class)
+    private void saveParamHistory(Map<String, ?> dto,List<Record> listRes){
+    	if(dto != null ){
+    		if(dto.size() <= 0){
+    			return;
+    		}
+    		List<String> paramlist = new ArrayList<String>();//缓存到本地的数据，校验是否重复，是则跳过校验
+    		for(Record listRe : listRes){
+    			String type = listRe.getStr("type");//保存到user_query_history的类型
+    			String param = listRe.getStr("param");//表单中对应字段的ID
+    			
+    			Long userId = LoginUserController.getLoginUserId(this);
+        		type = type.toUpperCase();
+        		//param = param.toUpperCase();
+        		
+    			if(dto.get(param) != null){
+    				String param_id = (String)dto.get(param);
+    				if(paramlist.contains(param_id) || StringUtils.isBlank(param_id)){
+    					continue;
+    				}
+    					
+    				Record rec = Db.findFirst("select * from user_query_history where type=? and ref_id=? and user_id=?",type, param_id, userId);
+    		        if(rec == null){
+    		            rec = new Record();
+    		            rec.set("ref_id", param_id);
+    		            rec.set("type", type);
+    		            rec.set("user_id", userId);
+    		            rec.set("query_stamp", new Date());
+    		            Db.save("user_query_history", rec);
+    		        }else{
+    		            rec.set("query_stamp", new Date());
+    		            Db.update("user_query_history", rec);
+    		        }
+    		        paramlist.add(param_id);
+    			}
+    		}
+    	}
+    }
+    
+    //常用明细列表字段保存进入历史记录
+    @Before(Tx.class)
+    private void saveItemParamHistory(List<Map<String, String>> list,List<Record> listRes){
+    	if(list != null ){
+    		if(list.size() <= 0){
+    			return;
+    		}
+    		for(Record listRe : listRes){
+    			String type = listRe.getStr("type");
+    			String param = listRe.getStr("param");
+    			
+    			Long userId = LoginUserController.getLoginUserId(this);
+        		type = type.toUpperCase();
+        		//param = param.toUpperCase();
+        		
+        		List<String> paramlist = new ArrayList<String>();
+        		for(Map<String, String> map : list){
+        			if(map.get(param) != null){
+        				String param_id = map.get(param);
+        				if(paramlist.contains(param_id) || StringUtils.isBlank(param_id)){
+        					continue;
+        				}
+        					
+        				Record rec = Db.findFirst("select * from user_query_history where type=? and ref_id=? and user_id=?",type, param_id, userId);
+        		        if(rec == null){
+        		            rec = new Record();
+        		            rec.set("ref_id", param_id);
+        		            rec.set("type", type);
+        		            rec.set("user_id", userId);
+        		            rec.set("query_stamp", new Date());
+        		            Db.save("user_query_history", rec);
+        		        }else{
+        		            rec.set("query_stamp", new Date());
+        		            Db.update("user_query_history", rec);
+        		        }
+        		        paramlist.add(param_id);
+        			}
+        		}
+    		}
     	}
     }
     

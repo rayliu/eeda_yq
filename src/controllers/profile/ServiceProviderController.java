@@ -561,14 +561,25 @@ public class ServiceProviderController extends Controller {
     //查询船公司下拉, 这里不用过滤office, 因为船公司是通用的
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchCarrier(){
-        UserLogin user = LoginUserController.getLoginUser(this);
-        
         String name = getPara("input");
-        List<Record> recs = null;
-        String sql = "select id,abbr name from party p where p.type = 'SP' and p.sp_type like '%carrier%' ";
-        if(!StringUtils.isBlank(name)){
-        	sql+=" and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
+        
+        String condition = "";
+        if(StringUtils.isNotBlank(name)){
+        	condition = " and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
         }
+        
+        List<Record> recs = null;
+        String sql = "select  * from(SELECT p.id,p.abbr name"
+				+ " FROM user_query_history uqh"
+				+ " LEFT JOIN party p ON p.id = uqh.ref_id"
+				+ " WHERE uqh.type = 'CARRIER'"
+				+ condition
+				+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
+				+ " ORDER BY uqh.query_stamp desc ) A"
+				+ " UNION "
+				+ " (select id,abbr name from party p where p.type = 'SP' and p.sp_type like '%carrier%' "
+				+ condition+")";
+       
         recs = Db.find(sql);
         renderJson(recs);
     }
