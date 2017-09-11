@@ -49,6 +49,14 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
+	oe.logo_path,
+	oe.office_name,
+	oe.eng_office_name,
+	oe.address,
+	oe.zip_code,
+	oe.homepage,
+	oe.office_fax,
+	oe.office_tel,
 	u.c_name,
 	joa.id,
 	joa.type,
@@ -115,6 +123,7 @@ LEFT JOIN fin_item fi ON fi.id = joa.charge_id
 LEFT JOIN currency cur ON cur.id = joa.currency_id
 LEFT JOIN arap_cost_item aci ON aci.ref_order_id = joa.id
 LEFT JOIN arap_cost_order aco ON aco.id = aci.cost_order_id
+LEFT JOIN office oe on oe.id = aco.office_id
 LEFT JOIN user_login u on u.id = aco.create_by
 left join party p on p.id = aco.sp_id
 WHERE
@@ -124,6 +133,30 @@ GROUP BY
 	joa.id
 ORDER BY jo.order_no]]>
 	</queryString>
+	<field name="logo_path" class="java.lang.String">
+		<fieldDescription><![CDATA[logo路径]]></fieldDescription>
+	</field>
+	<field name="office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="eng_office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[公司英文名称]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[公司英文地址]]></fieldDescription>
+	</field>
+	<field name="zip_code" class="java.lang.String">
+		<fieldDescription><![CDATA[邮政编码]]></fieldDescription>
+	</field>
+	<field name="homepage" class="java.lang.String">
+		<fieldDescription><![CDATA[公司主页]]></fieldDescription>
+	</field>
+	<field name="office_fax" class="java.lang.String">
+		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+	</field>
+	<field name="office_tel" class="java.lang.String">
+		<fieldDescription><![CDATA[公司电话]]></fieldDescription>
+	</field>
 	<field name="c_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -189,8 +222,8 @@ ORDER BY jo.order_no]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="fnd" class="java.lang.String"/>
-	<field name="destination" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="destination" class="java.lang.Long">
+		<fieldDescription><![CDATA[目的地]]></fieldDescription>
 	</field>
 	<field name="begin_time" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -228,20 +261,6 @@ ORDER BY jo.order_no]]>
 	</title>
 	<pageHeader>
 		<band height="113" splitType="Stretch">
-			<staticText>
-				<reportElement x="30" y="12" width="496" height="26" uuid="9f5bc2b4-6067-454d-8506-9f42f0978740"/>
-				<textElement textAlignment="Center">
-					<font fontName="宋体" size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[珠海横琴远桥供应链管理有限公司]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="109" y="38" width="361" height="23" uuid="dda69d07-58ec-4217-a6cd-e533cdf37552"/>
-				<textElement textAlignment="Center">
-					<font fontName="黑体" size="16" isBold="true" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[ZHUHAI HENGQIN ENKYO SCM CO.,LTD]]></text>
-			</staticText>
 			<line>
 				<reportElement x="0" y="61" width="555" height="1" uuid="8a15dbcd-dc70-4142-991e-aa1b9b132ce3"/>
 			</line>
@@ -287,48 +306,59 @@ ORDER BY jo.order_no]]>
 				</textElement>
 				<text><![CDATA[电子信箱：]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="365" y="62" width="100" height="18" uuid="22c185b9-ad44-4694-9ffc-1505f13c4e1c"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[86-756-3225991]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="365" y="79" width="100" height="18" uuid="41430ddd-5424-48d9-8721-90a238258e4d"/>
-				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[86-756-3225900]]></text>
-			</staticText>
 			<image>
 				<reportElement x="0" y="-11" width="109" height="34" uuid="d7c0123f-4c00-4bb2-b117-c27a6b980223"/>
-				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
+				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="61" y="62" width="240" height="17" uuid="e649dff3-3baa-4977-adf8-212ae3953cd7"/>
+			<textField>
+				<reportElement x="40" y="13" width="496" height="26" uuid="693831d8-8e53-4b95-bac9-9449a4787b05"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="16" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="39" width="361" height="22" uuid="17ccc269-581d-4681-ab18-66fc66a3abe8"/>
+				<textElement textAlignment="Center">
+					<font fontName="黑体" size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="62" width="239" height="17" uuid="4d06e799-42a8-4d2d-a596-e6476962c412"/>
+				<textElement>
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="79" width="239" height="17" uuid="ba367498-a69b-479c-ab42-3f69f918859a"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[珠海市石花路56号山海一品居2栋2单元701
-
-]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="61" y="79" width="240" height="17" uuid="92b5b21b-a216-4ab6-8b6c-948047108f4c"/>
+				<textFieldExpression><![CDATA[$F{zip_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="96" width="239" height="17" uuid="987236ab-ccb1-42b2-8a27-ee83e9b506f1"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[519015
-]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="61" y="96" width="240" height="17" uuid="e3b84697-2a4e-4ef2-8429-f9be6c440da3"/>
+				<textFieldExpression><![CDATA[$F{homepage}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="365" y="62" width="190" height="17" uuid="bbb7e829-21d9-425b-9dec-bf9c5fc235c3"/>
 				<textElement>
-					<font pdfEncoding="Cp1252"/>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[www.yq-scm.com]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$F{office_tel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="365" y="79" width="190" height="17" uuid="8f97bb8e-272a-4362-9345-36005a8d8044"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{office_fax}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
