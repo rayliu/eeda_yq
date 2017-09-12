@@ -33,6 +33,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.eeda.ListConfigController;
+import controllers.eeda.SysInfoController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -94,8 +95,10 @@ public class PlanOrderController extends Controller {
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
+   		
+   		String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {
-   			//update
+   		    action_type="update";
    			planOrder = PlanOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, planOrder);
 
@@ -143,6 +146,7 @@ public class PlanOrderController extends Controller {
 		planRes.add(new Record().set("type", "port").set("param", "POR"));
 		saveItemParamHistory(itemList,planRes); 
 		
+		SysInfoController.saveLog(jsonStr, id, user, action_type, "计划单", "");
 
 		long creator = planOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);

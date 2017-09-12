@@ -39,6 +39,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
 import controllers.eeda.ListConfigController;
+import controllers.eeda.SysInfoController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
@@ -477,8 +478,9 @@ public class TradeChargeRequestController extends Controller {
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id=user.getLong("office_id");
    		
+   		String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {
-   			//update
+   		    action_type="update";
    			order = TradeArapChargeApplicationOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, order); 
    			
@@ -541,7 +543,7 @@ public class TradeChargeRequestController extends Controller {
 	        
 		
 	}
-		
+   		SysInfoController.saveLog(jsonStr, id, user, action_type, "收款申请单", "trade");
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);
 		Record r = order.toRecord();

@@ -41,6 +41,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
 import controllers.eeda.ListConfigController;
+import controllers.eeda.SysInfoController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -211,9 +212,10 @@ public class BookingOrderController extends Controller {
         SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
         Date date=new Date();
 		newDateStr=sdf.format(date);
-   		
+
+		String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {
-   			//update
+   		    action_type="update";
    			bookingOrder = BookingOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, bookingOrder);
    			bookingOrder.set("updator", user.getLong("id"));
@@ -262,6 +264,7 @@ public class BookingOrderController extends Controller {
 		long creator = bookingOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);
    		
+   		SysInfoController.saveLog(jsonStr, id, user, action_type, "Booking", "");
 		Record r = bookingOrder.toRecord();
 		r.set("creator_name", user_name);
 		r.set("ocean", getDetail(id,"ocean"));

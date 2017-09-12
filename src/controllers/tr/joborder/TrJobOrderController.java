@@ -53,6 +53,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
 import controllers.eeda.ListConfigController;
+import controllers.eeda.SysInfoController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.FileUploadUtil;
@@ -250,9 +251,9 @@ public class TrJobOrderController extends Controller {
         }
         logger.debug("工作单出货日期："+newDateStr);
         
-        
+        String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {
-   			//update
+   		    action_type="update";
    			jobOrder = TradeJobOrder.dao.findById(id);
    			//版本(时间戳)校验，不对的话就不让更新保存
    			Timestamp page_update_stamp = Timestamp.valueOf(dto.get("update_stamp").toString());
@@ -420,7 +421,7 @@ public class TrJobOrderController extends Controller {
 	        }
 		}
 		
-		
+		SysInfoController.saveLog(jsonStr, id, user, action_type, "贸易工作单", "trade");
 
 		long creator = jobOrder.getLong("creator");
    		String user_name = LoginUserController.getUserNameById(creator);

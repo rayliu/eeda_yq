@@ -31,6 +31,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.eeda.ListConfigController;
+import controllers.eeda.SysInfoController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
@@ -64,9 +65,9 @@ public class TradeChargeCheckOrderController extends Controller {
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
-   		
+   		String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {
-   			//update
+   		    action_type="update";
    			order = TradeArapChargeOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, order);
    			
@@ -142,6 +143,8 @@ public class TradeChargeCheckOrderController extends Controller {
 				rc.update();
 			}	
 		}
+		
+		SysInfoController.saveLog(jsonStr, id, user, action_type, "应收对账单", "trade");
 		
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);

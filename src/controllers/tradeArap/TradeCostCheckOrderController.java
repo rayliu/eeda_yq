@@ -31,6 +31,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.eeda.ListConfigController;
+import controllers.eeda.SysInfoController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
@@ -411,9 +412,9 @@ public class TradeCostCheckOrderController extends Controller {
         TradeArapCostOrder aco = new TradeArapCostOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
-   		
+   		String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {
-   			//update
+   		    action_type="update";
    			aco = TradeArapCostOrder.dao.findById(id);
    			DbUtils.setModelValues(dto, aco);
    			aco.update();
@@ -480,7 +481,7 @@ public class TradeCostCheckOrderController extends Controller {
 				rc.update();
 			}	
 		}
-   		
+		SysInfoController.saveLog(jsonStr, id, user, action_type, "应付对账单", "trade");
    		String sql = " select aco.*, p.company_name company_name, u.c_name creator_name from trade_arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by"
