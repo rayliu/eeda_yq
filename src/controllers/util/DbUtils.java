@@ -80,12 +80,13 @@ public class DbUtils {
             		continue;
             	}
 			}
-        	if(beginTime.length()==10){
-        	    beginTime += " 00:00:00";
-        	}
-        	if(endTime.length()==10){
-        	    endTime += " 23:59:59";
-            }
+        	//为什么要加上时分秒？
+//        	if(beginTime.length()==10){
+//        	    beginTime += " 00:00:01";
+//        	}
+//        	if(endTime.length()==10){
+//        	    endTime += " 23:59:59";
+//            }
         	condition += " and (" + key + " between '" + beginTime + "' and '" + endTime+ "' )";
         }
         logger.debug("condition: "+condition);
