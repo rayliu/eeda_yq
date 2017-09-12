@@ -3,15 +3,44 @@ $(document).ready(function() {
 	
     var deletedTableIds=[];
 	
-	
     //删除一行
-    $("#customer_quotation_table").on('click', '.delete', function(e){
+    $("#customer_quotation_table").on('click', '#delete', function(e){
         e.preventDefault();
          var tr = $(this).parent().parent();
          deletedTableIds.push(tr.attr('id'));
 
          cargoTable.row(tr).remove().draw();
     }); 
+    //copy一行
+    $("#customer_quotation_table").on('click', '#copy', function(e){
+    	var row = $(this).parent().parent();
+    	var json = {};
+    	for(var i = 0; i < $(row.find('input,select')).size(); i++){
+    		var name = $(row.find('input,select')[i]).attr('name');
+    		var value = $(row.find('input,select')[i]).val();
+    		json[name] = value;
+    	}
+    	var item={};
+    	item.TAKE_WHARF = json.TAKE_WHARF;
+    	item.BACK_WHARF = json.BACK_WHARF;
+    	item.LOADING_WHARF1 = json.LOADING_WHARF1;
+    	item.LOADING_WHARF2 = json.LOADING_WHARF2;
+    	item.CURRENCY_ID = json.CURRENCY_ID;
+    	item.TRUCK_TYPE = json.truck_type;
+    	item.CONTAINER_VOLUME = json.container_volume;
+    	item.TAX_FREE_FREIGHT = json.tax_free_freight;
+    	item.TAX_RATE = json.tax_rate;
+    	item.TAX = json.tax;
+    	item.PRICE_TAX = json.price_tax;
+    	item.REMARK = json.remark;
+    	
+    	item.TAKE_ADDRESS_NAME = json.TAKE_WHARF_input;
+    	item.DELIVERY_ADDRESS_NAME = json.BACK_WHARF_input;
+    	item.LOADING_WHARF1_NAME = json.LOADING_WHARF1_input;
+    	item.LOADING_WHARF2_NAME = json.LOADING_WHARF2_input;
+    	item.CURRENCY_NAME = json.CURRENCY_ID_input;
+        cargoTable.row.add(item).draw(false);
+    });
 
     var bindFieldEvent=function(){
         $('table .date').datetimepicker({  
@@ -39,10 +68,16 @@ $(document).ready(function() {
         columns:[
            { "width": "30px",
                     "render": function ( data, type, full, meta ) {
-                        return '<button type="button" class="delete btn table_btn delete_btn btn-xs">'+
-                        '<i class="fa fa-trash-o"></i> 删除</button>';
+                        return '<button type="button" id="delete" class="btn table_btn delete_btn btn-xs"><i class="fa fa-trash-o"></i> 删除</button>';
+                        
                     }
             },
+            { "width": "25px",
+                "render": function ( data, type, full, meta ) {
+                    return '<button type="button" id="copy" class="btn table_btn delete_btn btn-xs">&nbsp&nbsp&nbsp复制&nbsp&nbsp&nbsp</button>';
+                    
+                }
+        },
             { "data": "TAKE_WHARF", "width": "150px", "className":"consigner_addr",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -52,7 +87,7 @@ $(document).ready(function() {
                                 id: 'TAKE_WHARF',
                                 value: data,
                                 display_value: full.TAKE_ADDRESS_NAME,
-                                style:'width:180px',
+                                style:'width:150px',
                             }
                         );
                         return field_html;
@@ -123,7 +158,7 @@ $(document).ready(function() {
                     return '<input type="text" name="container_volume" value="'+data+'" class="form-control" style="width:80px"/>';
                 }
             },
-            { "data": "CURRENCY_ID", "width": "60px",
+            { "data": "CURRENCY_ID", "width": "85px",
                 "render": function ( data, type, full, meta ) {
                     if(!data&&!full.CURRENCY_NAME){
                         data='3';
@@ -134,7 +169,7 @@ $(document).ready(function() {
                             id: 'CURRENCY_ID',
                             value: data,
                             display_value: full.CURRENCY_NAME,
-                            style:'width:80px'
+                            style:'width:85px'
                         }
                        );
                        return field_html;
