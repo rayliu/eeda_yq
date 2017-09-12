@@ -1,6 +1,7 @@
 <div class="form-group">
     <div class="col-lg-12">
         <div class="row">
+            <input type="hidden" id="${type}_event_id">
             <div class="col-lg-6">
                 <%include("/eeda/component/form/inputField.html", 
                                             {   id: type+'_event_name', 
@@ -17,6 +18,7 @@
                                 value:order.type!'',
                                 value_list:[
                                     {code:'open', value:'打开表单'},
+                                    {code:'set_css', value:'设置样式'},
                                     {code:'check', value:'检查表单'},
                                     {code:'setValue', value:'赋值'},
                                     {code:'save', value:'保存'},
@@ -29,13 +31,16 @@
             </div>
         </div>
         <h4>操作公式</h4>
-        <div class="row" id="open_form_div">
-            <%include("/profile/module/events/formular/formular_open_form.html", {type: type}){} %>
+        <div class="row" id="${type}_open_form_div">
+            <%include("/profile/module/events/type/open_form.html", {type: type}){} %>
         </div>
-        <div class="row" id="check_form_div" style="display: none;">
+        <div class="row" id="${type}_set_css_div" style="display: none;">
+            <%include("/profile/module/events/type/set_css.html", {type: type}){} %>
+        </div>
+        <div class="row" id="${type}_check_form_div" style="display: none;">
             <%include("/profile/module/events/formular/formular_check_form.html", {}){} %>
         </div>
-        <div class="row" id="assign_form_div" style="display: none;">
+        <div class="row" id="${type}_assign_form_div" style="display: none;">
             <%include("/profile/module/events/formular/formular_assign_form.html", {}){} %>
         </div>
         <div class="row">

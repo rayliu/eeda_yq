@@ -227,10 +227,10 @@ public class ModuleController extends Controller {
         // handle fields and build/update table
         List<Map<String, String>> field_list = (ArrayList<Map<String, String>>) dto
                 .get("fields");
-        //DbUtils.handleList(field_list, form_id, Field.class, "form_id");
+        // DbUtils.handleList(field_list, form_id, Field.class, "form_id");
         ModuleService ms = new ModuleService(this);
         ms.processFieldType(field_list, form_id);
-        
+
         // 根据字段去建表
         buildFormTable(form_id);
         // 处理按钮
@@ -249,49 +249,70 @@ public class ModuleController extends Controller {
         renderJson(orderRec);
     }
 
-    private void handleEvents(Map<String, ?> dto, Long form_id) throws InstantiationException, IllegalAccessException {
+    private void handleEvents(Map<String, ?> dto, Long form_id)
+            throws InstantiationException, IllegalAccessException {
         List<Map<String, ?>> event_list = (ArrayList<Map<String, ?>>) dto
                 .get("events");
         for (Map<String, ?> event : event_list) {
-            if(event.get("id")!=null){
-                Long id = ((Double)event.get("id")).longValue();
-                Record rec = Db.findFirst("select * from eeda_form_event where id=?", id);
+            if (event.get("id") != null) {
+                Long id = ((Double) event.get("id")).longValue();
+                Record rec = Db.findFirst(
+                        "select * from eeda_form_event where id=?", id);
                 rec.set("name", event.get("name"));
                 rec.set("type", event.get("type"));
-                if("open".equals(event.get("type"))){
+                if ("open".equals(event.get("type"))) {
                     saveEventOpen(event, id);
+                }else if("set_css".equals(event.get("type"))){
+                    ModuleService ms = new ModuleService(this);
+                    ms.saveEventSetCss(event, id);
                 }
                 Db.update("eeda_form_event", rec);
-            }else{
-                
+            } else {
+
                 Record rec = new Record();
                 rec.set("name", event.get("name"));
                 rec.set("type", event.get("type"));
                 rec.set("form_id", form_id);
                 rec.set("btn_id", event.get("btn_id"));
+                if (event.get("btn_id") == null) {
+                    rec.set("menu_type", "value_change");
+                }
                 Db.save("eeda_form_event", rec);
-                
-                if("open".equals(event.get("type"))){
+
+                if ("open".equals(event.get("type"))) {
                     saveEventOpen(event, rec.getLong("id"));
+                } else if ("set_css".equals(event.get("type"))) {
+                    ModuleService ms = new ModuleService(this);
+                    ms.saveEventSetCss(event, rec.getLong("id"));
                 }
             }
         }
     }
 
-    private void saveEventOpen(Map<String, ?> event, Long id) {
+    private void saveEventOpen(Map<String, ?> event, Long event_id) {
         Map<String, ?> openDto = (Map<String, ?>) event.get("openForm");
-        if(openDto==null){
+        if (openDto == null) {
             openDto = (Map<String, ?>) event.get("OPEN_FORM");
         }
-        Record eventOpen = Db.findFirst("select * from eeda_form_event_open where event_id=?", id);
-        if(eventOpen!=null){
-            eventOpen.set("condition", openDto.get("condition")==null?openDto.get("CONDITION"):openDto.get("condition"));
-            eventOpen.set("module_name", openDto.get("module_name")==null?openDto.get("MODULE_NAME"):openDto.get("module_name"));
-            eventOpen.set("open_type", openDto.get("open_type")==null?openDto.get("OPEN_TYPE"):openDto.get("open_type"));
+        Record eventOpen = Db
+                .findFirst(
+                        "select * from eeda_form_event_open where event_id=?",
+                        event_id);
+        if (eventOpen != null) {
+            eventOpen.set("condition",
+                    openDto.get("condition") == null ? openDto.get("CONDITION")
+                            : openDto.get("condition"));
+            eventOpen.set(
+                    "module_name",
+                    openDto.get("module_name") == null ? openDto
+                            .get("MODULE_NAME") : openDto.get("module_name"));
+            eventOpen.set("open_type",
+                    openDto.get("open_type") == null ? openDto.get("OPEN_TYPE")
+                            : openDto.get("open_type"));
             Db.update("eeda_form_event_open", eventOpen);
-        }else{
+        } else {
             eventOpen = new Record();
-            eventOpen.set("event_id", id);
+            eventOpen.set("event_id", event_id);
             eventOpen.set("condition", openDto.get("condition"));
             eventOpen.set("module_name", openDto.get("module_name"));
             eventOpen.set("open_type", openDto.get("open_type"));
@@ -418,28 +439,52 @@ public class ModuleController extends Controller {
         }
     }
 
-    public void searchFormBtns(){
+    public void searchFormBtns() {
         Long form_id = getParaToLong("form_id");
         String type = getPara("type");
-        List<Record>  list = Db.find("select * from eeda_form_btn where form_id=? and type=?", form_id, type);
+        List<Record> list = Db.find(
+                "select * from eeda_form_btn where form_id=? and type=?",
+                form_id, type);
         renderJson(list);
     }
-    
-    public void searchFormBtnEvents(){
+
+    public void searchFormBtnEvents() {
+
         Long form_id = getParaToLong("formId");
-        Long btn_id = getParaToLong("id");
-        List<Record>  list = Db.find("select * from eeda_form_event where form_id=? and btn_id=?", form_id, btn_id);
-        for (Record event : list) {
-            String eventType = event.getStr("type");
-            if ("open".equals(eventType)){
-                Record openRec = Db.findFirst("select * from eeda_form_event_open where event_id=?", event.getInt("id"));
-                event.set("open_form", openRec);
-            }
+        List<Record> list = null;
+        if ("值变化".equals(getPara("name"))) {
+            list = Db
+                    .find("select * from eeda_form_event where form_id=? and menu_type='value_change'",
+                            form_id);
+        }else{
+            Long btn_id = getParaToLong("id");
+            list = Db.find(
+                    "select * from eeda_form_event where form_id=? and btn_id=?",
+                    form_id, btn_id);
         }
         
+        for (Record event : list) {
+            String eventType = event.getStr("type");
+            if ("open".equals(eventType)) {
+                Record openRec = Db.findFirst(
+                        "select * from eeda_form_event_open where event_id=?",
+                        event.getInt("id"));
+                event.set("open_form", openRec);
+            }else if("set_css".equals(eventType)){
+                Record cssRec = Db.findFirst(
+                        "select * from eeda_form_event_css where event_id=?",
+                        event.getInt("id"));
+                List<Record> itemList = Db.find(
+                        "select * from eeda_form_event_css_item where event_id=?",
+                        event.getInt("id"));
+                cssRec.set("set_field_list", itemList);
+                event.set("set_css", cssRec);
+            }
+        }
+
         renderJson(list);
     }
-    
+
     private void searchHandle(Map<String, ?> dto, Long module_id) {
         String searchStr = (String) dto.get("search_obj");
         Map<String, ?> searchDto = new Gson()
@@ -634,8 +679,7 @@ public class ModuleController extends Controller {
 
         List<Record> structure_list = null;// getStructureRecs(module_id);
         Record formRec = getForm(module_id);
-        
-        
+
         List<Record> permission_list = getPermissionList(module_id);
         List<Record> auth_list = getAuthList(module_id);
         // String search_obj = getSearchObj(module_id);
@@ -646,13 +690,12 @@ public class ModuleController extends Controller {
             Long form_id = formRec.getLong("id");
             rec.set("form", formRec);
             rec.set("form_fields", getFormFields(form_id));
-            
+
             List<Record> btn_list_query = getFormBtns(form_id, "list");
             rec.set("btn_list_query", btn_list_query);
             List<Record> btn_list_edit = getFormBtns(form_id, "edit");
             rec.set("btn_list_edit", btn_list_edit);
-            
-           
+
         }
         rec.set("module_version", module.get("version"));
         rec.set("sys_only", sys_only);
@@ -674,19 +717,22 @@ public class ModuleController extends Controller {
 
     private List<Record> getFormFields(Long formId) {
         List<Record> recList = Db.find(
-               "select * from eeda_form_field where form_id=?", formId);
-        //获取字段类型的对应record
+                "select * from eeda_form_field where form_id=?", formId);
+        // 获取字段类型的对应record
         for (Record field : recList) {
-            String type=field.getStr("field_type");
-            if("复选框".equals(type)){
-                Record checkBox = Db.findFirst(
-                        "select * from eeda_form_field_type_checkbox where field_id=?", field.get("id"));
-                
-                List<Record> list = Db.find(
-                        "select * from eeda_form_field_type_checkbox_item where field_id=?", field.get("id"));
-                if(list.size()>0)
+            String type = field.getStr("field_type");
+            if ("复选框".equals(type)) {
+                Record checkBox = Db
+                        .findFirst(
+                                "select * from eeda_form_field_type_checkbox where field_id=?",
+                                field.get("id"));
+
+                List<Record> list = Db
+                        .find("select * from eeda_form_field_type_checkbox_item where field_id=?",
+                                field.get("id"));
+                if (list.size() > 0)
                     checkBox.set("item_list", list);
-                
+
                 field.set("CHECK_BOX", checkBox);
             }
         }
@@ -695,10 +741,11 @@ public class ModuleController extends Controller {
 
     private List<Record> getFormBtns(Long formId, String type) {
         List<Record> recList = Db.find(
-                "select * from eeda_form_btn where form_id=? and type=?", formId, type);
+                "select * from eeda_form_btn where form_id=? and type=?",
+                formId, type);
         return recList;
     }
-    
+
     private String getSearchObj(String module_id) {
         Record rec = Db.findFirst(
                 "select * from eeda_module_customize_search where module_id=?",
@@ -743,8 +790,10 @@ public class ModuleController extends Controller {
 
         for (Record event : event_list) {
             String eventType = event.getStr("type");
-            if ("open".equals(eventType)){
-                Record openRec = Db.findFirst("select * from eeda_form_event_open where event_id=?", event.getInt("id"));
+            if ("open".equals(eventType)) {
+                Record openRec = Db.findFirst(
+                        "select * from eeda_form_event_open where event_id=?",
+                        event.getInt("id"));
                 event.set("open_form", openRec);
             }
         }

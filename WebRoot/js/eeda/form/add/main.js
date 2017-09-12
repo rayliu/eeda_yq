@@ -1,4 +1,4 @@
-define(['jquery', '../btns', 'datetimepicker_CN'], function ($) {
+define(['jquery', '../btns', '../value_change','datetimepicker_CN'], function ($) {
     document.title = '新增 | ' + document.title;
 
     var date_inputs = $('input[data_type=date]');

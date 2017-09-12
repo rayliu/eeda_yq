@@ -69,6 +69,7 @@ public class FormController extends Controller {
         //doDelete 表单删除的动作
         
         //click 表单按钮的动作
+        //valueChange 表单按钮的动作, 参数 {field_name, value, old_value}
         
         setAttr("action", action);
         setAttr("module_id", module_id);
@@ -90,7 +91,20 @@ public class FormController extends Controller {
         Long form_id = formRec.getLong("id");
         logger.debug("-------------Eeda module:"+module_id+", form_id:"+form_id+", action: "+action+"---------------");
         
-        if("click".equals(action)){
+        if("valueChange".equals(action)){
+            List<Record> recList = Db.find("select * from eeda_form_event where "
+                    + " menu_type='value_change' and form_id=?", form_id);
+            for (Record event : recList) {
+                if("set_css".equals(event.getStr("type"))){
+                    Record cssRec = Db.findFirst("select * from eeda_form_event_css where event_id=?", event.getInt("id"));
+                    List<Record> cssItemList = Db.find("select * from eeda_form_event_css_item where "
+                            + " event_id=?", event.getInt("id"));
+                    cssRec.set("set_field_list", cssItemList);
+                    event.set("set_css", cssRec);
+                }
+            }
+            renderJson(recList);
+        }else if("click".equals(action)){
             Long btn_id = order_id;
             List<Record> recList = Db.find("select * from eeda_form_event where "
                     + " btn_id=?", btn_id);
@@ -243,7 +257,8 @@ public class FormController extends Controller {
                         + "</div> ";
             }else if("复选框".equals(fieldType)){
                 FormService fs = new FormService(this);
-                replaceNameDest = fs.processFieldType_checkbox(fieldRec, fieldRec.getLong("id"));
+                replaceNameDest = fs.processFieldType_checkbox(form_name, fieldRec, fieldRec.getLong("id"));
+                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
             }else{
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + "<input type='text' name='"+inputId+"' class='form-control'>";

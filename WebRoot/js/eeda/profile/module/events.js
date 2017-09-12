@@ -109,8 +109,7 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
                     btns.push(node);
                 }
                 var zNodes = [
-                   { name:"工具栏按钮", isParent:true, open: true, children: btns},
-                   { name:"自定义操作", isParent:true}
+                   { name:"工具栏按钮", isParent:true, open: true, children: btns}
                 ];
 
                  zTreeObj = $.fn.zTree.init($("#listEventTree"), setting, zNodes);
@@ -155,9 +154,9 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
       }
       //edit tree nodes
       var zTree = $.fn.zTree.getZTreeObj("editEventTree");
-      var toolBarNodes = zTree.getNodes()[0].children;
-      for(var i = 0;i<toolBarNodes.length;i++){
-        var eventNodes = toolBarNodes[i].children;
+      var toolBarBtnNodes = zTree.getNodes()[0].children;
+      for(var i = 0;i<toolBarBtnNodes.length;i++){
+        var eventNodes = toolBarBtnNodes[i].children;
 
         if(!eventNodes) 
           continue;
@@ -166,6 +165,17 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
           var node=eventNodes[j];
           node_list.push(node);
         }
+      }
+
+      //值改变
+      var value_change_nodes = zTree.getNodes()[1].children;
+      for(var i = 0;i<value_change_nodes.length;i++){
+        var node = value_change_nodes[i];
+
+        if(!node) 
+          continue;
+
+        node_list.push(node);
       }
       return node_list;
     }
@@ -178,4 +188,5 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
           // edit_dataTable: edit_dataTable
     };
     
+
 });

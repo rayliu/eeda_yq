@@ -20,7 +20,7 @@ public class FormService {
 
     @SuppressWarnings("unchecked")
     @Before(Tx.class)
-    public String processFieldType_checkbox(Record fieldRec, Long field_id){
+    public String processFieldType_checkbox(String form_name, Record fieldRec, Long field_id){
         String returnStr = "";
         String fieldDisplayName=fieldRec.getStr("field_display_name");
         String fieldName=fieldRec.getStr("field_name");
@@ -39,7 +39,7 @@ public class FormService {
                 checked = "checked";
             }
             String checkboxStr = "<label class='radio-inline'>"
-                    + "<input type='radio' name='"+fieldName+"' id='"+fieldName+"' value='"+code+"' "+checked+">"
+                    + "<input type='radio' origin_name='"+form_name+"-"+fieldDisplayName+"' name='"+fieldName+"' id='"+fieldName+"' value='"+code+"' "+checked+">"
                     + name+"</label>";
             returnStr+=checkboxStr;
         }
