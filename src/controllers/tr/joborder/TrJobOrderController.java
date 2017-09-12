@@ -328,6 +328,20 @@ public class TrJobOrderController extends Controller {
 		DbUtils.handleList(charge_list, id, TradeJobOrderArap.class, "order_id");
 		List<Map<String, String>> chargeCost_list = (ArrayList<Map<String, String>>)dto.get("chargeCost_list");
 		DbUtils.handleList(chargeCost_list, id, TradeJobOrderArap.class, "order_id");
+		
+		//保存下拉使用历史
+		List<Record> costRes = new ArrayList<Record>();
+		costRes.add(new Record().set("type", "ARAP_COM").set("param", "SP_ID"));
+		costRes.add(new Record().set("type", "ARAP_FIN").set("param", "CHARGE_ID"));
+		costRes.add(new Record().set("type", "charge_unit").set("param", "UNIT_ID"));
+		saveItemParamHistory(charge_list,costRes); 
+		
+		//保存下拉使用历史
+		List<Record> chargeRes = new ArrayList<Record>();
+		chargeRes.add(new Record().set("type", "ARAP_COM").set("param", "SP_ID"));
+		chargeRes.add(new Record().set("type", "ARAP_FIN").set("param", "CHARGE_ID"));
+		chargeRes.add(new Record().set("type", "charge_unit").set("param", "UNIT_ID"));
+		saveItemParamHistory(chargeCost_list,chargeRes); 
 //		//记录结算公司使用历史	
 //		saveAccoutCompanyQueryHistory(charge_list);
 //		saveAccoutCompanyQueryHistory(chargeCost_list);
