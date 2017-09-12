@@ -77,9 +77,10 @@ public class TransChargeBalanceReportController extends Controller {
         		+ " currency_total_amount,0) uncharge_hkd,"
         		+ " IF (joa.order_type = 'charge',currency_total_amount,0) charge_rmb"
 //        		+ " ,IF (joa.order_type = 'charge' AND pay_flag!='Y',currency_total_amount,0) uncharge_rmb"
-        		+ " FROM trans_job_order jo"
-        		+ " LEFT JOIN trans_job_order_arap joa ON jo.id = joa.order_id"
+        		+ " FROM trans_job_order_arap joa"
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"
+        		+ " LEFT JOIN trans_job_order jo ON jo.id = joa.order_id"
+
         		+ " WHERE jo.office_id =" +office_id+" "+condition
         		+ " and jo.delete_flag = 'N'"
 				+ " ) A"
