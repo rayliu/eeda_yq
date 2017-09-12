@@ -328,12 +328,12 @@ public class TrJobOrderController extends Controller {
 		DbUtils.handleList(charge_list, id, TradeJobOrderArap.class, "order_id");
 		List<Map<String, String>> chargeCost_list = (ArrayList<Map<String, String>>)dto.get("chargeCost_list");
 		DbUtils.handleList(chargeCost_list, id, TradeJobOrderArap.class, "order_id");
-		//记录结算公司使用历史	
-		saveAccoutCompanyQueryHistory(charge_list);
-		saveAccoutCompanyQueryHistory(chargeCost_list);
-		//记录结算费用使用历史  
-		saveFinItemQueryHistory(charge_list);
-		saveFinItemQueryHistory(chargeCost_list);
+//		//记录结算公司使用历史	
+//		saveAccoutCompanyQueryHistory(charge_list);
+//		saveAccoutCompanyQueryHistory(chargeCost_list);
+//		//记录结算费用使用历史  
+//		saveFinItemQueryHistory(charge_list);
+//		saveFinItemQueryHistory(chargeCost_list);
 		
 		//相关文档
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
@@ -357,13 +357,34 @@ public class TrJobOrderController extends Controller {
 		DbUtils.handleList(trade_detail,"trade_job_order_trade",id,"order_id");
 		List<Map<String, String>> trade_cost_list = (ArrayList<Map<String, String>>)dto.get("trade_cost");
 		DbUtils.handleList(trade_cost_list,"trade_job_order_trade_cost",id,"order_id");
+		//保存下拉使用历史
+		List<Record> trade_costRes = new ArrayList<Record>();
+		trade_costRes.add(new Record().set("type", "product").set("param", "COMMODITY_ID"));
+		saveItemParamHistory(trade_cost_list,trade_costRes); 
 		
 		Model<?> model = (Model<?>) TradeJobOrderArap.class.newInstance();
 		List<Map<String, String>> trade_service_list = (ArrayList<Map<String, String>>)dto.get("trade_service");
-		
+		//保存下拉使用历史
+		List<Record> serviceRes = new ArrayList<Record>();
+		serviceRes.add(new Record().set("type", "ARAP_COM").set("param", "SP_ID"));
+		serviceRes.add(new Record().set("type", "ARAP_FIN").set("param", "CHARGE_ID"));
+		serviceRes.add(new Record().set("type", "charge_unit").set("param", "UNIT_ID"));
+		saveItemParamHistory(trade_service_list,serviceRes); 
+
 		List<Map<String, String>> trade_cost_service_list = (ArrayList<Map<String, String>>)dto.get("trade_cost_service");
-		
+		//保存下拉使用历史
+		List<Record> cost_serviceRes = new ArrayList<Record>();
+		cost_serviceRes.add(new Record().set("type", "ARAP_COM").set("param", "SP_ID"));
+		cost_serviceRes.add(new Record().set("type", "ARAP_FIN").set("param", "CHARGE_ID"));
+		cost_serviceRes.add(new Record().set("type", "charge_unit").set("param", "UNIT_ID"));
+		saveItemParamHistory(trade_cost_service_list,cost_serviceRes); 
 		List<Map<String, String>> trade_sale_list = (ArrayList<Map<String, String>>)dto.get("trade_sale");
+		//保存下拉使用历史
+		List<Record> saleRes = new ArrayList<Record>();
+		saleRes.add(new Record().set("type", "ARAP_COM").set("param", "SP_ID"));
+		saleRes.add(new Record().set("type", "ARAP_FIN").set("param", "CHARGE_ID"));
+		saleRes.add(new Record().set("type", "charge_unit").set("param", "UNIT_ID"));
+		saveItemParamHistory(trade_sale_list,saleRes); 
 		if(trade_service_list!=null){
 	        for(int i=0;i<trade_service_list.size();i++){
 	        	Map<String, String> map=trade_service_list.get(i);
@@ -1935,6 +1956,89 @@ public class TrJobOrderController extends Controller {
 		
 		return result;
 	}
+	
+	
+	 //常用下拉字段保存进入历史记录（非明细表）
+    @Before(Tx.class)
+    private void saveParamHistory(Map<String, ?> dto,List<Record> listRes){
+    	if(dto != null ){
+    		if(dto.size() <= 0){
+    			return;
+    		}
+    		List<String> paramlist = new ArrayList<String>();//缓存到本地的数据，校验是否重复，是则跳过校验
+    		for(Record listRe : listRes){
+    			String type = listRe.getStr("type");//保存到user_query_history的类型
+    			String param = listRe.getStr("param");//表单中对应字段的ID
+    			
+    			Long userId = LoginUserController.getLoginUserId(this);
+        		type = type.toUpperCase();
+        		//param = param.toUpperCase();
+        		
+    			if(dto.get(param) != null){
+    				String param_id = (String)dto.get(param);
+    				if(paramlist.contains(param_id) || StringUtils.isBlank(param_id)){
+    					continue;
+    				}
+    					
+    				Record rec = Db.findFirst("select * from user_query_history where type=? and ref_id=? and user_id=?",type, param_id, userId);
+    		        if(rec == null){
+    		            rec = new Record();
+    		            rec.set("ref_id", param_id);
+    		            rec.set("type", type);
+    		            rec.set("user_id", userId);
+    		            rec.set("query_stamp", new Date());
+    		            Db.save("user_query_history", rec);
+    		        }else{
+    		            rec.set("query_stamp", new Date());
+    		            Db.update("user_query_history", rec);
+    		        }
+    		        paramlist.add(param_id);
+    			}
+    		}
+    	}
+    }
+    
+    //常用明细下拉列表字段保存进入历史记录
+    @Before(Tx.class)
+    private void saveItemParamHistory(List<Map<String, String>> list,List<Record> listRes){
+    	if(list != null ){
+    		if(list.size() <= 0){
+    			return;
+    		}
+    		for(Record listRe : listRes){
+    			String type = listRe.getStr("type");
+    			String param = listRe.getStr("param");
+    			
+    			Long userId = LoginUserController.getLoginUserId(this);
+        		type = type.toUpperCase();
+        		//param = param.toUpperCase();
+        		
+        		List<String> paramlist = new ArrayList<String>();
+        		for(Map<String, String> map : list){
+        			if(map.get(param) != null){
+        				String param_id = map.get(param);
+        				if(paramlist.contains(param_id) || StringUtils.isBlank(param_id)){
+        					continue;
+        				}
+        					
+        				Record rec = Db.findFirst("select * from user_query_history where type=? and ref_id=? and user_id=?",type, param_id, userId);
+        		        if(rec == null){
+        		            rec = new Record();
+        		            rec.set("ref_id", param_id);
+        		            rec.set("type", type);
+        		            rec.set("user_id", userId);
+        		            rec.set("query_stamp", new Date());
+        		            Db.save("user_query_history", rec);
+        		        }else{
+        		            rec.set("query_stamp", new Date());
+        		            Db.update("user_query_history", rec);
+        		        }
+        		        paramlist.add(param_id);
+        			}
+        		}
+    		}
+    	}
+    }
 
 
 }

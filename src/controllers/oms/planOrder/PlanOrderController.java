@@ -735,7 +735,7 @@ public class PlanOrderController extends Controller {
     	}
     }
     
-    //常用字段保存进入历史记录（非明细表）
+    //常用下拉字段保存进入历史记录（非明细表）
     @Before(Tx.class)
     private void saveParamHistory(Map<String, ?> dto,List<Record> listRes){
     	if(dto != null ){
@@ -775,7 +775,7 @@ public class PlanOrderController extends Controller {
     	}
     }
     
-    //常用明细列表字段保存进入历史记录
+    //常用明细下拉列表字段保存进入历史记录
     @Before(Tx.class)
     private void saveItemParamHistory(List<Map<String, String>> list,List<Record> listRes){
     	if(list != null ){

@@ -757,12 +757,25 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchChargeUnit(){
     	String input = getPara("input");
-    	List<Record> recs = null;
-    	String sql = "select id, name from unit where type='charge'";
-    	if(!StringUtils.isBlank(input)){
-    		sql+=" and name like '%" + input + "%' "+"or name_eng like '%"+input+"%'";
+    	
+    	String conditions = "";
+    	if(StringUtils.isNotBlank(input)){
+    		conditions = " and (u.name like '%" + input + "%' "+"or u.name_eng like '%"+input+"%')";
     	}
-    	recs = Db.find(sql);
+    			
+    	String sql = "select  * from(SELECT u.id, u. NAME , u.name_eng"
+    				+ " FROM user_query_history uqh"
+    				+ " LEFT JOIN unit u ON u.id = uqh.ref_id"
+    				+ " WHERE uqh.type = 'CHARGE_UNIT'"
+    				+ conditions
+    				+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
+    				+ " ORDER BY uqh.query_stamp desc limit 0,25) A"
+    				+ " UNION "
+    				+ " (SELECT id, NAME , name_eng"
+    				+ " FROM unit u WHERE u.type = 'charge'"
+    				+ conditions+") limit 0,25";
+    	
+    	List<Record> recs = Db.find(sql);
     	renderJson(recs);
     }
     
