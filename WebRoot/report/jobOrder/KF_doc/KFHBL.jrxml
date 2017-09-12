@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.util.NumberConverterUtil" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="456"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -41,10 +41,10 @@ if((IFNULL(jo.amount_20gp,0)+IFNULL(jo.amount_40gp,0)+IFNULL(jo.amount_40hq,0)+I
 
 	o.logo_path,
 	u.c_name,
-  	UPPER(ifnull(p.company_name_eng,p.company_name)) HBLconsigneeName,
-	UPPER(ifnull(p2.company_name_eng,p2.company_name)) HBLshipperName,
-	UPPER(ifnull(p3.company_name_eng,p3.company_name)) HBLnotify_partyName,
-	UPPER(ifnull(p1.company_name_eng,p1.company_name)) HBLOverseaAgentName,
+  	UPPER(IF(p.bill_of_lading_info is null,ifnull(p.company_name_eng,p.company_name),'')) HBLconsigneeName,
+	UPPER(IF(p2.bill_of_lading_info is null,ifnull(p2.company_name_eng,p2.company_name),'')) HBLshipperName,
+	UPPER(IF(p3.bill_of_lading_info is null,ifnull(p3.company_name_eng,p3.company_name),'')) HBLnotify_partyName,
+	UPPER(IF(p1.bill_of_lading_info is null,ifnull(p1.company_name_eng,p1.company_name),'')) HBLOverseaAgentName,
 	(
 		SELECT
 			GROUP_CONCAT(CN_no SEPARATOR ' ; ')
