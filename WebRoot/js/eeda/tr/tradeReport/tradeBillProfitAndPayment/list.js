@@ -29,7 +29,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		            	"render": function(data, type, full, meta) {
 		            		var str="";
 		            		if(full.COST_RMB!=0){
-		            			str = parseFloat(((full.CHARGE_RMB - full.COST_RMB)/full.COST_RMB)*100).toFixed(2);
+		            			str = parseFloat(((full.CHARGE_RMB - full.COST_RMB)/full.CHARGE_RMB)*100).toFixed(2);
 		            		}
 							return str
 						}

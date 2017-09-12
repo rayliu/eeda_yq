@@ -99,7 +99,7 @@ public class tradeBillProfitAndPaymentController extends Controller{
 		}
 		
 		
-		String order_export_date = "  and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"' )";
+		String order_export_date = " and (order_export_date between '"+order_export_date_begin_time+" 00:00:00' and '"+order_export_date_end_time+" 23:59:59' )";
 		String exportName = order_export_date_begin_time+"~"+order_export_date_end_time;
 		if(StringUtils.isBlank(order_export_date_begin_time)||StringUtils.isBlank(order_export_date_end_time)){
 			order_export_date = "";
@@ -108,35 +108,25 @@ public class tradeBillProfitAndPaymentController extends Controller{
 		
 	    String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
-        	sql = " SELECT *,charge_rmb-cost_rmb profit,FORMAT((((charge_rmb-cost_rmb)/cost_rmb)*100),2) profit_rat FROM ("
-            		+" SELECT jo.id,jo.customer_id,jo.order_no,jo.order_export_date,p.abbr,SUM(currency_total_amount) charge_rmb,"
-            		+" ifnull((SELECT SUM(currency_total_amount) from  job_order_arap joa "
-            		+" LEFT JOIN job_order jor on joa.order_id = jor.id "
-            		+" WHERE joa.order_type = 'cost' and jor.id = jo.id "+condition
-            		+ " and jor.delete_flag = 'N'"
-    				+" ),0) cost_rmb"
-            		+"  from job_order jo "
-            		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-            		+"  LEFT JOIN party p on p.id = jo.customer_id"
-            		+"  WHERE jo.office_id ="+office_id+" and joa.order_type = 'charge' "+condition
-            		+ " and jo.delete_flag = 'N'"
-    				+" GROUP BY jo.id"
-            		+" ) A where 1=1 and (charge_rmb-cost_rmb)<0 ORDER BY abbr";
+        	sql = "SELECT*,ROUND(charge_rmb-cost_rmb,2) profit,ROUND(((charge_rmb-cost_rmb)/charge_rmb)*100,2) profit_rate "
+              	 	 + " FROM (SELECT tjo.id,tjo.customer_id,tjo.order_no,p.abbr,tjo.order_export_date,"
+              	 	 + " SUM(IF(order_type='charge',currency_total_amount,0)) charge_rmb,"
+              	 	 + " SUM(IF(order_type='cost',currency_total_amount,0)) cost_rmb"
+              	 	 + " FROM trade_job_order tjo"
+              	 	 + " LEFT JOIN trade_job_order_arap tjoa ON tjoa.order_id = tjo.id"
+              	 	 + " LEFT JOIN party p ON p.id = tjo.customer_id"
+              	 	 + " WHERE tjo.delete_flag = 'N' and tjo.office_id = "+office_id+" "+condition
+              	 	 + " GROUP BY tjo.id ) A WHERE 1 = 1 AND (charge_rmb - cost_rmb) < 0 ORDER BY abbr";
         }else{
-        	sql = " SELECT *,charge_rmb-cost_rmb profit,FORMAT((((charge_rmb-cost_rmb)/cost_rmb)*100),2) profit_rat FROM ("
-            		+" SELECT jo.id,jo.customer_id,jo.order_no,jo.order_export_date,p.abbr,SUM(currency_total_amount) charge_rmb,"
-            		+" ifnull((SELECT SUM(currency_total_amount) from  job_order_arap joa "
-            		+" LEFT JOIN job_order jor on joa.order_id = jor.id "
-            		+" WHERE joa.order_type = 'cost' and jor.id = jo.id "+condition
-            		+ " and jor.delete_flag = 'N'"
-    				+" ),0) cost_rmb"
-            		+"  from job_order jo "
-            		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-            		+"  LEFT JOIN party p on p.id = jo.customer_id"
-            		+"  WHERE jo.office_id ="+office_id+" and joa.order_type = 'charge' "+condition
-            		+ " and jo.delete_flag = 'N'"
-    				+" GROUP BY jo.id"
-            		+" ) A where 1=1  ORDER BY abbr";
+        	sql = "SELECT*,ROUND(charge_rmb-cost_rmb,2) profit,ROUND(((charge_rmb-cost_rmb)/charge_rmb)*100,2) profit_rate "
+           	 	 + " FROM (SELECT tjo.id,tjo.customer_id,tjo.order_no,p.abbr,tjo.order_export_date,"
+           	 	 + " SUM(IF(order_type='charge',currency_total_amount,0)) charge_rmb,"
+           	 	 + " SUM(IF(order_type='cost',currency_total_amount,0)) cost_rmb"
+           	 	 + " FROM trade_job_order tjo"
+           	 	 + " LEFT JOIN trade_job_order_arap tjoa ON tjoa.order_id = tjo.id"
+           	 	 + " LEFT JOIN party p ON p.id = tjo.customer_id"
+           	 	 + " WHERE tjo.delete_flag = 'N' and tjo.office_id = "+office_id+" "+condition
+           	 	 + " GROUP BY tjo.id ) A WHERE 1 = 1 ORDER BY abbr";
         }
         
 		
@@ -144,7 +134,7 @@ public class tradeBillProfitAndPaymentController extends Controller{
 		String[] headers = total_name_header.split(",");
 		
 		
-		String[] fields = {"ORDER_NO", "ABBR", "ORDER_EXPORT_DATE", "CHARGE_RMB", "COST_RMB", "PROFIT","PROFIT_RAT"};
+		String[] fields = {"ORDER_NO", "ABBR", "ORDER_EXPORT_DATE", "CHARGE_RMB", "COST_RMB", "PROFIT","PROFIT_RATE"};
 		String fileName = PoiUtils.generateExcel(headers, fields, sql,exportName);
 		renderText(fileName);
 	}
