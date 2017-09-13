@@ -99,8 +99,8 @@ public class CustomReportController extends Controller {
                                     +"综合费,单证更改费,港建费,码头费,堆存/电费/港务费,DOC/THC费,代理运费,合计（元）";
 		String[] headers = total_name_header.split(",");
 
-		String[] fields = { "SP_NAME", "CREATE_STAMP", "CHARGE_USD", "CHARGE_JPY",
-				"CHARGE_HKD", "CHARGE_RMB", "COST_CNY","COST_USD","COST_JPY","COST_HKD","TOTAL_AMOUNT"};
+		String[] fields = { "SP_NAME", "CREATE_STAMP", "", "CUSTOM_ORDER_NO",
+				"", "", "","","","","","","","","","","","TOTAL_AMOUNT"};
 		
 		String exportName = "";
 		

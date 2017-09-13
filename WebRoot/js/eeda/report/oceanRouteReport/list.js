@@ -200,11 +200,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		  $.post('/oceanRouteReport/downloadExcelList',{customer_id:customer_id,date_type:date_type,type:type,begin_date:begin_date,end_date:end_date}, function(data){
 	          $('#exportTotaledExcel').prop('disabled', false);
 	          $('#singlexportTotaledExcel').prop('disabled', false);
-	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          $.scojs_message('生成Excel成功', $.scojs_message.TYPE_OK);
 	          window.open(data);
 	      }).fail(function() {
 	          $('#exportTotaledExcel').prop('disabled', false);
-	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	          $.scojs_message('生成Excel失败', $.scojs_message.TYPE_ERROR);
 	      });
       });
   });

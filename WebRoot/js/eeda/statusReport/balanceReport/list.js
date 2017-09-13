@@ -136,11 +136,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			  											,balance:balance,date_type:date_type}, function(data){
 	          $('#exportTotaledExcel1').prop('disabled', false);
 	          $('#exportTotaledExcel').prop('disabled', false);
-	          $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	          $.scojs_message('生成Excel成功', $.scojs_message.TYPE_OK);
 	          window.open(data);
 	      }).fail(function() {
 	          $('#exportTotaledExcel').prop('disabled', false);
-	          $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	          $.scojs_message('生成Excel失败', $.scojs_message.TYPE_ERROR);
 	      });
       }
       
