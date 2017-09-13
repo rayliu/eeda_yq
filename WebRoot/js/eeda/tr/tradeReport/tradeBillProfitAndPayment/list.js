@@ -87,6 +87,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		
 		$('#singleSearchBtn').click(function(){
 			 var selectField = $("#selected_field").val();
+			 var checked = "";
 			 var customer_name = "";
 			 var single_export_date_begin_time = "";
 			 var single_export_date_end_time = "";
@@ -97,7 +98,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		    	  single_export_date_begin_time = $("#single_export_date_begin_time").val();
 		          single_export_date_end_time = $("#single_export_date_end_time").val();
 		      }
-		      listTotalMoney(customer_name,single_export_date_begin_time,single_export_date_end_time);
+		      listTotalMoney(checked,customer_name,single_export_date_begin_time,single_export_date_end_time);
 		     var url = "/tradeBillProfitAndPayment/list?customer_name="+customer_name
 		     		 +"&order_export_date_begin_time="+single_export_date_begin_time
 		     		 +"&order_export_date_end_time="+single_export_date_end_time;
@@ -159,11 +160,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $.post('/tradeBillProfitAndPayment/downloadExcelList',{customer_id:customer_id,begin_time:begin_time,end_time:end_time,checked:checked}, function(data){
 	              $('#exportTotaledExcel').prop('disabled', false);
 	              $('#singleExportTotaledExcel').prop('disabled', false);
-	              $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+	              $.scojs_message('生成Excel成功', $.scojs_message.TYPE_OK);
 	              window.open(data);
 	          }).fail(function() {
 	              $('#exportTotaledExcel').prop('disabled', false);
-	              $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+	              $.scojs_message('生成Excel失败', $.scojs_message.TYPE_ERROR);
 	          });
 	      }
 	      var listTotalMoney = function(checked,customer_name,order_export_date_begin_time,order_export_date_end_time){
