@@ -12,7 +12,7 @@
                     		</select>
 
 							<div  style="position:absolute;left:34%;bottom:-5px;" id="customer_name">
-	                            <%include("/eeda/component/form/inputSpField.html", 
+	                            <%include("/eeda/component/form/inputCustomerField.html", 
 	                                                {   id: 'single_customer_name', 
 	                                                    style:'width:150%',
 	                                                    value: ''
@@ -57,7 +57,7 @@
 		                                 }){}%>
 		                        </div>
 		                        <div class="col-lg-4">
-		                        	<%include("/eeda/component/form/inputSpField.html", 
+		                        	<%include("/eeda/component/form/inputCustomerField.html", 
 		                            	{   id: 'customer', 
 		                                    label: '客户', 
 		                                    value: ''
@@ -85,7 +85,7 @@
 	</div>
            
 	<div class="row simple_list_div">
-		<%include("/eeda/component/form/detailTable.html", 
+		<%include("/eeda/component/form/detailTableWithFoot.html", 
 			{
 				id:'eeda_table', 
 				headers:['单号','客户','出货时间','应收折合金额(CNY)','应付折合金额(CNY)','利润(RMB)','利润率(%)']
