@@ -25,6 +25,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.eeda.ListConfigController;
+import controllers.oms.planOrder.PlanOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderNoGenerator;
@@ -267,47 +268,85 @@ public class CustomerContractController extends Controller {
    	   		customerContract.set("office_id", office_id);
    	   		customerContract.save();
    	   		id = customerContract.getLong("id").toString();
-   	   			
    			}
-   			
    		}
-   		//海运费用明细保存
+   		List<Record> orderRes = new ArrayList<Record>();
+		orderRes.add(new Record().set("type", "CUSTOMER").set("param", "customer_id"));
+   		PlanOrderController.saveParamHistory(dto, orderRes, user.getLong("id"));
    		
+   		//海运费用明细保存
    		List<Map<String,String>> oceanLocs = (ArrayList<Map<String, String>>) dto.get("itemOceanLocList");
         DbUtils.handleList(oceanLocs, "customer_contract_location", id,"contract_id");
-        
+        List<Record> oceanlocItemRes = new ArrayList<Record>();
+        oceanlocItemRes.add(new Record().set("type", "port").set("param", "POL_ID"));
+        oceanlocItemRes.add(new Record().set("type", "port").set("param", "POD_ID"));
+   		PlanOrderController.saveItemParamHistory(oceanLocs, oceanlocItemRes, user.getLong("id"));
+   		
         Record oceanRe = Db.findFirst("select * from customer_contract_location where contract_id = ? and type = 'ocean_loc' and is_select = 'Y' ",id);
         if(oceanRe != null){
         	List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemOceanList");
        		DbUtils.handleList(charge_items, "customer_contract_item", oceanRe.get("id").toString(),"customer_loc_id");	
+       		List<Record> oceanItemRes = new ArrayList<Record>();
+       		oceanItemRes.add(new Record().set("type", "ARAP_FIN").set("param", "FEE_ID"));
+       		oceanItemRes.add(new Record().set("type", "charge_unit").set("param", "UOM"));
+       		PlanOrderController.saveItemParamHistory(charge_items, oceanItemRes, user.getLong("id"));
         }
         
         List<Map<String,String>> airLocs = (ArrayList<Map<String, String>>) dto.get("itemAirLocList");
         DbUtils.handleList(airLocs, "customer_contract_location", id,"contract_id");
+        List<Record> airlocItemRes = new ArrayList<Record>();
+        airlocItemRes.add(new Record().set("type", "air_port").set("param", "POL_ID"));
+        airlocItemRes.add(new Record().set("type", "air_port").set("param", "POD_ID"));
+   		PlanOrderController.saveItemParamHistory(airLocs, airlocItemRes, user.getLong("id"));
         
         Record airRe = Db.findFirst("select * from customer_contract_location where contract_id = ? and type = 'air_loc' and is_select = 'Y' ",id);
         if(airRe != null){
         	List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemAirList");
        		DbUtils.handleList(charge_items, "customer_contract_item", airRe.get("id").toString(),"customer_loc_id");	
+       		List<Record> airItemRes = new ArrayList<Record>();
+       		airItemRes.add(new Record().set("type", "ARAP_FIN").set("param", "FEE_ID"));
+       		airItemRes.add(new Record().set("type", "charge_unit").set("param", "UOM"));
+       		PlanOrderController.saveItemParamHistory(charge_items, airItemRes, user.getLong("id"));
         }
         
         List<Map<String,String>> landLocs = (ArrayList<Map<String, String>>) dto.get("itemLandLocList");
         DbUtils.handleList(landLocs, "customer_contract_location", id,"contract_id");
+        List<Record> landlocItemRes = new ArrayList<Record>();
+        landlocItemRes.add(new Record().set("type", "laodingWharf").set("param", "POL_ID"));
+        landlocItemRes.add(new Record().set("type", "laodingWharf").set("param", "POD_ID"));
+   		PlanOrderController.saveItemParamHistory(landLocs, landlocItemRes, user.getLong("id"));
+   		
         
         Record landRe = Db.findFirst("select * from customer_contract_location where contract_id = ? and type = 'land_loc' and is_select = 'Y' ",id);
         if(landRe != null){
         	List<Map<String,String>> charge_items = (ArrayList<Map<String, String>>) dto.get("itemLandList");
        		DbUtils.handleList(charge_items, "customer_contract_item", landRe.get("id").toString(),"customer_loc_id");	
+       		List<Record> landItemRes = new ArrayList<Record>();
+       		landItemRes.add(new Record().set("type", "ARAP_FIN").set("param", "FEE_ID"));
+       		landItemRes.add(new Record().set("type", "charge_unit").set("param", "UOM"));
+       		PlanOrderController.saveItemParamHistory(charge_items, landItemRes, user.getLong("id"));
         }
        
    		
         List<Map<String,String>> charge_trade_items = (ArrayList<Map<String, String>>) dto.get("itemTradeList");
         DbUtils.handleList(charge_trade_items, "customer_contract_item", id,"contract_id");
+        List<Record> tradeItemRes = new ArrayList<Record>();
+        tradeItemRes.add(new Record().set("type", "ARAP_FIN").set("param", "FEE_ID"));
+        tradeItemRes.add(new Record().set("type", "charge_unit").set("param", "UOM"));
+   		PlanOrderController.saveItemParamHistory(charge_trade_items, tradeItemRes, user.getLong("id"));
         
         List<Map<String,String>> charge_tour_items = (ArrayList<Map<String, String>>) dto.get("itemTourList");
         DbUtils.handleList(charge_tour_items, "customer_contract_item", id,"contract_id");
         List<Map<String,String>> tourLocs = (ArrayList<Map<String, String>>) dto.get("itemTourLocList");
         DbUtils.handleList(tourLocs, "customer_contract_location", id,"contract_id");
+        List<Record> tourlocItemRes = new ArrayList<Record>();
+        tourlocItemRes.add(new Record().set("type", "port").set("param", "POL_ID"));
+        tourlocItemRes.add(new Record().set("type", "port").set("param", "POD_ID"));
+   		PlanOrderController.saveItemParamHistory(tourLocs, tourlocItemRes, user.getLong("id"));
+   		List<Record> tourItemRes = new ArrayList<Record>();
+        tourItemRes.add(new Record().set("type", "ARAP_FIN").set("param", "FEE_ID"));
+        tourItemRes.add(new Record().set("type", "charge_unit").set("param", "UOM"));
+   		PlanOrderController.saveItemParamHistory(charge_tour_items, tourItemRes, user.getLong("id"));
         
    		Record rcon = new Record();
    		rcon= Db.findFirst("select * from customer_contract joc where id = ? ",id);

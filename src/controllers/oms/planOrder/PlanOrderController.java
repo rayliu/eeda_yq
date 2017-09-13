@@ -135,7 +135,7 @@ public class PlanOrderController extends Controller {
 		//主单据
 		List<Record> orderRes = new ArrayList<Record>();
 		orderRes.add(new Record().set("type", "ARAP_COM").set("param", "to_party_id"));
-		saveParamHistory(dto,orderRes); 
+		saveParamHistory(dto,orderRes,user.getLong("id")); 
 		
 		//明细表内容
 		List<Record> planRes = new ArrayList<Record>();
@@ -144,7 +144,7 @@ public class PlanOrderController extends Controller {
 		planRes.add(new Record().set("type", "carrier").set("param", "CARRIER"));
 		planRes.add(new Record().set("type", "UNIT").set("param", "UNIT_ID"));
 		planRes.add(new Record().set("type", "port").set("param", "POR"));
-		saveItemParamHistory(itemList,planRes); 
+		saveItemParamHistory(itemList,planRes,user.getLong("id")); 
 		
 		SysInfoController.saveLog(jsonStr, id, user, action_type, "计划单", "");
 
@@ -737,7 +737,7 @@ public class PlanOrderController extends Controller {
     
     //常用下拉字段保存进入历史记录（非明细表）
     @Before(Tx.class)
-    private void saveParamHistory(Map<String, ?> dto,List<Record> listRes){
+    public static void saveParamHistory(Map<String, ?> dto,List<Record> listRes,Long user_id){
     	if(dto != null ){
     		if(dto.size() <= 0){
     			return;
@@ -747,7 +747,6 @@ public class PlanOrderController extends Controller {
     			String type = listRe.getStr("type");//保存到user_query_history的类型
     			String param = listRe.getStr("param");//表单中对应字段的ID
     			
-    			Long userId = LoginUserController.getLoginUserId(this);
         		type = type.toUpperCase();
         		//param = param.toUpperCase();
         		
@@ -757,12 +756,12 @@ public class PlanOrderController extends Controller {
     					continue;
     				}
     					
-    				Record rec = Db.findFirst("select * from user_query_history where type=? and ref_id=? and user_id=?",type, param_id, userId);
+    				Record rec = Db.findFirst("select * from user_query_history where type=? and ref_id=? and user_id=?",type, param_id, user_id);
     		        if(rec == null){
     		            rec = new Record();
     		            rec.set("ref_id", param_id);
     		            rec.set("type", type);
-    		            rec.set("user_id", userId);
+    		            rec.set("user_id", user_id);
     		            rec.set("query_stamp", new Date());
     		            Db.save("user_query_history", rec);
     		        }else{
@@ -777,7 +776,7 @@ public class PlanOrderController extends Controller {
     
     //常用明细下拉列表字段保存进入历史记录
     @Before(Tx.class)
-    private void saveItemParamHistory(List<Map<String, String>> list,List<Record> listRes){
+    public static void saveItemParamHistory(List<Map<String, String>> list,List<Record> listRes ,Long user_id){
     	if(list != null ){
     		if(list.size() <= 0){
     			return;
@@ -786,7 +785,6 @@ public class PlanOrderController extends Controller {
     			String type = listRe.getStr("type");
     			String param = listRe.getStr("param");
     			
-    			Long userId = LoginUserController.getLoginUserId(this);
         		type = type.toUpperCase();
         		//param = param.toUpperCase();
         		
@@ -798,12 +796,12 @@ public class PlanOrderController extends Controller {
         					continue;
         				}
         					
-        				Record rec = Db.findFirst("select * from user_query_history where type=? and ref_id=? and user_id=?",type, param_id, userId);
+        				Record rec = Db.findFirst("select * from user_query_history where type=? and ref_id=? and user_id=?",type, param_id, user_id);
         		        if(rec == null){
         		            rec = new Record();
         		            rec.set("ref_id", param_id);
         		            rec.set("type", type);
-        		            rec.set("user_id", userId);
+        		            rec.set("user_id", user_id);
         		            rec.set("query_stamp", new Date());
         		            Db.save("user_query_history", rec);
         		        }else{
