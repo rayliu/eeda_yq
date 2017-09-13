@@ -2,36 +2,42 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     $(document).ready(function() {
 
         $('#menu_profile').addClass('active').find('ul').addClass('in');
-
         
-        //校验是否已存在此费用
-        $('#orderForm').validate({
-	            rules: {
-	            	commodity_name: {
-	                	required: true,
-	                	remote:{
-		                    url: "/tradeItem/checkCommodityNameExist",
-		                    type: "post",
-		                    data:  {
-		                    	commodity_name: function() { 
-		                              return $("#commodity_name").val();
-		                        }
-	                    	}
-	                	}
-	                }
-	            },
-	            messages:{
-	            	commodity_name:{
-	                    remote:"此商品名称已存在"
-	                }
-	            },
-	            highlight: function(element) {
-	                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-	            },
-	            success: function(element) {
-	                element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
-	            }
-        });
+        var id = $("#id").val();
+       
+        	//校验是否已存在此费用
+            $('#orderForm').validate({
+            	
+            	rules: {
+    	            	commodity_name: {
+    	                	required: true,
+    	                	remote:{
+    		                    url: "/tradeItem/checkCommodityNameExist",
+    		                    type: "post",
+    		                    data:  {
+    		                    	commodity_name: function() { 
+    		                              return $("#commodity_name").val();
+    		                        },
+    		                        order_id: function() { 
+  		                              return $("#id").val();
+    		                        }
+    	                    	}
+    	                	}
+    	                }
+    	            },
+    	            messages:{
+    	            	commodity_name:{
+    	                    remote:"此商品名称已存在"
+    	                }
+    	            },
+    	            highlight: function(element) {
+    	                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+    	            },
+    	            success: function(element) {
+    	                element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
+    	            }
+            });
+      
  
         
         //------------save

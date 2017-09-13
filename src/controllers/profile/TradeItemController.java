@@ -294,19 +294,32 @@ public class TradeItemController extends Controller {
     
     //校验是否存在此商品名称
     public void checkCommodityNameExist(){
-    	String para= getPara("commodity_name");
+    	String para = getPara("commodity_name");
+    	String order_id = getPara("order_id");
     	UserLogin user = LoginUserController.getLoginUser(this);
         long userId = user.getLong("id");
         long officeId = user.getLong("office_id");
-        
-    	String sql = "select * from trade_item where commodity_name = ? and office_id=?";
-    	boolean ifExist;
-    	Record r = Db.findFirst(sql,para, officeId);
-    	if(r==null){
-    		ifExist = true;
+    	
+    	boolean ifExist = true;
+    	String sql = "select * from trade_item where id = ? and office_id=?";
+		String sql1 = "select * from trade_item where commodity_name = ? and office_id=?";
+		Record r = Db.findFirst(sql,order_id, officeId);
+		Record r1 = Db.findFirst(sql1,para, officeId);
+    	if(order_id!=null||order_id!=""){
+    		if(para.equals(r.get("commodity_name"))||r1==null){
+    			ifExist = true;
+    		}else{
+        		ifExist = false;
+        	}
     	}else{
-    		ifExist = false;
+    		if(r==null){
+        		ifExist = true;
+        	}else{
+        		ifExist = false;
+        	}
     	}
+    	
+    	
     	renderJson(ifExist);
     }
     
@@ -369,12 +382,14 @@ public class TradeItemController extends Controller {
 	   			if(commodity != null){
 	   				commodity_id = commodity.getLong("id");
 	   				commodity.set("unit_name", legal_unit);
+	   				commodity.set("commodity_code", commodity_code);
 	   				commodity.set("VAT_rate", vat_rate);
 	   				commodity.set("rebate_rate", rebate_rate);
 	   				commodity.set("remark", remark);
 	   				commodity.set("office_id", office_id);
 		   			Db.update("trade_item", commodity);
 	   			}else{
+	   				order.set("commodity_code", commodity_code);
 		   			order.set("commodity_name", commodity_name);
 		   			order.set("unit_name", legal_unit);
 		   			order.set("VAT_rate", vat_rate);
