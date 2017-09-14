@@ -70,11 +70,11 @@
 	            <div class="col-lg-6 guide_target2">
 	            	<% 
 		                var party_name='';
-		                if(has(self_party) && (null != self_party.ABBR!)){
+		                if(has(self_party) && ('' != self_party.ABBR!'')){
 		                    party_name = self_party.ABBR;
-		                }else if(has(entrusted) && (null != entrusted.OFFICE_NAME!)){
+		                }else if(has(entrusted) && ('' != entrusted.OFFICE_NAME!'')){
 		                    party_name = entrusted.OFFICE_NAME;
-		                }else if(has(office) && (null != office.OFFICE_NAME!)){
+		                }else if(has(office) && ('' != office.OFFICE_NAME!'')){
 		                    party_name = office.OFFICE_NAME;
 		                }
 		            %>
@@ -90,9 +90,9 @@
            		<div class="col-lg-6 guide_target3">           			
            			<%	var dis='';
            				var to_party_id_enter='';        				
-		                if(has(to_party) && (null != to_party.ID!)){
+		                if(has(to_party) && ('' != to_party.ID!'')){
 		                    to_party_id_enter = to_party.ID;
-		                }else if(has(toEntrusted) && (null != toEntrusted.ID!)){
+		                }else if(has(toEntrusted) && ('' != toEntrusted.ID!'')){
 		                    to_party_id_enter = toEntrusted.ID;
 		                }
 		                if(order.submit_flag!''=='Y'){
