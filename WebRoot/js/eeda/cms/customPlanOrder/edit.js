@@ -108,8 +108,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 						$('#saveBtn').attr('disabled', false);
                         $('#cancelAuditBtn').show().attr('disabled', false);
                          if(show_passAuditing){
-                        $('#custom_state').attr('disabled', false);
-                        $('#customs_billCode').attr('disabled', false);
+	                        $('#custom_state').attr('disabled', false);
+	                        $('#customs_billCode').attr('disabled', false);
                         }
 						//审核按钮状态
 						$('#passBtn').attr('disabled',true);
@@ -146,6 +146,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	 //提交报关行按钮状态
     	var id = $('#order_id').val();
     	var status = $('#status').val();
+    	if(show_passAuditing){
+            $('#custom_state').attr('disabled', false);
+            $('#customs_billCode').attr('disabled', false);
+        }
         if(id!=''){
         	$('#confirmCompleted').attr('disabled', false);
         }
@@ -161,8 +165,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('#cancelAuditBtn').show().attr('disabled',false);
             $('#refuseBtn').hide();
             if(show_passAuditing){
-            $('#custom_state').attr('disabled', false);
-            $('#customs_billCode').attr('disabled', false);
+	            $('#custom_state').attr('disabled', false);
+	            $('#customs_billCode').attr('disabled', false);
             }
             
         }
