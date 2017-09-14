@@ -1120,14 +1120,15 @@ public class TransJobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
-    //费用明细确认
+    //费用明细确认或取消
     @Before(Tx.class)
     public void feeConfirm(){
 		String id = getPara("id");
-			TransJobOrderArap tjoa = TransJobOrderArap.dao.findFirst("select * from trans_job_order_arap where id = ?",id);
-			tjoa.set("audit_flag", "Y");
-			tjoa.update();
-			renderJson(tjoa);
+		String audit_flag = getPara("audit_flag");
+		TransJobOrderArap tjoa = TransJobOrderArap.dao.findFirst("select * from trans_job_order_arap where id = ?",id);
+		tjoa.set("audit_flag", audit_flag);
+		tjoa.update();
+		renderJson(tjoa);
 	 }
     
     @Before(Tx.class)

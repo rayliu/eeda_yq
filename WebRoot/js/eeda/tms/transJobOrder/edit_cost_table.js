@@ -21,16 +21,31 @@ $(document).ready(function() {
     $("#cost_table").on('click', '.chargeConfirm_btn', function(e){
     	e.preventDefault();
     	var id = $(this).val();
-    	$.post('/transJobOrder/feeConfirm',{id:id},function(joa){
+    	var audit_flag = "Y";
+    	$.post('/transJobOrder/feeConfirm',{id:id,audit_flag:audit_flag},function(joa){
     		var order_id = joa.ORDER_ID;
 	    	var url = "/transJobOrder/tableList?order_id="+order_id+"&type=cost";
 	    	costTable.ajax.url(url).load();    		
-    		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+	    		$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	},'json').fail(function() {
             $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
        });
     });
     
+    //费用明细取消确认按钮动作
+    $("#cost_table").on('click', '.chargeCancelConfirm_btn', function(e){
+    	e.preventDefault();
+    	var id = $(this).val();
+    	var audit_flag = "N";
+    	$.post('/transJobOrder/feeConfirm',{id:id,audit_flag:audit_flag},function(joa){
+    		var order_id = joa.ORDER_ID;
+	    	var url = "/transJobOrder/tableList?order_id="+order_id+"&type=cost";
+	    	costTable.ajax.url(url).load(); 
+	    		$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
+    	},'json').fail(function() {
+            $.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
+       });
+    });	
 
     itemOrder.buildChargeCostDetail=function(){
         var cargo_table_rows = $("#cost_table tr");
@@ -219,13 +234,16 @@ $(document).ready(function() {
                 	if(full&&full.AUDIT_FLAG == 'Y'){
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>&nbsp';
                 		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> '; 
+                		str+= '<button type="button" class="btn table_btn btn_green chargeCancelConfirm_btn btn-xs" style="width:50px" value="'+full.ID+'">取消确认</button> '; 
                 		}
                 	else if(full.ID){
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" class=" btn table_btn btn_green chargeConfirm_btn btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';		
+                		str+= '<button type="button" class=" btn table_btn btn_green chargeConfirm_btn btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>取消确认</button> '; 
                 	}else{
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px">删除</button>&nbsp';
                 		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> ';
+                		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>取消确认</button> '; 
                 	}
                 	str +="</nobr>";
                     return str;
