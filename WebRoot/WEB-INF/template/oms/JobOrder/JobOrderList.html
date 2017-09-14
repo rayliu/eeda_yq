@@ -5,6 +5,7 @@
 	      var orderPermission = shiro.hasPermission("jobOrder.order");
 	      var boolOrder= orderPermission;
     	%>
+
 	<div class="row simple_search_div">
     	 <div class="panel panel-default">
          	<div class="panel-heading">
@@ -176,6 +177,48 @@
                                                     }
                                                  ){} %>
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                    	<!-- div class="col-lg-4">
+                                    	<%
+                                    		var order_type = '';
+                                    		var custom_status = '';
+                                    		if(type!''=='customwait'){
+                                    			order_type = 'custom';
+                                    			custom_status = '待报关';
+                                    		}
+                                    	%>
+                                    		<%include("/eeda/component/form/selectField.html", 
+                                                    {   id:'order_type', 
+                                                        label:'单据类型', 
+                                                        value: order_type,
+                                                        value_list:[
+                                                        		{code:'', value:''},
+					                                            {code:'ocean', value:'海运'},
+					                                            {code:'land', value:'陆运'}, 
+					                                            {code:'air', value:'空运'},
+					                                            {code:'custom', value:'报关'},
+					                                            {code:'insurance', value:'保险'},
+					                                            {code:'trade', value:'贸易'},
+					                                            {code:'express', value:'快递'}
+					                                        ]
+                                                    }
+                                                 ){} %>
+                                            </div -->
+                                            <div class="col-lg-4">
+                                        		<%include("/eeda/component/form/selectField.html", 
+                                                    {   id:'custom_status', 
+                                                        label:'报关状态', 
+                                                        value: custom_status,
+                                                        value_list:[
+                                                        		{code:'', value:''},
+					                                            {code:'待报关', value:'待报关'},
+					                                            {code:'处理中', value:'处理中'}, 
+					                                            {code:'已完成', value:'已完成'}
+					                                        ]
+                                                    }
+                                                 ){} %>
+                                             </div>
                                     </div>
                                     <div class="form-group table_btn_bar" >
                                         <button id="searchBtn" class="btn btn_grey" type="button">查询</button>

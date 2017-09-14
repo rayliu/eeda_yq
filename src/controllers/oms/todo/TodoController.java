@@ -26,6 +26,11 @@ public class TodoController extends Controller {
     long office_id=user.getLong("office_id");
 
     public void getYqTodoList(){
+    	 String ref_office = "";
+         Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+         if(relist!=null){
+         	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+         }
          String sql= "select ( "
             +"SELECT count(1) total FROM plan_order_item poi "
             +"    left join plan_order po on po.id = poi.order_id "
@@ -35,7 +40,7 @@ public class TodoController extends Controller {
             +"(SELECT COUNT(1) total "
             +"    FROM job_order jo LEFT JOIN job_order_shipment jos ON jo.id=jos.order_id "
             +"    WHERE jo.type='出口柜货' and jos.SONO is null and jo.transport_type LIKE '%ocean%' "
-            +"    and jo.office_id ="+office_id 
+            +"    and (jo.office_id ="+office_id+ref_office+")"
             + " and jo.delete_flag = 'N'"
 			+") SOTodoCount, "
             +"( "
@@ -50,14 +55,14 @@ public class TodoController extends Controller {
             +"        FROM job_order_shipment jos  "
             +"        LEFT JOIN job_order jo on jo.id = jos.order_id "
             +"        WHERE TO_DAYS(jos.export_date)=TO_DAYS(now()) and (jos.si_flag != 'Y' or jos.si_flag is null) "
-            +"        and jo.office_id ="+office_id 
+            +"    and (jo.office_id ="+office_id+ref_office+")"
             +") SITodoCount, "
             +"( "
             +"    SELECT COUNT(1) total "
             +"        FROM job_order_shipment jos "
             +"        LEFT JOIN job_order jo on jo.id = jos.order_id "
             +"        WHERE jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null) "
-            + " and jo.office_id ="+office_id 
+            +"    and (jo.office_id ="+office_id+ref_office+")"
             + " and jo.delete_flag = 'N'"
 			+") MBLTodoCount, "
             +"( "
@@ -67,18 +72,19 @@ public class TodoController extends Controller {
             +") WaitCustomTodoCountPlan, "
             +"( "
             +"    select count(total_count) total from (  "
-            +"        select count(1) total_count from job_order jor  "
-            +"        LEFT JOIN job_order_custom joc on joc.order_id = jor.id "
-            +"        left join job_order_custom_china_self_item jocc on jocc.order_id = jor.id "
-            +"        where jor.transport_type LIKE '%custom%' "
-            +"        and isnull(joc.customs_broker) and isnull(jocc.custom_bank) and jor.office_id="+office_id 
-            +"        group by jor.id) A "
+            +"        select count(1) total_count from job_order jo  "
+            +"        LEFT JOIN job_order_custom joc on joc.order_id = jo.id "
+            +"        left join job_order_custom_china_self_item jocc on jocc.order_id = jo.id "
+            +"        where jo.transport_type LIKE '%custom%' "
+            +"        and isnull(joc.customs_broker) and isnull(jocc.custom_bank)"
+            +"    and (jo.office_id ="+office_id+ref_office+")"
+            +"        group by jo.id) A "
             +") WaitCustomTodoCount, "
             +"( "
             +"    SELECT count(1) total  "
             +"        FROM job_order jo LEFT JOIN job_order_insurance joi ON jo.id = joi.order_id  "
             +"        WHERE transport_type LIKE '%insurance%' and joi.insure_no is NULL "
-            +"        and jo.office_id="+office_id 
+            +"    and (jo.office_id ="+office_id+ref_office+")"
             + " and jo.delete_flag = 'N'"
 			+") WaitBuyInsuranceTodoCount, "
             +"( "
@@ -87,7 +93,7 @@ public class TodoController extends Controller {
             +"        LEFT JOIN job_order jo on jo.id = jos.order_id "
             +"        WHERE  (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y'  "
             +"        and timediff(now(),jos.etd)<TIME('48:00:00')  "
-            +"        and jo.office_id="+office_id 
+            +"    and (jo.office_id ="+office_id+ref_office+")"
             + " and jo.delete_flag = 'N'"
 			 +") WaitOverseaCustomTodoCount, "
             +"( "
@@ -95,7 +101,7 @@ public class TodoController extends Controller {
             +"       FROM job_order_shipment jos "
             +"       LEFT JOIN job_order jo on jo.id = jos.order_id "
             +"       WHERE TO_DAYS(jos.etd)= TO_DAYS(now()) and (jos.in_line_flag != 'Y' or jos.in_line_flag is null) "
-            +"       and jo.office_id="+office_id
+            +"    and (jo.office_id ="+office_id+ref_office+")"
             + " and jo.delete_flag = 'N'"
 			 +") TlxOrderTodoCount; ";
          Record rec = Db.findFirst(sql);

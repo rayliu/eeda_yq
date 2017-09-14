@@ -3391,7 +3391,7 @@ public class JobOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
-    	String type=getPara("type");
+    	String type = getPara("type_");
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -3404,12 +3404,7 @@ public class JobOrderController extends Controller {
         	sort = "desc";
         }
         
-        if (getPara("start") != null  && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-            if("lock".equals(type)){
-            	sLimit = "";
-            }
-        }
+        
         String sql = "";
         String ref_office = "";
         Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
@@ -3417,202 +3412,80 @@ public class JobOrderController extends Controller {
         	ref_office = " or jor.office_id in ("+relist.getStr("office_id")+")";
         }
         
+        //代办事项条件
+        String dai_condition = "";
         if("sowait".equals(type)){
-        	sql=" SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag,ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,ifnull(u1.c_name, u1.user_name) updator_name,"
-	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three')  and   jod0.send_status='已发送' ) new_count,"
-        			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
-					+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
-        			+ " FROM job_order jor "
-        			+ " LEFT JOIN job_order_shipment jos on jor.id = jos.order_id "
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator "
-        			+ " left join user_login u1 ON u1.id = jor.updator"
-        			+ " WHERE (jor.office_id="+office_id+ ref_office+ ")"
-        			+ " and jor.type = '出口柜货' AND jos.SONO IS NULL AND jor.transport_type LIKE '%ocean%'"
-        			+ " and jor.delete_flag = 'N'";        	
+        	dai_condition = " and jor.type = '出口柜货' AND jos.SONO IS NULL AND jor.transport_type LIKE '%ocean%'";
         }else if("truckorderwait".equals(type)){
-        	 sql = "SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,ifnull(u1.c_name, u1.user_name) updator_name,"
-		         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
-        			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
-					+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
-        			+ " FROM job_order_land_item joli"
-        			+ " left join job_order jor on jor.id = joli.order_id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " left join user_login u1 ON u1.id = jor.updator"
-        			+ " WHERE (jor.office_id="+office_id+ref_office+ ")"
-        			+ " and datediff(joli.eta, now()) <= 3 AND jor.send_truckorder_flag != 'Y'"
-        			+ " AND jor.transport_type LIKE '%land%'"
-        			+ " and jor.delete_flag = 'N'";
-        	
-        	
+        	 dai_condition = " and datediff(joli.eta, now()) <= 3 AND jor.send_truckorder_flag != 'Y'"
+        			+ " AND jor.transport_type LIKE '%land%'";
         } else if("siwait".equals(type)){
-        	 sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,ifnull(u1.c_name, u1.user_name) updator_name,"
-		         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
-        			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
-					+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
-        	 		+ " FROM job_order_shipment jos"
-        	 		+ " left join job_order jor on jos.order_id = jor.id"
-        	 		+ " left join party p on p.id = jor.customer_id"
-        	 		+ " left join user_login u on u.id = jor.creator "
-        	 		+ " left join user_login u1 ON u1.id = jor.updator"
-        	 		+ " WHERE (jor.office_id="+office_id+ref_office+ ")"
-                    + " and TO_DAYS(jos.export_date)=TO_DAYS(now())"
-                    + " and jor.delete_flag = 'N'";
-        	
+        	dai_condition = " and TO_DAYS(jos.export_date)=TO_DAYS(now())";
         } else if("mblwait".equals(type)){
-        	sql = "SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,ifnull(u1.c_name, u1.user_name) updator_name,"
-	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
-        			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
-					+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
-        			+ " FROM job_order_shipment jos "
-        			+ " left join job_order jor on jos.order_id = jor.id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " left join user_login u1 ON u1.id = jor.updator"
-        			+ " WHERE (jor.office_id="+office_id+ref_office+ ")"
-                    + " and  jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null)"
-                    + " and jor.delete_flag = 'N'";
-        	
+        	dai_condition = " and jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null)";
         } else if("customwait".equals(type)){
-        	sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,ifnull(u1.c_name, u1.user_name) updator_name,"
-	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id  and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
-        			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
-					+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
-        			+ " from job_order jor "
-        			+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " left join user_login u1 ON u1.id = jor.updator"
-        			+ " left join job_order_custom_china_self_item jocc on jocc.order_id = jor.id"
-        			+ " WHERE (jor.office_id="+office_id+ref_office+ ")"
-                    + " and  jor.transport_type LIKE '%custom%'"
-        			+ " and isnull(joc.customs_broker) and isnull(jocc.custom_bank)"
-        			+ " and jor.delete_flag = 'N'"
-        			+ " GROUP BY jor.id";
-        	
+        	dai_condition = " and  jor.transport_type LIKE '%custom%'"
+        			+ " and isnull(joc.customs_broker) and isnull(jocc.custom_bank)" ;
         } else if("insurancewait".equals(type)){
-        	sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,ifnull(u1.c_name, u1.user_name) updator_name,"
-	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
-        			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
-					+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
-        			+ " FROM job_order jor "
-        			+ " LEFT JOIN job_order_insurance joi ON jor.id = joi.order_id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " left join user_login u1 ON u1.id = jor.updator"
-        			+ " WHERE (jor.office_id="+office_id+ref_office+ ")"
-                    + " and  jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL"
+        	dai_condition = " and  jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL"
                     + " and jor.delete_flag = 'N'";
         } else if("overseacustomwait".equals(type)){
-        	sql = "SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,ifnull(u1.c_name, u1.user_name) updator_name,"
-	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
-        			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
-					+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
-        			+ " FROM job_order_shipment jos "
-        			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " left join user_login u1 ON u1.id = jor.updator"
-        			+ " WHERE (jor.office_id="+office_id+ref_office+ ")"
-                    + " and (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
-        			+ " and timediff(now(),jos.etd)<TIME('48:00:00') "
-        			+ " and jor.delete_flag = 'N'";
+        	dai_condition = " and (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
+        			+ " and timediff(now(),jos.etd)<TIME('48:00:00')";
         } else if("tlxOrderwait".equals(type)){
-        	sql = " SELECT jor.*,if(jor.office_id != "+office_id+",'other','self') other_flag, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,ifnull(u1.c_name, u1.user_name) updator_name,"
-	         		+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
-        			+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
+        	dai_condition = " and TO_DAYS(jos.etd)= TO_DAYS(now())";
+        }
+       
+         sql = 		"SELECT * from (select jor.*, loc.name as pod_name,jos.sono,jos.mbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\" / \",jos.mbl_no), \"\")) AS sono_mbl,if(jor.office_id != "+office_id+",'other','self') other_flag,"
+         			+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
+         			+" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
+        		 	+" FROM  job_order_shipment_item josi  "
+        		 	+" LEFT JOIN job_order jo on jo.id=josi.order_id "
+        		 	+" WHERE josi.order_id =jor.id) container_no, "
+        		 	+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
 					+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
 					+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
-        			+ " FROM job_order_shipment jos"
-        			+ " LEFT JOIN job_order jor on jos.order_id = jor.id"
-        			+ " left join party p on p.id = jor.customer_id"
-        			+ " left join user_login u on u.id = jor.creator"
-        			+ " left join user_login u1 ON u1.id = jor.updator"
-        			+ " WHERE (jor.office_id="+office_id+ref_office+ ")"
-                    + " and TO_DAYS(jos.etd)= TO_DAYS(now())"
-                    + " and jor.delete_flag = 'N'";
-        }
-        else{
-		         sql = 		"SELECT * from (select jor.*, loc.name as pod_name,jos.sono,jos.mbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\" / \",jos.mbl_no), \"\")) AS sono_mbl,if(jor.office_id != "+office_id+",'other','self') other_flag,"
-		         			+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
-		         			+" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
-		        		 	+" FROM  job_order_shipment_item josi  "
-		        		 	+" LEFT JOIN job_order jo on jo.id=josi.order_id "
-		        		 	+" WHERE josi.order_id =jor.id) container_no, "
-		        		 	+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-							+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-							+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-							+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
-							+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-							+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-							+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-							+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge, "
-		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code,ifnull(u1.c_name, u1.user_name) updator_name"
-		         		+ "	from job_order jor"
-		         		+ "	left join job_order_shipment jos on jos.order_id = jor.id"
-		         		+ " left join location loc on jos.pod=loc.id"
-		         		+ "	left join party p on p.id = jor.customer_id"
-		         		+ "	left join user_login u on u.id = jor.creator"
-		         		+ " left join user_login u1 ON u1.id = jor.updator"
-		         		+ " WHERE (jor.office_id="+office_id+ ref_office+ ")"
-		         	    + " and jor.delete_flag = 'N'"
-		         	    + " GROUP BY jor.id "
-		         	    + " ) A where 1 = 1 ";
-         }
+					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge, "
+         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code,ifnull(u1.c_name, u1.user_name) updator_name"
+         		+ "	from job_order jor"
+         		+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
+         		+ " left join job_order_custom_china_self_item jocc on jocc.order_id = jor.id"
+         		+ " left join job_order_land_item joli on joli.order_id = jor.id"
+         		+ " LEFT JOIN job_order_insurance joi ON jor.id = joi.order_id"
+         		+ "	left join job_order_shipment jos on jos.order_id = jor.id"
+         		+ " left join location loc on jos.pod=loc.id"
+         		+ "	left join party p on p.id = jor.customer_id"
+         		+ "	left join user_login u on u.id = jor.creator"
+         		+ " left join user_login u1 ON u1.id = jor.updator"
+         		+ " WHERE (jor.office_id="+office_id+ ref_office+ ")"
+         		+ dai_condition
+         	    + " and jor.delete_flag = 'N'"
+         	    + " GROUP BY jor.id "
+         	    + " ) A where 1 = 1 ";
+        
         
         String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
+        
+        if (getPara("start") != null  && getPara("length") != null) {
+        	if(Long.parseLong(getPara("start")) <= rec.getLong("total")){
+        		sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        	}else{
+        		sLimit = " LIMIT 0, " + getPara("length");
+        		pageIndex = "1";
+        	}
+            
+            if("lock".equals(type)){
+            	sLimit = "";
+            }
+        }
         
         List<Record> orderList = Db.find(sql+ condition + " order by " + sName +" "+ sort +sLimit);
         System.out.println(sql+ condition + " order by " + sName +" "+ sort +sLimit);
