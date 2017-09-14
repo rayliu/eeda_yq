@@ -17,7 +17,7 @@ body ::-webkit-scrollbar {
 }
 
 body ::-webkit-scrollbar-thumb {
-    background: #233248;//#005BAC;
+    background: #005BAC;
     -webkit-border-radius: 1ex;
 }
 
@@ -188,7 +188,7 @@ body ::-webkit-scrollbar-corner {
 
 .form-control{
     border-radius: 0px;
-    height: 27px;
+    height: 25px;
     font-size: 10px;
     padding: 6px 8px;
 }
@@ -232,19 +232,15 @@ body ::-webkit-scrollbar-corner {
 /*   after login,  commond page  */
 .navbar {
     min-height: 80px;
-    background-color: #233248;//#DAE000;
-}
-
-.navbar-top-links a{
-    color: white;
+    background-color: #DAE000;
 }
 
 .navbar-brand{
     margin-top: 14px;
     margin-left: 25px;
-    height: 65px;
+    height: 55px;
     width: 250px;
-    background: url(/images/simple/banner_logo_v2.png) no-repeat;
+    background: url(/images/simple/banner_logo.png) no-repeat;
     display: inline-block;
 }
 
@@ -253,7 +249,7 @@ body ::-webkit-scrollbar-corner {
     margin-left: 67px;
     height: 15px;
     width: 220px;
-    background: url(/images/simple/slogan_13px_white.png) no-repeat;
+    background: url(/images/simple/slogan_13px.png) no-repeat;
     display: inline-block;
 }
 
@@ -285,7 +281,7 @@ body ::-webkit-scrollbar-corner {
     padding-top: 13px;
     margin-left: 150px;
     margin-bottom: 0px; 
-    background-color: rgba(35, 50, 72, 0.68);//#005BAC;
+    background-color: #005BAC;
     height: 40px;
     border-radius: 0px 0px 13px 13px;
     color: white;
@@ -369,7 +365,7 @@ select.form-control{
 }
 
 .btn_green{
-    background-color: #4cae4c;//#DAE000;
+    background-color: #DAE000;
 }
 .btn_blue{
     background-color: #005BAC;
@@ -386,7 +382,7 @@ select.form-control{
 
 thead.eeda{
     color: white;
-    background-color: #233248;//#005bac;
+    background-color: #005bac;
 }
 
 .table-bordered>thead>tr>th{
@@ -426,7 +422,7 @@ div.dataTables_wrapper div.dataTables_paginate{
     padding: 6px 9px;
     border-radius: 15px;
     line-height:  1;
-    background-color: #233248;//#005bac;
+    background-color: #005bac;
     color: white;
 }
 
@@ -434,17 +430,17 @@ div.dataTables_wrapper div.dataTables_paginate{
     margin-top: 3px;
     margin-right: 10px;
     padding: 3px 6px;
-    color: #233248;//#005bac;
+    color: #005bac;
     background-color: #fff;
     border-color: #fff;
 }
 
 .pagination>.active>a{
     padding: 3px 6px;
-    color: #233248;//#005bac;
+    color: #005bac;
     background-color: #fff;
     border-color: #fff;
-    border-bottom: 2px solid #233248;
+    border-bottom: 2px solid #005bac;
 }
 
 .nav-tabs>li>a {
@@ -605,7 +601,7 @@ h4.panel-title  {
 
 
 .simple_rectangle_title_div{
-    background-color: #233248;//#005bac;
+    background-color: #005bac;
     height:30px;
 	margin-bottom:10px;
 	
