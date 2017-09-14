@@ -45,4 +45,44 @@ public class FormService {
         }
         return returnStr;
     }
+    
+    @SuppressWarnings("unchecked")
+    @Before(Tx.class)
+    public String processFieldType_detail(String form_name, Record fieldRec, Long field_id){
+        String returnStr = "";
+        String fieldDisplayName=fieldRec.getStr("field_display_name");
+        String fieldName=fieldRec.getStr("field_name");
+        Record ref = Db.findFirst(
+                "select * from eeda_form_field_type_detail_ref where field_id=?", field_id);
+        
+        List<Record> condition_list = Db.find(
+                "select * from eeda_form_field_type_detail_ref_join_condition where field_id=?", field_id);
+        
+        List<Record> display_list = Db.find(
+                "select * from eeda_form_field_type_detail_ref_display_field where field_id=?", field_id);
+        String fieldStr = "";
+        
+        for (Record r : display_list) {
+            String name = r.getStr("target_field_name");
+            fieldStr+="<th>"+name+"</th>";
+        }
+        returnStr = "<div class='row'>"
+                +"    <div class='col-lg-12'>"
+                +"        <div class='form-group button-bar' >"
+                +"            <button type='button' class='btn btn-success btn-xs' name='add_detail_row_btn' target_table='detail_table_"+field_id+"'>添加</button>"
+                +"        </div>"
+                +"    </div>"
+                +"</div>"
+                +"<table id='detail_table_"+field_id+"' class='table table-striped table-bordered table-hover display' style='width:100%;'>"
+                +"    <thead class='eeda'>"
+                +"        <tr>"
+                + fieldStr
+                +"        </tr>"
+                +"    </thead>"
+                +"    <tbody>"
+                +"      "
+                +"    </tbody>"
+                +"</table>";
+        return returnStr;
+    }
 }

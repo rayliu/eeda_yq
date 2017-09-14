@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -86,7 +87,7 @@ public class ModuleService {
                 itemRec.set("field_name",
                         PingYinUtil.getFirstSpell(field_display_name));
                 itemRec.set("field_type", field_type);
-                if (seq != null)
+                if (seq != null && !StrKit.isBlank(seq.toString()))
                     itemRec.set("seq", seq);
                 Db.update("eeda_form_field", itemRec);
             }
@@ -107,59 +108,128 @@ public class ModuleService {
     private void processFieldType(Map<String, ?> field, Long field_id) {
         String fieldType = (String) field.get("field_type".toUpperCase());
         if ("复选框".equals(fieldType)) {
+            saveCheckBox(field, field_id);
+        }if ("从表引用".equals(fieldType)) {
             Long fieldId = field_id;
 
             Map<String, ?> fieldTypeObj = (Map<String, ?>) field
-                    .get("check_box".toUpperCase());
-            Object checkId = fieldTypeObj.get("id".toUpperCase());
-            String is_single_check = (String) fieldTypeObj
-                    .get("is_single_check".toUpperCase());
-            String line_display_num = (String) fieldTypeObj
-                    .get("line_display_numbers".toUpperCase());
+                    .get("DETAIL_REF");
+            Object refId = fieldTypeObj.get("id".toUpperCase());
+            String target_form_name = (String) fieldTypeObj
+                    .get("target_form_name".toUpperCase());
             Record rec = new Record();
-            if (!(checkId instanceof java.lang.Double)) {
+            if (!(refId instanceof java.lang.Double)) {
                 rec.set("field_id", fieldId);
-                rec.set("is_single_check", is_single_check);
-                rec.set("line_display_num", line_display_num);
-                Db.save("eeda_form_field_type_checkbox", rec);
+                rec.set("target_form_name", target_form_name);
+                Db.save("eeda_form_field_type_detail_ref", rec);
             } else {
-                rec = Db.findById("eeda_form_field_type_checkbox", checkId);
+                rec = Db.findById("eeda_form_field_type_detail_ref", refId);
                 rec.set("field_id", fieldId);
-                rec.set("is_single_check", is_single_check);
-                rec.set("line_display_num", line_display_num);
-                Db.update("eeda_form_field_type_checkbox", rec);
+                rec.set("target_form_name", target_form_name);
+                Db.update("eeda_form_field_type_detail_ref", rec);
             }
 
-            List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
-                    .get("item_list".toUpperCase());
-            for (Map<String, ?> checkBox : list) {
-                Object id = checkBox.get("id".toUpperCase());
-                String name = (String) checkBox.get("name".toUpperCase());
-                String code = (String) checkBox.get("code".toUpperCase());
-                Object seq = checkBox.get("seq".toUpperCase());
-                String is_default = (String) checkBox.get("is_default"
-                        .toUpperCase());
+            List<Map<String, ?>> join_condition_list = (ArrayList<Map<String, ?>>) fieldTypeObj
+                    .get("join_condition".toUpperCase());
+            for (Map<String, ?> condition : join_condition_list) {
+                Object id = condition.get("id".toUpperCase());
+                String field_from = (String) condition.get("field_from".toUpperCase());
+                String field_to = (String) condition.get("field_to".toUpperCase());
 
                 Record itemRec = new Record();
                 if (!(id instanceof java.lang.Double)) {
                     itemRec.set("field_id", fieldId);
-                    itemRec.set("seq", seq);
-                    itemRec.set("name", name);
-                    itemRec.set("code", code);
-                    itemRec.set("is_default", is_default);
-                    Db.save("eeda_form_field_type_checkbox_item", itemRec);
+                    itemRec.set("field_from", field_from);
+                    itemRec.set("field_to", field_to);
+                    Db.save("eeda_form_field_type_detail_ref_join_condition", itemRec);
                 } else {
-                    itemRec = Db.findById("eeda_form_field_type_checkbox_item",
+                    itemRec = Db.findById("eeda_form_field_type_detail_ref_join_condition",
                             id);
                     itemRec.set("field_id", fieldId);
-                    itemRec.set("name", name);
-                    itemRec.set("code", code);
-                    itemRec.set("seq", seq);
-                    itemRec.set("is_default", is_default);
-                    Db.update("eeda_form_field_type_checkbox_item", itemRec);
+                    itemRec.set("field_from", field_from);
+                    itemRec.set("field_to", field_to);
+                    Db.update("eeda_form_field_type_detail_ref_join_condition", itemRec);
+                }
+            }
+            
+            List<Map<String, ?>> display_list = (ArrayList<Map<String, ?>>) fieldTypeObj
+                    .get("display_field".toUpperCase());
+            for (Map<String, ?> display_field : display_list) {
+                Object id = display_field.get("id".toUpperCase());
+                String tartget_field_name = (String) display_field.get("tartget_field_name".toUpperCase());
+                String value = (String) display_field.get("value".toUpperCase());
+
+                Record itemRec = new Record();
+                if (!(id instanceof java.lang.Double)) {
+                    itemRec.set("field_id", fieldId);
+                    itemRec.set("target_field_name", tartget_field_name);
+                    itemRec.set("value", value);
+                    Db.save("eeda_form_field_type_detail_ref_display_field", itemRec);
+                } else {
+                    itemRec = Db.findById("eeda_form_field_type_detail_ref_display_field",
+                            id);
+                    itemRec.set("field_id", fieldId);
+                    itemRec.set("target_field_name", tartget_field_name);
+                    itemRec.set("value", value);
+                    Db.update("eeda_form_field_type_detail_ref_display_field", itemRec);
                 }
             }
         }
 
+    }
+
+    private void saveCheckBox(Map<String, ?> field, Long field_id) {
+        Long fieldId = field_id;
+
+        Map<String, ?> fieldTypeObj = (Map<String, ?>) field
+                .get("check_box".toUpperCase());
+        Object checkId = fieldTypeObj.get("id".toUpperCase());
+        String is_single_check = (String) fieldTypeObj
+                .get("is_single_check".toUpperCase());
+        String line_display_num = (String) fieldTypeObj
+                .get("line_display_numbers".toUpperCase());
+        Record rec = new Record();
+        if (!(checkId instanceof java.lang.Double)) {
+            rec.set("field_id", fieldId);
+            rec.set("is_single_check", is_single_check);
+            rec.set("line_display_num", line_display_num);
+            Db.save("eeda_form_field_type_checkbox", rec);
+        } else {
+            rec = Db.findById("eeda_form_field_type_checkbox", checkId);
+            rec.set("field_id", fieldId);
+            rec.set("is_single_check", is_single_check);
+            rec.set("line_display_num", line_display_num);
+            Db.update("eeda_form_field_type_checkbox", rec);
+        }
+
+        List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
+                .get("item_list".toUpperCase());
+        for (Map<String, ?> checkBox : list) {
+            Object id = checkBox.get("id".toUpperCase());
+            String name = (String) checkBox.get("name".toUpperCase());
+            String code = (String) checkBox.get("code".toUpperCase());
+            Object seq = checkBox.get("seq".toUpperCase());
+            String is_default = (String) checkBox.get("is_default"
+                    .toUpperCase());
+
+            Record itemRec = new Record();
+            if (!(id instanceof java.lang.Double)) {
+                itemRec.set("field_id", fieldId);
+                itemRec.set("seq", seq);
+                itemRec.set("name", name);
+                itemRec.set("code", code);
+                itemRec.set("is_default", is_default);
+                Db.save("eeda_form_field_type_checkbox_item", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_field_type_checkbox_item",
+                        id);
+                itemRec.set("field_id", fieldId);
+                itemRec.set("name", name);
+                itemRec.set("code", code);
+                itemRec.set("seq", seq);
+                itemRec.set("is_default", is_default);
+                Db.update("eeda_form_field_type_checkbox_item", itemRec);
+            }
+        }
     }
 }

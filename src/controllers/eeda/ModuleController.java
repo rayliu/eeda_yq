@@ -734,6 +734,24 @@ public class ModuleController extends Controller {
                     checkBox.set("item_list", list);
 
                 field.set("CHECK_BOX", checkBox);
+            }else if ("从表引用".equals(type)) {
+                Record ref = Db
+                        .findFirst(
+                                "select * from eeda_form_field_type_detail_ref where field_id=?",
+                                field.get("id"));
+
+                List<Record> condition_list = Db
+                        .find("select * from eeda_form_field_type_detail_ref_join_condition where field_id=?",
+                                field.get("id"));
+                if (condition_list.size() > 0)
+                    ref.set("join_condition", condition_list);
+                
+                List<Record> field_list = Db
+                        .find("select * from eeda_form_field_type_detail_ref_display_field where field_id=?",
+                                field.get("id"));
+                if (field_list.size() > 0)
+                    ref.set("display_field", field_list);
+                field.set("detail_ref", ref);
             }
         }
         return recList;

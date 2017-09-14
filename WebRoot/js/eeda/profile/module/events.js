@@ -169,13 +169,15 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
 
       //值改变
       var value_change_nodes = zTree.getNodes()[1].children;
-      for(var i = 0;i<value_change_nodes.length;i++){
-        var node = value_change_nodes[i];
+      if(value_change_nodes){
+        for(var i = 0;i<value_change_nodes.length;i++){
+          var node = value_change_nodes[i];
 
-        if(!node) 
-          continue;
+          if(!node) 
+            continue;
 
-        node_list.push(node);
+          node_list.push(node);
+        }
       }
       return node_list;
     }
