@@ -9,7 +9,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 //          ajax: "/salesBillReport/list",
           initComplete:function(settings){
     	  cssTd();
-    	  eeda.dt_float_header('eeda_table');
           },
           columns: [
       			{ "data": "ORDER_NO", "width": "80px","className":"order_no",
@@ -166,35 +165,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				  }
 	            },
 	            { "data": "ROYALTY_RATE", "width": "80px","class":"royalty_rate"},
-	            { "width": "100px","className":"commission_money",
-					"render": function(data, type, full, meta) {
-							var str=0;
-		            		
-		            		var sum_charge_total=0;
-		            		var sum_cost_total=0;
-		            		if(full.SUM_CHARGE_TOTAL){
-		            			sum_charge_total=full.SUM_CHARGE_TOTAL;
-		            		}
-		            		if(full.SUM_COST_TOTAL){
-		            			sum_cost_total=full.SUM_COST_TOTAL;
-		            		}
-		            		str = sum_charge_total-sum_cost_total;
-		            		
-		            		var royalty_rate = 0;
-		            		if(full.ROYALTY_RATE){
-		            			royalty_rate = full.ROYALTY_RATE;
-		            		}else{
-		            			return ""
-		            		}
-		            		var commission_money = (str*royalty_rate)/100;
-		            		if(commission_money<0){
-		            	    	return '<span style="color:red;">'+eeda.numFormat(commission_money.toFixed(2),3)+'</span>';
-		            	    }
-		            		
-							return eeda.numFormat(commission_money.toFixed(2),3);
-					}
+	            { "width": "80px","className":"charge_calculate_extract",
+	            	"render": function(data, type, full, meta) {
+	            		var charge_tiji = (full.SUM_CHARGE_TOTAL-full.SUM_COST_TOTAL)*(full.ROYALTY_RATE/100);
+	            		return eeda.numFormat(charge_tiji.toFixed(2),3);
+	            	}
+	            },
+	            { "width": "80px","className":"net_receipts_calculate_extract",
+	            	"render": function(data, type, full, meta) {
+	            		var net_receipts = (full.SUM_PAY_CHARGE_TOTAL-full.SUM_COST_TOTAL)*(full.ROYALTY_RATE/100);
+	            		return eeda.numFormat(net_receipts.toFixed(2),3);
+	            	}
 				}
-	            
 	          ]
 	      });
 
@@ -273,13 +255,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       		order_export_date_begin_time:order_export_date_begin_time,
       		order_export_date_end_time:order_export_date_end_time
         },function(data){
-    	  
       	  var sum_foot_charge_total = parseFloat(data.SUM_FOOT_CHARGE_TOTAL).toFixed(2);
       	  var sum_foot_cost_total = parseFloat(data.SUM_FOOT_COST_TOTAL).toFixed(2);
-      	  var sum_foot_gross_profit = parseFloat(data.SUM_FOOT_GROSS_PROFIT).toFixed(2);
+      	  var sum_foot_gross_profit = parseFloat(data.SUM_FOOT_CHARGE_TOTAL-data.SUM_FOOT_COST_TOTAL).toFixed(2);
       	  var sum_foot_pay_charge_total = parseFloat(data.SUM_FOOT_PAY_CHARGE_TOTAL).toFixed(2);
-      	  var sum_foot_current_profit = parseFloat(data.SUM_FOOT_CURRENT_PROFIT).toFixed(2);
-      	  var foot_commission_money = parseFloat(data.FOOT_COMMISSION_MONEY).toFixed(2);
+      	  var sum_foot_current_profit = parseFloat(data.SUM_FOOT_PAY_CHARGE_TOTAL-data.SUM_FOOT_COST_TOTAL).toFixed(2);
+      	 // var foot_commission_money = parseFloat(data.FOOT__MONEY).toFixed(2);
 
       	  var total=parseFloat(data.TOTAL);
 
@@ -293,7 +274,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       	  }else{
       		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","");; 
       	  }
-      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=commission_money]').html("提成金额CNY:<br>"+eeda.numFormat(foot_commission_money,3));
+      	 // $($('.dataTables_scrollFoot tr')[0]).find('th[class=commission_money]').html("提成金额CNY:<br>"+eeda.numFormat(foot_commission_money,3));
         });
 		
 	     var url = "/salesBillReport/list?customer_id="+customer_id
@@ -331,27 +312,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
           },function(data){
-      	  
         	  var sum_foot_charge_total = parseFloat(data.SUM_FOOT_CHARGE_TOTAL).toFixed(2);
-        	  var sum_foot_cost_total = parseFloat(data.SUM_FOOT_COST_TOTAL).toFixed(2);
-        	  var sum_foot_gross_profit = parseFloat(data.SUM_FOOT_GROSS_PROFIT).toFixed(2);
-        	  var sum_foot_pay_charge_total = parseFloat(data.SUM_FOOT_PAY_CHARGE_TOTAL).toFixed(2);
-        	  var sum_foot_current_profit = parseFloat(data.SUM_FOOT_CURRENT_PROFIT).toFixed(2);
-        	  var foot_commission_money = parseFloat(data.FOOT_COMMISSION_MONEY).toFixed(2);
+          	  var sum_foot_cost_total = parseFloat(data.SUM_FOOT_COST_TOTAL).toFixed(2);
+          	  var sum_foot_gross_profit = parseFloat(data.SUM_FOOT_CHARGE_TOTAL-data.SUM_FOOT_COST_TOTAL).toFixed(2);
+          	  var sum_foot_pay_charge_total = parseFloat(data.SUM_FOOT_PAY_CHARGE_TOTAL).toFixed(2);
+          	  var sum_foot_current_profit = parseFloat(data.SUM_FOOT_PAY_CHARGE_TOTAL-data.SUM_FOOT_COST_TOTAL).toFixed(2);
+        	  //var foot_commission_money = parseFloat(data.FOOT_COMMISSION_MONEY).toFixed(2);
 
         	  var total=parseFloat(data.TOTAL);
 
         	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=order_no]').html('共'+total+'项汇总：');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_charge_total]').html("折合应收CNY:<br>"+eeda.numFormat(sum_foot_charge_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_pay_charge_total]').html("折合实收CNY:<br>"+eeda.numFormat(sum_foot_pay_charge_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_cost_total]').html("折合应付CNY:<br>"+eeda.numFormat(sum_foot_cost_total,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=gross_profit]').html("毛利润CNY:<br>"+eeda.numFormat(sum_foot_gross_profit,3));
-        	  if(sum_foot_current_profit<0){
-        		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","red");
-        	  }else{
-        		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","");; 
-        	  }
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=commission_money]').html("提成金额CNY:<br>"+eeda.numFormat(foot_commission_money,3));
+          	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_charge_total]').html("折合应收CNY:<br>"+eeda.numFormat(sum_foot_charge_total,3));
+          	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_pay_charge_total]').html("折合实收CNY:<br>"+eeda.numFormat(sum_foot_pay_charge_total,3));
+          	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_cost_total]').html("折合应付CNY:<br>"+eeda.numFormat(sum_foot_cost_total,3));
+          	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=gross_profit]').html("毛利润CNY:<br>"+eeda.numFormat(sum_foot_gross_profit,3));
+          	  if(sum_foot_current_profit<0){
+          		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","red");
+          	  }else{
+          		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","");; 
+          	  }
+          	 // $($('.dataTables_scrollFoot tr')[0]).find('th[class=commission_money]').html("提成金额CNY:<br>"+eeda.numFormat(foot_commission_money,3));
           });
           /*  
               查询规则：参数对应DB字段名

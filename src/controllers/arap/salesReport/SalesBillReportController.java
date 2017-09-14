@@ -111,7 +111,7 @@ public class SalesBillReportController extends Controller {
 	}
 	
 	public void listTotal() {
-		String spid =(String) getPara("customer_id");
+		String spid = getPara("customer_id");
 		String user_name = getPara("user_name");
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
@@ -123,13 +123,13 @@ public class SalesBillReportController extends Controller {
 		if(StringUtils.isBlank(spid)){
 			sp_id="";
 		}else{
-			sp_id =" and p.id="+spid;
+			sp_id =" and jo.customer_id="+spid;
 		}
 		String userName = "";
 		if(StringUtils.isBlank(user_name)){
 			userName="";
 		}else{
-			userName =" and ul.c_name='"+user_name+"'";
+			userName =" and user_name='"+user_name+"'";
 		}
 		if(order_export_date_begin_time==null){
 			order_export_date_begin_time="";
@@ -145,30 +145,65 @@ public class SalesBillReportController extends Controller {
 		}
 		String condition = sp_id+userName+order_export_date;
 		
-		String sql=" SELECT *,SUM(foot_charge_total) sum_foot_charge_total,SUM(foot_cost_total) sum_foot_cost_total,(SUM(foot_charge_total)-SUM(foot_cost_total)) sum_foot_gross_profit,  "
-				+" SUM(foot_pay_charge_total) sum_foot_pay_charge_total, (SUM(foot_pay_charge_total)- SUM(foot_cost_total))  sum_foot_current_profit, "
-				+" CONVERT(SUM(commission_money),decimal(10,2)) foot_commission_money from ( "
-				+" SELECT *,SUM(charge_total) foot_charge_total,SUM(pay_charge_total) foot_pay_charge_total,SUM(cost_total) foot_cost_total,"
-				+ "(((SUM(charge_total)-SUM(cost_total))*royalty_rate)/100) commission_money from ( "
-				+" SELECT 	cs.royalty_rate,jo.order_no,jo.order_export_date, "
-				+" IF ( joa.order_type = 'charge',joa.currency_total_amount,0) charge_total, "
-				+" IF ( joa.order_type = 'charge' AND joa.pay_flag = 'Y',joa.currency_total_amount,0) pay_charge_total, "
-				+" IF ( joa.order_type = 'cost',joa.currency_total_amount,0) cost_total,ul.c_name"
-				+" FROM job_order jo "
-				+" LEFT JOIN job_order_arap joa ON joa.order_id = jo.id "
-				+" LEFT JOIN party p ON p.id = jo.customer_id "
-				+" LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id "
-				+" LEFT JOIN user_login ul ON ul.id = cs.salesman_id "
-				+" WHERE "
-				+" 	jo.office_id ="+office_id
-				+" AND p.id IN ( 	SELECT  customer_id "
-				+" 	FROM user_customer "
-				+" 	WHERE user_name = '"+currentUser.getPrincipal()+"' )  "+condition
-				+" ) A "
-				+" WHERE  	1 = 1  GROUP BY  	A.order_no  ORDER BY  	order_export_date desc "
-				+"  "
-				+" ) B  ";
-
+		String sql = " SELECT SUM(sum_charge_total) sum_foot_charge_total,SUM(sum_cost_total) sum_foot_cost_total,SUM(sum_pay_charge_total) sum_foot_pay_charge_total "
+				+ " FROM(SELECT A.*,"
+				+ " CAST(CONCAT(IF(SUM(charge_CNY)!=0,CONCAT('CNY:',round(SUM(charge_CNY),2)),''),"
+				+ " '  ',IF(SUM(charge_USD)!=0,CONCAT('USD:',round(SUM(charge_USD),2)),''),'  ',IF(SUM(charge_JPY)!=0,CONCAT('JPY:',round(SUM(charge_JPY),2)),''),"
+				+ " '  ',IF(SUM(charge_HKD)!=0,CONCAT('HKD:',round(SUM(charge_HKD),2)),''))as char) receivable,"
+				+ "	CAST(CONCAT(IF(SUM(pay_charge_CNY)!=0,CONCAT('CNY:',round(SUM(pay_charge_CNY),2)),''),"
+				+ "'  ',IF(SUM(pay_charge_USD)!=0,CONCAT('USD:',round(SUM(pay_charge_USD),2)),''),"
+				+ "'  ',IF(SUM(pay_charge_JPY)!=0,CONCAT('JPY:',round(SUM(pay_charge_JPY),2)),''),"
+				+ "'  ',IF(SUM(pay_charge_HKD)!=0,CONCAT('HKD:',round(SUM(pay_charge_HKD),2)),'')) as char) receipts,"
+				+ "	CAST(CONCAT(IF(SUM(cost_CNY)!=0,CONCAT('CNY:',round(SUM(cost_CNY),2)),''),"
+				+ "'  ',IF(SUM(cost_USD)!=0,CONCAT('USD:',round(SUM(cost_USD),2)),''),"
+				+ "'  ',IF(SUM(cost_JPY)!=0,CONCAT('JPY:',round(SUM(cost_JPY),2)),''),"
+				+ "'  ', IF(SUM(cost_HKD)!=0,CONCAT('HKD:',round(SUM(cost_HKD),2)),'')) as char) payable,"
+				+ " round(SUM(charge_total),2) sum_charge_total,"
+				+ " round(SUM(pay_charge_total),2) sum_pay_charge_total,"
+				+ " round(SUM(cost_total),2) sum_cost_total,"
+				+ " CAST(IFNULL(round(SUM(charge_total), 2) - round(SUM(cost_total), 2),'') as char) gross_profit,"
+				+ " CAST(IFNULL(round(SUM(pay_charge_total), 2) - round(SUM(cost_total), 2),'') as char) current_profit,"
+				+ " round(((round(SUM(charge_total), 2) - round(SUM(cost_total), 2))*royalty_rate)/100,2) commission_money "
+        		+" from( "
+        		+"		SELECT jo.id,jo.order_no,jo.fee_count,jo.customer_id,jos.mbl_no,jo.order_export_date,IFNULL(locean1.name,lair1.name) pol_name,"
+        		+ "		IFNULL(locean2.name,lair2.name) pod_name,ul.c_name user_name,p.abbr,cs.royalty_rate,contract_no, "
+        		+"		if(cy.code='CNY' AND joa.order_type='charge',joa.total_amount,0) charge_CNY, "
+        		+"		if(cy.code='USD' AND joa.order_type='charge',joa.total_amount,0) charge_USD, "
+        		+"		if(cy.code='JPY' AND joa.order_type='charge',joa.total_amount,0) charge_JPY, "
+        		+"		if(cy.code='HKD' AND joa.order_type='charge',joa.total_amount,0) charge_HKD, "
+        		+"		if(joa.order_type='charge',joa.currency_total_amount,0) charge_total, "
+        		+"		if(cy.code='CNY' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_CNY, "
+        		+"		if(cy.code='USD' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_USD, "
+        		+"		if(cy.code='JPY' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_JPY, "
+        		+"		if(cy.code='HKD' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_HKD, "
+        		+"		if(joa.order_type='charge' AND joa.pay_flag='Y',joa.currency_total_amount,0) pay_charge_total, "
+        		+"		if(cy.code='CNY' AND joa.order_type='cost',joa.total_amount,0) cost_CNY, "
+        		+"		if(cy.code='USD' AND joa.order_type='cost',joa.total_amount,0) cost_USD, "
+        		+"		if(cy.code='JPY' AND joa.order_type='cost',joa.total_amount,0) cost_JPY, "
+        		+"		if(cy.code='HKD' AND joa.order_type='cost',joa.total_amount,0) cost_HKD, "
+        		+"		if(joa.order_type='cost',joa.currency_total_amount,0) cost_total "
+        		+"		from job_order jo  "
+        		+"		LEFT JOIN job_order_arap joa on joa.order_id = jo.id "
+        		+"		LEFT JOIN currency cy on cy.id = joa.currency_id "
+        		+"		LEFT JOIN job_order_shipment jos on jos.order_id = jo.id "
+        		+"		LEFT JOIN job_order_air_item joai on joai.order_id = jo.id "
+        		+"		LEFT JOIN location locean1 on locean1.id = jos.pol "
+        		+"		LEFT JOIN location locean2 on locean2.id = jos.pod "
+        		+"		LEFT JOIN location lair1 on lair1.id = joai.start_from "
+        		+"		LEFT JOIN location lair2 on lair2.id = joai.destination "
+        		+"		LEFT JOIN party p on p.id = jo.customer_id "
+        		+"		LEFT JOIN customer_salesman cs on cs.party_id =  jo.customer_id "
+        		+"		LEFT JOIN user_login ul on ul.id = cs.salesman_id "
+        		+"		LEFT JOIN customer_contract ccon ON ccon.customer_id = jo.customer_id "
+        		+"		LEFT JOIN customer_contract_location ccl ON ccl.contract_id = ccon.id "
+        		+"		WHERE jo.office_id = "+office_id+" AND ccon.type = jo.type AND ccon.customer_id = jo.customer_id AND ccon.trans_clause = jo.trans_clause"
+        		+"		AND ccon.trade_type = jo.trade_type AND ccl.pol_id = jos.pol AND ccl.pod_id = jos.pod AND (jo.order_export_date BETWEEN ccon.contract_begin_time "
+        		+"		AND ccon.contract_end_time)"
+        		+"		AND p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"')"
+        		+" ) A  where 1= 1"+condition
+        		+" GROUP BY A.order_no "
+        		+ " ORDER BY order_export_date desc ) B where 1=1";
+		
 		Record re = Db.findFirst(sql);
 		long total=list();
 		re.set("total", total);
@@ -262,11 +297,11 @@ public class SalesBillReportController extends Controller {
         		+ " ORDER BY order_export_date desc";
 
         String sqlExport = sql;
-		String total_name_header = "工作单号,提单号,出货期日(日),业务员,客户,合同编号,起运港,目的港,计费数量,应收,折合应收CNY,实收,折合实收CNY,应付,折合应付CNY,毛利润(CNY),当前盈亏(CNY),提成比例%,提成(金额)";
+		String total_name_header = "工作单号,提单号,出货期日(日),业务员,客户,合同编号,起运港,目的港,计费数量,应收,折合应收CNY,实收,折合实收CNY,应付,折合应付CNY,毛利润(CNY),当前盈亏(CNY),提成比例%,应收计提,实收计提";
 		String[] headers = total_name_header.split(",");
 
 		String[] fields = { "ORDER_NO", "MBL_NO", "ORDER_EXPORT_DATE", "USER_NAME",
-				"ABBR", "CONTRACT_NO", "POL_NAME","POD_NAME","FEE_COUNT","RECEIVABLE","SUM_CHARGE_TOTAL","RECEIPTS","SUM_PAY_CHARGE_TOTAL","PAYABLE","SUM_COST_TOTAL","GROSS_PROFIT","CURRENT_PROFIT","ROYALTY_RATE","COMMISSION_MONEY"};
+				"ABBR", "CONTRACT_NO", "POL_NAME","POD_NAME","FEE_COUNT","RECEIVABLE","SUM_CHARGE_TOTAL","RECEIPTS","SUM_PAY_CHARGE_TOTAL","PAYABLE","SUM_COST_TOTAL","GROSS_PROFIT","CURRENT_PROFIT","ROYALTY_RATE","",""};
 		
 		String exportName = "";
 		
