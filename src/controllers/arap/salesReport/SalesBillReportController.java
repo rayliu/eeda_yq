@@ -111,7 +111,7 @@ public class SalesBillReportController extends Controller {
 	}
 	
 	public void listTotal() {
-		String spid = getPara("customer_id");
+		String customer_id = getPara("customer_id");
 		String user_name = getPara("user_name");
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
@@ -119,11 +119,11 @@ public class SalesBillReportController extends Controller {
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
-        String sp_id = "";
-		if(StringUtils.isBlank(spid)){
-			sp_id="";
+        String customerId = "";
+		if(StringUtils.isBlank(customer_id)){
+			customerId="";
 		}else{
-			sp_id =" and jo.customer_id="+spid;
+			customerId =" and customer_id="+customer_id;
 		}
 		String userName = "";
 		if(StringUtils.isBlank(user_name)){
@@ -143,9 +143,9 @@ public class SalesBillReportController extends Controller {
 		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
 			order_export_date="";
 		}
-		String condition = sp_id+userName+order_export_date;
+		String condition = customerId+userName+order_export_date;
 		
-		String sql = " SELECT SUM(sum_charge_total) sum_foot_charge_total,SUM(sum_cost_total) sum_foot_cost_total,SUM(sum_pay_charge_total) sum_foot_pay_charge_total "
+		String sql = " SELECT IFNULL(SUM(sum_charge_total),0.00) sum_foot_charge_total,IFNULL(SUM(sum_cost_total),0.00) sum_foot_cost_total,IFNULL(SUM(sum_pay_charge_total),0.00) sum_foot_pay_charge_total "
 				+ " FROM(SELECT A.*,"
 				+ " CAST(CONCAT(IF(SUM(charge_CNY)!=0,CONCAT('CNY:',round(SUM(charge_CNY),2)),''),"
 				+ " '  ',IF(SUM(charge_USD)!=0,CONCAT('USD:',round(SUM(charge_USD),2)),''),'  ',IF(SUM(charge_JPY)!=0,CONCAT('JPY:',round(SUM(charge_JPY),2)),''),"
@@ -158,12 +158,11 @@ public class SalesBillReportController extends Controller {
 				+ "'  ',IF(SUM(cost_USD)!=0,CONCAT('USD:',round(SUM(cost_USD),2)),''),"
 				+ "'  ',IF(SUM(cost_JPY)!=0,CONCAT('JPY:',round(SUM(cost_JPY),2)),''),"
 				+ "'  ', IF(SUM(cost_HKD)!=0,CONCAT('HKD:',round(SUM(cost_HKD),2)),'')) as char) payable,"
-				+ " round(SUM(charge_total),2) sum_charge_total,"
-				+ " round(SUM(pay_charge_total),2) sum_pay_charge_total,"
-				+ " round(SUM(cost_total),2) sum_cost_total,"
+				+ " SUM(charge_total) sum_charge_total,"
+				+ " SUM(pay_charge_total) sum_pay_charge_total,"
+				+ " SUM(cost_total) sum_cost_total,"
 				+ " CAST(IFNULL(round(SUM(charge_total), 2) - round(SUM(cost_total), 2),'') as char) gross_profit,"
-				+ " CAST(IFNULL(round(SUM(pay_charge_total), 2) - round(SUM(cost_total), 2),'') as char) current_profit,"
-				+ " round(((round(SUM(charge_total), 2) - round(SUM(cost_total), 2))*royalty_rate)/100,2) commission_money "
+				+ " CAST(IFNULL(round(SUM(pay_charge_total), 2) - round(SUM(cost_total), 2),'') as char) current_profit"
         		+" from( "
         		+"		SELECT jo.id,jo.order_no,jo.fee_count,jo.customer_id,jos.mbl_no,jo.order_export_date,IFNULL(locean1.name,lair1.name) pol_name,"
         		+ "		IFNULL(locean2.name,lair2.name) pod_name,ul.c_name user_name,p.abbr,cs.royalty_rate,contract_no, "
@@ -255,7 +254,8 @@ public class SalesBillReportController extends Controller {
 				+ " round(SUM(cost_total),2) sum_cost_total,"
 				+ " CAST(IFNULL(round(SUM(charge_total), 2) - round(SUM(cost_total), 2),'') as char) gross_profit,"
 				+ " CAST(IFNULL(round(SUM(pay_charge_total), 2) - round(SUM(cost_total), 2),'') as char) current_profit,"
-				+ " round(((round(SUM(charge_total), 2) - round(SUM(cost_total), 2))*royalty_rate)/100,2) commission_money "
+				+ " (SUM(charge_total)-SUM(cost_total))*(royalty_rate/100) receivable_tiji,"
+				+ " (SUM(pay_charge_total)-SUM(cost_total))*(royalty_rate/100) net_receivable_tiji"
         		+" from( "
         		+"		SELECT jo.id,jo.order_no,jo.fee_count,jo.customer_id,jos.mbl_no,jo.order_export_date,IFNULL(locean1.name,lair1.name) pol_name,"
         		+ "		IFNULL(locean2.name,lair2.name) pod_name,ul.c_name user_name,p.abbr,cs.royalty_rate,contract_no, "
@@ -301,7 +301,7 @@ public class SalesBillReportController extends Controller {
 		String[] headers = total_name_header.split(",");
 
 		String[] fields = { "ORDER_NO", "MBL_NO", "ORDER_EXPORT_DATE", "USER_NAME",
-				"ABBR", "CONTRACT_NO", "POL_NAME","POD_NAME","FEE_COUNT","RECEIVABLE","SUM_CHARGE_TOTAL","RECEIPTS","SUM_PAY_CHARGE_TOTAL","PAYABLE","SUM_COST_TOTAL","GROSS_PROFIT","CURRENT_PROFIT","ROYALTY_RATE","",""};
+				"ABBR", "CONTRACT_NO", "POL_NAME","POD_NAME","FEE_COUNT","RECEIVABLE","SUM_CHARGE_TOTAL","RECEIPTS","SUM_PAY_CHARGE_TOTAL","PAYABLE","SUM_COST_TOTAL","GROSS_PROFIT","CURRENT_PROFIT","ROYALTY_RATE","RECEIVABLE_TIJI","NET_RECEIVABLE_TIJI"};
 		
 		String exportName = "";
 		
