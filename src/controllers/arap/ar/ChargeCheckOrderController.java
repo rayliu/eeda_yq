@@ -858,8 +858,6 @@ public class ChargeCheckOrderController extends Controller {
   		public void downloadExcelList(){
   			String order_id = getPara("id");
   			String sp_name = getPara("sp_name");
-  	
-  			
   			String sqlExport = " SELECT l. NAME pod,l1. NAME pol,aco.begin_time,aco.end_time,o.eng_office_name,p.company_name,p.abbr sp_abbr,p.contact_person,p.phone,p.fax,p1.abbr customer_abbr,  "
   					+" jo.order_export_date,jo.order_no,jo.type, "
   					+"  jos.mbl_no MBL, jos.hbl_no HBL,jos.SONO so_no, "
@@ -914,6 +912,68 @@ public class ChargeCheckOrderController extends Controller {
   			String[] fields = {"ORDER_NO", "ORDER_EXPORT_DATE", "CUSTOMER_ABBR", "SP_ABBR", "TYPE", "MBL", "HBL", "SO_NO", "POL", "POD", "CONTAINER_NO", "CONTAINER_AMOUNT", "FEE_NAME", "CURRENCY_NAME", "TOTAL_AMOUNT"};
   			String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,sp_name);
   			renderText(fileName);
-  		}  
+  		} 
+  		
+  		public void downloadExcelList1(){
+  			String order_id = getPara("id");
+  			String sp_name = getPara("sp_name");
+  			String sqlExport = "SELECT aco.begin_time,aco.end_time,o.eng_office_name,p.company_name,p.contact_person,p.phone,p.fax,u.c_name,u.user_tel,"
+  					+ " jo.order_export_date,jo.order_no,jo.ref_no,CASE WHEN l.NAME != '' THEN l.NAME WHEN l1.NAME != '' THEN l1.NAME ELSE p1.abbr END fnd,"
+  					+ " REPLACE (ifnull((SELECT GROUP_CONCAT(josi.container_type) "
+  					+ " FROM job_order_shipment_item josi "
+  					+ " WHERE josi.order_id = jo.id),"
+  					+ " (SELECT GROUP_CONCAT(joli.truck_type) FROM job_order_land_item joli WHERE joli.order_id = jo.id)),'','') truck_type,(SELECT j.volume FROM job_order j WHERE j.id = joa.order_id) CBM,"
+  					+ " (SELECT j.pieces FROM job_order j WHERE j.id = joa.order_id) CTNS,(SELECT j.gross_weight FROM job_order j WHERE j.id = joa.order_id ) KGS,"
+  					+ " ifnull((SELECT GROUP_CONCAT(josi.container_no) FROM job_order_shipment_item josi WHERE josi.order_id = joa.order_id),(SELECT GROUP_CONCAT(j.land_container_no) "
+  					+ " FROM job_order_land_item j WHERE j.order_id = joa.order_id)) container_no,jos.mbl_no MBL,jos.hbl_no HBL,(SELECT sum(joa.total_amount) - IFNULL("
+  					+ " (SELECT sum(joa.total_amount) FROM job_order_arap joa LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id"
+  					+ " WHERE aco.id = "+order_id+" AND joa.currency_id = 6 AND joa.order_id = jo.id AND joa.order_type = 'cost' ),0) FROM job_order_arap joa "
+  					+ " LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id WHERE aco.id = "+order_id+" "
+  					+ " AND joa.currency_id = 6 AND joa.order_id = jo.id AND joa.order_type = 'charge') usd,(SELECT sum(joa.total_amount) - IFNULL((SELECT sum(joa.total_amount) "
+  					+ " FROM job_order_arap joa LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id "
+  					+ " WHERE aco.id = "+order_id+" AND joa.currency_id = 3 AND joa.order_id = jo.id AND joa.order_type = 'cost'),0) "
+  					+ " FROM job_order_arap joa LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id "
+  					+ " WHERE aco.id = "+order_id+" AND joa.currency_id = 3 AND joa.order_id = jo.id AND joa.order_type = 'charge') cny,"
+  					+ " (SELECT sum(joa.total_amount) - IFNULL((SELECT sum(joa.total_amount) FROM job_order_arap joa "
+  					+ " LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id "
+  					+ " LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id "
+  					+ " WHERE aco.id = "+order_id+" AND joa.currency_id = 8 AND joa.order_id = jo.id AND joa.order_type = 'cost'),0)"
+  					+ " FROM job_order_arap joa"
+  					+ " LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id "
+  					+ " LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id"
+  					+ " WHERE aco.id = "+order_id+" AND joa.currency_id = 8 AND joa.order_id = jo.id AND joa.order_type = 'charge') jpy,"
+  					+ " (SELECT sum(joa.total_amount) - IFNULL((SELECT sum(joa.total_amount)"
+  					+ " FROM job_order_arap joa LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id "
+  					+ " LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id "
+  					+ " WHERE aco.id = "+order_id+" AND joa.currency_id = 9 AND joa.order_id = jo.id AND joa.order_type = 'cost'),0)"
+  					+ " FROM job_order_arap joa "
+  					+ " LEFT JOIN arap_charge_item aci ON joa.id = aci.ref_order_id"
+  					+ " LEFT JOIN arap_charge_order aco ON aco.id = aci.charge_order_id "
+  					+ " WHERE aco.id = "+order_id+" AND joa.currency_id = 9 AND joa.order_id = jo.id AND joa.order_type = 'charge') hkd "
+  					+ " FROM arap_charge_order aco "
+  					+ " LEFT JOIN arap_charge_item aci ON aco.id = aci.charge_order_id "
+  					+ " LEFT JOIN job_order_arap joa ON joa.id = aci.ref_order_id "
+  					+ " LEFT JOIN office o ON o.id = aco.office_id "
+  					+ " LEFT JOIN job_order jo ON jo.id = joa.order_id "
+  					+ " LEFT JOIN job_order_shipment jos ON jos.order_id = jo.id "
+  					+ " LEFT JOIN job_order_shipment_item josi ON josi.order_id = jo.id "
+  					+ " LEFT JOIN job_order_air_item joai ON joai.order_id = jo.id "
+  					+ " LEFT JOIN job_order_land_item joli ON joli.order_id = jo.id "
+  					+ " LEFT JOIN location l ON l.id = jos.fnd "
+  					+ " LEFT JOIN location l1 ON l1.id = joai.destination "
+  					+ " LEFT JOIN party p ON p.id = aco.sp_id "
+  					+ " LEFT JOIN party p1 ON p1.id = joli.consignee "
+  					+ " LEFT JOIN user_login u ON u.id = 1 "
+  					+ " LEFT JOIN currency_rate cr ON cr.currency_id = joa.currency_id "
+  					+ " WHERE aco.id = "+order_id+" GROUP BY jo.id ORDER BY jo.order_export_date, jo.order_no";
+  			//String total_name_header = "申请单号, 出货日期, 客户, 结算公司, 类型, 提单号(MBL), 提单号(HBL), SO号, 起运港,目的港, 箱号, 箱量类型, 费用名称, 币制, 金额";// 目的港,体积,件数,毛重,发票号,
+  			String total_name_header = "DATE, DEBIT NO, DESTINATION, CBM, PKG, KGS, BILL NO, REF NO, MBL NO,HBL NO, CTNR NO,CNY, USD, HKD, JPY";// 目的港,体积,件数,毛重,发票号,
+  			String[] headers = total_name_header.split(",");
+  			
+  			//String head_id_sql_total = "ORDER_NO, ORDER_EXPORT_DATE, CUSTOMER_ABBR, SP_ABBR, TYPE, MBL, HBL, SO_NO, POL, POD, CONTAINER_NO, CONTAINER_AMOUNT, FEE_NAME, CURRENCY_NAME, TOTAL_AMOUNT";// 目的港,体积,件数,毛重,发票号,
+  			String[] fields = { "ORDER_EXPORT_DATE","ORDER_NO","DESTINATION","CBM", "CTNS", "KGS", "", "TRUCK_TYPE", "MBL", "HBL", "", "CNY", "USD", "HKD", "JPY"};
+  			String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,sp_name);
+  			renderText(fileName);
+  		} 
     
 }

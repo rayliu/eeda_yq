@@ -178,7 +178,7 @@ $(document).ready(function() {
     		}
     	});
     });
-    //生成应收对账明细
+    //生成应收对账PDF(合计)
     $('#printTotaledBtn').click(function(){
     	var order_id = $('#order_id').val();
     	var company_name = $('#company_name').val();
@@ -193,16 +193,30 @@ $(document).ready(function() {
     });
     
     //导出excel对账单
-    $('#exportTotaledExcel').click(function(){
+    $('#exportExcel').click(function(){
         $(this).attr('disabled', true);
         var id = $('#order_id').val();
         var sp_name = $('#company_name').val();
         $.post('/chargeCheckOrder/downloadExcelList', {id:id,sp_name:sp_name}, function(data){
-            $('#exportTotaledExcel').prop('disabled', false);
+            $('#exportExcel').prop('disabled', false);
             $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
             window.open(data);
         }).fail(function() {
-            $('#exportTotaledExcel').prop('disabled', false);
+            $('#exportExcel').prop('disabled', false);
+            $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
+        });
+    });
+    //导出excel对账单(合计)
+    $('#exportTotaledExcel').click(function(){
+        $(this).attr('disabled', true);
+        var id = $('#order_id').val();
+        var sp_name = $('#company_name').val();
+        $.post('/chargeCheckOrder/downloadExcelList1', {id:id,sp_name:sp_name}, function(data){
+            $('#exportExcel').prop('disabled', false);
+            $.scojs_message('生成应收Excel对账单成功', $.scojs_message.TYPE_OK);
+            window.open(data);
+        }).fail(function() {
+            $('#exportExcel').prop('disabled', false);
             $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
         });
     });
