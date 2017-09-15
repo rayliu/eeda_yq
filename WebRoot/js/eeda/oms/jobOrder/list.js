@@ -27,7 +27,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           colReorder: true,
           paging: true,
           serverSide: true, //不打开会出现排序不对
-          ajax: "/jobOrder/list?type_="+type,
+          ajax: "/jobOrder/list?type_="+type+"&custom_status_=待报关",
            "drawCallback": function( settings ) {
                 $('.other').popover({
                     html: true,
@@ -310,7 +310,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                +"&customer_name_like="+customer_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
-               +"&type_="+type
+               +"&type_="+$('#order_type').val()
     		   +"&custom_status_="+custom_status
           	   +"&order_export_date_begin_time="+sent_out_time_begin_time
           	   +"&order_export_date_end_time="+sent_out_time_end_time;

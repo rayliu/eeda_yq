@@ -3421,11 +3421,25 @@ public class JobOrderController extends Controller {
         			+ " AND jor.transport_type LIKE '%land%'";
         } else if("siwait".equals(type)){
         	dai_condition = " and TO_DAYS(jos.export_date)=TO_DAYS(now())";
+        }else if("hblwait".equals(type)){
+        	dai_condition = " and jos.si_flag = 'Y' and (jos.hbl_flag != 'Y' or jos.hbl_flag is null)";
         } else if("mblwait".equals(type)){
         	dai_condition = " and jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null)";
         } else if("customwait".equals(type)){
-        	dai_condition = " and  jor.transport_type LIKE '%custom%'"
-        			+ " and isnull(joc.customs_broker) and isnull(jocc.custom_bank)" ;
+        	String custom_status = getPara("custom_status_");
+        	if("待报关".equals(custom_status)){
+        		dai_condition = " and  jor.transport_type LIKE '%custom%'"
+            			+ " and (select group_concat(jcc.id) jccId from job_order_custom_china_self_item jcc where jcc.order_id = jor.id) is null";
+        	}else if("处理中".equals(custom_status)){
+        		dai_condition = " and  jor.transport_type LIKE '%custom%'"
+            			+ " and '处理中' in (select group_concat(if(jcc.status!='放行','处理中','放行')) jccId from job_order_custom_china_self_item jcc where jcc.order_id = jor.id) ";
+        	}else if("已完成".equals(custom_status)){
+        		dai_condition = " and  jor.transport_type LIKE '%custom%'"
+            			+ " and '处理中' not in (select group_concat(if(jcc.status!='放行','处理中','放行')) jccId from job_order_custom_china_self_item jcc where jcc.order_id = jor.id) ";
+        	}else{
+        		dai_condition = " and  jor.transport_type LIKE '%custom%'";
+        	}
+        			//+ " and isnull(joc.customs_broker) and isnull(jocc.custom_bank)" ;
         } else if("insurancewait".equals(type)){
         	dai_condition = " and  jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL"
                     + " and jor.delete_flag = 'N'";

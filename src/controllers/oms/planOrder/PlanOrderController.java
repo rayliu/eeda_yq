@@ -435,30 +435,34 @@ public class PlanOrderController extends Controller {
         }
         String sql = "";
         String condition="";
+        //代办事项
+        String dai_condition = "";
         if("todo".equals(type)){
-        	sql =" SELECT "
-        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name "
-        			+ " FROM plan_order po "
-        			+ " LEFT JOIN plan_order_item poi ON po.id = poi.order_id "
-        			+ " left join party p on p.id = po.customer_id "
-        			+ " left join user_login u on u.id = po.creator "
-        			+ " WHERE (po.office_id="+office_id+" or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y')) and is_gen_job='N' AND factory_loading_time is not NULL "
-        			+ " AND datediff(factory_loading_time, now())<=5"
-        			+ " and po.delete_flag = 'N'";
+//        	sql =" SELECT "
+//        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name "
+//        			+ " FROM plan_order po "
+//        			+ " LEFT JOIN plan_order_item poi ON po.id = poi.order_id "
+//        			+ " left join party p on p.id = po.customer_id "
+//        			+ " left join user_login u on u.id = po.creator "
+//        			+ " WHERE (po.office_id="+office_id+" or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y')) and is_gen_job='N' AND factory_loading_time is not NULL "
+//        			+ " AND datediff(factory_loading_time, now())<=5"
+//        			+ " and po.delete_flag = 'N'";
+        	dai_condition = " and 'N' in (select group_concat(confirm_shipment) from plan_order_item where order_id = po.id) and ifnull(poi.id,'') != ''";
         }else if ("customwaitPlan".equals(type)){
-        	sql =" SELECT "
-        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p. CODE"
-        			+ " FROM"
-        			+ "	plan_order po"
-        			+ " LEFT JOIN plan_order_item poi ON poi.order_id = po.id"
-        			+ " LEFT JOIN user_login u ON u.id = po.creator"
-        			+ " LEFT JOIN party p ON p.id = po.customer_id"
-        			+ " WHERE"
-        			+ " (po.office_id="+office_id+" or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y'))  and poi.customs_type = '自理报关'"
-        			+ " AND poi.is_gen_job = 'N'"
-        			+ " and po.delete_flag = 'N'"
-        			+ " GROUP BY poi.id ";
-        }else{
+//        	sql =" SELECT "
+//        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p. CODE"
+//        			+ " FROM"
+//        			+ "	plan_order po"
+//        			+ " LEFT JOIN plan_order_item poi ON poi.order_id = po.id"
+//        			+ " LEFT JOIN user_login u ON u.id = po.creator"
+//        			+ " LEFT JOIN party p ON p.id = po.customer_id"
+//        			+ " WHERE"
+//        			+ " (po.office_id="+office_id+" or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y'))  and poi.customs_type = '自理报关'"
+//        			+ " AND poi.is_gen_job = 'N'"
+//        			+ " and po.delete_flag = 'N'"
+//        			+ " GROUP BY poi.id ";
+        	dai_condition = " and poi.customs_type = '自理报关'";
+        }
         	sql = "SELECT * from (select"
         			+ " (GROUP_CONCAT(CONCAT(ifnull(cast(poi.factory_loading_time as char),'<span style=\"color:red;\">无出货时间</span>'), "
         			+ " IFNULL(if((poi.CARRIER is not null or poi.VESSEL is not null or poi.VOYAGE is not null)and poi.confirm_shipment = 'N',' <span style=\"color:#4caf50;\">已定仓</span>',null),IF (poi.confirm_shipment = 'Y',' 已确认出货',' 新建'))) SEPARATOR '<br/>')) item_status,"
@@ -476,9 +480,10 @@ public class PlanOrderController extends Controller {
     			+ " left join user_login u on u.id = po.creator"
     			+ " where (po.office_id="+office_id
     			+ " or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y')) and po.delete_flag = 'N'"
+    			+ dai_condition
     			+ "	group by po.id"
     			+ " ) A where 1=1 ";
-        }
+        
         condition = DbUtils.buildConditions(getParaMap());
         
         
