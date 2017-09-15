@@ -18,6 +18,7 @@ import models.eeda.profile.Currency;
 import models.eeda.tms.TransArapChargeItem;
 import models.eeda.tms.TransArapChargeOrder;
 import models.eeda.tms.TransArapChargeReceiveItem;
+import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
@@ -918,5 +919,89 @@ public class TransChargeCheckOrderController extends Controller {
         auditLog.save();
     }
     
+	public void chargeEdit(){
+    	String tjor_id = getPara("tjor_id");
+	    String itemSql = "SELECT  tjor.id,tjo.id tjo_id,tjo.container_no container_no,tjo.so_no,tjo.charge_time charge_time,"
+	    		+ " tjo.customer_id customer_id,p1.abbr customer_name,tjor.sp_id,p.abbr sp_name,"
+	    		+ " tjor.charge_id charge_id,f. NAME fin_name,tjor.currency_id currency_id,c.name currency_name,tjor.total_amount total_amount,"
+	    		+ " tjor.exchange_rate exchange_rate,(ifnull(tjor.total_amount,0)*ifnull(tjor.exchange_rate,1)) after_total,tjor.remark"
+	    		+ " FROM trans_job_order_arap tjor"
+	    		+ " LEFT JOIN trans_job_order tjo ON tjo.id = tjor.order_id"
+	    		+ " LEFT JOIN party p ON p.id = tjor.sp_id"
+	    		+ " LEFT JOIN party p1 ON p1.id = tjo.customer_id"
+	    		+ " LEFT JOIN fin_item f ON f.id = tjor.charge_id" 
+	    		+ " LEFT JOIN unit u ON u.id = tjor.unit_id"
+	    		+ " LEFT JOIN currency c ON c.id = tjor.currency_id"
+	    		+ " LEFT JOIN currency c1 ON c1.id = tjor.exchange_currency_id"
+	    		+ " WHERE tjor.id = ? ORDER BY tjor.id";
+	    List<Record> list = Db.find(itemSql,tjor_id);
+		Map map = new HashMap();
+		map.put("sEcho",1);
+		map.put("iTotalRecords", list.size());
+		map.put("iTotalDisplayRecords", list.size());
+		map.put("aaData", list);
+		renderJson(map); 
+    }
+    
+	public void chargeSave(){
+    	String jsonStr = getPara("params");
+    	
+    	Gson gson = new Gson();
+    	Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+    	TransJobOrderArap tjoa = new TransJobOrderArap().findById(dto.get("tjor_id"));
+    	TransJobOrder tjo = new TransJobOrder().findById(dto.get("tjo_id"));
+    	String chargeOrderId=(String)dto.get("order_id");
+    	tjoa.set("sp_id",(String)dto.get("sp_id"));
+    	
+    	String container_no = (String)dto.get("container_no");
+    	if(container_no.isEmpty()){
+    		tjo.set("container_no","");
+    	}else{
+    		tjo.set("container_no",container_no);
+    	}
+    	String so_no = (String)dto.get("so_no");
+    	if(so_no.isEmpty()){
+    		tjo.set("so_no","");
+    	}else{
+    		tjo.set("so_no",so_no);
+    	}
+    	
+    	String customer_id = (String)dto.get("customer_id");
+    	if(customer_id.isEmpty()){
+    		tjo.set("customer_id","");
+    	}else{
+    		tjo.set("customer_id",customer_id);
+    	}
+    	
+    	String charge_id = (String)dto.get("charge_id");
+    	if(charge_id.isEmpty()){
+    		tjoa.set("charge_id","");
+    	}else{
+    		tjoa.set("charge_id",charge_id);
+    	}
+    	
+    	String total_amount = (String)dto.get("total_amount");
+    	if(total_amount.isEmpty()){
+    		tjoa.set("total_amount","");
+    	}else{
+    		tjoa.set("total_amount",total_amount);
+    	}
+    	
+    	String exchange_rate = (String)dto.get("exchange_rate");
+    	if(exchange_rate.isEmpty()){
+    		tjoa.set("exchange_rate","");
+    	}else{
+    		tjoa.set("exchange_rate",exchange_rate);
+    	}
+    	
+    	tjoa.set("remark",(String)dto.get("remark"));
+    	tjoa.update();
+    	tjo.update();
+    	//计算结算汇总
+    	Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);
+		exchangeTotalMap.put("chargeOrderId", Double.parseDouble(chargeOrderId));
+		
+    	renderJson(exchangeTotalMap);
+    }
     
 }
