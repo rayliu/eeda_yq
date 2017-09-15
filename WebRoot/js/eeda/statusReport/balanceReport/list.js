@@ -10,7 +10,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: false, //不打开会出现排序不对
           columns: [
               { "data": "CREATE_STAMP" },
-              { "data": "TYPE"},
+//              { "data": "TYPE","visible":false},
               { "data": "SP_NAME1","visible":false},
               { "data": "SP_NAME2","visible":false},
               { "data": "SP_NAME3","visible":false},
@@ -149,15 +149,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  var names = [];
     	  names = sp_names.split(",");
     	  for(var i = 0;i<names.length;i++){
-    		  table.fnSetColumnVis(2+i, true);
-    		  $($('#eeda-table').DataTable().column(2+i).header()).text(names[i]);
+    		  table.fnSetColumnVis(1+i, true);
+    		  $($('#eeda-table').DataTable().column(1+i).header()).text(names[i]);
     	  }
       }
       
       var resetCol = function(){
     	  var table = $('#eeda-table').dataTable();
     	  for(var i = 0;i<20;i++){
-    		  table.fnSetColumnVis(2+i, false);
+    		  table.fnSetColumnVis(1+i, false);
     	  }
       }
       
