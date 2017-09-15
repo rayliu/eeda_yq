@@ -196,6 +196,7 @@ $(document).ready(function() {
         order.remark = $('#remark').val();
         order.container_no = $("#container_no").val();
         order.so_no = $("#so_no").val();
+        order.seal_no = $("#seal_no").val();
         order.lading_no = $("#lading_no").val();
         order.cabinet_type = $("#cabinet_type").val();
         order.head_carrier = $("#head_carrier").val();
