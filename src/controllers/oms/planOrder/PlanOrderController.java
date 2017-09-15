@@ -418,7 +418,7 @@ public class PlanOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 
-    	String type=getPara("type");
+    	String type=getPara("type_");
     	
         String sLimit = "";
         String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
@@ -447,7 +447,8 @@ public class PlanOrderController extends Controller {
 //        			+ " WHERE (po.office_id="+office_id+" or (ifnull(po.to_entrusted_id,'')="+office_id+" and po.submit_flag='Y')) and is_gen_job='N' AND factory_loading_time is not NULL "
 //        			+ " AND datediff(factory_loading_time, now())<=5"
 //        			+ " and po.delete_flag = 'N'";
-        	dai_condition = " and 'N' in (select group_concat(confirm_shipment) from plan_order_item where order_id = po.id) and ifnull(poi.id,'') != ''";
+        	dai_condition = " and 'N' in (select group_concat(confirm_shipment) from plan_order_item where order_id = po.id) and ifnull(poi.id,'') != ''"
+        			+ "  AND datediff(poi.factory_loading_time, now())<=5  ";
         }else if ("customwaitPlan".equals(type)){
 //        	sql =" SELECT "
 //        			+ " po.*, ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p. CODE"
@@ -461,7 +462,8 @@ public class PlanOrderController extends Controller {
 //        			+ " AND poi.is_gen_job = 'N'"
 //        			+ " and po.delete_flag = 'N'"
 //        			+ " GROUP BY poi.id ";
-        	dai_condition = " and poi.customs_type = '自理报关'";
+        	dai_condition = " and 'N' in (select group_concat(confirm_shipment) from plan_order_item where order_id = po.id)  and ifnull(poi.id,'') != ''"
+        			+ " and poi.customs_type = '自理报关'";
         }
         	sql = "SELECT * from (select"
         			+ " (GROUP_CONCAT(CONCAT(ifnull(cast(poi.factory_loading_time as char),'<span style=\"color:red;\">无出货时间</span>'), "

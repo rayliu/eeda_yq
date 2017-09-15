@@ -26,7 +26,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             colReorder: true,
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/planOrder/list?type="+type,
+            ajax: "/planOrder/list?type_="+type,
             columns:[
                 { "width": "30px",
                     "render": function ( data, type, full, meta ) {
@@ -124,6 +124,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var end_date = $("#single_create_stamp_end_time").val();
           }
           var url = "/planOrder/list?"+selectField+"="+selectFieldValue
+          			+"&type_="+type
           			+"&create_stamp_begin_time="+start_date
           			+"&create_stamp_end_time="+end_date;;
 
@@ -151,6 +152,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var url = "/planOrder/list?order_no="+order_no
                +"&order_status="+order_status
                +"&sp_name_like="+sp_name
+               +"&type_="+type
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;
 

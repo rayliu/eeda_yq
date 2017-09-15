@@ -80,7 +80,9 @@ public class TodoController extends Controller {
             +"( "
             +"    select count(1) total from plan_order por "
             +"        LEFT JOIN plan_order_item poi on poi.order_id = por.id "
-            +"        where poi.customs_type = '自理报关' and poi.is_gen_job = 'N' and por.office_id="+office_id 
+            +"        where poi.customs_type = '自理报关'  "
+            + " and (por.office_id="+office_id + " or (ifnull(por.to_entrusted_id,'')="+office_id+" and por.submit_flag='Y')) and por.delete_flag = 'N'"
+            + " and 'N' in (select group_concat(confirm_shipment) from plan_order_item where order_id = por.id) "
             +") WaitCustomTodoCountPlan, "
             +"( "
             +"    select count(total_count) total from (  "
