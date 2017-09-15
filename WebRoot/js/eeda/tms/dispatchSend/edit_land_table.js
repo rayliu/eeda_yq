@@ -219,6 +219,25 @@ $(document).ready(function() {
                     return field_html;
             	}
             },
+            { "data": "YARD_DATE", "width": "100px",
+            	"render": function ( data, type, full, meta ) {
+            		var info = "";
+            		if(!data)
+                        data='';
+            		if(full.UNLOAD_TYPE=="收重柜" || full.UNLOAD_TYPE=="移柜"){
+            			info ="disabled"
+            		}
+                    var field_html = template('table_date_field_template',
+	                    {
+	                        id: 'YARD_DATE',
+	                        value: data.substr(0,19),
+	                        style:'width:120px',
+	                        disabled:info
+	                    }
+	                );
+                    return field_html;
+            	}
+            },
             { "data": "ARRIVAL_DATE", "width": "100px",
             	"render": function ( data, type, full, meta ) {
             		var info = "";
