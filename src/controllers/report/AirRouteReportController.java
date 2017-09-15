@@ -128,7 +128,7 @@ public class AirRouteReportController extends Controller {
                 + "             p.abbr customer_name,"
                 + "             (select group_concat("
                 + "                 concat("
-                + "                     ifnull(joai.start_from,''), ' - ', ifnull(joai.destination,'')"
+                + "                     ifnull(joai.start_from_input,''), ' - ', ifnull(joai.destination_input,'')"
                 + "                 ) separator ' - '"
                 + "             ) from job_order_air_item joai where joai.order_id = jo.id) route,"
                 + "             jo.pieces,"
