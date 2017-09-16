@@ -98,7 +98,7 @@ public class outputScaleController extends Controller {
 		
 	}
 		
-	
+	@SuppressWarnings("unchecked")
 	public void downloadList(){
 		String jsonStr = getPara("params");
 		String sign = getPara("sign");

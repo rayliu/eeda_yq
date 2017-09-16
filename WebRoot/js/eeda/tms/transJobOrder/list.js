@@ -330,5 +330,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
       });
       
+      //导出工作单
+      $('#exportJobBtn').click(function(){
+    	  var condition={};
+    	  condition.customer_name_equals=$('#customer_name_input').val();
+    	  condition.cabinet_date_begin_time = $('#cabinet_date_begin_time').val();
+    	  condition.cabinet_date_end_time = $('#cabinet_date_end_time').val();
+    	  condition.charge_time_begin_time = $('#charge_time_begin_time').val();
+    	  condition.charge_time_end_time = $('#charge_time_end_time').val();
+    	  
+    	  
+    	  $.post('/transJobOrder/exportJobList', {params:JSON.stringify(condition)}, function(data){
+    		  if(data){
+					window.open(data);
+					$.scojs_message('导出工作单列表成功', $.scojs_message.TYPE_OK);
+				}else{
+					$.scojs_message('导出工作单列表失败',$.scojs_message.TYPE_ERROR);
+				}
+    		  $.unblockUI();
+    		 });
+      });
+      
   });
 });
