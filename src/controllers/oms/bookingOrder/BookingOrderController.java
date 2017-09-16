@@ -854,7 +854,7 @@ public class BookingOrderController extends Controller {
         
         sql = "SELECT * from (select bo.*,"
      		+ " ifnull(u.c_name, u.user_name) creator_name,ifnull(o.office_name,p.abbr) sp_name,"
-     		+ " (SELECT  count(jod0.id) FROM book_order_doc jod0 WHERE  jod0.order_id =bo.id and (jod0.type='zero' or jod0.type='two' or jod0.type='four')  and   jod0.send_status='已发送' ) new_count,"
+     		+ " (SELECT  count(jod0.id) FROM booking_order_doc jod0 WHERE  jod0.order_id =bo.id and (jod0.type='zero' or jod0.type='two' or jod0.type='four')  and   jod0.send_status='已发送' ) new_count,"
      		+ " (CASE"
      		+ " WHEN jos.ata is not null"
      		+ " THEN '已到港'"
@@ -870,7 +870,7 @@ public class BookingOrderController extends Controller {
      		+ " ) order_status, "
      		+ (office.getStr("type").equals("customer")?factoryTodo:forwarderTodo)
      		+ "	from booking_order bo"
-     		+ " LEFT JOIN job_order jor on jor.plan_order_item_id = bo.plan_item_id"
+     		+ " left join (select * from job_order where from_order_type = 'booking') jor on jor.from_order_id = bo.id"
      		+ " LEFT JOIN job_order_land_item joli on joli.order_id = jor.id"
      		+ " LEFT JOIN job_order_custom_china_self_item jocc on jocc.order_id = jor.id"
      		+ " LEFT JOIN job_order_shipment jos on jos.order_id = jor.id "
