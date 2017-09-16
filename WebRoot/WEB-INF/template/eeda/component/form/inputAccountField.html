@@ -33,7 +33,7 @@ $(document).ready(function() {
 			}
 			accountList.empty();
 			for(var i = 0; i < data.length; i++){
-				accountList.append("<li><a tabindex='-1' class='fromLocationItem' id='"+data[i].ID+"' account_no='"+data[i].ACCOUNT_NO+"' account_name='"+data[i].ACCOUNT_NAME+"'  bank_name='"+data[i].BANK_NAME+"'>"+data[i].BANK_NAME+"</a></li>");
+				accountList.append("<li><a tabindex='-1' class='fromLocationItem' id='"+data[i].ID+"' account_no='"+data[i].ACCOUNT_NO+"' account_name='"+data[i].ACCOUNT_NAME+"'  bank_name='"+data[i].BANK_NAME+"'>"+data[i].ACCOUNT_NO+" "+data[i].BANK_NAME+"</a></li>");
 			}
 			accountList.css({ 
 	        	left:$(me).position().left+"px", 
@@ -77,7 +77,7 @@ $(document).ready(function() {
 	// 选中银行账户
 	accountList.on('mousedown', '.fromLocationItem', function(e){
 		//console.log($('#accountList').is(":focus"));
-		inputField.val($(this).text());
+		inputField.val($(this).attr('bank_name'));
 		hiddenField.val($(this).attr('id'));
 		accountList.hide();
     });
