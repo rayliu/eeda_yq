@@ -209,8 +209,27 @@ $(document).ready(function() {
                 }
             }
      })
-	
-     
+	 
+     $('#deposit_bank_CNY_list').on('mousedown','a',function(){
+	   $('#account_no_CNY').val( $(this).attr('account_no'));
+ 	   $('#account_name_CNY').val( $(this).attr('account_name'));
+ 	   
+    })
+    $('#deposit_bank_USD_list').on('mousedown','a',function(){
+	   $('#account_no_USD').val( $(this).attr('account_no'));
+ 	   $('#account_name_USD').val( $(this).attr('account_name'));
+ 	   
+    })
+    $('#deposit_bank_JPY_list').on('mousedown','a',function(){
+	   $('#account_no_JPY').val( $(this).attr('account_no'));
+ 	   $('#account_name_JPY').val( $(this).attr('account_name'));
+ 	   
+    })
+    $('#deposit_bank_HKD_list').on('mousedown','a',function(){
+	   $('#account_no_HKD').val( $(this).attr('account_no'));
+ 	   $('#account_name_HKD').val( $(this).attr('account_name'));
+ 	   
+    })
 	
 	//已完成工作单确认
 	$('#confirmCompleted').click(function(){
@@ -676,7 +695,11 @@ $(document).ready(function() {
 		var self_val = $("#order_export_date").val();
         $("#sailing_date").val(self_val);
 	});
-	
+//	$('#updateOceanFive').click(function(){
+//		$.post('/jobOrder/updateOceanFive', {order_id:order_id}, function(data){
+//			$.scojs_message('已完成派车工作', $.scojs_message.TYPE_OK);
+//		}
+//	});
 	
 	//window.location.hash="#land_table";
 });

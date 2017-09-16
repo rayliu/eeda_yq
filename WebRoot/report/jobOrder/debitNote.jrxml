@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="244"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -26,9 +26,17 @@
 	<parameter name="order_id" class="java.util.List">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="account_ids" class="java.util.List">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	joa.sp_id,joa.exchange_total_amount exchange_total_amount,joa.invoice_no invoice_no,joa.price price,joa.total_amount total_amount,
+		(SELECT   CONCAT('A/C Name:',GROUP_CONCAT( DISTINCT bank_name)) from fin_account WHERE id in (jo.account_ids)) bankName,
+	(SELECT   CONCAT('Bank Name:',GROUP_CONCAT( DISTINCT account_name)) from fin_account WHERE id in (jo.account_ids)) accountName,
+	(SELECT GROUP_CONCAT(accountNo SEPARATOR '\n')
+	from
+	(SELECT CONCAT(fa.currency,' Number:',fa.account_no) accountNo from fin_account fa
+	WHERE $X{IN,fa.id,account_ids}) A) accountNo,joa.sp_id,joa.exchange_total_amount exchange_total_amount,joa.invoice_no invoice_no,joa.price price,joa.total_amount total_amount,
   joa.exchange_currency_rate exchange_rate,joa.amount amount, ifnull(pr.company_name,pr.company_name_eng) companyName,
 ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	ifnull(f.name,f.name_eng) charge_name,
@@ -136,6 +144,9 @@ WHERE
 	joa.order_type = 'charge'
 AND   $X{IN,joa.id,order_id} group by joa.id]]>
 	</queryString>
+	<field name="bankName" class="java.lang.String"/>
+	<field name="accountName" class="java.lang.String"/>
+	<field name="accountNo" class="java.lang.String"/>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
 	</field>
@@ -593,32 +604,11 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 	<columnFooter>
 		<band height="146">
 			<staticText>
-				<reportElement x="12" y="1" width="84" height="20" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
+				<reportElement x="12" y="1" width="62" height="15" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
 				<textElement>
 					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[银行信息:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="12" y="21" width="85" height="20" uuid="f77458ed-3298-4aae-8acc-ceaeaf327496"/>
-				<textElement>
-					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[账户名称：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="12" y="41" width="105" height="20" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
-				<textElement>
-					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[账    号：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="13" y="61" width="96" height="20" uuid="c2745b55-21a5-4968-87df-d544ce9de735"/>
-				<textElement>
-					<font fontName="宋体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
-				</textElement>
-				<text><![CDATA[开户银行：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="314" y="79" width="149" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
@@ -642,6 +632,24 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
 			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="13" y="16" width="237" height="15" uuid="fd8a4255-a0aa-4347-a223-e86a4fe22a7c"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bankName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="13" y="31" width="237" height="15" uuid="5eb72536-5a71-44e7-b59a-44f8e96f8aeb"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{accountName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="13" y="46" width="237" height="63" uuid="ab171974-5b25-4912-88b6-3d3c54aadc6f"/>
+				<textFieldExpression><![CDATA[$F{accountNo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnFooter>
 	<summary>
@@ -657,21 +665,21 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[($F{sum_CNY}.equals(null)?"":"人民币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_CNY}))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="20" width="232" height="20" uuid="8ba62630-c2a0-4718-9fc8-888e28d00bb0"/>
+				<reportElement x="8" y="20" width="233" height="20" uuid="8ba62630-c2a0-4718-9fc8-888e28d00bb0"/>
 				<textElement>
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{sum_USD}.equals(null)?"":"美金"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_USD}))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="40" width="232" height="20" uuid="b8d3f961-7903-437b-b604-ddacdf11708a"/>
+				<reportElement x="8" y="40" width="233" height="20" uuid="b8d3f961-7903-437b-b604-ddacdf11708a"/>
 				<textElement>
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{sum_JPY}.equals(null)?"":"日元"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_JPY}))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="60" width="231" height="20" uuid="0d83a4d9-2b62-4271-ba4e-543c2949adaf"/>
+				<reportElement x="8" y="60" width="233" height="20" uuid="0d83a4d9-2b62-4271-ba4e-543c2949adaf"/>
 				<textElement>
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>

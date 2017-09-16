@@ -573,6 +573,88 @@
                                                             <input type="radio" name='debit_note' value='invoice_eng'>Invoice(英文版)
                                                         </label>
                                                  </div>
+                                             </div><br>
+                                             <div class="row">
+                                             	 <div class="col-lg-6" id="bank_CNY" style="display:none">
+	                                                 <%include("/eeda/component/form/inputAccountField.html", 
+							                            { id:'deposit_bank_CNY',
+														label:'开户行(CNY)',
+													    value:accountCNY.id!'',
+													    display_value:accountCNY.bank_name!''
+														}){}%>
+														
+														<%include("/eeda/component/form/inputField.html", 
+														{ id:'account_no_CNY',
+														label:'收款账号(CNY)', 
+														value:accountCNY.account_no!'',
+														disabled:'disabled'
+														}){}%>
+														
+														<%include("/eeda/component/form/inputField.html", 
+														{ id:'account_name_CNY',
+														label:'账户名(CNY)', value:accountCNY.account_name!'',
+														disabled:'disabled'
+														}){}%>
+                                                 </div>
+                                                 <div class="col-lg-6" id="bank_USD" style="display:none">
+	                                                 <%include("/eeda/component/form/inputAccountField.html", 
+							                            { id:'deposit_bank_USD',
+														label:'开户行(USD)',
+													    value:accountUSD.id!'',
+													    display_value:accountUSD.bank_name!''
+														}){}%>
+														
+														<%include("/eeda/component/form/inputField.html", 
+														{ id:'account_no_USD',
+														label:'收款账号(USD)', value:accountUSD.account_no!'',
+														disabled:'disabled'
+														}){}%>
+														
+														<%include("/eeda/component/form/inputField.html", 
+														{ id:'account_name_USD',
+														label:'账户名(USD)', value:accountUSD.account_name!'',
+														disabled:'disabled'
+														}){}%>
+                                                 </div>
+                                             	 <div class="col-lg-6" id="bank_JPY" style="display:none">
+	                                                 <%include("/eeda/component/form/inputAccountField.html", 
+							                            { id:'deposit_bank_JPY',
+														label:'开户行(JPY)',
+													    value:accountJPY.id!'',
+													    display_value:accountJPY.bank_name!''
+														}){}%>
+														
+														<%include("/eeda/component/form/inputField.html", 
+														{ id:'account_no_JPY',
+														label:'收款账号(JPY)', value:accountJPY.account_no!'',
+														disabled:'disabled'
+														}){}%>
+														
+														<%include("/eeda/component/form/inputField.html", 
+														{ id:'account_name_JPY',
+														label:'账户名(JPY)', value:accountJPY.account_name!'',
+														disabled:'disabled'
+														}){}%>
+                                                 </div>
+                                                 <div class="col-lg-6" id="bank_HKD" style="display:none">
+	                                                 <%include("/eeda/component/form/inputAccountField.html", 
+							                            { id:'deposit_bank_HKD',
+														label:'开户行(HKD)',
+													    value:accountHKD.id!'',
+													    display_value:accountHKD.bank_name!''
+														}){}%>
+														<%include("/eeda/component/form/inputField.html", 
+														{ id:'account_no_HKD',
+														label:'收款账号(HKD)', value:accountHKD.account_no!'',
+														disabled:'disabled'
+														}){}%>
+														
+														<%include("/eeda/component/form/inputField.html", 
+														{ id:'account_name_HKD',
+														label:'账户名(HKD)', value:accountHKD.account_name!'',
+														disabled:'disabled'
+														}){}%>
+                                                 </div>
                                              </div>
                                              <br>
                                         </div>
@@ -662,6 +744,7 @@
                 
                 <div class="button-bar" >
                     <a id='saveBtn' class="btn btn_green" href="#">保存</a>
+                    <a id='updateOceanFive' class="btn btn_green" href="#">更新五字码</a>
                     <%if(boolOrder){%>
                     <button id="confirmCompleted" class="btn btn_white">工作单锁单</button>
                     <%}%>

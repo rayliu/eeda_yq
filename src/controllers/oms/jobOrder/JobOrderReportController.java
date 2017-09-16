@@ -310,6 +310,7 @@ public class JobOrderReportController extends Controller {
 	public void printDebitNotePDF() {
 		String debit_note = getPara("debit_note");
 		String order_id = getPara("itemIds");
+		String accountIdArray = getPara("accountIdArray");
 		String landIds = getPara("landIds");
 		String order_no = getPara("order_no");
 		String order_type = getPara("order_type");
@@ -365,7 +366,8 @@ public class JobOrderReportController extends Controller {
 			String[] landIds_arr = landIds.split(",");
 			hm.put("landIds", landIds_arr);
 		}
-		hm.put("order_id", order_id_arr);		
+		hm.put("order_id", order_id_arr);
+		hm.put("account_ids", accountIdArray);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);

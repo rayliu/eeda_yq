@@ -595,6 +595,31 @@ $(document).ready(function() {
     });
     
     //打印Debit_note
+    
+    
+    var currencyArray =['CNY','USD','JPY','HKD'];
+    $("#print_debit_note").click(function(){
+    	var itemCurrencyArray=[];
+    	$('#charge_table input[type="checkbox"]:checked').each(function(){
+  			var itemCurrency = $(this).parent().parent().find('[name=CURRENCY_ID_input]').val();
+  			itemCurrencyArray.push(itemCurrency);
+      	 });
+    	for(var i=0;currencyArray.length>i;i++){
+    		if(itemCurrencyArray.indexOf(currencyArray[i])==-1){
+       		 var id = "bank_"+currencyArray[i];
+       		 $('#'+id).hide();
+//       		itemCurrencyArray.splice($.inArray(currencyArray[i],itemCurrencyArray),1);  移除数组元素
+       	    }
+    	}
+    	for(var i=0;currencyArray.length>i;i++){
+	    		if(itemCurrencyArray.indexOf(currencyArray[i])>-1){
+	       		 var id = "bank_"+currencyArray[i];
+	       		 $('#'+id).show();
+	       	    }
+	    	}
+    });
+    
+    
 	$('#printDebitNoteBtn').click(function(){
 		$(this).attr('disabled', true);
 		
@@ -602,15 +627,31 @@ $(document).ready(function() {
 	    	var invoiceNo = $('#invoiceNo').val();
 	    	var order_type = $('#type').val();
 	      	var itemIds=[];
+	      	var accountIdArray=[];
+	      	var itemCurrencyArray=[];
 	      	$('#charge_table input[type="checkbox"]:checked').each(function(){
       			var itemId = $(this).parent().parent().attr('id');
       			itemIds.push(itemId);
+      			var itemCurrency = $(this).parent().parent().find('[name=CURRENCY_ID_input]').val();
+      			itemCurrencyArray.push(itemCurrency);
+      			for(var i=0;currencyArray.length>i;i++){
+      	    		if(itemCurrencyArray.indexOf(currencyArray[i])>-1){
+      	       		 var account_id = $('#deposit_bank_'+currencyArray[i]).val();
+      	       		 if(account_id!=""){
+      	       			if(accountIdArray.indexOf(account_id)==-1){
+      	       				accountIdArray.push(account_id);
+      	       			}
+      	       		 }
+      	       	    }
+      	    	}
 	      	 });
 	      	var order_no=$('#order_no').val();
+	      	var order_id=$('#order_id').val();
 	      	var itemIdsStr = itemIds.toString();
-	    	 $.post('/jobOrder/saveDebitNote', {itemIds:itemIdsStr,invoiceNo:invoiceNo}, function(data){
+	      	var accountIdArrayStr = accountIdArray.toString();
+	    	 $.post('/jobOrder/saveDebitNote', {itemIds:itemIdsStr,invoiceNo:invoiceNo,accountIdArray:accountIdArrayStr,order_id:order_id}, function(data){
 	    		 if(data.result==true){
-			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIdsStr,order_no:order_no,order_type:order_type}, function(data){
+			    	$.post('/jobOrderReport/printDebitNotePDF', {debit_note:debit_note, itemIds:itemIdsStr,accountIdArray:accountIdArrayStr,order_no:order_no,order_type:order_type}, function(data){
 			    		   $('#printDebitNoteBtn').attr('disabled', false);
 			                window.open(data);
 			    	}).fail(function() { 

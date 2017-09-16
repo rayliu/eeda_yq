@@ -3164,7 +3164,15 @@ public class JobOrderController extends Controller {
     	//海运头程资料
    		setAttr("oceanHead", Db.findFirst("select * from job_order_shipment_head where order_id = ?",id));
    		setAttr("truckHead", Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",id));
-    	  
+   		//回显银行账户
+   		setAttr("accountCNY", Db.findFirst("select * from fin_account fa "
+   				+ " where fa.currency='CNY' and (fa.is_stop is null or fa.is_stop !=1) and office_id="+office_id));
+   		setAttr("accountUSD", Db.findFirst("select * from fin_account fa "
+   				+ " where fa.currency='USD' and (fa.is_stop is null or fa.is_stop !=1) and office_id="+office_id));
+   		setAttr("accountJPY", Db.findFirst("select * from fin_account fa "
+   				+ " where fa.currency='JPY' and (fa.is_stop is null or fa.is_stop !=1) and office_id="+office_id));
+   		setAttr("accountHKD", Db.findFirst("select * from fin_account fa "
+   				+ " where fa.currency='HKD' and (fa.is_stop is null or fa.is_stop !=1) and office_id="+office_id));    	  
         render("/oms/JobOrder/JobOrderEdit.html");
     }
     
@@ -3625,6 +3633,11 @@ public class JobOrderController extends Controller {
     //费用应收打印debite_note PDF前保存
     @Before(Tx.class)
     public void saveDebitNote(){
+    	String accountIdArray=getPara("accountIdArray");
+		String order_id =getPara("order_id");
+		Record r = Db.findFirst("select * from job_order where id = ?",order_id);
+		r.set("account_ids",accountIdArray);
+		Db.update("job_order",r);
     	String ids = getPara("itemIds");
     	String invoiceNo = getPara("invoiceNo");
     	Db.update("update job_order_arap set invoice_no ='"+invoiceNo+"' where id in ("+ids+")");
@@ -3928,6 +3941,9 @@ public class JobOrderController extends Controller {
     		return;
     	}
         renderJson(jobOrderDoc);
+    }
+    public void updateOceanFive(){
+    	
     }
 
 
