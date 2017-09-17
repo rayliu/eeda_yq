@@ -687,7 +687,7 @@ eeda.refreshUrl = refreshUrl;
 				  }
 				  tableFieldList.empty();
 				  if(data.length==0){
-					  tableFieldList.append('<span class="search_hint">没有此币制记录，请设置<a href="/currency/create" target="_blank">点击此处</a></span>');
+					  tableFieldList.append('<span class="search_hint">没有此币制汇率，请设置<a href="/currencyRate/create" target="_blank">点击此处</a></span>');
 				  }
 				  for(var i = 0; i < data.length; i++)
 					  tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID

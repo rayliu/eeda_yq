@@ -1289,10 +1289,10 @@ public class TransJobOrderController extends Controller {
 
 
 			String sqlExport = "SELECT (@rowNO := @rowNo + 1) AS rowno,A.*FROM("+sql+condition+") A,(SELECT @rowNO := 0) B";
-			String[] headers = new String[]{"序号","提/收柜时间", "结算时间", "客户简称", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌", "运费","其他费用",
+			String[] headers = new String[]{"序号","提柜/货时间", "结算时间", "客户简称", "类型", "拖柜地址","SO号", "柜号", "柜型", "提柜类型", "结算车牌", "头程船公司","运费","其他费用",
 					"客户业务员","跨境","备注"};
-			String[] fields = new String[]{"ROWNO","CABINET_DATE", "CHARGE_TIME", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO",
-							"YUNFEI","CHARGE","CUSTOMER_SALESMAN","CROSS_BORDER_NAME","REMARK"};
+			String[] fields = new String[]{"ROWNO","CABINET_DATE", "CHARGE_TIME", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF","SO_NO", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO",
+							"HEAD_CARRIER_NAME","YUNFEI","CHARGE","CUSTOMER_SALESMAN","CROSS_BORDER_NAME","REMARK"};
 			String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,company_name);
 			renderText(fileName);
 		}
