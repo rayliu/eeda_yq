@@ -318,6 +318,10 @@ public class JobOrderReportController extends Controller {
 		if(order_id!=null){
 			order_id_arr = order_id.split(",");
 		}
+		String [] accountIdArray_id = null;
+		if(order_id!=null){
+			accountIdArray_id = accountIdArray.split(",");
+		}
 		
 		String fileName;
 		String outFileName;
@@ -367,7 +371,7 @@ public class JobOrderReportController extends Controller {
 			hm.put("landIds", landIds_arr);
 		}
 		hm.put("order_id", order_id_arr);
-		hm.put("account_ids", accountIdArray);
+		hm.put("account_ids", accountIdArray_id);
 		fileName = getContextPath() + fileName;
 		outFileName = getContextPath() + outFileName + order_id;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
