@@ -1,4 +1,4 @@
-define(['jquery', '../btns', '../value_change','datetimepicker_CN'], function ($) {
+define(['jquery', './detail_table', '../btns', '../value_change','datetimepicker_CN'], function ($, tableCont) {
     document.title = '新增 | ' + document.title;
 
     var date_inputs = $('input[data_type=date]');
@@ -12,4 +12,6 @@ define(['jquery', '../btns', '../value_change','datetimepicker_CN'], function ($
             $(item).trigger('keyup');
         });
     });
+
+    
 });

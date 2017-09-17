@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +22,11 @@ import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.JsonKit;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.form.FormService;
 import controllers.profile.LoginUserController;
@@ -43,7 +46,7 @@ public class FormController extends Controller {
         }
         return gt;
     }
-    @Before(EedaMenuInterceptor.class)
+    @Before({EedaMenuInterceptor.class, Tx.class})
     @SuppressWarnings("unchecked")
     public void index() throws IOException {
         logger.debug("thread["+Thread.currentThread().getName()+
@@ -70,6 +73,7 @@ public class FormController extends Controller {
         
         //click 表单按钮的动作
         //valueChange 表单按钮的动作, 参数 {field_name, value, old_value}
+        //tableConfig 从表表单的配置, 参数 {field_id_list}
         
         setAttr("action", action);
         setAttr("module_id", module_id);
@@ -91,7 +95,29 @@ public class FormController extends Controller {
         Long form_id = formRec.getLong("id");
         logger.debug("-------------Eeda module:"+module_id+", form_id:"+form_id+", action: "+action+"---------------");
         
-        if("valueChange".equals(action)){
+        if("tableConfig".equals(action)){
+            String jsonStr = getPara("field_id_list");
+            Gson gson = new Gson();
+            ArrayList<String> fieldIdList = gson.fromJson(jsonStr, ArrayList.class);
+            List<Record> list = new ArrayList<Record>();
+            for (String fieldId : fieldIdList) {
+                Record rec = new Record();
+                List<Record> itemList = Db.find("select * from eeda_form_field_type_detail_ref_display_field where "
+                        + " field_id=?", fieldId);
+                for (Record record : itemList) {
+                    String target_field_name = record.getStr("target_field_name");
+                    String form_name = target_field_name.split("\\.")[0];
+                    String field_display_name = target_field_name.split("\\.")[1];
+                    Record field_rec = FormService.getFieldName(form_name, field_display_name);//获取数据库对应的名称: f59_xh
+                    record.set("field_name", "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name"));
+                    record.set("field_display_name", field_rec.getStr("field_display_name"));
+                    record.set("field_type", field_rec.getStr("field_type"));
+                }
+                rec.set("display_field_list", itemList);
+                list.add(rec);
+            }
+            renderJson(list);
+        }else if("valueChange".equals(action)){
             List<Record> recList = Db.find("select * from eeda_form_event where "
                     + " menu_type='value_change' and form_id=?", form_id);
             for (Record event : recList) {
@@ -134,7 +160,7 @@ public class FormController extends Controller {
             if("doGet".equals(action)){
                 rec = getForm(form_id, order_id);
                 renderJson(rec);
-            }else if ("doAdd".equals(action)){
+            }else if ("doAdd".equals(action) || "doUpdate".equals(action)){
                 rec = saveForm();
                 renderJson(rec);
             }
@@ -165,8 +191,62 @@ public class FormController extends Controller {
                 rec.set(colName, value);
             }
         }
-        Db.save("form_"+form_id, rec);
         
+        String order_id = (String) dto.get("order_id");
+        if (StrKit.isBlank(order_id)) {
+            Db.save("form_"+form_id, rec);
+        }else{
+            rec.set("id", order_id);
+            Db.update("form_"+form_id, rec);
+        }
+        
+        //处理从表保存
+        List<Map<String, ?>> detailList = (ArrayList<Map<String, ?>>)dto.get("detail_tables");
+        for (Map<String, ?> detail : detailList) {
+             String table_id = (String) detail.get("table_id");
+             String field_id = table_id.split("_")[2];
+             //1.通过field_id 找到对应的明细表 form_id
+             Record detailRec = Db.findFirst("select distinct form.* from eeda_form_field f, eeda_form_field_type_detail_ref ref, eeda_form_define form "
+                +" where f.id = ref.field_id "
+                +" and ref.target_form_name = form.name"
+                +" and f.id = ?", field_id);
+             //2.通过field_id 找到对应的明细表 的 关联字段, 现在先做单个//TODO
+             Record detailConditionRec = Db.findFirst("select ref.* from eeda_form_field f, eeda_form_field_type_detail_ref_join_condition ref "
+                     +" where f.id = ref.field_id "
+                     +" and f.id = ?", field_id);
+             String field_from = detailConditionRec.getStr("field_from");
+             String field_to = detailConditionRec.getStr("field_to");
+             //主表关联值
+             Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+             String field_from_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
+             Object from_field_value = rec.get(field_from_name);
+             //从表关联值
+             Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+             String field_to_name = "f"+field_to_rec.getLong("id")+"_"+field_to_rec.getStr("field_name");
+             
+             Long detail_form_id = detailRec.getLong("id");
+             List<Map<String, ?>> detailDataList = (List<Map<String, ?>>)detail.get("data_list");
+             for (Map<String, ?> rowMap : detailDataList) {
+                 Record rowRec = new Record();
+                 for (Entry<String, ?> entry : rowMap.entrySet()) { 
+                     String colName = entry.getKey();
+                     String value = String.valueOf(entry.getValue()).trim();
+                     if("id".equals(colName)){
+                         if(!StrKit.isBlank(value)){
+                             rowRec.set(colName, Long.valueOf(value));
+                         }
+                     }else{
+                         rowRec.set(colName, value);
+                     }
+                 }
+                 rowRec.set(field_to_name, from_field_value);//关联字段 赋值
+                 if(rowRec.get("id")==null){
+                     Db.save("form_"+detail_form_id, rowRec);
+                 }else{
+                     Db.update("form_"+detail_form_id, rowRec);
+                 }
+            }
+        }
         return rec;
     }
     private List<Record> list(Long form_id){
@@ -189,6 +269,41 @@ public class FormController extends Controller {
     private Record getForm(Long form_id, Long order_id){
         Record rec = Db.findFirst("select * from form_"+form_id+" where "
                 + " id=?", order_id);
+        List<Record> detailList= new ArrayList<Record>();
+        
+        List<Record> fieldList = Db.find("select distinct field.id field_id, form.id form_id, form.name, cond.field_from, cond.field_to "
+                    +"from eeda_form_field field, eeda_form_field_type_detail_ref ref,"
+                    + " eeda_form_field_type_detail_ref_join_condition cond,"
+                    +"    eeda_form_define form"
+                    +" where "
+                    +" field.id = ref.field_id"
+                    +" and field.id = cond.field_id"
+                    +" and ref.target_form_name = form.name"
+                    +" and field.field_type='从表引用' "
+                    +" and field.form_id=?", form_id);
+        for (Record record : fieldList) {
+            Long d_form_id = record.getLong("form_id");
+            Long field_id = record.getLong("field_id");
+            
+            String field_from = record.getStr("field_from");
+            String field_to = record.getStr("field_to");
+            //主表关联值
+            Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+            String field_from_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
+            Object from_field_value = rec.get(field_from_name);
+            //从表关联值
+            Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+            String field_to_name = "f"+field_to_rec.getLong("id")+"_"+field_to_rec.getStr("field_name");
+            
+            List<Record> dataList = Db.find("select * from form_"+d_form_id+" where "+field_to_name+"=?", from_field_value);
+            
+            Record table_record = new Record(); 
+            table_record.set("table_id", "detail_table_"+field_id);
+            table_record.set("data_list", dataList);
+            
+            detailList.add(table_record);
+        }
+        rec.set("detail_tables", detailList);
         return rec;
     }
     
@@ -235,7 +350,7 @@ public class FormController extends Controller {
             
             if("编码".equals(fieldType)){
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
-                        + "<input type='text' name='"+inputId+"' class='form-control' disabled placeholder='系统自动生成'>";
+                        + "<input type='text' name='"+inputId+"' class='form-control'  placeholder='系统自动生成'>";//
             }else if("文本".equals(fieldType)){
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + "<input type='text' name='"+inputId+"' class='form-control'>";

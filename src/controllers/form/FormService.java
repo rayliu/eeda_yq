@@ -17,6 +17,13 @@ public class FormService {
         this.cont = cont;
     } 
     
+    public static Record getFieldName(String form_name, String feild_display_name){
+        Record rec = Db.findFirst("select f.* from eeda_form_define form, eeda_form_field f where "
+                +" form.id = f.form_id and "
+                +"form.name=? and f.field_display_name=?", form_name, feild_display_name);
+
+        return rec;
+    } 
 
     @SuppressWarnings("unchecked")
     @Before(Tx.class)
@@ -24,6 +31,7 @@ public class FormService {
         String returnStr = "";
         String fieldDisplayName=fieldRec.getStr("field_display_name");
         String fieldName=fieldRec.getStr("field_name");
+        Long form_id = fieldRec.getLong("form_id");
         Record checkBox = Db.findFirst(
                 "select * from eeda_form_field_type_checkbox where field_id=?", field_id);
         
@@ -39,7 +47,8 @@ public class FormService {
                 checked = "checked";
             }
             String checkboxStr = "<label class='radio-inline'>"
-                    + "<input type='radio' origin_name='"+form_name+"-"+fieldDisplayName+"' name='"+fieldName+"' id='"+fieldName+"' value='"+code+"' "+checked+">"
+                    + "<input type='radio' origin_name='"+form_name+"-"+fieldDisplayName
+                    +"' name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+"' value='"+code+"' "+checked+"/>"
                     + name+"</label>";
             returnStr+=checkboxStr;
         }
@@ -60,11 +69,15 @@ public class FormService {
         
         List<Record> display_list = Db.find(
                 "select * from eeda_form_field_type_detail_ref_display_field where field_id=?", field_id);
-        String fieldStr = "";
+        String fieldStr = "<th></th>";//默认第一列是放按钮的
         
         for (Record r : display_list) {
             String name = r.getStr("target_field_name");
-            fieldStr+="<th>"+name+"</th>";
+            if(name.indexOf(".")>0){
+                fieldStr+="<th>"+name.split("\\.")[1]+"</th>";
+            }else{
+                fieldStr+="<th>"+name+"</th>";
+            }
         }
         returnStr = "<div class='row'>"
                 +"    <div class='col-lg-12'>"
@@ -73,7 +86,7 @@ public class FormService {
                 +"        </div>"
                 +"    </div>"
                 +"</div>"
-                +"<table id='detail_table_"+field_id+"' class='table table-striped table-bordered table-hover display' style='width:100%;'>"
+                +"<table id='detail_table_"+field_id+"' type='dynamic' class='table table-striped table-bordered table-hover display' style='width:100%;'>"
                 +"    <thead class='eeda'>"
                 +"        <tr>"
                 + fieldStr
