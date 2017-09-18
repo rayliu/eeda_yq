@@ -297,7 +297,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           var sono = $("#sono").val().trim();
           var container_no = $("#container_no").val().trim();
           //var order_type = $("#order_type").val().trim();
-          var custom_status = $("#custom_status").val().trim();
+          var custom_status = $("#custom_status").val();
           var transport_type = type;
           //增加出口日期查询
           var url = "/jobOrder/list?order_no="+order_no
