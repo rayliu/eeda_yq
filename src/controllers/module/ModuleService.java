@@ -99,83 +99,112 @@ public class ModuleService {
                 field_id = (Long) id;
             }
             // 处理字段类型(例如, 复选框: 男, 女)
-            processFieldType(field, field_id);
+            saveFieldType(field, field_id);
         }
     }
 
     @SuppressWarnings("unchecked")
     @Before(Tx.class)
-    private void processFieldType(Map<String, ?> field, Long field_id) {
+    private void saveFieldType(Map<String, ?> field, Long field_id) {
         String fieldType = (String) field.get("field_type".toUpperCase());
         if ("复选框".equals(fieldType)) {
             saveCheckBox(field, field_id);
-        }if ("从表引用".equals(fieldType)) {
-            Long fieldId = field_id;
-
+        }else if ("从表引用".equals(fieldType)) {
+            saveDetailRef(field, field_id);
+        }else if ("字段引用".equals(fieldType)) {
             Map<String, ?> fieldTypeObj = (Map<String, ?>) field
-                    .get("DETAIL_REF");
-            Object refId = fieldTypeObj.get("id".toUpperCase());
-            String target_form_name = (String) fieldTypeObj
-                    .get("target_form_name".toUpperCase());
+                    .get("REF");
+            String refId = (String) fieldTypeObj.get("id".toUpperCase());
+            String ref_form = (String) fieldTypeObj
+                    .get("ref_form".toUpperCase());
+            String ref_field = (String) fieldTypeObj
+                    .get("ref_field".toUpperCase());
+            String is_dropdown = (String) fieldTypeObj
+                    .get("is_dropdown".toUpperCase());
             Record rec = new Record();
-            if (!(refId instanceof java.lang.Double)) {
-                rec.set("field_id", fieldId);
-                rec.set("target_form_name", target_form_name);
-                Db.save("eeda_form_field_type_detail_ref", rec);
+            if (StrKit.isBlank(refId)) {
+                rec.set("field_id", field_id);
+                rec.set("ref_form", ref_form);
+                rec.set("ref_field", ref_field);
+                rec.set("is_dropdown", is_dropdown);
+                Db.save("eeda_form_field_type_ref", rec);
             } else {
-                rec = Db.findById("eeda_form_field_type_detail_ref", refId);
-                rec.set("field_id", fieldId);
-                rec.set("target_form_name", target_form_name);
+                rec = Db.findById("eeda_form_field_type_ref", refId);
+                rec.set("field_id", field_id);
+                rec.set("ref_form", ref_form);
+                rec.set("ref_field", ref_field);
+                rec.set("is_dropdown", is_dropdown);
                 Db.update("eeda_form_field_type_detail_ref", rec);
             }
+        }
+        
+    }
 
-            List<Map<String, ?>> join_condition_list = (ArrayList<Map<String, ?>>) fieldTypeObj
-                    .get("join_condition".toUpperCase());
-            for (Map<String, ?> condition : join_condition_list) {
-                Object id = condition.get("id".toUpperCase());
-                String field_from = (String) condition.get("field_from".toUpperCase());
-                String field_to = (String) condition.get("field_to".toUpperCase());
+    private void saveDetailRef(Map<String, ?> field, Long field_id) {
+        Long fieldId = field_id;
 
-                Record itemRec = new Record();
-                if (!(id instanceof java.lang.Double)) {
-                    itemRec.set("field_id", fieldId);
-                    itemRec.set("field_from", field_from);
-                    itemRec.set("field_to", field_to);
-                    Db.save("eeda_form_field_type_detail_ref_join_condition", itemRec);
-                } else {
-                    itemRec = Db.findById("eeda_form_field_type_detail_ref_join_condition",
-                            id);
-                    itemRec.set("field_id", fieldId);
-                    itemRec.set("field_from", field_from);
-                    itemRec.set("field_to", field_to);
-                    Db.update("eeda_form_field_type_detail_ref_join_condition", itemRec);
-                }
-            }
-            
-            List<Map<String, ?>> display_list = (ArrayList<Map<String, ?>>) fieldTypeObj
-                    .get("display_field".toUpperCase());
-            for (Map<String, ?> display_field : display_list) {
-                Object id = display_field.get("id".toUpperCase());
-                String tartget_field_name = (String) display_field.get("tartget_field_name".toUpperCase());
-                String value = (String) display_field.get("value".toUpperCase());
-
-                Record itemRec = new Record();
-                if (!(id instanceof java.lang.Double)) {
-                    itemRec.set("field_id", fieldId);
-                    itemRec.set("target_field_name", tartget_field_name);
-                    itemRec.set("value", value);
-                    Db.save("eeda_form_field_type_detail_ref_display_field", itemRec);
-                } else {
-                    itemRec = Db.findById("eeda_form_field_type_detail_ref_display_field",
-                            id);
-                    itemRec.set("field_id", fieldId);
-                    itemRec.set("target_field_name", tartget_field_name);
-                    itemRec.set("value", value);
-                    Db.update("eeda_form_field_type_detail_ref_display_field", itemRec);
-                }
-            }
+        Map<String, ?> fieldTypeObj = (Map<String, ?>) field
+                .get("DETAIL_REF");
+        Object refId = fieldTypeObj.get("id".toUpperCase());
+        String target_form_name = (String) fieldTypeObj
+                .get("target_form_name".toUpperCase());
+        Record rec = new Record();
+        if (!(refId instanceof java.lang.Double)) {
+            rec.set("field_id", fieldId);
+            rec.set("target_form_name", target_form_name);
+            Db.save("eeda_form_field_type_detail_ref", rec);
+        } else {
+            rec = Db.findById("eeda_form_field_type_detail_ref", refId);
+            rec.set("field_id", fieldId);
+            rec.set("target_form_name", target_form_name);
+            Db.update("eeda_form_field_type_detail_ref", rec);
         }
 
+        List<Map<String, ?>> join_condition_list = (ArrayList<Map<String, ?>>) fieldTypeObj
+                .get("join_condition".toUpperCase());
+        for (Map<String, ?> condition : join_condition_list) {
+            Object id = condition.get("id".toUpperCase());
+            String field_from = (String) condition.get("field_from".toUpperCase());
+            String field_to = (String) condition.get("field_to".toUpperCase());
+
+            Record itemRec = new Record();
+            if (!(id instanceof java.lang.Double)) {
+                itemRec.set("field_id", fieldId);
+                itemRec.set("field_from", field_from);
+                itemRec.set("field_to", field_to);
+                Db.save("eeda_form_field_type_detail_ref_join_condition", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_field_type_detail_ref_join_condition",
+                        id);
+                itemRec.set("field_id", fieldId);
+                itemRec.set("field_from", field_from);
+                itemRec.set("field_to", field_to);
+                Db.update("eeda_form_field_type_detail_ref_join_condition", itemRec);
+            }
+        }
+        
+        List<Map<String, ?>> display_list = (ArrayList<Map<String, ?>>) fieldTypeObj
+                .get("display_field".toUpperCase());
+        for (Map<String, ?> display_field : display_list) {
+            Object id = display_field.get("id".toUpperCase());
+            String tartget_field_name = (String) display_field.get("tartget_field_name".toUpperCase());
+            String value = (String) display_field.get("value".toUpperCase());
+
+            Record itemRec = new Record();
+            if (!(id instanceof java.lang.Double)) {
+                itemRec.set("field_id", fieldId);
+                itemRec.set("target_field_name", tartget_field_name);
+                itemRec.set("value", value);
+                Db.save("eeda_form_field_type_detail_ref_display_field", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_field_type_detail_ref_display_field",
+                        id);
+                itemRec.set("field_id", fieldId);
+                itemRec.set("target_field_name", tartget_field_name);
+                itemRec.set("value", value);
+                Db.update("eeda_form_field_type_detail_ref_display_field", itemRec);
+            }
+        }
     }
 
     private void saveCheckBox(Map<String, ?> field, Long field_id) {
