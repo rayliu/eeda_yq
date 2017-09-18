@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="324"/>
+	<property name="ireport.x" value="3"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -288,7 +288,7 @@ where jos.order_id=$P{order_id}]]>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[  SHIPPER 付货人.]]></text>
+				<text><![CDATA[  SHIPPER 发货人.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="table" x="228" y="34" width="326" height="60" uuid="8b7db2b4-2db2-4be4-9fb8-d05b9b32abd7"/>
@@ -340,7 +340,7 @@ where jos.order_id=$P{order_id}]]>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[  PORT OF DISCHARGE 卸货港：]]></text>
+				<text><![CDATA[  PORT OF DISCHARGE 目的港：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="table" x="228" y="307" width="326" height="165" uuid="5745ef5a-5d84-4205-8ee1-0b919de7f6d0"/>
@@ -546,7 +546,7 @@ where jos.order_id=$P{order_id}]]>
 				<textElement textAlignment="Left">
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[PORT OF LOADING付运港：]]></text>
+				<text><![CDATA[PORT OF LOADING 启运港：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="230" y="305" width="75" height="20" uuid="1c8aba64-b946-4cea-9545-f441c1919143"/>
