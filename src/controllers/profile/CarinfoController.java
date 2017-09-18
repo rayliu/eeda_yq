@@ -215,7 +215,7 @@ public class CarinfoController extends Controller {
             carinfo.set("short_phone", getPara("short_phone") == "" ? 0 : getPara("short_phone"));
             carinfo.set("initial_mileage", getPara("initial_mileage") == "" ? 0 : getPara("initial_mileage"));
             carinfo.set("parent_id", getPara("parent_id") == "" ? null : getPara("parent_id"));
-            
+            carinfo.set("vehicle_status", getPara("vehicle_status") == "" ? null : getPara("vehicle_status"));
             if(getPara("gongsiche")!=""&&getPara("gongsiche")!=null){
             	carinfo.set("car_owned", getPara("gongsiche") == "" ? 0 : getPara("gongsiche"));
             }else if(getPara("jieche")!=""&&getPara("jieche")!=null){

@@ -1,184 +1,180 @@
 <%layout("/eeda/layout.html"){%>
 
-	<div id="page-wrapper">
-		<div class="row">
-             <div class="col-lg-12">
-              	<div class="btn-header">
-              		<div class="btn-header" style="font-size: 32px">车辆信息</div>
-				</div>
-                 <div class="panel panel-default">
-                   <!-- <div class="panel-heading">
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="btn-header">
+				<div class="btn-header" style="font-size: 32px">车辆信息</div>
+			</div>
+			<div class="panel panel-default">
+				<!-- <div class="panel-heading">
                  		车辆信息
             		</div> -->
-            		<div class="panel-body">
-            			<div class="row-fluid">
-            				<form  id='leadsForm' name="leadsForm" role="form" method="post">
-						<input id="carId" name="carId" type="hidden" value="${lu.id!''}">
-					<div class="col-lg-6">
-                        <div class="form-group ">
-                             <label class="control-label">车牌</label>
-                             <input type="text" class="form-control" id="car_no" name="car_no" value="${lu.car_no!''}">
-                        </div>
-						<div class="form-group ">
-			                 <label class="control-label">司机</label>
-			                 <input id="driver" name="driver" type="text" class="form-control" value="${lu.driver!''}">
-			            </div>
-			            <div class="form-group ">
-	                                <%include("/eeda/component/form/inputDropListField.html", 
-	                                {   id:'parent_id', 
-	                                    label:'车辆所属公司',
-	                                    class:'form-control', 
-	                                    url: '/serviceProvider/searchCompany',
-	                                    value:lu.parent_id!'',
-	                                    display_value:lu.parent_id_input!''
-	                                }){}%>
-			            </div>
-			             	<div class="form-group ">
-			                 <label class="control-label">司机电话</label>
-			                 <input type="text" class="form-control" id="phone" name="phone" value="${lu.phone!''}">
-			            	 </div>
-                     <div class="form-group ">
-                       <label class="control-label">司机电话（短号）</label>
-                       <input type="text" class="form-control" id="phone" name="short_phone" value="${lu.short_phone!''}">
-                     </div>
-			            	 <div class="form-group ">
-				                 <label class="control-label">额定载重</label>
-				                 <input type="text" class="form-control" name="rated_load" value="${lu.rated_load!''}">
-				             </div>
-				             <div class="form-group ">
-				                 <label class="control-label">初始里程</label>
-				                 <input type="text" class="form-control" name="initial_mileage" value="${lu.initial_mileage!''}">
-				             </div>
-                     <div class="form-group ">
-                         <label class="control-label">托卡卡号</label>
-                         <input type="text" class="form-control" name="toca_num" value="${lu.toca_num!''}">
-                     </div>
-			           </div>
-			           <div class="col-lg-6">
-			           
-		                    <div class="form-group ">
-		                    
-				                <label class="control-label">车辆所属</label><br>
-		                       		<% 
-		                       			var car_owned=lu.car_owned!'';
-		                       		 %>
-		                       		<div >
-                                       <input type="checkbox" name="gongsiche" style="margin-left:5px;" value="公司车" <%if(car_owned=='公司车'){%>checked<%}%> >公司车
-                                  
-                                       <input type="checkbox" name="jieche" style="margin-left:5px;" value="街车"	<%if(car_owned=='街车'){%>checked<%}%>>街车
-                                   
-                                    </div>
-				                
-				            </div>
-                            <div class="form-group">
-                                <label class="control-label">车型</label>
-                                <select class="form-control" id="ctype" name="ctype">
-                                <%
-                                    var cartype = lu.cartype!'';
-                                %>
-                                  <option <%if(cartype==''){%>selected<%}%>></option>
-                                  <option <%if(cartype=='40HQ'){%>selected<%}%>>40HQ</option>
-                                  <option <%if(cartype=='40GP'){%>selected<%}%>>40GP</option>
-                                  <option <%if(cartype=='20GP'){%>selected<%}%>>20GP</option>
-                                  <option <%if(cartype=='40T'){%>selected<%}%>>40T</option>
-                                  <option <%if(cartype=='20T'){%>selected<%}%>>20T</option>
-                                  <option <%if(cartype=='10T'){%>selected<%}%>>10T</option>
-                                  <option <%if(cartype=='8T'){%>selected<%}%>>8T</option>
-                                  <option <%if(cartype=='5T'){%>selected<%}%>>5T</option>
-                                  <option <%if(cartype=='3T'){%>selected<%}%>>3T</option>
-                                  <option <%if(cartype=='1.5T'){%>selected<%}%>>1.5T</option>
-                                  <option <%if(cartype=='21M'){%>selected<%}%>>21M</option>
-                                  <option <%if(cartype=='18.5M'){%>selected<%}%>>18.5M</option>
-                                  <option <%if(cartype=='18.0M'){%>selected<%}%>>18.0M</option>
-                                  <option <%if(cartype=='17.8M'){%>selected<%}%>>17.8M</option>
-                                  <option <%if(cartype=='17.5M'){%>selected<%}%>>17.5M</option>
-                                  <option <%if(cartype=='17.0M'){%>selected<%}%>>17.0M</option>
-                                  <option <%if(cartype=='16.0M'){%>selected<%}%>>16.0M</option>
-                                  <option <%if(cartype=='15.0M'){%>selected<%}%>>15.0M</option>
-                                  <option <%if(cartype=='14.5M'){%>selected<%}%>>14.5M</option>
-                                  <option <%if(cartype=='13.5M'){%>selected<%}%>>13.5M</option>
-                                  <option <%if(cartype=='13.0M'){%>selected<%}%>>13.0M</option>
-                                  <option <%if(cartype=='12.5M'){%>selected<%}%>>12.5M</option>
-                                  <option <%if(cartype=='9.6M'){%>selected<%}%>>9.6M</option>
-                                  <option <%if(cartype=='8.6M'){%>selected<%}%>>8.6M</option>
-                                  <option <%if(cartype=='8.0M'){%>selected<%}%>>8.0M</option>
-                                  <option <%if(cartype=='7.6M'){%>selected<%}%>>7.6M</option>
-                                  <option <%if(cartype=='7.2M'){%>selected<%}%>>7.2M</option>
-                                  <option <%if(cartype=='6.8M'){%>selected<%}%>>6.8M</option>
-                                  <option <%if(cartype=='6.5M'){%>selected<%}%>>6.5M</option>
-                                  <option <%if(cartype=='5.3M'){%>selected<%}%>>5.3M</option>
-                                  <option <%if(cartype=='4.3M'){%>selected<%}%>>4.3M</option>
-                                  <option <%if(cartype=='4.2M'){%>selected<%}%>>4.2M</option>
-                                  <option <%if(cartype=='2.6M'){%>selected<%}%>>2.6M</option>
-                                </select>
-                            </div>
-    			             <div class="form-group ">
-    			                 <label class="control-label">车长</label>
-    			                 <select class="form-control" id="length" name="length" >
-                                 <%
-                                    var length = lu.length!'';
-                                 %>
-                                      <option <%if(length==''){%>selected<%}%>></option>
-                                      <option <%if(length==21.0){%>selected<%}%>>21.0</option>
-                                      <option <%if(length==18.5){%>selected<%}%>>18.5</option>
-                                      <option <%if(length==18.0){%>selected<%}%>>18.0</option>
-                                      <option <%if(length==17.8){%>selected<%}%>>17.8</option>
-                                      <option <%if(length==17.5){%>selected<%}%>>17.5</option>
-                                      <option <%if(length==17.0){%>selected<%}%>>17.0</option>
-                                      <option <%if(length==16.0){%>selected<%}%>>16.0</option>
-                                      <option <%if(length==15.0){%>selected<%}%>>15.0</option>
-                                      <option <%if(length==14.5){%>selected<%}%>>14.5</option>
-                                      <option <%if(length==13.5){%>selected<%}%>>13.5</option>
-                                      <option <%if(length==13.0){%>selected<%}%>>13.0</option>
-                                      <option <%if(length==12.5){%>selected<%}%>>12.5</option>
-                                      <option <%if(length==10.5){%>selected<%}%>>10.5</option>
-                                      <option <%if(length==9.6){%>selected<%}%>>9.6</option>
-                                      <option <%if(length==8.6){%>selected<%}%>>8.6</option>
-                                      <option <%if(length==8.0){%>selected<%}%>>8.0</option>
-                                      <option <%if(length==7.6){%>selected<%}%>>7.6</option>
-                                      <option <%if(length==7.2){%>selected<%}%>>7.2</option>
-                                      <option <%if(length==6.8){%>selected<%}%>>6.8</option>
-                                      <option <%if(length==6.5){%>selected<%}%>>6.5</option>
-                                      <option <%if(length==5.3){%>selected<%}%>>5.3</option>
-                                      <option <%if(length==4.3){%>selected<%}%>>4.3</option>
-                                      <option <%if(length==4.2){%>selected<%}%>>4.2</option>
-                                      <option <%if(length==2.6){%>selected<%}%>>2.6</option>
-                                  </select>
-    			             </div>
-    			             
-    			             <div class="form-group ">
-    			                 <label class="control-label">百公里标准油耗</label>
-    			                 <input type="text" class="form-control" id="hundred_fuel_standard" name="hundred_fuel_standard" value="${lu.hundred_fuel_standard!''}">
-    			             </div>
-    			             <div class="form-group ">
-    			                 <label class="control-label">额定方数</label>
-    			                 <input type="text" class="form-control" name="rated_cube" value="${lu.rated_cube!''}">
-    			             </div>
-                       <div class="form-group ">
-                         <label class="control-label">托头重量</label>
-                         <input type="text" class="form-control" name="head_weight" value="${lu.head_weight!''}">
-                     </div>
-			                 <div class="form-group ">
-                         <label class="control-label">托卡重量</label>
-                         <input type="text" class="form-control" name="toca_weight" value="${lu.toca_weight!''}">
-                     </div>
-			            </div>
-			           
-			            
-			            </div>
-			            <div class="col-lg-7">
-			             	<button id="save" type="button" class="btn  btn-primary">保存</button>
-				            <a class="btn  btn-primary" href="/carInfo">返回</a>
-				        </div>
-			         </form>
-            			</div>
-            		</div>
-					
-							
+				<div class="panel-body">
+					<div class="row-fluid">
+						<form id='leadsForm' name="leadsForm" role="form" method="post">
+							<input id="carId" name="carId" type="hidden" value="${lu.id!''}">
+							<div class="col-lg-6">
+								<div class="form-group ">
+									<label class="control-label">车牌</label>
+									<input type="text" class="form-control" id="car_no" name="car_no" value="${lu.car_no!''}">
+								</div>
+								<div class="form-group ">
+									<label class="control-label">司机
+									</label> <input id="driver" name="driver" type="text" class="form-control" value="${lu.driver!''}">
+								</div>
+								<div class="form-group ">
+									<%include("/eeda/component/form/inputDropListField.html",
+										{	id:'parent_id',
+											label:'车辆所属公司',
+											class:'form-control',
+											url:'/serviceProvider/searchCompany',
+											value:lu.parent_id!'',
+											display_value:lu.parent_id_input!''
+										}){}%></div>
+								<div class="form-group ">
+									<label class="control-label">司机电话</label> 
+									<input type="text" class="form-control" id="phone" name="phone" value="${lu.phone!''}">
+								</div>
+								<div class="form-group ">
+									<label class="control-label">司机电话（短号）</label>
+									<input type="text" class="form-control" id="phone" name="short_phone" value="${lu.short_phone!''}">
+								</div>
+								<div class="form-group ">
+									<label class="control-label">额定载重</label>
+									<input type="text" class="form-control" name="rated_load" value="${lu.rated_load!''}">
+								</div>
+								<div class="form-group ">
+									<label class="control-label">初始里程</label>
+									<input type="text" class="form-control" name="initial_mileage" value="${lu.initial_mileage!''}">
+								</div>
+								<div class="form-group ">
+									<label class="control-label">托卡卡号</label>
+									<input type="text" class="form-control" name="toca_num" value="${lu.toca_num!''}">
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="form-group ">
+									<label class="control-label">车辆所属</label>
+									<br> <% var car_owned=lu.car_owned!''; %>
+									<div>
+										<input type="checkbox" name="gongsiche" style="margin-left: 5px;" value="公司车"<%if(car_owned=='公司车'){%>checked<%}%>>公司车 
+										<input type="checkbox" name="jieche" style="margin-left: 5px;" value="街车"<%if(car_owned=='街车'){%>checked<%}%>>街车
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label">车型</label>
+									<select class="form-control" id="ctype" name="ctype">
+									<%var cartype = lu.cartype!''; %>
+										<option<%if(cartype==''){%>selected<%}%>></option>
+										<option<%if(cartype=='40HQ'){%>selected<%}%>>40HQ</option>
+										<option<%if(cartype=='40GP'){%>selected<%}%>>40GP</option>
+										<option<%if(cartype=='20GP'){%>selected<%}%>>20GP</option>
+										<option<%if(cartype=='40T'){%>selected<%}%>>40T</option>
+										<option<%if(cartype=='20T'){%>selected<%}%>>20T</option>
+										<option<%if(cartype=='10T'){%>selected<%}%>>10T</option>
+										<option<%if(cartype=='8T'){%>selected<%}%>>8T</option>
+										<option<%if(cartype=='5T'){%>selected<%}%>>5T</option>
+										<option<%if(cartype=='3T'){%>selected<%}%>>3T</option>
+										<option<%if(cartype=='1.5T'){%>selected<%}%>>1.5T</option>
+										<option<%if(cartype=='21M'){%>selected<%}%>>21M</option>
+										<option<%if(cartype=='18.5M'){%>selected<%}%>>18.5M</option>
+										<option<%if(cartype=='18.0M'){%>selected<%}%>>18.0M</option>
+										<option<%if(cartype=='17.8M'){%>selected<%}%>>17.8M</option>
+										<option<%if(cartype=='17.5M'){%>selected<%}%>>17.5M</option>
+										<option<%if(cartype=='17.0M'){%>selected<%}%>>17.0M</option>
+										<option<%if(cartype=='16.0M'){%>selected<%}%>>16.0M</option>
+										<option<%if(cartype=='15.0M'){%>selected<%}%>>15.0M</option>
+										<option<%if(cartype=='14.5M'){%>selected<%}%>>14.5M</option>
+										<option<%if(cartype=='13.5M'){%>selected<%}%>>13.5M</option>
+										<option<%if(cartype=='13.0M'){%>selected<%}%>>13.0M</option>
+										<option<%if(cartype=='12.5M'){%>selected<%}%>>12.5M</option>
+										<option<%if(cartype=='9.6M'){%>selected<%}%>>9.6M</option>
+										<option<%if(cartype=='8.6M'){%>selected<%}%>>8.6M</option>
+										<option<%if(cartype=='8.0M'){%>selected<%}%>>8.0M</option>
+										<option<%if(cartype=='7.6M'){%>selected<%}%>>7.6M</option>
+										<option<%if(cartype=='7.2M'){%>selected<%}%>>7.2M</option>
+										<option<%if(cartype=='6.8M'){%>selected<%}%>>6.8M</option>
+										<option<%if(cartype=='6.5M'){%>selected<%}%>>6.5M</option>
+										<option<%if(cartype=='5.3M'){%>selected<%}%>>5.3M</option>
+										<option<%if(cartype=='4.3M'){%>selected<%}%>>4.3M</option>
+										<option<%if(cartype=='4.2M'){%>selected<%}%>>4.2M</option>
+										<option<%if(cartype=='2.6M'){%>selected<%}%>>2.6M</option>
+									</select>
+								</div>
+								<div class="form-group ">
+									<label class="control-label">车长</label>
+									<select class="form-control" id="length" name="length">
+										<%var length = lu.length!''; %>
+										<option<%if(length==''){%>selected<%}%>></option>
+										<option<%if(length==21.0){%>selected<%}%>>21.0</option>
+										<option<%if(length==18.5){%>selected<%}%>>18.5</option>
+										<option<%if(length==18.0){%>selected<%}%>>18.0</option>
+										<option<%if(length==17.8){%>selected<%}%>>17.8</option>
+										<option<%if(length==17.5){%>selected<%}%>>17.5</option>
+										<option<%if(length==17.0){%>selected<%}%>>17.0</option>
+										<option<%if(length==16.0){%>selected<%}%>>16.0</option>
+										<option<%if(length==15.0){%>selected<%}%>>15.0</option>
+										<option<%if(length==14.5){%>selected<%}%>>14.5</option>
+										<option<%if(length==13.5){%>selected<%}%>>13.5</option>
+										<option<%if(length==13.0){%>selected<%}%>>13.0</option>
+										<option<%if(length==12.5){%>selected<%}%>>12.5</option>
+										<option<%if(length==10.5){%>selected<%}%>>10.5</option>
+										<option<%if(length==9.6){%>selected<%}%>>9.6</option>
+										<option<%if(length==8.6){%>selected<%}%>>8.6</option>
+										<option<%if(length==8.0){%>selected<%}%>>8.0</option>
+										<option<%if(length==7.6){%>selected<%}%>>7.6</option>
+										<option<%if(length==7.2){%>selected<%}%>>7.2</option>
+										<option<%if(length==6.8){%>selected<%}%>>6.8</option>
+										<option<%if(length==6.5){%>selected<%}%>>6.5</option>
+										<option<%if(length==5.3){%>selected<%}%>>5.3</option>
+										<option<%if(length==4.3){%>selected<%}%>>4.3</option>
+										<option<%if(length==4.2){%>selected<%}%>>4.2</option>
+										<option<%if(length==2.6){%>selected<%}%>>2.6</option>
+									</select>
+								</div>
+
+								<div class="form-group ">
+									<label class="control-label">百公里标准油耗</label>
+									<input type="text" class="form-control" id="hundred_fuel_standard" name="hundred_fuel_standard" lue="${lu.hundred_fuel_standard!''}">
+								</div>
+								<div class="form-group ">
+									<label class="control-label">额定方数</label>
+									<input type="text" class="form-control" name="rated_cube" value="${lu.rated_cube!''}">
+								</div>
+								<div class="form-group ">
+									<label class="control-label">托头重量</label>
+									<input type="text" class="form-control" name="head_weight" value="${lu.head_weight!''}">
+								</div>
+								<div class="form-group ">
+									<label class="control-label">托卡重量</label>
+									<input type="text" class="form-control" name="toca_weight" value="${lu.toca_weight!''}">
+								</div>
+								<div class="form-group ">
+									<label class="control-label">车辆状态</label>
+									<select id="vehicle_status" class="form-control" name="vehicle_status">
+										<%var vehicle_status = lu.vehicle_status!''; %>
+										<option value=""></option>
+										<option value="正常车辆" <%if(vehicle_status=='正常车辆'){%>selected<%}%>>正常车辆</option>
+										<option value="无司机车辆" <%if(vehicle_status=='无司机车辆'){%>selected<%}%>>无司机车辆</option>
+										<option value="维修中" <%if(vehicle_status=='维修中'){%>selected<%}%>>维修中</option>
+										<option value="车辆被扣" <%if(vehicle_status=='车辆被扣'){%>selected<%}%>>车辆被扣</option>
+										<option value="故障车" <%if(vehicle_status=='故障车'){%>selected<%}%>>故障车</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-7">
+							<button id="save" type="button" class="btn btn_green">保存</button>
+							<a class="btn  btn-primary" href="/carInfo">返回</a>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
+</div>
 <%}%>
 
 <script>
