@@ -254,6 +254,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
+          var sp_id = $("#sp_id").val(); 
           var start_date = $("#charge_time_begin_time").val();
           var end_date = $("#charge_time_end_time").val();
           var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
@@ -265,6 +266,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var container_no= $.trim($("#container_no").val());
           //增加出口日期查询
           var url = "/transJobOrder/list?order_no="+order_no
+          	   +"&sp_id="+sp_id
           	   +"&status="+status
           	   +"&car_id="+car_id
                +"&customer_name_like="+customer_name
@@ -333,6 +335,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //导出工作单
       $('#exportJobBtn').click(function(){
     	  var condition={};
+    	  condition.sp_id=$('#sp_id').val();
     	  condition.customer_name_equals=$('#customer_name_input').val();
     	  condition.cabinet_date_begin_time = $('#cabinet_date_begin_time').val();
     	  condition.cabinet_date_end_time = $('#cabinet_date_end_time').val();

@@ -991,8 +991,8 @@ public class TransJobOrderController extends Controller {
         }
         else{
 		         sql = "SELECT * from (select GROUP_CONCAT(cast(substring(tjol.cabinet_date, 1, 10) AS CHAR)) cabinet_date,"
-		         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,tjo.status"
-		         		+ " ,tjo.land_export_stamp sent_out_time,"
+		         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,tjoa.sp_id sp_id,"
+		         		+ " tjo.status,tjo.land_export_stamp sent_out_time,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
 		         		+ " (SELECT SUM(tjoa.currency_total_amount) from trans_job_order_arap tjoa WHERE tjoa.order_id=tjo.id and tjoa.order_type='CHARGE' and tjoa.charge_id= " 
 						+"			(SELECT id FROM fin_item f WHERE f.name='运费'  and f.office_id="+office_id+")) yunfei, "
@@ -1009,6 +1009,7 @@ public class TransJobOrderController extends Controller {
 		         		+ "	left join party p1 on p1.id = tjo.head_carrier"
 		         		+ "	left join user_login u on u.id = tjo.creator"
 		         		+ "	left join carinfo car ON car.id = tjol.car_no"
+		         		+ " left join trans_job_order_arap tjoa ON tjoa.order_id = tjo.id"
 		         		+ "	where tjo.office_id="+office_id
 		         		+ "	and tjo.delete_flag = 'N' "
 		         		+ " GROUP BY tjo.id"
@@ -1213,6 +1214,9 @@ public class TransJobOrderController extends Controller {
             	if(key.endsWith("_equals")){
             		condition += " and " + key.replace("_equals", "") + " = '" + filterValue + "' ";
             		continue;
+            	}else if(key.endsWith("_id")){
+            		condition += " and " + key.replace("", "") + " = '" + filterValue + "' ";
+            		continue;
             	}else if(key.endsWith("_begin_time")){
             		key = key.replaceAll("_begin_time", "");
             		Map<String, String> valueMap = dateFieldMap.get(key)==null?new HashMap<String, String>():dateFieldMap.get(key);
@@ -1251,8 +1255,8 @@ public class TransJobOrderController extends Controller {
     }
     	
     	String	sql = "SELECT * from (select GROUP_CONCAT(cast(substring(tjol.cabinet_date, 1, 10) AS CHAR)) cabinet_date,"
-         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,tjo.status"
-         		+ " ,tjo.land_export_stamp sent_out_time,tjo.customer_salesman,dock.dock_name cross_border_name,tjo.remark,"
+         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,tjoa.sp_id sp_id,"
+         		+ " p2.abbr sp_name,tjo.status,tjo.land_export_stamp sent_out_time,tjo.customer_salesman,dock.dock_name cross_border_name,tjo.remark,"
          		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
          		+ " (SELECT SUM(convert(tjoa.currency_total_amount,decimal(10,2))) from trans_job_order_arap tjoa WHERE tjoa.order_id=tjo.id and tjoa.order_type='CHARGE' and tjoa.charge_id= " 
 				+"			(SELECT id FROM fin_item f WHERE f.name='运费'  and f.office_id="+office_id+")) yunfei, "
@@ -1270,8 +1274,10 @@ public class TransJobOrderController extends Controller {
          		+ " IFNULL(dock1.dock_name, '')) combine_wharf"
          		+ "	from trans_job_order tjo "
          		+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo.id"
+         		+ " LEFT JOIN trans_job_order_arap tjoa ON tjoa.order_id = tjo.id"
          		+ "	left join party p on p.id = tjo.customer_id"
          		+ "	left join party p1 on p1.id = tjo.head_carrier"
+         		+ " LEFT JOIN party p2 ON p2.id = tjoa.sp_id"
          		+ "	left join user_login u on u.id = tjo.creator"
          		+ "	left join carinfo car ON car.id = tjol.car_no"
          		+ " LEFT JOIN dockinfo dock ON dock.id = tjo.cross_border_travel"
@@ -1289,9 +1295,9 @@ public class TransJobOrderController extends Controller {
 
 
 			String sqlExport = "SELECT (@rowNO := @rowNo + 1) AS rowno,A.*FROM("+sql+condition+") A,(SELECT @rowNO := 0) B";
-			String[] headers = new String[]{"序号","提柜/货时间", "结算时间", "客户简称", "类型", "拖柜地址","SO号", "柜号", "柜型", "提柜类型", "结算车牌", "头程船公司","运费","其他费用",
+			String[] headers = new String[]{"序号","结算公司","提柜/货时间", "结算时间", "客户简称", "类型", "拖柜地址","SO号", "柜号", "柜型", "提柜类型", "结算车牌", "头程船公司","运费","其他费用",
 					"客户业务员","跨境","备注"};
-			String[] fields = new String[]{"ROWNO","CABINET_DATE", "CHARGE_TIME", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF","SO_NO", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO",
+			String[] fields = new String[]{"ROWNO","SP_NAME","CABINET_DATE", "CHARGE_TIME", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF","SO_NO", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO",
 							"HEAD_CARRIER_NAME","YUNFEI","CHARGE","CUSTOMER_SALESMAN","CROSS_BORDER_NAME","REMARK"};
 			String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,company_name);
 			renderText(fileName);
