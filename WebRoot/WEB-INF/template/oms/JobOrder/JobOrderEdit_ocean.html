@@ -508,7 +508,7 @@
                  <% if(boolOcean){ %>
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'closing_date', 
-                           label:'CL',
+                           label:'CUT OFF',
                            value:shipment.closing_date!planOrderItem.cls!''
                        }){}%>
                  <%}else{%>
@@ -519,7 +519,7 @@
                  <% if(boolOcean){ %>
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'etd', 
-                           label:'ETD',
+                           label:'ETD(截货日期)',
                            value:shipment.etd!planOrderItem.etd!''
                        }){}%>
                    <%}else{%>
