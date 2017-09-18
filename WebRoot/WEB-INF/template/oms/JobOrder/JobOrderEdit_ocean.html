@@ -706,6 +706,9 @@
            	 <% if(shiro.hasPermission("jobOrder.oceanTelexHBL")){ %>
            	 	<button id="prinTelextOceanHBL" class="btn btn_green"  disableStr>生成电放HBL PDF</button>
            	 <%}%>
+           	 <a data-target='#deliverWarehouseDetail' data-toggle='modal'>
+           	 	<button id="deliver_warehouse_bill" class="btn btn_green"  disableStr>生成进仓单 PDF</button>
+           	 </a>           	 
 			 <br><br>
            </div>
           <%}else{%> 
@@ -827,7 +830,96 @@
 	    </div>
 	  </div>
 	</div>
-                    
+	
+    <div class="modal fade" id="deliverWarehouseDetail">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header"><span>进仓单详细信息</span></div>
+            <div class="modal-body">
+            <form id = "deliverWarehouseForm">
+                <div class="form-group">
+                        <div class="row">
+                        	<div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'operator', 
+                                       label:'FROM',
+                                       value:warehouseBill.operator!''
+                                   }){}%>
+                           </div>
+                           <div class="col-lg-6">
+                                <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'truck_head_end_place', 
+                                       label:'TO',
+                                       value:truckHead.head_end_place!''
+                                   }){}%>
+                           </div>
+                       </div>
+                        <div class="row">
+                           <div class="col-lg-6">
+                                 <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'operator_tel', 
+                                       label:'TEL',
+                                       value:truckHead.operator_tel!''
+                                   }){}%>
+                           </div>
+                           <div class="col-lg-6">
+                                    <%include("/eeda/component/form/inputField.html", 
+                                       {   id:'truck_head_date',
+                                           label:'DATE',
+                                           disabled:'disabled',
+                                           value:truckHead.head_date!''
+                                       }){}%>
+                           </div>
+                       </div>
+                       
+                       <div class="row">
+                           <div class="col-lg-6">
+                                 <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'warehouse_contact', 
+                                       label:'仓库联系人',
+                                       placeholder:'选中地址信息回填',
+                                       value:truckHead.warehouse_contact!''
+                                   }){}%>
+                           </div>
+                           <div class="col-lg-6">
+                                    <%include("/eeda/component/form/inputField.html", 
+                                       {   id:'warehouse_contact_tel',
+                                           label:'仓库电话',
+                                           placeholder:'选中地址信息回填',
+                                           value:truckHead.warehouse_contact_tel!''
+                                       }){}%>
+                           </div>
+                       </div>
+                       <div class="row">
+                           <div class="col-lg-12">
+                                 <%include("/eeda/component/form/inputField.html", 
+                                   {   id:'warehouse_adddress', 
+                                       label:'仓库地址',
+                                       inline:false,
+                                       value:truckHead.warehouse_adddress!''
+                                   }){}%>
+                           </div>
+                       </div>
+                                               
+                       <div class="row">
+	                       <div class="col-lg-12"> 
+	                          <div class="form-group">
+	                               <label>进仓单备注</label>
+	                               <textarea id='cabinet_arrive_remark' placeholder='选中地址信息回填', class="form-control" rows="6" name="cabinet_arrive_remark">${truckHead.cabinet_arrive_remark!''}</textarea>
+	                          </div>
+	                      </div>
+                       </div>
+                </div>   
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="printWarehouseBill" class="btn btn-primary" style="display:none;">生成柜货派车单PDF</button>
+                <button class="btn  btn-default" data-dismiss="modal" >返回</button>
+            </div>
+        </div>
+        
+      </div>
+	</div>                
 <div class="row">
 	
     <div class="form-group">

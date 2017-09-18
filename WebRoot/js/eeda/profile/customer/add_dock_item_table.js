@@ -35,8 +35,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            item.party_type = 'customer';
 	            item.office_id = $('#office_id').val();
 	            for(var i = 1; i < row.childNodes.length; i++){
-	            	var name = $(row.childNodes[i]).find('input,select').attr('name');
-	            	var value = $(row.childNodes[i]).find('input,select').val();
+	            	var name = $(row.childNodes[i]).find('input,select,textarea,span').attr('name');
+	            	var value = $(row.childNodes[i]).find('input,select,textarea,span').val();
 	            	if(name){
 	            		item[name] = value;
 	            	}
@@ -67,9 +67,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		        
 		    },
             columns:[
-	            {"width": "5%",
+	            {"data":"ID","width": "3%",
 	                "render": function ( data, type, full, meta ) {
-	                		return '<button type="button" class="delete btn btn-default btn-xs" style="width:100%" >删除</button> ';
+	                		return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:100%" >删除</button> ';
 	                }
 	            },
 	            { "data": "DOCK_NAME","width": "20%",
@@ -79,7 +79,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return '<input style="width:100%"  type="text" name="dock_name" value="'+data+'" class="form-control search-control" />';
 	                }
 	            },
-	            {"data":"LAND_CONTACTS","width":"20%",
+	            {"data":"LAND_CONTACTS","width":"10%",
 	            	 "render": function ( data, type, full, meta ) {
 	            		 if(!data)
 	            			 data='';
@@ -87,13 +87,46 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            		 
 	            	 }
 	            },
-	            {"data":"LAND_CONTACT_PHONE","width":"20%",
+	            {"data":"LAND_CONTACT_PHONE","width":"10%",
 	            	 "render": function ( data, type, full, meta ) {
 	            		 if(!data)
 	            			 data='';
 	            		return '<input style="width:100%" type="text" name="land_contact_phone" value="'+data+'" class="form-control search-control" />';
 	            		 
 	            	 }
+	            },
+	            {"data":"BILL_REMARK","width":"20%",
+	            	 "render": function ( data, type, full, meta ) {
+	            		 if(!data)
+	            			 data='';
+	            		return '<textarea style="width:100%" rows="2" type="text" name="bill_remark" value="'+data+'" class="form-control search-control" >'+data+'</textarea>';
+	            		 
+	            	 }
+	            },
+	            { "data":"PICTURE_LINK","width":"10%",
+	            	"render": function ( data, type, full, meta ) {
+	            		if(full.ID){
+	            			if(data){
+		            			var str = '<a href="/upload/dockinfo/'+data+'" target="_blank">'+data+'</a>&nbsp;&nbsp;'
+		            			  +'<a id="'+data+'" class="glyphicon glyphicon-remove delete_icon_of_sign_desc" style="margin-right:15px;" role="menuitem" tabindex="-10"></a>';
+		            			return '<span style="width:100%;" name="picture_link" >'+str+'</span>';
+		            		}else{
+		            			return '<span class="btn table_btn btn_green btn-xs fileinput-button upload" style="width:100%" title="请先保存再上传文件">' 
+			                		+'<i class="glyphicon glyphicon-plus"></i>'
+			                		+'<span>上传图片</span>'
+			                		+'<input   type="file" multiple>'
+			                		+'</span>';
+		            		}
+	            		}else{
+	            			return '<span class="btn table_btn btn_green btn-xs fileinput-button upload" style="width:100%" disabled title="请先保存再上传文件">' 
+	                		+'<i class="glyphicon glyphicon-plus"></i>'
+	                		+'<span disabled>上传图片</span>'
+	                		+'<input   type="button" disabled>'
+	                		+'</span>';
+	            		}
+	            		
+			            				
+	            	}
 	            },
 	            { "data": "DOCK_NAME_ENG","width": "20%",
 	                "render": function ( data, type, full, meta ) {
@@ -102,22 +135,72 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return '<input type="text" name="dock_name_eng" value="'+data+'" class="form-control search-control" style="width:100%"/>';
 	                }
 	            },
-	            { "data": "DOCK_REGION","width": "20%",
+	            { "data": "DOCK_REGION","width": "10%",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
 	                   return '<input type="text" name="dock_region" value="'+data+'" class="form-control search-control" style="width:100%"/>';
 	                }
+	            },
+	            { "data": "PICTURE_LINK_ID","visible":false,
+	                "render": function ( data, type, full, meta ) {
+	                   if(!data)
+	                	   data='';
+	                   return '<input type="text" name="picture_link_id" value="'+data+'" class="form-control search-control" style="width:100%"/>';
+	                }
 	            }
 	        ]
 	    });
 	    
-
+	    //单据备注信息填写
+	    var dock_bill_remark_self;
+	    $('#dock_table').on('dblclick','[name=bill_remark]',function(){
+	    	dock_bill_remark_self = $(this);
+	    	$('#showNote').val(dock_bill_remark_self.val());
+	    	$('#a_btn').click();
+	    });
+	    $('#btnConfirm').click(function(){
+    		var showNote = $('#showNote').val();
+    		dock_bill_remark_self.val(showNote);
+    	})
 
 	    $('#add_cargo').on('click', function(){
 	        var item={};
 	        cargoTable.row.add(item).draw(true);
 	    });
+	    //上传图片
+	    $("#dock_table").on('click', '.upload', function(){
+			var id = $(this).parent().parent().attr('id');
+			var order_id = $('#partyId').val();
+				$(this).fileupload({
+					autoUpload: true, 
+				    url: '/customer/saveLandDocFile?id='+id,
+				    dataType: 'json',
+			        done: function (e, data) {
+	                    if(data.result.result){
+	    		    		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
+	    		    		itemOrder.refleshTable(order_id);
+	                    }else{
+	                        $.scojs_message('上传失败:'+data.result.ERRMSG, $.scojs_message.TYPE_ERROR);
+	                    }
+				     },
+			        error: function () {
+			            alert('上传的时候出现了错误！');
+			        }
+				});
+		});
+	    
+	    //单个删除签收文件
+	    $("#dock_table").on('click', '.delete_icon_of_sign_desc', function(){
+	    	var id =  $(this).parent().parent().parent().attr('id');
+	    	var order_id = $('#partyId').val();
+		     $.post('/customer/delectLandDocFile', {id:id}, function(data){
+		        	 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+		        	 itemOrder.refleshTable(order_id);
+		     },'json').fail(function() {
+		         	 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
+		     });
+	    })
 	    
 	    //刷新明细表
 	    itemOrder.refleshTable = function(order_id){

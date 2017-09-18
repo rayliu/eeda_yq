@@ -401,16 +401,16 @@ $(document).ready(function() {
             { "data":"ID","width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(data)
-	            		return '<span class="btn table_btn btn-success btn-xs fileinput-button" style="100px" >' 
+	            		return '<span class="btn table_btn btn-success btn-xs fileinput-button " style="100px" >' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
 		                		+'<input class="upload" type="file" multiple>'
 		                		+'</span>'
 		            else
-		            	return '<span class="btn table_btn btn-default btn-xs fileinput-button" style="100px" title="请先保存再上传文件">' 
+		            	return '<span class="btn table_btn btn-default btn-xs fileinput-button" style="100px" title="请先保存再上传文件" disabled>' 
 		                		+'<i class="glyphicon glyphicon-plus"></i>'
 		                		+'<span>上传签收文件</span>'
-		                		+'<input  class="upload" type="button" disabled>'
+		                		+'<input  class=" upload" type="button" disabled>'
 		                		+'</span>'			
             	}
             },

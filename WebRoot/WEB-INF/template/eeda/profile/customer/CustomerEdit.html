@@ -303,8 +303,8 @@
 	                                       {
 	                                           id:'dock_table',
 	                                           style:'width:100%',
-	                                           headers:['','地点名称','联系人','联系人电话','地点英文名称','所属区域'],
-	                                           field_list:['id','dock_name','land_contacts','land_contact_phone','dock_name_eng','dock_region'],
+	                                           headers:['','地点名称','联系人','联系人电话','单据备注','图片上传','地点英文名称','所属区域',''],
+	                                           field_list:['id','dock_name','land_contacts','land_contact_phone','bill_remark','picture_link','dock_name_eng','dock_region',''],
 	                                           value_list: itemList![]
 	                                       }){} %>
 	                        </form>
@@ -400,6 +400,23 @@
                     </div>      
                 </div>
          </div>
+         <a id='a_btn' data-target='#msg' data-toggle='modal' style='display:none'></a>
+                    <div class="modal fade" id="msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">单据备注 </div>
+					      	<div class="modal-body">
+					      		<div class="form-group">
+				                    <textarea id='showNote' class="form-control" rows="5" ></textarea>
+				            	</div>
+					    	</div>
+					    	<div class="modal-footer">
+					    		<button type="button" id="btnConfirm" class="btn  btn-primary" data-dismiss="modal">确认</button>
+					            <button type="button" class="btn  btn-default" data-dismiss="modal">返回</button>
+					        </div>
+					  </div>
+					</div>
+				  </div>
 
                 <div class="col-lg-12" style="margin-top:15px;">
                    <div  style="clear:both;">

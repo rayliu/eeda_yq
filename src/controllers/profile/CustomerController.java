@@ -548,6 +548,7 @@ public class CustomerController extends Controller {
     @Before(Tx.class)
     public void saveDocFile(){
     	String id = getPara("order_id");
+    	String type = getPara("type");
     	List<UploadFile> fileList = getFiles("customer_doc");
     	
 		for (int i = 0; i < fileList.size(); i++) {
@@ -565,6 +566,46 @@ public class CustomerController extends Controller {
 		resultMap.put("result", true);
     	renderJson(resultMap);
     }
+    
+    
+  //上传陆运图片
+    @Before(Tx.class)
+    public void saveLandDocFile(){
+    	String id = getPara("id");
+    	String type = getPara("type");
+    	Record rLandDoc = Db.findFirst("select * from dockinfo where id =?",id);
+    	
+    	
+    	rLandDoc.set("picture_link", null);
+    		List<UploadFile> fileList = getFiles("dockinfo");
+
+		for (int i = 0; i < fileList.size(); i++) {
+    		File file = fileList.get(i).getFile();
+    		String fileName = file.getName();
+    		rLandDoc.set("uploader", LoginUserController.getLoginUserId(this));
+    		rLandDoc.set("upload_time", new Date());
+    		rLandDoc.set("picture_link", fileName);
+    		
+			Db.update("dockinfo",rLandDoc);
+		}
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("result", true);
+    	renderJson(resultMap);
+    }
+    
+  //上传陆运图片
+    @Before(Tx.class)
+    public void delectLandDocFile(){
+    	String id = getPara("id");
+    	Record rLandDoc = Db.findFirst("select * from dockinfo where id =?",id);
+    	rLandDoc.set("picture_link", null);
+		Db.update("dockinfo",rLandDoc);
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("result", true);
+    	renderJson(resultMap);
+    }
+    
+    
     
     
   //删除相关文档
@@ -638,5 +679,8 @@ public class CustomerController extends Controller {
 		}
 		return itemList;
 	}
+    
+    
+    
     
 }
