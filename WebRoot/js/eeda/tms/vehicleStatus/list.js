@@ -30,7 +30,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               { "width": "60px",
                   "render": function ( data, type, full, meta ) {
                 	  var str="<nobr>";
-                	  if(full.MONITOR_STATUS=="N"){
+               	  if(full.MONITOR_STATUS=="N"){
                           str += "<button class='monitor btn table_btn btn_green' >"+
                                   "改为受控车辆"+
                               "</button>";
@@ -44,7 +44,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
               },
               { "data": "CAR_NO",  "width": "80px"},
-              { "data": "VEHICLE_STATUS","width":"60px"},
+              { "data": "SENDCAR_STATUS","width":"60px"},
+              { "data": "VEHICLE_STATUS","width":"80px",
+            	  "render": function ( data, type, full, meta ) {
+                      if(!data)
+                          data='';
+                      var str= '<select name="unload_type" class="form-control search-control vehicle_status" c_id="'+full.ID+'" style="width:80px">'
+              	   	 		   +'<option></option>'
+  			                   +'<option value="正常车辆" '+ (data=='正常车辆'?'selected':'') +'>正常车辆</option>'
+  			                   +'<option value="无司机车辆" '+ (data=='无司机车辆'?'selected':'') +'>无司机车辆</option>'
+  			                   +'<option value="维修中" '+ (data=='维修中'?'selected':'') +'>维修中</option>'
+  			                   +'<option value="车辆被扣" '+ (data=='车辆被扣'?'selected':'') +'>车辆被扣</option>'
+  			                   +'<option value="故障车" '+ (data=='故障车'?'selected':'') +'>故障车</option>'
+  			                   +'</select>';
+                      return str;
+                  }
+              },
               { "data": "MONITOR_STATUS","width":"50px",
                   "render": function ( data, type, full, meta ) {
 	                    if(data=="Y"){
@@ -79,10 +94,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var car_no = $.trim($("#car_id_input").val()); 
+          var sendcar_status = $("#sendcar_status").val();
           var vehicle_status = $("#vehicle_status").val();
           var monitor_status = $("#monitor_status").val();
           //增加出口日期查询
           var url = "/vehicleStatus/list?car_no="+car_no
+          	   +"&sendcar_status="+sendcar_status
           	   +"&vehicle_status="+vehicle_status
           	   +"&monitor_status="+monitor_status
           dataTable.ajax.url(url).load();
@@ -103,5 +120,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
       });
       
+      $("#eeda-table").on("change",".vehicle_status",function(){
+    	  var id = $(this).parent().parent().attr("id");
+    	  var vehicle_status = $(this).val();
+    	  $.post("/vehicleStatus/saveVehicleStatus",{id:id,vehicle_status:vehicle_status},function(data){
+    		  if(data){
+    			  $.scojs_message('保存车辆状态成功', $.scojs_message.TYPE_OK);
+    		  }else{
+    			  $.scojs_message('保存车辆状态失败', $.scojs_message.TYPE_ERROR);
+    		  }
+    	  });
+      });
   });
 });

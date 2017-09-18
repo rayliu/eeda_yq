@@ -169,7 +169,7 @@ public class VehicleStatusController extends Controller {
         	sql=" ";        	
         }else{
 		         sql = "select * from( SELECT *,CASE WHEN dispatch_status='N' and  cabinet_status ='N' and arrival_status='N' "
-		         		+ "and closing_status = 'N' THEN '待命车辆' ELSE ' 已启动车辆' END vehicle_status"
+		         		+ "and closing_status = 'N' THEN '待命车辆' ELSE ' 已启动车辆' END sendcar_status"
 		         		+ " from carinfo WHERE office_id ="+office_id+") A where 1=1";
          }
         
@@ -201,6 +201,17 @@ public class VehicleStatusController extends Controller {
             	 carinfo.set("monitor_status", "Y");
              }
              carinfo.update();
+        }
+        renderJson("{\"result\":true}");
+    }
+    
+    public void saveVehicleStatus() {
+        String id = getPara("id");
+        String vehicle_status = getPara("vehicle_status");
+        if (id != null) {
+        	Carinfo carinfo = Carinfo.dao.findById(id);
+            carinfo.set("vehicle_status", vehicle_status);
+            carinfo.update();
         }
         renderJson("{\"result\":true}");
     }

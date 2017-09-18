@@ -2,6 +2,7 @@
 <div id="page-wrapper">
 <div class="row simple_search_div">
     	<div class="panel panel-default">
+    	<input id="order_id" value="" style="display:none;">
         		<div class="panel-body" id="ChargeDiv">
         			<div class="col-lg-12">
         				<form id="orderForm" method="post" action="">	
@@ -15,8 +16,8 @@
 	                        	</div>
 					           	<div class="col-lg-4">
 	                                  <%include("/eeda/component/form/selectField.html", 
-	                                    {   id:'vehicle_status', 
-	                                        label:'车辆状态', 
+	                                    {   id:'sendcar_status', 
+	                                        label:'派车状态', 
 	                                        value_list:[
 	                                        	{code:'', value:''},
 	                                            {code:'待命车辆', value:'待命车辆'},
@@ -34,6 +35,22 @@
 	                                            {code:'Y', value:'受监控车辆'},
 	                                            {code:'N', value:'不受监控车辆'}
 	                                            
+	                                        ]
+	                                    }){}%>
+	                			</div>
+	                		</div>
+	                		<div class="row">
+	                			<div class="col-lg-4">
+	                                  <%include("/eeda/component/form/selectField.html", 
+	                                    {   id:'vehicle_status', 
+	                                        label:'车辆状态', 
+	                                        value_list:[
+	                                        	{code:'', value:''},
+	                                            {code:'正常车辆', value:'正常车辆'},
+	                                            {code:'无司机车辆', value:'无司机车辆'},
+	                                            {code:'维修中', value:'维修中'},
+	                                            {code:'车辆被扣', value:'车辆被扣'},
+	                                            {code:'故障车', value:'故障车'}
 	                                        ]
 	                                    }){}%>
 	                			</div>
@@ -56,6 +73,7 @@
                                     headers:[
                                     	'更改受控状态',
                                     	'车牌号码',
+                                        '派车状态',
                                         '车辆状态',
                                         '车辆受控状态',
                                         '司机',
