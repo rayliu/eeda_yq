@@ -77,7 +77,12 @@ public class TrJobOrderController extends Controller {
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/trJobOrder");
         setAttr("listConfigList", configList);
-		render("/tr/trJobOrder/trJobOrderList.html");
+        if("lock".equals(type)){
+        	render("/tr/trJobOrder/tradeJobOrderLockList.html");
+        }else{
+        	render("/tr/trJobOrder/trJobOrderList.html");
+        }
+		
 	}
 	
 	@Before(EedaMenuInterceptor.class)
@@ -1524,8 +1529,11 @@ public class TrJobOrderController extends Controller {
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
+        if (getPara("start") != null  && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+            if("lock".equals(type)){
+            	sLimit = "";
+            }
         }
         String sql = "";
         String ref_office = "";
@@ -1644,13 +1652,43 @@ public class TrJobOrderController extends Controller {
    		renderJson(order);
     }
    
-    //确认已完成工作单
+  //工作单锁单解锁
     @Before(Tx.class)
     public void confirmCompleted(){
-    	String id = getPara("id");
-    	TradeJobOrder order = TradeJobOrder.dao.findById(id);
-    	order.set("status", "已完成");
-    	order.update();
+    	String id = getPara("id"); 
+    	String[] idArray = id.split(",");
+    	String action = getPara("action");
+    	long user_id = LoginUserController.getLoginUser(this).getLong("id");
+    	String order_type = "jobOrderLock";
+    	Date action_time = new Date();
+    	if(action=="lock"||action.equals("lock")){
+    		for (int i = 0; i < idArray.length; i++) {
+    			TradeJobOrder order = TradeJobOrder.dao.findById(idArray[i]);
+            	order.set("status", "已完成");
+            	order.update();
+            	Record re = new Record();
+            	re.set("order_id", idArray[i]);
+            	re.set("user_id", user_id);
+            	re.set("order_type", order_type);
+            	re.set("action_time", action_time);
+            	re.set("action", action);
+            	Db.save("status_audit", re);
+    		}
+    	}
+    	if(action=="unLock"||action.equals("unLock")){
+    		for (int i = 0; i < idArray.length; i++) {
+    			TradeJobOrder order = TradeJobOrder.dao.findById(idArray[i]);
+            	order.set("status", "新建");
+            	order.update();
+            	Record re = new Record();
+            	re.set("order_id", idArray[i]);
+            	re.set("user_id", user_id);
+            	re.set("order_type", order_type);
+            	re.set("action_time", action_time);
+            	re.set("action", action);
+            	Db.save("status_audit", re);
+    		}
+    	}
     	renderJson("{\"result\":true}");
     }
     
