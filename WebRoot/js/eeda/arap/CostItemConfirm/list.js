@@ -43,7 +43,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
             { "data": "CHARGE_NAME", "width": "60px"},
             { "data": "PRICE", "width": "60px","class":"PRICE flag"},
-            { "data": "AMOUNT","width": "60px"},
+            { "data": "AMOUNT","width": "60px","class":"AMOUNT"},
             { "data": "UNIT_NAME", "width": "60px"},
             { "data": "TOTAL_AMOUNT", "width": "60px"},
             { "data": "CURRENCY_NAME", "width": "60px","class":"CURRENCY_NAME"},
@@ -127,17 +127,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			var sum_jpy = 0.00;
 			$("#eeda_table").find(".PRICE").each(function(){
 				self = $(this)
+				var total_money = parseFloat($(this).parent().find(".AMOUNT").text());
 				var price = parseFloat(self.text());
 				var currency_name = self.parent().find(".CURRENCY_NAME").text();
 				if(!isNaN(price)){
 					if(currency_name=='CNY'){
-						sum_cny += price;
+						sum_cny += price*total_money;
 					}else if(currency_name=='USD'){
-						sum_usd += price;
+						sum_usd += price*total_money;
 					}else if(currency_name=='HKD'){
-						sum_hkd += price;
+						sum_hkd += price*total_money;
 					}else if(currency_name=='JPY'){
-						sum_jpy += price;
+						sum_jpy += price*total_money;
 					}
 				}
 			})
