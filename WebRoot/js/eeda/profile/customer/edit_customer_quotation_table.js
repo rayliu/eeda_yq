@@ -175,6 +175,13 @@ $(document).ready(function() {
                        return field_html;
                      }
             },
+            { "data": "STREET_VEHICLE_FREIGHT","width": "80px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="street_vehicle_freight" value="'+data+'" class="form-control" style="width:80px"/>';
+                }
+            },
             { "data": "TAX_FREE_FREIGHT","width": "80px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
