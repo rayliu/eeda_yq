@@ -32,6 +32,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.PoiUtils;
 
@@ -551,6 +552,14 @@ public class ChargeCheckOrderController extends Controller {
     public void edit(){
 		String id = getPara("id");//arap_charge_order id
 		String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+id;
+		
+		UserLogin user1 = LoginUserController.getLoginUser(this);
+        long office_id=user1.getLong("office_id");
+		//判断单office_id与登陆用户的office_id是否一致
+        if(!OrderCheckOfficeUtil.checkOfficeEqual("arap_charge_order", Long.valueOf(id), office_id)){
+            renderError(403);// no permission
+            return;
+        }
 		
 		String sql = " select aco.*,p.company_name,p.contact_person,p.id company_id,p.abbr company_abbr,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_charge_order aco "
    				+ " left join party p on p.id=aco.sp_id "

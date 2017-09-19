@@ -62,6 +62,7 @@ import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.FileUploadUtil;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
@@ -3085,11 +3086,10 @@ public class JobOrderController extends Controller {
         long office_id=user1.getLong("office_id");
         
         //判断工作单与登陆用户的office_id是否一致
-//        if(!OrderCheckOfficeUtil.checkOfficeEqual("job_order", Long.valueOf(id), office_id)){
-//        	renderError(403);// no permission
-//            return;
-//
-//        }
+        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("job_order", Long.valueOf(id), office_id)){
+        	renderError(403);// no permission
+            return;
+        }
         Date today = new Date();  
         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
         String date=parseFormat.format(today);
@@ -3458,7 +3458,8 @@ public class JobOrderController extends Controller {
         	dai_condition = " and TO_DAYS(jos.etd)= TO_DAYS(now())";
         }
        
-         sql = 		"SELECT * from (select jor.*, loc.name as pod_name,jos.sono,jos.mbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\" / \",jos.mbl_no), \"\")) AS sono_mbl,if(jor.office_id != "+office_id+",'other','self') other_flag,"
+         sql = 		"SELECT * from (select jor.*, loc.name as pod_name,jos.sono,jos.mbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\" / \",jos.mbl_no), \"\")) AS sono_mbl,"
+                    + " if(jor.from_office_id is not null, 'other', if(jor.office_id != "+office_id+",'other','self') ) other_flag,"
          			+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
          			+" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
         		 	+" FROM  job_order_shipment_item josi  "
