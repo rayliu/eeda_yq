@@ -378,9 +378,13 @@ public class TransOrderShortCutController extends Controller {
 					rec.set("amount", 1);
 					rec.set("unit_id", 33);
 					rec.set("currency_id", 3);
-					rec.set("total_amount", freight);
+					rec.set("total_amount", freight); 
 					rec.set("exchange_rate", 1);
 					rec.set("currency_total_amount", freight);
+					if(records.get("street_vehicle_freight")!=null){
+						rec.set("street_vehicle_freight", records.get("street_vehicle_freight"));
+					}
+					
 					
 					Db.save("trans_job_order_arap",rec);
 					long arap_id = rec.getLong("id");

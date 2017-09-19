@@ -382,7 +382,7 @@ $(document).ready(function() {
                   }
                 }
             },
-            { "data": "CHARGE_ID", "width": "80px",
+            { "data": "CHARGE_ID", "width": "100px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
                 		if(!data)
@@ -539,6 +539,19 @@ $(document).ready(function() {
 	                }
                 }
             },
+            { "data": "STREET_VEHICLE_FREIGHT", "width": "100px",
+                "render": function ( data, type, full, meta ) {
+                	if(full.CHARGE_ID=='173'){
+                		   if(!data)
+   	                        data='';
+                		return '<input type="text" name="street_vehicle_freight" style="width:100px" value="'+data+'" class="form-control notsave"/>';
+                	}else{
+                		   if(!data)
+   	                        data='';
+                		return '<input type="text" name="street_vehicle_freight" style="width:100px" value="" class="form-control notsave" disabled/>';
+                	}
+                }
+            },
             { "data": "REMARK","width": "180px",
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
@@ -631,6 +644,7 @@ $(document).ready(function() {
     //刷新明细表
     itemOrder.refleshChargeTable = function(order_id){
     	var url = "/transJobOrder/tableList?order_id="+order_id+"&type=charge";
+    	
     	chargeTable.ajax.url(url).load();
     }
     
@@ -841,6 +855,15 @@ $(document).ready(function() {
 		  $("#AllCheckOfChargeTable").prop("checked",$(".checkBoxOfChargeTable").length == $(".checkBoxOfChargeTable:checked").length ? true : false);
     });
 	
+    //街车全程运费启用禁用
+    $("#charge_table").on('blur','[name=CHARGE_ID_input]',function(){
+    	if($(this).val()=="运费"){
+    		$($(this).parent().parent().parent().find("[name=street_vehicle_freight]")).attr("disabled",false);
+    	}else{
+    		$($(this).parent().parent().parent().find("[name=street_vehicle_freight]")).val("");
+    		$($(this).parent().parent().parent().find("[name=street_vehicle_freight]")).attr("disabled",true);
+    	}
+    });
 	
   });
 });

@@ -991,7 +991,7 @@ public class TransJobOrderController extends Controller {
         }
         else{
 		         sql = "SELECT * from (select GROUP_CONCAT(cast(substring(tjol.cabinet_date, 1, 10) AS CHAR)) cabinet_date,"
-		         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,tjoa.sp_id sp_id,"
+		         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,p.charge_company_id sp_id,,"
 		         		+ " tjo.status,tjo.land_export_stamp sent_out_time,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
 		         		+ " (SELECT SUM(tjoa.currency_total_amount) from trans_job_order_arap tjoa WHERE tjoa.order_id=tjo.id and tjoa.order_type='CHARGE' and tjoa.charge_id= " 
@@ -1009,7 +1009,6 @@ public class TransJobOrderController extends Controller {
 		         		+ "	left join party p1 on p1.id = tjo.head_carrier"
 		         		+ "	left join user_login u on u.id = tjo.creator"
 		         		+ "	left join carinfo car ON car.id = tjol.car_no"
-		         		+ " left join trans_job_order_arap tjoa ON tjoa.order_id = tjo.id"
 		         		+ "	where tjo.office_id="+office_id
 		         		+ "	and tjo.delete_flag = 'N' "
 		         		+ " GROUP BY tjo.id"
@@ -1255,7 +1254,7 @@ public class TransJobOrderController extends Controller {
     }
     	
     	String	sql = "SELECT * from (select GROUP_CONCAT(cast(substring(tjol.cabinet_date, 1, 10) AS CHAR)) cabinet_date,"
-         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,tjoa.sp_id sp_id,"
+         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,p.charge_company_id sp_id,"
          		+ " p2.abbr sp_name,tjo.status,tjo.land_export_stamp sent_out_time,tjo.customer_salesman,dock.dock_name cross_border_name,tjo.remark,"
          		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
          		+ " (SELECT SUM(convert(tjoa.currency_total_amount,decimal(10,2))) from trans_job_order_arap tjoa WHERE tjoa.order_id=tjo.id and tjoa.order_type='CHARGE' and tjoa.charge_id= " 
@@ -1274,7 +1273,6 @@ public class TransJobOrderController extends Controller {
          		+ " IFNULL(dock1.dock_name, '')) combine_wharf"
          		+ "	from trans_job_order tjo "
          		+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo.id"
-         		+ " LEFT JOIN trans_job_order_arap tjoa ON tjoa.order_id = tjo.id"
          		+ "	left join party p on p.id = tjo.customer_id"
          		+ "	left join party p1 on p1.id = tjo.head_carrier"
          		+ " LEFT JOIN party p2 ON p2.id = tjoa.sp_id"
