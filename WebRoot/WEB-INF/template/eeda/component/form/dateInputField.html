@@ -27,24 +27,28 @@
      </div>
 </div>
 <script>
-$(document).ready(function() {
-	//时间控件
-	var dateType = "";
-	if('${type!}'=='time'){
-		dateType = "time"
-	}
-	$('#${id}_div').datetimepicker({  
-	    format: dateType=='time'?'yyyy-MM-dd hh:MM:ss':'yyyy-MM-dd',  
-	    language: 'zh-CN'
-	}).on('changeDate', function(ev){
-	    $(".bootstrap-datetimepicker-widget").hide();   
-	    $('#${id}').trigger('keyup');
-	});
+requirejs(['jquery', 'dataTablesBootstrap', 'datetimepicker_CN'], 
+    function ($) {
+        $(document).ready(function() {
+            //时间控件
+            var dateType = "";
+            if('${type!}'=='time'){
+                dateType = "time"
+            }
+            $('#${id}_div').datetimepicker({  
+                format: dateType=='time'?'yyyy-MM-dd hh:MM:ss':'yyyy-MM-dd',  
+                language: 'zh-CN'
+            }).on('changeDate', function(ev){
+                $(".bootstrap-datetimepicker-widget").hide();   
+                $('#${id}').trigger('keyup');
+            });
 
-    //回显
-    var dateValue = '${value}';
-    if(dateValue){
-        $('#${id}').val(dateValue.substr(0,dateType=='time'?19:10));
-    }
-});
+            //回显
+            var dateValue = '${value}';
+            if(dateValue){
+                $('#${id}').val(dateValue.substr(0,dateType=='time'?19:10));
+            }
+        });
+    });
+
 </script>
