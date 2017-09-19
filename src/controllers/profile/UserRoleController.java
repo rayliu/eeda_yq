@@ -28,6 +28,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.ParentOffice;
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -63,7 +64,7 @@ public class UserRoleController extends Controller {
 					+ " left join role r on r.id = ur.role_id "
 					+ " left join user_login ul on ur.user_name = ul.user_name "
 					+ " where ifnull(ul.is_stop, 0) != 1 and r.office_id = " + parentID;
-			sql = "select ur.user_name,ul.c_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code "
+			sql = "select ul.id,ur.user_name,ul.c_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code "
 					+ " from user_role ur left join role r on r.id=ur.role_id "
 					+ " left join user_login ul on ur.user_name = ul.user_name "
 					+ " left join office o on ul.office_id = o.id "
@@ -74,7 +75,7 @@ public class UserRoleController extends Controller {
 			totalWhere ="select count(1) total from user_role ur "
 					+ " left join user_login ul on ur.user_name = ul.user_name "
 					+ " where ifnull(ul.is_stop, 0) != 1 and ul.office_id = " + pom.getCurrentOfficeId();
-			sql = "select ur.user_name,ul.c_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code "
+			sql = "select ul.id,ur.user_name,ul.c_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code "
 					+ " from user_role ur left join role r on r.id=ur.role_id "
 					+ " left join user_login ul on ur.user_name = ul.user_name "
 					+ " where ifnull(ul.is_stop, 0) != 1 and ul.office_id = " + pom.getCurrentOfficeId() + " and r.office_id = " + parentID + " group by ur.user_name" + sLimit;
@@ -97,7 +98,15 @@ public class UserRoleController extends Controller {
 	/*编辑*/
 	@Before(EedaMenuInterceptor.class)
 	public void edit(){
+		String id = getPara("id");
 		String user_name = getPara("username");
+		UserLogin user1 = LoginUserController.getLoginUser(this);
+        long office_id=user1.getLong("office_id");
+        //判断与登陆用户的office_id是否一致
+        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("user_login", Long.valueOf(id), office_id)){
+        	renderError(403);// no permission
+            return;
+        }
 		setAttr("user_name", user_name);		
 		render("/eeda/profile/userRole/assigning_roles.html");
 	}

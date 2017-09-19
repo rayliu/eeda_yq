@@ -11,7 +11,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 					{ "data":null,
 						"render":function(data, type, full, meta){
 		            		 if(userRole.update){
-		            			 return "<a href ='/userRole/edit?username=" + data.USER_NAME + "' target='_blank'>" + data.USER_NAME + "</a>";
+		            			 return "<a href ='/userRole/edit?id="+full.ID+"&&username=" + data.USER_NAME + "' target='_blank'>" + data.USER_NAME + "</a>";
 		            		}else{ 
 		            			return data.USER_NAME;
 		            		 } 
@@ -27,7 +27,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 			   	        	 var str = "<nobr>";
 			   	        	 if(data.ROLE_CODE != "admin"){
 			   	        		  if(userRole.update){
-			   	        			  str = str + "<a target='_blank' class='btn  btn-sm btn-primary' href='/userRole/edit?username=" + data.USER_NAME + "' >"+
+			   	        			  str = str + "<a target='_blank' class='btn  btn-sm btn-primary' href='/userRole/edit?id="+full.ID+"&&username=" + data.USER_NAME + "' >"+
 			                          			"<i class='fa fa-edit fa-fw'></i>编辑</a> ";
 			   	        		  }  
 				   	         }

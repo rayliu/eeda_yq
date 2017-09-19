@@ -31,6 +31,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.ParentOffice;
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -114,6 +115,13 @@ public class EmployeeFilingController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void edit(){
 		String id = getPara("id");
+		UserLogin user1 = LoginUserController.getLoginUser(this);
+	    long office_id=user1.getLong("office_id");
+	    //判断与登陆用户的office_id是否一致
+	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("user_login", Long.valueOf(id), office_id)){
+	    	renderError(403);// no permission
+	        return;
+	    }
 		Record user = new Record();
 		String sql = "SELECT	ul.*, GROUP_CONCAT( DISTINCT r. NAME) station_name"
 				+ " FROM	user_login ul"

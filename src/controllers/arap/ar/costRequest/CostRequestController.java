@@ -41,6 +41,7 @@ import com.jfinal.upload.UploadFile;
 import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
@@ -553,7 +554,14 @@ public class CostRequestController extends Controller {
 		List<Record> list = null;
     	list = getItems(id);
     	setAttr("docList", list);
-		
+    	
+    	UserLogin user1 = LoginUserController.getLoginUser(this);
+        long office_id=user1.getLong("office_id");
+        //判断与登陆用户的office_id是否一致
+        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("arap_cost_application_order", Long.valueOf(id), office_id)){
+        	renderError(403);// no permission
+            return;
+        }
 		Record r = order.toRecord();
 		r.set("creator_name", creator_name);
 		r.set("check_name", check_name);

@@ -26,6 +26,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.ParentOffice;
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -48,6 +49,13 @@ public class CurrencyRateController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
+        UserLogin user1 = LoginUserController.getLoginUser(this);
+        long office_id=user1.getLong("office_id");
+        //判断与登陆用户的office_id是否一致
+        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("currency_rate", Long.valueOf(id), office_id)){
+        	renderError(403);// no permission
+            return;
+        }
         if (id != null) {
             CurrencyRate currency = CurrencyRate.dao.findById(id);
             setAttr("order", currency);

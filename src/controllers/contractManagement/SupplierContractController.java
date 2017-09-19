@@ -27,6 +27,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
@@ -115,6 +116,11 @@ public class SupplierContractController extends Controller {
         String signal = getPara("signal");
         UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
+	     //判断与登陆用户的office_id是否一致
+	     if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("supplier_contract", Long.valueOf(id), office_id)){
+	     	renderError(403);// no permission
+	         return;
+	     }
    		SupplierContract  supplierContract= new SupplierContract();
         setAttr("user", LoginUserController.getLoginUser(this));
         setAttr("charge_items", getItems(id,"ocean"));

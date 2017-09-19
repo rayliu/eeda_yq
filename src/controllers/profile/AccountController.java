@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.ParentOfficeModel;
+import models.UserLogin;
 import models.eeda.profile.Account;
 
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +26,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.ParentOffice;
 import controllers.util.PermissionConstant;
 @RequiresAuthentication
@@ -48,6 +50,13 @@ public class AccountController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
+	    UserLogin user1 = LoginUserController.getLoginUser(this);
+	    long office_id=user1.getLong("office_id");
+	    //判断与登陆用户的office_id是否一致
+	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("fin_account", Long.valueOf(id), office_id)){
+	    	renderError(403);// no permission
+	        return;
+	    }
         if (id != null) {
             Account l = Account.dao.findById(id);
             setAttr("order", l);

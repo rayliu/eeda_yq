@@ -36,6 +36,7 @@ import com.jfinal.upload.UploadFile;
 
 import controllers.eeda.ListConfigController;
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
@@ -112,7 +113,13 @@ public class CustomerController extends Controller {
         Party party = Party.dao.findFirst("select p.*,p1.abbr charge_company_abbr from party p "
         		+ " LEFT JOIN party p1 on p1.id = p.charge_company_id"
         		+ " where p.id=?",id);
-        
+        UserLogin user1 = LoginUserController.getLoginUser(this);
+        long office_id=user1.getLong("office_id");
+        //判断与登陆用户的office_id是否一致
+        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("party", Long.valueOf(id), office_id)){
+        	renderError(403);// no permission
+            return;
+        }
         setAttr("party", party);
         String sql = "select jod.*,u.c_name from party_doc jod left join user_login u on jod.uploader=u.id "
     			+ " where party_id=? order by jod.id";

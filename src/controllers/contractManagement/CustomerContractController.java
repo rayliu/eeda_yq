@@ -28,6 +28,7 @@ import controllers.eeda.ListConfigController;
 import controllers.oms.planOrder.PlanOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
@@ -114,7 +115,12 @@ public class CustomerContractController extends Controller {
     public void edit() {
         String id = getPara("id");
         UserLogin user = LoginUserController.getLoginUser(this);
-        
+        long office_id=user.getLong("office_id");
+        //判断与登陆用户的office_id是否一致
+        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("customer_contract", Long.valueOf(id), office_id)){
+        	renderError(403);// no permission
+            return;
+        }
         setAttr("user", user);
         setAttr("charge_items", getItems(id,"ocean"));
         setAttr("ocean_locations", getItems(id,"ocean_loc"));
