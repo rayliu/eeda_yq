@@ -52,9 +52,9 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
           });
         },
         error: function (xhr, e) {
-            if(xhr.responseText.indexOf('忘记密码')>0){
+            if(xhr.responseText.indexOf('请输入用户名')>0){
               alert( 'error: 您未登录或超过15分钟未操作, 请重新登录.' );
-              window.location.href="/";
+              window.location.href="/login";
             }
             // if (x.status == 403) {
             //     window.location.reload(); 
@@ -62,9 +62,9 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
         },
         complete:function(XMLHttpRequest, textStatus){
            //console.log("ajaxSetup textStatus:"+textStatus);
-           if(XMLHttpRequest.responseText.indexOf('忘记密码')>0){
+           if(XMLHttpRequest.responseText.indexOf('请输入用户名')>0){
               alert( '您未登录或超过15分钟未操作, 请重新登录.' );
-              window.location.href="/";
+              window.location.href="/login";
             }
 
             $.unblockUI();
