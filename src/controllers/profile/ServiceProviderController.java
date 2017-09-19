@@ -947,6 +947,32 @@ public class ServiceProviderController extends Controller {
         renderJson(rec);
     }
     
+    //查询仓库地址
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+    public void landAddress(){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+        String name = getPara("input");
+        String addressInputStr = getPara("addressInputStr");
+        String addStr = "";
+        String conditon = "";
+        if(StringUtils.isNotEmpty(addressInputStr)){
+        	addStr=" and dock_name like '%"+addressInputStr+"%' ";
+        }
+        
+        List<Record> rec = null;
+        String sql = " SELECT dock.* from dockinfo dock LEFT JOIN party p on dock.party_id = p.id"
+        		+ " WHERE p.office_id = "+office_id+" and p.ref_office_id = "+office_id+ addStr;
+        
+        
+        rec = Db.find(sql);
+        renderJson(rec);
+    }
+    
+    
+    
+    
+    
     //查询收货人下拉列表
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchTruckIn(){

@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="628"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="order_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="login_user_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT ul.*,jdwb.*,dock.*,jo.order_no,jos.etd,jos.closing_date,oe.office_name,oe.logo_path,oe.address,
+p.company_name,CONCAT(lo.name,'-',lo.code) pod_name,CONCAT(jdwb.warehouse_contact,' : ',jdwb.warehouse_contact_tel) contact_tei,
+CONCAT(jo.pieces,' ',IFNULL(un.name_eng,'CARTONS')) amount_unit,CONCAT(jo.gross_weight,' ','KGS') weight_unit
+,CONCAT(jo.volume,' ','CBM') volume_unit
+from job_deliver_warehouse_bill jdwb
+LEFT JOIN job_order jo on jo.id = jdwb.order_id
+LEFT JOIN job_order_shipment jos on jos.order_id = jo.id
+LEFT JOIN dockinfo dock on dock.id = jdwb.warehouse_adddress
+LEFT JOIN party p on p.id = jdwb.customer_warehouse_bill
+LEFT JOIN unit un on un.id = jo.job_unit
+LEFT JOIN location lo on lo.id = jos.pod
+LEFT JOIN user_login ul on ul.id =$P{login_user_id}
+LEFT JOIN office oe on oe.id = ul.office_id
+WHERE jdwb.order_id = $P{order_id}]]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="password" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="password_hint" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="office_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="c_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_tel" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_phone" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_fax" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="is_stop" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="token" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="last_login" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="last_index" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="wechat_openid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="all_customer" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="entry_time" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[入职时间]]></fieldDescription>
+	</field>
+	<field name="create_time" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[创建时间]]></fieldDescription>
+	</field>
+	<field name="order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="operator" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="customer_warehouse_bill" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="operator_tel" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="warehouse_bill_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="warehouse_contact" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="warehouse_contact_tel" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="warehouse_adddress" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="warehouse_adddress_input" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="warehouse_bill_remark" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="warehouse_bill_picture_path" class="java.lang.String">
+		<fieldDescription><![CDATA[仓库图片]]></fieldDescription>
+	</field>
+	<field name="quick_search_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dock_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dock_name_eng" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="dock_region" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="party_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="party_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="land_contacts" class="java.lang.String">
+		<fieldDescription><![CDATA[联系人]]></fieldDescription>
+	</field>
+	<field name="land_contact_phone" class="java.lang.String">
+		<fieldDescription><![CDATA[联系人电话]]></fieldDescription>
+	</field>
+	<field name="bill_remark" class="java.lang.String">
+		<fieldDescription><![CDATA[单据备注]]></fieldDescription>
+	</field>
+	<field name="picture_link" class="java.lang.String">
+		<fieldDescription><![CDATA[图片链接]]></fieldDescription>
+	</field>
+	<field name="uploader" class="java.lang.Long">
+		<fieldDescription><![CDATA[上传人]]></fieldDescription>
+	</field>
+	<field name="upload_time" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="etd" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="closing_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="office_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="logo_path" class="java.lang.String">
+		<fieldDescription><![CDATA[logo路径]]></fieldDescription>
+	</field>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[公司英文地址]]></fieldDescription>
+	</field>
+	<field name="company_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="pod_name" class="java.lang.String"/>
+	<field name="contact_tei" class="java.lang.String"/>
+	<field name="amount_unit" class="java.lang.String"/>
+	<field name="weight_unit" class="java.lang.String"/>
+	<field name="volume_unit" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement x="159" y="49" width="211" height="39" uuid="ac27dbd8-8089-47e2-a05e-8f55c64feda7"/>
+				<textElement textAlignment="Center">
+					<font fontName="黑体" size="24" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[进仓通知]]></text>
+			</staticText>
+			<image>
+				<reportElement x="8" y="-12" width="130" height="42" uuid="95678e8d-70ad-4f35-89c4-5191d5be53d6"/>
+				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="70" y="24" width="405" height="25" uuid="bd1ea849-a800-4112-9aa1-f3defa55e072"/>
+				<textElement textAlignment="Center">
+					<font size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="698" splitType="Stretch">
+			<staticText>
+				<reportElement x="8" y="0" width="33" height="20" uuid="4f89be70-37e5-4655-bdc3-b017ee221000"/>
+				<text><![CDATA[TO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="0" width="58" height="20" uuid="9082e3cf-5ef5-4b25-8b51-e42961ddf7d3"/>
+				<text><![CDATA[JOB NO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="8" y="20" width="33" height="20" uuid="d33d0326-6907-4f48-941e-93e23ce94b3b"/>
+				<text><![CDATA[From:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="45" width="102" height="17" uuid="e0ed60f3-a77b-4c02-8755-5b27e5a8f1ab"/>
+				<text><![CDATA[贵公司委托我司出运到]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="89" width="97" height="15" uuid="d95021c2-7fef-45d9-bad9-faa001def9b7"/>
+				<text><![CDATA[将货物按照此编号：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="328" y="89" width="113" height="15" uuid="d6ace1e7-ef42-40ac-b4e9-16493ade8207"/>
+				<text><![CDATA[前送达我司仓库]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="1" width="288" height="20" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
+				<textFieldExpression><![CDATA[$F{company_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="417" y="1" width="138" height="20" uuid="f76ed8ed-6975-46a3-b6c7-05a39de3bc8d"/>
+				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="308" y="45" width="47" height="17" uuid="ff97411e-17a6-4bcb-adb8-69f2237ce5fc"/>
+				<text><![CDATA[预定船期:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="62" width="52" height="17" uuid="2d0df0d2-8125-4ea2-9594-a19f6a5a23c0"/>
+				<text><![CDATA[委托件数：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="62" width="41" height="17" uuid="5aa20012-593b-4750-b9cc-ffa8cb2f03fc"/>
+				<text><![CDATA[毛重：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="18" y="104" width="60" height="16" uuid="7250009b-c48f-42d5-99b2-4e4fff8a1a0b"/>
+				<text><![CDATA[仓库地址：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="618" width="66" height="18" uuid="c6c1f815-a510-4fb1-a7c1-475048ffaa5d"/>
+				<text><![CDATA[并请贵司于：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="184" y="618" width="121" height="18" uuid="7fc57b31-cf38-4155-bd2f-4ea1e377e87a"/>
+				<text><![CDATA[前将报关资料送至我司：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="672" width="58" height="18" uuid="7297f2f6-c518-49e2-946a-442d886a03b7"/>
+				<text><![CDATA[联系人(收):]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="142" y="45" width="163" height="17" uuid="c7bbe260-83a3-4c85-affc-b5b3b29170f5"/>
+				<textFieldExpression><![CDATA[$F{pod_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="355" y="46" width="100" height="17" uuid="bbe678e5-50da-4d8a-a19c-87c234324aeb"/>
+				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="91" y="62" width="214" height="17" uuid="40c8fd4e-f1cb-4737-a196-6abc4df04c04"/>
+				<textFieldExpression><![CDATA[$F{amount_unit}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="350" y="61" width="138" height="17" uuid="00922a81-d00d-45d4-8402-2c5c2e13ecef"/>
+				<textFieldExpression><![CDATA[$F{weight_unit}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="115" y="89" width="128" height="15" uuid="2c0f5218-3079-49b1-a07a-811c45e39774"/>
+				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="243" y="89" width="86" height="16" uuid="7fcfdcb3-bd64-4d37-a3b4-dbb47a0b24d6"/>
+				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="18" y="120" width="60" height="18" uuid="dc5a9609-cd6e-45f2-93fa-609394ce2dc4"/>
+				<text><![CDATA[仓库联系人：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="78" y="104" width="477" height="16" uuid="eb41ea91-d817-443d-adbd-72e84bad298c"/>
+				<textFieldExpression><![CDATA[$F{dock_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="27" y="529" width="482" height="88" uuid="01e1e0f1-830d-409b-b741-4d9ccc4fc2a4"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{warehouse_bill_remark}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="91" y="618" width="93" height="18" uuid="976c2d66-5e59-4f38-ac58-14ebd35978af"/>
+				<textFieldExpression><![CDATA[$F{closing_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="27" y="636" width="528" height="18" uuid="567a8350-caf3-484f-a4d5-8d6602738d95"/>
+				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="27" y="654" width="528" height="18" uuid="8a36fc90-a2b8-4078-bf62-5bb82ba247ce"/>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="20" width="288" height="20" uuid="5ac9cea2-c7ec-4b6f-9fbc-7f3b0a16332e"/>
+				<textFieldExpression><![CDATA[$F{operator}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="84" y="672" width="100" height="18" uuid="3afc27c7-d20b-44d3-8e2a-e4827f0a91c0"/>
+				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="206" y="672" width="50" height="18" uuid="abe178ba-8be9-42db-b91f-280bc4ffea80"/>
+				<text><![CDATA[联系电话:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="255" y="672" width="100" height="18" uuid="9d602cb0-57f9-4f4f-8b15-3a9e897bfa36"/>
+				<textFieldExpression><![CDATA[$F{user_phone}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="25" y="144" width="484" height="385" uuid="26f76c86-e8c6-4c97-be21-51bd6a9b1553"/>
+				<imageExpression><![CDATA["http://forwarder.esimplev.com/upload/dockinfo/"+$F{picture_link}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="78" y="120" width="450" height="18" uuid="c1665552-e207-402a-8a27-84e806449e2e"/>
+				<textFieldExpression><![CDATA[$F{contact_tei}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band/>
+	</detail>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

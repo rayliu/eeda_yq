@@ -223,6 +223,59 @@ public class JobOrderReportController extends Controller {
 		renderJson(rec);
 	}
 	
+	//生成进仓单PDF
+	@Before(Tx.class)
+	public void printwareHouseBill() {
+		String jsonStr=getPara("params");
+       	
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+            
+   		String id = (String) dto.get("id");
+   		String order_id = (String) dto.get("order_id");
+   		
+   		Record rBill = new Record();
+   		
+   		if (StringUtils.isNotEmpty(id)) {
+   			//update
+   			rBill = Db.findFirst("select * from job_deliver_warehouse_bill where id =?",id);
+   			DbUtils.setModelValues(dto, rBill,"job_deliver_warehouse_bill");
+   			Db.update("job_deliver_warehouse_bill",rBill);
+   		} else {
+   			//create 
+   			DbUtils.setModelValues(dto, rBill,"job_deliver_warehouse_bill");
+   			Db.save("job_deliver_warehouse_bill",rBill);
+   		}
+    	
+    	String fileName = "/report/jobOrder/delivery_notice.jasper";
+    	String customer_name = null;
+    	if(dto.get("customer_warehouse_bill_input")!=null){
+    		customer_name=(String) dto.get("customer_warehouse_bill_input");
+    	}
+    	
+		String outFileName = "/download/进仓单资料-"+customer_name;
+		String FileName = "进仓单资料-"+customer_name;
+		
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		hm.put("login_user_id", LoginUserController.getLoginUserId(this));
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName ;
+		String file = myPrint(fileName, outFileName,hm);
+		
+		//打印的同时保存到相关信息文档
+		outFileName = file.substring(file.indexOf("download")-1);
+		Record rec =new Record();
+		rec.set("warehouse_bill_id", rBill.get("id"));
+		rec.set("down_url", file.substring(file.indexOf("download")-1));
+		renderJson(rec);
+	}
+	
+	
+	
+	
+	
+	
 	@Before(Tx.class)
 	public void printCabinetTruck() {
 		String jsonStr=getPara("params");

@@ -154,7 +154,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    
 	    //单据备注信息填写
 	    var dock_bill_remark_self;
-	    $('#dock_table').on('dblclick','[name=bill_remark]',function(){
+	    $('#dock_table').on('click','[name=bill_remark]',function(){
 	    	dock_bill_remark_self = $(this);
 	    	$('#showNote').val(dock_bill_remark_self.val());
 	    	$('#a_btn').click();

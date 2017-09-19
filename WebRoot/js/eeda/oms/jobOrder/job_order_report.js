@@ -331,6 +331,69 @@ $(document).ready(function() {
 		}
     })
     
+    
+    //弹出进仓单详细信息
+    $('#deliver_warehouse_bill').click(function(){
+			//取客户信息
+	    	if($('#customer_warehouse_bill_input').val()==""||$('#customer_warehouse_bill_input').val().val()==undefined){
+				var customer_id = $('#customer_id').val();
+				var customer_id_input = $('#customer_id_input').val();
+				$('#customer_warehouse_bill_input').val(customer_id_input);
+				$('#customer_warehouse_bill').val(customer_id);
+	    	}
+			$('#operator').val(loginUserName);
+			$('#operator_tel').val(loginUserPhone);
+			$('#warehouse_bill_date').val(eeda.getDate());
+			var address = $('#warehouse_adddress_input').val();
+			if(address==""|| address==undefined){
+				$.post('/serviceProvider/landAddress', {customer_id:customer_id}, function(data){
+					 $('#warehouse_contact').val(data[0].LAND_CONTACTS);
+		           	 $('#warehouse_contact_tel').val(data[0].LAND_CONTACT_PHONE);
+		           	 $('#warehouse_bill_remark').val(data[0].BILL_REMARK);
+		           	 $('#warehouse_adddress_input').val(data[0].DOCK_NAME);
+		           	 $('#warehouse_adddress').val(data[0].ID);
+				 
+			});	
+		}	
+    })
+    
+    //生成海运头程资料
+    $('#printWarehouseBill').click(function(){
+    	var WarehouseBillDetail = {}
+    	var form = $('#deliverWarehouseForm input,#deliverWarehouseForm textarea');
+    	for(var i = 0; i < form.length; i++){
+    		var name = form[i].id;
+        	var value =form[i].value;
+        	if(name){
+        		WarehouseBillDetail[name] = value;
+        	}
+    	}
+    	WarehouseBillDetail.id = $('#warehouseBillId').val();
+    	WarehouseBillDetail.order_id = $('#order_id').val();
+    	
+		$.post('/jobOrderReport/printwareHouseBill', {params:JSON.stringify(WarehouseBillDetail)}, function(data){
+				$("#warehouseBillId").val(data.warehouse_bill_id);
+				if(data){
+	                window.open(data.DOWN_URL);
+	             }else{
+	               $.scojs_message('生成进仓单PDF失败', $.scojs_message.TYPE_ERROR);
+	             }
+				
+		},'json').fail(function(){
+		    	$.scojs_message('生成进仓单PDF失败', $.scojs_message.TYPE_ERROR);
+		  });
+		
+    });
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     //生成海运头程资料
     $('#printOceanHead').click(function(){
     	var oceanHead = {}

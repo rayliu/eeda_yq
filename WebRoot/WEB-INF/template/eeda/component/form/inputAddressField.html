@@ -1,0 +1,176 @@
+<div class="form-group">
+	<% if(label!''!=""){ %>
+		<label class="search-label">${label!''}
+	<% } %>
+    <%if(required!'' =='required'){%>
+        <span style='color:red; display:initial;'>*</span>
+    <%}%>
+    </label>
+    <input type="text" class="${class!'form-control search-control'}" 
+    id="${id}_input" name="${id}_input" placeholder="${placeholder!'请选择地址'}" value="${display_value!''}" style="${style!''};"  ${required!''} ${disabled!''}>
+    
+    <ul id='${id}_list' tabindex="-1" 
+	    class="pull-right dropdown-menu default dropdown-scroll" 
+	    style="top: 22%; left: 33%;">
+    </ul>
+</div>
+<input id="${id}" style="display: none;" name="${id}" value="${value!''}"/>
+<script>
+
+$(document).ready(function() {
+
+	//获取客户列表，自动填充
+	var addressFieldList =$("#${id}_list");
+	var inputField = $('#${id}_input');
+	var hiddenField = $('#${id}');
+	
+	//处理中文输入法, 没完成前不触发查询
+	var cpLock = false;
+    inputField.on('compositionstart', function () {
+        cpLock = true;
+    });
+    inputField.on('compositionend', function () {
+        cpLock = false;
+    });
+
+	inputField.on('keyup click', function(event){
+	    var me = this;
+	    var inputStr = inputField.val();
+	    if(cpLock)
+	    	return;
+
+	    if (event.keyCode == 40) {
+            addressFieldList.find('li').first().focus();
+            return false;
+        }
+
+	     $.get("/serviceProvider/landAddress", {addressInputStr:inputStr}, function(data){
+	    	if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
+				return;
+			}
+	        addressFieldList.empty();
+
+	        if(inputStr=='' && data.length>0){
+				if(data[0].REF_ID){
+					addressFieldList.append('<span class="search_hint">您曾经使用过的'+data.length+'行记录, 需要别的数据请输入查询条件</span>');
+				}else{
+					addressFieldList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+				}
+			}else if(data=="无记录"){
+				addressFieldList.append('<span class="search_hint">您没有该客户记录,<a href="/customer/add"  target="_blank">点击此处</a>去设置</span>');
+			}else if(inputStr.length>0 && data.length==25){
+				addressFieldList.append('<span class="search_hint">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
+			}
+
+	        if(data!="无记录"){
+	        	for(var i = 0; i < data.length; i++){
+	                 addressFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dock_id='"+data[i].ID+"' dock_name='"+data[i].DOCK_NAME+"' cantact='"+data[i].LAND_CONTACTS+"' contact_phone='"+data[i].LAND_CONTACT_PHONE+"' bill_remark='"+data[i].BILL_REMARK+"' picture_link='"+data[i].PICTURE_LINK+"'  >"+data[i].DOCK_NAME+"</a></li>");
+	                /*  if(i == 0){
+	                	 $('#warehouse_contact').val(data[i].LAND_CONTACTS);
+	                	 $('#warehouse_contact_tel').val(data[i].LAND_CONTACT_PHONE);
+	                	 $('#warehouse_bill_remark').val(data[i].BILL_REMARK);
+	                	 $('#warehouse_adddress_input').val(data[i].DOCK_NAME);
+	                	 $('#warehouse_adddress').val(data[i].ID);
+	                 } */
+	              }
+	        }
+	            
+	        addressFieldList.css({ 
+		    	left:$(me).position().left+"px", 
+		    	top:$(me).position().top+26+"px" 
+		    });
+
+		    eeda.hidePopList();
+	        addressFieldList.show();
+
+			//当查询结果只有一个时，自动赋值到hiddenField
+	        if(data.length==0){
+                hiddenField.val('');
+            }
+            if(data.length==1 && data[0].ID){
+                hiddenField.val(data[0].ID);
+//                 inputField.val(data[0].ABBR);
+//                 addressFieldList.hide();
+            }
+            if(!inputStr && data.length>1){
+                hiddenField.val('');
+            }   
+	    });
+	});
+	
+	addressFieldList.on('click', '.fromLocationItem', function(e){
+		  inputField.val($(this).text());//名字
+		  addressFieldList.hide();
+		  var dataId = $(this).attr('dock_id');
+		  hiddenField.val(dataId);//id
+     	  $('#warehouse_contact').val($(this).attr('cantact'));
+    	  $('#warehouse_contact_tel').val($(this).attr('contact_phone'));
+    	  $('#warehouse_bill_remark').val($(this).attr('bill_remark'));
+	});
+
+	//回车处理
+ 	addressFieldList.on('keydown', 'li', function(e){
+ 		e.preventDefault();
+        if (e.keyCode == 13) {//enter
+          var inputField = eeda._inputField;
+          var hiddenField = eeda._hiddenField;
+          inputField.val($(this).text());//名字
+          addressFieldList.hide();
+          var dataId = $(this).find('a').attr('dataId');
+          hiddenField.val(dataId);//id
+
+          var td = inputField.parent().parent();
+          var row = td.parent();
+          var colCount = row.find('td').length;
+
+          var nextTdInput, nextTd=td;
+          var index = 0;
+          while(!nextTdInput && index<colCount){
+              nextTd = nextTd.next();
+              index = nextTd.index();
+              nextTdInput = nextTd.find('input:last');
+              if(nextTdInput && !nextTdInput.prop('disabled')){
+                  nextTdInput.focus();
+                  break;
+              }else{
+                  nextTdInput=null;
+              }
+          }
+        }
+    });
+
+    addressFieldList.on('focus', 'li', function() {
+    	$this = $(this);
+        $this.addClass('active').siblings().removeClass();
+        // $this.closest('div.container').scrollTop($this.index() * $this.outerHeight());
+    }).on('keydown', 'li', function(e) {
+        $this = $(this);
+        if (e.keyCode == 40) {
+            $this.next().focus();
+            return false;
+        } else if (e.keyCode == 38) {
+            $this.prev().focus();
+            return false;
+        }
+    });
+	//当用户只点击了滚动条，没选地址，再点击页面别的地方时，隐藏列表
+	addressFieldList.on('mousedown', function(){
+	    return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
+	});
+
+	// 没选中item，焦点离开，隐藏列表
+	$(document).on('click', function(event){
+        var clickedEl_id = $(event.target).attr('id');
+        var inputField_id = inputField.attr('id');
+
+	    if (clickedEl_id!=inputField_id && addressFieldList.is(':visible') ){
+		    addressFieldList.hide();
+	    }
+
+        if(clickedEl_id!=inputField_id && hiddenField.val()==''){
+            inputField.val('');
+        }
+    });
+
+});
+</script>

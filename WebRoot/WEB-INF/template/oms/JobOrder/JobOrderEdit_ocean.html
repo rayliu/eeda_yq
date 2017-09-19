@@ -836,6 +836,7 @@
         <div class="modal-content">
           <div class="modal-header"><span>进仓单详细信息</span></div>
             <div class="modal-body">
+            <input type="hidden" value="${warehouseBill.id!''}" id="warehouseBillId">
             <form id = "deliverWarehouseForm">
                 <div class="form-group">
                         <div class="row">
@@ -847,11 +848,13 @@
                                    }){}%>
                            </div>
                            <div class="col-lg-6">
-                                <%include("/eeda/component/form/inputField.html", 
-                                   {   id:'truck_head_end_place', 
-                                       label:'TO',
-                                       value:truckHead.head_end_place!''
-                                   }){}%>
+                                <%include("/eeda/component/form/inputCustomerField.html", 
+                                    {
+                                        id:'customer_warehouse_bill', 
+                                        label:'TO', 
+                                        value:warehouseBill.customer_warehouse_bill!'',
+                                        display_value:warehouseBill.customer_warehouse_bill_name!''
+                                    }){} %>
                            </div>
                        </div>
                         <div class="row">
@@ -859,15 +862,15 @@
                                  <%include("/eeda/component/form/inputField.html", 
                                    {   id:'operator_tel', 
                                        label:'TEL',
-                                       value:truckHead.operator_tel!''
+                                       value:warehouseBill.operator_tel!''
                                    }){}%>
                            </div>
                            <div class="col-lg-6">
                                     <%include("/eeda/component/form/inputField.html", 
-                                       {   id:'truck_head_date',
+                                       {   id:'warehouse_bill_date',
                                            label:'DATE',
                                            disabled:'disabled',
-                                           value:truckHead.head_date!''
+                                           value:warehouseBill.warehouse_bill_date!''
                                        }){}%>
                            </div>
                        </div>
@@ -878,7 +881,7 @@
                                    {   id:'warehouse_contact', 
                                        label:'仓库联系人',
                                        placeholder:'选中地址信息回填',
-                                       value:truckHead.warehouse_contact!''
+                                       value:warehouseBill.warehouse_contact!''
                                    }){}%>
                            </div>
                            <div class="col-lg-6">
@@ -886,18 +889,19 @@
                                        {   id:'warehouse_contact_tel',
                                            label:'仓库电话',
                                            placeholder:'选中地址信息回填',
-                                           value:truckHead.warehouse_contact_tel!''
+                                           value:warehouseBill.warehouse_contact_tel!''
                                        }){}%>
                            </div>
                        </div>
                        <div class="row">
                            <div class="col-lg-12">
-                                 <%include("/eeda/component/form/inputField.html", 
+                                 <%include("/eeda/component/form/inputAddressField.html", 
                                    {   id:'warehouse_adddress', 
                                        label:'仓库地址',
-                                       inline:false,
-                                       value:truckHead.warehouse_adddress!''
+                                       value:warehouseBill.warehouse_adddress!'',
+                                       display_value:warehouseBill.warehouse_adddress_address!''
                                    }){}%>
+                                   
                            </div>
                        </div>
                                                
@@ -905,7 +909,7 @@
 	                       <div class="col-lg-12"> 
 	                          <div class="form-group">
 	                               <label>进仓单备注</label>
-	                               <textarea id='cabinet_arrive_remark' placeholder='选中地址信息回填', class="form-control" rows="6" name="cabinet_arrive_remark">${truckHead.cabinet_arrive_remark!''}</textarea>
+	                               <textarea id='warehouse_bill_remark' placeholder='选中地址信息回填', class="form-control" rows="6" name="warehouse_bill_remark">${warehouseBill.warehouse_bill_remark!''}</textarea>
 	                          </div>
 	                      </div>
                        </div>
@@ -913,7 +917,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button id="printWarehouseBill" class="btn btn-primary" style="display:none;">生成柜货派车单PDF</button>
+                <button id="printWarehouseBill" class="btn btn-primary" >生成进仓单 PDF</button>
                 <button class="btn  btn-default" data-dismiss="modal" >返回</button>
             </div>
         </div>
