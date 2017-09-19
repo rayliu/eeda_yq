@@ -53,13 +53,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         				if(cabinet_type=="全程"){
 		         					if(data){
 		         						return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
+		         					}else{
+		         						if(full.CAR_OWNED=="公司车"){
+		         							return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3);
+		         						}
+		         						if(full.CAR_OWNED=="街车"){
+		         							return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.STREET_VEHICLE_FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.STREET_VEHICLE_FREIGHT).toFixed(2),3);
+		         						}
+		         						
 		         					}
-		         					return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3);
+		         					
 		         				}else{
 		         					if(data){
 		         						return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
+		         					}else{
+		         						if(full.CAR_OWNED=="公司车"){
+		         							return '<input type="text" class="output_scale" value = "'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3);
+		         						}
+		         						if(full.CAR_OWNED=="街车"){
+		         							return '<input type="text" class="output_scale" value = "'+eeda.numFormat(parseFloat((full.STREET_VEHICLE_FREIGHT/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.STREET_VEHICLE_FREIGHT/2)).toFixed(2),3);
+		         						}
 		         					}
-		         					return '<input type="text" class="output_scale" value = "'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3);
 		         				}
 		         			}
 		         		},

@@ -44,7 +44,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         		{ "data": "OUTPUTSCALE","width": "40px","class":"outputScale",
 		         			"render":function(data,type,full,meta){
 		         				var cabinet_type= full.COMBINE_UNLOAD_TYPE;
-		         				debugger;
 		         				if(cabinet_type=="全程"){
 		         					if(data){
 		         						return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
