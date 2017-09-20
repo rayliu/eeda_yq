@@ -58,9 +58,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         							return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3);
 		         						}
 		         						if(full.CAR_OWNED=="街车"){
-		         							return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.STREET_VEHICLE_FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.STREET_VEHICLE_FREIGHT).toFixed(2),3);
+		         							if(!full.STREET_VEHICLE_FREIGHT){
+		         								return '<input type="text" class="output_scale" value = "" style="width:60px">';
+		         							}else{
+		         								return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.STREET_VEHICLE_FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.STREET_VEHICLE_FREIGHT).toFixed(2),3);
+		         							}
 		         						}
-		         						
 		         					}
 		         					
 		         				}else{
@@ -71,13 +74,25 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         							return '<input type="text" class="output_scale" value = "'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3);
 		         						}
 		         						if(full.CAR_OWNED=="街车"){
-		         							return '<input type="text" class="output_scale" value = "'+eeda.numFormat(parseFloat((full.STREET_VEHICLE_FREIGHT/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.STREET_VEHICLE_FREIGHT/2)).toFixed(2),3);
+		         							if(!full.STREET_VEHICLE_FREIGHT){
+		         								return '<input type="text" class="output_scale" value = "" style="width:60px">';
+		         							}else{
+		         								return '<input type="text" class="output_scale" value = "'+eeda.numFormat(parseFloat(full.STREET_VEHICLE_FREIGHT/2).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.STREET_VEHICLE_FREIGHT/2)).toFixed(2),3);
+		         							}
 		         						}
 		         					}
 		         				}
 		         			}
 		         		},
 		         		{ "data": "FREIGHT","width":"60px",
+		         			"render": function ( data, type, full, meta ) {
+		         				if(data)
+		         					return eeda.numFormat(parseFloat(data).toFixed(2),3)
+		         				else
+		         					return '';
+		         			}
+		         		},
+		         		{ "data": "STREET_VEHICLE_FREIGHT","width":"60px",
 		         			"render": function ( data, type, full, meta ) {
 		         				if(data)
 		         					return eeda.numFormat(parseFloat(data).toFixed(2),3)

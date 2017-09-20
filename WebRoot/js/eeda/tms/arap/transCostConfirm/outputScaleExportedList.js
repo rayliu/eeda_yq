@@ -65,6 +65,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         					return '';
 		         			}
 		         		},
+		         		{ "data": "STREET_VEHICLE_FREIGHT","width":"60px",
+		         			"render": function ( data, type, full, meta ) {
+		         				if(data)
+		         					return eeda.numFormat(parseFloat(data).toFixed(2),3)
+		         				else
+		         					return '';
+		         			}
+		         		},
 		         		{ "data": "NIGHT_FEE","width":"60px",
 		         			"render": function ( data, type, full, meta ) {
 		         				if(data)

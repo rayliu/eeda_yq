@@ -201,10 +201,10 @@ public class outputScaleController extends Controller {
 //		    	
 //		    }
 			String sqlExport = sql+sql_car_no+sql_driver+sql_id;
-			String[] headers = new String[]{"提单号", "提/收柜日期", "客户", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌", "产值","运费",
+			String[] headers = new String[]{"提单号", "提/收柜日期", "客户", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌", "产值","运费","街车运费",
 					"备注"};
 			String[] fields = new String[]{"LADING_NO", "C_DATE", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO", "OUTPUTSCALE",
-							"FREIGHT","REMARK"};
+							"FREIGHT","STREET_VEHICLE_FREIGHT","REMARK"};
 			String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,car_no);
 			renderText(fileName);
 			if(fileName!=null){
