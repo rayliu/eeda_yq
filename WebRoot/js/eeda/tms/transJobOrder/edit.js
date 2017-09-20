@@ -276,9 +276,6 @@ $(document).ready(function() {
                 
                 $("#fileuploadSpan").show();
                 $("#sendEmail").show();
-                $("#oceanPDF").show();
-                $("#airPDF").show();
-                $("#truckOrderPDF").show();
                 
                 //异步刷新明细表
                 
