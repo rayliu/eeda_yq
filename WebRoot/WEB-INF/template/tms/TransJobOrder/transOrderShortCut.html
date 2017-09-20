@@ -124,15 +124,13 @@
 			                        		            value: order.lading_no!''
 			                        		        }){}%>
 			                            </div>
-				           	     <div class="col-lg-4">
-				                  <%include("/eeda/component/form/inputPartyField.html", 
-								                    {   id:'HEAD_CARRIER',
-								                        type:'head_car',
-								                        label:'头程船公司', 
-								                        value: order.HEAD_CARRIER!'',
-								                        display_value:order.abbr!''
-								                    }){}%>
-						           </div>
+						           <div class="col-lg-4">
+	                       		    <%include("/eeda/component/form/inputField.html", 
+	                       		        {   id:'seal_no', 
+	                       		            label:'封条号', 
+	                       		            value: order.lading_no!''
+	                       		        }){}%>
+	                            </div>
 					        </div>
 					        <div class="row">
 					        	<div class="col-lg-4">
@@ -212,6 +210,17 @@
 					            </div>					            
 					        </div>
 					        <div class="row">
+				        	<div class="col-lg-4">
+								<%include("/eeda/component/form/inputPartyField.html", 
+									{   id:'HEAD_CARRIER',
+									    type:'head_car',
+									    label:'头程船公司', 
+									    value: order.HEAD_CARRIER!'',
+									    display_value:order.abbr!''
+									}){}%>
+								</div>
+							</div>
+					        <div class="row">
 					        	<div class="col-lg-12">
 				                    <div class="form-group">
 						                 <label>备注</label>
@@ -244,6 +253,7 @@
                                     	'柜号',
                                         '柜型',
                                         '提单号',
+                                        '封条号',
                                     	'头程船公司',
                                         '提柜码头',
                                         '还柜码头',

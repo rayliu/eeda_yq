@@ -174,6 +174,13 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                          return '<input type="text" name="lading_no" style="width:100px" value="'+data+'" class="form-control"/>';
 	                     }
 	            }, 
+	            { "data": "SEAL_NO","width": "80px",
+	                  "render": function ( data, type, full, meta ) {
+	                      if(!data)
+	                        data = '';
+	                          return '<input type="text" name="seal_no" style="width:100px" value="'+data+'" class="form-control"/>';
+	                     }
+	            }, 
 	            { "data": "HEAD_CARRIER","width": "70px",
 	          	  "render": function ( data, type, full, meta ) {
 	                    if(!data)
@@ -424,6 +431,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           var container_no=$('#container_no').val();
           var cabinet_type=$('#cabinet_type').val();
           var lading_no=$('#lading_no').val();
+          var seal_no=$('#seal_no').val();
           var HEAD_CARRIER=$('#HEAD_CARRIER').val();
           var take_wharf=$('#TAKE_WHARF').val();
           var back_wharf=$('#BACK_WHARF').val();
@@ -447,7 +455,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           var loading_wharf2_input=$('#LOADING_WHARF2_input').val();
           // var =$('#').val();CUSTOMER_ID_input
           var item={"CUSTOMER_ID":customer_id,"CABINET_DATE":cabinet_date,"CLOSING_DATE":closing_date,"CHARGE_TIME":charge_time,"TYPE":type,"SO_NO":so_no,
-                    "CONTAINER_NO":container_no,"CABINET_TYPE":cabinet_type,"LADING_NO":lading_no,"HEAD_CARRIER":HEAD_CARRIER,
+                    "CONTAINER_NO":container_no,"CABINET_TYPE":cabinet_type,"LADING_NO":lading_no,"SEAL_NO":seal_no,"HEAD_CARRIER":HEAD_CARRIER,
                     "TAKE_WHARF":take_wharf,"BACK_WHARF":back_wharf,"LOADING_WHARF1":loading_wharf1,"LOADING_WHARF2":loading_wharf2,"LOADING_PLATFORM":loading_platform,
                     "WHOLE_COURSE_CAR_NO":whole_course_car_no,"TIJIGUI_CAR_NO":tijigui_car_no,"SHOUZHONGGUI_CAR_NO":shouzhonggui_car_no,"YIGUI_CAR_NO":yigui_car_no,
                     "FREIGHT":"","CUSTOMER_SALESMAN":customer_salesman,"CONTRACT_NO":contract_no,"TOCA_NO":"","HIGH_SPEED_FEE":"","HIGH_SPEED":"","NIGHT_FEE":"","WEIGHING_FEE":"","JI_JINJI_OUT_FEE":"","ADVANCE_FEE":"","REMARK":remark,
