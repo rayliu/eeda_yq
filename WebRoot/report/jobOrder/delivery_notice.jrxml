@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="100"/>
+	<property name="ireport.y" value="628"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -324,7 +324,7 @@ WHERE jdwb.order_id = $P{order_id}]]>
 				<reportElement x="142" y="45" width="163" height="17" uuid="c7bbe260-83a3-4c85-affc-b5b3b29170f5"/>
 				<textFieldExpression><![CDATA[$F{pod_name}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement x="355" y="46" width="100" height="17" uuid="bbe678e5-50da-4d8a-a19c-87c234324aeb"/>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
@@ -340,7 +340,7 @@ WHERE jdwb.order_id = $P{order_id}]]>
 				<reportElement x="115" y="89" width="128" height="15" uuid="2c0f5218-3079-49b1-a07a-811c45e39774"/>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement x="243" y="89" width="86" height="16" uuid="7fcfdcb3-bd64-4d37-a3b4-dbb47a0b24d6"/>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
@@ -365,7 +365,7 @@ WHERE jdwb.order_id = $P{order_id}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{warehouse_bill_remark}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement x="91" y="618" width="93" height="18" uuid="976c2d66-5e59-4f38-ac58-14ebd35978af"/>
 				<textFieldExpression><![CDATA[$F{closing_date}]]></textFieldExpression>
 			</textField>
