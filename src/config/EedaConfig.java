@@ -99,6 +99,7 @@ import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentHead;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
+import models.eeda.oms.lclOrder.LclOrder;
 import models.eeda.oms.truckOrder.TruckOrder;
 import models.eeda.oms.truckOrder.TruckOrderArap;
 import models.eeda.oms.truckOrder.TruckOrderCargo;
@@ -180,6 +181,7 @@ import controllers.oms.customOrder.CustomOrderController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.oms.jobOrder.JobOrderControllerForMobile;
 import controllers.oms.jobOrder.JobOrderReportController;
+import controllers.oms.lclOrder.LclOrderController;
 import controllers.oms.planOrder.PlanOrderController;
 import controllers.oms.planOrder.PlanOrderControllerForMobile;
 import controllers.oms.todo.TodoController;
@@ -347,6 +349,7 @@ public class EedaConfig extends JFinalConfig {
 		me.add("/truckOrder", TruckOrderController.class, contentPath);
 		me.add("/currency", CurrencyController.class, contentPath);
 		me.add("/currencyRate", CurrencyRateController.class, contentPath);
+		me.add("/lclOrder", LclOrderController.class, contentPath);
 		
 		
 		//booking管理
@@ -576,6 +579,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("job_order_ocean_template", JobOrderOceanTemplate.class);
         arp.addMapping("job_order_sendmail_template", JobOrderSendMailTemplate.class);
         arp.addMapping("job_order_express", JobOrderExpress.class);
+        arp.addMapping("lcl_order", LclOrder.class);
         
         //booking
         arp.addMapping("booking_order", BookingOrder.class);

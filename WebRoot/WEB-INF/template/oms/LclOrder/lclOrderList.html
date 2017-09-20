@@ -1,0 +1,276 @@
+<%layout("/eeda/layout.html"){%>
+<div id="page-wrapper">
+        <%
+	      //如果只有edit, 没指定特定的, 默认都有编辑权限
+	      var orderPermission = shiro.hasPermission("jobOrder.order");
+	      var boolOrder= orderPermission;
+    	%>
+
+	<div class="row simple_search_div">
+    	 <div class="panel panel-default">
+         	<div class="panel-heading">
+            	<div class="row"><!--  第1行  -->
+                	<div class="three_tab"><!--  三列排版  -->
+                    	<nobr>
+                        	<div class="search_single">
+                            	<select id="selected_field" name="selected_field" class="form-control search-label">
+                              		<option value="order_no">工作单号</option>
+	                            	<option value="sono_like">SO号</option>
+	                               	<option value="container_no">柜号</option>
+	                               	<option value="type">出货类型</option>	                                	
+	                                <option value="old_order_no">旧工作单号</option>
+	                                <option value="customer_name">客户名称</option>
+	                                <option value="customer_code_like">客户代码</option>
+	                                <option value="create_stamp">创建时间</option>
+	                                <option value="sent_out_time">出货时间</option>
+                            	</select>
+
+                            	<input type="text" class="form-control search-control" id="public_text" name="public_text">
+                            		
+                            	<select id="single_export_type_list" name="export_type_list" class="form-control search-control" style="display: none;">
+                                	<option value=""></option>
+                                	<option value="出口柜货">出口柜货</option>
+                                	<option value="进口柜货">进口柜货</option>
+                                	<option value="出口散货">出口散货</option>
+                                	<option value="进口散货">进口散货</option>
+                                	<option value="出口空运">出口空运</option>
+                                	<option value="进口空运">进口空运</option>
+                                	<option value="内贸海运">内贸海运</option>
+                                	<option value="香港头程">香港头程</option>
+                                	<option value="香港游">香港游</option>
+                                	<option value="陆运">陆运</option>
+                                	<option value="报关">报关</option>
+                                	<option value="快递">快递</option>
+                                	<option value="加贸">加贸</option>
+                                	<option value="贸易">贸易</option>
+                                	<option value="园区游">园区游</option>
+                            	</select>
+                           	 		
+	                           	 <div style="display: none;position:absolute;left:34%;bottom:-5px;" id="customer_name_show">
+                                          <%include("/eeda/component/form/inputSpField.html", 
+                                                              {   id: 'single_customer_name',
+                                                              	  style:'width:150%',
+                                                                  value: ''
+                                                              }){}%>
+                                 </div>
+                                    
+                                 <div style="display: none;position:absolute;left:34%;bottom:-5px;" id="public_time_show">
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                                                {   id: 'public_time', 
+                                                                    style:'width:120%',
+								                   					begin_style:'width:30%',
+								                   					end_style:'width:30%',  
+                                                                    value: ''
+                                                                }){}%>
+                                 </div>
+                          	</div>
+                      	</nobr>
+                      </div>
+                      <div class="three_tab"><!--  三列排版  -->
+                          <div class="search_single">
+                          	<nobr>
+	                          	<button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
+	                          	<button class="btn btn_green create_btn" disabled type="button">创建拼箱单</button>
+	                        </nobr>
+                          </div>
+                          
+                      </div>
+                      <div class="three_tab"><!--  三列排版  -->
+                          <h4 class="panel-title pull-right" style="padding-top: 5px;">
+                              <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
+                                <i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
+                              </a>
+                          </h4>
+                      </div>
+                  </div>
+                  
+              </div>
+                    <div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+                        <div class="panel-body" id="ChargeDiv">
+                            <div class="col-lg-12">
+                                <form id="orderForm">
+                                    <div class="row"><!--  第1行  -->
+                                    	<div class="col-lg-4">
+                                          <%include("/eeda/component/form/inputSpField.html", 
+                                                              {   id: 'customer_name', 
+                                                                  label: '客户名称',
+                                                                  list:'list', 
+                                                                  value: ''
+                                                              }){}%>
+                                        </div>
+                                        <div class="col-lg-4">
+                                          <%include("/eeda/component/form/inputField.html", 
+                                                              {   id: 'customer_code', 
+                                                                  label: '客户代码', 
+                                                                  value: ''
+                                                              }){}%>
+                                        </div>
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                                                {   id: 'sent_out_time', 
+                                                                    label: '出货时间', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                    </div>
+                                    <div class="row"><!--  第1行  -->
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'order_no', 
+                                                                    label: '工作单号', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'old_order_no', 
+                                                                    label: '旧工作单号', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                                            {   id:'create_stamp', 
+                                                label:'创建时间', 
+                                                value:''
+                                            }){} %>
+                                        </div><!-- /.col-lg-2 -->
+                                    </div><!-- /.row-->
+                                    <div class="row">
+                                    	<div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'container_no', 
+                                                                    label: '柜号', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4"><!--  三列排版  -->
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id: 'sono', 
+                                                                    label: 'SO号', 
+                                                                    value: ''
+                                                                }){}%>
+                                        </div>
+                                        <div class="col-lg-4">
+                                             <%include("/eeda/component/form/selectField.html", 
+                                                    {   id:'type', 
+                                                        label:'出货类型', 
+                                                        value: '',
+                                                        value_list:[
+                                                        		{code:'', value:''},
+					                                            {code:'出口柜货', value:'出口柜货'},
+					                                            {code:'进口柜货', value:'进口柜货'}, 
+					                                            {code:'出口散货', value:'出口散货'},
+					                                            {code:'进口散货', value:'进口散货'},
+					                                            {code:'出口空运', value:'出口空运'},
+					                                            {code:'进口空运', value:'进口空运'},
+					                                            {code:'内贸海运', value:'内贸海运'},
+					                                            {code:'香港头程', value:'香港头程'},
+					                                            {code:'香港游', value:'香港游'},
+					                                            {code:'陆运', value:'陆运'},
+					                                            {code:'报关', value:'报关'},
+					                                            {code:'快递', value:'快递'},
+					                                            {code:'加贸', value:'加贸'},
+					                                            {code:'贸易', value:'贸易'},
+					                                            {code:'园区游', value:'园区游'}
+					                                        ]
+                                                    }
+                                                 ){} %>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                            <% if(type!'' == 'customwait'){%>
+                                            <div class="col-lg-4">
+                                        		<%include("/eeda/component/form/selectField.html", 
+                                                    {   id:'custom_status', 
+                                                        label:'报关状态', 
+                                                        value: custom_status,
+                                                        value_list:[
+                                                        		{code:'', value:''},
+					                                            {code:'待报关', value:'待报关'},
+					                                            {code:'处理中', value:'处理中'}, 
+					                                            {code:'已完成', value:'已完成'}
+					                                        ]
+                                                    }
+                                                 ){} %>
+                                             </div>
+                                             <% }%>
+                                    </div>
+                                    <div class="form-group table_btn_bar" >
+                                        <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                                        <button  class="btn btn_green create_btn" disabled type="button">创建拼箱单</button>
+                                        <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+ 
+            </div><!-- /.row 查询条件 结束-->
+            <div class="row simple_list_div">
+                
+                    <ul id="orderTabs" class="nav nav-tabs" >
+                        <li class="active">
+                            <a href="#" data-toggle="tab">全部</a>
+                        </li>
+                        <!-- <li>
+                            <a href="#" data-toggle="tab">海运</a>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="tab" >空运</a>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="tab">陆运</a>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="tab">报关</a>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="tab">保险</a>
+                        </li>
+                        <% var user_office_id = office_id;
+                        if(user_office_id==1){%>
+                        <li>
+                            <a href="#" data-toggle="tab">贸易</a>
+                        </li>
+                        <%}%>
+                        <li>
+                            <a href="#" data-toggle="tab">快递</a>
+                        </li> -->
+                    </ul>
+                    <%include("/eeda/component/form/detailTable.html", 
+                        {
+                            id:'eeda-table', 
+                            headers:['','','工作单号',
+                                '类型',
+                                '出货时间',
+                                '客户名称',
+                                'SO/MBL',
+                                '柜号',
+                                'POD',
+                                '费用',
+                                '创建人',
+                                '更新人',
+                                '创建时间',
+                                '状态','']
+                        }){} %>
+            </div>
+        </div>
+<%}%>
+
+<script>
+      var type = "${type!''}";
+ </script>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], 
+        function (common) {
+        requirejs(['app/oms/lclOrder/list']);
+    },
+    function(error) {
+        console.error('报错了: ',error);
+        var failedId = error.requireModules && error.requireModules[0];
+        console.error(failedId);
+        console.error(error.message);
+    });
+</script>
