@@ -24,7 +24,7 @@ public class FormService {
 
         return rec;
     } 
-
+    
     @SuppressWarnings("unchecked")
     @Before(Tx.class)
     public String processFieldType_checkbox(String form_name, Record fieldRec, Long field_id){
@@ -52,6 +52,33 @@ public class FormService {
                     + name+"</label>";
             returnStr+=checkboxStr;
         }
+        return returnStr;
+    }
+    @SuppressWarnings("unchecked")
+    @Before(Tx.class)
+    public String processFieldType_ref(String form_name, Record fieldRec, Long field_id){
+        String returnStr = "";
+        String fieldDisplayName=fieldRec.getStr("field_display_name");
+        String fieldName=fieldRec.getStr("field_name");
+        Long form_id = fieldRec.getLong("form_id");
+        Record ref = Db.findFirst(
+                "select * from eeda_form_field_type_ref where field_id=?", field_id);
+        
+        String target_form_name = ref.getStr("ref_form");
+        Record refForm = Db.findFirst(
+                "select * from eeda_form_define where name=?", target_form_name);
+        
+        String target_form_field = ref.getStr("ref_field");
+        Record field_rec = FormService.getFieldName(target_form_field.split("\\.")[0], target_form_field.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+        String field_name = "f"+field_rec.get("id")+"_"+field_rec.getStr("field_name");
+        
+        String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
+        returnStr = "<label class='search-label'>"+fieldDisplayName+"</label>"
+                + "<input type='text' name='"+inputId+"' class='form-control' placeholder='请选择' eeda_type='drop_down'"
+                + " target_form='"+refForm.getLong("id")+"' target_field_name='"+field_name+"' >"
+                //+ "<input id='"+inputId+"' style='display: none;' name="+inputId+" />"
+                + "<ul id='"+inputId+"_list' class='pull-right dropdown-menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;'>";
+        
         return returnStr;
     }
     

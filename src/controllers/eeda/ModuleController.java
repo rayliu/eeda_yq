@@ -722,18 +722,7 @@ public class ModuleController extends Controller {
         for (Record field : recList) {
             String type = field.getStr("field_type");
             if ("复选框".equals(type)) {
-                Record checkBox = Db
-                        .findFirst(
-                                "select * from eeda_form_field_type_checkbox where field_id=?",
-                                field.get("id"));
-
-                List<Record> list = Db
-                        .find("select * from eeda_form_field_type_checkbox_item where field_id=?",
-                                field.get("id"));
-                if (list.size() > 0)
-                    checkBox.set("item_list", list);
-
-                field.set("CHECK_BOX", checkBox);
+                buildCheckBox(field);
             }else if ("从表引用".equals(type)) {
                 Record ref = Db
                         .findFirst(
@@ -752,9 +741,30 @@ public class ModuleController extends Controller {
                 if (field_list.size() > 0)
                     ref.set("display_field", field_list);
                 field.set("detail_ref", ref);
+            }else if ("字段引用".equals(type)) {
+                Record ref = Db
+                        .findFirst(
+                                "select * from eeda_form_field_type_ref where field_id=?",
+                                field.get("id"));
+                field.set("ref", ref);
             }
         }
         return recList;
+    }
+
+    private void buildCheckBox(Record field) {
+        Record checkBox = Db
+                .findFirst(
+                        "select * from eeda_form_field_type_checkbox where field_id=?",
+                        field.get("id"));
+
+        List<Record> list = Db
+                .find("select * from eeda_form_field_type_checkbox_item where field_id=?",
+                        field.get("id"));
+        if (list.size() > 0)
+            checkBox.set("item_list", list);
+
+        field.set("CHECK_BOX", checkBox);
     }
 
     private List<Record> getFormBtns(Long formId, String type) {

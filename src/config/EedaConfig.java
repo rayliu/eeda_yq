@@ -129,8 +129,8 @@ public class EedaConfig extends JFinalConfig {
         me.add("/role", controllers.profile.RoleController.class, contentPath);
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
 
-        /*
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
+        /*
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
        
         me.add("/unit", UnitController.class, contentPath);

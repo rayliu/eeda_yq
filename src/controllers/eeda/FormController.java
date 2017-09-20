@@ -378,6 +378,10 @@ public class FormController extends Controller {
                 FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_detail(form_name, fieldRec, fieldRec.getLong("id"));
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
+            }else if("字段引用".equals(fieldType)){
+                FormService fs = new FormService(this);
+                replaceNameDest = fs.processFieldType_ref(form_name, fieldRec, fieldRec.getLong("id"));
+                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
             }else{
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + "<input type='text' name='"+inputId+"' class='form-control'>";

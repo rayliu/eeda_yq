@@ -140,43 +140,50 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
       var node_list=[];
       
       zTreeObj = $.fn.zTree.getZTreeObj("listEventTree");
-      var toolBarNodes = zTreeObj.getNodes()[0].children;
-      for(var i = 0;i<toolBarNodes.length;i++){
-        var eventNodes = toolBarNodes[i].children;
+      if(zTreeObj){
+        var toolBarNodes = zTreeObj.getNodes()[0].children;
+        for(var i = 0;i<toolBarNodes.length;i++){
+          var eventNodes = toolBarNodes[i].children;
 
-        if(!eventNodes) 
-          continue;
+          if(!eventNodes) 
+            continue;
 
-        for(var j = 0;j<eventNodes.length;j++){
-          var node=eventNodes[j];
-          node_list.push(node);
+          for(var j = 0;j<eventNodes.length;j++){
+            var node=eventNodes[j];
+            node_list.push(node);
+          }
         }
       }
+      
       //edit tree nodes
       var zTree = $.fn.zTree.getZTreeObj("editEventTree");
-      var toolBarBtnNodes = zTree.getNodes()[0].children;
-      for(var i = 0;i<toolBarBtnNodes.length;i++){
-        var eventNodes = toolBarBtnNodes[i].children;
+      if(zTree){
+        var toolBarBtnNodes = zTree.getNodes()[0].children;
+        for(var i = 0;i<toolBarBtnNodes.length;i++){
+          var eventNodes = toolBarBtnNodes[i].children;
 
-        if(!eventNodes) 
-          continue;
+          if(!eventNodes) 
+            continue;
 
-        for(var j = 0;j<eventNodes.length;j++){
-          var node=eventNodes[j];
-          node_list.push(node);
+          for(var j = 0;j<eventNodes.length;j++){
+            var node=eventNodes[j];
+            node_list.push(node);
+          }
         }
       }
 
       //值改变
-      var value_change_nodes = zTree.getNodes()[1].children;
-      if(value_change_nodes){
-        for(var i = 0;i<value_change_nodes.length;i++){
-          var node = value_change_nodes[i];
+      if(zTreeObj){
+        var value_change_nodes = zTree.getNodes()[1].children;
+        if(value_change_nodes){
+          for(var i = 0;i<value_change_nodes.length;i++){
+            var node = value_change_nodes[i];
 
-          if(!node) 
-            continue;
+            if(!node) 
+              continue;
 
-          node_list.push(node);
+            node_list.push(node);
+          }
         }
       }
       return node_list;
