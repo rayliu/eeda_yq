@@ -20,6 +20,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           $('.search_single').show();
         }
     });
+  	
+  	
   	//datatable, 动态处理
       var dataTable = eeda.dt({
           id: 'eeda-table',
@@ -321,6 +323,33 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
     		  transport_type = "express";
     	  }
     	  searchData(transport_type);
+      });
+      
+      
+      
+      var dataTable = eeda.dt({
+          id: 'lcl_table',
+          sort:true,
+          colReorder: true,
+          paging: true,
+          serverSide: true, //不打开会出现排序不对
+          ajax: "/lclOrder/orderList",
+          columns: [
+              { "data": "ORDER_NO", 
+                  "render": function ( data, type, full, meta ) {
+                      return "<a href='/lclOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+                  }
+              },
+              { "data": "TRANSPORT_TYPE"}, 
+              { "data": "TRANS_CLAUSE"}, 
+              { "data": "TRADE_TYPE"}, 
+              { "data": "MBLSHIPPER_NAME"}, 
+              { "data": "MBLCONSIGNEE_NAME"}, 
+              { "data": "MBLNOTIFY_PARTY_NAME"}, 
+              { "data": "CREATOR_NAME"}, 
+              { "data": "CREATE_TIME"}, 
+              { "data": "STATUS"}
+          ]
       });
 
   });

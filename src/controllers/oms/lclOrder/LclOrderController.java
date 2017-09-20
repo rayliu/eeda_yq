@@ -531,6 +531,72 @@ public class LclOrderController extends Controller {
         renderJson(map); 
     }
     
+    
+    public void orderList() {    	
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        
+    	String type = getPara("type_");
+    	
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        
+        String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
+        String sColumn =  getPara("order[0][column]");
+        String sName =  getPara("columns["+sColumn+"][data]")==null?"order_export_date":getPara("columns["+sColumn+"][data]") ;
+        if("0".equals(sName)){
+        	sName = "order_export_date";
+        	sort = "desc";
+        }
+        
+        
+        String sql = "";
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jor.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
+         sql = "select lor.*,ul.c_name creator_name,"
+         		+ " p1.abbr MBLshipper_name,"
+         		+ " p2.abbr MBLconsignee_name,"
+         		+ " p3.abbr MBLnotify_party_name"
+         		+ " from lcl_order lor"
+		        + " left join party p1 on p1.id = lor.MBLshipper" 
+		        + " left join party p2 on p2.id = lor.MBLconsignee " 
+		        + " left join party p3 on p3.id = lor.MBLnotify_party "
+		        + " left join user_login ul on ul.id = lor.creator "; 
+        
+        
+        String condition = DbUtils.buildConditions(getParaMap());
+
+        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        Record rec = Db.findFirst(sqlTotal);
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        if (getPara("start") != null  && getPara("length") != null) {
+        	if(Long.parseLong(getPara("start")) <= rec.getLong("total")){
+        		sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        	}else{
+        		sLimit = " LIMIT 0, " + getPara("length");
+        		pageIndex = "1";
+        	}
+            
+            if("lock".equals(type)){
+            	sLimit = "";
+            }
+        }
+        
+        List<Record> orderList = Db.find(sql+ condition + " order by " + sName +" "+ sort +sLimit);
+        System.out.println(sql+ condition + " order by " + sName +" "+ sort +sLimit);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map); 
+    }
+    
     //异步刷新字表
     public void tableList(){
     	String order_id = getPara("order_id");
