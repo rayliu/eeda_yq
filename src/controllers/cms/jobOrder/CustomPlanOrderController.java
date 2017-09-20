@@ -41,6 +41,7 @@ import controllers.eeda.ListConfigController;
 import controllers.eeda.SysInfoController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
@@ -532,9 +533,14 @@ public class CustomPlanOrderController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void edit() {
+    	String id = getPara("id");
     	UserLogin user_login = LoginUserController.getLoginUser(this);
         long office_id=user_login.getLong("office_id");
-    	String id = getPara("id");
+        //判断与登陆用户的office_id是否一致
+        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("custom_plan_order", Long.valueOf(id), office_id)){
+        	renderError(403);// no permission
+            return;
+        }
     	String sql = "select cpo.*,IF (cpo.office_id != "+office_id+",'other','self') other_flag,l.name trading_country_name,l1.name destination_country_name,l2.name destination_port_name,"
     			+ " sm.name supervision_mode_name,p.abbr hongkong_consignee_input"
     			+ "	,p1.abbr head_carrier_name,l3.name aim_port_name,l4.name shipment_port_name,concat(ce.code,' ',ce.name) nature_of_exemption_name,"

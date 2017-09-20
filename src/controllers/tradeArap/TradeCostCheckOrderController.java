@@ -34,6 +34,7 @@ import controllers.eeda.ListConfigController;
 import controllers.eeda.SysInfoController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
@@ -494,6 +495,13 @@ public class TradeCostCheckOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void edit(){
 		String id = getPara("id");//trade_arap_cost_order id
+		UserLogin user1 = LoginUserController.getLoginUser(this);
+	    long office_id=user1.getLong("office_id");
+	    //判断与登陆用户的office_id是否一致
+	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("trade_arap_cost_order", Long.valueOf(id), office_id)){
+	    	renderError(403);// no permission
+	        return;
+	    }
 		String sql = " select aco.*,p.id company_id,p.company_name,p.abbr company_abbr,u.c_name creator_name,u1.c_name confirm_by_name from trade_arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "
    				+ " left join user_login u on u.id=aco.create_by "

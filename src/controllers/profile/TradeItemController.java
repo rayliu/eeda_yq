@@ -27,6 +27,7 @@ import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.PoiUtils;
 
 @RequiresAuthentication
@@ -178,6 +179,13 @@ public class TradeItemController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
+	    UserLogin user1 = LoginUserController.getLoginUser(this);
+	    long office_id=user1.getLong("office_id");
+	    //判断与登陆用户的office_id是否一致
+	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("trade_item", Long.valueOf(id), office_id)){
+	    	renderError(403);// no permission
+	        return;
+	    }
         Record tradeItem = Db.findFirst("SELECT * from trade_item t where id="+id);
         setAttr("order", tradeItem);
         

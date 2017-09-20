@@ -57,6 +57,7 @@ import controllers.eeda.SysInfoController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.FileUploadUtil;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
@@ -1276,10 +1277,15 @@ public class TrJobOrderController extends Controller {
     @Before({EedaMenuInterceptor.class, Tx.class})
     public void edit() {
     	String id = getPara("id");
-    	TradeJobOrder jobOrder = TradeJobOrder.dao.findById(id);
-    	setAttr("order", jobOrder);
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        //判断与登陆用户的office_id是否一致
+        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("trade_job_order", Long.valueOf(id), office_id)){
+        	renderError(403);// no permission
+            return;
+        }
+    	TradeJobOrder jobOrder = TradeJobOrder.dao.findById(id);
+    	setAttr("order", jobOrder);
     	
     	//获取汇率日期信息
     	Record r = Db.findFirst("SELECT * from ( SELECT min(to_stamp) min_stamp FROM currency_rate WHERE office_id = "+office_id+") A WHERE min_stamp > now()");

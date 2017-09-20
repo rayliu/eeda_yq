@@ -22,6 +22,8 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.util.OrderCheckOfficeUtil;
+
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
 public class FinItemController extends Controller {
@@ -163,6 +165,13 @@ public class FinItemController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
+	    UserLogin user1 = LoginUserController.getLoginUser(this);
+	    long office_id=user1.getLong("office_id");
+	    //判断与登陆用户的office_id是否一致
+	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("fin_item", Long.valueOf(id), office_id)){
+	    	renderError(403);// no permission
+	        return;
+	    }
         FinItem u = FinItem.dao.findById(id);
         setAttr("order", u);
         UserLogin user = LoginUserController.getLoginUser(this);

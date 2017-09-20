@@ -37,6 +37,7 @@ import controllers.eeda.SysInfoController;
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
@@ -370,6 +371,14 @@ public class PlanOrderController extends Controller {
     @Before({EedaMenuInterceptor.class, Tx.class})
     public void edit() {
     	String id = getPara("id");
+    	UserLogin user1 = LoginUserController.getLoginUser(this);
+        long office_id=user1.getLong("office_id");
+        //判断与登陆用户的office_id是否一致
+        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("plan_order", Long.valueOf(id), office_id)){
+        	renderError(403);// no permission
+            return;
+        }
+    	
     	PlanOrder planOrder = PlanOrder.dao.findById(id);
     	setAttr("order", planOrder);
     	
@@ -396,7 +405,6 @@ public class PlanOrderController extends Controller {
     	setAttr("user", user);
     	
     	//当前
-    	long office_id = user.getLong("office_id");
    		Office office = Office.dao.findById(office_id);
    		setAttr("office", office);
    		

@@ -46,6 +46,7 @@ import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.FileUploadUtil;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
@@ -600,6 +601,13 @@ public class BookingOrderController extends Controller {
     @Before({EedaMenuInterceptor.class, Tx.class})
     public void edit() {
     	String id = getPara("id");
+    	UserLogin user1 = LoginUserController.getLoginUser(this);
+        long office_id=user1.getLong("office_id");
+        //判断与登陆用户的office_id是否一致
+        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("booking_order", Long.valueOf(id), office_id)){
+        	renderError(403);// no permission
+            return;
+        }
     	BookingOrder bookingOrder = BookingOrder.dao.findFirst(
     			" SELECT border.*,p1.abbr shipper_name,p2.abbr consignee_name,p3.abbr notify_name,o.office_name,"
     			+ " p4.abbr entrust_name,p4.ref_office_id entrust_ref_office_id,o.office_name,ul.c_name creator_name,CONCAT(ut.name,ut.name_eng) order_unit_input"
