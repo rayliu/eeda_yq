@@ -44,7 +44,7 @@ $(document).ready(function() {
     		alert+='启运港 POL<br><br>';
     	}
     	if($('#pod').val()==''){
-    		alert+='卸货港 POD<br><br>';
+    		alert+='目的港 POD<br><br>';
     	}
     	if($('#fnd').val()==''){
     		alert+='目的地 FND<br><br>';
