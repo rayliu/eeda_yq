@@ -260,11 +260,17 @@ public class ModuleController extends Controller {
                         "select * from eeda_form_event where id=?", id);
                 rec.set("name", event.get("name"));
                 rec.set("type", event.get("type"));
-                if ("open".equals(event.get("type"))) {
+                rec.set("menu_type", event.get("menu_type"));
+                
+                String type = (String) event.get("type");
+                if ("open".equals(type)) {
                     saveEventOpen(event, id);
-                }else if("set_css".equals(event.get("type"))){
+                }else if("set_css".equals(type)){
                     ModuleService ms = new ModuleService(this);
                     ms.saveEventSetCss(event, id);
+                } else if ("set_value".equals(type)) {
+                    ModuleService ms = new ModuleService(this);
+                    ms.saveEventSetValue(event, rec.getLong("id"));
                 }
                 Db.update("eeda_form_event", rec);
             } else {
@@ -274,16 +280,19 @@ public class ModuleController extends Controller {
                 rec.set("type", event.get("type"));
                 rec.set("form_id", form_id);
                 rec.set("btn_id", event.get("btn_id"));
-                if (event.get("btn_id") == null) {
-                    rec.set("menu_type", "value_change");
-                }
+                rec.set("menu_type", event.get("menu_type"));
+               
                 Db.save("eeda_form_event", rec);
 
-                if ("open".equals(event.get("type"))) {
+                String type = (String) event.get("type");
+                if ("open".equals(type)) {
                     saveEventOpen(event, rec.getLong("id"));
-                } else if ("set_css".equals(event.get("type"))) {
+                } else if ("set_css".equals(type)) {
                     ModuleService ms = new ModuleService(this);
                     ms.saveEventSetCss(event, rec.getLong("id"));
+                } else if ("set_value".equals(type)) {
+                    ModuleService ms = new ModuleService(this);
+                    ms.saveEventSetValue(event, rec.getLong("id"));
                 }
             }
         }
@@ -456,6 +465,10 @@ public class ModuleController extends Controller {
             list = Db
                     .find("select * from eeda_form_event where form_id=? and menu_type='value_change'",
                             form_id);
+        }else if ("新增-打开表单后".equals(getPara("name"))) {
+            list = Db
+                    .find("select * from eeda_form_event where form_id=? and menu_type='default_event_add_after_open'",
+                            form_id);
         }else{
             Long btn_id = getParaToLong("id");
             list = Db.find(
@@ -473,12 +486,21 @@ public class ModuleController extends Controller {
             }else if("set_css".equals(eventType)){
                 Record cssRec = Db.findFirst(
                         "select * from eeda_form_event_css where event_id=?",
-                        event.getInt("id"));
+                        event.getLong("id"));
                 List<Record> itemList = Db.find(
                         "select * from eeda_form_event_css_item where event_id=?",
-                        event.getInt("id"));
+                        event.getLong("id"));
                 cssRec.set("set_field_list", itemList);
                 event.set("set_css", cssRec);
+            }else if("set_value".equals(eventType)){
+                Record cssRec = Db.findFirst(
+                        "select * from eeda_form_event_set_value where event_id=?",
+                        event.getLong("id"));
+                List<Record> itemList = Db.find(
+                        "select * from eeda_form_event_set_value_item where event_id=?",
+                        event.getLong("id"));
+                cssRec.set("set_field_list", itemList);
+                event.set("set_value", cssRec);
             }
         }
 

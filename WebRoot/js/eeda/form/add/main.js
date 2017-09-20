@@ -13,5 +13,20 @@ define(['jquery', './detail_table', '../btns', '../value_change', '../drop_list_
         });
     });
 
-    
+    //判断是否有defaut-event:   新增-打开表单
+    var module_id = $('#module_id').val();
+    $.post('/form/'+module_id+'-eventConfig', function(data, textStatus, xhr) {
+        console.log("eventConfig.....");
+        console.log(data);
+        $.each(data, function(index, item) {
+            var condition = item.SET_VALUE.CONDITION;
+
+            var item_list = item.SET_VALUE_ITEM;
+            $.each(item_list, function(index, field) {
+                 var field_name = field.FIELD_NAME;
+                 var value = field.VALUE;
+                 $('[name='+ field_name+']').val(value);
+            });
+        });
+    });
 });

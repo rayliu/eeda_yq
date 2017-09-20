@@ -185,6 +185,19 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
             node_list.push(node);
           }
         }
+
+        //默认事件
+        var default_event_nodes = zTree.getNodes()[2].children;
+        $.each(default_event_nodes, function(index, item) {
+           var nodes = item.children;
+           if(nodes){
+              $.each(nodes, function(index, node) {
+                node_list.push(node);
+             });
+           }
+           
+        });
+        
       }
       return node_list;
     }

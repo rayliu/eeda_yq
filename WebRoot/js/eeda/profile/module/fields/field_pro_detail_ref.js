@@ -106,7 +106,7 @@ define(['jquery'], function ($) {
             for (var i = 0; i < inputs.length/3; i++) {
               var item={
                 ID: $(inputs[i*3]).val(),
-                TARTGET_FIELD_NAME: $(inputs[i*3 + 1]).val(),
+                TARGET_FIELD_NAME: $(inputs[i*3 + 1]).val(),
                 VALUE: $(inputs[i*3 + 2]).val()
               };
 

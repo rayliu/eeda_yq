@@ -1,4 +1,5 @@
-define(['jquery', 'zTree', './events/edit/type_set_css'], function ($, tree, setCssCont) {
+define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set_value'],
+   function ($, tree, setCssCont, setValueCont) {
     
     //---------------tree handle
     var setting = {
@@ -45,7 +46,19 @@ define(['jquery', 'zTree', './events/edit/type_set_css'], function ($, tree, set
       $('#edit_event_name').val(currentNode.name);
       $('#edit_event_type').val(currentNode.type).change();
 
-      if(currentNode.SET_CSS){
+      if(currentNode.SET_VALUE){
+        $('#edit_event_value_id').val(currentNode.SET_VALUE.ID||'');
+        $('#edit_event_set_value_condition').val(currentNode.SET_VALUE.CONDITION);
+
+        var itemList = currentNode.SET_VALUE.SET_FIELD_LIST;
+        setValueCont.dataTable.clear().draw();
+        if(itemList){
+          for (var i = 0; i < itemList.length; i++) {
+              var item = itemList[i];
+              setValueCont.dataTable.row.add(item).draw(false);
+          }
+        }
+      }else if(currentNode.SET_CSS){
         $('#edit_event_css_id').val(currentNode.SET_CSS.ID||'');
         $('#edit_event_set_css_condition').val(currentNode.SET_CSS.CONDITION);
         $('#edit_set_css_target_field').val(currentNode.SET_CSS.TARGET_FIELD);
@@ -71,7 +84,8 @@ define(['jquery', 'zTree', './events/edit/type_set_css'], function ($, tree, set
             var sObj = $("#" + treeNode.tId + "_span");
             //如果是单据则不能在其下级添加节点
             if (treeNode.level==2 || treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
-            if (treeNode.level==1 || treeNode.type=='value_change') return;
+            if (treeNode.level==1 && treeNode.MENU_TYPE=='value_change') return;
+            if (treeNode.level==0 && treeNode.type=='default_event_root') return;
 
             var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
                 + "' title='添加' onfocus='this.blur();'></span>";
@@ -82,13 +96,21 @@ define(['jquery', 'zTree', './events/edit/type_set_css'], function ($, tree, set
                 var zTree = $.fn.zTree.getZTreeObj("editEventTree");
                 var nodeName = "新事件" + (newCount++);
                 if(treeNode.name == '值变化'){
-                  var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, type:'value_change'});
+                  var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, menu_type:'value_change'});
                   currentNode=newNodes[0];
                   $('#edit_event_name').val(currentNode.name);
                   $('#edit_event_type').val(currentNode.type);
                   $('#edit_event_field').val(currentNode.field);
+                }else if(treeNode.type == 'default_event_add_after_open' 
+                  || treeNode.type == 'default_event_edit_after_open' 
+                  || treeNode.type == 'default_event_save_before' 
+                  || treeNode.type == 'default_event_save_after' ){
+                    var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, menu_type: treeNode.type});
+                    currentNode=newNodes[0];
+                    $('#edit_event_name').val(currentNode.name);
+                    $('#edit_event_type').val(currentNode.type);
                 }else{
-                  var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, type:'btn'});
+                  var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, menu_type:'btn'});
                   currentNode=newNodes[0];
                   $('#edit_event_name').val(currentNode.name);
                   $('#edit_event_type').val(currentNode.type);
@@ -140,7 +162,15 @@ define(['jquery', 'zTree', './events/edit/type_set_css'], function ($, tree, set
                 }
                 var zNodes = [
                    { name:"工具栏按钮", isParent:true, open: true, children: btns, formId:$('#form_id').val()},
-                   { name:"值变化", isParent:true, formId:$('#form_id').val()}
+                   { name:"值变化", isParent:true, formId:$('#form_id').val()},
+                   { name:"表单默认事件", isParent:true, formId:$('#form_id').val(), type:'default_event_root',
+                      children: [
+                        { name:"新增-打开表单后", isParent:true, formId:$('#form_id').val(), type:'default_event_add_after_open'},
+                        { name:"修改-打开表单后", isParent:true, formId:$('#form_id').val(), type:'default_event_edit_after_open'},
+                        { name:"保存表单前", isParent:true, formId:$('#form_id').val(), type:'default_event_save_before'},
+                        { name:"保存表单后", isParent:true, formId:$('#form_id').val(), type:'default_event_save_after'}
+                      ]
+                   }
                 ];
 
                 zTreeObj = $.fn.zTree.init($("#editEventTree"), setting, zNodes);
@@ -170,8 +200,12 @@ define(['jquery', 'zTree', './events/edit/type_set_css'], function ($, tree, set
             var operation_type=$('#edit_event_type').val();
 
             currentNode.EVENT_NAME= event_name;
-            currentNode.type= operation_type;
             currentNode.SET_CSS = set_css_dto;
+         }else if(type=='set_value'){
+            var dto = setValueCont.buildDto();
+
+            currentNode.EVENT_NAME= event_name;
+            currentNode.SET_VALUE = dto;
          }
          zTreeObj.updateNode(currentNode);
     });
@@ -200,6 +234,8 @@ define(['jquery', 'zTree', './events/edit/type_set_css'], function ($, tree, set
           $('#edit_open_form_div').show();
        }else if(type == 'set_css'){
           $('#edit_set_css_div').show();
+       }else if(type == 'set_value'){
+          $('#edit_set_value_div').show();
        }
     });
 

@@ -95,7 +95,35 @@ public class FormController extends Controller {
         Long form_id = formRec.getLong("id");
         logger.debug("-------------Eeda module:"+module_id+", form_id:"+form_id+", action: "+action+"---------------");
         
-        if("tableConfig".equals(action)){
+        if("eventConfig".equals(action)){
+            List<Record> itemList = Db.find("select * from eeda_form_event where menu_type='default_event_add_after_open'"
+                    + " and form_id=?", form_id);
+            for (Record record : itemList) {
+                String type = record.getStr("type");
+                if("set_value".equals(type)){
+                    Record cssRec = Db.findFirst("select * from eeda_form_event_set_value where event_id=?", record.getLong("id"));
+                    record.set("set_value", cssRec);
+                    
+                    List<Record> list = Db.find("select * from eeda_form_event_set_value_item where "
+                            + " event_id=?", record.getLong("id"));
+                    for (Record rec : list) {
+                        String name = rec.getStr("name");
+                        Record field_rec = FormService.getFieldName(name.split("\\.")[0], name.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+                        String field_name = "form_"+field_rec.getLong("form_id")+"-f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
+                        rec.set("field_name", field_name);
+                        
+                        String value = rec.getStr("value");
+                        if("系统变量.当前用户名".equals(value)){
+                            String userName=user.getStr("c_name");
+                            rec.set("value", userName);
+                        }
+                    }
+                    record.set("set_value_item", list);
+                }
+            }
+            
+            renderJson(itemList);
+        }else if("tableConfig".equals(action)){
             String jsonStr = getPara("field_id_list");
             Gson gson = new Gson();
             ArrayList<String> fieldIdList = gson.fromJson(jsonStr, ArrayList.class);
@@ -122,9 +150,9 @@ public class FormController extends Controller {
                     + " menu_type='value_change' and form_id=?", form_id);
             for (Record event : recList) {
                 if("set_css".equals(event.getStr("type"))){
-                    Record cssRec = Db.findFirst("select * from eeda_form_event_css where event_id=?", event.getInt("id"));
+                    Record cssRec = Db.findFirst("select * from eeda_form_event_css where event_id=?", event.getLong("id"));
                     List<Record> cssItemList = Db.find("select * from eeda_form_event_css_item where "
-                            + " event_id=?", event.getInt("id"));
+                            + " event_id=?", event.getLong("id"));
                     cssRec.set("set_field_list", cssItemList);
                     event.set("set_css", cssRec);
                 }
@@ -136,7 +164,7 @@ public class FormController extends Controller {
                     + " btn_id=?", btn_id);
             for (Record event : recList) {
                 if("open".equals(event.getStr("type"))){
-                    Record rec = Db.findFirst("select * from eeda_form_event_open where event_id=?", event.getInt("id"));
+                    Record rec = Db.findFirst("select * from eeda_form_event_open where event_id=?", event.getLong("id"));
                     event.set("open", rec);
                 }
             }
@@ -345,6 +373,7 @@ public class FormController extends Controller {
             String fieldName=fieldRec.getStr("field_name");
             String replaceNameOrigin = "#{"+form_name+"."+fieldDisplayName+"}";
             String fieldType = fieldRec.getStr("field_type");
+            String read_only = fieldRec.getStr("read_only");
             String replaceNameDest ="";
             String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
             
@@ -352,8 +381,12 @@ public class FormController extends Controller {
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + "<input type='text' name='"+inputId+"' class='form-control'  placeholder='系统自动生成'>";//
             }else if("文本".equals(fieldType)){
+                String disabled = "";
+                if("Y".equals(read_only)){
+                    disabled = "disabled";
+                }
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
-                        + "<input type='text' name='"+inputId+"' class='form-control'>";
+                        + "<input type='text' name='"+inputId+"' class='form-control' "+disabled+" >";
             }else if("日期".equals(fieldType)){
                 replaceNameDest = "<div id='"+inputId+"_div'>"
                         + " <label class='search-label'>"+fieldDisplayName+"</label>"

@@ -20,11 +20,11 @@
                                     {code:'open', value:'打开表单'},
                                     {code:'set_css', value:'设置样式'},
                                     {code:'check', value:'检查表单'},
-                                    {code:'setValue', value:'赋值'},
+                                    {code:'set_value', value:'赋值'},
                                     {code:'save', value:'保存'},
                                     {code:'new', value:'新建表单'},
                                     {code:'delete', value:'删除表单'},
-                                    {code:'openUrl', value:'打开网页'},
+                                    {code:'open_url', value:'打开网页'},
                                     {code:'print', value:'打印'}
                                 ]
                             }){}%>
@@ -37,12 +37,16 @@
         <div class="row" id="${type}_set_css_div" style="display: none;">
             <%include("/profile/module/events/type/set_css.html", {type: type}){} %>
         </div>
+        <div class="row" id="${type}_set_value_div" style="display: none;">
+            <%include("/profile/module/events/type/set_value.html", {}){} %>
+        </div>
         <div class="row" id="${type}_check_form_div" style="display: none;">
             <%include("/profile/module/events/formular/formular_check_form.html", {}){} %>
         </div>
         <div class="row" id="${type}_assign_form_div" style="display: none;">
             <%include("/profile/module/events/formular/formular_assign_form.html", {}){} %>
         </div>
+
         <div class="row">
             <div class="form-group button-bar" >
                 <button type="button" class="btn btn-success" id="${type}EventConfirmBtn">确定</button>
