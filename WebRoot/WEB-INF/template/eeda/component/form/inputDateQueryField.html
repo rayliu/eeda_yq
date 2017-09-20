@@ -23,49 +23,52 @@
         </div>
  
     <script>
-    $(document).ready(function() {
-    	var type = '${date_type!}';
-    	var format = 'yyyy-MM-dd';
-    	var viewMode = 'days';
-    	if(type=='year'){
-    		format = 'yyyy';
-    		viewMode = 'years';
-    	}else if(type=='month'){
-    		format = 'yyyy-MM';
-    		viewMode = 'months';
-    	}
-    	
-    	
-    	//时间控件
-    	$('#${id}_begin_div').datetimepicker({  
-    	    format: format, 
-    	    viewMode: viewMode,
-    	    language: 'zh-CN'
-    	}).on('changeDate', function(ev){
-    	    $(".bootstrap-datetimepicker-widget").hide();   
-    	    $('#${id}_begin_time').trigger('keyup');
-    	});
+requirejs(['jquery', 'dataTablesBootstrap', 'datetimepicker_CN'], 
+    function ($) {
+        $(document).ready(function() {
+        	var type = '${date_type!}';
+        	var format = 'yyyy-MM-dd';
+        	var viewMode = 'days';
+        	if(type=='year'){
+        		format = 'yyyy';
+        		viewMode = 'years';
+        	}else if(type=='month'){
+        		format = 'yyyy-MM';
+        		viewMode = 'months';
+        	}
+        	
+        	
+        	//时间控件
+        	$('#${id}_begin_div').datetimepicker({  
+        	    format: format, 
+        	    viewMode: viewMode,
+        	    language: 'zh-CN'
+        	}).on('changeDate', function(ev){
+        	    $(".bootstrap-datetimepicker-widget").hide();   
+        	    $('#${id}_begin_time').trigger('keyup');
+        	});
 
-        //回显
-        var dateValue_begin = '${begin_value!''}';
-        if(dateValue_begin){
-            $('#${id}_begin_time').val(dateValue_begin.substr(0,10));
-        }
+            //回显
+            var dateValue_begin = '${begin_value!''}';
+            if(dateValue_begin){
+                $('#${id}_begin_time').val(dateValue_begin.substr(0,10));
+            }
 
-        //时间控件
-        $('#${id}_end_div').datetimepicker({  
-        	 format: format, 
-     	    viewMode: viewMode,
-            language: 'zh-CN'
-        }).on('changeDate', function(ev){
-            $(".bootstrap-datetimepicker-widget").hide();   
-            $('#${id}_end_time').trigger('keyup');
+            //时间控件
+            $('#${id}_end_div').datetimepicker({  
+            	 format: format, 
+         	    viewMode: viewMode,
+                language: 'zh-CN'
+            }).on('changeDate', function(ev){
+                $(".bootstrap-datetimepicker-widget").hide();   
+                $('#${id}_end_time').trigger('keyup');
+            });
+
+            //回显
+            var dateValue_end = '${end_value!''}';
+            if(dateValue_end){
+                $('#${id}_end_time').val(dateValue_end.substr(0,10));
+            }
         });
-
-        //回显
-        var dateValue_end = '${end_value!''}';
-        if(dateValue_end){
-            $('#${id}_end_time').val(dateValue_end.substr(0,10));
-        }
-    });
+});
     </script>
