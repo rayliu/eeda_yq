@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="consignmentBill" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="815"/>
+	<property name="ireport.y" value="60"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -253,60 +253,71 @@ where cpo.id = $P{order_id}]]>
 				</graphicElement>
 			</line>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="45" y="82" width="100" height="20" uuid="60bb636f-042d-496c-8e15-e56c0a651e4a"/>
+				<reportElement x="45" y="81" width="100" height="20" uuid="60bb636f-042d-496c-8e15-e56c0a651e4a"/>
 				<textFieldExpression><![CDATA[$F{shipping_date}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="399" y="74" width="156" height="20" uuid="5e96462b-e441-4d32-a80c-44d34df63631"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="399" y="73" width="156" height="20" uuid="5e96462b-e441-4d32-a80c-44d34df63631"/>
 				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
 				<textFieldExpression><![CDATA[$F{customs_number}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="44" y="100" width="140" height="20" uuid="2fb80ea7-e23c-4670-95ae-25ddd6830237"/>
-				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="44" y="99" width="140" height="20" uuid="2fb80ea7-e23c-4670-95ae-25ddd6830237"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{boat_company_name}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="214" y="102" width="137" height="20" uuid="159547fe-e9b0-4c27-83db-8ae50f470b03"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="214" y="101" width="137" height="20" uuid="159547fe-e9b0-4c27-83db-8ae50f470b03"/>
 				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
 				<textFieldExpression><![CDATA[$F{boat_name}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="399" y="103" width="156" height="20" uuid="b7be3891-e5b0-497d-8a42-d0ae97212e0c"/>
-				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="399" y="101" width="156" height="20" uuid="b7be3891-e5b0-497d-8a42-d0ae97212e0c"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{appointed_port_name}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="45" y="129" width="311" height="20" uuid="d1f4a588-2da3-4fd4-93a2-02c97f820c5d"/>
-				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="45" y="128" width="311" height="20" uuid="d1f4a588-2da3-4fd4-93a2-02c97f820c5d"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{shipping_men_name}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="45" y="159" width="314" height="20" uuid="a4be965e-8d6f-4418-a218-9057ae31022e"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{consignee_name}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="44" y="190" width="311" height="20" uuid="5490c036-1b13-4ad5-91b9-d64d4ac5589b"/>
-				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="44" y="189" width="311" height="20" uuid="5490c036-1b13-4ad5-91b9-d64d4ac5589b"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{notice_man_name}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="399" y="132" width="156" height="20" uuid="465971f3-a103-4e5f-9b70-5b5cceb85537"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="399" y="131" width="156" height="20" uuid="465971f3-a103-4e5f-9b70-5b5cceb85537"/>
 				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
 				<textFieldExpression><![CDATA[$F{shipping_men_phone}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="399" y="163" width="156" height="20" uuid="43b7c478-644c-4e20-b84e-dd587d1ec4a2"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="399" y="162" width="156" height="20" uuid="43b7c478-644c-4e20-b84e-dd587d1ec4a2"/>
 				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
 				<textFieldExpression><![CDATA[$F{consignee_phone}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="399" y="193" width="156" height="20" uuid="b31f8e03-1ebf-4371-8db4-26f806cb10fe"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="399" y="192" width="156" height="20" uuid="b31f8e03-1ebf-4371-8db4-26f806cb10fe"/>
 				<textElement textAlignment="Left" verticalAlignment="Bottom"/>
 				<textFieldExpression><![CDATA[$F{notice_man_phone}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="0" y="262" width="555" height="410" uuid="f8d52200-ce08-4a0d-9571-b54e2b0cbb1e"/>
+				<reportElement x="0" y="282" width="555" height="390" uuid="f8d52200-ce08-4a0d-9571-b54e2b0cbb1e"/>
 				<subreportParameter name="order_id">
 					<subreportParameterExpression><![CDATA[$P{order_id}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -317,13 +328,6 @@ where cpo.id = $P{order_id}]]>
 	</columnHeader>
 	<columnFooter>
 		<band height="130">
-			<staticText>
-				<reportElement x="0" y="1" width="555" height="20" uuid="e36ce9a9-8a19-4d03-9a25-837838b9dfdf"/>
-				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[            合计                 件                             公斤        公斤]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="0" y="80" width="104" height="20" uuid="35382747-b0fb-4798-b594-d610161afc97"/>
 				<textElement>
@@ -339,25 +343,19 @@ where cpo.id = $P{order_id}]]>
 				<text><![CDATA[ (申请单位盖章/签名)]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="0" width="555" height="1" uuid="e4cbe086-a726-44f3-b6e8-1fe362d7fc76"/>
+				<reportElement x="0" y="0" width="555" height="1" uuid="92064dd2-e996-4f52-a8aa-0697622d3571"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="0" y="20" width="555" height="1" uuid="92064dd2-e996-4f52-a8aa-0697622d3571"/>
-				<graphicElement>
-					<pen lineWidth="1.0"/>
-				</graphicElement>
-			</line>
-			<line>
-				<reportElement x="22" y="21" width="1" height="59" uuid="c16c1833-6b1e-4080-9bb9-0996c3cc0a21"/>
+				<reportElement x="22" y="0" width="1" height="78" uuid="c16c1833-6b1e-4080-9bb9-0996c3cc0a21"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="0" y="21" width="555" height="59" uuid="387b2c83-575a-4bc4-8f86-901eb5dd450f"/>
+				<reportElement x="0" y="4" width="555" height="74" uuid="387b2c83-575a-4bc4-8f86-901eb5dd450f"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -373,7 +371,7 @@ where cpo.id = $P{order_id}]]>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement x="426" y="21" width="1" height="80" uuid="f1e50634-23b9-4b37-bca0-deff53aa0f5f"/>
+				<reportElement x="426" y="0" width="1" height="101" uuid="f1e50634-23b9-4b37-bca0-deff53aa0f5f"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
