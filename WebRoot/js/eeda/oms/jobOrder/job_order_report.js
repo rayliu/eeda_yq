@@ -281,7 +281,7 @@ $(document).ready(function() {
     		alert+='目的港<br><br>';
     	}
     	if($('#closing_date').val()==''){
-    		alert+='截关日期<br><br>';
+    		alert+='CUT OFF<br><br>';
     	}
     	if($('#etd').val()==''){
     		alert+='ETD<br><br>';
