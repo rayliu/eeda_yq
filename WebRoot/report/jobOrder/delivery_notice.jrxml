@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="628"/>
+	<property name="ireport.y" value="100"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -241,18 +241,30 @@ WHERE jdwb.order_id = $P{order_id}]]>
 			</staticText>
 			<staticText>
 				<reportElement x="40" y="45" width="102" height="17" uuid="e0ed60f3-a77b-4c02-8755-5b27e5a8f1ab"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[贵公司委托我司出运到]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="18" y="89" width="97" height="15" uuid="d95021c2-7fef-45d9-bad9-faa001def9b7"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[将货物按照此编号：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="328" y="89" width="113" height="15" uuid="d6ace1e7-ef42-40ac-b4e9-16493ade8207"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[前送达我司仓库]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="40" y="1" width="288" height="20" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{company_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
@@ -261,30 +273,51 @@ WHERE jdwb.order_id = $P{order_id}]]>
 			</textField>
 			<staticText>
 				<reportElement x="308" y="45" width="47" height="17" uuid="ff97411e-17a6-4bcb-adb8-69f2237ce5fc"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[预定船期:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="40" y="62" width="52" height="17" uuid="2d0df0d2-8125-4ea2-9594-a19f6a5a23c0"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[委托件数：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="309" y="62" width="41" height="17" uuid="5aa20012-593b-4750-b9cc-ffa8cb2f03fc"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[毛重：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="18" y="104" width="60" height="16" uuid="7250009b-c48f-42d5-99b2-4e4fff8a1a0b"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[仓库地址：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="26" y="618" width="66" height="18" uuid="c6c1f815-a510-4fb1-a7c1-475048ffaa5d"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[并请贵司于：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="184" y="618" width="121" height="18" uuid="7fc57b31-cf38-4155-bd2f-4ea1e377e87a"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[前将报关资料送至我司：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="27" y="672" width="58" height="18" uuid="7297f2f6-c518-49e2-946a-442d886a03b7"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[联系人(收):]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
@@ -313,16 +346,22 @@ WHERE jdwb.order_id = $P{order_id}]]>
 			</textField>
 			<staticText>
 				<reportElement x="18" y="120" width="60" height="18" uuid="dc5a9609-cd6e-45f2-93fa-609394ce2dc4"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[仓库联系人：]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="78" y="104" width="477" height="16" uuid="eb41ea91-d817-443d-adbd-72e84bad298c"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{dock_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="27" y="529" width="482" height="88" uuid="01e1e0f1-830d-409b-b741-4d9ccc4fc2a4"/>
 				<textElement>
-					<font size="11"/>
+					<font fontName="黑体" size="11" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{warehouse_bill_remark}]]></textFieldExpression>
 			</textField>
@@ -332,22 +371,37 @@ WHERE jdwb.order_id = $P{order_id}]]>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="27" y="636" width="528" height="18" uuid="567a8350-caf3-484f-a4d5-8d6602738d95"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="27" y="654" width="528" height="18" uuid="8a36fc90-a2b8-4078-bf62-5bb82ba247ce"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="40" y="20" width="288" height="20" uuid="5ac9cea2-c7ec-4b6f-9fbc-7f3b0a16332e"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{operator}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="84" y="672" width="100" height="18" uuid="3afc27c7-d20b-44d3-8e2a-e4827f0a91c0"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="206" y="672" width="50" height="18" uuid="abe178ba-8be9-42db-b91f-280bc4ffea80"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<text><![CDATA[联系电话:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
@@ -360,6 +414,9 @@ WHERE jdwb.order_id = $P{order_id}]]>
 			</image>
 			<textField isBlankWhenNull="true">
 				<reportElement x="78" y="120" width="450" height="18" uuid="c1665552-e207-402a-8a27-84e806449e2e"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{contact_tei}]]></textFieldExpression>
 			</textField>
 		</band>
