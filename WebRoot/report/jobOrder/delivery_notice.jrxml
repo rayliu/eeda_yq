@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="628"/>
+	<property name="ireport.y" value="196"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -410,7 +410,7 @@ WHERE jdwb.order_id = $P{order_id}]]>
 			</textField>
 			<image>
 				<reportElement x="25" y="144" width="484" height="385" uuid="26f76c86-e8c6-4c97-be21-51bd6a9b1553"/>
-				<imageExpression><![CDATA["http://forwarder.esimplev.com/upload/dockinfo/"+$F{picture_link}]]></imageExpression>
+				<imageExpression><![CDATA[$F{picture_link}.equals(null)?"":"http://forwarder.esimplev.com/upload/dockinfo/"+$F{picture_link}]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
 				<reportElement x="78" y="120" width="450" height="18" uuid="c1665552-e207-402a-8a27-84e806449e2e"/>
