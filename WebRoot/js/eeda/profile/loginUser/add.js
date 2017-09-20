@@ -296,6 +296,10 @@ $(document).ready(function(){
         if(!$("#leadsForm").valid()){
             return;
         }
+        if($("#username").val()==''||$("#username").val()==undefined){
+        	$.scojs_message('用户名(必填),不能为空', $.scojs_message.TYPE_ERROR);
+            return;
+        }
         $.blockUI({ 
             message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
         });
