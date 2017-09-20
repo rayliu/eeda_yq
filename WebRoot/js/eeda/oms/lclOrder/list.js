@@ -151,21 +151,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 
 
 
-      //base on config hide cols
-      dataTable.columns().eq(0).each( function(index) {
-          var column = dataTable.column(index);
-          $.each(cols_config, function(index, el) {
-              
-              if(column.dataSrc() == el.COL_FIELD){
-                
-                if(el.IS_SHOW == 'N'){
-                  column.visible(false, false);
-                }else{
-                  column.visible(true, false);
-                }
-              }
-          });
-      });
+
       
       var checkNum = 0;
       $('#eeda-table').on('click','[name=checkBox]',function(){
@@ -196,7 +182,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
       //简单查询
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
-	      if(selectField == 'sono_like'||selectField == 'container_no'||selectField == 'old_order_no'||selectField == 'order_no'||selectField == 'customer_code_like'){
+	      if(selectField == 'hbl_no_like'||selectField == 'container_no'||selectField == 'old_order_no'||selectField == 'order_no'||selectField == 'customer_code_like'){
 	    	  $('#public_text').val("");
 	    	  $('#customer_name_show').hide();
 	    	  $('#single_export_type_list').hide();
@@ -226,7 +212,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 	$('#singleSearchBtn').click(function(){
 	     var selectField = $('#selected_field').val();
 	     var selectFieldValue = '';
-	     if(selectField == 'sono_like'||selectField == 'container_no'||selectField == 'old_order_no'||selectField == 'order_no'||selectField == 'customer_code_like'){
+	     if(selectField == 'hbl_no_like'||selectField == 'container_no'||selectField == 'old_order_no'||selectField == 'order_no'||selectField == 'customer_code_like'){
 	    	  selectFieldValue = $("#public_text").val();
 	      }else if(selectField == 'type'){
 	    	  selectFieldValue = $("#single_export_type_list").val();
@@ -242,7 +228,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           }
 	     
      
-	     var url = "/jobOrder/list?"+selectField+"="+selectFieldValue
+	     var url = "/lclOrder/list?"+selectField+"="+selectFieldValue
 	     			+"&create_stamp_begin_time="+start_date
 	     			+"&create_stamp_end_time="+end_date
 	     			+"&type_="+type
@@ -280,16 +266,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           var export_type = $('#type').val();
           var customer_code = $("#customer_code").val().trim();
           var customer_name = $("#customer_name_input").val().trim();
-          var sono = $("#sono").val().trim();
+          var hbl_no = $("#hbl_no").val().trim();
           var container_no = $("#container_no").val().trim();
           //var order_type = $("#order_type").val().trim();
           var custom_status = $("#custom_status").val();
           var transport_type = type;
           //增加出口日期查询
-          var url = "/jobOrder/list?order_no="+order_no
+          var url = "/lclOrder/list?order_no="+order_no
                +"&old_order_no="+old_order_no
           	   +"&type_equals="+export_type
-               +"&sono_like="+sono
+               +"&hbl_no_like="+hbl_no
                +"&container_no="+container_no
           	   +"&transport_type_like="+transport_type
           	   +"&customer_code_like="+customer_code
@@ -327,7 +313,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
       
       
       
-      var dataTable = eeda.dt({
+      var orderTable = eeda.dt({
           id: 'lcl_table',
           sort:true,
           colReorder: true,

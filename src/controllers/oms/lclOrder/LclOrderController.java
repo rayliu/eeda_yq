@@ -179,6 +179,10 @@ public class LclOrderController extends Controller {
    			//DbUtils.handleList(itemList, id, PlanOrderItem.class, "order_id");
    	   		for(Map<String, String> map : itemList){
    	   			String job_id = map.get("id");
+   	   			Record jobRe = Db.findById("job_order", job_id);
+   	   			jobRe.set("lcl_order_flag", "Y");
+   	   			Db.update("job_order",jobRe);
+   	   			
    	   			Record item = new Record();
    	   			item.set("job_order_id", job_id);
    	   			item.set("order_id", id);
@@ -470,21 +474,21 @@ public class LclOrderController extends Controller {
         	ref_office = " or jor.office_id in ("+relist.getStr("office_id")+")";
         }
         
-         sql = 		"SELECT * from (select jor.*, loc.name as pod_name,jos.sono,jos.mbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\" / \",jos.mbl_no), \"\")) AS sono_mbl,if(jor.office_id != "+office_id+",'other','self') other_flag,"
-         			+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
-         			+" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
-        		 	+" FROM  job_order_shipment_item josi  "
-        		 	+" LEFT JOIN job_order jo on jo.id=josi.order_id "
-        		 	+" WHERE josi.order_id =jor.id) container_no, "
-        		 	+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
-					+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
-					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge, "
-         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code,ifnull(u1.c_name, u1.user_name) updator_name"
+     sql = 		"SELECT * from (select jor.*, loc.name as pod_name,jos.sono,jos.mbl_no,jos.hbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\" / \",jos.mbl_no), \"\")) AS sono_mbl,if(jor.office_id != "+office_id+",'other','self') other_flag,"
+     			+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
+     			+" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
+    		 	+" FROM  job_order_shipment_item josi  "
+    		 	+" LEFT JOIN job_order jo on jo.id=josi.order_id "
+    		 	+" WHERE josi.order_id =jor.id) container_no, "
+    		 	+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
+				+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
+				+ " LEFT JOIN currency c ON c.id = joa.currency_id "
+				+ " WHERE joa.order_id=jor.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
+				+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
+				+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
+				+ " LEFT JOIN currency c ON c.id = joa.currency_id "
+				+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge, "
+				+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code,ifnull(u1.c_name, u1.user_name) updator_name"
          		+ "	from job_order jor"
          		+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
          		+ " left join job_order_custom_china_self_item jocc on jocc.order_id = jor.id"
@@ -498,6 +502,7 @@ public class LclOrderController extends Controller {
          		+ " WHERE (jor.office_id="+office_id+ ref_office+ ")"
          	    + " and jor.delete_flag = 'N'"
          	    + " and jor.status = '新建'"
+         	    + " and ifnull(jor.lcl_order_flag,'') != 'Y'"
          	    + " GROUP BY jor.id "
          	    + " ) A where 1 = 1 ";
         

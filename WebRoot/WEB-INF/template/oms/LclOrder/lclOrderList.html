@@ -26,7 +26,7 @@
                         	<div class="search_single">
                             	<select id="selected_field" name="selected_field" class="form-control search-label">
                               		<option value="order_no">工作单号</option>
-	                            	<option value="sono_like">SO号</option>
+	                            	<option value="hbl_no_like">HBL_NO</option>
 	                               	<option value="container_no">柜号</option>
 	                               	<option value="type">出货类型</option>	                                	
 	                                <option value="old_order_no">旧工作单号</option>
@@ -157,8 +157,8 @@
                                         </div>
                                         <div class="col-lg-4"><!--  三列排版  -->
                                             <%include("/eeda/component/form/inputField.html", 
-                                                                {   id: 'sono', 
-                                                                    label: 'SO号', 
+                                                                {   id: 'hbl_no', 
+                                                                    label: 'HBL_NO', 
                                                                     value: ''
                                                                 }){}%>
                                         </div>
@@ -253,6 +253,7 @@
                     <%include("/eeda/component/form/detailTable.html", 
                         {
                             id:'eeda-table', 
+                            style:'width:1800px',
                             headers:['','','工作单号',
                                 '类型',
                                 '出货时间',
@@ -273,13 +274,14 @@
              <%include("/eeda/component/form/detailTable.html", 
                         {
                             id:'lcl_table', 
+                            style:'width:1700px',
                             headers:['拼箱单号',
                                 '服务类型',
                                 '运输条款',
                                 '贸易类型',
-                                '发货人MBLShipper',
-                                '收货人MBLConsignee',
-                                '通知人MBLNotifyParty  ',
+                                'MBLShipper',
+                                'MBLConsignee',
+                                'MBLNotifyParty  ',
                                 '创建人',
                                 '创建时间',
                                 '状态']
