@@ -29,6 +29,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.ParentOffice;
 
 @RequiresAuthentication
@@ -339,6 +340,13 @@ public class CarinfoController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
     	String id = getPara("id");
+	    UserLogin user1 = LoginUserController.getLoginUser(this);
+	    long office_id=user1.getLong("office_id");
+	    //判断与登陆用户的office_id是否一致
+	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("carinfo", Long.valueOf(id), office_id)){
+	    	renderError(403);// no permission
+	        return;
+	    }
 //        Carinfo carinfo = Carinfo.dao.findById(id);
        String sqlString="SELECT c.*,p.abbr parent_id_input FROM carinfo c LEFT JOIN party p on p.id=c.parent_id "
     		   			+" WHERE c.id="+id;

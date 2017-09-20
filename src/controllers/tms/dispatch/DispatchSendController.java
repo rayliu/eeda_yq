@@ -47,6 +47,7 @@ import com.jfinal.upload.UploadFile;
 
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
@@ -875,6 +876,13 @@ public class DispatchSendController extends Controller {
     @Before({EedaMenuInterceptor.class, Tx.class})
     public void edit() {
     	String id = getPara("id");
+	    UserLogin user1 = LoginUserController.getLoginUser(this);
+	    long office_id=user1.getLong("office_id");
+	    //判断与登陆用户的office_id是否一致
+	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("trans_job_order", Long.valueOf(id), office_id)){
+	    	renderError(403);// no permission
+	        return;
+	    }
     	String str=" select tjo.*,di.dock_name take_wharf_name ,di1.dock_name back_wharf_name,di2.dock_name cross_border_travel_name from trans_job_order tjo "
 					+" LEFT JOIN dockinfo di on di.id=tjo.take_wharf "
 					+" LEFT JOIN dockinfo di1 on di1.id=tjo.back_wharf "
