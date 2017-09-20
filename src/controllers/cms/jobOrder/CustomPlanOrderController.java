@@ -367,7 +367,10 @@ public class CustomPlanOrderController extends Controller {
     			r.set("shipping_men", shipping_men);
     		}
     		if(!"".equals(boat_company)){
-    			r.set("consignee", consignee);
+    			if(StringUtils.isNotEmpty(consignee)){
+    				r.set("consignee", consignee);
+    			}
+    			
     		}
     		if(!"".equals(appointed_port)){
     			r.set("appointed_port", appointed_port);
