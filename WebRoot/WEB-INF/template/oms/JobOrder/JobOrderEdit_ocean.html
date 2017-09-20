@@ -688,6 +688,9 @@
            	 <button id="printKFHBL" class="btn btn_green"  disableStr>生成HBL PDF</button>
            	 <button id="printKFAgentHBL" class="btn btn_green"  disableStr>生成代理HBL PDF</button>
            	 <%}%>
+           	 <% if(shiro.hasPermission("jobOrder.BlankHBL")){ %>
+           	 <button id="printBlankHBL" class="btn btn_green"  disableStr>生成HBL PDF</button>
+           	 <%}%>
            	 <button id="printOceanWord" class="btn btn_green" disableStr>生成电放保函  Word</button>
            	 <button id="printOceanBooking" class="btn btn_green" disableStr>生成booking PDF</button>
            	 <button id="printOceanSI" class="btn btn_green" disableStr>生成SI MBLPDF</button>

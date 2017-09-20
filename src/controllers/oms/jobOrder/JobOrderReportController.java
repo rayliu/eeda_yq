@@ -164,7 +164,12 @@ public class JobOrderReportController extends Controller {
 			 fileName = "/report/jobOrder/KF_doc/KFAgentHBL.jasper";
 			 outFileName = "/download/"+hbl_no;
 		}
-		
+		if("printBlankHBL".equals(printHBL)){
+			 fileName = "/report/jobOrder/KF_doc/BlankHBL.jasper";
+			 outFileName = "/download/"+hbl_no;
+			//打印的同时保存到相关信息文档
+			savePDF(order_id,hbl_no,"two");
+		}
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
