@@ -34,6 +34,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import controllers.eeda.SysInfoController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.PoiUtils;
 
@@ -278,7 +279,13 @@ public class CmsChargeCheckOrderController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit(){
 		String id = getPara("id");
-
+	    UserLogin user1 = LoginUserController.getLoginUser(this);
+	    long office_id=user1.getLong("office_id");
+	    //判断与登陆用户的office_id是否一致
+	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("custom_arap_charge_order", Long.valueOf(id), office_id)){
+	    	renderError(403);// no permission
+	        return;
+	    }
 		CustomArapChargeOrder order = CustomArapChargeOrder.dao.findById(id);
 		Long create_by = order.getLong("create_by");
 		Long confirm_by = order.getLong("confirm_by");
