@@ -106,7 +106,9 @@ public class AirRouteReportController extends Controller {
             
         }
         
-        condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
+        if(StringUtils.isNotBlank(begin_date)||StringUtils.isNotBlank(end_date)){
+        	condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
+        }
         if(StringUtils.isNotBlank(type)){
         	condition+=" and jo.type = '"+type+"'";
         }
@@ -121,9 +123,7 @@ public class AirRouteReportController extends Controller {
                 + "     SUM(IFNULL(volume, 0)) volume,"
                 + "     SUM(IFNULL(ari_kg, 0)) ari_kg"
                 + " FROM"
-                + "     (SELECT "
-                + "         CAST(CONCAT(YEAR(jo.order_export_date), '-', MONTH(jo.order_export_date))"
-                + "                 AS CHAR) order_export_date,"
+                + "     (SELECT "+group_condition+" order_export_date,"
                 + "             jo.customer_id,"
                 + "             p.abbr customer_name,"
                 + "             (select group_concat("

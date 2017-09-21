@@ -105,8 +105,9 @@ public class ProfitReportController extends Controller {
             }
             
         }
-        
-        condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
+        if(StringUtils.isNotBlank(begin_date)||StringUtils.isNotBlank(end_date)){
+        	condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
+        }
         if(StringUtils.isNotBlank(type)){
         	condition+=" and jo.type = '"+type+"'";
         }

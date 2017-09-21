@@ -55,12 +55,6 @@ public class OceanRouteReportController extends Controller {
         String type = getPara("type");
         String condition = "";
         String group_condition="";
-        if(StringUtils.isNotEmpty(customer_id)){
-            condition += " and jo.customer_id = "+customer_id;
-        }
-        if(StringUtils.isNotBlank(type)){
-        	condition+=" and jo.type = '"+type+"'";
-        }
         
         if("year".equals(date_type)){
             if(StringUtils.isNotEmpty(begin_date)){
@@ -110,8 +104,15 @@ public class OceanRouteReportController extends Controller {
             
         }
         
-        condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
-        
+        if(StringUtils.isNotEmpty(customer_id)){
+            condition += " and jo.customer_id = "+customer_id;
+        }
+        if(StringUtils.isNotBlank(type)){
+        	condition+=" and jo.type = '"+type+"'";
+        }
+        if(StringUtils.isNotBlank(begin_date)||StringUtils.isNotBlank(end_date)){
+        	condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
+        }
         
         String sql = "SELECT  "
                 + "        order_export_date, "
@@ -124,9 +125,7 @@ public class OceanRouteReportController extends Controller {
                 + "        SUM(IFNULL(ocean_fcl_teu, 0)) ocean_fcl_teu, "
                 + "        SUM(IFNULL(ocean_lcl_cbm, 0)) ocean_lcl_cbm "
                 + "    FROM "
-                + "        (SELECT  "
-                + "            CAST(CONCAT(YEAR(jo.order_export_date), '-', MONTH(jo.order_export_date)) "
-                + "                    AS CHAR) order_export_date, "
+                + "        (SELECT "+group_condition+" order_export_date, "
                 + "                jo.customer_id, "
                 + "                concat(ifnull(pol.name,''), ' -', ifnull(hub.name,''), '- ', ifnull(pod.name,'')) route, "
                 + "                jo.pieces, "
