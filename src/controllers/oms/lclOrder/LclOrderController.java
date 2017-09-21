@@ -562,20 +562,28 @@ public class LclOrderController extends Controller {
         	ref_office = " or jor.office_id in ("+relist.getStr("office_id")+")";
         }
         
-         sql = "select lor.*,ul.c_name creator_name,"
+        String condition = DbUtils.buildConditions(getParaMap());
+        sql = "select lor.*,ul.c_name creator_name,"
          		+ " p1.abbr MBLshipper_name,"
          		+ " p2.abbr MBLconsignee_name,"
-         		+ " p3.abbr MBLnotify_party_name"
+         		+ " p3.abbr MBLnotify_party_name,"
+         		+ " GROUP_CONCAT(jor.order_no) job_order_no, "
+         		+ " GROUP_CONCAT(jos.pol) pol,"
+         		+ " GROUP_CONCAT(jos.pod) pod,"
+         		+ " GROUP_CONCAT(jos.mbl_no) mbl_no"
          		+ " from lcl_order lor"
+         		+ " LEFT JOIN lcl_order_item loi on loi.order_id = loi.id"
+         		+ " LEFT JOIN job_order jor on jor.id = loi.job_order_id"
+         		+ " LEFT JOIN job_order_shipment jos on jos.order_id = jor.id"
 		        + " left join party p1 on p1.id = lor.MBLshipper" 
 		        + " left join party p2 on p2.id = lor.MBLconsignee " 
 		        + " left join party p3 on p3.id = lor.MBLnotify_party "
-		        + " left join user_login ul on ul.id = lor.creator "; 
-        
-        
-        String condition = DbUtils.buildConditions(getParaMap());
+		        + " left join user_login ul on ul.id = lor.creator "
+		        +  condition
+		        + " group by lor.id"; 
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+
+        String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
@@ -586,14 +594,9 @@ public class LclOrderController extends Controller {
         		sLimit = " LIMIT 0, " + getPara("length");
         		pageIndex = "1";
         	}
-            
-            if("lock".equals(type)){
-            	sLimit = "";
-            }
         }
         
-        List<Record> orderList = Db.find(sql+ condition + " order by " + sName +" "+ sort +sLimit);
-        System.out.println(sql+ condition + " order by " + sName +" "+ sort +sLimit);
+        List<Record> orderList = Db.find("select * from (" +sql + ") A order by " + sName +" "+ sort +sLimit);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
