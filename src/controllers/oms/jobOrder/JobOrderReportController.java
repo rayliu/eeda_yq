@@ -192,6 +192,11 @@ public class JobOrderReportController extends Controller {
    		String id = (String) dto.get("id");
    		String order_id = (String) dto.get("order_id");
 		String SONO = (String) dto.get("SONO");
+		if(StringUtils.isNotBlank(SONO)){
+			if(SONO.contains("/")){
+				SONO = SONO.replaceAll("/", ",");
+			}
+		}
    		
    		JobOrderShipmentHead jsh = new JobOrderShipmentHead();
    		
