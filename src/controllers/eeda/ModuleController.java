@@ -260,7 +260,7 @@ public class ModuleController extends Controller {
                         "select * from eeda_form_event where id=?", id);
                 rec.set("name", event.get("name"));
                 rec.set("type", event.get("type"));
-                rec.set("menu_type", event.get("menu_type"));
+                rec.set("menu_type", event.get("menu_type".toUpperCase()));
                 
                 String type = (String) event.get("type");
                 if ("open".equals(type)) {
@@ -280,6 +280,7 @@ public class ModuleController extends Controller {
                 rec.set("type", event.get("type"));
                 rec.set("form_id", form_id);
                 rec.set("btn_id", event.get("btn_id"));
+                
                 rec.set("menu_type", event.get("menu_type"));
                
                 Db.save("eeda_form_event", rec);
@@ -481,7 +482,7 @@ public class ModuleController extends Controller {
             if ("open".equals(eventType)) {
                 Record openRec = Db.findFirst(
                         "select * from eeda_form_event_open where event_id=?",
-                        event.getInt("id"));
+                        event.getLong("id"));
                 event.set("open_form", openRec);
             }else if("set_css".equals(eventType)){
                 Record cssRec = Db.findFirst(
@@ -635,8 +636,8 @@ public class ModuleController extends Controller {
         // 每个子表中默认有ID, PARENT_form_ID, eeda_delete字段，请勿添加同名字段。
         String createTableSql = "CREATE TABLE if not exists `" + tableName
                 + "` (" + " `id` BIGINT(20) NOT NULL AUTO_INCREMENT,"
-                + " `parent_form_id` BIGINT(20) NULL,"
-                + " `eeda_delete` char(1) NOT NULL DEFAULT 'N',"
+//                + " `parent_form_id` BIGINT(20) NULL,"
+//                + " `eeda_delete` char(1) NOT NULL DEFAULT 'N',"
                 + "PRIMARY KEY (`id`))";
         Db.update(createTableSql);
 
