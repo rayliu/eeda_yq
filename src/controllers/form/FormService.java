@@ -37,7 +37,7 @@ public class FormService {
         
         List<Record> list = Db.find(
                 "select * from eeda_form_field_type_checkbox_item where field_id=?", field_id);
-        returnStr = "<label class='label-margin'>"+fieldDisplayName+"</label> ";
+        returnStr = "<label class='label-margin'>"+fieldDisplayName+"</label> <div style='padding-top: 8px;'>";
         for (Record r : list) {
             String name = r.getStr("name");
             String code = r.getStr("code");
@@ -52,7 +52,7 @@ public class FormService {
                     + name+"</label>";
             returnStr+=checkboxStr;
         }
-        return returnStr;
+        return returnStr+"</div>";
     }
     @SuppressWarnings("unchecked")
     @Before(Tx.class)
