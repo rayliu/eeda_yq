@@ -132,7 +132,7 @@ public class LclOrderController extends Controller {
    		order.set("transport_type", transportType);
    		setAttr("order", order);
    		
-        render("/oms/LclOrder/lclOrderEdit.html");
+        render("/oms/LclOrder/LclOrderEdit.html");
     }
     
     @Before(Tx.class)
@@ -568,16 +568,18 @@ public class LclOrderController extends Controller {
          		+ " p2.abbr MBLconsignee_name,"
          		+ " p3.abbr MBLnotify_party_name,"
          		+ " GROUP_CONCAT(jor.order_no) job_order_no, "
-         		+ " GROUP_CONCAT(jos.pol) pol,"
-         		+ " GROUP_CONCAT(jos.pod) pod,"
+         		+ " GROUP_CONCAT(l1.name) pol,"
+         		+ " GROUP_CONCAT(l2.name) pod,"
          		+ " GROUP_CONCAT(jos.mbl_no) mbl_no"
          		+ " from lcl_order lor"
-         		+ " LEFT JOIN lcl_order_item loi on loi.order_id = loi.id"
+         		+ " LEFT JOIN lcl_order_item loi on loi.order_id = lor.id"
          		+ " LEFT JOIN job_order jor on jor.id = loi.job_order_id"
          		+ " LEFT JOIN job_order_shipment jos on jos.order_id = jor.id"
 		        + " left join party p1 on p1.id = lor.MBLshipper" 
 		        + " left join party p2 on p2.id = lor.MBLconsignee " 
 		        + " left join party p3 on p3.id = lor.MBLnotify_party "
+		        + " LEFT JOIN location l1 on l1.id = jos.pol"
+		        + " LEFT JOIN location l2 on l2.id = jos.pod"
 		        + " left join user_login ul on ul.id = lor.creator "
 		        +  condition
 		        + " group by lor.id"; 
