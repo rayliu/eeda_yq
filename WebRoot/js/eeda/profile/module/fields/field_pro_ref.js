@@ -48,7 +48,7 @@ define(['jquery'], function ($) {
               REF_FORM: $('#ref_form').val(),
               REF_FIELD: $('#ref_field').val(),
               IS_DROPDOWN: $('#is_dropdown').prop('checked')==true?'Y':'N',
-              REF_CONDITION: $('#ref_condition').va()
+              REF_CONDITION: $('#ref_condition').val()
             };
             // var data = dataTable.rows().data();
             // var inputs = dataTable.$('input, select');

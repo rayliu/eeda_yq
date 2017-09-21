@@ -175,7 +175,7 @@ public class FormController extends Controller {
             }else if("view".equals(action)){
                 
             }else if("add".equals(action)){
-                edit(form_id, -1l, formRec);
+                edit(form_id, null, formRec);
             }else if("list".equals(action)){
                 list(form_id);
                 render("/eeda/form/listTemplate.html");
