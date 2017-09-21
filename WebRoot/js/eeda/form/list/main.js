@@ -28,7 +28,7 @@ define(['jquery', '../btns'], function ($) {
         var dataTable = eeda.dt({
             id: 'list_table',
             paging: true,
-            serverSide: false,
+            serverSide: true,
             columns: colsSetting
         });
 
