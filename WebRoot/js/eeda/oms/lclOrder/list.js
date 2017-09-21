@@ -41,20 +41,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           columns: [
 				{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
-				    	if(full.STATUS!='已完成'){
-				    		return '<input type = "checkBox" name = "checkBox">';
-				    	}else{
-				    		return '<input type = "checkBox" disabled name = "checkBox">';
-				    	}
-				      
+				    	return '<input type = "checkBox" name = "checkBox">';
 				    }
 				},
-              { "width": "30px",
-                  "render": function ( data, type, full, meta ) {
-                    return '<button type="button" class="btn table_btn delete btn-xs" >'+
-                          '<i class="fa fa-trash-o"></i> 删除</button>';
-                  }
-              },
               { "data": "ORDER_NO", 
                   "render": function ( data, type, full, meta ) {
                 	  var other = '';
