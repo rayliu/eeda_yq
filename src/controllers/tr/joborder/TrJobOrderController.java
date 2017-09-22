@@ -486,7 +486,7 @@ public class TrJobOrderController extends Controller {
 		//贸易信息，应付服务费用模板
 		List<Map<String, String>> costService_template = (ArrayList<Map<String, String>>)dto.get("costService_template");
 		List<Map<String, String>> allCostService_template = (ArrayList<Map<String, String>>)dto.get("allCostService_template");
-   		saveTradeSaleTemplate(type,customer_id,costService_template,allCostService_template);
+   		saveTradeCostServiceTemplate(type,customer_id,costService_template,allCostService_template);
 		//贸易信息，销售应收费用模板
 		List<Map<String, String>> chargeSale_template = (ArrayList<Map<String, String>>)dto.get("chargeSale_template");
 		List<Map<String, String>> allChargeSale_template = (ArrayList<Map<String, String>>)dto.get("allChargeSale_template");
@@ -754,6 +754,57 @@ public class TrJobOrderController extends Controller {
         	Db.update("update trade_job_order_trade_sale_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
         }
     }
+    
+    
+    //常用贸易
+    /**
+     * 保存费用模板
+     * @param shipment_detail
+     */
+    public void saveTradeCostServiceTemplate(String order_type,String customer_id,
+    		List<Map<String, String>> charge_list, List<Map<String, String>> charge_list_all){
+        if((charge_list==null||charge_list.size()<=0) )
+            return;
+
+        Gson gson = new Gson();
+        String chargeObject = gson.toJson(charge_list);
+        String chargeObjectAll = gson.toJson(charge_list_all);
+        
+    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	
+    	String chargeSql = "select parent_id from trade_job_order_trade_service_template where"
+                + " arap_type = 'cost' and creator_id = "+creator_id+" and customer_id = "+customer_id+" and order_type = '"+order_type+"' "
+                + " and  json_value = '"+chargeObject+"' and parent_id is not null";
+
+        Record chargeRec = Db.findFirst(chargeSql);
+
+        if(chargeRec == null){
+        	if(!(charge_list==null||charge_list.size()<=0)){
+        		//保存全部信息
+                Record all= new Record();
+                all.set("creator_id", creator_id);
+                all.set("customer_id", customer_id);
+                all.set("arap_type", "cost");
+                all.set("order_type", order_type);
+                all.set("json_value", chargeObjectAll);          
+                Db.save("trade_job_order_trade_service_template", all);  
+        		
+                //保存局部信息
+        		Record r= new Record();
+                r.set("creator_id", creator_id);
+                r.set("customer_id", customer_id);
+                r.set("arap_type", "cost");
+                r.set("order_type", order_type);
+                r.set("json_value", chargeObject);
+                r.set("parent_id", all.getLong("id"));
+                Db.save("trade_job_order_trade_service_template", r);  
+       		}
+        }else{
+        	Long parent_id = chargeRec.getLong("parent_id");
+        	Db.update("update trade_job_order_trade_sale_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
+        }
+    }
+    
     
     //保存常用邮箱模版
     public void saveEmailTemplate(){
