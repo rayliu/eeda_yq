@@ -36,7 +36,7 @@ public class BookingProfitReportController extends Controller {
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/profitReport");
         setAttr("listConfigList", configList);
-    	render("eeda/statusReport/profitReport.html");
+    	render("eeda/bookingStatusReport/bookingProfitReport.html");
     }
 
     public  long list() {
