@@ -25,6 +25,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
                     trigger: 'hover'
                 });
   		  },
+  		initComplete:function(settings){
+            hideColumn();
+            },
             columns:[
 					{ "width": "30px",
 					    "render": function ( data, type, full, meta ) {
@@ -381,6 +384,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
               $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
           });
       });
-
+      var hideColumn = function(){}
+      if(!$("#jurisdiction").val()){
+		  var hideColumn = function(){         	
+		       	//隐藏对usd和jpy列
+		    	  var dataTable = $('#eeda-table').dataTable();
+		        	dataTable.fnSetColumnVis(8, false);
+		  }
+      }
     });
 });

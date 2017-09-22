@@ -188,7 +188,9 @@
 				</div>
 			</div>
 		</div>
-		 
+		<% if(shiro.hasPermission("customPlanOrder.fin_item_hide")){ %>
+			<input value="true" id="jurisdiction" style="display:none;"/>
+		<%}%>
         <div class="row simple_list_div">
 			<ul id="orderTabs" class="nav nav-tabs" >
 		        <li class="active">
