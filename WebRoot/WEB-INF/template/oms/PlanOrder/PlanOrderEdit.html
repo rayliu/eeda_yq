@@ -70,12 +70,18 @@
 	            <div class="col-lg-6 guide_target2">
 	            	<% 
 		                var party_name='';
-		                if(has(self_party) && ('' != self_party.ABBR!'')){
-		                    party_name = self_party.ABBR;
-		                }else if(has(entrusted) && ('' != entrusted.OFFICE_NAME!'')){
-		                    party_name = entrusted.OFFICE_NAME;
-		                }else if(has(office) && ('' != office.OFFICE_NAME!'')){
-		                    party_name = office.OFFICE_NAME;
+		                if(has(self_party)){
+		                	if('' != self_party.ABBR!''){
+		                    	party_name = self_party.ABBR;
+		                    }
+		                }else if(has(entrusted)){
+		                	if('' != entrusted.OFFICE_NAME!''){
+		                    	party_name = entrusted.OFFICE_NAME;
+		                    }
+		                }else if(has(office)){
+		                	if('' != office.OFFICE_NAME!''){
+		                    	party_name = office.OFFICE_NAME;
+		                    }
 		                }
 		            %>
 	            	<%include("/eeda/component/form/inputCustomerField.html",
@@ -90,10 +96,14 @@
            		<div class="col-lg-6 guide_target3">           			
            			<%	var dis='';
            				var to_party_id_enter='';        				
-		                if(has(to_party) && ('' != to_party.ID!'')){
-		                    to_party_id_enter = to_party.ID;
-		                }else if(has(toEntrusted) && ('' != toEntrusted.ID!'')){
-		                    to_party_id_enter = toEntrusted.ID;
+		                if(has(to_party)){
+		                	if('' != to_party.ID!''){
+		                		to_party_id_enter = to_party.ID;
+		                	}
+		                }else if(has(toEntrusted)){
+		                	if( '' != toEntrusted.ID!''){
+		                    	to_party_id_enter = toEntrusted.ID;
+		                    }
 		                }
 		                if(order.submit_flag!''=='Y'){
            				dis='disabled';
