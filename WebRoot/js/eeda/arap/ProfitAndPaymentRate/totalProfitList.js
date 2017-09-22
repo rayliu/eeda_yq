@@ -86,12 +86,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	
 	$('#singleSearchBtn').click(function(){
 	     var selectField = $('#selected_field').val();
+	     var order_export_date_begin_time = '';
+	     var order_export_date_end_time  = '';
+	     var customer = '';
 	     if(selectField=='order_export_date'){
-	    	 var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
-	    	 var order_export_date_end_time = $("#single_order_export_date_end_time").val();
+	    	  order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
+	    	  order_export_date_end_time = $("#single_order_export_date_end_time").val();
 	      }
 	      if(selectField=='customer'){
-	    	 var customer = $("#single_customer").val();
+	    	 customer = $("#single_customer").val();
 	      }
 	      
 	      //合计字段
@@ -132,7 +135,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
           });
           
-          var url = "/totalProfit/list?customer_id="+customer
+          var url = "/totalProfit/list?customer="+customer
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load(cssTd);
@@ -195,7 +198,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
           });
           
-          var url = "/totalProfit/list?customer_id="+customer
+          var url = "/totalProfit/list?customer="+customer
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load();
@@ -232,7 +235,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       });
       
       var excel_method = function(customer_id,begin_time,end_time){
-    	  $.post('/totalProfit/downloadExcelList',{customer_id:customer_id,begin_time:begin_time,end_time:end_time}, function(data){
+    	  $.post('/totalProfit/downloadExcelList',{customer:customer_id,begin_time:begin_time,end_time:end_time}, function(data){
               $('#exportTotaledExcel').prop('disabled', false);
               $('#singlexportTotaledExcel').prop('disabled', false);
               $.scojs_message('导出利润表excel文件成功', $.scojs_message.TYPE_OK);

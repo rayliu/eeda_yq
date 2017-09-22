@@ -72,7 +72,6 @@ public class TotalProfitController extends Controller {
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
-        		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
         		+"  WHERE p.office_id ="+office_id+" "
         		+ conditions
         		+ " and jo.delete_flag = 'N'"
@@ -123,7 +122,6 @@ public class TotalProfitController extends Controller {
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
-        		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
         		+"  WHERE p.office_id ="+office_id+" "
         		+ conditions
         		+ " and jo.delete_flag = 'N'"
