@@ -263,7 +263,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
           var container_no = $("#container_no").val().trim();
           var transport_type = type;
           //增加出口日期查询
-          var url = "/jobOrder/list?order_no="+order_no+"&type=lock"
+          var url = "/jobOrder/list?order_no="+order_no+"&type_=lock"
                +"&old_order_no="+old_order_no
           	   +"&status="+status
                +"&sono_like="+sono
