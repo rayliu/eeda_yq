@@ -641,6 +641,8 @@ public class ModuleController extends Controller {
                 + "PRIMARY KEY (`id`))";
         Db.update(createTableSql);
 
+        
+        
         String fieldSql = "select * from eeda_form_field where form_id=?";
         List<Record> fieldList = Db.find(fieldSql, form_id);
         for (Record field : fieldList) {
@@ -674,6 +676,8 @@ public class ModuleController extends Controller {
                 }
             } else {
                 if (oldFieldRec != null) {
+                    if("varchar(255)".equals(oldFieldRec.getStr("TYPE")))
+                        continue;
                     createField = "ALTER TABLE `" + tableName + "` "
                             + "CHANGE COLUMN `" + oldFieldRec.getStr("field")
                             + "` `" + fieldName
@@ -686,7 +690,29 @@ public class ModuleController extends Controller {
             }
             Db.update(createField);
         }
-
+        //删除字段
+        String descSql = "desc form_"+form_id;
+        List<Record> existFieldList = Db.find(descSql);
+        for (Record existFieldRec : existFieldList) {
+            boolean is_exist = false;
+            String existFieldName=existFieldRec.getStr("field");
+            if("id".equals(existFieldName))
+                continue;
+            for (Record field : fieldList) {
+                String fieldName = "f" + field.get("id").toString() + "_"
+                        + field.getStr("field_name");
+                if(existFieldName.equals(fieldName)){
+                    is_exist = true;
+                    break;
+                }
+            }
+            if(!is_exist){
+                String sql = "ALTER TABLE `" + tableName
+                        + "` DROP COLUMN `" + existFieldName
+                        + "`";
+                Db.update(sql);
+            }
+        }
     }
 
     public void getOrderStructure() {

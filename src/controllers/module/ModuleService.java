@@ -104,11 +104,17 @@ public class ModuleService {
             long form_id) {
         for (Map<String, ?> field : field_list) {
             Object id = field.get("id".toUpperCase());
+            String is_delete = (String) field.get("is_delete");
+            if("Y".equals(is_delete)){
+                Db.deleteById("eeda_form_field", id);
+                continue;
+            }
             String field_display_name = (String) field.get("field_display_name"
                     .toUpperCase());
             Object seq = field.get("seq".toUpperCase());
             String field_type = (String) field.get("field_type".toUpperCase());
             String read_only = (String) field.get("read_only".toUpperCase());
+            
             Record itemRec = new Record();
             if (!(id instanceof java.lang.Double)) {
                 itemRec.set("form_id", form_id);
@@ -142,6 +148,7 @@ public class ModuleService {
             // 处理字段类型(例如, 复选框: 男, 女)
             saveFieldType(field, field_id);
         }
+        
     }
 
     @SuppressWarnings("unchecked")
