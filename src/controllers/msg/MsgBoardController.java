@@ -56,7 +56,7 @@ public class MsgBoardController extends Controller {
         r.set("create_stamp", new Date());
         r.set("creator", LoginUserController.getLoginUserId(this));
         Db.save("msg_board", r);
-        redirect("/");
+        redirect("/home");
    	}
     
     @Before(Tx.class)
