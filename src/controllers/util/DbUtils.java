@@ -50,7 +50,7 @@ public class DbUtils {
             	}else if(key.endsWith("_end_time")){
             		key = key.replaceAll("_end_time", "");
             		Map<String, String> valueMap = dateFieldMap.get(key)==null?new HashMap<String, String>():dateFieldMap.get(key);
-            		valueMap.put("_end_time", filterValue);
+            		valueMap.put("_end_time", filterValue+" 23:59:59");
             		dateFieldMap.put(key, valueMap);
             		continue;
             	}else if(key.endsWith("_between")){
