@@ -81,146 +81,161 @@ public class profitController extends Controller {
 	}
 	
 	public void listTotal() {
-		String customer_id =(String) getPara("customer");
-		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
-		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
-//		String user_name =(String) getPara("user_name");
 		String user_id =(String) getPara("user_id");
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
-		String customerId =" and customer_id="+customer_id;
-		if(StringUtils.isBlank(customer_id)){
-			customerId="";
-		}
-		String userId =" and ul.id ="+user_id;
-		if(StringUtils.isBlank(user_id)){
-			userId="";
-		}
-		if(order_export_date_begin_time==null){
-			order_export_date_begin_time="";
-		}
-		if(order_export_date_end_time==null){
-			order_export_date_end_time="";
-		}
-		
-		String order_export_date =  " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
-
-		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
-			order_export_date="";
-		}
-		String condition = customerId+userId+order_export_date;
-		
-		String sql=" SELECT "
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
-			+"	  and joa.order_type = 'charge' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) charge_cny,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
-			+"	  and joa.order_type = 'charge' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) charge_usd,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
-			+"	  and joa.order_type = 'charge' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) charge_jpy,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
-			+"	  and joa.order_type = 'charge' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) charge_hkd,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
-			+"	  and joa.order_type = 'cost' "+condition
-			+"	) cost_cny,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
-			+"	  and joa.order_type = 'cost' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) cost_usd,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
-			+"	  and joa.order_type = 'cost' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) cost_jpy,"
-			+"	(SELECT "
-			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
-			+"	  from job_order jo "
-			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
-			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
-			+"	  and joa.order_type = 'cost' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+"	) cost_hkd, "
-			+"	(SELECT "
-			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
-			+"	FROM  job_order jo "
-			+"	  LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
-			+"	  LEFT JOIN party p ON p.id = jo.customer_id "
-			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
-			+"	WHERE 	p.office_id = "+office_id
-			+"	AND joa.order_type = 'charge' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+") total_charge,"
-			+"	(SELECT "
-			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
-			+"	FROM  job_order jo "
-			+"	  LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
-			+"	  LEFT JOIN party p ON p.id = jo.customer_id "
-			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
-			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
-			+"	WHERE 	p.office_id = "+office_id
-			+"	AND joa.order_type = 'cost' "+condition
-			+ " and jo.delete_flag = 'N'"
-			+") total_cost";
+        String conditions = "";
+        String customer = getPara("customer");
+        String begin_time = getPara("order_export_date_begin_time");
+        String end_time = getPara("order_export_date_end_time");
+        
+        if(StringUtils.isNotBlank(customer)){
+        	conditions += " and jo.customer_id = "+ customer;
+        }
+        
+        if(StringUtils.isNotBlank(user_id)){
+        	conditions += " and ul.id = "+ user_id;
+        }
+        
+        if(StringUtils.isBlank(begin_time)){
+        	begin_time = " 2000-1-1";
+        }
+        if(StringUtils.isBlank(end_time)){
+        	end_time = " 2037-1-1";
+        }else{
+        	end_time = end_time + " 23:59:59";
+        }
+        conditions += " and (jo.order_export_date between '"+begin_time+"' and '"+end_time+"')";
+        
+        
+        String sql = " SELECT "
+        		+ " ifnull(SUM(charge_rmb),0) total_charge,"
+        		+ " ifnull(sum(cost_rmb),0) total_cost "
+        		+ " FROM ("
+        		+" SELECT cast(CONCAT(year(jo.order_export_date),'-',month(jo.order_export_date)) as char) date_time,"
+	    		+"	if(joa.order_type='charge',currency_total_amount,0) charge_rmb,"
+	    		+"	if(joa.order_type='cost',currency_total_amount,0) cost_rmb"
+        		+"  from job_order jo "
+        		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+        		+"  LEFT JOIN party p on p.id = jo.customer_id"
+        		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
+        		+" LEFT JOIN user_login ul on ul.id = cs.salesman_id"
+        		+"  WHERE p.office_id ="+office_id+" "
+        		+ conditions
+        		+ " and jo.delete_flag = 'N'"
+    			+" ) A where 1=1 ";
+        
+//		String sql=" SELECT "
+//			+"	(SELECT "
+//			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+//			+"	  from job_order jo "
+//			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+//			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+//			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
+//			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
+//			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+//			+"	  and joa.order_type = 'charge' "+condition
+//			+ " and jo.delete_flag = 'N'"
+//			+"	) charge_cny,"
+//			+"	(SELECT "
+//			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+//			+"	  from job_order jo "
+//			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+//			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+//			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
+//			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
+//			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+//			+"	  and joa.order_type = 'charge' "+condition
+//			+ " and jo.delete_flag = 'N'"
+//			+"	) charge_usd,"
+//			+"	(SELECT "
+//			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+//			+"	  from job_order jo "
+//			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+//			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+//			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
+//			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
+//			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+//			+"	  and joa.order_type = 'charge' "+condition
+//			+ " and jo.delete_flag = 'N'"
+//			+"	) charge_jpy,"
+//			+"	(SELECT "
+//			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+//			+"	  from job_order jo "
+//			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+//			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+//			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
+//			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
+//			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+//			+"	  and joa.order_type = 'charge' "+condition
+//			+ " and jo.delete_flag = 'N'"
+//			+"	) charge_hkd,"
+//			+"	(SELECT "
+//			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+//			+"	  from job_order jo "
+//			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+//			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+//			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
+//			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
+//			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+//			+"	  and joa.order_type = 'cost' "+condition
+//			+"	) cost_cny,"
+//			+"	(SELECT "
+//			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+//			+"	  from job_order jo "
+//			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+//			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+//			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
+//			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
+//			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+//			+"	  and joa.order_type = 'cost' "+condition
+//			+ " and jo.delete_flag = 'N'"
+//			+"	) cost_usd,"
+//			+"	(SELECT "
+//			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+//			+"	  from job_order jo "
+//			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+//			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+//			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
+//			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
+//			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+//			+"	  and joa.order_type = 'cost' "+condition
+//			+ " and jo.delete_flag = 'N'"
+//			+"	) cost_jpy,"
+//			+"	(SELECT "
+//			+"	IFNULL(SUM(joa.exchange_total_amount),0)"
+//			+"	  from job_order jo "
+//			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
+//			+"	  LEFT JOIN party p on p.id = jo.customer_id"
+//			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
+//			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
+//			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+//			+"	  and joa.order_type = 'cost' "+condition
+//			+ " and jo.delete_flag = 'N'"
+//			+"	) cost_hkd, "
+//			+"	(SELECT "
+//			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
+//			+"	FROM  job_order jo "
+//			+"	  LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
+//			+"	  LEFT JOIN party p ON p.id = jo.customer_id "
+//			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
+//			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
+//			+"	WHERE 	p.office_id = "+office_id
+//			+"	AND joa.order_type = 'charge' "+condition
+//			+ " and jo.delete_flag = 'N'"
+//			+") total_charge,"
+//			+"	(SELECT "
+//			+"		IFNULL(SUM(joa.currency_total_amount),	0) "
+//			+"	FROM  job_order jo "
+//			+"	  LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
+//			+"	  LEFT JOIN party p ON p.id = jo.customer_id "
+//			+"    LEFT JOIN customer_salesman cs ON cs.party_id = jo.customer_id"
+//			+"    LEFT JOIN user_login ul ON ul.id = cs.salesman_id"
+//			+"	WHERE 	p.office_id = "+office_id
+//			+"	AND joa.order_type = 'cost' "+condition
+//			+ " and jo.delete_flag = 'N'"
+//			+") total_cost";
 		
 		Record re = Db.findFirst(sql);
 		long total=list();
