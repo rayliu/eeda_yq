@@ -24,7 +24,7 @@ public class DbUtils {
             String key = entry.getKey();
             String filterValue = entry.getValue()[0];
             
-            if(StringUtils.isNotEmpty(filterValue) && !"undefined".equals(filterValue)){
+            if(StringUtils.isNotBlank(filterValue) && !"undefined".equals(filterValue)){
 //            	logger.debug(key + ":" + filterValue);
             	if(key.endsWith("_equals")){
             		condition += " and " + key.replace("_equals", "") + " = '" + filterValue + "' ";
