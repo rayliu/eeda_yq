@@ -50,6 +50,13 @@ public class ArapReportController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
+        
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
         String sql = "select * ,if(B.order_type='charge',(SELECT GROUP_CONCAT(aco.order_no SEPARATOR ',') from arap_charge_order aco "
 					+" 						LEFT JOIN arap_charge_item aci on aco.id=aci.charge_order_id "
 					+" 						WHERE aci.ref_order_id=B.id "
@@ -57,7 +64,7 @@ public class ArapReportController extends Controller {
 					+" 						LEFT JOIN arap_cost_item aci on aco.id=aci.cost_order_id "
 					+" 					WHERE aci.ref_order_id=B.id "
 					+" 						) "
-					+" )check_order_no, "
+					+" ) check_order_no, "
 					+" if(B.order_type='charge',(SELECT GROUP_CONCAT(aco.id  SEPARATOR ',') from arap_charge_order aco  "
 					+" 							LEFT JOIN arap_charge_item aci on aco.id=aci.charge_order_id "
 					+" 							WHERE aci.ref_order_id=B.id "
@@ -101,7 +108,7 @@ public class ArapReportController extends Controller {
  				+ " left join currency cur on cur.id=joa.currency_id "
  				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
  				+ " left join fin_item f on f.id=joa.charge_id "
- 				+ " where  jo.office_id = "+office_id
+ 				+ " where  jo.office_id = "+office_id + ref_office
  				+ " and jo.delete_flag = 'N'"
 				+ " GROUP BY joa.id "
  				+ " ) B where 1=1 ";
