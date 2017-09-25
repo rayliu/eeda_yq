@@ -14,13 +14,22 @@
                             <select id="selected_field" name="selected_field" class="form-control search-label">
                             	<option value="sp_name">被委托方</option>
                                 <option value="order_no">计划订单号</option>
-                                <option value="order_status">单据状态</option>
+                                <option value="status">锁单状态</option>
+                                <option value="order_status">业务状态</option>
                                 <option value="create_stamp">创建时间</option>
                             </select>
 
                             <input type="text" class="form-control search-control" id="single_order_no" name="single_order_no" style="display: none;">
-                            <select id="single_order_status_list" name="single_order_status_list" class="form-control" style="display:none;width:63%;">
+                            <select id="single_status_list" name="single_status_list" class="form-control" style="display:none;width:63%;">
+                                <option value=""></option>
                                 <option value="新建">新建</option>
+                                <option value="已完成">已完成</option>
+                            </select>
+                            
+                            <select id="single_order_status_list" name="single_order_status_list" class="form-control" style="display:none;width:63%;">
+                                <option value=""></option>
+                                <option value="新建">新建</option>
+                                <option value="处理中">处理中</option>
                                 <option value="已完成">已完成</option>
                             </select>
                            	 
@@ -76,8 +85,8 @@
                             </div>
                             <div class="col-lg-4"> 
                                 <%include("/eeda/component/form/selectField.html", 
-                                        {   id:'order_status', 
-                                            label:'单据状态', 
+                                        {   id:'status', 
+                                            label:'锁单状态', 
                                             value: '',
                                             value_list:[
                                                 {code:'', value:''},
@@ -103,6 +112,20 @@
                                                         value: ''
                                                     }){}%>
                             </div>
+                            <div class="col-lg-4"> 
+                                <%include("/eeda/component/form/selectField.html", 
+                                        {   id:'order_status', 
+                                            label:'业务状态', 
+                                            value: '',
+                                            value_list:[
+                                                {code:'', value:''},
+                                                {code:'新建', value:'新建'},
+                                                {code:'处理中', value:'处理中'},
+                                                {code:'已完成', value:'已完成'}
+                                            ]
+                                        }
+                                     ){} %>
+                            </div>
                         </div>
                         <div class="form-group button-bar" >
                             <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
@@ -125,11 +148,12 @@
                                 '计划单号',
                                 '类型',
                                 '被委托方简称',
-                                '单据状态',
+                                '业务状态',
                                 '计划明细状态',
                                 '海关状态',
                                 '创建人',
-                                '创建时间']
+                                '创建时间',
+                                '锁单状态']
                         }){} %>
             </div>
         </div><!-- end of  .page-wrapper-->

@@ -57,7 +57,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	              { "data": "ITEM_STATUS" },
 	              { "data": ""}, 
 	              { "data": "CREATOR_NAME"}, 
-	              { "data": "CREATE_STAMP"}
+	              { "data": "CREATE_STAMP"},
+	              { "data": "STATUS"}
             ]
         });
       
@@ -92,20 +93,30 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  $('#single_order_status_list').hide();
               $('#sp_name_show').show();
               $('#create_stamp_show').hide();
+              $('#single_status_list').hide();
           }else if(selectField == 'order_no'){//计划订单号
         	  $('#single_order_no').show();
               $('#single_order_status_list').hide();
               $('#sp_name_show').hide();
               $('#create_stamp_show').hide();
-          }else if(selectField=='order_status'){//单据状态
+              $('#single_status_list').hide();
+          }else if(selectField=='order_status'){//业务状态
         	  $('#single_order_no').hide();
               $('#sp_name_show').hide();
               $('#create_stamp_show').hide();
+              $('#single_status_list').hide();
               $('#single_order_status_list').show();
-          }else if(selectField=='create_stamp'){//单据状态
+          }else if(selectField=='status'){//锁单状态
         	  $('#single_order_no').hide();
               $('#sp_name_show').hide();
               $('#single_order_status_list').hide();
+              $('#create_stamp_show').hide();
+              $('#single_status_list').show();
+          }else if(selectField=='create_stamp'){//创建时间
+        	  $('#single_order_no').hide();
+              $('#sp_name_show').hide();
+              $('#single_order_status_list').hide();
+              $('#single_status_list').hide();
               $('#create_stamp_show').show();
           }
       });
@@ -117,9 +128,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             selectFieldValue = $('#single_order_no').val();
           }else if(selectField == 'order_status'){//单据状态
             selectFieldValue = $('#single_order_status_list').val();
+          }else if(selectField == 'status'){//业务状态
+            selectFieldValue = $('#single_status_list').val();
           }else if(selectField == 'sp_name'){//被委托方
             selectFieldValue = $('#single_sp_name_input').val();
-          }else if(selectField == 'create_stamp'){//被委托方
+          }else if(selectField == 'create_stamp'){//创建时间
         	var start_date = $("#single_create_stamp_begin_time").val();
         	var end_date = $("#single_create_stamp_end_time").val();
           }
@@ -138,6 +151,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
           var order_status = $('#order_status').val();
+          var status = $('#status').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var sp_name = $("#sp_name_input").val().trim();
@@ -151,6 +165,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           */
           var url = "/planOrder/list?order_no="+order_no
                +"&order_status="+order_status
+               +"&status="+status
                +"&sp_name_like="+sp_name
                +"&type_="+type
                +"&create_stamp_begin_time="+start_date
