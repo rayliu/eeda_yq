@@ -1060,14 +1060,14 @@ public class BookingOrderController extends Controller {
     
     public List<Record> getCostItems(String orderId){
     	String  itemSql = "";
-    	itemSql = "SELECT f.name charge_name,f.name_eng charge_name_eng,jor.price price,jor.amount amount,u.name unit_name,jor.total_amount,c.name currency_name FROM job_order_arap jor "
-    			+ " LEFT JOIN party pr ON pr.id = jor.sp_id "
-    			+ " LEFT JOIN fin_item f ON f.id = jor.charge_id "
-    			+ " LEFT JOIN unit u ON u.id = jor.unit_id "
-    			+ " LEFT JOIN currency c ON c.id = jor.currency_id "
-    			+ " LEFT JOIN job_order jo ON jo.id = jor.order_id "
-    			+ " LEFT JOIN booking_order bo ON bo.id = jo.from_order_id "
-    			+ " where jor.audit_flag='Y' and jor.order_type='charge' and jo.from_order_id = "+orderId;
+    	itemSql = "SELECT f.name charge_name,f.name_eng charge_name_eng,joa.price price,joa.amount amount,u.name unit_name,joa.total_amount,c.name currency_name FROM booking_order bo "
+    			+ " LEFT JOIN job_order jo ON jo.from_order_id = bo.id "
+    			+ " LEFT JOIN job_order_arap joa ON joa.order_id = jo.id "
+    			+ " LEFT JOIN party pr ON pr.id = joa.sp_id "
+    			+ " LEFT JOIN fin_item f ON f.id = joa.charge_id "
+    			+ " LEFT JOIN unit u ON u.id = joa.unit_id "
+    			+ " LEFT JOIN currency c ON c.id = joa.currency_id "
+    			+ " where joa.audit_flag='Y' and joa.order_type='charge' and jo.from_order_id = "+orderId;
     	List<Record> itemList = Db.find(itemSql);
     	return itemList;
     }
