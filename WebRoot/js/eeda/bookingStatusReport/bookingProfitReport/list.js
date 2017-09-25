@@ -179,7 +179,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
           var customer_id = $("#customer_id").val();
-          var customer_name = $("#customer_name_input").val();
+          var customer_name = $("#customer_id_input").val();
           var date_type = $('[name=type]:checked').val();
           var type = $("#type").val()
           var begin_date = '';
@@ -202,6 +202,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         //合计字段
           $.post('bookingProfitReport/listTotal',{
         	  customer_id:customer_id,
+        	  customer_name:customer_name,
         	  date_type:date_type,
         	  begin_date:begin_date,
         	  end_date:end_date,
@@ -233,7 +234,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           //增加出口日期查询
           var url = "/bookingProfitReport/list?order_no="+order_no
           	    +"&customer_id="+customer_id
-          	    +"&customer_name_like="+customer_name
+          	    +"&customer_name="+customer_name
           	    +"&date_type="+date_type
           		+"&begin_date="+begin_date
           		+"&end_date="+end_date
@@ -273,7 +274,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#exportTotaledExcel').click(function(){
     	  $(this).attr('disabled', true);
           var customer_id = $("#customer_id").val();
-          var customer_name = $("#customer_name_input").val();
+          var customer_name = $("#customer_id_input").val();
           var date_type = $('[name=type]:checked').val();
           var type = $("#type").val()
           var begin_date = '';
@@ -292,7 +293,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  end_date = $("#day_end_time").val()
           }
        
-		  $.post('/bookingProfitReport/downloadExcelList',{customer_id:customer_id,date_type:date_type,type:type,begin_date:begin_date,end_date:end_date}, function(data){
+		  $.post('/bookingProfitReport/downloadExcelList',{customer_id:customer_id,customer_name,customer_name,date_type:date_type,type:type,begin_date:begin_date,end_date:end_date}, function(data){
 	          $('#exportTotaledExcel').prop('disabled', false);
 	          $('#singlexportTotaledExcel').prop('disabled', false);
 	          $.scojs_message('生成Excel成功', $.scojs_message.TYPE_OK);
