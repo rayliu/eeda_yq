@@ -1,11 +1,23 @@
 <table id="${id}" class="table table-striped table-bordered table-hover display" cellspacing="0" style="${style!'width:100%;'}">
+    <tfoot class="search">
+        <tr>
+            <%for(name in headers){%>
+                <th></th>
+            <%}%>
+        </tr>
+    </tfoot>
     <thead class="head">
         <tr>
-        	<%for(name in headers){%>
-        		<th>${name}</th>
-        	<%}%>
+        	<%for(field in headers){
+                if(field==''){%>
+                    <th></th>
+              <%}else{%>
+                    <th field_name="f${field.ID}_${field.FIELD_NAME!''}">${field.FIELD_DISPLAY_NAME!''}</th>
+              <%}
+        	}%>
         </tr>
     </thead>
+
     <tbody>
     	<%for(record in value_list![]){
     		 var map = @record.getColumns();
@@ -23,11 +35,5 @@
     		</tr>
     	<%}%>
     </tbody>
-    <tfoot>
-        <tr  class="foot">
-            <%for(name in headers){%>
-                <th></th>
-            <%}%>
-        </tr>
-    </tfoot>
+    
 </table>

@@ -40,5 +40,25 @@ define(['jquery', '../btns'], function ($) {
         console.log('doQuery.................');
         dataTable.ajax.url(url).load();
 
-        
+        $('#list_table tfoot.search th').each( function (i, item) {
+            var th = $('#list_table thead th').eq($(this).index());
+            var title = th.text();
+            var field_name = th.attr('field_name');
+            if(title!="")
+                $(this).html('<input type="text" placeholder="过滤..." data-index="'+i+'" field_name="'+field_name+'" style="width: 100%;"/>');
+        });
+
+        $('#list_table').on( 'keyup', 'tfoot input', function () {
+            globalSearch();
+        });
+
+        var globalSearch = function(){
+            var query="";
+            $('#list_table tfoot input').each(function(index, el) {
+                query+="&"+$(el).attr('field_name')+"_like="+$(el).val();
+            });
+
+            var url = '/form/'+$('#form_id').val()+'-doQuery?1=1'+query;
+            dataTable.ajax.url(url).load();
+        }
 });

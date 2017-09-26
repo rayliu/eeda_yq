@@ -11,10 +11,10 @@
             var headers=[''];
 
             for(field in field_list){
-                array.add(headers, field.FIELD_DISPLAY_NAME);
+                array.add(headers, field);
             }
         %>
-        <%include("/eeda/component/form/detailTable.html", 
+        <%include("/eeda/component/form/detailTableWithFoot.html", 
             {
                 id:'list_table',
                 headers: headers
