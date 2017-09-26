@@ -114,6 +114,7 @@ public class ModuleService {
             Object seq = field.get("seq".toUpperCase());
             String field_type = (String) field.get("field_type".toUpperCase());
             String read_only = (String) field.get("read_only".toUpperCase());
+            String listed = (String) field.get("listed".toUpperCase());
             
             Record itemRec = new Record();
             if (!(id instanceof java.lang.Double)) {
@@ -123,6 +124,7 @@ public class ModuleService {
                         PingYinUtil.getFirstSpell(field_display_name));
                 itemRec.set("field_type", field_type);
                 itemRec.set("read_only", read_only);
+                itemRec.set("listed", listed);
                 if (seq instanceof java.lang.Long)
                     itemRec.set("seq", seq);
                 Db.save("eeda_form_field", itemRec);
@@ -136,6 +138,7 @@ public class ModuleService {
                 if (seq != null && !StrKit.isBlank(seq.toString()))
                     itemRec.set("seq", seq);
                 itemRec.set("read_only", read_only);
+                itemRec.set("listed", listed);
                 Db.update("eeda_form_field", itemRec);
             }
 
