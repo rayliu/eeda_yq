@@ -502,6 +502,17 @@
               		   <label class="search-label">目的地 FND</label> <span class='search-control'>${shipment.fnd_name!portCreate.pod_name!''}</span>
                  <%}%>
                </div>
+               <div class="col-lg-4">
+                 <% if(boolOcean){ %>
+                   <%include("/eeda/component/form/dateInputField.html", 
+                       {   id:'deadline_date', 
+                           label:'截货日期',
+                           value:shipment.deadline_date!''
+                       }){}%>
+                   <%}else{%>
+              		   <label class="search-label">ETD</label> <span class='search-control'>${shipment.deadline_date!''}</span>
+                   <%}%>
+               </div>
            </div>
            <div class="row">
            	   <div class="col-lg-4">
@@ -519,7 +530,7 @@
                  <% if(boolOcean){ %>
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'etd', 
-                           label:'ETD(截货日期)',
+                           label:'ETD',
                            value:shipment.etd!planOrderItem.etd!''
                        }){}%>
                    <%}else{%>
