@@ -531,6 +531,7 @@
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'etd', 
                            label:'ETD',
+                           type:'time',
                            value:shipment.etd!planOrderItem.etd!''
                        }){}%>
                    <%}else{%>
@@ -541,7 +542,8 @@
                  <% if(boolOcean){ %>
                    <%include("/eeda/component/form/dateInputField.html", 
                        {   id:'eta', 
-                           label:'ETA', 
+                           label:'ETA',
+                           type:'time', 
                            value:shipment.eta!planOrderItem.eta!''
                        }){}%>
                    <%}else{%>

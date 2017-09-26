@@ -36,7 +36,7 @@ requirejs(['jquery', 'dataTablesBootstrap', 'datetimepicker_CN'],
                 dateType = "time"
             }
             $('#${id}_div').datetimepicker({  
-                format: dateType=='time'?'yyyy-MM-dd hh:MM:ss':'yyyy-MM-dd',  
+                format: dateType=='time'?'yyyy-MM-dd hh:mm:ss':'yyyy-MM-dd',  
                 language: 'zh-CN'
             }).on('changeDate', function(ev){
                 $(".bootstrap-datetimepicker-widget").hide();   
