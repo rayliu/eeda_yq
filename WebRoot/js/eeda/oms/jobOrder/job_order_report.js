@@ -928,6 +928,25 @@ $(document).ready(function() {
 //		
 //    });
     
-	
+    //约柜标记位
+    var mblflag=$('#aboutShipmentHide').val();
+    if(mblflag == 'Y'){
+    	$('#aboutShipment').attr('disabled',true);
+    }
+    
+    $('#aboutShipment').click(function(){
+    	var order_id = $("#order_id").val();
+    	$.post('/jobOrder/aboutShipmentflag',{order_id:order_id},function(data){
+    		if(data){
+    			$.scojs_message('约柜确认成功', $.scojs_message.TYPE_OK);
+    		    $('#aboutShipment').attr('disabled',true);
+    		} else {
+    			$.scojs_message('约柜确认失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	},'json').fail(function(){
+		    $.scojs_message('约柜确认失败', $.scojs_message.TYPE_ERROR);
+  		});
+    	
+    });
 });
 });

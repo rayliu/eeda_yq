@@ -167,6 +167,15 @@ public class JobOrderController extends Controller {
     	renderJson("{\"result\":true,\"send_truckorder_flag\":\"Y\"}");
     }
     
+    //已派车的标记位
+    public void aboutShipmentflag(){
+    	String order_id = getPara("order_id");
+    	JobOrderShipment ship = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",order_id);
+    	ship.set("aboutShipment_flag", "Y");
+    	ship.update();
+    	renderJson(true);
+    }
+    
     //已电放确认表标识
     public void alreadyInlineFlag(){
     	String jsonStr = getPara("order_id");

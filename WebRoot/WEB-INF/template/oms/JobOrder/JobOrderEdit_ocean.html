@@ -722,7 +722,9 @@
            	 <%}%>
            	 <a data-target='#deliverWarehouseDetail' data-toggle='modal'>
            	 	<button id="deliver_warehouse_bill" class="btn btn_green"  disableStr>生成进仓单 PDF</button>
-           	 </a>           	 
+           	 </a>
+           	 <button id="aboutShipment" class="btn btn_green" disableStr>已约柜</button>
+           	 <input id="aboutShipmentHide" type="hidden" value="${shipment.aboutShipment_flag!''}">           	 
 			 <br><br>
            </div>
           <%}else{%> 
@@ -743,6 +745,8 @@
            	 <input id="alreadyAFR_AMShide" type="hidden" value="${shipment.afr_ams_flag!''}" >
            	 <button id="alreadyInline" class="btn btn_green" disableStr>已电放</button>
            	 <input id="alreadyInlineHide" type="hidden" value="${shipment.in_line_flag!''}">
+           	 <button id="aboutShipment" class="btn btn_green" disableStr>已约柜</button>
+           	 <input id="aboutShipmentHide" type="hidden" value="${shipment.aboutShipment_flag!''}">           	 
 			 <br><br>
            </div>
           <%}%>
