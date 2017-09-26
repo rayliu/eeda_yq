@@ -357,7 +357,21 @@ $(document).ready(function() {
 		}	
     })
     
-    //生成海运头程资料
+    //进仓单赋值
+    $('#warehouse_list').on('mousedown','a',function(){
+ 	     $('#warehouse_adddress_input').attr( 'warehouse_sp_id',$(this).attr('partyid'));  	   
+    })
+    
+    $('#warehouse_adddress_input').on('click',function(){
+ 	     if(!$('#warehouse_input').val()){
+ 	    	$('#warehouse_adddress_input').attr( 'warehouse_sp_id',''); 
+ 	    	$.scojs_message('请先选择仓库公司', $.scojs_message.TYPE_ERROR);
+ 	     } 
+ 	     return ;
+    })
+    
+    
+    //生成进仓单PDF
     $('#printWarehouseBill').click(function(){
     	var WarehouseBillDetail = {}
     	var form = $('#deliverWarehouseForm input,#deliverWarehouseForm textarea');

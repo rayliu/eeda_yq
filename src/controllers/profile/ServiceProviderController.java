@@ -613,7 +613,7 @@ public class ServiceProviderController extends Controller {
 		List<Record> spList = Collections.EMPTY_LIST;
 		if(StrKit.isBlank(input)){//从历史记录查找
             String sql = "select h.ref_id, p.id, p.abbr name,p.ref_office_id from user_query_history h, party p "
-                    + " where h.ref_id=p.id and h.type='ARAP_COM' and h.user_id=?";
+                    + " where h.ref_id=p.id and h.type='ARAP_COM' and h.user_id=? "+sql_sp_type;
             spList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
             if(spList.size()==0){
             	String sql2 = "select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "+sql_type+sql_sp_type
@@ -954,6 +954,11 @@ public class ServiceProviderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
         String name = getPara("input");
+        String sp_id = getPara("sp_id");
+        if(StringUtils.isEmpty(sp_id)){
+        	return;
+        }
+        sp_id = " and p.id="+sp_id;
         String addressInputStr = getPara("addressInputStr");
         String addStr = "";
         String conditon = "";
@@ -963,7 +968,7 @@ public class ServiceProviderController extends Controller {
         
         List<Record> rec = null;
         String sql = " SELECT dock.* from dockinfo dock LEFT JOIN party p on dock.party_id = p.id"
-        		+ " WHERE p.office_id = "+office_id+" and p.ref_office_id = "+office_id+ addStr;
+        		+ " WHERE p.office_id = "+office_id+sp_id+ addStr;
         
         
         rec = Db.find(sql);

@@ -78,7 +78,7 @@ public class PlanOrderController extends Controller {
    		Record party_amount = Db.findFirst("select count(1) amount from party where ref_office_id is not null and ref_office_id!=? and office_id =?",office_id,office_id);
    		Long amount = party_amount.get("amount");
    		if(amount==1){
-   			Record to_party = Db.findFirst("select * from party where ref_office_id is not null and ref_office_id!=? and office_id =?",office_id,office_id);
+   			Party to_party = Party.dao.findFirst("select * from party where ref_office_id is not null and ref_office_id!=? and office_id =?",office_id,office_id);
    	   		setAttr("to_party", to_party);
    		}
         render("/oms/PlanOrder/PlanOrderEdit.html");

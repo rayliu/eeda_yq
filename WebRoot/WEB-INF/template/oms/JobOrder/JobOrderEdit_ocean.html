@@ -510,7 +510,7 @@
                            value:shipment.deadline_date!''
                        }){}%>
                    <%}else{%>
-              		   <label class="search-label">ETD</label> <span class='search-control'>${shipment.deadline_date!''}</span>
+              		   <label class="search-label">截货日期</label> <span class='search-control'>${shipment.deadline_date!''}</span>
                    <%}%>
                </div>
            </div>
@@ -611,14 +611,14 @@
                 }
                  %>        
                  <%include("/eeda/component/form/inputSelectAreaOfOverseaAgent.html", 
-                    {   id:oversea_agent,
-                        label: '海外代理', 
-                        type:'oversea_agent',
-                        value: shipment.oversea_agent!'',
-                        display_value: shipment.oversea_agent_name!'',
-                        textarea_value:shipment.oversea_agent_info!'',
-                        disabled:disableStr
-                    }){}%>
+	                    {   id:oversea_agent,
+	                        label: '海外代理', 
+	                        type:'oversea_agent',
+	                        value: shipment.oversea_agent!'',
+	                        display_value: shipment.oversea_agent_name!'',
+	                        textarea_value:shipment.oversea_agent_info!'',
+	                        disabled:disableStr
+	                    }){}%>
               </div>
               <div class="col-lg-4">
 
@@ -894,7 +894,18 @@
                                        }){}%>
                            </div>
                        </div>
-                       
+                       <div class="row">
+                           <div class="col-lg-6">
+                               <%include("/eeda/component/form/inputSpField.html", 
+                                         {
+                                             id:'warehouse', 
+                                             label:'仓库公司', 
+                                             value:warehouseBill.warehouse!'',
+                                             sp_type:'warehouse',
+                                        	 display_value:warehouseBill.warehouse_name!''
+                                         }){} %>
+                           </div>
+                       </div>
                        <div class="row">
                            <div class="col-lg-6">
                                  <%include("/eeda/component/form/inputField.html", 
@@ -918,6 +929,7 @@
                                  <%include("/eeda/component/form/inputAddressField.html", 
                                    {   id:'warehouse_adddress', 
                                        label:'仓库地址',
+                                       sp_id:warehouseBill.warehouse!'',
                                        value:warehouseBill.warehouse_adddress!'',
                                        display_value:warehouseBill.warehouse_adddress_address!''
                                    }){}%>
