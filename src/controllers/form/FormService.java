@@ -48,7 +48,7 @@ public class FormService {
             }
             String checkboxStr = "<label class='radio-inline'>"
                     + "<input type='radio' origin_name='"+form_name+"-"+fieldDisplayName
-                    +"' name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+"' value='"+code+"' "+checked+"/>"
+                    +"' name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+"' value='"+name+"' "+checked+"/>"
                     + name+"</label>";
             returnStr+=checkboxStr;
         }

@@ -33,14 +33,7 @@ define(['jquery'], function ($) {
                          data='';
                     return '<input type="text" name="name" value="'+data+'" class="form-control" style="width:200px"/>';
                   }
-              }, 
-              { "data": "CODE",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                         data='';
-                    return '<input type="text" name="code" value="'+data+'" class="form-control" style="width:200px"/>';
-                  }
-              }, 
+              },
               { "data": "IS_DEFAULT", "width": "30px",
                 "render": function ( data, type, full, meta ) {
                     if(data == 'Y'){
