@@ -814,7 +814,7 @@ public class ServiceProviderController extends Controller {
     			+ "	rate"
     			+ " FROM"
     			+ "	currency_rate c"
-    			+ " left join currency cr on cr.code = c.currency_code"
+    			+ " left join currency cr on cr.id = c.currency_id"
     			+ " WHERE"
     			+ " 	1 = 1"
     			+ " AND NAME IS NOT NULL and c.is_stop = 'Y' and c.office_id = "+office_id+" and c.to_stamp in (select max(to_stamp) to_stamp "
