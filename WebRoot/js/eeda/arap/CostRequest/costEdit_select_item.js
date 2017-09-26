@@ -505,9 +505,17 @@ var checkIds=[];
     var refleshCreateTable = function(appApplication_id){
         var url = "/costCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
         itemTable.ajax.url(url).load();
-        };
-        
-    
+    };
+    var detailedSearchTable = function(){
+    	var order_id = $("#order_id").val();
+    	var order_no1 = $("#order_no1").val();
+    	var currency_name = $("#currency_id").val();
+    	var url = "/costCheckOrder/tableList?appApplication_id="+order_id+"&order_id=N&bill_flag=create&order_no1="+order_no1+"&currency_name="+currency_name;
+        itemTable.ajax.url(url).load();
+    };
+    $("#detailedSearchBtn").on('click',function(){
+    	detailedSearchTable();
+    });
    
     $('#select_item_table').on('click','[type=checkbox]',function(){
     	var checked = $(this).prop('checked');

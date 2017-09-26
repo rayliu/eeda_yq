@@ -182,11 +182,13 @@ public class CostCheckOrderController extends Controller {
     	return re;
     }
 	
-	public List<Record> getCostItemList(String order_ids,String bill_flag,String code,String exchange_currency,String fin_name){
+	public List<Record> getCostItemList(String order_ids,String bill_flag,String code,String exchange_currency,String fin_name,String order_no,String currency_name){
     	String sql = null;
     	String currency_code="";
     	String query_exchange_currency="";
     	String query_fin_name="";
+    	String query_order_no="";
+    	String query_currency_name="";
 		if(StringUtils.isNotEmpty(code)){
 			currency_code=" and cur. NAME="+"'"+code+"'";
 		}
@@ -197,6 +199,12 @@ public class CostCheckOrderController extends Controller {
 		}
 		if(StringUtils.isNotEmpty(fin_name)){
 			query_fin_name=" and fi.id="+fin_name;
+		}
+		if(StringUtils.isNotBlank(order_no)){
+			query_order_no = " and jo.order_no='"+order_no+"'";
+		}
+		if(StringUtils.isNotBlank(currency_name)){
+			query_currency_name = " and cur.name='"+currency_name+"'";
 		}
 			if("create".equals(bill_flag)){
 				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
@@ -229,7 +237,7 @@ public class CostCheckOrderController extends Controller {
 							+" left join cost_application_order_rel caol on caol.job_order_arap_id  = joa.id"
 							+" left join arap_cost_application_order acao on caol.application_order_id = acao.id"
 							 +" left join arap_cost_order aco on aco.id=caol.cost_order_id"
-						  +" where acao.id="+order_ids+query_fin_name
+						  +" where acao.id="+order_ids+query_fin_name+query_order_no+query_currency_name
 						  + " and jo.delete_flag = 'N'"
 							+" GROUP BY joa.id"
 							+" ORDER BY aco.order_no, jo.order_no";
@@ -792,7 +800,8 @@ public class CostCheckOrderController extends Controller {
     	String order_ids = getPara("order_ids");
     	String appliction_id = getPara("appApplication_id");
     	String bill_flag = getPara("bill_flag");
-    	
+    	String order_no = getPara("order_no1");
+    	String currency_name = getPara("currency_name");
     	String  currency_code=getPara("query_currency");
     	//查询结算币制
     	String  exchange_currency=getPara("query_exchange_currency");
@@ -800,12 +809,12 @@ public class CostCheckOrderController extends Controller {
     	List<Record> list = null;
     	if("N".equals(order_id)){
     		if(StringUtils.isNotEmpty(appliction_id)){
-    			list = getCostItemList(appliction_id,bill_flag,currency_code,exchange_currency,fin_name);
+    			list = getCostItemList(appliction_id,bill_flag,currency_code,exchange_currency,fin_name,order_no,currency_name);
         	}else{
 	    		if("".equals(order_ids)){
 	    			order_ids=null;
 	    				}
-	    		list = getCostItemList(order_ids,"",currency_code,exchange_currency,fin_name);
+	    		list = getCostItemList(order_ids,"",currency_code,exchange_currency,fin_name,order_no,currency_name);
 	    		}
     	}else{
     		list = getItemList(ids,order_id,currency_code);
