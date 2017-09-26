@@ -49,6 +49,9 @@ define(['jquery', 'sco'], function ($) {
                                 }else{
                                     doUpdate(data);
                                 }
+                            }else if(event.TYPE == "refresh_list"){
+                                var dataTable = $('#list_table').DataTable();
+                                dataTable.ajax.reload();
                             }
                         }
                     }
