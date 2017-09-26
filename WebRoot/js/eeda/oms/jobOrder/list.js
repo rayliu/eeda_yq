@@ -49,8 +49,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 				},
               { "width": "30px",
                   "render": function ( data, type, full, meta ) {
-                    return '<button type="button" class="btn table_btn delete btn-xs" >'+
-                          '<i class="fa fa-trash-o"></i> 删除</button>';
+                	  var str = "";
+                	  if(full.OTHER_FLAG=='other'){
+                		  str = "disabled";
+                	  }
+                	  return '<button type="button" class="btn table_btn delete btn-xs" '+str+'>'
+                      +'<i class="fa fa-trash-o"></i> 删除</button>';
                   }
               },
               { "data": "ORDER_NO", 
