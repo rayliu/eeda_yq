@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.JsonKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -73,9 +74,27 @@ public class FormService {
         String field_name = "f"+field_rec.get("id")+"_"+field_rec.getStr("field_name");
         
         String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
+        
+        List<Record> itemList = Db.find(
+                "select * from eeda_form_field_type_ref_item where field_id=?", field_id);
+        for (Record record : itemList) {
+            String name = record.getStr("name");
+            Record rec = FormService.getFieldName(name.split("\\.")[0], name.split("\\.")[1]);
+            String t_field_name = "f"+rec.get("id")+"_"+rec.getStr("field_name");//获取数据库对应的名称: f59_xh
+            record.set("target_field_name", t_field_name);
+            
+            String value = record.getStr("value");
+            Record value_rec = FormService.getFieldName(value.split("\\.")[0], value.split("\\.")[1]);
+            String v_field_name = "f"+value_rec.get("id")+"_"+value_rec.getStr("field_name");//获取数据库对应的名称: f59_xh
+            record.set("origin_field_name", v_field_name);
+        }
+        
+        String listJson = JsonKit.toJson(itemList);
+        
         returnStr = "<label class='search-label'>"+fieldDisplayName+"</label>"
                 + "<input type='text' name='"+inputId+"' class='form-control' placeholder='请选择' eeda_type='drop_down'"
-                + " target_form='"+refForm.getLong("id")+"' target_field_name='"+field_name+"' >"
+                + " target_form='"+refForm.getLong("id")+"' target_field_name='"+field_name+"'"
+                + " item_list='"+listJson+"'>"
                 //+ "<input id='"+inputId+"' style='display: none;' name="+inputId+" />"
                 + "<ul id='"+inputId+"_list' class='pull-right dropdown-menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;'>";
         

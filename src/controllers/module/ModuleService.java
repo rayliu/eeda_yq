@@ -165,7 +165,7 @@ public class ModuleService {
         }else if ("字段引用".equals(fieldType)) {
             Map<String, ?> fieldTypeObj = (Map<String, ?>) field
                     .get("REF");
-            String refId = (String) fieldTypeObj.get("id".toUpperCase());
+            String refId = fieldTypeObj.get("id".toUpperCase()).toString();
             String ref_form = (String) fieldTypeObj
                     .get("ref_form".toUpperCase());
             String ref_field = (String) fieldTypeObj
@@ -185,7 +185,33 @@ public class ModuleService {
                 rec.set("ref_form", ref_form);
                 rec.set("ref_field", ref_field);
                 rec.set("is_dropdown", is_dropdown);
-                Db.update("eeda_form_field_type_detail_ref", rec);
+                Db.update("eeda_form_field_type_ref", rec);
+            }
+            
+            List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
+                    .get("item_list".toUpperCase());
+            if(list==null)
+                return;
+            
+            for (Map<String, ?> row : list) {
+                String id = row.get("id".toUpperCase()).toString();
+                String name = (String) row.get("name".toUpperCase());
+                String value = (String) row.get("value".toUpperCase());
+
+                Record itemRec = new Record();
+                if (StrKit.isBlank(id)) {
+                    itemRec.set("field_id", field_id);
+                    itemRec.set("name", name);
+                    itemRec.set("value", value);
+                    Db.save("eeda_form_field_type_ref_item", itemRec);
+                } else {
+                    itemRec = Db.findById("eeda_form_field_type_ref_item",
+                            id);
+                    itemRec.set("field_id", field_id);
+                    itemRec.set("name", name);
+                    itemRec.set("value", value);
+                    Db.update("eeda_form_field_type_ref_item", itemRec);
+                }
             }
         }
         

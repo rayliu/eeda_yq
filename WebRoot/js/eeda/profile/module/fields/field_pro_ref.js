@@ -26,6 +26,18 @@ define(['jquery'], function ($) {
                          data='';
                     return '<input type="text" name="name" value="'+data+'" class="form-control" style="width:200px"/>';
                   }
+              },
+              { "data": "operator",
+                "render": function ( data, type, full, meta ) {
+                    return '=';
+                  }
+              },
+              { "data": "VALUE",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                         data='';
+                    return '<input type="text" name="value" value="'+data+'" class="form-control" style="width:200px"/>';
+                  }
               }
           ]
         });
@@ -50,30 +62,28 @@ define(['jquery'], function ($) {
               IS_DROPDOWN: $('#is_dropdown').prop('checked')==true?'Y':'N',
               REF_CONDITION: $('#ref_condition').val()
             };
-            // var data = dataTable.rows().data();
-            // var inputs = dataTable.$('input, select');
-            // var itemList = [];
-            // for (var i = 0; i < inputs.length/5; i++) {
-            //   var item={
-            //     ID: $(inputs[i*5]).val(),
-            //     SEQ: $(inputs[i*5 + 1]).val(),
-            //     NAME: $(inputs[i*5 + 2]).val(),
-            //     CODE: $(inputs[i*5 + 3]).val(),
-            //     IS_DEFAULT: $(inputs[i*5 + 4]).prop('checked')==true?'Y':'N'
-            //   };
+            var data = dataTable.rows().data();
+            var inputs = dataTable.$('input, select');
+            var itemList = [];
+            for (var i = 0; i < inputs.length/3; i++) {
+              var item={
+                ID: $(inputs[i*3]).val(),
+                NAME: $(inputs[i*3 + 1]).val(),
+                VALUE: $(inputs[i*3 + 2]).val()
+              };
 
-            //   itemList.push(item);
-            // }
+              itemList.push(item);
+            }
 
-            // dto.ITEM_LIST = itemList;
+            dto.ITEM_LIST = itemList;
             return dto;
         };
 
         
-        $('#addCheckboxBtn').click(function(){
+        $('#add_ref_btn').click(function(){
             dataTable.row.add({}).draw(false);
             current_tr_index = dataTable.rows().data().length;
-            current_tr = $('#field_checkbox_table tr:eq('+current_tr_index+')');
+            current_tr = $('#field_ref_display_table tr:eq('+current_tr_index+')');
         });
 
         return {

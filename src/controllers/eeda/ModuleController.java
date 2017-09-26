@@ -796,6 +796,13 @@ public class ModuleController extends Controller {
                                 "select * from eeda_form_field_type_ref where field_id=?",
                                 field.get("id"));
                 field.set("ref", ref);
+                
+                List<Record> field_list = Db
+                        .find("select * from eeda_form_field_type_ref_item where field_id=?",
+                                field.get("id"));
+                if (field_list.size() > 0)
+                    ref.set("item_list", field_list);
+                
             }
         }
         return recList;

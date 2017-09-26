@@ -78,6 +78,14 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
           }else{
             $('#is_dropdown').prop('checked', false);
           }
+          var display_list = ref.ITEM_LIST;
+          refCont.dataTable.clear().draw();
+          if(display_list){
+            for (var i = 0; i < display_list.length; i++) {
+                var item = display_list[i];
+                refCont.dataTable.row.add(item).draw(false);
+            }
+          }
         }
 
         var re_display_detail_ref_values = function(data) {
@@ -164,8 +172,6 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             $('.ref_config').show();
           }
         });
-
-
 
         //回写到table
         $('#field_tab_confirmFieldBtn').click(function(){
