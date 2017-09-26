@@ -50,7 +50,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
               { "width": "30px",
                   "render": function ( data, type, full, meta ) {
                 	  var str = "";
-                	  if(full.OTHER_FLAG=='other'){
+                	  if(full.FROM_ORDER_TYPE!=null||full.FROM_ORDER_ID!=null){
                 		  str = "disabled";
                 	  }
                 	  return '<button type="button" class="btn table_btn delete btn-xs" '+str+'>'
