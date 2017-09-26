@@ -69,7 +69,7 @@
             <div class="simple_order_list_div">
 	            <div class="col-lg-6 guide_target2">
 	            	<% 
-		                var party_name='';
+		                var party_name;
 		                if(has(self_party)){
 		                	if('' != self_party.ABBR!''){
 		                    	party_name = self_party.ABBR;
@@ -94,8 +94,8 @@
 	             </div>
             	
            		<div class="col-lg-6 guide_target3">           			
-           			<%	var dis='';
-           				var to_party_id_enter='';        				
+           			<%	var dis;
+           				var to_party_id_enter;        				
 		                if(has(to_party)){
 		                	if('' != to_party.ID!''){
 		                		to_party_id_enter = to_party.ID;
