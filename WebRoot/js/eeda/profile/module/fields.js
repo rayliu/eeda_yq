@@ -35,6 +35,11 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             $('#sort_type').val(data.SORT_TYPE);
             $('#default_value').val(data.DEFAULT_VALUE);
             $('#seq').val(data.SEQ);
+            if(data.LISTED == 'Y'){
+              $('#is_not_list_col').prop('checked', false);
+            }else{
+              $('#is_not_list_col').prop('checked', true);
+            }
 
             if(!data.FIELD_TYPE){
               //清空所有属性
@@ -108,6 +113,11 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
           }else{
             $('#is_single_check').prop('checked', false);
           }
+          if(data.CHECK_BOX.IS_SINGLE_CHECK == 'Y'){
+            $('#is_single_check').prop('checked', true);
+          }else{
+            $('#is_single_check').prop('checked', false);
+          }
           $('#line_display_numbers').val(data.CHECK_BOX.LINE_DISPLAY_NUM);
 
           var itemList = data.CHECK_BOX.ITEM_LIST;
@@ -166,6 +176,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             item.DEFAULT_VALUE=$('#default_value').val();
             item.SEQ=$('#seq').val();
             item.READ_ONLY=$('#read_only').prop('checked')==true?'Y':'N';
+            item.LISTED=$('#is_not_list_col').prop('checked')==true?'N':'Y';
             
 
             var checkText=$('#field_type').find("option:selected").text();

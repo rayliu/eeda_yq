@@ -66,13 +66,12 @@ define(['jquery'], function ($) {
             var data = dataTable.rows().data();
             var inputs = dataTable.$('input, select');
             var itemList = [];
-            for (var i = 0; i < inputs.length/5; i++) {
+            for (var i = 0; i < inputs.length/4; i++) {
               var item={
-                ID: $(inputs[i*5]).val(),
-                SEQ: $(inputs[i*5 + 1]).val(),
-                NAME: $(inputs[i*5 + 2]).val(),
-                CODE: $(inputs[i*5 + 3]).val(),
-                IS_DEFAULT: $(inputs[i*5 + 4]).prop('checked')==true?'Y':'N'
+                ID: $(inputs[i*4]).val(),
+                SEQ: $(inputs[i*4 + 1]).val(),
+                NAME: $(inputs[i*4 + 2]).val(),
+                IS_DEFAULT: $(inputs[i*4 + 3]).prop('checked')==true?'Y':'N'
               };
 
               itemList.push(item);

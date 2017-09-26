@@ -18,8 +18,10 @@ define(['jquery', '../btns'], function ($) {
 
         for (var i=0;i<field_list_json.length;i++){
             var field = field_list_json[i];
+            var visible = field.LISTED=="Y"?true:false;
             var col={
-                data: ('f'+field.ID+'_'+field.FIELD_NAME).toUpperCase()
+                data: ('f'+field.ID+'_'+field.FIELD_NAME).toUpperCase(),
+                visible: visible
             };
             //console.log(col);
             colsSetting.push(col);
