@@ -65,6 +65,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                             	 str +="港口监管<br>";
                              }else if(val == "wharf"){
                             	 str +="码头";
+                             }else if(val == "wharf"){
+                            	 str +="仓储";
                              }
                          });
                          

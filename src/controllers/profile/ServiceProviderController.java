@@ -279,7 +279,8 @@ public class ServiceProviderController extends Controller {
 		        + (getPara("sp_type_manufacturer")==null?"":getPara("sp_type_manufacturer")+";")
 				+ (getPara("sp_type_traders")==null?"":getPara("sp_type_traders")+";")
 				+ (getPara("sp_type_port_supervision")==null?"":getPara("sp_type_port_supervision")+";")
-				+ (getPara("sp_type_wharf")==null?"":getPara("sp_type_wharf")+";");
+				+ (getPara("sp_type_wharf")==null?"":getPara("sp_type_wharf")+";")
+				+ (getPara("sp_type_warehouse")==null?"":getPara("sp_type_warehouse")+";");
         
         contact.set("sp_type", sp_type);
         contact.set("mobile", getPara("mobile"));

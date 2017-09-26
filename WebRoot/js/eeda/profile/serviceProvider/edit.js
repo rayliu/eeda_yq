@@ -86,6 +86,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $('#sp_type_port_supervision').attr('checked', 'checked');
             }else if(checkSpType == 'wharf'){
                 $('#sp_type_wharf').attr('checked', 'checked');
+            }else if(checkSpType == 'warehouse'){
+                $('#sp_type_warehouse').attr('checked', 'checked');
             }
             
         };
@@ -225,9 +227,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#disVerification").prop('disabled',true);
 		  }
       }
-      
-      
-      
+    
       
       
       $("#submit,#approval,#disapproval,#verification,#disVerification").click(function(){
