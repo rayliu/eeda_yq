@@ -506,6 +506,10 @@ var checkIds=[];
         var url = "/costCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
         itemTable.ajax.url(url).load();
     };
+    
+    if($("#order_id").val()!=null){
+    	$("#detailedSearch").show();
+    }
     var detailedSearchTable = function(){
     	var order_id = $("#order_id").val();
     	var order_no1 = $("#order_no1").val();
