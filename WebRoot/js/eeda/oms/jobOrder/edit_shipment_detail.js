@@ -5,6 +5,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		var arrays = [];
         	var item = {};
         	item['id'] = $('#shipment_id').val();
+        	item['customer_id'] = $('#customer_id').val();
         	item['release_type'] = $('#shipmentForm input[type="radio"]:checked').val();
         	item['prepaid'] = $('#prepaid').val($('#prepaid').prop('checked')==true?'Y':'N');
             item['agent_prepaid'] = $('#agent_prepaid').val($('#agent_prepaid').prop('checked')==true?'Y':'N');
