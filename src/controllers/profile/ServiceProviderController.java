@@ -847,8 +847,8 @@ public class ServiceProviderController extends Controller {
     	String sql = "SELECT A.to_stamp,A.from_stamp,A.remark,c.id,c. CODE,c. NAME,A.rate"
     			+ " FROM "
     			+ " currency c"
-    			+ " left join (select * from currency_rate crr where to_stamp in ( select max(to_stamp) from currency_rate where office_id = "+office_id+" GROUP BY currency_id)  and crr.is_stop = 'Y' ) A  on A.currency_id = c.id "
-    			+ "where 1 = 1 and name is not null ";
+    			+ " left join (select * from currency_rate crr where to_stamp in ( select max(to_stamp) from currency_rate where office_id = "+office_id+" GROUP BY currency_id)  and crr.is_stop = 'Y') A  on A.currency_id = c.id "
+    			+ "where 1 = 1 and c.office_id = "+office_id+" and name is not null ";
         if(!StringUtils.isBlank(input)){
     		sql+=" and (c.name like '%" + input + "%' or c.english_name like '%" + input + "%' or c.code like '%" + input + "%') ";
     	}
