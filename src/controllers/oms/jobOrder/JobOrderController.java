@@ -142,7 +142,7 @@ public class JobOrderController extends Controller {
 				    			+" where joi.id = ?";
 	    	setAttr("portCreate",Db.findFirst(port_sql,id));
     	}
-    	setAttr("usedOceanInfo", getUsedOceanInfo());
+//    	setAttr("usedOceanInfo", getUsedOceanInfo());
     	setAttr("usedAirInfo", getUsedAirInfo());
     	setAttr("emailTemplateInfo", getEmailTemplateInfo());
     	//当前登陆用户
@@ -158,7 +158,8 @@ public class JobOrderController extends Controller {
     	jos.update();
     	renderJson("{\"result\":true,\"mbl_flag\":\"Y\"}");
     }
-   //已派车的标记位
+    
+    //已派车的标记位
     public void sendTruckorder(){
     	String order_id = getPara("order_id");
     	JobOrder job_order = JobOrder.dao.findById(order_id);
@@ -166,6 +167,8 @@ public class JobOrderController extends Controller {
     	job_order.update();
     	renderJson("{\"result\":true,\"send_truckorder_flag\":\"Y\"}");
     }
+
+    
     
     //已派车的标记位
     public void aboutShipmentflag(){
@@ -2376,8 +2379,9 @@ public class JobOrderController extends Controller {
         
         Map<String, String> recMap=shipment_detail.get(0);
     	
-    	Long creator_id = LoginUserController.getLoginUserId(this);
+    	Long creator_id = LoginUserController.getLoginUserId(this); //customer_id
     	String MBLshipper = recMap.get("MBLshipper");
+    	String customer_id = recMap.get("customer_id");
     	String MBLshipper_info = recMap.get("MBLshipper_info");    	
     	String MBLconsignee = recMap.get("MBLconsignee");
     	String MBLconsignee_info = recMap.get("MBLconsignee_info");
@@ -2465,6 +2469,7 @@ public class JobOrderController extends Controller {
         if(checkRec==null){
             Record r= new Record();
             r.set("creator_id", creator_id);
+            r.set("customer_id", customer_id);
             r.set("MBLshipper", MBLshipper);
             r.set("MBLshipper_info", MBLshipper_info);
             r.set("MBLconsignee", MBLconsignee);
@@ -3115,7 +3120,7 @@ public class JobOrderController extends Controller {
     		setAttr("rateExpired", "Y");
     	}
     	//获取海运明细表信息
-    	setAttr("usedOceanInfo", getUsedOceanInfo());
+//    	setAttr("usedOceanInfo", getUsedOceanInfo(jobOrder.get("customer_id").toString()));
     	setAttr("shipmentList", getItems(id,"shipment"));
     	setAttr("shipment", getItemDetail(id,"shipment"));
     	//获取空运运明细表信息
@@ -3277,7 +3282,7 @@ public class JobOrderController extends Controller {
     }
     
     //常用海运信息
-    public List<Record> getUsedOceanInfo(){
+    public List<Record> getUsedOceanInfo(String customer_id){
         List<Record> list = Db.find("select t.*,"
                 + " p1.abbr MBLshipperAbbr , "
                 + " p2.abbr MBLconsigneeAbbr,"
@@ -3301,7 +3306,7 @@ public class JobOrderController extends Controller {
                 + " left join party p8 on p8.id= t.HBLshipper"
                 + " left join party p9 on p9.id= t.HBLconsignee"
                 + " left join party p10 on p10.id= t.HBLnotify_party"
-                + " where t.creator_id=? order by t.id", LoginUserController.getLoginUserId(this));
+                + " where t.creator_id=? and t.customer_id=? order by t.id", LoginUserController.getLoginUserId(this),customer_id);
         return list;
     }
     //常用空运信息
@@ -3540,6 +3545,13 @@ public class JobOrderController extends Controller {
         map.put("recordsFiltered", rec.getLong("total"));
         map.put("data", orderList);
         renderJson(map); 
+    }
+    
+  //海运常用信息回显
+    public void oceanTemplateShow(){
+    	String customer_id = getPara("customer_id");
+    	List<Record> oceanRecord = getUsedOceanInfo(customer_id);
+    	renderJson(oceanRecord);
     }
     
     //异步刷新字表

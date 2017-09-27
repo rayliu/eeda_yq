@@ -144,58 +144,9 @@
 
   <%}%> 
     <div id="collapseOceanInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
-        <div class="panel-body">
+        <div class="panel-body" id="usedOceanInfoDetail">
             <ul id="usedOceanInfo" class="usedOceanInfo">
-              <%for(userInfo in usedOceanInfo![]){%>
-                    <li id="${userInfo.id}"
-                        MBLshipper_id="${userInfo.MBLshipper}"
-                        MBLshipper_abbr="${userInfo.MBLshipperAbbr}"
-                        MBLshipper_info="${userInfo.MBLshipper_info}"
-                        MBLconsignee_id="${userInfo.MBLconsignee}"
-                        MBLconsignee_abbr="${userInfo.MBLconsigneeAbbr}"
-                        MBLconsignee_info="${userInfo.MBLconsignee_info}"
-                        MBLnotify_id="${userInfo.MBLnotify_party}"
-                        MBLnotify_abbr="${userInfo.MBLnotify_partyAbbr}"
-                        MBLnotify_info="${userInfo.MBLnotify_info}"
-                        
-                        HBLshipper_id="${userInfo.HBLshipper}"
-                        HBLshipper_abbr="${userInfo.HBLshipperAbbr}"
-                        HBLshipper_info="${userInfo.HBLshipper_info}"
-                        HBLconsignee_id="${userInfo.HBLconsignee}"
-                        HBLconsignee_abbr="${userInfo.HBLconsigneeAbbr}"
-                        HBLconsignee_info="${userInfo.HBLconsignee_info}"
-                        HBLnotify_id="${userInfo.HBLnotify_party}"
-                        HBLnotify_abbr="${userInfo.HBLnotify_partyAbbr}"
-                        HBLnotify_info="${userInfo.HBLnotify_info}"
-                        por_id="${userInfo.por}" 
-                        pol_id="${userInfo.pol}" 
-                        pod_id="${userInfo.pod}" 
-                        fnd_id="${userInfo.fnd}" 
-                        por_name="${userInfo.por_name}" 
-                        pol_name="${userInfo.pol_name}" 
-                        pod_name="${userInfo.pod_name}" 
-                        fnd_name="${userInfo.fnd_name}" 
-                        head_carrier="${userInfo.head_carrier}" 
-                        head_carrier_name="${userInfo.head_carrier_name}" 
-                        oversea_agent="${userInfo.oversea_agent}" 
-                        oversea_agent_name="${userInfo.oversea_agent_name}" 
-                        oversea_agent_info="${userInfo.oversea_agent_info}" 
-                        release_type="${userInfo.release_type}" 
-                        shipping_mark="${userInfo.shipping_mark}" 
-                        cargo_desc="${userInfo.cargo_desc}" 
-                        >
-                      <div class="radio">
-                        <a class="deleteOceanTemplate" href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>
-                        <label class="selectOceanTemplate">
-                            <input type="radio" value="1" name="usedOceanInfo" style="margin-top: 0px;">
-                            <span>MBLshipper:${userInfo.MBLshipperAbbr}, MBLconsignee:${userInfo.MBLconsigneeAbbr}, MBLnotifyParty: ${userInfo.MBLnotify_partyAbbr}</span><br>
-                            <span>HBLshipper:${userInfo.HBLshipperAbbr}, HBLconsignee:${userInfo.HBLconsigneeAbbr}, HBLnotifyParty: ${userInfo.HBLnotify_partyAbbr}</span><br>
-                            <span class="port"> 头程船公司：${userInfo.head_carrier_name}, POR:${userInfo.por_name}, POL:${userInfo.pol_name}, POD:${userInfo.pod_name}, FND:${userInfo.fnd_name}, 海外代理：${userInfo.oversea_agent_name}</span> 
-                        </label>
-                      </div>
-                   </li>
-              <%}%>
-            </ul>
+              
         </div>
     </div>
 </div>

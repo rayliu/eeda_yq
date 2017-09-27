@@ -27,6 +27,85 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	arrays.push(item);
             return arrays;
         };
+      
+        
+      //海运模板点击
+        $('#collapseOceanInfo').on('show.bs.collapse', function () {
+        	var	div = $('#usedOceanInfoDetail').empty();
+            $('#collapseOceanIcon').removeClass('fa-angle-double-down').addClass('fa-angle-double-up');
+            var customer_id = $('#customer_id').val();
+            if(!customer_id){
+            	$.scojs_message('请先选择客户', $.scojs_message.TYPE_ERROR);
+            	return
+            }else{
+            	$.post('/jobOrder/oceanTemplateShow', {customer_id:customer_id}, function(data){
+            		if(data){
+            			for(var i = 0;i<data.length;i++){
+            				var li = '';
+            				var li_val = '';
+            				li +='<li '
+            					+' id="'+data[i].ID+'" '
+        						+' MBLshipper_id="'+(data[i].MBLSHIPPER==null?'':data[i].MBLSHIPPER)+'" '
+        						+' MBLshipper_abbr="'+data[i].MBLSHIPPERABBR+'" '
+        						+' MBLshipper_info="'+data[i].MBLSHIPPER_INFO+'" '
+        						+' MBLconsignee_id="'+data[i].MBLCONSIGNEE+'" '
+        						+' MBLconsignee_abbr="'+data[i].MBLCONSIGNEEABBR+'" '
+        						+' MBLconsignee_info="'+data[i].MBLCONSIGNEE_INFO+'" '
+        						+' MBLnotify_id="'+data[i].MBLNOTIFY_PARTY+'" '
+        						+' MBLnotify_abbr="'+data[i].MBLNOTIFY_PARTYABBR+'" '
+        						+' MBLnotify_info="'+data[i].MBLNOTIFY_PARTY_INFO+'" '
+        						+' HBLshipper_id="'+data[i].HBLSHIPPER+'" '
+        						+' HBLshipper_abbr="'+data[i].HBLSHIPPERABBR+'" '
+        						+' HBLshipper_info="'+data[i].HBLSHIPPER_INFO+'" '
+        						+' HBLconsignee_id="'+data[i].HBLCONSIGNEE+'" '
+        						+' HBLconsignee_abbr="'+data[i].HBLCONSIGNEEABBR+'" '
+        						+' HBLconsignee_info="'+data[i].HBLCONSIGNEE_INFO+'" '
+        						+' HBLnotify_id="'+data[i].HBLNOTIFY_PARTY+'" '
+        						+' HBLnotify_abbr="'+data[i].HBLNOTIFY_PARTY+'" '
+        						+' HBLconsignee_info="'+data[i].HBLCONSIGNEE_INFO+'" '
+        						+' HBLnotify_id="'+data[i].HBLNOTIFY_PARTY+'" '
+        						+' HBLnotify_abbr="'+data[i].HBLNOTIFY_INFO+'" '
+        						+' HBLnotify_info="'+data[i].HBLNOTIFY_PARTY_INFO+'" '
+        						+' por_id="'+data[i].POR+'" '
+        						+' pol_id="'+data[i].POL+'" '
+        						+' pod_id="'+data[i].POD+'" '
+        						+' fnd_id="'+data[i].FND+'" '
+        						+' por_name="'+(data[i].POR_NAME==null?'':data[i].POR_NAME)+'" '
+        						+' pol_name="'+(data[i].POL_NAME==null?'':data[i].POL_NAME)+'" '
+        						+' pod_name="'+(data[i].POD_NAME==null?'':data[i].POD_NAME)+'" '
+        						+' fnd_name="'+(data[i].FND_NAME==null?'':data[i].FND_NAME)+'" '
+        						+' head_carrier="'+data[i].HEAD_CARRIER+'" '
+        						+' head_carrier_name="'+(data[i].HEAD_CARRIER_NAME==null?'':data[i].HEAD_CARRIER_NAME)+'" '
+        						+' oversea_agent="'+data[i].OVERSEA_AGENT+'" '
+        						+' oversea_agent_name="'+(data[i].OVERSEA_AGENT_NAME==null?'':data[i].OVERSEA_AGENT_NAME)+'" '
+        						+' oversea_agent_info="'+(data[i].OVERSEA_AGENT_INFO==null?'':data[i].OVERSEA_AGENT_INFO)+'" '
+        						+' release_type="'+data[i].RELEASE_TYPE+'" '
+        						+' shipping_mark="'+data[i].SHIPPING_MARK+'" '
+        						+' cargo_desc="'+data[i].CARGO_DESC+'" '
+        						+'>';
+        					li_val = '<span></span>  MBLShipper ： '+data[i].MBLSHIPPERABBR+' ,  MBLConsignee ：'+data[i].MBLCONSIGNEEABBR+' , 启运港  POL :'+data[i].POL_NAME+' <br/>'
+        							+' HBLShipper : '+data[i].HBLSHIPPERABBR+' ,  HBLConsignee :'+data[i].HBLCONSIGNEEABBR+' , 目的港  POD : '+data[i].POD_NAME;
+            				
+            				div.append('<ul class="usedOceanInfo" id="'+data[i].ID+'">'
+            						+li
+            						+'<div class="radio">'
+            						+'	<a class="deleteOceanTemplate" style="margin-right: 10px;padding-top: 5px;float: left;">删除</a>'
+            						+'	<div class="selectOceanTemplate" style="margin-left: 60px;padding-top: 0px;">'
+            						+'      <input type="radio" value="1" name="usedOceanInfo">'
+            						+		li_val
+            						+'	</div>'
+            						+'</div><hr/>'
+            						+'</li>'
+            						+'</ul>');
+            			}
+            		}
+            	});
+            }
+        });
+      
+      
+        
+      
         
       //保存海运模板
         $('#oceanBtnTemplet').click(function(){
@@ -131,7 +210,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         
 
         //常用海运信息模版
-        $('#usedOceanInfo').on('click', '.selectOceanTemplate', function(){
+        $('#usedOceanInfoDetail').on('click', '.selectOceanTemplate', function(){
             var li = $(this).parent().parent();
             $('#ocean_HBLshipper_input').val(li.attr('HBLshipper_abbr'));
             $('#ocean_HBLshipper_info').val(li.attr('HBLshipper_info'));
@@ -187,15 +266,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           $('#collapseOceanIcon').removeClass('fa-angle-double-up').addClass('fa-angle-double-down');
         });
         
-        $('.deleteOceanTemplate').click(function(e) {
+        $('#usedOceanInfoDetail').on('click', '.deleteOceanTemplate', function(){
         	$(this).attr('disabled', true);
-        	e.preventDefault();
-        	var li = $(this).parent().parent();
-        	var id = li.attr('id');
+        	var ul = $(this).parent().parent();
+    	  	var id = ul.attr('id');
         	$.post('/jobOrder/deleteOceanTemplate', {id:id}, function(data){
         		$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
         		$(this).attr('disabled', false);
-        		li.css("display","none");
+        		ul.css("display","none");
         	},'json').fail(function() {
         		$(this).attr('disabled', false);
                 $.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
