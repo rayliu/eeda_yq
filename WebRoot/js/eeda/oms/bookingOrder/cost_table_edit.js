@@ -15,7 +15,7 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 	     						return data;
 	     				}
 	     			},
-			        { "data": "CHARGE_ENG_NAME",width:"120px",
+			        { "data": "CHARGE_ENG_NAME",width:"460px",
 			        	"render": function ( data, type, full, meta ) {
 			    			if(!data)
 			    				data='';
@@ -28,14 +28,14 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 			                    var str =  parseFloat(data).toFixed(2);
 			                else
 			                
-			                return '<input type="text" name="price" style="width:70px" value="'+str+'" class="form-control notsave"/>';
+			                return '<input type="text" name="price" style="width:60px;" value="'+str+'" class="form-control notsave"/>';
 			           }
 			        },
 			        { "data": "AMOUNT",width:"60px",
 			            "render": function ( data, type, full, meta ) {
 			            	if(!data)
 			                    data='1';
-			                return '<input type="text" name="amount" style="width:70px" value="'+data+'" class="form-control notsave" />';
+			                return '<input type="text" name="amount" style="width:60px;" value="'+data+'" class="form-control notsave" />';
 			          }
 			        },
 			        { "data": "UNIT_NAME",width:"60px",
@@ -51,7 +51,7 @@ define(['jquery', 'file_upload' ,'sco'], function ($, metisMenu) {
 			                    var str =  parseFloat(data).toFixed(3);
 			                else
 			                	str = '';
-			            	return '<input type="text" name="total_amount" style="width:70px" value="'+str+'" class="form-control notsave" disabled />';
+			            	return '<input type="text" name="total_amount" style="width:60px;" value="'+str+'" class="form-control notsave" disabled />';
 			            	
 			            }
 			        },
