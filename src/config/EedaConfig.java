@@ -48,7 +48,9 @@ import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.IndexController;
 import controllers.alipay.AlipayController;
+import controllers.app.AppBestCaseController;
 import controllers.app.AppControllerForMobile;
+import controllers.app.AppTaoController;
 import controllers.bizadmin.BizAdminController;
 import controllers.bizadmin.account.AccountController;
 import controllers.bizadmin.register.RegisterController;
@@ -140,6 +142,8 @@ public class EedaConfig extends JFinalConfig {
     }
     private void setAppRoute(Routes me) {
         me.add("/app", AppControllerForMobile.class);
+        me.add("/app/tao", AppTaoController.class);
+        me.add("/app/bestCase", AppBestCaseController.class);
     }
 
 	private void setWeddingRoute(Routes me) {

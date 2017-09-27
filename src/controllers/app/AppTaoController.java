@@ -31,7 +31,7 @@ public class AppTaoController extends Controller {
     	List<Record> bannerList = Db.find(" SELECT  id,  ad_index, "
     			+ " ifnull(user_id, default_user_id) user_id, "
     			+ " ifnull( product_id, default_product_id ) product_id,"
-    			+ " if(photo = '' || photo is null,default_photo,photo)) photo"
+    			+ " if(photo = '' || photo is null, default_photo, photo) photo"
     			+ " FROM"
     			+ " `wc_ad_banner_photo`; ");
     	//横幅广告
