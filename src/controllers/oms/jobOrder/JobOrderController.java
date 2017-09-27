@@ -158,8 +158,18 @@ public class JobOrderController extends Controller {
     	jos.update();
     	renderJson("{\"result\":true,\"mbl_flag\":\"Y\"}");
     }
+   
+    //插入动作HBL标识符
+    public void hblflag(){
+    	String jsonStr = getPara("order_id");
+    	JobOrderShipment jos = JobOrderShipment.dao.findFirst("select id from job_order_shipment where order_id = ?",jsonStr);
+    	jos.set("hbl_flag", "Y");
+    	jos.update();
+    	renderJson(true);
+    }
     
-    //已派车的标记位
+    
+   //已派车的标记位
     public void sendTruckorder(){
     	String order_id = getPara("order_id");
     	JobOrder job_order = JobOrder.dao.findById(order_id);
@@ -3455,7 +3465,7 @@ public class JobOrderController extends Controller {
         } else if("shipmentHead".equals(type)){//头程
         	dai_condition = " and datediff(jor.order_export_date, now()) <= 1 and jor.print_shipmentHead_flag != 'Y'";
         } else if("siwait".equals(type)){
-        	dai_condition = " and TO_DAYS(jos.export_date)=TO_DAYS(now())";
+        	dai_condition = " and datediff(jor.order_export_date, now()) <= 0 ";
         }else if("hblwait".equals(type)){
         	dai_condition = " and jos.si_flag = 'Y' and (jos.hbl_flag != 'Y' or jos.hbl_flag is null)";
         } else if("mblwait".equals(type)){

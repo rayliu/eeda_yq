@@ -933,8 +933,8 @@ $(document).ready(function() {
 //    });
     
     //约柜标记位
-    var mblflag=$('#aboutShipmentHide').val();
-    if(mblflag == 'Y'){
+    var aboutShipmentflag=$('#aboutShipmentHide').val();
+    if(aboutShipmentflag == 'Y'){
     	$('#aboutShipment').attr('disabled',true);
     }
     
@@ -950,7 +950,27 @@ $(document).ready(function() {
     	},'json').fail(function(){
 		    $.scojs_message('约柜确认失败', $.scojs_message.TYPE_ERROR);
   		});
-    	
+    });
+    
+    
+    //约柜标记位
+    var hblflag=$('#oceanHBLHidden').val();
+    if(hblflag == 'Y'){
+    	$('#oceanHBL').attr('disabled',true);
+    }
+    
+    $('#oceanHBL').click(function(){
+    	var order_id = $("#order_id").val();
+    	$.post('/jobOrder/hblflag',{order_id:order_id},function(data){
+    		if(data){
+    			$.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+    		    $('#oceanHBL').attr('disabled',true);
+    		} else {
+    			$.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	},'json').fail(function(){
+		    $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+  		});
     });
 });
 });

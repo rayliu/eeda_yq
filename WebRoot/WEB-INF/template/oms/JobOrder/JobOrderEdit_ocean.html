@@ -664,21 +664,24 @@
            	 <a data-target='#oceanHeadDetail' data-toggle='modal'>
 				<button id="oceanHeadDetailBtn1" style="display:none"></button>
 			 </a>
-           	 <button id="oceanMBL" class="btn btn_green" disableStr>确认MBL</button>
-           	 <input id="oceanMBLHidden" type="hidden" value="${shipment.mbl_flag!''}" >
-           	 <button id="alreadyAFR_AMS" class="btn btn_green" disableStr>已AFR/AMS</button>
-           	 <input id="alreadyAFR_AMShide" type="hidden" value="${shipment.afr_ams_flag!''}" >
-           	 <button id="alreadyInline" class="btn btn_green" disableStr>已电放</button>
-           	 <input id="alreadyInlineHide" type="hidden" value="${shipment.in_line_flag!''}">
            	 <% if(shiro.hasPermission("jobOrder.oceanTelexHBL")){ %>
            	 	<button id="prinTelextOceanHBL" class="btn btn_green"  disableStr>生成电放HBL PDF</button>
            	 <%}%>
            	 <a data-target='#deliverWarehouseDetail' data-toggle='modal'>
            	 	<button id="deliver_warehouse_bill" class="btn btn_green"  disableStr>生成进仓单 PDF</button>
            	 </a>
+           	 <br><br>
            	 <button id="aboutShipment" class="btn btn_green" disableStr>已约柜</button>
-           	 <input id="aboutShipmentHide" type="hidden" value="${shipment.aboutShipment_flag!''}">           	 
-			 <br><br>
+           	 <input id="aboutShipmentHide" type="hidden" value="${shipment.aboutShipment_flag!''}">    
+           	 <button id="oceanHBL" class="btn btn_green" disableStr>已核对HBL</button>
+           	 <input id="oceanHBLHidden" type="hidden" value="${shipment.hbl_flag!''}" >    
+           	 <button id="oceanMBL" class="btn btn_green" disableStr>确认MBL</button>
+           	 <input id="oceanMBLHidden" type="hidden" value="${shipment.mbl_flag!''}" >
+           	 <button id="alreadyAFR_AMS" class="btn btn_green" disableStr>已AFR/AMS</button>
+           	 <input id="alreadyAFR_AMShide" type="hidden" value="${shipment.afr_ams_flag!''}" >
+           	 <button id="alreadyInline" class="btn btn_green" disableStr>已电放</button>
+           	 <input id="alreadyInlineHide" type="hidden" value="${shipment.in_line_flag!''}"> 
+			 <br>
            </div>
           <%}else{%> 
              <div id="oceanPDF" class="form-group"  style="display:none">
@@ -692,14 +695,18 @@
            	 <a data-target='#oceanHeadDetail' data-toggle='modal'>
 				<button id="oceanHeadDetailBtn1" style="display:none"></button>
 			 </a>
+			 <br><br>
+			 <button id="aboutShipment" class="btn btn_green" disableStr>已约柜</button>
+           	 <input id="aboutShipmentHide" type="hidden" value="${shipment.aboutShipment_flag!''}">     
+           	 <button id="oceanHBL" class="btn btn_green" disableStr>已核对HBL</button>
+           	 <input id="oceanHBLHidden" type="hidden" value="${shipment.hbl_flag!''}" >          	 
            	 <button id="oceanMBL" class="btn btn_green" disableStr>确认MBL</button>
            	 <input id="oceanMBLHidden" type="hidden" value="${shipment.mbl_flag!''}" >
            	 <button id="alreadyAFR_AMS" class="btn btn_green" disableStr>已AFR/AMS</button>
            	 <input id="alreadyAFR_AMShide" type="hidden" value="${shipment.afr_ams_flag!''}" >
            	 <button id="alreadyInline" class="btn btn_green" disableStr>已电放</button>
            	 <input id="alreadyInlineHide" type="hidden" value="${shipment.in_line_flag!''}">
-           	 <button id="aboutShipment" class="btn btn_green" disableStr>已约柜</button>
-           	 <input id="aboutShipmentHide" type="hidden" value="${shipment.aboutShipment_flag!''}">           	 
+           	 
 			 <br><br>
            </div>
           <%}%>
