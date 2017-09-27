@@ -210,6 +210,10 @@ public class JobOrderReportController extends Controller {
    			DbUtils.setModelValues(dto, jsh);
    			jsh.save();
    		}
+   		
+   		Record jobOrder = Db.findById("job_order", order_id);
+   		jobOrder.set("print_shipmentHead_flag", "Y");
+   		Db.update("job_order",jobOrder);
     	
     	String fileName = "/report/jobOrder/oceanHead.jasper";
     	
