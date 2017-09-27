@@ -3464,12 +3464,19 @@ public class JobOrderController extends Controller {
          			+ " and datediff(jor.order_export_date, now()) <= 3 AND jor.send_truckorder_flag != 'Y'";
         } else if("shipmentHead".equals(type)){//头程
         	dai_condition = " and datediff(jor.order_export_date, now()) <= 1 and jor.print_shipmentHead_flag != 'Y'";
-        } else if("siwait".equals(type)){
-        	dai_condition = " and datediff(jor.order_export_date, now()) <= 0 ";
-        }else if("hblwait".equals(type)){
-        	dai_condition = " and jos.si_flag = 'Y' and (jos.hbl_flag != 'Y' or jos.hbl_flag is null)";
-        } else if("mblwait".equals(type)){
-        	dai_condition = " and jos.si_flag = 'Y' and (jos.mbl_flag != 'Y' or jos.mbl_flag is null)";
+        } else if("vgmwait".equals(type)){  //vgm
+        	dai_condition = " and datediff(jor.order_export_date, now()) = 0 and ifnull(jos.vgm,'') = ''";
+        }else if("hblwait".equals(type)){  //hbl
+        	dai_condition = " and (ifnull(jos.hbl_flag,'') != 'Y') and datediff(jor.order_export_date, now()) = 0";
+        } else if("mblwait".equals(type)){  //mbl
+        	dai_condition = " and jos.si_flag = 'Y' and ifnull(jos.mbl_flag,'') != 'Y'  ";
+        }  else if("insurancewait".equals(type)){  //保险
+        	dai_condition = "  and datediff(jor.order_export_date, now()) = 0 and  jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL";
+        } else if("overseacustomwait".equals(type)){
+        	dai_condition = " and (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
+        			+ " and timediff(now(),jos.etd)<TIME('48:00:00')";
+        } else if("tlxOrderwait".equals(type)){
+        	dai_condition = " and TO_DAYS(jos.etd)= TO_DAYS(now())";
         } else if("customwait".equals(type)){
         	String custom_status = getPara("custom_status_");
         	if("待报关".equals(custom_status)){
@@ -3485,14 +3492,6 @@ public class JobOrderController extends Controller {
         		dai_condition = " and  jor.transport_type LIKE '%custom%'";
         	}
         			//+ " and isnull(joc.customs_broker) and isnull(jocc.custom_bank)" ;
-        } else if("insurancewait".equals(type)){
-        	dai_condition = " and  jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL"
-                    + " and jor.delete_flag = 'N'";
-        } else if("overseacustomwait".equals(type)){
-        	dai_condition = " and (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
-        			+ " and timediff(now(),jos.etd)<TIME('48:00:00')";
-        } else if("tlxOrderwait".equals(type)){
-        	dai_condition = " and TO_DAYS(jos.etd)= TO_DAYS(now())";
         }
        
          sql = 		"SELECT * from (select jor.*, loc.name as pod_name,jos.sono,jos.mbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\" / \",jos.mbl_no), \"\")) AS sono_mbl,"

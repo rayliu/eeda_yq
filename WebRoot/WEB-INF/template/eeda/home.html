@@ -12,7 +12,7 @@
 			                    show = 'block';
 			                }
 			            %>  
-			            
+			            <!-- { id: 'SOTodoCount', name: 'SO待更新',title:'类型是出口柜货，且没有so号的工作单', url:'/jobOrder?type=sowait'}, -->
 			            <div class="row head_style"><div class="font_style">To-do List 待办事项</div></div>
 			            <div class="row simple_title_div">
 			            	<div class="col-xs-12">
@@ -20,16 +20,16 @@
 			            		<div class="row">
 			            		<%
 				                  var alertItems = [
-				                    { id: 'SOTodoCount', name: 'SO待更新',title:'类型是出口柜货，且没有so号的工作单', url:'/jobOrder?type=sowait'},
-				                    { id: 'WaitAboutShipmentTodoCount', name: '未约柜',title:'距离出货时间少于3天,且没点击已约柜按钮', url:'/jobOrder?type=aboutShipment',row:'1'},
-				                    { id: 'truckOrderTodoCount', name: '未派车',title:'距离出货时间少于3天,且没点击已完成派车按钮', url:'/jobOrder?type=truckorderwait',row:'1'},
-				                    { id: 'waitShipmentHeadTodoCount', name: '待发头程资料',title:'距离出货日期时间少于1天，且没有发送头程给客户的工作单', url:'/jobOrder?type=shipmentHead'},
-				                    { id: 'SITodoCount', name: 'SI待更新',title:'出货时间等于今天，且还没有生成SI PDF的工作单', url:'/jobOrder?type=siwait'},
-				                    { id: 'MBLTodoCount', name: '未确认MBL',title:'生成了SI PDF，但没有点击确认MBL的工作单', url:'/jobOrder?type=mblwait',row:'1'},
-				                    { id: 'waitCustomTodoCount', name: '工作单待报关',title:'服务类型勾上了报关，且报关信息的Tab中，报关行的信息为空的工作单', url:'/jobOrder?type=customwait',row:'1'},
-				                    { id: 'waitBuyInsuranceTodoCount', name: '待买保险',title:'服务类型勾上了保险，且保险信息的Tab中的投保单号为空', url:'/jobOrder?type=insurancewait'},
-				                    { id: 'waitOverseaCustomTodoCount', name: '待海外系统申报',title:'勾选待海外申报,且距离ETD的时间少于48小时提醒,点击已AFR/AMS结束提醒', url:'/jobOrder?type=overseacustomwait',row:'1'},
-				                    { id: 'TlxOrderTodoCount', name: '待电放提单',title:'ETD时间等于当天提醒，点击已电放结束提醒。', url:'/jobOrder?type=tlxOrderwait'}
+				                    { id: 'wait1', name: '未约柜',title:'距离出货时间少于3天,且没点击已约柜按钮', url:'/jobOrder?type=aboutShipment',row:'1'},
+				                    { id: 'wait2', name: '未派车',title:'距离出货时间少于3天,且没点击已完成派车按钮', url:'/jobOrder?type=truckorderwait'},
+				                    { id: 'wait3', name: '待发头程资料',title:'距离出货日期时间少于1天，且没有发送头程给客户的工作单', url:'/jobOrder?type=shipmentHead',row:'1'},
+				                    { id: 'wait4', name: '待发送VGM',title:'出货时间等于今天，且还没填写VGM信息的工作单', url:'/jobOrder?type=vgmwait'},
+				                    { id: 'wait5', name: '未确认HBL',title:'出货时间等于今天，且还没核对HBL的工作单', url:'/jobOrder?type=hblwait',row:'1'},
+				                    { id: 'wait6', name: '未确认MBL',title:'出货时间等于今天，且还还没确认MBL的工作单', url:'/jobOrder?type=mblwait'},
+				                    { id: 'wait7', name: '待买保险',title:'出货时间等于今天，服务类型勾上了保险，且保险信息的Tab中的投保单号为空', url:'/jobOrder?type=insurancewait',row:'1'},
+				                    { id: 'wait8', name: '待海外系统申报',title:'勾选待海外申报,且距离ETD的时间少于48小时提醒,未点击已AFR/AMS结束提醒', url:'/jobOrder?type=overseacustomwait'},
+				                    { id: 'wait9', name: '待电放提单',title:'ETD时间等于当天提醒，未点击已电放结束提醒。', url:'/jobOrder?type=tlxOrderwait',row:'1'},
+				                    { id: 'wait10', name: '工作单待报关',title:'服务类型勾上了报关，且报关信息的Tab中，报关行的信息为空的工作单', url:'/jobOrder?type=customwait'}
 				                  ];
 				                for(info in alertItems![]){%>
 						                    <div class="interval">

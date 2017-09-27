@@ -5,16 +5,17 @@ define(['jquery'], function ($) {
         //查询系统单据数量合计
         $.get('/todo/getYqTodoList', function(data){
         	if(bIndex){
-            	$("#WaitAboutShipmentTodoCount").empty().text(data.WAITABOUTSHIPMENTTODOCOUNT);
-                $("#SOTodoCount").empty().text(data.SOTODOCOUNT);
-                $("#truckOrderTodoCount").empty().text(data.TRUCKORDERTODOCOUNT);
-                $("#SITodoCount").empty().text(data.SITODOCOUNT);
-                $("#MBLTodoCount").empty().text(data.MBLTODOCOUNT);
-                $("#waitShipmentHeadTodoCount").empty().text(data.WAITSHIPMENTHEADTODOCOUNT);
-                $("#waitCustomTodoCount").empty().text(data.WAITCUSTOMTODOCOUNT);
-                $("#waitOverseaCustomTodoCount").empty().text(data.WAITOVERSEACUSTOMTODOCOUNT);
-                $("#TlxOrderTodoCount").empty().text(data.TLXORDERTODOCOUNT);
-                $("#waitBuyInsuranceTodoCount").empty().text(data.WAITBUYINSURANCETODOCOUNT);
+            	//$("#wait1").empty().text(data.WAITABOUTSHIPMENTTODOCOUNT);
+                $("#wait1").empty().text(data.SOTODOCOUNT);
+                $("#wait2").empty().text(data.TRUCKORDERTODOCOUNT);
+                $("#wait3").empty().text(data.VGMTODOCOUNT);
+                $("#wait4").empty().text(data.HBLTODOCOUNT);
+                $("#wait5").empty().text(data.MBLTODOCOUNT);
+                $("#wait6").empty().text(data.WAITBUYINSURANCETODOCOUNT);//保险
+                $("#wait7").empty().text(data.WAITSHIPMENTHEADTODOCOUNT);
+                $("#wait8").empty().text(data.WAITOVERSEACUSTOMTODOCOUNT);
+                $("#wait9").empty().text(data.TLXORDERTODOCOUNT);
+                $("#wait10").empty().text(data.WAITCUSTOMTODOCOUNT);
         	}
             // $(".planOrderWait").empty().text(data);
             // $(".soWait").empty().text(data);
