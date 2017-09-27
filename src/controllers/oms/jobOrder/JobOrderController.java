@@ -3439,9 +3439,16 @@ public class JobOrderController extends Controller {
         String dai_condition = "";
         if("sowait".equals(type)){
         	dai_condition = " and jor.type = '出口柜货' AND jos.SONO IS NULL AND jor.transport_type LIKE '%ocean%'";
-        }else if("truckorderwait".equals(type)){
-        	 dai_condition = " and datediff(joli.eta, now()) <= 3 AND jor.send_truckorder_flag != 'Y'"
-        			+ " AND jor.transport_type LIKE '%land%'";
+        }else if("aboutShipment".equals(type)){//约柜
+       	 	dai_condition = " and datediff(jor.order_export_date, now()) <= 3 AND jos.aboutShipment_flag != 'Y'"
+     			+ " AND jor.transport_type LIKE '%ocean%'";
+        }else if("truckorderwait".equals(type)){//派车
+//        	dai_condition = " and datediff(joli.eta, now()) <= 3 AND jor.send_truckorder_flag != 'Y'"
+//        			+ " AND jor.transport_type LIKE '%land%'";
+        	dai_condition = " and datediff(jor.order_export_date, now()) <= 3 AND jor.send_truckorder_flag != 'Y'"
+         			+ " and datediff(jor.order_export_date, now()) <= 3 AND jor.send_truckorder_flag != 'Y'";
+        } else if("shipmentHead".equals(type)){//头程
+        	dai_condition = " and datediff(jor.order_export_date, now()) <= 1 and jor.print_shipmentHead_flag != 'Y'";
         } else if("siwait".equals(type)){
         	dai_condition = " and TO_DAYS(jos.export_date)=TO_DAYS(now())";
         }else if("hblwait".equals(type)){

@@ -5,12 +5,12 @@ define(['jquery'], function ($) {
         //查询系统单据数量合计
         $.get('/todo/getYqTodoList', function(data){
         	if(bIndex){
-            	$("#planOrderTodoCount").empty().text(data.PLANORDERTODOCOUNT);
+            	$("#WaitAboutShipmentTodoCount").empty().text(data.WAITABOUTSHIPMENTTODOCOUNT);
                 $("#SOTodoCount").empty().text(data.SOTODOCOUNT);
                 $("#truckOrderTodoCount").empty().text(data.TRUCKORDERTODOCOUNT);
                 $("#SITodoCount").empty().text(data.SITODOCOUNT);
                 $("#MBLTodoCount").empty().text(data.MBLTODOCOUNT);
-                $("#waitCustomTodoCountPlan").empty().text(data.WAITCUSTOMTODOCOUNTPLAN);
+                $("#waitShipmentHeadTodoCount").empty().text(data.WAITSHIPMENTHEADTODOCOUNT);
                 $("#waitCustomTodoCount").empty().text(data.WAITCUSTOMTODOCOUNT);
                 $("#waitOverseaCustomTodoCount").empty().text(data.WAITOVERSEACUSTOMTODOCOUNT);
                 $("#TlxOrderTodoCount").empty().text(data.TLXORDERTODOCOUNT);
