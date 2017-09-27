@@ -51,13 +51,6 @@ public class CurrencyController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
-        UserLogin user1 = LoginUserController.getLoginUser(this);
-        long office_id=user1.getLong("office_id");
-        //判断与登陆用户的office_id是否一致
-        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("currency", Long.valueOf(id), office_id)){
-        	renderError(403);// no permission
-            return;
-        }
         if (id != null) {
             Currency currency = Currency.dao.findById(id);
             setAttr("order", currency);
@@ -113,8 +106,6 @@ public class CurrencyController extends Controller {
     // 列出金融账户信息
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_A_LIST}) 去这个文件里面读取权限
     public void list() {
-    	 UserLogin user1 = LoginUserController.getLoginUser(this);
-         long office_id=user1.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("sEcho");
       
@@ -124,7 +115,7 @@ public class CurrencyController extends Controller {
 
         String sql = "select cu.*,ul.c_name creator_name from currency cu"
         		+ " left join user_login ul on ul.id = cu.creator"
-        		+ " where 1 = 1 and cu.office_id="+office_id;
+        		+ " where 1 = 1";
         
         String condition = DbUtils.buildConditions(getParaMap());
 
