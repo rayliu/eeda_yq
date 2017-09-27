@@ -3175,7 +3175,10 @@ public class JobOrderController extends Controller {
    		setAttr("truckHead", Db.findFirst("select * from job_order_land_cabinet_truck where order_id = ?",id));
    		
    		//仓库详细信息会显
-   		setAttr("warehouseBill", Db.findFirst("select * from job_deliver_warehouse_bill where order_id = ?",id));
+   		setAttr("warehouseBill", Db.findFirst("select jdwb.*,p.abbr warehouse_name ,dock.dock_name warehouse_adddress_name from job_deliver_warehouse_bill jdwb"
+   				+ " LEFT JOIN party p on jdwb.warehouse = p.id"
+   				+ " LEFT JOIN dockinfo dock on dock.id = jdwb.warehouse_adddress"
+   				+ " where order_id =?",id));
    		//回显银行账户
    		setAttr("accountCNY", Db.findFirst("select * from fin_account fa "
    				+ " where fa.currency='CNY' and (fa.is_stop is null or fa.is_stop !=1) and office_id="+office_id));
