@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','./account_item_table','./contacts_item_table','./car_item_table'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','./account_item_table','./contacts_item_table','./car_item_table','./add_dock_item_table'], function ($, metisMenu) { 
 
   $(document).ready(function() {
 
@@ -148,6 +148,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	 order.acount_json =itemOrder.buildCargoDetail();
     	 order.contacts_json =itemOrder.buildContactsDetail();
     	 order.cars_json =itemOrder.buildCarsDetail();
+    	 order.dock_Item=itemOrder.buildDockItem();
     	 $("#acount_json").val(JSON.stringify(order));
     	 $.post("/serviceProvider/save", $("#customerForm").serialize(),function(data){
     		if(data=='abbrError'){

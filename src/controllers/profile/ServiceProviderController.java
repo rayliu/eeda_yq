@@ -99,7 +99,10 @@ public class ServiceProviderController extends Controller {
     		itemList = Db.find(itemSql, id);
     	}else if("cars".equals(type)){
     		itemList = Db.find("SELECT * FROM carinfo WHERE parent_id = ?",id);
-		}else {
+		}else if("dock".equals(type)){
+    		itemSql = "SELECT d.* FROM dockinfo d WHERE  d.party_type='serviceProvider' and d.party_id=? order by d.id";
+    		itemList = Db.find(itemSql, id);
+    	}else {
     		itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",id);
 		}
 		return itemList;
@@ -130,6 +133,7 @@ public class ServiceProviderController extends Controller {
         setAttr("party", party);
         setAttr("user", LoginUserController.getLoginUser(this));
         setAttr("itemList", getItemDetail(id,""));
+        setAttr("dockList", getItemDetail(id, "dock"));
         setAttr("contacts_itemList", getItemDetail(id,"contacts"));
         render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
@@ -240,9 +244,14 @@ public class ServiceProviderController extends Controller {
         String order_id = party.get("id").toString();
         List<Map<String, String>> acount = (ArrayList<Map<String, String>>)dto.get("acount_json");
 		DbUtils.handleList(acount, order_id, FinAccount.class, "order_id");
+		
 		//保存联系人信息
 		List<Map<String, String>> contacts = (ArrayList<Map<String, String>>)dto.get("contacts_json");
 		DbUtils.handleList(contacts, "contacts_item", order_id, "party_id");
+		
+		//保存联系人信息
+		List<Map<String, String>> dock_Item = (ArrayList<Map<String, String>>)dto.get("dock_Item");
+		DbUtils.handleList(dock_Item,  "dockinfo", id, "party_id");
 		//保存公司车辆信息
 		List<Map<String, String>> cars = (ArrayList<Map<String, String>>)dto.get("cars_json");
 		DbUtils.handleList(cars, "carinfo", order_id, "parent_id");
