@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="INVOICE_ENG" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="168"/>
+	<property name="ireport.y" value="314"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -29,8 +29,21 @@
 	<parameter name="order_id" class="java.util.List">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="account_ids" class="java.util.List">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
+	(SELECT   CONCAT('A/C Name:',GROUP_CONCAT( DISTINCT bank_name)) from fin_account WHERE id in (jo.account_ids)) bankName,
+	(SELECT   CONCAT('Bank Name:',GROUP_CONCAT( DISTINCT account_name)) from fin_account WHERE id in (jo.account_ids)) accountName,
+	(SELECT GROUP_CONCAT(accountNo SEPARATOR '\n')
+	from
+	(SELECT CONCAT(fa.currency,' Number:',fa.account_no) accountNo from fin_account fa
+	WHERE $X{IN,fa.id,account_ids}) A) accountNo,
+	(SELECT GROUP_CONCAT(accountNo SEPARATOR '\n')
+	from
+	(SELECT CONCAT(fa.currency,' Number:',fa.account_no) accountNo from fin_account fa
+	WHERE $X{IN,fa.id,account_ids}) A) accountNo,
 	jor.sp_id,jor.exchange_total_amount exchange_total_amount,jor.invoice_no invoice_no,jor.price price,jor.total_amount total_amount,
   jor.exchange_currency_rate exchange_rate,jor.amount amount, ifnull(pr.company_name,pr.company_name_eng) companyName,
 ifnull(pr.contact_person,pr.contact_person_eng) personEng,
@@ -131,11 +144,14 @@ WHERE
 	jor.order_type = 'charge'
 AND  $X{IN,jor.id,order_id} group by jor.id]]>
 	</queryString>
+	<field name="bankName" class="java.lang.String"/>
+	<field name="accountName" class="java.lang.String"/>
+	<field name="accountNo" class="java.lang.String"/>
 	<field name="sp_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[供应商id]]></fieldDescription>
 	</field>
 	<field name="exchange_total_amount" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[结算金额]]></fieldDescription>
 	</field>
 	<field name="invoice_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -144,10 +160,10 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="total_amount" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[对账金额]]></fieldDescription>
 	</field>
 	<field name="exchange_rate" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+		<fieldDescription><![CDATA[对人民币汇率]]></fieldDescription>
 	</field>
 	<field name="amount" class="java.lang.Double">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -178,7 +194,7 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 	<field name="etd" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="eta" class="java.sql.Date">
+	<field name="eta" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="ref_no" class="java.lang.String">
@@ -534,28 +550,7 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				<textElement>
 					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<text><![CDATA[银行信息:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="13" y="20" width="153" height="20" uuid="f77458ed-3298-4aae-8acc-ceaeaf327496"/>
-				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[账户名称：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="13" y="40" width="153" height="20" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
-				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[账    号：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="13" y="60" width="154" height="20" uuid="c2745b55-21a5-4968-87df-d544ce9de735"/>
-				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[开户银行：]]></text>
+				<text><![CDATA[ACCOUNT INFORMATION:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="333" y="60" width="134" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
@@ -578,6 +573,18 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				</textElement>
 				<text><![CDATA[AUTHORISED SIGNATURE:]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="13" y="20" width="153" height="20" uuid="334d80bd-19f8-47bb-8e07-73aeaf063fb0"/>
+				<textFieldExpression><![CDATA[$F{bankName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="13" y="40" width="153" height="20" uuid="6a74722e-97f8-4ef6-9ec1-906890ba4451"/>
+				<textFieldExpression><![CDATA[$F{accountName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="13" y="59" width="153" height="49" uuid="3a59bb24-25b2-46f6-bd61-bfa2da7448af"/>
+				<textFieldExpression><![CDATA[$F{accountNo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<summary>
