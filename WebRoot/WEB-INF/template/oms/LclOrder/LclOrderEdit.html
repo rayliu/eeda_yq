@@ -200,17 +200,35 @@
                                 </label>
                             </div>
                          </div>
-                    </div>                            
-                <div class="form-group">
-                 <label>备注</label>
-                 <textarea id='remark' class="form-control" rows="3" name="note">${order.remark!''}</textarea>
-                </div>
+                    </div>
+                    <div class="row">
+		               <div class="col-lg-4">
+		                   <%include("/eeda/component/form/inputArea.html", 
+		                       {   id:'lcl_shipping_mark', 
+		                           label:'唛头', 
+		                           value:order.lcl_shipping_mark!''
+		                       }){}%>
+		               </div>
+		               
+		               <div class="col-lg-4">
+		                   <%include("/eeda/component/form/inputArea.html", 
+		                       {   id:'lcl_cargo_desc', 
+		                           label:'货物描述', 
+		                           value:order.lcl_cargo_desc!''
+		                       }){}%>
+		               </div>
+		               <div class="col-lg-4">		                                        
+			                <div class="form-group">
+				                 <label>备注</label>
+				                 <textarea id='remark' class="form-control" rows="3" name="note">${order.remark!''}</textarea>
+			                </div>
+		               </div>
+	                </div>
                 </div>
             </div>
             </div>
             
             <div style="margin-top:10px;margin-left:15px">
-            <div class="row small_head"  style="width:200px"><div class="font_style" style="">Product Information 明细信息</div></div>
             <div class="row simple_small_title_div">
             <div class="col-lg-12">
             	<div class="row">
