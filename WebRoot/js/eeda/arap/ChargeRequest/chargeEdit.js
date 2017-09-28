@@ -1,5 +1,5 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './chargeEdit_select_item', './edit_doc_table','dataTablesBootstrap', 
-        'validate_cn', 'sco', 'pageguide'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
+﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './chargeEdit_select_item', './invoice_item', './edit_doc_table','dataTablesBootstrap', 
+        'validate_cn', 'sco', 'pageguide'], function ($, metisMenu, sb, createStep1Contr, selectContr, invoiceCont) {
 $(document).ready(function() {
 
 	tl.pg.init({
