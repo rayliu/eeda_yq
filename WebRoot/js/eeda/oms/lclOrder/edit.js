@@ -34,6 +34,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
                 MBLshipper_info: $('#MBLshipper_info').val(),
                 MBLconsignee_info: $('#MBLconsignee_info').val(),
                 MBLnotify_party_info: $('#MBLnotify_party_info').val(),
+                pieces: $('#pieces').val(),
+                lcl_unit: $('#lcl_unit').val(),
+                net_weight: $('#net_weight').val(),
+                gross_weight: $('#gross_weight').val(),
+                volume: $('#volume').val(),
+                fee_count: $('#fee_count').val(),
+                amount_20gp: $('#amount_20gp').val(),
+                amount_40gp: $('#amount_40gp').val(),
+                amount_40hq: $('#amount_40hq').val(),
+                amount_45gp: $('#amount_45gp').val(),
+                amount_45hp: $('#amount_45hp').val(),
+                billing_method:$('#billing_method input[type="radio"]:checked').val(),
                 remark: $('#remark').val(),
                 status: $('#status').val()==''?'新建':$('#status').val(),
                 itemList : lclOrder.buildCargoDetail()
@@ -65,6 +77,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
                 $('#saveBtn').attr('disabled', false);
                 $.unblockUI();
             });
-        });  
+        }); 
+        
+        //放货方式radio回显
+        var radioVal = $('#hidden_billing_method').val();
+        $('#billing_method input[type="radio"]').each(function(){
+        	var checkValue = $(this).val();
+        	if(radioVal==checkValue){
+        		$(this).attr("checked",true);
+        	}
+        });
+
+        
      });
 });

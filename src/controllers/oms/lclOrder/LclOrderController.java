@@ -430,11 +430,12 @@ public class LclOrderController extends Controller {
     	setAttr("itemList", getOrderItems(id));
     	
     	//回显客户信息
-    	Record order = Db.findFirst("select lor.*, p1.abbr MBLshipperAbbr , p2.abbr MBLconsigneeAbbr, p3.abbr MBLnotify_partyAbbr"
+    	Record order = Db.findFirst("select CONCAT(ut.name,ut.name_eng) lcl_unit_name,lor.*, p1.abbr MBLshipperAbbr , p2.abbr MBLconsigneeAbbr, p3.abbr MBLnotify_partyAbbr"
 				+ " from lcl_order lor "
 				+ " left join party p1 on p1.id=lor.MBLshipper"
 				+ " left join party p2 on p2.id=lor.MBLconsignee"
-				+ " left join party p3 on p3.id=lor.MBLnotify_party"
+				+ " left join party p3 on p3.id=lor.MBLnotify_party "
+				+ " LEFT JOIN unit ut on ut.id = lor.lcl_unit"
 				+ " where lor.id = ?",id);
 
     	//用户信息

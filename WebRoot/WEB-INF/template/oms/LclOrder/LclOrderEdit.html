@@ -112,8 +112,95 @@
                                                     disabled: 'disabled'
                                                 }){}%>
                         </div>
-                    </div>  
-                            
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'pieces', 
+                                    label:'件数', 
+                                    value: order.pieces!planOrderItem.pieces!'',
+                                    placeholder:'请输入数字'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputUnitItem.html", 
+                                {   id:'lcl_unit', 
+                                    label:'计量单位', 
+                                    value: order.lcl_unit!'',
+                                    display_value:order.lcl_unit_name!'',
+                                    placeholder:'请选择计量单位'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'net_weight', 
+                                    label:'净重(KG)', 
+                                    value: order.net_weight!planOrderItem.net_weight!'',
+                                    placeholder:'请输入数字'
+                                }){}%>
+                        </div>
+                    </div>
+                    <div class="row">
+                    	<div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'gross_weight', 
+                                    label:'毛重(KG)', 
+                                    value: order.gross_weight!planOrderItem.gross_weight!'',
+                                    placeholder:'请输入数字'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'volume', 
+                                    label:'体积(CBM)', 
+                                    value: order.volume!planOrderItem.volume!'',
+                                    placeholder:'请输入数字'
+                                }){}%>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputField.html", 
+                                {   id:'fee_count', 
+                                    label:'计费数量', 
+                                    value: order.fee_count!planOrderItem.fee_count!'',
+                                    placeholder:'请输入数字'
+                                }){}%>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="form-group" id="transport_type">
+                                <label class="search-label">箱量汇总</label>
+                                <label class="checkbox-inline" style="margin-left:-20px">
+                                   20GP X <input id="amount_20gp" name = "amount_20gp" type ="text" class="container_amount" style="width:30px;"  value="${order.amount_20gp!''}">
+                                </label>
+                                <label class="checkbox-inline">
+                                   40GP X <input id="amount_40gp" name = "amount_40gp" type ="text" class="container_amount" style="width:30px"  value="${order.amount_40gp!''}">
+                                </label>
+                                <label class="checkbox-inline">
+                                   40HQ X <input id="amount_40hq" name = "amount_40hq" type ="text" class="container_amount" style="width:30px"  value="${order.amount_40hq!''}">
+                                </label>
+                                <label class="checkbox-inline">
+                                   45GP X <input id="amount_45gp" name = "amount_45gp" type ="text" class="container_amount" style="width:30px"  value="${order.amount_45gp!''}">
+                                </label>
+                                <label class="checkbox-inline">
+                                   45HQ X <input id="amount_45hp" name = "amount_45hp" type ="text" class="container_amount" style="width:30px" value="${order.amount_45hp!''}">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group" id="billing_method">
+                            <input type="hidden" id="hidden_billing_method" value="${order.billing_method!''}">
+                                <label class="search-label">计费方式</label>
+                                <label class="checkbox-inline" style="margin-right:0px;">
+                                    <input type="radio" name='billing_method' value='perWeight' checked style="margin-left:-10px;">按重量(KG)
+                                </label>
+                                <label class="checkbox-inline" style="margin-right:0px;">
+                                    <input type="radio" name='billing_method' value='perVolume'>按体积(CBM)
+                                </label>
+                            </div>
+                         </div>
+                    </div>                            
                 <div class="form-group">
                  <label>备注</label>
                  <textarea id='remark' class="form-control" rows="3" name="note">${order.remark!''}</textarea>
@@ -158,6 +245,12 @@
 		        </div>
 		        </div>
             </div>
+            <div id="LCLOceanPDF" class="form-group" >
+	           	 <button id="printOceanBooking" class="btn btn_green" >生成拼箱通知单  PDF</button>
+	           	 <button id="printOceanSI" class="btn btn_green" >生成MBL SI PDF</button>	           	 
+				 <button id="oceanHeadDetailBtn" class="btn btn_green" >生成进仓单 PDF</button>
+				 <br>
+	        </div>
             </div>
             </form>
             <div class="simple_order_list_div"> 

@@ -751,7 +751,7 @@ public class ServiceProviderController extends Controller {
     	
     	String conditions = "";
     	if(StringUtils.isNotBlank(input)){
-    		conditions = " and (u.name like '%" + input + "%' "+"or u.name_eng like '%"+input+"%')";
+    		conditions = " and (u.name like '%" + input + "%' "+"or u.name_eng like '%"+input+"%' or CONCAT(u. NAME, u.name_eng) like '%"+input+"%')";
     	}
     			
     	String sql = "select  * from(SELECT u.id, CONCAT(u. NAME, u.name_eng) NAME, u.name_eng"
