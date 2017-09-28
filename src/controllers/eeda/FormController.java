@@ -387,6 +387,35 @@ public class FormController extends Controller {
                 }
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + "<input type='text' name='"+inputId+"' class='form-control' "+disabled+" >";
+            }else if("全国城市".equals(fieldType)){
+                String disabled = "";
+                if("Y".equals(read_only)){
+                    disabled = "disabled";
+                }
+                
+                replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
+                        + "<div class=''>"+
+                        "    <input id='"+inputId+"_province' type='text' class='province' field_type='list' value='' style='display:none;'/>"+
+                        "    <input id='"+inputId+"' type='text' field_type='list' value='' style='display:none;'/>"+
+                        "    <input type='text' class='form-control city_input'"+
+                        "    name='"+inputId+"' "+
+                        "    placeholder='请选择城市' >"+
+                        "    <div id='"+inputId+"_list' class='area-list pull-right dropdown-menu default dropdown-scroll' tabindex='-1'  "+
+                        "    style='top: 35%; left: 2%; display: none;'>"+
+                        "        <div class='area-list-title'>"+
+                        "            <input data-id='0' data-level='0' type='button' value='省份' class='this'>"+
+                        "            <input data-id='0' data-level='1' type='button' value='城市'>"+
+                        "            <input data-id='0' data-level='2' type='button' value='县区'>"+
+                        "            <span class='tips'>如不需选县区，请点击外面空白区域</span>"+
+                        "        </div>"+
+                        "        <div class='area-list-content' style='clear:both;'>"+
+                        "            "+
+                        "        </div>"+
+                        "    </div>"+
+                        "        "+
+                        "    <ul id='"+inputId+"_list——1' class='pull-right dropdown-menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;'>"+
+                        "    </ul>"+
+                        "</div>";
             }else if("日期".equals(fieldType)){
                 replaceNameDest = "<div id='"+inputId+"_div'>"
                         + " <label class='search-label'>"+fieldDisplayName+"</label>"

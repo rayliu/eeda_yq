@@ -6,6 +6,7 @@ import interceptor.ActionCostInterceptor;
 import java.lang.management.ManagementFactory;
 import java.sql.SQLException;
 
+import models.Location;
 import models.Office;
 import models.Permission;
 import models.Role;
@@ -130,6 +131,8 @@ public class EedaConfig extends JFinalConfig {
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
 
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
+        
+        me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);//全国城市
         /*
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
        
@@ -208,6 +211,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("office_config", OfficeConfig.class);
         
         arp.addMapping("user_office", UserOffice.class);
+        arp.addMapping("location", Location.class);
         /*
         arp.addMapping("unit", Unit.class);
         arp.addMapping("country", Country.class);
@@ -216,7 +220,7 @@ public class EedaConfig extends JFinalConfig {
 
 //        arp.addMapping("route", Route.class);
         arp.addMapping("category", Category.class);
-        arp.addMapping("location", Location.class);
+        
         arp.addMapping("order_no_seq", OrderNoSeq.class);
         
         //基本数据用户网点
