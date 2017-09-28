@@ -3461,7 +3461,7 @@ public class JobOrderController extends Controller {
 //        	dai_condition = " and datediff(joli.eta, now()) <= 3 AND jor.send_truckorder_flag != 'Y'"
 //        			+ " AND jor.transport_type LIKE '%land%'";
         	dai_condition = " and datediff(jor.order_export_date, now()) <= 3 AND jor.send_truckorder_flag != 'Y'"
-         			+ " and datediff(jor.order_export_date, now()) <= 3 AND jor.send_truckorder_flag != 'Y'";
+        			+ "  and jor.transport_type LIKE '%land%'";
         } else if("shipmentHead".equals(type)){//头程
         	dai_condition = " and datediff(jor.order_export_date, now()) <= 1 and jor.print_shipmentHead_flag != 'Y'";
         } else if("vgmwait".equals(type)){  //vgm

@@ -6,13 +6,13 @@ define(['jquery'], function ($) {
         $.get('/todo/getYqTodoList', function(data){
         	if(bIndex){
             	//$("#wait1").empty().text(data.WAITABOUTSHIPMENTTODOCOUNT);
-                $("#wait1").empty().text(data.SOTODOCOUNT);
+                $("#wait1").empty().text(data.WAITABOUTSHIPMENTTODOCOUNT);
                 $("#wait2").empty().text(data.TRUCKORDERTODOCOUNT);
-                $("#wait3").empty().text(data.VGMTODOCOUNT);
-                $("#wait4").empty().text(data.HBLTODOCOUNT);
-                $("#wait5").empty().text(data.MBLTODOCOUNT);
-                $("#wait6").empty().text(data.WAITBUYINSURANCETODOCOUNT);//保险
-                $("#wait7").empty().text(data.WAITSHIPMENTHEADTODOCOUNT);
+                $("#wait3").empty().text(data.WAITSHIPMENTHEADTODOCOUNT);
+                $("#wait4").empty().text(data.VGMTODOCOUNT);
+                $("#wait5").empty().text(data.HBLTODOCOUNT);
+                $("#wait6").empty().text(data.MBLTODOCOUNT);
+                $("#wait7").empty().text(data.WAITBUYINSURANCETODOCOUNT);//保险
                 $("#wait8").empty().text(data.WAITOVERSEACUSTOMTODOCOUNT);
                 $("#wait9").empty().text(data.TLXORDERTODOCOUNT);
                 $("#wait10").empty().text(data.WAITCUSTOMTODOCOUNT);
