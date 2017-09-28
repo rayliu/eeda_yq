@@ -218,7 +218,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  var single_cabinet_type = $("#single_cabinet_type").val();
 	      }
 	      if(selectField=='status'){
-	    	  selectValue = $("#status").val();
+	    	  selectValue = $("#single_status").val();
 	      }
 	      if(selectField=='cabinet_date'){
 	    	  var cabinet_date_begin = $("#single_public_time_begin_time").val();
@@ -240,7 +240,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           	   +"&cabinet_date_begin_time="+cabinet_date_begin
           	   +"&cabinet_date_end_time="+cabinet_date_end   
           	   +"&cabinet_type="+single_cabinet_type
-          	   +"&status="+status;
+          	   +"&status_equals="+status;
           dataTable.ajax.url(url).load();
       });
       

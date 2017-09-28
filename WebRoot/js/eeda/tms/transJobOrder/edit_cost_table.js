@@ -18,7 +18,7 @@ $(document).ready(function() {
     });
     
     //费用明细确认按钮动作
-    $("#cost_table").on('click', '.chargeConfirm_btn', function(e){
+    $("#cost_table").on('click', '.costConfirm_btn', function(e){
     	e.preventDefault();
     	var id = $(this).val();
     	var audit_flag = "Y";
@@ -33,7 +33,7 @@ $(document).ready(function() {
     });
     
     //费用明细取消确认按钮动作
-    $("#cost_table").on('click', '.chargeCancelConfirm_btn', function(e){
+    $("#cost_table").on('click', '.costCancelConfirm_btn', function(e){
     	e.preventDefault();
     	var id = $(this).val();
     	var audit_flag = "N";
@@ -234,11 +234,11 @@ $(document).ready(function() {
                 	if(full&&full.AUDIT_FLAG == 'Y'){
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>&nbsp';
                 		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>确认</button> '; 
-                		str+= '<button type="button" class="btn table_btn btn_green chargeCancelConfirm_btn btn-xs" style="width:50px" value="'+full.ID+'">取消确认</button> '; 
+                		str+= '<button type="button" class="btn table_btn btn_green costCancelConfirm_btn btn-xs" style="width:50px" value="'+full.ID+'">取消确认</button> '; 
                 		}
                 	else if(full.ID){
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" >删除</button>&nbsp';
-                		str+= '<button type="button" class=" btn table_btn btn_green chargeConfirm_btn btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';
+                		str+= '<button type="button" class=" btn table_btn btn_green costConfirm_btn btn-xs" style="width:50px" value="'+full.ID+'" >确认</button> ';
                 		str+= '<button type="button" class="btn table_btn btn_green btn-xs" style="width:50px"  disabled>取消确认</button> '; 
                 	}else{
                 		str+= '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px">删除</button>&nbsp';

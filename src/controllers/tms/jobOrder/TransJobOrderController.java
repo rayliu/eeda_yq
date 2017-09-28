@@ -17,6 +17,7 @@ import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
 import models.UserLogin;
+import models.eeda.cms.CustomPlanOrder;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrderSendMail;
@@ -64,7 +65,12 @@ public class TransJobOrderController extends Controller {
 	public void index() {
 		String type = getPara("type");
 		setAttr("type",type);
-		render("/tms/TransJobOrder/JobOrderList.html");
+		if("lock".equals(type)){
+			render("/tms/TransJobOrder/JobOrderLockList.html");
+		}else{
+			render("/tms/TransJobOrder/JobOrderList.html");
+		}
+		
 	}
 	
 	@Before(EedaMenuInterceptor.class)
@@ -1308,6 +1314,45 @@ public class TransJobOrderController extends Controller {
 			renderText(fileName);
 		}
 	
+  //工作单锁单解锁
+    @Before(Tx.class)
+    public void lockRelease(){
+    	String id = getPara("id"); 
+    	String[] idArray = id.split(",");
+    	String action = getPara("action");
+    	long user_id = LoginUserController.getLoginUser(this).getLong("id");
+    	String order_type = "transJobOrderLock";
+    	Date action_time = new Date();
+    	if(action=="lock"||action.equals("lock")){
+    		for (int i = 0; i < idArray.length; i++) {
+    			TransJobOrder order = TransJobOrder.dao.findById(idArray[i]);
+            	order.set("status", "已完成");
+            	order.update();
+            	Record re = new Record();
+            	re.set("order_id", idArray[i]);
+            	re.set("user_id", user_id);
+            	re.set("order_type", order_type);
+            	re.set("action_time", action_time);
+            	re.set("action", action);
+            	Db.save("status_audit", re);
+    		}
+    	}
+    	if(action=="unLock"||action.equals("unLock")){
+    		for (int i = 0; i < idArray.length; i++) {
+    			TransJobOrder order = TransJobOrder.dao.findById(idArray[i]);
+            	order.set("status", "新建");
+            	order.update();
+            	Record re = new Record();
+            	re.set("order_id", idArray[i]);
+            	re.set("user_id", user_id);
+            	re.set("order_type", order_type);
+            	re.set("action_time", action_time);
+            	re.set("action", action);
+            	Db.save("status_audit", re);
+    		}
+    	}
+    	renderJson("{\"result\":true}");
+    }
     
     
 

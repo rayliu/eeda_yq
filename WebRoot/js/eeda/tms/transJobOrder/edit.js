@@ -104,23 +104,42 @@ $(document).ready(function() {
     });
      
 	
-	//已完成工作单确认
+	//锁单
 	$('#confirmCompleted').click(function(){
         $.blockUI({ 
             message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
         });
 		$('#confirmCompleted').attr('disabled', true);
 		id = $('#order_id').val();
-		$.post('/jobOrder/confirmCompleted', {id:id}, function(data){
-	            $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+		var action = 'lock';
+		$.post('/transJobOrder/lockRelease', {id:id,action:action}, function(data){
+	            $.scojs_message('锁单成功', $.scojs_message.TYPE_OK);
+	            $('#status').val("已完成");
 	            $('#saveBtn').attr('disabled', true);
 	            $.unblockUI();
 	    },'json').fail(function() {
-	        $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+	        $.scojs_message('锁单失败', $.scojs_message.TYPE_ERROR);
 	        $('#confirmCompleted').attr('disabled', false);
             $.unblockUI();
 	   });
-	})
+	});
+	
+	//锁单状态控制
+	if($("#status").val()=='已完成'){
+		$("#add_land").attr("disabled",true); 
+		$("#add_charge").attr("disabled",true);
+		$("#add_charge_cost").attr("disabled",true);
+		$(".delete").attr("disabled",true);
+		$(".chargeConfirm_btn").attr("disabled",true);
+		$(".chargeCancelConfirm_btn").attr("disabled",true);
+		$(".costConfirm_btn").attr("disabled",true);
+		$(".costCancelConfirm_btn").attr("disabled",true);
+		$("#fileuploadSpan").attr("disabled",true);
+		$("#fileupload").attr("disabled",true);
+		$("#sendEmail").attr("disabled",true);
+	}else{
+		
+	}
 	
 	/*$("input[name='CLOSING_DATE']").on('changeDate', function(ev){
 		if($("input[name='CLOSING_DATE']").val()){

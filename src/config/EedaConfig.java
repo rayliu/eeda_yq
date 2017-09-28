@@ -125,6 +125,7 @@ import models.eeda.tms.TransArapCostOrder;
 import models.eeda.tms.TransArapCostReceiveItem;
 import models.eeda.tms.TransJobOrder;
 import models.eeda.tms.TransJobOrderArap;
+import models.eeda.tms.TransJobOrderDoc;
 import models.eeda.tms.TransJobOrderLandItem;
 import models.eeda.tr.tradeJoborder.TradeArapAccountAuditLog;
 import models.eeda.tr.tradeJoborder.TradeArapChargeApplicationOrder;
@@ -651,6 +652,7 @@ public class EedaConfig extends JFinalConfig {
         //tms 车队管理
         arp.addMapping("trans_job_order", TransJobOrder.class);
         arp.addMapping("trans_job_order_land_item", TransJobOrderLandItem.class);
+        arp.addMapping("trans_job_order_doc", TransJobOrderDoc.class);
         arp.addMapping("trans_job_order_arap", TransJobOrderArap.class);
         arp.addMapping("trans_arap_cost_order", TransArapCostOrder.class);
         arp.addMapping("trans_arap_cost_item", TransArapCostItem.class);
