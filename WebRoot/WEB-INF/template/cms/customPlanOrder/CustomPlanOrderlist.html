@@ -13,6 +13,7 @@
 		                               	<option value="booking_no_equals">订舱号</option>
 		                               	<option value="status">单据状态</option>
 		                              	<option value="custom_state_equals">海关状态</option>
+		                              	<option value="lock_bill_status">锁单状态</option>
 		                                <option value="type_equals">类型</option>
 		                                <option value="date_custom">报关日期</option>
 		                                <option value="create_stamp">创建时间</option>	 
@@ -57,7 +58,11 @@
 			    						<option value="进口柜货">进口柜货</option>
 			    						<option value="进口散货">进口散货</option>
 			    					</select>
-	                            	
+	                            	<select id="single_lock_bill_status" class="form-control search-control" style="display: none;">
+			    						<option></option>
+			    						<option value="未锁">未锁</option>
+			    						<option value="已锁单">已锁单</option>
+			    					</select>
 	                                <div style="display: none;position:absolute;left:34%;bottom:-5px;" id="public_time_show">
 			                        	<%include("/eeda/component/form/inputDateQueryField.html", 
 									    	{   id:'public_time',
@@ -162,6 +167,17 @@
 	                        		</div>
 	                       		</div>
 	                       		<div class="row">
+	                       			<div class="col-lg-4"> 
+		                             	<%include("/eeda/component/form/selectField.html", 
+					                    	{   id:'lock_bill_status', 
+					                            label:'锁单状态', 
+					                            value_list:[
+					                            		   {code:'', value:''},
+					                                       {code:'未锁', value:'未锁'},
+					                                       {code:'已锁单', value:'已锁单'}
+					                                       ]
+					                        }){} %>
+	                         		</div>
 	                       			<div class="col-lg-4">        
 	                            		<%include("/eeda/component/form/inputDateQueryField.html", 
 			                        		{	id:'date_custom',
@@ -234,7 +250,8 @@
                                         							'费用',
                                         							'报关日期',
 							                                        '创建人',
-							                                        '创建时间']
+							                                        '创建时间',
+							                                        '锁单状态']
 							                                }){} %>
                             
 		</div>

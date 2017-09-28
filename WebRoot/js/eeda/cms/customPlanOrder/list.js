@@ -135,7 +135,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	            		  else
 	            			  return '';
                 	  }
-	              }
+	              },
+	              { "data": "LOCK_BILL_STATUS"}
             ]
         });
 
@@ -170,6 +171,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
   	    	  $("#single_order_no").hide();
   	    	  $("#single_booking_no").hide();
   	    	  $("#single_status").hide();
+  	    	  $("#single_lock_bill_status").hide();
   	    	  $("#single_custom_state").hide();
   	    	  $("#single_type").hide();
   	    	  $("#public_time_show").hide();
@@ -180,6 +182,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
   	    	  $("#single_order_no").show();
 	    	  $("#single_booking_no").hide();
 	    	  $("#single_status").hide();
+	    	  $("#single_lock_bill_status").hide();
 	    	  $("#single_custom_state").hide();
 	    	  $("#single_type").hide();
 	    	  $("#public_time_show").hide();
@@ -190,6 +193,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
   	    	  $("#single_booking_no").val("");
   	    	  $("#single_order_no").hide();
 	    	  $("#single_status").hide();
+	    	  $("#single_lock_bill_status").hide();
 	    	  $("#single_custom_state").hide();
 	    	  $("#single_type").hide();
 	    	  $("#public_time_show").hide();
@@ -198,6 +202,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
   	      }
   	      if(selectField=="status"){
   	    	  $("#single_status").val("");
+  	    	  $("#single_lock_bill_status").hide();
   	    	  $("#single_order_no").hide();
 	    	  $("#single_booking_no").hide();
 	    	  $("#single_custom_state").hide();
@@ -206,11 +211,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	    	  $("#customer_name_show").hide();
 	    	  $("#single_status").show();
   	      }
+  	    if(selectField=="lock_bill_status"){
+	    	  $("#single_status").val("");
+	    	  $("#single_order_no").hide();
+	    	  $("#single_booking_no").hide();
+	    	  $("#single_custom_state").hide();
+	    	  $("#single_type").hide();
+	    	  $("#public_time_show").hide();
+	    	  $("#customer_name_show").hide();
+	    	  $("#single_status").hide();
+	    	  $("#single_lock_bill_status").show();
+	      }
   	      if(selectField=="custom_state_equals"){
   	    	  $("#single_custom_state").val("");
   	    	  $("#single_order_no").hide();
 	    	  $("#single_booking_no").hide();
 	    	  $("#single_status").hide();
+	    	  $("#single_lock_bill_status").hide();
 	    	  $("#single_type").hide();
 	    	  $("#public_time_show").hide();
 	    	  $("#customer_name_show").hide();
@@ -221,6 +238,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
   	    	  $("#single_order_no").hide();
 	    	  $("#single_booking_no").hide();
 	    	  $("#single_status").hide();
+	    	  $("#single_lock_bill_status").hide();
 	    	  $("#single_custom_state").hide();
 	    	  $("#public_time_show").hide();
 	    	  $("#customer_name_show").hide();
@@ -232,6 +250,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
   	    	  $("#single_order_no").hide();
 	    	  $("#single_booking_no").hide();
 	    	  $("#single_status").hide();
+	    	  $("#single_lock_bill_status").hide();
 	    	  $("#single_custom_state").hide();
 	    	  $("#single_type").hide();
 	    	  $("#customer_name_show").hide();
@@ -258,6 +277,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
  	     if(selectField=="status"){
  	    	 selectFieldValue = $("#single_status").val();
  	     }
+ 	    if(selectField=="lock_bill_status"){
+	    	 selectFieldValue = $("#single_lock_bill_status").val();
+	     }
  	      if(selectField=="custom_state_equals"){
  	    	 selectFieldValue = $("#single_custom_state").val();
  	     }
@@ -309,6 +331,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
           var order_no = $.trim($("#order_no").val());
           var customer_name = $('#customer_input').val();
           var status = $('#status').val();
+          var lock_bill_status = $("#lock_bill_status").val();
           var custom_state = $('#custom_state').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
@@ -342,6 +365,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
           */
           var url = "/customPlanOrder/list?order_no="+order_no
                +"&status_equals="+status
+               +"&lock_bill_status_equals="+lock_bill_status
                +"&booking_no_equals="+booking_no
                +"&custom_state_equals="+custom_state
                +"&receive_company_name="+customer_name

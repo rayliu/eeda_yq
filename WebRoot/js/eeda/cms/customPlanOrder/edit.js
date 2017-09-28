@@ -556,7 +556,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	$('#receive_sent_consignee_info').attr('disabled',true);
     }
     
-    
+  //锁单状态控制
+	if($("#lock_bill_status").val()=="未锁"){
+		$("#saveBtn").show();
+		$("#add_cargo").attr("disabled",false);
+		$("#fileuploadSpan").attr("disabled",false);
+		$("#fileupload").attr("disabled",false);
+		$("#add_shipping_item").attr("disabled",false);
+		$("#cancelAuditBtn").attr("disabled",false);
+		$("#passBtn").attr("disabled",false);
+		$("#refuseBtn").attr("disabled",false);
+		
+	}else{
+		$("#saveBtn").hide();
+		$("#add_cargo").attr("disabled",true);
+		$("#fileuploadSpan").attr("disabled",true);
+		$("#fileupload").attr("disabled",true);
+		$("#add_shipping_item").attr("disabled",true);
+		$("#cancelAuditBtn").attr("disabled",true);
+		$("#passBtn").attr("disabled",true);
+		$("#refuseBtn").attr("disabled",true);
+	}
 
      //选中回显
     $('#ChargeDiv,#CostDiv').on('click', '.selectChargeTemplate,.selectCostTemplate', function(){

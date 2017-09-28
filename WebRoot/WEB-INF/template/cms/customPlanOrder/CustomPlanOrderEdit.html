@@ -182,9 +182,19 @@
 				                                    textarea_value:order.receive_sent_consignee_info!'' 
 				                                 }){}%>
                        </div>
-                   </div><br>
+					</div>
+					<div class="row">
+                   		<div class="col-lg-4">
+	                        <%include("/eeda/component/form/inputField.html", 
+	                                            {   id:'lock_bill_status', 
+	                                                label:'锁单状态',
+	                                                disabled: 'disabled', 
+	                                                value:order.lock_bill_status!''
+	                                            }){}%>
+	                    </div>
+					</div>
+                   	<br>
                 </form>
-               
           </div> 
         </div> 
 			      

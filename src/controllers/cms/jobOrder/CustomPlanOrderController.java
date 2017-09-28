@@ -59,7 +59,11 @@ public class CustomPlanOrderController extends Controller {
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/customPlanOrder");
         setAttr("listConfigList", configList);
-		render("/cms/customPlanOrder/CustomPlanOrderlist.html");
+        if("lock".equals(type)){
+        	render("/cms/customPlanOrder/CustomPlanOrderLockList.html");
+        }else{
+        	render("/cms/customPlanOrder/CustomPlanOrderlist.html");
+        }
 	}
 	
 	
@@ -670,7 +674,7 @@ public class CustomPlanOrderController extends Controller {
 							+ " WHERE joa.order_id=cpo.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
 							+ "cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',ROUND(joa.total_amount,2))) from custom_plan_order_arap joa"
 							+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
+							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge'  group by joa.order_type) as char) charge,lock_bill_status "
         			+ " FROM custom_plan_order cpo"
         			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
         			+ " where (cpo.office_id="+office_id+ ")"
@@ -695,7 +699,7 @@ public class CustomPlanOrderController extends Controller {
 							+ " WHERE joa.order_id=cpo.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
 							+ "cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',ROUND(joa.total_amount,2))) from custom_plan_order_arap joa"
 							+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
+							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge'  group by joa.order_type) as char) charge,lock_bill_status "
         			+ " FROM custom_plan_order cpo"
         			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
         			+ " where (cpo.office_id="+office_id+ ")"
@@ -714,7 +718,7 @@ public class CustomPlanOrderController extends Controller {
 							+ " WHERE joa.order_id=cpo.id and joa.order_type='cost'  group by joa.order_type ) as char) cost, "
 							+ "cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',ROUND(joa.total_amount,2))) from custom_plan_order_arap joa"
 							+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
-							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge'  group by joa.order_type) as char) charge "
+							+ " WHERE joa.order_id=cpo.id and joa.order_type='charge'  group by joa.order_type) as char) charge,lock_bill_status "
         			+ " FROM custom_plan_order cpo"
         			+ " LEFT JOIN user_login ul on ul.id = cpo.creator"
         			+ " where (cpo.office_id="+office_id+ ")"
@@ -986,8 +990,46 @@ public class CustomPlanOrderController extends Controller {
         }catch(Exception e){
         	e.printStackTrace();
         }
-       
     }
    
+    //工作单锁单解锁
+    @Before(Tx.class)
+    public void lockRelease(){
+    	String id = getPara("id"); 
+    	String[] idArray = id.split(",");
+    	String action = getPara("action");
+    	long user_id = LoginUserController.getLoginUser(this).getLong("id");
+    	String order_type = "customPlanOrderLock";
+    	Date action_time = new Date();
+    	if(action=="lock"||action.equals("lock")){
+    		for (int i = 0; i < idArray.length; i++) {
+    			CustomPlanOrder order = CustomPlanOrder.dao.findById(idArray[i]);
+            	order.set("lock_bill_status", "已锁单");
+            	order.update();
+            	Record re = new Record();
+            	re.set("order_id", idArray[i]);
+            	re.set("user_id", user_id);
+            	re.set("order_type", order_type);
+            	re.set("action_time", action_time);
+            	re.set("action", action);
+            	Db.save("status_audit", re);
+    		}
+    	}
+    	if(action=="unLock"||action.equals("unLock")){
+    		for (int i = 0; i < idArray.length; i++) {
+    			CustomPlanOrder order = CustomPlanOrder.dao.findById(idArray[i]);
+            	order.set("lock_bill_status", "未锁");
+            	order.update();
+            	Record re = new Record();
+            	re.set("order_id", idArray[i]);
+            	re.set("user_id", user_id);
+            	re.set("order_type", order_type);
+            	re.set("action_time", action_time);
+            	re.set("action", action);
+            	Db.save("status_audit", re);
+    		}
+    	}
+    	renderJson("{\"result\":true}");
+    }
     
 }
