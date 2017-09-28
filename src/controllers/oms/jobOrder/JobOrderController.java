@@ -3456,27 +3456,35 @@ public class JobOrderController extends Controller {
         	dai_condition = " and jor.type = '出口柜货' AND jos.SONO IS NULL AND jor.transport_type LIKE '%ocean%'";
         }else if("aboutShipment".equals(type)){//约柜
        	 	dai_condition = " and datediff(jor.order_export_date, now()) <= 3 AND jos.aboutShipment_flag != 'Y'"
-     			+ " AND jor.transport_type LIKE '%ocean%'";
+     			+ " AND jor.transport_type LIKE '%ocean%' and jor.type='出口柜货'"
+			    + " and jos.por = 3732";
         }else if("truckorderwait".equals(type)){//派车
 //        	dai_condition = " and datediff(joli.eta, now()) <= 3 AND jor.send_truckorder_flag != 'Y'"
 //        			+ " AND jor.transport_type LIKE '%land%'";
         	dai_condition = " and datediff(jor.order_export_date, now()) <= 3 AND jor.send_truckorder_flag != 'Y'"
         			+ "  and jor.transport_type LIKE '%land%'";
         } else if("shipmentHead".equals(type)){//头程
-        	dai_condition = " and datediff(jor.order_export_date, now()) <= 1 and jor.print_shipmentHead_flag != 'Y'";
+        	dai_condition = " and datediff(jor.order_export_date, now()) <= 1 and jor.print_shipmentHead_flag != 'Y'"
+        			+ " AND jor.transport_type LIKE '%ocean%'";
         } else if("vgmwait".equals(type)){  //vgm
-        	dai_condition = " and datediff(jor.order_export_date, now()) = 0 and ifnull(jos.vgm,'') = ''";
+        	dai_condition = " and datediff(jor.order_export_date, now()) = 0 and ifnull(jos.vgm,'') = ''"
+        			+ " AND jor.transport_type LIKE '%ocean%'";
         }else if("hblwait".equals(type)){  //hbl
-        	dai_condition = " and (ifnull(jos.hbl_flag,'') != 'Y') and datediff(jor.order_export_date, now()) = 0";
+        	dai_condition = " and (ifnull(jos.hbl_flag,'') != 'Y') and datediff(jor.order_export_date, now()) = 0"
+        			+ " AND jor.transport_type LIKE '%ocean%'";
         } else if("mblwait".equals(type)){  //mbl
-        	dai_condition = " and jos.si_flag = 'Y' and ifnull(jos.mbl_flag,'') != 'Y'  ";
+        	dai_condition = " and jos.si_flag = 'Y' and ifnull(jos.mbl_flag,'') != 'Y' "
+        			+ " AND jor.transport_type LIKE '%ocean%' ";
         }  else if("insurancewait".equals(type)){  //保险
         	dai_condition = "  and datediff(jor.order_export_date, now()) = 0 and  jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL";
         } else if("overseacustomwait".equals(type)){
         	dai_condition = " and (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
-        			+ " and timediff(now(),jos.etd)<TIME('48:00:00')";
+        			+ " and timediff(now(),jos.etd)<TIME('48:00:00')"
+        			+ " AND jor.transport_type LIKE '%ocean%'";
         } else if("tlxOrderwait".equals(type)){
-        	dai_condition = " and TO_DAYS(jos.etd)= TO_DAYS(now())";
+        	dai_condition = " and TO_DAYS(jos.etd)= TO_DAYS(now()) "
+            + " and ifnull(jos.in_line_flag,'') != 'Y'"
+            + " and jo.transport_type LIKE '%ocean%'";
         } else if("customwait".equals(type)){
         	String custom_status = getPara("custom_status_");
         	if("待报关".equals(custom_status)){
