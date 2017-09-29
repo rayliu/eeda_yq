@@ -42,7 +42,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                 		  other = ' <span class="" '+new_count
                           +'><img src="/images/order_from_outside.png" style="height:15px;" title="Outside Order"></span>';
                 	  }
-                      return "<a href='/jobOrder/edit?id="+full.ID+"'target='_blank'>"+data+other+"</a>";
+                      return "<a href='/serviceProvider/edit?id="+full.SPID+"'target='_blank'>"+data+other+"</a>";
                   }
               },
               { "data": "SUM_SCORE","width":"40px",
