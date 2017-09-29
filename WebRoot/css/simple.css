@@ -8,6 +8,8 @@ html, body,.container {
     background-color: #fff;
     font-family: dinpro, "Microsoft YaHei", Arial,sans-serif;
     font-size: 12px;
+
+/*     overflow-y: hidden; */
 }
 
 body ::-webkit-scrollbar {
