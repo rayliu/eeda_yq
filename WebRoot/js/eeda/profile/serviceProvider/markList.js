@@ -31,7 +31,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                 });
         },
           columns: [
-              { "data": "SP_NAME","width":"120px",
+              { "data": "SP_NAME","width":"150px",
                   "render": function ( data, type, full, meta ) {
                 	  var other = '';
                     var new_count='';
@@ -45,7 +45,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                       return "<a href='/serviceProvider/edit?id="+full.SPID+"'target='_blank'>"+data+other+"</a>";
                   }
               },
-              { "data": "SUM_SCORE","width":"40px",
+              { "data": "SUM_SCORE","width":"100px",
                   "render": function ( data, type, full, meta ) {
 	                    if(!data){
 	                    	data='80';
@@ -63,7 +63,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                     return data;
                   }
               },
-              { "data": "SPID", "width":"40px",
+              { "data": "SPID","width":"200px",
                   "render": function ( data, type, full, meta ) {
                       return "<a class=' btn table_btn btn_green btn-xs' href='/supplierRating/edit?sp_id="+full.SPID+"'target='_blank'>打分</a>";
                   }
