@@ -77,7 +77,7 @@ define(['jquery', 'sco'], function ($) {
                 field_id_list.push(field_id);
 
                 var ar = [];
-                $("#"+id+" tbody").each(function() {// tr:nth-child(n+2)
+                $("#"+id+" tbody tr").each(function() {// tr:nth-child(n+2)
                   rowData = $(this).find('input, select, textarea').serializeArray();
                   var rowAr = {};
                   $.each(rowData, function(e, v) {

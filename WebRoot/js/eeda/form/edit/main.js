@@ -1,4 +1,5 @@
-define(['jquery', '../btns', '../add/detail_table', '../value_change', '../drop_list_change', '../city_list'],function ($, btnCont, tableCont) {
+define(['jquery', '../btns', '../add/detail_table', '../value_change', '../drop_list_change', '../table_drop_list', '../city_list'],
+    function ($, btnCont, tableCont) {
         document.title = '编辑 | ' + document.title;
 
         var form_define_json = JSON.parse($("#form_define").text());
