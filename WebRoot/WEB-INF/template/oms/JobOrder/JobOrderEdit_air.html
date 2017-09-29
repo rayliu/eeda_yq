@@ -8,39 +8,13 @@
             <i id='collapseAirIcon' class="fa 
             <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用空运信息
             </a>
-            <button id ="airBtnTemplet" class="btn btn_green" style="margin-left:15px;display:none;">存为模板</button>
+            <button id ="airBtnTemplet" class="btn btn_green" style="margin-left:15px;">存为模板</button>
         </h4>
     </div>
-    <div id="collapseAirInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
-        <div class="panel-body">
+   <div id="collapseAirInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+        <div class="panel-body" id="usedAirInfoDetail">
             <ul id="usedAirInfo" class="usedAirInfo">
-              <%for(userInfo in usedAirInfo![]){%>
-                    <li id="${userInfo.id}"
-                        shipper_id="${userInfo.shipper}"
-                        shipper_abbr="${userInfo.shipperAbbr}"
-                        shipper_info="${userInfo.shipper_info}"
-                        consignee_id="${userInfo.consignee}"
-                        consignee_abbr="${userInfo.consigneeAbbr}"
-                        consignee_info="${userInfo.consignee_info}"
-                        notify_id="${userInfo.notify_party}"
-                        notify_abbr="${userInfo.notify_partyAbbr}"
-                        notify_info="${userInfo.notify_party_info}"
-                        booking_agent="${userInfo.booking_agent}" 
-                        booking_agent_name="${userInfo.booking_agent_name}" 
-                        shipping_mark="${userInfo.shipping_mark}" 
-                        goods_mark="${userInfo.goods_mark}" 
-                        >
-                      <div class="radio">
-                        <a class="deleteAirTemplate" href="#" style="margin-right: 10px;padding-top: 6px;float: left;">删除</a>
-                        <label class="selectAirTemplate">
-                            <input type="radio" value="1" name="usedAirInfo" style="margin-top: 0px;">
-                            <span>Shipper:${userInfo.shipperAbbr}, Consignee:${userInfo.consigneeAbbr}, NotifyParty: ${userInfo.notify_partyAbbr}</span><br>
-                            <span class="port">唛头${userInfo.shipping_mark}, 货物描述：${userInfo.goods_mark}</span>
-                        </label>
-                      </div>
-                    </li>
-              <%}%>
-            </ul>
+              
         </div>
     </div>
 </div>

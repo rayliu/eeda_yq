@@ -143,7 +143,7 @@ public class JobOrderController extends Controller {
 	    	setAttr("portCreate",Db.findFirst(port_sql,id));
     	}
 //    	setAttr("usedOceanInfo", getUsedOceanInfo());
-    	setAttr("usedAirInfo", getUsedAirInfo());
+    	//setAttr("usedAirInfo", getUsedAirInfo());
     	setAttr("emailTemplateInfo", getEmailTemplateInfo());
     	//当前登陆用户
     	setAttr("loginUser", LoginUserController.getLoginUser(this));
@@ -2381,6 +2381,17 @@ public class JobOrderController extends Controller {
         renderJson("{\"result\":true}");
     }
     
+    @SuppressWarnings("unchecked")
+	@Before(Tx.class)
+    public void saveAirTemplet(){
+    	String jsonStr=getPara("params");
+       	Gson gson = new Gson();  
+		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+
+		List<Map<String, String>> air_detail = (ArrayList<Map<String, String>>)dto.get("airTemplet");
+		saveAirTemplate(air_detail);
+        renderJson("{\"result\":true}");
+    }
     
     //保存海运填写模板
     public void saveOceanTemplate(List<Map<String, String>> shipment_detail){
@@ -2678,6 +2689,7 @@ public class JobOrderController extends Controller {
     	String booking_agent = recMap.get("booking_agent");
     	String goods_mark = recMap.get("goods_mark");
     	String shipping_mark = recMap.get("shipping_mark");
+    	String customer_id = recMap.get("customer_id");
     	
     	String content = shipper+consignee+notify_party+booking_agent+shipping_mark+goods_mark;
         if("".equals(content)){
@@ -2716,6 +2728,7 @@ public class JobOrderController extends Controller {
     		r.set("booking_agent", booking_agent);
     		r.set("shipping_mark", shipping_mark);
     		r.set("goods_mark", goods_mark);
+    		r.set("customer_id", customer_id);
     		Db.save("job_order_air_template", r);
     	}
     }
@@ -3134,7 +3147,7 @@ public class JobOrderController extends Controller {
     	setAttr("shipmentList", getItems(id,"shipment"));
     	setAttr("shipment", getItemDetail(id,"shipment"));
     	//获取空运运明细表信息
-    	setAttr("usedAirInfo", getUsedAirInfo());
+    	//setAttr("usedAirInfo", getUsedAirInfo());
     	setAttr("airList", getItems(id,"air"));
     	setAttr("cargoDescList", getItems(id,"cargoDesc"));
     	setAttr("air", getItemDetail(id,"air"));
@@ -3320,8 +3333,8 @@ public class JobOrderController extends Controller {
         return list;
     }
     //常用空运信息
-    public List<Record> getUsedAirInfo(){
-    	List<Record> list = Db.find("select t.*,"
+    public List<Record> getUsedAirInfo(String customer_id){
+    	String sql = "select t.*,"
     			+ " p1.abbr shipperAbbr , "
     			+ " p2.abbr consigneeAbbr,"
     			+ " p3.abbr notify_partyAbbr,"
@@ -3330,7 +3343,8 @@ public class JobOrderController extends Controller {
     			+ " left join party p2 on p2.id= t.consignee"
     			+ " left join party p3 on p3.id= t.notify_party"
     			+ " left join party p7 on p7.id=t.booking_agent"
-    			+ " where t.creator_id=? order by t.id", LoginUserController.getLoginUserId(this));
+    			+ " where t.creator_id="+LoginUserController.getLoginUserId(this)+" and t.customer_id="+customer_id+" order by t.id";
+    	List<Record> list = Db.find(sql);
     	return list;
     }
     
@@ -3564,11 +3578,18 @@ public class JobOrderController extends Controller {
         renderJson(map); 
     }
     
-  //海运常用信息回显
+    //海运常用信息回显
     public void oceanTemplateShow(){
     	String customer_id = getPara("customer_id");
     	List<Record> oceanRecord = getUsedOceanInfo(customer_id);
     	renderJson(oceanRecord);
+    }
+    
+    //空运常用信息回显
+    public void airTemplateShow(){
+    	String customer_id = getPara("customer_id");
+    	List<Record> airRecord = getUsedAirInfo(customer_id);
+    	renderJson(airRecord);
     }
     
     //异步刷新字表

@@ -46,19 +46,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             				li +='<li '
             					+' id="'+data[i].ID+'" '
         						+' MBLshipper_id="'+(data[i].MBLSHIPPER==null?'':data[i].MBLSHIPPER)+'" '
-        						+' MBLshipper_abbr="'+data[i].MBLSHIPPERABBR+'" '
+        						+' MBLshipper_abbr="'+(data[i].MBLSHIPPERABBR==null?'':data[i].MBLSHIPPERABBR)+'" '
         						+' MBLshipper_info="'+data[i].MBLSHIPPER_INFO+'" '
         						+' MBLconsignee_id="'+data[i].MBLCONSIGNEE+'" '
-        						+' MBLconsignee_abbr="'+data[i].MBLCONSIGNEEABBR+'" '
+        						+' MBLconsignee_abbr="'+(data[i].MBLCONSIGNEEABBR==null?'':data[i].MBLCONSIGNEEABBR)+'" '
         						+' MBLconsignee_info="'+data[i].MBLCONSIGNEE_INFO+'" '
         						+' MBLnotify_id="'+data[i].MBLNOTIFY_PARTY+'" '
-        						+' MBLnotify_abbr="'+data[i].MBLNOTIFY_PARTYABBR+'" '
+        						+' MBLnotify_abbr="'+(data[i].MBLNOTIFY_PARTYABBR==null?'':data[i].MBLNOTIFY_PARTYABBR)+'" '
         						+' MBLnotify_info="'+data[i].MBLNOTIFY_PARTY_INFO+'" '
         						+' HBLshipper_id="'+data[i].HBLSHIPPER+'" '
-        						+' HBLshipper_abbr="'+data[i].HBLSHIPPERABBR+'" '
+        						+' HBLshipper_abbr="'+(data[i].HBLSHIPPERABBR==null?'':data[i].HBLSHIPPERABBR)+'" '
         						+' HBLshipper_info="'+data[i].HBLSHIPPER_INFO+'" '
         						+' HBLconsignee_id="'+data[i].HBLCONSIGNEE+'" '
-        						+' HBLconsignee_abbr="'+data[i].HBLCONSIGNEEABBR+'" '
+        						+' HBLconsignee_abbr="'+(data[i].HBLCONSIGNEEABBR==null?'':data[i].HBLCONSIGNEEABBR)+'" '
         						+' HBLconsignee_info="'+data[i].HBLCONSIGNEE_INFO+'" '
         						+' HBLnotify_id="'+data[i].HBLNOTIFY_PARTY+'" '
         						+' HBLnotify_abbr="'+data[i].HBLNOTIFY_PARTY+'" '
@@ -107,14 +107,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         
       
         
-      //保存海运模板
+        //保存海运模板
         $('#oceanBtnTemplet').click(function(){
         	var oceanOrderTemplet={};
         	oceanOrderTemplet.oceanTemplet=itemOrder.buildShipmentDetail();
         	$.post('/jobOrder/saveOceanTemplet',{params:JSON.stringify(oceanOrderTemplet)},function(data){
         		$.scojs_message('海运信息模板保存保存成功', $.scojs_message.TYPE_OK);
         	});
-        	
         });
         
         
