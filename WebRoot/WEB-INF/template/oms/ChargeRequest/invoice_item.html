@@ -11,28 +11,31 @@
        <div>
                <%include("/eeda/component/form/detailTable.html", 
                   {
-                      id:'invoice_item_table',
+                      id:'invoice_table',
+                      style:'width:1000px',
                       headers:[
                           '',
-                          '发票号码',
+                          '发票号码66256',
                           '发票金额',
                           '币制',
                           '备注',
                           '开票人',
                           '开票时间',
-                          'currency_name'
+                          'currency_name',
+                          'creator_name'
                       ],
                       field_list:[
                           'ID',
-                          'INV_NO',
+                          'INVOICE_NO',
                           'AMOUNT',
-                          'CURRENCY',
+                          'CURRENCY_ID',
                           'REMARK', 
                           'CREATOR', 
                           'CREATE_STAMP',
-                          'CURRENCY_NAME'
+                          'CURRENCY_NAME',
+                          'CREATOR_NAME'
                       ],
-                      value_list: order.invoice_list![]
+                      value_list:invoice_list![]
                   }){} %>
        </div>
     </div>

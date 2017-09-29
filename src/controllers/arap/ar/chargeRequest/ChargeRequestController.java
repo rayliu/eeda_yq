@@ -5,11 +5,13 @@ import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
@@ -20,7 +22,9 @@ import models.ChargeApplicationOrderRel;
 import models.Office;
 import models.Party;
 import models.UserLogin;
+import models.eeda.oms.jobOrder.ChargeRequestInvoices;
 import models.eeda.oms.jobOrder.JobOrderArap;
+import models.eeda.oms.jobOrder.JobOrderExpress;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -34,6 +38,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
@@ -546,6 +551,37 @@ public class ChargeRequestController extends Controller {
 	        
 		
 	}
+   		//发票明细
+		List<Map<String, String>> InvoiceItem_list = (ArrayList<Map<String, String>>)dto.get("InvoiceItem_list");
+		String userId = user.getLong("id").toString();
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		String dateString = formatter.format(date);  
+		for (Map<String, String> rowMap : InvoiceItem_list) {//获取每一行
+    		Model<?> model = (Model<?>) ChargeRequestInvoices.class.newInstance();
+    		
+    		String rowId = rowMap.get("id");
+    		String action = rowMap.get("action");
+    		if(StringUtils.isEmpty(rowId)){
+    			if(!"DELETE".equals(action)){
+    				DbUtils.setModelValues(rowMap, model);
+	    			model.set("order_id", id);
+	    			model.set("creator", userId);
+	    			model.set("create_stamp", dateString);
+	    			model.save();	
+    			}
+    		}else{
+    				if("DELETE".equals(action)  ){//delete
+        				Model<?> deleteModel = model.findById(rowId);
+            			deleteModel.delete();
+            		}else{//UPDATE
+            			Model<?> updateModel = model.findById(rowId);
+            			DbUtils.setModelValues(rowMap, updateModel);
+            			updateModel.update();
+            		}
+    		}
+		}
+		
    		saveLog(jsonStr, id, user, action_type);
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);
@@ -618,6 +654,12 @@ public class ChargeRequestController extends Controller {
         }
 		List<Record> Account = Db.find("select * from fin_account where bank_name != '现金'");
 		setAttr("accountList", Account);
+		String sql1 = "select cri.*,ul.id creator,ul.c_name creator_name,c.id currency_id,c.name currency_name from charge_request_invoices cri "
+				+ "	left join user_login ul on ul.id =cri.creator"
+				+ " left join currency c on c.id =cri.currency_id"
+				+ " where order_id="+id;
+		List<Record> invoice_list = Db.find(sql1);
+		setAttr("invoice_list", invoice_list);
 		
 		render("/oms/ChargeRequest/chargeEdit.html");
 	}

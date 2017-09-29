@@ -730,7 +730,10 @@ eeda.refreshUrl = refreshUrl;
 
 			  var class_name = td.attr('class');
 			  var currency_rate = $(this).attr('currency_rate');
-              td.next().children().val(currency_rate);//选择币制则填入汇率
+			  if(para!="notRate"){
+				  td.next().children().val(currency_rate);//选择币制则填入汇率
+			  }
+              
               td.parent().find('.exchange_currency_rate_rmb input').val(currency_rate);
               if(class_name==' cny_to_other'&&td.parent().find('[name=CURRENCY_ID_input]').val()!=$(this).text()){
             	   td.parent().find('.exchange_currency_rate input').val('');
