@@ -28,13 +28,13 @@ $(document).ready(function() {
     	var li = $(this).parent().parent();
         $('#shipper_input').val(li.attr('shipper_abbr'));
         $('#shipper_info').val(li.attr('shipper_info'));
-        $('#shipper').val(li.attr('shipper_id'));
+        $('#shipper').val(li.attr('shipper'));
         $('#consignee_input').val(li.attr('consignee_abbr'));
         $('#consignee_info').val(li.attr('consignee_info'));
-        $('#consignee').val(li.attr('consignee_id'));
+        $('#consignee').val(li.attr('consignee'));
         $('#notify_party_input').val(li.attr('notify_abbr'));
         $('#notify_party_info').val(li.attr('notify_info'));
-        $('#notify_party').val(li.attr('notify_id'));
+        $('#notify_party').val(li.attr('notify_party'));
         $('#booking_agent_input').val(li.attr('booking_agent_name'));
         $('#booking_agent').val(li.attr('booking_agent'));
         $('#goods_mark').val(li.attr('goods_mark'));

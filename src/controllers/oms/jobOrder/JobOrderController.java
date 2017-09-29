@@ -631,10 +631,6 @@ public class JobOrderController extends Controller {
    	        }
    		}
    		
-   		
-   		//保存空运填写模板
-   		saveAirTemplate(air_detail);
-   		
    		//海 陆 空运带出合同费用信息(供应商)
    		if(supplier_contract_type.indexOf("ocean")>-1){
    			if(type.indexOf("柜货")>-1){
