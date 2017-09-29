@@ -19,6 +19,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.eeda.ListConfigController;
 import controllers.util.DbUtils;
@@ -43,31 +44,74 @@ public class SupplierRatingController extends Controller {
         render("/eeda/profile/serviceProvider/serviceProviderMarkList.html");
     }
     
-    public void list() {
-    	Long parentID = pom.getParentOfficeId();
-    	String sp_id=getPara("sp_id");
+    
+    
+    public void list() {    	
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+    	
         String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        
+        String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
+        String sColumn =  getPara("order[0][column]");
+        String sName =  getPara("columns["+sColumn+"][data]")==null?"order_export_date":getPara("columns["+sColumn+"][data]") ;
+        if("0".equals(sName)){
+        	sName = "order_export_date";
+        	sort = "desc";
         }
-        String sql="select * (select pm.*,p.abbr,ul.c_name creator FROM party_mark pm "
-				+" LEFT JOIN party p on p.id=pm.sp_id "
-				+" LEFT JOIN user_login ul on ul.id=pm.creator "
-				+" WHERE pm.sp_id = " +sp_id
-				+" )A where 1=1 ";
-      
+        
+        
+        String sql = "SELECT * from( SELECT p.abbr sp_name,p.id spId, SUM(score) sum_score,GROUP_CONCAT(CONCAT(pm.item,' : ',pm.score) SEPARATOR ' <br> ') item_smg from party p"
+        		+ " LEFT JOIN party_mark pm on pm.sp_id = p.id  WHERE p.office_id = "+office_id
+        		+ " GROUP BY p.id ) A where 1=1 ";
+
+        
+        
         String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
-        List<Record> orderList = Db.find(sql+ condition +sLimit);
-        Map map = new HashMap();
+        logger.debug("total records:" + rec.getLong("total"));
+        
+        if (getPara("start") != null  && getPara("length") != null) {
+        	if(Long.parseLong(getPara("start")) <= rec.getLong("total")){
+        		sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        	}else{
+        		sLimit = " LIMIT 0, " + getPara("length");
+        		pageIndex = "1";
+        	}
+        }
+        
+        List<Record> orderList = Db.find(sql+ condition + " order by " + sName +" "+ sort +sLimit);
+        System.out.println(sql+ condition + " order by " + sName +" "+ sort +sLimit);
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
         map.put("data", orderList);
-        renderJson(map);}
+        renderJson(map); 
+    }
+    
+    
+    
+    @Before({EedaMenuInterceptor.class, Tx.class})
+    public void edit() {
+    	Long parentID = pom.getParentOfficeId();
+    	String sp_id=getPara("sp_id");
+        //供应商
+        String sql = "SELECT * from party WHERE id = "+sp_id;
+        
+        //评分明细
+        List<Record> partyItem = null;
+        String itemSql = "select * from party_mark pm where pm.sp_id ="+sp_id;
+        partyItem = Db.find(itemSql);
+        setAttr("partyItemList", partyItem);
+        
+        //打分页面        
+   	    setAttr("partyMark", Db.findFirst(sql));
+   	    render("/eeda/profile/serviceProvider/serviceProviderMarkEdit.html");
+     }
     
   //打分
     public void checkedList(){

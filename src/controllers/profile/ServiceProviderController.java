@@ -1106,6 +1106,8 @@ public class ServiceProviderController extends Controller {
         map.put("data", orderList);
         renderJson(map);
     }
+    
+    
     //保存打分
     public void markCustormerSave() throws InstantiationException, IllegalAccessException{
     	String jsonStr=getPara("params");

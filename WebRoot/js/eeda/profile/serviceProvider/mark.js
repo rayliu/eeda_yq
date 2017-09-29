@@ -1,7 +1,18 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) { 
 
   $(document).ready(function() {
-
+	  
+	  $('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
+	  $('#menu_order').addClass('active').find('ul').addClass('in');
+	  
+	  $('.complex_search').click(function(event) {
+	        if($('.search_single').is(':visible')){
+	          $('.search_single').hide();
+	        }else{
+	          $('.search_single').show();
+	        }
+	    });
+	  
     var deletedTableIds=[];
   		
 
@@ -83,7 +94,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     data='';
                   return '<input type="text" disabled name="mark_date"   value="'+data+'" class="form-control" />';
                 }
-              }
+              },
+              { "data": "CREATOR_NAME", "visible": false,
+                  "render": function ( data, type, full, meta ) {
+                    if(!data)
+                      data='';
+                    return '<input type="text" disabled name="mark_date"   value="'+data+'" class="form-control" />';
+                  }
+                }
             ]
         });
   		
@@ -232,6 +250,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
          }
           freshItemTable() ;
       });
+      calculate();
 
   })
 })

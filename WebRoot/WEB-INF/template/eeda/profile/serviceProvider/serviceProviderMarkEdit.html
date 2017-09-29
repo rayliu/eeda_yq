@@ -1,0 +1,56 @@
+<%layout("/eeda/layout.html"){%>
+		<div id="page-wrapper">
+			
+                     <input id="user_id" name="user_id" type="hidden" value="${user.ID!''}">
+                     <div class="row col-lg-12">
+	                        <div class="col-lg-6">
+	                              <%include("/eeda/component/form/inputSpField.html", {
+	                               id:'markCustomer',
+	                              label:'被评供应商名称', 
+	                              value:partyMark.ID!'',
+	                              display_value:partyMark.ABBR!'',
+	                              disabled: 'disabled'
+	                              }){}%>
+	                        </div>
+	                        <div class="col-lg-3">
+	                            <button id="searchBtn" class="btn btn_green" type="button">查询</button>
+	                        </div>
+                     </div>
+                     <div class="form-group button-bar" >
+                        <button id="add_mark" class="btn btn_grey" type="button">添加</button>
+                     </div>
+                     <div class="col-lg-3">
+                           <span class="badge" style="margin-bottom:3px;"> （初始分80）总分: <span id="total_mark">80</span></span>
+                     </div>
+                  <%include("/eeda/component/form/detailTable.html", 
+                  {
+                      id:'mark_table',
+                      style:'width:1000px',
+                      headers:['','项目','分数值(数值只能输入数字)','说明','考评人','考评时间', 'creator_name'],
+                      field_list:['id','item', 'score', 'remark', 'creator', 'mark_date', 'creator_name'],                                     
+                      value_list: partyItemList![]
+                  }){} %>
+            
+            
+          <div class="row col-lg-12">
+           <div class="button-bar">
+               <button id="save_mark" type="button" class="btn btn_green save" data-dismiss="modal">保存</button>
+               <a href='/supplierRating' type="button" class="btn  btn_white" data-dismiss="modal">返回</a>
+            </div>
+          </div>
+	</div>
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function () {
+        requirejs(['app/profile/serviceProvider/mark']);
+    },
+    function(error) {
+        console.error('报错了: ',error);
+        //error.requireModules : is Array of all failed modules
+        var failedId = error.requireModules && error.requireModules[0];
+        console.error(failedId);
+        console.error(error.message);
+        window.location.reload();
+    });
+    var itemOrder={};
+</script>
