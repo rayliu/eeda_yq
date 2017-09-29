@@ -397,34 +397,34 @@ public class JobOrderReportController extends Controller {
 		if("debitNote".equals(debit_note)){
 			if(order_type.contains("空运")){
 				fileName = "/report/jobOrder/AIR_debitNote.jasper";
-				outFileName = "/download/AIR_debitNote中文";
+				outFileName = "/download/AIR_DB-";
 			}else{
 				fileName = "/report/jobOrder/debitNote.jasper";
-				outFileName = "/download/debitNote中文";			
+				outFileName = "/download/DB-";			
 			}
 		}else if ("debit_note_eng".equals(debit_note)){
 			if(order_type.contains("空运")){
 				fileName = "/report/jobOrder/AIR_debitNote_eng.jasper";
-				outFileName = "/download/AIR_debitNote_eng英文";
+				outFileName = "/download/AIR_DB-";
 			}else{
 				fileName = "/report/jobOrder/debitNote_eng.jasper";
-				outFileName = "/download/debitNote英文";			
+				outFileName = "/download/DB-";			
 			}
 		}else if ("invoice".equals(debit_note)){
 			if(order_type.contains("空运")){
 				fileName = "/report/jobOrder/AIR_INVOICE.jasper";
-				outFileName = "/download/AIR_Invoice中文";
+				outFileName = "/download/AIR_IN-";
 			}else{
 				fileName = "/report/jobOrder/INVOICE.jasper";
-				outFileName = "/download/Invoice中文";				
+				outFileName = "/download/IN-";				
 			}
 		}else if ("invoice_eng".equals(debit_note)){
 			if(order_type.contains("空运")){
 				fileName = "/report/jobOrder/AIR_INVOICE_eng.jasper";
-				outFileName = "/download/AIR_Invoice_eng英文";
+				outFileName = "/download/AIR_IN-";
 			}else{
 				fileName = "/report/jobOrder/INVOICE_eng.jasper";
-				outFileName = "/download/Invoice_eng英文";				
+				outFileName = "/download/IN-";				
 			}
 
 		}else {
@@ -441,7 +441,7 @@ public class JobOrderReportController extends Controller {
 		hm.put("order_id", order_id_arr);
 		hm.put("account_ids", accountIdArray_id);
 		fileName = getContextPath() + fileName;
-		outFileName = getContextPath() + outFileName + order_id;
+		outFileName = getContextPath() + outFileName + order_no;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
