@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="265"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -161,7 +161,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
 	</field>
 	<field name="office_tel" class="java.lang.String">
 		<fieldDescription><![CDATA[公司电话]]></fieldDescription>
@@ -577,18 +577,21 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="15" y="122" width="153" height="20" uuid="00a4e460-d4ae-419b-abcc-3017a922fd7a"/>
+				<reportElement x="15" y="122" width="230" height="20" uuid="00a4e460-d4ae-419b-abcc-3017a922fd7a"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bankName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="15" y="142" width="153" height="20" uuid="05385bdf-d7fe-47ee-96c4-5c2e91edacd6"/>
+				<reportElement x="15" y="142" width="230" height="20" uuid="05385bdf-d7fe-47ee-96c4-5c2e91edacd6"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{accountName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="15" y="161" width="153" height="52" uuid="af9e3037-396c-4fa4-9e02-f1d668a2862e"/>
+				<reportElement x="15" y="161" width="230" height="52" uuid="af9e3037-396c-4fa4-9e02-f1d668a2862e"/>
 				<textFieldExpression><![CDATA[$F{accountNo}]]></textFieldExpression>
 			</textField>
 		</band>
