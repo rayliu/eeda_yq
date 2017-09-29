@@ -566,8 +566,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		$("#cancelAuditBtn").attr("disabled",false);
 		$("#passBtn").attr("disabled",false);
 		$("#refuseBtn").attr("disabled",false);
-		
-	}else{
+	}else if($("#lock_bill_status").val()=="已锁单"){
 		$("#saveBtn").hide();
 		$("#add_cargo").attr("disabled",true);
 		$("#fileuploadSpan").attr("disabled",true);
@@ -576,6 +575,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		$("#cancelAuditBtn").attr("disabled",true);
 		$("#passBtn").attr("disabled",true);
 		$("#refuseBtn").attr("disabled",true);
+	}else{
+		$("#saveBtn").show();
 	}
 
      //选中回显
