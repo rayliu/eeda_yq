@@ -2737,7 +2737,7 @@ public class JobOrderController extends Controller {
             Record rec = new Record();
             rec.set("result", false);
             if(msg.indexOf("Posted content")>0){
-                rec.set("errMsg", "文件不能大于10M.");
+                rec.set("errMsg", "文件不能大于20M.");
             }else{
                 rec.set("errMsg", msg);
             }
@@ -2752,8 +2752,8 @@ public class JobOrderController extends Controller {
 	    for (int i = 0; i < fileList.size(); i++) {
             File file = fileList.get(i).getFile();
             //file.length()/1024/1024
-            if(FileUploadUtil.getFileSize(file)>10){
-                throw new Exception("文件不能超过10M.");
+            if(FileUploadUtil.getFileSize(file)>20){
+                throw new Exception("文件不能超过20M.");
             }
             String fileName = file.getName();
             
@@ -2794,7 +2794,7 @@ public class JobOrderController extends Controller {
             Record rec = new Record();
             rec.set("result", false);
             if(msg.indexOf("Posted content")>0){
-                rec.set("errMsg", "文件不能大于10M.");
+                rec.set("errMsg", "文件不能大于20M.");
             }else{
                 rec.set("errMsg", msg);
             }

@@ -50,8 +50,8 @@ public class FileUploadUtil {
 	    for (int i = 0; i < fileList.size(); i++) {
             File file = fileList.get(i).getFile();
             //file.length()/1024/1024
-            if(getFileSize(file)>10){
-                throw new Exception("文件不能超过10M.");
+            if(getFileSize(file)>20){
+                throw new Exception("文件不能超过20M.");
             }
             String fileName = file.getName();
             
