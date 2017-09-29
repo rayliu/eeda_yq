@@ -2725,7 +2725,7 @@ public class JobOrderController extends Controller {
     public void saveDocFile() throws Exception{
     	try {
             String order_id = getPara("order_id");
-            List<UploadFile> fileList = getFiles("doc");
+            List<UploadFile> fileList = getFiles("doc",20971520);
             Long userId = LoginUserController.getLoginUserId(this);
             String type= getPara("type");
             
@@ -2778,7 +2778,7 @@ public class JobOrderController extends Controller {
     public void uploadCustomDoc() throws Exception{
         try {
             String order_id = getPara("order_id");
-            List<UploadFile> fileList = getFiles("doc");
+            List<UploadFile> fileList = getFiles("doc",20971520);
             Long userId = LoginUserController.getLoginUserId(this);
             
 //            FileUploadUtil.uploadFile(fileList, order_id, userId, "job_order_custom_doc", false);
@@ -2807,7 +2807,7 @@ public class JobOrderController extends Controller {
     public void uploadSignDesc() throws Exception{
         try {
             String id = getPara("id");
-            List<UploadFile> fileList = getFiles("doc");
+            List<UploadFile> fileList = getFiles("doc",20971520);
             Long userId = LoginUserController.getLoginUserId(this);
             
             FileUploadUtil.uploadFile(fileList, id, userId, "job_order_land_doc", true);
