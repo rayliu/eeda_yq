@@ -876,7 +876,7 @@ $(document).ready(function() {
     };
 	
 
-    $('#printCabinetTruck').click(function(){
+    $('#printCabinetTruck').click(function(){debugger;
     	var noType = $('#cabinet_truck_detail input[name="so_no"]').val();
     	pdf_btn(noType);
     });
@@ -885,6 +885,9 @@ $(document).ready(function() {
     	pdf_btn(noType);
     });
     var pdf_btn = function(noType){
+    	debugger;
+    	$('#land_sendTruck').click();
+    	
     	var truckHead = {}
     	var form = $('#truckHeadForm input,#truckHeadForm textarea');
     	for(var i = 0; i < form.length; i++){
@@ -898,6 +901,8 @@ $(document).ready(function() {
     			truckHead[name] = value;
     		}
     	}
+    	
+    	
     	var k = 0;
 		$('#land_table input[type="checkbox"]:checked').each(function(){ //land_shipment_table
 				truckHead.item_id = $(this).parent().parent().attr('id');
