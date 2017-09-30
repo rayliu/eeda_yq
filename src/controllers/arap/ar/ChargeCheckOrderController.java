@@ -407,7 +407,7 @@ public class ChargeCheckOrderController extends Controller {
 			query_exchange_currency=" and joa. exchange_currency_id="+re.get(0).get("id");
 		}
 		if(StringUtils.isNotEmpty(fin_name)){
-			query_fin_name=" and fi.id="+fin_name;
+			query_fin_name=" and fi.id in ("+fin_name+")";
 		}
 			if("create".equals(bill_flag)){
 				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"

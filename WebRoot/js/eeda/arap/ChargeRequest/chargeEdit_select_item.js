@@ -315,11 +315,11 @@ var itemIds=[];
         var searchData2=function(){
             var ids=$('#ids').val();
             var query_exchange_currency=$('#query_currency').val();
-            var fin_name=$('#query_fin').val();
+            var fin_ids=$('#fin_ids').val();
             var url = "/chargeCheckOrder/tableList?order_ids="+ids+"&order_id=N"
                             +"&table_type=item"
                             +"&query_exchange_currency="+query_exchange_currency
-                            +"&query_fin_name="+fin_name;
+                            +"&query_fin_name="+fin_ids;
            itemTable.ajax.url(url).load(function(){
               var a=[];
               $('#select_item_table input[type=checkbox]:checked').each(function(){
@@ -502,16 +502,72 @@ var itemIds=[];
        $("#select_item_table").on('click','input[type=checkbox]',function(){
               $("#allcheck2").prop("checked",$("#select_item_table input[type=checkbox]").length-1 == $("#select_item_table input[type=checkbox]:checked").length ? true : false);
         });
+       
+       
+       var fin_names = [];
+       var fin_ids = [];
        //清空条件
        $("#clear_fin").click(function(){
             $('#query_fin').val('');
             $('#query_fin_input').val('');
+            $('#finName_list').text('');
+            $('#fin_names').val('');
+            $('#fin_ids').val('');
+            fin_names=[];
+            fin_ids=[];
        });
         $("#clear_query").click(function(){
             $('#query_currency').val('');
             $('#query_fin').val('');
             $('#query_fin_input').val('');
+            $('#finName_list').text('');
+            $('#fin_names').val('');
+            $('#fin_ids').val('');
+            fin_names=[];
+            fin_ids=[];
        });
+       
+      
+  	  $("#query_fin_list").on('mousedown', '.fromLocationItem', function(e){
+  		  var fin_name = $(this).text();
+  		  var fin_id = $(this).attr('finid');
+  		  for(num in fin_names){//重复校验
+      		  if(fin_names[num]==fin_name){
+      			  $("#query_fin_input").val('');//清空文本框
+      			  return false;
+      		  }
+      	  }
+  		  fin_names.push(fin_name);
+  		  fin_ids.push(fin_id);
+  		  
+  		  $('#fin_names').val(fin_names);
+  		  $('#fin_ids').val(fin_ids);
+  		  $('#finName_list').append('<li class="search-control" finid="'+fin_id+'">'+fin_name+'<a name="delete_icon" class="glyphicon glyphicon-remove" style="margin-right:15px;" role="menuitem" tabindex="-10"></a></li>')
+    	  
+  		  $("#query_fin_input").val('');//清空文本框
+  	  });
+        
+        $('#finName_list').on('click', 'a', function(e){
+      	  $(this).parent().hide();
+      	  var fin_name = $(this).parent().text();
+      	  var fin_id = $(this).parent().attr('finid');
+      	  for(num in fin_names){
+      		  if(fin_names[num]==fin_name){
+      			  fin_names.splice(num,1);
+      			  fin_ids.splice(num,1);
+      		  }
+      	  }
+      	  $('#fin_names').val(fin_names);
+      	  $('#fin_ids').val(fin_ids);
+        })
+        
+        
+       
+        
+        
+        
+        
+        
     
     return {
         refleshSelectTable: refleshSelectTable,
