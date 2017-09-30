@@ -129,6 +129,7 @@ $(document).ready(function() {
                 }
             },
             {"data":"PAY_REMARK"},
+            {"data":"INVOICES_NO"},
             { "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     var str="<nobr>";
@@ -317,7 +318,8 @@ $(document).ready(function() {
                 }
             },
             {"data":"PAY_REMARK"},
-            { "width": "100px","visible": false,
+            {"data":"INVOICES_NO"},
+            { "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     var str="<nobr>";
                     if(full.STATUS=="新建"){
@@ -546,6 +548,7 @@ $(document).ready(function() {
           
           var service_stamp = $('#service_stamp').val();
           var fee_type = $('#fee_type').val();
+          var invoices_no = $('#invoices_no').val();
           
           var begin_date_begin_time = $('#begin_date_begin_time').val();
           var begin_date_end_time = $('#begin_date_end_time').val();
@@ -563,6 +566,7 @@ $(document).ready(function() {
             +"&application_order_no="+applicationOrderNo
             +"&status="+encodeURI(status2)
             +"&fee_type="+fee_type
+            +"&invoices_no_like="+invoices_no
             +"&service_stamp_between="+service_stamp
 
             +"&create_stamp_begin_time="+begin_date_begin_time

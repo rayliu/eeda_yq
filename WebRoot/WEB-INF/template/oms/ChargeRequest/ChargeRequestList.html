@@ -103,6 +103,10 @@
 									<div class="form-group">      
 		                     			<%include("/eeda/component/form/dateInputField.html", {id:'service_stamp', label:'业务发生月', value:''}){} %>
 									</div>
+									<div class="form-group">
+										<label class="search-label">发票号</label>
+										<input type="text" class="form-control search-control applicationOrderNo" id="invoices_no" value="">
+									</div>
 								</div>
 								<div class="col-lg-4">
 									<div class="form-group">      
@@ -158,7 +162,7 @@
                                 <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'application_table',
-                                    style:'width:2100px',
+                                    style:'width:2200px',
                                     headers:[
                                     '<input type="checkbox" id="allCheck">',
                                     '状态',
@@ -171,6 +175,7 @@
                                     '申请收款(JPY)',
                                     '申请收款(HKD)',
                                     '收款备注',
+                                    '发票号',
                                     '操作',
                                     '申请单号',
                                     '业务单号',
@@ -188,10 +193,9 @@
                        		 <%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'checked_application_table',
-                                    style:'width:2100px',
+                                    style:'width:2200px',
                                     headers:[
                                     '<input type="checkbox" id="allCheck2">',
-                                    '操作',
                                     '状态',
                                     '收款对象',
                                     '发票类型',
@@ -202,6 +206,8 @@
                                     '申请收款(JPY)',
                                     '申请收款(HKD)',
                                     '收款备注',
+                                    '发票号',
+                                    '操作',
                                     '申请单号',
                                     '业务单号',
                                     '收款方式',
