@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="592"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -33,7 +33,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[SELECT ul.*,jdwb.*,dock.*,jo.order_no,jos.etd,jos.closing_date,oe.office_name,oe.logo_path,oe.address,
+		<![CDATA[SELECT ul.*,jdwb.*,dock.*,jo.order_no,jos.etd,jos.closing_date,oe.office_name,oe.logo_path,oe.address,jos.deadline_date,
 p.company_name,CONCAT(lo.name,'-',lo.code) pod_name,CONCAT(jdwb.warehouse_contact,' : ',jdwb.warehouse_contact_tel) contact_tei,
 CONCAT(jo.pieces,' ',IFNULL(un.name_eng,'CARTONS')) amount_unit,CONCAT(jo.gross_weight,' ','KGS') weight_unit
 ,CONCAT(jo.volume,' ','CBM') volume_unit
@@ -135,6 +135,9 @@ WHERE jdwb.order_id = $P{order_id}]]>
 	<field name="warehouse_bill_picture_path" class="java.lang.String">
 		<fieldDescription><![CDATA[仓库图片]]></fieldDescription>
 	</field>
+	<field name="warehouse" class="java.lang.Long">
+		<fieldDescription><![CDATA[仓库公司id]]></fieldDescription>
+	</field>
 	<field name="quick_search_code" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -188,6 +191,9 @@ WHERE jdwb.order_id = $P{order_id}]]>
 	</field>
 	<field name="address" class="java.lang.String">
 		<fieldDescription><![CDATA[公司英文地址]]></fieldDescription>
+	</field>
+	<field name="deadline_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[截关日期]]></fieldDescription>
 	</field>
 	<field name="company_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -342,7 +348,7 @@ WHERE jdwb.order_id = $P{order_id}]]>
 			</textField>
 			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 				<reportElement x="243" y="89" width="86" height="16" uuid="7fcfdcb3-bd64-4d37-a3b4-dbb47a0b24d6"/>
-				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{deadline_date}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="18" y="120" width="60" height="18" uuid="dc5a9609-cd6e-45f2-93fa-609394ce2dc4"/>
