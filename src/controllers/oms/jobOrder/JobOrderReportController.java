@@ -111,16 +111,33 @@ public class JobOrderReportController extends Controller {
 	public void printOceanSI() {
 		
 		String order_id = getPara("order_id");
+		String order_no = getPara("order_no");
 		String fileName = "/report/jobOrder/oceanSI.jasper";
-		String outFileName = "/download/工作单海运MBLSI";
+		String outFileName = "/download/MBLSI-";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
 		hm.put("login_user_id", LoginUserController.getLoginUserId(this));
 		fileName = getContextPath() + fileName;
-		outFileName = getContextPath() + outFileName + order_id;
+		outFileName = getContextPath() + outFileName + order_no;
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
+	//拼箱单MBL PDF 生成
+	public void printLclOceanSI() {
+		
+		String order_id = getPara("order_id");
+		String order_no = getPara("order_no");
+		String fileName = "/report/jobOrder/lclOceanSI.jasper";
+		String outFileName = "/download/MBLSI-";
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("order_id", order_id);
+		hm.put("login_user_id", LoginUserController.getLoginUserId(this));
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_no;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+	
 	
 	public void printOceanHBLSI() {
 		

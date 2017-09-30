@@ -89,6 +89,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
         		$(this).attr("checked",true);
         	}
         });
+        
+      //生成MBL SI PDF 
+      $('#printLclOceanSI').click(function(){
+    	  var order_id = $('#order_id').val();
+    	  var order_no = $('#order_no').val();
+    	  $.post('/jobOrderReport/printLclOceanSI', {order_id:order_id,order_no:order_no}, function(data){
+	    		if(data){
+	                window.open(data);}else{
+	               $.scojs_message('生成MBLSI PDF失败', $.scojs_message.TYPE_ERROR);
+	               }
+	    	}); 
+      }); 
+     
+      
+        
 
         
      });

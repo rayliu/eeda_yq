@@ -83,18 +83,22 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		        $.unblockUI();
 		    },
             columns:[
-	            {"width": "10px",
+	            {"data":"ID","width": "10px",
 	                "render": function ( data, type, full, meta ) {
 	                		return '<button type="button" class="delete btn table_btn btn-default btn-xs" >删除</button> ';
 	                }
 	                
 	            },
-	            { "data": "ORDER_NO","width": "80px"}, 
+	            { "data": "ORDER_NO","width": "80px",
+	            	"render":function(data , type, full, meta){
+	            		return '<a href = "/jobOrder/edit?id='+full.ID+'">'+data+'</a>';
+	            	}
+	            }, 
 	            { "data": "CUSTOMER_NAME","width": "120px"},
 	            { "data": "ORDER_TYPE","width": "60px"},
 	            { "data": "ORDER_EXPORT_DATE" ,"width": "60px"},
-	            { "data": "POL" ,"width": "80px"},
-	            { "data": "POD","width": "80px"},
+	            { "data": "POL_NAME" ,"width": "80px"},
+	            { "data": "POD_NAME","width": "80px"},
 	            { "data": "PIECES" ,"width": "30px"},
 	            { "data": "GROSS_WEIGHT","width": "50px"},
 	            { "data": "VOLUME","width": "60px"},

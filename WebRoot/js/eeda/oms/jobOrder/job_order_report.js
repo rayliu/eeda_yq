@@ -61,7 +61,8 @@ $(document).ready(function() {
 			$('#pdfAlert').click();
 		}else{
 		    	var order_id = $("#order_id").val();
-		    	$.post('/jobOrderReport/printOceanSI', {order_id:order_id}, function(data){
+		    	var order_no = $("#order_no").val();
+		    	$.post('/jobOrderReport/printOceanSI', {order_id:order_id,order_no:order_no}, function(data){
 		    		if(data){
 		                window.open(data);
 		                $.post('/jobOrder/siflag', {order_id:order_id}, function(data){

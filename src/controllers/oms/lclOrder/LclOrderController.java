@@ -81,6 +81,7 @@ public class LclOrderController extends Controller {
 		List<Record> itemList = Db.find(itemSql);
    		setAttr("itemList", itemList);
    		
+   		
    		String transportType = "";
    		for(Record re : itemList){
    			String transport_type = re.getStr("transport_type");
@@ -128,6 +129,25 @@ public class LclOrderController extends Controller {
    		}
    		
    		Record order = new Record();
+   		String order_sql = " SELECT SUM(pieces) pieces,SUM(net_weight) net_weight,SUM(gross_weight) gross_weight,SUM(volume) volume  "
+						+" ,SUM(fee_count) fee_count,GROUP_CONCAT(shipping_mark SEPARATOR '\n') lcl_shipping_mark, "
+						+" GROUP_CONCAT(cargo_desc SEPARATOR '\n') lcl_cargo_desc,trans_clause,trade_type,lcl_unit_name,lcl_unit from ( "
+						+" SELECT "
+						+" 	jor.*, "
+						+" 	jor.type order_type, "
+						+" 	jos.cargo_desc cargo_name, "
+						+" 	jos.shipping_mark, "
+						+" 	jos.cargo_desc, "
+						+" 	CONCAT(ut.name,ut.name_eng) lcl_unit_name,"
+						+ " ut.id lcl_unit "
+						+" FROM "
+						+" 	job_order jor "
+						+" LEFT JOIN job_order_shipment jos ON jos.order_id = jor.id "
+						+" LEFT JOIN unit ut on ut.id = jor.job_unit "
+						+" WHERE "
+						+" 	jor.id IN ("+ids+") "
+						+" ) A ";
+   		order = Db.findFirst(order_sql);
    		order.set("transport_type", transportType);
    		setAttr("order", order);
    		
@@ -406,7 +426,8 @@ public class LclOrderController extends Controller {
    				+ " jos.pol, jos.pod, jor.pieces, jor.gross_weight, jor.volume, jos.cargo_desc cargo_name,"
    				+ " c_p.abbr carrier, v_p.abbr vessel, jos.voyage, jos.eta,"
    				+ " jos.etd, jos.SONO so_number, "
-   				+ " jos.net_weight, jos.vgm, l.name por"
+   				+ " jos.net_weight, jos.vgm, l.name por,"
+   				+ " l1.name pol_name,l2.name pod_name"
    				+ " FROM lcl_order_item loi"
    				+ " left join job_order jor on jor.id = loi.job_order_id"
    				+ " LEFT JOIN job_order_shipment jos ON jos.order_id = jor.id"
@@ -414,6 +435,8 @@ public class LclOrderController extends Controller {
    				+ " LEFT JOIN party c_p on c_p.id = jos.carrier"
    				+ " LEFT JOIN party v_p on v_p.id = jos.vessel"
    				+ " left join location l on l.id =  jos.por"
+   				+ " LEFT JOIN location l1 ON l1.id = jos.pol "
+   				+ " LEFT JOIN location l2 ON l2.id = jos.pod"
    				+ " where loi.order_id = ?"
    				+ " group by loi.id ";
 

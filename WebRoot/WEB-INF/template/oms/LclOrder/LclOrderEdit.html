@@ -135,7 +135,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'net_weight', 
                                     label:'净重(KG)', 
-                                    value: order.net_weight!planOrderItem.net_weight!'',
+                                    value: order.net_weight!'',
                                     placeholder:'请输入数字'
                                 }){}%>
                         </div>
@@ -145,7 +145,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'gross_weight', 
                                     label:'毛重(KG)', 
-                                    value: order.gross_weight!planOrderItem.gross_weight!'',
+                                    value: order.gross_weight!'',
                                     placeholder:'请输入数字'
                                 }){}%>
                         </div>
@@ -153,7 +153,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'volume', 
                                     label:'体积(CBM)', 
-                                    value: order.volume!planOrderItem.volume!'',
+                                    value: order.volume!'',
                                     placeholder:'请输入数字'
                                 }){}%>
                         </div>
@@ -161,7 +161,7 @@
                             <%include("/eeda/component/form/inputField.html", 
                                 {   id:'fee_count', 
                                     label:'计费数量', 
-                                    value: order.fee_count!planOrderItem.fee_count!'',
+                                    value: order.fee_count!'',
                                     placeholder:'请输入数字'
                                 }){}%>
                         </div>
@@ -264,9 +264,9 @@
 		        </div>
             </div>
             <div id="LCLOceanPDF" class="form-group" >
-	           	 <button id="printOceanBooking" class="btn btn_green" >生成拼箱通知单  PDF</button>
-	           	 <button id="printOceanSI" class="btn btn_green" >生成MBL SI PDF</button>	           	 
-				 <button id="oceanHeadDetailBtn" class="btn btn_green" >生成进仓单 PDF</button>
+	           	 <button id="printLclOceanBooking" class="btn btn_green" style = "display:none" >生成拼箱通知单  PDF</button>
+	           	 <button id="printLclOceanSI" type="button" class="btn btn_green" >生成MBL SI PDF</button>	           	 
+				 <button id="oceanLclHeadDetailBtn" class="btn btn_green" style = "display:none">生成进仓单 PDF</button>
 				 <br>
 	        </div>
             </div>
@@ -290,7 +290,7 @@
                                         			'船公司', '船名vessel', '航次voyage','ETA','ETD','SO号码','净重(KG)','总重量(KG)','收货港POR'
                                                    ],
                                                  
-                                        field_list:['id','order_no','customer_name','order_type','order_export_date','pol','pod','pieces','gross_weight','volume', 
+                                        field_list:['id','order_no','customer_name','order_type','order_export_date','pol_name','pod_name','pieces','gross_weight','volume', 
                                         'cargo_name','carrier', 'vessel', 'voyage', 'eta','etd','so_number', 'net_weight','vgm','por'
                                         ],
                                         value_list: itemList![]
