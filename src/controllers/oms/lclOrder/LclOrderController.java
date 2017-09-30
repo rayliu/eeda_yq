@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import models.Office;
-import models.Party;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
@@ -502,7 +501,7 @@ public class LclOrderController extends Controller {
          		+ " left join user_login u1 ON u1.id = jor.updator"
          		+ " WHERE (jor.office_id="+office_id+ ref_office+ ")"
          	    + " and jor.delete_flag = 'N'"
-         	    + " and jor.status = '新建'"
+         	    + " and jor.status = '新建' and jor.type like '%散货%'"
          	    + " and ifnull(jor.lcl_order_flag,'') != 'Y'"
          	    + " GROUP BY jor.id "
          	    + " ) A where 1 = 1 ";
@@ -582,6 +581,7 @@ public class LclOrderController extends Controller {
 		        + " LEFT JOIN location l1 on l1.id = jos.pol"
 		        + " LEFT JOIN location l2 on l2.id = jos.pod"
 		        + " left join user_login ul on ul.id = lor.creator "
+		        + " where lor.office_id = "+office_id+" "
 		        +  condition
 		        + " group by lor.id"; 
 

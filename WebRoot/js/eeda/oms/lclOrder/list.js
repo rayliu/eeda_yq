@@ -39,11 +39,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                 });
         },
           columns: [
-				{ "width": "10px",
-				    "render": function ( data, type, full, meta ) {
-				    	return '<input type = "checkBox" name = "checkBox">';
-				    }
-				},
+			  { "width": "10px",
+				   "render": function ( data, type, full, meta ) {
+				      return '<input type = "checkBox" name = "checkBox">';
+				   }
+			  },
               { "data": "ORDER_NO", 
                   "render": function ( data, type, full, meta ) {
                 	  var other = '';
