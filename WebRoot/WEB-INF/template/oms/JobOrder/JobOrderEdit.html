@@ -490,13 +490,15 @@
                                         <i id='collapseChargeIcon' class="fa 
                                         <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用应收费用明细
                                         </a>
+                                        <button id ="chargeBtnTemplet" class="btn btn_green" style="margin-left:15px">存为模板</button>
                                     </h4>
                                 </div>
-                                <div id="collapseChargeInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
-                                   <div class="panel-body" id="ChargeDiv">
-                                        
-                                    </div>
-                               </div>
+                               <div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+							        <div class="panel-body" id="ChargeDiv">
+							            <ul id="usedChargeInfo" class="usedChargeInfo">
+							              
+							        </div>
+							   </div>
                             </div>
                             
 
@@ -675,13 +677,15 @@
                                         <i id='collapseCostIcon' class="fa 
                                         <%if(order.id!''==''){%>fa-angle-double-up<%}else{%>fa-angle-double-down<%}%>"></i> 常用应付费用明细
                                         </a>
+                                        <button id ="costBtnTemplet" class="btn btn_green" style="margin-left:15px">存为模板</button>
                                     </h4>
                                 </div>
-                                <div id="collapseCostInfo" class="panel-collapse collapse <%if(order.id!''==''){%>in<%}%>" aria-expanded="false" style="height: auto;">
-                                    <div class="panel-body"  id="CostDiv">
-                                        
-                                    </div>
-                                </div>
+                                <div id="collapseCostInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+							        <div class="panel-body" id="CostDiv">
+							            <ul id="usedCostInfo" class="usedCostInfo">
+							              
+							        </div>
+							   </div>
                             </div>
                             
                             <div class="button-bar">

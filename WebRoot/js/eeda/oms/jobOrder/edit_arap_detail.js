@@ -48,7 +48,7 @@ $(document).ready(function() {
         						+'total_amount="'+json_obj[j].total_amount+'" '
         						+'type="'+json_obj[j].type+'" '
         						+'unit_name="'+json_obj[j].unit_name+'" '
-        						+'></li>';
+        						+'>';
         					li_val += '<span></span> '+json_obj[j].sp_name+' , '+json_obj[j].charge_name+' , '+json_obj[j].charge_eng_name+'<br/>';
         				}
         				
@@ -61,6 +61,7 @@ $(document).ready(function() {
         						+		li_val
         						+'	</div>'
         						+'</div><hr/>'
+        						+'</li>'
         						+'</ul>');
         				
         			}
@@ -80,7 +81,7 @@ $(document).ready(function() {
   
     $('#ChargeDiv,#CostDiv').on('click', '.deleteChargeTemplate,.deleteCostTemplate', function(){
 	  	$(this).attr('disabled', true);
-	  	var ul = $(this).parent().parent();
+	  	var ul = $(this).parent().parent().parent();
 	  	var id = ul.attr('id');
 	  	$.post('/jobOrder/deleteArapTemplate', {id:id}, function(data){
 	  		if(data){
@@ -107,7 +108,7 @@ $(document).ready(function() {
     		table='cost_table';
     	}
     	
-        var li = $(this).parent().parent().find('li');
+        var li = $(this).parent().parent().parent().find('li');
         var dataTable = $('#'+table).DataTable();
         
         for(var i=0; i<li.length; i++){
@@ -118,7 +119,7 @@ $(document).ready(function() {
         	item.SP_ID=row.attr('sp_id');
         	item.CHARGE_ID= row.attr('charge_id');
         	item.CHARGE_ENG_ID= row.attr('charge_eng_id');
-        	item.PRICE= row.attr('PRICE');
+        	item.PRICE= row.attr('price');
         	item.AMOUNT= row.attr('amount');
         	item.UNIT_ID= row.attr('unit_id');
         	item.TOTAL_AMOUNT= row.attr('total_amount');
@@ -139,9 +140,38 @@ $(document).ready(function() {
         	item.CURRENCY_NAME=row.attr('currency_name');
         	item.EXCHANGE_CURRENCY_ID_NAME=row.attr('exchange_currency_name');
         	item.AUDIT_FLAG='';
-        	dataTable.row.add(item).draw();
+        	dataTable.row.add(item).draw(false);
         }
     });
+    
+    //保存应收费用模板
+    $('#chargeBtnTemplet').click(function(){
+    	templetMethod("charge");
+    });
+    
+  //保存应付费用模板
+    $('#costBtnTemplet').click(function(){
+    	templetMethod("cost");
+    });
+    var templetMethod = function(parameter){
+    	var order_type = $('#type').val();
+        var customer_id = $('#customer_id').val();
+        var ArapTemplet={};
+    	if(parameter == 'charge'){
+    		ArapTemplet.charge_template=  itemOrder.buildChargeTemplate();
+    		ArapTemplet.allCharge_template = itemOrder.buildAllChargeTemplate();
+        	$.post('/jobOrder/saveArapTemplet',{order_type:order_type,customer_id:customer_id,params:JSON.stringify(ArapTemplet)},function(data){
+        		$.scojs_message('应收费用信息模板保存成功', $.scojs_message.TYPE_OK);
+        	});
+    	}
+    	if(parameter == 'cost'){
+    		ArapTemplet.cost_template = itemOrder.buildCostTemplate();
+    		ArapTemplet.allCost_template = itemOrder.buildAllCostTemplate();
+        	$.post('/jobOrder/saveArapTemplet',{order_type:order_type,customer_id:customer_id,params:JSON.stringify(ArapTemplet)},function(data){
+        		$.scojs_message('应付费用信息模板保存成功', $.scojs_message.TYPE_OK);
+        	});
+    	}
+    }
     
 });
 });

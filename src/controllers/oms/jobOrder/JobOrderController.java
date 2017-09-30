@@ -666,12 +666,6 @@ public class JobOrderController extends Controller {
    		//陆运带出合同费用信息(客户)
    		saveJobLandCustomerContractConditions(jobOrder);*/
    		
-   	    //费用明细，应收应付
-		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
-		List<Map<String, String>> cost_template = (ArrayList<Map<String, String>>)dto.get("cost_template");
-		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
-		List<Map<String, String>> allCost_template = (ArrayList<Map<String, String>>)dto.get("allCost_template");
-   		saveArapTemplate(type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);
      	//贸易信息，应收服务，销售应收模板
 		List<Map<String, String>> chargeService_template = (ArrayList<Map<String, String>>)dto.get("chargeService_template");
 		List<Map<String, String>> allChargeService_template = (ArrayList<Map<String, String>>)dto.get("allChargeService_template");
@@ -2389,6 +2383,24 @@ public class JobOrderController extends Controller {
         renderJson("{\"result\":true}");
     }
     
+    //费用存为模板单击事件
+    @SuppressWarnings("unchecked")
+   	@Before(Tx.class)
+       public void saveArapTemplet(){
+       	String jsonStr=getPara("params");
+    	String order_type=getPara("order_type");
+    	String customer_id=getPara("customer_id");
+        Gson gson = new Gson();  
+   		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+
+   		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
+   		List<Map<String, String>> cost_template = (ArrayList<Map<String, String>>)dto.get("cost_template");
+   		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
+   		List<Map<String, String>> allCost_template = (ArrayList<Map<String, String>>)dto.get("allCost_template");
+   		saveArapTemplate(order_type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);
+           renderJson("{\"result\":true}");
+       }
+    
     //保存海运填写模板
     public void saveOceanTemplate(List<Map<String, String>> shipment_detail){
         if(shipment_detail==null||shipment_detail.size()<=0)
@@ -3263,9 +3275,12 @@ public class JobOrderController extends Controller {
     	String order_type = getPara("order_type");
     	String customer_id = getPara("customer_id");
     	String arap_type = getPara("arap_type");
-    	List<Record> list = Db.find("select * from job_order_arap_template "
-    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
-    			+ " order by id desc", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    	String sql = "select * from job_order_arap_template "
+    			+ " where creator_id = "+LoginUserController.getLoginUserId(this)
+    			+" and customer_id = "+customer_id+" and order_type = '"+order_type
+    			+"' and arap_type = '"+arap_type+"' and parent_id is null"
+    			+ " order by id desc";
+    	List<Record> list = Db.find(sql);
     	renderJson(list);
     }
     /**
