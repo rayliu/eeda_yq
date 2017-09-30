@@ -22,7 +22,7 @@ var checkIds=[];
                     }
                 },
                 { "data": "CHECK_ORDER_NO"},
-                {"width":"30px",
+                {"width":"50px",
                     "render": function ( data, type, full, meta ) {
                           var str = '<button type="button" class="delete btn table_btn  delete_btn btn-xs" style="width:50px" >删除</button>';
                           if($("#status").val()=='已复核'|| $("#status").val()=='已付款'){
@@ -513,7 +513,7 @@ var checkIds=[];
     var detailedSearchTable = function(){
     	var order_id = $("#order_id").val();
     	var order_no1 = $("#order_no1").val();
-    	var currency_name = $("#currency_id").val();
+    	var currency_name = $("#currency_id_input").val();
     	var url = "/costCheckOrder/tableList?appApplication_id="+order_id+"&order_id=N&bill_flag=create&order_no1="+order_no1+"&currency_name="+currency_name;
         itemTable.ajax.url(url).load();
     };
