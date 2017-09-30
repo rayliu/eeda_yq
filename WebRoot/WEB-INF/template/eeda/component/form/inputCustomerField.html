@@ -72,7 +72,7 @@ $(document).ready(function() {
 		        	}else{
 		        		code=" - "+data[i].CODE;
 		        	}
-		        	companyList.append("<li tabindex='"+i+"'><a class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' partyId='"+data[i].ID+"' partyCode='"+data[i].CODE+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+code +"</a></li>");
+		        	companyList.append("<li tabindex='"+i+"'><a class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' partyId='"+data[i].ID+"' partyCode='"+data[i].CODE+"' address='"+data[i].ADDRESS+"', company_name='"+data[i].COMPANY_NAME+"', company_abbr='"+data[i].ABBR+"'>"+data[i].ABBR+code +"</a></li>");
 		        }
 	        }
 	            
@@ -100,7 +100,7 @@ $(document).ready(function() {
 	});
 	
 	companyList.on('click', '.fromLocationItem', function(e){
-		inputField.val($(this).text());
+		inputField.val($(this).attr('company_abbr'));
 	    companyList.hide();
 	    var companyId = $(this).attr('partyId');
 	    hiddenField.val(companyId);
@@ -109,7 +109,7 @@ $(document).ready(function() {
 	//回车处理
  	companyList.on('keydown', 'li', function(e){
         if (e.keyCode == 13) {
-          inputField.val($(this).text());//名字
+          inputField.val($(this).find('a').attr('company_abbr'));//名字
           companyList.hide();
           var dataId = $(this).find('a').attr('partyId');
           hiddenField.val(dataId);//id
