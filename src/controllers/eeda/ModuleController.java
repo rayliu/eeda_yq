@@ -26,6 +26,7 @@ import org.apache.shiro.subject.Subject;
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -34,6 +35,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import controllers.module.ModuleService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.PingYinUtil;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -244,11 +246,45 @@ public class ModuleController extends Controller {
                 "module_id");
         // 处理岗位权限
         handleAuth(dto, module_id);
+        // 处理打印模板
+        handlePrintTemplate(dto, form_id);
 
         Record orderRec = Db.findById("eeda_modules", module_id);
         renderJson(orderRec);
     }
-
+    @SuppressWarnings("null")
+    private void handlePrintTemplate(Map<String, ?> dto, Long form_id) {
+        List<Map<String, String>> template_list = (ArrayList<Map<String, String>>) dto.get("print_template");
+        
+        for (Map<String, ?> field : template_list) {
+            String id = field.get("id".toUpperCase()).toString();
+            String is_delete = (String) field.get("is_delete");
+            if("Y".equals(is_delete)){
+                Db.deleteById("eeda_form_print_template", id);
+                continue;
+            }
+            String name = (String) field.get("name"
+                    .toUpperCase());
+            String desc = (String) field.get("desc".toUpperCase());
+            String content = (String) field.get("content".toUpperCase());
+            
+            Record itemRec = new Record();
+            if (StrKit.isBlank(id)) {
+                itemRec.set("form_id", form_id);
+                itemRec.set("name", name);
+                itemRec.set("desc", desc);
+                itemRec.set("content", content);
+                Db.save("eeda_form_print_template", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_print_template", id);
+                itemRec.set("name", name);
+                itemRec.set("desc", desc);
+                itemRec.set("content", content);
+                Db.update("eeda_form_print_template", itemRec);
+            }
+        }
+    }
+    
     private void handleEvents(Map<String, ?> dto, Long form_id)
             throws InstantiationException, IllegalAccessException {
         List<Map<String, ?>> event_list = (ArrayList<Map<String, ?>>) dto
@@ -744,7 +780,8 @@ public class ModuleController extends Controller {
             rec.set("btn_list_query", btn_list_query);
             List<Record> btn_list_edit = getFormBtns(form_id, "edit");
             rec.set("btn_list_edit", btn_list_edit);
-
+            List<Record> print_template_list = getPrintTemplate(form_id);
+            rec.set("print_template_list", print_template_list);
         }
         rec.set("module_version", module.get("version"));
         rec.set("sys_only", sys_only);
@@ -756,6 +793,13 @@ public class ModuleController extends Controller {
         rec.set("auth_list", auth_list);
         // rec.set("search_obj", search_obj);
         return rec;
+    }
+    
+    private List<Record> getPrintTemplate(Long formId) {
+        List<Record> recList = Db.find(
+                "select * from eeda_form_print_template where form_id=?",
+                formId);
+        return recList;
     }
 
     private Record getForm(String module_id) {

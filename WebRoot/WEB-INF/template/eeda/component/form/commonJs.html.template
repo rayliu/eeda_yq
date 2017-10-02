@@ -25,7 +25,8 @@
             jq_ui_widget: 'jQuery-File-Upload-9.9.3/js/vendor/jquery.ui.widget',
             file_upload: 'jQuery-File-Upload-9.9.3/js/jquery.fileupload',
             echarts: 'echarts3.1.10/echarts.common.min',
-            ueditor: 'ueditor/ueditor.all.min'
+            ueditor: 'ueditor/ueditor.all.min',
+            printMe: 'printMe/jquery-printme.min'
         },
         shim: {
             jquery_ui: {
@@ -78,6 +79,9 @@
             },
             file_upload:{
                 deps: ['jq_ui_widget']
+            },
+            printMe:{
+                deps: ['jquery']
             }
         }
     });

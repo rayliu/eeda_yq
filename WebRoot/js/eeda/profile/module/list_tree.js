@@ -217,6 +217,20 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events'],
                     auth_dataTable.row.add(authItem).draw(false);
                 }
 
+                var print_template_dataTable = $('#print_template_table').DataTable();
+                print_template_dataTable.clear().draw();
+                for (var i = 0; i < json.PRINT_TEMPLATE_LIST.length; i++) {
+                    var template = json.PRINT_TEMPLATE_LIST[i];
+                    var item ={
+                        ID: template.ID,
+                        NAME: template.NAME,
+                        DESC: template.DESC,
+                        CONTENT: template.CONTENT
+                    };
+
+                    print_template_dataTable.row.add(item).draw(false);
+                }
+
             }, 'json');
         };
         //---------------------------  tree handler end -------------

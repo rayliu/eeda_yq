@@ -11,6 +11,7 @@ table.dataTable thead .sorting_desc_disabled {
     background: transparent;
 }
 /*1.9*/
+
 table.dataTable thead .sorting_asc:after {
     content: "\f0de";
     float: right;
@@ -561,6 +562,16 @@ tbody .btn, tbody .btn-xs {
 
 #module_form table td{
     padding: 10px;
+}
+
+
+#template_content table td,
+#template_content table th {
+    border: 1px solid #ddd !important;
+}
+
+#template_content table{
+    width: 100%;
 }
 
 /* ray added */

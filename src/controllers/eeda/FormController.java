@@ -183,6 +183,9 @@ public class FormController extends Controller {
                 if("open".equals(event.getStr("type"))){
                     Record rec = Db.findFirst("select * from eeda_form_event_open where event_id=?", event.getLong("id"));
                     event.set("open", rec);
+                }else if("print".equals(event.getStr("type"))){
+                    List<Record> template_list = Db.find("select * from eeda_form_print_template where form_id=?", form_id);
+                    event.set("template_list", template_list);
                 }
             }
             renderJson(recList);

@@ -156,6 +156,9 @@
 							</div>
 						</div>
 				    </div>
+				    <div class="tab-pane" id="print_template">
+                        <%include("/profile/module/print_template/print_template.html", {}){} %>
+                    </div>
 				  </div>
 
 					<div class="row" >
@@ -167,26 +170,7 @@
 						 </div>
 					</div>
 				  
-					<div class="row">
-		                <div class="col-lg-8">
-		                    <div class="panel panel-yellow">
-		                        <div class="panel-heading">
-		                            注意:
-		                        </div>
-		                        <div class="panel-body">
-	                            	<ol style="line-height: 1.5;">
-										<li style="margin-bottom: 10px;">权限采用格式: 模块名.list, 模块名.add, 模块名.edit</li>
-										<li>在页面HTML中, 用shiro 判断是否有此权限
-											<code>
-												< % if(shiro.hasPermission("salesOrder.add")) % >
-											</code>
-										</li>
-									</ol>
-		                        </div>
-		                    </div>
-		                    <!-- /.col-lg-4 -->
-		                </div>
-		            </div>
+					
 			</div>
 	    </div>
     </div>

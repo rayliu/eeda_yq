@@ -1,4 +1,4 @@
-define(['jquery', 'sco'], function ($) {
+define(['jquery', './print', 'sco'], function ($, printCont) {
         //按钮事件响应
         $('#page-wrapper').on('click', 'button', function(event) {
             event.preventDefault();
@@ -52,6 +52,19 @@ define(['jquery', 'sco'], function ($) {
                             }else if(event.TYPE == "refresh_list"){
                                 var dataTable = $('#list_table').DataTable();
                                 dataTable.ajax.reload();
+                            }else if(event.TYPE == "print"){
+                                var template_list = event.TEMPLATE_LIST;
+                                $('#template_list').empty();
+                                $.each(template_list, function(index, item) {
+                                    var html='<div class="radio">'
+                                             +'  <label>'
+                                             +'       <input type="radio" name="template_id" value="'+item.ID+'" checked>'+item.NAME
+                                             +'       <pre id="template_content_'+item.ID +'" style="display:none;">'+item.CONTENT+'</pre>'
+                                             +'   </label>'
+                                             +'</div>';
+                                    $('#template_list').append(html);
+                                });
+                                $('#print_template_list').modal('show');
                             }
                         }
                     }
