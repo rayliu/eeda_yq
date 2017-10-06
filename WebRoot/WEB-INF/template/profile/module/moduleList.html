@@ -82,6 +82,9 @@
 				 	 <li role="presentation">
 				 	 	<a href="#print_template" aria-controls="role_permission" role="tab" data-toggle="tab">打印模板</a>
 				 	 </li>
+				 	 <li role="presentation">
+				 	 	<a href="#data_interface" aria-controls="role_permission" role="tab" data-toggle="tab">数据接口</a>
+				 	 </li>
 				  </ul>
 
 				  <!-- Tab panes -->
@@ -158,6 +161,9 @@
 				    </div>
 				    <div class="tab-pane" id="print_template">
                         <%include("/profile/module/print_template/print_template.html", {}){} %>
+                    </div>
+                    <div class="tab-pane" id="data_interface">
+                        <%include("/profile/module/interface/interface.html", {}){} %>
                     </div>
 				  </div>
 

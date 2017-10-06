@@ -186,6 +186,12 @@ public class FormController extends Controller {
                 }else if("print".equals(event.getStr("type"))){
                     List<Record> template_list = Db.find("select * from eeda_form_print_template where form_id=?", form_id);
                     event.set("template_list", template_list);
+                }else if("list_add_row".equals(event.getStr("type"))){
+                    Record rec = Db.findFirst("select * from eeda_form_event_list_add_row where event_id=?", event.getLong("id"));
+                    String field = rec.getStr("target_field_name");
+                    Record target_field_rec = FormService.getFieldName(field.split("\\.")[0], field.split("\\.")[1]);
+                    rec.set("field_id", target_field_rec.getLong("id"));
+                    event.set("list_add_row", rec);
                 }
             }
             renderJson(recList);
@@ -463,6 +469,10 @@ public class FormController extends Controller {
             }else if("字段引用".equals(fieldType)){
                 FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_ref(form_name, fieldRec, fieldRec.getLong("id"));
+                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
+            }else if("按钮".equals(fieldType)){
+                FormService fs = new FormService(this);
+                replaceNameDest = fs.processFieldType_btn(form_name, fieldRec, fieldRec.getLong("id"));
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
             }else{
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"

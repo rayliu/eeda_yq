@@ -19,6 +19,7 @@
                                 value_list:[
                                     {code:'open', value:'打开表单'},
                                     {code:'refresh_list', value:'刷新表单列表'},
+                                    {code:'list_add_row', value:'列表添加新行'},
                                     {code:'set_css', value:'设置样式'},
                                     {code:'check', value:'检查表单'},
                                     {code:'set_value', value:'赋值'},
@@ -32,6 +33,9 @@
             </div>
         </div>
         <h4>操作公式</h4>
+        <div class="row" id="${type}_list_add_row_div" style="display: none;">
+            <%include("/profile/module/events/type/list_add_row.html", {type: type}){} %>
+        </div>
         <div class="row" id="${type}_open_form_div">
             <%include("/profile/module/events/type/open_form.html", {type: type}){} %>
         </div>

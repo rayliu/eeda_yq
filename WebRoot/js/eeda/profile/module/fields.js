@@ -150,6 +150,25 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         };
 
         
+        var clear = function(){
+            $('#field_display_name').val('');
+            $('#field_type').val('').change();
+            $('#sort_type').val('');
+            $('#default_value').val('');
+            $('#seq').val('');
+            $('#is_not_list_col').prop('checked', false);
+            
+            $('#ref_id').val('');
+            $('#ref_form').val('');
+            $('#ref_field').val('');
+            $('#ref_condition').val('');
+
+            dataTable.clear().draw();
+            checkboxCont.clear();
+            detailTableCont.clear();
+            refCont.clear();
+        };
+
         $('#addFieldBtn').click(function(){
             dataTable.row.add({}).draw(false);
             current_tr_index = dataTable.rows().data().length;
@@ -204,6 +223,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
 
 
         return {
+            clear: clear,
             buildFieldsDetail: buildFieldsDetail,
             dataTable: dataTable
         };

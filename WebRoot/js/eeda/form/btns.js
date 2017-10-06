@@ -65,6 +65,10 @@ define(['jquery', './print', 'sco'], function ($, printCont) {
                                     $('#template_list').append(html);
                                 });
                                 $('#print_template_list').modal('show');
+                            }else if(event.TYPE == "list_add_row"){
+                                var target_table_id = "detail_table_"+event.LIST_ADD_ROW.FIELD_ID;
+                                var dataTable = $('#'+target_table_id).DataTable();
+                                dataTable.row.add({}).draw(false);
                             }
                         }
                     }

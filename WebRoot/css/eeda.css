@@ -574,4 +574,32 @@ tbody .btn, tbody .btn-xs {
     width: 100%;
 }
 
+.box{
+    border: solid 1px #ddd ;
+    padding: 10px;
+}
+
+.box .table_block{
+    height: 50px;
+    border: solid 1px; 
+    display: inline-block;
+    padding-top: 17px;
+}
+.box .connect_line{
+    width: 10px;
+    border: solid; 
+    display: inline-block;
+}
+.box .connect_type{
+    display: inline-block;
+    width: initial;
+}
+
+.box .table_block span{
+    top: -17px;
+}
+
+.box .table_block_right{
+    display: inline-block;
+}
 /* ray added */

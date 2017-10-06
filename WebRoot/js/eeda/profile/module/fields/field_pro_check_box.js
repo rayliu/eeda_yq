@@ -81,24 +81,18 @@ define(['jquery'], function ($) {
             return dto;
         };
 
-        
+        var clear = function(){
+          dataTable.clear().draw();
+        };
+
         $('#addCheckboxBtn').click(function(){
             dataTable.row.add({}).draw(false);
             current_tr_index = dataTable.rows().data().length;
             current_tr = $('#field_checkbox_table tr:eq('+current_tr_index+')');
         });
-        
-        // $('#field_type').change(function(event) {
-        //   var checkText=$(this).find("option:selected").text();  //获取Select选择的Text
-        //   $('.config').hide();
-        //   if(checkText == '文本'){
-        //     $('#text_config').show();
-        //   }else if (checkText == '复选框') {
-        //     $('.check_box_config').show();
-        //   }
-        // });
 
         return {
+            clear: clear,
             buildDto: buildDto,
             dataTable: dataTable
         };

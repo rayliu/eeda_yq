@@ -25,6 +25,14 @@ public class FormService {
 
         return rec;
     } 
+    @SuppressWarnings("unchecked")
+    @Before(Tx.class)
+    public String processFieldType_btn(String form_name, Record fieldRec, Long field_id){
+        String returnStr = "<button type='button' class='btn btn-success' id='form_"+fieldRec.getLong("form_id")+"-btn_"+field_id+"'>"+
+                fieldRec.getStr("field_display_name")+"</button>";
+       
+        return returnStr;
+    }
     
     @SuppressWarnings("unchecked")
     @Before(Tx.class)
@@ -55,6 +63,7 @@ public class FormService {
         }
         return returnStr+"</div>";
     }
+    
     @SuppressWarnings("unchecked")
     @Before(Tx.class)
     public String processFieldType_ref(String form_name, Record fieldRec, Long field_id){
@@ -125,14 +134,7 @@ public class FormService {
                 fieldStr+="<th>"+name+"</th>";
             }
         }
-        returnStr = "<div class='row'>"
-                +"    <div class='col-lg-12'>"
-                +"        <div class='form-group button-bar' >"
-                +"            <button type='button' class='btn btn-success btn-xs' name='add_detail_row_btn' target_table='detail_table_"+field_id+"'>添加</button>"
-                +"        </div>"
-                +"    </div>"
-                +"</div>"
-                +"<table id='detail_table_"+field_id+"' type='dynamic' class='table table-striped table-bordered table-hover display' style='width:100%;'>"
+        returnStr = "<table id='detail_table_"+field_id+"' type='dynamic' class='table table-striped table-bordered table-hover display' style='width:100%;'>"
                 +"    <thead class='eeda'>"
                 +"        <tr>"
                 + fieldStr

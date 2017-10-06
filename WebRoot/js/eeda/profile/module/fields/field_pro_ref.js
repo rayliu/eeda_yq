@@ -79,7 +79,10 @@ define(['jquery'], function ($) {
             return dto;
         };
 
-        
+        var clear = function(){
+          dataTable.clear().draw();
+        };
+
         $('#add_ref_btn').click(function(){
             dataTable.row.add({}).draw(false);
             current_tr_index = dataTable.rows().data().length;
@@ -87,6 +90,7 @@ define(['jquery'], function ($) {
         });
 
         return {
+            clear: clear,
             buildDto: buildDto,
             dataTable: dataTable
         };

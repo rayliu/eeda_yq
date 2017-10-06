@@ -248,6 +248,8 @@ public class ModuleController extends Controller {
         handleAuth(dto, module_id);
         // 处理打印模板
         handlePrintTemplate(dto, form_id);
+        // 处理数据接口
+        ms.saveInterface(dto, form_id);
 
         Record orderRec = Db.findById("eeda_modules", module_id);
         renderJson(orderRec);
@@ -330,6 +332,9 @@ public class ModuleController extends Controller {
                 } else if ("set_value".equals(type)) {
                     ModuleService ms = new ModuleService(this);
                     ms.saveEventSetValue(event, rec.getLong("id"));
+                } else if ("list_add_row".equals(type)) {
+                    ModuleService ms = new ModuleService(this);
+                    ms.saveEventListAddRow(event, rec.getLong("id"));
                 }
             }
         }
@@ -491,7 +496,15 @@ public class ModuleController extends Controller {
         List<Record> list = Db.find(
                 "select * from eeda_form_btn where form_id=? and type=?",
                 form_id, type);
-        renderJson(list);
+        
+        List<Record> page_btn_list = Db.find(
+                "select * from eeda_form_field where form_id=? and field_type='按钮'",
+                form_id);
+        
+        Record rec = new Record();
+        rec.set("tool_bar_btns", list);
+        rec.set("page_btns", page_btn_list);
+        renderJson(rec);
     }
 
     public void searchFormBtnEvents() {
@@ -538,6 +551,12 @@ public class ModuleController extends Controller {
                         event.getLong("id"));
                 cssRec.set("set_field_list", itemList);
                 event.set("set_value", cssRec);
+            }else if("list_add_row".equals(eventType)){
+                Record rec = Db.findFirst(
+                        "select * from eeda_form_event_list_add_row where event_id=?",
+                        event.getLong("id"));
+                
+                event.set("list_add_row", rec);
             }
         }
 
@@ -782,6 +801,8 @@ public class ModuleController extends Controller {
             rec.set("btn_list_edit", btn_list_edit);
             List<Record> print_template_list = getPrintTemplate(form_id);
             rec.set("print_template_list", print_template_list);
+            List<Record> interface_list = getInterface(form_id);
+            rec.set("interface_list", interface_list);
         }
         rec.set("module_version", module.get("version"));
         rec.set("sys_only", sys_only);
@@ -793,6 +814,37 @@ public class ModuleController extends Controller {
         rec.set("auth_list", auth_list);
         // rec.set("search_obj", search_obj);
         return rec;
+    }
+    
+    private List<Record> getInterface(Long formId) {
+        List<Record> recList = Db.find(
+                "select * from eeda_form_interface where form_id=?",
+                formId);
+        for (Record intFace : recList) {
+            long id = intFace.getLong("id");
+            Record rec = new Record();
+            List<Record> sourceList = Db.find(
+                    "select * from eeda_form_interface_source where interface_id=?",
+                    id);
+            rec.set("block_list", sourceList);
+            
+            List<Record> joinList = Db.find(
+                    "select * from eeda_form_interface_source_join where interface_id=?",
+                    id);
+            rec.set("join_list", joinList);
+            intFace.set("source", rec);
+            
+            List<Record> colList = Db.find(
+                    "select * from eeda_form_interface_cols where interface_id=?",
+                    id);
+            intFace.set("cols", colList);
+            
+            List<Record> filterList = Db.find(
+                    "select * from eeda_form_interface_filter where interface_id=?",
+                    id);
+            intFace.set("filter", filterList);
+        }
+        return recList;
     }
     
     private List<Record> getPrintTemplate(Long formId) {

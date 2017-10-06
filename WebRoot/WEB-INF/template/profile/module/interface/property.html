@@ -1,0 +1,75 @@
+<div class="form-group">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-4">
+                <input type="hidden" id="interface_id">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id:'interface_name', 
+                                                label:'名称'
+                                            }){}%>
+            </div>
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/selectField.html", 
+                            {   id:'interface_type', 
+                                label:'类型', 
+                                value_list:[
+                                    {code:'列表选择', value:'列表选择'},
+                                    {code:'自动编号', value:'自动编号'},
+                                    {code:'下拉列表', value:'下拉列表'},
+                                    {code:'属性列表', value:'属性列表'}
+                                ]
+                            }){}%>
+            </div>
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id:'is_distinct', 
+                                                type: 'checkbox',
+                                                label:'不显示重复数据'
+                                            }){}%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id:'dialog_height', 
+                                                label:'窗口高度'
+                                            }){}%>
+            </div>
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id:'dialog_width', 
+                                                label:'窗口宽度'
+                                            }){}%>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active" >
+                <a href="#property_data_source" aria-controls="permission" role="tab" data-toggle="tab">数据源</a>
+            </li>
+            <li role="presentation" >
+                <a href="#property_cols" aria-controls="permission" role="tab" data-toggle="tab">数据列</a>
+            </li>
+            <li role="presentation" >
+                <a href="#property_filter" aria-controls="permission" role="tab" data-toggle="tab">过滤条件</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="property_data_source">
+                <%include("/profile/module/interface/property_data_source.html", {}){} %>
+            </div>
+            <div class="tab-pane" id="property_cols">
+                <%include("/profile/module/interface/property_cols.html", {}){} %>
+            </div>
+            <div class="tab-pane" id="property_filter">
+                <%include("/profile/module/interface/property_filter.html", {}){} %>
+            </div>
+        </div>
+
+            <div class="row">
+                <div class="form-group button-bar" >
+                    <button type="button" class="btn btn-success" id="interface_confirmFieldBtn">确定</button>
+                </div>
+            </div>
+    </div>
+</div>

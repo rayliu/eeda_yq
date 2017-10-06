@@ -82,7 +82,9 @@ public class MainController extends Controller {
     }
     
     public void index() {
-        render("/eeda/index.html");
+        if (isAuthenticated()) {
+            render("/eeda/index.html");
+        }
     }
     @Before(EedaMenuInterceptor.class)
     public void home() {

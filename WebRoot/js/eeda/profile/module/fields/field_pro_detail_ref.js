@@ -126,7 +126,13 @@ define(['jquery'], function ($) {
             display_dataTable.row.add({}).draw(false);
         });
 
+        var clear = function(){
+          connect_dataTable.clear().draw();
+          display_dataTable.clear().draw();
+        };
+
         return {
+            clear: clear,
             buildDto: buildDto,
             connect_dataTable: connect_dataTable,
             display_dataTable: display_dataTable

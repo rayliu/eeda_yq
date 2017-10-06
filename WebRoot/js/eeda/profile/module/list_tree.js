@@ -1,5 +1,5 @@
-define(['jquery', 'zTree', './fields', './btns', './events', './edit_events'], 
-    function ($, tree, fieldCont, btnsCont, evnetsCont, editEventCont) {
+define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', './interface/interface'], 
+    function ($, tree, fieldCont, btnsCont, eventsCont, editEventCont, intCont) {
 
     $(document).ready(function() {
     	
@@ -154,9 +154,15 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events'],
                 module_obj = json;
 
                 //fields clear
-                fieldCont.dataTable.clear().draw();
+                fieldCont.clear();
+
                 var ue = UE.getEditor('container');
                 ue.execCommand('cleardoc');//clear content
+
+                btnsCont.clear();
+                eventsCont.clear();
+                editEventCont.clear();
+                intCont.clear();
 
                 if(module_obj.FORM){
                     $("#form_id").val(module_obj.FORM.ID);
@@ -186,7 +192,7 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events'],
                         toolbar_edit_table.row.add(field).draw(false);
                     }
                     //回显事件树的按钮列表
-                    evnetsCont.displayBtnTree();
+                    eventsCont.displayBtnTree();
                     editEventCont.displayBtnTree();
                 }
 
@@ -229,6 +235,26 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events'],
                     };
 
                     print_template_dataTable.row.add(item).draw(false);
+                }
+
+                var interface_dataTable = $('#interface_table').DataTable();
+                interface_dataTable.clear().draw();
+                for (var i = 0; i < json.INTERFACE_LIST.length; i++) {
+                    var inter = json.INTERFACE_LIST[i];
+                    var item ={
+                        ID: inter.ID,
+                        NAME: inter.NAME,
+                        TYPE: inter.TYPE,
+                        HEIGHT: inter.HEIGHT,
+                        WIDTH: inter.WIDTH,
+                        IS_DISTINCT: inter.IS_DISTINCT,
+                        FILTER_CONDITION: inter.FILTER_CONDITION,
+                        COLS: inter.COLS,
+                        FILTER: inter.FILTER,
+                        SOURCE: inter.SOURCE
+                    };
+
+                    interface_dataTable.row.add(item).draw(false);
                 }
 
             }, 'json');

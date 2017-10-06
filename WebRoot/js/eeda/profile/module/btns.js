@@ -61,7 +61,19 @@ define(['jquery'], function ($) {
             return itemList;
         };
 
-        
+        var clear = function(){
+            $('#list_btn_name').val('');
+            $('#list_btn_type').val('');
+            $('#list_btn_seq').val('');
+
+            $('#edit_btn_name').val('');
+            $('#edit_btn_type').val('');
+            $('#edit_btn_seq').val('');
+
+            list_dataTable.clear().draw();
+            edit_dataTable.clear().draw();
+        }
+
         $('#addListBtn').click(function(){
             list_dataTable.row.add({type:'list', btn_type:'customize'}).draw(false);
             current_tr_index = list_dataTable.rows().data().length;
@@ -138,6 +150,7 @@ define(['jquery'], function ($) {
         });
 
         return {
+            clear: clear,
             buildTableDetail: buildTableDetail,
             list_dataTable: list_dataTable,
             edit_dataTable: edit_dataTable

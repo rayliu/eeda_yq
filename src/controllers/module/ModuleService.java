@@ -20,6 +20,199 @@ public class ModuleService {
         this.cont = cont;
     }
     
+    @SuppressWarnings({ "unused", "unchecked" })
+    public void saveInterface(Map<String, ?> dto, Long form_id) {
+        List<Map<String, String>> interface_list = (ArrayList<Map<String, String>>) dto.get("interface");
+        
+        for (Map<String, ?> interfaceObj : interface_list) {
+            String id = interfaceObj.get("id".toUpperCase()).toString();
+            String is_delete = (String) interfaceObj.get("is_delete");
+            if("Y".equals(is_delete)){
+                Db.deleteById("eeda_form_interface", id);
+                Db.update("delete from eeda_form_interface_source where interface_id=?", id);
+                Db.update("delete from eeda_form_interface_source_join where interface_id=?", id);
+                Db.update("delete from eeda_form_interface_cols where interface_id=?", id);
+                Db.update("delete from eeda_form_interface_filter where interface_id=?", id);
+                continue;
+            }
+            String name = (String) interfaceObj.get("name".toUpperCase());
+            String type = (String) interfaceObj.get("type".toUpperCase());
+            String is_distinct = (String) interfaceObj.get("is_distinct".toUpperCase());
+            String height = (String) interfaceObj.get("height".toUpperCase());
+            String width = (String) interfaceObj.get("width".toUpperCase());
+            String filter_condition = (String) interfaceObj.get("filter_condition".toUpperCase());
+            
+            Record itemRec = new Record();
+            if (StrKit.isBlank(id)) {
+                itemRec.set("form_id", form_id);
+                itemRec.set("name", name);
+                itemRec.set("type", type);
+                itemRec.set("is_distinct", is_distinct);
+                itemRec.set("height", height);
+                itemRec.set("width", width);
+                itemRec.set("filter_condition", filter_condition);
+                Db.save("eeda_form_interface", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_interface", id);
+                itemRec.set("name", name);
+                itemRec.set("type", type);
+                itemRec.set("is_distinct", is_distinct);
+                itemRec.set("height", height);
+                itemRec.set("width", width);
+                itemRec.set("filter_condition", filter_condition);
+                Db.update("eeda_form_interface", itemRec);
+            }
+            Long interface_id = itemRec.getLong("id");
+            //处理数据源
+            Map<String, ?> source = (Map<String, ?>) interfaceObj
+                    .get("SOURCE");
+            handleBlocks(source, interface_id);
+            handleJoins(source, interface_id);
+
+            //处理数据列
+            handleInterfaceCols(interfaceObj, interface_id);
+            //处理参数
+            handleInterfaceFilter(interfaceObj, interface_id);
+        }
+    }
+
+    private void handleInterfaceFilter(Map<String, ?> dto, long interface_id) {
+        List<Map<String, ?>> col_list = (ArrayList<Map<String, ?>>) dto
+                .get("FILTER");
+        for (Map<String, ?> col : col_list) {
+            String id = col.get("id".toUpperCase()).toString();
+            String para_name = (String) col.get("para_name".toUpperCase());
+            String data_type = (String) col.get("data_type".toUpperCase());
+            String is_mandatory = (String) col.get("is_mandatory".toUpperCase());
+            String default_value = (String) col.get("default_value".toUpperCase());
+            
+            Record itemRec = new Record();
+            if (StrKit.isBlank(id)) {
+                itemRec.set("interface_id", interface_id);
+                itemRec.set("para_name", para_name);
+                itemRec.set("data_type", data_type);
+                itemRec.set("is_mandatory", is_mandatory);
+                itemRec.set("default_value", default_value);
+                Db.save("eeda_form_interface_filter", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_interface_filter", id);
+                itemRec.set("para_name", para_name);
+                itemRec.set("data_type", data_type);
+                itemRec.set("is_mandatory", is_mandatory);
+                itemRec.set("default_value", default_value);
+                Db.update("eeda_form_interface_filter", itemRec);
+            }
+        }
+    }
+    
+    private void handleInterfaceCols(Map<String, ?> dto, long interface_id) {
+        List<Map<String, ?>> col_list = (ArrayList<Map<String, ?>>) dto
+                .get("COLS");
+        for (Map<String, ?> col : col_list) {
+            String id = col.get("id".toUpperCase()).toString();
+            String col_name = (String) col.get("col_name".toUpperCase());
+            String value = (String) col.get("value".toUpperCase());
+            String width = col.get("width".toUpperCase()).toString();
+            String visible = (String) col.get("is_visible".toUpperCase());
+            
+            Record itemRec = new Record();
+            if (StrKit.isBlank(id)) {
+                itemRec.set("interface_id", interface_id);
+                itemRec.set("col_name", col_name);
+                itemRec.set("value", value);
+                if (!StrKit.isBlank(width))
+                    itemRec.set("width", width);
+                itemRec.set("is_visible", visible);
+                Db.save("eeda_form_interface_cols", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_interface_cols", id);
+                itemRec.set("col_name", col_name);
+                itemRec.set("value", value);
+                if (!StrKit.isBlank(width))
+                    itemRec.set("width", width);
+                itemRec.set("is_visible", visible);
+                Db.update("eeda_form_interface_cols", itemRec);
+            }
+        }
+    }
+
+    private void handleJoins(Map<String, ?> dto, long interface_id) {
+        List<Map<String, ?>> join_list = (ArrayList<Map<String, ?>>) dto
+                .get("join_list");
+        for (Map<String, ?> join : join_list) {
+            String id = join.get("id".toUpperCase()).toString();
+            String form_left = (String) join.get("form_left".toUpperCase());
+            String form_left_field = (String) join.get("form_left_field".toUpperCase());
+            String form_right = (String) join.get("form_right".toUpperCase());
+            String form_right_field = (String) join.get("form_right_field".toUpperCase());
+            
+            Record itemRec = new Record();
+            if (StrKit.isBlank(id)) {
+                itemRec.set("interface_id", interface_id);
+                itemRec.set("form_left", form_left);
+                itemRec.set("form_left_field", form_left_field);
+                itemRec.set("form_right", form_right);
+                itemRec.set("form_right_field", form_right_field);
+                Db.save("eeda_form_interface_source_join", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_interface_source_join", id);
+                itemRec.set("form_left", form_left);
+                itemRec.set("form_left_field", form_left_field);
+                itemRec.set("form_right", form_right);
+                itemRec.set("form_right_field", form_right_field);
+                Db.update("eeda_form_interface_source_join", itemRec);
+            }
+        }
+    }
+
+    private void handleBlocks(Map<String, ?> dto, long interface_id) {
+        List<Map<String, ?>> block_list = (ArrayList<Map<String, ?>>) dto
+                .get("block_arr");
+        for (Map<String, ?> block : block_list) {
+            String id = block.get("id".toUpperCase()).toString();
+            String form_name = (String) block.get("form_name".toUpperCase());
+            String seq = block.get("seq".toUpperCase()).toString();
+            String join_type = (String) block.get("join_type".toUpperCase());
+            
+            Record itemRec = new Record();
+            if (StrKit.isBlank(id)) {
+                itemRec.set("interface_id", interface_id);
+                itemRec.set("form_name", form_name);
+                itemRec.set("seq", seq);
+                itemRec.set("join_type", join_type);
+                Db.save("eeda_form_interface_source", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_interface_source", id);
+                itemRec.set("form_name", form_name);
+                itemRec.set("seq", seq);
+                itemRec.set("join_type", join_type);
+                Db.update("eeda_form_interface_source", itemRec);
+            }
+        }
+        
+    }
+    
+    public void saveEventListAddRow(Map<String, ?> event, Long event_id) {
+        Map<String, ?> dto = (Map<String, ?>) event.get("EVENT_TARGET_LIST");
+        if (dto == null) {
+           return;
+        }
+        Record eventListAddRow = Db
+                .findFirst(
+                        "select * from eeda_form_event_list_add_row where event_id=?",
+                        event_id);
+        String target_field_name = dto.get("target_field_name".toUpperCase()).toString();
+        if (eventListAddRow != null) {
+            eventListAddRow.set("target_field_name", target_field_name);
+            Db.update("eeda_form_event_list_add_row", eventListAddRow);
+        } else {
+            eventListAddRow = new Record();
+            eventListAddRow.set("event_id", event_id);
+            eventListAddRow.set("target_field_name", target_field_name);
+            Db.save("eeda_form_event_list_add_row", eventListAddRow);
+        }
+    }
+    
     public void saveEventSetValue(Map<String, ?> event, Long event_id) {
         Map<String, ?> dto = (Map<String, ?>) event.get("SET_VALUE");
         if (dto != null) {

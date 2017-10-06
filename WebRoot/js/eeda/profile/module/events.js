@@ -77,8 +77,8 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
         };
 
     function removeHoverDom(treeId, treeNode) {
-            $("#addBtn_"+treeNode.tId).unbind().remove();
-        };
+        $("#addBtn_"+treeNode.tId).unbind().remove();
+    };
 
     function dataFilter(treeId, parentNode, childNodes) {
         if (!childNodes) return null;
@@ -195,14 +195,34 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
                 node_list.push(node);
              });
            }
-           
         });
         
+        //页面按钮
+        var page_btn_nodes = zTree.getNodes()[3].children;
+        $.each(page_btn_nodes, function(index, item) {
+           var nodes = item.children;
+           if(nodes){
+              $.each(nodes, function(index, node) {
+                node_list.push(node);
+             });
+           }
+        });
       }
       return node_list;
+    };
+
+    var clear = function(){
+      $('#list_event_name').val('');
+      $('#list_event_type').val('');
+
+      $('#event_open_condition').val('');
+      $('#event_open_module').val('');
+      $('#event_open_type').val('');
+      
     }
 
     return {
+        clear: clear,
         zTreeObj: zTreeObj,
         displayBtnTree: displayBtnTree,
         buildTreeNodes: buildTreeNodes
