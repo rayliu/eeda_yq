@@ -837,5 +837,20 @@ $(document).ready(function() {
         return cargo_items_array;
     };
 
+  //保存销售应收费用模板
+    $('#chargeSaleBtnTemplet').click(function(){
+    	var chargeSaleOrderTemplet={};
+    	chargeSaleOrderTemplet.order_type = $('#type').val();
+    	chargeSaleOrderTemplet.customer_id = $('#customer_id').val();
+    	chargeSaleOrderTemplet.chargeSale_template = itemOrder.buildChargeSaleTemplate();
+    	chargeSaleOrderTemplet.allChargeSale_template = itemOrder.buildAllChargeSaleTemplate();
+    	$.post('/trJobOrder/saveChargeSaleTemplet',{params:JSON.stringify(chargeSaleOrderTemplet)},function(data){
+    		if(data){
+    			$.scojs_message('销售应收费用模板保存成功', $.scojs_message.TYPE_OK);
+    		}else{
+    			$.scojs_message('销售应收费用模板保存失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	});
+    });
 });
 });

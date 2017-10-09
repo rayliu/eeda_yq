@@ -479,21 +479,6 @@ public class TrJobOrderController extends Controller {
 		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
 		List<Map<String, String>> allCost_template = (ArrayList<Map<String, String>>)dto.get("allCost_template");
    		saveArapTemplate(type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);
-     	//贸易信息，应收服务费用模板
-		List<Map<String, String>> chargeService_template = (ArrayList<Map<String, String>>)dto.get("chargeService_template");
-		List<Map<String, String>> allChargeService_template = (ArrayList<Map<String, String>>)dto.get("allChargeService_template");
-		saveTradeServiceTemplate(type,customer_id,chargeService_template,allChargeService_template);
-		//贸易信息，应付服务费用模板
-		List<Map<String, String>> costService_template = (ArrayList<Map<String, String>>)dto.get("costService_template");
-		List<Map<String, String>> allCostService_template = (ArrayList<Map<String, String>>)dto.get("allCostService_template");
-   		saveTradeCostServiceTemplate(type,customer_id,costService_template,allCostService_template);
-		//贸易信息，销售应收费用模板
-		List<Map<String, String>> chargeSale_template = (ArrayList<Map<String, String>>)dto.get("chargeSale_template");
-		List<Map<String, String>> allChargeSale_template = (ArrayList<Map<String, String>>)dto.get("allChargeSale_template");
-   		saveTradeSaleTemplate(type,customer_id,chargeSale_template,allChargeSale_template);
-   	    
-   	   	   		
-	
    		renderJson(r);
    	}
     
@@ -972,6 +957,51 @@ public class TrJobOrderController extends Controller {
             Db.save("job_order_ocean_template", r);
         }
     }
+    
+    //贸易应收服务费用信息存为模板单击事件
+    @SuppressWarnings("unchecked")
+   	@Before(Tx.class)
+    public void chargeServiceTemplet(){
+       	String jsonStr = getPara("params");
+        Gson gson = new Gson();  
+   		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+   		String type = (String) dto.get("order_type");;
+   		String customer_id = (String) dto.get("customer_id");
+   		List<Map<String, String>> chargeService_template = (ArrayList<Map<String, String>>)dto.get("chargeService_template");
+		List<Map<String, String>> allChargeService_template = (ArrayList<Map<String, String>>)dto.get("allChargeService_template");
+		saveTradeServiceTemplate(type,customer_id,chargeService_template,allChargeService_template);
+        renderJson("{\"result\":true}");
+       }
+    
+    //贸易应付服务费用信息存为模板单击事件
+    @SuppressWarnings("unchecked")
+   	@Before(Tx.class)
+    public void saveCostServiceTemplet(){
+       	String jsonStr = getPara("params");
+        Gson gson = new Gson();  
+   		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+   		String type = (String) dto.get("order_type");;
+   		String customer_id = (String) dto.get("customer_id");
+   		List<Map<String, String>> costService_template = (ArrayList<Map<String, String>>)dto.get("costService_template");
+		List<Map<String, String>> allCostService_template = (ArrayList<Map<String, String>>)dto.get("allCostService_template");
+   		saveTradeCostServiceTemplate(type,customer_id,costService_template,allCostService_template);
+        renderJson("{\"result\":true}");
+       }
+    
+    //贸易销售应收费用信息存为模板单击事件
+    @SuppressWarnings("unchecked")
+   	@Before(Tx.class)
+    public void saveChargeSaleTemplet(){
+       	String jsonStr = getPara("params");
+        Gson gson = new Gson();  
+   		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+   		String type = (String) dto.get("order_type");
+   		String customer_id = (String) dto.get("customer_id");
+   		List<Map<String, String>> chargeSale_template = (ArrayList<Map<String, String>>)dto.get("chargeSale_template");
+		List<Map<String, String>> allChargeSale_template = (ArrayList<Map<String, String>>)dto.get("allChargeSale_template");
+   		saveTradeSaleTemplate(type,customer_id,chargeSale_template,allChargeSale_template);
+        renderJson("{\"result\":true}");
+       }
     
     private void savePortQueryHistory(String portId){
         Long userId = LoginUserController.getLoginUserId(this);
@@ -1781,14 +1811,14 @@ public class TrJobOrderController extends Controller {
     @Before(Tx.class)
     public void deleteTradeSaleTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from trade_job_order_trade_sale_template where id = ?",id);
+    	Db.update("delete from trade_job_order_trade_sale_template where id = ? or parent_id = ?",id,id);
     	renderJson("{\"result\":true}");
     }
   //删除常用模版
     @Before(Tx.class)
     public void deleteTradeServiceTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from trade_job_order_trade_service_template where id = ?",id);
+    	Db.update("delete from trade_job_order_trade_service_template where id = ? or parent_id = ?",id,id);
     	renderJson("{\"result\":true}");
     }
     

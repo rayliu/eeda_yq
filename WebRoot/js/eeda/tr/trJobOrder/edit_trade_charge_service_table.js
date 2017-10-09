@@ -854,5 +854,21 @@ $(document).ready(function() {
         }
         return cargo_items_array;
     };
+    
+  //保存应收服务费用模板
+    $('#chargeServiceBtnTemplet').click(function(){
+    	var chargeServiceOrderTemplet={};
+    	chargeServiceOrderTemplet.order_type = $('#type').val();
+    	chargeServiceOrderTemplet.customer_id = $('#customer_id').val();
+    	chargeServiceOrderTemplet.chargeService_template = itemOrder.buildChargeServiceTemplate();
+    	chargeServiceOrderTemplet.allChargeService_template = itemOrder.buildAllChargeServiceTemplate();
+    	$.post('/trJobOrder/chargeServiceTemplet',{params:JSON.stringify(chargeServiceOrderTemplet)},function(data){
+    		if(data){
+    			$.scojs_message('应收服务费用模板保存成功', $.scojs_message.TYPE_OK);
+    		}else{
+    			$.scojs_message('应收服务费用模板保存失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	});
+    });
 });
 });
