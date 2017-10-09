@@ -94,11 +94,12 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                 if(status=='新建'){
                     $('#saveBtn').attr('disabled', false);
                     $('#confirmBtn').attr('disabled', false);
-                    $('#printBtn').attr('disabled', false);         
+                             
                 }else if(status=='已确认'){
                     $('#add_cost').attr("disabled",true);
                     $('.delete').attr("disabled",true);
-                    }
+                }
+                $('#printBtn').attr('disabled', false);
             }
         
         $('#confirmBtn').click(function(){

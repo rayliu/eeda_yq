@@ -343,7 +343,7 @@ public class TradeJobOrderReportController extends Controller {
 	//打印应付对账单PDF
 	public void payableDetailPDF(){
 		String order_id = getPara("order_id");
-		String fileName = "/report/trade/payableDetails.jasper";
+		String fileName = "/report/tradeCheckOrder/payableDetails.jasper";
 		String outFileName = "/download/应付对账单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
