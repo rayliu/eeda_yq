@@ -52,6 +52,7 @@ public class FinItemController extends Controller {
 						+" LEFT JOIN currency_rate cr ON cr.currency_id = c.id	and cr.office_id=f.office_id "
 						+" WHERE	f.office_id = ?  "
                 		+ " and f.name like '%"+input+"%' "
+                		+ " GROUP BY f.id"
                         + " order by convert(f.name using gb2312) asc limit 25", officeId);
             }
         }else{
@@ -60,13 +61,15 @@ public class FinItemController extends Controller {
 						+" LEFT JOIN currency c ON  c.`code` = f.binding_currency "
 						+" LEFT JOIN currency_rate cr ON cr.currency_id = c.id	and cr.office_id=f.office_id "
 						+" WHERE	f.office_id = ?  "
-                		+ " and (f.name like '%"+input+"%' or f.code like '%"+input+"%')"
+                		+ " and (f.name like '%"+input+"%' or f.code like '%"+input+"%') "
+                		+ " GROUP BY f.id"
                         + " order by convert(f.name using gb2312) asc limit 25", officeId);
             }else{
                 finItems = Db.find("SELECT	f.*,c.id currency_id,c.`code` currency_code,cr.rate FROM 	fin_item f "
 						+" LEFT JOIN currency c on  c.`code` = f.binding_currency "
 						+" LEFT JOIN currency_rate cr ON cr.currency_id = c.id		and cr.office_id=f.office_id "
 						+" WHERE	f.office_id = ?   "
+						+ " GROUP BY f.id"
                         + "order by convert(f.name using gb2312) asc limit 25", officeId);
             }
             

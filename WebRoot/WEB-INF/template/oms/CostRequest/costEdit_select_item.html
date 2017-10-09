@@ -29,10 +29,19 @@
                                           value:'',
                                           display_value:''
                                        }){}%>
-                    </div>
+                  </div>
                   <button type="button" id="clear_fin" class="btn btn_white">清空费用</button>
                   <button type="button" id="clear_query" class="btn btn_white">清空条件</button>
-            </div>
+                </div>
+                <div class="row">
+	                  <div class="col-lg-12 ">
+							<input type="hidden" id="fin_names">
+							<input type="hidden" id="fin_ids"> 
+							<label>选中费用列表:</label>
+							<ul id='finName_list' class="search-control">
+							</ul>
+					  </div>
+	            </div>
         </div> 
         <div class="simple_order_list_div" id="detailedSearch" style="display:none;">
 	        <div class="col-lg-12">

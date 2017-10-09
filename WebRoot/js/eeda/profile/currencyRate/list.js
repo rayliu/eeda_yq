@@ -94,7 +94,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
           *_status =
           时间字段需成双定义  *_begin_time *_end_time   between
         */
-        var url = "/currencyRate/list?name="+name;
+        var url = "/currencyRate/list?currency_code_equals="+name;
 
         dataTable.ajax.url(url).load();
     };

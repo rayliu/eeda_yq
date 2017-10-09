@@ -198,7 +198,7 @@ public class CostCheckOrderController extends Controller {
 			query_exchange_currency=" and joa. exchange_currency_id="+re.get(0).get("id");
 		}
 		if(StringUtils.isNotEmpty(fin_name)){
-			query_fin_name=" and fi.id="+fin_name;
+			query_fin_name=" and fi.id in ("+fin_name+")";
 		}
 		if(StringUtils.isNotBlank(order_no)){
 			query_order_no = " and jo.order_no='"+order_no+"'";
