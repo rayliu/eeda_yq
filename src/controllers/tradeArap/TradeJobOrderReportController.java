@@ -313,7 +313,7 @@ public class TradeJobOrderReportController extends Controller {
 		String order_id = getPara("order_id");
 		String fileName = "/report/tradeCheckOrder/ReceivableDetails.jasper";
 		String outFileName = "/download/应收对账单PDF";
-		HashMap<String, Object> hm = new HashMap<String, Object>();
+		HashMap<String, Object> hm = new HashMap<String, Object>(); 
 		hm.put("order_id", order_id);
 		hm.put("login_user_id", LoginUserController.getLoginUserId(this));
 		fileName = getContextPath() + fileName;
