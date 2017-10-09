@@ -86,7 +86,7 @@ public class TodoController extends Controller {
             +"        LEFT JOIN job_order_shipment jos   on jo.id = jos.order_id "
             +"        WHERE"
             + " datediff(jo.order_export_date, now()) <= 0 and ifnull(jos.vgm,'') = '' "
-            + " and datediff(jo.order_export_date,'2017-01-01') > 0"  //统计2017后的数据，之前的忽略
+            + " and datediff(jo.order_export_date,'2017-10-08') > 0"  //统计2017-10-08后的数据，之前的忽略
             + " and jo.transport_type LIKE '%ocean%'"
             +"  and (jo.office_id ="+office_id+ref_office+")"
             + " and jo.delete_flag = 'N'"
@@ -126,7 +126,7 @@ public class TodoController extends Controller {
             + " LEFT JOIN job_order_insurance joi ON joi.order_id = jo.id  "
             +"  WHERE "
             + " datediff(jo.order_export_date, now()) <= 0 "
-            + " and datediff(jo.order_export_date,'2017-01-01') > 0"  //统计2017后的数据，之前的忽略
+            + " and datediff(jo.order_export_date,'2017-10-08') > 0"  //统计2017-10-08后的数据，之前的忽略
             + " and  jo.transport_type LIKE '%insurance%'"
             + " and joi.insure_no is NULL "
             +"  and (jo.office_id ="+office_id+ref_office+")"

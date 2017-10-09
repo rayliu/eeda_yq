@@ -3502,7 +3502,7 @@ public class JobOrderController extends Controller {
         } else if("vgmwait".equals(type)){  //vgm
         	dai_condition = " and datediff(jor.order_export_date, now()) <= 0 and ifnull(jos.vgm,'') = ''"
         			+ " AND jor.transport_type LIKE '%ocean%'"
-        			+ " and datediff(jor.order_export_date,'2017-01-01') > 0";  //统计2017后的数据，之前的忽略;;
+        			+ " and datediff(jor.order_export_date,'2017-10-08') > 0";  //统计2017-10-08后的数据，之前的忽略;;
         }else if("hblwait".equals(type)){  //hbl
         	dai_condition = " and ifnull(jos.hbl_flag,'') != 'Y' and datediff(jor.order_export_date, now()) <= 0"
         			+ " AND jor.transport_type LIKE '%ocean%'"
@@ -3516,7 +3516,7 @@ public class JobOrderController extends Controller {
         			+ " and datediff(jor.order_export_date,'2017-01-01') > 0";  //统计2017后的数据，之前的忽略;;
         }  else if("insurancewait".equals(type)){  //保险
         	dai_condition = "  and datediff(jor.order_export_date, now()) <= 0 and  jor.transport_type LIKE '%insurance%' and joi.insure_no is NULL"
-        			+ " and datediff(jor.order_export_date,'2017-01-01') > 0";  //统计2017后的数据，之前的忽略;;
+        			+ " and datediff(jor.order_export_date,'2017-10-08') > 0";  //统计2017-10-08后的数据，之前的忽略;;
         } else if("overseacustomwait".equals(type)){
         	dai_condition = " and (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
         			+ " and timediff(now(),jos.etd)<TIME('48:00:00')"
