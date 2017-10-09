@@ -468,6 +468,7 @@ public class JobOrderController extends Controller {
 		DbUtils.handleList(charge_list, id, JobOrderArap.class, "order_id");
 		List<Map<String, String>> chargeCost_list = (ArrayList<Map<String, String>>)dto.get("chargeCost_list");
 		DbUtils.handleList(chargeCost_list, id, JobOrderArap.class, "order_id");
+		
 		//记录结算公司使用历史	
 		saveAccoutCompanyQueryHistory(charge_list);
 		saveAccoutCompanyQueryHistory(chargeCost_list);
@@ -874,6 +875,7 @@ public class JobOrderController extends Controller {
     		jarap.set("rmb_difference", 0.00);
     		jarap.set("order_id", order_id);
     		jarap.set("cus_contract_flag","Y");//标记位 
+    		jarap.set("contract_amount",total_amount);//合同算出来的金额
     		jarap.save();
     	}
     	
@@ -1082,6 +1084,7 @@ public class JobOrderController extends Controller {
     		jarap.set("rmb_difference", 0.00);
     		jarap.set("order_id", order_id);
     		jarap.set("cus_contract_flag","GH");//标记位 
+    		jarap.set("contract_amount",total_amount);//合同算出来的金额
     		jarap.save();
     	}
     	
@@ -1277,6 +1280,7 @@ public class JobOrderController extends Controller {
     		jarap.set("rmb_difference", 0.00);
     		jarap.set("order_id", order_id);
     		jarap.set("cus_contract_flag","SH");//标记位 
+    		jarap.set("contract_amount",total_amount);//合同算出来的金额
     		jarap.save();
     	}
     	
@@ -1487,6 +1491,7 @@ public class JobOrderController extends Controller {
     		jarap.set("rmb_difference", 0.00);
     		jarap.set("order_id", order_id);
     		jarap.set("cus_contract_flag","Y");//标记位 
+    		jarap.set("contract_amount",total_amount);//合同算出来的金额
     		jarap.save();
     	}
     	
@@ -1691,6 +1696,7 @@ public class JobOrderController extends Controller {
     		jarap.set("rmb_difference", 0.00);
     		jarap.set("order_id", order_id);
     		jarap.set("cus_contract_flag","Y");//标记位 
+    		jarap.set("contract_amount",total_amount);//合同算出来的金额
     		jarap.save();
     	}
     	
@@ -1865,6 +1871,7 @@ public class JobOrderController extends Controller {
         		jarap.set("rmb_difference", 0.00);
         		jarap.set("order_id", order_id);
         		jarap.set("cus_contract_flag","Y");//标记位 
+        		jarap.set("contract_amount",total_amount);//合同算出来的金额
         		jarap.save();
         	}
         	
@@ -2037,6 +2044,7 @@ public class JobOrderController extends Controller {
         		jarap.set("rmb_difference", 0.00);
         		jarap.set("order_id", order_id);
         		jarap.set("cus_contract_flag","Y");//标记位 
+        		jarap.set("contract_amount",total_amount);//合同算出来的金额
         		jarap.save();
         	}
         	
@@ -2190,32 +2198,6 @@ public class JobOrderController extends Controller {
         	Long parent_id = chargeRec.getLong("parent_id");
         	Db.update("update job_order_land_arap_template set json_value = ? where id = ?",chargeObjectAll,parent_id);
         }
-        
-//        if(costRec == null){
-//        	if(!(cost_list==null||cost_list.size()<=0)){
-//        		//保存全部信息
-//                Record all = new Record();
-//                all.set("creator_id", creator_id);
-//                all.set("customer_id", customer_id);
-//                all.set("arap_type", "cost");
-//                all.set("order_type", order_type);
-//                all.set("json_value", costObjectAll);
-//                Db.save("job_order_land_arap_template", all);  
-//                
-//        		//保存局部信息
-//        		Record r= new Record();
-//                r.set("creator_id", creator_id);
-//                r.set("customer_id", customer_id);
-//                r.set("arap_type", "cost");
-//                r.set("order_type", order_type);
-//                r.set("json_value", costObject);
-//                r.set("parent_id",  all.getLong("id"));
-//                Db.save("job_order_land_arap_template", r);  
-//       		}
-//        }else{
-//        	Long parent_id = costRec.getLong("parent_id");
-//        	Db.update("update job_order_land_arap_template set json_value = ? where id = ?",costObjectAll,parent_id);
-//        }
     }
     /**
      * 保存费用模板
