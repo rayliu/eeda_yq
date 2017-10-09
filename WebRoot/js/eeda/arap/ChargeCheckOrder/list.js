@@ -59,11 +59,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
+	            		var value = data;
 	            		if(full.SQL_TYPE=='cost'){
-		            		return '<span style="color:red;">'+'-'+data+'</span>';
+	            			value = '<span style="color:red;">'+'-'+data+'</span>';
 		            	}
-	                    return data;
-	                  }
+	            		
+	            		if(full.DIFF_FLAG=='Y'){
+	            			debugger;
+	            			value = '<span style="background-color:#ffff66;">'+'-'+data+'</span>';
+	            		}
+	                    return value;
+	                }
 	            },
 	            { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
 	            { "data": "EXCHANGE_RATE", "width": "60px"},

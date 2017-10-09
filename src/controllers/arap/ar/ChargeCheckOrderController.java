@@ -198,7 +198,7 @@ public class ChargeCheckOrderController extends Controller {
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	 sql = "select * from(  "
-        			+ " select joa.order_type sql_type, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+        			+ " select if(joa.contract_amount != joa.total_amount,'Y','N') diff_flag,joa.order_type sql_type, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
               		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type,jo.delete_flag jor_delete_flag, "
               		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
               		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
@@ -225,7 +225,7 @@ public class ChargeCheckOrderController extends Controller {
     				+ " ) B where 1=1 and jor_delete_flag = 'N' ";
         	}else{
         		 sql = "select * from(  "
-                 		+ " select ifnull(f.name,f.name_eng) fee_name, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+                 		+ " select if(joa.contract_amount != joa.total_amount,'Y','N') diff_flag, ifnull(f.name,f.name_eng) fee_name, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
                  		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no,jo.type,jo.delete_flag jor_delete_flag, "
                  		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
                  		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
