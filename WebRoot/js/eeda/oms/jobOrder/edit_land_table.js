@@ -118,17 +118,17 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" style="width:30px" disabled>';
 			    }
 			},
-            { "width": "10px",
+            { "width": "50px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" style="width:30px" class="delete btn table_btn delete_btn btn-xs" >删除</button>';
+                	return '<button type="button" style="width:50px" class="delete btn table_btn delete_btn btn-xs" >删除</button>';
                 }
             },
-            { "width": "10px",
+            { "width": "50px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ID){
-            			return '<button type="button" style="width:30px" class="land_charge btn table_btn btn_green btn-xs" >费用</button>';	
+            			return '<button type="button" style="width:50px" class="land_charge btn table_btn btn_green btn-xs" >费用</button>';	
             		}else{
-            			return '<button type="button" style="width:30px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>';
+            			return '<button type="button" style="width:50px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>';
             		}
             	}
             },

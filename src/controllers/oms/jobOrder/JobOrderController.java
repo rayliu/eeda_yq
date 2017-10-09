@@ -2383,6 +2383,23 @@ public class JobOrderController extends Controller {
         renderJson("{\"result\":true}");
     }
     
+    @SuppressWarnings("unchecked")
+	@Before(Tx.class)
+    public void saveLandTemplet(){
+    	String jsonStr=getPara("params");
+       	Gson gson = new Gson();  
+		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+		//保存陆运费用模版
+        String type = (String) dto.get("type");//根据工作单类型生成不同前缀
+        String customer_id = (String)dto.get("customer_id");
+   		List<Map<String, String>> land_charge_template = (ArrayList<Map<String, String>>)dto.get("land_charge_template");
+		List<Map<String, String>> land_cost_template = (ArrayList<Map<String, String>>)dto.get("land_cost_template");
+		List<Map<String, String>> land_allCharge_template = (ArrayList<Map<String, String>>)dto.get("land_allCharge_template");
+		List<Map<String, String>> land_allCost_template = (ArrayList<Map<String, String>>)dto.get("land_allCost_template");
+		saveLandArapTemplate(type,customer_id,land_charge_template,land_cost_template,land_allCharge_template,land_allCost_template);
+        renderJson("{\"result\":true}");
+    }
+    
     //费用存为模板单击事件
     @SuppressWarnings("unchecked")
    	@Before(Tx.class)
@@ -3290,9 +3307,14 @@ public class JobOrderController extends Controller {
     	String order_type = getPara("order_type");
     	String customer_id = getPara("customer_id");
     	String arap_type = getPara("arap_type");
-    	List<Record> list = Db.find("select * from job_order_land_arap_template "
-    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
-    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    	String sql = "select * from job_order_land_arap_template "
+    			+ " where creator_id = "+LoginUserController.getLoginUserId(this)
+    			+ " and customer_id = "+customer_id
+    			+ " and order_type = '"+order_type
+    			+ "' and arap_type = '"+arap_type
+    			+ "' and parent_id is null"
+    			+ " order by id";
+    	List<Record> list = Db.find(sql);
     	renderJson(list);
     }
     //常用贸易信息
@@ -3909,15 +3931,6 @@ public class JobOrderController extends Controller {
         		model.save();
         	}
         }
-      //保存陆运费用模版
-        String type = (String) dto.get("type");//根据工作单类型生成不同前缀
-        String customer_id = (String)dto.get("customer_id");
-   		List<Map<String, String>> land_charge_template = (ArrayList<Map<String, String>>)dto.get("land_charge_template");
-		List<Map<String, String>> land_cost_template = (ArrayList<Map<String, String>>)dto.get("land_cost_template");
-		List<Map<String, String>> land_allCharge_template = (ArrayList<Map<String, String>>)dto.get("land_allCharge_template");
-		List<Map<String, String>> land_allCost_template = (ArrayList<Map<String, String>>)dto.get("land_allCost_template");
-		saveLandArapTemplate(type,customer_id,land_charge_template,land_cost_template,land_allCharge_template,land_allCost_template);
-   		
         renderJson("{\"result\":true}");
     }
     

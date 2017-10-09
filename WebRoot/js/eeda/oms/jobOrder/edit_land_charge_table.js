@@ -31,7 +31,7 @@ $(document).ready(function() {
                                 +'unit_id="'+json_obj[j].UNIT_ID+'" '
                                 +'amount="'+json_obj[j].amount+'" '
                                 +'charge_name="'+json_obj[j].charge_name+'" '
-                                +'charge_name_eng="'+json_obj[j].charge_eng_name+'" '
+                                +'charge_eng_name="'+json_obj[j].charge_eng_name+'" '
                                 +'currency_name="'+json_obj[j].currency_name+'" '
                                 +'currency_total_amount="'+json_obj[j].currency_total_amount+'" '
                                 +'exchange_currency_id="'+json_obj[j].exchange_currency_id+'" '
@@ -125,7 +125,7 @@ $(document).ready(function() {
             item.REMARK= row.attr('remark');
             item.SP_NAME=row.attr('sp_name');
             item.CHARGE_NAME=row.attr('charge_name');
-            item.CHARGE_NAME_ENG=row.attr('charge_name_eng');
+            item.CHARGE_ENG_NAME=row.attr('charge_eng_name');
             item.UNIT_NAME=row.attr('unit_name');
             item.CURRENCY_NAME=row.attr('currency_name');
             item.EXCHANGE_CURRENCY_ID_NAME=row.attr('exchange_currency_name');
@@ -640,7 +640,7 @@ $(document).ready(function() {
                     return data;
                 }
             },
-            { "data": "CHARGE_NAME_ENG", "visible": false,
+            { "data": "CHARGE_ENG_NAME", "visible": false,
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
@@ -701,13 +701,6 @@ $(document).ready(function() {
     	order.land_item_id = $('#land_item_id').val();
     	order.land_charge_item = itemOrder.buildLandChargeDetail();
 
-        //陆运常用费用
-        order.customer_id = $('#customer_id').val();
-        order.type = $('#type').val();
-        order.land_charge_template = itemOrder.buildLandChargeTemplate();
-        // order.land_cost_template = itemOrder.buildLandCostTemplate();
-        order.land_allCharge_template = itemOrder.buildLandAllChargeTemplate();
-        // order.land_allCost_template = itemOrder.buildLandAllCostTemplate();
     	$.post('/jobOrder/saveLandCharge', {params:JSON.stringify(order)}, function(data){
     		 
     		 var url = "/jobOrder/tableListOfLandCharge?order_id="+order_id+"&land_item_id="+land_item_id;
@@ -850,6 +843,17 @@ $(document).ready(function() {
 		  $("#land_AllCheckOfChargeTable").prop("checked",$(".checkBoxOfLandChargeTable").length == $(".checkBoxOfLandChargeTable:checked").length ? true : false);
     });
     
+    //存为模板
+    $('#landBtnTemplet').click(function(){
+    	var landOrderTemplet={};
+    	landOrderTemplet.customer_id = $('#customer_id').val();
+    	landOrderTemplet.type = $('#type').val();
+    	landOrderTemplet.land_charge_template = itemOrder.buildLandChargeTemplate();
+    	landOrderTemplet.land_allCharge_template = itemOrder.buildLandAllChargeTemplate();
+    	$.post('/jobOrder/saveLandTemplet',{params:JSON.stringify(landOrderTemplet)},function(data){
+    		$.scojs_message('陆运费用信息模板保存成功', $.scojs_message.TYPE_OK);
+    	});
+    });
 	
   });
 });
