@@ -308,10 +308,10 @@ public class TradeJobOrderReportController extends Controller {
 		renderText(file.substring(file.indexOf("download")-1));
 	}
 	
-	//打印应收对账单
+	//打印应收对账单(明细)
 	public void printReceiveDetailPDF(){
 		String order_id = getPara("order_id");
-		String fileName = "/report/trade/ReceivableDetails.jasper";
+		String fileName = "/report/tradeCheckOrder/ReceivableDetails.jasper";
 		String outFileName = "/download/应收对账单PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
@@ -321,19 +321,15 @@ public class TradeJobOrderReportController extends Controller {
 		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
 		renderText(file.substring(file.indexOf("download")-1));
 	}
-	//打印应收对账单
+	
+	//打印应收对账单(合计)
 	public void printTotaledReceiveDetailPDF(){
 		String order_id = getPara("order_id");
 		String company_name = getPara("company_name");
 		String fileName = "";
-		
-		if("昂励制冷器材（中山）有限公司".equals(company_name)){
-			 fileName = "/report/trade/SpecialTotaledReceivableDetails.jasper";
-		}else if("昂励制冷设备（上海）有限公司".equals(company_name)){
-			 fileName = "/report/trade/huAngLiTotaledReceivableDetails.jasper";
-		}else{
-			 fileName = "/report/trade/TotaledReceivableDetails.jasper";
-		}
+
+		fileName = "/report/tradeCheckOrder/TotaledReceivableDetails.jasper";
+
 		String outFileName = "/download/应收对账单(合计版)PDF";
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
