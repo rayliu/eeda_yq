@@ -72,8 +72,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	                }
 	            },
 	            { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
-	            { "data": "EXCHANGE_RATE", "width": "60px"},
-	            { "data": "AFTER_TOTAL", "width": "60px" ,'class':'AFTER_TOTAL',
+	            { "data": "EXCHANGE_RATE", "width": "70px"},
+	            { "data": "AFTER_TOTAL", "width": "70px" ,'class':'AFTER_TOTAL',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='cost'){
 	            			return '<span style="color:red;">'+'-'+data+'</span>';
@@ -82,8 +82,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	                  }
 	            },
 	            { "data": "EXCHANGE_CURRENCY_NAME", "width": "60px",'class':'EXCHANGE_CURRENCY_NAME'},
-	            { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px"},
-	            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px",'class':'EXCHANGE_TOTAL_AMOUNT',
+	            { "data": "EXCHANGE_CURRENCY_RATE", "width": "80px"},
+	            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "80px",'class':'EXCHANGE_TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
 	            		if(full.SQL_TYPE=='cost'){
 	            			return '<span style="color:red;">'+'-'+data+'</span>';
