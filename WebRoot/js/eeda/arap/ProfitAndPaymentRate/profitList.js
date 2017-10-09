@@ -3,9 +3,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
       eeda.hideSideBar();//打开报表时自动收起左边菜单
 
+      
+      var windowHeight = $(window).height();        //获取浏览器窗口高度
+      var headerHeight =  $("#eeda_table").offset().top;//判断是否到达窗口顶部
+      var page = windowHeight - headerHeight-80;
+      $('.paDiv').css("height",windowHeight - headerHeight);
       var dataTable = eeda.dt({
           id: 'eeda_table',
           colReorder: true,
+          scrollY: page,
           paging: false,
           serverSide: false, //不打开会出现排序不对 
 //          ajax: "/profitAndPaymentRate/list",

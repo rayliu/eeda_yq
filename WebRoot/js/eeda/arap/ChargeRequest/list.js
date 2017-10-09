@@ -11,11 +11,16 @@ $(document).ready(function() {
         $("#allCheck").prop("checked",$("#application_table .checkBox").length == $("#application_table .checkBox:checked").length ? true : false);
      };
                 
+     
+    var windowHeight = $(window).height();        //获取浏览器窗口高度
+    var headerHeight =  $("#application_table").offset().top;//判断是否到达窗口顶部
+    var page = windowHeight - headerHeight-50;
+    $('.paDiv').css("height",windowHeight - headerHeight);
+
     var application_table = eeda.dt({
         id: 'application_table',
         autoWidth: false,
-//        scrollY: 530,
-        
+        scrollY: page,
         scrollCollapse: true,
 //        paging: true,
         drawCallback: function( settings ) {
@@ -225,7 +230,7 @@ $(document).ready(function() {
         id: 'checked_application_table',
         colReorder: true,
         autoWidth: false,
-        scrollY: 530,
+        scrollY: page,
         scrollCollapse: true,
 //        paging: true,
         drawCallback: function( settings ) {
@@ -995,6 +1000,7 @@ $(document).ready(function() {
         totalMoney();
     });
 
+    
 
 });
 });
