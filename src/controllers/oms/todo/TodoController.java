@@ -165,7 +165,7 @@ public class TodoController extends Controller {
             +"        LEFT JOIN job_order_custom joc on joc.order_id = jo.id "
             +"        left join job_order_custom_china_self_item jocc on jocc.order_id = jo.id "
             +"        where jo.transport_type LIKE '%custom%'"
-            + " and datediff(jo.order_export_date,'2017-01-01') > 0"  //统计2017后的数据，之前的忽略
+            + " and datediff(jo.order_export_date,'2017-10-08') > 0"  //统计2017-10-08后的数据，之前的忽略
             + " and ifnull((select group_concat(jcc.id) jccId from job_order_custom_china_self_item jcc where jcc.order_id = jo.id),'') = ''"
             + " and ifnull((select group_concat(cpo.id) from custom_plan_order cpo where cpo.ref_job_order_id = jo.id),'') = ''"
             + " and ifnull((SELECT group_concat(custom_order_no) FROM job_order_custom where custom_type = 'abroad' and order_id = jo.id),'') = ''"

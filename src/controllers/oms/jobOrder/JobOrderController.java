@@ -3521,7 +3521,7 @@ public class JobOrderController extends Controller {
         	dai_condition = " and (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
         			+ " and timediff(now(),jos.etd)<TIME('48:00:00')"
         			+ " AND jor.transport_type LIKE '%ocean%'"
-        			+ " and datediff(jor.order_export_date,'2017-01-01') > 0";  //统计2017后的数据，之前的忽略;;
+        			+ " and datediff(jor.order_export_date,'2017-10-08') > 0";  //统计2017-10-08后的数据，之前的忽略;;
         } else if("tlxOrderwait".equals(type)){
         	dai_condition = " and datediff(jos.etd, now()) <= 0" 
             + " and ifnull(jos.in_line_flag,'') != 'Y'"
