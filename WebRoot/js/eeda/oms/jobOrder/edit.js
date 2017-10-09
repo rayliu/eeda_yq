@@ -197,6 +197,7 @@ $(document).ready(function() {
                 if(status=='已完成'){
                     // $('#confirmCompleted').attr('disabled', true);
                     $('#saveBtn').css('display',"none");
+                    $('#confirmCompleted').attr('disabled',true);
                     // $('#add_charge').attr('disabled', true);
                     // $('#add_charge_cost').attr('disabled', true);
                     $('input').not("#charge_table input:checkbox").attr('disabled',true);
@@ -231,19 +232,20 @@ $(document).ready(function() {
  	   
     })
 	
-	//已完成工作单确认
+	//工作单锁单
 	$('#confirmCompleted').click(function(){
         $.blockUI({ 
             message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
         });
 		$('#confirmCompleted').attr('disabled', true);
 		id = $('#order_id').val();
-		$.post('/jobOrder/confirmCompleted', {id:id}, function(data){
-	            $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+		var action = 'lock';
+		$.post('/jobOrder/confirmCompleted', {id:id,action:action}, function(data){
+	            $.scojs_message('工作单锁单成功', $.scojs_message.TYPE_OK);
 	            $('#saveBtn').attr('disabled', true);
 	            $.unblockUI();
 	    },'json').fail(function() {
-	        $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+	        $.scojs_message('工作单锁单失败', $.scojs_message.TYPE_ERROR);
 	        $('#confirmCompleted').attr('disabled', false);
             $.unblockUI();
 	   });
