@@ -57,10 +57,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "SP_NAME", "width": "100px","class":"SP_NAME"},
 	            { "data": "TOTAL_AMOUNT", "width": "60px",'class':'TOTAL_AMOUNT',
 	            	"render": function ( data, type, full, meta ) {
+	            		var value = eeda.numFormat(parseFloat(data).toFixed(2),3);
 	            		if(full.SQL_TYPE=='charge'){
-		            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
+		            		return '<span style="color:red;">'+'-'+value+'</span>';
 		            	}
-	                    return eeda.numFormat(parseFloat(data).toFixed(2),3);
+	            		if(full.DIFF_FLAG=='Y'){
+	            			value = '<span style="background-color:#ffff66;">'+data+'</span>';
+	            		}
+	                    return value;
 	                  }
 	            },
 	            { "data": "CURRENCY_NAME", "width": "60px",'class':'CURRENCY_NAME'},
