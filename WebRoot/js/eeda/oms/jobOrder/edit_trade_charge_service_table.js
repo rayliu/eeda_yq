@@ -616,7 +616,10 @@ $(document).ready(function() {
                                 +'currency_id="'+json_obj[j].CURRENCY_ID+'" '
                                 +'sp_id="'+json_obj[j].SP_ID+'" '
                                 +'unit_id="'+json_obj[j].UNIT_ID+'" '
+                                +'price="'+json_obj[j].price+'" '
+                                +'unit_name="'+json_obj[j].unit_name+'" '
                                 +'charge_name="'+json_obj[j].charge_name+'" '
+                                +'charge_name_eng="'+json_obj[j].charge_eng_name+'" '
                                 +'currency_name="'+json_obj[j].currency_name+'" '
                                 +'currency_total_amount="'+json_obj[j].currency_total_amount+'" '
                                 +'exchange_currency_id="'+json_obj[j].exchange_currency_id+'" '
@@ -742,7 +745,6 @@ $(document).ready(function() {
             }
             
             var item={}
-            item.order_type = "charge";//应收
             for(var i = 1; i < row.childNodes.length; i++){
                 if($(row.childNodes[i]).find('.notsave').size()==0){
                     var el = $(row.childNodes[i]).find('input,select');
@@ -803,7 +805,6 @@ $(document).ready(function() {
             }
             
             var item={}
-            item.order_type = "charge";//应收
             for(var i = 1; i < row.childNodes.length; i++){
                     var el = $(row.childNodes[i]).find('input,select');
                     var name = el.attr('name'); 
@@ -832,5 +833,21 @@ $(document).ready(function() {
         }
         return cargo_items_array;
     };
+    
+  //保存应收服务费用模板
+    $('#chargeServiceBtnTemplet').click(function(){
+    	var chargeServiceOrderTemplet={};
+    	chargeServiceOrderTemplet.order_type = $('#type').val();
+    	chargeServiceOrderTemplet.customer_id = $('#customer_id').val();
+    	chargeServiceOrderTemplet.chargeService_template = itemOrder.buildChargeServiceTemplate();
+    	chargeServiceOrderTemplet.allChargeService_template = itemOrder.buildAllChargeServiceTemplate();
+    	$.post('/jobOrder/saveChargeServiceTemplet',{params:JSON.stringify(chargeServiceOrderTemplet)},function(data){
+    		if(data){
+    			$.scojs_message('应收服务费用模板保存成功', $.scojs_message.TYPE_OK);
+    		}else{
+    			$.scojs_message('应收服务费用模板保存失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	});
+    });
 });
 });

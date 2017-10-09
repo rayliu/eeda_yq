@@ -667,14 +667,6 @@ public class JobOrderController extends Controller {
    		//陆运带出合同费用信息(客户)
    		saveJobLandCustomerContractConditions(jobOrder);*/
    		
-     	//贸易信息，应收服务，销售应收模板
-		List<Map<String, String>> chargeService_template = (ArrayList<Map<String, String>>)dto.get("chargeService_template");
-		List<Map<String, String>> allChargeService_template = (ArrayList<Map<String, String>>)dto.get("allChargeService_template");
-		saveTradeServiceTemplate(type,customer_id,chargeService_template,allChargeService_template);
-		List<Map<String, String>> chargeSale_template = (ArrayList<Map<String, String>>)dto.get("chargeSale_template");
-		List<Map<String, String>> allChargeSale_template = (ArrayList<Map<String, String>>)dto.get("allChargeSale_template");
-   		saveTradeSaleTemplate(type,customer_id,chargeSale_template,allChargeSale_template);
-   	   	   		
    		saveLog(jsonStr, id, user, action_type);
    		renderJson(r);
    	}
@@ -2400,6 +2392,36 @@ public class JobOrderController extends Controller {
            renderJson("{\"result\":true}");
        }
     
+    //贸易应收服务费用信息存为模板单击事件
+    @SuppressWarnings("unchecked")
+   	@Before(Tx.class)
+       public void saveChargeServiceTemplet(){
+       	String jsonStr = getPara("params");
+        Gson gson = new Gson();  
+   		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+   		String type = (String) dto.get("order_type");;
+   		String customer_id = (String) dto.get("customer_id");
+   		List<Map<String, String>> chargeService_template = (ArrayList<Map<String, String>>)dto.get("chargeService_template");
+		List<Map<String, String>> allChargeService_template = (ArrayList<Map<String, String>>)dto.get("allChargeService_template");
+		saveTradeServiceTemplate(type,customer_id,chargeService_template,allChargeService_template);
+        renderJson("{\"result\":true}");
+       }
+    
+    //贸易销售应收费用信息存为模板单击事件
+    @SuppressWarnings("unchecked")
+   	@Before(Tx.class)
+       public void saveChargeSaleTemplet(){
+       	String jsonStr = getPara("params");
+        Gson gson = new Gson();  
+   		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+   		String type = (String) dto.get("order_type");;
+   		String customer_id = (String) dto.get("customer_id");
+   		List<Map<String, String>> chargeSale_template = (ArrayList<Map<String, String>>)dto.get("chargeSale_template");
+		List<Map<String, String>> allChargeSale_template = (ArrayList<Map<String, String>>)dto.get("allChargeSale_template");
+   		saveTradeSaleTemplate(type,customer_id,chargeSale_template,allChargeSale_template);
+        renderJson("{\"result\":true}");
+       }
+    
     //保存海运填写模板
     public void saveOceanTemplate(List<Map<String, String>> shipment_detail){
         if(shipment_detail==null||shipment_detail.size()<=0)
@@ -3304,9 +3326,14 @@ public class JobOrderController extends Controller {
     	String order_type = getPara("order_type");
     	String customer_id = getPara("customer_id");
     	String arap_type = getPara("arap_type");
-    	List<Record> list = Db.find("select * from job_order_trade_service_template "
-    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
-    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    	String sql = "select * from job_order_trade_service_template "
+    			+ " where creator_id = "+LoginUserController.getLoginUserId(this)
+    			+ " and customer_id = "+customer_id
+    			+ " and order_type = '"+order_type
+    			+ "' and arap_type = '"+arap_type
+    			+ "' and parent_id is null"
+    			+ " order by id";
+    	List<Record> list = Db.find(sql);
     	renderJson(list);
     }
     public void getTradeSaleTemplate(){
@@ -3787,35 +3814,35 @@ public class JobOrderController extends Controller {
     @Before(Tx.class)
     public void deleteTradeSaleTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from job_order_trade_sale_template where id = ?",id);
+    	Db.update("delete from job_order_trade_sale_template where id = ? or parent_id = ?",id,id);
     	renderJson("{\"result\":true}");
     }
   //删除常用模版
     @Before(Tx.class)
     public void deleteTradeServiceTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from job_order_trade_service_template where id = ?",id);
+    	Db.update("delete from job_order_trade_service_template where id = ? or parent_id = ?",id,id);
     	renderJson("{\"result\":true}");
     }
     //删除海运常用信息模版
     @Before(Tx.class)
     public void deleteOceanTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from job_order_ocean_template where id = ?",id);
+    	Db.update("delete from job_order_ocean_template where id = ? or parent_id = ?",id,id);
     	renderJson("{\"result\":true}");
     }
     //删除空运常用信息模版
     @Before(Tx.class)
     public void deleteAirTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from job_order_air_template where id = ?",id);
+    	Db.update("delete from job_order_air_template where id = ? or parent_id = ?",id,id);
     	renderJson("{\"result\":true}");
     }
     //删除邮箱常用模版
     @Before(Tx.class)
     public void deleteEmailTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from job_order_sendmail_template where id = ?",id);
+    	Db.update("delete from job_order_sendmail_template where id = ? or parent_id = ?",id,id);
     	renderJson("{\"result\":true}");
     }
     
@@ -3824,7 +3851,7 @@ public class JobOrderController extends Controller {
     public void feeConfirm(){
 		String id = getPara("id");
 		if (id != null) {
-        	JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ?",id);
+        	JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ? or parent_id = ?",id,id);
            		joa.set("audit_flag", "Y");
         	   	joa.update();
         }

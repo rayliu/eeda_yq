@@ -446,11 +446,6 @@ $(document).ready(function() {
         order.cost_template = itemOrder.buildCostTemplate();
         order.allCharge_template = itemOrder.buildAllChargeTemplate();
         order.allCost_template = itemOrder.buildAllCostTemplate();
-        //贸易信息模板
-        order.chargeService_template = itemOrder.buildChargeServiceTemplate();
-        order.chargeSale_template = itemOrder.buildChargeSaleTemplate();
-        order.allChargeService_template = itemOrder.buildAllChargeServiceTemplate();
-        order.allChargeSale_template = itemOrder.buildAllChargeSaleTemplate();
         //相关文档
         order.doc_list = eeda.buildTableDetail("doc_table","");
 

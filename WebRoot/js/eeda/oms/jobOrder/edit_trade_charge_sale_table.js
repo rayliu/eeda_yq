@@ -611,7 +611,7 @@ $(document).ready(function() {
                                 +'unit_id="'+json_obj[j].UNIT_ID+'" '
                                 +'amount="'+json_obj[j].amount+'" '
                                 +'charge_name="'+json_obj[j].charge_name+'" '
-                                // +'charge_name_eng="'+json_obj[j].charge_eng_name+'" '
+                                +'charge_name_eng="'+json_obj[j].charge_eng_name+'" '
                                 +'currency_name="'+json_obj[j].currency_name+'" '
                                 +'currency_total_amount="'+json_obj[j].currency_total_amount+'" '
                                 +'exchange_currency_id="'+json_obj[j].exchange_currency_id+'" '
@@ -827,5 +827,20 @@ $(document).ready(function() {
         return cargo_items_array;
     };
 
+  //保存销售应收费用模板
+    $('#chargeSaleBtnTemplet').click(function(){
+    	var chargeSaleOrderTemplet={};
+    	chargeSaleOrderTemplet.order_type = $('#type').val();
+    	chargeSaleOrderTemplet.customer_id = $('#customer_id').val();
+    	chargeSaleOrderTemplet.chargeSale_template = itemOrder.buildChargeSaleTemplate();
+    	chargeSaleOrderTemplet.allChargeSale_template = itemOrder.buildAllChargeSaleTemplate();
+    	$.post('/jobOrder/saveChargeSaleTemplet',{params:JSON.stringify(chargeSaleOrderTemplet)},function(data){
+    		if(data){
+    			$.scojs_message('销售应收费用模板保存成功', $.scojs_message.TYPE_OK);
+    		}else{
+    			$.scojs_message('销售应收费用模板保存失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	});
+    });
 });
 });
