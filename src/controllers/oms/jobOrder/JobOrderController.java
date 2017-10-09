@@ -3521,7 +3521,7 @@ public class JobOrderController extends Controller {
         	dai_condition = " and (jos.afr_ams_flag !='Y' OR jos.afr_ams_flag is  NULL) and jos.wait_overseaCustom = 'Y' "
         			+ " and timediff(now(),jos.etd)<TIME('48:00:00')"
         			+ " AND jor.transport_type LIKE '%ocean%'"
-        			+ " and datediff(jor.order_export_date,'2017-10-08') > 0";  //统计2017-10-08后的数据，之前的忽略;;
+        			+ " and datediff(jor.order_export_date,'2017-01-01') > 0";  //统计2017-01-01后的数据，之前的忽略;;
         } else if("tlxOrderwait".equals(type)){
         	dai_condition = " and datediff(jos.etd, now()) <= 0" 
             + " and ifnull(jos.in_line_flag,'') != 'Y'"
@@ -3535,21 +3535,21 @@ public class JobOrderController extends Controller {
         				+ " and ifnull((select group_concat(cpo.id) from custom_plan_order cpo where cpo.ref_job_order_id = jor.id),'') = ''"
         	            + " and ifnull((SELECT group_concat(custom_order_no) FROM job_order_custom where custom_type = 'abroad' and order_id = jor.id),'') = ''"
         	            + " and ifnull((SELECT group_concat(custom_order_no) FROM job_order_custom where custom_type = 'HK/MAC' and order_id = jor.id),'') = ''"
-        	            + " and datediff(jor.order_export_date,'2017-01-01') > 0";  //统计2017后的数据，之前的忽略;;
+        	            + " and datediff(jor.order_export_date,'2017-10-08') > 0";  //统计2017-10-08后的数据，之前的忽略;;
         	}else if("处理中".equals(custom_status)){
         		dai_condition = " and  jor.transport_type LIKE '%custom%'"
             			+ " and ('处理中' in (select group_concat(if(jcc.status!='放行','处理中','放行'))  from job_order_custom_china_self_item jcc where jcc.order_id = jor.id) "
             			+ " or '处理中' in (select group_concat(if(cpo.custom_status!='放行','处理中','放行'))  from custom_plan_order cpo where cpo.ref_job_order_id = jor.id)) "
             			+ " and ifnull((SELECT group_concat(custom_order_no) FROM job_order_custom where custom_type = 'abroad' and order_id = jor.id),'') = ''"
         	            + " and ifnull((SELECT group_concat(custom_order_no) FROM job_order_custom where custom_type = 'HK/MAC' and order_id = jor.id),'') = ''"
-        	            + " and datediff(jor.order_export_date,'2017-01-01') > 0";  //统计2017后的数据，之前的忽略;;
+        	            + " and datediff(jor.order_export_date,'2017-10-08') > 0";  //统计2017-10-08后的数据，之前的忽略;;
         	}else if("已完成".equals(custom_status)){
         		dai_condition = " and jor.transport_type LIKE '%custom%'"
             			+ " and ('处理中' not in (select group_concat(if(jcc.status!='放行','处理中','放行')) jccId from job_order_custom_china_self_item jcc where jcc.order_id = jor.id) "
             			+ " or '处理中' not in (select group_concat(if(cpo.custom_status!='放行','处理中','放行'))  from custom_plan_order cpo where cpo.ref_job_order_id = jor.id) "
             			+ " or ifnull((SELECT group_concat(custom_order_no) FROM job_order_custom where custom_type = 'abroad' and order_id = jor.id),'') != ''"
         	            + " or ifnull((SELECT group_concat(custom_order_no) FROM job_order_custom where custom_type = 'HK/MAC' and order_id = jor.id),'') != '')"
-        	            + " and datediff(jor.order_export_date,'2017-01-01') > 0";  //统计2017后的数据，之前的忽略;;
+        	            + " and datediff(jor.order_export_date,'2017-10-08') > 0";  //统计2017-10-08后的数据，之前的忽略;;
         	}else{
         		dai_condition = " and  jor.transport_type LIKE '%custom%'"
         		+ " and datediff(jor.order_export_date,'2017-01-01') > 0";  //统计2017后的数据，之前的忽略;;
