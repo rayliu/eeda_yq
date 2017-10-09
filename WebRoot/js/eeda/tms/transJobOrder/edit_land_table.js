@@ -523,17 +523,26 @@ $(document).ready(function() {
     	self  = $(this)
     	var selected = self.val();    	
     	if(selected =="提吉柜"){
-    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",true)
-    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",false)
+    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",true);
+    		$((self.parent().siblings("td").find("[name=CLOSING_DATE_div]"))).find('.fa').hide();
+    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",false);
+    		$((self.parent().siblings("td").find("[name=CABINET_DATE_div]"))).find('.fa').show();
     	}else if(selected == "收重柜"){
-    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",true)
-    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",false)
+    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",true);
+    		$((self.parent().siblings("td").find("[name=CABINET_DATE_div]"))).find('.fa').hide();
+    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",false);
+    		$((self.parent().siblings("td").find("[name=CLOSING_DATE_div]"))).find('.fa').show();
+    		
     	}else if(selected == "移柜"){
-    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",true)
-    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",true)
+    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",true);
+    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",true);
+    		$((self.parent().siblings("td").find("[name=CABINET_DATE_div]"))).find('.fa').hide();
+    		$((self.parent().siblings("td").find("[name=CLOSING_DATE_div]"))).find('.fa').hide();
     	}else{
-    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",false)
-    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",false)
+    		self.parent().siblings("td").find("[name=CABINET_DATE]").prop("disabled",false);
+    		$((self.parent().siblings("td").find("[name=CABINET_DATE_div]"))).find('.fa').show();
+    		self.parent().siblings("td").find("[name=CLOSING_DATE]").prop("disabled",false);
+    		$((self.parent().siblings("td").find("[name=CLOSING_DATE_div]"))).find('.fa').show();
     	}
     
     })
