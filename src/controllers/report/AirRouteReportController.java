@@ -138,11 +138,10 @@ public class AirRouteReportController extends Controller {
                 + "             jo.gross_weight,"
                 + "             jo.volume,"
                 + "             (select sum(gross_weight) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口空运', '进口空运')) ari_kg"
-                + "     FROM"
-                + "         job_order jo"
+                + "     FROM job_order jo"
                 + "     LEFT JOIN party p ON p.id = jo.customer_id"
                 + "     WHERE jo.type in ('出口空运', '进口空运')"
-                + "           and jo.office_id="+office_id
+                + "           and p.ref_office_id ="+office_id
                 + condition
                 + " and jo.delete_flag = 'N'"
 				+ " ) A where 1=1"
@@ -256,11 +255,10 @@ public class AirRouteReportController extends Controller {
                 + "             jo.gross_weight,"
                 + "             jo.volume,"
                 + "             (select sum(gross_weight) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口空运', '进口空运')) ari_kg"
-                + "     FROM"
-                + "         job_order jo"
+                + "     FROM job_order jo"
                 + "     LEFT JOIN party p ON p.id = jo.customer_id"
                 + "     WHERE jo.type in ('出口空运', '进口空运')"
-                + "           and jo.office_id="+office_id
+                + "           and p.ref_office_id="+office_id
                 + condition
                 + " and jo.delete_flag = 'N'"
 				+ " ) A where 1=1"
@@ -364,11 +362,10 @@ public class AirRouteReportController extends Controller {
                   + "             jo.gross_weight,"
                   + "             jo.volume,"
                   + "             (select sum(gross_weight) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口空运', '进口空运')) ari_kg"
-                  + "     FROM"
-                  + "         job_order jo"
+                  + "     FROM job_order jo"
                   + "     LEFT JOIN party p ON p.id = jo.customer_id"
                   + "     WHERE jo.type in ('出口空运', '进口空运')"
-                  + "           and jo.office_id="+office_id
+                  + "           and p.ref_office_id="+office_id
                   + condition
                   + " and jo.delete_flag = 'N'"
   				+ " ) A where 1=1"

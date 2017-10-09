@@ -165,16 +165,12 @@ public class BookingProfitReportController extends Controller {
     			+ " (SELECT	count(gross_weight) FROM job_order jo1 WHERE jo1.id = jo.id and jo1.gross_weight is not null "
     			+ "	 AND jo1.type IN ('出口空运','进口空运')) ari_kg_bill, "
     			+ " jo.id "
-    			+ " from booking_order bo "
-    			+ " left join job_order jo on jo.from_order_id = bo.id"
-    			+ " left join party p on p.id = jo.customer_id"
-    			+ " WHERE jo.office_id="+office_id
+    			+ " from job_order jo left join party p on p.id = jo.customer_id"
+    			+ " WHERE p.ref_office_id="+office_id
     			+ condition
-    			+ " and jo.delete_flag = 'N' and jo.from_order_id = bo.id and jo.from_order_type = 'booking' and bo.office_id = "+office_id
- 				+ " ) A where 1=1"
+    			+ " and jo.delete_flag = 'N' ) A where 1=1"
     			+ " GROUP BY A.order_export_date,A.customer_id"
-    			+ " )B ORDER BY B.customer_id , B.order_export_date"
-    			+ "  ";
+    			+ " )B ORDER BY B.customer_id , B.order_export_date ";
     	
     	//String condition = DbUtils.buildConditions(getParaMap());
         
@@ -361,12 +357,10 @@ public class BookingProfitReportController extends Controller {
     			+ " (SELECT	count(gross_weight) FROM job_order jo1 WHERE jo1.id = jo.id and jo1.gross_weight is not null "
     			+ "	 AND jo1.type IN ('出口空运','进口空运')) ari_kg_bill, "
     			+ " jo.id "
-    			+ " from booking_order bo"
-    			+ " left join job_order jo on jo.from_order_id = bo.id"
-    			+ " left join party p on p.id = jo.customer_id"
-    			+ " WHERE jo.office_id="+office_id
+    			+ " from job_order jo left join party p on p.id = jo.customer_id"
+    			+ " WHERE p.ref_office_id="+office_id
     			+ condition
-    			 + " and jo.delete_flag = 'N' and jo.from_order_id = bo.id and jo.from_order_type = 'booking' and bo.office_id = "+office_id
+    			 + " and jo.delete_flag = 'N' "
  				+ " ) A where 1=1"
     			+ " GROUP BY A.order_export_date,A.customer_id"
     			+ " )B "
@@ -510,12 +504,10 @@ public class BookingProfitReportController extends Controller {
 				+ " (SELECT	count(gross_weight) FROM job_order jo1 WHERE jo1.id = jo.id and jo1.gross_weight is not null "
 				+ "	 AND jo1.type IN ('出口空运','进口空运')) ari_kg_bill, "
 				+ " jo.id "
-				+ " from booking_order bo"
-				+ " left join job_order jo on jo.from_order_id = bo.id"
-				+ " left join party p on p.id = jo.customer_id"
-				+ " WHERE jo.office_id="+ office_id
+				+ " from job_order jo left join party p on p.id = jo.customer_id"
+				+ " WHERE p.ref_office_id="+ office_id
 				+ condition
-				+ " and jo.delete_flag = 'N' and jo.from_order_id = bo.id and jo.from_order_type = 'booking' and bo.office_id = "+ office_id
+				+ " and jo.delete_flag = 'N' "
 				+ " ) A where 1=1"
 				+ " GROUP BY A.order_export_date,A.customer_id"
 				+ " )B ORDER BY B.customer_id , B.order_export_date" + "  ";

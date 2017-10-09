@@ -149,7 +149,7 @@ public class OceanRouteReportController extends Controller {
                 + "        left join location pod on jos.pod = pod.id "
                 + "        LEFT JOIN party p ON p.id = jo.customer_id "
                 + "        WHERE jo.type in ('出口柜货', '进口柜货','出口散货', '进口散货') "
-                + "           and jo.office_id="+office_id
+                + "           and p.ref_office_id="+office_id
                 + condition
                 + " and jo.delete_flag = 'N'"
 				+ " ) A where 1=1"

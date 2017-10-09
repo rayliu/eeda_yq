@@ -147,13 +147,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	 var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
 	    	 var order_export_date_end_time = $("#single_order_export_date_end_time").val();
 	      }
-	      var url = "/profitAndPaymentRate/list?sp_id="+sp_id
+	      var url = "/bookingPaymentRate/list?sp_id="+sp_id
           +"&order_export_date_begin_time="+order_export_date_begin_time
           +"&order_export_date_end_time="+order_export_date_end_time;
 	      dataTable.ajax.url(url).load(tableStyle);
 	     
 	   //合计字段
-         $.post('profitAndPaymentRate/listTotal',{
+         $.post('bookingPaymentRate/listTotal',{
        	  sp_id:sp_id,
        	  order_export_date_begin_time:order_export_date_begin_time,
        	  order_export_date_end_time:order_export_date_end_time
@@ -222,7 +222,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           */
           
           //合计字段
-          $.post('profitAndPaymentRate/listTotal',{
+          $.post('bookingPaymentRate/listTotal',{
         	  sp_id:sp_id,
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
@@ -269,7 +269,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
           });
           
-          var url = "/profitAndPaymentRate/list?sp_id="+sp_id
+          var url = "/bookingPaymentRate/list?sp_id="+sp_id
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load(tableStyle);
@@ -310,7 +310,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           excel_method(sp_id,begin_time,end_time);
       });
       var excel_method = function(sp_id,begin_time,end_time){
-		  $.post('/profitAndPaymentRate/downloadExcelList',{sp_id:sp_id,begin_time:begin_time,end_time:end_time}, function(data){
+		  $.post('/bookingPaymentRate/downloadExcelList',{sp_id:sp_id,begin_time:begin_time,end_time:end_time}, function(data){
 	          $('#exportTotaledExcel1').prop('disabled', false);
 	          $('#exportTotaledExcel').prop('disabled', false);
 	          $('#singlexportTotaledExcel').prop('disabled', false);

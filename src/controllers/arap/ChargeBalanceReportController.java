@@ -75,7 +75,7 @@ public class ChargeBalanceReportController extends Controller {
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"
         		+ " LEFT JOIN customer_salesman cs on cs.party_id = joa.sp_id"
         		+ " LEFT JOIN employee em on em.id = cs.salesman_id"
-        		+ " WHERE p.office_id =" +office_id+" "
+        		+ " WHERE p.ref_office_id =" +office_id+" "
         		+ " and jo.delete_flag = 'N'"
 				+ " ) A"
         		+ " WHERE A.sp_id IS NOT NULL AND A.charge_rmb!=0"+condition
@@ -130,7 +130,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	p.ref_office_id = "+office_id
 			+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -140,7 +140,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	p.ref_office_id = "+office_id
 			+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -150,7 +150,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	p.ref_office_id = "+office_id
 			+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -160,7 +160,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	p.ref_office_id = "+office_id
 			+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -170,7 +170,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	p.ref_office_id = "+office_id
 			+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y'  "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -180,7 +180,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	p.ref_office_id = "+office_id
 			+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -190,7 +190,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	p.ref_office_id = "+office_id
 			+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -200,7 +200,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	p.ref_office_id = "+office_id
 			+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -210,7 +210,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	p.ref_office_id = "+office_id
 			+"	AND joa.order_type = 'charge' "+condition+""
 			+ " and jo.delete_flag = 'N'"
 			+ ") total_charge,"
@@ -219,7 +219,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	p.ref_office_id = "+office_id
 			+"	AND joa.order_type = 'charge' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_uncharge";
@@ -279,7 +279,7 @@ public class ChargeBalanceReportController extends Controller {
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"
         		+ " LEFT JOIN customer_salesman cs on cs.party_id = joa.sp_id"
         		+ " LEFT JOIN employee em on em.id = cs.salesman_id"
-        		+ " WHERE p.office_id =" +office_id+" "
+        		+ " WHERE p.ref_office_id =" +office_id+" "
         		+ " and jo.delete_flag = 'N'"
 				+ " ) A"
         		+ " WHERE A.sp_id IS NOT NULL AND A.charge_rmb!=0"+condition
