@@ -126,16 +126,13 @@ $(document).ready(function() {
     var status = $("#status").val()
     if(order_id==""){
     	$('#saveBtn').attr('disabled', false);
-    	
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
-    		$('#confirmBtn').attr('disabled', false);
-    		$('#printTotaledBtn').attr('disabled', false);
-    		$('#printBtn').attr('disabled', false);    		
-    	}else if(status=='已确认'){
-            $('#printTotaledBtn').attr('disabled', false);
-        }
+    		$('#confirmBtn').attr('disabled', false); 		
+    	}
+    	$('#printTotaledBtn').attr('disabled', false);
+		$('#printBtn').attr('disabled', false); 
     }
     
     //确认单据
@@ -145,12 +142,12 @@ $(document).ready(function() {
     	 $.post('/tradeChargeCheckOrder/confirm', {id:id}, function(data){
     		 if(data){
     			 $('#saveBtn').attr('disabled', true);
-                 $('#printBtn').attr('disabled', true);
                  $('.delete').attr('disabled', true);
                  $('#add_charge').attr('disabled', true);
 
                  $("#status").val('已确认');
                  $('#printTotaledBtn').attr('disabled', false);
+                 $('#printBtn').attr('disabled', false); 
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
