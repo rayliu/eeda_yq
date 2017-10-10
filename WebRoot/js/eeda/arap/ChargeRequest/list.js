@@ -20,6 +20,7 @@ $(document).ready(function() {
     var application_table = eeda.dt({
         id: 'application_table',
         autoWidth: false,
+        colReorder: true,
         scrollY: page,
         scrollCollapse: true,
 //        paging: true,
