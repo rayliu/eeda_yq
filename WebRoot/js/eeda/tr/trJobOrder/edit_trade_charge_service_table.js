@@ -744,8 +744,29 @@ $(document).ready(function() {
             item.EXCHANGE_CURRENCY_ID_NAME=row.attr('exchange_currency_name');
             item.AUDIT_FLAG='';
             dataTable.row.add(item).draw();
+            var row = $("#charge_service_table tbody tr");
+            total_calculation(row);
         }
     });
+    
+    var total_calculation = function(row){
+ 	   var amount = 0;
+ 	   var total_cny_total_amount = 0;
+ 	   var total_exchange_total_amount_rmb = 0;
+ 	   var total_rmb_difference = 0;
+ 	   
+ 	   for(var i = 0;i<row.length;i++){
+ 		   amount += row.eq(i).find('[name=amount]').val()*1;
+ 		   total_cny_total_amount += row.eq(i).find('[name=currency_total_amount]').val()*1;
+ 		   total_exchange_total_amount_rmb += row.eq(i).find('[name=exchange_total_amount_rmb]').val()*1;
+ 		   total_rmb_difference += row.eq(i).find('[name=rmb_difference]').val()*1;
+ 	   }
+ 	   
+ 	   $($('.dataTables_scrollFoot tr')[1]).find('.amount').html(amount.toFixed(1));
+ 	   $($('.dataTables_scrollFoot tr')[1]).find('.cny_total_amount').html(total_cny_total_amount.toFixed(3));
+ 	   $($('.dataTables_scrollFoot tr')[1]).find('.rmb_difference').html(total_rmb_difference.toFixed(3));
+       $($('.dataTables_scrollFoot tr')[1]).find('.exchange_total_amount_rmb').html(total_exchange_total_amount_rmb.toFixed(3));
+    }
    
     itemOrder.buildChargeServiceTemplate=function(){
         var cargo_table_rows = $("#charge_service_table tr");
