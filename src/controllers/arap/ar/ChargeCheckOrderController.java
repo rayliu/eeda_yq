@@ -328,7 +328,7 @@ public class ChargeCheckOrderController extends Controller {
     		 currenry_code=" and cur. NAME="+"'"+code+"'";
     	}
 		if(StringUtils.isEmpty(order_id)){
-			sql = " select joa.id, joa.order_type,jo.order_no,jo.order_export_date,jo.customer_id,jo.volume vgm,"
+			sql = " select if(joa.contract_amount != joa.total_amount and joa.cus_contract_flag = 'Y','Y','N') diff_flag,joa.id, joa.order_type,jo.order_no,jo.order_export_date,jo.customer_id,jo.volume vgm,"
     			+ "IFNULL(cur1.name,cur.name) exchange_currency_name,"
     			+ "IFNULL(joa.exchange_currency_rate,1) exchange_currency_rate,IFNULL(joa.exchange_total_amount,joa.total_amount) exchange_total_amount,"
     			+ "joa.total_amount total_amount,joa.exchange_rate exchange_rate," 
@@ -354,7 +354,7 @@ public class ChargeCheckOrderController extends Controller {
     			+ " and jo.delete_flag = 'N'"
     			+ " GROUP BY joa.id";
 			}else{				
-			sql = " select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
+			sql = " select if(joa.contract_amount != joa.total_amount and joa.cus_contract_flag = 'Y','Y','N') diff_flag,joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
 					+" aco.order_no check_order_no, jo.id job_order_id, jo.order_no,jo.order_export_date,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
 					+ " jo.ref_no ref_no,"
 						+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"

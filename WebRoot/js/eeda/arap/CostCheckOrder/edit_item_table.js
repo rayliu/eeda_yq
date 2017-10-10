@@ -81,10 +81,14 @@ $(document).ready(function() {
             { "data": "CURRENCY_NAME","class":"currency_name"},
             { "data": "TOTAL_AMOUNT","class":"total_amount", 
             	"render": function ( data, type, full, meta ) {
+            		var value = eeda.numFormat(parseFloat(data).toFixed(2),3);
             		if(full.ORDER_TYPE=='charge'){
-	            		return '<span style="color:red;">'+'-'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'</span>';
+	            		value =  '<span style="color:red;">'+'-'+value+'</span>';
 	            	}
-            		return eeda.numFormat(parseFloat(data).toFixed(2),3);
+            		if(full.DIFF_FLAG=='Y'){
+            			value = '<span style="background-color:#ffff66;">'+data+'</span>';
+            		}
+            		return value;
                   }
             },
             { "data": "EXCHANGE_RATE", "visible": false},
@@ -125,7 +129,8 @@ $(document).ready(function() {
                     return data;
                 }
             },
-            { "data": "JOB_ORDER_ID", "visible": false}
+            { "data": "JOB_ORDER_ID", "visible": false},
+            { "data": "DIFF_FLAG", "visible": false}
         ]
     });
         var dataTable = eeda.dt({
