@@ -116,7 +116,7 @@ public class CostCheckOrderController extends Controller {
 		}
 		
 		if(StringUtils.isEmpty(order_id)){
-			sql = " select joa.id,joa.type,joa.sp_id, joa.order_type, joa.total_amount, joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
+			sql = " select if(joa.contract_amount != joa.total_amount and joa.cus_contract_flag = 'Y','Y','N') diff_flag,joa.id,joa.type,joa.sp_id, joa.order_type, joa.total_amount, joa.exchange_rate,joa.currency_total_amount,jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
 	                + " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
 	                + " ifnull((select rc.new_rate from rate_contrast rc "
 	    			+ " where rc.currency_id = joa.currency_id and rc.order_id = '"+order_id+"'),cast(joa.exchange_rate as char)) new_rate,"
@@ -145,7 +145,7 @@ public class CostCheckOrderController extends Controller {
 	                + " GROUP BY joa.id"
 	                + " ORDER BY jo.order_no";	
 		}else{
-			sql = " select joa.id,joa.type,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
+			sql = " select if(joa.contract_amount != joa.total_amount and joa.cus_contract_flag = 'Y','Y','N') diff_flag,joa.id,joa.type,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
 			        + " aco.order_no check_order_no, jo.order_no,jo.id job_order_id,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight, "
 	                + " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination, "
 	                + " ifnull((select rc.new_rate from rate_contrast rc "

@@ -80,12 +80,14 @@ $(document).ready(function() {
 
             { "data": "TOTAL_AMOUNT",'class':'total_amount', "width": "70px",
             	"render": function ( data, type, full, meta ) {
-            		var total_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
+            		var total_str = eeda.numFormat(parseFloat(data).toFixed(2),3);
             		
             		if(full.ORDER_TYPE=='cost'){
-	            		return '<span style="color:red;">'+'-'+total_str+'</span>';
+            			total_str =  '<span style="color:red;">'+'-'+total_str+'</span>';
 	            	}
-            		
+            		if(full.DIFF_FLAG=='Y'){
+            			total_str = '<span style="background-color:#ffff66;">'+total_str+'</span>';
+            		}
                     return total_str;
                   }
             },
@@ -137,7 +139,8 @@ $(document).ready(function() {
                     return data;
                 }
             },
-            { "data": "JOB_ORDER_ID", "visible": false}
+            { "data": "JOB_ORDER_ID", "visible": false},
+            { "data": "DIFF_FLAG", "visible": false}
         ]
     }); 
         
