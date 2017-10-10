@@ -57,7 +57,7 @@ public class TransChargeConfirmController extends Controller {
 				+ " right join trans_job_order tjo on tjo.id=tjoa.order_id "
 				+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjoa.order_id"
 				+ " left join party p on p.id=tjo.customer_id "
-				+ " left join party p1 on p1.charge_company_id=tjoa.sp_id "
+				+ " LEFT JOIN party p1 ON p1.id = tjoa.sp_id "
 				+ " left join fin_item f on f.id=tjoa.charge_id "
 				+ " left join unit u on u.id=tjoa.unit_id "
 				+ " left join currency c on c.id=tjoa.currency_id "
