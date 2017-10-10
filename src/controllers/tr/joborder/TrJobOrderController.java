@@ -474,11 +474,11 @@ public class TrJobOrderController extends Controller {
    		r.set("trade", getItemDetail(id,"trade"));
     	   		
    	    //费用明细，应收应付模版
-		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
+		/*List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
 		List<Map<String, String>> cost_template = (ArrayList<Map<String, String>>)dto.get("cost_template");
 		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
 		List<Map<String, String>> allCost_template = (ArrayList<Map<String, String>>)dto.get("allCost_template");
-   		saveArapTemplate(type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);
+   		saveArapTemplate(type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);*/
    		renderJson(r);
    	}
     
@@ -971,7 +971,7 @@ public class TrJobOrderController extends Controller {
 		List<Map<String, String>> allChargeService_template = (ArrayList<Map<String, String>>)dto.get("allChargeService_template");
 		saveTradeServiceTemplate(type,customer_id,chargeService_template,allChargeService_template);
         renderJson("{\"result\":true}");
-       }
+    }
     
     //贸易应付服务费用信息存为模板单击事件
     @SuppressWarnings("unchecked")
@@ -986,7 +986,7 @@ public class TrJobOrderController extends Controller {
 		List<Map<String, String>> allCostService_template = (ArrayList<Map<String, String>>)dto.get("allCostService_template");
    		saveTradeCostServiceTemplate(type,customer_id,costService_template,allCostService_template);
         renderJson("{\"result\":true}");
-       }
+    }
     
     //贸易销售应收费用信息存为模板单击事件
     @SuppressWarnings("unchecked")
@@ -1001,7 +1001,23 @@ public class TrJobOrderController extends Controller {
 		List<Map<String, String>> allChargeSale_template = (ArrayList<Map<String, String>>)dto.get("allChargeSale_template");
    		saveTradeSaleTemplate(type,customer_id,chargeSale_template,allChargeSale_template);
         renderJson("{\"result\":true}");
-       }
+    }
+    //贸易销售应收费用信息存为模板单击事件
+    @SuppressWarnings("unchecked")
+   	@Before(Tx.class)
+    public void saveArapTemplet(){
+       	String jsonStr = getPara("params");
+        Gson gson = new Gson();  
+   		Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+   		String type = (String) dto.get("order_type");
+   		String customer_id = (String) dto.get("customer_id");
+   		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
+		List<Map<String, String>> cost_template = (ArrayList<Map<String, String>>)dto.get("cost_template");
+		List<Map<String, String>> allCharge_template = (ArrayList<Map<String, String>>)dto.get("allCharge_template");
+		List<Map<String, String>> allCost_template = (ArrayList<Map<String, String>>)dto.get("allCost_template");
+   		saveArapTemplate(type,customer_id,charge_template,cost_template,allCharge_template,allCost_template);
+        renderJson("{\"result\":true}");
+    }
     
     private void savePortQueryHistory(String portId){
         Long userId = LoginUserController.getLoginUserId(this);
@@ -1427,9 +1443,14 @@ public class TrJobOrderController extends Controller {
     	String order_type = getPara("order_type");
     	String customer_id = getPara("customer_id");
     	String arap_type = getPara("arap_type");
-    	List<Record> list = Db.find("select * from trade_job_order_arap_template "
-    			+ " where creator_id =? and customer_id = ? and order_type = ? and arap_type = ? and parent_id is null"
-    			+ " order by id", LoginUserController.getLoginUserId(this),customer_id,order_type,arap_type);
+    	String sql = "select * from trade_job_order_arap_template "
+    			+ " where creator_id = "+LoginUserController.getLoginUserId(this)
+    			+ " and customer_id = "+customer_id
+    			+ " and order_type = '"+order_type
+    			+ "' and arap_type = '"+arap_type
+    			+ "' and parent_id is null"
+    			+ " order by id";
+    	List<Record> list = Db.find(sql);
     	renderJson(list);
     }
     /**

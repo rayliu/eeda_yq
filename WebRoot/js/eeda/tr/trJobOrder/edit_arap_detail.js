@@ -143,5 +143,37 @@ $(document).ready(function() {
         }
     });
     
+    
+    //保存应收费用模板
+    $('#chargeBtnTemplet').click(function(){
+    	var chargeOrderTemplet={};
+    	chargeOrderTemplet.order_type = $('#type').val();
+    	chargeOrderTemplet.customer_id = $('#customer_id').val();
+    	chargeOrderTemplet.charge_template = itemOrder.buildChargeTemplate();
+    	chargeOrderTemplet.allCharge_template = itemOrder.buildAllChargeTemplate();
+    	$.post('/trJobOrder/saveArapTemplet',{params:JSON.stringify(chargeOrderTemplet)},function(data){
+    		if(data){
+    			$.scojs_message('应收费用模板保存成功', $.scojs_message.TYPE_OK);
+    		}else{
+    			$.scojs_message('应收费用模板保存失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	});
+    });
+    
+    //保存应收费用模板
+    $('#costBtnTemplet').click(function(){
+    	var costOrderTemplet={};
+    	costOrderTemplet.order_type = $('#type').val();
+    	costOrderTemplet.customer_id = $('#customer_id').val();
+    	costOrderTemplet.cost_template = itemOrder.buildCostTemplate();
+    	costOrderTemplet.allCost_template = itemOrder.buildAllCostTemplate();
+    	$.post('/trJobOrder/saveArapTemplet',{params:JSON.stringify(costOrderTemplet)},function(data){
+    		if(data){
+    			$.scojs_message('应付费用模板保存成功', $.scojs_message.TYPE_OK);
+    		}else{
+    			$.scojs_message('应付费用模板保存失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	});
+    });
 });
 });

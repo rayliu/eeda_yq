@@ -356,10 +356,10 @@ $(document).ready(function() {
                     return str;
                 }
             },
-            { "data": "TYPE", "width": "80px", 
+            { "data": "TYPE", "width": "60px", 
                 "render": function ( data, type, full, meta ) {
                 	if(full.AUDIT_FLAG == 'Y'){
-                		var str = '<select name="type" class="form-control search-control notsave" style="width:50px" disabled>'  
+                		var str = '<select name="type" class="form-control search-control notsave" style="width:60px" disabled>'  
                 			+'<option value="海运" '+(data=='海运' ? 'selected':'')+'> 海运 </option>'
 	                        +'<option value="空运" '+(data=='空运' ? 'selected':'')+'> 空运 </option>'
 	                        +'<option value="陆运" '+(data=='陆运' ? 'selected':'')+'> 陆运 </option>'
@@ -370,7 +370,7 @@ $(document).ready(function() {
 	                	return str;
                 	}else{
                 			var trans_type=$('#trans_type').val();
-                			var str = '<select name="type" class="form-control search-control notsave" style="width:50px">'
+                			var str = '<select name="type" class="form-control search-control notsave" style="width:60px">'
                                +'<option value='+trans_type+'>'+trans_type+'</option>'
                     		   +'<option value="海运" '+(data=='海运' ? 'selected':'')+'> 海运 </option>'
                                +'<option value="空运" '+(data=='空运' ? 'selected':'')+'> 空运 </option>'
