@@ -1450,7 +1450,7 @@ eeda.refreshUrl = refreshUrl;
                   var hiddenField = eeda._hiddenField;
                   inputField.val($(this).text());//名字
                   tableFieldList.hide();
-                  hiddenField.val($(this).attr('dataId'));//不保存Id, 只保存车牌号
+                  hiddenField.val($(this).find('a').attr('dataId'));//不保存Id, 只保存车牌号
 
               }
           });
