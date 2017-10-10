@@ -37,7 +37,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                 });
         },
           columns: [
-				{ "width": "10px",
+			  { "width": "10px",
 				    "render": function ( data, type, full, meta ) {
 				    	if(full.STATUS!='已完成'){
 				    		return '<input type = "checkBox" name = "checkBox">';
@@ -46,7 +46,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 				    	}
 				      
 				    }
-				},
+			  },
               { "width": "30px",
                   "render": function ( data, type, full, meta ) {
                 	  var str = "";
@@ -79,14 +79,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                   }
               }, 
               { "data": "ORDER_EXPORT_DATE", 
-            	  render: function(data){
+            	  "render": function(data){
             		  if(data)
             			  return data;
             		  return '';
             	  }
               }, 
               { "data": "CUSTOMER_NAME"}, 
-              { "data": "SONO_MBL"},  
+              { "data": "SONO_MBL", "width": "80px",
+            	"render":function(data){
+            		if(data){
+            			return data;
+            		}
+            		return '';
+            	}  
+              },  
               { "data": "CONTAINER_NO"},
               {"data":"POD_NAME",
             	  "render":function(data,type,full,meta){

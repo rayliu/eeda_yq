@@ -847,7 +847,11 @@ public class JobOrderController extends Controller {
     		jarap.set("price", re.get("price"));
     		jarap.set("amount", amount);
     		jarap.set("unit_id", re.get("uom"));
-    		Double total_amount = re.getDouble("price")*amount;
+    		Double total_amount =0.0;
+    		if(re.getDouble("price")!=null){
+    			total_amount= re.getDouble("price")*amount;
+    		}
+    		
     		jarap.set("total_amount", total_amount);
     		jarap.set("currency_id", re.get("currency_id"));
     		//获取汇率
