@@ -3855,7 +3855,7 @@ public class JobOrderController extends Controller {
     public void feeConfirm(){
 		String id = getPara("id");
 		if (id != null) {
-        	JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ? or parent_id = ?",id,id);
+        	JobOrderArap joa = JobOrderArap.dao.findFirst("select * from job_order_arap where id = ? ",id);
            		joa.set("audit_flag", "Y");
         	   	joa.update();
         }
