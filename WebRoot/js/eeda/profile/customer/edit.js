@@ -228,6 +228,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.beforelast_year_salesamount = $("#beforelast_year_salesamount").val();
             order.bill_of_lading_info = $("#bill_of_lading_info").val();
             order.charge_company_id = $("#charge_company_id").val();
+            order.identification_no = $("#identification_no").val();
             
             order.docItem = buildDocItem();
             		

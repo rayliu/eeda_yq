@@ -324,6 +324,7 @@ public class ServiceProviderController extends Controller {
         contact.set("solve_problem_time", getPara("solve_problem_time"));
         contact.set("pay_account_time", getPara("pay_account_time"));
         contact.set("business_scope", getPara("business_scope"));
+        contact.set("identification_no", getPara("identification_no"));
     }
 
     public void province() {

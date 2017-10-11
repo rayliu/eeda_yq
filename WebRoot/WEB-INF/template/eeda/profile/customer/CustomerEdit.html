@@ -226,10 +226,18 @@
 			                                }){} %>
 			                          </div>
 			                         <%}%>
+			                         <div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>纳税人识别号</label>
+                                                <input class="form-control" id="identification_no" type="text" name="identification_no" value="${party.identification_no!''}">
+                                            </div>
+                                        </fieldset>
+                                      </div>
 									  <div class="col-lg-4">
 	                                        <fieldset>
 	                                            <div class="form-group">
-	                                                <label>重点客户提醒(根据一段时间内没有出现在工作单进行提醒)</label>
+	                                                <label>重点客户提醒(一段时间内没有出现在工作单进行提醒)</label>
 		                                           	<select class="form-control" id="customer_remind" name="customer_remind">
 		                                           		<option></option>
 		                                           		<option value="7" <% if(party.customer_remind!''=='7'){%>selected<%}%>>七天</option>

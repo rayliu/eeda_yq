@@ -330,8 +330,7 @@ eeda.refreshUrl = refreshUrl;
  };
 
  eeda.hideSideBar=function(){
-          $('#left_side_bar').hide();
-
+        $('#left_side_bar').hide();
         $('#page-wrapper').css('margin', '0');
         $('#hide_menu_btn').css('left', '0px');
             $('.breadcrumb').css('margin-left', '0px');
