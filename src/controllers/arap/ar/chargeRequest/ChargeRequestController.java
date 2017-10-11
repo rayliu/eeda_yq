@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import models.AppInvoiceDoc;
 import models.ArapAccountAuditLog;
@@ -24,7 +23,6 @@ import models.Party;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.ChargeRequestInvoices;
 import models.eeda.oms.jobOrder.JobOrderArap;
-import models.eeda.oms.jobOrder.JobOrderExpress;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -558,31 +556,34 @@ public class ChargeRequestController extends Controller {
 		String userId = user.getLong("id").toString();
 		Date date = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
-		String dateString = formatter.format(date);  
-		for (Map<String, String> rowMap : InvoiceItem_list) {//获取每一行
-    		Model<?> model = (Model<?>) ChargeRequestInvoices.class.newInstance();
-    		
-    		String rowId = rowMap.get("id");
-    		String action = rowMap.get("action");
-    		if(StringUtils.isEmpty(rowId)){
-    			if(!"DELETE".equals(action)){
-    				DbUtils.setModelValues(rowMap, model);
-	    			model.set("order_id", id);
-	    			model.set("creator", userId);
-	    			model.set("create_stamp", dateString);
-	    			model.save();	
-    			}
-    		}else{
-    				if("DELETE".equals(action)  ){//delete
-        				Model<?> deleteModel = model.findById(rowId);
-            			deleteModel.delete();
-            		}else{//UPDATE
-            			Model<?> updateModel = model.findById(rowId);
-            			DbUtils.setModelValues(rowMap, updateModel);
-            			updateModel.update();
-            		}
-    		}
+		String dateString = formatter.format(date);
+		if(InvoiceItem_list!=null){
+			for (Map<String, String> rowMap : InvoiceItem_list) {//获取每一行
+	    		Model<?> model = (Model<?>) ChargeRequestInvoices.class.newInstance();
+	    		
+	    		String rowId = rowMap.get("id");
+	    		String action = rowMap.get("action");
+	    		if(StringUtils.isEmpty(rowId)){
+	    			if(!"DELETE".equals(action)){
+	    				DbUtils.setModelValues(rowMap, model);
+		    			model.set("order_id", id);
+		    			model.set("creator", userId);
+		    			model.set("create_stamp", dateString);
+		    			model.save();	
+	    			}
+	    		}else{
+	    				if("DELETE".equals(action)  ){//delete
+	        				Model<?> deleteModel = model.findById(rowId);
+	            			deleteModel.delete();
+	            		}else{//UPDATE
+	            			Model<?> updateModel = model.findById(rowId);
+	            			DbUtils.setModelValues(rowMap, updateModel);
+	            			updateModel.update();
+	            		}
+	    		}
+			}
 		}
+		
 		
    		saveLog(jsonStr, id, user, action_type);
 		long create_by = order.getLong("create_by");

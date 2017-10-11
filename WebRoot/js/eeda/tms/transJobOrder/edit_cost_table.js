@@ -293,8 +293,7 @@ $(document).ready(function() {
                             id: 'SP_ID',
                             value: data,
                             display_value: full.SP_NAME,
-                            style:'width:120px',
-                            disabled:'disabled'
+                            style:'width:120px'
                         }
                     );
                     return field_html;
