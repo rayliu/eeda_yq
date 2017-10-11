@@ -575,10 +575,16 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="13" y="20" width="153" height="20" uuid="334d80bd-19f8-47bb-8e07-73aeaf063fb0"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bankName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="13" y="40" width="153" height="20" uuid="6a74722e-97f8-4ef6-9ec1-906890ba4451"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{accountName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
