@@ -55,6 +55,11 @@ public class OceanRouteReportController extends Controller {
         String type = getPara("type");
         String condition = "";
         String group_condition="";
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
         
         if("year".equals(date_type)){
             if(StringUtils.isNotEmpty(begin_date)){
@@ -149,7 +154,7 @@ public class OceanRouteReportController extends Controller {
                 + "        left join location pod on jos.pod = pod.id "
                 + "        LEFT JOIN party p ON p.id = jo.customer_id "
                 + "        WHERE jo.type in ('出口柜货', '进口柜货','出口散货', '进口散货') "
-                + "           and p.ref_office_id="+office_id
+                + "           and (jo.office_id="+office_id+ ref_office+ ")"
                 + condition
                 + " and jo.delete_flag = 'N'"
 				+ " ) A where 1=1"

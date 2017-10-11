@@ -54,6 +54,13 @@ public class ProfitReportController extends Controller {
         String type = getPara("type");
         String condition = "";
         String group_condition="";
+        
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
         if(StringUtils.isNotEmpty(customer_id)){
         	condition += " and jo.customer_id = "+customer_id;
         }
@@ -156,7 +163,7 @@ public class ProfitReportController extends Controller {
     			+ " jo.id "
     			+ " from job_order jo"
     			+ " left join party p on p.id = jo.customer_id"
-    			+ " WHERE jo.office_id="+office_id
+    			+ " WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ")"
     			+ condition
     			 + " and jo.delete_flag = 'N'"
  				+ " ) A where 1=1"
