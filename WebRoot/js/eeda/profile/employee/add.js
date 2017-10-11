@@ -46,9 +46,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
             var order = {
                 id: $('#order_id').val(),
-                employee_name: $('#employee_name').val(),
-                station: $('#station').val(),
-                induction_time: $('#induction_time').val(),
+                c_name: $('#c_name').val(),
+                entry_time: $('#entry_time').val(),
                 user_tel: $('#user_tel').val(),
                 user_phone: $('#user_phone').val(),
             	user_fax: $('#user_fax').val(),
@@ -59,10 +58,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 var order = data;
                 if(order.ID>0){
                 	$("#order_id").val(order.ID);
-                	$("#employee_name").val(order.EMPLOYEE_NAME);
-                	$("#station").val(order.STATION);
-                	$("#induction_time").val(order.INDUCTION_TIME);
-                	$("#create_stamp").val(order.CREATE_STAMP);
+                	$("#c_name").val(order.C_NAME);
+                	$("#entry_time").val(order.ENTRY_TIME);
+                	$("#create_time").val(order.CREATE_TIME);
                 	$("#user_tel").val(order.USER_TEL);
                 	$("#user_phone").val(order.USER_PHONE);
                 	$("#user_fax").val(order.USER_FAX);

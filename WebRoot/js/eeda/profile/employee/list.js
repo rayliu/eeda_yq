@@ -58,16 +58,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorde
           var station_name = $("#station_name").val().trim();
           var entry_time_begin_time = $("#entry_time_begin_time").val();
           var entry_time_end_time = $("#entry_time_end_time").val();
-          var create_stamp_begin_time = $("#create_stamp_begin_time").val();
-          var create_stamp_end_time = $("#create_stamp_end_time").val();
+          var create_time_begin_time = $("#create_time_begin_time").val();
+          var create_time_end_time = $("#create_time_end_time").val();
           
           
           var url = "/employeeFiling/list?c_name="+user_name
 								          +"&station_name="+station_name
-								          +"&induction_time_begin_time="+induction_time_begin_time
-							          	  +"&induction_time_end_time="+induction_time_end_time
-							          	  +"&create_stamp_begin_time="+create_stamp_begin_time
-							          	  +"&create_stamp_end_time="+create_stamp_end_time;
+								          +"&entry_time_begin_time="+entry_time_begin_time
+							          	  +"&entry_time_end_time="+entry_time_end_time
+							          	  +"&create_time_begin_time="+create_time_begin_time
+							          	  +"&create_time_end_time="+create_time_end_time;
           
           dataTable.ajax.url(url).load();
       };

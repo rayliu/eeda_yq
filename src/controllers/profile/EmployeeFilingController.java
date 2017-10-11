@@ -56,22 +56,22 @@ public class EmployeeFilingController extends Controller {
         String id = (String) dto.get("id");
         UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
-        Employee em = new Employee();
+   		UserLogin user1 = new UserLogin();
         if (StringUtils.isBlank(id)) {
         	//create
-   			DbUtils.setModelValues(dto, em);
-   			em.set("create_stamp",new Date());
-   			em.set("office_id",office_id);
-   			em.save();
-            id = em.getLong("id").toString();
+   			DbUtils.setModelValues(dto, user1);
+   			user1.set("create_time",new Date());
+   			user1.set("office_id",office_id);
+   			user1.save();
+            id = user1.getLong("id").toString();
         } else {
-        	em = Employee.dao.findById(id);
-            DbUtils.setModelValues(dto, em);
-            em.set("update_stamp",new Date());
-            em.update();
+        	user1 = UserLogin.dao.findById(id);
+            DbUtils.setModelValues(dto, user1);
+            //user1.set("update_stamp",new Date());
+            user1.update();
         }
-        em.toRecord();
-        renderJson(em);
+        user1.toRecord();
+        renderJson(user1);
     }
 	
 	public void list() {
@@ -89,11 +89,12 @@ public class EmployeeFilingController extends Controller {
         String condition="";
         String ref_office = "";
 
-        sql = " SELECT	ul.*, GROUP_CONCAT( DISTINCT r. NAME) station_name FROM	user_login ul "
+        sql = "SELECT*FROM( SELECT	ul.*, GROUP_CONCAT( DISTINCT r. NAME) station_name FROM	user_login ul "
         		+ " LEFT JOIN user_role ur on ur.user_name = ul.user_name"
         		+ " LEFT JOIN role r ON r.id = ur.role_id "
-        		+ " where 1 =1 and ul.office_id= "+office_id
-        		+ " group BY ul.id";
+        		+ " where ul.office_id= "+office_id
+        		+ " group BY ul.id  order by ul.id "
+        		+ " ) A where 1=1";
         
 
         condition = DbUtils.buildConditions(getParaMap());
@@ -102,7 +103,7 @@ public class EmployeeFilingController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by   ul.id " );
+        List<Record> orderList = Db.find(sql+ condition );
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));

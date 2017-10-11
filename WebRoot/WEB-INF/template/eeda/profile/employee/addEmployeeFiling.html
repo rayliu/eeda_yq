@@ -28,9 +28,9 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <%include("/eeda/component/form/dateInputField.html", 
-					                        {   id:'induction_time', 
+					                        {   id:'entry_time', 
 					                            label:'入职时间',
-					                            value:order.induction_time!''
+					                            value:order.entry_time!''
 					                        }){}%>
                                     </div>
 	                          </div>
@@ -67,7 +67,7 @@
                                     </div>
                               		<div class="col-lg-4">
                                         <%include("/eeda/component/form/inputField.html", 
-		                                    {   id:'create_stamp', 
+		                                    {   id:'create_time', 
 		                                        label:'创建时间', 
 		                                        value:order.create_time!'', 
 		                                        disabled: 'disabled'
@@ -79,7 +79,7 @@
 			           
                             <!-- /.row (nested) --><div class="col-lg-12" style="margin-top:15px;">
              <div class="row" style="clear:both;">
-                    <button id="saveBtn" type="button" class="btn  btn-primary">保存</button>
+                    <button id="saveBtn" type="button" class="btn  btn_green">保存</button>
                     <a class="btn  btn-primary" href="/employeeFiling">返回</a>                    
              </div><br>
           </div>
