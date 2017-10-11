@@ -21,6 +21,7 @@ import com.jfinal.upload.UploadFile;
 
 import controllers.profile.CustomerController;
 import controllers.profile.LoginUserController;
+import controllers.profile.ServiceProviderController;
 import controllers.profile.TradeItemController;
 import controllers.tr.joborder.TrJobOrderController;
 import controllers.util.ReaderXLS;
@@ -97,7 +98,16 @@ public class ImportOrder extends Controller {
 						if(resultMap.getBoolean("result")){
 							resultMap = order.importValue(content, userId, officeId);
 						}
+					}else if("sp".equals(order_type)){
+						// 内容校验
+						ServiceProviderController order = new ServiceProviderController();
+						resultMap = order.importCheck(content,officeId);
+						// 内容开始导入
+						if(resultMap.getBoolean("result")){
+							resultMap = order.importValue(content, userId, officeId);
+						}
 					}
+					
 				} else {
 					resultMap.set("result", false);
 					resultMap.set("cause", "导入失败，excel标题列与模板excel标题列不一致");

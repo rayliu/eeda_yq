@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn',  'dtColReorder'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn',  'dtColReorder',  'file_upload'], function ($, metisMenu) { 
 
     $(document).ready(function() {
 
@@ -176,6 +176,42 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           	+"&code_like="+code+"&abbr_like="+ABBR+"&address_like="+ADDRESS+"&status="+status;
           	dataTable.ajax.url(url).load();
         });
+    	
+    	
+    	$("#importBtn").click(function(){
+	    	fileUpload();
+	    	$("#importFileUpload").click();
+	    });
+      
+      
+      
+      var fileUpload = function(){
+	    	var str = null;
+		    var errCustomerNo = null;
+		    var errCustomerNoArr = [];
+			$('#importFileUpload').fileupload({
+		        dataType: 'json',
+		        url: '/importOrder?order_type=sp',
+		        done: function (e,data) {
+		        	$("#footer").show();
+		        	$("#msgLoad").empty().append('<h4>'+data.result.CAUSE+'</h4>');
+		        	//searchData();
+		        	
+		        	var url = "/serviceProvider/list";
+		    	    dataTable.ajax.url(url).load();
+		        },  
+		        progressall: function (e, data) {//设置上传进度事件的回调函数  
+		        	str = null;
+		            errCustomerNo = null;
+		            errCustomerNoArr = [];
+		        	$('#msgLoad').empty().append('<center><img src="/yh/image/loading5.gif" width="20%"><h4>导入过程可能需要一点时间，请勿退出页面！</h4></center>');
+		        	$('#myModal').modal('show');
+		        	$("#footer").hide();
+		        } 
+		    },'json').error(function (jqXHR, textStatus, errorThrown) {
+		        alert("出错了，请刷新页面重新尝试。")
+		    });
+	    }
 
     });
 });

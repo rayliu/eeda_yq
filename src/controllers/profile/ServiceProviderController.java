@@ -3,6 +3,8 @@ package controllers.profile;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,10 +32,12 @@ import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.eeda.ListConfigController;
+import controllers.importOrder.CheckOrder;
 import controllers.util.DbUtils;
 import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
@@ -1154,4 +1158,189 @@ public class ServiceProviderController extends Controller {
     	party.update();
     	renderJson(party);
     }
+    
+    
+    @Before(Tx.class)
+   	public static Record importCheck(List<Map<String, String>> lines, long office_id) {
+   		Record result = new Record();
+   		result.set("result",true);
+   		//if ("true".equals(importResult.get("result"))) {
+   			int rowNumber = 2;//最左边的编码行
+   			String error_msg = "";
+   			try {
+   				for (Map<String, String> line :lines) {
+   					String quick_search_code = line.get("助记码").trim();
+   					String company_name = line.get("公司中文名称").trim();
+   					String abbr = line.get("公司简称").trim();
+   					String company_name_eng = line.get("公司英文名称").trim();
+   					String address = line.get("中文地址").trim();
+   					String address_eng = line.get("英文地址").trim();
+   					String contact_person = line.get("联系人").trim();
+   					String contact_person_eng = line.get("联系人(英文)").trim();
+   					String phone = line.get("联系人电话").trim();
+   					String email = line.get("邮箱").trim();
+   					String fax = line.get("传真").trim();
+   					String website = line.get("公司网站").trim();
+   					String identification_no = line.get("纳税人识别号").trim();
+   					String postal_code = line.get("邮政编码").trim();
+   					String establish_time = line.get("成立时间").trim();
+   					String register_capital = line.get("注册资金").trim();
+   					String main_business = line.get("主营业务").trim();
+   					String receiver = line.get("收款人").trim();
+   					String bill_of_lading_info = line.get("提单抬头").trim();
+   					String remark = line.get("备注").trim();
+   					
+   					if(StringUtils.isBlank(quick_search_code)){
+   						error_msg += "第"+rowNumber+"行【助记码】，字段不能为空<br/>";
+   					}
+   					
+   					if(StringUtils.isNotBlank(company_name)){
+   						Party party = Party.dao.findFirst("select * from party where company_name =? and type='SP' and office_id = ?",company_name,office_id);
+   						if(party != null){
+   							error_msg += "第"+rowNumber+"行【公司中文名称】，系统已存在【"+company_name+"】此供应商<br/>";
+   						}
+   					}else{
+   						error_msg += "第"+rowNumber+"行【公司中文名称】，字段不能为空<br/>";
+   					}
+   					
+   					if(StringUtils.isNotBlank(abbr)){
+   						Record customer = Db.findFirst("select * from party where abbr = ?  and type = 'SP'  and office_id = ?",abbr,office_id);
+   			   			if(customer != null){
+   			   				error_msg += "第"+rowNumber+"行【公司简称】，系统已存在【"+abbr+"】此供应商<br/>";
+   			   			}
+   					}else{
+   						error_msg += "第"+rowNumber+"行【公司简称】，字段不能为空<br/>";
+   					}
+   					
+   					if(StringUtils.isNotBlank(email)){
+						if(!CheckOrder.checkEmail(email)){
+							error_msg += "第"+rowNumber+"行【邮箱】，【"+abbr+"】邮箱格式不合法<br/>";
+						}
+					}
+   					
+   					if(StringUtils.isNotBlank(establish_time)){
+						if(!CheckOrder.checkDate(establish_time)){
+							error_msg += "第"+rowNumber+"行【成立时间】，【"+establish_time+"】日期格式不合法<br/>";
+						}
+					}
+   					
+   					rowNumber++;
+   				}
+   				
+   				if(StringUtils.isNotBlank(error_msg)){
+   					throw new Exception();
+   				}
+   			} catch (Exception e) {
+   				result.set("result", false);
+   				result.set("cause", error_msg);
+   				return result;
+   			} 
+   		return result;
+   	}
+   	
+   	
+   	
+   	@Before(Tx.class)
+   	public static Record importValue( List<Map<String, String>> lines, long user_id, long office_id) {
+   		Connection conn = null;
+   		Record result = new Record();
+   		result.set("result",true);
+
+   		int rowNumber = 1;
+   		
+   		try {
+   			conn = DbKit.getConfig().getDataSource().getConnection();
+   			DbKit.getConfig().setThreadLocalConnection(conn);
+   			conn.setAutoCommit(false);// 自动提交变成false
+   			
+   			for (Map<String, String> line :lines) {
+   				String quick_search_code = line.get("助记码").trim();
+				String company_name = line.get("公司中文名称").trim();
+				String abbr = line.get("公司简称").trim();
+				String company_name_eng = line.get("公司英文名称").trim();
+				String address = line.get("中文地址").trim();
+				String address_eng = line.get("英文地址").trim();
+				String contact_person = line.get("联系人").trim();
+				String contact_person_eng = line.get("联系人(英文)").trim();
+				String phone = line.get("联系人电话").trim();
+				String fax = line.get("传真").trim();
+				String email = line.get("邮箱").trim();
+				String website = line.get("公司网站").trim();
+				String identification_no = line.get("纳税人识别号").trim();
+				String postal_code = line.get("邮政编码").trim();
+				String establish_time = line.get("成立时间").trim();
+				String register_capital = line.get("注册资金").trim();
+				String main_business = line.get("主营业务").trim();
+				String receiver = line.get("收款人").trim();
+				String bill_of_lading_info = line.get("提单抬头").trim();
+				String remark = line.get("备注").trim();
+   				
+   				Record order = new Record();
+   				String code = OrderNoGenerator.getOrderNo("party",office_id);
+   	            if(StringUtils.isNotBlank(code)){
+   	            	order.set("code", code.replace("P", "S"));
+   	            }
+   	            order.set("quick_search_code",quick_search_code );
+   	            order.set("company_name",company_name );
+   	            order.set("abbr",abbr );
+   	            order.set("email",email );
+   	            order.set("company_name_eng",company_name_eng );
+   	            order.set("address", address);
+   	            order.set("address_eng",address_eng );
+   	            order.set("contact_person",contact_person );
+   	            order.set("contact_person_eng",contact_person_eng );
+   	            order.set("phone",phone );
+   	            order.set("fax",fax );
+   	            order.set("website",website );
+   	            order.set("identification_no",identification_no );
+   	            order.set("postal_code",postal_code );
+   	            order.set("establish_time", establish_time);
+   	            order.set("register_capital", register_capital);
+   	            order.set("main_business", main_business);
+   	            order.set("receiver",receiver );
+   	            order.set("bill_of_lading_info", bill_of_lading_info);
+   	            order.set("remark",remark );
+   	            
+   	            order.set("office_id", office_id);
+   	            order.set("type", Party.PARTY_TYPE_SERVICE_PROVIDER);
+   	            order.set("creator", user_id);
+   	            order.set("create_date", new Date());
+   	            
+   	   			Db.save("party", order);
+
+   				rowNumber++;
+   			}
+   			conn.commit();
+   			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！");
+   		} catch (Exception e) {
+   			System.out.println("导入操作异常！");
+   			System.out.println(e.getMessage());
+   			e.printStackTrace();
+   			
+   			try {
+   				if (null != conn)
+   					conn.rollback();
+   			} catch (SQLException e1) {
+   				e1.printStackTrace();
+   			}
+
+   			result.set("result", false);
+   			
+   			result.set("cause", "导入失败<br/>数据导入至第" + (rowNumber)
+   						+ "行时出现异常:" + e.getMessage() + "<br/>导入数据已取消！");
+   			
+   		} finally {
+   			try {
+   				if (null != conn) {
+   					conn.close();
+   				}
+   			} catch (Exception e2) {
+   				e2.printStackTrace();
+   			} finally {
+   				DbKit.getConfig().removeThreadLocalConnection();
+   			}
+   		}
+   		
+   		return result;
+   	}
 }
