@@ -36,27 +36,27 @@ $(document).ready(function() {
     			maxlength:11
     		},
     		amount_20gp:{
-    			number:true,
+    			isDigits:true,
     			min:0,
     			maxlength:11
     		},
     		amount_40gp:{
-    			number:true,
+    			isDigits:true,
     			min:0,
     			maxlength:11
     		},
     		amount_40hq:{
-    			number:true,
+    			isDigits:true,
     			min:0,
     			maxlength:11
     		},
     		amount_45gp:{
-    			number:true,
+    			isDigits:true,
     			min:0,
     			maxlength:11
     		},
     		amount_45hp:{
-    			number:true,
+    			isDigits:true,
     			min:0,
     			maxlength:11
     		}
@@ -159,6 +159,14 @@ $(document).ready(function() {
 	}
     dealPoint("net_weight,gross_weight,volume,");
     
+    //箱量汇总去小数取整
+    $("#amount_20gp,#amount_40gp,#amount_40hq,#amount_45gp,#amount_45hp").keyup(function(){
+    	var num = $(this).val();
+    	if(!isNaN(parseInt(num))&&num!=""){
+    		$(this).val(parseInt(num));
+    	}
+    });
+    
     $("#vgm").blur(function(){
     	self = $(this)
     	if(! $.trim(self.val()) == ""&&!isNaN(parseInt(self.val()))){
@@ -166,7 +174,7 @@ $(document).ready(function() {
     		$("#vgm").val((value).toFixed(4))
     	}
     })
-		   // 手机号码验证
+		// 手机号码验证
 		jQuery.validator.addMethod("isMobile", function(value, element) {
 		    var length = value.length;
 		    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
@@ -174,7 +182,11 @@ $(document).ready(function() {
 		}, "请正确填写您的手机号码");
 			tl.pg.init({
 		        pg_caption: '本页教程'
-		    });
+	    });
+		//只能输入整数验证
+		jQuery.validator.addMethod("isDigits", function(value, element) {       
+	        return this.optional(element) || /^\d+$/.test(value);       
+	    }, "只能输入整数"); 
 
 	var loadOrderToLocalstorage=function(order_id){
         if(!!window.localStorage){//查询条件处理
