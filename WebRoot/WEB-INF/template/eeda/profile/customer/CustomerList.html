@@ -69,6 +69,9 @@
                             <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
                             <% if(shiro.hasPermission("Customer.create")){%>
                             	<a class="btn btn_green" href="/customer/add">新增</a>
+                            	<button class="btn btn_green" type="button" id="importBtn" margin-bottom:15px;">导入客户信息</button>
+                                <input type="file" id="importFileUpload" name="files[]" style="position:absolute;  opacity:0;">
+                                <a class="btn btn_green" type="button" id="downloadBtn" href="/download/transJobOrder/客户导入模板.xlsx">下载导入模板</a>
                             <%}%>
                         </div> 
             </div>
@@ -98,15 +101,29 @@
                                     </tbody>
                                 </table>
                     </div> 
+                    
+                    
+                    <div class="panel-heading">
+				       <div class="modal fade" id="myModal" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="false" data-backdrop="static">
+				         <div class="modal-dialog">
+				           <div class="modal-content">
+				               <div class="modal-body pre-scrollable">
+				               		<span id="msgLoad"></span>
+				               </div>
+				               <div class="modal-footer" id="footer" aria-hidden="true">
+				               	<button type="button" class="btn  btn-primary" id="confirm" style="display:none">确认</button>
+				 				<button type="button" class="btn  btn-primary" data-dismiss="modal" id="cancel">关闭</button>
+							  </div>
+				            </div>
+				          </div>
+				        </div>
+				    </div>
+                    
+                    
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-          
-        </div>
-       
+
 
 <%}%>
 <script>

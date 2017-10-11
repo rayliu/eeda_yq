@@ -70,6 +70,17 @@ public class CheckOrder extends Controller {
 	
 
 	
+	/**
+	 * 邮箱校验
+	 */
+	public static boolean checkEmail (String email){
+		boolean flag = true;
+		if (!email.matches("[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+")) {
+			flag = false;
+	    }
+		return flag;
+	}
+	
 
 	/**
 	 * 校验是否为double类型

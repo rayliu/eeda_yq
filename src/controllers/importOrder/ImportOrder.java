@@ -19,6 +19,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
+import controllers.profile.CustomerController;
 import controllers.profile.LoginUserController;
 import controllers.profile.TradeItemController;
 import controllers.tr.joborder.TrJobOrderController;
@@ -87,6 +88,14 @@ public class ImportOrder extends Controller {
 						if(true){
 							TradeItemController tradeItem = new TradeItemController();
 							resultMap = tradeItem.importValue(content, order_id, officeId);
+						}
+					}else if("customer".equals(order_type)){
+						// 内容校验
+						CustomerController order = new CustomerController();
+						resultMap = order.importCheck(content,officeId);
+						// 内容开始导入
+						if(resultMap.getBoolean("result")){
+							resultMap = order.importValue(content, userId, officeId);
 						}
 					}
 				} else {
