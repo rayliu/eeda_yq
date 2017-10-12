@@ -43,6 +43,13 @@ public class profitController extends Controller {
         }
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = " SELECT A.id,A.customer_id,A.abbr,A.user_name,A.royalty_rate,A.user_id,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
         		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb FROM ("
@@ -61,8 +68,8 @@ public class profitController extends Controller {
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
         		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
-        		+ " LEFT JOIN user_login ul on ul.id = cs.salesman_id"
-        		+"  WHERE p.office_id ="+office_id+" "
+        		+" LEFT JOIN user_login ul on ul.id = cs.salesman_id"
+        		+"  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ")"
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1 "+condition+" GROUP BY A.customer_id  ORDER BY abbr";
 		
@@ -85,6 +92,12 @@ public class profitController extends Controller {
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
         String conditions = "";
         String customer = getPara("customer");
         String begin_time = getPara("order_export_date_begin_time");
@@ -121,7 +134,7 @@ public class profitController extends Controller {
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
         		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
         		+" LEFT JOIN user_login ul on ul.id = cs.salesman_id"
-        		+"  WHERE p.office_id ="+office_id+" "
+        		+"  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ")"
         		+ conditions
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1 ";

@@ -8,6 +8,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           paging: true,
           serverSide: true, //不打开会出现排序不对 
           ajax: "/billProfitAndPayment/list",
+          drawCallback:function(data){
+        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+data.json.recordsFiltered+'项汇总：');
+          },
           columns: [
                 {"data": "ORDER_NO", 
               	  "render": function ( data, type, full, meta ) {
@@ -16,8 +19,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 },
       			{ "data": "ABBR", "width": "120px"},
       			{ "data": "ORDER_EXPORT_DATE", "width": "120px"},
-	            { "data": "CHARGE_RMB", "width": "120px"},
-	            { "data": "COST_RMB", "width": "120px"  },
+	            { "data": "CHARGE_RMB", "width": "120px",
+      				"render":function( data, type, full, meta ){
+      					if(data==0){
+      						return '';
+      					}
+      					return data;
+      				}
+	            },
+	            { "data": "COST_RMB", "width": "120px",
+      				"render":function( data, type, full, meta ){
+      					if(data==0){
+      						return '';
+      					}
+      					return data;
+      				}
+	            },
 	            {
 					"render": function(data, type, full, meta) {
 						var str = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
@@ -89,14 +106,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	
 	$('#singleSearchBtn').click(function(){
 		var selectField = $("#selected_field").val();
+		var checked = "";
+		var customer = "";
 	     if(selectField=='customer_name'){
-	    	  var customer_name = $("#single_customer_name").val();
+	    	 customer = $("#single_customer_name").val();
 	      }
 	      if(selectField=='order_export_date'){
 	    	  var single_export_date_begin_time = $("#single_export_date_begin_time").val();
 	          var single_export_date_end_time = $("#single_export_date_end_time").val();
 	      }
-	     var url = "/billProfitAndPayment/list?customer_id="+customer_name
+	      listTotalMoney(checked,customer,single_export_date_begin_time,single_export_date_end_time);
+	     var url = "/billProfitAndPayment/list?customer_id="+customer
 	     		 +"&order_export_date_begin_time="+single_export_date_begin_time
 	     		 +"&order_export_date_end_time="+single_export_date_end_time;
 	     dataTable.ajax.url(url).load();
@@ -114,6 +134,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var customer = $("#customer").val(); 
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
+          listTotalMoney(checked,customer,order_export_date_begin_time,order_export_date_end_time);
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -165,5 +186,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               $.scojs_message('生成应收Excel对账单失败', $.scojs_message.TYPE_ERROR);
           });
       }
+      
+      var listTotalMoney = function(checked,customer,order_export_date_begin_time,order_export_date_end_time){
+	      //合计字段
+         $.post('/billProfitAndPayment/listTotal',{
+          checked:checked,
+          customer:customer,
+       	  order_export_date_begin_time:order_export_date_begin_time,
+       	  order_export_date_end_time:order_export_date_end_time
+         },function(data){
+        	 var charge_total = parseFloat(data.CHARGE_TOTAL).toFixed(2);
+        	 var cost_total = parseFloat(data.COST_TOTAL).toFixed(2);
+        	 var total_profit = parseFloat(data.TOTAL_PROFIT).toFixed(2);
+        	 var total_profit_rate = parseFloat(data.TOTAL_PROFIT_RATE).toFixed(2);
+        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("应收(合计):<br>"+eeda.numFormat(charge_total,3));
+        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("应付(合计):<br>"+eeda.numFormat(cost_total,3));
+        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("利润(合计):<br>"+total_profit);
+        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("平均利润率:<br>"+total_profit_rate);
+         });
+	 }
+      
+     listTotalMoney();
+      
   });
 });
