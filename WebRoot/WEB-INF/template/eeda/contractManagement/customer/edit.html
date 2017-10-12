@@ -209,9 +209,19 @@
                                     }){}%>
                             </div>
                         </div>
-                        <div class="form-group">
-                         <label>备注</label>
-                         <textarea id='remark' class="form-control" rows="3" name="remark">${order.remark!''}</textarea>
+                        <div class="row">
+                        	<div class="col-lg-4">
+		                        <div class="form-group">
+		                         <label>合同特别事项录入</label>
+		                         <textarea id='special_item' class="form-control" rows="3" name="special_item">${order.special_item!''}</textarea>
+		                        </div>
+	                        </div>
+                        	<div class="col-lg-4">
+		                        <div class="form-group">
+		                         <label>备注</label>
+		                         <textarea id='remark' class="form-control" rows="3" name="remark">${order.remark!''}</textarea>
+		                        </div>
+	                        </div>
                         </div>
                     </div>
                 </div>

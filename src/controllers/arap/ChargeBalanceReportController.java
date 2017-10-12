@@ -48,6 +48,14 @@ public class ChargeBalanceReportController extends Controller {
         }
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
+        
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = " SELECT A.id,A.customer_id,A.abbr,A.sp_id,A.employee_name,A.employee_id,sum(charge_cny) charge_cny,"
         		+ " SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,"
@@ -75,7 +83,7 @@ public class ChargeBalanceReportController extends Controller {
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"
         		+ " LEFT JOIN customer_salesman cs on cs.party_id = joa.sp_id"
         		+ " LEFT JOIN employee em on em.id = cs.salesman_id"
-        		+ " WHERE p.ref_office_id =" +office_id+" "
+        		+ " WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ")"
         		+ " and jo.delete_flag = 'N'"
 				+ " ) A"
         		+ " WHERE A.sp_id IS NOT NULL AND A.charge_rmb!=0"+condition
@@ -105,6 +113,12 @@ public class ChargeBalanceReportController extends Controller {
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
 		
 		String sp_id =" and sp_id="+spid;
 		if(StringUtils.isBlank(spid)){
@@ -130,7 +144,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.ref_office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -140,7 +154,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.ref_office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -150,7 +164,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.ref_office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -160,7 +174,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.ref_office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -170,7 +184,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.ref_office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y'  "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -180,7 +194,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.ref_office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -190,7 +204,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.ref_office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -200,7 +214,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.ref_office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
@@ -210,7 +224,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.ref_office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+"	AND joa.order_type = 'charge' "+condition+""
 			+ " and jo.delete_flag = 'N'"
 			+ ") total_charge,"
@@ -219,7 +233,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
-			+"	WHERE 	p.ref_office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+"	AND joa.order_type = 'charge' and pay_flag!='Y' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_uncharge";
@@ -237,6 +251,13 @@ public class ChargeBalanceReportController extends Controller {
 		String sp_id = getPara("sp_id");
 		String begin_time = getPara("begin_time");
 		String end_time = getPara("end_time");
+		
+		String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+		
 		String spId = "";
 		String order_export_date = "";
 		if (StringUtils.isBlank(sp_id)) {
@@ -279,7 +300,7 @@ public class ChargeBalanceReportController extends Controller {
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"
         		+ " LEFT JOIN customer_salesman cs on cs.party_id = joa.sp_id"
         		+ " LEFT JOIN employee em on em.id = cs.salesman_id"
-        		+ " WHERE p.ref_office_id =" +office_id+" "
+        		+ " WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ")"
         		+ " and jo.delete_flag = 'N'"
 				+ " ) A"
         		+ " WHERE A.sp_id IS NOT NULL AND A.charge_rmb!=0"+condition
