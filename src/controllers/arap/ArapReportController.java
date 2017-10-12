@@ -141,6 +141,13 @@ public class ArapReportController extends Controller {
 				String order_export_date_begin_time = (String)dto.get("order_export_date_begin_time");
 				String order_export_date_end_time = (String)dto.get("order_export_date_end_time");
 				
+				String ref_office = "";
+		        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+		        if(relist!=null){
+		        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+		        }
+				
+				
 				String orderNo = " and order_no like '%"+order_no+"%'";
 				String customerId =" and customer_id = '"+customer_id+"'";
 				String spId = " and sp_id = '"+sp_id+"'";
@@ -223,7 +230,7 @@ public class ArapReportController extends Controller {
 	 				+ " left join currency cur on cur.id=joa.currency_id "
 	 				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
 	 				+ " left join fin_item f on f.id=joa.charge_id "
-	 				+ " where  jo.office_id = "+office_id
+	 				+ " where  jo.office_id = "+office_id + ref_office
 	 				+ " and jo.delete_flag = 'N'"
 					+ " GROUP BY joa.id "
 	 				+ " ) B where 1=1 ";

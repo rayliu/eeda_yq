@@ -50,7 +50,7 @@
                               		<div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
-                                                <label>助记码(拼音首字母)</label>
+                                                <label>助记码:拼音首字母(<span style="color:red">必填</span>)</label>
                                                 <input  class="form-control" id="quick_search_code" name="quick_search_code" type="text" value="${party.quick_search_code!''}" required>
                                             </div>                                     
                                         </fieldset>
@@ -76,7 +76,7 @@
 							  		<div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
-                                                <label>公司简称(必填)</label>
+                                                <label>公司简称(<span style="color:red">必填</span>)</label>
                                                 <input  class="form-control" id="abbr" name="abbr" type="text" value="${party.abbr!''}" required>
                                             </div>                                     
                                         </fieldset>
@@ -102,7 +102,7 @@
 							  		<div class="col-lg-4">
                                         <fieldset>
                                             <div class="form-group">
-                                                <label>公司中文名称(必填)</label>
+                                                <label>公司中文名称(<span style="color:red">必填</span>)</label>
                                                 <input  class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}" required>
                                             </div>                                     
                                         </fieldset>
@@ -268,6 +268,16 @@
 	                                            </div>
 	                                        </fieldset>
 	                                    </div>                              
+	                                    <div class="col-lg-4">
+	                                        <fieldset>
+	                                            <div class="form-group">
+	                                                <label>特别事项录入</label>
+													<textarea class="form-control" rows="5" id="special_item" name="special_item">${party.special_item!''}</textarea>
+	                                            </div>
+	                                        </fieldset>
+	                                    </div>
+                               </div>
+                               <div class="row">                            
 	                                    <div class="col-lg-4">
 	                                        <fieldset>
 	                                            <div class="form-group">

@@ -303,6 +303,7 @@ public class ServiceProviderController extends Controller {
         contact.set("introduction", getPara("introduction"));
         contact.set("city", getPara("city"));
         contact.set("postal_code", getPara("postal_code"));
+        contact.set("special_item", getPara("special_item"));
         
         //新增字段
         contact.set("register_capital", getPara("register_capital"));

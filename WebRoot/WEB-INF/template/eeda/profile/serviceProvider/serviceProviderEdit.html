@@ -17,15 +17,15 @@
                                                 <input placeholder="" class="form-control" id="code" name="code" type="text" value="${party.code!''}"  readonly>
                                             </div> 
                                             <div class="form-group">
-                                                <label>助记码(拼音首字母)</label>
+                                                <label>助记码:拼音首字母(<span style="color:red">必填</span>)</label>
                                                 <input placeholder="" class="form-control" id="quick_search_code" type="text" name="quick_search_code" value="${party.quick_search_code!''}">
                                             </div>
                                             <div class="form-group">
-                                                <label>简称(必填)</label>
+                                                <label>简称(<span style="color:red">必填</span>)</label>
                                                 <input class="form-control" id="abbr" type="text" name="abbr" value="${party.abbr!''}">
                                             </div>
                                             <div class="form-group">
-                                                <label>公司名称(必填)</label>
+                                                <label>公司名称(<span style="color:red">必填</span>)</label>
                                                 <input placeholder="" class="form-control" id="company_name" name="company_name" type="text" value="${party.company_name!''}">
                                             </div> 
                                             <div class="form-group">
@@ -76,7 +76,10 @@
                                                 <label>纳税人识别号</label>
                                                 <input class="form-control" id="identification_no" type="text" name="identification_no" value="${party.identification_no!''}">
                                             </div>
-
+                                            <div class="form-group">
+                                                <label>特别事项录入</label>
+												<textarea class="form-control" rows="5" id="special_item" name="special_item">${party.special_item!''}</textarea>
+                                            </div>
                                       </div>
                                       <div class="col-lg-4">
                                       		<div class="form-group">

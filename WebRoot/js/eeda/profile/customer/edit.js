@@ -229,6 +229,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
             order.bill_of_lading_info = $("#bill_of_lading_info").val();
             order.charge_company_id = $("#charge_company_id").val();
             order.identification_no = $("#identification_no").val();
+            order.special_item = $("#special_item").val();
             
             order.docItem = buildDocItem();
             		
