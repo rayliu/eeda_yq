@@ -48,6 +48,13 @@ public class ProfitAndPaymentRateController extends Controller {
         }
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
+        
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = " SELECT A.id,A.customer_id,A.abbr,A.sp_id,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
         		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb FROM ("
@@ -65,7 +72,7 @@ public class ProfitAndPaymentRateController extends Controller {
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p ON p.id = joa.sp_id"
-        		+"  WHERE p.office_id ="+office_id+" "+condition
+        		+"  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") "+condition
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where A.sp_id is NOT NULL GROUP BY A.sp_id  ORDER BY abbr";
 		
@@ -92,6 +99,12 @@ public class ProfitAndPaymentRateController extends Controller {
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
 		String sp_id =" and sp_id="+spid;
 		if(StringUtils.isBlank(spid)){
 			sp_id="";
@@ -116,7 +129,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+			+"	  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_cny,"
@@ -125,7 +138,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+			+"	  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_usd,"
@@ -134,7 +147,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+			+"	  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_jpy,"
@@ -143,7 +156,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+			+"	  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) charge_hkd,"
@@ -152,7 +165,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 3 "
+			+"	  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") and joa.exchange_currency_id = 3 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_cny,"
@@ -161,7 +174,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 6 "
+			+"	  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") and joa.exchange_currency_id = 6 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_usd,"
@@ -170,7 +183,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 8 "
+			+"	  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") and joa.exchange_currency_id = 8 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_jpy,"
@@ -179,7 +192,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	  from job_order jo "
 			+"	  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 			+"	  LEFT JOIN party p on p.id = jo.customer_id"
-			+"	  WHERE p.office_id = "+office_id+" and joa.exchange_currency_id = 9 "
+			+"	  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") and joa.exchange_currency_id = 9 "
 			+"	  and joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) cost_hkd, "
@@ -188,7 +201,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"	LEFT JOIN party p ON p.id = jo.customer_id "
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+"	AND joa.order_type = 'charge' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_charge,"
@@ -197,7 +210,7 @@ public class ProfitAndPaymentRateController extends Controller {
 			+"	FROM  job_order jo "
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"	LEFT JOIN party p ON p.id = jo.customer_id "
-			+"	WHERE 	p.office_id = "+office_id
+			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+"	AND joa.order_type = 'cost' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_cost";
@@ -215,6 +228,13 @@ public class ProfitAndPaymentRateController extends Controller {
 		String begin_time = getPara("begin_time");
 		String end_time = getPara("end_time");
 		String spId = "";
+		
+		String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+		
 		String order_export_date = "";
 		if (StringUtils.isBlank(sp_id)) {
 			spId = "";
@@ -245,7 +265,7 @@ public class ProfitAndPaymentRateController extends Controller {
 	        		+"  from job_order jo "
 	        		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 	        		+"  LEFT JOIN party p ON p.id = joa.sp_id"
-	        		+"  WHERE p.office_id ="+office_id+" "+condition
+	        		+"  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") "+condition
 	        		+ " and jo.delete_flag = 'N'"
 	    			+" ) A where A.sp_id is NOT NULL GROUP BY A.sp_id  ORDER BY abbr";
 
