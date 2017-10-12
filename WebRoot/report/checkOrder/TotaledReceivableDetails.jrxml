@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="receivableDetails" language="groovy" pageWidth="842" pageHeight="595" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="05aa4a47-05ff-482b-8469-0e68db4e82b0">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="75"/>
 	<property name="ireport.y" value="0"/>
 	<style name="bottomLine" forecolor="#000000" fill="Solid">
 		<pen lineStyle="Dashed"/>
@@ -565,7 +565,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 	<summary>
 		<band height="35" splitType="Stretch">
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="635" y="0" width="54" height="20" uuid="9d492093-0cd2-4ca4-95d6-3f5a0db9d529"/>
+				<reportElement x="634" y="0" width="55" height="20" uuid="9d492093-0cd2-4ca4-95d6-3f5a0db9d529"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
@@ -579,7 +579,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$V{SUM_HKD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="742" y="0" width="60" height="20" uuid="23bcd840-a1dc-44c0-9009-a895a50a90fd"/>
+				<reportElement x="741" y="0" width="61" height="20" uuid="23bcd840-a1dc-44c0-9009-a895a50a90fd"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
@@ -614,14 +614,14 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{user_tel}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="581" y="0" width="54" height="20" uuid="d438846b-7740-4512-9d7e-9bde9b2483c0"/>
+				<reportElement x="578" y="0" width="60" height="20" uuid="d438846b-7740-4512-9d7e-9bde9b2483c0"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_RMB}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="523" y="0" width="59" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
+				<reportElement x="516" y="0" width="59" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 		</band>
