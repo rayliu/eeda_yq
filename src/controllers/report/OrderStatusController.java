@@ -48,6 +48,12 @@ public class OrderStatusController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jor.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
     	String sql = "select * from (SELECT jor.id,p.abbr customer_name,jor.customer_id,"
     			+ " ( "
     			+ " SELECT CONCAT(cast(por.id as char),':',por.order_no,'-',por.status)"
@@ -86,7 +92,7 @@ public class OrderStatusController extends Controller {
     			+ " ) cost_app_no"
     			+ " from job_order jor"
     			+ " LEFT JOIN party p on p.id = jor.customer_id"
-    			+ " where jor.office_id = "+ office_id
+    			+ " where (jor.office_id = "+office_id + ref_office+")"
     			 + " and jor.delete_flag = 'N'"
  				+") a where 1 = 1";
     	

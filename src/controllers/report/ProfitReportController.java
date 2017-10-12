@@ -196,6 +196,14 @@ public class ProfitReportController extends Controller {
         String end_date = getPara("end_date");
         String date_type = getPara("date_type");
         String type = getPara("type");
+        
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
+        
         String condition = "";
         String group_condition="";
         if(StringUtils.isNotEmpty(customer_id)){
@@ -255,52 +263,7 @@ public class ProfitReportController extends Controller {
         
         condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
         
-  /*      String sql = "  SELECT "
-        		+" 	SUM(gross_weight) gross_weight_total,SUM(pieces) pieces_total,SUM(volume) volume_total,SUM(ocean_fcl_bill) ocean_fcl_bill_total, "
-        		+" 	SUM(ocean_lcl_bill) ocean_lcl_bill_total,SUM(ari_kg_bill) ari_kg_bill_total,SUM(ocean_fcl_teu) ocean_fcl_teu_total,SUM(ocean_lcl_cbm)  "
-        		+" ocean_lcl_cbm_total,SUM(ari_kg) ari_kg_total "
-    	        + " from (select order_export_date,customer_id,"
-    			+ " sum(ifnull(pieces,0)) pieces,"
-    			+ " sum(ifnull(gross_weight,0)) gross_weight, "
-    			+ " sum(ifnull(volume,0)) volume, "
-    			+ " SUM(IFNULL(ocean_fcl_bill, 0)) ocean_fcl_bill, "
-    			+ " SUM(IFNULL(ocean_lcl_bill, 0)) ocean_lcl_bill, "
-    			+ " SUM(IFNULL(ari_kg_bill, 0)) ari_kg_bill, "
-    			+ " customer_name,"
-    			+ " SUM(IFNULL(ocean_fcl_teu, 0)) ocean_fcl_teu,"
-    			+ " SUM(IFNULL(ocean_lcl_cbm, 0)) ocean_lcl_cbm,"
-    			+ " SUM(IFNULL(ari_kg, 0)) ari_kg,"
-    			+ " group_concat(CAST(id as CHAR) separator ', ' ) truck_order_ids"
-    			+ " from ("
-    			+ " select "+group_condition+" order_export_date, jo.customer_id, jo.pieces,"
-    			+ " jo.gross_weight, jo.volume,p.abbr customer_name,"
-    			+ " (select ("
-    			+ "    count(case when container_type = '20''GP' then container_type end) +"
-    			+ "    count(case when container_type = '40''GP' then container_type end)*2 +"
-    			+ "    count(case when container_type = '45''GP' then container_type end)*2 +"
-    			+ "    count(case when container_type = '40''HQ' then container_type end)*2) gp20"
-    			+ " from job_order_shipment_item josi where josi.load_type='FCL'and josi.order_id =jo.id "
-    			+ "    and jo.type in('出口柜货', '进口柜货')"
-    			+ " ) ocean_fcl_teu,"
-    			+ " (SELECT   COUNT(container_type) FROM job_order_shipment_item josi WHERE "
-    			+ "	josi.load_type = 'FCL' AND josi.order_id = jo.id and container_type is not null "
-    			+ "	AND jo.type IN ('出口柜货','进口柜货') ) ocean_fcl_bill, "
-    			+ " (SELECT count(volume) FROM job_order jo1 WHERE jo1.id = jo.id and volume is NOT null "
-    			+ "	 AND jo1.type IN ('出口散货','进口散货')) ocean_lcl_bill, "
-    			+ " (select sum(volume) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口散货', '进口散货')) ocean_lcl_cbm,"
-    			+ " (select sum(gross_weight) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口空运', '进口空运')) ari_kg,"
-    			+ " (SELECT	count(gross_weight) FROM job_order jo1 WHERE jo1.id = jo.id and jo1.gross_weight is not null "
-    			+ "	 AND jo1.type IN ('出口空运','进口空运')) ari_kg_bill, "
-    			+ " jo.id "
-    			+ " from job_order jo"
-    			+ " left join party p on p.id = jo.customer_id"
-    			+ " WHERE jo.office_id="+office_id
-    			+ condition
-    			 + " and jo.delete_flag = 'N'"
- 				+ " ) A where 1=1"
-    			+ " GROUP BY A.order_export_date,A.customer_id"
-    			+ " )B ORDER BY B.customer_id , B.order_export_date"
-    			+ "  ";*/
+
         
     	String sql = " select ifnull(sum(gross_weight),0) gross_weight_total,ifnull(sum(volume),0) volume_total,ifnull(sum(ocean_fcl_teu),0) ocean_fcl_teu_total,ifnull(sum(ocean_fcl_bill),0) ocean_fcl_bill_total,ifnull(sum(ocean_lcl_cbm),0) ocean_lcl_cbm_total,ifnull(sum(ocean_lcl_bill),0) ocean_lcl_bill_total,ifnull(sum(ari_kg),0) ari_kg_total,ifnull(sum(ari_kg_bill),0) ari_kg_bill_total,ifnull(sum(pieces),0) pieces_total"
     			+ " from ("
@@ -348,7 +311,7 @@ public class ProfitReportController extends Controller {
     			+ " jo.id "
     			+ " from job_order jo"
     			+ " left join party p on p.id = jo.customer_id"
-    			+ " WHERE jo.office_id="+office_id
+    			+ " WHERE (jo.office_id="+office_id+ ref_office+ ")"
     			+ condition
     			 + " and jo.delete_flag = 'N'"
  				+ " ) A where 1=1"

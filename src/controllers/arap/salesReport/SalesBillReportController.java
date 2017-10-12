@@ -48,6 +48,14 @@ public class SalesBillReportController extends Controller {
         }
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
+        
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = " SELECT A.*,SUM(charge_CNY) sum_charge_CNY,SUM(charge_USD) sum_charge_USD,SUM(charge_JPY) sum_charge_JPY ,SUM(charge_HKD) sum_charge_HKD,SUM(charge_total) sum_charge_total, "
         		+"			SUM(pay_charge_CNY) sum_pay_charge_CNY,SUM(pay_charge_USD) sum_pay_charge_USD,SUM(pay_charge_JPY) sum_pay_charge_JPY ,SUM(pay_charge_HKD)  "
@@ -56,7 +64,13 @@ public class SalesBillReportController extends Controller {
         		+ "         SUM(cost_total) sum_cost_total "
         		+" from( "
         		+"		SELECT jo.id,jo.order_no,jo.fee_count,jo.customer_id,jos.mbl_no,jo.order_export_date,IFNULL(locean1.name,lair1.name) pol_name,"
-        		+ "		IFNULL(locean2.name,lair2.name) pod_name,ul.c_name user_name,p.abbr,cs.royalty_rate,contract_no, "
+        		+ "		IFNULL(locean2.name,lair2.name) pod_name,ul.c_name user_name,p.abbr,cs.royalty_rate,"
+        		+ " (SELECT contract_no from customer_contract ccon"
+        		+ "		LEFT JOIN customer_contract_location ccl ON ccl.contract_id = ccon.id"
+        		+ "		WHERE	ccon.type = jo.type	AND ccon.customer_id = jo.customer_id"
+        		+ "		AND ccon.trans_clause = jo.trans_clause	AND ccon.trade_type = jo.trade_type"
+        		+ "		AND ccl.pol_id = jos.pol AND ccl.pod_id = jos.pod	AND (jo.order_export_date BETWEEN ccon.contract_begin_time"
+        		+ "		AND ccon.contract_end_time)	and ccon.customer_id = jo.customer_id)	contract_no, "
         		+"		if(cy.code='CNY' AND joa.order_type='charge',joa.total_amount,0) charge_CNY, "
         		+"		if(cy.code='USD' AND joa.order_type='charge',joa.total_amount,0) charge_USD, "
         		+"		if(cy.code='JPY' AND joa.order_type='charge',joa.total_amount,0) charge_JPY, "
@@ -86,9 +100,7 @@ public class SalesBillReportController extends Controller {
         		+"		LEFT JOIN user_login ul on ul.id = cs.salesman_id "
         		+"		LEFT JOIN customer_contract ccon ON ccon.customer_id = jo.customer_id "
         		+"		LEFT JOIN customer_contract_location ccl ON ccl.contract_id = ccon.id "
-        		+"		WHERE jo.office_id = "+office_id+" AND ccon.type = jo.type AND ccon.customer_id = jo.customer_id AND ccon.trans_clause = jo.trans_clause"
-        		+"		AND ccon.trade_type = jo.trade_type AND ccl.pol_id = jos.pol AND ccl.pod_id = jos.pod AND (jo.order_export_date BETWEEN ccon.contract_begin_time "
-        		+"		AND ccon.contract_end_time)"
+        		+"		WHERE (jo.office_id="+office_id+ ref_office+ ") and jo.delete_flag = 'N'"
         		+"		AND p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"')"
         		+" ) A  where 1= 1"+condition
         		+" GROUP BY A.order_no "
@@ -119,6 +131,12 @@ public class SalesBillReportController extends Controller {
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
         String customerId = "";
 		if(StringUtils.isBlank(customer_id)){
 			customerId="";
@@ -147,65 +165,30 @@ public class SalesBillReportController extends Controller {
 		
 		String sql = " SELECT IFNULL(SUM(sum_charge_total),0.00) sum_foot_charge_total,IFNULL(SUM(sum_cost_total),0.00) sum_foot_cost_total,IFNULL(SUM(sum_pay_charge_total),0.00) sum_foot_pay_charge_total "
 				+ " FROM(SELECT A.*,"
-				+ " CAST(CONCAT(IF(SUM(charge_CNY)!=0,CONCAT('CNY:',round(SUM(charge_CNY),2)),''),"
-				+ " '  ',IF(SUM(charge_USD)!=0,CONCAT('USD:',round(SUM(charge_USD),2)),''),'  ',IF(SUM(charge_JPY)!=0,CONCAT('JPY:',round(SUM(charge_JPY),2)),''),"
-				+ " '  ',IF(SUM(charge_HKD)!=0,CONCAT('HKD:',round(SUM(charge_HKD),2)),''))as char) receivable,"
-				+ "	CAST(CONCAT(IF(SUM(pay_charge_CNY)!=0,CONCAT('CNY:',round(SUM(pay_charge_CNY),2)),''),"
-				+ "'  ',IF(SUM(pay_charge_USD)!=0,CONCAT('USD:',round(SUM(pay_charge_USD),2)),''),"
-				+ "'  ',IF(SUM(pay_charge_JPY)!=0,CONCAT('JPY:',round(SUM(pay_charge_JPY),2)),''),"
-				+ "'  ',IF(SUM(pay_charge_HKD)!=0,CONCAT('HKD:',round(SUM(pay_charge_HKD),2)),'')) as char) receipts,"
-				+ "	CAST(CONCAT(IF(SUM(cost_CNY)!=0,CONCAT('CNY:',round(SUM(cost_CNY),2)),''),"
-				+ "'  ',IF(SUM(cost_USD)!=0,CONCAT('USD:',round(SUM(cost_USD),2)),''),"
-				+ "'  ',IF(SUM(cost_JPY)!=0,CONCAT('JPY:',round(SUM(cost_JPY),2)),''),"
-				+ "'  ', IF(SUM(cost_HKD)!=0,CONCAT('HKD:',round(SUM(cost_HKD),2)),'')) as char) payable,"
 				+ " SUM(charge_total) sum_charge_total,"
 				+ " SUM(pay_charge_total) sum_pay_charge_total,"
 				+ " SUM(cost_total) sum_cost_total,"
 				+ " CAST(IFNULL(round(SUM(charge_total), 2) - round(SUM(cost_total), 2),'') as char) gross_profit,"
 				+ " CAST(IFNULL(round(SUM(pay_charge_total), 2) - round(SUM(cost_total), 2),'') as char) current_profit"
         		+" from( "
-        		+"		SELECT jo.id,jo.order_no,jo.fee_count,jo.customer_id,jos.mbl_no,jo.order_export_date,IFNULL(locean1.name,lair1.name) pol_name,"
-        		+ "		IFNULL(locean2.name,lair2.name) pod_name,ul.c_name user_name,p.abbr,cs.royalty_rate,contract_no, "
-        		+"		if(cy.code='CNY' AND joa.order_type='charge',joa.total_amount,0) charge_CNY, "
-        		+"		if(cy.code='USD' AND joa.order_type='charge',joa.total_amount,0) charge_USD, "
-        		+"		if(cy.code='JPY' AND joa.order_type='charge',joa.total_amount,0) charge_JPY, "
-        		+"		if(cy.code='HKD' AND joa.order_type='charge',joa.total_amount,0) charge_HKD, "
+        		+"		SELECT jo.id,jo.order_no,jo.fee_count,jo.customer_id,jo.order_export_date,"
+        		+ "		ul.c_name user_name,p.abbr,cs.royalty_rate, "
         		+"		if(joa.order_type='charge',joa.currency_total_amount,0) charge_total, "
-        		+"		if(cy.code='CNY' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_CNY, "
-        		+"		if(cy.code='USD' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_USD, "
-        		+"		if(cy.code='JPY' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_JPY, "
-        		+"		if(cy.code='HKD' AND joa.pay_flag='Y' AND joa.order_type='charge',joa.total_amount,0) pay_charge_HKD, "
         		+"		if(joa.order_type='charge' AND joa.pay_flag='Y',joa.currency_total_amount,0) pay_charge_total, "
-        		+"		if(cy.code='CNY' AND joa.order_type='cost',joa.total_amount,0) cost_CNY, "
-        		+"		if(cy.code='USD' AND joa.order_type='cost',joa.total_amount,0) cost_USD, "
-        		+"		if(cy.code='JPY' AND joa.order_type='cost',joa.total_amount,0) cost_JPY, "
-        		+"		if(cy.code='HKD' AND joa.order_type='cost',joa.total_amount,0) cost_HKD, "
         		+"		if(joa.order_type='cost',joa.currency_total_amount,0) cost_total "
         		+"		from job_order jo  "
         		+"		LEFT JOIN job_order_arap joa on joa.order_id = jo.id "
         		+"		LEFT JOIN currency cy on cy.id = joa.currency_id "
-        		+"		LEFT JOIN job_order_shipment jos on jos.order_id = jo.id "
-        		+"		LEFT JOIN job_order_air_item joai on joai.order_id = jo.id "
-        		+"		LEFT JOIN location locean1 on locean1.id = jos.pol "
-        		+"		LEFT JOIN location locean2 on locean2.id = jos.pod "
-        		+"		LEFT JOIN location lair1 on lair1.id = joai.start_from "
-        		+"		LEFT JOIN location lair2 on lair2.id = joai.destination "
         		+"		LEFT JOIN party p on p.id = jo.customer_id "
         		+"		LEFT JOIN customer_salesman cs on cs.party_id =  jo.customer_id "
         		+"		LEFT JOIN user_login ul on ul.id = cs.salesman_id "
-        		+"		LEFT JOIN customer_contract ccon ON ccon.customer_id = jo.customer_id "
-        		+"		LEFT JOIN customer_contract_location ccl ON ccl.contract_id = ccon.id "
-        		+"		WHERE jo.office_id = "+office_id+" AND ccon.type = jo.type AND ccon.customer_id = jo.customer_id AND ccon.trans_clause = jo.trans_clause"
-        		+"		AND ccon.trade_type = jo.trade_type AND ccl.pol_id = jos.pol AND ccl.pod_id = jos.pod AND (jo.order_export_date BETWEEN ccon.contract_begin_time "
-        		+"		AND ccon.contract_end_time)"
+        		+"		WHERE (jo.office_id="+office_id+ ref_office+ ") and jo.delete_flag = 'N'"
         		+"		AND p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"')"
         		+" ) A  where 1= 1"+condition
         		+" GROUP BY A.order_no "
         		+ " ORDER BY order_export_date desc ) B where 1=1";
 		
 		Record re = Db.findFirst(sql);
-		long total=list();
-		re.set("total", total);
 		renderJson(re);
 	}
 	
@@ -218,6 +201,13 @@ public class SalesBillReportController extends Controller {
 		String end_time = getPara("end_time");
 		String customerId = "";
 		String userName = "";
+		
+		String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+		
 		String order_export_date = "";
 		if (StringUtils.isBlank(customer_id)) {
 			customerId = "";
@@ -258,7 +248,13 @@ public class SalesBillReportController extends Controller {
 				+ " (SUM(pay_charge_total)-SUM(cost_total))*(royalty_rate/100) net_receivable_tiji"
         		+" from( "
         		+"		SELECT jo.id,jo.order_no,jo.fee_count,jo.customer_id,jos.mbl_no,jo.order_export_date,IFNULL(locean1.name,lair1.name) pol_name,"
-        		+ "		IFNULL(locean2.name,lair2.name) pod_name,ul.c_name user_name,p.abbr,cs.royalty_rate,contract_no, "
+        		+ "		IFNULL(locean2.name,lair2.name) pod_name,ul.c_name user_name,p.abbr,cs.royalty_rate,"
+        		+ " (SELECT contract_no from customer_contract ccon"
+        		+ "		LEFT JOIN customer_contract_location ccl ON ccl.contract_id = ccon.id"
+        		+ "		WHERE	ccon.type = jo.type	AND ccon.customer_id = jo.customer_id"
+        		+ "		AND ccon.trans_clause = jo.trans_clause	AND ccon.trade_type = jo.trade_type"
+        		+ "		AND ccl.pol_id = jos.pol AND ccl.pod_id = jos.pod	AND (jo.order_export_date BETWEEN ccon.contract_begin_time"
+        		+ "		AND ccon.contract_end_time)	and ccon.customer_id = jo.customer_id)	contract_no, "
         		+"		if(cy.code='CNY' AND joa.order_type='charge',joa.total_amount,0) charge_CNY, "
         		+"		if(cy.code='USD' AND joa.order_type='charge',joa.total_amount,0) charge_USD, "
         		+"		if(cy.code='JPY' AND joa.order_type='charge',joa.total_amount,0) charge_JPY, "
@@ -286,11 +282,7 @@ public class SalesBillReportController extends Controller {
         		+"		LEFT JOIN party p on p.id = jo.customer_id "
         		+"		LEFT JOIN customer_salesman cs on cs.party_id =  jo.customer_id "
         		+"		LEFT JOIN user_login ul on ul.id = cs.salesman_id "
-        		+"		LEFT JOIN customer_contract ccon ON ccon.customer_id = jo.customer_id "
-        		+"		LEFT JOIN customer_contract_location ccl ON ccl.contract_id = ccon.id "
-        		+"		WHERE jo.office_id = "+office_id+" AND ccon.type = jo.type AND ccon.customer_id = jo.customer_id AND ccon.trans_clause = jo.trans_clause"
-        		+"		AND ccon.trade_type = jo.trade_type AND ccl.pol_id = jos.pol AND ccl.pod_id = jos.pod AND (jo.order_export_date BETWEEN ccon.contract_begin_time "
-        		+"		AND ccon.contract_end_time)"
+        		+"		WHERE (jo.office_id="+office_id+ ref_office+ ") and jo.delete_flag = 'N'"
         		+"		AND p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"')"
         		+" ) A  where 1= 1"+condition
         		+" GROUP BY A.order_no "

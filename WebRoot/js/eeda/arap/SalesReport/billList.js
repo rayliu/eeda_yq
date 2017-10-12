@@ -7,8 +7,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           paging: true,
           serverSide: true, //不打开会出现排序不对 
 //          ajax: "/salesBillReport/list",
-          initComplete:function(settings){
+          drawCallback:function(data){
     	  cssTd();
+    	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=order_no]').html('共'+data.json.recordsFiltered+'项汇总：');
           },
           columns: [
       			{ "data": "ORDER_NO", "width": "80px","className":"order_no",
@@ -262,9 +263,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       	  var sum_foot_current_profit = parseFloat(data.SUM_FOOT_PAY_CHARGE_TOTAL-data.SUM_FOOT_COST_TOTAL).toFixed(2);
       	 // var foot_commission_money = parseFloat(data.FOOT__MONEY).toFixed(2);
 
-      	  var total=parseFloat(data.TOTAL);
 
-      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=order_no]').html('共'+total+'项汇总：');
       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_charge_total]').html("折合应收CNY:<br>"+eeda.numFormat(sum_foot_charge_total,3));
       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_pay_charge_total]').html("折合实收CNY:<br>"+eeda.numFormat(sum_foot_pay_charge_total,3));
       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_cost_total]').html("折合应付CNY:<br>"+eeda.numFormat(sum_foot_cost_total,3));
@@ -309,6 +308,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         //合计字段
           $.post('salesBillReport/listTotal',{
         	  customer_id:customer_id,
+        	  user_name:user_name,
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
           },function(data){
@@ -319,9 +319,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           	  var sum_foot_current_profit = parseFloat(data.SUM_FOOT_PAY_CHARGE_TOTAL-data.SUM_FOOT_COST_TOTAL).toFixed(2);
         	  //var foot_commission_money = parseFloat(data.FOOT_COMMISSION_MONEY).toFixed(2);
 
-        	  var total=parseFloat(data.TOTAL);
-
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=order_no]').html('共'+total+'项汇总：');
+        	  
           	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_charge_total]').html("折合应收CNY:<br>"+eeda.numFormat(sum_foot_charge_total,3));
           	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_pay_charge_total]').html("折合实收CNY:<br>"+eeda.numFormat(sum_foot_pay_charge_total,3));
           	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_cost_total]').html("折合应付CNY:<br>"+eeda.numFormat(sum_foot_cost_total,3));
