@@ -51,6 +51,12 @@ public class BillProfitAndPaymentController extends Controller {
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	sql = " SELECT * FROM ("
@@ -63,7 +69,7 @@ public class BillProfitAndPaymentController extends Controller {
             		+"  from job_order jo "
             		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
             		+"  LEFT JOIN party p on p.id = jo.customer_id"
-            		+"  WHERE jo.office_id ="+office_id+" and joa.order_type = 'charge' "+condition
+            		+"  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") and joa.order_type = 'charge' "+condition
             		+ " and jo.delete_flag = 'N'"
     				+" GROUP BY jo.id"
             		+" ) A where 1=1 and (charge_rmb-cost_rmb)<0 ORDER BY abbr";
@@ -78,7 +84,7 @@ public class BillProfitAndPaymentController extends Controller {
             		+"  from job_order jo "
             		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
             		+"  LEFT JOIN party p on p.id = jo.customer_id"
-            		+"  WHERE jo.office_id ="+office_id+" and joa.order_type = 'charge' "+condition
+            		+"  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ") and joa.order_type = 'charge' "+condition
             		+ " and jo.delete_flag = 'N'"
     				+" GROUP BY jo.id"
             		+" ) A where 1=1  ORDER BY abbr";
