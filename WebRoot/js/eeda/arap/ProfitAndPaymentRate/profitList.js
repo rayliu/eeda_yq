@@ -323,7 +323,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     			  royalty_total+=parseFloat(royalty.replace(",",""));
     		  }
     	  });
-    	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("提成汇总:<br>"+eeda.numFormat(royalty_total,3));
+    	  if(royalty_total!=0){
+    		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("提成汇总:<br>"+eeda.numFormat(royalty_total,3));
+    	  }
+    	  
       }
     	  
       var excel_method = function(customer_id,begin_time,end_time){
