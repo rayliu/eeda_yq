@@ -55,7 +55,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                    return '<button type="button" class="delete btn table_btn  btn-xs" style="width:30px"  >删除</button>';
 	                  }
                 },
-                { "data": "CUSTOMER_ID", "width": "80px",
+                { "data": "CUSTOMER_ID", "width": "60px",
 	                  "render": function ( data, type, full, meta ) {
 	                     if(!data)
 	                            data='';
@@ -65,7 +65,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                                value: data,
 	                                display_value: full.CUSTOMER_ID_INPUT,
 	                                required:'required',
-	                                style:'width:100px',
+	                                style:'width:80px',
 	                            }
 	                        );
 	                        return field_html;
@@ -80,7 +80,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                               id: 'CABINET_DATE',
 	                               value: data,
 	                               display_value: full.CABINET_DATE,
-	                               style:'width:100px'
+	                               style:'width:80px'
 	                           }
 	                       );
 	                  return field_html;
@@ -95,13 +95,13 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                               id: 'CLOSING_DATE',
 	                               value: data,
 	                               display_value: full.CLOSING_DATE,
-	                               style:'width:100px'
+	                               style:'width:80px'
 	                           }
 	                       );
 	                  return field_html;
 	                }
 	            },
-	            { "data": "CHARGE_TIME", "width": "80px",
+	            { "data": "CHARGE_TIME", "width": "60px",
 	                  "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                    data='';
@@ -110,17 +110,17 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                               id: 'CHARGE_TIME',
 	                               value: data,
 	                               display_value: full.CHARGE_TIME,
-	                               style:'width:100px'
+	                               style:'width:80px'
 	                           }
 	                       );
 	                  return field_html;
 	                }
 	            },
-                { "data": "TYPE","width": "60px",
+                { "data": "TYPE","width": "50px",
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str= '<select name="type" class="form-control search-control"  style="width:80px">'
+	                    var str= '<select name="type" class="form-control search-control"  style="width:70px">'
 	                        +'<option value="出口柜货" '+(data=='出口柜货' ? 'selected':'')+'>出口柜货</option>'
 	                        +'<option value="进口柜货" '+(data=='进口柜货' ? 'selected':'')+'>进口柜货</option>'
 	                        +'<option value="出口散货" '+(data=='出口散货' ? 'selected':'')+'>出口散货</option>'
@@ -167,18 +167,18 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                    return str;
 	                }
 	            },
-	            { "data": "LADING_NO","width": "80px",
+	            { "data": "LADING_NO","width": "60px",
 	                  "render": function ( data, type, full, meta ) {
 	                      if(!data)
 	                        data = '';
-	                          return '<input type="text" name="lading_no" style="width:100px" value="'+data+'" class="form-control"/>';
+	                          return '<input type="text" name="lading_no" style="width:80px" value="'+data+'" class="form-control"/>';
 	                     }
 	            }, 
-	            { "data": "SEAL_NO","width": "80px",
+	            { "data": "SEAL_NO","width": "60px",
 	                  "render": function ( data, type, full, meta ) {
 	                      if(!data)
 	                        data = '';
-	                          return '<input type="text" name="seal_no" style="width:100px" value="'+data+'" class="form-control"/>';
+	                          return '<input type="text" name="seal_no" style="width:80px" value="'+data+'" class="form-control"/>';
 	                     }
 	            }, 
 	            { "data": "HEAD_CARRIER","width": "70px",
@@ -190,13 +190,13 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                               id: 'HEAD_CARRIER',
 	                               value: data,
 	                               display_value: full.HEAD_CARRIER_INPUT,
-	                               style:'width:90px',
+	                               style:'width:80px',
 	                           }
 	                       );
 	                       return field_html;
 	                   }
 	              },
-	              { "data": "TAKE_WHARF","width": "100px",
+	              { "data": "TAKE_WHARF","width": "80px",
 		                "render": function ( data, type, full, meta ) {
 		                     if(!data)
 		                            data='';
@@ -205,13 +205,13 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 		                                id: 'TAKE_WHARF',
 		                                value: data,
 		                                display_value: full.TAKE_WHARF_INPUT,
-		                                style:'width:120px',
+		                                style:'width:100px',
 		                            }
 		                        );
 		                        return field_html;
 		                    }
 		           },
-		           { "data": "BACK_WHARF","width": "100px",
+		           { "data": "BACK_WHARF","width": "80px",
 		                "render": function ( data, type, full, meta ) {
 		                      if(!data)
 		                            data='';
@@ -220,13 +220,13 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 		                                id: 'BACK_WHARF',
 		                                value: data,
 		                                display_value: full.BACK_WHARF_INPUT,
-		                                style:'width:120px',
+		                                style:'width:100px',
 		                            }
 		                        );
 		                        return field_html;
 		                    }
 		           },
-		           { "data": "LOADING_WHARF1","width": "110px",
+		           { "data": "LOADING_WHARF1","width": "90px",
 		                "render": function ( data, type, full, meta ) {
 		                     if(!data)
 		                            data='';
@@ -235,13 +235,13 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 		                                id: 'LOADING_WHARF1',
 		                                value: data,
 		                                display_value: full.LOADING_WHARF1_INPUT,
-		                                style:'width:130px',
+		                                style:'width:110px',
 		                            }
 		                        );
 		                        return field_html;
 		                    }
 		           },
-		           { "data": "LOADING_WHARF2","width": "110px",
+		           { "data": "LOADING_WHARF2","width": "90px",
 		                "render": function ( data, type, full, meta ) {
 		                     if(!data)
 		                            data='';
@@ -250,7 +250,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 		                                id: 'LOADING_WHARF2',
 		                                value: data,
 		                                display_value: full.LOADING_WHARF2_INPUT,
-		                                style:'width:130px',
+		                                style:'width:110px',
 		                            }
 		                        );
 		                        return field_html;
@@ -263,7 +263,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                          return '<input type="text" name="loading_platform" style="width:80px" value="'+data+'" class="form-control"/>';
 	                     }
                   },
-		          { "data": "WHOLE_COURSE_CAR_NO","width": "80px",
+		          { "data": "WHOLE_COURSE_CAR_NO","width": "60px",
 		                "render": function ( data, type, full, meta ) {
 		                   if(!data)
 		                        data='';
@@ -272,7 +272,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 		                            id: 'WHOLE_COURSE_CAR_NO',  //component_id 便于用 #id取组件
 		                            value: data,
 		                            display_value: full.WHOLE_COURSE_CAR_NO_INPUT,
-		                            style:'width:100px'
+		                            style:'width:80px'
 		                        }
 		                    );
 		                     return field_html;
@@ -287,7 +287,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                            id: 'TIJIGUI_CAR_NO',  //component_id 便于用 #id取组件
 	                            value: data,
 	                            display_value: full.TIJIGUI_CAR_NO_INPUT,
-	                            style:'width:100px'
+	                            style:'width:80px'
 	                        }
 	                    );
 	                     return field_html;
@@ -302,13 +302,13 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                            id: 'SHOUZHONGGUI_CAR_NO',  //component_id 便于用 #id取组件
 	                            value: data,
 	                            display_value: full.SHOUZHONGGUI_CAR_NO_INPUT,
-	                            style:'width:100px'
+	                            style:'width:80px'
 	                        }
 	                    );
 	                     return field_html;
 	                 }
 	              },
-	              { "data": "YIGUI_CAR_NO","width": "80px",
+	              { "data": "YIGUI_CAR_NO","width": "70px",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                        data='';
@@ -317,20 +317,20 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                            id: 'YIGUI_CAR_NO',  //component_id 便于用 #id取组件
 	                            value: data,
 	                            display_value: full.YIGUI_CAR_NO_INPUT,
-	                            style:'width:100px'
+	                            style:'width:80px'
 	                        }
 	                    );
 	                     return field_html;
 	                 }
 	              }, 
-	              { "data": "FREIGHT","width": "80px",
+	              { "data": "FREIGHT","width": "60px",
 		              "render": function ( data, type, full, meta ) {
 	                      if(!data)
 	                        data = '';
-	                          return '<input type="text" name="freight" placeholder="为空,从合同价带出" style="width:100px" value="'+data+'" class="form-control"/>';
+	                          return '<input type="text" name="freight" placeholder="为空,从合同价带出" style="width:80px" value="'+data+'" class="form-control"/>';
 	                     }
                   },
-                  { "data": "CROSS_BORDER_TRAVEL","width": "80px",
+                  { "data": "CROSS_BORDER_TRAVEL","width": "60px",
 		                "render": function ( data, type, full, meta ) {
 		                     if(!data)
 		                            data='';
@@ -339,7 +339,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 		                                id: 'CROSS_BORDER_TRAVEL',
 		                                value: data,
 		                                display_value: full.CROSS_BORDER_TRAVEL,
-		                                style:'width:100px',
+		                                style:'width:80px',
 		                            }
 		                        );
 		                        return field_html;
