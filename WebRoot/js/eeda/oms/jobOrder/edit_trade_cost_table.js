@@ -666,8 +666,25 @@ $(document).ready(function() {
     	}
     	
     })
-
     
+    //校验
+     $('#trade_cost_table').on("blur","[name=number],[name=price],[name=domestic_price],[name=value_added_tax],"
+    				   +"[name=tax_refund_rate],[name=tax_refund_rate_customer],[name=custom_price],[name=custom_amount],[name=custom_rate],[name=agency_rate],[name=agency_amount_cny]",function(){
+		self = $(this);
+		data = self.val();
+		len = $.trim(data).length;
+		var name = self.attr("name");
+		var re = /^\d{0,9}(\.\d{1,6})?$/g;
+		if(!re.test(data)&&len!=0||len>16&&len!=0){
+			self.parent().append("<span style='color:red;width:130px;display:block;' class='error_span'>请输入合法数字</span>")
+		}
+		
+	});
+    $('#trade_cost_table').on("focus","[name=number],[name=price],[name=domestic_price],[name=value_added_tax],"
+			   +"[name=tax_refund_rate],[name=tax_refund_rate_customer],[name=custom_price],[name=custom_amount],[name=custom_rate],[name=agency_rate],[name=agency_amount_cny]",function(){
+		self = $(this)
+		self.parent().find("span").remove()
+	})
     
 });
 });

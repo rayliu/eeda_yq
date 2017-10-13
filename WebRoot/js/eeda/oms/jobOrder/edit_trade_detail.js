@@ -120,7 +120,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             trade_cost_table.clear().rows.add(new_trade_cost_list).draw();
         }
 
-  
+        //校验
+        $("#contract_number").on("blur",function(){
+    		self = $(this);
+    		data = self.val();
+    		len = $.trim(data).length;
+    		var re = /^.{255,}$/g;
+    		if(re.test(data)&&len!=0){
+    			self.parent().append("<span style='color:red;width:322px;margin-left:160px;' class='error_span'>请输入长度255以内的字符串</span>")
+    		}
+    	});
+        $("#cost_currency_rate").on("blur",function(){
+    		self = $(this);
+    		data = $.trim(self.val());
+    		var re = /^\d{0,4}(\.\d{1,5})?$/g;
+    		if(!re.test(data)){
+    			self.parent().append("<span style='color:red;width:322px;margin-left:160px;' class='error_span'>请输入合法数字</span>")
+    		}
+        });
+        $("#contract_number,#cost_currency_rate").on("focus",function(){
+    		self = $(this)
+    		self.parent().find("span").remove()
+    	})
 
     });
 });

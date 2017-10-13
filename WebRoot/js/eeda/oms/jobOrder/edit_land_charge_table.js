@@ -678,16 +678,16 @@ $(document).ready(function() {
         ]
     });
 	
-	$('#land_charge_table').on("blur","[name=price],[name=amount],[name=exchange_rate],[name=EXCHANGE_CURRENCY_RATE]",function(){
+	$('#land_charge_table').on("blur","[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate]",function(){
 		self = $(this)
 		data = self.val()
 		data = $.trim(data)
 		if(isNaN(data)){   
-			self.parent().append("<span style='color:red'>请输入数字！！！</span>")
+			self.parent().append("<span style='color:red'>请输入数字</span>")
 		}
 	})
 	
-	$('#land_charge_table').on("focus","[name=price],[name=amount],[name=volume],[name=vgm]",function(){
+	$('#land_charge_table').on("focus","[name=price],[name=amount],[name=volume],[name=vgm],[name=exchange_currency_rate]",function(){
     		self = $(this)
     		self.parent().find("span").remove()
     })

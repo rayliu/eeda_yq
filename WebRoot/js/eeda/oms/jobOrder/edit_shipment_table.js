@@ -194,9 +194,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
     		self = $(this)
     		data = self.val()
     		len = $.trim(data).length
-    		re = /^\d{0,11}$/g
+    		re = /^\d{0,10}$/g
     		if(!re.test(data)&&len!=0){   
-    			self.parent().append("<span style='color:red' class='error_span'>请输入11位以内的数字！！！</span>")
+    			self.parent().append("<span style='color:red' class='error_span'>请输入10位以内的整数</span>")
     		}
     	})
     	$('#ocean_cargo_table').on("blur","[name=gross_weight],[name=volume]",function(){
@@ -205,9 +205,18 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
     		len = $.trim(data).length
     		re = /^\d{0,11}\.?\d{0,11}$/g
     		if(len>11&&len!=0||!re.test(data)&&len!=0){
-    			self.parent().append("<span style='color:red' class='error_span'>请输入11位以内的数字！！！</span>")
+    			self.parent().append("<span style='color:red' class='error_span'>请输入11位以内的数字</span>")
     		}else if (len != 0 ){
     			self.val(parseFloat(data).toFixed(4))
+    		}
+    	})
+    	$('#ocean_cargo_table').on("blur","[name=container_no],[name=seal_no],[name=pallet_desc]",function(){
+    		self = $(this)
+    		data = self.val()
+    		len = $.trim(data).length
+    		re = /^.{100}$/g
+    		if(re.test(data)&&len!=""){
+    			self.parent().append("<span style='color:red' class='error_span'>请输入长度100以内的字符串</span>")
     		}
     	})
     	$('#ocean_cargo_table').on("blur","[name=vgm]",function(){
@@ -216,12 +225,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
     		len = $.trim(data).length
     		re = /^\d{0,11}\.?\d{0,11}$/g
     		if(len>11&&len!=0||!re.test(data)&&len!=0){
-    			self.parent().append("<span style='color:red' class='error_span'>请输入11位以内的数字！！！</span>")
+    			self.parent().append("<span style='color:red' class='error_span'>请输入11位以内的数字</span>")
     		}else if (len != 0 ){
     			self.val(parseFloat(data).toFixed(5))
     		}
     	})
-    	$('#ocean_cargo_table').on("focus","[name=pieces],[name=gross_weight],[name=volume],[name=vgm]",function(){
+    	
+    	$('#ocean_cargo_table').on("focus","[name=pieces],[name=gross_weight],[name=volume],[name=vgm],[name=container_no],[name=seal_no],[name=pallet_desc]",function(){
     		self = $(this)
     		self.parent().find("span").remove()
     	})

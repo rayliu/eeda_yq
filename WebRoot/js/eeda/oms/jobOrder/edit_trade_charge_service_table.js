@@ -129,6 +129,7 @@ $(document).ready(function() {
                             {
                                 id: 'SP_ID',
                                 value: data,
+                                style:'width:120px;',
                                 display_value: full.SP_NAME,
                                 disabled:'disabled'
                             }
@@ -140,6 +141,7 @@ $(document).ready(function() {
                                 {
                                     id: 'SP_ID',
                                     value: $('#sp').val(),
+                                    style:'width:120px;',
                                     display_value: $('#sp_input').val()
                                 }
                         );
@@ -148,6 +150,7 @@ $(document).ready(function() {
                         {
                             id: 'SP_ID',
                             value: data,//对应数据库字段
+                            style:'width:120px;',
                             display_value: full.SP_NAME
                         }
                      );
@@ -166,6 +169,7 @@ $(document).ready(function() {
                             {
                                 id: 'CHARGE_ID',
                                 value: data,
+                                style:'width:120px;',
                                 display_value: full.CHARGE_NAME,
                                 disabled:'disabled'
                             }
@@ -178,6 +182,7 @@ $(document).ready(function() {
                         {
                             id: 'CHARGE_ID',//对应数据库字段
                             value: data,
+                            style:'width:120px;',
                             display_value: full.CHARGE_NAME
                         }
                     );
@@ -185,7 +190,7 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "CHARGE_ENG_ID", "width": "180px",
+            { "data": "CHARGE_ENG_ID", "width": "120px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -193,35 +198,35 @@ $(document).ready(function() {
                             {
                         id: 'CHARGE_ENG_ID',
                         value: data,
+                        style:'width:140px;',
                         display_value: full.CHARGE_NAME_ENG,
-                        
                         disabled:'disabled'
                             }
                     );
                     return field_html;
                 }
             },
-            { "data": "PRICE", "width": "50px",
+            { "data": "PRICE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
                     if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="price"  value="'+str+'" class="form-control notsave" disabled />';
+                        return '<input type="text" name="price"  style="width:80px;" value="'+str+'" class="form-control notsave" disabled />';
                      }else{
-                        return '<input type="text" name="price" value="'+str+'" class="form-control notsave" />';
+                        return '<input type="text" name="price" style="width:80px;" value="'+str+'" class="form-control notsave" />';
                      }
                   }
             },
-            { "data": "AMOUNT","width": "50px",
+            { "data": "AMOUNT","width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='1';
                     if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave" disabled/>';
+                        return '<input type="text" name="amount" style="width:80px;" value="'+data+'" class="form-control notsave" disabled/>';
                      }else{
-                        return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave"/>';
+                        return '<input type="text" name="amount" style="width:80px;" value="'+data+'" class="form-control notsave"/>';
                     }
                 }
             },
@@ -263,7 +268,7 @@ $(document).ready(function() {
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
-                    return '<input type="text" name="total_amount" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="total_amount" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
                     
                 }
             },
@@ -297,20 +302,20 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "EXCHANGE_RATE", "width": "80px",
+            { "data": "EXCHANGE_RATE", "width": "90px",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(6);
                     else
                         str = '';
                 if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
+                        return '<input type="text" name="exchange_rate" style="width:110px" value="'+str+'" class="form-control notsave" disabled />';
                 }else{
-                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control notsave" />';
+                        return '<input type="text" name="exchange_rate" style="width:110px" value="'+str+'" class="form-control notsave" />';
                }
               }
             },
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "80px","className":"cny_total_amount",
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "100px","className":"cny_total_amount",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -368,23 +373,23 @@ $(document).ready(function() {
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
-                    return '<input type="text" name="exchange_total_amount" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="exchange_total_amount" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
                 }
             },
-            { "data": "EXCHANGE_CURRENCY_RATE_RMB", "width": "80px", "className":"exchange_currency_rate_rmb",
+            { "data": "EXCHANGE_CURRENCY_RATE_RMB", "width": "100px", "className":"exchange_currency_rate_rmb",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(6);
                     else
                         str = '';
                     if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
+                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
                     }else{
-                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:100px" value="'+str+'" class="form-control notsave" />';
+                        return '<input type="text" name="exchange_currency_rate_rmb" style="width:120px" value="'+str+'" class="form-control notsave" />';
                     }
                 }
             },
-            { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "80px","className":"exchange_total_amount_rmb",
+            { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "120px","className":"exchange_total_amount_rmb",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
@@ -849,5 +854,39 @@ $(document).ready(function() {
     		}
     	});
     });
+    
+    //校验
+    $('#charge_service_table').on("blur","[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate],"
+   				   +"[name=exchange_currency_rate_rmb]",function(){
+		data = $(this).val();
+		len = $.trim(data).length;
+		var re = /^\d{0,9}(\.\d{1,6})?$/g;
+		if(!re.test(data)&&len!=0||len>16&&len!=0){
+			$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法数字</span>")
+		}
+	});
+    $("#service_currency_rate,#service_exchange_currency_rate").on("blur",function(){
+		data = $(this).val();
+		len = $.trim(data).length;
+		var re = /^\d{0,9}(\.\d{1,6})?$/g;
+		if(!re.test(data)&&len!=0||len>16&&len!=0){
+			$(this).parent().append("<span style='color:red;width:130px;display:block;margin-left:110px;' class='error_span'>请输入合法数字</span>")
+		}
+    });
+    $('#charge_service_table').on("blur","[name=remark]",function(){
+		data = $(this).val();
+		len = $.trim(data).length;
+		var re = /^.{500,}$/g;
+		if(re.test(data)&&len!=0){
+			$(this).parent().append("<span style='color:red;' class='error_span'>请输入长度500以内的字符串</span>")
+		}
+	});
+    $('#charge_service_table').on("focus","[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate],"
+			   +"[name=exchange_currency_rate_rmb],[name=remark]",function(){
+		$(this).parent().find("span").remove();
+	});
+	$("#service_currency_rate,#service_exchange_currency_rate").on("focus",function(){
+		$(this).parent().find("span").remove();
+	});
 });
 });

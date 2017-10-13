@@ -416,7 +416,31 @@ $(document).ready(function() {
     $('#reflesh').on('click',function(){
     	itemOrder.refleshCustomAPPTable($('#order_id').val());
     });
-        
     
+    //校验
+	$("#hk_phone,#abroad_phone").on("blur",function(){
+		self = $(this)
+		data = self.val()
+		data = $.trim(data)
+		var mobile = /^((1[34578]\d{9})|(0\d{2,3}-\d{7,8}))$/;
+		if(!mobile.test(data)&&data!=""){   
+			self.parent().append("<span style='color:red;width:322px;margin-left:160px;' class='error_span'>请输入正确的电话或者手机号码</span>")
+		}
+	})
+	$("#hk_customs_broker,#hk_contact,#hk_custom_order_no,#hk_destination_country,#abroad_customs_broker,#abroad_contact,#abroad_custom_order_no,#abroad_destination_country").on("blur",function(){
+		self = $(this)
+		data = self.val()
+		data = $.trim(data)
+		var len = $.trim(data).length
+		var re = /^.{255,}$/g;
+		if(re.test(data)&&data!=""){   
+			self.parent().append("<span style='color:red;width:322px;margin-left:160px;' class='error_span'>请输入长度255以内的字符串</span>")
+		}
+	})
+    $("#hk_customs_broker,#hk_contact,#hk_custom_order_no,#hk_destination_country,#abroad_customs_broker,#abroad_contact,#abroad_custom_order_no,#abroad_destination_country,#hk_phone,#abroad_phone").on("focus",function(){
+    		self = $(this)
+    		self.parent().find("span").remove()
+    })
+   
 });
 });

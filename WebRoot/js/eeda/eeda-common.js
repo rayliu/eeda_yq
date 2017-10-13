@@ -993,9 +993,12 @@ eeda.refreshUrl = refreshUrl;
               hiddenField.val(dataId);//id
 
               var row = inputField.parent().parent().parent();
-              row.find('.consignor_phone input').val($(this).attr('phone'));
-              row.find('.consignor_addr input').val($(this).attr('addr'));
-              row.find('.consignor_contact_man input').val($(this).attr('contact_man'));
+              var phone = $(this).attr('phone');
+              row.find('.consignor_phone input').val(phone!="null"?phone:"");
+              var addr = $(this).attr('addr');
+              row.find('.consignor_addr input').val(addr!="null"?addr:"");
+              var contact_man = $(this).attr('contact_man');
+              row.find('.consignor_contact_man input').val(contact_man!="null"?contact_man:"");
           });
 
           tableFieldList.on('keydown', 'li', function(e){
@@ -1098,9 +1101,12 @@ eeda.refreshUrl = refreshUrl;
               hiddenField.val(dataId);//id
 
               var row = inputField.parent().parent().parent();
-              row.find('.consignee_phone input').val($(this).attr('phone'));
-              row.find('.consignee_addr input').val($(this).attr('addr'));
-              row.find('.consignee_contact_man input').val($(this).attr('contact_man'));
+              var phone = $(this).attr('phone');
+              row.find('.consignee_phone input').val(phone!="null"?phone:"");
+              var addr = $(this).attr('addr');
+              row.find('.consignee_addr input').val(addr!="null"?addr:"");
+              var contact_man = $(this).attr('contact_man');
+              row.find('.consignee_contact_man input').val(contact_man!="null"?contact_man:"");
           });
 
           tableFieldList.on('keydown', 'li', function(e){

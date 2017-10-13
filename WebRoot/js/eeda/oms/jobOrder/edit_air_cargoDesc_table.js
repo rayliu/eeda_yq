@@ -113,12 +113,13 @@ $(document).ready(function() {
     });
 
    	$('#cargoDesc_table').on("blur","[name=long],[name=high],[name=wide],[name=gross_weight],[name=amount]",function(){
-		self = $(this)
-		data = self.val()
-		len = $.trim(data).length
-		re = /^\d*\.?\d*$/g
+		self = $(this);
+		data = self.val();
+		len = $.trim(data).length;
+		re = /^\d*\.?\d*$/g;
+		
 		if(len>11&&len!=0||!re.test(data)&&len!=0){
-			self.parent().append("<p><span style='color:red' class='error_span'>请输入数字！！！</span></p>")
+			self.parent().append("<p><span style='color:red' class='error_span'>请输入长度11位以内的数字</span></p>")
 		}else if (len != 0 ){
 			
 		}

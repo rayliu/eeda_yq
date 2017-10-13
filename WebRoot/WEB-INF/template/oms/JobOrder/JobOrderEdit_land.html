@@ -4,7 +4,7 @@
                     <div class="row">
                         <div class="form-group">
                             <div class="col-lg-12" style="margin:15px 0px;">
-                                <a href='#' data-toggle="modal" data-target="#partyModal" class="btn btn_green">添加收发货人</a>
+                                <a href='#' data-toggle="modal" data-target="#partyModal" class="btn btn_green" style="display:none;">添加收发货人</a>
                                 <button class="btn btn_green" id="truckOrderPDF" disabled>生成散货派车单PDF</button> 
                                 
                                 <% if(shiro.hasPermission("jobOrder.cabinet_truck_SOPDF")){ %>
@@ -71,10 +71,10 @@
 			                                <%include("/eeda/component/form/detailTable.html", 
 			                                    {
 			                                        id:'land_table',
-			                                        style:'width:3100px',
+			                                        style:'width:3400px',
 			                                        headers:[
 			                                            '<input id="allCheckOfLand" type="checkbox" style="width:30px">',
-			                                            '','',     '',  '收卸货类型', 
+			                                            '','','','收卸货类型', 
 			                                            '运输公司', '车型',
 			                                            '预约到达时间', 
 			                                            '发货公司',

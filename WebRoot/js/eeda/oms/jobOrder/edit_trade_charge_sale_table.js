@@ -128,6 +128,7 @@ $(document).ready(function() {
                             {
                                 id: 'SP_ID',
                                 value: data,
+                                style:'width:120px;',
                                 display_value: full.SP_NAME,
                                 disabled:'disabled'
                             }
@@ -139,6 +140,7 @@ $(document).ready(function() {
                                 {
                                     id: 'SP_ID',
                                     value: $('#sp').val(),
+                                    style:'width:120px;',
                                     display_value: $('#sp_input').val()
                                 }
                         );
@@ -147,6 +149,7 @@ $(document).ready(function() {
                         {
                             id: 'SP_ID',
                             value: data,//对应数据库字段
+                            style:'width:120px;',
                             display_value: full.SP_NAME
                         }
                      );
@@ -164,6 +167,7 @@ $(document).ready(function() {
                         var field_html = template('table_dropdown_template',
                             {
                                 id: 'CHARGE_ID',
+                                style:'width:120px;',
                                 value: data,
                                 display_value: full.CHARGE_NAME,
                                 disabled:'disabled'
@@ -176,6 +180,7 @@ $(document).ready(function() {
                     var field_html = template('table_dropdown_template',
                         {
                             id: 'CHARGE_ID',//对应数据库字段
+                            style:'width:120px;',
                             value: data,
                             display_value: full.CHARGE_NAME
                         }
@@ -184,13 +189,14 @@ $(document).ready(function() {
                 }
               }
             },
-            { "data": "CHARGE_ENG_ID", "width": "180px",
+            { "data": "CHARGE_ENG_ID", "width": "120px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
                     var field_html = template('table_dropdown_template',
                             {
                         id: 'CHARGE_ENG_ID',
+                        style:'width:140px;',
                         value: data,
                         display_value: full.CHARGE_NAME_ENG,
                         
@@ -200,27 +206,27 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "PRICE", "width": "50px",
+            { "data": "PRICE", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
                     if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="price"  value="'+str+'" class="form-control notsave" disabled />';
+                        return '<input type="text" name="price" style="width:80px;" value="'+str+'" class="form-control notsave" disabled />';
                      }else{
-                        return '<input type="text" name="price" value="'+str+'" class="form-control notsave" />';
+                        return '<input type="text" name="price" style="width:80px;" value="'+str+'" class="form-control notsave" />';
                      }
                   }
             },
-            { "data": "AMOUNT","width": "50px",
+            { "data": "AMOUNT","width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='1';
                     if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave" disabled/>';
+                        return '<input type="text" name="amount" style="width:80px;" value="'+data+'" class="form-control notsave" disabled/>';
                      }else{
-                        return '<input type="text" name="amount"  value="'+data+'" class="form-control notsave"/>';
+                        return '<input type="text" name="amount" style="width:80px;" value="'+data+'" class="form-control notsave"/>';
                     }
                 }
             },
@@ -256,17 +262,17 @@ $(document).ready(function() {
                     }
                 }
             },
-            { "data": "TOTAL_AMOUNT", "width": "80px","className":"currency_total_amount",
+            { "data": "TOTAL_AMOUNT", "width": "100px","className":"currency_total_amount",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
-                    return '<input type="text" name="total_amount" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="total_amount" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
                     
                 }
             },
-            { "data": "CURRENCY_ID", "width":"60px","className":"currency_name",
+            { "data": "CURRENCY_ID", "width":"100px","className":"currency_name",
                 "render": function ( data, type, full, meta ) {
                     if(full.AUDIT_FLAG == 'Y'){
                         if(!data)
@@ -276,7 +282,7 @@ $(document).ready(function() {
                                 id: 'CURRENCY_ID',
                                 value: data,
                                 display_value: full.CURRENCY_NAME,
-                                style:'width:80px',
+                                style:'width:120px',
                                 disabled:'disabled'
                             }
                         );
@@ -289,36 +295,36 @@ $(document).ready(function() {
                            id: 'CURRENCY_ID',
                            value: data,
                            display_value: full.CURRENCY_NAME,
-                           style:'width:80px'
+                           style:'width:120px'
                        }
                    );
                    return field_html; 
                 }
               }
             },
-            { "data": "EXCHANGE_RATE", "width": "80px",
+            { "data": "EXCHANGE_RATE", "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(6);
                     else
                         str = '';
                 if(full.AUDIT_FLAG == 'Y'){
-                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
+                        return '<input type="text" name="exchange_rate" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
                 }else{
-                        return '<input type="text" name="exchange_rate" style="width:100px" value="'+str+'" class="form-control notsave" />';
+                        return '<input type="text" name="exchange_rate" style="width:120px" value="'+str+'" class="form-control notsave" />';
                }
               }
             },
-            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "80px","className":"cny_total_amount",
+            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "120px","className":"cny_total_amount",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
-                    return '<input type="text" name="currency_total_amount" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="currency_total_amount" style="width:140px" value="'+str+'" class="form-control notsave" disabled />';
               }
             },
-            { "data": "EXCHANGE_CURRENCY_ID", "width":"60px","className":"cny_to_other",
+            { "data": "EXCHANGE_CURRENCY_ID", "width":"80px","className":"cny_to_other",
                 "render": function ( data, type, full, meta ) {
                     if(full.AUDIT_FLAG == 'Y'){
                         if(!data)
@@ -328,7 +334,7 @@ $(document).ready(function() {
                                     id: 'exchange_currency_id',
                                     value: data,
                                     display_value: full.EXCHANGE_CURRENCY_ID_NAME,
-                                    style:'width:80px',
+                                    style:'width:100px',
                                     disabled:'disabled'
                                 }
                         );
@@ -341,7 +347,7 @@ $(document).ready(function() {
                                     id: 'exchange_currency_id',
                                     value: data,
                                     display_value: full.EXCHANGE_CURRENCY_ID_NAME,
-                                    style:'width:80px'
+                                    style:'width:100px'
                                 }
                         );
                         return field_html; 
@@ -367,7 +373,7 @@ $(document).ready(function() {
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
-                    return '<input type="text" name="exchange_total_amount" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="exchange_total_amount" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
                 }
             },
             { "data": "EXCHANGE_CURRENCY_RATE_RMB", "width": "80px", "className":"exchange_currency_rate_rmb",
@@ -383,13 +389,13 @@ $(document).ready(function() {
                     }
                 }
             },
-            { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "80px","className":"exchange_total_amount_rmb",
+            { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "120px","className":"exchange_total_amount_rmb",
                 "render": function ( data, type, full, meta ) {
                     if(data)
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '';
-                    return '<input type="text" name="exchange_total_amount_rmb" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="exchange_total_amount_rmb" style="width:140px" value="'+str+'" class="form-control notsave" disabled />';
                 }
             },
             { "data": "RMB_DIFFERENCE", "width": "80px","className":"rmb_difference",
@@ -398,7 +404,7 @@ $(document).ready(function() {
                         var str =  parseFloat(data).toFixed(2);
                     else
                         str = '0.00';
-                    return '<input type="text" name="rmb_difference" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
+                    return '<input type="text" name="rmb_difference" style="width:100px" value="'+str+'" class="form-control notsave" disabled />';
                 }
             },
             { "data": "REMARK","width": "180px",
@@ -842,5 +848,39 @@ $(document).ready(function() {
     		}
     	});
     });
+    
+    //校验
+    $('#trade_sale_table').on("blur","[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate],"
+   				   +"[name=exchange_currency_rate_rmb]",function(){
+		data = $(this).val();
+		len = $.trim(data).length;
+		var re = /^\d{0,9}(\.\d{1,6})?$/g;
+		if(!re.test(data)&&len!=0||len>16&&len!=0){
+			$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法数字</span>")
+		}
+	});
+    $("#sale_currency_rate,#sale_exchange_currency_rate").on("blur",function(){
+		data = $(this).val();
+		len = $.trim(data).length;
+		var re = /^\d{0,9}(\.\d{1,6})?$/g;
+		if(!re.test(data)&&len!=0||len>16&&len!=0){
+			$(this).parent().append("<span style='color:red;width:130px;display:block;margin-left:110px;' class='error_span'>请输入合法数字</span>")
+		}
+    });
+    $('#trade_sale_table').on("blur","[name=remark]",function(){
+		data = $(this).val();
+		len = $.trim(data).length;
+		var re = /^.{500,}$/g;
+		if(re.test(data)&&len!=0){
+			$(this).parent().append("<span style='color:red;' class='error_span'>请输入长度500以内的字符串</span>")
+		}
+	});
+    $('#trade_sale_table').on("focus","[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate],"
+			   +"[name=exchange_currency_rate_rmb],[name=remark]",function(){
+		$(this).parent().find("span").remove();
+	});
+	$("#sale_currency_rate,#sale_exchange_currency_rate").on("focus",function(){
+		$(this).parent().find("span").remove();
+	});
 });
 });

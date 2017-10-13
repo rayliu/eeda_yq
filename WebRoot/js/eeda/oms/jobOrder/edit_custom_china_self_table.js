@@ -157,6 +157,19 @@ $(document).ready(function() {
     	cargoTable.ajax.url(url).load();
     }
     
-
+    //报关单号码、填报人校验
+    $('#custom_self_item_table').on("blur","[name=custom_order_no],[name=creator]",function(){
+    	self = $(this);
+		data = self.val();
+		len = $.trim(data).length;
+		var re = /^.{255,}$/g;
+		if(re.test(data)&&len!=0){
+			self.parent().append("<span style='color:red' class='error_span'>请输入长度255以内的字符串</span>");
+		}
+    });
+    $('#custom_self_item_table').on("focus","[name=custom_order_no],[name=creator]",function(){
+		self = $(this)
+		self.parent().find("span").remove()
+	})
 });
 });

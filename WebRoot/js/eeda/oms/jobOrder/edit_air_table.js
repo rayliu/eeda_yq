@@ -94,18 +94,18 @@ $(document).ready(function() {
                     return field_html;
                 }
             },
-            { "data": "FLIGHT_NO", "width": "180px",
+            { "data": "FLIGHT_NO", "width": "130px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="flight_no" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="flight_no" value="'+data+'" class="form-control" style="width:150px"/>';
                 }
             },
-            { "data": "VOYAGE_NO", "width": "180px",
+            { "data": "VOYAGE_NO", "width": "140px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<input type="text" name="voyage_no" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="voyage_no" value="'+data+'" class="form-control" style="width:160px"/>';
                 }
             },
             { "data": "START_FROM", "width":"130px",
@@ -123,7 +123,7 @@ $(document).ready(function() {
                    return field_html; 
                 }
             },
-            { "data": "ETD", "width": "180px",
+            { "data": "ETD", "width": "160px",
             	"render": function ( data, type, full, meta ) {
             		 if(!data)
 	                        data='';
@@ -131,7 +131,7 @@ $(document).ready(function() {
 		                    {
 		                        id: 'ETD',
 		                        value: data.substr(0,19),
-		                        style:'width:180px'
+		                        style:'width:170px'
 		                    }
 		                );
 	                    return field_html;
@@ -153,7 +153,7 @@ $(document).ready(function() {
                    return field_html; 
                 }
             },
-            { "data": "ETA", "width": "180px",
+            { "data": "ETA", "width": "160px",
                 "render": function ( data, type, full, meta ) {
                 	 if(!data)
 	                        data='';
@@ -195,6 +195,58 @@ $(document).ready(function() {
         var item={};
         cargoTable.row.add(item).draw(true);
     });
+    
+    $("[name=hawb_no],[name=mawb_no],[name=shipping_mark],[name=goods_mark],[name=booking_mark]").on("blur",function(){
+		self = $(this);
+		data = self.val();
+		len = $.trim(data).length;
+		var name = self.attr("name");
+		if(name=="hawb_no"||name=="mawb_no"){
+			var re = /^.{50,}$/g;
+			if(len!=0&&re.test(data)){
+				self.parent().append("<p><span style='color:red' class='error_span'>请输入长度50以内的字符串</span></p>")
+			}
+		}
+		if(name=="shipping_mark"){
+			var re = /^.{100,}$/g;
+			if(len!=0&&re.test(data)){
+				self.parent().append("<p><span style='color:red' class='error_span'>请输入长度100以内的字符串</span></p>")
+			}
+		}
+		if(name=="goods_mark"){
+			var re = /^.{2000,}$/g;
+			if(len!=0&&re.test(data)){
+				self.parent().append("<p><span style='color:red' class='error_span'>请输入长度2000以内的字符串</span></p>")
+			}
+		}
+		if(name=="booking_mark"){
+			var re = /^.{255,}$/g;
+			if(len!=0&&re.test(data)){
+				self.parent().append("<p><span style='color:red' class='error_span'>请输入长度255以内的字符串</span></p>")
+			}
+		}
+	})
+	
+	//航班号、航次校验
+	$('#air_table').on("blur","[name=flight_no],[name=voyage_no]",function(){
+		self = $(this);
+		data = self.val();
+		len = $.trim(data).length;
+		var re = /^.{100,}$/g;
+		if(re.test(data)&&len!=0){   
+			self.parent().append("<span style='color:red' class='error_span'>请输入长度100以内的字符串</span>");
+		}
+	})
+	
+	$("[name=hawb_no],[name=mawb_no],[name=shipping_mark],[name=goods_mark],[name=booking_mark]").on("focus",function(){
+    		self = $(this)
+    		self.parent().find("span").remove()
+    })
+    
+	$('#air_table').on("focus","[name=flight_no],[name=voyage_no]",function(){
+		self = $(this)
+		self.parent().find("span").remove()
+	})
     
     //刷新明细表
     itemOrder.refleshAirItemTable = function(order_id){
