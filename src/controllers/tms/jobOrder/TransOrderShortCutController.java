@@ -162,8 +162,12 @@ public class TransOrderShortCutController extends Controller {
 				tjol.set("truck_type", ci.get("cartype"));
 				tjol.set("driver", ci.get("driver"));
 				tjol.set("driver_tel", ci.get("phone"));
-				tjol.set("cabinet_date", itemMap.get("CABINET_DATE"));
-				tjol.set("closing_date", itemMap.get("CLOSING_DATE"));
+				if(StringUtils.isNotEmpty(itemMap.get("CABINET_DATE"))){
+					tjol.set("cabinet_date", itemMap.get("CABINET_DATE"));
+				}
+				if(StringUtils.isNotEmpty(itemMap.get("CLOSING_DATE"))){
+					tjol.set("closing_date", itemMap.get("CLOSING_DATE"));
+				}
 				tjol.set("loading_platform", itemMap.get("loading_platform"));
 				 loading_wharf1=itemMap.get("LOADING_WHARF1");
 				if(!"".equals(loading_wharf1)){
@@ -191,7 +195,9 @@ public class TransOrderShortCutController extends Controller {
 				tjol.set("driver", ci.get("driver"));
 				tjol.set("driver_tel", ci.get("phone"));
 				tjol.set("take_wharf", itemMap.get("TAKE_WHARF"));
-				tjol.set("cabinet_date", itemMap.get("CABINET_DATE"));
+				if(StringUtils.isNotEmpty(itemMap.get("CABINET_DATE"))){
+					tjol.set("cabinet_date", itemMap.get("CABINET_DATE"));
+				}
 				tjol.set("loading_platform", itemMap.get("loading_platform"));
 				 loading_wharf1=itemMap.get("LOADING_WHARF1");
 				if(!"".equals(loading_wharf1)){
@@ -233,7 +239,9 @@ public class TransOrderShortCutController extends Controller {
 				tjol.set("unload_type", "收重柜");
 				tjol.set("item_type", "shipment");
 				tjol.set("status", "待发车");
-				tjol.set("closing_date", itemMap.get("CLOSING_DATE"));
+				if(StringUtils.isNotEmpty(itemMap.get("CLOSING_DATE"))){
+					tjol.set("closing_date", itemMap.get("CLOSING_DATE"));
+				}
 				//车牌对应司机；
 				Carinfo ci=Carinfo.dao.findById(itemMap.get("SHOUZHONGGUI_CAR_NO"));
 				tjol.set("car_no", ci.get("id"));
