@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','pageguide','datetimepicker_CN'], function ($, metisMenu,template) {
+define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco','pageguide','datetimepicker_CN','dtColReorder'], function ($, metisMenu,template) {
   $(document).ready(function() {
 	  tl.pg.init({
           pg_caption: '本页教程'
@@ -36,7 +36,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           // serverSide: true, //不打开会出现排序不对
           autoWidth: false,
           scrollY: 530,
-          
+          colReorder: true,
           scrollCollapse: true,
           "drawCallback":function(settings){
             bindFieldEvent();
@@ -158,7 +158,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                        data='';
-	                    var str= '<select  name="cabinet_type" class="form-control search-control valid">'
+	                    var str= '<select  name="cabinet_type" style="width:60px" class="form-control search-control valid">'
 	                    		 +'<option value="40HQ" '+(data=='40HQ' ? 'selected':'')+'>40HQ</option>'
 	                             +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
 	                             +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'	                             
@@ -394,11 +394,11 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                          return '<input type="text" name="weighing_fee" style="width:60px" value="'+data+'" class="form-control"/>';
 	                     }
                   },
-                  { "data": "JI_JINJI_OUT_FEE","width": "50px",
+                  { "data": "JI_JINJI_OUT_FEE","width": "70px",
 		              "render": function ( data, type, full, meta ) {
 	                      if(!data)
 	                        data = '';
-	                          return '<input type="text" name="ji_jinji_out_fee" style="width:70px" value="'+data+'" class="form-control"/>';
+	                          return '<input type="text" name="ji_jinji_out_fee" style="width:90px" value="'+data+'" class="form-control"/>';
 	                     }
                   },
                   { "data": "ADVANCE_FEE","width": "40px",
