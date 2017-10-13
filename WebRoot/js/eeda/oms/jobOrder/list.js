@@ -258,6 +258,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 	    	  selectField="type_equals";
 	      }else if(selectField == 'customer_name'){
 	    	  selectFieldValue = $("#single_customer_name_input").val();
+	    	  selectFieldValue +="&customer="+$("#single_customer_name").val();
           }else if(selectField == 'create_stamp'){
         	  var start_date = $("#public_time_begin_time").val();
               var end_date = $("#public_time_end_time").val();
@@ -305,6 +306,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           var export_type = $('#type').val();
           var customer_code = $("#customer_code").val().trim();
           var customer_name = $("#customer_name_input").val().trim();
+          var customer_id = $("#customer_name").val().trim();
           var sono = $("#sono").val().trim();
           var container_no = $("#container_no").val().trim();
           //var order_type = $("#order_type").val().trim();
@@ -322,6 +324,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
                +"&type_="+$('#order_type').val()
+               +"&customer="+customer_id
     		   +"&custom_status_="+custom_status
           	   +"&order_export_date_begin_time="+sent_out_time_begin_time
           	   +"&order_export_date_end_time="+sent_out_time_end_time;

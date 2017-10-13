@@ -477,7 +477,8 @@ public class JobOrderController extends Controller {
 		saveFinItemQueryHistory(chargeCost_list);
 		
 		//常用客户保存进入历史记录
-   		saveCustomerQueryHistory(customerId);
+		Long userId = LoginUserController.getLoginUserId(this);
+   		saveCustomerQueryHistory(customerId,userId);
    		//保存海运下拉使用历史
    		//表内容
 		List<Record> oceanRes = new ArrayList<Record>();
@@ -2591,7 +2592,7 @@ public class JobOrderController extends Controller {
         }
     }
 
-    private void addHistoryRecord(long userId, String partyId, String type) {
+    static void addHistoryRecord(long userId, String partyId, String type) {
         Record rec = Db.findFirst("select * from user_query_history where type='"+type+"' and ref_id=? and user_id=?", partyId, userId);
         if(rec==null){
             rec = new Record();
@@ -2606,8 +2607,8 @@ public class JobOrderController extends Controller {
         }
     }
     //常用客户保存进入历史记录
-    private void saveCustomerQueryHistory(long customerId){
-        Long userId = LoginUserController.getLoginUserId(this);
+     static void saveCustomerQueryHistory(long customerId,long userId){
+//        Long userId = LoginUserController.getLoginUserId(this);
         Record rec = Db.findFirst("select * from user_query_history where type='CUSTOMER' and ref_id=? and user_id=?", customerId, userId);
         if(rec==null){
             rec = new Record();
@@ -3490,6 +3491,12 @@ public class JobOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
     	String type = getPara("type_");
+    	if(StringUtils.isNotEmpty(getPara("customer"))){
+    		String customerId =getPara("customer");
+    		//常用客户保存进入历史记录
+          	Long userId = LoginUserController.getLoginUserId(this);
+          	addHistoryRecord(userId,customerId,"ARAP_COM");
+    	}
     	
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -3502,7 +3509,7 @@ public class JobOrderController extends Controller {
         	sort = "desc";
         }
         
-        
+       
         String sql = "";
         String ref_office = "";
         Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
