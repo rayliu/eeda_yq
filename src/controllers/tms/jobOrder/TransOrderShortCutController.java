@@ -92,7 +92,10 @@ public class TransOrderShortCutController extends Controller {
    			String loading_wharf1=itemMap.get("LOADING_WHARF1");
    			String loading_wharf2=itemMap.get("LOADING_WHARF2");
 			transJobOrder.set("customer_id", itemMap.get("CUSTOMER_ID"));
-			transJobOrder.set("charge_time", itemMap.get("CHARGE_TIME"));
+			if(StringUtils.isNotEmpty(itemMap.get("CHARGE_TIME"))){
+				transJobOrder.set("charge_time", itemMap.get("CHARGE_TIME"));
+			}
+			
 			if(StringUtils.isNotEmpty(itemMap.get("HEAD_CARRIER"))){
 				transJobOrder.set("head_carrier", itemMap.get("HEAD_CARRIER"));
 			}			
