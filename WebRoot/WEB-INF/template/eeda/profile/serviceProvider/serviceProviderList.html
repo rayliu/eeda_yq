@@ -14,10 +14,13 @@
                                 </div>
 	                	<div>
 	                    		<button id="singleSearchBtn" class="btn btn_grey" type="button" style="float:left;">查询</button>
+	                    		<% if(shiro.hasPermission("serviceProvider.create")){%>
+		                                <a class="btn  btn_green" href="/serviceProvider/add"  >新增供应商</a>
+                                 <%}%>
 	                    </div>
                     </div>
 	                <div id="" style="margin-right:15px;"><!--  三列排版  -->
-	                	<h4 class="panel-title pull-right" style="padding-top: 5px;">
+	                	<h4 class="panel-title pull-right" style="margin-top:-10px;">
 	                    	<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
 	                    		<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
 	                    	</a>
@@ -80,10 +83,10 @@
 	                                <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
 	                                <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                                     <% if(shiro.hasPermission("serviceProvider.create")){%>
-	                                <a class="btn  btn_green" href="/serviceProvider/add"  >新增供应商</a>
-	                                <button class="btn btn_green" type="button" id="importBtn" margin-bottom:15px;">导入供应商信息</button>
-                                	<input type="file" id="importFileUpload" name="files[]" style="position:absolute;  opacity:0;">
-                                	<a class="btn btn_green" type="button" id="downloadBtn" href="/download/transJobOrder/供应商导入模板.xlsx">下载导入模板</a>
+		                                <a class="btn  btn_green" href="/serviceProvider/add"  >新增供应商</a>
+		                                <button class="btn btn_green" type="button" id="importBtn" margin-bottom:15px;">导入供应商信息</button>
+	                                	<input type="file" id="importFileUpload" name="files[]" style="position:absolute;  opacity:0;">
+	                                	<a class="btn btn_green" type="button" id="downloadBtn" href="/download/transJobOrder/供应商导入模板.xlsx">下载导入模板</a>
                                     <%}%>
 	                            </div> 
                             </div>
