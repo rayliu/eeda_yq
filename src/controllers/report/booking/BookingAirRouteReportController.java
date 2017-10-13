@@ -34,9 +34,9 @@ public class BookingAirRouteReportController extends Controller {
     public void index() {
     	UserLogin user = LoginUserController.getLoginUser(this);
         long user_id = user.getLong("id");
-		List<Record> configList = ListConfigController.getConfig(user_id, "/airRouteReport");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/bookingAirRouteReport");
 		setAttr("listConfigList", configList);
-		render("eeda/report/airRouteReport/list.html");
+		render("eeda/bookingReport/bookingAirRouteReportList.html");
     }
    
     public long list() {
@@ -139,7 +139,7 @@ public class BookingAirRouteReportController extends Controller {
                 + "         job_order jo"
                 + "     LEFT JOIN party p ON p.id = jo.customer_id"
                 + "     WHERE jo.type in ('出口空运', '进口空运')"
-                + "           and jo.office_id="+office_id
+                + "           and p.ref_office_id="+office_id
                 + condition
                 + " and jo.delete_flag = 'N'"
 				+ " ) A where 1=1"
@@ -257,7 +257,7 @@ public class BookingAirRouteReportController extends Controller {
                 + "         job_order jo"
                 + "     LEFT JOIN party p ON p.id = jo.customer_id"
                 + "     WHERE jo.type in ('出口空运', '进口空运')"
-                + "           and jo.office_id="+office_id
+                + "           and p.ref_office_id="+office_id
                 + condition
                 + " and jo.delete_flag = 'N'"
 				+ " ) A where 1=1"
@@ -365,7 +365,7 @@ public class BookingAirRouteReportController extends Controller {
                   + "         job_order jo"
                   + "     LEFT JOIN party p ON p.id = jo.customer_id"
                   + "     WHERE jo.type in ('出口空运', '进口空运')"
-                  + "           and jo.office_id="+office_id
+                  + "           and p.ref_office_id="+office_id
                   + condition
                   + " and jo.delete_flag = 'N'"
   				+ " ) A where 1=1"

@@ -34,10 +34,10 @@ public class BookingOceanRouteReportController extends Controller {
     public void index() {
     	UserLogin user = LoginUserController.getLoginUser(this);
         long user_id = user.getLong("id");
-		List<Record> configList = ListConfigController.getConfig(user_id, "/oceanRouteReport");
+		List<Record> configList = ListConfigController.getConfig(user_id, "/bookingOceanRouteReport");
 		setAttr("listConfigList", configList);
 		
-    	render("eeda/report/oceanRouteReport/list.html");
+    	render("eeda/bookingReport/bookingOceanRouteReportList.html");
     }
    
     public long list() {
@@ -150,7 +150,7 @@ public class BookingOceanRouteReportController extends Controller {
                 + "        left join location pod on jos.pod = pod.id "
                 + "        LEFT JOIN party p ON p.id = jo.customer_id "
                 + "        WHERE jo.type in ('出口柜货', '进口柜货','出口散货', '进口散货') "
-                + "           and jo.office_id="+office_id
+                + "           and p.ref_office_id="+office_id
                 + condition
                 + " and jo.delete_flag = 'N'"
 				+ " ) A where 1=1"
@@ -278,7 +278,7 @@ public class BookingOceanRouteReportController extends Controller {
                 + "        left join location pod on jos.pod = pod.id "
                 + "        LEFT JOIN party p ON p.id = jo.customer_id "
                 + "        WHERE jo.type in ('出口柜货', '进口柜货','出口散货', '进口散货') "
-                + "           and jo.office_id="+office_id
+                + "           and p.ref_office_id="+office_id
                 + condition
                 + " and jo.delete_flag = 'N'"
 				+ " ) A where 1=1"
@@ -395,7 +395,7 @@ public class BookingOceanRouteReportController extends Controller {
 	                + "        left join location pod on jos.pod = pod.id "
 	                + "        LEFT JOIN party p ON p.id = jo.customer_id "
 	                + "        WHERE jo.type in ('出口柜货', '进口柜货','出口散货', '进口散货') "
-	                + "           and jo.office_id="+office_id
+	                + "           and p.ref_office_id="+office_id
 	                + condition
 	                + " and jo.delete_flag = 'N'"
 					+ " ) A where 1=1"

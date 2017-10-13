@@ -1,7 +1,7 @@
 ﻿<%layout("/eeda/layout.html"){%>
 <div id="page-wrapper">
 	<div class="row simple_search_div">
-		 <div class="panel panel-default">
+		<div class="panel panel-default">
             	<div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="collapsed">
@@ -9,11 +9,11 @@
                         </h4>
                  </div>
              <div id="collapseChargeInfo" class="panel-collapse collapse " aria-expanded="false" style="height: auto;">
-              <div class="panel-body" id="ChargeDiv">
+               <div class="panel-body" id="ChargeDiv">
 		           <div class="col-lg-12">
 						<div class="panel-body">
 							<form id="orderForm" method="post" action="">
-								<div class="row">
+								<div class="row">	
 									<div class="col-lg-2">    
 										<label><input type="radio" name="type" value="day"/>按出货日期</label>
 									</div>	
@@ -26,7 +26,6 @@
 									<div class="col-lg-2">    
 										<label><input type="radio" name="type" value="year"/>按年统计</label>
 									</div>
-									
 								</div>
 								<br/>
 								<br/>
@@ -45,16 +44,13 @@
                                 <%include("/eeda/component/form/inputDateQueryField.html", {
                                 id:'year', label:'统计日期', value:'',date_type:'year'}){} %>
                             </div>
-                            <div class="col-lg-4" id="day" style="display:none;">        
+                             <div class="col-lg-4" id="day" style="display:none;">        
                                 <%include("/eeda/component/form/inputDateQueryField.html", {
                                 id:'day', label:'出货时间', value:'',date_type:'day'}){} %>
                             </div>
 							<div class="col-lg-4" style="display:none">
 								<%include("/eeda/component/form/inputCustomerField.html", {
-								id:'customer_id', 
-								label:'客户名称',
-								list:'list', 
-								value: '' }){} %>
+								id:'customer_id', label:'客户名称', value: '' }){} %>
 							</div>
 								<div class="col-lg-4">
                                 <%include("/eeda/component/form/selectField.html", 
@@ -82,56 +78,41 @@
                                     }){}%>
                             </div><!-- /.col-lg-4 -->
 						</div>
+						
 						<div class="form-group button-bar" >
                                 <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
                                 <button id="exportTotaledExcel" type="button" class="btn btn_green">导出</button>
                                 <button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
                         </div>
-                        <div class="form-group" style="display:none" >
-                            <label>总件数汇总：</label><span id="pieces_total" style="color:black"></span><br>
-		                    <label>总重量汇总(毛重)：<span id="gross_weight_total" style="color:black"></span><br>
-		                    <label>总体积汇总(立方)：<span id="volume_total" style="color:black"></span><br>
-		                    <label>海运货量TEU汇总：</label><span id="ocean_fcl_teu_total" style="color:black"></span><br>
-		                    <label>票数汇总(海运货量)：</label><span id="ocean_fcl_bill_total" style="color:black"></span><br>
-		                    <label>海运散货(立方)汇总：</label><span id="ocean_lcl_cbm_total" style="color:black"></span><br>
-		                    <label>票数汇总(海运散货)：</label><span id="ocean_lcl_bill_total" style="color:black"></span><br>
-		                    <label>空运货量(公斤)汇总：</label><span id="ari_kg_total" style="color:black"></span><br>
-		                    <label>票数汇总(空运货量)：</label><span id="ari_kg_bill_total" style="color:black"></span><br>
-                        </div>
 					</form>
-					</div>
 				</div>
 			</div>
 			</div>
+			
+		</div>
 			<!-- /.row 查询条件 结束-->
             <div class="row simple_list_div">
 					<%include("/eeda/component/form/detailTableWithFoot.html", 
                                 {
                                     id:'eeda-table', 
-                                    style:'width:1600px',
                                     headers:[
                                     	'单据日期',
                                         '客户名称',
+                                        '路线',
                                         '总件数',
-                                        '总重量(毛重)',
                                         '总体积(立方)',
-                                        '海运货量TEU',
-                                        '票数（海运货量）',
-                                        '海运散货(立方)',
-                                        '票数（海运散货）',
-                                        '空运货量(公斤)',
-                                        '票数（空运货量）',
-                                        '陆运车型(车次)'
+                                        '空运货量(公斤)'
                                         ]
                                 }){} %>
 				</div>
 		<!-- /.col-lg-12 -->
 		</div>
+		
 	</div>
 </div>
 <%}%>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
-        requirejs(['app/bookingStatusReport/bookingProfitReport/list']);
+        requirejs(['app/bookingReport/routeReport/airList']);
     });
 </script>

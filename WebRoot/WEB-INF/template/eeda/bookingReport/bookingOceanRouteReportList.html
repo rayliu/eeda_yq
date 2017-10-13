@@ -49,14 +49,14 @@
                                 <%include("/eeda/component/form/inputDateQueryField.html", {
                                 id:'day', label:'出货时间', value:'',date_type:'day'}){} %>
                             </div>
-							<div class="col-lg-4">
+							<div class="col-lg-4" style="display:none">
 								<%include("/eeda/component/form/inputSpField.html", {
 								id:'customer_id', 
 								label:'客户名称',
 								list:'list', 
 								value: '' }){} %>
 							</div>
-							<div class="col-lg-4">
+									<div class="col-lg-4">
                                 <%include("/eeda/component/form/selectField.html", 
                                     {   id:'type', 
                                         label:'类型', 
@@ -118,6 +118,6 @@
 <%}%>
 <script>
     requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
-        requirejs(['app/report/oceanRouteReport/list']);
+        requirejs(['app/bookingReport/routeReport/oceanList']);
     });
 </script>
