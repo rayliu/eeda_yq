@@ -399,17 +399,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         	cargoTable.ajax.url(url).load();
         });
         
-        //空运页面校验
-        $('#charge_air_table').on('blur','[name=price],[name=volume1],[name=volume2],[name=gross_weight1],[name=gross_weight2]',function(){
-        	var data = $(this).val();
-        	var len = $.trim(data).length;
-        	var re = /^\d{0,9}(\.\d{1,5})?$/;
-        	if(!re.test(data)&&len>0||len>15&&len>0){
-        		$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入合法数字</span>")
-        	}
-        });
-        $('#charge_air_table').on('focus','[name=price],[name=volume1],[name=volume2],[name=gross_weight1],[name=gross_weight2]',function(){
-        	$(this).parent().find("span").remove();
-        });
+        
     });
 });
