@@ -65,8 +65,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 		            	}
 	            		
 	            		if(full.DIFF_FLAG=='Y'){
-	            			debugger;
-	            			value = '<span style="background-color:#ffff66;">'+'-'+data+'</span>';
+	            			value = '<span style="background-color:#ffff66;">'+data+'</span>';
 	            		}
 	                    return value;
 	                }
