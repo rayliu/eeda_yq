@@ -4,7 +4,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           pg_caption: '本页教程'
       });
       var deletedTableIds=[];
-        var bindFieldEvent=function(){
+      	var bindFieldEvent=function(){
        	    $('table .date').datetimepicker({  
        	        format: 'yyyy-MM-dd hh:mm:ss',  
        	        language: 'zh-CN'
@@ -13,6 +13,39 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
        	        $(el).trigger('keyup');
        	    });
             	
+       	    $('#closing_date_div').datetimepicker({  
+       	    	format:'yyyy-MM-dd hh:mm:ss',  
+       	    			language: 'zh-CN'
+       	    }).on('changeDate', function(ev){
+       	    	$(".bootstrap-datetimepicker-widget").hide();   
+       	    	$('#closing_date').trigger('keyup');
+       	    });
+       	    
+       	    $('#closing_date_div').on('changeDate', function(ev){
+       	    	$(".bootstrap-datetimepicker-widget").hide();
+       	    		$('#closing_date_div').each(function(){
+       	    			$("#charge_time").val($('#closing_date').val());
+             	});
+       	    });
+       	    $('#closing_date').on('keyup',function(){
+	    		$("#charge_time").val($("#closing_date").val());
+    	    });
+       	 	$('#closing_date').on('blur',function(){
+       	 		$("#charge_time").val($("#closing_date").val());
+       	 	}); 
+       	    
+       	    $('#eeda-table [name=CLOSING_DATE_div]').on('changeDate', function(ev){
+                 $(".bootstrap-datetimepicker-widget").hide();
+                 	$('#eeda-table [name=CLOSING_DATE_div]').each(function(){
+                 		$(this).parent().parent().find("[name=CHARGE_TIME]").val($(this).parent().find("[name=CLOSING_DATE]").val());
+                 	});
+             });
+       	    $('#eeda-table').on('keyup','[name=CLOSING_DATE]',function(){
+   	    		$(this).parent().parent().parent().find("[name=CHARGE_TIME]").val($(this).val());
+       	    });
+       	    $('#eeda-table').on('blur','[name=CLOSING_DATE]',function(){
+	    		$(this).parent().parent().parent().find("[name=CHARGE_TIME]").val($(this).val());
+    	    }); 
             eeda.bindTableField('eeda-table','CUSTOMER_ID','/serviceProvider/searchCompany','');
             eeda.bindTableField('eeda-table','CHARGE_ID','/finItem/search','');
             eeda.bindTableFieldCarInfo('eeda-table', 'WHOLE_COURSE_CAR_NO');
@@ -38,7 +71,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           scrollY: 530,
           colReorder: true,
           scrollCollapse: true,
-          "drawCallback":function(settings){
+          drawCallback:function(settings){
             bindFieldEvent();
           },
           columns: [
@@ -629,8 +662,6 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           }
           return cargo_items_array;
        }
-
-
 
   });
 });
