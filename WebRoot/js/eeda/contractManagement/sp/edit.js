@@ -2,7 +2,6 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	'./oceanEdit_charge','./airEdit_charge','./landEdit_charge', './edit_charge_trade', './edit_charge_tour'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-
     	tl.pg.init({
 	        pg_caption: '本页教程'
 	    });
@@ -29,9 +28,24 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        	if(!$(this).valid()){
 	        		formRequired++;
 	            }
-	        })
+	        });
+	        var errorlength = $("[class=error_span]").length;
+	        var loc_id = $($(".error_span").get(0)).parent().parent().parent().parent().attr('id');
 	        if(formRequired>0){
-	        	$.scojs_message('供应商和合同有效期为必填', $.scojs_message.TYPE_ERROR);
+	        	var customer = $("#customer_id_input").val();
+	        	var contract_begin_time = $("#contract_begin_time").val();
+	        	var contract_end_time = $("#contract_end_time").val();
+	        	if(customer==""||contract_begin_time==""||contract_end_time==""){
+	        		$.scojs_message('客户或者合同有效期是必填字段', $.scojs_message.TYPE_ERROR);
+	        		return;
+	        	}else{
+	        		$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+	        		return;
+	        	}
+	        }
+	        if(errorlength>0){
+	        	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+	        	location.hash="#"+loc_id;
 	        	return;
 	        }
 	        
@@ -85,13 +99,20 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	  $('#orderForm').validate({
 	        rules: {
 	        	period: {
-	        		number:true
-	        	}
+	        		number:true,
+	        		maxlength:15
+	        	},
+	        	special_item: {
+			    	maxlength:500
+			  	},
+			  	remark: {
+			  		maxlength:2450
+			  	}
 	        }, 
 	        messages:{
-	        	period: {
-	              
-	            }
+	        	period:{
+	        		maxlength:$.validator.format("最多输入{0}个的数字"),
+	        	}
 	        },
 	        highlight: function(element) {
 	            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
