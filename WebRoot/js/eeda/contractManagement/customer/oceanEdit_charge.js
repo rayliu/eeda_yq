@@ -213,7 +213,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                 	"render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        return '<input type="text" name="volume1" value="'+data+'" class="form-control" style="width:55px"/>';
+                        return '<input type="text" name="volume1" value="'+data+'" class="form-control" style="width:70px"/>';
                     }
                 },
                 { "data": "-","width": "5px",
@@ -222,19 +222,19 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
                         return "<span style='width:5px'>-</span>"
                     }
                 },
-                { "data": "VOLUME2", "width": "30px",
+                { "data": "VOLUME2", "width": "50px",
                 	"render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        return '<input type="text" name="volume2" value="'+data+'" class="form-control" style="width:50px"/>';
+                        return '<input type="text" name="volume2" value="'+data+'" class="form-control" style="width:70px"/>';
                     }
                 },
-                { "data": "GROSS_WEIGHT1", "width": "40px",
+                { "data": "GROSS_WEIGHT1", "width": "50px",
                     "render": function ( data, type, full, meta ) {
                     	 if(!data)
     	                        data='';
     	                    
-    	                    return '<input type="text" style="width:50px" name="gross_weight1" value = "'+data+'" class="form-control notsave" >';
+    	                    return '<input type="text" style="width:70px" name="gross_weight1" value = "'+data+'" class="form-control notsave" >';
                     }
                 },
                 { "data": "-","width": "5px",
@@ -251,12 +251,12 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 //    	                    return '<input type="text" style="width:80px" name="gross_weight" value = "'+data+'" class="form-control notsave" >';
 //                    }
 //                },
-                { "data": "GROSS_WEIGHT2", "width": "30px",
+                { "data": "GROSS_WEIGHT2", "width": "50px",
                     "render": function ( data, type, full, meta ) {
                     	 if(!data)
     	                        data='';
     	                    
-    	                    return '<input type="text" style="width:50px" name="gross_weight2" value = "'+data+'" class="form-control notsave" >';
+    	                    return '<input type="text" style="width:70px" name="gross_weight2" value = "'+data+'" class="form-control notsave" >';
                     }
                 },
                 { "data": "POL_NAME", "visible": false,
@@ -420,6 +420,19 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             }
             var url = "/customerContract/clickItem?contract_id="+order_id+"&type=ocean&customer_loc_id="+item_id;
         	cargoTable.ajax.url(url).load();
+        });
+        
+        //海运页面校验
+        $('#charge_ocean_table').on('blur','[name=price],[name=volume1],[name=volume2],[name=gross_weight1],[name=gross_weight2]',function(){
+        	var data = $(this).val();
+        	var len = $.trim(data).length;
+        	var re = /^\d{0,9}(\.\d{1,5})?$/;
+        	if(!re.test(data)&&len>0||len>15&&len>0){
+        		$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入合法数字</span>")
+        	}
+        });
+        $('#charge_ocean_table').on('focus','[name=price],[name=volume1],[name=volume2],[name=gross_weight1],[name=gross_weight2]',function(){
+        	$(this).parent().find("span").remove();
         });
     });
 });
