@@ -267,6 +267,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
    	     var selectFieldValue = '';
  	     if(selectField=='receive_company_name'){
  	    	 selectFieldValue = $("#single_customer_name_input").val();
+ 	    	selectFieldValue +="&customer="+$("#single_customer_name").val();
  	     }
  	     if(selectField=='order_no'){
  	    	 selectFieldValue = $("#single_order_no").val();
@@ -330,6 +331,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
      var searchData=function(paraStr){
           var order_no = $.trim($("#order_no").val());
           var customer_name = $('#customer_input').val();
+          var customer = $('#customer').val();
           var status = $('#status').val();
           var lock_bill_status = $("#lock_bill_status").val();
           var custom_state = $('#custom_state').val();
@@ -369,6 +371,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
                +"&booking_no_equals="+booking_no
                +"&custom_state_equals="+custom_state
                +"&receive_company_name="+customer_name
+               +"&customer="+customer
                +"&type_equals="+type
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date

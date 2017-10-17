@@ -41,7 +41,6 @@ import controllers.eeda.ListConfigController;
 import controllers.eeda.SysInfoController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
-import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 
 @RequiresAuthentication
@@ -654,6 +653,14 @@ public class CustomPlanOrderController extends Controller {
         if(relist!=null){
         	ref_office = " or cpo.office_id in ("+relist.getStr("office_id")+")";
         }
+        
+        String customer_id = getPara("customer");
+        Long userId = LoginUserController.getLoginUserId(this);
+        if(StringUtils.isNotEmpty(getPara("customer"))){
+    		//常用party查询保存进入历史记录
+//          	JobOrderController.addHistoryRecord(userId,customer_id,"ARAP_COM");
+    	}
+        
         
         if("unConfirmFee".equals(confirmFee)){
         	sql = "SELECT * from (SELECT cpo.id,cpo.to_office_id,cpo.order_no,cpo.date_custom,cpo.tracking_no,cpo.customs_billCode,cpo.type,cpo.receive_sent_consignee_input receive_company_name,ul.c_name creator_name,cpo.booking_no,"

@@ -10,6 +10,7 @@ import java.util.Map;
 import models.UserLogin;
 import models.eeda.oms.jobOrder.JobOrderArap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -21,6 +22,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.eeda.ListConfigController;
+import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 
@@ -59,6 +61,22 @@ public class CostItemConfirmController extends Controller {
         if(relist!=null){
         	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
         }
+        
+        String customer_id = getPara("customer_id");
+        Long userId = LoginUserController.getLoginUserId(this);
+        if(StringUtils.isNotEmpty(getPara("customer_id"))){
+    		//常用party查询保存进入历史记录
+          	JobOrderController.addHistoryRecord(userId,customer_id,"ARAP_COM");
+    	}
+        
+        String sp_id = getPara("sp_id");
+        if(StringUtils.isNotEmpty(getPara("sp_id"))){
+    		//常用party查询保存进入历史记录
+          	JobOrderController.addHistoryRecord(userId,sp_id,"ARAP_COM");
+    	}
+        
+        
+        
         String sql = "select * from( "
         		+ " select joa.*,jo.id jobid,jo.order_no,jo.order_export_date,jo.create_stamp,jo.customer_id,p.abbr customer_name,p1.abbr sp_name,f.name charge_name,u.name unit_name,"
         		+ " c.name currency_name, c1. NAME exchange_currency_name "

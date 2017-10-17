@@ -30,6 +30,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.eeda.ListConfigController;
+import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderCheckOfficeUtil;
@@ -189,6 +190,19 @@ public class ChargeCheckOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
+        String sp_id = getPara("sp");
+        Long userId = LoginUserController.getLoginUserId(this);
+        if(StringUtils.isNotEmpty(getPara("sp"))){
+    		//常用party查询保存进入历史记录
+          	JobOrderController.addHistoryRecord(userId,sp_id,"ARAP_COM");
+    	}
+        
+        String customer_id = getPara("customer");
+        if(StringUtils.isNotEmpty(getPara("customer"))){
+    		//常用party查询保存进入历史记录
+          	JobOrderController.addHistoryRecord(userId,customer_id,"CUSTOMER");
+    	}
+        
         String ref_office = "";
         Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
         if(relist!=null){
@@ -295,6 +309,13 @@ public class ChargeCheckOrderController extends Controller {
         			
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
+        String sp_id = getPara("sp");
+        Long userId = LoginUserController.getLoginUserId(this);
+        if(StringUtils.isNotEmpty(getPara("sp"))){
+    		//常用party查询保存进入历史记录
+          	JobOrderController.addHistoryRecord(userId,sp_id,"ARAP_COM");
+    	}
         
         String sql = "select * from(  "
         		+ " select aco.*,IFNULL(aco.audit_status,aco.status) toStatus, p.abbr sp_name,CAST(CONCAT(begin_time,' 到 <br>',end_time) AS char) check_time_slot "

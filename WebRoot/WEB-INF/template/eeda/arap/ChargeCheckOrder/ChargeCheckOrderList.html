@@ -54,12 +54,6 @@
                                          </div>
                                      </div>       
                                      <div class="row">  
-                                        <div class="col-lg-4">
-                                         <%include("/eeda/component/form/inputDateQueryField.html", 
-                                         {   id:'order_export_date', 
-                                             label:'出货日期'
-                                         }){} %>
-                                         </div>
                                          <div class="col-lg-4">
                                                 <%include("/eeda/component/form/inputCustomerField.html", 
                                                          {   id: 'customer', 
@@ -81,7 +75,13 @@
                                                        {code:'贸易', value:'贸易'}
                                                    ]
                                                }){}%>
-                                            </div>
+                                         </div>
+                                         <div class="col-lg-4">
+		                                         <%include("/eeda/component/form/inputDateQueryField.html", 
+				                                         {   id:'order_export_date', 
+				                                             label:'出货日期'
+				                                         }){} %>
+                                         </div>
                                     </div>
                                     <div class="row">  
 	                                        <div class="col-lg-4">
@@ -137,11 +137,14 @@
 									                           value:shipment.pod!''									                          
 									                       }){}%>
 									         </div>
+									         <div class="col-lg-4">
+			                                        <input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red">(红色为应付)</span>
+									         </div>
                                        </div>
                                        <div class="form-group button-bar" >
 		                                	<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
 		                                	<button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
-		                                	&nbsp&nbsp<input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red">(红色为应付)</span>
+		                                	
                                       <button id="createBtn" disabled type="button" class="btn btn_green guide_target4" >创建对账单</button>
                                       <span style="background-color:#ffff66;float:right">底色为橙色代表对账金额与合同价存在差异</span>
 		                               </div>
@@ -172,7 +175,7 @@
 									<span class="badge" style='margin-top:12px;'> HKD总额: <span id="hkd_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
 									<span class="badge" style='margin-top:12px;'> JPY总额: <span id="jpy_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
                                     <br/>
-                                     <b class="guide_target3">结算总额：</b>
+                                    <b class="guide_target3">结算总额：</b>
                                     <span class="badge" style='margin-top:12px;'> CNY总额: <span id="exchange_cny_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
                                     <span class="badge" style='margin-top:12px;'> USD总额: <span id="exchange_usd_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;
                                     <span class="badge" style='margin-top:12px;'> HKD总额: <span id="exchange_hkd_totalAmountSpan">0.00</span></span>&nbsp;&nbsp;

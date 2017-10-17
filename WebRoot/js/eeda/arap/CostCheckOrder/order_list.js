@@ -107,6 +107,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	      }
 	      if(selectField=='sp_name'){
 	    	  selectFieldValue = $("#single_sp_name_input").val();
+	    	  selectFieldValue +="&sp_id="+$("#single_sp_name").val();
 	      }
 	      if(selectField=="toStatus_equals"){
 	    	  selectFieldValue = $("#single_status").val();

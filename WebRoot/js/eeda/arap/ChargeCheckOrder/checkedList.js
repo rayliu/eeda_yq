@@ -117,6 +117,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
 	      }
 	      if(selectField=='sp_name'){
 	    	  selectFieldValue = $("#single_sp_name_input").val();
+	    	  selectFieldValue += "&sp="+$("#single_sp_name").val();
 	      }
 	      if(selectField=="toStatus_equals"){
 	    	  selectFieldValue = $("#single_status").val();
@@ -145,6 +146,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
      var searchData=function(){
           var order_no = $("#order_no1").val();
           var sp_name = $('#sp1_input').val().trim();
+          var sp = $('#sp1').val().trim();
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
           var toStatus = $("#status").val();
@@ -158,6 +160,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
           */
           var url = "/chargeCheckOrder/checkedList?order_no="+order_no
                +"&sp_name="+sp_name
+               +"&sp="+sp
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
                +"&toStatus_equals="+toStatus

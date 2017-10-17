@@ -199,7 +199,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var url = "/costCheckOrder/list?order_no="+order_no
           			   +"&checked="+checked
           			   +"&customer_id="+customer
-			           +"&customer_id="+customer
 			           +"&customer_name_like="+customer_input
 			           +"&sp_id="+sp
 			           +"&sp_name_like="+sp_input
@@ -483,11 +482,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
    	 	    	 })
        		 }
        	 }
-   	 	   
-   	 	 $('#cny_totalAmountSpan').html(cny_totalAmount.toFixed(2));
-		 $('#usd_totalAmountSpan').html(usd_totalAmount.toFixed(2));
-		 $('#hkd_totalAmountSpan').html(hkd_totalAmount.toFixed(2));
-		 $('#jpy_totalAmountSpan').html(jpy_totalAmount.toFixed(2));
+   	 	 
+   	 	 cny_totalAmount.toFixed(2)=="-0.00"?$('#cny_totalAmountSpan').html("0.00"):$('#cny_totalAmountSpan').html(cny_totalAmount.toFixed(2));
+   	 	 usd_totalAmount.toFixed(2)=="-0.00"?$('#usd_totalAmountSpan').html("0.00"):$('#usd_totalAmountSpan').html(usd_totalAmount.toFixed(2));
+   	 	 hkd_totalAmount.toFixed(2)=="-0.00"?$('#hkd_totalAmountSpan').html("0.00"):$('#hkd_totalAmountSpan').html(hkd_totalAmount.toFixed(2));
+   	 	 jpy_totalAmount.toFixed(2)=="-0.00"?$('#jpy_totalAmountSpan').html("0.00"):$('#jpy_totalAmountSpan').html(jpy_totalAmount.toFixed(2));
 		 $('#totalAmount').val(totalAmount.toFixed(2));
 		 $('#cny_totalAmount').val(cny_totalAmount.toFixed(2));
 		 $('#usd_totalAmount').val(usd_totalAmount.toFixed(2));

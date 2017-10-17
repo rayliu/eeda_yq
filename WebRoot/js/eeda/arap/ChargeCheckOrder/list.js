@@ -344,12 +344,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
     	 
           var order_no = $("#order_no").val().trim(); 
           var sp_name = $('#sp_input').val().trim();
+          var sp = $('#sp').val().trim();
 
           if(!sp_name){
               $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
               return;
           }
           var customer_name = $('#customer_input').val().trim();
+          var customer = $('#customer').val().trim();
           var type = $('#type').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
@@ -366,7 +368,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
           var url = "/chargeCheckOrder/list?checked="+checked
           	   +"&order_no="+order_no
                +"&sp_name="+sp_name
+               +"&sp="+sp
                +"&customer_name="+customer_name
+               +"&customer="+customer
                +"&type_equals="+type
                +"&order_export_date_end_time="+order_export_date_end_time
                +"&order_export_date_begin_time="+order_export_date_begin_time
@@ -390,6 +394,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 	 			  flag++;
 	 		  }
 	 	    })
+	 	   
     	 if(this.checked==true){
 		 	    if(flag>0){
 		 	    	$.scojs_message('不能全选，包含不同结算公司', $.scojs_message.TYPE_ERROR);
@@ -440,8 +445,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
     		 $("#uncheckedEeda-table .checkBox").prop('checked',false);
     		 if(flag==0){
 	 	    	 $("#uncheckedEeda-table .checkBox").each(function(){
-	 	    		 var id = $(this).parent().parent().attr('id');
-	 	    		 var sp_name = $(this).parent().siblings('.SP_NAME')[0].textContent;
+
+	 	    		var id = $(this).parent().parent().attr('id');
+	 	    		var sp_name = $(this).parent().siblings('.SP_NAME')[0].textContent;
 	 	    		var total_amount = $(this).parent().siblings('.TOTAL_AMOUNT')[0].textContent;
 	 	    		var currency_name = $(this).parent().siblings('.CURRENCY_NAME')[0].textContent;
 	 	    		var  exchange_total_amount = $(this).parent().siblings('.EXCHANGE_TOTAL_AMOUNT')[0].textContent;
@@ -460,15 +466,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 						}
 					}
 					if(exchange_total_amount!=''&&!isNaN(exchange_total_amount)){
-									if(exchange_currency_name=='CNY'){
-										exchange_cny_totalAmount -= parseFloat(exchange_total_amount);
-									}else if(exchange_currency_name=='USD'){
-										exchange_usd_totalAmount -= parseFloat(exchange_total_amount);
-									}else if(exchange_currency_name=='HKD'){
-										exchange_hkd_totalAmount -= parseFloat(exchange_total_amount);
-									}else if(exchange_currency_name=='JPY'){
-										exchange_jpy_totalAmount -= parseFloat(exchange_total_amount);
-									}
+						if(exchange_currency_name=='CNY'){
+							exchange_cny_totalAmount -= parseFloat(exchange_total_amount);
+						}else if(exchange_currency_name=='USD'){
+							exchange_usd_totalAmount -= parseFloat(exchange_total_amount);
+						}else if(exchange_currency_name=='HKD'){
+							exchange_hkd_totalAmount -= parseFloat(exchange_total_amount);
+						}else if(exchange_currency_name=='JPY'){
+							exchange_jpy_totalAmount -= parseFloat(exchange_total_amount);
+						}
 					}
 	 	    		 itemIds.pop(id);
 	 	    		cnames.pop(sp_name);
@@ -486,10 +492,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 			 $('#hkd_totalAmount').val(hkd_totalAmount.toFixed(2));
 			 $('#jpy_totalAmount').val(jpy_totalAmount.toFixed(2));
 			  //结账
-			 $('#exchange_cny_totalAmountSpan').html(exchange_cny_totalAmount.toFixed(2));
-			 $('#exchange_usd_totalAmountSpan').html(exchange_usd_totalAmount.toFixed(2));
-			 $('#exchange_hkd_totalAmountSpan').html(exchange_hkd_totalAmount.toFixed(2));
-			 $('#exchange_jpy_totalAmountSpan').html(exchange_jpy_totalAmount.toFixed(2));
+			 exchange_cny_totalAmount.toFixed(2)=="-0.00"?$('#exchange_cny_totalAmountSpan').html("0.00"):$('#exchange_cny_totalAmountSpan').html(exchange_cny_totalAmount.toFixed(2)); 
+			 exchange_usd_totalAmount.toFixed(2)=="-0.00"?$('#exchange_usd_totalAmountSpan').html("0.00"):$('#exchange_usd_totalAmountSpan').html(exchange_usd_totalAmount.toFixed(2)); 
+			 exchange_hkd_totalAmount.toFixed(2)=="-0.00"?$('#exchange_hkd_totalAmountSpan').html("0.00"):$('#exchange_hkd_totalAmountSpan').html(exchange_hkd_totalAmount.toFixed(2)); 
+			 exchange_jpy_totalAmount.toFixed(2)=="-0.00"?$('#exchange_jpy_totalAmountSpan').html("0.00"):$('#exchange_jpy_totalAmountSpan').html(exchange_jpy_totalAmount.toFixed(2)); 
 			 $('#exchange_totalAmount').val(exchange_totalAmount.toFixed(2));
 			 $('#exchange_cny_totalAmount').val(exchange_cny_totalAmount.toFixed(2));
 			 $('#exchange_usd_totalAmount').val(exchange_usd_totalAmount.toFixed(2));
