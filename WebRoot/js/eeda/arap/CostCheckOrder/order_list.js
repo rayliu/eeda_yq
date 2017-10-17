@@ -20,6 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "CREATE_STAMP"},
             { "data": "TOSTATUS"},
             { "data": "SP_NAME"},
+            { "data": "AUDIT_SLOT"},
             { "data": "TOTAL_AMOUNT","visible":false},
             { "data": "CNY",
                 "render":function(data,type,full,meta){
@@ -63,6 +64,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#sp_name_show").hide();
 	    	  $("#single_status").hide();
 	    	  $("#create_stamp1_show").hide();
+	    	  $("#audit_slot_show").hide();
 	    	  $("#single_order_no1").show();
 	      }
 	      if(selectField=='sp_name'){
@@ -70,6 +72,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_order_no1").hide();
 	    	  $("#single_status").hide();
 	    	  $("#create_stamp1_show").hide();
+	    	  $("#audit_slot_show").hide();
 	    	  $("#sp_name_show").show();
 	      }
 	      if(selectField=="toStatus_equals"){
@@ -77,13 +80,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_order_no1").hide();
 	    	  $("#create_stamp1_show").hide();
 	    	  $("#sp_name_show").hide();
+	    	  $("#audit_slot_show").hide();
 	    	  $("#single_status").show();
 	      }
 	      if(selectField=="create_stamp"){
 	    	  $("#single_order_no1").hide();
 	    	  $("#sp_name_show").hide();
 	    	  $("#single_status").hide();
+	    	  $("#audit_slot_show").hide();
 	    	  $("#create_stamp1_show").show();
+	      }
+	      if(selectField=="audit_slot_between"){
+	    	  $("#single_order_no1").hide();
+	    	  $("#sp_name_show").hide();
+	    	  $("#single_status").hide();
+	    	  $("#create_stamp1_show").hide();
+	    	  $("#audit_slot_show").show();
 	      }
      });
 	
@@ -102,6 +114,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	      if(selectField=="create_stamp"){
 	    	  var start_date = $("#single_create_stamp1_begin_time").val();
 	    	  var end_date = $("#single_create_stamp1_end_time").val();
+	      }
+	      if(selectField=="audit_slot_between"){
+	    	  selectFieldValue = $("#single_audit_slot").val();
 	      }
 	     var url = "/costCheckOrder/orderList?"+selectField+"="+selectFieldValue
 	     		+"&create_stamp_begin_time="+start_date
@@ -126,6 +141,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var order_export_date_begin_time = $("#order_export_date1_begin_time").val();
           var order_export_date_end_time = $("#order_export_date1_end_time").val();
           var status = $("#status").val();
+          var audit_slot = $("#audit_slot").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -140,7 +156,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		               +"&create_stamp_end_time="+end_date
 		               +"&order_export_date_begin_time="+order_export_date_begin_time
 		               +"&order_export_date_end_time="+order_export_date_end_time
-          			   +"&toStatus_equals="+status;
+          			   +"&toStatus_equals="+status
+          			   +"&audit_slot_between="+audit_slot;
 
           dataTable.ajax.url(url).load();
       };

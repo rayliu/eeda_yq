@@ -437,7 +437,7 @@ public class CostCheckOrderController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select aco.*,IFNULL(aco.audit_status,aco.status) toStatus,p.abbr sp_name"
+        		+ " select aco.*,IFNULL(aco.audit_status,aco.status) toStatus,p.abbr sp_name,CAST(CONCAT(substring(begin_time,1,10),' 到 <br>',substring(end_time,1,10)) AS CHAR) audit_slot"
 				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
 				+ " where aco.office_id = "+ office_id
