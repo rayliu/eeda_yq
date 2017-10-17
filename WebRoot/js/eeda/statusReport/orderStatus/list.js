@@ -85,6 +85,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	     }
 	     if(selectField=="customer_name"){
 	    	 selectFieldValue = $("#single_customer_name_input").val();
+	    	 selectFieldValue +="&customer="+$("#single_customer_name").val();
 	      }
 	     
 	     var url = "/orderStatus/list?"+selectField+"="+selectFieldValue;
@@ -118,6 +119,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      var searchData=function(){
           
           var customer_name = $("#customer_name_input").val();
+          var customer = $("#customer_name").val();
           var plan_order = $.trim($("#plan_order").val()); 
           var job_order = $.trim($("#job_order").val()); 
           var charge_check = $.trim($("#charge_check").val()); 
@@ -129,6 +131,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           //增加出口日期查询
           var url = "/orderStatus/list?"
         	    + "customer_name="+customer_name
+        	    + "&customer="+customer
           	    +"&plan_order_no="+plan_order
           	    +"&job_order_no="+job_order
 	          	+"&charge_check_no="+charge_check

@@ -200,11 +200,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	      }
 	     if(selectField=="customer_name"){
 	    	 selectFieldValue = $("#single_customer_name_input").val();
-	      }
-	      if(selectField=="order_export_date"){
+	    	 selectFieldValue +="&customer_id="+$("#single_customer_name").val();
+	     }
+	     if(selectField=="order_export_date"){
 	    	  var export_date_start_date = $("#single_export_date_begin_time").val();
 	    	  var export_date_end_date = $("#single_export_date_end_time").val();
-	      }
+	     }
 	     var url = "/arapReport/list?"+selectField+"="+selectFieldValue
 	     		 +"&order_export_date_begin_time="+export_date_start_date
 	     		 +"&order_export_date_end_time="+export_date_end_date;

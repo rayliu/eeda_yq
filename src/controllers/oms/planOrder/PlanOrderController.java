@@ -39,7 +39,6 @@ import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
-
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
 public class PlanOrderController extends Controller {
@@ -437,6 +436,15 @@ public class PlanOrderController extends Controller {
         	sort ="desc";
         }
         
+        if(StringUtils.isNotEmpty(getPara("partyId"))){
+    		String partyId =getPara("partyId");
+    		//常用客户保存进入历史记录
+          	Long userId = LoginUserController.getLoginUserId(this);
+          	JobOrderController.addHistoryRecord(userId,partyId,"ARAP_COM");
+    	}
+        
+        
+        
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
@@ -511,8 +519,8 @@ public class PlanOrderController extends Controller {
 
         renderJson(orderListMap); 
     }
-    
-    //异步刷新字表
+
+	//异步刷新字表
     public void tableList(){
     	String order_id = getPara("order_id");
     	List<Record> list = null;

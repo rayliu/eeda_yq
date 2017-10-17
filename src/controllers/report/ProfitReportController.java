@@ -21,6 +21,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.eeda.ListConfigController;
+import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.PoiUtils;
 
@@ -196,6 +197,13 @@ public class ProfitReportController extends Controller {
         String end_date = getPara("end_date");
         String date_type = getPara("date_type");
         String type = getPara("type");
+        
+        if(StringUtils.isNotEmpty(getPara("customer_id"))){
+//    		String partyId =getPara("partyId");
+    		//常用客户保存进入历史记录
+          	Long userId = LoginUserController.getLoginUserId(this);
+          	JobOrderController.addHistoryRecord(userId,customer_id,"ARAP_COM");
+    	}
         
         String ref_office = "";
         Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);

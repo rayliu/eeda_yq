@@ -259,6 +259,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
           var status = $('#status').val();
           var customer_code = $("#customer_code").val().trim();
           var customer_name = $("#customer_name_input").val().trim();
+          var customer = $("#customer_name").val().trim();
           var sono = $("#sono").val().trim();
           var container_no = $("#container_no").val().trim();
           var transport_type = type;
@@ -271,6 +272,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
           	   +"&transport_type_like="+transport_type
           	   +"&customer_code_like="+customer_code
                +"&customer_name_like="+customer_name
+               +"&customer="+customer
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
           	   +"&order_export_date_begin_time="+sent_out_time_begin_time

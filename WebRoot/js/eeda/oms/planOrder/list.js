@@ -132,6 +132,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             selectFieldValue = $('#single_status_list').val();
           }else if(selectField == 'sp_name'){//被委托方
             selectFieldValue = $('#single_sp_name_input').val();
+            selectFieldValue+="&partyId="+$("#single_sp_name").val().trim();
           }else if(selectField == 'create_stamp'){//创建时间
         	var start_date = $("#single_create_stamp_begin_time").val();
         	var end_date = $("#single_create_stamp_end_time").val();
@@ -155,6 +156,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var sp_name = $("#sp_name_input").val().trim();
+          var partyId = $("#sp_name").val().trim();
           
           /*  
               查询规则：参数对应DB字段名
@@ -167,6 +169,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                +"&order_status="+order_status
                +"&status="+status
                +"&sp_name_like="+sp_name
+               +"&partyId="+partyId
                +"&type_="+type
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date;

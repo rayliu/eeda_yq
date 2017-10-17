@@ -2592,7 +2592,7 @@ public class JobOrderController extends Controller {
         }
     }
 
-    static void addHistoryRecord(long userId, String partyId, String type) {
+   public static void addHistoryRecord(long userId, String partyId, String type) {
         Record rec = Db.findFirst("select * from user_query_history where type='"+type+"' and ref_id=? and user_id=?", partyId, userId);
         if(rec==null){
             rec = new Record();
@@ -2606,6 +2606,7 @@ public class JobOrderController extends Controller {
             Db.update("user_query_history", rec);
         }
     }
+    
     //常用客户保存进入历史记录
      static void saveCustomerQueryHistory(long customerId,long userId){
 //        Long userId = LoginUserController.getLoginUserId(this);
