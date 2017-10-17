@@ -318,5 +318,18 @@ $(document).ready(function() {
             var url = "/supplierContract/clickItem?contract_id="+order_id+"&type=tour&supplier_loc_id="+item_id;
         	cargoTable.ajax.url(url).load();
         });
+        
+        //加工贸易页面校验
+        $('#charge_tour_table').on('blur','[name=price]',function(){
+        	var data = $(this).val();
+        	var len = $.trim(data).length;
+        	var re = /^\d{0,9}(\.\d{1,5})?$/;
+        	if(!re.test(data)&&len>0||len>15&&len>0){
+        		$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入合法数字</span>")
+        	}
+        });
+        $('#charge_tour_table').on('focus','[name=price]',function(){
+        	$(this).parent().find("span").remove();
+        });
 });
 });
