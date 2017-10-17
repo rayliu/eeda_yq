@@ -20,7 +20,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
 			          },
 					  { "data": "CREATE_STAMP", "width": "100px"},  
 					  { "data": "TOSTATUS", "width": "100px"},
-					  { "data": "SP_NAME", "width": "60px"}, 
+					  { "data": "SP_NAME", "width": "100px"}, 
+					  {	"data": "CHECK_TIME_SLOT", "width": "100px"},
 					  { "data": "TOTAL_AMOUNT","width": "60px","visible":false,
 				    	 "render":function(data, type, full, meta){
 				    		 if(data<0){
@@ -30,25 +31,25 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
 				    		 }
 				    	 }
 					  },
-			          { "data": "CNY",
+			          { "data": "CNY", "width": "100px",
 						  "render":function(data,type,full,meta){
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
-					  { "data": "USD",
+					  { "data": "USD", "width": "100px",
 						  "render":function(data,type,full,meta){
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
-			          { "data": "JPY",
+			          { "data": "JPY", "width": "100px",
 						  "render":function(data,type,full,meta){
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
-			          { "data": "HKD",
+			          { "data": "HKD", "width": "100px",
 						  "render":function(data,type,full,meta){
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
@@ -72,6 +73,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
   	    	  $("#sp_name_show").hide();
   	    	  $("#single_status").hide();
   	    	  $("#create_stamp1_show").hide();
+  	    	  $("#check_time_slot_show").hide();
   	    	  $("#single_order_no1").show();
   	      }
   	      if(selectField=='sp_name'){
@@ -79,6 +81,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
   	    	  $("#single_order_no1").hide();
 	    	  $("#single_status").hide();
 	    	  $("#create_stamp1_show").hide();
+	    	  $("#check_time_slot_show").hide();
 	    	  $("#sp_name_show").show();
   	      }
   	      if(selectField=="toStatus_equals"){
@@ -86,13 +89,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
   	    	  $("#single_order_no1").hide();
 	    	  $("#create_stamp1_show").hide();
 	    	  $("#sp_name_show").hide();
+	    	  $("#check_time_slot_show").hide();
 	    	  $("#single_status").show();
   	      }
   	      if(selectField=="create_stamp"){
   	    	  $("#single_order_no1").hide();
 	    	  $("#sp_name_show").hide();
 	    	  $("#single_status").hide();
+	    	  $("#check_time_slot_show").hide();
 	    	  $("#create_stamp1_show").show();
+  	      }
+  	    if(selectField=="check_time_slot_between"){
+  	    	$("#single_status").val("");
+  	    	  $("#single_order_no1").hide();
+	    	  $("#create_stamp1_show").hide();
+	    	  $("#sp_name_show").hide();
+	    	  $("#single_status").hide();
+	    	  $("#check_time_slot_show").show();
   	      }
        });
   	
@@ -111,6 +124,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
 	      if(selectField=="create_stamp"){
 	    	  var start_date = $("#single_create_stamp1_begin_time").val();
 	    	  var end_date = $("#single_create_stamp1_end_time").val();
+	      }
+	      if(selectField=="check_time_slot_between"){
+	    	  selectFieldValue = $("#single_check_time_slot").val();
 	      }
   	     var url = "/chargeCheckOrder/checkedList?"+selectField+"="+selectFieldValue
   	     		+"&create_stamp_begin_time="+start_date
@@ -132,6 +148,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
           var toStatus = $("#status").val();
+          var check_time_slot = $("#check_time_slot").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -143,8 +160,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
                +"&sp_name="+sp_name
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
-               +"&toStatus_equals="+toStatus;
-
+               +"&toStatus_equals="+toStatus
+               +"&check_time_slot_between="+check_time_slot
+          
           dataTable.ajax.url(url).load();
        }
        
