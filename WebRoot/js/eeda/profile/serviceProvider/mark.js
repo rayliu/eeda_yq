@@ -153,7 +153,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
   		})
   	 //保存
   	 $('#save_mark').click(function(){
-      var order={};
+  		var errorlength = $("[class=error_span]").length;
+        var loc_id = $($(".error_span").get(0)).parent().parent().parent().parent().attr('id');
+        if(errorlength>0){
+        	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+        	location.hash="#"+loc_id;
+        	return;
+        }
+        var order={};
   	 	 order.item_list=itemOrder.buildItemList();
   	 	 order.sp_id=$('#markCustomer').val()
   	 	 //异步向后台提交数据
@@ -252,5 +259,28 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       });
       calculate();
 
+      $("#mark_table").on("blur","[name=score],[name=remark]",function(){
+    	  var data = $(this).val();
+    	  var name = $(this).attr("name");
+    	  var len = $.trim(data).length;
+    	  var re = /^\d{0,2}(\.\d{1,2})?$/;
+    	  var re1 = /^.{255,}$/;
+    	  if(name=="score"&&len>0){
+    		  if(!re.test(data)){
+        		  $(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入正确的分数</span>");
+        	  }
+    	  }else if(name=="remark"){
+    		  if(re1.test(data)){
+        		  $(this).parent().append("<span style='color:red;display:block;' class='error_span'>最多输入长度为255的字符串</span>");
+        	  }
+    	  }
+    	  
+    	  
+      });
+    		  
+	  $('#mark_table').on('focus','[name=score],[name=remark]',function(){
+        	$(this).parent().find("span").remove();
+      });		  
+    
   })
 })
