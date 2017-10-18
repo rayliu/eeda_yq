@@ -121,6 +121,49 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	var url = "/customer/tableList?order_id="+order_id+"&type=contacts";
 	    	contactsTable.ajax.url(url).load();
 	    }
-	    
+	    //校验
+        $('#contacts_table').on('blur','[name=POSITION],[name=FULL_NAME],[name=MOBILE_PHONE],[name=EMAIL],[name=OFFICE_PHONE]',function(){
+        	var data = $(this).val();
+        	var name = $(this).attr("name");
+        	var len = $.trim(data).length;
+        	if(name=="POSITION"){
+        		var re = /^.{100,}$/;
+        		if(re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>只能输入长度100内的字符串</span>");
+        			return;
+        		}
+        	}
+        	if(name=="FULL_NAME"){
+        		var re = /^.{100,}$/;
+        		if(re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>只能输入长度100内的字符串</span>");
+        			return;
+        		}
+        	}
+        	if(name=="MOBILE_PHONE"){
+        		var re = /^1[3456789]\d{9}$/;
+        		if(!re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入正确的手机</span>");
+        			return;
+        		}
+        	}
+        	if(name=="EMAIL"){
+        		var re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        		if(!re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>邮箱格式不正确</span>");
+        			return;
+        		}
+        	}
+        	if(name=="OFFICE_PHONE"){
+        		var re = /^\d{3,4}-\d{7,8}$/;
+        		if(!re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入正确的电话号码</span>");
+        			return;
+        		}
+        	}
+        });
+        $('#contacts_table').on('focus','[name=POSITION],[name=FULL_NAME],[name=MOBILE_PHONE],[name=EMAIL],[name=OFFICE_PHONE]',function(){
+        	$(this).parent().find("span").remove();
+        });
 	});
 });

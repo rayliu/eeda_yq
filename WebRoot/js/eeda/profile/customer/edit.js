@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_doc_table', './edit_customer_quotation_table','./add_dock_item_table','./contacts_item_table',
+define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_doc_table', './edit_customer_quotation_table','./add_dock_item_table','./contacts_item_table',
         './account_item_table','./salesman_item_table'], function ($, metisMenu) { 
     $(document).ready(function() {
 
@@ -54,18 +54,73 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
                       }
                     }
                 },
-              contact_person:{//form 中 name为必填
-                required: true
+              contact_person: {
+            	  required: true,
+            	  maxlength:100
               },
-              location:{
-                required: true
+              contact_person_eng: {
+            	  maxlength:100
               },
-              insurance_rates:{
-                number:true 
+              receipt: {
+            	  maxlength:100
               },
-              email:{
-                email: true
-              }
+              phone: {
+            	  isMobile:true
+              },
+		  	registration: {
+		  		maxlength:255
+		  	},
+		  	fax: {
+		  		maxlength:50
+		  	},
+		  	custom_registration: {
+		  		maxlength:255
+		  	},
+		  	company_name_eng: {
+		  		maxlength:100
+		  	},
+		  	skype: {
+		  		maxlength:100
+		  	},
+		  	insurance_rates: {
+		  		number:true
+		  	},
+		  	address: {
+		  		maxlength:255
+		  	},
+		  	email: {
+		  		email: true
+		  	},
+		  	address_eng: {
+		  		maxlength:255
+		  	},
+		  	zip_code: {
+		  		maxlength:50
+		  	},
+		  	identification_no: {
+		  		maxlength:100
+		  	},
+		  	bill_of_lading_info: {
+		  		maxlength:1000
+		  	},
+		  	introduction: {
+		  		maxlength:255
+		  	},
+		  	special_item: {
+		  		maxlength:255
+		  	},
+		  	remark: {
+		  		maxlength:2450
+		  	},
+		  	this_year_salesamount: {
+		  		maxlength:255
+		  	},
+		  	this_year_salesamount: {
+		  		maxlength:255
+		  	},
+		  	beforelast_year_salesamount: {
+		  		maxlength:255
+		  	}
             },
             messages:{
                 company_name:{
@@ -91,8 +146,11 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
                 element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
             }
         });
-        
-      
+        jQuery.validator.addMethod("isMobile", function(value, element) {
+            var length = value.length;
+            var mobile = /^((1[3456789]\d{9})|(0\d{2,3}-\d{7,8}))$/;
+            return this.optional(element) || (mobile.test(value));
+        }, "请输入格式正确的电话或手机号码");
         // 回显入库是否库存管理
         $("input[name='isInventoryControl']").each(function(){
             if($("#inventoryControl").val() == $(this).val()){
@@ -193,8 +251,16 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
         
         $('#saveBtn').click(function(){
         	//提交前，校验必填
-            if(!$("#customerForm").valid()){
-            	$.scojs_message('上面有必填字段', $.scojs_message.TYPE_ERROR);
+        	var formRequired = 0;
+            $('#customerForm').each(function(){
+            	if(!$(this).valid()){
+            		formRequired++;
+                }
+            })
+            
+            var errorlength = $(".error_span").length;
+            if(errorlength>0||formRequired>0){
+            	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
                 return;
             }
             var order ={}
@@ -257,7 +323,87 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', './edit_
                 $('#saveBtn').attr('disabled', false);
               });
         })
-
+        
+        //主页面校验
+  	  	$('#customerForm').validate({
+  	        rules: {
+  	        	contact_person: {
+  	        		maxlength:100
+  	        	},
+  	        	contact_person_eng: {
+  			    	maxlength:100
+  			  	},
+  			  	receipt: {
+  			  		maxlength:100
+  			  	},
+  			  	phone: {
+			  		maxlength:100
+			  	},
+			  	registration: {
+			  		maxlength:255
+			  	},
+			  	fax: {
+  			  		maxlength:50
+  			  	},
+  			  	custom_registration: {
+  			  		maxlength:255
+  			  	},
+  			  	company_name_eng: {
+  			  		maxlength:100
+  			  	},
+  			  	skype: {
+  			  		maxlength:100
+  			  	},
+  			  	insurance_rates: {
+  			  		number:true
+  			  	},
+  			  	address: {
+  			  		maxlength:255
+  			  	},
+  			  	email: {
+			  		maxlength:100
+			  	},
+			  	address_eng: {
+  			  		maxlength:255
+  			  	},
+  			  	zip_code: {
+			  		maxlength:50
+			  	},
+			  	identification_no: {
+			  		maxlength:100
+			  	},
+			  	bill_of_lading_info: {
+			  		maxlength:1000
+			  	},
+			  	introduction: {
+			  		maxlength:255
+			  	},
+			  	special_item: {
+			  		maxlength:255
+			  	},
+			  	remark: {
+			  		maxlength:2450
+			  	},
+			  	this_year_salesamount: {
+			  		maxlength:255
+			  	},
+			  	this_year_salesamount: {
+			  		maxlength:255
+			  	},
+			  	beforelast_year_salesamount: {
+			  		maxlength:255
+			  	}
+  	        },
+  	        messages: {
+  	        	maxlength:$.validator.format("最多输入{0}个的数字"),
+  	        },
+  	        highlight: function(element) {
+  	            $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+  	        },
+  	        success: function(element) {
+  	            element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
+  	        }
+  	    });
         
 
     });

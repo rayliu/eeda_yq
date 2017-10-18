@@ -127,6 +127,28 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	salesmanTable.ajax.url(url).load();
 	    }
 	    
-	    
+	    //校验
+        $('#salesman_table').on('blur','[name=ROYALTY_RATE],[name=REMARK]',function(){
+        	var data = $(this).val();
+        	var name = $(this).attr("name");
+        	var len = $.trim(data).length;
+        	if(name=="ROYALTY_RATE"){
+        		var re = /^\d{0,5}(\.\d{1,5})?$/;
+        		if(!re.test(data)){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入合法的数字</span>");
+        			return;
+        		}
+        	}
+        	if(name=="REMARK"){
+        		var re = /^.{500,}$/;
+        		if(re.test(data)){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>只能输入长度500内的字符串</span>");
+        			return;
+        		}
+        	}
+        });
+        $('#salesman_table').on('focus','[name=ROYALTY_RATE],[name=REMARK]',function(){
+        	$(this).parent().find("span").remove();
+        });
 	});
 });
