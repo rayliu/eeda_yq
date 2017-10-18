@@ -1,17 +1,23 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
 
   $(document).ready(function() {
-
-	  
 	  
         $('#customerForm').validate({
             rules: {
             	dock_name: {//form 中company_name为必填, 注意input 中定义的id, name都要为company_name
-                required: true
-              },
-              quick_search_code:{//form 中 abbr为必填
-                  required: true
-                }
+            		required: true,
+            		maxlength:100
+            	},
+            	quick_search_code:{
+            		required: true,
+            		maxlength:20
+            	},
+            	dock_name_eng:{
+            		maxlength:100
+            	},
+            	dock_region:{
+            		maxlength:255
+            	}
             },
             highlight: function(element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -25,7 +31,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //自动提交改为手动提交
       $("#saveBtn").click(function(){
     	 if(!$("#customerForm").valid()){
-    		  return;
+    		 $.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+    		 return;
     	 }
     	 var order={};
     	 order.id=$('#dock_id').val();

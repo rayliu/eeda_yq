@@ -38,7 +38,7 @@
 			            </div>
 			            <div class="col-lg-12">
 			           	  <div class="button-bar">
-			             	<button type="button" id="saveBtn" class="btn  btn-primary">保存</button>
+			             	<button type="button" id="saveBtn" class="btn btn_green">保存</button>
 				            <a class="btn  btn-primary" href="/dockInfo">返回</a>
 				          </div>
 				        </div>
@@ -50,11 +50,8 @@
 		</div>
 	</div>
 <%}%>
-<!-- 寮曞叆鏍￠獙鐨刯s 鏂囦欢鍙婂叾 涓枃 鏂囦欢-->
-<script src="/yh/js/jquery.validate.min.js"></script>
-<script src="/yh/js/jvalidate.messages_cn.js"></script>
-<script>
 
+<script>
 requirejs(['/js/eeda/eeda-common.js'], function (common) {
         requirejs(['app/profile/dockInfo/edit']);
     });
