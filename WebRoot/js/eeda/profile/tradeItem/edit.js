@@ -4,42 +4,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#menu_profile').addClass('active').find('ul').addClass('in');
         
         var id = $("#id").val();
-       
-        	//校验是否已存在此费用
-            $('#orderForm').validate({
-            	
-            	rules: {
-    	            	commodity_name: {
-    	                	required: true,
-    	                	remote:{
-    		                    url: "/tradeItem/checkCommodityNameExist",
-    		                    type: "post",
-    		                    data:  {
-    		                    	commodity_name: function() { 
-    		                              return $("#commodity_name").val();
-    		                        },
-    		                        order_id: function() { 
-  		                              return $("#id").val();
-    		                        }
-    	                    	}
-    	                	}
-    	                }
-    	            },
-    	            messages:{
-    	            	commodity_name:{
-    	                    remote:"此商品名称已存在"
-    	                }
-    	            },
-    	            highlight: function(element) {
-    	                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-    	            },
-    	            success: function(element) {
-    	                element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
-    	            }
-            });
-      
- 
         
+        $("#commodity_name").blur(function(){
+        	var commodity_name = $("#commodity_name").val();
+        	$.post("/tradeItem/checkCommodityNameExist",{commodity_name:commodity_name},function(data){
+        		if(!data){
+        			$("#commodity_name").parent().append("<span style='color:red;display:block;' class='error_span'>此商品名称已存在</span>")
+        			$("#commodity_name").closest('.form-group').removeClass('has-success').addClass('has-error');
+        		}else{
+        			$("#commodity_name").addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
+        		}
+        	});
+        });
+        $('#commodity_name').on('focus',function(){
+        	$(this).parent().find("span").remove();
+        });
         //------------save
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
@@ -48,7 +27,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             if(!$("#orderForm").valid()){
                 return false;
             }
-            
+            var errorlength = $("[class=error_span]").length;
+            if(errorlength>0){
+            	$.scojs_message('单据存在填写错误字段未处理', $.scojs_message.TYPE_ERROR);
+            	return;
+            }
             $(this).attr('disabled', true);
 
            

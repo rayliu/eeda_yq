@@ -313,14 +313,14 @@ public class TradeItemController extends Controller {
 		String sql1 = "select * from trade_item where commodity_name = ? and office_id=?";
 		Record r = Db.findFirst(sql,order_id, officeId);
 		Record r1 = Db.findFirst(sql1,para, officeId);
-    	if(order_id!=null||order_id!=""){
+    	if(order_id!=null&&order_id!=""){
     		if(para.equals(r.get("commodity_name"))||r1==null){
     			ifExist = true;
     		}else{
         		ifExist = false;
         	}
     	}else{
-    		if(r==null){
+    		if(r1==null){
         		ifExist = true;
         	}else{
         		ifExist = false;
