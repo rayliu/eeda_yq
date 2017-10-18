@@ -141,5 +141,42 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	carsTable.ajax.url(url).load();
 	    }
 	    
+	    //校验
+        $('#cars_table').on('blur','[name=car_no],[name=driver],[name=phone],[name=cartype],[name=length],[name=toca_num]',function(){
+        	var data = $(this).val();
+        	var name = $(this).attr("name");
+        	var len = $.trim(data).length;
+        	if(name=="car_no"||name=="driver"||name=="cartype"){
+        		var re = /^.{50,}$/;
+        		if(re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>只能输入长度50内的字符串</span>");
+        			return;
+        		}
+        	}
+        	if(name=="phone"){
+        		var re = /^1[3456789]\d{9}$/;
+        		if(!re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入正确的手机号码</span>");
+        			return;
+        		}
+        	}
+        	if(name=="length"){
+        		var re = /^\d{0,9}(\.\d{1,9})?$/;
+        		if(!re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入长度20内的合法数字</span>");
+        			return;
+        		}
+        	}
+        	if(name=="toca_num"){
+        		var re = /^\d{0,20}$/;
+        		if(!re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入长度20内的整数</span>");
+        			return;
+        		}
+        	}
+        });
+        $('#cars_table').on('focus','[name=car_no],[name=driver],[name=phone],[name=cartype],[name=length],[name=toca_num]',function(){
+        	$(this).parent().find("span").remove();
+        });
 	});
 });

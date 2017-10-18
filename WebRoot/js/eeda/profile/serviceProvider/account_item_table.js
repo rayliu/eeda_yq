@@ -114,6 +114,29 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	var url = "/serviceProvider/tableList?order_id="+order_id;
 	    	cargoTable.ajax.url(url).load();
 	    }
-	    
+	   
+	    //校验
+        $('#cargo_table').on('blur','[name=ACCOUNT_NAME],[name=BANK_NAME],[name=ACCOUNT_NO],[name=REMARK]',function(){
+        	var data = $(this).val();
+        	var name = $(this).attr("name");
+        	var len = $.trim(data).length;
+        	if(name=="ACCOUNT_NAME"||name=="BANK_NAME"||name=="REMARK"){
+        		var re = /^.{255,}$/;
+        		if(re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>只能输入长度255内的字符串</span>");
+        			return;
+        		}
+        	}
+        	if(name=="ACCOUNT_NO"){
+        		var re = /^\d{1,19}$/;
+        		if(!re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入正确的银行账户</span>");
+        			return;
+        		}
+        	}
+        });
+        $('#cargo_table').on('focus','[name=ACCOUNT_NAME],[name=BANK_NAME],[name=ACCOUNT_NO],[name=REMARK]',function(){
+        	$(this).parent().find("span").remove();
+        });
 	});
 });

@@ -104,19 +104,100 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#customerForm').validate({
             rules: {
               company_name: {//form 中company_name为必填, 注意input 中定义的id, name都要为company_name
-                required: true
+                required: true,
+                maxlength:100
               },
               abbr:{//form 中 abbr为必填
-                  required: true
-                },
+                  required: true,
+                  maxlength:60
+              },
+              quick_search_code :{
+        	      required: true,
+        	      maxlength:45
+              },
               contact_person:{//form 中 name为必填
                 required: true
               },
-              location:{
+              /*location:{
                 required: true
+              },*/
+              company_name_eng :{
+              	maxlength:100
               },
-           	  email:{
-                email: true
+              address: {
+	        	  maxlength:255
+	          },
+	              contact_person_eng: {
+            	  maxlength:100
+              },
+              address_eng: {
+            	  maxlength:255
+              },
+              bill_of_lading_info: {
+            	  maxlength:1000
+              },
+              contact_person: {
+            	  maxlength:100
+              },
+              contact_person_eng: {
+            	  maxlength:100
+              },
+              phone: {
+            	  isMobile:true
+              },
+              email: {
+            	  email:true
+              },
+              website: {
+            	  isWebsite:true
+              },
+              fax: {
+            	  maxlength:50
+              },
+              identification_no: {
+            	  maxlength:100
+              },
+              register_capital: {
+            	  maxlength:255
+              },
+              main_business: {
+            	  maxlength:255
+              },
+              receiver: {
+            	  maxlength:50
+              },
+              postal_code: {
+            	  maxlength:60
+              },
+              status: {
+            	  maxlength:255
+              },
+              this_year_salesamount: {
+            	  maxlength:255
+              },
+              last_year_salesamount: {
+            	  maxlength:255
+              },
+              beforelast_year_salesamount: {
+            	  maxlength:255
+              },
+              response_problem_time: {
+            	  maxlength:225
+              },
+              solve_problem_time: {
+            	  maxlength:225
+              },
+              pay_account_time: {
+            	  maxlength:225
+              },
+              business_scope: {
+            	  maxlength:500
+              },
+              introduction: {
+            	  maxlength:255
+              },
+              remark: {
+            	  maxlength:255
               }
             },
             highlight: function(element) {
@@ -126,7 +207,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
             }
         });
-        
+        jQuery.validator.addMethod("isMobile", function(value, element) {
+            var length = value.length;
+            var mobile = /^((1[3456789]\d{9})|(0\d{2,3}-\d{7,8}))$/;
+            return this.optional(element) || (mobile.test(value));
+        }, "请输入格式正确的电话或手机号码");
+        jQuery.validator.addMethod("isWebsite", function(value, element) {
+            var length = value.length;
+            var re = /^([a-zA-Z\d][a-zA-Z\d-_]+\.)+[a-zA-Z\d-_][^ ]*$/;
+            return this.optional(element) || (re.test(value));
+        }, "网站格式不正确");
          
       // 回显计费方式
       var chargeTypeOption=$("#chargeType>option");
@@ -139,10 +229,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       }
       //自动提交改为手动提交
       $("#save").click(function(){
-    	 if(!$("#customerForm").valid()){
-    		 $.scojs_message('请填上面的必填字段', $.scojs_message.TYPE_ERROR);
-    		  return false;
-    	 }
+    	  //提交前，校验必填
+      	  var formRequired = 0;
+          $('#customerForm').each(function(){
+          	if(!$(this).valid()){
+          		formRequired++;
+              }
+          })
+          var errorlength = $(".error_span").length;
+          if(errorlength>0||formRequired>0){
+          	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+              return;
+          }
+          
     	 $("#save").attr("disabled",false);
     	 var order={};
     	 order.acount_json =itemOrder.buildCargoDetail();

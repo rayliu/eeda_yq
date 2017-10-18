@@ -207,5 +207,49 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	cargoTable.ajax.url(url).load();
 	    }
 	    
+	  //校验
+        $('#dock_table').on('blur','[name=dock_name],[name=land_contacts],[name=land_contact_phone],[name=bill_remark],[name=dock_name_eng],[name=dock_region]',function(){
+        	var data = $(this).val();
+        	var name = $(this).attr("name");
+        	var len = $.trim(data).length;
+        	if(name=="dock_name"||name=="dock_name_eng"){
+        		var re = /^.{100,}$/;
+        		if(re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>只能输入长度100内的字符串</span>");
+        			return;
+        		}
+        	}
+        	if(name=="land_contacts"){
+        		var re = /^.{50,}$/;
+        		if(re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>只能输入长度50内的字符串</span>");
+        			return;
+        		}
+        	}
+        	if(name=="bill_remark"){
+        		var re = /^.{1000,}$/;
+        		if(re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>只能输入长度1000内的字符串</span>");
+        			return;
+        		}
+        	}
+        	if(name=="dock_region"){
+        		var re = /^.{255,}$/;
+        		if(re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>只能输入长度255内的字符串</span>");
+        			return;
+        		}
+        	}
+        	if(name=="land_contact_phone"){
+        		var mobile = /^((1[3456789]\d{9})|(0\d{2,3}-\d{7,8}))$/;
+        		if(!mobile.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入正确的电话或者手机号码</span>");
+        			return;
+        		}
+        	}
+        });
+        $('#dock_table').on('focus','[name=dock_name],[name=land_contacts],[name=land_contact_phone],[name=bill_remark],[name=dock_name_eng],[name=dock_region]',function(){
+        	$(this).parent().find("span").remove();
+        });
 	});
 });
