@@ -733,7 +733,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 		});
 		
 		//校验
-		$('#cargo_table').on("blur","[name=PIECES],[name=GROSS_WEIGHT],[name=VOLUME],[name=CONTAINER_TYPE],[name=CONTAINER_AMOUNT],[name=TRUCK_TYPE],[name=CARGO_NAME]",function(){
+		$('#cargo_table').on("blur","[name=PIECES],[name=GROSS_WEIGHT],[name=VOLUME],[name=CONTAINER_TYPE],[name=CONTAINER_AMOUNT],[name=TRUCK_TYPE],[name=CARGO_NAME],[name=PICKUP_ADDR]",function(){
 			var data = $(this).val();
 			var name = $(this).attr("name");
 			var len = $.trim(data).length;
@@ -758,7 +758,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 					return;
 				}
 			}
-			if(name=="CARGO_NAME"){
+			if(name=="CARGO_NAME"||name=="PICKUP_ADDR"){
 				var re = /^.{500,}$/g;
 				if(re.test(data)&&len!=0){
 					$(this).parent().append("<span style='color:red;' class='error_span'>请输入长度500以内的字符串</span>");
@@ -766,7 +766,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 				}
 			}
 		});
-		$('#cargo_table').on("focus","[name=PIECES],[name=GROSS_WEIGHT],[name=VOLUME],[name=CONTAINER_TYPE],[name=CONTAINER_AMOUNT],[name=TRUCK_TYPE],[name=CARGO_NAME]",function(){
+		$('#cargo_table').on("focus","[name=PIECES],[name=GROSS_WEIGHT],[name=VOLUME],[name=CONTAINER_TYPE],[name=CONTAINER_AMOUNT],[name=TRUCK_TYPE],[name=CARGO_NAME],[name=PICKUP_ADDR]",function(){
 			$(this).parent().find("span").remove();
 		});
 	});

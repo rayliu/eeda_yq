@@ -70,7 +70,7 @@ $(document).ready(function() {
             }
         })
         if(formRequired>0){
-        	$.scojs_message('客户和出货时间为必填字段', $.scojs_message.TYPE_ERROR);
+        	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
         	return;
         }
 
@@ -155,6 +155,46 @@ $(document).ready(function() {
         $('#saveBtn').attr('disabled',true);
 	}
 	
+	//校验
+	$("#orderForm").validate({
+    	rules:{
+    		outer_order_no:{
+    			maxlength:50
+    		},
+    		gargo_name:{
+    			maxlength:100
+    		},
+    		pickup_addr:{
+    			maxlength:500
+    		},
+    		pieces:{
+    			number:true,
+    			maxlength:11
+    		},
+    		gross_weight:{
+    			number:true,
+    			maxlength:11
+    		},
+    		volume:{
+    			number:true,
+    			maxlength:11
+    		},
+    		remark:{
+    			maxlength:255
+    		}
+    	},
+    	messages:{
+    		pieces:{
+    			maxlength:$.validator.format("最多可以输入 {0} 个数字")
+    		},
+    		gross_weight:{
+    			maxlength:$.validator.format("最多可以输入 {0} 个数字")
+    		},
+    		volume:{
+    			maxlength:$.validator.format("最多可以输入 {0} 个数字")
+    		}
+    	}
+    });
 	
 	
 	
