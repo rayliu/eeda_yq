@@ -42,9 +42,9 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<detail>
-		<band height="20">
+		<band height="12">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="153" height="20" uuid="89d8254b-b3a6-4a3c-98ac-9cd9e0a3426e"/>
+				<reportElement x="0" y="0" width="153" height="12" uuid="89d8254b-b3a6-4a3c-98ac-9cd9e0a3426e"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>

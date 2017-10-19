@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import models.ParentOfficeModel;
@@ -34,17 +33,13 @@ import org.apache.shiro.subject.Subject;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
-import com.jfinal.config.JFinalConfig;
 import com.jfinal.core.Controller;
-import com.jfinal.core.JFinal;
 import com.jfinal.ext.plugin.shiro.ShiroKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
-import com.jfinal.weixin.sdk.kit.IpKit;
 
-import config.EedaConfig;
 import controllers.profile.LoginUserController;
 import controllers.util.EedaCommonHandler;
 import controllers.util.MD5Util;
@@ -127,13 +122,18 @@ public class MainController extends Controller {
             	Record rec = Db.findFirst(officeConfig, user.getLong("office_id"));
             	if(rec == null || rec.getStr("index_page_path") == null){
             	    if(getAttr("modules")==null){
-                        redirect("/");
+                        redirect("/");                    	
                     }else{
                         List<Record> moduleList = (List<Record>)getAttr("modules");
-                        List<Record> orderList = (List<Record>)moduleList.get(0).get("orders");
-                        Record firstModule = (Record)orderList.get(0);
+                        if(moduleList.size()==0){
+                        	redirect("/module");
+                        }else{
+                        	List<Record> orderList = (List<Record>)moduleList.get(0).get("orders");
+                            Record firstModule = (Record)orderList.get(0);
+                            
+                            redirect(firstModule.getStr("url"));
+                        }
                         
-                        redirect(firstModule.getStr("url"));
                     };
             	}else{
             		render(rec.getStr("index_page_path"));
