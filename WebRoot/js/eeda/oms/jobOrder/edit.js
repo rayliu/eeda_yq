@@ -59,6 +59,9 @@ $(document).ready(function() {
     			isDigits:true,
     			min:0,
     			maxlength:11
+    		},
+    		note:{
+    			maxlength:255
     		}
     		
     	}
@@ -125,13 +128,16 @@ $(document).ready(function() {
     $("#airForm").validate({
     	rules:{
     		air_net_weight:{
-    			number:true
+    			number:true,
+    			maxlength:11
     		},
     		air_gross_weight:{
-    			number:true
+    			number:true,
+    			maxlength:11
     		},
     		air_volume:{
-    			number:true
+    			number:true,
+    			maxlength:11
     		},
     		shipping_mark:{
     			maxlength:1000
@@ -141,9 +147,18 @@ $(document).ready(function() {
     		},
     		booking_mark:{
     			maxlength:2000
+    		}
+    	},
+    	messages:{
+    		air_net_weight:{
+    			maxlength:$.validator.format("请输入长度 {0} 内的数字")
     		},
-    		
-    		
+    		air_gross_weight:{
+    			maxlength:$.validator.format("请输入长度 {0} 内的数字")
+    		},
+    		air_volume:{
+    			maxlength:$.validator.format("请输入长度 {0} 内的数字")
+    		},
     	}
     })
     //小数处理
