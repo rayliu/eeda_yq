@@ -118,7 +118,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
           ]
       });
           
-    $('#eeda-table').on('click',' [type=checkBox]',function(){
+    $('#eeda-table').on('click','[type=checkBox]',function(){
     	$('[name=allCheckBox]').prop("checked",$('#eeda-table tbody [type=checkBox]:unchecked').size()==0)
         var current_status = $(this).parent().parent().find('.status').text();
         	if($('#eeda-table tbody [type=checkBox]:checked').size()>0){
