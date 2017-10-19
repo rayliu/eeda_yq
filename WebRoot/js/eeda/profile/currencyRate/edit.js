@@ -6,10 +6,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	$('#saveBtn').click(function(e){
         //阻止a 的默认响应行为，不需要跳转
         e.preventDefault();
-        //提交前，校验数据
-        if(!$("#accountFrom").valid()){
+        //提交前，校验必填
+    	var formRequired = 0;
+        $('#accountFrom').each(function(){
+        	if(!$(this).valid()){
+        		formRequired++;
+            }
+        })
+        
+        if(formRequired>0){
+        	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
             return;
         }
+        
         $(this).attr('disabled', true);
         
         var order = {
@@ -57,10 +66,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	
 	$('#accountFrom').validate({
         rules: {
-
+        	rate:{
+        		number:true,
+        		maxlength:18
+        	},
+        	remark:{
+        		maxlength:100
+        	}
         },
         messages:{
-            
+        	rate:{
+        		maxlength:$.validator.format("请输入长度最多是 {0} 个数字"),
+        	}
         },
         highlight: function(element) {
             $(element).closest('.form-group').removeClass('has-success').addClass('has-error');

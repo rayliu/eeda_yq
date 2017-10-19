@@ -7,10 +7,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#orderForm').validate({
 	            rules: {
 	                code: {
+	                	maxlength:20,
 	                	remote:{
 		                    url: "/finItem/checkCodeExist",
 		                    type: "post",
 		                    data:  {
+		                    	id: function() {
+	                				return $("#id").val();
+	                			},
 		                        code: function() { 
 		                              return $("#code").val();
 		                        }
@@ -19,26 +23,37 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                },
 	                name: {
 	                	required: true,
+	                	maxlength:100,
 	                	remote:{
 	                		url: "/finItem/checkNameExist",
 	                		type: "post",
 	                		data:  {
-	                			code: function() { 
+	                			id: function() {
+	                				return $("#id").val();
+	                			},
+	                			name: function() { 
 	                				return $("#name").val();
 	                			}
 	                		}
 	                	}
 	                },
 	                name_eng: {
+	                	maxlength:100,
 	                	remote:{
 	                		url: "/finItem/checkNameEngExist",
 	                		type: "post",
 	                		data:  {
-	                			code: function() { 
+	                			id: function() {
+	                				return $("#id").val();
+	                			},
+	                			name_eng: function() { 
 	                				return $("#name_eng").val();
 	                			}
 	                		}
 	                	}
+	                },
+	                remark:{
+	                	maxlength:255
 	                }
 	            },
 	            messages:{
@@ -65,9 +80,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
             e.preventDefault();
-            //提交前，校验数据
-            if(!$("#orderForm").valid()){
-                return false;
+            //提交前，校验必填
+        	var formRequired = 0;
+            $('#orderForm').each(function(){
+            	if(!$(this).valid()){
+            		formRequired++;
+                }
+            })
+            
+            if(formRequired>0){
+            	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+                return;
             }
             
             $(this).attr('disabled', true);

@@ -1,11 +1,17 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
 
-
 	$('#saveBtn').click(function(e){
         //阻止a 的默认响应行为，不需要跳转
         e.preventDefault();
-        //提交前，校验数据
-        if(!$("#accountFrom").valid()){
+        //提交前，校验必填
+    	var formRequired = 0;
+        $('#accountFrom').each(function(){
+        	if(!$(this).valid()){
+        		formRequired++;
+            }
+        })
+        if(formRequired>0){
+        	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
             return;
         }
         
@@ -43,13 +49,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	$('#accountFrom').validate({
         rules: {
         	account_name: {
-            required: true
+            required: true,
+            maxlength:255
           },
           bank_name: {
-            required: true
+            required: true,
+            maxlength:255
           },
-          account_no:{
-            required: true
+          account_no: {
+            required: true,
+            maxlength:100
+          },
+          remark: {
+        	maxlength:255
           }
         },
         messages:{

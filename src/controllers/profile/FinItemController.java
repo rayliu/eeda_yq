@@ -247,17 +247,24 @@ public class FinItemController extends Controller {
     //校验是否存在此费用
     public void checkCodeExist(){
     	String para= getPara("code");
+    	String id= getPara("id");
     	UserLogin user = LoginUserController.getLoginUser(this);
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         
     	String sql = "select * from fin_item where code = ? and office_id=?";
+    	String sql1 = "select * from fin_item where id = ? and office_id=?";
     	boolean ifExist;
     	Record r = Db.findFirst(sql,para, officeId);
-    	if(r==null){
+    	Record r1 = Db.findFirst(sql1, id, officeId);
+    	if(r1.get("code").equals(para)){
     		ifExist = true;
     	}else{
-    		ifExist = false;
+    		if(r==null){
+        		ifExist = true;
+        	}else{
+        		ifExist = false;
+        	}
     	}
     	renderJson(ifExist);
     }
@@ -265,31 +272,46 @@ public class FinItemController extends Controller {
     //校验是否存在此费用
     public void checkNameExist(){
     	String para= getPara("name");
+    	String id= getPara("id");
     	UserLogin user = LoginUserController.getLoginUser(this);
         Long officeId = user.getLong("office_id");
     	String sql = "select * from fin_item where name = ? and office_id=?";
+    	String sql1 = "select * from fin_item where id = ? and office_id=?";
     	boolean ifExist;
     	Record r = Db.findFirst(sql, para, officeId);
-    	if(r==null){
+    	Record r1 = Db.findFirst(sql1, id, officeId);
+    	if(r1.get("name").equals(para)){
     		ifExist = true;
     	}else{
-    		ifExist = false;
+    		if(r==null){
+        		ifExist = true;
+        	}else{
+        		ifExist = false;
+        	}
     	}
+    	
     	renderJson(ifExist);
     }
     
     //校验是否存在此费用
     public void checkNameEngExist(){
     	String para= getPara("name_eng");
+    	String id= getPara("id");
     	UserLogin user = LoginUserController.getLoginUser(this);
         Long officeId = user.getLong("office_id");
     	String sql = "select * from fin_item where name_eng =? and office_id=?";
+    	String sql1 = "select * from fin_item where id = ? and office_id=?";
     	boolean ifExist;
     	Record r = Db.findFirst(sql, para, officeId);
-    	if(r==null){
+    	Record r1 = Db.findFirst(sql1, id, officeId);
+    	if(r1.get("name_eng").equals(para)){
     		ifExist = true;
     	}else{
-    		ifExist = false;
+    		if(r==null){
+        		ifExist = true;
+        	}else{
+        		ifExist = false;
+        	}
     	}
     	renderJson(ifExist);
     }
