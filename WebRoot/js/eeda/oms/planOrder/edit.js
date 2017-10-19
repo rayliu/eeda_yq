@@ -1,8 +1,5 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
         'validate_cn', 'sco', 'datetimepicker_CN', 'jq_blockui', 'dtColReorder'], function ($, metisMenu) { 
-    
-    
-
     $(document).ready(function() {
 
         tl.pg.init({
@@ -50,9 +47,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
             //阻止a 的默认响应行为，不需要跳转
             e.preventDefault();
             //提交前，校验数据
+            var formRequired = 0;
+            $('#orderForm').each(function(){
+            	if(!$(this).valid()){
+            		formRequired++;
+                }
+            })
+            errorlength = $("[class=error_span]").length;
+            var loc_id = $($(".error_span").get(0)).parent().parent().parent().parent().attr('id');
+            
+            if(formRequired>0||errorlength>0){
+            	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+            	location.hash="#"+loc_id;
+            	return;
+            }
+            /*//提交前，校验数据
             if(!$("#orderForm").valid()){
                 return;
-            }
+            }*/
             
             $.blockUI({ 
                 message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
@@ -171,7 +183,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
              $('#add_cargo').hide();
          }
          
-
+         //校验
+         $('#note').on("blur",function(){
+     		var data = $.trim($(this).val());
+     		var len = data.length;
+     		var re = /^.{255,}$/;
+     		if(re.test(data)&&len!=0){
+     			$(this).parent().append("<span style='color:red;' class='error_span'>请输入长度255以内的字符串</span>")
+     		}
+     	});
+        $("#note").on("focus",function(){
+     		$(this).parent().find("span").remove();
+     	});
 
      });
 });

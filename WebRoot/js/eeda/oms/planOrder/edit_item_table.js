@@ -731,5 +731,43 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 				$('#create_jobOrder').attr('disabled',true);
 			}
 		});
+		
+		//校验
+		$('#cargo_table').on("blur","[name=PIECES],[name=GROSS_WEIGHT],[name=VOLUME],[name=CONTAINER_TYPE],[name=CONTAINER_AMOUNT],[name=TRUCK_TYPE],[name=CARGO_NAME]",function(){
+			var data = $(this).val();
+			var name = $(this).attr("name");
+			var len = $.trim(data).length;
+			if(name=="PIECES"||name=="GROSS_WEIGHT"||name=="VOLUME"){
+				var re = /^\d{0,8}(\d{1}.\d{1,5})?$/g;
+				if(!re.test(data)&&len!=0){
+					$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法的数字</span>");
+					return;
+				}
+			}
+			/*if(name=="CONTAINER_TYPE"||name=="TRUCK_TYPE"){
+				var re = /^.{255,}$/g;
+				if(re.test(data)&&len!=0){
+					$(this).parent().append("<span style='color:red;' class='error_span'>请输入长度255以内的字符串</span>");
+					return;
+				}
+			}*/
+			if(name=="CONTAINER_AMOUNT"){
+				var re = /^\d{0,2}$/;
+				if(!re.test(data)&&len!=0){
+					$(this).parent().append("<span style='color:red;' class='error_span'>请输入长度2以内的数字</span>");
+					return;
+				}
+			}
+			if(name=="CARGO_NAME"){
+				var re = /^.{500,}$/g;
+				if(re.test(data)&&len!=0){
+					$(this).parent().append("<span style='color:red;' class='error_span'>请输入长度500以内的字符串</span>");
+					return;
+				}
+			}
+		});
+		$('#cargo_table').on("focus","[name=PIECES],[name=GROSS_WEIGHT],[name=VOLUME],[name=CONTAINER_TYPE],[name=CONTAINER_AMOUNT],[name=TRUCK_TYPE],[name=CARGO_NAME]",function(){
+			$(this).parent().find("span").remove();
+		});
 	});
 });
