@@ -68,7 +68,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 //          paging: true,
           // serverSide: true, //不打开会出现排序不对
           autoWidth: false,
-          scrollY: 530,
+          scrollY: 450,
           colReorder: true,
           scrollCollapse: true,
           drawCallback:function(settings){
@@ -452,7 +452,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
       });
 
      
-       $('#add_land').on('click', function(){
+       $('#add_land,#add_land1').on('click', function(){
     	  var customer_id=$('#CUSTOMER_ID').val();
     	  var customer_salesman=$('#customer_salesman').val();
     	  var contract_no=$('#contract_no').val();
@@ -549,8 +549,12 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
          }
           order.itemList=itemOrder.buildItemList();
           $.post("/transOrderShortCut/create",{params:JSON.stringify(order)},function(data){
-              if(data.INDEXS){
-            	  $('#eeda-table [type="checkbox"]:checked').parent().parent().remove();        
+              if(data.INDEXS){ 
+            	  $('#eeda-table [type="checkbox"]:checked').each(function(){
+            		  var tr = $(this).parent().parent();
+            		  dataTable.row(tr).remove().draw();
+            	  });
+            	  $('#allCheckOfLand').prop('checked',false);
                   $.scojs_message('创建成功', $.scojs_message.TYPE_OK);
               }               
              }).fail(function() {
@@ -591,30 +595,30 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           }
        });
 
-      $('#eeda-table').on('blur','[name=CUSTOMER_ID_input],[name=TAKE_WHARF_input],[name=BACK_WHARF_input],[name=LOADING_WHARF1_input],[name=LOADING_WHARF2_input],[name=CHARGE_ID_input]',function(){
-        var row=$(this).parent().parent().parent();
-        var order={};
-        order.CUSTOMER_ID=$(row.find('[name=CUSTOMER_ID]')).val();
-        order.TAKE_WHARF=$(row.find('[name=TAKE_WHARF]')).val();
-        order.BACK_WHARF=$(row.find('[name=BACK_WHARF]')).val();
-        order.LOADING_WHARF1=$(row.find('[name=LOADING_WHARF1]')).val();
-        order.LOADING_WHARF2=$(row.find('[name=LOADING_WHARF2]')).val();
-        order.CHARGE_ID=$(row.find('[name=CHARGE_ID]')).val();
-        order.CABINET_TYPE=$(row.find('[name=cabinet_type]')).val();
-        if(order.CUSTOMER_ID&&order.CABINET_TYPE){
-          $.post("/transOrderShortCut/checkCustomerQuotation",{params:JSON.stringify(order)},function(data){
-                if(data.length==1){
-                  $(row.find('[name=total_amount]')).val(data[0].TAX_FREE_FREIGHT);
-                   $(row.find('[name=currency_total_amount]')).val(data[0].TAX_FREE_FREIGHT);
-                   $(row.find('[name=CURRENCY_ID]')).val(data[0].CURRENCY_ID);
-                    $(row.find('[name=CURRENCY_ID_input]')).val(data[0].CURRENCY_NAME);
-                }               
-               }).fail(function() {
-               
-           });
-        }
-
-      });
+//      $('#eeda-table').on('blur','[name=CUSTOMER_ID_input],[name=TAKE_WHARF_input],[name=BACK_WHARF_input],[name=LOADING_WHARF1_input],[name=LOADING_WHARF2_input],[name=CHARGE_ID_input]',function(){
+//        var row=$(this).parent().parent().parent();
+//        var order={};
+//        order.CUSTOMER_ID=$(row.find('[name=CUSTOMER_ID]')).val();
+//        order.TAKE_WHARF=$(row.find('[name=TAKE_WHARF]')).val();
+//        order.BACK_WHARF=$(row.find('[name=BACK_WHARF]')).val();
+//        order.LOADING_WHARF1=$(row.find('[name=LOADING_WHARF1]')).val();
+//        order.LOADING_WHARF2=$(row.find('[name=LOADING_WHARF2]')).val();
+//        order.CHARGE_ID=$(row.find('[name=CHARGE_ID]')).val();
+//        order.CABINET_TYPE=$(row.find('[name=cabinet_type]')).val();
+//        if(order.CUSTOMER_ID&&order.CABINET_TYPE){
+//          $.post("/transOrderShortCut/checkCustomerQuotation",{params:JSON.stringify(order)},function(data){
+//                if(data.length==1){
+//                  $(row.find('[name=total_amount]')).val(data[0].TAX_FREE_FREIGHT);
+//                   $(row.find('[name=currency_total_amount]')).val(data[0].TAX_FREE_FREIGHT);
+//                   $(row.find('[name=CURRENCY_ID]')).val(data[0].CURRENCY_ID);
+//                    $(row.find('[name=CURRENCY_ID_input]')).val(data[0].CURRENCY_NAME);
+//                }               
+//               }).fail(function() {
+//               
+//           });
+//        }
+//
+//      });
 
 
        itemOrder.buildItemList=function(){
