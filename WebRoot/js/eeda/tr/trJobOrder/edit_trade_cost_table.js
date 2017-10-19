@@ -706,12 +706,37 @@ $(document).ready(function() {
             })
             $($('.dataTables_scrollFoot tr')[0]).find('th').eq(16).html(total.toFixed(3));
         }
-    })
-
+    });
     
-
-    
-
+    //校验
+    $('#trade_cost_table').on("blur","[name=number],[name=price],[name=domestic_price],[name=value_added_tax],[name=tax_refund_rate],"
+		    		+"[name=tax_refund_rate_customer],[name=custom_price],[name=custom_amount],[name=custom_rate],[name=agency_rate],"
+		    		+"[name=agency_amount_cny]",function(){
+		var data = $(this).val();
+		var name = $(this).attr("name");
+		var len = $.trim(data).length;
+		if(name=="number"){
+			var re = /^\d{0,5}(\d{1}\.\d{1,3})?$/g;
+			if(!re.test(data)&&len!=0){
+				$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法的数字</span>");
+				return;
+			}
+		}
+		if(name=="price"||name=="domestic_price"||name=="domestic_price"||name=="value_added_tax"||name=="tax_refund_rate"||
+				name=="tax_refund_rate_customer"||name=="custom_price"||name=="custom_amount"||name=="custom_rate"||name=="agency_rate"||name=="agency_amount_cny"){
+			var re = /^\d{0,9}(\d{1}\.\d{1,3})?$/g;
+			if(!re.test(data)&&len!=0){
+				$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法的数字</span>");
+				return;
+			}
+		}
+		
+	});
+    $('#trade_cost_table').on("focus","[name=number],[name=price],[name=domestic_price],[name=value_added_tax],[name=tax_refund_rate],"
+    		+"[name=tax_refund_rate_customer],[name=custom_price],[name=custom_amount],[name=custom_rate],[name=agency_rate],"
+    		+"[name=agency_amount_cny]",function(){
+		$(this).parent().find("span").remove();
+	});
     
 });
 });

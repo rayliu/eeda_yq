@@ -806,5 +806,38 @@ $(document).ready(function() {
 		  $("#AllCheckOfCostTable").prop("checked",$(".checkBoxOfCostTable").length == $(".checkBoxOfCostTable:checked").length ? true : false);
     });
 
+    //校验
+    $('#cost_table').on("blur","[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate],[name=exchange_currency_rate_rmb],"
+		    		+"[name=remark]",function(){
+		var data = $(this).val();
+		var name = $(this).attr("name");
+		var len = $.trim(data).length;
+		if(name=="amount"||name=="price"){
+			var re = /^\d{0,8}(\d{1}\.\d{1,3})?$/g;
+			if(!re.test(data)&&len!=0){
+				$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法的数字</span>");
+				return;
+			}
+		}
+		if(name=="exchange_rate"||name=="exchange_currency_rate"||name=="exchange_currency_rate_rmb"){
+			var re = /^\d{0,2}(\d{1}\.\d{1,6})?$/g;
+			if(!re.test(data)&&len!=0){
+				$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法的数字</span>");
+				return;
+			}
+		}
+		if(name=="remark"){
+			var re = /^.{500,}$/g;
+			if(re.test(data)&&len>0){
+				$(this).parent().append("<span style='color:red;' class='error_span'>请输入长度500以内的字符串</span>");
+				return;
+			}
+		}
+		
+	});
+    $('#cost_table').on("focus","[name=price],[name=amount],[name=exchange_rate],[name=exchange_currency_rate],[name=exchange_currency_rate_rmb],"
+    		+"[name=remark]",function(){
+		$(this).parent().find("span").remove();
+	});
   });
 });

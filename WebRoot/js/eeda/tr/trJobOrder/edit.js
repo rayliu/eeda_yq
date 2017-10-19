@@ -59,8 +59,10 @@ $(document).ready(function() {
         		formRequired++;
             }
         })
-        if(formRequired>0){
-        	$.scojs_message('客户和出货时间为必填字段', $.scojs_message.TYPE_ERROR);
+        errorlength = $("[class=error_span]").length;
+        var loc_id = $($(".error_span").get(0)).parent().parent().parent().parent().attr('id');
+        if(formRequired>0||errorlength>0){
+        	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
         	return;
         }
         //费用的结算公司必填
@@ -418,17 +420,33 @@ $(document).ready(function() {
         //校验是否已存在此费用
         $('#orderForm_tradeItem').validate({
                 rules: {
-                    commodity_name: {
+                	commodity_name_tradeItem: {
                         required: true,
+                        maxlength:100,
                         remote:{
                             url: "/tradeItem/checkCommodityNameExist",
-                            type: "post",
+                            type: "post", 
                             data:  {
                                 commodity_name: function() { 
                                       return $("#commodity_name").val();
                                 }
                             }
                         }
+                    },
+                    unit_name_tradeItem:{
+                    	maxlength:50
+                    },
+                    unit_name_eng_tradeItem:{
+                    	maxlength:100
+                    },
+                    VAT_rate_tradeItem:{
+                    	number:true
+                    },
+                    rebate_rate_tradeItem:{
+                    	number:true
+                    },
+                    remark_tradeItem:{
+                    	maxlength:255
                     }
                 },
                 messages:{
@@ -443,7 +461,96 @@ $(document).ready(function() {
                     element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
                 }
         });
-
+        //主工作单校验
+        $('#orderForm').validate({
+        	 rules: {
+        		 note:{
+        			 maxlength:255
+        		 }
+        	 }
+        });
+        //报关信息校验
+        $('#hkForm').validate({
+       	 rules: {
+       		hk_customs_broker:{
+       			 maxlength:255
+       		 },
+       		hk_contact:{
+      			 maxlength:255
+      		 },
+      		hk_phone:{
+      			isPhone:true
+      		 },
+      		hk_custom_order_no:{
+      			 maxlength:255
+      		 },
+      		hk_destination_country:{
+      			 maxlength:255
+      		 }
+       	 }
+       });
+        $('#abroadForm').validate({
+          	 rules: {
+          		abroad_customs_broker:{
+          			 maxlength:255
+          		 },
+          		abroad_contact:{
+         			 maxlength:255
+         		 },
+         		abroad_phone:{
+         			isPhone:true
+         		 },
+         		abroad_custom_order_no:{
+         			 maxlength:255
+         		 },
+         		abroad_destination_country:{
+         			 maxlength:255
+         		 }
+          	 }
+          });
+        //贸易信息校验
+        $('#tradeForm').validate({
+         	 rules: {
+         		contract_number:{
+         			 maxlength:255
+         		 },
+         		cost_currency_rate:{
+        			 number:true,
+        			 maxlength:11
+        		 },
+        		 service_currency_rate:{
+        			 number:true,
+        			 maxlength:11
+        		 },
+        		 service_exchange_currency_rate:{
+        			 number:true,
+        			 maxlength:11
+        		 },
+        		 cost_service_currency_rate:{
+        			 number:true,
+        			 maxlength:11
+        		 },
+        		 cost_service_exchange_currency_rate:{
+        			 number:true,
+        			 maxlength:11
+        		 },
+        		 sale_currency_rate:{
+        			 number:true,
+        			 maxlength:11
+        		 },
+        		 sale_exchange_currency_rate:{
+        			 number:true,
+        			 maxlength:11
+        		 }
+         	 }
+         });
+        
+        //添加电话和手机自定义校验
+        jQuery.validator.addMethod("isPhone", function(value, element) {
+            var length = value.length;
+            var phone = /^(1[3456789]\d{9}|\d{3,4}-\d{7,8})$/;
+          return this.optional(element) || ( length>0&&phone.test(value));   
+        }, $.validator.format("请请输入正确的电话或者手机号码"));
         //------------save
         $('#saveBtn_tradeItem').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
