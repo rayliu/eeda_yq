@@ -860,7 +860,7 @@ NON-NEGOTIABLE]]></text>
 				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="20" y="366" width="133" height="30" uuid="4c693fdb-2ca0-4a70-9c4e-70776935a829"/>
+				<reportElement x="20" y="363" width="133" height="44" uuid="4c693fdb-2ca0-4a70-9c4e-70776935a829"/>
 				<subreportParameter name="order_id">
 					<subreportParameterExpression><![CDATA[$F{order_id}]]></subreportParameterExpression>
 				</subreportParameter>
