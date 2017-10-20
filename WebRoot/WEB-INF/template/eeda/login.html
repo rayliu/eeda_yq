@@ -5,7 +5,7 @@
 	<meta property="qc:admins" content="1621525725152022123671306654" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+	<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet">
   
     <title>${_res.pageTitle}</title>
 	<% if(SYS_CONFIG.logo==""){%>
@@ -70,106 +70,45 @@
             <div class="login_form_cn_title">
                 ${system_name!'检单-供应链管理系统'} <span style="display: none;">- 注册新用户</span>
             </div>
-            <form role="form" action="/login" id="loginForm" method="post" >
-                <fieldset>
+            <form  id="loginForm"  >
                     <div class="form-group" >
-                        <input class="form-control" placeholder="Email / 用户名" id="username" name="username" type="text" autofocus value="" autocomplete="on">
+                        <input class="form-control" placeholder="Email / 用户名" id="username" name="username" type="text" autofocus value="" autocomplete="on" required>
                     </div>
                     <div class="form-group">
-                        <input class="form-control" placeholder="Password / 密码" id="password" name="password" type="password" value="">
+                        <input class="form-control" placeholder="Password / 密码" id="password" name="password" type="password" value="" required>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn">Sign In 登录</button>
+                        <div id="signInBtn" class="btn"><div style="margin-top:3px">Sign In 登录</div></div>
                     </div>
-                    <div class="form-group">
-	                        <input id="remUserSelect"  type='checkBox' style="display: none;" 记住用户名></input>
-	                        <a href ="/reset" style = "float:right; padding-right: 0px;">忘记密码?</a>
-                    </div>
-                    <div class="form-group" style = "display: none; clear:both;float:right; padding-right: 0px;margin-top: 10px;">
-                            还没账号？<a href ="#" id="registerBtn">注册</a>
-                    </div>
-                    
-                    <div class="form-group SNSSignIn" style="display: none;">
-                        社交帐号登录
-
-                        <div class="sns-buttons is-visible" style="visibility: visible;">
-                            <a title="微信登录" class="js-bindwechat" href="#"><i class="fa fa-weixin"></i></a>
-                            <a title="微博登录" class="js-bindweibo" href="#"><i class="fa fa-weibo"></i></a>
-                            <a title="QQ 登录" class="js-bindqq" href="#"><i class="fa fa-qq"></i></a>
-                        </div>
-
-
-                    </div>
-                </fieldset>
             </form>
-            <form role="form" id="registerForm" method="post" style="display: none;">
-                <fieldset>
-                    <div class="form-group" >
-                        <input class="form-control" placeholder="邮箱" id="username" name="username" type="text" autofocus value="" autocomplete="on">
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="密码" id="password" name="password" type="password" value="">
-                    </div>
-                    <div class="form-group">
-                        <input class="form-control" placeholder="再次输入密码" id="password" name="password" type="password" value="">
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn">Sign Up 提交</button>
-                    </div>
-                    <div class="form-group" style = "clear:both;float:right; padding-right: 0px;margin-top: 10px;">
-                            已有账号？<a href ="#" id="registerBtn">登录</a>
-                    </div>
-                    
-                    
-
-                    </div>
-                </fieldset>
-            </form>
-        </div>
     </section>
     <section class="login_back_footer">
         Copyright © 2017-2027 ESIMPLEV
     </section>
-
-    <!-- Core Scripts - Include with every page 
-    <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101116610" data-redirecturi="http://56.eeda123.com" charset="utf-8"></script>
-    -->
     <script src="/js/lib/jquery/jquery-1.10.2.js" type="text/javascript"></script>
     <script src="/js/lib/validate/jquery.validate.min.js"></script>
     <script src="/js/lib/validate/jvalidate.messages_cn.js"></script>
     <script src="/js/lib/jquery/jquery.cookie.js"></script> 
-
-
 <script>
     $(document).ready(function() {
-    
-        //QC.Login({
-          // btnId:"qqLoginBtn"    //插入按钮的节点id
-        //});
-
-        $('#loginForm').validate({
-            rules: {
-            username: {//form 中company_name为必填, 注意input 中定义的id, name都要为company_name
-                required: true
-              },
-              password:{//form 中 name为必填
-                required: true
-              }
-            },
-            messages:{
-              	username:"请输入用户名",
-              	password:"请输入用户密码"
-              },
-            highlight: function(element) {
-                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
-            },
-            success: function(element) {
-                element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
-            }
-        }); 
+        $('#signInBtn').on('click',function(){
+        	if(!$('#loginForm').valid()){
+        		return false;
+        	}
+        	
+        	$.post('/login',$('#loginForm').serialize(),function(data){
+        		if(data.ERRMSG){
+        			$.scojs_message(data.ERRMSG, $.scojs_message.TYPE_ERROR);
+        		}else{
+        			window.location.href = "/login?username="+$('#username').val()+"&password="+$('#password').val();
+        		}
+        	}).fail(function(){
+        		alert("shibai ");
+        	}); 
+        });
         
       //按照状态读取是否显示昵称
-      var COOKIE_NAME = 'username'; 
+/*       var COOKIE_NAME = 'username'; 
       if( $.cookie(COOKIE_NAME) ){ 
     	  	$("#username").val( $.cookie(COOKIE_NAME) );
     	  	$("#remUserSelect").attr("checked",true) 
@@ -181,14 +120,12 @@
     	  }else{ 
     		  $.cookie(COOKIE_NAME, null, { path: '/' }); //删除cookie 
     		  } 
-      });
+      }); */
       
       
     });
 </script>
-<script>
-	$('button[type=submit]').focus();
-</script>
+<script src="/js/lib/sco/js/sco.message.js"></script>
 </body>
 
 </html>

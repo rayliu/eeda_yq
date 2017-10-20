@@ -182,6 +182,7 @@ public class MainController extends Controller {
         if (getPara("remember") != null && "Y".equals(getPara("remember")))
             token.setRememberMe(true);
 
+        Record errRe = new Record();
         String errMsg = "";
         try {
             currentUser.login(token);
@@ -205,17 +206,14 @@ public class MainController extends Controller {
             errMsg = "用户名/密码不正确";
             ae.printStackTrace();
         }
-
+        errRe.set("errMsg", errMsg);
         if (errMsg.length()==0) {
-        	
         	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=? and (is_stop = 0 or is_stop is null)", username);
-        	
-        	
         	if(user==null){
             	errMsg = "用户名不存在或已被停用";
             	setAttr("errMsg", errMsg);
-            	logger.debug(errMsg);
-            	render("/eeda/login.html");
+            	errRe.set("errMsg", errMsg);
+            	renderJson(errRe);
             }else if(user.get("c_name") != null && !"".equals(user.get("c_name"))){
             	setAttr("userId", user.get("c_name"));
             	
@@ -229,13 +227,8 @@ public class MainController extends Controller {
             	redirect("/home");
             	//render("/eeda/index.html");
             };
-          
-            
         } else {
-            setAttr("errMsg", errMsg);
-            logger.debug(errMsg);
-            
-            render("/eeda/login.html");
+            renderJson(errRe);
         }
     }
     
