@@ -46,7 +46,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         		{ "data": "CONTAINER_NO", "width": "80px"},
 		         		{ "data": "CABINET_TYPE", "width": "40px"},
 		         		{ "data": "COMBINE_UNLOAD_TYPE", "width": "80px"},
-		         		{ "data": "COMBINE_CAR_NO", "width": "70px"},
+		         		{ "data": "COMBINE_CAR_NO", "width": "90px"},
 		         		{ "data": "OUTPUTSCALE","width": "40px","class":"outputScale",
 		         			"render":function(data,type,full,meta){
 		         				var cabinet_type= full.COMBINE_UNLOAD_TYPE;
@@ -55,7 +55,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         						return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
 		         					}else{
 		         						if(full.CAR_OWNED=="公司车"){
-		         							return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3);
+		         							if(!full.FREIGHT){
+		         								return '<input type="text" class="output_scale" value = "" style="width:60px">';
+		         							}else{
+		         								return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3);
+		         							}
 		         						}
 		         						if(full.CAR_OWNED=="街车"){
 		         							if(!full.STREET_VEHICLE_FREIGHT){
@@ -71,7 +75,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         						return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
 		         					}else{
 		         						if(full.CAR_OWNED=="公司车"){
-		         							return '<input type="text" class="output_scale" value = "'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3);
+		         							if(!full.FREIGHT){
+		         								return '<input type="text" class="output_scale" value = "" style="width:60px">';
+		         							}else{
+		         								return '<input type="text" class="output_scale" value = "'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3);
+		         							}
+		         							
 		         						}
 		         						if(full.CAR_OWNED=="街车"){
 		         							if(!full.STREET_VEHICLE_FREIGHT){
@@ -179,9 +188,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				if($('#AllCheck').prop('checked')){
 					$('#export_outputTable').attr('disabled',false);
 					$('#saveBtn').attr('disabled',false);
+					$('#applyBtn').attr('disabled',false);
 				}else{
 					$('#export_outputTable').attr('disabled',true);
 					$('#saveBtn').attr('disabled',true);
+					$('#applyBtn').attr('disabled',true);
 				}
 			});
 		}
@@ -202,9 +213,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				if(hava_check>0){
 					$('#export_outputTable').attr('disabled',false);
 					$('#saveBtn').attr('disabled',false);
+					$('#applyBtn').attr('disabled',false);
 				}else{
 					$('#export_outputTable').attr('disabled',true);
 					$('#saveBtn').attr('disabled',true);
+					$('#applyBtn').attr('disabled',true);
 				}
 			});
 		}
@@ -217,12 +230,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			if((driver == null || driver == "") && (car_no == null || car_no == "") || (export_flag == "Y")){
 				$('#export_outputTable').attr('disabled',true);
 				$('#saveBtn').attr('disabled',true);
+				$('#applyBtn').attr('disabled',true);
 				$('#AllCheck').attr('disabled',true);
 				$('#AllCheck').attr('checked',false)
 				return;
 			}else{	   
 				$('#export_outputTable').attr('disabled',false);
 				$('#saveBtn').attr('disabled',false);
+				$('#applyBtn').attr('disabled',false);
 				$('#AllCheck').prop('checked',true);
 				$('#eeda_table input[name="check_box"]').each(function(){
 					$(this).attr('disabled',false);
@@ -262,6 +277,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				refresh();
 				$('#AllCheck').attr('disabled',true);
 				$('#export_outputTable').attr('disabled',true);
+				('#applyBtn').attr('disabled',true);
 			});
 		});
 		
@@ -305,6 +321,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 							refresh();
 							$('#AllCheck').attr('disabled',true);
 							$('#saveBtn').attr('disabled',true);
+							$('#applyBtn').attr('disabled',true);
 						}else{
 							$.scojs_message('生成产值表PDF失败',$.scojs_message.TYPE_ERROR);
 						}
@@ -325,5 +342,40 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			dataTable.ajax.url(url).load(function(){
 			});
 		}
+		
+		$("#applyBtn").click(function(){
+			$('#applyBtn').attr('disabled',true);
+			var car_no = $('#car_id_input').val().trim();
+			var car_id = $('#car_id').val();
+			var driver = $('#driver').val().trim();
+			var outputScale = $("#outputScaleApply").val();
+			var order = {};
+			var itemjson = [];
+			var itemIds=[];
+			$('#eeda_table input[name="check_box"]').each(function(){
+				var checkbox = $(this).prop('checked');
+				if(checkbox){
+					var itemTr = $(this).parent().parent();
+					var itemId = itemTr.attr('id');
+					if(itemId!=undefined){
+						var item={};
+						itemIds.push(itemId);
+						item.id=itemId;
+						item.outputScale = outputScale;
+						item.car_id = car_id;
+						itemjson.push(item);
+					}
+		   
+				}
+			});
+			order.param = itemjson;
+			$.post('/outputScale/downloadList?itemIds='+itemIds,{params:JSON.stringify(order),car_no:car_no,driver:driver},function(data){
+				$.scojs_message('应用成功', $.scojs_message.TYPE_OK);
+				refresh();
+				$('#AllCheck').attr('disabled',true);
+				$('#export_outputTable').attr('disabled',true);
+				$('#saveBtn').attr('disabled',true);
+			});
+		});
 	});
 });

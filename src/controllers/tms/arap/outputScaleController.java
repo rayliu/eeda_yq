@@ -57,7 +57,7 @@ public class outputScaleController extends Controller {
         		+" loading_wharf2_name,tjo.container_no,tjo.cabinet_type,tjol.unload_type,car.car_no,tjol.car_no car_id,tjo.remark, "
         		+" (CONVERT (substring(tjol.closing_date, 1, 10),CHAR)) create_stamp,tjol.driver,car.car_owned,CONCAT(IFNULL(CONCAT(dock.dock_name,'-'),''),IFNULL(CONCAT(dock2.dock_name,'-'),''),IFNULL(CONCAT(dock3.dock_name,'-'),''),IFNULL(" 
         		+ "dock1.dock_name,'')) combine_wharf, "
-        		+" (SELECT GROUP_CONCAT(car.car_no SEPARATOR '/') from trans_job_order tjo1  "
+        		+" (SELECT GROUP_CONCAT(car.car_no SEPARATOR '<br>/') from trans_job_order tjo1  "
         		+" LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo1.id "
         		+" LEFT JOIN carinfo car on car.id = tjol.car_no  "
         		+" WHERE tjo.id = tjo1.id) combine_car_no, "
@@ -129,7 +129,11 @@ public class outputScaleController extends Controller {
 	    		Record reland = Db.findById("trans_job_order_land_item", rowId);
 	    		String job_order_id = reland.getLong("order_id").toString();
 	    		TransJobOrderArap transJobArap = TransJobOrderArap.dao.findFirst("select * from trans_job_order_arap  where order_id = ? and car_id = ? and charge_id = ?",job_order_id,car_id,charge_id);
-	    		String price = rowMap.get("outputScale");//获取产值		
+	    		
+	    		String price = "0";//获取产值
+	    		if(StringUtils.isNotBlank(rowMap.get("outputScale"))){
+	    			 price = rowMap.get("outputScale");//获取产值
+	    		}
 	    		Double total_amount = Double.parseDouble(price) * Double.parseDouble(amount);	    		
 	    		Double currency_total_amount = total_amount * Double.parseDouble(exchange_rate);	    		
 	    		if(transJobArap==null){	    			
@@ -229,4 +233,5 @@ public class outputScaleController extends Controller {
 		renderJson("{\"result\":true}");
 	}
    
+	
 }

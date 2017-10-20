@@ -82,6 +82,15 @@
 						                                            value: ''
 						                                        }){}%>
 						                </div>
+						                
+						                <div class="col-lg-4">
+						                	<div class="form-group">
+						                		<label class="search-label" style="">产值</label>
+						                     	<input type="text" id=outputScaleApply name="outputscaleApply" style="" value="" class="form-control search-control date" autocomplete="off">
+						                    	<button class="btn table_btn btn_green" id="applyBtn" style="margin-left:10px;" disabled>应用</button>
+						                    </div>
+						                     
+						                </div>
 						            </div>
 									<div class="form-group button-bar" >
 										<button id="searchBtn" class="btn btn_grey" type="button">查询<tton>
@@ -98,7 +107,7 @@
 							     <%include("/eeda/component/form/detailTable.html", 
 							         {
 							             id:'eeda_table', 
-							             style:'width:1600px',
+							             style:'width:1800px',
 							             headers:['<input type="checkbox" id="AllCheck"  >','工作单号','提单号','提/收柜时间','结算时间','客户','类型','导出状态','拖柜地址','柜号','柜型',
 							                     '提柜类型','结算车牌','产值','运费','街车运费','压夜费','备注','创建时间']
 							         }){} %>
