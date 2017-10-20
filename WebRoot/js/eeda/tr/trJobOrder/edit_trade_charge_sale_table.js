@@ -880,14 +880,14 @@ $(document).ready(function() {
 		var data = $(this).val();
 		var name = $(this).attr("name");
 		var len = $.trim(data).length;
-		if(name=="amount"||name=="price"){
+		if(name=="amount"){
 			var re = /^\d{0,8}(\d{1}\.\d{1,3})?$/g;
 			if(!re.test(data)&&len!=0){
 				$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法的数字</span>");
 				return;
 			}
 		}
-		if(name=="exchange_rate"||name=="exchange_currency_rate"||name=="exchange_currency_rate_rmb"){
+		if(name=="exchange_rate"||name=="exchange_currency_rate"||name=="exchange_currency_rate_rmb"||name=="price"){
 			var re = /^\d{0,2}(\d{1}\.\d{1,6})?$/g;
 			if(!re.test(data)&&len!=0){
 				$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法的数字</span>");
