@@ -326,7 +326,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         		}
         	})
         	if(gross_weight_total!=0){
-        		$("#gross_weight").val(gross_weight_total);
+        		$("#gross_weight").val(parseFloat(gross_weight_total).toFixed(4));
         	}else{
         		$("#gross_weight").val("");
         	}
@@ -347,7 +347,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         		volume_total = ($(this).val())*1+volume_total;
         	})
         	if(volume_total!=0){
-        		$("#volume").val(volume_total);
+        		$("#volume").val(parseFloat(volume_total).toFixed(4));
         	}else{
         		$("#volume").val("");
         	}

@@ -21,7 +21,8 @@ $(document).ready(function() {
     			maxlength:255
     		},
     		pieces:{
-    			number:true
+    			number:true,
+    			maxlength:11
     		},
     		net_weight:{
     			number:true,
@@ -166,7 +167,7 @@ $(document).ready(function() {
 		var ids = ids.split(",")
 		for(x in ids){
 			id = $.trim(ids[x])
-			var num = parseFloat($("#"+id+"").val()).toFixed(2);
+			var num = parseFloat($("#"+id+"").val()).toFixed(4);
 			if(!isNaN(num)){
 				$("#"+id+"").val(num)
 			}
