@@ -10,30 +10,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn',
             serverSide: true, //不打开会出现排序不对
             ajax: "/customer/list",
             columns: [
-                { "data": null,
-                    "width": "10%",
-                    "render": function ( data, type, full, meta ) {
-                            var str="<nobr>";
-                        if(Customer.updatePermission){
-                         str +="<a class='btn  btn-primary btn-sm' href='/customer/edit?id="+full.PID+"' target='_blank'>"+
-                                    "<i class='fa fa-edit fa-fw'></i>"+
-                                    "编辑"+"</a> ";
-                        }
-                        if(Customer.delPermission){
-                             if(full.IS_STOP != true){
-                                     str += "<a class='btn btn-danger  btn-sm' href='/customer/delete/"+full.PID+"'>"+
-                                             "<i class='fa fa-trash-o fa-fw'></i>"+ 
-                                             "停用"+
-                                             "</a>";
-                             }else{
-                                 str +="<a class='btn btn-success' href='/customer/delete/"+full.PID+"'>"+
-                                         "<i class='fa fa-trash-o fa-fw'></i>启用</a>";
-                             }
-                        }
-                        str +="</nobr>";
-                       return str;
-                    }
-                },
+                
                 { "data": "COMPANY_NAME","width": "15%",
                     "render": function ( data, type, full, meta ) {
                         if(Customer.updatePermission){
@@ -67,8 +44,31 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn',
                              return "现付";
                          }
                     }
+                },
+                { "data": null,
+                    "width": "10%",
+                    "render": function ( data, type, full, meta ) {
+                            var str="<nobr>";
+                        if(Customer.updatePermission){
+                         str +="<a class='btn table_btn btn-success btn-sm' href='/customer/edit?id="+full.PID+"' target='_blank'>"+
+                                    "<i class='fa fa-edit fa-fw'></i>"+
+                                    "编辑"+"</a> ";
+                        }
+                        if(Customer.delPermission){
+                             if(full.IS_STOP != true){
+                                     str += "<a class='btn table_btn btn-danger  btn-sm' href='/customer/delete/"+full.PID+"'>"+
+                                             "<i class='fa fa-trash-o fa-fw'></i>"+ 
+                                             "停用"+
+                                             "</a>";
+                             }else{
+                                 str +="<a class='btn table_btn btn-success' href='/customer/delete/"+full.PID+"'>"+
+                                         "<i class='fa fa-trash-o fa-fw'></i>启用</a>";
+                             }
+                        }
+                        str +="</nobr>";
+                       return str;
+                    }
                 }
-                
             ]
         });
     	
