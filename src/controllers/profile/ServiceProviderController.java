@@ -1344,4 +1344,11 @@ public class ServiceProviderController extends Controller {
    		
    		return result;
    	}
+   	
+   	public void spName(){
+   		String id = getPara("sp_id");
+   		String sql = "select abbr from party where id = "+id;
+   		Record re = Db.findFirst(sql);
+   		renderJson(re);
+   	}
 }

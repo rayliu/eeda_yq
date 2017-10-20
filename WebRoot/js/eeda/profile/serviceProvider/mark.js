@@ -281,6 +281,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	  $('#mark_table').on('focus','[name=score],[name=remark]',function(){
         	$(this).parent().find("span").remove();
       });		  
+	  
+	  $.post("/serviceProvider/spName",{sp_id:$('#partyId').val()},function(data){
+    	  if(data){
+    		  $("#markCustomer").val(data.ABBR);
+    	  }
+      });
     
   })
 })

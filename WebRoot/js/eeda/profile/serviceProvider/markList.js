@@ -1,19 +1,5 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-
-    
-  		$('#menu_todo_list').removeClass('active').find('ul').removeClass('in');
-		$('#menu_order').addClass('active').find('ul').addClass('in');
-		
-
-  	  
-  	$('.complex_search').click(function(event) {
-        if($('.search_single').is(':visible')){
-          $('.search_single').hide();
-        }else{
-          $('.search_single').show();
-        }
-    });
   	//datatable, 动态处理
       var dataTable = eeda.dt({
           id: 'eeda-table',
@@ -71,45 +57,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           ]
       });
 
-
-
-      //base on config hide cols
-      dataTable.columns().eq(0).each( function(index) {
-          var column = dataTable.column(index);
-          $.each(cols_config, function(index, el) {
-              
-              if(column.dataSrc() == el.COL_FIELD){
-                
-                if(el.IS_SHOW == 'N'){
-                  column.visible(false, false);
-                }else{
-                  column.visible(true, false);
-                }
-              }
-          });
-      });
-
       
-
-
-      
-      
-      $('#resetBtn').click(function(){
-          $("#orderForm")[0].reset();
-      });
-
-      $('#searchBtn').click(function(){
-          searchData(); 
-      })
-
-     var searchData=function(type){
-          var sp_name = $.trim($("#sp_name_input").val()); 
-          //增加出口日期查询
-          var url = "/supplierRating/list?sp_name_like="+sp_name;
-;
-
-          dataTable.ajax.url(url).load();
-      };
-      
-  });
+	});
 });
