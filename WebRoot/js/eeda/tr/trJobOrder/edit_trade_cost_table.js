@@ -716,7 +716,7 @@ $(document).ready(function() {
 		var name = $(this).attr("name");
 		var len = $.trim(data).length;
 		if(name=="number"){
-			var re = /^\d{0,9}(\d{1}\.\d{1,3})?$/g;
+			var re = /^\d{0,8}(\d{1}\.\d{1,3})?$/g;
 			if(!re.test(data)&&len!=0){
 				$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法的数字</span>");
 				return;
