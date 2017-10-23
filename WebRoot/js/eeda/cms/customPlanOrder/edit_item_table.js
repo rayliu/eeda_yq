@@ -315,5 +315,35 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 				$('#create_jobOrder').attr('disabled',true);
 			}
 		});
+		
+		//校验
+		$('#cargo_table').on("blur","[name=ITEM_NO],[name=COMMODITY_CODE],[name=COMMODITY_NAME],[name=STANDARD],"
+				   +"[name=DECLARE_ELEMENT],[name=TRANSACTION_AMOUNT],[name=LEGAL_AMOUNT],[name=PRICE]",function(){
+			var data = $(this).val();
+			var name = $(this).attr("name");
+			var len = $.trim(data).length;
+			if(name=="ITEM_NO"||name=="DECLARE_ELEMENT"){
+				var re = /^.{100,}$/g;
+				if(re.test(data)&&len>0){
+					$(this).parent().append("<span style='color:red;' class='error_span'>请输入长度最多是100的字符串</span>")
+				}
+			}
+			if(name=="COMMODITY_CODE"||name=="COMMODITY_NAME"||name=="STANDARD"){
+				var re = /^.{50,}$/g;
+				if(re.test(data)&&len>0){
+					$(this).parent().append("<span style='color:red;' class='error_span'>请输入长度最多是50的字符串</span>")
+				}
+			}
+			if(name=="TRANSACTION_AMOUNT"||name=="LEGAL_AMOUNT"||name=="PRICE"){
+				var re = /^\d{0,9}(\.\d{1,6})?$/g;
+				if(!re.test(data)&&len!=0||len>16&&len!=0){
+					$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法数字</span>")
+				}
+			}
+		});
+		$('#cargo_table').on("focus","[name=ITEM_NO],[name=COMMODITY_CODE],[name=COMMODITY_NAME],[name=STANDARD],"
+				   +"[name=DECLARE_ELEMENT],[name=TRANSACTION_AMOUNT],[name=LEGAL_AMOUNT],[name=PRICE]",function(){
+			$(this).parent().find("span").remove();
+		});
 	});
 });

@@ -184,12 +184,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         $('#saveBtn').click(function(e){
             //阻止a 的默认响应行为，不需要跳转
             e.preventDefault();
-            //提交前，校验页面中必填字段
-            if(!$("#customForm").valid()){
-                return;
-            }
-            $(this).attr('disabled', true);
+          //提交前，校验数据
+            var formRequired = 0;
+            $('form').each(function(){
+            	if(!$(this).valid()){
+            		formRequired++;
+                }
+            })
+            errorlength = $("[class=error_span]").length;
+            var loc_id = $($(".error_span").get(0)).parent().parent().parent().parent().attr('id');
             
+            if(formRequired>0||errorlength>0){
+            	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+            	location.hash="#"+loc_id;
+            	return;
+            }
        //获取页面数据，构造json 
             var items_array = salesOrder.buildCargoDetail();
         	var order = {};
@@ -642,5 +651,107 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     // on('keyup',function(){
     	chargeDetail_tabShow();
     })
+    
+    //主工作单的校验
+    $("#customForm").validate({
+    	rules:{
+    		ref_no:{
+    			maxlength:100
+    		},
+    		customs_billCode:{
+    			maxlength:255
+    		},
+    		copyTracking_no:{
+    			maxlength:100
+    		}
+    	}
+    });
+    //头程资料的校验
+    $("#headDetailForm").validate({
+    	rules:{
+    		booking_no:{
+    			maxlength:50
+    		},
+    		cabinet_no:{
+    			maxlength:50
+    		},
+    		seal_no:{
+    			maxlength:50
+    		},
+    		vessel:{
+    			maxlength:50
+    		},
+    		pieces:{
+    			digits:true,
+    			maxlength:10
+    		},
+    		gross_weight:{
+    			number:true,
+    			maxlength:11
+    		},
+    		volume:{
+    			number:true,
+    			maxlength:11
+    		},
+    		remark:{
+    			maxlength:1000
+    		}
+    	}
+    });
+    
+    //报关单的校验
+    $("#Custom_noteForm").validate({
+    	rules:{
+    		transport_tool:{
+    			maxlength:100
+    		},
+    		tracking_no:{
+    			maxlength:100
+    		},
+    		record_no:{
+    			maxlength:100
+    		},
+    		license_no:{
+    			maxlength:100
+    		},
+    		contract_agreement_no:{
+    			maxlength:100
+    		},
+    		freight:{
+    			number:true,
+    			maxlength:30
+    		},
+    		insurance_premium:{
+    			number:true,
+    			maxlength:30
+    		},
+    		incidental:{
+    			number:true,
+    			maxlength:30
+    		},
+    		number:{
+    			digits:true,
+    			maxlength:30
+    		},
+    		custom_gross_weight:{
+    			number:true,
+    			maxlength:30
+    		},
+    		custom_net_weight:{
+    			number:true,
+    			maxlength:30
+    		},
+    		container_no:{
+    			maxlength:50
+    		},
+    		documents_attached:{
+    			maxlength:100
+    		},
+    		note:{
+    			maxlength:500
+    		}
+    	}
+    });
+    
   });
 });
