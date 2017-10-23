@@ -274,8 +274,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		  $(this).parent().append("<span style='color:red;display:block;' class='error_span'>最多输入长度为255的字符串</span>");
         	  }
     	  }
-    	  
-    	  
       });
     		  
 	  $('#mark_table').on('focus','[name=score],[name=remark]',function(){

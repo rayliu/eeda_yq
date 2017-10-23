@@ -1,13 +1,48 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) { 
     $(document).ready(function() {
-
         $('#menu_profile').addClass('active').find('ul').addClass('in');
         
         var id = $("#id").val();
         
+        $('#orderForm').validate({
+            rules: {
+            	commodity_name:{
+            		maxlength:100
+            	},
+            	commodity_code:{
+            		maxlength:255
+            	},
+            	unit_name:{
+            		maxlength:50
+            	},
+            	unit_name_eng:{
+            		maxlength:100
+            	},
+            	VAT_rate:{
+            		number:true,
+            		maxlength:10
+            	},
+            	rebate_rate:{
+            		number:true,
+            		maxlength:10
+            	},
+            	remark:{
+            		maxlength:255
+            	}
+            },
+            messages:{
+            	VAT_rate:{
+            		maxlength: $.validator.format( "请输入一个 长度最多是 {0} 的数字" )
+            	},
+            	rebate_rate:{
+            		maxlength: $.validator.format( "请输入一个 长度最多是 {0} 的数字" )
+            	}
+            	
+            }
+        });
         $("#commodity_name").blur(function(){
         	var commodity_name = $("#commodity_name").val();
-        	$.post("/tradeItem/checkCommodityNameExist",{commodity_name:commodity_name},function(data){
+        	$.post("/tradeItem/checkCommodityNameExist",{commodity_name:commodity_name,order_id:id},function(data){
         		if(!data){
         			$("#commodity_name").parent().append("<span style='color:red;display:block;' class='error_span'>此商品名称已存在</span>")
         			$("#commodity_name").closest('.form-group').removeClass('has-success').addClass('has-error');
@@ -67,6 +102,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                 $('#saveBtn').attr('disabled', false);
             });
-        });  
+        });
+        
      });
 });
