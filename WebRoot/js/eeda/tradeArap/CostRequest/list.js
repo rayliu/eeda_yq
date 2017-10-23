@@ -305,7 +305,7 @@ $(document).ready(function() {
                         return "<a href='/tradeCostRequest/edit?id="+full.ID+"'target='_self'>"+data+"</a>";
                  }
             },
-            {"data":"CHARGE_ORDER_NO"},
+            {"data":"COST_ORDER_NO"},
             {"data":"PAYMENT_METHOD",'class':'payment_method',
                 "render": function(data, type, full, meta) {
                     if(data == 'cash'){
@@ -410,7 +410,7 @@ $(document).ready(function() {
         		
         		payee_company:$('#sp_id_input').val().trim(),
         	  	  
-				charge_order_no : $('#orderNo').val().trim(), 
+				cost_order_no : $('#orderNo').val().trim(), 
                 applicationOrderNo : $('#applicationOrderNo').val(),
                 status2 : $('#status2').val().trim(),
                 fee_type : $('#fee_type').val().trim(),
@@ -435,7 +435,7 @@ $(document).ready(function() {
     	 var sp_id = $('#sp_id').val();
     	  var payee_company = $('#sp_id_input').val().trim();
     	  
-          var charge_order_no = $('#orderNo').val().trim(); 
+          var cost_order_no = $('#orderNo').val().trim(); 
           var applicationOrderNo = $('#applicationOrderNo').val();
 //          if(back=="true"){
 //          	  $('#status2').val("新建");
@@ -459,7 +459,7 @@ $(document).ready(function() {
 
           var url = "/tradeCostRequest/applicationList?sp_id="+sp_id
      	   +"&payee_company_equals="+payee_company  
-            +"&charge_order_no="+charge_order_no
+            +"&cost_order_no="+cost_order_no
             +"&application_order_no="+applicationOrderNo
             +"&status="+status2
             +"&fee_type="+fee_type
@@ -488,7 +488,7 @@ $(document).ready(function() {
             var conditions = JSON.parse(query_to);
             $("#sp_id").val(conditions.sp_id);
             $("#sp_id_input").val(conditions.payee_company);
-            $("#orderNo").val(conditions.charge_order_no);
+            $("#orderNo").val(conditions.cost_order_no);
             $("#applicationOrderNo").val(conditions.applicationOrderNo);
             $("#status2").val(conditions.status2);
             $("#fee_type").val(conditions.fee_type);
