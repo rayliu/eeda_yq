@@ -34,7 +34,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
     		$.post('/planOrder/confirmCompleted', {id:id}, function(data){
     	            $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
     	            $('#saveBtn').attr('disabled', true);
-    	            salesOrder.refleshTabl(id);
+    	            $("#status").val("已完成");
+    	            //salesOrder.refleshTabl(id);
     	    },'json').fail(function() {
     	        $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
     	        $('#confirmCompleted').attr('disabled', false);
@@ -107,7 +108,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
 
                     $.unblockUI();
                     //异步刷新明细表
-                    salesOrder.refleshTable(order.ID);
+                    //salesOrder.refleshTable(order.ID);
                 }else{
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                     $('#saveBtn').attr('disabled', false);
@@ -162,7 +163,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'pageguide',
          		 if(data){
          			 $('#saveBtn').attr('disabled', true);
          			 $.scojs_message('提交成功', $.scojs_message.TYPE_OK);
-         			 salesOrder.refleshTable(order_id);
+         			 //salesOrder.refleshTable(order_id);
          		 }
          		$.unblockUI();
          	 }).fail(function() {

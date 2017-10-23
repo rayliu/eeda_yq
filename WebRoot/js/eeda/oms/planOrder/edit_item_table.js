@@ -645,11 +645,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             });
 	    	$.post('/planOrder/confirmShipment',{item_id:itemIdArray.toString()},function(data){
     		    if(data.result){
-    			    $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
+    			    $.scojs_message('出货成功', $.scojs_message.TYPE_OK);
     			    //异步刷新明细表
                     salesOrder.refleshTable($('#order_id').val());
     		    }else{
-    			    $.scojs_message('确认失败', $.scojs_message.TYPE_ERROR);
+    			    $.scojs_message('出货失败', $.scojs_message.TYPE_ERROR);
     			    self.disabled = false;
     		    }
     		    $.unblockUI();

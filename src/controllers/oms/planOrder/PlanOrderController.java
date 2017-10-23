@@ -543,6 +543,7 @@ public class PlanOrderController extends Controller {
     	String id = getPara("id");
     	PlanOrder order = PlanOrder.dao.findById(id);
     	order.set("status", "已完成");
+    	order.update();
     	renderJson("{\"result\":true}");
     }
     
