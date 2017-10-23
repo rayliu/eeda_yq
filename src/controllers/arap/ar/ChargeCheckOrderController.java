@@ -3,6 +3,7 @@ package controllers.arap.ar;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -632,21 +633,30 @@ public class ChargeCheckOrderController extends Controller {
 		exchangeTotalMap.put("JPY", 0d);
 		
 		List<Record> resultList= Db.find(sql);
+		
 		for (Record rec : resultList) {
             String name = rec.get("exchange_currency_name");
             String type = rec.get("order_type");
             Double exchange_amount = exchangeTotalMap.get(name);
+            BigDecimal bg = new BigDecimal(exchange_amount);
+            exchange_amount = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             if(exchangeTotalMap.get(name)==null){
                 if("charge".equals(type)){
                     exchangeTotalMap.put(name, exchange_amount+=exchange_amount);//Double.ParseDouble(df.format(result_value))转取两位小数
                 }else{
-                    exchangeTotalMap.put(name, 0-rec.getDouble("exchange_total_amount"));
+                	BigDecimal charge_total = new BigDecimal(rec.getDouble("exchange_total_amount"));
+                	Double charge_total_amount = charge_total.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    exchangeTotalMap.put(name, 0-charge_total_amount);
                 }
             }else{
                 if("charge".equals(type)){
-                    exchangeTotalMap.put(name, exchange_amount+=rec.getDouble("exchange_total_amount"));
+                	BigDecimal charge_total = new BigDecimal(rec.getDouble("exchange_total_amount"));
+                	Double charge_total_amount = charge_total.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    exchangeTotalMap.put(name, exchange_amount+=charge_total_amount);
                 }else{
-                    exchangeTotalMap.put(name, exchange_amount-=rec.getDouble("exchange_total_amount"));
+                	BigDecimal cost_total = new BigDecimal(rec.getDouble("exchange_total_amount"));
+                	Double cost_total_amount = cost_total.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    exchangeTotalMap.put(name, exchange_amount-=cost_total_amount);
                 }        
             }
         }
