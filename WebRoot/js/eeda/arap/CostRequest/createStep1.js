@@ -111,6 +111,16 @@
 					"render": function(data, type, full, meta) {
 						return parseFloat(full.HKD - full.PAID_HKD).toFixed(2);	
 					}
+				}, 
+				{"data":"BEGIN_TIME","width":"70px","visible":false,
+					"render": function(data, type, full, meta) {
+						return data;
+					}
+				}, 
+				{"data":"END_TIME","width":"70px","visible":false,
+					"render": function(data, type, full, meta) {
+						return data;
+					}
 				} 	
         ]      
     });
@@ -313,6 +323,8 @@
 		if($(this).prop('checked')){
 			 sp_id=costAccept_table.row(rowindex).data().SP_ID.toString();
 			 sp_name=costAccept_table.row(rowindex).data().SP_NAME.toString();
+			 begin_time=costAccept_table.row(rowindex).data().BEGIN_TIME.toString();
+			 end_time=costAccept_table.row(rowindex).data().END_TIME.toString();
 		}
 
       	$('#costAccept_table input[type="checkbox"]:checked').each(function(){
@@ -323,11 +335,15 @@
       		 $('#createSave').attr('disabled',true);
       		 $('#sp_id_input').val('');
       		 $('#sp_id').val('');
+      		 $('#check_time_begin_time').val('');
+         	 $('#check_time_end_time').val('');
   		    selectContr.refleshSelectTable(idsArray);
   		    return;
       	}
       	 $('#createSave').attr('disabled',false);
       	 $('#sp_id_input').val(sp_name);
+      	 $('#check_time_begin_time').val(begin_time.substring(0,10));
+      	 $('#check_time_end_time').val(end_time.substring(0,10));
       	 $('#sp_id').val(sp_id);
   		 $('#ids').val(idsArray);
   		 selectContr.refleshSelectTable(idsArray);

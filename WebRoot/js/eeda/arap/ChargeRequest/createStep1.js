@@ -125,6 +125,16 @@
 					"render": function(data, type, full, meta) {
 						return "<span style='width:80px'>"+parseFloat(full.HKD - full.PAID_HKD).toFixed(2)+"</span>";	
 					}
+				}, 
+				{"data":"BEGIN_TIME","width":"70px","visible":false,
+					"render": function(data, type, full, meta) {
+						return data;
+					}
+				}, 
+				{"data":"END_TIME","width":"70px","visible":false,
+					"render": function(data, type, full, meta) {
+						return data;
+					}
 				} 	
         ]      
     });
@@ -341,6 +351,8 @@
 		if($(this).prop('checked')){
 			 sp_id=costAccept_table.row(rowindex).data().SP_ID.toString();
 			 sp_name=costAccept_table.row(rowindex).data().SP_NAME.toString();
+			 begin_time=costAccept_table.row(rowindex).data().BEGIN_TIME.toString();
+			 end_time=costAccept_table.row(rowindex).data().END_TIME.toString();
 		}
 
       	$('#chargeAccept_table input[type="checkbox"]:checked').each(function(){
@@ -351,12 +363,16 @@
       	if(idsArray==''){
       		 $('#sp_id_input').val('');
       		 $('#sp_id').val('');
+      		 $('#check_time_begin_time').val('');
+        	 $('#check_time_end_time').val('');
   		    selectContr.refleshSelectTable(idsArray);
   		    return;
       	}
       	 $('#sp_id_input').val(sp_name);
       	 $('#sp_id').val(sp_id);
-  		$('#ids').val(idsArray);
+      	 $('#check_time_begin_time').val(begin_time.substring(0,10));
+     	 $('#check_time_end_time').val(end_time.substring(0,10));
+  		 $('#ids').val(idsArray);
   		selectContr.refleshSelectTable(idsArray);
 	})
 
