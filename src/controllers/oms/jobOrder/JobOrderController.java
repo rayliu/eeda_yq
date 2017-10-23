@@ -3840,7 +3840,7 @@ public class JobOrderController extends Controller {
     @Before(Tx.class)
     public void deleteOceanTemplate(){
     	String id = getPara("id");
-    	Db.update("delete from job_order_ocean_template where id = ? or parent_id = ?",id,id);
+    	Db.update("delete from job_order_ocean_template where id = ? ",id);
     	renderJson("{\"result\":true}");
     }
     //删除空运常用信息模版
