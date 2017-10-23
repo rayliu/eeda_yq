@@ -1,17 +1,27 @@
-<%layout("/eeda/layout.html"){%>
-    <div id="page-wrapper">
-        <form id="module_form">
-            <input type="hidden" id="module_id" name="module_id" value="${module_id!''}">
-            <input type="hidden"  id="order_id" name="order_id" value="${order_id!''}">
-            <% include("/eeda/form/btnToolBar.html", 
-                {
-                    btnList: btnList![]
-                }){} %>
+<%layout("/eeda/theme/h-ui/layout.html"){%>
+    <section class="Hui-article-box">
+        <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
+            <span class="c-gray en">&gt;</span>
+            资讯管理
+            <span class="c-gray en">&gt;</span>
+            资讯列表
+            <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+        </nav>
+        <div class="Hui-article">
+            <article class="cl pd-20">
+                <form id="module_form">
+                    <input type="hidden" id="module_id" name="module_id" value="${module_id!''}">
+                    <input type="hidden"  id="order_id" name="order_id" value="${order_id!''}">
+                    <% include("/eeda/form/btnToolBar.html", 
+                        {
+                            btnList: btnList![]
+                        }){} %>
 
-            ${form_content!'模板未定义!'}
-        </form>
-    </div>
-
+                    ${form_content!'模板未定义!'}
+                </form>
+            </article>
+        </div>
+    </section>
     <%include("/eeda/form/printTemplate.html", {}){} %>
 <%}%>
 

@@ -374,7 +374,7 @@ public class FormController extends Controller {
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
-        logger.debug("total records:" + rec.getLong("total"));
+        setAttr("queryTotal", sqlTotal);
         
         List<Record> orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
         Map orderListMap = new HashMap();
@@ -404,15 +404,19 @@ public class FormController extends Controller {
             String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
             
             if("编码".equals(fieldType)){
-                replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
-                        + "<input type='text' name='"+inputId+"' class='form-control'  placeholder='系统自动生成'>";//
+                replaceNameDest = "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
+                        + "<div class='formControls col-xs-8 col-sm-9'>"
+                        + "  <input type='text' name='"+inputId+"' class='input-text' autocomplete='off'  placeholder='系统自动生成' >"
+                        + "</div>";
             }else if("文本".equals(fieldType)){
                 String disabled = "";
                 if("Y".equals(read_only)){
                     disabled = "disabled";
                 }
-                replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
-                        + "<input type='text' name='"+inputId+"' class='form-control' "+disabled+" >";
+                replaceNameDest = "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
+                        + "<div class='formControls col-xs-8 col-sm-9'>"
+                        + "  <input type='text' name='"+inputId+"' class='input-text' autocomplete='off' "+disabled+" >"
+                        + "</div>";
             }else if("全国城市".equals(fieldType)){
                 String disabled = "";
                 if("Y".equals(read_only)){

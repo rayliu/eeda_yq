@@ -1,24 +1,47 @@
-<%layout("/eeda/layout.html"){%>
+<%layout("/eeda/theme/h-ui/layout.html"){%>
+
+    <section class="Hui-article-box">
+        <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
+            <span class="c-gray en">&gt;</span>
+            资讯管理
+            <span class="c-gray en">&gt;</span>
+            资讯列表
+            <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+        </nav>
+        <div class="Hui-article">
+            <article class="cl pd-20">
+                <input type="hidden" id="module_id" value="${module_id!''}">
+                <input type="hidden" id="form_id" value="${form_id!''}">
+                <% include("/eeda/form/btnToolBar.html", 
+                    {
+                        btnList: btnList
+                    }){} %>
+
+                <div class="mt-20">
+
+                    <%
+                        var headers=[''];
+
+                        for(field in field_list){
+                            array.add(headers, field);
+                        }
+                    %>
+                    <%include("/eeda/component/form/detailTableWithFoot.html", 
+                        {
+                            id:'list_table',
+                            headers: headers
+                        }){} %>
+
+                </div>
+            </article>
+        </div>
+    </section>
+
+
     <div id="page-wrapper">
-        <input type="hidden" id="module_id" value="${module_id!''}">
-        <input type="hidden" id="form_id" value="${form_id!''}">
-        <% include("/eeda/form/btnToolBar.html", 
-            {
-                btnList: btnList
-            }){} %>
+        
 
-        <%
-            var headers=[''];
-
-            for(field in field_list){
-                array.add(headers, field);
-            }
-        %>
-        <%include("/eeda/component/form/detailTableWithFoot.html", 
-            {
-                id:'list_table',
-                headers: headers
-            }){} %>
+        
     </div>
 <%}%>
 
@@ -36,3 +59,70 @@
         <%}%>
     });
 </script>
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+
+
+/*资讯-编辑*/
+function form_edit(title,url,id,w,h){
+    var index = layer.open({
+        type: 2,
+        title: title,
+        content: url
+    });
+    layer.full(index);
+}
+/*资讯-删除*/
+function form_del(obj,id){
+    layer.confirm('确认要删除吗？',function(index){
+        $.ajax({
+            type: 'POST',
+            url: '',
+            dataType: 'json',
+            success: function(data){
+                $(obj).parents("tr").remove();
+                layer.msg('已删除!',{icon:1,time:1000});
+            },
+            error:function(data) {
+                console.log(data.msg);
+            },
+        });     
+    });
+}
+
+/*资讯-审核*/
+function form_shenhe(obj,id){
+    layer.confirm('审核文章？', {
+        btn: ['通过','不通过','取消'], 
+        shade: false,
+        closeBtn: 0
+    },
+    function(){
+        $(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_start(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
+        $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+        $(obj).remove();
+        layer.msg('已发布', {icon:6,time:1000});
+    },
+    function(){
+        $(obj).parents("tr").find(".td-manage").prepend('<a class="c-primary" onClick="article_shenqing(this,id)" href="javascript:;" title="申请上线">申请上线</a>');
+        $(obj).parents("tr").find(".td-status").html('<span class="label label-danger radius">未通过</span>');
+        $(obj).remove();
+        layer.msg('未通过', {icon:5,time:1000});
+    }); 
+}
+/*资讯-下架*/
+function form_stop(obj,id){
+    layer.confirm('确认要下架吗？',function(index){
+        $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
+        $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
+        $(obj).remove();
+        layer.msg('已下架!',{icon: 5,time:1000});
+    });
+}
+
+
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+

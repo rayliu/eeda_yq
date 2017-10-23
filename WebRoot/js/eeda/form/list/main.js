@@ -9,9 +9,7 @@ define(['jquery', '../btns'], function ($) {
             {
                 data: null,
                 render: function ( data, type, full, meta ) {
-                  return '<input type="checkBox" name="checkBox" style="margin-right:5px;"> '
-                    +'<a href="/form/'+module_id+'-doDelete-'+data.ID+'" class="btn table_btn  btn-xs" ><i class="fa fa-trash-o"></i></a> '
-                    +'<a href="/form/'+module_id+'-edit-'+data.ID+'" class="btn table_btn  btn-xs" ><i class="fa fa-edit"></i></a>';
+                  return '<input type="checkBox" name="checkBox" style="margin-right:5px;">';
                 }
             }
         ];
@@ -26,6 +24,17 @@ define(['jquery', '../btns'], function ($) {
             //console.log(col);
             colsSetting.push(col);
         };
+
+        //操作按钮
+        var btnCol = {
+            data: null,
+            render: function ( data, type, full, meta ) {
+
+              return '<a style="text-decoration:none" class="ml-5" href="/form/'+module_id+'-edit-'+data.ID+'" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>'
+                    +'<a style="text-decoration:none" class="ml-5" href="/form/'+module_id+'-doDelete-'+data.ID+'" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> ';
+            }
+        };
+        colsSetting.push(btnCol);
 
         var dataTable = eeda.dt({
             id: 'list_table',

@@ -46,7 +46,8 @@ public class FormService {
         
         List<Record> list = Db.find(
                 "select * from eeda_form_field_type_checkbox_item where field_id=?", field_id);
-        returnStr = "<label class='label-margin'>"+fieldDisplayName+"</label> <div style='padding-top: 8px;'>";
+        returnStr = "<label class='form-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
+                + " <div class='formControls skin-minimal col-xs-8 col-sm-9'>";
         for (Record r : list) {
             String name = r.getStr("name");
             String code = r.getStr("code");
@@ -55,10 +56,18 @@ public class FormService {
             if("Y".equals(isDefault)){
                 checked = "checked";
             }
-            String checkboxStr = "<label class='radio-inline'>"
-                    + "<input type='radio' origin_name='"+form_name+"-"+fieldDisplayName
-                    +"' name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+"' value='"+name+"' "+checked+"/>"
-                    + name+"</label>";
+            String checkboxStr = 
+                    "<div class='radio-box'>"
+                    + "   <div class='iradio-blue'>"
+                    + "      <input type='radio' origin_name='"+form_name+"-"+fieldDisplayName
+                    +"'          name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+"' value='"+name+"' "+checked+"/>"
+                    + "   </div>"
+                    + "<label for='"+fieldName+"'>"+name+"</label>"
+                    +"</div>";
+//                "<label class='radio-inline'>"
+//                    + "<input type='radio' origin_name='"+form_name+"-"+fieldDisplayName
+//                    +"' name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+"' value='"+name+"' "+checked+"/>"
+//                    + name+"</label>";
             returnStr+=checkboxStr;
         }
         return returnStr+"</div>";
@@ -100,12 +109,15 @@ public class FormService {
         
         String listJson = JsonKit.toJson(itemList);
         
-        returnStr = "<label class='search-label'>"+fieldDisplayName+"</label>"
-                + "<input type='text' name='"+inputId+"' class='form-control' placeholder='请选择' eeda_type='drop_down'"
-                + " target_form='"+refForm.getLong("id")+"' target_field_name='"+field_name+"'"
-                + " item_list='"+listJson+"'>"
-                //+ "<input id='"+inputId+"' style='display: none;' name="+inputId+" />"
-                + "<ul id='"+inputId+"_list' class='pull-right dropdown-menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;'>";
+        returnStr = "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
+                + "<div class='formControls col-xs-8 col-sm-9'>"
+                + " <input type='text' name='"+inputId+"' class='input-text' autocomplete='off' placeholder='请选择' eeda_type='drop_down'"
+                + "    target_form='"+refForm.getLong("id")+"' target_field_name='"+field_name+"'"
+                + "    item_list='"+listJson+"'>"
+                + "</div>"
+                + "<span class='dropDown'>"
+                + "     <ul id='"+inputId+"_list' class='dropDown-menu menu radius box-shadow'>"
+                + "</span>";
         
         return returnStr;
     }

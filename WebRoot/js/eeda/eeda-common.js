@@ -1,4 +1,4 @@
-define(['jquery', 'dataTablesBootstrap', 'metisMenu', 'sb_admin'], function($){
+define(['jquery', 'dataTablesBootstrap'], function($){
   
     var url = window.location;
     // var element = $('ul.nav a').filter(function() {
@@ -190,7 +190,7 @@ eeda.dt = function(opt){
 }
 
 eeda.hidePopList=function(){
-    var listArr=$(".dropdown-menu");
+    var listArr=$(".dropDown-menu");
     $(listArr).each(function(i, el) {
         if($(el).is(':visible')){
           $(el).hide();

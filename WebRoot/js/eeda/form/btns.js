@@ -1,6 +1,6 @@
 define(['jquery', './print', 'sco'], function ($, printCont) {
         //按钮事件响应
-        $('#page-wrapper').on('click', 'button', function(event) {
+        $('#btn_tool_bar').on('click', 'button', function(event) {
             event.preventDefault();
             var btn = $(this);
             var btn_id = btn.attr('id');
