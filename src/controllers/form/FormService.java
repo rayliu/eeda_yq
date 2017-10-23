@@ -48,7 +48,9 @@ public class FormService {
                 "select * from eeda_form_field_type_checkbox_item where field_id=?", field_id);
         returnStr = "<label class='form-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
                 + " <div class='formControls skin-minimal col-xs-8 col-sm-9'>";
+        int index = 0;
         for (Record r : list) {
+            index++;
             String name = r.getStr("name");
             String code = r.getStr("code");
             String isDefault = r.getStr("is_default");
@@ -58,11 +60,9 @@ public class FormService {
             }
             String checkboxStr = 
                     "<div class='radio-box'>"
-                    + "   <div class='iradio-blue'>"
-                    + "      <input type='radio' origin_name='"+form_name+"-"+fieldDisplayName
-                    +"'          name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+"' value='"+name+"' "+checked+"/>"
-                    + "   </div>"
-                    + "<label for='"+fieldName+"'>"+name+"</label>"
+                    + "     <input type='radio' origin_name='"+form_name+"-"+fieldDisplayName
+                    +"'          name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+index+"' value='"+name+"' "+checked+"/>"
+                    + "     <label for='"+fieldName+index+"'>"+name+"</label>"
                     +"</div>";
 //                "<label class='radio-inline'>"
 //                    + "<input type='radio' origin_name='"+form_name+"-"+fieldDisplayName
