@@ -39,6 +39,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
 import controllers.eeda.ListConfigController;
+import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.OrderCheckOfficeUtil;
@@ -257,6 +258,13 @@ public class CostRequestController extends Controller {
 //            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
 //        }
         
+    	String sp_id =getPara("sp_id");
+        if(StringUtils.isNotEmpty(getPara("sp_id"))){
+    		//常用结算公司保存进入历史记录
+          	Long userId = LoginUserController.getLoginUserId(this);
+          	JobOrderController.addHistoryRecord(userId,sp_id,"ARAP_COM");
+    	}
+    	
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         

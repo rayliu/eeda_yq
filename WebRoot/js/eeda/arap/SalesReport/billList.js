@@ -18,7 +18,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       				}
       			},
       			{ "data": "MBL_NO", "width": "100px","className":"mbl_no"},
-	            { "data": "ORDER_EXPORT_DATE", "width": "80px" ,"className":"order_export_date"},
+	            { "data": "ORDER_EXPORT_DATE", "width": "90px" ,"className":"order_export_date"},
 	            { "data": "USER_NAME", "width": "100px","className":"user_name"},
 	            { "data": "ABBR", "width": "100px","className":"abbr"},
 	            { "data": "CONTRACT_NO", "width": "80px","className":"contract_no"},
@@ -238,8 +238,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	
 	$('#singleSearchBtn').click(function(){
 	    var selectField = $('#selected_field').val();
+	    var customer_id = '';
 		if(selectField=='customer_id'){
-			var customer_id = $("#single_customer_id").val();
+			customer_id = $("#single_customer_id").val();
 		}
 		if(selectField=='user_id'){
 			var user_name = $("#single_user_id_input").val();
@@ -282,7 +283,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	        +"&order_export_date_end_time="+order_export_date_end_time;
 	     dataTable.ajax.url(url).load();
 	     
-	}); 
+	  }); 
       
       $('#resetBtn').click(function(e){
           $("#orderForm")[0].reset();
