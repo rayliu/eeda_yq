@@ -6,7 +6,8 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', 'jq_bloc
 		$('#editForm').validate({
 			rules : {
 				rolename : {
-					required : true
+					required : true,
+					maxlength:50
 					/* remote:{
 	                	url: "/role/checkRoleNameExit", //后台处理程序    
                         type: "post",  //数据发送方式  
@@ -17,8 +18,10 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', 'jq_bloc
 
                         } 
 					}*/
-				} 
-
+				},
+				remark: {
+					maxlength:50
+				}
 			},
 			/* messages:{
             	 rolename:{
@@ -63,7 +66,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTables', 'validate_cn', 'jq_bloc
             var submitObj={
                 role_id: $('#role_id').val(),
                 role_name: $('#rolename').val(),
-                role_desc: $('#roleremark').val(),
+                role_desc: $('#remark').val(),
                 role_permisstions: role_permisstions
             };
 

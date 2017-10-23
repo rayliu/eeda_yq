@@ -185,7 +185,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         });
         $("#this_year_salesamount,#last_year_salesamount,#beforelast_year_salesamount,#response_problem_time,#solve_problem_time,#pay_account_time,"
         		+"#business_scope,#introduction,#remark").on("blur",function(){
-        			debugger;
 			 var data = $.trim($(this).val());
 	    	 var name = $(this).attr("name");
 	    	 var len = $.trim(data).length;

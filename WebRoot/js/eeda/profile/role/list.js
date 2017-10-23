@@ -48,6 +48,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
 			rules : {
 				rolename : {
 					required : true,
+					maxlength:50,
 					remote:{
 	                	url: "/role/checkRoleNameExit", //后台处理程序    
                         type: "post",  //数据发送方式  
@@ -58,6 +59,9 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
 
                         } 
 					}
+				},
+				remark: {
+					maxlength:50
 				}
 			},
 			messages:{
