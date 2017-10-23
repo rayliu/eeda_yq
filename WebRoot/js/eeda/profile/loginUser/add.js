@@ -67,13 +67,42 @@ var queryOffice=function(){
 	
 	$('#leadsForm').validate({
         rules: {
-        	"username": {
-        		
-        		levelLimit:true
+        	username: {
+        		levelLimit:true,
+        		required:true,
+        		maxlength:50
+            },
+            pw_hint: {
+            	maxlength:255
+            },
+            user_fax: {
+            	isFax:true
+            },
+            name: {
+            	maxlength:20,
+            	required:true
+            },
+            user_tel: {
+            	isTel:true
+            },
+            password: {
+            	maxlength:16,
+            	required:true
+            },
+            user_phone: {
+            	isMobile:true
+            },
+            confirm_password: {
+            	maxlength:16,
+            	required:true
+            },
+            email: {
+            	email:true
             }
+            
         },
         messages:{
-        	"username":{
+        	username:{
         		levelLimit:"输入含有非法字符，不能输入中文"
             }
         },
@@ -84,8 +113,24 @@ var queryOffice=function(){
             element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
         }
     });
-	
-	
+	// 手机号码验证
+	jQuery.validator.addMethod("isMobile", function(value, element) {
+	    var length = value.length;
+	    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+	    return this.optional(element) || (length == 11 && mobile.test(value));
+	}, "请正确填写您的手机号码");
+	// 电话号码验证
+	jQuery.validator.addMethod("isTel", function(value, element) {
+	    var length = value.length;
+	    var mobile = /^\d{3,4}-\d{7,8}$/;
+	    return this.optional(element) || (length > 0 && mobile.test(value));
+	}, "请正确填写您的电话号码");
+	// 传真号码验证
+	jQuery.validator.addMethod("isFax", function(value, element) {
+	    var length = value.length;
+	    var mobile = /^\d{3,4}-\d{7,8}$/;
+	    return this.optional(element) || (length > 0 && mobile.test(value));
+	}, "请正确填写您的传真号码");
 
 var queryCustomer=function(){
 	var customers=[];
@@ -293,12 +338,15 @@ $(document).ready(function(){
         //阻止a 的默认响应行为，不需要跳转
         e.preventDefault();
         //提交前，校验数据
-        if(!$("#leadsForm").valid()){
-            return;
-        }
-        if($("#username").val()==''||$("#username").val()==undefined){
-        	$.scojs_message('用户名(必填),不能为空', $.scojs_message.TYPE_ERROR);
-            return;
+        $('form').each(function(){
+        	if(!$(this).valid()){
+        		formRequired++;
+            }
+        })
+        
+        if(formRequired>0){
+        	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+        	return;
         }
         $.blockUI({ 
             message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
