@@ -95,7 +95,7 @@ public class BillProfitAndPaymentController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+" ORDER BY abbr "+sLimit);
+        List<Record> orderList = Db.find(sql+" ORDER BY order_export_date desc "+sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
