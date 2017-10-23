@@ -17,7 +17,6 @@ import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
 import models.UserLogin;
-import models.eeda.cms.CustomPlanOrder;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
 import models.eeda.oms.jobOrder.JobOrderSendMail;
@@ -1016,13 +1015,20 @@ public class TransJobOrderController extends Controller {
 						+ "cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',tjoa.currency_total_amount)) from trans_job_order_arap tjoa"
 						+ " LEFT JOIN fin_item fi on fi.id = tjoa.charge_id "
 						+ " WHERE tjoa.order_id=tjo.id and tjoa.order_type='charge' and fi.name!='运费' group by tjoa.order_type) as char) charge, "
-		         		+ " p1.abbr head_carrier_name,cast(substring(tjo.charge_time, 1, 10) AS CHAR) charge_time,tjol.car_no car_id,GROUP_CONCAT(car.car_no SEPARATOR '/') combine_car_no"
+		         		+ " p1.abbr head_carrier_name,cast(substring(tjo.charge_time, 1, 10) AS CHAR) charge_time,tjol.car_no car_id,GROUP_CONCAT(car.car_no SEPARATOR '/') combine_car_no,"
+		         		+ "	CONCAT(	IFNULL(CONCAT(dock0.dock_name, '-'),''),IFNULL(CONCAT(GROUP_CONCAT(dock2.dock_name SEPARATOR '-'),'-'),''),IFNULL(CONCAT(GROUP_CONCAT(dock3.dock_name SEPARATOR '-'"
+		         		+ "	),'-'),''),IFNULL(dock1.dock_name, '')) combine_wharf"
 		         		+ "	from trans_job_order tjo "
 		         		+ " LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo.id"
 		         		+ "	left join party p on p.id = tjo.customer_id"
 		         		+ "	left join party p1 on p1.id = tjo.head_carrier"
 		         		+ "	left join user_login u on u.id = tjo.creator"
 		         		+ "	left join carinfo car ON car.id = tjol.car_no"
+		         		+ " LEFT JOIN dockinfo dock ON dock.id = tjo.cross_border_travel"
+		         		+ " LEFT JOIN dockinfo dock0 ON dock0.id = tjo.take_wharf"
+		         		+ " LEFT JOIN dockinfo dock1 ON dock1.id = tjo.back_wharf"
+		        		+ " LEFT JOIN dockinfo dock2 ON dock2.id = tjol.loading_wharf1"
+		        		+ " LEFT JOIN dockinfo dock3 ON dock3.id = tjol.loading_wharf2"
 		         		+ "	where tjo.office_id="+office_id
 		         		+ "	and tjo.delete_flag = 'N' "
 		         		+ " GROUP BY tjo.id"

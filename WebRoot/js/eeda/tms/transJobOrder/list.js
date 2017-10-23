@@ -39,16 +39,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                   }
               },
               { "data": "CUSTOMER_NAME","width":"60px"},
-              { "data": "TYPE","width":"50px",
+              { "data": "TYPE","width":"40px",
                   "render": function ( data, type, full, meta ) {
 	                    if(!data)
 	                    	data='';
 	                    return data;
                   }
               },
+              { "data": "COMBINE_WHARF","width":"60px"},
               { "data": "CONTAINER_NO","width":"60px"}, 
               { "data": "SO_NO","width":"60px"}, 
-              { "data": "CABINET_DATE", "width":"72px",//提柜、提货时间
+              { "data": "CABINET_DATE", "width":"80px",//提柜、提货时间
             	  "render": function(data){
             		  if(data)
             			  return data;
@@ -70,8 +71,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             		  }            		  
             	  }
               },
-              { "data": "HEAD_CARRIER_NAME","width":"55px"}, 
-              { "data": "YUNFEI","width":"45px",
+              { "data": "HEAD_CARRIER_NAME","width":"60px"}, 
+              { "data": "YUNFEI","width":"35px",
                   "render": function ( data, type, full, meta ) {
                     if(data)
                       return eeda.numFormat(parseFloat(data).toFixed(2),3)
@@ -79,7 +80,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                       return '';
                     }
               },
-              { "data": null,"width":"65px",
+              { "data": null,"width":"45px",
                   "render": function ( data, type, full, meta ) {
                 	  if(data){
                 		  data = '';
@@ -135,7 +136,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     //简单查询
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
-	      if(selectField=='order_no'||selectField=='container_no'){
+	      if(selectField=='order_no'||selectField=='container_no'||selectField=='creator_name'){
 	    	  $("#public_text").val("");
 	    	  $("#single_customer").hide();
 	    	  $("#single_status").hide();
@@ -205,7 +206,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $("#singleSearchBtn").click(function(){
     	  var selectField = $('#selected_field').val();
     	  var selectValue = "";
-	      if(selectField=='order_no'||selectField=='container_no'){
+	      if(selectField=='order_no'||selectField=='container_no'||selectField=='creator_name'){
 	    	  selectValue = $("#public_text").val();
 	      }
 	      if(selectField=='customer_name_like'){
@@ -264,6 +265,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var customer_name = $("#customer_name_input").val().trim();
           var cabinet_type=$("#cabinet_type").val().trim();
           var container_no= $.trim($("#container_no").val());
+          var creator_name= $.trim($("#creator_name").val());
           //增加出口日期查询
           var url = "/transJobOrder/list?order_no="+order_no
           	   +"&sp_id="+sp_id
@@ -275,7 +277,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           	   +"&cabinet_date_begin_time="+cabinet_date_begin_time
           	   +"&cabinet_date_end_time="+cabinet_date_end_time
           	   +"&cabinet_type="+cabinet_type
-          	   +"&container_no="+container_no;
+          	   +"&container_no="+container_no
+          	   +"&creator_name="+creator_name;
           dataTable.ajax.url(url).load();
       };
       

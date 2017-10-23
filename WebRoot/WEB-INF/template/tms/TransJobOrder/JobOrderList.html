@@ -15,7 +15,8 @@
 	                            <option value="status">状态</option>	
 	                            <option value="cabinet_date">提柜时间</option>
 	                            <option value="charge_time">结算时间</option>
-	                            <option value="create_time">创建时间</option>	 
+	                            <option value="create_time">创建时间</option>
+	                            <option value="creator_name">创建人</option>
                             </select>
 							
 							<input type="text" id="public_text" class="form-control search-control"/>
@@ -164,6 +165,13 @@
 	                                        ]
 	                                    }){}%>
 	                			</div>
+	                			<div class="col-lg-4">
+	                                  <%include("/eeda/component/form/inputField.html", 
+	                                    {   id:'creator_name', 
+	                                        label:'创建人', 
+	                                        value:''
+	                                    }){}%>
+	                			</div>
 	                		</div>
 							<div class="form-group button-bar" >
 		                		<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
@@ -222,6 +230,7 @@
                                     headers:['','工作单号',
                                         '客户名称',
                                         '类型',
+                                        '拖柜地址',
                                         '柜号',
                                         'SO号',
                                         '提柜/提货时间',

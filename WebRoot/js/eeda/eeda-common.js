@@ -43,6 +43,8 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
               || url.indexOf('/serviceProvider/searchTruckIn')!=-1
               || url.indexOf('/dockInfo/searchLoading')!=-1
               || url.indexOf('/serviceProvider/searchChargeUnit')!=-1
+              || url.indexOf('/dockInfo/searchDock')!=-1
+              || url.indexOf('/carInfo/search')!=-1
           ){
             return;
           }

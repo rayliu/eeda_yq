@@ -119,6 +119,71 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                  return field_html;
 	                }
 	            },
+	            { "data": "WHOLE_COURSE_CAR_NO","width": "60px",
+	                "render": function ( data, type, full, meta ) {
+	                   if(!data)
+	                        data='';
+	                    var field_html = template('table_car_no_field_template',
+	                        {
+	                            id: 'WHOLE_COURSE_CAR_NO',  //component_id 便于用 #id取组件
+	                            value: data,
+	                            display_value: full.WHOLE_COURSE_CAR_NO_INPUT,
+	                            style:'width:80px'
+	                        }
+	                    );
+	                     return field_html;
+	                 }
+	          },
+              { "data": "TIJIGUI_CAR_NO","width": "80px",
+                "render": function ( data, type, full, meta ) {
+                   if(!data)
+                        data='';
+                    var field_html = template('table_car_no_field_template',
+                        {
+                            id: 'TIJIGUI_CAR_NO',  //component_id 便于用 #id取组件
+                            value: data,
+                            display_value: full.TIJIGUI_CAR_NO_INPUT,
+                            style:'width:80px'
+                        }
+                    );
+                     return field_html;
+                 }
+              }, 
+              { "data": "SHOUZHONGGUI_CAR_NO","width": "80px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    var field_html = template('table_car_no_field_template',
+                        {
+                            id: 'SHOUZHONGGUI_CAR_NO',  //component_id 便于用 #id取组件
+                            value: data,
+                            display_value: full.SHOUZHONGGUI_CAR_NO_INPUT,
+                            style:'width:80px'
+                        }
+                    );
+                     return field_html;
+                 }
+              },
+              { "data": "CONTAINER_NO","width": "80px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data = '';
+	                          return '<input type="text" name="container_no" style="width:100px" value="'+data+'" class="form-control"/>';
+	                     }
+	            },
+	            { "data": "CABINET_TYPE","width": "40px",
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    var str= '<select  name="cabinet_type" style="width:60px" class="form-control search-control valid">'
+	                    		 +'<option value="40HQ" '+(data=='40HQ' ? 'selected':'')+'>40HQ</option>'
+	                             +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
+	                             +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'	                             
+	                             +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>45GP</option>'
+	                             +'</select>'; 
+	                    return str;
+	                }
+	            },
 	            { "data": "CLOSING_DATE", "width": "80px",
 	                  "render": function ( data, type, full, meta ) {
 	                    if(!data)
@@ -180,26 +245,6 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                          return '<input type="text" name="so_no" style="width:100px" value="'+data+'" class="form-control"/>';
 	                     }
                 }, 
-                { "data": "CONTAINER_NO","width": "80px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data = '';
-	                          return '<input type="text" name="container_no" style="width:100px" value="'+data+'" class="form-control"/>';
-	                     }
-	            },
-	            { "data": "CABINET_TYPE","width": "40px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                    var str= '<select  name="cabinet_type" style="width:60px" class="form-control search-control valid">'
-	                    		 +'<option value="40HQ" '+(data=='40HQ' ? 'selected':'')+'>40HQ</option>'
-	                             +'<option value="20GP" '+(data=='20GP' ? 'selected':'')+'>20GP</option>'
-	                             +'<option value="40GP" '+(data=='40GP' ? 'selected':'')+'>40GP</option>'	                             
-	                             +'<option value="45GP" '+(data=='45GP' ? 'selected':'')+'>45GP</option>'
-	                             +'</select>'; 
-	                    return str;
-	                }
-	            },
 	            { "data": "LADING_NO","width": "60px",
 	                  "render": function ( data, type, full, meta ) {
 	                      if(!data)
@@ -296,51 +341,6 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	                          return '<input type="text" name="loading_platform" style="width:80px" value="'+data+'" class="form-control"/>';
 	                     }
                   },
-		          { "data": "WHOLE_COURSE_CAR_NO","width": "60px",
-		                "render": function ( data, type, full, meta ) {
-		                   if(!data)
-		                        data='';
-		                    var field_html = template('table_car_no_field_template',
-		                        {
-		                            id: 'WHOLE_COURSE_CAR_NO',  //component_id 便于用 #id取组件
-		                            value: data,
-		                            display_value: full.WHOLE_COURSE_CAR_NO_INPUT,
-		                            style:'width:80px'
-		                        }
-		                    );
-		                     return field_html;
-		                 }
-		          },
-	              { "data": "TIJIGUI_CAR_NO","width": "80px",
-	                "render": function ( data, type, full, meta ) {
-	                   if(!data)
-	                        data='';
-	                    var field_html = template('table_car_no_field_template',
-	                        {
-	                            id: 'TIJIGUI_CAR_NO',  //component_id 便于用 #id取组件
-	                            value: data,
-	                            display_value: full.TIJIGUI_CAR_NO_INPUT,
-	                            style:'width:80px'
-	                        }
-	                    );
-	                     return field_html;
-	                 }
-	              }, 
-	              { "data": "SHOUZHONGGUI_CAR_NO","width": "80px",
-	                "render": function ( data, type, full, meta ) {
-	                    if(!data)
-	                        data='';
-	                    var field_html = template('table_car_no_field_template',
-	                        {
-	                            id: 'SHOUZHONGGUI_CAR_NO',  //component_id 便于用 #id取组件
-	                            value: data,
-	                            display_value: full.SHOUZHONGGUI_CAR_NO_INPUT,
-	                            style:'width:80px'
-	                        }
-	                    );
-	                     return field_html;
-	                 }
-	              },
 	              { "data": "YIGUI_CAR_NO","width": "70px",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
