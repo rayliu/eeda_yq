@@ -113,7 +113,7 @@ $(document).ready(function() {
 	    	if(!isNaN(calcNumber))
     			$(row.find('[name=number]')).val(calcNumber);
     		if(!isNaN(calcPrice))
-    			$(row.find('[name=price]')).val(calcPrice);
+    			$(row.find('[name=price]')).val(calcPrice.toFixed(3));
     		if(!isNaN(total)){
     			$(row.find('[name=domestic_price]')).val(total.toFixed(3));
             }
