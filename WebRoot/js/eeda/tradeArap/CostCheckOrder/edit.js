@@ -72,6 +72,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                     $('#saveBtn').attr('disabled', false);
                     $('#confirmBtn').attr('disabled', false);
                     $('#exchange').attr('disabled',false);
+                    $('#add_cost').prop('disabled',false);
                     //异步刷新明细表
                     itemOrder.refleshTable(order.ID);
                 }else{

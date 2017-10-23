@@ -477,9 +477,13 @@ $(document).ready(function() {
        
        itemTable.ajax.url(url).load();
     }
-
-
-    //添加明细   
+    
+    if($("#order_id").val()==""){
+    	$('#add_cost').prop('disabled',true);
+    }else{
+    	$('#add_cost').prop('disabled',false);
+    }
+     //添加明细   
      $('#add_cost').click(function(){
             $('#allcost').prop('checked',false);
             $('#add_cost_item').prop('disabled',true);
