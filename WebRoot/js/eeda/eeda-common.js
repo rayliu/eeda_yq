@@ -1,4 +1,4 @@
-define(['jquery', 'dataTablesBootstrap'], function($){
+define(['jquery', 'dataTablesBootstrap', 'sb_admin'], function($){
   
     var url = window.location;
     // var element = $('ul.nav a').filter(function() {
