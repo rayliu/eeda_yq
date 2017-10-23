@@ -73,6 +73,7 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           scrollCollapse: true,
           drawCallback:function(settings){
             bindFieldEvent();
+            
           },
           columns: [
 			    { "data":"ID","width": "10px",

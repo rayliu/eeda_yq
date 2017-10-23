@@ -1160,19 +1160,24 @@ eeda.refreshUrl = refreshUrl;
           }).find('li').first().focus();
       };
       
+
       eeda.bindTableFieldCarInfo = function(talbe_id, el_name) {
           var tableFieldList = $('#table_car_no_field_list');
+          $('#'+talbe_id+' input[name='+el_name+'_input]').off("keyup click"); 
           $('#'+talbe_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
               var me = this;
+              amongK=$('#'+talbe_id+' tr').index(this); 
               var inputField = $(this);
               var hiddenField = $(this).parent().find('input[name='+el_name+']');
               var inputStr = inputField.val();
+              
+              
 
               if (event.keyCode == 40) {
                   tableFieldList.find('li').first().focus();
                   return false;
               }
-
+              
               $.get('/carInfo/search', {input:inputStr}, function(data){
                   if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
                       return;
@@ -1205,6 +1210,7 @@ eeda.refreshUrl = refreshUrl;
 		            }
               },'json');
           });
+      
 
           tableFieldList.on('click', '.item', function(e){
               var inputField = eeda._inputField;
