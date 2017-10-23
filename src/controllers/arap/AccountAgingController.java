@@ -21,6 +21,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.eeda.ListConfigController;
+import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.PoiUtils;
 
@@ -46,6 +47,11 @@ public class AccountAgingController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sp_id = getPara("sp_id");
+    	if(StringUtils.isNotEmpty(getPara("sp_id"))){    		
+    		//常用结算公司保存进入历史记录
+          	Long userId = LoginUserController.getLoginUserId(this);
+          	JobOrderController.addHistoryRecord(userId,sp_id,"ARAP_COM");
+    	}
         String type = getPara("type")==null?"new":getPara("type").trim();
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");

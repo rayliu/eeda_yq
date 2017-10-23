@@ -21,6 +21,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.eeda.ListConfigController;
+import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PoiUtils;
@@ -54,6 +55,14 @@ public class ChargeBalanceReportController extends Controller {
         if(relist!=null){
         	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
         }
+        
+        String sp_id =getPara("sp_id");
+    	if(StringUtils.isNotEmpty(getPara("sp_id"))){    		
+    		//常用结算公司保存进入历史记录
+          	Long userId = LoginUserController.getLoginUserId(this);
+          	JobOrderController.addHistoryRecord(userId,sp_id,"ARAP_COM");
+    	}
+        
         
         
         String condition = DbUtils.buildConditions(getParaMap());

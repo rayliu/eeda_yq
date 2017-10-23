@@ -21,6 +21,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.eeda.ListConfigController;
+import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PoiUtils;
@@ -48,6 +49,13 @@ public class CostBalanceReportController extends Controller {
         }
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
+        String sp_id =getPara("sp_id");
+    	if(StringUtils.isNotEmpty(getPara("sp_id"))){    		
+    		//常用结算公司保存进入历史记录
+          	Long userId = LoginUserController.getLoginUserId(this);
+          	JobOrderController.addHistoryRecord(userId,sp_id,"ARAP_COM");
+    	}
         
         String ref_office = "";
         Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);

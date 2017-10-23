@@ -181,8 +181,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	
 	$('#singleSearchBtn').click(function(){
 	     var selectField = $('#selected_field').val();
+	     var sp_id='';
 	     if(selectField=='sp_id'){
-	    	 var sp_id = $("#single_sp_id").val();
+	    	 sp_id = $("#single_sp_id").val();
 	      }
 	      if(selectField=="order_export_date"){
 	    	 var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();

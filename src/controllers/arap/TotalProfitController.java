@@ -20,8 +20,8 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
-import controllers.util.DbUtils;
 import controllers.util.PoiUtils;
 
 @RequiresAuthentication
@@ -44,6 +44,14 @@ public class TotalProfitController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String conditions = "";
+        
+        String customer_id =getPara("customer");
+    	if(StringUtils.isNotEmpty(getPara("customer"))){    		
+    		//常用结算公司保存进入历史记录
+          	Long userId = LoginUserController.getLoginUserId(this);
+          	JobOrderController.addHistoryRecord(userId,customer_id,"CUSTOMER");
+    	}
+        
         String customer = getPara("customer");
         String begin_time = getPara("order_export_date_begin_time");
         String end_time = getPara("order_export_date_end_time");

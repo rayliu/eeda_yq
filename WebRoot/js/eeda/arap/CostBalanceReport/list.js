@@ -93,7 +93,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	            },
     	            { "data": "UNCOST_RMB", "width": "100px","class":"uncost_rmb",
     	            	"render": function(data, type, full, meta) {
-    					return '<span style="color:red;">'+eeda.numFormat(data,3)+'</span>';
+    					return '<span style="color:red;">'+eeda.numFormat(data.toFixed(2),3)+'</span>';
     				  }
     	            },
     	            { "width": "80px",
@@ -146,8 +146,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	
 	$('#singleSearchBtn').click(function(){
 		var selectField = $("#selected_field").val();
+		var sp_id='';
 		  if(selectField=='sp_id'){
-			  var sp_id = $("#single_sp_id").val();
+			  sp_id = $("#single_sp_id").val();
 	      }
 	      if(selectField=="order_export_date"){
 	    	  var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();

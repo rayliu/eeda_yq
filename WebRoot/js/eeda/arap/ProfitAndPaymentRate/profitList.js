@@ -63,7 +63,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       	            		return profit_rate;
       					}
 	            },
-                { "data": "EMPLOYEE_NAME", "width": "120px"},
+                { "data": "USER_NAME", "width": "120px"},
 	            {"width": "120px",
 					     "render": function(data, type, full, meta) {
       	            	    var profit = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
