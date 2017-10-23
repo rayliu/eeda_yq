@@ -282,11 +282,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	$(this).parent().find("span").remove();
       });		  
 	  
-	  $.post("/serviceProvider/spName",{sp_id:$('#partyId').val()},function(data){
-    	  if(data){
-    		  $("#markCustomer").val(data.ABBR);
-    	  }
-      });
-    
+	  if($('#partyId').val()!=""){
+		  $.post("/serviceProvider/spName",{sp_id:$('#partyId').val()},function(data){
+	    	  if(data){
+	    		  $("#markCustomer").val(data.ABBR);
+	    	  }
+	      });
+	  }
+	  
   })
 })

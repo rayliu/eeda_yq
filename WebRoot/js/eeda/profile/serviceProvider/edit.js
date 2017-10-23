@@ -157,6 +157,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               identification_no: {
             	  maxlength:100
               },
+              special_item:{
+            	  maxlength:500
+              },
               register_capital: {
             	  maxlength:255
               },
@@ -171,33 +174,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               },
               status: {
             	  maxlength:255
-              },
-              this_year_salesamount: {
-            	  maxlength:255
-              },
-              last_year_salesamount: {
-            	  maxlength:255
-              },
-              beforelast_year_salesamount: {
-            	  maxlength:255
-              },
-              response_problem_time: {
-            	  maxlength:225
-              },
-              solve_problem_time: {
-            	  maxlength:225
-              },
-              pay_account_time: {
-            	  maxlength:225
-              },
-              business_scope: {
-            	  maxlength:500
-              },
-              introduction: {
-            	  maxlength:255
-              },
-              remark: {
-            	  maxlength:255
               }
             },
             highlight: function(element) {
@@ -207,6 +183,35 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
             }
         });
+        $("#this_year_salesamount,#last_year_salesamount,#beforelast_year_salesamount,#response_problem_time,#solve_problem_time,#pay_account_time,"
+        		+"#business_scope,#introduction,#remark").on("blur",function(){
+        			debugger;
+			 var data = $.trim($(this).val());
+	    	 var name = $(this).attr("name");
+	    	 var len = $.trim(data).length;
+        	 if(name=="this_year_salesamount"||name=="last_year_salesamount"||name=="beforelast_year_salesamount"||name=="introduction"||name=="remark"){
+        		 if(len>255){
+        			 $(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入最多是255长度的字符串</span>");
+        			 return;
+        		 }
+        	 }
+        	 if(name=="response_problem_time"||name=="solve_problem_time"||name=="pay_account_time"){
+        		 if(len>225){
+        			 $(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入最多是225长度的字符串</span>");
+        			 return;
+        		 }
+        	 }
+        	 if(name=="business_scope"){
+        		 if(len>500){
+        			 $(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入最多是500长度的字符串</span>");
+        			 return;
+        		 }
+        	 }
+        });
+        $("#this_year_salesamount,#last_year_salesamount,#beforelast_year_salesamount,#response_problem_time,#solve_problem_time,#pay_account_time,"
+        		+"#business_scope,#introduction,#remark").on("focus",function(){
+        	$(this).parent().find("span").remove();
+     	});
         jQuery.validator.addMethod("isMobile", function(value, element) {
             var length = value.length;
             var mobile = /^((1[3456789]\d{9})|(0\d{2,3}-\d{7,8}))$/;

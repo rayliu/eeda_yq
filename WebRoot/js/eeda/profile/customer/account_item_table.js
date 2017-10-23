@@ -136,9 +136,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         		}
         	}
         	if(name=="ACCOUNT_NO"){
-        		var re = /^[1-9](\d{14}|\d{18})$/;
-        		if(!re.test(data)&&len>0){
-        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入正确的银行卡账户</span>");
+        		var re = /^.{100,}$/;
+        		if(re.test(data)&&len>0){
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>只能输入长度100内的字符串</span>");
         			return;
         		}
         	}
