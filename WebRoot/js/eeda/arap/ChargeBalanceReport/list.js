@@ -373,8 +373,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	  $(function(){
           var scroll_bar = $("#eeda_table");//表格的id
           var bar_head = $("#eeda_table_head");//表头
+          var head_top_height = 0.0;
           $(window).scroll(function(){
-              var scroll_top = $('body').scrollTop() - scroll_bar.offset().top;//判断是否到达窗口顶部
+        	  if(head_top_height == 0){
+        	  	head_top_height = bar_head.offset().top;
+        	  }
+              var scroll_top = $('body').scrollTop() - head_top_height;//判断是否到达窗口顶部
               var scroll_botton =$('body').scrollTop() - $("#eeda_table_info").offset().top+50 ;
               if (scroll_top > 0 && scroll_botton < 0) {
             	  bar_head.css({'z-index':'1','border-radius':'15px 15px 0 0','position':'fixed','top':'0','width':$("#eeda_table").width()});
