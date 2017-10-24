@@ -123,7 +123,7 @@ $(document).ready(function() {
     		$('#printBtn').attr('disabled', false);  
     	}else if(status=='已确认'){
             $('#printTotaledBtn').attr('disabled', false);
-            $("#").attr('disabled', false);
+            $('#cancelConfirmBtn').attr('disabled', false);
             $("#printBtn").attr('disabled', false);
             $('#add_charge').attr("disabled",true);
         }else if(status=='取消确认'){
