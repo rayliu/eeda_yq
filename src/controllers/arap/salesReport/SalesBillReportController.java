@@ -221,7 +221,7 @@ public class SalesBillReportController extends Controller {
 		if (StringUtils.isBlank(customer_id)) {
 			customerId = "";
 		} else {
-			customerId = " and jo.customer_id = " + customer_id;
+			customerId = " and customer_id = " + customer_id;
 		}
 		if (StringUtils.isBlank(user_name)) {
 			userName = "";
