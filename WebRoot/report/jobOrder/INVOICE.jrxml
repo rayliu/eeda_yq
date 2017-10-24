@@ -548,7 +548,7 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 			<staticText>
 				<reportElement x="13" y="0" width="153" height="20" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
 				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" size="12" isBold="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[ACCOUNT INFORMATION:]]></text>
 			</staticText>
