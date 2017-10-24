@@ -39,6 +39,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.render.CaptchaRender;
 
 import controllers.profile.LoginUserController;
 import controllers.util.EedaCommonHandler;
@@ -47,6 +48,7 @@ import controllers.util.ParentOffice;
 import controllers.util.getCurrentPermission;
 
 public class MainController extends Controller {
+    private static final String RANDOM_CODE_KEY = "eeda";
 	private Log logger = Log.getLog(MainController.class);
     // in config route已经将路径默认设置为/eeda
     // me.add("/eeda", controllers.yh.AppController.class, "/eeda");
@@ -87,6 +89,14 @@ public class MainController extends Controller {
             render("/eeda/index.html");
         }
     }
+    
+    public void captcha() {
+        CaptchaRender cr = new CaptchaRender();
+        cr.setContext(this.getRequest(), this.getResponse());
+        cr.setCaptchaName(RANDOM_CODE_KEY);
+        cr.render();
+    }
+    
     @Before(EedaMenuInterceptor.class)
     public void home() {
         setSysTitle();
@@ -171,12 +181,23 @@ public class MainController extends Controller {
         setSysTitle();
         
         if (username == null) {
-            render("/eeda/login.html");
+            render("/eeda/theme/h-ui/login.html");
             return;
         }
         String sha1Pwd = MD5Util.encode("SHA1", getPara("password"));
         UsernamePasswordToken token = new UsernamePasswordToken(username, sha1Pwd );
 
+        
+        String inputRandomCode = getPara("inputRandomCode");
+        boolean loginSuccess = CaptchaRender.validate(this, inputRandomCode);
+        if (!loginSuccess) {
+            String errMsg = "验证码不正确";
+            setAttr("errMsg", errMsg);
+            logger.debug(errMsg);
+            render("/eeda/theme/h-ui/login.html");
+            return;
+        }
+        
         if (getPara("remember") != null && "Y".equals(getPara("remember")))
             token.setRememberMe(true);
 
@@ -213,7 +234,7 @@ public class MainController extends Controller {
             	errMsg = "用户名不存在或已被停用";
             	setAttr("errMsg", errMsg);
             	logger.debug(errMsg);
-            	render("/eeda/login.html");
+            	render("/eeda/theme/h-ui/login.html");
             }else if(user.get("c_name") != null && !"".equals(user.get("c_name"))){
             	setAttr("userId", user.get("c_name"));
             	
@@ -233,7 +254,7 @@ public class MainController extends Controller {
             setAttr("errMsg", errMsg);
             logger.debug(errMsg);
             
-            render("/eeda/login.html");
+            render("/eeda/theme/h-ui/login.html");
         }
     }
     
