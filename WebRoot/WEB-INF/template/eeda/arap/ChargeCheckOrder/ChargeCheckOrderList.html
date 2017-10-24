@@ -43,15 +43,13 @@
                                                     label: '工作单号', 
                                                     value: ''
                                                 }){}%>
-                                        </div>                                          
-                                        
+                                        </div>            
                                         <div class="col-lg-4">
-                                         <%include("/eeda/component/form/inputDateQueryField.html", 
-                                         {   id:'create_stamp', 
-                                             label:'创建日期', 
-                                             value:''
-                                         }){} %>
-                                         </div>
+		                                         <%include("/eeda/component/form/inputDateQueryField.html", 
+				                                         {   id:'order_export_date', 
+				                                             label:'出货日期'
+				                                         }){} %>
+                                        </div>                              
                                      </div>       
                                      <div class="row">  
                                          <div class="col-lg-4">
@@ -61,95 +59,77 @@
                                                              value: ''
                                                          }){}%>
                                          </div>
-	                                    <div class="col-lg-4">
-                                           <%include("/eeda/component/form/selectField.html", 
+	                                     <div class="col-lg-4">
+                                         	<%include("/eeda/component/form/selectField.html", 
                                                {   id:'type', 
                                                    label:'类型', 
                                                    value_list:[
                                                        {code:'', value:''},
-                                                       {code:'海运', value:'海运'},
-                                                       {code:'空运', value:'空运'},
-                                                       {code:'陆运', value:'陆运'},
-                                                       {code:'报关', value:'报关'},
-                                                       {code:'保险', value:'保险'},
-                                                       {code:'贸易', value:'贸易'}
+                                                       {code:'出口柜货', value:'出口柜货'},
+		                                               {code:'进口柜货', value:'进口柜货'}, 
+		                                               {code:'出口散货', value:'出口散货'},
+		                                               {code:'进口散货', value:'进口散货'},
+		                                               {code:'出口空运', value:'出口空运'},
+		                                               {code:'进口空运', value:'进口空运'},
+		                                               {code:'内贸海运', value:'内贸海运'},
+		                                               {code:'香港头程', value:'香港头程'},
+		                                               {code:'香港游', value:'香港游'},
+		                                               {code:'陆运', value:'陆运'},
+		                                               {code:'报关', value:'报关'},
+		                                               {code:'快递', value:'快递'},
+		                                               {code:'加贸', value:'加贸'},
+		                                               {code:'贸易', value:'贸易'},
+		                                               {code:'园区游', value:'园区游'}
                                                    ]
                                                }){}%>
                                          </div>
-                                         <div class="col-lg-4">
-		                                         <%include("/eeda/component/form/inputDateQueryField.html", 
-				                                         {   id:'order_export_date', 
-				                                             label:'出货日期'
-				                                         }){} %>
+	                                     <div class="col-lg-4">
+                                         	<%include("/eeda/component/form/selectField.html", 
+                                               {   id:'container_type', 
+                                                   label:'箱型（海运）', 
+                                                   value_list:[
+                                                       {code:"", value:""},
+                                                       {code:"20'GP", value:"20GP"},
+		                                               {code:"40'GP", value:"40GP"}, 
+		                                               {code:"40'HQ", value:"40HQ"},
+		                                               {code:"45'GP", value:"45GP"}
+                                                   ]
+                                               }){}%>
                                          </div>
-                                    </div>
+									</div>
                                     <div class="row">  
-	                                        <div class="col-lg-4">
-	                                         <%include("/eeda/component/form/inputField.html", 
-	                                         {   id:'cabinet_no', 
-	                                             label:'柜号', 
-	                                             value:''
-	                                         }){} %>
-	                                         </div>
-	                                         <div class="col-lg-4">
-	                                                <%include("/eeda/component/form/inputField.html", 
-	                                                         {   id: 'cabinet_type', 
-	                                                             label: '柜型', 
-	                                                             value: ''
-	                                                         }){}%>
-	                                         </div>
 	                                     <div class="col-lg-4">
 	                                           <%include("/eeda/component/form/inputField.html", 
 	                                               {   id:'mbl_no', 
 	                                                   label:'MBL号码', 
 	                                                   value:''
 	                                               }){}%>
-	                                        </div>
-                                    </div>
-                                    <div class="row">  
+                                        </div>
                                         <div class="col-lg-4">
-                                         <%include("/eeda/component/form/inputField.html", 
-                                         {   id:'declare_no', 
-                                             label:'报关单号', 
-                                             value:''
-                                         }){} %>
-                                         </div>
-                                         <div class="col-lg-4">
-                                                <%include("/eeda/component/form/inputField.html", 
-                                                         {   id: 'creator', 
-                                                             label: '创建人', 
-                                                             value: ''
-                                                         }){}%>
-                                         </div>
-	                                        <div class="col-lg-4">
-	                                                 <%include("/eeda/component/form/inputPortField.html", 
-	                                                       {   id:'pol', 
-	                                                           label:'启运港 POL', 
-	                                                           value:shipment.pol!''
-	                                                       }){}%>
-	                                         </div>                                        
-                                       </div>
-                                       <div class="row">  
-	                                         <div class="col-lg-4">
-			                                        <%include("/eeda/component/form/inputPortField.html", 
-									                       {   id:'pod', 
-									                           label:'目的港 POD', 
-									                           value:shipment.pod!''									                          
-									                       }){}%>
-									         </div>
-									         <div class="col-lg-4">
-			                                        <input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red">(红色为应付)</span>
-									         </div>
-                                       </div>
-                                       <div class="form-group button-bar" >
-		                                	<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
-		                                	<button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
+                                                 <%include("/eeda/component/form/inputPortField.html", 
+                                                       {   id:'pol', 
+                                                           label:'启运港 POL', 
+                                                           value:shipment.pol!''
+                                                       }){}%>
+                                        </div>  
+                                        <div class="col-lg-4">
+		                                        <%include("/eeda/component/form/inputPortField.html", 
+								                       {   id:'pod', 
+								                           label:'目的港 POD', 
+								                           value:shipment.pod!''									                          
+								                       }){}%>
+								        </div>
+                                    </div>
+                                    <div class="form-group button-bar" >
+	                                	<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+	                                	<button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
 		                                	
-                                      <button id="createBtn" disabled type="button" class="btn btn_green guide_target4" >创建对账单</button>
-                                      <span style="background-color:#ffff66;float:right">底色为橙色代表对账金额与合同价存在差异</span>
-		                               </div>
-                                	</form>
-                                </div>
+                                      	<button id="createBtn" disabled type="button" class="btn btn_green guide_target4" >创建对账单</button>
+                                      	<input type="checkbox" name="checkOrderAll" id="checkOrderAll" value="Y">查看应收应付<span style="color:red">(红色为应付)</span>
+                                      	<span style="background-color:#ffff66;float:right">底色为橙色代表对账金额与合同价存在差异</span>
+		                            </div>
+                                </form>
+                               </div>
 							</div>
 						</div>
 					</div>

@@ -41,6 +41,9 @@ public class DbUtils {
             	}else if(key.endsWith("_id") || key.endsWith("status") ||key.endsWith("_type")||key.endsWith("flag")){
             		condition += " and " + key + " = '" + filterValue + "' ";
             		continue;
+            	}else if(key.endsWith("_mark")){
+            		condition += " and " + key.replace("_mark", "") + " = \"" + filterValue + "\" ";
+            		continue;
             	}else if(key.endsWith("_begin_time")){
             		key = key.replaceAll("_begin_time", "");
             		Map<String, String> valueMap = dateFieldMap.get(key)==null?new HashMap<String, String>():dateFieldMap.get(key);

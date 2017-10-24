@@ -76,21 +76,21 @@ var queryOffice=function(){
             	maxlength:255
             },
             user_fax: {
-            	isFax:true
+            	phone:true
             },
             name: {
             	maxlength:20,
             	required:true
             },
             user_tel: {
-            	isTel:true
+            	phone:true
             },
             password: {
             	maxlength:16,
             	required:true
             },
             user_phone: {
-            	isMobile:true
+            	phone:true
             },
             confirm_password: {
             	maxlength:16,
@@ -113,7 +113,12 @@ var queryOffice=function(){
             element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
         }
     });
-	// 手机号码验证
+	jQuery.validator.addMethod("phone", function(value, element) {
+	    var length = value.length;
+	    var phone = /^[^\u4e00-\u9fa5]{0,}$/;
+	    return this.optional(element) || (length > 0 && phone.test(value));
+	}, "不能输入汉字请正确输入");
+	/*// 手机号码验证
 	jQuery.validator.addMethod("isMobile", function(value, element) {
 	    var length = value.length;
 	    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
@@ -130,7 +135,7 @@ var queryOffice=function(){
 	    var length = value.length;
 	    var mobile = /^\d{3,4}-\d{7,8}$/;
 	    return this.optional(element) || (length > 0 && mobile.test(value));
-	}, "请正确填写您的传真号码");
+	}, "请正确填写您的传真号码");*/
 
 var queryCustomer=function(){
 	var customers=[];

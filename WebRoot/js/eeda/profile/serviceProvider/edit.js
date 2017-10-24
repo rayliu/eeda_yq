@@ -152,7 +152,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	  isWebsite:true
               },
               fax: {
-            	  maxlength:50
+            	  isFax:true
               },
               identification_no: {
             	  maxlength:100
@@ -216,6 +216,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             var mobile = /^((1[3456789]\d{9})|(0\d{2,3}-\d{7,8}))$/;
             return this.optional(element) || (mobile.test(value));
         }, "请输入格式正确的电话或手机号码");
+        jQuery.validator.addMethod("isFax", function(value, element) {
+            var length = value.length;
+            var re = /^(0\d{2,3}-\d{7,8})$/;
+            return this.optional(element) || (re.test(value));
+        }, "请输入格式正确的传真");
         jQuery.validator.addMethod("isWebsite", function(value, element) {
             var length = value.length;
             var re = /^([a-zA-Z\d][a-zA-Z\d-_]+\.)+[a-zA-Z\d-_][^ ]*$/;

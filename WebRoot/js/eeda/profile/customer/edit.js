@@ -76,7 +76,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_d
 			  		maxlength:255
 			  	},
 			  	fax: {
-			  		maxlength:50
+			  		isFax:true
 			  	},
 			  	custom_registration: {
 			  		maxlength:255
@@ -156,6 +156,11 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_d
             var mobile = /^((1[3456789]\d{9})|(0\d{2,3}-\d{7,8}))$/;
             return this.optional(element) || (mobile.test(value));
         }, "请输入格式正确的电话或手机号码");
+        jQuery.validator.addMethod("isFax", function(value, element) {
+            var length = value.length;
+            var re = /^(0\d{2,3}-\d{7,8})$/;
+            return this.optional(element) || (re.test(value));
+        }, "请输入格式正确的传真");
         // 回显入库是否库存管理
         $("input[name='isInventoryControl']").each(function(){
             if($("#inventoryControl").val() == $(this).val()){
