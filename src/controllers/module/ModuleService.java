@@ -38,8 +38,8 @@ public class ModuleService {
             String name = (String) interfaceObj.get("name".toUpperCase());
             String type = (String) interfaceObj.get("type".toUpperCase());
             String is_distinct = (String) interfaceObj.get("is_distinct".toUpperCase());
-            String height = (String) interfaceObj.get("height".toUpperCase());
-            String width = (String) interfaceObj.get("width".toUpperCase());
+            String height = interfaceObj.get("height".toUpperCase()).toString();
+            String width = interfaceObj.get("width".toUpperCase()).toString();
             String filter_condition = (String) interfaceObj.get("filter_condition".toUpperCase());
             
             Record itemRec = new Record();
