@@ -273,6 +273,20 @@ $(document).ready(function() {
                     return field_html;
             	}
             },
+            { "data": "SWITCHING_TIME", "width": "100px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+                        data='';
+                    var field_html = template('table_date_field_template',
+	                    {
+	                        id: 'SWITCHING_TIME',
+	                        value: data,
+	                        style:'width:120px'
+	                    }
+	                );
+                    return field_html;
+            	}
+            },
             { "data": "LOADING_WHARF1", "width": "100px", "className":"consigner_addr",
                 "render": function ( data, type, full, meta ) {
                     if(!data)

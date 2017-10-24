@@ -1,4 +1,4 @@
-﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './costEdit_select_item', './edit_doc_table','dataTablesBootstrap', 
+﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './costEdit_select_item', './edit_doc_table', './invoice_item','dataTablesBootstrap', 
         'validate_cn', 'sco', 'pageguide'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
 	tl.pg.init({
@@ -93,6 +93,8 @@ $(document).ready(function() {
 			}
 		}
 		var order = buildOrder();
+		//发票明细
+		order.InvoiceItem_list = itemOrder.buildInvoiceItem();
 		$("#saveBtn").attr("disabled", true);
 		$.get('/costRequest/save',{params:JSON.stringify(order)}, function(data){
 			$("#saveBtn").attr("disabled", false);

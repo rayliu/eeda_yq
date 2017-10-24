@@ -291,6 +291,9 @@
 							<li class="active">
                                 <a href="#item_list" data-toggle="tab" id="costCheckOrderSelectItem">单据明细</a>
                             </li>
+                            <li>
+                                    <a href="#invoice_list" data-toggle="tab">发票明细</a>
+                            </li>
 							<li >
 								<a href="#upload" data-toggle="tab" data-src="create" id="costCheckOrderbasic">发票图片上传</a>
 							</li>
@@ -356,6 +359,9 @@
 		                   </div>
 		                   <div class="tab-pane fade active in" id="item_list">
                                 <%include("/oms/CostRequest/costEdit_select_item.html", {}){} %>
+                            </div>
+                            <div class="tab-pane fade" id="invoice_list">
+                                    <%include("/oms/CostRequest/invoice_item.html", {}){} %>
                             </div>
 
 		                   <div class="tab-pane fade" id="upload">
@@ -463,7 +469,10 @@
 
 <%}%>
 
+<%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
 <%include("/oms/CostRequest/edit_guide.html",{}){} %>
+
 <script>
     var itemOrder = {};
     requirejs(['/js/eeda/eeda-common.js'], function (common) {

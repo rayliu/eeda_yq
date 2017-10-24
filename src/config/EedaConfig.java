@@ -83,7 +83,6 @@ import models.eeda.oms.bookOrder.BookOrderShipmentHead;
 import models.eeda.oms.bookOrder.BookOrderShipmentItem;
 import models.eeda.oms.bookOrder.BookingOrder;
 import models.eeda.oms.bookOrder.BookingOrderDoc;
-import models.eeda.oms.jobOrder.ChargeRequestInvoices;
 import models.eeda.oms.jobOrder.JobOrder;
 import models.eeda.oms.jobOrder.JobOrderAir;
 import models.eeda.oms.jobOrder.JobOrderAirCargoDesc;
@@ -100,6 +99,7 @@ import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentHead;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
+import models.eeda.oms.jobOrder.RequestInvoices;
 import models.eeda.oms.lclOrder.LclOrder;
 import models.eeda.oms.truckOrder.TruckOrder;
 import models.eeda.oms.truckOrder.TruckOrderArap;
@@ -582,7 +582,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("job_order_ocean_template", JobOrderOceanTemplate.class);
         arp.addMapping("job_order_sendmail_template", JobOrderSendMailTemplate.class);
         arp.addMapping("job_order_express", JobOrderExpress.class);
-        arp.addMapping("charge_request_invoices", ChargeRequestInvoices.class);
+        arp.addMapping("request_invoices", RequestInvoices.class);
         arp.addMapping("lcl_order", LclOrder.class);
         
         //booking

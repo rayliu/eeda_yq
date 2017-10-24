@@ -103,6 +103,10 @@
 									<div class="form-group">      
 		                     			<%include("/eeda/component/form/dateInputField.html", {id:'service_stamp', label:'业务发生月', value:''}){} %>
 									</div>
+									<div class="form-group">
+										<label class="search-label">发票号</label>
+										<input type="text" class="form-control search-control applicationOrderNo" id="invoices_no" value="">
+									</div>
 								</div>
 								<div class="col-lg-4">
 									<div class="form-group">      
@@ -177,6 +181,7 @@
                                     '申请付款(JPY)',
                                     '申请付款(HKD)',
                                     '付款备注',
+                                    '发票号',
                                     '操作',
                                     '申请单号',
                                     '业务单号',
@@ -208,6 +213,7 @@
                                     '申请付款(JPY)',
                                     '申请付款(HKD)',
                                     '付款备注',
+                                    '发票号',
                                     '业务单号',
                                     '操作',
                                     '申请单号',

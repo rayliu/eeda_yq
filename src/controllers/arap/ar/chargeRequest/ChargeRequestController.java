@@ -21,8 +21,8 @@ import models.ChargeApplicationOrderRel;
 import models.Office;
 import models.Party;
 import models.UserLogin;
-import models.eeda.oms.jobOrder.ChargeRequestInvoices;
 import models.eeda.oms.jobOrder.JobOrderArap;
+import models.eeda.oms.jobOrder.RequestInvoices;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -324,9 +324,9 @@ public class ChargeRequestController extends Controller {
         		+ " '申请单' order_type,aco.order_no charge_order_no,u.c_name"
         		+ " ,EXISTS (SELECT	joa.order_type FROM job_order_arap joa "
         		+ " LEFT JOIN charge_application_order_rel caor ON caor.job_order_arap_id = joa.id"
-        		+ " WHERE	caor.application_order_id = acao.id	AND joa.order_type = 'cost' ) hedge_flag,"
-        		+ " (SELECT GROUP_CONCAT(cri.invoice_no SEPARATOR '<br>') FROM charge_request_invoices cri "
-        		+ " LEFT JOIN arap_charge_application_order acao_1 ON acao_1.id = cri.order_id WHERE cri.order_id = acao.id ) invoices_no"
+        		+ " WHERE	caor.application_order_id = acao.id	AND joa.order_type = 'cost' ) hedge_flag,"        		
+        		+ " (SELECT GROUP_CONCAT(cri.invoice_no SEPARATOR '<br>') FROM request_invoices cri "
+        		+ " LEFT JOIN arap_charge_application_order acao_1 ON acao_1.id = cri.order_id WHERE order_type='chargeRequest' and cri.order_id = acao.id ) invoices_no"
 				+ " from arap_charge_application_order acao "
 				+ " left join charge_application_order_rel caor on caor.application_order_id = acao.id "
 				+ " left join arap_charge_order aco on aco.id = caor.charge_order_id"
@@ -568,7 +568,7 @@ public class ChargeRequestController extends Controller {
 		String dateString = formatter.format(date);
 		if(InvoiceItem_list!=null){
 			for (Map<String, String> rowMap : InvoiceItem_list) {//获取每一行
-	    		Model<?> model = (Model<?>) ChargeRequestInvoices.class.newInstance();
+	    		Model<?> model = (Model<?>) RequestInvoices.class.newInstance();
 	    		
 	    		String rowId = rowMap.get("id");
 	    		String action = rowMap.get("action");
@@ -576,6 +576,7 @@ public class ChargeRequestController extends Controller {
 	    			if(!"DELETE".equals(action)){
 	    				DbUtils.setModelValues(rowMap, model);
 		    			model.set("order_id", id);
+		    			model.set("order_type", "chargeRequest");
 		    			model.set("creator", userId);
 		    			model.set("create_stamp", dateString);
 		    			model.save();	
@@ -666,10 +667,10 @@ public class ChargeRequestController extends Controller {
         }
 		List<Record> Account = Db.find("select * from fin_account where bank_name != '现金'");
 		setAttr("accountList", Account);
-		String sql1 = "select cri.*,ul.id creator,ul.c_name creator_name,c.id currency_id,c.name currency_name from charge_request_invoices cri "
+		String sql1 = "select cri.*,ul.id creator,ul.c_name creator_name,c.id currency_id,c.name currency_name from request_invoices cri "
 				+ "	left join user_login ul on ul.id =cri.creator"
 				+ " left join currency c on c.id =cri.currency_id"
-				+ " where order_id="+id;
+				+ " where order_type='chargeRequest' and order_id="+id;
 		List<Record> invoice_list = Db.find(sql1);
 		setAttr("invoice_list", invoice_list);
 		

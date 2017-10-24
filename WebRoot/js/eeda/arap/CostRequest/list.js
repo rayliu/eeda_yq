@@ -137,6 +137,7 @@ $(document).ready(function() {
             	}
             },
             {"data":"PAY_REMARK"},
+            {"data":"INVOICES_NO"},
             { "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     var str="<nobr>";
@@ -300,6 +301,7 @@ $(document).ready(function() {
                 }
             },
             {"data":"PAY_REMARK"},
+            {"data":"INVOICES_NO"},
             { "width": "100px",
                 "render": function ( data, type, full, meta ) {
                     var str="<nobr>";
@@ -536,6 +538,7 @@ $(document).ready(function() {
 //            }
           var status2 = $('#status2').val().trim();
           var fee_type = $('#fee_type').val();
+          var invoices_no = $('#invoices_no').val();
           
           var service_stamp = $('#service_stamp').val();
           
@@ -555,6 +558,7 @@ $(document).ready(function() {
             +"&application_order_no="+applicationOrderNo
             +"&status="+status2
             +"&fee_type="+fee_type
+            +"&invoices_no_like="+invoices_no
             
             +"&service_stamp_between="+service_stamp
 
