@@ -90,7 +90,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
         var order_id = $("#order_id").val();
          if(order_id==""){
                 $('#saveBtn').attr('disabled', false);
-                
+                $('#query_listCurrency').prop('disabled',true);
             }else{
                 if(status=='新建'){
                     $('#saveBtn').attr('disabled', false);
@@ -101,6 +101,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                     $('.delete').attr("disabled",true);
                 }
                 $('#printBtn').attr('disabled', false);
+                $('#query_listCurrency').prop('disabled',false);
             }
         
         $('#confirmBtn').click(function(){

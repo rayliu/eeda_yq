@@ -126,6 +126,8 @@ $(document).ready(function() {
     var status = $("#status").val()
     if(order_id==""){
     	$('#saveBtn').attr('disabled', false);
+    	$('#add_charge').prop('disabled',true);
+    	$('#query_listCurrency').prop('disabled',true);
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
@@ -133,6 +135,8 @@ $(document).ready(function() {
     	}
     	$('#printTotaledBtn').attr('disabled', false);
 		$('#printBtn').attr('disabled', false); 
+		$('#add_charge').prop('disabled',false);
+		$('#query_listCurrency').prop('disabled',false);
     }
     
     //确认单据
