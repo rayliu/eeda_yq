@@ -28,7 +28,7 @@ public class AppCategoryController extends Controller {
     	String conditions = getRequest().getHeader("conditions");
     	
     	//商家列表
-    	List<Record> shopList = Db.find(" select wc.c_name company_name,ctg.name category_name from user_login ul"
+    	List<Record> shopList = Db.find(" select cast(ul.id as char) user_id, wc.c_name company_name,ctg.name category_name from user_login ul"
     			+ " left join wc_company wc on wc.creator = ul.id"
     			+ " left join category ctg on ctg.id = wc.trade_type"
     			+ " where ctg.name = '婚纱'");
