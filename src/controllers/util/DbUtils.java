@@ -42,7 +42,7 @@ public class DbUtils {
             		condition += " and " + key + " = '" + filterValue + "' ";
             		continue;
             	}else if(key.endsWith("_mark")){
-            		condition += " and " + key.replace("_mark", "") + " = \"" + filterValue + "\" ";
+            		condition += " and " + key.replace("_mark", "") + " like \"%" + filterValue + "%\" ";
             		continue;
             	}else if(key.endsWith("_begin_time")){
             		key = key.replaceAll("_begin_time", "");

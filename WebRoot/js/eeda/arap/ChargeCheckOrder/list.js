@@ -375,7 +375,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
                +"&type_equals="+type
                +"&order_export_date_end_time="+order_export_date_end_time
                +"&order_export_date_begin_time="+order_export_date_begin_time
-	           +"&container_type_mark="+container_type
+	           +"&container_amount_mark="+container_type
 	           +"&pol_equals="+pol
 	           +"&pod_equals="+pod
 	           +"&mbl_no="+mbl_no;

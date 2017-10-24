@@ -377,10 +377,10 @@ public class CostCheckOrderController extends Controller {
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
         	sql = "select * from(  "
-        			+ " select if(joa.contract_amount != joa.total_amount and joa.cus_contract_flag = 'Y','Y','N') diff_flag,joa.order_type sql_type, joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-              		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
+        			+ " select if(joa.contract_amount != joa.total_amount and joa.cus_contract_flag = 'Y','Y','N') diff_flag,joa.order_type sql_type, joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+              		+ " jo.id jobid,jo.type,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
               		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
-              		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+              		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount,GROUP_CONCAT(jos.pol) pol,GROUP_CONCAT(jos.pod) pod, "
               		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type ,ifnull(joa.exchange_rate,1) exchange_rate,"
               		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
               		+ " ) after_total,"
@@ -406,10 +406,10 @@ public class CostCheckOrderController extends Controller {
        	 
        	}else{
 	         sql = "select * from(  "
-	         		+ " select if(joa.contract_amount != joa.total_amount and joa.cus_contract_flag = 'Y','Y','N') diff_flag,joa.id,joa.type,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
-	         		+ " jo.id jobid,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
+	         		+ " select if(joa.contract_amount != joa.total_amount and joa.cus_contract_flag = 'Y','Y','N') diff_flag,joa.id,joa.sp_id,ifnull(joa.total_amount,0) total_amount,ifnull(joa.currency_total_amount,0) currency_total_amount,"
+	         		+ " jo.id jobid,jo.type,jo.order_no,jo.create_stamp,jo.order_export_date, jo.customer_id,jo.volume,jo.net_weight,jo.ref_no, "
 	         		+ " p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,jos.hbl_no,l.name fnd,joai.destination, "
-	         		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount, "
+	         		+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount,GROUP_CONCAT(jos.pol) pol,GROUP_CONCAT(jos.pod) pod, "
 	         		+ " ifnull(cur.name,'CNY') currency_name,joli.truck_type,ifnull(joa.exchange_rate, 1) exchange_rate,"
 	         		+ " ( ifnull(joa.total_amount, 0) * ifnull(joa.exchange_rate, 1)"
 	         		+ " ) after_total ,ifnull(f.name,f.name_eng) fee_name,cur1.name exchange_currency_name,joa.exchange_currency_rate,joa.exchange_total_amount"

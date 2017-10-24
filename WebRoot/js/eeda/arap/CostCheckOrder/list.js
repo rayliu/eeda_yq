@@ -173,7 +173,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	     		 checked = 'Y';
 	     	 }
     	  
-          var order_no = $.trim($("#order_no").val()); 
+          var order_no = $.trim($("#order_no").val());
+          var container_type = $.trim($("#container_type").val());
+          var mbl_no = $.trim($("#mbl_no").val());
+          var pol = $.trim($("#pol").val());
+          var pod = $.trim($("#pod").val());
           var customer = $("#customer").val(); 
           var customer_input = $("#customer_input").val().trim(); 
           var sp = $("#sp").val();
@@ -184,8 +188,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               return;
           }
           var type = $("#type").val(); 
-          var start_date = $("#create_stamp_begin_time").val();
-          var end_date = $("#create_stamp_end_time").val();
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
           
@@ -203,8 +205,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			           +"&sp_id="+sp
 			           +"&sp_name_like="+sp_input
 			           +"&type_equals="+type
-		               +"&create_stamp_begin_time="+start_date
-		               +"&create_stamp_end_time="+end_date
+		               +"&container_amount_mark="+container_type
+		               +"&mbl_no="+mbl_no
+		               +"&pol_equals="+pol
+		               +"&pod_equals="+pod
 		               +"&order_export_date_begin_time="+order_export_date_begin_time
 		               +"&order_export_date_end_time="+order_export_date_end_time;
 
