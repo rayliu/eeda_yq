@@ -20,7 +20,7 @@ define(['jquery', 'sco', '../btns'], function ($, sco, btnCont) {
                 render: function ( data, type, full, meta ) {
                     if(!data)
                         data='';
-                    return '<button class="btn btn-xs" name="table_delete_row_btn" ><i class="fa fa-trash-o"></i></button> '
+                    return '<button class="btn btn-xs" name="table_delete_row_btn" ><i class="Hui-iconfont">&#xe6e2;</i></button> '
                         +'<input type="hidden" name="id" value="'+data+'" class="form-control"/>';
                 }
             };
@@ -47,7 +47,7 @@ define(['jquery', 'sco', '../btns'], function ($, sco, btnCont) {
                         if(field.FIELD_TYPE == '字段引用'){
                             str+= " target_form='"+field.REF.TARGET_FORM_ID+"' target_field_name='"+field.REF.TARGET_FIELD_NAME+"'"
                         }
-                        return str+' class="form-control" style="width: 100%;"/>'
+                        return str+' class="input-text" style="width: 100%;"/>'
                             +"<ul name='"+field.FIELD_NAME+"_list' class='pull-right dropdown-menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;'>";;    
                     }
                  }
@@ -60,7 +60,9 @@ define(['jquery', 'sco', '../btns'], function ($, sco, btnCont) {
                 columns: cols,
                 initComplete: function(settings) {
                     //等table 初始完成后, 才执行 查数据的动作
-                    getDataFunc();
+                    if(getDataFunc){
+                        getDataFunc();
+                    }
                 }
             });
         });
