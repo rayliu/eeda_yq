@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="INVOICE_ENG" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="213"/>
+	<property name="ireport.y" value="246"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -574,21 +574,21 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				<text><![CDATA[AUTHORISED SIGNATURE:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="13" y="20" width="153" height="20" uuid="334d80bd-19f8-47bb-8e07-73aeaf063fb0"/>
+				<reportElement x="13" y="20" width="292" height="20" uuid="334d80bd-19f8-47bb-8e07-73aeaf063fb0"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bankName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="13" y="40" width="153" height="20" uuid="6a74722e-97f8-4ef6-9ec1-906890ba4451"/>
+				<reportElement x="13" y="40" width="292" height="20" uuid="6a74722e-97f8-4ef6-9ec1-906890ba4451"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{accountName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="13" y="59" width="153" height="49" uuid="3a59bb24-25b2-46f6-bd61-bfa2da7448af"/>
+				<reportElement x="13" y="59" width="292" height="49" uuid="3a59bb24-25b2-46f6-bd61-bfa2da7448af"/>
 				<textFieldExpression><![CDATA[$F{accountNo}]]></textFieldExpression>
 			</textField>
 		</band>

@@ -44,7 +44,8 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
               || url.indexOf('/dockInfo/searchLoading')!=-1
               || url.indexOf('/serviceProvider/searchChargeUnit')!=-1
               || url.indexOf('/dockInfo/searchDock')!=-1
-              || url.indexOf('/carInfo/search')!=-1
+              || url.indexOf('/carInfo/search')!=-1 
+              || url.indexOf('/trJobOrder/searchCommodity')!=-1 
           ){
             return;
           }
@@ -496,12 +497,13 @@ eeda.refreshUrl = refreshUrl;
       //处理中文输入法, 没完成前不触发查询
       var cpLock = false;
       var isEmpty = 0;
+      
       $('#'+table_id+' input[name='+el_name+'_input]').on('compositionstart', function () {
           cpLock = true;
       }).on('compositionend', function () {
           cpLock = false;
       });
-      
+      	  $('#'+table_id+' input[name='+el_name+'_input]').off("keyup click");
 		  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
 			  var me = this;
 			  var inputField = $(this);
@@ -670,6 +672,7 @@ eeda.refreshUrl = refreshUrl;
 		  
 	  eeda.bindTableFieldCurrencyId = function(table_id, el_name,url,para) {
 		  var tableFieldList = $('#table_currency_input_field_list');
+		  $('#'+table_id+' input[name='+el_name+'_input]').off('keyup click');
 		  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
 			  
 			  var me = this;
@@ -943,9 +946,10 @@ eeda.refreshUrl = refreshUrl;
       	return curDateTime; 
 	};
 
-    eeda.bindTableFieldTruckOut = function(talbe_id, el_name) {
+    eeda.bindTableFieldTruckOut = function(table_id, el_name) {
           var tableFieldList = $('#table_truck_out_input_field_list');
-          $('#'+talbe_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
+          $('#'+table_id+' input[name='+el_name+'_input]').off('keyup click');
+          $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
               var me = this;
               var inputField = $(this);
               var hiddenField = $(this).parent().find('input[name='+el_name+']');
@@ -1051,9 +1055,10 @@ eeda.refreshUrl = refreshUrl;
           }).find('li').first().focus();
       };
 
-    eeda.bindTableFieldTruckIn = function(talbe_id, el_name) {
+    eeda.bindTableFieldTruckIn = function(table_id, el_name) {
           var tableFieldList = $('#table_truck_in_input_field_list');
-          $('#'+talbe_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
+          $('#'+table_id+' input[name='+el_name+'_input]').off("keyup click");
+          $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
               var me = this;
               var inputField = $(this);
               var hiddenField = $(this).parent().find('input[name='+el_name+']');
@@ -1161,12 +1166,12 @@ eeda.refreshUrl = refreshUrl;
       };
       
 
-      eeda.bindTableFieldCarInfo = function(talbe_id, el_name) {
+      eeda.bindTableFieldCarInfo = function(table_id, el_name) {
           var tableFieldList = $('#table_car_no_field_list');
-          $('#'+talbe_id+' input[name='+el_name+'_input]').off("keyup click"); 
-          $('#'+talbe_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
+          $('#'+table_id+' input[name='+el_name+'_input]').off("keyup click"); 
+          $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
               var me = this;
-              amongK=$('#'+talbe_id+' tr').index(this); 
+              amongK=$('#'+table_id+' tr').index(this); 
               var inputField = $(this);
               var hiddenField = $(this).parent().find('input[name='+el_name+']');
               var inputStr = inputField.val();
@@ -1289,7 +1294,7 @@ eeda.refreshUrl = refreshUrl;
           }).find('li').first().focus();
       };
       
-      eeda.bindTableLocationField = function(talbe_id, el_name) {
+      eeda.bindTableLocationField = function(table_id, el_name) {
     	  var spList = $('#input_location_field_list');
            var area_list_title = $("#input_location_field_list .area-list-title");
            var spListContent =$("#input_location_field_list .area-list-content");
@@ -1322,8 +1327,8 @@ eeda.refreshUrl = refreshUrl;
                
              },'json');
            };
-             
-           $('#'+talbe_id+' input[name='+el_name+'_INPUT]').on(' click', function(){
+           $('#'+table_id+' input[name='+el_name+'_INPUT]').off("click");
+           $('#'+table_id+' input[name='+el_name+'_INPUT]').on(' click', function(){
                var me = this;
                var inputField = $(this);
                var hiddenField = $(this).parent().find('input[name='+el_name+']');
@@ -1390,9 +1395,10 @@ eeda.refreshUrl = refreshUrl;
 
       };
       
-      eeda.bindTableFieldDockInfo = function(talbe_id, el_name) {
+      eeda.bindTableFieldDockInfo = function(table_id, el_name) {
           var tableFieldList = $('#table_dock_no_field_list');
-          $('#'+talbe_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
+          $('#'+table_id+' input[name='+el_name+'_input]').off('keyup click');
+          $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
               var me = this;
               var inputField = $(this);
               var hiddenField = $(this).parent().find('input[name='+el_name+']');
@@ -1502,9 +1508,10 @@ eeda.refreshUrl = refreshUrl;
       };
       
       
-      eeda.bindTableFieldTradeItem = function(talbe_id, el_name,url) {
+      eeda.bindTableFieldTradeItem = function(table_id, el_name,url) {
           var tableFieldList = $('#table_trade_item_input_field_list');
-          $('#'+talbe_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
+          $('#'+table_id+' input[name='+el_name+'_input]').off('keyup click');
+          $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
               var me = this;
               var inputField = $(this);
               var hiddenField = $(this).parent().find('input[name='+el_name+']');
@@ -1638,6 +1645,7 @@ eeda.refreshUrl = refreshUrl;
       
       eeda.bindTableFieldChargeId = function(table_id, el_name,url,para) {
 		  var tableFieldList = $('#table_fin_item_field_list');
+		  $('#'+table_id+' input[name='+el_name+'_input]').off('keyup click');
 		  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
 			  
 			  var me = this;
@@ -1822,12 +1830,13 @@ eeda.refreshUrl = refreshUrl;
 
 	      //处理中文输入法, 没完成前不触发查询
 	      var cpLock = false;
+	      
 	      $('#'+table_id+' input[name='+el_name+'_input]').on('compositionstart', function () {
 	          cpLock = true;
 	      }).on('compositionend', function () {
 	          cpLock = false;
 	      });
-
+	      	  $('#'+table_id+' input[name='+el_name+'_input]').off('keyup click');
 			  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
 
 				  var me = this;

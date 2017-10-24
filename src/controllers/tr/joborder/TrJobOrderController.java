@@ -1385,7 +1385,15 @@ public class TrJobOrderController extends Controller {
     	setAttr("order", jobOrder);
     	
     	//获取汇率日期信息
-    	Record r = Db.findFirst("SELECT * from ( SELECT min(to_stamp) min_stamp FROM currency_rate WHERE office_id = "+office_id+") A WHERE min_stamp > now()");
+    	String sql = "SELECT to_stamp FROM currency_rate"
+        		+ " WHERE"
+        		+ " office_id ="+office_id+" and "
+        		+ " to_stamp IN ("
+        		+ "SELECT max(to_stamp) as to_stamp FROM"
+        		+ " currency_rate  GROUP BY office_id HAVING MAX(to_stamp) > now() )";
+    	//获取汇率日期信息
+    	Record r = Db.findFirst(sql);
+    
     	if(r==null){
     		setAttr("rateExpired", "Y");
     	}

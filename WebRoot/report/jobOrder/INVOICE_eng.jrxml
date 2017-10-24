@@ -525,21 +525,21 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				<text><![CDATA[ACCOUNT INFORMATION:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="20" width="153" height="20" uuid="5e66b774-6428-49fe-84e0-5203dca90539"/>
+				<reportElement x="10" y="20" width="319" height="20" uuid="5e66b774-6428-49fe-84e0-5203dca90539"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bankName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="40" width="153" height="20" uuid="92c757c9-cdb1-4d0b-a622-c78ec4f11198"/>
+				<reportElement x="10" y="40" width="319" height="20" uuid="92c757c9-cdb1-4d0b-a622-c78ec4f11198"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{accountName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="59" width="153" height="49" uuid="e973f740-dd82-436f-9fbf-4704b5c45f8e"/>
+				<reportElement x="10" y="59" width="319" height="49" uuid="e973f740-dd82-436f-9fbf-4704b5c45f8e"/>
 				<textFieldExpression><![CDATA[$F{accountNo}]]></textFieldExpression>
 			</textField>
 		</band>

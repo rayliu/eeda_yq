@@ -321,9 +321,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
 			}
 		});
 		
-		$('#createBtn').click(function(){
+		$('#createBtn').on('click',function(){
 			$('#createBtn').attr('disabled',true);
-			
         	$('#idsArray').val(itemIds);
         	$('#billForm').submit();
         });

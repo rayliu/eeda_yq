@@ -633,21 +633,21 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="13" y="16" width="237" height="15" uuid="fd8a4255-a0aa-4347-a223-e86a4fe22a7c"/>
+				<reportElement x="13" y="16" width="289" height="15" uuid="fd8a4255-a0aa-4347-a223-e86a4fe22a7c"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{bankName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="13" y="31" width="237" height="15" uuid="5eb72536-5a71-44e7-b59a-44f8e96f8aeb"/>
+				<reportElement x="13" y="31" width="289" height="15" uuid="5eb72536-5a71-44e7-b59a-44f8e96f8aeb"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{accountName}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="13" y="46" width="237" height="63" uuid="ab171974-5b25-4912-88b6-3d3c54aadc6f"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="13" y="46" width="289" height="63" uuid="ab171974-5b25-4912-88b6-3d3c54aadc6f"/>
 				<textFieldExpression><![CDATA[$F{accountNo}]]></textFieldExpression>
 			</textField>
 		</band>

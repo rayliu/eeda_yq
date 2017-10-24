@@ -536,7 +536,9 @@ public class ChargeCheckOrderController extends Controller {
 		String exchange_usd_totalAmount = getPara("exchange_usd_totalAmount");
 		String exchange_hkd_totalAmount = getPara("exchange_hkd_totalAmount");
 		String exchange_jpy_totalAmount = getPara("exchange_jpy_totalAmount");
-		
+		if(StringUtils.isEmpty(ids)){
+			return;
+		}
 		String sql = "SELECT cur.name currency_name ,joa.exchange_rate ,p.phone,p.abbr company_abbr,p.contact_person,p.address,p.company_name,joa.sp_id,joa.order_id"
 				+ " FROM job_order_arap joa"
 				+ " LEFT JOIN currency cur on cur.id = joa.currency_id"
@@ -544,6 +546,7 @@ public class ChargeCheckOrderController extends Controller {
 				+ " WHERE joa.id in("+ ids +")"
 				+ " group by joa.order_id";
 		Record rec =Db.findFirst(sql);
+		
 		rec.set("total_amount", total_amount);
 		//对账
 		rec.set("jpy_duizhang", jpy_totalAmount);

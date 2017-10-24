@@ -72,7 +72,7 @@
 	jo.volume,
 	jo.net_weight,
 	jo.type,
-	p.abbr sp_name,
+	p.company_name sp_name,
 	p1.abbr customer_name,
 	p.contact_person,
   p.phone phone,
