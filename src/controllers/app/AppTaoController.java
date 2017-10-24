@@ -36,7 +36,9 @@ public class AppTaoController extends Controller {
     			+ " `wc_ad_banner_photo`; ");
     	//横幅广告
     	List<Record> cuList = Db.find(" select "
-    			+ " wcu.id ,cgr.`name` trade_type,com.c_name compnay_name,wcu.begin_date,wcu.end_date,wcu.title,wcu.content"
+    			+ " cast(wcu.id as char) id ,cgr.`name` trade_type,"
+    			+ " com.c_name compnay_name,wcu.begin_date,wcu.end_date,wcu.title,wcu.content,"
+    			+ " cast(wcu.creator as char) user_id"
     			+ " from wc_ad_cu wcu "
     			+ " LEFT JOIN wc_company com on com.creator = wcu.creator"
     			+ " LEFT JOIN category cgr on cgr.id = com.trade_type");
