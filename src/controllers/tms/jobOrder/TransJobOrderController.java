@@ -1222,7 +1222,7 @@ public class TransJobOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String condition = "";
-        String company_name = (String) dto.get("customer_name_equals");
+        String company_name = (String) dto.get("customer_name_like");
     	Map<String, Map<String, String>> dateFieldMap = new HashMap<String, Map<String, String>>();
     	if(StringUtils.isNotEmpty(jsonStr)){
         for (Entry<String, ?> entry : dto.entrySet()) {
@@ -1235,6 +1235,9 @@ public class TransJobOrderController extends Controller {
             		continue;
             	}else if(key.endsWith("_id")){
             		condition += " and " + key.replace("", "") + " = '" + filterValue + "' ";
+            		continue;
+            	}else if(key.endsWith("_like")){
+            		condition += " and " + key.replace("_like", "") + " like '%" + filterValue + "%' ";
             		continue;
             	}else if(key.endsWith("_begin_time")){
             		key = key.replaceAll("_begin_time", "");
