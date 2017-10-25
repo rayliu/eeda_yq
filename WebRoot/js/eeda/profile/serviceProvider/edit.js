@@ -253,7 +253,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           
     	 $("#save").attr("disabled",false);
     	 var order={};
-    	 order.acount_json =itemOrder.buildCargoDetail();
+    	 order.acount_json =itemOrder.buildAccountDetail();
     	 order.contacts_json =itemOrder.buildContactsDetail();
     	 order.cars_json =itemOrder.buildCarsDetail();
     	 order.dock_Item=itemOrder.buildDockItem();

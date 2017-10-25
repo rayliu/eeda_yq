@@ -4,23 +4,23 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    var deletedTableIds=[];
 
 	    //删除一行
-	    $("#cargo_table").on('click', '.delete', function(e){
+	    $("#account_table").on('click', '.delete', function(e){
 	        e.preventDefault();
 	        var tr = $(this).parent().parent();
 	        deletedTableIds.push(tr.attr('id'));
 	        
-	        cargoTable.row(tr).remove().draw();
+	        accountTable.row(tr).remove().draw();
 	    }); 
 	    
 	    //构造函数，获得json
-	    itemOrder.buildCargoDetail=function(){
-	    	var cargo_table_rows = $("#cargo_table tr");
+	    itemOrder.buildAccountDetail=function(){
+	    	var account_table_rows = $("#account_table tr");
 	        var cargo_items_array=[];
-	        for(var index=0; index<cargo_table_rows.length; index++){
+	        for(var index=0; index<account_table_rows.length; index++){
 	            if(index==0)
 	                continue;
 
-	            var row = cargo_table_rows[index];
+	            var row = account_table_rows[index];
 	            var empty = $(row).find('.dataTables_empty').text();
 	            if(empty)
 	            	continue;
@@ -59,8 +59,8 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    
 
 	    //------------事件处理
-	    var cargoTable = eeda.dt({
-            id: 'cargo_table',
+	    var accountTable = eeda.dt({
+            id: 'account_table',
             autoWidth: false,
             "drawCallback": function( settings ) {
 		        
@@ -104,19 +104,19 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    
 
 
-	    $('#add_cargo').on('click', function(){
+	    $('#add_account').on('click', function(){
 	        var item={};
-	        cargoTable.row.add(item).draw(true);
+	        accountTable.row.add(item).draw(true);
 	    });
 	    
 	    //刷新明细表
 	    itemOrder.refleshTable = function(order_id){
 	    	var url = "/serviceProvider/tableList?order_id="+order_id;
-	    	cargoTable.ajax.url(url).load();
+	    	accountTable.ajax.url(url).load();
 	    }
 	   
 	    //校验
-        $('#cargo_table').on('blur','[name=ACCOUNT_NAME],[name=BANK_NAME],[name=ACCOUNT_NO],[name=REMARK]',function(){
+        $('#account_table').on('blur','[name=ACCOUNT_NAME],[name=BANK_NAME],[name=ACCOUNT_NO],[name=REMARK]',function(){
         	var data = $(this).val();
         	var name = $(this).attr("name");
         	var len = $.trim(data).length;
@@ -135,7 +135,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         		}
         	}
         });
-        $('#cargo_table').on('focus','[name=ACCOUNT_NAME],[name=BANK_NAME],[name=ACCOUNT_NO],[name=REMARK]',function(){
+        $('#account_table').on('focus','[name=ACCOUNT_NAME],[name=BANK_NAME],[name=ACCOUNT_NO],[name=REMARK]',function(){
         	$(this).parent().find("span").remove();
         });
 	});
