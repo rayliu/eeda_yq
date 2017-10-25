@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -47,7 +46,7 @@
 
     <div id="wrapper">
 
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <nav id="headDiv" class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -103,8 +102,12 @@
                     </a>
                 </div>
             </ul>
-
         </nav>
+        <div style="text-align:center;">
+        	<span id="headShow" style="position: absolute;background-color:yellor; margin-top:5px;z-index:1;color:white;cursor: pointer;">
+        	隐藏头部</span>
+        	
+        </div>
         <!-- /.navbar-static-top -->
 
         <nav  id='left_side_bar' class="navbar-default navbar-static-side" role="navigation">
@@ -189,5 +192,38 @@
 
   
 </body>
+<script>
+$(document).ready(function() {
+	$('#headShow').on('click',function(){
+		var value= $('#headShow').text();
+		if(value == '隐藏头部'){
+			if(!!window.localStorage){
+				localStorage.setItem("headDiv","hide");
+			}
+			$('#headShow').text("显示头部")
+			$('#headDiv').hide();
+		}else{
+			if(!!window.localStorage){
+				localStorage.setItem("headDiv","show");
+			}
+			$('#headShow').text("隐藏头部")
+			$('#headDiv').show();
+		}
+	});
+	
+	var headDiv = ';'
+	if(!!window.localStorage){
+	 	headDiv = localStorage.getItem('headDiv');
+	}
 
+	if(headDiv == 'hide'){
+		$('#headShow').text("显示头部")
+		$('#headDiv').hide();
+	}else if(headDiv == 'show'){
+		$('#headShow').text("隐藏头部")
+		$('#headDiv').show();
+	}
+})
+</script>
 </html>
+
