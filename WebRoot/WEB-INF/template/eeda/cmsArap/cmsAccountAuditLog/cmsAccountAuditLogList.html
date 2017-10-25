@@ -60,12 +60,20 @@
 					                                               <%}%>
 					                                           </select>
 			                                                 </div>
-			                                                <div class="col-lg-4 form-group">
-			                                                    <div id="datetimepicker3" class="input-append date ">
-			                                                        <label class="search-label">开始日期</label>
-			                                                        <input id="beginTime" class="form-control search-control  beginTime" type="text">
-			                                                        <span class="add-on"> <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+			                                                <div class="col-lg-4">
+			                                                    <div class="form-group">
+			                                                        <span id="datetimepicker3">
+				                                                        <label class="search-label">结算日期</label>
+				                                                        <input id="beginTime" class="form-control search-control date" type="text">
+				                                                        <span class="add-on"> <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+				                                                        </span>
 			                                                        </span>
+			                                                        ~
+			                                                        <span id="datetimepicker2">
+				                                                        <input id="endTime" class="form-control search-control date" type="text"/>
+				                                                        <span class="add-on"> <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+				                                                        </span>
+			                                                    	</span>
 			                                                    </div>
 			                                                </div>
 			                                            	<div class="col-lg-4 form-group">
@@ -74,14 +82,6 @@
 			                                                </div>
 			                                            </div>
 			                                            <div class="row">
-			                                            	<div class="col-lg-4 form-group">
-			                                                    <span id="datetimepicker2" class="input-append date search-control ">
-			                                                        <label class="search-label">结束日期</label>
-			                                                        <input id="endTime" class="form-control search-control endTime" type="text"/>
-			                                                        <span class="add-on"> <i class="fa fa-calendar" data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-			                                                        </span>
-			                                                    </span>
-			                                                </div>
 			                                            	<div class="col-lg-4 form-group">
 			                                                   <label class="search-label">账户名称</label>
 					                                           <select id="bankName" class="form-control search-control bankName" name="bankName">
@@ -110,7 +110,7 @@
                                                     <th>收款金额</th>
                                                     <th>付款金额</th>
                                                     <th>账户名称</th>
-                                                    <th>日期</th>
+                                                    <th>结算日期</th>
                                                     <th>操作人</th>
                                                 </tr>
                                             </thead>

@@ -30,10 +30,12 @@ public class CustomAccountAuditLogController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
-    	List<ArapAccountAuditLog> list = ArapAccountAuditLog.dao.find("SELECT DISTINCT source_order FROM custom_arap_account_audit_log");
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	long office_id = user.getLong("office_id");
+    	List<ArapAccountAuditLog> list = ArapAccountAuditLog.dao.find("SELECT DISTINCT source_order FROM arap_account_audit_log where office_id ="+office_id);
     	setAttr("List", list);
     	
-    	List<ArapAccountAuditLog> accountlist = ArapAccountAuditLog.dao.find("SELECT DISTINCT a.bank_name FROM custom_arap_account_audit_log aaa left join fin_account a on a.id = aaa.account_id");
+    	List<ArapAccountAuditLog> accountlist = ArapAccountAuditLog.dao.find("SELECT DISTINCT a.bank_name FROM arap_account_audit_log aaa left join fin_account a on a.id = aaa.account_id where aaa.office_id ="+office_id);
     	setAttr("accountList", accountlist);
     	render("/eeda/cmsArap/cmsAccountAuditLog/cmsAccountAuditLogList.html");
     }
@@ -77,13 +79,14 @@ public class CustomAccountAuditLogController extends Controller {
     		condiction +=" and A.source_order ='" + sourceOrder + "' ";
     	}
     	if(orderNo != null && !orderNo.equals("")){
-    		condiction +=" and A.order_no like '%" + orderNo + "%' ";
+    		condiction +=" and A.invoice_order_no like '%" + orderNo + "%' ";
     	}
     	if(bankName != null && !bankName.equals("")){
     		condiction +=" and A.bank_name = '" + bankName + "' ";
     	}
     	if(money != null && !money.equals("")){
-    		condiction +=" and A.amount like '%" + money + "%' ";
+    		String amount = money.replaceAll(",","");
+    		condiction +=" and A.amount like '%" + amount + "%' ";
     	}
     	if(begin == null || "".equals(begin)){
     		condiction += " and A.create_date between '" + beginTime + "' ";
