@@ -1,11 +1,39 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap','sco','pageguide','validate_cn','./edit_item_table','./edit_receiptItem_table'], function ($, metisMenu) { 
 
 $(document).ready(function() {
-	
 	tl.pg.init({
         pg_caption: '本页教程'
     });
 
+	//校验
+    $("#orderForm").validate({
+    	rules:{
+    		remark:{
+    			maxlength:30
+    		}
+    	}
+    })
+    //校验
+    $("#confirmForm").validate({
+    	rules:{
+    		account_no:{
+    			number:true,
+    			maxlength:30
+    		},
+    		account_name:{
+    			maxlength:30
+    		},
+    		invoice_no:{
+    			maxlength:255
+    		}
+    	},
+    	messages: {
+    		account_no:{
+    			number:"请输入合法的银行账户",
+    			maxlength: $.validator.format( "请输入长度最多是 {0} 银行账户" )
+    		},
+    	}
+    })
     $(function(){
       if(!$('#receive_cny').val()){
             $('#receive_cny').val($('#total_amount').val());
@@ -48,8 +76,15 @@ $(document).ready(function() {
         //阻止a 的默认响应行为，不需要跳转
         e.preventDefault();
         //提交前，校验数据
-        if(!$("#orderForm").valid()){
-            return;
+        var formRequired = 0;
+        $('form').each(function(){
+        	if(!$(this).valid()){
+        		formRequired++;
+            }
+        })
+        if(formRequired>0){
+        	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+        	return;
         }
         
         $(this).attr('disabled', true);
@@ -73,7 +108,8 @@ $(document).ready(function() {
                 $('#saveBtn').attr('disabled', false);
                 $('#confrimBtn').attr('disabled', false);
                 $('#printTotaledBtn').attr('disabled', false);
-                $('#printBtn').attr('disabled', false);                 
+                $('#printBtn').attr('disabled', false);   
+                $('#add_charge').attr('disabled', false);
                 //异步刷新明细表
                 itemOrder.refleshTable(order.ID);
             }else{
@@ -92,13 +128,15 @@ $(document).ready(function() {
     var status = $("#status").val()
     if(order_id==""){
     	$('#saveBtn').attr('disabled', false);
+    	$('#add_charge').attr('disabled', true);
     	
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
     		$('#confrimBtn').attr('disabled', false);
     		$('#printTotaledBtn').attr('disabled', false);
-    		$('#printBtn').attr('disabled', false);    		
+    		$('#printBtn').attr('disabled', false);
+    		$('#add_charge').attr('disabled', false);
     	}
     }
     
@@ -242,7 +280,7 @@ $(document).ready(function() {
         }
     })
 
-      //付款确认
+      //收款确认
       $("#confirmBtn,#badBtn").on('click',function(){
             var confirmVal =$(this).text();
             if(confirmVal=='坏账确认'){
