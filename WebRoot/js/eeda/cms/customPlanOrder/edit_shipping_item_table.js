@@ -132,5 +132,27 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    	cargoTable.ajax.url(url).load();
 	    }
 	
+	    //校验
+	    $('#shipping_item_table').on("blur","[name=container_number],[name=pack],[name=number],[name=cargo_name]," 
+	    		+"[name=net_weight],[name=gross_weight],[name=volume]",function(){
+			var data = $(this).val();
+			var name = $(this).attr("name");
+			var len = $.trim(data).length;
+			if(name=="container_number"||name=="pack"||name=="cargo_name"){
+				if(len>255){
+					$(this).parent().append("<span style='color:red;' class='error_span'>请输入长度255以内的字符串</span>")
+				}
+			}
+			if(name=="net_weight"||name=="gross_weight"||name=="volume"||name=="number"){
+				var re = /^\d{0,9}(\.?\d{1,5})$/;
+				if(!re.test(data)||len>15){
+					$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法的数字</span>")
+				}
+			}
+		});
+	    $('#shipping_item_table').on("focus","[name=container_number],[name=pack],[name=number],[name=cargo_name]," 
+	    		+"[name=net_weight],[name=gross_weight],[name=volume]",function(){
+			$(this).parent().find("span").remove();
+		});
 	});
 });

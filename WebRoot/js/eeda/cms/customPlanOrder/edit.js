@@ -652,6 +652,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	chargeDetail_tabShow();
     })
     
+	//手机号码验证添加进validate
+	jQuery.validator.addMethod("isPhone", function(value, element) {
+	    var length = value.length;
+	    var phone = /^(1[3456789]\d{9})|(0\d{2,3}-\d{7,8})$/;
+	    return this.optional(element) || (length > 0 && phone.test(value));
+	}, "请正确填写您的电话或手机号码");
     //主工作单的校验
     $("#customForm").validate({
     	rules:{
@@ -663,6 +669,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		},
     		copyTracking_no:{
     			maxlength:100
+    		}
+    	}
+    });
+  //头程资料的校验
+    $("#hkForm").validate({
+    	rules:{
+    		customs_number:{
+    			maxlength:255
+    		},
+    		boat_name:{
+    			maxlength:255
+    		},
+    		shipping_men_phone:{
+    			isPhone:true
+    		},
+    		consignee_phone:{
+    			isPhone:true
+    		},
+    		notice_man_phone:{
+    			isPhone:true
     		}
     	}
     });
