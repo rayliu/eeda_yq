@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHBL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.util.NumberConverterUtil" uuid="8fb08dd1-b296-4784-b537-f34e278d0719">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="22"/>
+	<property name="ireport.y" value="729"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_no" value="$P{order_id}"/>
 	</parameter>
@@ -90,9 +90,7 @@ left join party p1 on p1.id=jos.oversea_agent
 left join unit un on un.id = josi.unit_id
 where jos.order_id=$P{order_id}]]>
 	</queryString>
-	<field name="container_type_count" class="java.lang.Short">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<field name="container_type_count" class="java.lang.Short"/>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -149,6 +147,9 @@ where jos.order_id=$P{order_id}]]>
 	</field>
 	<field name="pieces" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="job_unit" class="java.lang.String">
+		<fieldDescription><![CDATA[job计量单位id]]></fieldDescription>
 	</field>
 	<field name="billing_method" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -233,6 +234,54 @@ where jos.order_id=$P{order_id}]]>
 	</field>
 	<field name="send_truckorder_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[派车单标记位]]></fieldDescription>
+	</field>
+	<field name="amount_20gp" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amount_40gp" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amount_40hq" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amount_45gp" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="amount_45hp" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fee_count" class="java.lang.String">
+		<fieldDescription><![CDATA[计费数量]]></fieldDescription>
+	</field>
+	<field name="from_office_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[从外部系统生成的单的office_id]]></fieldDescription>
+	</field>
+	<field name="from_order_id" class="java.lang.Long">
+		<fieldDescription><![CDATA[从外部工作单的id]]></fieldDescription>
+	</field>
+	<field name="from_order_type" class="java.lang.String">
+		<fieldDescription><![CDATA[外部工作单据的类型]]></fieldDescription>
+	</field>
+	<field name="from_order_no" class="java.lang.String">
+		<fieldDescription><![CDATA[外部系统提交过来的工作单号]]></fieldDescription>
+	</field>
+	<field name="customer_contract_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="supplier_contract_type" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="relation_no" class="java.lang.String">
+		<fieldDescription><![CDATA[关联单号]]></fieldDescription>
+	</field>
+	<field name="account_ids" class="java.lang.String">
+		<fieldDescription><![CDATA[银行账户id数组]]></fieldDescription>
+	</field>
+	<field name="lcl_order_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="print_shipmentHead_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="order_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -357,7 +406,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="etd" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="eta" class="java.sql.Date">
+	<field name="eta" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="booking_mark" class="java.lang.String">
@@ -393,10 +442,31 @@ where jos.order_id=$P{order_id}]]>
 	<field name="wait_overseaCustom" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="hbl_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="in_line_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="closing_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="agent_prepaid" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="atd" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="ata" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sailing_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deadline_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[截关日期]]></fieldDescription>
+	</field>
+	<field name="aboutShipment_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="por_name" class="java.lang.String"/>
