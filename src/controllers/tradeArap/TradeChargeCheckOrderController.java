@@ -15,6 +15,7 @@ import models.RateContrast;
 import models.UserLogin;
 import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
 import models.eeda.cms.CustomArapChargeOrder;
+import models.eeda.oms.jobOrder.JobOrderArap;
 import models.eeda.profile.Currency;
 
 import org.apache.commons.lang.StringUtils;
@@ -631,7 +632,7 @@ public class TradeChargeCheckOrderController extends Controller {
         order.set("update_stamp", new Date());
         order.set("return_reason", delete_reason);
         order.set("update_by", LoginUserController.getLoginUserId(this));
-       // order.update();
+        order.update();
         renderJson("{\"result\":true}");
     }
     
@@ -736,6 +737,103 @@ public class TradeChargeCheckOrderController extends Controller {
 		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
 		renderJson(r);
 	}
+    
+    //编辑
+    public void chargeEdit(){
+    	String tjor_id = getPara("tjor_id");
+	    String itemSql = "select tjor.*, pr.abbr sp_name, f.name charge_name,f.name_eng charge_name_eng,u.name unit_name,c.name currency_name,"
+    				+ " c1.name exchange_currency_id_name"
+    				+ " from trade_job_order_arap tjor "
+    		        + " left join party pr on pr.id=tjor.sp_id"
+    		        + " left join fin_item f on f.id=tjor.charge_id"
+    		        + " left join unit u on u.id=tjor.unit_id"
+    		        + " left join currency c on c.id=tjor.currency_id"
+    		        + " left join currency c1 on c1.id=tjor.exchange_currency_id"
+    		        + " where tjor.id=? order by tjor.id";
+	    List<Record> list = Db.find(itemSql,tjor_id);
+		Map map = new HashMap();
+		map.put("sEcho",1);
+		map.put("iTotalRecords", list.size());
+		map.put("iTotalDisplayRecords", list.size());
+		map.put("aaData", list);
+		renderJson(map); 
+    }
+    
+    public void chargeSave(){
+    	String jsonStr = getPara("params");
+    	
+    	Gson gson = new Gson();
+    	Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+    	TradeJobOrderArap tjoa = new TradeJobOrderArap().findById(dto.get("tjor_id"));
+    	String chargeOrderId=(String)dto.get("order_id");
+    	String price = (String)dto.get("price");
+    	if(price.isEmpty()){
+    		tjoa.set("price",0);
+    	}else{
+    		tjoa.set("price",price);
+    	}    	
+    	
+    	String amount = (String)dto.get("amount");
+    	if(amount.isEmpty()){
+    		tjoa.set("amount",0);
+    	}else{
+    		tjoa.set("amount",amount);
+    	}
+    	tjoa.set("unit_id",(String)dto.get("unit_id"));
+    	
+    	String total_amount = (String)dto.get("total_amount");
+    	if(total_amount.isEmpty()){
+    		tjoa.set("total_amount",0);
+    	}else{
+    		tjoa.set("total_amount",total_amount);
+    	}
+    	String currency_total_amount = (String)dto.get("currency_total_amount");
+    	if(total_amount.isEmpty()){
+    		tjoa.set("currency_total_amount",0);
+    	}else{
+    		tjoa.set("currency_total_amount",currency_total_amount);
+    	}
+    	
+    	String exchange_currency_rate = (String)dto.get("exchange_currency_rate");
+    	if(exchange_currency_rate.isEmpty()){
+    		tjoa.set("exchange_currency_rate",0);
+    	}else{
+    		tjoa.set("exchange_currency_rate",exchange_currency_rate);
+    	}
+    	
+    	String exchange_total_amount = (String)dto.get("exchange_total_amount");
+    	if(exchange_total_amount.isEmpty()){
+    		tjoa.set("exchange_total_amount",0);
+    	}else{
+    		tjoa.set("exchange_total_amount",exchange_total_amount);
+    	}
+    	
+    	String exchange_currency_rate_rmb = (String)dto.get("exchange_currency_rate_rmb");
+    	if(exchange_currency_rate_rmb.isEmpty()){
+    		tjoa.set("exchange_currency_rate_rmb",0);
+    	}else{
+    		tjoa.set("exchange_currency_rate_rmb",exchange_currency_rate_rmb);
+    	}
+    	
+    	String exchange_total_amount_rmb = (String)dto.get("exchange_total_amount_rmb");
+    	if(exchange_total_amount_rmb.isEmpty()){
+    		tjoa.set("exchange_total_amount_rmb",0);
+    	}else{
+    		tjoa.set("exchange_total_amount_rmb",exchange_total_amount_rmb);
+    	}
+    	tjoa.set("sp_id",(String)dto.get("sp_id"));
+    	tjoa.set("charge_id",(String)dto.get("charge_id"));
+    	tjoa.set("currency_id",(String)dto.get("currency_id"));
+    	tjoa.set("exchange_currency_id",(String)dto.get("exchange_currency_id"));
+    	tjoa.set("rmb_difference",(String)dto.get("rmb_difference"));
+    	tjoa.set("remark",(String)dto.get("remark"));
+    	tjoa.update();
+    	//计算结算汇总
+    	Map<String, Double> exchangeTotalMap = updateExchangeTotal(chargeOrderId);
+		exchangeTotalMap.put("chargeOrderId", Double.parseDouble(chargeOrderId));
+		
+    	renderJson(exchangeTotalMap);
+    }
     
     public void insertChargeItem(){
     	String itemList= getPara("charge_itemlist");

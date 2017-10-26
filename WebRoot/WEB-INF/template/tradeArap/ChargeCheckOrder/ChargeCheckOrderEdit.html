@@ -3,6 +3,7 @@
 	<input id="order_id" type="hidden" name="order_id" value="${order.id!''}" />
 	<input id="company_id" type="hidden" name="company_id" value="${order.company_id!''}" />
 	<input id="company_abbr" type="hidden" name="company_abbr" value="${order.company_abbr!''}" />
+	<input id="tjor_id" type="hidden" name="tjor_id" value="" />
 	<div class="row simple_search_div">
         <div class="col-lg-12">
 		<form id="orderForm">
@@ -79,6 +80,11 @@
 				<div class="guide_target1 col-lg-4">	
 					<%include("/eeda/component/form/inputDateQueryField.html", { id:'check_time',
 					label:'对账日期', begin_value:order.begin_time!'', end_value:order.end_time!'', disabled: 'disabled' 
+					}){}%>
+				</div>
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", { id:'return_reason',
+					label:'退单原因', value:order.return_reason!'',disabled:'disabled'
 					}){}%>
 				</div>
 			</div>
@@ -244,7 +250,7 @@
 						<%include("/eeda/component/form/detailTable.html", 
                             {
                                 id:'eeda-table', 
-                                style:'width:1600px',
+                                style:'width:1500px',
                                 headers:[
                                 	'<input type="checkbox" id="allcheck">',
                                 	'操作',
@@ -281,10 +287,11 @@
 		<div class="col-lg-12">
 			<br>
 			<button id='saveBtn' class="btn  btn_green" disabled >保存</button> 
+			<button id='refuseBtn' class="btn  btn_red guide_confrimBtn" >退单</button> 
 			<% if(shiro.hasPermission("tradeChargeCheckOrder.confirm")){%>
                         <button id="confirmBtn" type="button" class="guide_target3 btn btn_green" disabled>确认</button>
             <%}%>
-             <button id='refuseBtn' class="btn  btn_red guide_confrimBtn" >退单</button> 
+            
 			<button id="printBtn" type="button" class="btn  btn_white" disabled >生成明细对账单(PDF)</button>
 			<button id="printTotaledBtn" type="button" class="btn  btn_white" disabled >生成合计对账单(PDF)</button>			
 			<a class="btn  btn_white" href="/tradeChargeCheckOrder">返回</a>
@@ -309,9 +316,7 @@
                              <div class="form-group">
                              <select class="form-control search-control deleteReason">
                              <option>金额不对</option>  
-                             <option>单据重复</option>                   
-                             <option>单据作废</option>
-                             <option>单据信息错误太多，不要了</option>                     
+                             <option>日期错误</option>                     
                              </select><br/><br/>
                              <textarea id='deleteReason' name="deleteReason" class="form-control" rows="3" required></textarea>
                              </div>
@@ -390,8 +395,38 @@
         </div>
     </div>
 </div>
+<a id='charge_editBtn' data-target='#charge_edit' data-toggle='modal' style='display:none'></a>
+	<div class="modal fade" id="charge_edit" tabindex="-20" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+		<%include("/eeda/component/form/detailTable.html", 
+                                {
+                                    id:'charge_table',
+                                    style:'width:1400px',
+                                    headers:['结算公司', '费用名称','单价', '数量', '单位','对账金额','对账币制', '对人民币汇率', '对账金额(人民币)','结算币制','结算汇率','结算金额','对人民币汇率','结算金额(人民币)','汇兑损益','备注',
+                                    'sp_name', 'charge_name','unit_name','currency_name','audit_flag'],
+                                    field_list:['sp_id', 'charge_id', 'price', 'amount', 'unit_id', 'total_amount','currency_id',
+                                     'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','exchange_currency_rate_rmb','exchange_total_amount_rmb','rmb_difference','remark','sp_name', 'charge_name',
+                                     'unit_name','currency_name','exchange_currency_id_name','audit_flag'],
+                                    value_list: chargeList![]
+                                }){} %>
+                     <div class="modal-footer">
+		                 <button id="charge_saveBtn" type="button" class="btn btn_green save" data-dismiss="modal">保存</button>
+		            	 <button type="button" class="btn  btn_white" data-dismiss="modal">返回</button>
+	            	 </div>
+            	</div>
+        	</div>                  
+    	</div>                    
+	</div>
 </div>
 <%}%>
+<%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableSelectTruckTypeField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputFinItemField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputAddressField.js",{}){} %>
 <%include("/tradeArap/ChargeCheckOrder/guideEdit.html",{}){} %>
 <script> 
     var itemOrder = {};

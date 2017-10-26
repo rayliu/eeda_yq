@@ -18,8 +18,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			           	  }
 			          },
 					  { "data": "CREATE_STAMP", "width": "100px"},  
-					  { "data": "TOSTATUS", "width": "100px"},
-					  { "data": "SP_NAME", "width": "60px"}, 
+					  { "data": "TOSTATUS", "width": "100px",
+						  "render":function(data, type, full, meta){
+					    		 if(data=="已退单"){
+					    			 return '<span style="color:red">'+data+'</span>';
+					    		 }else{
+					    			 return data;
+					    		 }
+					    	 }
+					  },
+					  { "data": "SP_NAME", "width": "100px"}, 
 					  { "data": "TOTAL_AMOUNT","width": "60px","visible":false,
 				    	 "render":function(data, type, full, meta){
 				    		 if(data<0){
@@ -29,31 +37,31 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 				    		 }
 				    	 }
 					  },
-			          { "data": "CNY",
+			          { "data": "CNY","width": "80px",
 						  "render":function(data,type,full,meta){
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
-					  { "data": "USD",
+					  { "data": "USD","width": "80px",
 						  "render":function(data,type,full,meta){
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
-			          { "data": "JPY",
+			          { "data": "JPY","width": "80px",
 						  "render":function(data,type,full,meta){
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
-			          { "data": "HKD",
+			          { "data": "HKD","width": "80px",
 						  "render":function(data,type,full,meta){
 							  var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
 							  return usd_str;
 						  }
 					  },
-					  { "data": "RETURN_REASON", "width": "60px"}
+					  { "data": "RETURN_REASON", "width": "120px"}
             ]
         });
         

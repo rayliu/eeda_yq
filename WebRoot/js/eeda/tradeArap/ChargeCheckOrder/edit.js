@@ -46,11 +46,6 @@ $(document).ready(function() {
     	return items_array;
     }
     
-    var status = $("#status").val()
-    if(status == "已收款"||status == "已确认"){
-        $('#refuseBtn').attr('disabled', true);
-    }
-    
     //删除按钮动作
     $("#refuseBtn").click(function(){
         var id = $('#order_id').val();
@@ -68,9 +63,10 @@ $(document).ready(function() {
          var deleteReason = $('#deleteReason').val();
         $.post('/tradeChargeCheckOrder/returnOrder', {id:id,delete_reason:deleteReason}, function(data){
             $('#deleteReasonDetail .return').click();
+            $('#return_reason').val($("#deleteReason").val());
+            $('#status').val("已退单");
+            $('#confirmBtn').attr('disabled', true);
             $.scojs_message('退单成功', $.scojs_message.TYPE_OK);
-            $('#confirmBtn').attr('disabled',true);
-            $('#refuseBtn').attr('disabled', true);
         },'json').fail(function() {
             $.scojs_message('退单失败', $.scojs_message.TYPE_ERROR);
         });
@@ -78,6 +74,7 @@ $(document).ready(function() {
     
     //------------save
     $('#saveBtn').click(function(e){
+    	$("#status").val("新建");
         //阻止a 的默认响应行为，不需要跳转
         e.preventDefault();
         //提交前，校验数据
@@ -107,7 +104,8 @@ $(document).ready(function() {
                 $('#saveBtn').attr('disabled', false);
                 $('#confirmBtn').attr('disabled', false);
                 $('#printTotaledBtn').attr('disabled', false);
-                $('#printBtn').attr('disabled', false);                 
+                $('#printBtn').attr('disabled', false);
+                $('#refuseBtn').attr('disabled', false);              
                 //异步刷新明细表
                 itemOrder.refleshTable(order.ID);
             }else{
@@ -128,11 +126,19 @@ $(document).ready(function() {
     	$('#saveBtn').attr('disabled', false);
     	$('#add_charge').prop('disabled',true);
     	$('#query_listCurrency').prop('disabled',true);
+    	$('#refuseBtn').attr('disabled', true);
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
-    		$('#confirmBtn').attr('disabled', false); 		
+    		$('#confirmBtn').attr('disabled', false); 	
     	}
+    	if(status=='已退单'){
+    		$('#saveBtn').attr('disabled', false);
+    		$('#confirmBtn').attr('disabled', true); 	
+    	}
+    	if(status == "已收款"||status == "已确认"){
+            $('#refuseBtn').attr('disabled', true);
+        }
     	$('#printTotaledBtn').attr('disabled', false);
 		$('#printBtn').attr('disabled', false); 
 		$('#add_charge').prop('disabled',false);
@@ -148,7 +154,7 @@ $(document).ready(function() {
     			 $('#saveBtn').attr('disabled', true);
                  $('.delete').attr('disabled', true);
                  $('#add_charge').attr('disabled', true);
-
+                 $('#refuseBtn').attr('disabled', true);
                  $("#status").val('已确认');
                  $('#printTotaledBtn').attr('disabled', false);
                  $('#printBtn').attr('disabled', false); 
