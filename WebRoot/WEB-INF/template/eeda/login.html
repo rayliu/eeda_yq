@@ -99,6 +99,17 @@
 <script>
     $(document).ready(function() {
         $('#signInBtn').on('click',function(){
+        	login();
+        });
+        
+        $(document).keypress(function(e) {  
+            // 回车键事件  
+            if(e.which == 13) {  
+            	login();
+            }  
+        }); 
+        
+        var login = function(){
         	if(!$('#loginForm').valid()){
         		return false;
         	}
@@ -112,7 +123,7 @@
         	}).fail(function(){
         		alert("系统出错，请刷新后再尝试");
         	}); 
-        });
+        }
         
         $('#password').on('click input',function(){
         	var value = $('#password').val(); 
