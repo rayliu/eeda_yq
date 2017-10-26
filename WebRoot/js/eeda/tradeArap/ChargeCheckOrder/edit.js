@@ -134,7 +134,8 @@ $(document).ready(function() {
     	}
     	if(status=='已退单'){
     		$('#saveBtn').attr('disabled', false);
-    		$('#confirmBtn').attr('disabled', true); 	
+    		$('#confirmBtn').attr('disabled', true); 
+    		$('.itemEdit').attr('disabled', true);
     	}
     	if(status == "已收款"||status == "已确认"){
             $('#refuseBtn').attr('disabled', true);
@@ -155,6 +156,7 @@ $(document).ready(function() {
                  $('.delete').attr('disabled', true);
                  $('#add_charge').attr('disabled', true);
                  $('#refuseBtn').attr('disabled', true);
+                 $('.itemEdit').attr('disabled', true);
                  $("#status").val('已确认');
                  $('#printTotaledBtn').attr('disabled', false);
                  $('#printBtn').attr('disabled', false); 

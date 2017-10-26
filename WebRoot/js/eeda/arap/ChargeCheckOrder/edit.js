@@ -129,6 +129,7 @@ $(document).ready(function() {
             $('#cancelConfirmBtn').attr('disabled', false);
             $("#printBtn").attr('disabled', false);
             $('#add_charge').attr("disabled",true);
+            $('.itemEdit').attr("disabled",true);
         }else if(status=='取消确认'){
         	$('#saveBtn').attr('disabled', false);
     		$('#confirmBtn').attr('disabled', false);
@@ -137,7 +138,6 @@ $(document).ready(function() {
         }else{
         	$('#add_charge').attr("disabled",true);
             $('.delete').attr("disabled",true);
-            $('.itemEdit').attr("disabled",true);
             $('#cancelConfirmBtn').attr('disabled', true);
             $('#printBtn').attr('disabled', false);
         }
@@ -154,7 +154,7 @@ $(document).ready(function() {
                  $('.delete').attr('disabled', true);
                  $('.itemEidt').attr('disabled', true);
                  $('#add_charge').attr('disabled', true);
-
+                 $('.itemEdit').attr("disabled",true);
                  $("#status").val('已确认');
                  $('#printTotaledBtn').attr('disabled', false);
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
