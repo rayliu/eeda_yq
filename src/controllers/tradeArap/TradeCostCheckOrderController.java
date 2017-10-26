@@ -526,7 +526,7 @@ public class TradeCostCheckOrderController extends Controller {
         order.set("last_modified_stamp", new Date());
         order.set("return_reason", delete_reason);
         order.set("last_modified_by", LoginUserController.getLoginUserId(this));
-       // order.update();
+        order.update();
         renderJson("{\"result\":true}");
     }
 	

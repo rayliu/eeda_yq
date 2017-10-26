@@ -80,6 +80,14 @@
                                                 end_value: order.end_time!''
                                             }){} %>
                                         </div>
+                                        <div class="col-lg-4">
+                                            <%include("/eeda/component/form/inputField.html", 
+                                                                {   id:'return_reason', 
+                                                                    label:'退单原因', 
+                                                                    value: order.return_reason!'',
+                                                                    disabled: 'disabled'
+                                                                }){}%>
+                                        </div>
                                 </div>
                                  <div class="row">
                                      <div class="col-lg-12">

@@ -38,6 +38,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
             var order = {
                 id: $('#id').val(),
                 ids: $('#ids').val(),
+                status: "新建",
                 remark: $('#remark').val(),
                 total_amount: 0,//parseFloat($('#total_amount').val()).toFixed(2),
                 cost_amount: 0,//$('#cost_amount').val(),
@@ -99,7 +100,11 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                 }else if(status=='已确认'){
                     $('#add_cost').attr("disabled",true);
                     $('.delete').attr("disabled",true);
-                }
+                }else if(status=='已退单'){
+            		$('#saveBtn').attr('disabled', false);
+            		$('#confirmBtn').attr('disabled', true); 
+            		$('.itemEdit').attr('disabled', true);
+            	}
                 $('#printBtn').attr('disabled', false);
                 $('#query_listCurrency').prop('disabled',false);
             }
@@ -113,7 +118,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                      $('#printBtn').attr('disabled', true);
                      $('.delete').attr('disabled', true);
                      $('#add_cost').attr('disabled', true);
-
+                     $('#refuseBtn').attr('disabled', true);
                      $("#status").val(data.STATUS);
 	    			 $('#confirm_name').val(data.CONFIRM_BY_NAME);
 	    			 $('#confirm_stamp').val(data.CONFIRM_STAMP);
@@ -127,7 +132,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
         
         
         var status = $("#status").val()
-        if(status == "已收款"||status == "已确认"){
+        if(status == "已收款"||status == "已确认"||status == "收款申请中"){
             $('#refuseBtn').attr('disabled', true);
         }
         
@@ -147,10 +152,11 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
          var id = $('#delete_id').val();
          var deleteReason = $('#deleteReason').val();
         $.post('/tradeCostCheckOrder/returnOrder', {id:id,delete_reason:deleteReason}, function(data){
+        	$("#return_reason").val($("#deleteReason").val());
+        	$("#status").val("已退单");
             $('#deleteReasonDetail .return').click();
             $.scojs_message('退单成功', $.scojs_message.TYPE_OK);
             $('#confirmBtn').attr('disabled',true);
-            $('#refuseBtn').attr('disabled', true);
         },'json').fail(function() {
             $.scojs_message('退单失败', $.scojs_message.TYPE_ERROR);
         });

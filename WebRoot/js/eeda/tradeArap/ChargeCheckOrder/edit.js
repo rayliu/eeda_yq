@@ -137,7 +137,7 @@ $(document).ready(function() {
     		$('#confirmBtn').attr('disabled', true); 
     		$('.itemEdit').attr('disabled', true);
     	}
-    	if(status == "已收款"||status == "已确认"){
+    	if(status == "已收款"||status == "已确认"||status == "收款申请中"){
             $('#refuseBtn').attr('disabled', true);
         }
     	$('#printTotaledBtn').attr('disabled', false);
