@@ -249,10 +249,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
      });
 	
 	$('#singleSearchBtn').click(function(){
+		$("#orderForm")[0].reset();
 	     var selectField = $('#selected_field').val();
 	     var selectFieldValue = '';
+	     var start_date = "";
+	     var end_date = "";
+	     var sent_out_time_begin_time = "";
+	     var sent_out_time_end_time = "";
 	     if(selectField == 'sono_like'||selectField == 'container_no'||selectField == 'old_order_no'||selectField == 'order_no'||selectField == 'customer_code_like'){
-	    	  selectFieldValue = $("#public_text").val();
+	    	  selectFieldValue = $("#public_text").val().trim();
 	      }else if(selectField == 'type'){
 	    	  selectFieldValue = $("#single_export_type_list").val();
 	    	  selectField="type_equals";
@@ -260,13 +265,34 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 	    	  selectFieldValue = $("#single_customer_name_input").val();
 	    	  selectFieldValue +="&customer="+$("#single_customer_name").val();
           }else if(selectField == 'create_stamp'){
-        	  var start_date = $("#public_time_begin_time").val();
-              var end_date = $("#public_time_end_time").val();
+        	  start_date = $("#public_time_begin_time").val();
+              end_date = $("#public_time_end_time").val();
           }else if(selectField == 'sent_out_time'){
-              var sent_out_time_begin_time = $("#public_time_begin_time").val();
-              var sent_out_time_end_time = $("#public_time_end_time").val();
+              sent_out_time_begin_time = $("#public_time_begin_time").val();
+              sent_out_time_end_time = $("#public_time_end_time").val();
           }
 	     
+	     if(selectField == 'sono_like'){
+	    	 $("#sono").val(selectFieldValue);
+	     }else if(selectField == 'container_no'){
+	    	 $("#container_no").val(selectFieldValue);
+	     }else if(selectField == 'old_order_no'){
+	    	 $("#old_order_no").val(selectFieldValue);
+	     }else if(selectField == 'order_no'){
+	    	 $("#order_no").val(selectFieldValue);
+	     }else if(selectField == 'customer_code_like'){
+	    	 $("#customer_code").val(selectFieldValue);
+	     }else if(selectField == 'type_equals'){
+	    	 $("#type").val(selectFieldValue);
+	     }else if(selectField == 'customer_name'){
+	    	 $("#customer_name_input").val($("#single_customer_name_input").val());
+	     }else if(selectField == 'create_stamp'){
+	    	 $("#create_stamp_begin_time").val(start_date);
+	    	 $("#create_stamp_end_time").val(end_date);
+	     }else if(selectField == 'sent_out_time'){
+	    	 $("#sent_out_time_begin_time").val(sent_out_time_begin_time);
+	    	 $("#sent_out_time_end_time").val(sent_out_time_end_time);
+	     }
      
 	     var url = "/jobOrder/list?"+selectField+"="+selectFieldValue
 	     			+"&create_stamp_begin_time="+start_date
