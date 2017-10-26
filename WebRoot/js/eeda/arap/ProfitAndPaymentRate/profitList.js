@@ -128,15 +128,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	
 	$('#singleSearchBtn').click(function(){
 	     var selectField = $('#selected_field').val();
+	     var customer = "";
+	     var user_id = "";
 	     if(selectField=='order_export_date'){
 	    	 var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
 	    	 var order_export_date_end_time = $("#single_order_export_date_end_time").val();
 	      }
 	      if(selectField=='customer'){
-	    	 var customer = $("#single_customer").val();
+	    	 customer = $("#single_customer").val();
 	      }
 	      if(selectField=="user_id"){
-	    	  var user_id = $("#single_user_id").val();
+	    	  user_id = $("#single_user_id").val();
 	      }
 	      
 	      //合计字段
