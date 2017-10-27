@@ -427,10 +427,10 @@ public class FormController extends Controller {
                         + "<div class=''>"+
                         "    <input id='"+inputId+"_province' type='text' class='province' field_type='list' value='' style='display:none;'/>"+
                         "    <input id='"+inputId+"' type='text' field_type='list' value='' style='display:none;'/>"+
-                        "    <input type='text' class='form-control city_input'"+
-                        "    name='"+inputId+"' "+
+                        "    <input type='text' class='input-text city_input'"+
+                        "    name='"+inputId+"' autocomplete='off'"+
                         "    placeholder='请选择城市' >"+
-                        "    <div id='"+inputId+"_list' class='area-list pull-right dropdown-menu default dropdown-scroll' tabindex='-1'  "+
+                        "    <div id='"+inputId+"_list' class='area-list pull-right dropDown-menu default dropdown-scroll' tabindex='-1'  "+
                         "    style='top: 35%; left: 2%; display: none;'>"+
                         "        <div class='area-list-title'>"+
                         "            <input data-id='0' data-level='0' type='button' value='省份' class='this'>"+
@@ -443,7 +443,7 @@ public class FormController extends Controller {
                         "        </div>"+
                         "    </div>"+
                         "        "+
-                        "    <ul id='"+inputId+"_list——1' class='pull-right dropdown-menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;'>"+
+                        "    <ul id='"+inputId+"_list——1' class='pull-right dropDown-menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;'>"+
                         "    </ul>"+
                         "</div>";
             }else if("日期".equals(fieldType)){
