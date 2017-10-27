@@ -84,7 +84,7 @@ public class WebAdminController extends Controller {
     public void index() {
         if (isAuthenticated()) {
         	//注册用户数
-        	Record user = Db.findFirst("select count(1) total from user_login");
+        	Record user = Db.findFirst("select count(1)-1 total from user_login");
         	setAttr("user", user);
         	//商家入驻数量
         	Record passcompany = Db.findFirst("select count(1) total from user_login where is_stop ='0'");
@@ -96,13 +96,13 @@ public class WebAdminController extends Controller {
         	Record product = Db.findFirst("select count(1) total from wc_product");//全部（不管是否上架）
         	setAttr("product", product);
         	//“促”用户数
-        	Record ad_cu = Db.findFirst("select count(1) total,sum(price) income from wc_ad_cu");//全部（不管是否上架）
+        	Record ad_cu = Db.findFirst("select count(1) total,ifnull(sum(price),0) income from wc_ad_cu");//全部（不管是否上架）
         	setAttr("ad_cu", ad_cu);
         	//“惠”用户数
         	Record ad_hui = Db.findFirst("select count(1) total from wc_ad_hui group by creator");//全部（不管是否上架）
         	setAttr("ad_hui", ad_hui);
         	//钻石商家数
-        	Record diamond = Db.findFirst("select count(1) total,sum(total_price) income from wc_ad_diamond");//全部（不管是否上架）
+        	Record diamond = Db.findFirst("select count(1) total, ifnull(sum(total_price),0) income from wc_ad_diamond");//全部（不管是否上架）
         	setAttr("diamond", diamond);
         	//上传案例数
         	Record wccase = Db.findFirst("select count(1) total from wc_case");//所有

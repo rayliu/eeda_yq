@@ -46,7 +46,6 @@ public class AccountController extends Controller {
 	
 	@Before(Tx.class)
 	public void updateInfo(){
-		Long user_id = LoginUserController.getLoginUserId(this);
 		String jsonStr = getPara("jsonStr");
         Long userId = LoginUserController.getLoginUserId(this);
         Gson gson = new Gson();  
@@ -58,9 +57,8 @@ public class AccountController extends Controller {
 		String qq = (String) dto.get("qq");
 		String contact = (String) dto.get("contact");
 		String logo = (String) dto.get("logo");
-		Record re = null;
-		if(StringUtils.isNotBlank(user_id.toString())){
-			re=Db.findFirst("select * from wc_company where creator = "+userId);
+		Record re = Db.findFirst("select * from wc_company where creator = ?",userId);
+		if(re != null){
 			re.set("telephone", phone);
 			re.set("shop_telephone", telephone);
 			re.set("about", about);
@@ -69,7 +67,18 @@ public class AccountController extends Controller {
 			re.set("contact", contact);
 			re.set("logo", logo);
 			Db.update("wc_company",re);
-		}	
+		} else {
+			re = new Record();
+			re.set("telephone", phone);
+			re.set("shop_telephone", telephone);
+			re.set("about", about);
+			re.set("address", address);
+			re.set("qq", qq);
+			re.set("contact", contact);
+			re.set("logo", logo);
+			re.set("creator", userId);
+			Db.save("wc_company",re);
+		}
 		renderJson(re);
 	}
 	

@@ -51,7 +51,7 @@ public class AccountController extends Controller {
 	    	re_hui.set("status", "N");
 	    }
 	    setAttr("hui",re_hui);
-	    setAttr("notice", noticeRec.get("content"));
+	    setAttr("notice", noticeRec);
 		render(getRequest().getRequestURI()+"/list.html");
 	}
 	

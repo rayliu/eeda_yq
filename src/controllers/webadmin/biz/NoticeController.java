@@ -27,7 +27,7 @@ public class NoticeController extends Controller {
 
 	public void index() {
 		Record noticeRec = Db.findFirst("select * from wc_notice order by create_time desc;");
-		 setAttr("notice", noticeRec.get("content"));
+		 setAttr("notice", noticeRec);
 		render(getRequest().getRequestURI()+"/list.html");
 	}
 	

@@ -36,14 +36,12 @@ public class CuController extends Controller {
 	}
 	
 	public void buy(){
-        String id = getPara("id");
         Long user_id = LoginUserController.getLoginUserId(this);
-        String sql="select * from wc_ad_cu where creator ="+user_id;
-        String per_price="select * from price_maintain where type  ='促广告'";
-        Record user=Db.findFirst(sql);
-        Record price=Db.findFirst(per_price);
+
+        Record user=Db.findFirst("select * from wc_ad_cu where creator = ?",user_id);
         setAttr("user", user);
-        setAttr("per_price", price.get("price"));
+        Record priceRe = Db.findFirst("select * from price_maintain where type  ='促广告'");
+        setAttr("priceRe", priceRe);
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	

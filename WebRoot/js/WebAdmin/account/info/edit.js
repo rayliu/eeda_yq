@@ -28,7 +28,6 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 	  }
 	  
 	 $('#updateBtn').on('click',function(){
-
 		 var self = this;
 		 var order = {};
 		 order.id = $('#user_id').val();
@@ -38,7 +37,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		 order.telephone = $('#telephone').val();
 		 order.qq = $('#qq').val();
 		 order.about = $('#about').val();
-		 order.logo = $('#img_logo').attr('value');
+		 order.logo = $('#img_logo').prop('value')==undefined?$('#img_logo').attr('value'):$('#img_logo').prop('value');
 		 $(self).attr('disabled',true);
 		 $.post('/WebAdmin/account/updateInfo',{jsonStr:JSON.stringify(order)},function(data){
 			 if(data){
