@@ -5,10 +5,10 @@
                              <br>
                              <%include("/eeda/component/form/detailTable.html", 
                                  {
-                                     id:'cargo_table',
+                                     id:'account_table',
                                      style:'width:100%',
-                                     headers:['','账户名','开户行', '银行账号','备注'],
-                                     field_list:['id','account_name','bank_name','account_no','remark'],
+                                     headers:['','账户名','开户行', '银行账号','币制','备注','currency_name'],
+                                     field_list:['id','account_name','bank_name','account_no','currency_id','remark','currency_name'],
                                      value_list: account_itemList![]
                                  }){} %>
                    

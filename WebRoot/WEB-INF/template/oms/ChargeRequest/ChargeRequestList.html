@@ -143,7 +143,9 @@
 					<% if(shiro.hasPermission("chargeRequest.confirmRequest")){%>
 						<button id="confirmed" class="btn btn btn_green guide_target5" style="margin-top:12px;"  disabled>收款确认</button>
 					<%}%>
-                    
+					<% if(shiro.hasPermission("chargeRequest.create")){%>
+                    	<a href="/chargeRequest/create" class="btn btn_green" style="margin-top:12px;" type="button" >创建申请单</a>
+                    <%}%>
 					
 		</div>
 		

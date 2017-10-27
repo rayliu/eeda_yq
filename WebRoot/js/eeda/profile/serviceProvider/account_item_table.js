@@ -57,13 +57,17 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	        return cargo_items_array;
 	    };
 	    
+	    var bindFieldEvent=function(){
+	        eeda.bindTableFieldCurrencyId('account_table','CURRENCY_ID','/serviceProvider/searchCurrency','notRate');
+	    };
+	    
 
 	    //------------事件处理
 	    var accountTable = eeda.dt({
             id: 'account_table',
             autoWidth: false,
-            "drawCallback": function( settings ) {
-		        
+            drawCallback: function( settings ) {
+            	bindFieldEvent();
 		    },
             columns:[
 	            {"width": "5%",
@@ -92,11 +96,33 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                   return '<input type="text" name="ACCOUNT_NO" value="'+data+'" class="form-control search-control" style="width:100%"/>';
 	                }
 	            },
+	            { "data": "CURRENCY_ID", "width":"5%","className":"currency_name",
+	                "render": function ( data, type, full, meta ) {
+	            	   if(!data)
+	                       data='';
+	                   var field_html = template('table_dropdown_template',
+	                       {
+	                           id: 'CURRENCY_ID',
+	                           value: data,
+	                           display_value: full.CURRENCY_NAME,
+	                           style:'width:100%'
+	                       }
+	                   );
+	                   return field_html; 
+	                }
+	            },
 	            { "data": "REMARK","width": "20%",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
 	                   return '<input type="text" name="REMARK" value="'+data+'" class="form-control search-control" style="width:100%"/>';
+	                }
+	            },
+	            { "data": "CURRENCY_NAME", "visible": false,
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
 	                }
 	            }
 	        ]
@@ -128,9 +154,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         		}
         	}
         	if(name=="ACCOUNT_NO"){
-        		var re = /^\d{1,19}$/;
+        		var re = /^.{12,30}$/;
         		if(!re.test(data)&&len>0){
-        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>请输入正确的银行账户</span>");
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>输入银行账户的字符长度应在12-30</span>");
         			return;
         		}
         	}

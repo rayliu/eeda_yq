@@ -6,7 +6,6 @@ import interceptor.SetAttrLoginUserInterceptor;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -684,7 +683,8 @@ public class CustomerController extends Controller {
     		itemSql = "SELECT * FROM contacts_item WHERE party_id=?";
     		itemList = Db.find(itemSql, orderId);
     	}else if("account".equals(type)){
-    		itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",orderId);
+    		itemList = Db.find("SELECT fa.*,cy.code currency_name FROM fin_account fa "
+    				+ " LEFT JOIN currency cy on cy.id = fa.currency_id  WHERE order_id =?",orderId);
 		}else if("salesman".equals(type)){
     		itemList = Db.find("SELECT cs.*,ul.c_name salesman_name FROM customer_salesman cs "
     				+ " LEFT JOIN user_login ul on cs.salesman_id = ul.id WHERE party_id =?",orderId);

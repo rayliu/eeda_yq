@@ -715,7 +715,7 @@ eeda.refreshUrl = refreshUrl;
 		            
 			  },'json');
 		  });
-		  
+		  tableFieldList.off('keyup click');
 		  tableFieldList.on('click', '.fromLocationItem', function(e){
 			  var inputField = eeda._inputField;
 			  var hiddenField = eeda._hiddenField;

@@ -35,7 +35,7 @@ $(document).ready(function() {
 				accountList.append('搜索无结果<a class="search_hint" href="/serviceProvider/edit?id='+order_id+'">点击此处</a>设置该结算公司银行账户');
 			}else{
 				for(var i = 0; i < data.length; i++){
-					accountList.append("<li><a tabindex='-1' class='fromLocationItem' id='"+data[i].ID+"' account_no='"+data[i].ACCOUNT_NO+"' account_name='"+data[i].ACCOUNT_NAME+"'  bank_name='"+data[i].BANK_NAME+"'>"+data[i].BANK_NAME+"</a></li>");
+					accountList.append("<li><a tabindex='-1' class='fromLocationItem' id='"+data[i].ID+"' account_no='"+data[i].ACCOUNT_NO+"' account_name='"+data[i].ACCOUNT_NAME+"' currency_name='"+data[i].CURRENCY_NAME+"'  bank_name='"+data[i].BANK_NAME+"'>"+data[i].CURRENCY_NAME+" : "+data[i].BANK_NAME+"</a></li>");
 				}
 			}
 			

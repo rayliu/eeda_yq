@@ -4,7 +4,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    var deletedTableIds=[];
 
 	    //删除一行
-	    $("#cargo_table").on('click', '.delete', function(e){
+	    $("#account_table").on('click', '.delete', function(e){
 	        e.preventDefault();
 	        var tr = $(this).parent().parent();
 	        deletedTableIds.push(tr.attr('id'));
@@ -14,13 +14,13 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    
 	    //构造函数，获得json
 	    itemOrder.buildAccountDetail=function(){
-	    	var cargo_table_rows = $("#cargo_table tr");
-	        var cargo_items_array=[];
-	        for(var index=0; index<cargo_table_rows.length; index++){
+	    	var account_table_rows = $("#account_table tr");
+	        var account_items_array=[];
+	        for(var index=0; index<account_table_rows.length; index++){
 	            if(index==0)
 	                continue;
 
-	            var row = cargo_table_rows[index];
+	            var row = account_table_rows[index];
 	            var empty = $(row).find('.dataTables_empty').text();
 	            if(empty)
 	            	continue;
@@ -42,7 +42,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            	}
 	            }
 	            item.action = id.length > 0?'UPDATE':'CREATE';
-	            cargo_items_array.push(item);
+	            account_items_array.push(item);
 	        }
 
 	        //add deleted items
@@ -52,19 +52,25 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                id: id,
 	                action: 'DELETE'
 	            };
-	            cargo_items_array.push(item);
+	            account_items_array.push(item);
 	        }
 	        deletedTableIds = [];
-	        return cargo_items_array;
+	        return account_items_array;
 	    };
+	    
+	    
+	    var bindFieldEvent=function(){
+	        eeda.bindTableFieldCurrencyId('account_table','CURRENCY_ID','/serviceProvider/searchCurrency','notRate');
+	    };
+	    
 	    
 
 	    //------------事件处理
 	    var accountTable = eeda.dt({
-            id: 'cargo_table',
+            id: 'account_table',
             autoWidth: false,
-            "drawCallback": function( settings ) {
-		        
+            drawCallback: function( settings ) {
+            	bindFieldEvent();
 		    },
             columns:[
 	            {"width": "5%",
@@ -86,11 +92,26 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                    return '<input type="text" name="BANK_NAME" value="'+data+'" class="form-control search-control" style="width:100%"/>';
 	                }
 	            },
-	            { "data": "ACCOUNT_NO","width": "25%",
+	            { "data": "ACCOUNT_NO","width": "20%",
 	                "render": function ( data, type, full, meta ) {
 	                   if(!data)
 	                	   data='';
 	                   return '<input type="text" name="ACCOUNT_NO" value="'+data+'" class="form-control search-control" style="width:100%"/>';
+	                }
+	            },
+	            { "data": "CURRENCY_ID", "width":"5%","className":"currency_name",
+	                "render": function ( data, type, full, meta ) {
+	            	   if(!data)
+	                       data='';
+	                   var field_html = template('table_dropdown_template',
+	                       {
+	                           id: 'CURRENCY_ID',
+	                           value: data,
+	                           display_value: full.CURRENCY_NAME,
+	                           style:'width:100%'
+	                       }
+	                   );
+	                   return field_html; 
 	                }
 	            },
 	            { "data": "REMARK","width": "20%",
@@ -99,7 +120,15 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	                	   data='';
 	                   return '<input type="text" name="REMARK" value="'+data+'" class="form-control search-control" style="width:100%"/>';
 	                }
+	            },
+	            { "data": "CURRENCY_NAME", "visible": false,
+	                "render": function ( data, type, full, meta ) {
+	                    if(!data)
+	                        data='';
+	                    return data;
+	                }
 	            }
+	            
 	        ]
 	    });
 	    
@@ -117,7 +146,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	    }
 	    
 	  //校验
-        $('#cargo_table').on('blur','[name=ACCOUNT_NAME],[name=BANK_NAME],[name=ACCOUNT_NO],[name=REMARK]',function(){
+        $('#account_table').on('blur','[name=ACCOUNT_NAME],[name=BANK_NAME],[name=ACCOUNT_NO],[name=REMARK]',function(){
         	var data = $(this).val();
         	var name = $(this).attr("name");
         	var len = $.trim(data).length;
@@ -150,7 +179,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         		}
         	}
         });
-        $('#cargo_table').on('focus','[name=ACCOUNT_NAME],[name=BANK_NAME],[name=ACCOUNT_NO],[name=REMARK]',function(){
+        $('#account_table').on('focus','[name=ACCOUNT_NAME],[name=BANK_NAME],[name=ACCOUNT_NO],[name=REMARK]',function(){
         	$(this).parent().find("span").remove();
         });
 	});

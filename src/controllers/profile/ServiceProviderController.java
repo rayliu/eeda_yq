@@ -3,6 +3,7 @@ package controllers.profile;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -35,6 +36,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.upload.UploadFile;
 
 import controllers.eeda.ListConfigController;
 import controllers.importOrder.CheckOrder;
@@ -106,8 +108,13 @@ public class ServiceProviderController extends Controller {
 		}else if("dock".equals(type)){
     		itemSql = "SELECT d.* FROM dockinfo d WHERE  d.party_type='serviceProvider' and d.party_id=? order by d.id";
     		itemList = Db.find(itemSql, id);
+		}else if("docItem".equals(type)){
+			itemSql = "select jod.*,u.c_name from party_doc jod left join user_login u on jod.uploader=u.id "
+        			+ " where jod.party_id=? order by jod.id";
+    		itemList = Db.find(itemSql, id);
     	}else {
-    		itemList = Db.find("SELECT * FROM fin_account WHERE order_id = ?",id);
+    		itemList = Db.find("SELECT fa.*,cy.code currency_name FROM fin_account fa "
+    				+ "LEFT JOIN currency cy on cy.id = fa.currency_id  WHERE order_id = ?",id);
 		}
 		return itemList;
     }
@@ -138,6 +145,7 @@ public class ServiceProviderController extends Controller {
         setAttr("user", LoginUserController.getLoginUser(this));
         setAttr("itemList", getItemDetail(id,""));
         setAttr("dockList", getItemDetail(id, "dock"));
+        setAttr("docList", getItemDetail(id, "docItem"));
         setAttr("contacts_itemList", getItemDetail(id,"contacts"));
         render("/eeda/profile/serviceProvider/serviceProviderEdit.html");
     }
@@ -241,6 +249,9 @@ public class ServiceProviderController extends Controller {
             party.save();
 
         }
+        
+        
+        
         String acount_json = getPara("acount_json");
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(acount_json, HashMap.class);  
@@ -248,6 +259,10 @@ public class ServiceProviderController extends Controller {
         String order_id = party.get("id").toString();
         List<Map<String, String>> acount = (ArrayList<Map<String, String>>)dto.get("acount_json");
 		DbUtils.handleList(acount, order_id, FinAccount.class, "order_id");
+		
+		//文档上传保存
+        List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("docItem");
+		DbUtils.handleList(itemList, "party_doc", id, "party_id");
 		
 		//保存联系人信息
 		List<Map<String, String>> contacts = (ArrayList<Map<String, String>>)dto.get("contacts_json");
@@ -893,7 +908,8 @@ public class ServiceProviderController extends Controller {
 //    	String d = sf.format(new Date());
     	List<Record> recs = null;
     	
-    	String sql = "select * from fin_account fa where order_id="+order_id;
+    	String sql = "select fa.*,cy.code currency_name from fin_account fa "
+    			+ "LEFT JOIN currency cy on cy.id = fa.currency_id where order_id="+order_id;
     	if(!StringUtils.isBlank(input)){
     		sql+=" and (fa.bank_name like '%" + input + "%') ";
     	}
@@ -1351,4 +1367,51 @@ public class ServiceProviderController extends Controller {
    		Record re = Db.findFirst(sql);
    		renderJson(re);
    	}
+   	
+    //删除相关文档
+    @Before(Tx.class)
+    public void deleteDoc(){
+    	String id = getPara("docId");
+    	Record r = Db.findById("party_doc", id);
+    	String fileName = r.getStr("doc_name");
+    	Map<String,Object> resultMap = new HashMap<String,Object>();
+    	
+    	String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\serviceProvider_doc\\"+fileName;
+        File file = new File(filePath);
+        if (file.exists() && file.isFile()) {
+            boolean result = file.delete();
+            Db.delete("party_doc", r);
+            resultMap.put("result", result);
+        }else{
+        	resultMap.put("result", "文件不存在可能已被删除!");
+        }
+        renderJson(resultMap);
+    }
+    
+    //上传相关文档
+    @Before(Tx.class)
+    public void saveDocFile(){
+    	String id = getPara("order_id");
+    	String type = getPara("type");
+    	List<UploadFile> fileList = getFiles("serviceProvider_doc");
+    	
+		for (int i = 0; i < fileList.size(); i++) {
+    		File file = fileList.get(i).getFile();
+    		String fileName = file.getName();
+    		
+    		Record r = new Record();
+    		r.set("party_id", id);
+			r.set("uploader", LoginUserController.getLoginUserId(this));
+			r.set("doc_name", fileName);
+			r.set("upload_time", new Date());
+			Db.save("party_doc",r);
+		}
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		resultMap.put("result", true);
+    	renderJson(resultMap);
+    }
+    
+   	
+   	
 }
