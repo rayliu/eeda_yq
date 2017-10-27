@@ -88,12 +88,7 @@ $(document).ready(function() {
                 $("#status").val(order.STATUS);
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-                $('#saveBtn').attr('disabled', false);
-                $('#confirmBtn').attr('disabled', false);
-                $('#printTotaledBtn').attr('disabled', false);
-                $('#printBtn').attr('disabled', false);
-                $('#add_charge').attr('disabled', false);
-                $('#query_listCurrency').attr('disabled', false);
+                $('#saveBtn,#confirmBtn,#printTotaledBtn,#printBtn,#add_charge,#exchange,#query_listCurrency,.itemEdit,.delete').attr('disabled', false);
                 //异步刷新明细表
                 itemOrder.refleshTable(order.ID);
             }else{
@@ -116,30 +111,18 @@ $(document).ready(function() {
     	$('#printTotaledBtn').attr('disabled', true);
 		$('#printBtn').attr('disabled', true);
 		$('#add_charge').attr('disabled', true);
-		$('#query_listCurrency').attr('disabled', true);
+		$('#query_listCurrency,.itemEdit,.delete').attr('disabled', true);
     }else{
     	if(status=='新建'){
-    		$('#saveBtn').attr('disabled', false);
-    		$('#confirmBtn').attr('disabled', false);
-    		$('#printTotaledBtn').attr('disabled', false);
-    		$('#printBtn').attr('disabled', false);
-    		$('#query_listCurrency').attr('disabled', false);
+    		$('#saveBtn,#confirmBtn,#printTotaledBtn,#printBtn,#add_charge,#exchange,#query_listCurrency,.itemEdit,.delete').attr('disabled', false);
     	}else if(status=='已确认'){
-            $('#printTotaledBtn').attr('disabled', false);
             $('#cancelConfirmBtn').attr('disabled', false);
-            $("#printBtn").attr('disabled', false);
-            $('#add_charge').attr("disabled",true);
-            $('.itemEdit').attr("disabled",true);
+            $('#add_charge,#saveBtn,#confirmBtn,#exchange').attr('disabled', true);
         }else if(status=='取消确认'){
-        	$('#saveBtn').attr('disabled', false);
-    		$('#confirmBtn').attr('disabled', false);
-    		$('#printTotaledBtn').attr('disabled', false);
-    		$('#printBtn').attr('disabled', false);
+        	$('#cancelConfirmBtn').attr('disabled', true);
+        	$('#add_charge,#saveBtn,#confirmBtn,#exchange').attr('disabled', false);
         }else{
-        	$('#add_charge').attr("disabled",true);
-            $('.delete').attr("disabled",true);
-            $('#cancelConfirmBtn').attr('disabled', true);
-            $('#printBtn').attr('disabled', false);
+        	$('#add_charge,#saveBtn,#confirmBtn,#exchange,#cancelConfirmBtn').attr('disabled', true);
         }
     }
     
@@ -149,14 +132,9 @@ $(document).ready(function() {
     	var id = $("#order_id").val();
     	 $.post('/chargeCheckOrder/confirm', {id:id}, function(data){
     		 if(data){
-    			 $('#saveBtn').attr('disabled', true);
-                 $('#printBtn').attr('disabled', false);
-                 $('.delete').attr('disabled', true);
-                 $('.itemEidt').attr('disabled', true);
-                 $('#add_charge').attr('disabled', true);
-                 $('.itemEdit').attr("disabled",true);
+    			 $('#cancelConfirmBtn').attr('disabled', false);
+                 $('.delete,.itemEdit,#add_charge,#saveBtn,#confirmBtn,#exchange').attr('disabled', true);
                  $("#status").val('已确认');
-                 $('#printTotaledBtn').attr('disabled', false);
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
@@ -243,12 +221,7 @@ $(document).ready(function() {
     			$("#status").val('取消确认');
     			$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
     			$('#cancelConfirmBtn').attr('disabled', true);
-    			$('#confirmBtn').attr('disabled', false);
-    			$('#saveBtn').attr('disabled', false);
-    			$('#printBtn').attr('disabled', false);
-    			$('#add_charge').attr('disabled', false);
-    			$('.delete').attr('disabled', false);
-    			$('.itemEdit').attr('disabled', false);
+    			$('.delete,.itemEdit,#add_charge,#saveBtn,#confirmBtn,#exchange').attr('disabled', false);
     		}else{
     			$.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
     		}
