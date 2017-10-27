@@ -1147,10 +1147,10 @@ public class TradeCostRequestController extends Controller {
     	String itemid=getPara("cost_itemid");
     	if(itemid !=null&& appOrderId!=null){
     		 Db.deleteById("trade_cost_application_order_rel","job_order_arap_id,application_order_id",itemid,appOrderId);
-    		 Record re = Db.findFirst("select * from trade_arap_cost_item where ref_order_id=?",itemid);
-			 Long cost_order_id=re.getLong("cost_order_id");
-    		 TradeArapCostOrder arapCostOrder = TradeArapCostOrder.dao.findById(cost_order_id);
-    		 arapCostOrder.set("audit_status", "新建").update();
+    		 //Record re = Db.findFirst("select * from trade_arap_cost_item where ref_order_id=?",itemid);
+			 //Long cost_order_id=re.getLong("cost_order_id");
+			 //TradeArapCostOrder arapCostOrder = TradeArapCostOrder.dao.findById(cost_order_id);
+			 // arapCostOrder.set("audit_status", "新建").update();
     		 
     		 TradeJobOrderArap jobOrderArap = TradeJobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("create_flag", "N");

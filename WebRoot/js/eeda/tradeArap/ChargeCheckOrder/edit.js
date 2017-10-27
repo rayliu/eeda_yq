@@ -46,7 +46,7 @@ $(document).ready(function() {
     	return items_array;
     }
     
-    //删除按钮动作
+    //退单按钮动作
     $("#refuseBtn").click(function(){
         var id = $('#order_id').val();
         $('#delete_id').val(id);
@@ -65,7 +65,8 @@ $(document).ready(function() {
             $('#deleteReasonDetail .return').click();
             $('#return_reason').val($("#deleteReason").val());
             $('#status').val("已退单");
-            $('#confirmBtn').attr('disabled', true);
+            $('#confirmBtn,#refuseBtn').attr('disabled', true);
+            $('#saveBtn').attr('disabled', false);
             $.scojs_message('退单成功', $.scojs_message.TYPE_OK);
         },'json').fail(function() {
             $.scojs_message('退单失败', $.scojs_message.TYPE_ERROR);
@@ -103,9 +104,8 @@ $(document).ready(function() {
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                 $('#saveBtn').attr('disabled', false);
                 $('#confirmBtn').attr('disabled', false);
-                $('#printTotaledBtn').attr('disabled', false);
-                $('#printBtn').attr('disabled', false);
-                $('#refuseBtn').attr('disabled', false);              
+                $('#refuseBtn').attr('disabled', false);
+                $('#add_charge').attr('disabled', false);  
                 //异步刷新明细表
                 itemOrder.refleshTable(order.ID);
             }else{
@@ -124,26 +124,36 @@ $(document).ready(function() {
     var status = $("#status").val()
     if(order_id==""){
     	$('#saveBtn').attr('disabled', false);
-    	$('#add_charge').prop('disabled',true);
     	$('#query_listCurrency').prop('disabled',true);
-    	$('#refuseBtn').attr('disabled', true);
+        $('#printBtn,#printTotaledBtn').attr('disabled', true);
     }else{
     	if(status=='新建'){
     		$('#saveBtn').attr('disabled', false);
-    		$('#confirmBtn').attr('disabled', false); 	
-    	}
-    	if(status=='已退单'){
+    		$('#confirmBtn').attr('disabled', false); 
+    		$('#refuseBtn').attr('disabled', false);
+    		$('.itemEdit,.delete,#add_charge,#exchange,#query_listCurrency').attr('disabled', false);
+    	}else if(status=='已退单'){
     		$('#saveBtn').attr('disabled', false);
+    		$('#confirmBtn').attr('disabled', true);
+    		$('#refuseBtn').attr('disabled', true);
+    		$('.itemEdit,.delete,#add_charge,#exchange,#query_listCurrency').attr('disabled', false);
+    	}else if(status == "已确认"){
+    		$('#cancelConfirmBtn').attr('disabled', false);
+    		$('#saveBtn').attr('disabled', true);
     		$('#confirmBtn').attr('disabled', true); 
-    		$('.itemEdit').attr('disabled', true);
-    	}
-    	if(status == "已收款"||status == "已确认"||status == "收款申请中"){
             $('#refuseBtn').attr('disabled', true);
+            $('.itemEdit,.delete,#add_charge,#exchange').attr('disabled', true);
+        }else if(status == "取消确认"){
+        	$('#cancelConfirmBtn').attr('disabled', true);
+    		$('#saveBtn').attr('disabled', false);
+    		$('#confirmBtn').attr('disabled', false); 
+            $('#refuseBtn').attr('disabled', false);
+            $('.itemEdit,.delete,#add_charge,#exchange,#query_listCurrency').attr('disabled', false);
+        }else{
+        	$('.delete,.itemEdit,#add_charge,#refuseBtn,#exchange').prop('disabled',true);
+        	$('#saveBtn,#confirmBtn,#cancelConfirmBtn').prop('disabled',true);
+    		$('#query_listCurrency').prop('disabled',false);
         }
-    	$('#printTotaledBtn').attr('disabled', false);
-		$('#printBtn').attr('disabled', false); 
-		$('#add_charge').prop('disabled',false);
-		$('#query_listCurrency').prop('disabled',false);
     }
     
     //确认单据
@@ -153,13 +163,9 @@ $(document).ready(function() {
     	 $.post('/tradeChargeCheckOrder/confirm', {id:id}, function(data){
     		 if(data){
     			 $('#saveBtn').attr('disabled', true);
-                 $('.delete').attr('disabled', true);
-                 $('#add_charge').attr('disabled', true);
-                 $('#refuseBtn').attr('disabled', true);
-                 $('.itemEdit').attr('disabled', true);
+                 $('.delete,.itemEdit,#add_charge,#refuseBtn,#exchange').attr('disabled', true);
                  $("#status").val('已确认');
-                 $('#printTotaledBtn').attr('disabled', false);
-                 $('#printBtn').attr('disabled', false); 
+                 $('#cancelConfirmBtn').attr('disabled', false);
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_stamp").val(data.CONFIRM_STAMP); 
     			 $.scojs_message('确认成功', $.scojs_message.TYPE_OK);
@@ -171,7 +177,22 @@ $(document).ready(function() {
          });
     })
     
-    
+    //取消确认单据
+        $("#cancelConfirmBtn").click(function(){
+    	var id = $("#order_id").val();
+    	$.post("/tradeChargeCheckOrder/cancelConfirm",{id:id},function(data){
+    		if(data){
+    			$("#status").val('取消确认');
+    			$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
+    			$('#cancelConfirmBtn').attr('disabled', true);
+    			$('#confirmBtn').attr('disabled', false);
+    			$('#saveBtn').attr('disabled', false);
+    			$('.delete,.itemEdit,#refuseBtn,#add_charge,#exchange').attr('disabled', false);
+    		}else{
+    			$.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	})
+    });
     //打印应收对账明细
     $('#printBtn').click(function(){
     	var order_id = $('#order_id').val();

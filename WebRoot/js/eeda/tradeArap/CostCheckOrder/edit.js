@@ -70,10 +70,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                     
                     eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-                    $('#saveBtn').attr('disabled', false);
-                    $('#confirmBtn').attr('disabled', false);
-                    $('#exchange').attr('disabled',false);
-                    $('#add_cost').prop('disabled',false);
+                    $('#refuseBtn,#add_cost,#exchange,#confirmBtn,#saveBtn').attr('disabled',false);
                     //异步刷新明细表
                     itemOrder.refleshTable(order.ID);
                 }else{
@@ -96,29 +93,36 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                 if(status=='新建'){
                     $('#saveBtn').attr('disabled', false);
                     $('#confirmBtn').attr('disabled', false);
-                             
-                }else if(status=='已确认'){
-                    $('#add_cost').attr("disabled",true);
-                    $('.delete').attr("disabled",true);
+                    $('#refuseBtn').attr('disabled', false);
+                    $('.itemEdit,.delete,#add_cost,#exchange,#query_listCurrency').attr('disabled', false);
                 }else if(status=='已退单'){
-            		$('#saveBtn').attr('disabled', false);
-            		$('#confirmBtn').attr('disabled', true); 
-            		$('.itemEdit').attr('disabled', true);
+                	$('#confirmBtn,#refuseBtn').attr('disabled', true); 
+            		$('#saveBtn,#exchange').attr('disabled', false);
+            	}else if(status=='已确认'){
+            		$('.itemEdit,.delete,#add_cost,#exchange,#confirmBtn,#refuseBtn,#saveBtn').attr('disabled', true);
+                    $('#cancelConfirmBtn').attr("disabled",false);
+                }else if(status=='取消确认'){
+                	$('.itemEdit,.delete,#add_cost,#exchange,#confirmBtn,#refuseBtn,#saveBtn').attr('disabled', false);
+                	$('#cancelConfirmBtn').attr("disabled",true);
+                }else{
+            		$('#add_cost').attr("disabled",true);
+            		$('.delete').attr("disabled",true);
+                    $('.itemEdit').attr("disabled",true);
+            		$('#cancelConfirmBtn').attr('disabled', true);
+                    $('#printBtn').attr('disabled', false);
+                    $('#query_listCurrency').prop('disabled',false);
             	}
-                $('#printBtn').attr('disabled', false);
-                $('#query_listCurrency').prop('disabled',false);
+                
             }
         
+         //确认单据
         $('#confirmBtn').click(function(){
         	$(this).attr('disabled', true);
         	var id = $('#id').val();
         	 $.post('/tradeCostCheckOrder/confirm', {id:id}, function(data){
         		 if(data){
-	    			 $('#saveBtn').attr('disabled', true);
-                     $('#printBtn').attr('disabled', true);
-                     $('.delete').attr('disabled', true);
-                     $('#add_cost').attr('disabled', true);
-                     $('#refuseBtn').attr('disabled', true);
+        			 $('.itemEdit,.delete,#add_cost,#exchange,#confirmBtn,#refuseBtn,#saveBtn').attr('disabled', true);
+                     $('#cancelConfirmBtn').attr("disabled",false);
                      $("#status").val(data.STATUS);
 	    			 $('#confirm_name').val(data.CONFIRM_BY_NAME);
 	    			 $('#confirm_stamp').val(data.CONFIRM_STAMP);
@@ -129,14 +133,23 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
                  $(this).attr('disabled', false);
 	           });
         })
+        //取消确认单据
+        $("#cancelConfirmBtn").click(function(){
+    	var id = $("#id").val();
+    	$.post("/tradeCostCheckOrder/cancelConfirm",{id:id},function(data){
+    		if(data){
+    			$("#status").val('取消确认');
+    			$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
+    			$('.itemEdit,.delete,#add_cost,#exchange,#confirmBtn,#refuseBtn,#saveBtn').attr('disabled', false);
+        		$('#cancelConfirmBtn').attr("disabled",true);
+    			$('.itemEdit,.delete,#add_cost,#exchange,#confirmBtn,#refuseBtn,#saveBtn').attr('disabled', false);
+    		}else{
+    			$.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	})
+    });
         
-        
-        var status = $("#status").val()
-        if(status == "已收款"||status == "已确认"||status == "收款申请中"){
-            $('#refuseBtn').attr('disabled', true);
-        }
-        
-            //删除按钮动作
+     //退单按钮动作
     $("#refuseBtn").click(function(){
         var id = $('#order_id').val();
         $('#delete_id').val(id);
@@ -156,7 +169,7 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
         	$("#status").val("已退单");
             $('#deleteReasonDetail .return').click();
             $.scojs_message('退单成功', $.scojs_message.TYPE_OK);
-            $('#confirmBtn').attr('disabled',true);
+            $('#confirmBtn,#refuseBtn').attr('disabled',true);
         },'json').fail(function() {
             $.scojs_message('退单失败', $.scojs_message.TYPE_ERROR);
         });

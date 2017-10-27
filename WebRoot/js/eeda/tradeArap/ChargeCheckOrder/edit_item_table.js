@@ -64,12 +64,12 @@ $(document).ready(function() {
                      }
                     return str;*/
             	  var str = '';
-                  if($("#status").val()=='已确认'){
-                 	 str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px;" disabled >删除</button>&nbsp'
-                      str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;" disabled >编辑</button>';                         
+                  if($("#status").val()=='新建'||$("#status").val()=='已退单'){
+                 	 str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px;" >删除</button>&nbsp'
+                      str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;" >编辑</button>';                         
                   }else{                    	
-                     str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px" >删除</button>&nbsp'
-                     str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;"  >编辑</button>';
+                     str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px" disabled>删除</button>&nbsp'
+                     str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;" disabled>编辑</button>';
                   }
                  return str;
                 }
@@ -274,7 +274,7 @@ $(document).ready(function() {
                 $.unblockUI();
             },
             columns:[
-                { "data": "SP_ID","width": "80px",
+                { "data": "SP_ID","width": "110px",
                     "render": function ( data, type, full, meta ) {
                     	if(full.AUDIT_FLAG == 'Y'){
                     		if(!data)
@@ -284,7 +284,7 @@ $(document).ready(function() {
                                     id: 'SP_ID',
                                     value: data,
                                     display_value: full.SP_NAME,
-                                    style:'width:120px',
+                                    style:'width:110px',
                                     disabled:'disabled'
                                 }
                             );
@@ -297,14 +297,14 @@ $(document).ready(function() {
                                 id: 'SP_ID',
                                 value: data,
                                 display_value: full.SP_NAME,
-                                style:'width:120px'
+                                style:'width:110px'
                             }
                         );
                         return field_html;
                      }
                    }
                 },
-                { "data": "CHARGE_ID","width": "80px",
+                { "data": "CHARGE_ID","width": "110px",
                     "render": function ( data, type, full, meta ) {
                     	if(full.AUDIT_FLAG == 'Y'){
                     		if(!data)
@@ -314,7 +314,7 @@ $(document).ready(function() {
                                     id: 'CHARGE_ID',
                                     value: data,
                                     display_value: full.CHARGE_NAME,
-                                    style:'width:120px'
+                                    style:'width:110px'
                                 }
                             );
                             return field_html;
@@ -326,14 +326,14 @@ $(document).ready(function() {
                                 id: 'CHARGE_ID',//对应数据库字段
                                 value: data,
                                 display_value: full.CHARGE_NAME,
-                                style:'width:120px'
+                                style:'width:110px'
                             }
                         );
                         return field_html;
                     }
                   }
                 },
-                { "data": "PRICE", "width": "50px",
+                { "data": "PRICE", "width": "70px",
                     "render": function ( data, type, full, meta ) {
                     	if(data)
                             var str =  parseFloat(data).toFixed(2);
@@ -346,7 +346,7 @@ $(document).ready(function() {
                          }
                    }
                 },
-                { "data": "AMOUNT","width": "50px",
+                { "data": "AMOUNT","width": "70px",
                     "render": function ( data, type, full, meta ) {
                     	if(!data)
                             data='1';
@@ -357,7 +357,7 @@ $(document).ready(function() {
     	                 }
                   }
                 },
-                { "data": "UNIT_ID","width": "60px",
+                { "data": "UNIT_ID","width": "80px",
                     "render": function ( data, type, full, meta ) {
                     	if(full.AUDIT_FLAG == 'Y'){
                     	 if(!data)
@@ -388,7 +388,7 @@ $(document).ready(function() {
                     }
                   }
                 },
-                { "data": "TOTAL_AMOUNT", "width": "60px","className":"currency_total_amount",
+                { "data": "TOTAL_AMOUNT", "width": "70px","className":"currency_total_amount",
                     "render": function ( data, type, full, meta ) {
                     	if(data)
                             var str =  parseFloat(data).toFixed(3);
@@ -398,7 +398,7 @@ $(document).ready(function() {
                     	
                     }
                 },
-                { "data": "CURRENCY_ID", "width":"60px","className":"currency_name",
+                { "data": "CURRENCY_ID", "width":"70px","className":"currency_name",
                     "render": function ( data, type, full, meta ) {
                     	if(full.AUDIT_FLAG == 'Y'){
     	                	if(!data)
@@ -427,7 +427,7 @@ $(document).ready(function() {
                     }
                   }
                 },
-                { "data": "EXCHANGE_RATE", "width": "80px",
+                { "data": "EXCHANGE_RATE", "width": "90px",
                     "render": function ( data, type, full, meta ) {
                     	if(data)
                             var str =  parseFloat(data).toFixed(6);
@@ -440,7 +440,7 @@ $(document).ready(function() {
                    }
                   }
                 },
-                { "data": "CURRENCY_TOTAL_AMOUNT", "width": "110px","className":"cny_total_amount",
+                { "data": "CURRENCY_TOTAL_AMOUNT", "width": "120px","className":"cny_total_amount",
                     "render": function ( data, type, full, meta ) {
                     	if(data)
                             var str =  (Math.round(data*100)/100).toFixed(2);
@@ -449,7 +449,7 @@ $(document).ready(function() {
     	                return '<input type="text" name="currency_total_amount" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
                   }
                 },
-                { "data": "EXCHANGE_CURRENCY_ID", "width":"60px","className":"cny_to_other",
+                { "data": "EXCHANGE_CURRENCY_ID", "width":"70px","className":"cny_to_other",
                 	"render": function ( data, type, full, meta ) {
                 		if(full.AUDIT_FLAG == 'Y'){
                 			if(!data)
@@ -478,7 +478,7 @@ $(document).ready(function() {
                 		}
                 	}
                 },
-                { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px","className":"exchange_currency_rate",
+                { "data": "EXCHANGE_CURRENCY_RATE", "width": "80px","className":"exchange_currency_rate",
                 	"render": function ( data, type, full, meta ) {
                 		if(data)
                 			var str =  parseFloat(data).toFixed(6);
@@ -491,7 +491,7 @@ $(document).ready(function() {
                 		}
                 	}
                 },
-                { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px","className":"exchange_total_amount",
+                { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "70px","className":"exchange_total_amount",
                 	"render": function ( data, type, full, meta ) {
                 		if(data)
                 			var str =  (Math.round(data*100)/100).toFixed(2);
@@ -500,7 +500,7 @@ $(document).ready(function() {
                 		return '<input type="text" name="exchange_total_amount" style="width:70px" value="'+str+'" class="form-control notsave" disabled />';
                 	}
                 },
-                { "data": "EXCHANGE_CURRENCY_RATE_RMB", "width": "80px", "className":"exchange_currency_rate_rmb",
+                { "data": "EXCHANGE_CURRENCY_RATE_RMB", "width": "90px", "className":"exchange_currency_rate_rmb",
                     "render": function ( data, type, full, meta ) {
                         if(data)
                             var str =  parseFloat(data).toFixed(6);
@@ -513,7 +513,7 @@ $(document).ready(function() {
                         }
                     }
                 },
-                { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "110px","className":"exchange_total_amount_rmb",
+                { "data": "EXCHANGE_TOTAL_AMOUNT_RMB", "width": "120px","className":"exchange_total_amount_rmb",
                     "render": function ( data, type, full, meta ) {
                         if(data)
                             var str =  parseFloat(data).toFixed(2);
@@ -522,7 +522,7 @@ $(document).ready(function() {
                         return '<input type="text" name="exchange_total_amount_rmb" style="width:120px" value="'+str+'" class="form-control notsave" disabled />';
                     }
                 },
-                { "data": "RMB_DIFFERENCE", "width": "60px","className":"rmb_difference",
+                { "data": "RMB_DIFFERENCE", "width": "70px","className":"rmb_difference",
                     "render": function ( data, type, full, meta ) {
                         if(data)
                             var str =  parseFloat(data).toFixed(2);
@@ -536,11 +536,11 @@ $(document).ready(function() {
                     	if(full.AUDIT_FLAG == 'Y'){
     	                    if(!data)
     	                        data='';
-    	                    return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" />';
+    	                    return '<input type="text" name="remark" style="width:150px" value="'+data+'" class="form-control notsave" />';
     	                }else{
     	            	   if(!data)
     	                       data='';
-    	                   return '<input type="text" name="remark" style="width:200px" value="'+data+'" class="form-control notsave" />';
+    	                   return '<input type="text" name="remark" style="width:150px" value="'+data+'" class="form-control notsave" />';
     	                }
                    }
                 }, 

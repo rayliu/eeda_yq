@@ -11,6 +11,7 @@ import java.util.Map;
 
 import models.eeda.tr.tradeJoborder.TradeArapChargeItem;
 import models.eeda.tr.tradeJoborder.TradeArapChargeOrder;
+import models.eeda.tr.tradeJoborder.TradeArapCostOrder;
 import models.RateContrast;
 import models.UserLogin;
 import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
@@ -737,6 +738,32 @@ public class TradeChargeCheckOrderController extends Controller {
 		r.set("confirm_by_name", LoginUserController.getUserNameById(aco.getLong("confirm_by")));
 		renderJson(r);
 	}
+    
+    public void cancelConfirm(){
+   	 String id = getPara("id");
+   	 long office_id = LoginUserController.getLoginUser(this).getLong("office_id");
+   	 Date action_time = new Date();
+   	 String action = "cancelConfirm";
+   	 String order_type = "tradeChargeCheckOrder";
+   	 //保存进状态审核表
+   	 Record re = new Record();
+   	 re.set("order_id", id);
+   	 re.set("user_id", office_id);
+   	 re.set("action_time", action_time);
+   	 re.set("action",action);
+   	 re.set("order_type", order_type);
+   	 Db.save("status_audit", re);
+   	 //更新arap_charge_order表的状态
+   	 TradeArapChargeOrder aco = TradeArapChargeOrder.dao.findById(id);
+		 aco.set("status","取消确认");
+		 aco.update();
+		//更新job_order_arap表的billConfirm_flag设为'N'(变回未确认状态)
+		 String sql="UPDATE trade_job_order_arap joa set billConfirm_flag='N' "
+					+"where joa.id in (select aci.ref_order_id FROM trade_arap_charge_item aci where charge_order_id="+id+" )";
+		 Db.update(sql);
+		 
+		 renderJson(true);
+   }
     
     //编辑
     public void chargeEdit(){

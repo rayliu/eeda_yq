@@ -1262,10 +1262,10 @@ public class TradeChargeRequestController extends Controller {
     	String itemid=getPara("charge_itemid");
     	if(itemid !=null&& appOrderId!=null){
     		 Db.deleteById("trade_charge_application_order_rel","job_order_arap_id,application_order_id",itemid,appOrderId);
-    		 Record re = Db.findFirst("select * from trade_arap_charge_item where ref_order_id=?",itemid);
-			 Long charge_order_id=re.getLong("charge_order_id");
-    		 TradeArapChargeOrder arapChargeOrder = TradeArapChargeOrder.dao.findById(charge_order_id);
-    		 arapChargeOrder.set("audit_status", "新建").update();
+    		 //Record re = Db.findFirst("select * from trade_arap_charge_item where ref_order_id=?",itemid);
+			 //Long charge_order_id=re.getLong("charge_order_id");
+    		 //TradeArapChargeOrder arapChargeOrder = TradeArapChargeOrder.dao.findById(charge_order_id);
+    		 //arapChargeOrder.set("audit_status", "新建").update();
     		 
     		 TradeJobOrderArap jobOrderArap = TradeJobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("create_flag", "N");

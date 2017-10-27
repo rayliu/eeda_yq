@@ -243,7 +243,7 @@
                 </div>
 	        </div>
 	        <div class="table_btn_bar">
-	        	<button class="guide_target2 btn btn_blue" id="add_charge">添加明细</button> 
+	        	<button class="guide_target2 btn btn_blue" id="add_charge" disabled>添加明细</button> 
 	        </div><br/>
 
 	        </div>
@@ -287,13 +287,13 @@
 		<div class="col-lg-12">
 			<br>
 			<button id='saveBtn' class="btn  btn_green" disabled >保存</button> 
-			<button id='refuseBtn' class="btn  btn_red guide_confrimBtn" >退单</button> 
+			<button id='refuseBtn' class="btn  btn_red guide_confrimBtn" disabled>退单</button> 
 			<% if(shiro.hasPermission("tradeChargeCheckOrder.confirm")){%>
                         <button id="confirmBtn" type="button" class="guide_target3 btn btn_green" disabled>确认</button>
             <%}%>
-            
-			<button id="printBtn" type="button" class="btn  btn_white" disabled >生成明细对账单(PDF)</button>
-			<button id="printTotaledBtn" type="button" class="btn  btn_white" disabled >生成合计对账单(PDF)</button>			
+            <button id="cancelConfirmBtn" type="button" class="btn btn_green guide_target4" disabled>取消确认</button>
+			<button id="printBtn" type="button" class="btn  btn_white" >生成明细对账单(PDF)</button>
+			<button id="printTotaledBtn" type="button" class="btn  btn_white" >生成合计对账单(PDF)</button>			
 			<a class="btn  btn_white" href="/tradeChargeCheckOrder">返回</a>
 			<a href="/tradeChargeRequest/create" class="btn btn_green" type="button" >创建申请单</a>
 		</div>
@@ -403,7 +403,7 @@
 		<%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'charge_table',
-                                    style:'width:1400px',
+                                    style:'width:1700px',
                                     headers:['结算公司', '费用名称','单价', '数量', '单位','对账金额','对账币制', '对人民币汇率', '对账金额(人民币)','结算币制','结算汇率','结算金额','对人民币汇率','结算金额(人民币)','汇兑损益','备注',
                                     'sp_name', 'charge_name','unit_name','currency_name','audit_flag'],
                                     field_list:['sp_id', 'charge_id', 'price', 'amount', 'unit_id', 'total_amount','currency_id',

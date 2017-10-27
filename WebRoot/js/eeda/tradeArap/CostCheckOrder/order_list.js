@@ -18,7 +18,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
            	  }
             },
             { "data": "CREATE_STAMP"},
-            { "data": "STATUS"},
+            { "data": "TOSTATUS",
+            	"render":function(data,type,full,meta){
+                    if(data=="已退单"){
+                    	return '<span style="color:red">已退单</span>';
+                    }
+                    return data;
+                  }
+            },
             { "data": "SP_NAME"},
             { "data": "TOTAL_AMOUNT","visible":false},
             { "data": "CNY",
@@ -44,7 +51,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 var usd_str=eeda.numFormat(parseFloat(data).toFixed(2),3);
                 return usd_str;
               }
-            }
+            },
+            { "data": "RETURN_REASON"}
           ]
       });
 
@@ -79,7 +87,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		               +"&create_stamp_end_time="+end_date
 		               +"&order_export_date_begin_time="+order_export_date_begin_time
 		               +"&order_export_date_end_time="+order_export_date_end_time
-          			   +"&status="+status;
+          			   +"&toStatus_equals="+status;
 
           dataTable.ajax.url(url).load();
       };
