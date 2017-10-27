@@ -104,8 +104,9 @@
             </ul>
         </nav>
         <div style="text-align:center;">
-        	<span id="headShow" style="position: absolute;background-color:yellor; margin-top:5px;z-index:1;color:white;cursor: pointer;">
-        	隐藏头部</span>
+        	<span id="headShow" style="width:50px;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;position: absolute;background-color: rgba(241, 241, 241, 0.3); margin-top:-5px;z-index:1;color:white;cursor: pointer;">
+        	   <i id='hide_header_icon' class="fa fa-angle-up fa-2x"></i>
+            </span>
         	
         </div>
         <!-- /.navbar-static-top -->
@@ -195,32 +196,36 @@
 <script>
 $(document).ready(function() {
 	$('#headShow').on('click',function(){
-		var value= $('#headShow').text();
-		if(value == '隐藏头部'){
+        var is_head_show = '';
+        if(!!window.localStorage){
+            is_head_show = localStorage.getItem('headDiv');
+        }
+		
+		if(is_head_show == 'show'){
 			if(!!window.localStorage){
 				localStorage.setItem("headDiv","hide");
 			}
-			$('#headShow').text("显示头部")
+			$('#hide_header_icon').removeClass('fa-angle-up').addClass('fa-angle-down');
 			$('#headDiv').hide();
 		}else{
 			if(!!window.localStorage){
 				localStorage.setItem("headDiv","show");
 			}
-			$('#headShow').text("隐藏头部")
+			$('#hide_header_icon').removeClass('fa-angle-down').addClass('fa-angle-up');
 			$('#headDiv').show();
 		}
 	});
 	
-	var headDiv = ';'
+	var headDiv = '';
 	if(!!window.localStorage){
 	 	headDiv = localStorage.getItem('headDiv');
 	}
 
 	if(headDiv == 'hide'){
-		$('#headShow').text("显示头部")
+		$('#hide_header_icon').removeClass('fa-angle-up').addClass('fa-angle-down');
 		$('#headDiv').hide();
 	}else if(headDiv == 'show'){
-		$('#headShow').text("隐藏头部")
+		$('#hide_header_icon').removeClass('fa-angle-down').addClass('fa-angle-up');
 		$('#headDiv').show();
 	}
 })
