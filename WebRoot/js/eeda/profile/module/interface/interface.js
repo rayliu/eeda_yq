@@ -152,6 +152,7 @@ define(['jquery', './interface_source', './interface_cols', './interface_filter'
             current_tr = $('#interface_table tr:eq('+current_tr_index+')');
         });
         
+        /*
         $('#field_type').change(function(event) {
           var checkText=$(this).find("option:selected").text();  //获取Select选择的Text
           $('.config').hide();
@@ -168,6 +169,7 @@ define(['jquery', './interface_source', './interface_cols', './interface_filter'
             $('.ref_config').show();
           }
         });
+        */
 
         //回写到table
         $('#interface_confirmFieldBtn').click(function(){

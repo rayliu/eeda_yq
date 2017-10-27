@@ -1,5 +1,5 @@
-define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref', './fields/field_pro_ref'], 
-  function ($, checkboxCont, detailTableCont, refCont) {
+define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref', './fields/field_pro_ref', './fields/field_pro_auto_no'], 
+  function ($, checkboxCont, detailTableCont, refCont, autoNoCont) {
     
 
         var dataTable = eeda.dt({
@@ -45,6 +45,8 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
               //清空所有属性
               $('#check_box_id').val('');
               checkboxCont.dataTable.clear().draw();
+            }else if(data.FIELD_TYPE == '自动编号'){
+                re_display_auto_no_values(data);
             }else if(data.FIELD_TYPE == '复选框'){
                 re_display_checkbox_values(data);
             }else if(data.FIELD_TYPE == '从表引用'){
@@ -66,6 +68,25 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
           return false;
         });
 
+        var re_display_auto_no_values = function(data) {
+          var ref = data.AUTO_NO;
+          $('#auto_no_id').val(ref.ID);
+
+          if(ref.IS_GEN_BEFORE_SAVE == 'Y'){
+            $('#is_gen_before_save').prop('checked', true);
+          }else{
+            $('#is_gen_before_save').prop('checked', false);
+          }
+          var display_list = ref.ITEM_LIST;
+          autoNoCont.dataTable.clear().draw();
+          if(display_list){
+            for (var i = 0; i < display_list.length; i++) {
+                var item = display_list[i];
+                autoNoCont.dataTable.row.add(item).draw(false);
+            }
+          }
+        };
+
         var re_display_ref_values = function(data) {
           var ref = data.REF;
           $('#ref_id').val(ref.ID);
@@ -86,7 +107,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
                 refCont.dataTable.row.add(item).draw(false);
             }
           }
-        }
+        };
 
         var re_display_detail_ref_values = function(data) {
           var detail_ref = data.DETAIL_REF;
@@ -180,6 +201,9 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
           $('.config').hide();
           if(checkText == '文本'){
             $('#text_config').show();
+          }else if (checkText == '自动编号') {
+            //autoNoCont.dataTable.clear().draw();
+            $('.auto_no_config').show();
           }else if (checkText == '复选框') {
             checkboxCont.dataTable.clear().draw();
             $('.check_box_config').show();
@@ -207,6 +231,9 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             var checkText=$('#field_type').find("option:selected").text();
             if(checkText == '文本'){
               
+            }else if (checkText == '自动编号') {
+              var auto_no_dto = autoNoCont.buildDto();
+              item.AUTO_NO = auto_no_dto;
             }else if (checkText == '复选框') {
               var check_dto = checkboxCont.buildDto();
               item.CHECK_BOX = check_dto;

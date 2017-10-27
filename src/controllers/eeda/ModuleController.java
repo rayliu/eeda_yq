@@ -868,6 +868,17 @@ public class ModuleController extends Controller {
             String type = field.getStr("field_type");
             if ("复选框".equals(type)) {
                 buildCheckBox(field);
+            }else if ("自动编号".equals(type)) {
+                Record ref = Db
+                        .findFirst(
+                                "select * from eeda_form_field_type_auto_no where field_id=?",
+                                field.get("id"));
+                List<Record> item_list = Db
+                        .find("select * from eeda_form_field_type_auto_no_item where field_id=?",
+                                field.get("id"));
+                if (item_list.size() > 0)
+                    ref.set("item_list", item_list);
+                field.set("auto_no", ref);
             }else if ("从表引用".equals(type)) {
                 Record ref = Db
                         .findFirst(

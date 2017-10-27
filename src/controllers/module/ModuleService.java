@@ -21,6 +21,7 @@ public class ModuleService {
     }
     
     @SuppressWarnings({ "unused", "unchecked" })
+    @Before(Tx.class)
     public void saveInterface(Map<String, ?> dto, Long form_id) {
         List<Map<String, String>> interface_list = (ArrayList<Map<String, String>>) dto.get("interface");
         
@@ -66,8 +67,8 @@ public class ModuleService {
             //处理数据源
             Map<String, ?> source = (Map<String, ?>) interfaceObj
                     .get("SOURCE");
-            handleBlocks(source, interface_id);
-            handleJoins(source, interface_id);
+            //handleBlocks(source, interface_id);
+//            handleJoins(source, interface_id);
 
             //处理数据列
             handleInterfaceCols(interfaceObj, interface_id);
@@ -353,6 +354,8 @@ public class ModuleService {
         String fieldType = (String) field.get("field_type".toUpperCase());
         if ("复选框".equals(fieldType)) {
             saveCheckBox(field, field_id);
+        }else if ("自动编号".equals(fieldType)) {
+            saveAutoNo(field, field_id);
         }else if ("从表引用".equals(fieldType)) {
             saveDetailRef(field, field_id);
         }else if ("字段引用".equals(fieldType)) {
@@ -409,7 +412,52 @@ public class ModuleService {
         }
         
     }
+    
+    private void saveAutoNo(Map<String, ?> field, Long field_id) {
+        Long fieldId = field_id;
 
+        Map<String, ?> fieldTypeObj = (Map<String, ?>) field
+                .get("auto_no".toUpperCase());
+        Object checkId = fieldTypeObj.get("id".toUpperCase());
+        String is_gen_before_save = (String) fieldTypeObj
+                .get("is_gen_before_save".toUpperCase());
+       
+        Record rec = new Record();
+        if (!(checkId instanceof java.lang.Double)) {
+            rec.set("field_id", fieldId);
+            rec.set("is_gen_before_save", is_gen_before_save);
+            Db.save("eeda_form_field_type_auto_no", rec);
+        } else {
+            rec = Db.findById("eeda_form_field_type_checkbox", checkId);
+            rec.set("field_id", fieldId);
+            rec.set("is_gen_before_save", is_gen_before_save);
+            Db.update("eeda_form_field_type_auto_no", rec);
+        }
+
+        List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
+                .get("item_list".toUpperCase());
+        for (Map<String, ?> item : list) {
+            Object id = item.get("id".toUpperCase());
+            String type = (String) item.get("type".toUpperCase());
+            String value = (String) item.get("value".toUpperCase());
+           
+            Record itemRec = new Record();
+            if (!(id instanceof java.lang.Double)) {
+                itemRec.set("field_id", fieldId);
+                itemRec.set("type", type);
+                itemRec.set("value", value);
+                Db.save("eeda_form_field_type_auto_no_item", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_field_type_auto_no_item",
+                        id);
+                itemRec.set("field_id", fieldId);
+                itemRec.set("type", type);
+                itemRec.set("value", value);
+                Db.update("eeda_form_field_type_auto_no_item", itemRec);
+            }
+        }
+    }
+    
     private void saveDetailRef(Map<String, ?> field, Long field_id) {
         Long fieldId = field_id;
 
