@@ -1,4 +1,4 @@
-define(['jquery', './detail_table', '../btns', '../value_change', '../drop_list_change', 'datetimepicker_CN', '../city_list'], function ($, tableCont) {
+define(['jquery', './detail_table', '../btns', '../value_change', '../drop_list_change', '../table_drop_list', 'datetimepicker_CN', '../city_list'], function ($, tableCont) {
     document.title = '新增 | ' + document.title;
 
     var date_inputs = $('input[data_type=date]');

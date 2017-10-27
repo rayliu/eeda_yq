@@ -50,14 +50,14 @@ define(['jquery', 'sco'], function ($) {
                 drop_list.append(html);
             }
             
-            span_drop.addClass('open');
+            
             
             drop_list.css({ 
-                left:inputField.position().left+"px", 
-                top:inputField.position().top+32+"px",
+                left:0-inputField.width()-10+"px", 
+                top: "11px",
                 width: inputField.width()+"px"
             });
-
+            span_drop.addClass('open');
             //eeda.hidePopList();
             drop_list.css('display', 'block');
             
@@ -65,7 +65,7 @@ define(['jquery', 'sco'], function ($) {
     });
 
 
-    $('table').on('click', 'ul.dropdown-menu a', function(e){
+    $('table').on('click', 'ul.dropDown-menu a', function(e){
         var item = $(this);
         var id = item.attr('id');
         var value = item.text();
@@ -73,7 +73,7 @@ define(['jquery', 'sco'], function ($) {
 
         var ul = item.closest('ul');
         var inputField_name = ul.attr('input_name');
-        var inputField = ul.parent().find('input');
+        var inputField = ul.parent().parent().find('input');
         inputField.val(value);
         //处理引用字段
         var item_list_str = inputField.attr('item_list');
