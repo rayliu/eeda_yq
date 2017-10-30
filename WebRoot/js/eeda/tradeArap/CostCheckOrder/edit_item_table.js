@@ -249,36 +249,6 @@ $(document).ready(function() {
                 $.unblockUI();
             },
             columns:[
-                { "data": "SP_ID","width": "120px",
-                    "render": function ( data, type, full, meta ) {
-                    	if(full.AUDIT_FLAG == 'Y'){
-                    		if(!data)
-                                data='';
-                            var field_html = template('table_dropdown_template',
-                                {
-                                    id: 'SP_ID',
-                                    value: data,
-                                    display_value: full.SP_NAME,
-                                    style:'width:120px',
-                                    disabled:'disabled'
-                                }
-                            );
-                            return field_html;
-                         }else{
-                        if(!data)
-                            data='';
-                        var field_html = template('table_dropdown_template',
-                            {
-                                id: 'SP_ID',
-                                value: data,
-                                display_value: full.SP_NAME,
-                                style:'width:120px'
-                            }
-                        );
-                        return field_html;
-                     }
-                   }
-                },
                 { "data": "CHARGE_ID","width": "120px",
                     "render": function ( data, type, full, meta ) {
                     	if(full.AUDIT_FLAG == 'Y'){
@@ -518,13 +488,6 @@ $(document).ready(function() {
     	                   return '<input type="text" name="remark" style="width:150px" value="'+data+'" class="form-control notsave" />';
     	                }
                    }
-                }, 
-                { "data": "SP_NAME", "visible": false,
-                    "render": function ( data, type, full, meta ) {
-                        if(!data)
-                            data='';
-                        return data;
-                    }
                 }, 
                 { "data": "CHARGE_NAME", "visible": false,
                     "render": function ( data, type, full, meta ) {

@@ -373,11 +373,11 @@
 		<%include("/eeda/component/form/detailTable.html", 
                                 {
                                     id:'cost_table',
-                                    style:'width:1800px',
-                                    headers:['结算公司', '费用名称','单价', '数量', '单位','对账金额','对账币制', '对人民币汇率', '对账金额(人民币)','结算币制','结算汇率','结算金额','对人民币汇率','结算金额(人民币)','汇兑损益','备注',
-                                    'sp_name', 'cost_name','unit_name','currency_name','audit_flag'],
-                                    field_list:['sp_id', 'charge_id', 'price', 'amount', 'unit_id', 'total_amount','currency_id',
-                                     'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','exchange_currency_rate_rmb','exchange_total_amount_rmb','rmb_difference','remark','sp_name', 'charge_name',
+                                    style:'width:1600px',
+                                    headers:['费用名称','单价', '数量', '单位','对账金额','对账币制', '对人民币汇率', '对账金额(人民币)','结算币制','结算汇率','结算金额','对人民币汇率','结算金额(人民币)','汇兑损益','备注',
+                                    'cost_name','unit_name','currency_name','audit_flag'],
+                                    field_list:['charge_id', 'price', 'amount', 'unit_id', 'total_amount','currency_id',
+                                     'exchange_rate', 'currency_total_amount','exchange_currency_id','exchange_currency_rate','exchange_total_amount','exchange_currency_rate_rmb','exchange_total_amount_rmb','rmb_difference','remark','charge_name',
                                      'unit_name','currency_name','exchange_currency_id_name','audit_flag'],
                                     value_list: costList![]
                                 }){} %>

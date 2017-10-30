@@ -18,16 +18,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 					  }
 				},
 				
-				{ "data": "STATUS", "width": "100px"},
+				{ "data": "STATUS", "width": "100px",
+					"render":function(data, type, full, meta){
+						 if(data=='已退单'){
+							 return '<span style="color:red">'+data+'</span>';
+						 }else{
+							 return data;
+						 }
+					}
+				},
 				{ "data": "PARTY_NAME", "width": "80px"}, 
 				{ "data": "CHECK_AMOUNT","width": "80px",
-				"render":function(data, type, full, meta){
-					 if(data<0){
-						 return '<span style="color:red">'+data+'</span>';
-					 }else{
-						 return data;
-					 }
-				}
+					"render":function(data, type, full, meta){
+						 if(data<0){
+							 return '<span style="color:red">'+data+'</span>';
+						 }else{
+							 return data;
+						 }
+					}
 				},
 				{ "data": "CREATOR_NAME", "width": "80px"}, 
 				{ "data": "CREATE_STAMP", "width": "80px"}, 
