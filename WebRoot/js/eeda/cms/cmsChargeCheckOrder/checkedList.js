@@ -18,7 +18,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 			           	  }
 			          },
 					  
-					  { "data": "REAL_STATUS", "width": "60px"},
+					  { "data": "REAL_STATUS", "width": "60px",
+			        	  "render":function(data, type, full, meta){
+					    		 if(data=='已退单'){
+					    			 return '<span style="color:red">'+data+'</span>';
+					    		 }else{
+					    			 return data;
+					    		 }
+					    	 }
+					  },
 					  { "data": "SP_NAME", "width": "120px"}, 
 					  { "data": "CHECK_AMOUNT","width": "60px",
 				    	 "render":function(data, type, full, meta){

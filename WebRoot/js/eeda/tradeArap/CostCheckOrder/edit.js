@@ -142,7 +142,6 @@ define(['jquery', 'metisMenu', 'sb_admin', './edit_item_table', 'dataTablesBoots
     			$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
     			$('.itemEdit,.delete,#add_cost,#exchange,#confirmBtn,#refuseBtn,#saveBtn').attr('disabled', false);
         		$('#cancelConfirmBtn').attr("disabled",true);
-    			$('.itemEdit,.delete,#add_cost,#exchange,#confirmBtn,#refuseBtn,#saveBtn').attr('disabled', false);
     		}else{
     			$.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
     		}
