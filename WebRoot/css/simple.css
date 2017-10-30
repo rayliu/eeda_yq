@@ -338,6 +338,10 @@ select.form-control{
     background-color: #f7f7f7;
 }
 
+.btn:active, .btn:focus{
+    outline: none;
+}
+
 .btn{
     padding: 2px 40px;
     font-size: 8px;
