@@ -114,11 +114,24 @@ public class CustomerController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
-        Party party = Party.dao.findFirst("select p.*,p1.abbr charge_company_abbr from party p "
-        		+ " LEFT JOIN party p1 on p1.id = p.charge_company_id"
-        		+ " where p.id=?",id);
+        String type = getPara("type");
+        Party party =null;
+        
         UserLogin user1 = LoginUserController.getLoginUser(this);
         long office_id=user1.getLong("office_id");
+        
+        if("OWN".equals(type)){
+        	party = Party.dao.findFirst("select p.*,p1.abbr charge_company_abbr from party p "
+            		+ " LEFT JOIN party p1 on p1.id = p.charge_company_id"
+            		+ " where p.office_id=? and p.type='OWN'",office_id);
+        }else{
+        	party = Party.dao.findFirst("select p.*,p1.abbr charge_company_abbr from party p "
+            		+ " LEFT JOIN party p1 on p1.id = p.charge_company_id"
+            		+ " where p.id=?",id);
+        }
+        
+        id = party.getLong("id").toString();
+        
         //判断与登陆用户的office_id是否一致
         if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("party", Long.valueOf(id), office_id)){
         	renderError(403);// no permission
@@ -381,7 +394,7 @@ public class CustomerController extends Controller {
             }
             renderJson(resultList);
         }else{
-            String sql = "select p.id, p.abbr,p.code from party p where p.type = 'CUSTOMER' ";
+            String sql = "select p.id, p.abbr,p.code from party p where (p.type = 'CUSTOMER' or p.type = 'OWN') ";
             String sql_contition =" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" +customerName.toLowerCase()+ "%'"
                 	+ " or p.quick_search_code like '%" + customerName.toUpperCase() + "%'"
                 	+ " or p.code like '%" + customerName.toUpperCase() + "%'"
@@ -421,12 +434,12 @@ public class CustomerController extends Controller {
         if(StrKit.isBlank(customerName)){//从历史记录查找
             String sql = "select h.ref_id, p.id, p.abbr,ifnull(p.contact_person_eng, p.contact_person) contact_person, "
                     + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info from user_query_history h, party p "
-                    + "where h.ref_id=p.id and h.type='CUSTOMER' and h.user_id=?";
+                    + "where h.ref_id=p.id and (h.type='CUSTOMER' OR h.type='OWN') and h.user_id=?";
             resultList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
             if(resultList.size()==0){
                 sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
                     + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
-                    + " from party p where p.type = 'CUSTOMER' "
+                    + " from party p where (p.type = 'CUSTOMER' OR p.type = 'OWN') "
                     + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
                 resultList = Db.find(sql+" order by abbr limit 25");
             }
