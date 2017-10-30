@@ -339,6 +339,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       $('#exportJobBtn').click(function(){
     	  var condition={};
     	  condition.sp_id=$('#sp_id').val();
+    	  condition.creator_name_like=$('#creator_name').val();
     	  condition.customer_name_like=$('#customer_name_input').val();
     	  condition.cabinet_date_begin_time = $('#cabinet_date_begin_time').val();
     	  condition.cabinet_date_end_time = $('#cabinet_date_end_time').val();
