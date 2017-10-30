@@ -911,10 +911,10 @@ public class CustomChargeReuqestrController extends Controller {
     	String itemid=getPara("charge_itemid");
     	if(itemid !=null&& appOrderId!=null){
     		 Db.deleteById("custom_charge_application_order_rel","job_order_arap_id,application_order_id",itemid,appOrderId);
-    		 Record re = Db.findFirst("select * from custom_arap_charge_item where ref_order_id=?",itemid);
+    		/* Record re = Db.findFirst("select * from custom_arap_charge_item where ref_order_id=?",itemid);
 			 String charge_order_id=re.getStr("custom_charge_order_id");
     		 CustomArapChargeOrder arapChargeOrder = CustomArapChargeOrder.dao.findById(charge_order_id);
-    		 arapChargeOrder.set("audit_status", "新建").update();
+    		 arapChargeOrder.set("audit_status", "新建").update();*/
     		 
     		 CustomPlanOrderArap jobOrderArap = CustomPlanOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("create_flag", "N");

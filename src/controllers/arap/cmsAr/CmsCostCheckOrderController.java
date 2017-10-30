@@ -18,6 +18,7 @@ import models.eeda.cms.CustomArapChargeOrder;
 import models.eeda.cms.CustomArapCostReceiveItem;
 import models.eeda.cms.CustomPlanOrderArap;
 import models.eeda.profile.Currency;
+import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -70,6 +71,7 @@ public class CmsCostCheckOrderController extends Controller {
    			
    			//需后台处理的字段
    			order.set("check_amount", dto.get("total_amount"));
+   			order.set("status","新建");
    			order.set("update_by", user.getLong("id"));
    			order.set("update_stamp", new Date());
    			order.update();
@@ -338,7 +340,64 @@ public class CmsCostCheckOrderController extends Controller {
         renderJson("{\"result\":true}");
     }
 	
-
+  //编辑
+    public void costEdit(){
+    	String cpoa_id = getPara("cpoa_id");
+    	String itemSql = "SELECT cpoa.sp_id sp_id,pr.abbr sp_name,cpoa.charge_id charge_id,f. NAME charge_name,cpoa.price,cpoa.amount,cpoa.currency_id currency_id,IF(c.id=3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark "
+  			   + " FROM custom_plan_order_arap cpoa "
+  			   + " LEFT JOIN party pr ON pr.id = cpoa.sp_id "
+  			   + " LEFT JOIN fin_item f ON f.id = cpoa.charge_id "
+  			   + " LEFT JOIN unit u ON u.id = cpoa.unit_id "
+  			   + " LEFT JOIN currency c ON c.id = cpoa.currency_id "
+  			   + " WHERE cpoa.id = ? ORDER BY cpoa.id ";
+	    List<Record> list = Db.find(itemSql,cpoa_id);
+		Map map = new HashMap();
+		map.put("sEcho",1);
+		map.put("iTotalRecords", list.size());
+		map.put("iTotalDisplayRecords", list.size());
+		map.put("aaData", list);
+		renderJson(map); 
+    }
+    
+    public void costSave(){
+    	String jsonStr = getPara("params");
+    	
+    	Gson gson = new Gson();
+    	Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+    	CustomPlanOrderArap cpoa = new CustomPlanOrderArap().findById(dto.get("cpoa_id"));
+    	String customChargeOrderId = (String)dto.get("customChargeOrderId");
+    	String price = (String)dto.get("price");
+    	if(price.isEmpty()){
+    		cpoa.set("price",0);
+    	}else{
+    		cpoa.set("price",price);
+    	}    	
+    	
+    	String amount = (String)dto.get("amount");
+    	if(amount.isEmpty()){
+    		cpoa.set("amount",0);
+    	}else{
+    		cpoa.set("amount",amount);
+    	}
+    	
+    	String total_amount = (String)dto.get("total_amount");
+    	if(total_amount.isEmpty()){
+    		cpoa.set("total_amount",0);
+    	}else{
+    		cpoa.set("total_amount",total_amount);
+    	}
+    	
+    	cpoa.set("sp_id",(String)dto.get("sp_id"));
+    	cpoa.set("charge_id",(String)dto.get("charge_id"));
+    	cpoa.set("currency_id",(String)dto.get("currency_id"));
+    	cpoa.set("remark",(String)dto.get("remark"));
+    	cpoa.update();
+    	//计算结算汇总
+		Map<String, Double> exchangeTotalMap = updateExchangeTotal(customChargeOrderId);
+		exchangeTotalMap.put("customChargeOrderId", Double.parseDouble(customChargeOrderId));
+		
+    	renderJson(exchangeTotalMap);
+    }
     
     @Before(Tx.class)
 	public void exchange_currency(){
@@ -462,6 +521,31 @@ public class CmsCostCheckOrderController extends Controller {
 		renderJson(r);
 	}
     
+	 public void cancelConfirm(){
+    	 String id = getPara("id");
+    	 long office_id = LoginUserController.getLoginUser(this).getLong("office_id");
+    	 Date action_time = new Date();
+    	 String action = "cancelConfirm";
+    	 String order_type = "cmsCostCheckOrder";
+    	 //保存进状态审核表
+    	 Record re = new Record();
+    	 re.set("order_id", id);
+    	 re.set("user_id", office_id);
+    	 re.set("action_time", action_time);
+    	 re.set("action",action);
+    	 re.set("order_type", order_type);
+    	 Db.save("status_audit", re);
+    	 //更新custom_arap_charge_order表的状态
+    	 CustomArapCostOrder aco = CustomArapCostOrder.dao.findById(id);
+ 		 aco.set("status","取消确认");
+ 		 aco.update();
+ 		//更新job_order_arap表的billConfirm_flag设为'N'(变回未确认状态)
+ 		String sql="UPDATE custom_plan_order_arap cpoa set billConfirm_flag='N' "
+				+"where cpoa.id in (select aci.ref_order_id FROM custom_arap_cost_item aci where custom_cost_order_id="+id+" )";
+ 		 Db.update(sql);
+ 		 
+ 		 renderJson(true);
+    }
     public List<Record> getCostItemList(String order_ids,String bill_flag,String code,String exchange_currency,String fin_name){
     	String sql = null;
     	String currency_code="";

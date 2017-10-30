@@ -961,10 +961,10 @@ public class CustomCostReuqestrController extends Controller {
     	String itemid=getPara("cost_itemid");
     	if(itemid !=null&& appOrderId!=null){
     		 Db.deleteById("custom_cost_application_order_rel","job_order_arap_id,application_order_id",itemid,appOrderId);
-    		 Record re = Db.findFirst("select * from custom_arap_cost_item where ref_order_id=?",itemid);
+    		/* Record re = Db.findFirst("select * from custom_arap_cost_item where ref_order_id=?",itemid);
 			 Long cost_order_id=re.getLong("custom_cost_order_id");
     		 CustomArapCostOrder arapCostOrder = CustomArapCostOrder.dao.findById(cost_order_id);
-			 arapCostOrder.set("audit_status", "新建").update();
+			 arapCostOrder.set("audit_status", "新建").update();*/
     		 
     		 CustomPlanOrderArap jobOrderArap = CustomPlanOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("create_flag", "N");

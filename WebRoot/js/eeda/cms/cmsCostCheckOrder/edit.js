@@ -118,11 +118,8 @@ $(document).ready(function() {
                 $("#status").val(order.STATUS);
                 eeda.contactUrl("edit?id",order.ID);
                 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-                $('#saveBtn').attr('disabled', false);
-                $('#confrimBtn').attr('disabled', false);
-                $('#printTotaledBtn').attr('disabled', false);
-                $('#printBtn').attr('disabled', false);   
-                $('#add_cost').attr('disabled', false);
+                $('#saveBtn,#refuseBtn,#confrimBtn').attr('disabled', false);
+        		$('#add_cost,.delete,.itemEdit').attr('disabled', false);
                 //异步刷新明细表
                 itemOrder.refleshTable(order.ID);
             }else{
@@ -141,18 +138,28 @@ $(document).ready(function() {
     var status = $("#status").val()
     if(order_id==""){
     	$('#saveBtn').attr('disabled', false);
-    	$('#add_cost').attr('disabled', true);
+    	$('#add_cost,.delete,.itemEdit').attr('disabled', true);
     }else{
     	if(status=='新建'){
+    		$('#saveBtn,#refuseBtn,#confrimBtn').attr('disabled', false);
+    		$('#add_cost,.delete,.itemEdit').attr('disabled', false);
+    	}else if(status=='已退单'){
     		$('#saveBtn').attr('disabled', false);
-    		$('#confrimBtn').attr('disabled', false);
-    		$('#printTotaledBtn').attr('disabled', false);
-    		$('#printBtn').attr('disabled', false); 
-        	$('#add_cost').attr('disabled', false);
+    		$('#refuseBtn,#confrimBtn').attr('disabled', true);
+    		$('#add_cost,.delete,.itemEdit').attr('disabled', false);
+    		
+    	}else if(status=='已确认'){
+    		$('#saveBtn,#refuseBtn,#confrimBtn').attr('disabled', true);
+    		$('#add_cost,.delete,.itemEdit').attr('disabled', true);
+    		$('#cancelConfirmBtn').attr('disabled', false);
+    	}else if(status=='取消确认'){
+    		$('#saveBtn,#refuseBtn,#confrimBtn').attr('disabled', false);
+    		$('#add_cost,.delete,.itemEdit').attr('disabled', false);
+    		$('#cancelConfirmBtn').attr('disabled', true);
+    	}else{
+    		$('#saveBtn,#refuseBtn,#confrimBtn,#cancelConfirmBtn').attr('disabled', true);
+    		$('#add_cost,.delete,.itemEdit').attr('disabled', true);
     	}
-        if(status == "已退单"||status == "已确认"){
-            $('#refuseBtn').attr('disabled', true);
-        }
     }
     
     //确认单据
@@ -161,8 +168,9 @@ $(document).ready(function() {
     	var id = $("#order_id").val();
     	 $.post('/cmsCostCheckOrder/confirm', {id:id}, function(data){
     		 if(data){
-    			 $('#saveBtn').attr('disabled', true);
-    			 $('#confirmBtn').attr('disabled', false);
+    			 $('#saveBtn,#refuseBtn,#confrimBtn').attr('disabled', true);
+    	    	 $('#add_cost,.delete,.itemEdit').attr('disabled', true);
+	    		 $('#cancelConfirmBtn').attr('disabled', false);
     			 $("#status").val('已确认');
     			 $("#confirm_name").val(data.CONFIRM_BY_NAME);
     			 $("#confirm_time").val(data.CONFIRM_STAMP); 
@@ -174,8 +182,22 @@ $(document).ready(function() {
         	 $(this).attr('disabled', false);
          });
     })
+    //取消确认单据
+    $("#cancelConfirmBtn").click(function(){
+		var id = $("#order_id").val();
+		$.post("/cmsCostCheckOrder/cancelConfirm",{id:id},function(data){
+			if(data){
+				$("#status").val('取消确认');
+				$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);
+				$('.itemEdit,.delete,#add_cost,#confrimBtn,#refuseBtn,#saveBtn').attr('disabled', false);
+	    		$('#cancelConfirmBtn').attr("disabled",true);
+			}else{
+				$.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
+			}
+		})
+	});
     
-       //删除按钮动作
+       //退单按钮动作
      $("#refuseBtn").click(function(){
          var id = $('#order_id').val();
          $('#delete_id').val(id);
@@ -191,6 +213,8 @@ $(document).ready(function() {
           var id = $('#delete_id').val();
           var deleteReason = $('#deleteReason').val();
          $.post('/cmsCostCheckOrder/returnOrder', {id:id,delete_reason:deleteReason}, function(data){
+        	 $("#status").val("已退单");
+        	 $("#return_reason").val(deleteReason);
              $('#deleteReasonDetail .return').click();
              $.scojs_message('退单成功', $.scojs_message.TYPE_OK);
              $('#confrimBtn').attr('disabled', true);
