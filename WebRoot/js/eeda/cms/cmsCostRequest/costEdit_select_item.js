@@ -18,7 +18,7 @@ var checkIds=[];
                     }
                 },
                 { "data": "CHECK_ORDER_NO"},
-                {"width":"30px",
+                {"width":"50px",
                     "render": function ( data, type, full, meta ) {
                           var str = '<button type="button" class="delete btn table_btn  delete_btn btn-xs" style="width:50px" >删除</button>';
                           if($("#status").val()=='已复核'|| $("#status").val()=='已付款'){
