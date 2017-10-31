@@ -206,6 +206,29 @@ $(document).ready(function() {
         });
     })
     
+    $("#email,#ccEmail,#bccEmail,#emailTitle,#emailTemplateRemark").on("blur",function(){
+    	var data = $(this).val();
+    	var name = $(this).attr("name");
+    	var len = $.trim(data).length;
+    	if(name=="email"||name=="ccEmail"||name=="bccEmail"){
+    		var re = /^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
+    		if(re.test(data)||len>20){
+    			$(this).parent().append("<span style='color:red' class='error_span'>请输入正确的邮箱地址</span>");
+    			return;
+    		}
+    	}
+    	if(name=="emailTitle"||name=="emailTemplateRemark"){
+    		if(len>255){
+    			$(this).parent().append("<span style='color:red' class='error_span'>请输入长度255以内的字符串</span>")
+				return;
+    		}
+    	}
+    });
+    $("#email,#ccEmail,#bccEmail,#emailTitle,#emailTemplateRemark").on("focus",function(){
+    	$(this).parent().find("span").remove();
+    });
+    
+    
     
 });
 });

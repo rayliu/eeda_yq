@@ -217,7 +217,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  var single_cabinet_type = $("#single_cabinet_type").val();
 	      }
 	      if(selectField=='status'){
-	    	  selectValue = $("#status").val();
+	    	  selectValue = $("#single_status").val();
 	      }
 	      if(selectField=='cabinet_date'){
 	    	  var cabinet_date_begin = $("#single_public_time_begin_time").val();
@@ -228,8 +228,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	 var charge_time_end = $("#single_public_time_end_time").val();
 	      }
 	      if(selectField=='create_time'){
-	    	  var create_time_begin = $("#single_public_time_begin_time").val();
-	    	  var create_time_end = $("#single_public_time_end_time").val();
+	    	  var create_stamp_begin = $("#single_public_time_begin_time").val();
+	    	  var create_stamp_end = $("#single_public_time_end_time").val();
 	      }
 	      
 	      //增加出口日期查询
@@ -238,6 +238,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                +"&charge_time_end_time="+charge_time_end
           	   +"&cabinet_date_begin_time="+cabinet_date_begin
           	   +"&cabinet_date_end_time="+cabinet_date_end   
+          	   +"&create_stamp_begin_time="+create_stamp_begin
+        	   +"&create_stamp_end_time="+create_stamp_end   
           	   +"&cabinet_type="+single_cabinet_type
           	   +"&status="+status;
           dataTable.ajax.url(url).load();
@@ -257,6 +259,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var end_date = $("#charge_time_end_time").val();
           var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
           var cabinet_date_end_time = $("#cabinet_date_end_time").val();
+          var create_stamp_begin_time = $("#create_time_begin_time").val();
+          var create_stamp_end_time = $("#create_time_end_time").val();
           var status = $('#status').val();
           var car_id = $("#car_id").val().trim();
           var customer_name = $("#customer_name_input").val().trim();
@@ -271,6 +275,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                +"&charge_time_end_time="+end_date
           	   +"&cabinet_date_begin_time="+cabinet_date_begin_time
           	   +"&cabinet_date_end_time="+cabinet_date_end_time
+          	   +"&create_stamp_begin_time="+create_stamp_begin_time
+        	   +"&create_stamp_end_time="+create_stamp_end_time
           	   +"&cabinet_type="+cabinet_type
           	   +"&container_no="+container_no;
           dataTable.ajax.url(url).load();
