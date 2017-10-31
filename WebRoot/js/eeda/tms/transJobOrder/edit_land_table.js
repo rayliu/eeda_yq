@@ -564,5 +564,52 @@ $(document).ready(function() {
 		        }
 			});
 	});
+    
+    $('#land_table').on("blur","[name=loading_platform],[name=toca_weight],[name=head_weight],[name=pieces],[name=volume],"
+			   +"[name=driver],[name=driver_tel],[name=consignor_phone],[name=consignee_phone],[name=cargo_desc],[name=required_time_remark]",function(){
+		var data = $(this).val();
+		var len = $.trim(data).length;
+		var name = $(this).attr("name");
+		if(name=="loading_platform"||name=="car_no"||name=="land_seal_no"||name=="land_container_no"){
+			if(len>200){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度200以内的字符串</span>")
+				return;
+			}
+		}
+		if(name=="toca_weight"||name=="head_weight"){
+			if(len>45){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度45以内的字符串</span>")
+				return;
+			}
+		}
+		if(name=="pieces"){
+			if(len>30){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度50以内的字符串</span>")
+				return;
+			}
+		}
+		if(name=="cargo_desc"||name=="required_time_remark"){
+			if(len>255){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度255以内的字符串</span>")
+				return;
+			}
+		}
+		if(name=="driver"){
+			if(len>100){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度100以内的字符串</span>")
+				return;
+			}
+		}
+		if(name=="driver_tel"||name=="consignor_phone"||name=="consignee_phone"||name=="volume"||name=="sign_status"){
+			if(len>20){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度20以内的字符串</span>")
+				return;
+			}
+		}
+	});
+    $('#land_table').on("focus","[name=loading_platform],[name=toca_weight],[name=head_weight],[name=pieces],"
+			   +"[name=driver],[name=driver_tel],[name=consignor_phone],[name=consignee_phone],[name=cargo_desc],[name=required_time_remark]",function(){
+		$(this).parent().find("span").remove();
+	});
 });
 });

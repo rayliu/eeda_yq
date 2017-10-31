@@ -865,5 +865,28 @@ $(document).ready(function() {
     	}
     });
 	
+    $('#charge_table').on("blur","[name=price],[name=amount],[name=exchange_rate],[name=street_vehicle_freight],[name=remark]",function(){
+		var data = $(this).val();
+		var len = $.trim(data).length;
+		var name = $(this).attr("name");
+		if(name=="price"||name=="exchange_rate"){
+			if(isNaN(data)||len>19){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度19以内的数字</span>")
+			}
+		}
+		if(name=="amount"||name=="street_vehicle_freight"){
+			if(isNaN(data)||len>45){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度20以内的数字</span>")
+			}
+		}
+		if(name=="remark"){
+			if(len>500){ 
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度500以内的字符串</span>")
+			}
+		}
+	});
+    $('#charge_table').on("focus","[name=price],[name=amount],[name=exchange_rate],[name=street_vehicle_freight],[name=remark]",function(){
+		$(this).parent().find("span").remove();
+	});
   });
 });

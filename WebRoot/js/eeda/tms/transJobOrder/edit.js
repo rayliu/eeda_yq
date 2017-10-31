@@ -12,6 +12,27 @@ $(document).ready(function() {
 	    rules: {
 		      container_no: {
 		    	  rangelength: [11,11]
+		      },
+		      so_no: {
+		    	  maxlength:100
+		      },
+		      seal_no: {
+		    	  maxlength:100
+		      },
+		      lading_no: {
+		    	  maxlength:100
+		      },
+		      contract_no: {
+		    	  maxlength:200
+		      },
+		      customer_salesman: {
+		    	  maxlength:100
+		      },
+		      toca_no: {
+		    	  maxlength:100
+		      },
+		      remark: {
+		    	  maxlength:255
 		      }
 	    }
 	});
@@ -151,12 +172,20 @@ $(document).ready(function() {
 	
     //------------save
 	$('#saveBtn').click(function(e){
-        //提交前，校验数据
-		var type_required =  $('#type').val();
-		type_controll(type_required);
-    	if(!$('#orderForm').valid()){
-    		$.scojs_message('有必填字段未填', $.scojs_message.TYPE_ERROR);
-    		return false;
+		//提交前，校验数据
+        var formRequired = 0;
+        $('form').each(function(){
+        	if(!$(this).valid()){
+        		formRequired++;
+            }
+        })
+        errorlength = $("[class=error_span]").length;
+        var loc_id = $($(".error_span").get(0)).parent().parent().parent().parent().attr('id');
+        
+        if(formRequired>0||errorlength>0){
+        	$.scojs_message('单据存在填写格式错误字段未处理', $.scojs_message.TYPE_ERROR);
+        	location.hash="#"+loc_id;
+        	return;
         }
     	
         //费用的结算公司必填
