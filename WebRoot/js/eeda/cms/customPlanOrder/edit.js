@@ -672,7 +672,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		}
     	}
     });
-  //头程资料的校验
+  //校验
     $("#hkForm").validate({
     	rules:{
     		customs_number:{
@@ -680,19 +680,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     		},
     		boat_name:{
     			maxlength:255
-    		},
-    		shipping_men_phone:{
-    			isPhone:true
-    		},
-    		consignee_phone:{
-    			isPhone:true
-    		},
-    		notice_man_phone:{
-    			isPhone:true
     		}
     	}
     });
-    //头程资料的校验
+    //校验
     $("#headDetailForm").validate({
     	rules:{
     		booking_no:{
@@ -702,6 +693,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     			maxlength:50
     		},
     		seal_no:{
+    			maxlength:50
+    		},
+    		voyage:{
     			maxlength:50
     		},
     		vessel:{
@@ -777,6 +771,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     			maxlength:500
     		}
     	}
+    });
+    
+    $("#shipping_men_phone,#consignee_phone,#notice_man_phone").on("blur",function(){
+    	var data = $(this).val();
+    	var len = $.trim(data).length;
+    	var re = /^[\u4e00-\u9fa5]$/;
+    	if(re.test(data)){
+    		$(this).parent().append("<span style='color:red;margin-left:120px;' class='error_span'>不能输入汉字</span>");
+    	}else if(len>20){
+    		$(this).parent().append("<span style='color:red;margin-left:120px;' class='error_span'>长度不能超过20位</span>");
+    	}
+    });
+    $("#shipping_men_phone,#consignee_phone,#notice_man_phone").on("focus",function(){
+    	$(this).parent().find("span").remove();
     });
     
   });
