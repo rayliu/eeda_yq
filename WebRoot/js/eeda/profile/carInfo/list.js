@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($, metisMenu) {
+define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) {
     $(document).ready(function() {
 
         var carTable = eeda.dt({
@@ -19,10 +19,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 { "data":"LENGTH"},
                 { "data":null, 
                     "render": function ( data, type, full, meta ) {
-                        if(order.delPermission){
-                            return '<button type="button" class="btn btn-danger btn-xs delete" code="'+full.ID+'"" style="width:50px">停用</button>';   
+                       // if(order.delPermission){
+                    	if(data.IS_STOP=="1"){
+                            return '<button type="button" class="btn btn-danger btn-xs delete" code="'+full.ID+'"" style="width:30px">启用</button>';   
+                        }else{
+                        	return '<button type="button" class="btn btn-danger btn-xs delete" code="'+full.ID+'"" style="width:30px">停用</button>';   
                         }
-                        return '';
                     }
                 }
             ]
@@ -34,17 +36,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
                 //保存成功后，刷新列表
                 console.log(data);
                 if(data.success){
-                    carTable.draw();
+                	carTable.ajax.reload().draw()
+                    $.scojs_message('停用成功', $.scojs_message.TYPE_OK);
                 }else{
-                    alert('停用失败');
+                	$.scojs_message('停用失败', $.scojs_message.TYPE_ERROR);
                 }
             },'json');
         });
         
         $('#resetBtn').click(function(){
-        	$('#query_dock_name').val('');
-        	$("#query_quick_search_code").val('');
-        	$("#query_dock_region").val('');
+        	$('#query_car_no').val('');
+        	$("#query_driver").val('');
+        	$("#query_cartype").val('');
         });
         $('#searchBtn').click(function(){
             searchData(); 

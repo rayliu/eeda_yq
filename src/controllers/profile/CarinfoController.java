@@ -210,6 +210,8 @@ public class CarinfoController extends Controller {
             carinfo.set("hundred_fuel_standard", getPara("hundred_fuel_standard") == "" ? 0 : getPara("hundred_fuel_standard"));
             carinfo.set("rated_load", getPara("rated_load") == "" ? 0 : getPara("rated_load"));
             carinfo.set("rated_cube", getPara("rated_cube") == "" ? 0 : getPara("rated_cube"));
+            carinfo.set("cartype", getPara("cartype") == "" ? 0 : getPara("cartype"));
+            carinfo.set("length", getPara("length") == "" ? 0 : getPara("length"));
             carinfo.set("toca_weight", getPara("toca_weight") == "" ? 0 : getPara("toca_weight"));
             carinfo.set("head_weight", getPara("head_weight") == "" ? 0 : getPara("head_weight"));
             carinfo.set("toca_num", getPara("toca_num") == "" ? 0 : getPara("toca_num"));

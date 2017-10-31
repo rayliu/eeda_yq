@@ -1,6 +1,64 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'validate_cn', 'sco'], function ($, metisMenu) {
     $(document).ready(function() {
-
+    	$("#leadsForm").validate({
+    	    rules: {
+    	    	car_no:{
+    	    		maxlength:50
+    	    	},
+    	    	driver:{
+    	    		maxlength:50
+    	    	},
+    	    	phone:{
+    	    		maxlength:50
+    	    	},
+    	    	short_phone:{
+    	    		maxlength:50
+    	    	},
+    	    	rated_load:{
+    	    		number:true,
+    	    		maxlength:10
+    	    	},
+    	    	initial_mileage:{
+    	    		number:true,
+    	    		maxlength:10
+    	    	},
+    	    	toca_num:{
+    	    		number:true,
+    	    		maxlength:20
+    	    	},
+    	    	hundred_fuel_standard:{
+    	    		number:true,
+    	    		maxlength:10
+    	    	},
+    	    	rated_cube:{
+    	    		number:true,
+    	    		maxlength:10
+    	    	},
+    	    	head_weight:{
+    	    		maxlength:50
+    	    	},
+    	    	toca_weight:{
+    	    		maxlength:50
+    	    	}
+    	    },
+    	    messages: {
+    	    	rated_load:{
+    	    		 maxlength: $.validator.format("最多可以输入 {0} 个数字")
+    	    	},
+    	    	initial_mileage:{
+    	    		maxlength: $.validator.format("最多可以输入 {0} 个数字")
+    	    	},
+    	    	toca_num:{
+    	    		maxlength: $.validator.format("最多可以输入 {0} 个数字")
+    	    	},
+    	    	hundred_fuel_standard:{
+    	    		maxlength: $.validator.format("最多可以输入 {0} 个数字")
+    	    	},
+    	    	rated_cube:{
+    	    		maxlength: $.validator.format("最多可以输入 {0} 个数字")
+    	    	}
+    	    }
+    	});
         //保存
         //自动提交改为手动提交
         $("#save").click(function(){
