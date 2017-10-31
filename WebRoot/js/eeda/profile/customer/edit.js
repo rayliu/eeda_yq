@@ -69,14 +69,8 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_d
 	              receipt: {
 	            	  maxlength:100
 	              },
-	              phone: {
-	            	  isMobile:true
-	              },
 			  	registration: {
 			  		maxlength:255
-			  	},
-			  	fax: {
-			  		isFax:true
 			  	},
 			  	custom_registration: {
 			  		maxlength:255
@@ -151,16 +145,19 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_d
                 element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
             }
         });
-        jQuery.validator.addMethod("isMobile", function(value, element) {
-            var length = value.length;
-            var mobile = /^((1[3456789]\d{9})|(0\d{2,3}-\d{7,8}))$/;
-            return this.optional(element) || (mobile.test(value));
-        }, "请输入格式正确的电话或手机号码");
-        jQuery.validator.addMethod("isFax", function(value, element) {
-            var length = value.length;
-            var re = /^(0\d{2,3}-\d{7,8})$/;
-            return this.optional(element) || (re.test(value));
-        }, "请输入格式正确的传真");
+        $("#phone,#fax").on("blur",function(){
+        	var data = $(this).val();
+        	var len = $.trim(data).length;
+        	var re = /^[\u4e00-\u9fa5]$/;
+        	if(re.test(data)){
+        		$(this).parent().append("<span style='color:red;display:block;' class='error_span'>不能输入汉字</span>");
+        	}else if(len>100){
+        		$(this).parent().append("<span style='color:red;display:block;' class='error_span'>只能输入长度100内的字符串</span>");
+        	}
+        });
+        $('#phone,#fax').on('focus',function(){
+        	$(this).parent().find("span").remove();
+        });
         // 回显入库是否库存管理
         $("input[name='isInventoryControl']").each(function(){
             if($("#inventoryControl").val() == $(this).val()){
