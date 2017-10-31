@@ -23,11 +23,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                     return "<a href='/transJobOrder/edit?id="+full.JOBID+"'target='_blank'>"+data+"</a>";
                 }
 			},
-           { "data": "CABINET_DATE", "width": "70px"},			
-            { "data": "CREATE_STAMP", "width": "80px"},
+           { "data": "CABINET_DATE", "width": "80px"},			
+           { "data": "CHARGE_TIME", "width": "80px"},
             { "data": "CONTAINER_NO", "width": "80px"},
-            { "data": "SO_NO", "width": "100px"},
-            { "data": "AUDIT_FLAG", "width": "40px",
+            { "data": "SO_NO", "width": "80px"},
+            { "data": "AUDIT_FLAG", "width": "50px",
             	"render": function ( data, type, full, meta ) {
 			    	if(data != 'Y')
 			    		return '未确认';
@@ -75,6 +75,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px",
             		
             },
+            { "data": "CREATE_STAMP", "width": "80px"},
             { "data": "REMARK", "width": "100px"},
           ]
       });
@@ -90,9 +91,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
-          
-          var order_export_date_begin_time = $("#order_export_date_begin_time").val();
-          var order_export_date_end_time = $("#order_export_date_end_time").val();
+          var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
+          var cabinet_date_end_time = $("#cabinet_date_end_time").val();
+          var charge_time_begin_time = $("#charge_time_begin_time").val();
+          var charge_time_end_time = $("#charge_time_end_time").val();
           
           var customer = $("#customer").val(); 
           var sp = $("#sp").val(); 
@@ -108,11 +110,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/transCostConfirm/list?order_no="+order_no
-          			   +"&order_export_date_begin_time="+order_export_date_begin_time
-          			   +"&order_export_date_end_time="+order_export_date_end_time
+          			   +"&cabinet_date_begin_time="+cabinet_date_begin_time
+          			   +"&cabinet_date_end_time="+cabinet_date_end_time
+          			   +"&charge_time_begin_time="+charge_time_begin_time
+        			   +"&charge_time_end_time="+charge_time_end_time
 			           +"&customer_id="+customer
 			           +"&sp_id="+sp
-                 +"&car_id="+car_id
+			           +"&car_id="+car_id
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
           			   +"&audit_flag_notequals="+audit_flag;

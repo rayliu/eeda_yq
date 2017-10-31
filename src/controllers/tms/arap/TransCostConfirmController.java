@@ -45,7 +45,7 @@ public class TransCostConfirmController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String sql = "select * from( "
-        		+ " select tjoa.*,tjo.id jobid,tjo.order_no,tjo.create_stamp,tjo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,"
+        		+ " select tjoa.*,tjo.id jobid,tjo.order_no,tjo.create_stamp,tjo.charge_time,tjo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,"
         		+ " CONVERT(substring(tjol.cabinet_date,1,10),char) cabinet_date,c.name currency_name, c1. NAME exchange_currency_name,tjo.container_no,tjo.so_no,cf.car_no "
 				+ " from trans_job_order_arap tjoa "
 				+ " right join trans_job_order tjo on tjo.id=tjoa.order_id "
