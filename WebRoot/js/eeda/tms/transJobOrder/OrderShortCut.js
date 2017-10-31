@@ -3,6 +3,34 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
 	  tl.pg.init({
           pg_caption: '本页教程'
       });
+	  $("#orderForm").validate({
+		    rules: {
+		    	customer_salesman: {
+		    		  maxlength:100
+			      },
+			      contract_no: {
+			    	  maxlength:200
+			      },
+			      so_no: {
+			    	  maxlength:100
+			      },
+			      container_no: {
+			    	  maxlength:255
+			      },
+			      lading_no: {
+			    	  maxlength:200
+			      },
+			      seal_no: {
+			    	  maxlength:100
+			      },
+			      loading_platform: {
+			    	  maxlength:200
+			      },
+			      remark: {
+			    	  maxlength:255
+			      }
+		    }
+		});
       var deletedTableIds=[];
       	var bindFieldEvent=function(){
        	    $('table .date').datetimepicker({  
@@ -668,5 +696,52 @@ define(['jquery', 'metisMenu', 'template','sb_admin',  'dataTablesBootstrap', 'v
           return cargo_items_array;
        }
 
+       $('#eeda-table').on("blur","[name=container_no],[name=so_no],[name=lading_no],[name=seal_no],[name=loading_platform],"
+			   +"[name=customer_salesman],[name=contract_no],[name=toca_no],[name=high_speed_fee],[name=call_fee],[name=night_fee],[name=weighing_fee],"
+			   +"[name=ji_jinji_out_fee],[name=advance_fee],[name=remark]",function(){
+		var data = $(this).val();
+		var len = $.trim(data).length;
+		var name = $(this).attr("name");
+		if(name=="container_no"||name=="lading_no"||name=="loading_platform"){
+			if(len>200){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度200以内的字符串</span>")
+				return;
+			}
+		}
+		if(name=="so_no"||name=="seal_no"||name=="seal_no"||name=="seal_no"||name=="toca_no"||name=="customer_salesman"){
+			if(len>100){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度100以内的字符串</span>")
+				return;
+			}
+		}
+		if(name=="high_speed_fee"||name=="call_fee"||name=="night_fee"||name=="weighing_fee"||name=="ji_jinji_out_fee"||name=="advance_fee"){
+			if(isNaN(data)||len>30){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入20以内的数字</span>")
+				return;
+			}
+		}
+		if(name=="contract_no"||name=="remark"){
+			if(len>255){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度255以内的字符串</span>")
+				return;
+			}
+		}
+		if(name=="driver"){
+			if(len>100){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度100以内的字符串</span>")
+				return;
+			}
+		}
+		if(name=="driver_tel"||name=="consignor_phone"||name=="consignee_phone"||name=="volume"||name=="sign_status"){
+			if(len>20){
+				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度20以内的字符串</span>")
+				return;
+			}
+		}
+	});
+    $('#land_table').on("focus","[name=loading_platform],[name=toca_weight],[name=head_weight],[name=pieces],"
+			   +"[name=driver],[name=driver_tel],[name=consignor_phone],[name=consignee_phone],[name=cargo_desc],[name=required_time_remark]",function(){
+		$(this).parent().find("span").remove();
+	});
   });
 });
