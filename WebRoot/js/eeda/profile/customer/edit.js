@@ -352,7 +352,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_d
         				$('#logo_path').text('');
         				$('#fileuploadLogoSpan').hide();
         	        	$('#changeFileuploadLogoSpan').show();
-        				$('#logo_path').append('<img style="width:600px;height:200px;" src="/upload/partyLOGO/'+data.result.LOGO_PATH+'">');
+        				$('#logo_path').append('<img style="max-width:600px;max-height:200px;" src="/upload/partyLOGO/'+data.result.LOGO_PATH+'">');
         			}else{
         				$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
         			}
@@ -367,11 +367,9 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_d
         if(hidden_logo_path){
         	$('#fileuploadLogoSpan').hide();
         	$('#changeFileuploadLogoSpan').show();
-        	$('#logo_path').append('<img style="width:600px;height:200px;" src="/upload/partyLOGO/'+hidden_logo_path+'">');
+        	$('#logo_path').append('<img style="max-width:600px;max-height:200px;" src="/upload/partyLOGO/'+hidden_logo_path+'">');
         	
         }
-        
-        
         
         //删除logo
         $('#delete_logo').on('click',function(){
@@ -389,7 +387,5 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_d
               });
         	
         });
-        
-
     });
 });
