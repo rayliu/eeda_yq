@@ -403,10 +403,27 @@ public class CustomerController extends Controller {
             renderJson(resultList);
         }else{
             String sql = "select p.id, p.abbr,p.code from party p where (p.type = 'CUSTOMER' or p.type = 'OWN') ";
-            String sql_contition =" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" +customerName.toLowerCase()+ "%'"
-                	+ " or p.quick_search_code like '%" + customerName.toUpperCase() + "%'"
-                	+ " or p.code like '%" + customerName.toUpperCase() + "%'"
-                	+ " or p.code like '%" +customerName.toLowerCase()+ "%' "
+            String sql_contition =" and (p.abbr like '%"
+            		+ customerName 
+            		+ "%' or p.company_name like '%" 
+            		+ customerName 
+            		+ "%' or p.quick_search_code like '%" 
+            		+ customerName.toLowerCase()+ "%'"
+                	+ " or p.quick_search_code like '%" 
+            		+ customerName.toUpperCase() 
+            		+ "%'"
+                	+ " or p.code like '%" 
+            		+ customerName.toUpperCase() 
+            		+ "%'"
+                	+ " or p.code like '%" 
+            		+ customerName.toLowerCase()
+            		+ "%'"
+            		+ " or p.company_name_eng like '%" 
+            		+ customerName.toUpperCase() 
+            		+ "%'"
+                	+ " or p.company_name_eng like '%" 
+            		+ customerName.toLowerCase()
+            		+ "%'"
                     + " or concat(p.abbr,' - ',p.code) like '%" +customerName+ "%') ";
             if (customerName.trim().length() > 0) {
                 sql +=sql_contition;
