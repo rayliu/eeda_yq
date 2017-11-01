@@ -139,7 +139,7 @@ public class AirRouteReportController extends Controller {
                 + "     SUM(IFNULL(ari_kg, 0)) ari_kg"
                 + " FROM"
                 + "     (SELECT "+group_condition+" order_export_date,"
-                + "             jo.customer_id,"
+                + "             jo.customer_id,jo.order_export_date order_export_date_sort,"
                 + "             p.abbr customer_name,"
                 + "             (select group_concat("
                 + "                 concat("
@@ -161,7 +161,7 @@ public class AirRouteReportController extends Controller {
                 + " and jo.delete_flag = 'N'"
 				+ " ) A where 1=1"
                 + " GROUP BY A.order_export_date,A.customer_id, A.route"
-                + " ORDER BY A.customer_id , A.order_export_date";
+                + " ORDER BY A.order_export_date_sort DESC";
         
         
         String sqlTotal = "select count(1) total from ("+sql+") B";

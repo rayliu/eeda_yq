@@ -144,7 +144,7 @@ public class OceanRouteReportController extends Controller {
                 + "                concat(ifnull(pol.name,''), ' -', ifnull(hub.name,''), '- ', ifnull(pod.name,'')) route, "
                 + "                jo.pieces, "
                 + "                jo.gross_weight, "
-                + "                jo.volume, "
+                + "                jo.volume,jo.order_export_date order_export_date_sort,"
                 + "                p.abbr customer_name, "
                 + "                (select ( "
                 + "                    count(case when container_type = '20''GP' then container_type end) + "
@@ -168,7 +168,7 @@ public class OceanRouteReportController extends Controller {
                 + " and jo.delete_flag = 'N'"
 				+ " ) A where 1=1"
                 + " GROUP BY A.order_export_date,A.customer_id, A.route"
-                + " ORDER BY A.customer_id , A.order_export_date";
+                + " ORDER BY A.order_export_date_sort DESC";
         
         
         String sqlTotal = "select count(1) total from ("+sql+") B";

@@ -142,7 +142,7 @@ public class ProfitReportController extends Controller {
     			+ " SUM(IFNULL(ari_kg, 0)) ari_kg,"
     			+ " group_concat(CAST(id as CHAR) separator ', ' ) truck_order_ids"
     			+ " from ("
-    			+ " select "+group_condition+" order_export_date, jo.customer_id, jo.pieces,"
+    			+ " select "+group_condition+" order_export_date, jo.customer_id, jo.pieces,jo.order_export_date order_export_date_sort,"
     			+ " jo.gross_weight, jo.volume,p.abbr customer_name,"
     			+ " (select ("
     			+ "    count(case when container_type = '20''GP' then container_type end) +"
@@ -168,8 +168,8 @@ public class ProfitReportController extends Controller {
     			+ condition
     			 + " and jo.delete_flag = 'N'"
  				+ " ) A where 1=1"
-    			+ " GROUP BY A.order_export_date,A.customer_id"
-    			+ " )B ORDER BY B.customer_id , B.order_export_date"
+    			+ " GROUP BY A.order_export_date_sort DESC"
+    			+ " )B "
     			+ "  ";
     	
     	//String condition = DbUtils.buildConditions(getParaMap());
