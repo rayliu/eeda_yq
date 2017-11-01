@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import models.ParentOfficeModel;
 import models.Party;
 import models.UserCustomer;
@@ -115,6 +117,7 @@ public class CustomerController extends Controller {
     public void edit() {
         String id = getPara("id");
         String type = getPara("type");
+        setAttr("type",type);
         Party party =null;
         
         UserLogin user1 = LoginUserController.getLoginUser(this);
@@ -146,6 +149,7 @@ public class CustomerController extends Controller {
         setAttr("contacts_itemList", getItems(id,"contacts"));
         setAttr("account_itemList", getItems(id,"account"));
         setAttr("salesman_itemList", getItems(id,"salesman"));
+        setAttr("mailSet",getDetail(id,"mailSet"));
         render("/eeda/profile/customer/CustomerEdit.html");
     }
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_C_DELETE})
@@ -259,9 +263,13 @@ public class CustomerController extends Controller {
 		//客户的工厂地点dock
 		List<Map<String, String>> dock_Item = (ArrayList<Map<String, String>>)dto.get("dock_Item");
 		DbUtils.handleList(dock_Item,  "dockinfo", id, "party_id");
+		//保存邮箱设置
+		List<Map<String, String>> mailSet = (ArrayList<Map<String, String>>)dto.get("mailSet_json");
+		DbUtils.handleList(mailSet, "send_mail_set", id,"party_id");
 		
-		party = Party.dao.findFirst("select p.*,p1.abbr charge_company_abbr from party p "
+		party = Party.dao.findFirst("select p.*,p1.abbr charge_company_abbr,sms.id mail_id from party p "
         		+ " LEFT JOIN party p1 on p1.id = p.charge_company_id"
+        		+ " left join send_mail_set sms on sms.party_id = p.id"
         		+ " where p.id=?",id);
     	renderJson(party);
     }
@@ -591,8 +599,62 @@ public class CustomerController extends Controller {
     	renderJson(resultMap);
     }
     
+    //上传公司LOGO
+    @Before(Tx.class)
+    public void uploadLogo(){
+    	String id = getPara("order_id");
+    	String src_path = getPara("src_path");
+    	String self_btn_id = getPara("self_btn_id");
+    	Record party = Db.findFirst("select * from party where id =?",id);
+    	
+    	if("changeFileuploadLogoSpan".equals(self_btn_id)){
+			String path = getRequest().getServletContext().getRealPath("/");
+	    	File deleteLogo = new File(path+src_path);
+	    	if (deleteLogo.exists() && deleteLogo.isFile()) {
+	    		deleteLogo.delete();
+	    	}
+		}
+    	party.set("logo_path", null);
+    		List<UploadFile> fileList = getFiles("partyLOGO");
+
+		for (int i = 0; i < fileList.size(); i++) {
+    		File file = fileList.get(i).getFile();
+    		String fileName = file.getName();
+
+    		party.set("logo_path", fileName);
+    		
+			Db.update("party",party);
+		}
+		
+    	renderJson(party);
+    }
     
-  //上传陆运图片
+    //删除公司LOGO
+    @Before(Tx.class)
+    public void deleteLogo(){
+    	String id = getPara("order_id");
+    	String src_path = getPara("src_path");
+    	String path = getRequest().getServletContext().getRealPath("/");
+    	File deleteLogo = new File(path+src_path);
+
+    	if (deleteLogo.exists() && deleteLogo.isFile()) {
+    		deleteLogo.delete();
+    	}
+    	
+    	Record party = Db.findFirst("select * from party where id =?",id);
+    	party.set("logo_path", null);
+    	Db.update("party",party);
+    	HttpServletRequest url = getRequest();
+    	
+    	renderJson("{\"result\":true}");
+    }
+    
+    //获取访问链接
+//    HttpServletRequest url = getRequest();
+//	StringBuffer URL = url.getRequestURL();
+    //String URL = url.getServerName();域名
+    
+    //上传陆运图片
     @Before(Tx.class)
     public void saveLandDocFile(){
     	String id = getPara("id");
@@ -617,7 +679,7 @@ public class CustomerController extends Controller {
     	renderJson(resultMap);
     }
     
-  //上传陆运图片
+  //删除陆运图片
     @Before(Tx.class)
     public void delectLandDocFile(){
     	String id = getPara("id");
@@ -701,9 +763,20 @@ public class CustomerController extends Controller {
 		}else if("salesman".equals(type)){
     		itemList = Db.find("SELECT cs.*,ul.c_name salesman_name FROM customer_salesman cs "
     				+ " LEFT JOIN user_login ul on cs.salesman_id = ul.id WHERE party_id =?",orderId);
+		}else if("mailSet".equals(type)){
+    		itemList = Db.find("SELECT * from send_mail_set where party_id =?",orderId);
 		}
 		return itemList;
 	}
+    public Record getDetail(String orderId,String type){
+    	Record re =null;
+    	String sql = "";
+    	if("mailSet".equals(type)){
+    		sql = "select * from send_mail_set where party_id =?";
+    		re = Db.findFirst(sql,orderId);
+    	}
+    	return re;
+    };
     
     
     @Before(Tx.class)

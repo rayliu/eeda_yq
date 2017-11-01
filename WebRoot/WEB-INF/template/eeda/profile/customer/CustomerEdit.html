@@ -234,6 +234,14 @@
                                             </div>
                                         </fieldset>
                                       </div>
+                                      <div class="col-lg-4">
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label>主页网址</label>
+                                                <input class="form-control" id="homepage" type="text" name="homepage" value="${party.homepage!''}">
+                                            </div>
+                                        </fieldset>
+                                      </div>
 									  <div class="col-lg-4">
 	                                        <fieldset>
 	                                            <div class="form-group">
@@ -286,6 +294,26 @@
 	                                            </div>
 	                                        </fieldset>
 	                                    </div>
+	                                    <% if(type!''=='OWN'){%>
+	                                    <div class="col-lg-4">
+                                             <label>公司LOGO</label>
+                                             <span class=" fileinput-button" id="fileuploadLogoSpan">                                     
+		                                     <span  class="btn  btn_green" style="padding:2px 4px;" title="请先保存再上传文件">
+		                                    	<i class="glyphicon glyphicon-plus"></i> 
+				                                    	上传LOGO</span>
+				                                    	<input style="font-size:15px;margin:0;" id="fileuploadLogo" type="file" name="files[]" multiple>
+				                             </span>
+				                             <span class=" fileinput-button" id="changeFileuploadLogoSpan" style="display:none">                                     
+		                                     <span  class="btn  btn_green" style="padding:2px 4px;" title="请先保存再上传文件">
+		                                    	<i class="glyphicon glyphicon-plus"></i> 
+				                                    	更换LOGO</span>
+				                                    	<input style="font-size:15px;margin:0;" id="changeFileuploadLogoSpan" type="file" name="files[]" multiple>
+				                             </span>
+				                             <button type="button" id="delete_logo" class="btn btn_green" style="padding:2px 4px;">删除LOGO</button><br>
+				                                <input  id="hidden_logo_path" name="hidden_logo_path" type="hidden" value="${party.logo_path!''}"></input> 
+												<span  id="logo_path" name="logo_path" ></span>
+	                                    </div>
+	                                    <%}%>
                                </div>
                                <div class="row">
                                		   <div class="col-lg-12">                              
@@ -354,6 +382,11 @@
                     <li >
                         <a id='document_info' href="#documentInfo" data-toggle="tab" >文档信息</a>
                     </li>
+                    <% if(type!''=='OWN'){%>
+                    <li >
+                        <a id='mail_info' href="#mailInfo" data-toggle="tab" >发送邮箱设置</a>
+                    </li>
+                    <%}%>
                 </ul>
                </div>
          </div>
@@ -419,6 +452,13 @@
                       </div>
                     </div>      
                 </div>
+                <div class="tab-pane fade in" id="mailInfo">
+                    <div class="form-group"> 
+                     <div class="col-lg-12"> 
+                         <%include("/eeda/profile/customer/mailSet.html",{}){}%>
+                      </div>
+                    </div>      
+                </div>
          </div>
          <a id='a_btn' data-target='#msg' data-toggle='modal' style='display:none'></a>
                     <div class="modal fade" id="msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -458,8 +498,9 @@
 <%include("/eeda/component/jsTemplate/tableInputDockInfoField.js",{}){} %>
 <%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
 <script>
-var itemOrder={};
+ var itemOrder={};
  var company_name = '${party.company_name!''}';
+ var type = '${type!''}';
 
 if(company_name){
 	document.title = company_name +' | '+document.title;

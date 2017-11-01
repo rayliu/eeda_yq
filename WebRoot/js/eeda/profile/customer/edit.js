@@ -1,7 +1,10 @@
 define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_doc_table', './edit_customer_quotation_table','./add_dock_item_table','./contacts_item_table',
-        './account_item_table','./salesman_item_table'], function ($, metisMenu) { 
+        './account_item_table','./salesman_item_table','./edit_mailSet_detail'], function ($, metisMenu) { 
     $(document).ready(function() {
-
+    	if(type=="OWN"){
+    		$('#breadcrumb_li').text('本公司设置');
+    	}
+    	
         var cname = $("#company_name").val();
         var sname = $("#abbr").val();
         $('#customerForm').validate({
@@ -303,6 +306,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_d
             order.charge_company_id = $("#charge_company_id").val();
             order.identification_no = $("#identification_no").val();
             order.special_item = $("#special_item").val();
+            order.homepage = $("#homepage").val();
             
             order.docItem = buildDocItem();
             		
@@ -311,6 +315,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_d
             order.acount_json =itemOrder.buildAccountDetail();
        	    order.contacts_json =itemOrder.buildContactsDetail();
        	    order.salesman_json = itemOrder.buildSalesmanDetail();
+       	    order.mailSet_json = itemOrder.buildMailSetDetail();
         	$('#saveBtn').attr('disabled', true);
         	$.post('/customer/save', {params:JSON.stringify(order)}, function(data){
         		eeda.contactUrl("edit?id",data.ID);
@@ -321,6 +326,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_d
         		$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
         		$('#partyId').val(data.ID);
         		$('#code').val(data.CODE);
+        		$('#mail_id').val(data.MAIL_ID);
         		$('#charge_company_id_input').val(data.CHARGE_COMPANY_ABBR);
         		$('#saveBtn').attr('disabled', false);
         		$("#fileuploadSpan").show();
@@ -330,6 +336,60 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables', 'validate_cn', './edit_d
                 $('#saveBtn').attr('disabled', false);
               });
         })
+        
+        //公司logo图片上传
+        $('#fileuploadLogo,#changeFileuploadLogoSpan').on('click',function(){
+        	var src_path=$('#logo_path img').attr('src');
+        	var order_id = $('#partyId').val();
+        	var self_id = $(this).attr('id');
+        	$(this).fileupload({
+        		autoUpload:true,
+        		url:'/customer/uploadLogo?order_id='+order_id+'&src_path='+src_path+'&self_btn_id='+self_id,
+        		dataType:'json',
+        		done:function(e,data){
+        			if(data.result.LOGO_PATH){
+        				$.scojs_message('上传成功',$.scojs_message.TYPE_OK);
+        				$('#logo_path').text('');
+        				$('#fileuploadLogoSpan').hide();
+        	        	$('#changeFileuploadLogoSpan').show();
+        				$('#logo_path').append('<img style="width:600px;height:200px;" src="/upload/partyLOGO/'+data.result.LOGO_PATH+'">');
+        			}else{
+        				$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
+        			}
+        		},
+        		error:function(){
+        			alert('上传时，出现错误！');
+        		}
+        	});
+        });
+        var hidden_logo_path=$('#hidden_logo_path').val();
+        
+        if(hidden_logo_path){
+        	$('#fileuploadLogoSpan').hide();
+        	$('#changeFileuploadLogoSpan').show();
+        	$('#logo_path').append('<img style="width:600px;height:200px;" src="/upload/partyLOGO/'+hidden_logo_path+'">');
+        	
+        }
+        
+        
+        
+        //删除logo
+        $('#delete_logo').on('click',function(){
+        	var src_path=$('#logo_path img').attr('src');
+        	var order_id = $('#partyId').val();
+        	$.post('/customer/deleteLogo',{src_path:src_path,order_id:order_id},function(data){
+        		if(data){
+        			$.scojs_message('删除成功',$.scojs_message.TYPE_OK);
+        			$('#logo_path').text('');
+        			$('#fileuploadLogoSpan').show();
+    	        	$('#changeFileuploadLogoSpan').hide();
+        		}
+        	},'json').fail(function(){
+                $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+              });
+        	
+        });
+        
 
     });
 });

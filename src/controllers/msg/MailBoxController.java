@@ -4,7 +4,6 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -174,13 +173,13 @@ public class MailBoxController extends Controller {
         
         List<Record> configList = Db.find("select * from mail_box_config where office_id=?", office_id);
         for (Record config : configList) {
-            recieveMail(office_id, config);
+            receiveMail(office_id, config);
         }
         
         renderText("OK");
     }
 
-    private void recieveMail(long office_id, Record config) {
+    private void receiveMail(long office_id, Record config) {
         String imapserver = config.getStr("smtp"); // 邮件服务器
         String userName = config.getStr("user");
         String pwd = config.getStr("pwd"); // 根据自已的密码修改
