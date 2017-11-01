@@ -9,9 +9,10 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			    dataType: 'json',
 		        done: function (e, data) {
 	        		if(data){
-			    		$('#img_logo').val(data.result.NAME);
+			    		$('#img_logo').attr('value', data.result.NAME);
 			    		var imgPre =Id("img_logo");
 			  		    imgPre.src = '/upload/'+data.result.NAME;
+
 			    	}else{
 			    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
 			    	}
@@ -46,15 +47,15 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		 
 		 var order = {};
 		 order.id = $('#order_id').val();
-		 order.contact_person = $('#contact_person').val();
-		 order.phone = $('#tel_phone').val();
+		 order.contact = $('#contact_person').val();
+		 order.telephone = $('#tel_phone').val();
 		 order.province = province;
 		 order.city = city;
 		 order.district = district;
 		 order.address = $('#address').val();
-		 order.address_phone = $('#address_phone').val();
+		 order.shop_telephone = $('#shop_telephone').val();
 		 order.qq = $('#qq').val();
-		 order.intro = $('#intro').val();
+		 order.about = $('#intro').val();
 		 order.logo = $('#img_logo').attr('value');
 		 
 		 

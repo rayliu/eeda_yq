@@ -114,7 +114,7 @@ public class ReminderController extends Controller {
     				+ "from user_login ul  "
     				+ "LEFT JOIN wc_company wc on wc.creator = ul.id "
     				+" LEFT JOIN category ca on ca.id = wc.trade_type "
-    				+" left join location loc on loc.code = ifnull(wc.city,wc.province)"
+    				+" left join location loc on loc.code = ifnull(wc.city,wc.province) and loc.code <>''"
     				+" where ul.status != '通过' ";
     	String condition = DbUtils.buildConditions(getParaMap());
 

@@ -207,7 +207,7 @@ public class SpController extends Controller {
     	String sql="select 	A.leave_days,ca.name trade_type_name,ifnull(loc.name,'暂无') location,ul.id uid,ul.user_name,ul.phone,wc.* from user_login ul  "
 	    			+ "left join  wc_company wc ON wc.creator = ul.id  "
 	    			+ "LEFT JOIN category ca on ca.id = wc.trade_type "
-	    			+ "left join location loc on loc.code = ifnull(wc.city,wc.province) "
+	    			+ "left join location loc on loc.code = ifnull(wc.city,wc.province)  and loc.code <>''"
 	    			+ "left join (select creator,datediff(max(end_date),now()) leave_days from wc_ad_diamond wad  group by creator) A  on A.creator = ul.id "
 	    			+ "where ul.status = '通过' ";
         String sqlTotal = "select count(1) total from ("+sql+condition+ ") B";

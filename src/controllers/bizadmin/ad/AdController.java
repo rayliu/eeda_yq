@@ -122,7 +122,7 @@ public class AdController extends Controller {
 		if(re != null){
 			setAttr("price",re.get("price"));
 		}
-		setAttr("price", Db.findFirst(sql).get("price"));
+		//setAttr("price", Db.findFirst(sql).get("price"));
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	

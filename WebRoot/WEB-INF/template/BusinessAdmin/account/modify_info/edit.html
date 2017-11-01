@@ -58,7 +58,7 @@
             </dt>
             <dd class="fm-field" id="fm-login-password-wrap">
               <div class="textin">
-                <input type="text" id="address_phone" name="address_phone" value="${company.shop_telephone!''}" />
+                <input type="text" id="shop_telephone" name="shop_telephone" value="${company.shop_telephone!''}" />
               </div>
             </dd>
           </dl>
@@ -99,7 +99,7 @@
                 </div>
                 <span class="red">图片为JPG格式，小于1000kb</span> 
                 <div class="form-control" style="margin-left:100px">
-                	<img style='width: 150px;height:150px' class='shadow' src='/upload/${company.logo!"default_logo.png"}' onerror='this.src="/upload/default_logo.png"' value='${company.logo!""}' id="img_logo">      
+                	<img style='width: 150px;height:150px' class='shadow' src='/upload/${company.logo!"default_logo.png"}'  value='${company.logo!""}' id="img_logo">      
             	</div>
             </dd>
           </dl>
@@ -112,6 +112,7 @@
 
 <%}%>
 <script>
+  //onerror='this.src="/upload/default_logo.png"'
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
          requirejs(['/js/BusinessAdmin/account/modify_info/edit.js']);
     });

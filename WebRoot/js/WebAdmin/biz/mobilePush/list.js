@@ -8,7 +8,11 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             ajax: "/WebAdmin/biz/mobilePush/list",
             columns: [
 	                     { "data":"ORDER_NO","width": "80px"},
-	                     { "data": "PRODUCTOR", "width":"120px"}, 
+	                     { "data": "PRODUCTOR", "width":"120px",
+                            "render":function(data,type,full,meta){
+                                 return "<a href='/WebAdmin/biz/edit?id="+full.WC_ID+"'>"+data+"</a>";
+                             }
+                         }, 
 	                     { "data": "CREATE_TIME", "width":"60px"},
 	                     { "data": "AMOUNT", "width":"60px"},
 	                     { "data": "PUT_IN_TIME", "width":"60px"},
