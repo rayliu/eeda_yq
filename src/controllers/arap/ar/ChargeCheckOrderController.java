@@ -322,7 +322,7 @@ public class ChargeCheckOrderController extends Controller {
         		+ " select aco.*,IFNULL(aco.audit_status,aco.status) toStatus, p.abbr sp_name,CAST(CONCAT(begin_time,' 到 <br>',end_time) AS char) check_time_slot "
 				+ " from arap_charge_order aco "
 				+ " left join party p on p.id=aco.sp_id "
-				+ " where aco.office_id = "+office_id+" order by aco.create_stamp DESC "
+				+ " where aco.office_id = "+office_id+" order by aco.begin_time DESC "
 				+ " ) B where 1=1 ";
         String condition = DbUtils.buildConditions(getParaMap());
 
