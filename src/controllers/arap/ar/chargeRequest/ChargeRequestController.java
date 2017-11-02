@@ -262,6 +262,20 @@ public class ChargeRequestController extends Controller {
         		+" 	) ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
+        String check_time_1_begin =getPara("check_time_1_begin"); 
+        String check_time_1_end =getPara("check_time_1_end"); 
+        if(StringUtils.isNotEmpty(check_time_1_begin)){
+        	condition+= " and ('"+check_time_1_begin+"' <= begin_time";
+        }else if(StringUtils.isNotEmpty(check_time_1_end)){
+        	condition+= " and ('1970-01-01' <= begin_time";
+        }
+        if(StringUtils.isNotEmpty(check_time_1_end)){
+        	condition+= " and end_time<='"+check_time_1_end+"')";
+        }else if(StringUtils.isNotEmpty(check_time_1_begin)){
+        	condition+= " and end_time<='2030-12-31')";
+        }
+        
+        
         String sqlTotal = "select count(1) total from ("+sql+ condition +") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));

@@ -250,15 +250,15 @@
 	    var order_no = $("#orderNo_filter1").val().trim(); 
 	    var status = $('#status_filter1').val();
 	    var orderType = $('#orderType').val();
-	    var start_date = $("#create_stamp_begin_time").val();
-	    var end_date = $("#create_stamp_end_time").val();
+	    var check_time_1_begin_time = $("#check_time_1_begin_time").val();
+	    var check_time_1_end_time = $("#check_time_1_end_time").val();
    
         var url = "/chargeRequest/OrderList?sp_id="+sp
       	   +"&order_no="+order_no
            +"&status="+status
            +"&order_type="+orderType
-           +"&create_stamp_begin_time="+start_date
-           +"&create_stamp_end_time="+end_date;
+           +"&check_time_1_begin="+check_time_1_begin_time
+           +"&check_time_1_end="+check_time_1_end_time;
 
         costAccept_table.ajax.url(url).load();
     };
