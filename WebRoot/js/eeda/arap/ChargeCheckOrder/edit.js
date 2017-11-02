@@ -226,7 +226,13 @@ $(document).ready(function() {
     			$.scojs_message('取消确认失败', $.scojs_message.TYPE_ERROR);
     		}
     	})
-    });   
+    });
+    
+    //账单公司信息回填
+    $('#own_company_list').on('click', '.fromLocationItem', function(e){
+		$('#own_company_name_eng').val($(this).attr('company_name_eng')=='null'?'':$(this).attr('company_name_eng'));
+		$('#own_company_tel').val($(this).attr('phone')=='null'?'':$(this).attr('phone'));
+	});
   
 });
 });

@@ -11,6 +11,9 @@
 		<![CDATA[SELECT
 	o.logo_path,
 	o.office_name,
+	pown.logo_path p_logo_path,
+	pown.company_name p_company_name,
+	CONCAT('Fax:',pown.fax) p_office_fax,
 	CONCAT('Tel:',IFNULL(u.user_tel,u.user_phone)) user_tel,
 	CONCAT('Fax:',o.office_fax) office_fax,
 	CONVERT(substring(jos.etd,1,10),char) ETD,
@@ -69,6 +72,7 @@ FROM
 LEFT JOIN job_order jo ON jo.id = jos.order_id
 LEFT JOIN office o on o.id = jo.office_id
 LEFT JOIN user_login u ON u.id = $P{login_user_id}
+LEFT JOIN (SELECT * from party where type='OWN') pown on  pown.office_id = u.office_id
 LEFT JOIN job_order_shipment_item josi ON jo.id = josi.order_id
 LEFT JOIN location lo ON lo.id = jos.por
 LEFT JOIN location lo1 ON lo1.id = jos.pol
@@ -88,11 +92,14 @@ WHERE
 	<field name="office_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="p_logo_path" class="java.lang.String"/>
+	<field name="p_company_name" class="java.lang.String"/>
+	<field name="p_office_fax" class="java.lang.String"/>
 	<field name="user_tel" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
 	</field>
 	<field name="ETD" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -279,6 +286,18 @@ WHERE
 	<field name="supplier_contract_type" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="relation_no" class="java.lang.String">
+		<fieldDescription><![CDATA[关联单号]]></fieldDescription>
+	</field>
+	<field name="account_ids" class="java.lang.String">
+		<fieldDescription><![CDATA[银行账户id数组]]></fieldDescription>
+	</field>
+	<field name="lcl_order_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="print_shipmentHead_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="order_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -399,7 +418,7 @@ WHERE
 	<field name="fnd" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="eta" class="java.sql.Date">
+	<field name="eta" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="booking_mark" class="java.lang.String">
@@ -435,6 +454,9 @@ WHERE
 	<field name="wait_overseaCustom" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="hbl_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="in_line_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -451,6 +473,12 @@ WHERE
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="sailing_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deadline_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[截关日期]]></fieldDescription>
+	</field>
+	<field name="aboutShipment_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="por_name" class="java.lang.String"/>
@@ -1192,7 +1220,8 @@ WHERE
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[
+($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="329" y="159" width="223" height="20" uuid="7c652868-ecdc-4a27-a3df-ff6ad3b048e6"/>
@@ -1210,7 +1239,7 @@ WHERE
 			</textField>
 			<image>
 				<reportElement x="297" y="44" width="258" height="74" uuid="b5fd949e-77c4-4f2d-ae93-aa1cafd3b551"/>
-				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
+				<imageExpression><![CDATA[($F{p_logo_path}.equals(null)?$F{logo_path}:"http://forwarder.esimplev.com/upload/partyLOGO/"+$F{p_logo_path})]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
 				<reportElement x="333" y="650" width="219" height="39" uuid="331c1dbe-c9e9-426e-90b2-a29be29c8062"/>

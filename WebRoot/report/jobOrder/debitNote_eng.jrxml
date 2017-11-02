@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="296"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -54,6 +54,13 @@
 	o.eng_address,
 	CONCAT('Fax: ',o.office_fax) office_fax,
 	CONCAT('Tel: ',o.office_tel) office_tel,
+	pown.logo_path p_logo_path,
+	pown.company_name p_company_name,
+	pown.company_name_eng p_company_name_eng,
+	pown.address p_address,
+	pown.address_eng p_address_eng,
+	CONCAT('Fax: ',pown.fax) p_fax,
+	CONCAT('Tel: ',pown.phone) p_phone,
 	josi.container_no,
 	jos.order_id,
 	jos.hbl_no,
@@ -98,6 +105,7 @@ FROM
 LEFT JOIN job_order_arap joa ON jo.id = joa.order_id
 LEFT JOIN party pr ON pr.id = joa.sp_id
 LEFT JOIN office o on o.id = pr.office_id
+LEFT JOIN (SELECT * from party where type='OWN') pown on  pown.office_id = o.id
 LEFT JOIN job_order_shipment jos ON jos.order_id = joa.order_id
 LEFT JOIN job_order_shipment_item josi ON josi.order_id = jo.id
 LEFT JOIN unit u1 ON josi.unit_id = u1.id
@@ -161,11 +169,18 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
 	</field>
 	<field name="office_tel" class="java.lang.String">
 		<fieldDescription><![CDATA[公司电话]]></fieldDescription>
 	</field>
+	<field name="p_logo_path" class="java.lang.String"/>
+	<field name="p_company_name" class="java.lang.String"/>
+	<field name="p_company_name_eng" class="java.lang.String"/>
+	<field name="p_address" class="java.lang.String"/>
+	<field name="p_address_eng" class="java.lang.String"/>
+	<field name="p_fax" class="java.lang.String"/>
+	<field name="p_phone" class="java.lang.String"/>
 	<field name="container_no" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -228,14 +243,14 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			</staticText>
 			<image>
 				<reportElement x="8" y="-12" width="130" height="42" uuid="95678e8d-70ad-4f35-89c4-5191d5be53d6"/>
-				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
+				<imageExpression><![CDATA[($F{p_logo_path}.equals(null)?$F{logo_path}:"http://forwarder.esimplev.com/upload/partyLOGO/"+$F{p_logo_path})]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
 				<reportElement x="104" y="24" width="405" height="25" uuid="bd1ea849-a800-4112-9aa1-f3defa55e072"/>
 				<textElement textAlignment="Center">
 					<font size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="167" y="70" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="8a2b76d2-0e6a-4550-a030-d23601e21458"/>
@@ -243,7 +258,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{office_tel}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{p_phone}.equals(null)?$F{office_tel}:$F{p_phone})]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="316" y="70" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="3d051f46-42f8-447b-b94b-ee9378541356"/>
@@ -251,12 +266,12 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{office_fax}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{p_fax}.equals(null)?$F{office_fax}:$F{p_fax})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="103" y="51" width="405" height="19" uuid="7e5dbfce-62ff-45a0-8679-27495a09901d"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$F{eng_address}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{p_company_name_eng}.equals(null)?$F{eng_office_name}:$F{p_company_name_eng})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -570,11 +585,11 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="343" y="191" width="205" height="15" uuid="25b56eca-7482-427c-a569-109b79890b2c"/>
+				<reportElement x="343" y="191" width="226" height="15" uuid="25b56eca-7482-427c-a569-109b79890b2c"/>
 				<textElement textAlignment="Left">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{p_company_name_eng}.equals(null)?$F{eng_office_name}:$F{p_company_name_eng})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="15" y="122" width="314" height="20" uuid="00a4e460-d4ae-419b-abcc-3017a922fd7a"/>

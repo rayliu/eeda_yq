@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="truckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6e032343-152e-4328-9fc1-a87e482c2444">
 	<property name="ireport.zoom" value="1.100000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="282"/>
+	<property name="ireport.y" value="347"/>
 	<parameter name="itemId" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -29,11 +29,15 @@ ul.user_name,
 ul.user_phone,
 ul.user_tel,
 ul.user_fax,
-oe.office_name
+oe.office_name,
+oe.logo_path,
+pown.company_name p_company_name,
+pown.logo_path p_logo_path
 from job_order jo
 LEFT JOIN job_order_land_item joli on joli.order_id = jo.id
 LEFT JOIN user_login ul on ul.id = jo.creator
 LEFT JOIN office oe on oe.id = jo.office_id
+LEFT JOIN (SELECT * from party where type='OWN') pown on  pown.office_id = ul.office_id
 LEFT JOIN party p on p.id =  joli.consignor
 LEFT JOIN party p1 on p1.id =  joli.consignee
 LEFT JOIN party p2 on p2.id = joli.transport_company
@@ -99,6 +103,11 @@ where joli.id=$P{itemId}]]>
 	<field name="office_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="logo_path" class="java.lang.String">
+		<fieldDescription><![CDATA[logo路径]]></fieldDescription>
+	</field>
+	<field name="p_company_name" class="java.lang.String"/>
+	<field name="p_logo_path" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -119,7 +128,7 @@ where joli.id=$P{itemId}]]>
 			</line>
 			<image>
 				<reportElement x="1" y="-15" width="190" height="51" uuid="8286be88-8d20-4197-a1a0-3b22f7c4fe89"/>
-				<imageExpression><![CDATA["yqlogo.png"]]></imageExpression>
+				<imageExpression><![CDATA[($F{p_logo_path}.equals(null)?$F{logo_path}:"http://forwarder.esimplev.com/upload/partyLOGO/"+$F{p_logo_path})]]></imageExpression>
 			</image>
 		</band>
 	</pageHeader>
@@ -276,7 +285,7 @@ where joli.id=$P{itemId}]]>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="402" y="596" width="154" height="15" uuid="af1e1c1a-5812-47cb-bd4f-e39afe28e6e2"/>

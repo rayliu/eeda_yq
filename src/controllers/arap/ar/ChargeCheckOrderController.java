@@ -525,6 +525,8 @@ public class ChargeCheckOrderController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
 	public void create(){
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	long office_id = user.getLong("office_id");
 		String ids = getPara("idsArray");//job_order_arap ids
 		String total_amount = getPara("totalAmount");
 		String cny_totalAmount = getPara("cny_totalAmount");
@@ -546,6 +548,11 @@ public class ChargeCheckOrderController extends Controller {
 				+ " WHERE joa.id in("+ ids +")"
 				+ " group by joa.order_id";
 		Record rec =Db.findFirst(sql);
+		
+		String own_sql = "select p.id, p.company_name,p.company_name_eng,p.phone,p.code "
+				+ " from party p LEFT JOIN office_ref oref on sub_party_id = p.id  "
+				+ " where oref.main_office_id = "+office_id+" and oref.sub_office_id="+office_id;
+		Record own_rec = Db.findFirst(own_sql);
 		
 		rec.set("total_amount", total_amount);
 		//对账
@@ -569,6 +576,7 @@ public class ChargeCheckOrderController extends Controller {
 		rec.set("currencyList", getCurrencyList(ids,""));
 		rec.set("company_abbr", rec.get("company_abbr"));
 		setAttr("order",rec);
+		setAttr("ownOrder",own_rec);
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
 	}
 	
@@ -586,12 +594,19 @@ public class ChargeCheckOrderController extends Controller {
             return;
         }
 		
-		String sql = " select aco.*,p.company_name,p.contact_person,p.id company_id,p.abbr company_abbr,p.phone,p.address,u.c_name creator_name,u1.c_name confirm_by_name from arap_charge_order aco "
+		String sql = " select aco.*,p.company_name,p.contact_person,p.id company_id,p.abbr company_abbr,p.phone,p.address,u.c_name creator_name,"
+				+ " u1.c_name confirm_by_name,pown.company_name own_company_name from arap_charge_order aco "
    				+ " left join party p on p.id=aco.sp_id "
+   				+ " left join party pown on pown.id=aco.own_company "
    				+ " left join user_login u on u.id=aco.create_by "
    				+ " left join user_login u1 on u1.id=aco.confirm_by "
    				+ " where aco.id = ? ";
 		Record rec =Db.findFirst(sql,id);
+		
+		String own_sql = "select p.id, p.company_name,p.company_name_eng,p.phone,p.code "
+				+ " from party p LEFT JOIN office_ref oref on sub_party_id = p.id  "
+				+ " where oref.main_office_id = "+office_id+" and oref.sub_office_id="+office_id;
+		Record own_rec = Db.findFirst(own_sql);
 
 		rec.set("address", rec.get("address"));
 		rec.set("customer", rec.get("contact_person"));
@@ -601,6 +616,7 @@ public class ChargeCheckOrderController extends Controller {
 		rec.set("company_id", rec.get("company_id"));
 		rec.set("company_abbr", rec.get("company_abbr"));
 		setAttr("order",rec);
+		setAttr("ownOrder",own_rec);
 		render("/eeda/arap/ChargeCheckOrder/ChargeCheckOrderEdit.html");
 	}
 

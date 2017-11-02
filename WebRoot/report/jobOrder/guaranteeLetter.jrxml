@@ -13,6 +13,8 @@
 		<![CDATA[SELECT
 	oe.logo_path,
 	oe.office_name,
+	pown.logo_path p_logo_path,
+	pown.company_name p_company_name,
 	jos.order_id,
 	josi.order_id,
 	jos.mbl_no,
@@ -33,6 +35,7 @@ LEFT JOIN party p ON p.id = jos.HBLshipper
 LEFT JOIN party p1 ON p1.id = jos.HBLconsignee
 LEFT JOIN user_login ul on ul.id = $P{login_user_id}
 LEFT JOIN office oe ON oe.id = ul.office_id
+LEFT JOIN (SELECT * from party where type='OWN') pown on  pown.office_id = ul.office_id
 where jos.order_id = $P{order_id}]]>
 	</queryString>
 	<field name="logo_path" class="java.lang.String">
@@ -41,6 +44,8 @@ where jos.order_id = $P{order_id}]]>
 	<field name="office_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="p_logo_path" class="java.lang.String"/>
+	<field name="p_company_name" class="java.lang.String"/>
 	<field name="order_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -77,7 +82,7 @@ where jos.order_id = $P{order_id}]]>
 		<band height="800" splitType="Stretch">
 			<image>
 				<reportElement x="2" y="12" width="190" height="50" uuid="078e4bfb-2c1d-4929-9773-6039b06c66c4"/>
-				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
+				<imageExpression><![CDATA[($F{p_logo_path}.equals(null)?$F{logo_path}:"http://forwarder.esimplev.com/upload/partyLOGO/"+$F{p_logo_path})]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="16" y="82" width="32" height="20" uuid="1d1a2949-2f5c-4de3-8eea-3d4c5c3290a0"/>
@@ -251,7 +256,7 @@ where jos.order_id = $P{order_id}]]>
 				<textElement>
 					<font size="14"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

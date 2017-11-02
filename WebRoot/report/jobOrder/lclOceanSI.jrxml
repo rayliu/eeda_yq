@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="210"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -43,6 +43,7 @@
 		ul.user_fax,
 		ul.email user_email,
 		oe.office_name,
+		pown.company_name p_company_name,
 ifnull(p.company_name_eng,p.company_name) MBLshipper_name,
 ifnull(p1.company_name_eng,p1.company_name) MBLconsignee_name, ifnull(p2.company_name_eng,p2.company_name) MBLnotify_party_name,
 cast( concat(SUM(josi.pieces),' ',ifnull(u.name_eng,u.name)) AS char ) pieces_unit
@@ -56,6 +57,7 @@ left join location lo1 on lo1.id=jos.pol
 left join location lo2 on lo2.id=jos.pod
 left join location lo3 on lo3.id=jos.fnd
 LEFT JOIN user_login ul on ul.id = $P{login_user_id}
+LEFT JOIN (SELECT * from party where type='OWN') pown on  pown.office_id = ul.office_id
 LEFT JOIN office oe on oe.id = ul.office_id
 left join party p on p.id = lor.MBLshipper
 left join party p1 on p1.id = lor.MBLconsignee
@@ -205,6 +207,7 @@ GROUP BY josi.container_no]]>
 	<field name="office_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="p_company_name" class="java.lang.String"/>
 	<field name="MBLshipper_name" class="java.lang.String"/>
 	<field name="MBLconsignee_name" class="java.lang.String"/>
 	<field name="MBLnotify_party_name" class="java.lang.String"/>
@@ -596,7 +599,7 @@ GROUP BY josi.container_no]]>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="436" y="59" width="119" height="15" uuid="1d461254-c132-4f0c-9332-cc023d0d1eba"/>

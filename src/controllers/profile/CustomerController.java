@@ -446,6 +446,49 @@ public class CustomerController extends Controller {
         }
     }
     
+ // 列出客户公司名称
+    @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
+    public void search_company_title() {
+        String customerName = getPara("customerName");
+        UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+
+        if(StringUtils.isEmpty(customerName)){
+            customerName = "";
+        }
+        long userId = LoginUserController.getLoginUserId(this);
+        
+        List<Record> resultList = Collections.EMPTY_LIST;
+            String sql = "select p.id, p.company_name,p.company_name_eng,p.phone,p.code from party p LEFT JOIN office_ref oref on sub_party_id = p.id  where oref.main_office_id = "+office_id;
+            String sql_contition =" and (p.abbr like '%" + customerName + "%' or p.quick_search_code like '%" +customerName.toLowerCase()+ "%'"
+                	+ " or p.quick_search_code like '%" + customerName.toUpperCase() + "%'"
+                	+ " or p.code like '%" + customerName.toUpperCase() + "%'"
+                	+ " or p.code like '%" +customerName.toLowerCase()+ "%' "
+                	+ " or p.company_name like '%" +customerName+ "%' "
+                    + " or concat(p.abbr,' - ',p.code) like '%" +customerName+ "%') ";
+            if (customerName.trim().length() > 0) {
+                sql +=sql_contition;
+            }
+            resultList = Db.find(sql+" order by abbr limit 25");
+            
+            if(resultList.size()==0){
+            	String err = "无记录";
+            	renderText(err);
+            	return;
+            }else{
+            	 if (customerName.trim().length() > 0) {
+                     sql +=sql_contition;
+                 }
+            	 resultList = Db.find(sql+" order by abbr limit 25");
+            	 renderJson(resultList);
+            	 return;
+            }
+        
+    }
+    
+    
+    
+    
     // 列出所有客户名称
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void search_customer() {

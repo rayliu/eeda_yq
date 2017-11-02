@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHead" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="244"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -11,7 +11,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     o.logo_path,o.office_name,u.email user_email,jos.*,josi.*,josh.*,p.company_name head_company,p1.company_name carrier_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
+     o.logo_path,o.office_name,pown.logo_path p_logo_path,pown.company_name p_company_name,u.email user_email,jos.*,josi.*,josh.*,p.company_name head_company,p1.company_name carrier_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
 ifnull(
 (select GROUP_CONCAT(CN_no SEPARATOR '  ;  ') from
 (SELECT
@@ -32,6 +32,7 @@ LEFT JOIN party p1 on p1.id = jos.carrier
 LEFT JOIN party p2 on p2.id = jos.HBLshipper
 LEFT JOIN office o on o.id = p.office_id
 LEFT JOIN user_login u on u.id =$P{login_user_id}
+LEFT JOIN (SELECT * from party where type='OWN') pown on  pown.office_id = u.office_id
 left join location lo on lo.id=jos.por
 left join location lo1 on lo1.id=jos.pol
 left join location lo2 on lo2.id=jos.pod
@@ -44,6 +45,8 @@ where jos.order_id=$P{order_id}]]>
 	<field name="office_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="p_logo_path" class="java.lang.String"/>
+	<field name="p_company_name" class="java.lang.String"/>
 	<field name="user_email" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -147,7 +150,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="etd" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="eta" class="java.sql.Date">
+	<field name="eta" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="gross_weight" class="java.lang.Double">
@@ -201,6 +204,9 @@ where jos.order_id=$P{order_id}]]>
 	<field name="si_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="hbl_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="mbl_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -220,6 +226,15 @@ where jos.order_id=$P{order_id}]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="ata" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sailing_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deadline_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[截关日期]]></fieldDescription>
+	</field>
+	<field name="aboutShipment_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="type" class="java.lang.String">
@@ -475,7 +490,7 @@ where jos.order_id=$P{order_id}]]>
 			</textField>
 			<image>
 				<reportElement x="0" y="-14" width="200" height="55" uuid="2822a4ec-e64c-4543-9a4d-2840063ece01"/>
-				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
+				<imageExpression><![CDATA[($F{p_logo_path}.equals(null)?$F{logo_path}:"http://forwarder.esimplev.com/upload/partyLOGO/"+$F{p_logo_path})]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="true">
 				<reportElement x="153" y="324" width="402" height="20" uuid="22b56d9b-b74f-4a25-b012-2d9866d57479"/>
@@ -579,11 +594,11 @@ where jos.order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{head_customer_tel}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="360" y="703" width="196" height="20" uuid="ee419ef5-b19f-4cd3-a6d2-4c00172e7188"/>
+				<reportElement x="360" y="703" width="211" height="20" uuid="ee419ef5-b19f-4cd3-a6d2-4c00172e7188"/>
 				<textElement>
 					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="360" y="739" width="50" height="17" uuid="305ba72e-c280-404b-b467-9659a5d55ec8"/>
