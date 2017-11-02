@@ -1,10 +1,16 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder', 'pageguide'], function ($, metisMenu) {
   $(document).ready(function() {
- 
-        tl.pg.init({
-            pg_caption: '本页教程'
-        });
-        
+	  if($("#unselected").attr("class")=="tab-pane fade active in"){
+  		tl.pg.init({
+              pg_caption: '本页教程'
+          });
+	  }
+      $("#notReconciled").click(function(){
+    	  $("#tlyPageGuideToggles").show();
+      });
+      $("#cost_check_order_tab").click(function(){
+    	  $("#tlyPageGuideToggles").hide();
+      });
 	  	var cnames = [];
 		var itemIds=[];
 	    var totalAmount = 0.0;

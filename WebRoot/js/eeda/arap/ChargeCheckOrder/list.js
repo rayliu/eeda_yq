@@ -1,11 +1,17 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder','sco','pageguide','validate_cn'], function ($, metisMenu) { 
 
     $(document).ready(function() {
-
-        tl.pg.init({
-            pg_caption: '本页教程'
+    	if($("#unselected").attr("class")=="tab-pane fade active in"){
+    		tl.pg.init({
+                pg_caption: '本页教程'
+            });
+    	}
+        $("#notReconciled").click(function(){
+        	$("#tlyPageGuideToggles").show();
         });
-        
+        $("#reconciled").click(function(){
+        	$("#tlyPageGuideToggles").hide();
+        });
     	//datatable, 动态处理
 		var cnames = [];
 		var itemIds=[];
