@@ -38,10 +38,13 @@
 						return "<a href='/chargeCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
 					}
 				},
-				{"data":"ORDER_TYPE","class":"order_type","width":"60px"},   
+				{"width":"70px",
+					"render": function(data, type, full, meta) {
+						return full.BEGIN_TIME+'到'+full.END_TIME;
+					}
+				},  
 				{"data":"STATUS","width":"30px"},
 				{"data":"SP_NAME","sClass":"SP_NAME","width":"60px"},
-				{"data":"APP_MSG","width":"120px"},
 				{"data":"CNY","width":"70px",
 					"render":function(data,type,full,meta){
 						if(data==''){
@@ -125,7 +128,9 @@
 					"render": function(data, type, full, meta) {
 						return "<span style='width:80px'>"+parseFloat(full.HKD - full.PAID_HKD).toFixed(2)+"</span>";	
 					}
-				}, 
+				},				
+				{"data":"APP_MSG","width":"120px"},
+				{"data":"ORDER_TYPE","class":"order_type","width":"60px"},
 				{"data":"BEGIN_TIME","width":"70px","visible":false,
 					"render": function(data, type, full, meta) {
 						return data;
