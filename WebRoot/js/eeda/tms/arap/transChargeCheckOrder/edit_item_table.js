@@ -273,6 +273,7 @@ $(document).ready(function() {
             { "data": "CONTAINER_NO", "width": "70px" },
             { "data": "COMBINE_WHARF", "width": "70px" },
             { "data": "SO_NO", "width": "70px"},
+            { "data": "CABINET_TYPE", "width": "70px"},
              { "data": "CABINET_DATE", "width": "70px", 
                render: function(data){
                  if(data)

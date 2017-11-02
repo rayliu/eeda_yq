@@ -344,7 +344,7 @@ public class TransChargeCheckOrderController extends Controller {
 			}else{				
 			sql = " select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,joa.remark,"
 					+" aco.order_no check_order_no, jo.id job_order_id, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
-					+ " jo.ref_no ref_no,jo.so_no,jo.container_no,"
+					+ " jo.ref_no ref_no,jo.so_no,jo.cabinet_type,jo.container_no,"
 						+" p.abbr sp_name,p1.abbr customer_name, "
 						+" ifnull((select rc.new_rate from rate_contrast rc"
 						    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
@@ -368,13 +368,13 @@ public class TransChargeCheckOrderController extends Controller {
 						+" left join currency cur on cur.id=joa.currency_id"
 						+" left join currency cur1 on cur1.id=joa.exchange_currency_id"
 						+" left join trans_arap_charge_item aci on aci.ref_order_id = joa.id"
-						+ " left join trans_job_order_land_item  jols on jols.order_id=jo.id "
+						 + " LEFT JOIN trans_job_order_land_item tjoli on tjoli.order_id=jo.id"
 						+ " LEFT JOIN dockinfo dock0 ON dock0.id = jo.take_wharf "
 	    				+ " LEFT JOIN dockinfo dock1 ON dock1.id = jo.back_wharf "
-	    				+ " LEFT JOIN dockinfo dock2 ON dock2.id = jols.loading_wharf1 "
-	    				+ " LEFT JOIN dockinfo dock3 ON dock3.id = jols.loading_wharf2"
+	    				+ " LEFT JOIN dockinfo dock2 ON dock2.id = tjoli.loading_wharf1 "
+	    				+ " LEFT JOIN dockinfo dock3 ON dock3.id = tjoli.loading_wharf2"
 					 +" left join trans_arap_charge_order aco on aco.id = aci.charge_order_id"
-					 + " LEFT JOIN trans_job_order_land_item tjoli on tjoli.order_id=jo.id"
+					
 					 +" where joa.id = aci.ref_order_id and aco.id = ("+order_id+")" +currenry_code
 					 + " and jo.delete_flag = 'N'"
 						+" GROUP BY joa.id"
