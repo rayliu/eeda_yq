@@ -169,11 +169,8 @@ import controllers.app.AppControllerForMobile;
 import controllers.cms.jobOrder.CustomJobOrderController;
 import controllers.cms.jobOrder.CustomPlanOrderController;
 import controllers.cms.jobOrder.FeeBatchInputController;
-import controllers.eeda.FormController;
 import controllers.eeda.ListConfigController;
-import controllers.eeda.ListController;
 import controllers.eeda.ModuleController;
-import controllers.eeda.QueryController;
 import controllers.msg.MailBoxController;
 import controllers.msg.PersonalMsgController;
 import controllers.msg.YqDashBoardController;
@@ -296,11 +293,6 @@ public class EedaConfig extends JFinalConfig {
         me.add("/", controllers.eeda.MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
         me.add("/listConfig", ListConfigController.class, contentPath);
-        
-        
-        me.add("/list", ListController.class, contentPath);
-        me.add("/query", QueryController.class, contentPath);
-        me.add("/form", FormController.class, contentPath);
         
         me.add("/dashBoard", YqDashBoardController.class);
         me.add("/mailConfig", MailConfigController.class);
