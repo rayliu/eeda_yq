@@ -801,7 +801,7 @@ public class TransChargeCheckOrderController extends Controller {
       		+ " FROM (SELECT tjo.order_no,tjo.lading_no,"
       		+ " SUBSTR(CAST(( SELECT GROUP_CONCAT(tjoli.cabinet_date) FROM  trans_job_order_land_item tjoli LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id WHERE tjor.id = tjo.id ) AS CHAR),1,10) cabinet_date,"
       		+ " SUBSTR(CAST((tjo.charge_time) as char),1,10) charge_time,p.abbr customer_name,tjo.type,tjo.container_no,tjo.so_no,tjo.cabinet_type,"
-      		+ " ( SELECT GROUP_CONCAT(co.car_no) FROM trans_job_order_land_item tjoli LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id LEFT JOIN carinfo co ON co.id = tjoli.car_no WHERE tjor.id = tjo.id ) car_no,"
+      		+ " ( SELECT group_concat(co.car_no separator '/') FROM trans_job_order_land_item tjoli LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id LEFT JOIN carinfo co ON co.id = tjoli.car_no WHERE tjor.id = tjo.id ) car_no,"
       		+ " if(tjoa.charge_id = 173,IFNULL(round(tjoa.total_amount,2),''),'') freight,cy. NAME  currency_name,"
       		+ " if(tjoa.charge_id = 174,IFNULL(round(tjoa.total_amount,2),''),'') call_fee,"
       		+ " if(tjoa.charge_id = 262,IFNULL(round(tjoa.total_amount,2),''),'') high_speed_fee,"
