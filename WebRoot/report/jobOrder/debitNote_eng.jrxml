@@ -169,7 +169,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[ 公司传真]]></fieldDescription>
+		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
 	</field>
 	<field name="office_tel" class="java.lang.String">
 		<fieldDescription><![CDATA[公司电话]]></fieldDescription>
@@ -250,7 +250,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<textElement textAlignment="Center">
 					<font size="16"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{p_company_name_eng}.equals(null)?$F{eng_office_name}:$F{p_company_name_eng})]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="167" y="70" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="8a2b76d2-0e6a-4550-a030-d23601e21458"/>
