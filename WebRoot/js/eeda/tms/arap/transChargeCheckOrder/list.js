@@ -51,6 +51,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
 	            
 	            { "data": "CONTAINER_NO", "width": "60px"},
 	            { "data": "CABINET_TYPE", "width": "40px"},
+	            { "data": "COMBINE_WHARF", "width": "77px"},
 	            { "data": "SO_NO", "width": "60px"},
               	{ "data": "CABINET_DATE", "width": "70px", 
             		  render: function(data){

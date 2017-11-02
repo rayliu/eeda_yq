@@ -39,7 +39,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
 					{ "data": "CHARGE_TIME", "width": "65px"},
 					{ "data": "CONTAINER_NO", "width": "60px"},
 					{ "data": "CABINET_TYPE", "width": "60px"},
-					{ "data": "SO_NO", "width": "80px"},
+					{ "data": "COMBINE_WHARF", "width": "77px"},
+					{ "data": "SO_NO", "width": "60px"},
 					{ "data": "AUDIT_FLAG", "width": "40px",
 					"render": function ( data, type, full, meta ) {
 						if(data != 'Y')
