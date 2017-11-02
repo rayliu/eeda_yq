@@ -1,0 +1,68 @@
+
+<form id = "mailForm">
+<input type="hidden" id="mail_id" value="${mailSet.id!''}">
+     <div class="form-group">  <!--  form row  -->
+     		<div class="row col-lg-12">
+     			<h4>邮箱账号信息</h4>
+     		</div>
+             <div class="row">
+                 <div class="col-lg-4">
+                      <fieldset>
+                    	<div class="form_group">
+                    			<%include("/eeda/component/form/selectField.html",
+		                      		{    id:'send_mail_type',
+		                      			 label:'邮箱类型',
+		                      			 value:mailSet.send_mail_type!'',
+		                      			 value_list:[
+		                      			 {code:'SMTP',value:'SMTP'}
+		                      			 ]
+	                      		}){}%>                    			
+                    	</div>
+                      </fieldset>
+                 </div>
+                 <div class="col-lg-4">
+		                     <%include("/eeda/component/form/inputField.html", 
+		                         {   id:'send_host', 
+		                             label:'邮件服务器', 
+		                             value:mailSet.send_host!''
+		                         }){}%>
+                 </div>
+                 
+             </div>
+             <div class="row">
+             	 <div class="col-lg-4">
+                 	 <%include("/eeda/component/form/inputField.html",
+                 	 	{id:'send_port',
+                 	 	 label:'端口',
+                 	 	 value:mailSet.send_port!''      	 	 
+                 	 }){}%>
+                 </div>
+                 <div class="col-lg-4">
+                 		<input type="hidden" id="hidden_mail_ssl" value="${mailSet.mail_ssl!''}">
+                        <div class="form-group" >
+                          <label class="checkbox-inline">
+                              <input id="mail_ssl" type="checkbox" value="SSL">SSL
+                          </label>
+                        </div>
+                 </div>
+             </div>
+             <div class="row">
+                 <div class="col-lg-4">
+                     <%include("/eeda/component/form/inputField.html", 
+                         {   id:'send_user_name', 
+                             label:'用户名', 
+                             value:mailSet.send_user_name!''
+                         }){}%>
+                 </div>
+                 <div class="col-lg-4">
+                     <%include("/eeda/component/form/inputField.html", 
+                         {   id:'send_password', 
+                             label:'密码', 
+                             value:mailSet.send_password!''
+                         }){}%>
+                 </div>
+             </div>
+     </div>
+</form>
+
+
