@@ -789,7 +789,7 @@ public class TransChargeCheckOrderController extends Controller {
     	String order_id = getPara("order_id");
     	String company_name = getPara("company_name");
 //        UserLogin user = LoginUserController.getLoginUser(this);
-      String exportSql =  "SELECT a.*,cast(IF (SUM(freight) != 0,CONVERT (SUM(freight),DECIMAL),'') AS CHAR) sum_freight,"
+      String exportSql =  "SELECT (@rowNO := @rowNo + 1) AS rowno,a.*,cast(IF (SUM(freight) != 0,CONVERT (SUM(freight),DECIMAL),'') AS CHAR) sum_freight,"
       		+ " cast(IF (SUM(call_fee) != 0,CONVERT (SUM(call_fee),DECIMAL),'') AS CHAR) sum_call_fee,"
       		+ " cast(IF (SUM(high_speed_fee) != 0,CONVERT (SUM(high_speed_fee),DECIMAL),'') AS CHAR) sum_high_speed_fee,"
       		+ " cast(IF (SUM(weighing_fee) != 0,CONVERT (SUM(weighing_fee),DECIMAL),'') AS CHAR) sum_weighing_fee,"
@@ -799,8 +799,8 @@ public class TransChargeCheckOrderController extends Controller {
       		+ " cast(IF (SUM(overtime_fee) != 0,CONVERT (SUM(overtime_fee),DECIMAL),'') AS CHAR) sum_overtime_fee,"
       		+ " cast(IF (SUM(tax_fee) != 0,CONVERT (SUM(tax_fee),DECIMAL),'') AS CHAR) sum_tax_fee "
       		+ " FROM (SELECT tjo.order_no,tjo.lading_no,"
-      		+ " CAST(( SELECT GROUP_CONCAT(tjoli.cabinet_date) FROM  trans_job_order_land_item tjoli LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id WHERE tjor.id = tjo.id ) AS CHAR) cabinet_date,"
-      		+ " tjo.charge_time,p.abbr customer_name,tjo.type,tjo.container_no,tjo.so_no,tjo.cabinet_type,"
+      		+ " SUBSTR(CAST(( SELECT GROUP_CONCAT(tjoli.cabinet_date) FROM  trans_job_order_land_item tjoli LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id WHERE tjor.id = tjo.id ) AS CHAR),1,10) cabinet_date,"
+      		+ " SUBSTR(CAST((tjo.charge_time) as char),1,10) charge_time,p.abbr customer_name,tjo.type,tjo.container_no,tjo.so_no,tjo.cabinet_type,"
       		+ " ( SELECT GROUP_CONCAT(co.car_no) FROM trans_job_order_land_item tjoli LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id LEFT JOIN carinfo co ON co.id = tjoli.car_no WHERE tjor.id = tjo.id ) car_no,"
       		+ " if(tjoa.charge_id = 173,IFNULL(round(tjoa.total_amount,2),''),'') freight,cy. NAME  currency_name,"
       		+ " if(tjoa.charge_id = 174,IFNULL(round(tjoa.total_amount,2),''),'') call_fee,"
@@ -828,7 +828,7 @@ public class TransChargeCheckOrderController extends Controller {
 			+ " LEFT JOIN dockinfo dock2 ON dock2.id = joli.loading_wharf1 "
 			+ " LEFT JOIN dockinfo dock3 ON dock3.id = joli.loading_wharf2"
       		+ " WHERE tjoa.id = taci.ref_order_id AND taco.id = "+order_id+" AND tjo.delete_flag = 'N'  GROUP BY tjoa.id ORDER BY tjo.order_no"
-      		+ " )a GROUP BY a.order_no";
+      		+ " )a,(SELECT @rowNO := 0) b GROUP BY a.order_no";
 
         
         //List<String> headers = new ArrayList<String>();
