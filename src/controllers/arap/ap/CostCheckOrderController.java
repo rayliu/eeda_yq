@@ -610,10 +610,15 @@ public class CostCheckOrderController extends Controller {
    				+ " where aco.id = ? ";
 		Record order = Db.findFirst(sql,id);
 		
+		String own_sql = "select p.id, p.company_name,p.company_name_eng,p.phone,p.code "
+				+ " from party p LEFT JOIN office_ref oref on sub_party_id = p.id  "
+				+ " where oref.main_office_id = "+office_id+" and oref.sub_office_id="+office_id;
+		Record own_rec = Db.findFirst(own_sql);
 //		String condition = "select ref_order_id from arap_cost_item where cost_order_id ="+id;
 //		order.set("currencylist", getCurrencyList(condition,id));
 		order.set("item_list", getItemList("",id,""));
 		setAttr("order", order);
+		setAttr("ownOrder",own_rec);
 		render("/eeda/arap/CostCheckOrder/CostCheckOrderEdit.html");
 	}
 	

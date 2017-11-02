@@ -93,7 +93,35 @@
                                          <textarea class="form-control" rows="4" id="remark">${order.remark!''}</textarea>
                                      </div>
                                 </div>
-                                
+                                <div class="row">
+				<div class="col-lg-12">
+					<h4>账单公司信息</h4>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/ownSubOfficeRef.html", 
+					{	id:'own_company', 
+						label:'中文名称', 
+						value:order.own_company!ownOrder.id!'',
+						display_value:order.own_company_name!ownOrder.company_name!''
+					}){}%>
+				</div>
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", 
+					{	id:'own_company_name_eng', 
+						label:'英文名称', 
+						value:order.own_company_name_eng!ownOrder.company_name_eng!''
+					}){}%>
+				</div>
+				<div class="col-lg-4">
+					<%include("/eeda/component/form/inputField.html", 
+					{	id:'own_company_tel', 
+						label:'电话', 
+						value:order.own_company_tel!ownOrder.phone!''
+					}){}%>
+				</div>
+			</div><br><br>
                                 <div class="row">
                                     <div class="form-group">
                                         <div class="col-lg-12">
