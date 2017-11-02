@@ -113,7 +113,7 @@ $(document).ready(function() {
 	    	if(!isNaN(calcNumber))
     			$(row.find('[name=number]')).val(calcNumber);
     		if(!isNaN(calcPrice))
-    			$(row.find('[name=price]')).val(calcPrice.toFixed(3));
+    			$(row.find('[name=price]')).val(calcPrice.toFixed(8));
     		if(!isNaN(total)){
     			$(row.find('[name=domestic_price]')).val(total.toFixed(3));
             }
@@ -722,10 +722,17 @@ $(document).ready(function() {
 				return;
 			}
 		}
-		if(name=="price"||name=="domestic_price"||name=="domestic_price"||name=="value_added_tax"||name=="tax_refund_rate"||
+		if(name=="domestic_price"||name=="domestic_price"||name=="value_added_tax"||name=="tax_refund_rate"||
 				name=="tax_refund_rate_customer"||name=="custom_price"||name=="custom_amount"||name=="custom_rate"||name=="agency_rate"||name=="agency_amount_cny"){
 			var re = /^\d{0,8}(\d{1}\.\d{1,6})?$/g;
 			if(!re.test(data)&&len!=0){
+				$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法的数字</span>");
+				return;
+			}
+		}
+		if(name=="price"){
+			var re = /^\d{0,8}(\d{1}\.\d{1,8})?$/g;
+			if(isNaN(data)){
 				$(this).parent().append("<span style='color:red;' class='error_span'>请输入合法的数字</span>");
 				return;
 			}
