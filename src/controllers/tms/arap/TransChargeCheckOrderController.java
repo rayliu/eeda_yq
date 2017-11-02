@@ -191,10 +191,10 @@ public class TransChargeCheckOrderController extends Controller {
       				+ " left join currency cur1 on cur1.id=joa.exchange_currency_id "
       				+ " left join trans_job_order_land_item joli on joli.order_id=joa.order_id "
       				+ " left join fin_item f on f.id = joa.charge_id"
-      				+ " LEFT JOIN dockinfo dock0 ON dock0.id = tjo.take_wharf "
-    				+ " LEFT JOIN dockinfo dock1 ON dock1.id = tjo.back_wharf "
-    				+ " LEFT JOIN dockinfo dock2 ON dock2.id = tjol.loading_wharf1 "
-    				+ " LEFT JOIN dockinfo dock3 ON dock3.id = tjol.loading_wharf2"
+      				+ " LEFT JOIN dockinfo dock0 ON dock0.id = jo.take_wharf "
+    				+ " LEFT JOIN dockinfo dock1 ON dock1.id = jo.back_wharf "
+    				+ " LEFT JOIN dockinfo dock2 ON dock2.id = joli.loading_wharf1 "
+    				+ " LEFT JOIN dockinfo dock3 ON dock3.id = joli.loading_wharf2"
       				+ " where joa.audit_flag='Y' and joa.bill_flag='N'  and jo.office_id = "+office_id
       				 + " and jo.delete_flag = 'N'"
      				+ " GROUP BY joa.id "
@@ -789,55 +789,53 @@ public class TransChargeCheckOrderController extends Controller {
     	String order_id = getPara("order_id");
     	String company_name = getPara("company_name");
 //        UserLogin user = LoginUserController.getLoginUser(this);
-        String exportSql =  "SELECT (@rowNO := @rowNo + 1) AS rowno,a.* from( "
-        		+ " SELECT tjo.id,tjo.order_no,tjo.lading_no lading_no,tjo.type,taco.invoice_no invoice_no,"
-        		 +" 	( SELECT GROUP_CONCAT(tjoli.cabinet_date) "
-        		 +" 		FROM  trans_job_order_land_item tjoli "
-        		 +" 		LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id "
-        		 +" 		WHERE tjor.id = tjo.id ) cabinet_date, "
-        		 +"   	py.abbr  customer_name, "
-        		 +" 	( SELECT GROUP_CONCAT(tjoli.unload_type) "
-        		 +" 		FROM trans_job_order_land_item tjoli "
-        		 + "        LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id "
-        		 +" 		WHERE tjor.id = tjo.id ) unload_type, "
-        		 +" 	d.dock_name, tjo.container_no, tjo.cabinet_type, "
-        		 +" 	( SELECT GROUP_CONCAT(co.car_no) "
-        		 +" 		FROM trans_job_order_land_item tjoli "
-        		 +" 		LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id "
-        		 +" 		LEFT JOIN carinfo co ON co.id = tjoli.car_no "
-        		 +" 		WHERE tjor.id = tjo.id ) car_no, "
-        		 +" 	if(tjoa.charge_id = 173,IFNULL(round(tjoa.total_amount,2),''),'') freight, "
-        		 +"   cy. NAME  currency_name, "
-        		 +" 	if(tjoa.charge_id = 264,IFNULL(round(tjoa.total_amount,2),''),'') weighing_fee, "
-        		 +" 	if(tjoa.charge_id = 263,IFNULL(round(tjoa.total_amount,2),''),'') night_fee, "
-        		 +" 	if(tjoa.charge_id = 262,IFNULL(round(tjoa.total_amount,2),''),'') high_speed_fee, "
-        		 +" 	if(tjoa.charge_id = 174,IFNULL(round(tjoa.total_amount,2),''),'') call_fee, "
-        		 +" 	if(tjoa.charge_id = 302,IFNULL(round(tjoa.total_amount,2),''),'') empty_in_out_fee, "
-        		 +" 	if(tjoa.charge_id = 497,IFNULL(round(tjoa.total_amount,2),''),'') advance_fee, "
-        		 +" 	tjo.remark "
-        		 +" FROM trans_arap_charge_order taco "
-        		 +" LEFT JOIN trans_arap_charge_item taci ON taco.id = taci.charge_order_id  "
-        		 +" LEFT JOIN trans_job_order_arap tjoa ON taci.ref_order_id = tjoa.id "
-        		
-        		 +" LEFT JOIN currency cy ON cy.id = tjoa.currency_id "
-        		 +" LEFT JOIN trans_job_order tjo ON tjo.id = tjoa.order_id "
-        		 +" LEFT JOIN party py ON py.id = tjo.customer_id "
-        		 +" LEFT JOIN dockinfo d ON d.id = tjo.take_wharf "
-        		 +" WHERE "
-        		 +" 	tjoa.id = taci.ref_order_id "
-        		 +" AND taco.id = ("+order_id+") "
-        		 +" AND tjo.delete_flag = 'N' "
-        		 +" GROUP BY "
-        		 +" 	tjoa.id "
-        		 +" ORDER BY "
-        		 +" 	taco.order_no, "
-        		 +" 	tjo.order_no ) a,(SELECT @rowNO := 0) b";
+      String exportSql =  "SELECT a.*,cast(IF (SUM(freight) != 0,CONVERT (SUM(freight),DECIMAL),'') AS CHAR) sum_freight,"
+      		+ " cast(IF (SUM(call_fee) != 0,CONVERT (SUM(call_fee),DECIMAL),'') AS CHAR) sum_call_fee,"
+      		+ " cast(IF (SUM(high_speed_fee) != 0,CONVERT (SUM(high_speed_fee),DECIMAL),'') AS CHAR) sum_high_speed_fee,"
+      		+ " cast(IF (SUM(weighing_fee) != 0,CONVERT (SUM(weighing_fee),DECIMAL),'') AS CHAR) sum_weighing_fee,"
+      		+ " cast(IF (SUM(night_fee) != 0,CONVERT (SUM(night_fee),DECIMAL),'') AS CHAR) sum_night_fee,"
+      		+ " cast(IF (SUM(empty_in_out_fee) != 0,CONVERT (SUM(empty_in_out_fee),DECIMAL),'') AS CHAR) sum_empty_in_out_fee,"
+      		+ " cast(IF (SUM(advance_fee) != 0,CONVERT (SUM(advance_fee),DECIMAL),'') AS CHAR) sum_advance_fee,"
+      		+ " cast(IF (SUM(overtime_fee) != 0,CONVERT (SUM(overtime_fee),DECIMAL),'') AS CHAR) sum_overtime_fee,"
+      		+ " cast(IF (SUM(tax_fee) != 0,CONVERT (SUM(tax_fee),DECIMAL),'') AS CHAR) sum_tax_fee "
+      		+ " FROM (SELECT tjo.order_no,tjo.lading_no,"
+      		+ " CAST(( SELECT GROUP_CONCAT(tjoli.cabinet_date) FROM  trans_job_order_land_item tjoli LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id WHERE tjor.id = tjo.id ) AS CHAR) cabinet_date,"
+      		+ " tjo.charge_time,p.abbr customer_name,tjo.type,tjo.container_no,tjo.so_no,tjo.cabinet_type,"
+      		+ " ( SELECT GROUP_CONCAT(co.car_no) FROM trans_job_order_land_item tjoli LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id LEFT JOIN carinfo co ON co.id = tjoli.car_no WHERE tjor.id = tjo.id ) car_no,"
+      		+ " if(tjoa.charge_id = 173,IFNULL(round(tjoa.total_amount,2),''),'') freight,cy. NAME  currency_name,"
+      		+ " if(tjoa.charge_id = 174,IFNULL(round(tjoa.total_amount,2),''),'') call_fee,"
+      		+ " if(tjoa.charge_id = 262,IFNULL(round(tjoa.total_amount,2),''),'') high_speed_fee,"
+      		+ " if(tjoa.charge_id = 264,IFNULL(round(tjoa.total_amount,2),''),'') weighing_fee, "
+      		+ " if(tjoa.charge_id = 263,IFNULL(round(tjoa.total_amount,2),''),'') night_fee,"
+      		+ " if(tjoa.charge_id = 302,IFNULL(round(tjoa.total_amount,2),''),'') empty_in_out_fee,"
+      		+ " if(tjoa.charge_id = 497,IFNULL(round(tjoa.total_amount,2),''),'') advance_fee, "
+      		+ " if(tjoa.charge_id = 492,IFNULL(round(tjoa.total_amount,2),''),'') overtime_fee,"
+      		+ " if(tjoa.charge_id = 104,IFNULL(round(tjoa.total_amount,2),''),'') tax_fee,"
+      		+ " taco.invoice_no,"
+      		+ " CONCAT(IFNULL(CONCAT(dock0.dock_name, '-'),''),"
+			+ " IFNULL(CONCAT(GROUP_CONCAT(dock2.dock_name SEPARATOR '-'),'-'),''),"
+			+ " IFNULL(CONCAT(GROUP_CONCAT(dock3.dock_name SEPARATOR '-'),'-'),''),"
+			+ " IFNULL(dock1.dock_name, '')) combine_wharf"
+      		+ " from trans_job_order_arap tjoa"
+      		+ " LEFT JOIN trans_arap_charge_item taci ON taci.ref_order_id = tjoa.id"
+      		+ " LEFT JOIN trans_arap_charge_order taco ON taco.id = taci.charge_order_id"
+      		+ " LEFT JOIN trans_job_order tjo ON tjo.id = tjoa.order_id"
+      		+ " LEFT JOIN party p ON p.id = tjo.customer_id"
+      		+ " LEFT JOIN currency cy ON cy.id = tjoa.currency_id"
+      		+ " left join trans_job_order_land_item joli on joli.order_id=tjoa.order_id "
+      		+ " LEFT JOIN dockinfo dock0 ON dock0.id = tjo.take_wharf "
+			+ " LEFT JOIN dockinfo dock1 ON dock1.id = tjo.back_wharf "
+			+ " LEFT JOIN dockinfo dock2 ON dock2.id = joli.loading_wharf1 "
+			+ " LEFT JOIN dockinfo dock3 ON dock3.id = joli.loading_wharf2"
+      		+ " WHERE tjoa.id = taci.ref_order_id AND taco.id = "+order_id+" AND tjo.delete_flag = 'N'  GROUP BY tjoa.id ORDER BY tjo.order_no"
+      		+ " )a GROUP BY a.order_no";
+
         
         //List<String> headers = new ArrayList<String>();
-        String[] headers = new String[]{"序号","提单号", "提柜日期", "客户", "方式", "提柜地址", "柜号", "尺码", "拖车号", "应收运费", "币制",
-        								"打单费","高速费","过磅费","压夜费","吉进吉出","代垫费", "发票号"};
-        String[] fields = new String[]{"ROWNO","LADING_NO", "CABINET_DATE", "CUSTOMER_NAME", "TYPE", "DOCK_NAME", "CONTAINER_NO", "CABINET_TYPE", "CAR_NO", "FREIGHT", "CURRENCY_NAME",
-        								"CALL_FEE","HIGH_SPEED_FEE","WEIGHING_FEE","NIGHT_FEE","EMPTY_IN_OUT_FEE","ADVANCE_FEE",  "INVOICE_NO"};
+        String[] headers = new String[]{"序号","提单号", "提柜日期","结算日期", "客户", "方式", "拖柜地址", "柜号",  "SO号", "柜型", "车牌号", "应收运费", "币制",
+        								"打单费","高速费","过磅费","压夜费","吉进吉出","代垫费","超时费","税金", "发票号"};
+        String[] fields = new String[]{"ROWNO","LADING_NO","CABINET_DATE","CHARGE_TIME","CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO",  "SO_NO","CABINET_TYPE", "CAR_NO", "SUM_FREIGHT", "CURRENCY_NAME",
+        								"SUM_CALL_FEE","SUM_HIGH_SPEED_FEE","SUM_WEIGHING_FEE","SUM_NIGHT_FEE","SUM_EMPTY_IN_OUT_FEE","SUM_ADVANCE_FEE","SUM_OVERTIME_FEE" ,"SUM_TAX_FEE","INVOICE_NO"};
         String fileName = PoiUtils.generateExcel(headers, fields, exportSql,company_name);
         renderText(fileName);
     }
