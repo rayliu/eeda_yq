@@ -98,7 +98,7 @@
                 <div class="log_out"  style="float:right">
                     <a href="/logout">
                         Log Out 退出
-                        <img src="/images/simple/log_out_icon.png">
+                            
                     </a>
                 </div>
             </ul>
@@ -130,23 +130,18 @@
                                     </a>
                                 <%} else {%>
                                     <a href="#">
-                                        <i class="fa fa-file-text fa-fw"></i>
-                                        ${module.module_name!}<span class="fa arrow"></span>
+                                        <% 
+                                            if(module.icon!=null){ 
+                                            %>
+                                                <img src="/images/${module.icon!}" style="width: 12px;margin-top: -3px;">
+                                        <%  }else {%>
+                                                <i class="fa fa-file-text fa-fw"></i>
+                                        <%  } %>
+                                        <span style="padding-left: 5px;">${module.module_name!}</span>
+                                            <span class="fa arrow"></span>
                                     </a>
                                     <% if(module.orders != null ){%>
-
-
                                         <ul class="nav nav-second-level">
-                                            <!--li id="${module.id!}">
-                                                <a href="#">
-                                                    ${module.module_name!}<span class="fa arrow"></span>
-                                                </a>
-                                                <ul class="nav nav-second-level">
-                                                    <li id="${module.id}">
-                                                        <a href="#">${module.module_name!}</a>
-                                                    </li>
-                                                </ul>
-                                            </li-->
                                             <%
                                             for(menu_order in module.orders){
                                             %>
