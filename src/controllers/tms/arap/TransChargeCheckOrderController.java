@@ -801,7 +801,11 @@ public class TransChargeCheckOrderController extends Controller {
       		+ " FROM (SELECT tjo.order_no,tjo.lading_no,"
       		+ " SUBSTR(CAST(( SELECT GROUP_CONCAT(tjoli.cabinet_date) FROM  trans_job_order_land_item tjoli LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id WHERE tjor.id = tjo.id ) AS CHAR),1,10) cabinet_date,"
       		+ " SUBSTR(CAST((tjo.charge_time) as char),1,10) charge_time,p.abbr customer_name,tjo.type,tjo.container_no,tjo.so_no,tjo.cabinet_type,"
-      		+ " ( SELECT group_concat(co.car_no separator '/') FROM trans_job_order_land_item tjoli LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id LEFT JOIN carinfo co ON co.id = tjoli.car_no WHERE tjor.id = tjo.id ) car_no,"
+      		+ " (SELECT IFNULL(group_concat(if(tjoli.unload_type != '移柜',tjoli.unload_type,'') SEPARATOR '/'),'') FROM trans_job_order_land_item tjoli "
+      		+ " LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id LEFT JOIN carinfo co ON co.id = tjoli.car_no WHERE tjor.id = tjo.id) unload_type,"
+      		+ " (SELECT IFNULL(group_concat(if(tjoli.unload_type = '移柜',co.car_no,'') SEPARATOR ''),'') FROM trans_job_order_land_item tjoli "
+      		+ " LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id LEFT JOIN carinfo co ON co.id = tjoli.car_no WHERE tjor.id = tjo.id) shift_container_car_no,"
+      		+ " ( SELECT IFNULL(group_concat(if(tjoli.unload_type != '移柜',co.car_no,'') SEPARATOR '/'),'') FROM trans_job_order_land_item tjoli LEFT JOIN trans_job_order tjor ON tjoli.order_id = tjor.id LEFT JOIN carinfo co ON co.id = tjoli.car_no WHERE tjor.id = tjo.id ) car_no,"
       		+ " if(tjoa.charge_id = 173,IFNULL(round(tjoa.total_amount,2),''),'') freight,cy. NAME  currency_name,"
       		+ " if(tjoa.charge_id = 174,IFNULL(round(tjoa.total_amount,2),''),'') call_fee,"
       		+ " if(tjoa.charge_id = 262,IFNULL(round(tjoa.total_amount,2),''),'') high_speed_fee,"
@@ -832,9 +836,9 @@ public class TransChargeCheckOrderController extends Controller {
 
         
         //List<String> headers = new ArrayList<String>();
-        String[] headers = new String[]{"序号","提单号", "提柜日期","结算日期", "客户", "方式", "拖柜地址", "柜号",  "SO号", "柜型", "车牌号", "应收运费", "币制",
+        String[] headers = new String[]{"序号","提单号", "提柜日期","结算日期", "客户", "方式", "拖柜地址", "柜号",  "SO号", "柜型","提货类型","车牌号","移柜车牌号", "应收运费", "币制",
         								"打单费","高速费","过磅费","压夜费","吉进吉出","代垫费","超时费","税金", "发票号"};
-        String[] fields = new String[]{"ROWNO","LADING_NO","CABINET_DATE","CHARGE_TIME","CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO",  "SO_NO","CABINET_TYPE", "CAR_NO", "SUM_FREIGHT", "CURRENCY_NAME",
+        String[] fields = new String[]{"ROWNO","LADING_NO","CABINET_DATE","CHARGE_TIME","CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO",  "SO_NO","CABINET_TYPE","UNLOAD_TYPE","CAR_NO","SHIFT_CONTAINER_CAR_NO", "SUM_FREIGHT", "CURRENCY_NAME",
         								"SUM_CALL_FEE","SUM_HIGH_SPEED_FEE","SUM_WEIGHING_FEE","SUM_NIGHT_FEE","SUM_EMPTY_IN_OUT_FEE","SUM_ADVANCE_FEE","SUM_OVERTIME_FEE" ,"SUM_TAX_FEE","INVOICE_NO"};
         String fileName = PoiUtils.generateExcel(headers, fields, exportSql,company_name);
         renderText(fileName);
