@@ -377,7 +377,8 @@
       		 $('#sp_id').val('');
       		 $('#check_time_begin_time').val('');
         	 $('#check_time_end_time').val('');
-  		    selectContr.refleshSelectTable(idsArray);
+  		     selectContr.refleshSelectTable(idsArray);
+  		     $("#allCheck1").prop("checked",$("#chargeAccept_table tr:has(td) input[type=checkbox]").length == $("#chargeAccept_table tr:has(td) input[type=checkbox]:checked").length ? true : false);
   		    return;
       	}
       	 $('#sp_id_input').val(sp_name);
@@ -385,7 +386,9 @@
       	 $('#check_time_begin_time').val(begin_time.substring(0,10));
      	 $('#check_time_end_time').val(end_time.substring(0,10));
   		 $('#ids').val(idsArray);
-  		selectContr.refleshSelectTable(idsArray);
+  		 selectContr.refleshSelectTable(idsArray);
+  		 $("#allCheck1").prop("checked",$("#chargeAccept_table tr:has(td) input[type=checkbox]").length == $("#chargeAccept_table tr:has(td) input[type=checkbox]:checked").length ? true : false);
+
 	})
 	
 	var checkRequest1 = function(){
@@ -405,6 +408,7 @@
       	if(idsArray==''){
       		 $('#sp_id_input').val('');
       		 $('#sp_id').val('');
+      		$('#createSave').attr('disabled',true);
       		 billIds=[];
       		 cnames=[];
   		    selectContr.refleshSelectTable(idsArray);
@@ -413,10 +417,10 @@
       	 $('#sp_id_input').val(sp_name);
       	 $('#sp_id').val(sp_id);
   		 $('#ids').val(idsArray);
-  		selectContr.refleshSelectTable(idsArray);
-  		$("#chargeAccept_table input[type=checkbox]").on('click',function(){
- 		   $("#allCheck1").prop("checked",$("#chargeAccept_table input[type=checkbox]").length == $("#chargeAccept_table input[type=checkbox]:checked").length ? true : false);
-       });
+  		 $('#createSave').attr('disabled',false);
+  		 selectContr.refleshSelectTable(idsArray);
+  		 $("#allCheck1").prop("checked",$("#chargeAccept_table tr:has(td) input[type=checkbox]").length == $("#chargeAccept_table tr:has(td) input[type=checkbox]:checked").length ? true : false);
+
 	}
 	
 	$('#allCheck1').on('click',function(){
