@@ -261,10 +261,17 @@
            +"&check_time_1_begin="+check_time_1_begin_time
            +"&check_time_1_end="+check_time_1_end_time;
 
-        costAccept_table.ajax.url(url).load();
+        costAccept_table.ajax.url(url).load(allCheckbtn);
+        
     };
     
-    
+    var allCheckbtn = function(){
+    	if($("#chargeAccept_table tr:has(td) input[type=checkbox]").length>0){
+      	  $("#allCheck1").prop("checked",$("#chargeAccept_table tr:has(td) input[type=checkbox]").length == $("#chargeAccept_table tr:has(td) input[type=checkbox]:checked").length ? true : false);
+        }else{
+      	  $("#allCheck1").prop("checked",false);
+        }
+    }
     
 
       //查询已申请单
@@ -298,7 +305,7 @@
                +"&pay_time_begin_time="+confirmBegin_date_begin_time
                +"&pay_time_end_time="+confirmBegin_date_end_time;
 
-          application_table.ajax.url(url).load();
+          application_table.ajax.url(url).load(); 
 	};
     	
 
@@ -356,14 +363,14 @@
 	
 	$('#chargeAccept_table').on('click', 'input[type="checkbox"]',function(){
 		var idsArray=[];
-		var begin_time='';
-		var end_time='';
 		var rowindex=$(this).parent().parent().index();
+		
 		if($(this).prop('checked')){
 			 sp_id=costAccept_table.row(rowindex).data().SP_ID.toString();
 			 sp_name=costAccept_table.row(rowindex).data().SP_NAME.toString();
 			 begin_time=costAccept_table.row(rowindex).data().BEGIN_TIME.toString();
 			 end_time=costAccept_table.row(rowindex).data().END_TIME.toString();
+			 
 		}
 
       	$('#chargeAccept_table input[type="checkbox"]:checked').each(function(){
@@ -408,11 +415,12 @@
       	if(idsArray==''){
       		 $('#sp_id_input').val('');
       		 $('#sp_id').val('');
-      		$('#createSave').attr('disabled',true);
+      		 $('#createSave').attr('disabled',true);
+      		 
       		 billIds=[];
       		 cnames=[];
-  		    selectContr.refleshSelectTable(idsArray);
-  		    return;
+  		     selectContr.refleshSelectTable(idsArray);
+  		     return;
       	}
       	 $('#sp_id_input').val(sp_name);
       	 $('#sp_id').val(sp_id);
