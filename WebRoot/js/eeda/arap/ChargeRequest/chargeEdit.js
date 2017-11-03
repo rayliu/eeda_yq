@@ -222,7 +222,7 @@ $(document).ready(function() {
 		});
 	  
 	  
-	//撤销单据
+	  //撤销单据
 	  $("#deleteBtn").on('click',function(){
 		  	$("#deleteBtn").attr("disabled", true);
 		  	if(confirm("确定撤撤销此单据？返回到上一步重新做单？")){
@@ -297,7 +297,7 @@ $(document).ready(function() {
 			},'json');
 		});
 	  
-	//收款确认撤回未确认状态
+	  //收款确认撤回未确认状态
 	  $("#returnConfirmBtn").on('click',function(){
 		  	$("#returnConfirmBtn").attr("disabled", true);
 		  	if(confirm("确定撤回未收款确认状态？")){
@@ -344,7 +344,7 @@ $(document).ready(function() {
 	        //获取对账单号
 	    });  
 
-	//异步显示总金额
+   //异步显示总金额
     
  
   //按钮控制

@@ -279,7 +279,10 @@ public class ChargeRequestController extends Controller {
         String sqlTotal = "select count(1) total from ("+sql+ condition +") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
-        
+        String pageBoolean = getPara("pageBoolean");
+        if((StringUtils.isEmpty(pageBoolean)||(pageBoolean.equals("false")))){
+        	sLimit="";
+        }
         List<Record> orderList = Db.find(sql+ condition +sLimit);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("draw", pageIndex);

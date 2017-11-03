@@ -4,13 +4,14 @@
     $('#menu_finance').addClass('active').find('ul').addClass('in');
     
     var billIds=[];
+    var pageBoolean=false;
     
 	var costAccept_table = eeda.dt({
 	    id: 'chargeAccept_table',
 	    autoWidth: true,
-	    paging: true,
+	    paging: pageBoolean,
 	    serverSide: true, //不打开会出现排序不对 
-	    ajax: "/chargeRequest/OrderList",
+	    ajax: "/chargeRequest/OrderList?pageBoolean="+pageBoolean,
 	    columns: [
 				{ 
 				    "render": function(data, type, full, meta) {
@@ -329,9 +330,12 @@
 		 }
 			
 	 });
+	
+	
+	
+	
   	//checkbox选中则button可点击
 	$('#chargeAccept_table').on('click',"input[name='order_check_box']",function () {
-		
 		if(billIds.length>0){
 			$('#createSave').attr('disabled',false);
 		}else{
@@ -348,10 +352,12 @@
     }
 
 	var sp_name='';
-	var sp_id='';	
+	var sp_id='';
+	
 	$('#chargeAccept_table').on('click', 'input[type="checkbox"]',function(){
 		var idsArray=[];
-		
+		var begin_time='';
+		var end_time='';
 		var rowindex=$(this).parent().parent().index();
 		if($(this).prop('checked')){
 			 sp_id=costAccept_table.row(rowindex).data().SP_ID.toString();
@@ -362,8 +368,9 @@
 
       	$('#chargeAccept_table input[type="checkbox"]:checked').each(function(){
       			var itemId = $(this).parent().parent().attr('id');
-//      			var order_type = $(this).parent().parent().find(".order_type").text();
-      			idsArray.push(itemId);
+      			if(itemId){
+      				idsArray.push(itemId);
+      			}
       	});
       	if(idsArray==''){
       		 $('#sp_id_input').val('');
@@ -380,6 +387,76 @@
   		 $('#ids').val(idsArray);
   		selectContr.refleshSelectTable(idsArray);
 	})
+	
+	var checkRequest1 = function(){
+		var idsArray=[];
+      	$('#chargeAccept_table input[type="checkbox"]:checked').each(function(){
+      			var itemId = $(this).parent().parent().attr('id');
+      			if(itemId){
+      				var rowindex=$(this).parent().parent().index();
+      				
+	      			if($(this).prop('checked')){
+	   				 sp_id=costAccept_table.row(rowindex).data().SP_ID.toString();
+	   				 sp_name=costAccept_table.row(rowindex).data().SP_NAME.toString();	   			
+      			}
+	      		idsArray.push(itemId);	
+   			}
+      	});
+      	if(idsArray==''){
+      		 $('#sp_id_input').val('');
+      		 $('#sp_id').val('');
+      		 billIds=[];
+      		 cnames=[];
+  		    selectContr.refleshSelectTable(idsArray);
+  		    return;
+      	}
+      	 $('#sp_id_input').val(sp_name);
+      	 $('#sp_id').val(sp_id);
+  		 $('#ids').val(idsArray);
+  		selectContr.refleshSelectTable(idsArray);
+  		$("#chargeAccept_table input[type=checkbox]").on('click',function(){
+ 		   $("#allCheck1").prop("checked",$("#chargeAccept_table input[type=checkbox]").length == $("#chargeAccept_table input[type=checkbox]:checked").length ? true : false);
+       });
+	}
+	
+	$('#allCheck1').on('click',function(){
+		var check = $(this).prop('checked');
+		if(check){
+			$('#chargeAccept_table input[type=checkbox]').prop('checked',true);
+			$('#chargeAccept_table input[type="checkbox"]:checked').each(function(){
+				var itemId = $(this).parent().parent().attr('id');
+      			if(itemId){
+				var cname = $(this).parent().siblings('.SP_NAME')[0].textContent;
+				if($(this).prop('checked')){
+					if(cnames.length > 0 ){
+	   					if(cnames[0]==cname){
+	   							cnames.push(cname);
+	   							if($(this).val() != ''){
+	   								billIds.push($(this).val());
+	   							}
+	   					}else{
+	   						$.scojs_message('请选择同一个付款对象', $.scojs_message.TYPE_ERROR);
+	   						$(this).attr('checked',false);
+	   						$('#chargeAccept_table input[type=checkbox]').prop('checked',false);
+	   						$('#allCheck1').prop('checked',false);
+	   						return ;
+	   					}
+	   				}else{
+	   					cnames.push(cname);
+	   					if($(this).val() != ''){
+	   						billIds.push($(this).val());
+	   					}
+	   				}	   			
+      			
+				}
+			  }
+			});
+			checkRequest1();			
+		}else{
+			$('#chargeAccept_table input[type=checkbox]').prop('checked',false);
+			checkRequest1();	
+		}
+	});
 
        
 		return {
