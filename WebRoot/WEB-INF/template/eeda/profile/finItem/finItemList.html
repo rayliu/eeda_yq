@@ -1,30 +1,32 @@
 <%layout("/eeda/layout.html"){%>
-        <div id="page-wrapper">
-        	<div class="row simple_search_div">
-  	  			<div class="panel panel-default">
-      				<div class="panel-heading">
-      				 <div class="row" style="margin-left:15px;margin-top:15px"><!--  第1行  -->
-            		<div class="search_single">
-                             <div class="col-lg-4"><!--  三列排版  -->
-                                 <%include("/eeda/component/form/inputField.html", 
+<div id="page-wrapper">
+	<div class="row simple_search_div">
+  		<div class="panel panel-default">
+      		<div class="panel-heading">
+      			<div class="row" style="margin-left:15px;margin-top:15px"><!--  第1行  -->
+            		<div class="col-lg-4">
+                    	<div class="search_single"><!--  三列排版  -->
+                        	<%include("/eeda/component/form/inputField.html", 
                                                      {   id: 'single_code', 
                                                          label: '费用代码', 
                                                          value: ''
                                                      }){}%>
-                             </div>
-	                <div>
+                        </div>
+					</div>
+               	    <div class="col-lg-4">
+						<div class="search_single">
 	                    	<button id="singleSearchBtn" class="btn btn_grey" type="button" style="float:left;">查询</button>
 	                    	<a class="btn btn_green" href="/finItem/create">新增</a>
-	                 </div>
-                    </div>
-	                <div id="" style="margin-right:15px;"><!--  三列排版  -->
-	                	<h4 class="panel-title pull-right" style="padding-top: 5px;">
+                   		</div>
+                	</div>
+                    <div class="col-lg-4">
+                    	<h4 class="panel-title pull-right" style="margin-right:20px;">
 	                    	<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
-	                    		<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 高级查询
+	                    		<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件
 	                    	</a>
 	                    </h4>
-	                </div>
-			</div>
+                    </div>
+				</div>
 			<div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
 				<div class="panel-body" id="ChargeDiv">
 					                        <div class="row simple_search_div"><br>
@@ -73,7 +75,7 @@
                                     headers:['费用代码','费用名称','费用名称(英)','绑定常用币制','备注','']
                                 }){} %>
                 </div>
-
+</div>
 <%}%>
 
 <script>
