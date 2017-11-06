@@ -22,6 +22,7 @@
 <link href="/css/eeda.css" rel="stylesheet"> 
 <link href="/css/wedding/main.css" rel="stylesheet">
 </head>
+
 <body class="reg_header">
 <form method="post" id="first_form" action="/BusinessAdmin/register/info">
 <div class="bodywrapper" style="width:900px; margin:100px auto; border:1px solid #ccc; background-color:#FFF">  
@@ -39,7 +40,7 @@
                 </dt>
                 <dd>
                     <div class="textin">
-                        <input type="text" name="login_name"  />
+                        <input type="text" name="login_name" autocomplete="off" />
                         <span class="red">            *</span>
                     </div>
                 </dd>
@@ -52,7 +53,7 @@
                 </dt>
                 <dd>
                     <div class="textin">
-                        <input type="text" name="phone" />
+                        <input type="text" name="phone" autocomplete="off"/>
                         <span class="red">*</span>
                     </div>
                 </dd>
@@ -65,7 +66,7 @@
                 </dt>
                 <dd class="fm-field" id="fm-login-password-wrap">
                     <div class="textin">
-                        <input type="password" class="input_text"  name="password" id="password" >
+                        <input type="password" class="input_text"  name="password" id="password" autocomplete="off">
                         <span class="red">*</span>
                     </div>
                 </dd>
@@ -78,7 +79,7 @@
                 </dt>
                 <dd class="fm-field" id="fm-login-password-wrap">
                     <div class="textin">
-                        <input type="password" class="input_text"  name="passwordagain" />
+                        <input type="password" class="input_text"  name="passwordagain" autocomplete="off"/>
                         <span class="red">*</span>
                     </div>
                 </dd>
