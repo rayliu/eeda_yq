@@ -1,21 +1,22 @@
 ﻿define(['jquery', 'metisMenu', 'sb_admin', './costEdit_select_item', ,  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu,sb,selectContr) {
 
-	document.title = '复核收款| '+document.title;
+	document.title = '复核付款| '+document.title;
     $('#menu_finance').addClass('active').find('ul').addClass('in');
-    
+    var billIds=[];
+    var pageBoolean=false;
 	var costAccept_table = eeda.dt({
 	    id: 'costAccept_table',
 	    autoWidth: true,
 	    paging: true,
 	    serverSide: true, //不打开会出现排序不对 
-	    ajax: "/costRequest/OrderList",
+	    ajax: "/costRequest/OrderList?pageBoolean="+pageBoolean,
 	    columns: [
 				{ 
 				    "render": function(data, type, full, meta) {
 				    	if(full.GREATE_FLAG=='Y'){
-				    		return '<input type="checkbox" class="checkBox" disabled>';
+				    		return '<input type="checkbox" name="order_check_box" class="checkBox" disabled>';
 				    	}else{
-				    		return '<input type="checkbox" class="checkBox" >';
+				    		return '<input type="checkbox" name="order_check_box" class="checkBox" >';
 				    	}
 				    }
 				},
@@ -217,10 +218,12 @@
 
       //查询待申请单
 	$('#searchBtn').click(function(){
+		$("#allCheck1").attr("checked",false);
   	    searchData(); 
 	})
 	
 	$('#resetBtn').click(function(e){
+		$("#sp").val('');
 	  	$("#sp_input").val('');
 	  	$("#orderNo_filter1").val('');
 	  	$("#create_stamp_begin_time").val('');
@@ -317,8 +320,11 @@
 	//点击时，赋值给sp_id_input
 	var sp_name='';
 	var sp_id='';	
+	
 	$('#costAccept_table').on('click', 'input[type="checkbox"]',function(){
 		var idsArray=[];
+		var begin_time='';
+		var end_time='';
 		var rowindex=$(this).parent().parent().index();
 		if($(this).prop('checked')){
 			 sp_id=costAccept_table.row(rowindex).data().SP_ID.toString();
@@ -327,7 +333,7 @@
 			 end_time=costAccept_table.row(rowindex).data().END_TIME.toString();
 		}
 
-      	$('#costAccept_table input[type="checkbox"]:checked').each(function(){
+      	$('#costAccept_table input[name=order_check_box]:checked').each(function(){
       			var itemId = $(this).parent().parent().attr('id');
       			idsArray.push(itemId);
       	});
@@ -349,7 +355,77 @@
   		 selectContr.refleshSelectTable(idsArray);
 	});
 	
-	
+	var checkRequest1 = function(){
+		var idsArray=[];
+      	$('#costAccept_table input[type="checkbox"]:checked').each(function(){
+      			var itemId = $(this).parent().parent().attr('id');
+      			if(itemId){
+      				var rowindex=$(this).parent().parent().index();
+      				
+	      			if($(this).prop('checked')){
+	   				 sp_id=costAccept_table.row(rowindex).data().SP_ID.toString();
+	   				 sp_name=costAccept_table.row(rowindex).data().SP_NAME.toString();	   			
+      			}
+	      		idsArray.push(itemId);	
+   			}
+      	});
+      	if(idsArray==''){
+      		$('#createSave').attr('disabled',true);
+      		 $('#sp_id_input').val('');
+      		 $('#sp_id').val('');
+      		 billIds=[];
+      		 cnames=[];
+  		    selectContr.refleshSelectTable(idsArray);
+  		    return;
+      	}
+      	$('#createSave').attr('disabled',false);
+      	 $('#sp_id_input').val(sp_name);
+      	 $('#sp_id').val(sp_id);
+  		 $('#ids').val(idsArray);
+  		selectContr.refleshSelectTable(idsArray);
+  		$("#costAccept_table input[type=checkbox]").on('click',function(){
+ 		   $("#allCheck1").prop("checked",$("#costAccept_table input[type=checkbox]").length == $("#costAccept_table input[type=checkbox]:checked").length ? true : false);
+       });
+	}
+	$('#allCheck1').on('click',function(){
+		var check = $(this).prop('checked');
+		if(check){
+			$('#costAccept_table input[type=checkbox]').prop('checked',true);
+			$('#costAccept_table input[type="checkbox"]:checked').each(function(){
+				var itemId = $(this).parent().parent().attr('id');
+      			if(itemId){
+				var cname = $(this).parent().siblings('.sp_name')[0].textContent;
+				if($(this).prop('checked')){
+					if(cnames.length > 0 ){
+	   					if(cnames[0]==cname){
+	   							cnames.push(cname);
+	   							if($(this).val() != ''){
+	   								billIds.push($(this).val());
+	   							}
+	   					}else{
+	   						$.scojs_message('请选择同一个付款对象', $.scojs_message.TYPE_ERROR);
+	   						$(this).attr('checked',false);
+	   						$('#costAccept_table input[type=checkbox]').prop('checked',false);
+	   						$('#allCheck1').prop('checked',false);
+	   						return ;
+	   					}
+	   				}else{
+	   					cnames.push(cname);
+	   					if($(this).val() != ''){
+	   						billIds.push($(this).val());
+	   					}
+	   				}	   			
+      			
+				}
+			  }
+			});
+			checkRequest1();
+		}else{
+			$('#costAccept_table input[type=checkbox]').prop('checked',false);
+			$("#createSave").attr("disabled",true);
+			checkRequest1();
+		}
+	});
 
 
 	
