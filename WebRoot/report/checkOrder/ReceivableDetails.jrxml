@@ -11,7 +11,7 @@
 		<![CDATA[SELECT aco.begin_time,aco.end_time,IFNULL(aco.own_company_name_eng,o.eng_office_name) eng_officeName,IFNULL(pwon.company_name,o.office_name) officeName,
 IFNULL(pwon.homepage,o.homepage) homePage,IFNULL(aco.own_company_tel,o.office_tel) officeTel,
 pwon.logo_path own_logo_path,o.logo_path logoPath,p.company_name,p.contact_person,p.phone,p.fax,
- u.c_name,IF(u.user_phone='' or u.user_phone=null,u.user_tel,'') user_phone,u.email user_email,IFNULL(p.address,p.address_eng) company_address, jo.order_export_date,jo.order_no,jos.mbl_no MBL, jos.hbl_no HBL,
+ u.c_name,IF(u.user_tel='' or u.user_tel=null,u.user_phone,u.user_tel) user_phone,u.email user_email,IFNULL(p.address,p.address_eng) company_address, jo.order_export_date,jo.order_no,jos.mbl_no MBL, jos.hbl_no HBL,
 fi.name fee_name,joa.amount,joa.price,ut.name unit_name,
 (SELECT IF (
   joa.order_type='charge',
@@ -130,48 +130,47 @@ GROUP BY aci.id]]>
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="53" splitType="Stretch">
+		<band height="66" splitType="Stretch">
 			<line>
-				<reportElement x="162" y="27" width="509" height="1" uuid="8da3511b-409f-4ae7-8a0e-3a9598727131"/>
+				<reportElement x="164" y="39" width="509" height="1" uuid="8da3511b-409f-4ae7-8a0e-3a9598727131"/>
 				<graphicElement>
 					<pen lineWidth="1.5"/>
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement x="162" y="26" width="509" height="27" uuid="ea7faa52-2eaa-45c3-809a-3f0c5eb3e394"/>
+				<reportElement x="164" y="38" width="509" height="27" uuid="ea7faa52-2eaa-45c3-809a-3f0c5eb3e394"/>
 				<textElement textAlignment="Center">
 					<font size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[MONTHLY STATEMENT]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="162" y="0" width="509" height="28" uuid="fe8a4aa2-04ff-4f81-bb56-b0df51e008d0"/>
+				<reportElement x="164" y="12" width="509" height="28" uuid="fe8a4aa2-04ff-4f81-bb56-b0df51e008d0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="16" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{eng_officeName}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="-14" y="-15" width="190" height="51" uuid="86354c08-c082-4327-991c-018fc6ca91d5"/>
-				<imageExpression><![CDATA[($F{own_logo_path}.equals(null)?$F{logoPath}:"http://forwarder.esimplev.com/upload/partyLOGO/"+$F{own_logo_path})
-]]></imageExpression>
+				<reportElement x="-14" y="-10" width="190" height="51" uuid="86354c08-c082-4327-991c-018fc6ca91d5"/>
+				<imageExpression><![CDATA[($F{own_logo_path}.equals(null)?$F{logoPath}:"http://forwarder.esimplev.com/upload/partyLOGO/"+$F{own_logo_path})]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="744" y="-14" width="20" height="20" uuid="ff1ed8c5-e7c9-406d-aea6-1bce36268df1"/>
+				<reportElement x="744" y="-7" width="20" height="20" uuid="ff1ed8c5-e7c9-406d-aea6-1bce36268df1"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="763" y="-14" width="12" height="20" uuid="93e80d00-bb64-466e-b283-e1bf27bb8f9b"/>
+				<reportElement x="763" y="-7" width="12" height="20" uuid="93e80d00-bb64-466e-b283-e1bf27bb8f9b"/>
 				<text><![CDATA[of]]></text>
 			</staticText>
 			<textField evaluationTime="Report">
-				<reportElement x="774" y="-14" width="20" height="20" uuid="aefb63f1-6539-4197-a897-b6f988a17149"/>
+				<reportElement x="774" y="-7" width="20" height="20" uuid="aefb63f1-6539-4197-a897-b6f988a17149"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="719" y="-14" width="26" height="20" uuid="e2d7e994-7be4-4243-b05c-ad761c27f5f6"/>
+				<reportElement x="719" y="-7" width="26" height="20" uuid="e2d7e994-7be4-4243-b05c-ad761c27f5f6"/>
 				<text><![CDATA[page]]></text>
 			</staticText>
 		</band>
