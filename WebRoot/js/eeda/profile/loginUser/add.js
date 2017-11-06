@@ -343,6 +343,7 @@ $(document).ready(function(){
         //阻止a 的默认响应行为，不需要跳转
         e.preventDefault();
         //提交前，校验数据
+        var formRequired=0;
         $('form').each(function(){
         	if(!$(this).valid()){
         		formRequired++;
