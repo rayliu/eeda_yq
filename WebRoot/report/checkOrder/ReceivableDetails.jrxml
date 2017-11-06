@@ -8,9 +8,10 @@
 	</parameter>
 	<parameter name="login_user_id" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT aco.begin_time,aco.end_time,o.eng_office_name,p.company_name,p.contact_person,p.phone,p.fax, u.c_name,u.user_phone,
-jo.order_export_date,jo.order_no,
- jos.mbl_no MBL, jos.hbl_no HBL,
+		<![CDATA[SELECT aco.begin_time,aco.end_time,IFNULL(aco.own_company_name_eng,o.eng_office_name) eng_officeName,IFNULL(pwon.company_name,o.office_name) officeName,
+IFNULL(pwon.homepage,o.homepage) homePage,IFNULL(aco.own_company_tel,o.office_tel) officeTel,
+pwon.logo_path own_logo_path,o.logo_path logoPath,p.company_name,p.contact_person,p.phone,p.fax,
+ u.c_name,IF(u.user_phone='' or u.user_phone=null,u.user_tel,'') user_phone,u.email user_email,IFNULL(p.address,p.address_eng) company_address, jo.order_export_date,jo.order_no,jos.mbl_no MBL, jos.hbl_no HBL,
 fi.name fee_name,joa.amount,joa.price,ut.name unit_name,
 (SELECT IF (
   joa.order_type='charge',
@@ -36,6 +37,7 @@ fi.name fee_name,joa.amount,joa.price,ut.name unit_name,
 
 from arap_charge_order aco
 left join party p on p.id=aco.sp_id
+LEFT JOIN party pwon on pwon.id = aco.own_company
 left join user_login u on u.id = $P{login_user_id}
 LEFT JOIN office o on o.id = aco.office_id
 left join arap_charge_item aci on aci.charge_order_id = aco.id
@@ -53,9 +55,14 @@ GROUP BY aci.id]]>
 	<field name="end_time" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="eng_office_name" class="java.lang.String">
-		<fieldDescription><![CDATA[公司英文名称]]></fieldDescription>
+	<field name="eng_officeName" class="java.lang.String"/>
+	<field name="officeName" class="java.lang.String"/>
+	<field name="homePage" class="java.lang.String">
+		<fieldDescription><![CDATA[公司主页]]></fieldDescription>
 	</field>
+	<field name="officeTel" class="java.lang.String"/>
+	<field name="own_logo_path" class="java.lang.String"/>
+	<field name="logoPath" class="java.lang.String"/>
 	<field name="company_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -74,6 +81,8 @@ GROUP BY aci.id]]>
 	<field name="user_phone" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="user_email" class="java.lang.String"/>
+	<field name="company_address" class="java.lang.String"/>
 	<field name="order_export_date" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -140,34 +149,57 @@ GROUP BY aci.id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{eng_officeName}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="-14" y="-15" width="190" height="51" uuid="86354c08-c082-4327-991c-018fc6ca91d5"/>
+				<imageExpression><![CDATA[($F{own_logo_path}.equals(null)?$F{logoPath}:"http://forwarder.esimplev.com/upload/partyLOGO/"+$F{own_logo_path})
+]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="744" y="-14" width="20" height="20" uuid="ff1ed8c5-e7c9-406d-aea6-1bce36268df1"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="763" y="-14" width="12" height="20" uuid="93e80d00-bb64-466e-b283-e1bf27bb8f9b"/>
+				<text><![CDATA[of]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="774" y="-14" width="20" height="20" uuid="aefb63f1-6539-4197-a897-b6f988a17149"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="719" y="-14" width="26" height="20" uuid="e2d7e994-7be4-4243-b05c-ad761c27f5f6"/>
+				<text><![CDATA[page]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="82" splitType="Stretch">
 			<staticText>
-				<reportElement x="611" y="0" width="61" height="20" uuid="90713178-9e22-4d2b-a76e-78e194fe1c34"/>
+				<reportElement x="542" y="0" width="61" height="20" uuid="90713178-9e22-4d2b-a76e-78e194fe1c34"/>
 				<text><![CDATA[JOB DATE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="20" width="61" height="20" uuid="b9821a78-8916-41d2-b380-26e991a98dae"/>
+				<reportElement x="0" y="0" width="38" height="20" uuid="b9821a78-8916-41d2-b380-26e991a98dae"/>
 				<text><![CDATA[TO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="40" width="61" height="20" uuid="34745f8b-c64e-4c17-8221-577669e93587"/>
+				<reportElement x="0" y="20" width="38" height="20" uuid="34745f8b-c64e-4c17-8221-577669e93587"/>
 				<text><![CDATA[ATTN:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="420" y="40" width="28" height="21" uuid="ee6f64dd-c510-41ab-a32b-eae82efbe6c9"/>
+				<reportElement x="542" y="40" width="28" height="21" uuid="ee6f64dd-c510-41ab-a32b-eae82efbe6c9"/>
 				<text><![CDATA[TEL:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="548" y="40" width="30" height="20" uuid="ffa2d624-4d5e-4deb-99f6-3e81b8595c59"/>
+				<reportElement x="670" y="40" width="30" height="20" uuid="ffa2d624-4d5e-4deb-99f6-3e81b8595c59"/>
 				<text><![CDATA[FAX:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="611" y="20" width="61" height="20" uuid="b1435dff-1acd-4b83-b853-4d9cd2ddb22c"/>
+				<reportElement x="542" y="20" width="61" height="20" uuid="b1435dff-1acd-4b83-b853-4d9cd2ddb22c"/>
 				<text><![CDATA[Print Date:]]></text>
 			</staticText>
 			<staticText>
@@ -259,48 +291,62 @@ GROUP BY aci.id]]>
 				<text><![CDATA[HBL NO]]></text>
 			</staticText>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="670" y="0" width="60" height="20" uuid="48374145-65f9-4907-9eb1-e60eb741d90a"/>
+				<reportElement x="601" y="0" width="60" height="20" uuid="48374145-65f9-4907-9eb1-e60eb741d90a"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{begin_time}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="730" y="0" width="10" height="20" uuid="e720b22a-5c31-4727-9b09-bcb39a4fadcd"/>
+				<reportElement x="661" y="0" width="10" height="20" uuid="e720b22a-5c31-4727-9b09-bcb39a4fadcd"/>
 				<text><![CDATA[~]]></text>
 			</staticText>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="740" y="0" width="60" height="20" uuid="6a3692e1-bd15-495d-962f-7ce234bf4708"/>
+				<reportElement x="671" y="0" width="60" height="20" uuid="6a3692e1-bd15-495d-962f-7ce234bf4708"/>
 				<textFieldExpression><![CDATA[$F{end_time}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="61" y="21" width="550" height="20" uuid="8a4c37c2-aba7-4d10-aa4d-3a3918ec6101"/>
+				<reportElement x="37" y="0" width="504" height="20" uuid="8a4c37c2-aba7-4d10-aa4d-3a3918ec6101"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{company_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="61" y="40" width="310" height="20" uuid="209a763c-2f6b-46a0-a887-54972ea3d44e"/>
+				<reportElement x="37" y="20" width="505" height="20" uuid="209a763c-2f6b-46a0-a887-54972ea3d44e"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{contact_person}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="448" y="40" width="100" height="20" uuid="f48450bb-b275-4661-8330-0259ab5755d1"/>
+				<reportElement x="570" y="40" width="100" height="20" uuid="f48450bb-b275-4661-8330-0259ab5755d1"/>
 				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="1" y="64" width="801" height="1" uuid="9f471d4d-5606-46ac-8965-54a16d395127"/>
 			</line>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="671" y="20" width="113" height="20" uuid="daf6f9b9-91ca-4155-9d07-8161acb33b7e"/>
+				<reportElement x="602" y="20" width="113" height="20" uuid="daf6f9b9-91ca-4155-9d07-8161acb33b7e"/>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="578" y="40" width="100" height="20" uuid="022eafb6-77cf-4fa0-aeb0-bb8d79fd56e7"/>
+				<reportElement x="700" y="40" width="100" height="20" uuid="022eafb6-77cf-4fa0-aeb0-bb8d79fd56e7"/>
 				<textFieldExpression><![CDATA[$F{fax}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="40" width="38" height="20" uuid="58d9a808-6565-4f79-9dac-9fe11adec3a6"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[地址:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="37" y="40" width="504" height="20" uuid="46f97d90-d795-4342-a100-f371fbbb67a1"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{company_address}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -396,66 +442,106 @@ GROUP BY aci.id]]>
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band splitType="Stretch"/>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="352" y="-1" width="199" height="20" uuid="05d8037f-6f4d-447a-a68b-e3c98cfea50c"/>
+				<textFieldExpression><![CDATA[$F{homePage}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="666" y="0" width="138" height="20" uuid="401c6893-f06a-4616-a3a6-2eeca1ffa367"/>
+				<textFieldExpression><![CDATA[$F{officeTel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="0" width="236" height="20" uuid="48f082d6-c152-4454-946e-33c82f0904fe"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{officeName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="639" y="0" width="27" height="20" uuid="730510ca-3651-4801-9768-52db92a5f4df"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Tel：]]></text>
+			</staticText>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="35" splitType="Stretch">
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="661" y="0" width="48" height="20" uuid="9d492093-0cd2-4ca4-95d6-3f5a0db9d529"/>
+				<reportElement x="662" y="0" width="48" height="15" uuid="9d492093-0cd2-4ca4-95d6-3f5a0db9d529"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_USD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="709" y="0" width="45" height="20" uuid="637f854b-f301-411d-bbf2-4887855d655c"/>
+				<reportElement x="708" y="0" width="46" height="15" uuid="637f854b-f301-411d-bbf2-4887855d655c"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_HKD}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="754" y="0" width="48" height="20" uuid="23bcd840-a1dc-44c0-9009-a895a50a90fd"/>
+				<reportElement x="752" y="0" width="52" height="15" uuid="23bcd840-a1dc-44c0-9009-a895a50a90fd"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_JPY}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="612" y="0" width="49" height="20" uuid="d438846b-7740-4512-9d7e-9bde9b2483c0"/>
+				<reportElement x="606" y="0" width="58" height="15" uuid="d438846b-7740-4512-9d7e-9bde9b2483c0"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUM_RMB}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="548" y="0" width="62" height="20" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
+				<reportElement x="548" y="0" width="53" height="15" uuid="fe64103a-065a-4549-95d3-b03d0d465b88"/>
 				<text><![CDATA[TOTAL:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="311" y="15" width="122" height="20" uuid="2098dc0c-0c6a-44e8-92bc-94a4bc2f3cf6"/>
+				<reportElement x="371" y="20" width="122" height="15" uuid="2098dc0c-0c6a-44e8-92bc-94a4bc2f3cf6"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{user_phone}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="152" y="15" width="106" height="20" uuid="1f251fe5-b14f-40d3-8fd7-b559d37e6f9b"/>
+				<reportElement x="102" y="19" width="106" height="15" uuid="1f251fe5-b14f-40d3-8fd7-b559d37e6f9b"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="258" y="15" width="54" height="20" uuid="c5f0020d-77f1-4c2b-a7ff-9a4c4679eccc"/>
+				<reportElement x="318" y="20" width="54" height="15" uuid="c5f0020d-77f1-4c2b-a7ff-9a4c4679eccc"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[联系电话：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="112" y="15" width="40" height="20" uuid="4ac5e223-9685-491c-8662-7164e97244dd"/>
+				<reportElement x="62" y="19" width="40" height="15" uuid="4ac5e223-9685-491c-8662-7164e97244dd"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[制表人：]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="584" y="20" width="114" height="15" uuid="aa383992-bfb2-42cf-b777-4d158f0214f8"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{user_email}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="548" y="20" width="38" height="15" uuid="27663a96-aebc-4c46-b9fa-f907c95881b3"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[Email：]]></text>
 			</staticText>
 		</band>
 	</summary>
