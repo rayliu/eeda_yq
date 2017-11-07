@@ -989,7 +989,7 @@ public class ServiceProviderController extends Controller {
         rec = Db.find(sql);
         if(rec.size()==0){
         	sql = "SELECT	GROUP_CONCAT( CONCAT(ifnull(di.dock_name, ''),':',ifnull(di.land_contacts, ''),':',	ifnull(di.land_contact_phone, '')"
-        			+ "	) ) dock_names FROM dockinfo di WHERE 1=1"+addStr;
+        			+ "	) ) dock_names FROM dockinfo di WHERE 1=1 "+addStr;
         rec = Db.find(sql);
         }
         renderJson(rec);
