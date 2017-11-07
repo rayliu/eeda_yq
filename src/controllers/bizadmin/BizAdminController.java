@@ -150,11 +150,12 @@ public class BizAdminController extends Controller {
         }
 
         if (errMsg.length()==0) {
+        	String systen_type = "商家后台";
         	
-        	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=? and (is_stop = 0 or is_stop is null)",currentUser.getPrincipal());
-        	
+        	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=? and (is_stop = 0 or is_stop is null) and system_type = ?",currentUser.getPrincipal(),systen_type);
         	
         	if(user==null){
+        		currentUser.logout();
             	errMsg = "用户名不存在或已被停用";
             	setAttr("errMsg", errMsg);
             	render(strLoginPagePath);
