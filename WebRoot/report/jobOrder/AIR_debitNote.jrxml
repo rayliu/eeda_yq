@@ -243,14 +243,14 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[DEBIT NOTE]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="93" y="26" width="384" height="29" uuid="b46d3b87-edce-4651-b5a0-2660d2a32e04"/>
+				<reportElement x="83" y="26" width="404" height="29" uuid="b46d3b87-edce-4651-b5a0-2660d2a32e04"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="18" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="93" y="54" width="384" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="455e6f24-6e86-494c-801f-9f3c155f7a7b"/>
+				<reportElement mode="Transparent" x="83" y="54" width="404" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="455e6f24-6e86-494c-801f-9f3c155f7a7b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -258,7 +258,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="93" y="76" width="384" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="048cb641-3dc8-4021-abd3-6dbfc6bda8f5"/>
+				<reportElement mode="Transparent" x="83" y="76" width="404" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="048cb641-3dc8-4021-abd3-6dbfc6bda8f5"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -293,28 +293,28 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[TO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="18" y="39" width="25" height="15" uuid="d33d0326-6907-4f48-941e-93e23ce94b3b"/>
+				<reportElement x="18" y="44" width="25" height="15" uuid="d33d0326-6907-4f48-941e-93e23ce94b3b"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[Attn:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="18" y="55" width="25" height="17" uuid="e0ed60f3-a77b-4c02-8755-5b27e5a8f1ab"/>
+				<reportElement x="18" y="63" width="25" height="17" uuid="e0ed60f3-a77b-4c02-8755-5b27e5a8f1ab"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[Tel:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="18" y="89" width="56" height="15" uuid="d95021c2-7fef-45d9-bad9-faa001def9b7"/>
+				<reportElement x="18" y="86" width="56" height="15" uuid="d95021c2-7fef-45d9-bad9-faa001def9b7"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[Vel / Voy:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="18" y="110" width="56" height="15" uuid="39eff2eb-c391-4a11-9411-9213a9a2817a"/>
+				<reportElement x="18" y="108" width="56" height="15" uuid="39eff2eb-c391-4a11-9411-9213a9a2817a"/>
 				<text><![CDATA[MBL NO:]]></text>
 			</staticText>
 			<staticText>
@@ -330,23 +330,23 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[CTR NO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="25" width="65" height="15" uuid="23f495eb-c93a-4723-84e1-43a17b9b528c"/>
+				<reportElement x="351" y="25" width="55" height="15" uuid="23f495eb-c93a-4723-84e1-43a17b9b528c"/>
 				<text><![CDATA[Invoice No.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="45" width="65" height="15" uuid="f20a6ee2-3adf-4528-9617-5d930f1c3124"/>
+				<reportElement x="351" y="44" width="55" height="15" uuid="f20a6ee2-3adf-4528-9617-5d930f1c3124"/>
 				<text><![CDATA[DATE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="65" width="65" height="17" uuid="9ac6b0fe-4779-40dd-ba21-535c01b136fc"/>
+				<reportElement x="351" y="63" width="55" height="17" uuid="9ac6b0fe-4779-40dd-ba21-535c01b136fc"/>
 				<text><![CDATA[HBL No.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="89" width="65" height="15" uuid="d6ace1e7-ef42-40ac-b4e9-16493ade8207"/>
+				<reportElement x="351" y="86" width="55" height="15" uuid="d6ace1e7-ef42-40ac-b4e9-16493ade8207"/>
 				<text><![CDATA[ETD:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="110" width="65" height="15" uuid="2e3665ad-a673-465f-a640-85676c1e3074"/>
+				<reportElement x="351" y="108" width="55" height="15" uuid="2e3665ad-a673-465f-a640-85676c1e3074"/>
 				<text><![CDATA[ETA:]]></text>
 			</staticText>
 			<staticText>
@@ -354,7 +354,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[POD:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="351" y="150" width="25" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
+				<reportElement x="351" y="149" width="25" height="15" uuid="1ef1c68b-1f7e-4b65-8feb-91d5a3c07129"/>
 				<text><![CDATA[Qty:]]></text>
 			</staticText>
 			<staticText>
@@ -406,80 +406,80 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<reportElement x="0" y="214" width="555" height="1" uuid="92ec3e54-b78d-4dd2-833b-994d18652e10"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement x="74" y="110" width="254" height="15" uuid="12467054-823e-4a70-8005-7ed958f4f86e"/>
+				<reportElement x="73" y="108" width="254" height="15" uuid="12467054-823e-4a70-8005-7ed958f4f86e"/>
 				<textFieldExpression><![CDATA[$F{mbl_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="74" y="130" width="254" height="14" uuid="233fbb37-7715-446b-a4ee-5cd20d0a8821"/>
+				<reportElement x="73" y="129" width="254" height="14" uuid="233fbb37-7715-446b-a4ee-5cd20d0a8821"/>
 				<textFieldExpression><![CDATA[$F{pol}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="74" y="149" width="100" height="15" uuid="d27820b1-a0c0-40eb-ba6a-8bc241b6f65e"/>
+				<reportElement x="73" y="149" width="100" height="15" uuid="d27820b1-a0c0-40eb-ba6a-8bc241b6f65e"/>
 				<textFieldExpression><![CDATA[$F{gross_weight}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="415" y="46" width="115" height="15" uuid="fe80cc78-973f-488c-84b7-7fe43c5732dd"/>
+				<reportElement x="405" y="44" width="139" height="15" uuid="fe80cc78-973f-488c-84b7-7fe43c5732dd"/>
 				<textFieldExpression><![CDATA[$F{export_date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="416" y="65" width="114" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
+				<reportElement x="405" y="63" width="139" height="17" uuid="27502a39-69d8-427a-a4dd-9d270889bd80"/>
 				<textFieldExpression><![CDATA[$F{hbl_no}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="414" y="89" width="115" height="15" uuid="01b48f23-9a69-4e9e-ba26-98f48207a25f"/>
+				<reportElement x="405" y="86" width="115" height="15" uuid="01b48f23-9a69-4e9e-ba26-98f48207a25f"/>
 				<textFieldExpression><![CDATA[$F{etd}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="415" y="110" width="114" height="15" uuid="be92611a-c302-41a7-91e6-b8ba5c48afa0"/>
+				<reportElement x="405" y="108" width="114" height="15" uuid="be92611a-c302-41a7-91e6-b8ba5c48afa0"/>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="416" y="130" width="139" height="14" uuid="536e3e0d-cf2d-451c-b50e-58f70e27f32a"/>
+				<reportElement x="405" y="129" width="139" height="14" uuid="536e3e0d-cf2d-451c-b50e-58f70e27f32a"/>
 				<textFieldExpression><![CDATA[$F{fnd}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="40" width="303" height="15" uuid="1d53aa30-90fc-490b-acf5-b4488a9a9499"/>
+				<reportElement x="43" y="44" width="303" height="15" uuid="1d53aa30-90fc-490b-acf5-b4488a9a9499"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{personEng}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="1" width="301" height="15" uuid="5da3f075-434d-4e64-bfb9-459dddc561e4"/>
+				<reportElement x="43" y="1" width="301" height="39" uuid="5da3f075-434d-4e64-bfb9-459dddc561e4"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{company_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="55" width="301" height="17" uuid="246046ec-ad77-4259-a2a0-d0dba018e0cf"/>
+				<reportElement x="43" y="63" width="301" height="17" uuid="246046ec-ad77-4259-a2a0-d0dba018e0cf"/>
 				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="352" y="2" width="58" height="20" uuid="2b1d3b07-aa9b-437b-bd78-c589ebb969d4"/>
+				<reportElement x="351" y="1" width="55" height="20" uuid="2b1d3b07-aa9b-437b-bd78-c589ebb969d4"/>
 				<text><![CDATA[JOB NO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="415" y="1" width="140" height="20" uuid="991facb4-7a53-4676-a280-5b2af336f2f5"/>
+				<reportElement x="405" y="1" width="140" height="20" uuid="991facb4-7a53-4676-a280-5b2af336f2f5"/>
 				<textFieldExpression><![CDATA[$F{order_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="416" y="25" width="139" height="15" uuid="1d6729a1-29b4-4a71-bc3e-2b75d5c07d45"/>
+				<reportElement x="405" y="25" width="139" height="15" uuid="1d6729a1-29b4-4a71-bc3e-2b75d5c07d45"/>
 				<textFieldExpression><![CDATA[$F{invoice_no}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="416" y="151" width="34" height="16" uuid="31236f61-a729-4647-8bb9-eb28f224d252"/>
+				<reportElement x="405" y="149" width="36" height="16" uuid="31236f61-a729-4647-8bb9-eb28f224d252"/>
 				<textFieldExpression><![CDATA[$F{pieces}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="73" y="89" width="254" height="15" uuid="055efe25-6aa2-4356-89ed-f3c08f26ac5a"/>
+				<reportElement x="73" y="86" width="254" height="15" uuid="055efe25-6aa2-4356-89ed-f3c08f26ac5a"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vessel_voyage}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="450" y="151" width="104" height="16" uuid="2803dc0a-769f-46e2-a48c-d19e50b73135"/>
+				<reportElement x="441" y="149" width="104" height="16" uuid="2803dc0a-769f-46e2-a48c-d19e50b73135"/>
 				<text><![CDATA[PACKAGES]]></text>
 			</staticText>
 			<staticText>
@@ -596,14 +596,14 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[开户银行：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="320" y="79" width="149" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
+				<reportElement x="320" y="79" width="183" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
 				<textElement>
 					<font fontName="SansSerif" size="10" isBold="true" pdfEncoding="Cp1252"/>
 				</textElement>
 				<text><![CDATA[FOR AND ON BEHALF OF]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="301" y="94" width="220" height="15" uuid="b1fff306-2524-4525-afad-9bb102cbd4d0"/>
+				<reportElement x="320" y="94" width="248" height="15" uuid="b1fff306-2524-4525-afad-9bb102cbd4d0"/>
 				<textElement>
 					<font fontName="SansSerif" isBold="true" pdfEncoding="Cp1252"/>
 				</textElement>
@@ -626,40 +626,40 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 		</band>
 	</columnFooter>
 	<summary>
-		<band height="80" splitType="Stretch">
+		<band height="60" splitType="Stretch">
 			<line>
 				<reportElement x="1" y="0" width="555" height="1" uuid="1308d29b-2c0c-4385-b6af-dd03271b8ef0"/>
 			</line>
 			<textField>
-				<reportElement x="8" y="1" width="233" height="20" uuid="32957b70-5bc6-475b-8991-0d8f9dcaddbb"/>
+				<reportElement x="8" y="1" width="233" height="15" uuid="32957b70-5bc6-475b-8991-0d8f9dcaddbb"/>
 				<textElement>
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{sum_CNY}.equals(null)?"":"人民币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_CNY}))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="20" width="232" height="20" uuid="8ba62630-c2a0-4718-9fc8-888e28d00bb0"/>
+				<reportElement x="8" y="15" width="233" height="15" uuid="8ba62630-c2a0-4718-9fc8-888e28d00bb0"/>
 				<textElement>
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{sum_USD}.equals(null)?"":"美金"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_USD}))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="40" width="232" height="20" uuid="b8d3f961-7903-437b-b604-ddacdf11708a"/>
+				<reportElement x="8" y="30" width="233" height="15" uuid="b8d3f961-7903-437b-b604-ddacdf11708a"/>
 				<textElement>
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{sum_JPY}.equals(null)?"":"日元"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_JPY}))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="60" width="231" height="20" uuid="0d83a4d9-2b62-4271-ba4e-543c2949adaf"/>
+				<reportElement x="8" y="45" width="233" height="15" uuid="0d83a4d9-2b62-4271-ba4e-543c2949adaf"/>
 				<textElement>
 					<font fontName="宋体" size="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{sum_HKD}.equals(null)?"":"港币"+((controllers.yh.report.ReportScriptlet)$P{REPORT_SCRIPTLET}).convertNumToChinese($F{sum_HKD}))]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="250" y="0" width="126" height="80" uuid="5fed97fb-141a-4a56-85b4-f9f41b375264"/>
+				<reportElement x="250" y="0" width="126" height="60" uuid="5fed97fb-141a-4a56-85b4-f9f41b375264"/>
 				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -667,7 +667,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[TOTAL Amount:]]></text>
 			</staticText>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="450" y="1" width="100" height="79" uuid="0a0be80c-adb8-4d7c-a78c-f3dca602d3bd"/>
+				<reportElement x="450" y="1" width="100" height="59" uuid="0a0be80c-adb8-4d7c-a78c-f3dca602d3bd"/>
 				<textFieldExpression><![CDATA[$F{ex_total}]]></textFieldExpression>
 			</textField>
 		</band>
