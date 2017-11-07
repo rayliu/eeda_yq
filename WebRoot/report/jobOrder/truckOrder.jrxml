@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="truckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6e032343-152e-4328-9fc1-a87e482c2444">
 	<property name="ireport.zoom" value="1.100000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="347"/>
+	<property name="ireport.y" value="145"/>
 	<parameter name="itemId" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -115,25 +115,81 @@ where joli.id=$P{itemId}]]>
 		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="86" splitType="Stretch">
+		<band height="124" splitType="Stretch">
 			<staticText>
-				<reportElement x="235" y="47" width="141" height="35" uuid="1b26dba1-7c26-497e-b00e-4fb82c132fa3"/>
+				<reportElement x="208" y="88" width="141" height="35" uuid="1b26dba1-7c26-497e-b00e-4fb82c132fa3"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="黑体" size="22" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[ 派 车 单]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="82" width="555" height="1" uuid="ae76ec21-fffd-41b8-86fc-71b156209727"/>
+				<reportElement x="0" y="123" width="555" height="1" uuid="ae76ec21-fffd-41b8-86fc-71b156209727"/>
 			</line>
 			<image>
-				<reportElement x="1" y="-15" width="190" height="51" uuid="8286be88-8d20-4197-a1a0-3b22f7c4fe89"/>
+				<reportElement x="-14" y="-10" width="190" height="51" uuid="8286be88-8d20-4197-a1a0-3b22f7c4fe89"/>
 				<imageExpression><![CDATA[($F{p_logo_path}.equals(null)?$F{logo_path}:"http://forwarder.esimplev.com/upload/partyLOGO/"+$F{p_logo_path})]]></imageExpression>
 			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="53" y="50" width="198" height="15" uuid="af1e1c1a-5812-47cb-bd4f-e39afe28e6e2"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="382" y="67" width="154" height="15" uuid="52695d24-98d2-4dcb-8059-4d56aa62c29b"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{user_tel}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="53" y="67" width="198" height="15" uuid="c71c741b-cfa5-42e8-813b-53b5b10e725c"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{user_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
+				<reportElement x="382" y="50" width="153" height="15" uuid="f0eba1c9-c15a-41a0-9487-691c58e261ed"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="50" width="51" height="15" uuid="bdf414d4-b99e-4230-9d41-0f3677d9f7e4"/>
+				<textElement textAlignment="Left">
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[制单人：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="67" width="51" height="15" uuid="61ded141-76ca-4535-8bdb-fe34239b7c43"/>
+				<textElement textAlignment="Left">
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[E-MAIL：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="67" width="35" height="15" uuid="110894c9-8858-4a7a-8460-fa511e3c5cc5"/>
+				<textElement textAlignment="Left">
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[TEL：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="50" width="35" height="15" uuid="f2e320a0-a669-42df-bcd3-9ff93226b2dc"/>
+				<textElement textAlignment="Left">
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[DATE：]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="673" splitType="Stretch">
+		<band height="593" splitType="Stretch">
 			<staticText>
 				<reportElement x="2" y="0" width="32" height="17" uuid="a84c775c-483b-4438-975c-e7eb5c404a57"/>
 				<text><![CDATA[TO：]]></text>
@@ -273,55 +329,6 @@ where joli.id=$P{itemId}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{volume}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="402" y="561" width="45" height="20" uuid="5b813400-2b1b-4eac-89d9-919a33237e41"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[制单人：]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="402" y="581" width="154" height="15" uuid="20afb023-11bd-4087-a1ee-d601911e78c8"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="402" y="596" width="154" height="15" uuid="af1e1c1a-5812-47cb-bd4f-e39afe28e6e2"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{c_name}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="402" y="611" width="154" height="15" uuid="52695d24-98d2-4dcb-8059-4d56aa62c29b"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{user_tel}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="402" y="626" width="154" height="15" uuid="c79a46d4-7aef-4708-8760-8b86fc08523d"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{user_phone}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="402" y="641" width="154" height="15" uuid="c71c741b-cfa5-42e8-813b-53b5b10e725c"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{user_name}]]></textFieldExpression>
-			</textField>
-			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="402" y="656" width="153" height="15" uuid="f0eba1c9-c15a-41a0-9487-691c58e261ed"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="32" y="0" width="505" height="20" uuid="8a9ddc2f-772a-4a7d-bb58-05408e394fed"/>
 				<textElement>
@@ -342,7 +349,15 @@ where joli.id=$P{itemId}]]>
 		<band splitType="Stretch"/>
 	</detail>
 	<columnFooter>
-		<band splitType="Stretch"/>
+		<band height="15" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="0" width="154" height="15" uuid="20afb023-11bd-4087-a1ee-d601911e78c8"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
+			</textField>
+		</band>
 	</columnFooter>
 	<pageFooter>
 		<band splitType="Stretch"/>
