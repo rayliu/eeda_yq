@@ -22,6 +22,16 @@ $().ready(function(){
 			$('#phone').text(data.PHONE);
 		}
 	});
+	
+	
+	$('.userinfo').click(function(){
+		if($('.userinfodrop').attr('style') == 'display: block;'){
+			$('.userinfodrop').hide();
+		}else{
+			$('.userinfodrop').show();
+		}
+	});
+
 });
 </script>
 
@@ -41,7 +51,7 @@ $().ready(function(){
         <div class="right">
 <div class="userinfo"> <img src="/images/thumbs/avatar.png" alt="" /> <span class="login_name" id="head_name"></span> </div>
 
-<div class="userinfodrop">
+<div class="userinfodrop" style="display:none">
     <div class="avatar"> <a href=""><img src="/images/thumbs/avatarbig.png" alt="" /></a> </div>
     <div class="userdata">
         <h4 class="login_name"></h4><br/>
