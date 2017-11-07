@@ -465,7 +465,7 @@ ORDER BY jo.order_no]]>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="32" y="68" width="292" height="20" uuid="def5c461-3e43-4b40-84de-9c8e0c8f139a"/>
+				<reportElement x="31" y="68" width="292" height="20" uuid="def5c461-3e43-4b40-84de-9c8e0c8f139a"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -478,14 +478,14 @@ ORDER BY jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{end_time}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="32" y="48" width="244" height="20" uuid="568edf22-cc2e-4208-b59a-f8b05c366fbb"/>
+				<reportElement x="31" y="48" width="244" height="20" uuid="568edf22-cc2e-4208-b59a-f8b05c366fbb"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{contact_person}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="32" y="29" width="244" height="20" uuid="37527578-ef5e-43a4-997c-5c820dd9805b"/>
+				<reportElement x="31" y="29" width="244" height="20" uuid="37527578-ef5e-43a4-997c-5c820dd9805b"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
