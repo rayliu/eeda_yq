@@ -779,6 +779,9 @@ ORDER BY jo.order_no]]>
 				<reportElement x="77" y="0" width="40" height="15" uuid="30d31d0b-ce7e-4d5c-ba2a-b4655ebb847f"/>
 				<textFieldExpression><![CDATA[$V{PageSize}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="-1" width="555" height="1" uuid="be1734e1-158b-4261-b8c5-c4c7f4f84514"/>
+			</line>
 		</band>
 	</summary>
 </jasperReport>

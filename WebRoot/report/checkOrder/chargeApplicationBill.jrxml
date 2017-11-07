@@ -833,6 +833,9 @@ ORDER BY
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PageSize}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="-1" width="555" height="1" uuid="88e072c0-74ba-454b-8e82-7c7fddc00158"/>
+			</line>
 		</band>
 	</summary>
 </jasperReport>

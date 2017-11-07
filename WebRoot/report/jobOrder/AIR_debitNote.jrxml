@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="debitNote" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="292"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -221,7 +221,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="2" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
 		<band height="151" splitType="Stretch">
@@ -232,25 +232,25 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				</graphicElement>
 			</line>
 			<image>
-				<reportElement x="2" y="-10" width="140" height="38" uuid="44b39cc7-80f7-43ee-beb3-35f96e91d3ca"/>
+				<reportElement x="-14" y="-10" width="190" height="51" uuid="44b39cc7-80f7-43ee-beb3-35f96e91d3ca"/>
 				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="233" y="110" width="271" height="36" uuid="ac92119a-3fdc-4f7d-9f2c-a5f2c23c930c"/>
+				<reportElement x="208" y="110" width="271" height="36" uuid="ac92119a-3fdc-4f7d-9f2c-a5f2c23c930c"/>
 				<textElement>
 					<font fontName="黑体" size="24" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[DEBIT NOTE]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="136" y="5" width="347" height="29" uuid="b46d3b87-edce-4651-b5a0-2660d2a32e04"/>
+				<reportElement x="93" y="26" width="384" height="29" uuid="b46d3b87-edce-4651-b5a0-2660d2a32e04"/>
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="18" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="118" y="39" width="384" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="455e6f24-6e86-494c-801f-9f3c155f7a7b"/>
+				<reportElement mode="Transparent" x="93" y="54" width="384" height="22" forecolor="#000000" backcolor="#FFFFFF" uuid="455e6f24-6e86-494c-801f-9f3c155f7a7b"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="16" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -258,15 +258,15 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{eng_office_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="118" y="61" width="384" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="048cb641-3dc8-4021-abd3-6dbfc6bda8f5"/>
+				<reportElement mode="Transparent" x="93" y="76" width="384" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="048cb641-3dc8-4021-abd3-6dbfc6bda8f5"/>
 				<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
-					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"  isPdfEmbedded="false"/>
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{eng_address}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="185" y="78" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="14cdbeb6-c9e0-4cc6-8bbe-230cb6b11a40"/>
+				<reportElement mode="Transparent" x="160" y="91" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="14cdbeb6-c9e0-4cc6-8bbe-230cb6b11a40"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -274,7 +274,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{office_tel}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="310" y="78" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="d4ff6fc7-78a1-46a2-8f80-73ba5c653045"/>
+				<reportElement mode="Transparent" x="285" y="91" width="124" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="d4ff6fc7-78a1-46a2-8f80-73ba5c653045"/>
 				<textElement textAlignment="Left" rotation="None" markup="none">
 					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
