@@ -6,6 +6,30 @@
     <div class="pageheader notab">
      <div class="registered " id="login-content" >
      	<form id="orderForm">
+     		<dl>
+	            <dt>
+	              <div class="fm-label-wrap ">
+	                <label for="fm-login-id">公司名称：<span style="color:red">*</span></label>
+	              </div>
+	            </dt>
+	            <dd>
+	              <div class="textin">
+	                <input type="text" id="company_name" name="company_name" value="${company.company_name!''}" required/>
+	              </div>
+	            </dd>
+          </dl>
+          <dl>
+	            <dt>
+	              <div class="fm-label-wrap ">
+	                <label for="fm-login-id">公司简称：<span style="color:red">*</span></label>
+	              </div>
+	            </dt>
+	            <dd>
+	              <div class="textin">
+	                <input type="text" id="c_name" name="c_name" value="${company.c_name!''}" required/>
+	              </div>
+	            </dd>
+          </dl>
           <dl>
             <dt>
               <div class="fm-label-wrap ">
@@ -21,7 +45,7 @@
           <dl>
             <dt class="fm-label">
               <div class="fm-label-wrap ">
-                <label for="fm-login-password">联系电话：</label>
+                <label for="fm-login-password">联系电话：<span style="color:red">*</span></label>
               </div>
             </dt>
             <dd class="fm-field" id="fm-login-password-wrap">

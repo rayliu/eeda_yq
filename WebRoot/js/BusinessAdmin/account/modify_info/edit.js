@@ -28,6 +28,10 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 	  }
 	  
 	 $('#updateBtn').on('click',function(){
+		 if(!$('#orderForm').valid()){
+			 return false;
+		 }
+		 
 		 var p_c_d = $('#p_c_d').val();
 		 var province = '';
 		 var city = '';
@@ -47,6 +51,8 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		 
 		 var order = {};
 		 order.id = $('#order_id').val();
+		 order.company_name = $('#company_name').val();
+		 order.c_name = $('#c_name').val();
 		 order.contact = $('#contact_person').val();
 		 order.telephone = $('#tel_phone').val();
 		 order.province = province;
@@ -70,8 +76,15 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 				 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 			 }
 		 });
+	 });
+	 
+	 $('#address').click(function(){
+		 var replaceStr = '-';//要替换的字符串
+		 var str = $('#p_c_d_input').val();//要被替换的字符串
 		 
-		 
+		 if($('#address').val().trim() == ''){
+			 $('#address').val(str.replace(new RegExp(replaceStr,'gm'),' ') + ' ');
+		 }
 	 });
   });
 });
