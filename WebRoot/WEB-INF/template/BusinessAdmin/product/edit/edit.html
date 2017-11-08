@@ -10,12 +10,12 @@
                 <dl class="form-group">
                     <dt>
                         <div class="fm-label-wrap" >
-                            <label for="fm-login-id">产品名称：</label>
+                            <label for="fm-login-id">产品名称：<span class="red">*</span></label>
                         </div>
                     </dt>
                     <dd>
                         <div class="textin input_div">
-                            <input type="text" id="name" name="ProductName" value="${product.name!''}" /> <span class="red">*</span>
+                            <input type="text" id="name" name="ProductName" value="${product.name!''}" /> 
                         </div>
                     </dd>
                 </dl>
@@ -44,12 +44,6 @@
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="textin input_div">
                             <div style="padding-top:5px;">
-                              <!--   <select name="category" id="category">
-                                    <option value ="摄楼" <% if(product.category!'摄楼'=='摄楼'){%>selected<%}%>>摄楼</option>
-                                    <option value ="婚礼策划 " <% if(product.category!''=='婚礼策划'){%>selected<%}%>>婚礼策划 </option>
-                                    <option value="跟拍摄影 " <% if(product.category!''=='跟拍摄影'){%>selected<%}%>>跟拍摄影 </option>
-                                    <option value="跟拍摄像" <% if(product.category!''=='跟拍摄像'){%>selected<%}%>>跟拍摄像</option>
-                                </select> -->
                                  <select  class=" select_text" id ="category" value ="">
 							            		<%
 							                    	for(category in categorys!){ 
@@ -67,7 +61,7 @@
                 <dl>
                     <dt class="fm-label">
                         <div class="fm-label-wrap ">
-                            <label for="fm-login-password">单 位：</label>
+                            <label for="fm-login-password">单 位：<span class="red">*</span></label>
                         </div>
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
@@ -75,25 +69,25 @@
                             <label><input type="radio" class="radio" name="unit" value="一套" <% if(product.unit!'一套'=='一套'){%>checked<%}%>  />一套</label>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <label><input type="radio" class="radio" name="unit" value="一件" <% if(product.unit!''=='一件'){%>checked<%}%>  />一件</label>
-                            <span class="red">*</span>
+                            
                         </div>
                     </dd>
                 </dl>
                 <dl>
                     <dt class="fm-label">
                         <div class="fm-label-wrap ">
-                            <label for="fm-login-password">价 格：</label>
+                            <label for="fm-login-password">价 格：<span class="red">*</span></label>
                         </div>
                     </dt>
                     <dd class="fm-field" id="fm-login-password-wrap">
                         <div class="chose">
                             <label>
                                 <input type="radio" class="radio" name="price_type" value="人民币" <% if(product.price_type!'人民币'=='人民币'){ var price = product.price!'';%>checked<%}%>  />
-                                <input style="width:100px;" type="text" id="price" name="price" value="${price!''}" required/>人民币
+                                <input style="width:100px;" type="text" id="price" name="price" value="${product.price!''}" required/>人民币
                             </label>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <label><input type="radio" class="radio" name="price_type" value="面议" <% if(product.price_type!''=='面议'){%>checked<%}%> />面议</label>
-                            <span class="red">*</span>
+                            
                         </div>
                     </dd>
                 </dl>
@@ -118,7 +112,8 @@
 				<hr/>
                 <div class="img_row" id="img_item">
                 <%for(item in productItem![]){%>
-                  	<img style='width: 200px; height: 150px;margin-left:20px;' name="img_photo" class="shadow " src='/upload/${item.photo!"nophoto.png"}' value='${item.photo!""}' id="img_photo${item.seq!''}">
+                  	<i><img style='width: 200px; height: 150px;margin-left:20px;' name="img_photo" class="shadow " src='/upload/${item.photo!"nophoto.png"}' value='${item.photo!""}' id="img_photo${item.seq!''}">
+                  	<span style='color:red;cursor:pointer' class='delete_item_id' item_id='${item.id!""}' photo="${item.photo!""}" code='${item.seq!""}' ><strong> 删除 </strong></span></i>
                 <%}%>
                 </div>
             </div>

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.FetchProfile.Item;
+
 import interceptor.SetAttrLoginUserInterceptor;
 
 import org.apache.commons.lang.StringUtils;
@@ -80,6 +82,28 @@ public class ProductController extends Controller {
 			result = true;
 		}
 		return result;
+	}
+	
+	@Before(Tx.class)
+	public void deleteItem(){
+		String item_id = getPara("item_id");
+		String photo = getPara("photo");
+		String product_id = getPara("product_id");
+		
+		Db.deleteById("wc_product_pic", item_id);
+		deletePicture(photo);
+		
+		//重新排序
+		List<Record> items = Db.find("select * from wc_product_pic where order_id = ? order by create_time asc",product_id);
+		int number = items.size();
+		int i = 1;
+		for (Record item : items) {
+			item.set("seq", i);
+			Db.update("wc_product_pic",item);
+			++ i;
+		}
+		
+		renderJson(true);
 	}
 	
 	
@@ -243,7 +267,5 @@ public class ProductController extends Controller {
     	renderJson(re);
     }
     
-    
-	
-	
+
 }

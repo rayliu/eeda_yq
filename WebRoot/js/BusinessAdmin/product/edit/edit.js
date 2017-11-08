@@ -39,9 +39,20 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 			        }
 			   });
 		  }else{
+			//算图片数量
+			var diamond_flag = $('#diamond_flag').val();
+			var photo_size = $('[name=img_photo]').size();
+			if(diamond_flag != 'Y'){
+				if(photo_size > 9){
+					alert('普通商家只能上传十个产品，如需更多，请开通钻石会员');
+					return false;
+				}
+			}
+			  
 			  img_num = img_num+1;
-			  var img = "<img style='width: 200px; height: 150px;margin-left:20px;display:none' name='img_photo'  class='shadow' id='img_photo"+img_num+"'>";
-			  $('#img_item').append(img);
+			  var img = "<i><img style='width: 200px; height: 150px;margin-left:20px;display:none' name='img_photo'  class='shadow' id='img_photo"+img_num+"'>" +
+			  			"<span style='color:red;cursor:pointer' class='delete_item' code='"+img_num+"' ><strong> 删除 </strong></span></i>";
+			  
 			  
 			  $('#file_'+str).fileupload({
 					validation: {allowedExtensions: ['*']},
@@ -50,6 +61,7 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 				    dataType: 'json',
 			        done: function (e, data) {
 		        		if(data){
+		        			$('#img_item').append(img);
 		        			$('#img_'+str+img_num).show();
 				    		$('#img_'+str+img_num).attr('value',data.result.NAME);
 				    		var imgPre =Id('img_'+str+img_num);
@@ -62,6 +74,28 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 			        }
 			   });
 		  }
+	  });
+	  
+	  $("#img_item").on('click','.delete_item',function(){
+		  var code = $(this).attr('code');
+		  $('#img_photo'+code).parent().remove();
+		  img_num--;
+	  });
+	  
+	  $("#img_item").on('click','.delete_item_id',function(){
+		  var item_id = $(this).attr('item_id');
+		  var photo = $(this).attr('photo');
+		  var product_id = $('#order_id').val();
+		  
+		  $.post('/BusinessAdmin/product/deleteItem',{item_id:item_id,photo:photo,product_id:product_id},function(data){
+			  if(data){
+				  location.reload();
+			  }else{
+				  $.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+			  }
+		  }).fail(function(){
+			  alert('后台报错')
+		  });
 	  });
 	  
 	  
@@ -134,14 +168,20 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 	    	order.content = $('#content').val();
 	    	order.cover = $('#img_cover').attr('value');
 	    	for(var i = 1;i <= img_num;i++){
-	    		order['photo'+i] = $('#img_photo'+i).attr('value');
+	    		var photo_name = $('#img_photo'+i).attr('value');
+	    		if(photo_name == undefined){
+	    			for(var j = i+1 ; j < 100 ; j++){
+	    				if($('#img_photo'+j).attr('value') != undefined){
+	    					photo_name = $('#img_photo'+j).attr('value');
+	    					break;
+	    				}
+	    			}
+	    		}
+	    		order['photo'+i] = photo_name;
 	    	}
 
 	    	$.post('/BusinessAdmin/product/save',{jsonStr:JSON.stringify(order)}, function(data, textStatus, xhr) {
 	    		if(data){
-//	    			eeda.refreshUrl('edit?id='+data.ID);
-//	    			eeda.refreshUrl('edit');
-	    			
 	    			$('#order_id').val(data.ID);
 	    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 	    			window.location.href="/BusinessAdmin/product";
