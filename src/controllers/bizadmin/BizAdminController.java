@@ -207,7 +207,8 @@ public class BizAdminController extends Controller {
     
     public void getLoginUser(){
     	Long user_id = LoginUserController.getLoginUserId(this);
-    	String sql = "select * from user_login where id = "+user_id;
+    	String sql = "select * from wc_company wc"
+    			+ " where creator = "+user_id;
     	Record re = Db.findFirst(sql);
     	renderJson(re);
     }

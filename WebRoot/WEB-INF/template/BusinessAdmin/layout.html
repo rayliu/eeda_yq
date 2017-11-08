@@ -18,8 +18,8 @@
 $().ready(function(){
 	$.post('/BusinessAdmin/getLoginUser',function(data){
 		if(data){
-			$('#head_name').text(data.USER_NAME);
-			$('#phone').text(data.PHONE);
+			$('#head_name').text(data.C_NAME);
+			$('#phone').text(data.TELEPHONE);
 		}
 	});
 	
