@@ -1,48 +1,210 @@
 <%layout("/eeda/layout.html"){%>
-		<div id="page-wrapper">
-			
-                     <input id="user_id" name="user_id" type="hidden" value="${user.ID!''}">
-                     <div class="row col-lg-12">
-	                        <div class="col-lg-6">
-	                              <%include("/eeda/component/form/inputSpField.html", {
-	                               id:'markCustomer',
-	                              label:'被评供应商名称', 
-	                              value:partyMark.ID!'',
-	                              display_value:partyMark.ABBR!'',
-	                              disabled: 'disabled'
-	                              }){}%>
-	                        </div>
-	                        <div class="col-lg-3">
-	                            <button id="searchBtn" class="btn btn_green" type="button">查询</button>
-	                        </div>
-                     </div>
-                     <div class="form-group button-bar" >
-                        <button id="add_mark" class="btn btn_grey" type="button">添加</button>
-                     </div>
-                     <div class="col-lg-3">
-                           <span class="badge" style="margin-bottom:3px;"> （初始分80）总分: <span id="total_mark">80</span></span>
-                     </div>
-                  <%include("/eeda/component/form/detailTable.html", 
-                  {
-                      id:'mark_table',
-                      style:'width:1000px',
-                      headers:['','项目','分数值(数值只能输入数字)','说明','考评人','考评时间', 'creator_name'],
-                      field_list:['id','item', 'score', 'remark', 'creator', 'mark_date', 'creator_name'],                                     
-                      value_list: partyItemList![]
-                  }){} %>
-            
-            
-          <div class="row col-lg-12">
-           <div class="button-bar">
-               <button id="save_mark" type="button" class="btn btn_green save" data-dismiss="modal">保存</button>
-               <a href='/supplierRating' type="button" class="btn  btn_white" data-dismiss="modal">返回</a>
-            </div>
-          </div>
+<link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
+<div id="page-wrapper">
+	<div class="row simple_search_div"><br>
+		<div class="row">
+			<div class="col-lg-12">
+				<h4>&nbsp&nbsp&nbsp创建</h4>
+			</div>
+		</div><br>
+		<input id="order_id" type="hidden" name="order_id" value="${party_mark.id!''}"/>
+		<div class="col-lg-12">
+			<form id="customerForm" role="form"  method="post">
+				<div class="row">
+					<div class="col-lg-4">
+                 		<%include("/eeda/component/form/InputField.html", 
+							{   id:'order_no', 
+    							label:'评分单号',
+    							disabled:'disabled',
+    							value:party_mark.order_no!''
+						}){}%>
+					</div>
+					<div class="col-lg-4">
+                 		<%include("/eeda/component/form/inputSpField.html", 
+							{   id:'sp_id', 
+    							label:'供应商',
+    							value:party_mark.sp_id!'',
+    							required:'required',
+    							display_value:party_mark.sp_name!''
+						}){}%>
+					</div>
+					<div class="col-lg-4">
+                        <!-- <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'status',
+                                        label:'状态', 
+                                        value:'',
+                                        value_list:[
+                                        	{code:'',value:''},
+                                            {code:'新建', value:'新建'},
+                                            {code:'已审核', value:'已审核'},
+                                            {code:'审核不通过', value:'审核不通过'}
+                                        ]
+                                    }){}%> -->
+	                 		<%include("/eeda/component/form/inputField.html", 
+								{   id:'status', 
+	    							label:'状态',
+	    							disabled:'disabled',
+	    							value:party_mark.status!''
+							}){}%>
+                    </div>
+				</div>
+				<div class="row">
+					<div class="col-lg-4">
+                 		<%include("/eeda/component/form/inputField.html", 
+							{   id:'creator', 
+    							label:'创建人',
+    							disabled:'disabled',
+    							value:party_mark.creator_name!''
+						}){}%>
+					</div>
+					<div class="col-lg-4">
+                 		<%include("/eeda/component/form/inputField.html", 
+							{   id:'create_stamp', 
+    							label:'创建时间',
+    							disabled:'disabled',
+    							value:party_mark.create_stamp!''
+						}){}%>
+					</div>
+					<div class="col-lg-4">
+                 		<%include("/eeda/component/form/inputField.html", 
+							{   id:'total_score', 
+    							label:'总分',
+    							disabled:'disabled',
+    							value:party_mark.SUM_scores!''
+						}){}%>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-4">
+                 		<%include("/eeda/component/form/inputField.html", 
+							{   id:'auditor', 
+    							label:'审核人',
+    							disabled:'disabled',
+    							value:party_mark.auditor_name!''
+						}){}%>
+					</div>
+					<div class="col-lg-4">
+                 		<%include("/eeda/component/form/inputField.html", 
+							{   id:'audit_stamp', 
+    							label:'审核时间',
+    							disabled:'disabled',
+    							value:party_mark.audit_stamp!''
+						}){}%>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+                 		<%include("/eeda/component/form/inputField.html", 
+							{   id:'audit_suggestion', 
+    							label:'审核意见',
+    							style:'width:653px',
+    							value:party_mark.audit_suggestion!''
+						}){}%>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<label style="width:9.6%;">
+						<input type="hidden" id="enterprise_nature" value="${party_mark.score_type!''}">
+                 		<input type="radio" value="plus" <%if(party_mark.score_type!'' != 'reduce'){%> checked <% }%> id="plus_score" /><span style="font-weight:bold;">&nbsp加分</span>
+                 		<input type="radio" value="reduce" id="reduce_score" <%if(party_mark.score_type=='reduce'){%>checked<%}%> style="margin-left:15px;" /><span style="font-weight:bold;">&nbsp减分</span>
+               			</label>
+               			<input type="text" id="score" name="score" value="${party_mark.score!''}" style="margin-bottom:0.5%">
+               		</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-4">
+                 		<%include("/eeda/component/form/DateInputField.html", 
+							{   id:'event_time', 
+    							label:'事件发生时间',
+    							value:party_mark.event_time!''
+						}){}%>
+					</div>
+					<div class="col-lg-4">
+						<%include("/eeda/component/form/selectField.html", 
+                                    {   id:'item_name', 
+                                        label:'项目', 
+                                        value:party_mark.item_name!'',
+                                        value_list:[
+                                        	{code:'', value:''},
+                                        	{code:'价格', value:'价格'},
+                                        	{code:'附加费用', value:'附加费用'},
+                                            {code:'付款方式', value:'付款方式'},
+                                            {code:'紧急情况对应效率', value:'紧急情况对应效率'},                                            
+                                            {code:'员工服务态度', value:'员工服务态度'},
+                                            {code:'货物交付及时', value:'货物交付及时'},
+                                            {code:'货物损坏率', value:'货物损坏率'},                                            
+                                            {code:'通关专业程度', value:'通关专业程度'},
+                                        	{code:'通关时效性', value:'通关时效性'},                                        	
+                                        	{code:'其它', value:'其它'}
+                                        ]
+                                    }){}%>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+	                	<label style="width:9.6%;position:relative;top:-40px;">参与者</label>
+						<textarea class="row_textarea" id="participant" name="participant" style="">${party_mark.participant!''}</textarea>
+                    </div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<label style="width:9.6%;position:relative;top:-40px;">说明</label>
+						<textarea class="row_textarea" id="about" name="about" style="">${party_mark.about!''}</textarea>
+                    </div>
+				</div>
+				<div class="row row_show">
+                    <div class="col-lg-12">
+						<label style="width:9.6%;position:relative;top:-40px;">检讨事宜</label>
+						<textarea class="row_textarea" id="review" name="review" style="">${party_mark.review!''}</textarea>
+                    </div>
+				</div>
+				<div class="row row_show">
+					<div class="col-lg-12">
+						<label style="width:9.6%;position:relative;top:-40px;">改善方案</label>
+						<textarea class="row_textarea" id="improvement" name="improvement" style="">${party_mark.improvement!''}</textarea>
+                    </div>
+				</div>
+			</form>
+		</div>
+		<div class="col-lg-6">
+			<div class="col-lg-3">
+	        	<h4>文档</h4>
+	        </div>
+	    </div>
+	    <div class="col-lg-12"> 
+                        <span class=" fileinput-button" id="fileuploadSpan"> 
+                                    
+                                    <span style="margin-top:10px" class="btn  btn_green" >
+                                    	<i class="glyphicon glyphicon-plus"></i> 
+                                    	选择文件</span> 
+                                    <input id="fileupload" type="file" name="files[]" multiple> 
+                                </span> 
+                               <%include("/eeda/component/form/detailTable.html", 
+                                   {
+                                       id:'doc_table',
+                                       style:'width:80%',
+                                       headers:['','文档名称','上传人','上传时间','备注'],
+                                       field_list:['id','doc_name','c_name','upload_stamp','remark'],
+                                       value_list: docList![]
+                                   }){} %>
+                          </div>
+                          
+		<div class="col-lg-12">
+			<button id="saveBtn" type="button" class="btn  btn_green" >保存</button>
+			<button id="submitBtn" type="button" class="btn  btn_green" >提交</button>
+			<%if(shiro.hasPermission("supplierRating.check")){%>
+				<button id="checkBtn" type="button" class="btn  btn_green" disabled>审核</button>
+				<button id="notPassCheckBtn" type="button" class="btn btn-danger btn-xs guide_target11" style="background-color:#d9534f" disabled>审核不通过</button>
+			<%}%>
+			<a href="/supplierRating" type="button" class="btn  btn_white" data-dismiss="modal">返回</a>
+		</div>
 	</div>
+</div>
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function () {
-        requirejs(['app/profile/serviceProvider/mark']);
+        requirejs(['app/profile/serviceProvider/markEdit']);
     },
     function(error) {
         console.error('报错了: ',error);

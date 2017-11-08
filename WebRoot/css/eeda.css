@@ -493,7 +493,13 @@ li{
 	  padding-left: 15px;
 	  width: 32%;
 	  float:left;
-	  
+}
+
+.row_textarea{
+	width:653px;
+	height:50px;
+	border:1px solid #ccc;
+	background-color:#fff;
 }
 
 #join_table.table>tbody>tr>td{
