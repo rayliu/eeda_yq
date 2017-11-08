@@ -40,10 +40,10 @@ public class DiamondController extends Controller {
 	}
 	
 	@Before(EedaMenuInterceptor.class)
-	 public void edit(){
-	        String id = getPara("id");
-	        render(getRequest().getRequestURI()+"/edit.html");
-	    }
+	public void edit(){
+        String id = getPara("id");
+        render(getRequest().getRequestURI()+"/edit.html");
+    }
 
     
     public void list(){

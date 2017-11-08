@@ -4,13 +4,13 @@
       <div style=" clear:both;"></div>
     </div>
     
-    <div class="pageheader"  style="height:550px;">
+    <div class="pageheader">
         <div style="margin-left:20px;">
         	<p><strong>上传案例</strong></p>
 	       	<input type="hidden" value="${example.id!' '}" id="id"/>
 	       	<div class="form-group">
-		        <div style="width:500px">
-		        	<label>案例名称： </label>
+		        <div style="width:600px">
+		        	<label>案例名称： <span style="color:red">*</span></label>
 		        	<input type="text" class="input_text" name="name" id="name" />
 		        </div>
 	        </div>
@@ -29,10 +29,11 @@
 				 选择图片
 			</div>
             <span class="red">*图片要求小于500Kb(普通商家只能上传10个产品)</span>
-				<hr/>
-                <div class="img_row" id="img_item">
+			<hr/>
+            <div class="img_row" id="img_item">
                 <%for(item in productItem![]){%>
-                  	<img style='width: 200px; height: 150px;margin-left:20px;' name="img_photo" class="shadow " src='/upload/${item.photo!"nophoto.png"}' value='${item.photo!""}' id="img_photo${item.seq!''}">
+                  	<i><img style='width: 200px; height: 150px;margin-left:20px;' name="img_photo" class="shadow " src='/upload/${item.photo!"nophoto.png"}' value='${item.photo!""}' id="img_photo${item.seq!''}">
+                  	<span style='color:red;cursor:pointer' class='delete_item_id' item_id='${item.id!""}' photo="${item.photo!""}" code='${item.seq!""}' ><strong> 删除 </strong></span></i>
                 <%}%>
             </div>
         </div>

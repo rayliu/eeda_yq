@@ -20,6 +20,7 @@ $().ready(function(){
 		if(data){
 			$('#head_name').text(data.C_NAME);
 			$('#phone').text(data.TELEPHONE);
+			$('#diamond_flag').val(data.DIAMOND);
 			$('.s_logo').attr('src','/upload/'+data.LOGO);
 		}
 	});
@@ -50,7 +51,11 @@ $().ready(function(){
         </div>
         <!--left-->
         <div class="right">
-<div class="userinfo"> <img src="/images/thumbs/avatar.png" style="width:30px;height:30px"  class="s_logo"/> <span class="login_name" id="head_name"></span> </div>
+		<div class="userinfo"> 
+			<input type="hidden" id="diamond_flag">
+			<img src="/images/thumbs/avatar.png" style="width:30px;height:30px"  class="s_logo"/> 
+			<span class="login_name" id="head_name"></span> 
+		</div>
 
 <div class="userinfodrop" style="display:none">
     <div class="avatar"> <a href=""><img src="/images/thumbs/avatarbig.png" style="width:100px;height:100px" class="s_logo" /></a> </div>

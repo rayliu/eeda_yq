@@ -25,10 +25,20 @@ $(document).ready(function() {
 	  
 	  
 	$("#file_photo").on('click',function(){
+		//算图片数量
+		var diamond_flag = $('#diamond_flag').val();
+		var photo_size = $('[name=img_photo]').size();
+		if(diamond_flag != 'Y'){
+			if(photo_size > 9){
+				alert('普通商家只能上传十个产品，如需更多，请开通钻石会员');
+				return false;
+			}
+		}
+		
 		img_num = $('[name=img_photo]').size();
 		img_num = img_num+1;
-		var img = "<img style='width: 200px; height: 150px;margin-left:20px;display:none' name='img_photo'  class='shadow' id='img_photo"+img_num+"'>";
-		$('#img_item').append(img);
+		var img = "<i><img style='width: 200px; height: 150px;margin-left:20px;display:none' name='img_photo'  class='shadow' id='img_photo"+img_num+"'>" +
+				"<span style='color:red;cursor:pointer' class='delete_item' code='"+img_num+"' ><strong> 删除 </strong></span></i>";
 		  
 		$(this).fileupload({
 			validation: {allowedExtensions: ['*']},
@@ -37,6 +47,7 @@ $(document).ready(function() {
 		    dataType: 'json',
 	        done: function (e, data) {
         		if(data){
+        			$('#img_item').append(img);
         			$('#img_photo'+img_num).show();
 		    		$.scojs_message('已选择', $.scojs_message.TYPE_OK);
 		    		$('#img_photo'+img_num).attr('value',data.result.NAME);
@@ -56,6 +67,27 @@ $(document).ready(function() {
 		  return document.getElementById(id);
 	  }
 	  
+	  $("#img_item").on('click','.delete_item',function(){
+		  var code = $(this).attr('code');
+		  $('#img_photo'+code).parent().remove();
+		  img_num--;
+	  });
+	  
+	  $("#img_item").on('click','.delete_item_id',function(){
+		  var item_id = $(this).attr('item_id');
+		  var photo = $(this).attr('photo');
+		  
+		  $.post('/BusinessAdmin/product/deleteItem',{item_id:item_id,photo:photo},function(data){
+			  if(data){
+				  location.reload();
+			  }else{
+				  $.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+			  }
+		  }).fail(function(){
+			  alert('后台报错')
+		  });
+	  });
+	  
 	  
 	$("#save_btn").click(function(){
 		var self = $(this);
@@ -66,8 +98,18 @@ $(document).ready(function() {
 		example.name=$("#name").val();
 		example.picture_name=$("#example_img").val();
 	  	for(var i = 1;i <= img_num;i++){
-    		example['photo'+i] = $('#img_photo'+i).attr('value');
+    		var photo_name = $('#img_photo'+i).attr('value');
+    		if(photo_name == undefined){
+    			for(var j = i+1 ; j < 100 ; j++){
+    				if($('#img_photo'+j).attr('value') != undefined){
+    					photo_name = $('#img_photo'+j).attr('value');
+    					break;
+    				}
+    			}
+    		}
+    		order['photo'+i] = photo_name;
     	}
+	  	
 		if($.trim(example.name)==""){
 			alert("案例名称必须要填！！")
 			return;

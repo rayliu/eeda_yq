@@ -207,9 +207,21 @@ public class BizAdminController extends Controller {
     
     public void getLoginUser(){
     	Long user_id = LoginUserController.getLoginUserId(this);
-    	String sql = "select * from wc_company wc"
+    	Record diamond = Db.findFirst("select * from wc_ad_diamond"
+    			+ " where creator = ? and (now() BETWEEN begin_date and end_date) and status = '已开通'",user_id);
+    	
+    	
+    	String sql = "select * from wc_company wc "
     			+ " where creator = "+user_id;
-    	Record re = Db.findFirst(sql);
+    	Record user = Db.findFirst(sql);
+    	
+    	Record re = user;
+    	if(diamond != null){
+    		re.set("diamond", "Y");
+    	}else{
+    		re.set("diamond", "N");
+    	}
+    	
     	renderJson(re);
     }
 
