@@ -76,8 +76,9 @@ $(document).ready(function() {
 	  $("#img_item").on('click','.delete_item_id',function(){
 		  var item_id = $(this).attr('item_id');
 		  var photo = $(this).attr('photo');
+		  var product_id = $('#order_id').val();
 		  
-		  $.post('/BusinessAdmin/product/deleteItem',{item_id:item_id,photo:photo},function(data){
+		  $.post('/BusinessAdmin/product/deleteItem',{item_id:item_id,photo:photo,product_id:product_id},function(data){
 			  if(data){
 				  location.reload();
 			  }else{

@@ -65,21 +65,22 @@ public class CaseController extends Controller {
         String picture_name=(String) dto.get("picture_name");
         Record example=null;
         if(StringUtils.isNotBlank(id)){
-    		example=Db.findById("wc_case", id);
+    		example = Db.findById("wc_case", id);
     		example.set("name", name);
     		example.set("picture_name", picture_name);
     		example.set("create_time",new Date());
     		Db.update("wc_case", example);
-     	List<Record> orderItem = Db.find("select * from wc_case_item where order_id = ?",id);
-    	for (int i = 1; i <= img_num; i++) {
-    		int order_num = orderItem.size();
-    		Record re = null;
-    		if(i > order_num){
-    			re = new Record();
-    			re.set("photo", (String) dto.get("photo"+i));
-        		re.set("seq", i);
-        		re.set("order_id", id);
-            	Db.save("wc_case_item", re);
+	     	List<Record> orderItem = Db.find("select * from wc_case_item where order_id = ?",id);
+	    	for (int i = 1; i <= img_num; i++) {
+	    		int order_num = orderItem.size();
+	    		Record re = null;
+	    		if(i > order_num){
+	    			re = new Record();
+	    			re.set("photo", (String) dto.get("photo"+i));
+	        		re.set("seq", i);
+	        		re.set("order_id", id);
+	        		re.set("create_time", new Date());
+	            	Db.save("wc_case_item", re);
 	    		}
 			}
 	    }
@@ -114,11 +115,25 @@ public class CaseController extends Controller {
 		return result;
 	}
     
+	
 	@Before(Tx.class)
-	public void deletePicture(){
-		String id=getPara("id");
-		deletePicture(Db.findById("wc_case_item",id).getStr("photo"));
-		Db.deleteById("wc_case_item", id);
+	public void deleteItem(){
+		String item_id = getPara("item_id");
+		String photo = getPara("photo");
+		String product_id = getPara("product_id");
+		
+		Db.deleteById("wc_case_item", item_id);
+		deletePicture(photo);
+		
+		//重新排序
+		List<Record> items = Db.find("select * from wc_case_item where order_id = ? order by create_time asc",product_id);
+		int number = items.size();
+		int i = 1;
+		for (Record item : items) {
+			item.set("seq", i);
+			Db.update("wc_case_item",item);
+			++ i;
+		}
 		renderJson(true);
 	}
     

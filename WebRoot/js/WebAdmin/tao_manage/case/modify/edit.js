@@ -27,9 +27,9 @@ $(document).ready(function() {
 	$("#file_photo").on('click',function(){
 		img_num = $('[name=img_photo]').size();
 		img_num = img_num+1;
-		var img = "<img style='width: 200px; height: 150px;margin-left:20px;display:none' name='img_photo'  class='shadow' id='img_photo"+img_num+"'>";
-		$('#img_item').append(img);
-		  
+		var img = "<i><img style='width: 200px; height: 150px;margin-left:20px;display:none' name='img_photo'  class='shadow' id='img_photo"+img_num+"'>" +
+		"<span style='color:red;cursor:pointer' class='delete_item' code='"+img_num+"' ><strong> 删除 </strong></span></i>";
+		
 		$(this).fileupload({
 			validation: {allowedExtensions: ['*']},
 			autoUpload: true, 
@@ -37,6 +37,7 @@ $(document).ready(function() {
 		    dataType: 'json',
 	        done: function (e, data) {
         		if(data){
+        			$('#img_item').append(img);
         			$('#img_photo'+img_num).show();
 		    		$('#img_photo'+img_num).attr('value',data.result.NAME);
 		    		var imgPre =Id('img_photo'+img_num);
@@ -91,27 +92,32 @@ $(document).ready(function() {
   		window.history.back();
   	});
 	
-	$(".delete_picture").click(function(){
-  		var self = $(this);
-  		var id = self.attr('pid');
-  		var c_id=$("#example_id").val();
-  		var result = confirm("你真的要删除这张图片吗?");
-  		if(!result){
-  			return;
-  		}
-  		$.post("/WebAdmin/tao_manage/case/deletePicture",{id:id},function(data){
-    		if(data){
-    			eeda.refreshUrl('edit?id='+data.ID);
-    			$('#order_id').val(data.ID);
-    			$.scojs_message('成功删除成功', $.scojs_message.TYPE_OK);
-    			window.location.href = '/WebAdmin/tao_manage/case/modify?id='+c_id+''; 
-    		}else{
-    			$.scojs_message('删除失败', $.scojs_message.TYPE_ERROR);
-    		}
-    		$(self).attr('disabled',false);
-    	})
-  		
-  	});
+	
+	$("#img_item").on('click','.delete_item',function(){
+		  var code = $(this).attr('code');
+		  $('#img_photo'+code).parent().remove();
+		  img_num--;
+	  });
+	  
+	  $("#img_item").on('click','.delete_item_id',function(){
+		  var item_id = $(this).attr('item_id');
+		  var photo = $(this).attr('photo');
+		  var product_id = $('#example_id').val();
+		  
+		  var result = confirm("你真的要删除这张图片吗?");
+  		  if(!result){
+  			  return;
+  		  }
+		  $.post('/WebAdmin/tao_manage/case/deleteItem',{item_id:item_id,photo:photo,product_id:product_id},function(data){
+			  if(data){
+				  location.reload();
+			  }else{
+				  $.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+			  }
+		  }).fail(function(){
+			  alert('后台报错')
+		  });
+	  });
 		 
 		 
 	$("#eeda_table").on("click",".delBtn",function(){
