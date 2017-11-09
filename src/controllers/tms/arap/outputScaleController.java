@@ -169,7 +169,44 @@ public class outputScaleController extends Controller {
 		if(sign=="导出"||sign.equals("导出")){
 			String car_no = getPara("car_no");
 			String driver = getPara("driver");
-			String sql = list();
+			 String sql = "select * from( "
+		        		+" SELECT tjo.id tjoid,tjol.id ,tjo.office_id,tjo.delete_flag,tjo.order_no,tjo.lading_no,p.company_name customer_name,tjo.customer_id customer_id,"
+		        		+" IFNULL(CONVERT (substring(tjol.cabinet_date, 1, 10),CHAR),CONVERT (substring(tjol.closing_date, 1, 10),CHAR)) c_date" 
+		        		+" ,tjo.type,dock.dock_name take_wharf_name, "
+		        		+" dock1.dock_name back_wharf_name,dock2.dock_name loading_wharf1_name,dock3.dock_name " 
+		        		+" loading_wharf2_name,tjo.container_no,tjo.cabinet_type,tjol.unload_type,car.car_no,tjol.car_no car_id,tjo.remark, "
+		        		+" (CONVERT (substring(tjol.closing_date, 1, 10),CHAR)) create_stamp,tjol.driver,car.car_owned,CONCAT(IFNULL(CONCAT(dock.dock_name,'-'),''),IFNULL(CONCAT(dock2.dock_name,'-'),''),IFNULL(CONCAT(dock3.dock_name,'-'),''),IFNULL(" 
+		        		+ "dock1.dock_name,'')) combine_wharf, "
+		        		+" (SELECT GROUP_CONCAT(if(tjol.unload_type!='移柜',car.car_no,'') SEPARATOR '/') from trans_job_order tjo1  "
+		        		+" LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo1.id "
+		        		+" LEFT JOIN carinfo car on car.id = tjol.car_no  "
+		        		+" WHERE tjo.id = tjo1.id) combine_car_no,(SELECT GROUP_CONCAT(if(tjol.unload_type!='移柜',tjol.driver,'') SEPARATOR '/') FROM trans_job_order tjo1 "
+		        		+" LEFT JOIN trans_job_order_land_item tjol ON tjol.order_id = tjo1.id LEFT JOIN carinfo car ON car.id = tjol.car_no WHERE tjo.id = tjo1.id ) combine_driver,"
+		        		+" (SELECT GROUP_CONCAT(if(tjol.unload_type!='移柜',tjol.unload_type,'') SEPARATOR '/') from trans_job_order tjo1 "
+		        		+" LEFT JOIN trans_job_order_land_item tjol on tjol.order_id = tjo1.id "
+		        		+" WHERE tjo.id = tjo1.id) combine_unload_type,(SELECT GROUP_CONCAT(if(tjol.unload_type='移柜',car.car_no,'') SEPARATOR '') FROM trans_job_order tjo1 "
+		        		+ " LEFT JOIN trans_job_order_land_item tjol ON tjol.order_id = tjo1.id LEFT JOIN carinfo car ON car.id = tjol.car_no WHERE tjo.id = tjo1.id) yigui_car_no, "
+		        		+ " (SELECT GROUP_CONCAT(if(tjol.unload_type='移柜',tjol.driver,'') SEPARATOR '') FROM trans_job_order tjo1 "
+		        		+ " LEFT JOIN trans_job_order_land_item tjol ON tjol.order_id = tjo1.id LEFT JOIN carinfo car ON car.id = tjol.car_no WHERE tjo.id = tjo1.id) yigui_driver,"
+		        		+ " (SELECT SUM(tjoa.currency_total_amount) FROM trans_job_order_arap tjoa WHERE tjoa.order_id = tjo.id AND tjoa.order_type = 'CHARGE' AND tjoa.charge_id = ( SELECT id FROM "
+		        		+ " fin_item f WHERE f. NAME = '运费' AND f.office_id = "+office_id+") ) freight,(SELECT SUM(tjoa.street_vehicle_freight) "
+		        		+ "FROM trans_job_order_arap tjoa WHERE tjoa.order_id = tjo.id AND tjoa.charge_id) street_vehicle_freight,"
+		        		+ " (SELECT SUM(tjoa.currency_total_amount) FROM trans_job_order_arap tjoa WHERE tjoa.order_id = tjo.id AND tjoa.order_type = 'COST' AND tjoa.car_id = car.id  AND tjoa.charge_id = ( SELECT id FROM "
+		        		+ " fin_item f WHERE f. NAME = '运费' AND f.office_id = "+office_id+") ) outputScale,cast((SELECT GROUP_CONCAT(CONCAT('（应收）',fi. NAME,':',round(tjoa.currency_total_amount,2))) "
+		        		+ " FROM trans_job_order_arap tjoa LEFT JOIN fin_item fi ON fi.id = tjoa.charge_id WHERE tjoa.order_id = tjo.id AND tjoa.order_type = 'charge' AND fi. NAME != '运费' GROUP BY tjoa.order_type) AS CHAR ) other_fee,"
+		        		//+ "(SELECT SUM(tjoa.currency_total_amount) FROM trans_job_order_arap tjoa WHERE tjoa.order_id = tjo.id AND tjoa.order_type = 'CHARGE' AND tjoa.charge_id = (SELECT id FROM fin_item f WHERE f. NAME = '压夜费' AND f.office_id = 4)) night_fee,"
+		        		+ "tjol.export_flag,"
+		        		+ " cast(substring(tjo.charge_time, 1, 10) AS CHAR) charge_time"
+		        		+" from trans_job_order_land_item tjol  "
+		        		+" LEFT JOIN trans_job_order tjo on tjol.order_id = tjo.id "
+		        		+" LEFT JOIN dockinfo dock on dock.id = tjo.take_wharf "
+		        		+" LEFT JOIN dockinfo dock1 on dock1.id = tjo.back_wharf "
+		        		+" LEFT JOIN dockinfo dock2 on dock2.id = tjol.loading_wharf1 "
+		        		+" LEFT JOIN dockinfo dock3 on dock3.id = tjol.loading_wharf2 "
+		        		+" LEFT JOIN carinfo car on car.id = tjol.car_no  "
+		        		+" LEFT JOIN party p ON p.id = tjo.customer_id "
+		        		+ " WHERE tjo.office_id = "+office_id
+							+ " ) A where 1=1 and delete_flag ='N' ";
 			String sql_car_no ="";
 			String sql_driver ="";
 			String sql_id ="";
@@ -205,10 +242,10 @@ public class outputScaleController extends Controller {
 //		    	
 //		    }
 			String sqlExport = sql+sql_car_no+sql_driver+sql_id;
-			String[] headers = new String[]{"提单号", "提/收柜日期", "客户", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌", "产值","运费","街车运费",
+			String[] headers = new String[]{"提单号", "提/收柜日期", "客户", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌","司机","移柜车牌","移柜司机", "产值","运费","街车运费","其他费用",
 					"备注"};
-			String[] fields = new String[]{"LADING_NO", "C_DATE", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO", "OUTPUTSCALE",
-							"FREIGHT","STREET_VEHICLE_FREIGHT","REMARK"};
+			String[] fields = new String[]{"LADING_NO", "C_DATE", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO","COMBINE_DRIVER",
+					"YIGUI_CAR_NO","YIGUI_DRIVER","OUTPUTSCALE","FREIGHT","STREET_VEHICLE_FREIGHT","OTHER_FEE","REMARK"};
 			String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,car_no);
 			renderText(fileName);
 			if(fileName!=null){
