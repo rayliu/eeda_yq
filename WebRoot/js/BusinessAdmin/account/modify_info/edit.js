@@ -27,6 +27,35 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		  return document.getElementById(id);
 	  }
 	  
+	  
+	  jQuery.validator.addMethod("isPhone", function(value,element) { 
+		  var length = value.length; 
+		  var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/; 
+		  var tel = /^\d{3,4}-?\d{7,9}$/; 
+		  return this.optional(element) || (tel.test(value) || mobile.test(value)); 
+
+	  }, "请正确填写您的联系电话"); 
+	  
+	  $('#orderForm').validate({
+		  rules: {
+			  shop_telephone: {
+		    	  isPhone: true,
+		      },
+		      phone: {
+		    	  isPhone: true,
+		      },
+		      qq: {
+		    	  number:true,
+		    	  rangelength:[5,15]
+		      }
+		    },
+		  messages: {
+		    	rangelength: $.validator.format("请输入长度在 {0} 到 {1} 之间的字符串dd"),
+		  }
+	  });
+  
+	  
+	  
 	 $('#updateBtn').on('click',function(){
 		 if(!$('#orderForm').valid()){
 			 return false;
