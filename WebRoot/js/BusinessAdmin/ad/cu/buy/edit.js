@@ -47,10 +47,11 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			//获取日期
 			var begin_date = $("#begin_date").val();
 			var end_date = $("#end_date").val();
-			var v = DateDiff(begin_date,end_date);if(v){
+			var v = DateDiff(begin_date,end_date);
+			if(v){
 				$("#total_day").text(v);
-				var price = $("#price").text();
-				var sum=v*price;
+				var per_price = $("#per_price").text();
+				var sum=v*per_price;
 				$("#price").text(sum);
 			}
 		});
@@ -59,9 +60,10 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			var self = this;
 			var ad = {};
 			if(!$("#order_form").valid()){
-				alert("保存失败，请重新核对填写信息！");
 				return;
 			}
+			ad.title = $("#title").val();
+			ad.content = $("#content").val();
 			ad.begin_date = $("#begin_date").val();
 			ad.end_date = $("#end_date").val();
 			ad.total_day = $("#total_day").text();
@@ -71,7 +73,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 				if(data){
 		    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 		    			$(self).attr('disabled',false);
-		    			window.location.href="http://localhost:8080/BusinessAdmin/ad/cu";
+		    			window.location.href="/BusinessAdmin/ad/cu";
 		    		}else{
 		    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 		    		}

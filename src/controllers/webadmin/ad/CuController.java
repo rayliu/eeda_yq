@@ -36,7 +36,8 @@ public class CuController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		Record re = Db.findFirst("select * from price_maintain where type = ?","促广告");
-		setAttr("order", re);
+		setAttr("price_maintain", re);
+		
 		String sql_loc = "select loc.name city,lm.* from location_management lm "
 				+ "left join location loc on lm.code = loc.code";
 		String sql_cat = "select * from category ";
@@ -126,10 +127,20 @@ public class CuController extends Controller {
     
     @Before(Tx.class)
     public void updateCu(){
-    	SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	String price=getPara("price");
-    	String sql="update price_maintain set price= " +price +", update_time='"+df.format(new Date())+"' where type='促广告'";
-    	Db.update(sql);
+
+    	Record re = Db.findFirst("select * from price_maintain where type='促广告'");
+ 	   if(re == null){
+ 		   re = new Record();
+ 		   re.set("type", "促广告");
+ 		   re.set("price", price);
+ 		   re.set("update_time", new Date());
+ 		   Db.save("price_maintain",re);
+ 	   }else {
+ 		   re.set("price", price);
+ 		   re.set("update_time", new Date());
+ 		   Db.update("price_maintain",re);
+ 	   }
     	renderJson(true);
     }
     

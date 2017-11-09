@@ -108,21 +108,23 @@ public class AdController extends Controller {
 	}
 	
 	public void mobile(){
-
         Long userId = LoginUserController.getLoginUserId(this);
-        String sql="";
-		String is_diamond="select * from wc_ad_diamond where creator = "+userId;
-		if(Db.find(is_diamond).size()!=0){
-			sql="select * from price_maintain where type = '钻石商家'";
-			setAttr("diamond_tip","您是尊贵的钻石商家，已经为您提供了优惠");
+        
+        Record diamond = Db.findFirst("select * from wc_ad_diamond"
+    			+ " where creator = ? and (now() BETWEEN begin_date and end_date) and status = '已开通'",userId);
+        String type = "";
+		if(diamond != null){
+			type = "钻石推送广告";
+			setAttr("is_diamond", "Y");
 		}else{
-			sql="select * from price_maintain where type = '推送广告'";
+			type = "推送广告";
+			setAttr("is_diamond", "N");
 		}
-		Record re = Db.findFirst(sql);
+		Record re = Db.findFirst("select * from price_maintain where type = ?",type);
 		if(re != null){
 			setAttr("price",re.get("price"));
 		}
-		//setAttr("price", Db.findFirst(sql).get("price"));
+		
         render(getRequest().getRequestURI()+"/edit.html");
     }
 	

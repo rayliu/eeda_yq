@@ -9,13 +9,21 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
           columns: [
             { "data": "ORDER_NO" ,"width": "80px"},
             { "data": "TITLE","class":"title", "width": "100px"},
-            { "data": "STATUS","width": "100px"},
+            { "data": "STATUS","width": "100px" ,
+                render: function(data,type,full,meta){
+                	var status = '开启';
+                	if(data=='开启'){
+                		status = '关闭';
+                	}
+                    return data + " <button class='stdbtn btn_blue statusBtn' id='"+full.ID+"' content='"+full.CONTENT+"' href='#title'>"+status+"</button>";
+                }
+            },
             { "data": "BEGIN_DATE","width": "100px" },
             { "data": "END_DATE", "width": "100px" },
             { "data": "PRICE", "width": "100px"},
             { "data": null, "width": "100px",
               render: function(data,type,full,meta){
-                return "<a class='stdbtn btn_blue editBtn' id='"+full.ID+"' content='"+full.CONTENT+"' href='#title'>编辑</a>";
+                return "<button class='stdbtn btn_blue editBtn' id='"+full.ID+"' content='"+full.CONTENT+"' href='#title'>编辑</button>";
               }
             }
           ]
@@ -26,6 +34,21 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
 	     }
 		
 		
+		$('#eeda_table').on('click','.statusBtn',function(){
+			var id = $(this).attr('id');
+			var status = $(this).text();
+			$.post('/BusinessAdmin/ad/cu/changeStatus',{id:id,status:status},function(data){
+				if(data){
+					refleshTable();
+					$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
+				}else{
+					$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+				}
+			});
+				
+		});
+		 
+		 
 		$('#eeda_table').on('click','.editBtn',function(){
 			var $row = $(this).parent().parent();
 			var title = $($row.find('.title')).text();
@@ -40,6 +63,10 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
 		});
 		
 		  $('#saveBtn').click(function(event) {
+			  if(!$('#orderForm').valid()){
+				  return ;
+			  }
+			  
 		    	var self = this;
 		    	$(self).attr('disabled',true);
 	    	  
