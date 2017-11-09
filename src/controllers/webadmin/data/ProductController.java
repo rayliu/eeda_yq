@@ -42,17 +42,17 @@ public class ProductController extends Controller {
 	
 	@Before(EedaMenuInterceptor.class)
 	 public void edit(){
-	        String id = getPara("id");
-//	      String title = getPara("edit_radioTitle");
-//	      String content = getPara("edit_radioContent");
-//	      Record r= Db.findById("msg_board", id);
-//	      r.set("title", title);
-//	      r.set("content", content);
-//	      r.set("update_stamp", new Date());
-//	      r.set("updator", LoginUserController.getLoginUserId(this));
-//	      Db.update("msg_board", r);
-
-	        render(getRequest().getRequestURI()+"/edit.html");
+		String id = getPara("id");
+    	String sql="select * from wc_product where id = "+id;
+    	String pic="select * from wc_product_pic where order_id="+id;
+        String sql_cat = "select * from category ";
+    	List<Record> categorys = Db.find(sql_cat);
+    	Record  re = Db.findFirst(sql);
+    	List  pictures = Db.find(pic);
+    	setAttr("product",re);
+    	setAttr("pictures",pictures);
+    	setAttr("categorys",categorys);
+    	render(getRequest().getRequestURI()+".html");
 	    }
 	 
     @Before(Tx.class)
@@ -165,20 +165,7 @@ public class ProductController extends Controller {
 		renderJson(result);
 	}
     
-    
-    public void modify(){
-    	String id = getPara("id");
-    	String sql="select * from wc_product where id = "+id;
-    	String pic="select * from wc_product_pic where order_id="+id;
-        String sql_cat = "select * from category ";
-    	List<Record> categorys = Db.find(sql_cat);
-    	Record  re = Db.findFirst(sql);
-    	List  pictures = Db.find(pic);
-    	setAttr("product",re);
-    	setAttr("pictures",pictures);
-    	setAttr("categorys",categorys);
-    	render(getRequest().getRequestURI()+"/edit.html");
-    }
+
     
     @Before(Tx.class)
 	public void update(){
@@ -247,11 +234,25 @@ public class ProductController extends Controller {
 	}
 	
     
-	@Before(Tx.class)
-	public void deletePicture(){
-		String id=getPara("id");
-		deletePicture(Db.findById("wc_product_pic",id).getStr("photo"));
-		Db.deleteById("wc_product_pic", id);
+    @Before(Tx.class)
+	public void deleteItem(){
+		String item_id = getPara("item_id");
+		String photo = getPara("photo");
+		String product_id = getPara("product_id");
+		
+		Db.deleteById("wc_product_pic", item_id);
+		deletePicture(photo);
+		
+		//重新排序
+		List<Record> items = Db.find("select * from wc_product_pic where order_id = ? order by create_time asc",product_id);
+		int number = items.size();
+		int i = 1;
+		for (Record item : items) {
+			item.set("seq", i);
+			Db.update("wc_product_pic",item);
+			++ i;
+		}
+		
 		renderJson(true);
 	}
 	

@@ -14,6 +14,7 @@
 <script type="text/javascript" src="/js/BusinessAdmin/plugins/general.js"></script>
 <script type="text/javascript" src="/js/BusinessAdmin/plugins/dashboard.js"></script>
 <script src="/js/lib/require2.3.2.min.js"></script>
+
 <%include("/eeda/component/form/commonJs.html",{}){} %>
 <link href="/js/lib/sco/css/sco.message.css" rel="stylesheet"> 
 <link href="/js/lib/jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet">
@@ -143,7 +144,7 @@
 		                      display_value: p_c_d_name!''
 		                  }){} %>
 		                  <div class="" style="margin-left:95px;" >
-		              	  	  <input type="text" id="address" class="input_text" name="shop_address_1" value="" placeholder=" 具体地址" >
+		              	  	  <input type="text" id="address" class="input_text addr" name="shop_address_1" value="" placeholder=" 具体地址" >
 		              	  </div>
 		              </div>
 		            </dl>
@@ -291,7 +292,7 @@
 		                      display_value: ''
 		                  }){} %>
 		                  <div class="" style="margin-left:95px;" >
-		              	  	  <input type="text" id="address" class="input_text" name="shop_address_2" value="" placeholder=" 具体地址" >
+		              	  	  <input type="text" id="address" class="input_text addr" name="shop_address_2" value="" placeholder=" 具体地址" >
 		              	  </div>
 		              </div>
                     </dl>
@@ -366,7 +367,6 @@
 
 
 </body>
-
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
          requirejs(['/js/BusinessAdmin/register/info/index.js']);

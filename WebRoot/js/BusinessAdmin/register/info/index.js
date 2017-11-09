@@ -1,6 +1,15 @@
 define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], function ($, metisMenu) {
 	
 	$(document).ready(function() {
+		$('.addr').click(function(){
+			 var replaceStr = '-';//要替换的字符串
+			 var type = $("#register_type").val();
+			 var str = $('#p_c_d_'+type+'_input').val();//要被替换的字符串
+			 
+			 if($(this).val().trim() == ''){
+				 $('[name=shop_address_'+type+']').val(str.replace(new RegExp(replaceStr,'gm'),' ') + ' ');
+			 }
+		});
 		
 		//校验规则
 		$("#first_feorm").validate({
@@ -93,7 +102,10 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 			            alert('上传的时候出现了错误！');
 			        }
 			 });
-		})
+		});
+		
+		
+		 
 		
 	});
 });

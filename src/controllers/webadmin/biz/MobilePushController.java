@@ -125,22 +125,39 @@ public class MobilePushController extends Controller {
    
    @Before(Tx.class)
    public void updateDiamond(){
-       SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
 	   String price = getPara("price");
-       String sql="update price_maintain set price= "+price+",update_time = '"+df.format(new Date())+"' where type='钻石商家'";
 
-	   Db.update(sql);
+       Record re = Db.findFirst("select * from price_maintain where type='钻石商家'");
+	   if(re == null){
+		   re = new Record();
+		   re.set("price", price);
+		   re.set("update_time", new Date());
+		   Db.save("price_maintain",re);
+	   }else {
+		   re.set("price", price);
+		   re.set("update_time", new Date());
+		   Db.update("price_maintain",re);
+	   }
+       
 	   renderJson(true);
    }
    
    @Before(Tx.class)
    public void updateMobile(){
-       SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
 	   String  price = getPara("price");
-	   String sql = "update price_maintain set price = "+price+" ,update_time='"+df.format(new Date())+"' where type='推送广告'";
-	   Db.update(sql);
+	   
+	   Record re = Db.findFirst("select * from price_maintain where type='推送广告'");
+	   if(re == null){
+		   re = new Record();
+		   re.set("price", price);
+		   re.set("update_time", new Date());
+		   Db.save("price_maintain",re);
+	   }else {
+		   re.set("price", price);
+		   re.set("update_time", new Date());
+		   Db.update("price_maintain",re);
+	   }
+
 	   renderJson(true);
    }
 
