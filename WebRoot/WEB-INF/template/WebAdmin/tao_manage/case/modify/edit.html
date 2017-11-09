@@ -32,15 +32,15 @@
 				<hr/>
                 <div class="img_row" id="img_item">
                 <%for(item in pictures![]){%>
-                  	<img style='width: 200px; height: 150px;margin-left:20px;' name="img_photo" class="shadow " src='/upload/${item.photo!"nophoto.png"}' value='${item.photo!""}' id="img_photo${item.seq!''}">
-                  	<a href="#" style="color:red" class="delete_picture" pid="${item.id!''}">删除</a>
+                  	<i><img style='width: 200px; height: 150px;margin-left:20px;' name="img_photo" class="shadow " src='/upload/${item.photo!"nophoto.png"}' value='${item.photo!""}' id="img_photo${item.seq!''}">
+                  	<span style='color:red;cursor:pointer' class='delete_item_id' item_id='${item.id!""}' photo="${item.photo!""}" code='${item.seq!""}' ><strong> 删除 </strong></span></i>
                 <%}%>
             </div>
         </div>
 
        		 <div style="margin:20px 0 0 20px">
                 <button type="button" id="save_btn" class="stdbtn btn_blue" style="width:200px;" >修改</button>
-                <button type="button" id="back_btn" class="stdbtn btn_blue" style="width:200px;" >修改</button>
+                <button type="button" id="back_btn" class="stdbtn btn_white" style="width:100px;" >返回</button>
           	</div>
     </div>
 <%}%>
