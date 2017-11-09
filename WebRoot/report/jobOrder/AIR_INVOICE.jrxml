@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AIR_Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="52"/>
+	<property name="ireport.y" value="1"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -93,7 +93,7 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	GROUP BY c.id) sum_HKD,
 
 	(select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
-			CONCAT(c.name,': ',sum(total_amount)) total
+			CONCAT(c.name,': ',convert(sum(total_amount),decimal(10,2))) total
 		FROM
 			job_order_arap joa
 		LEFT JOIN currency c ON c.id = joa.currency_id
@@ -104,7 +104,7 @@ GROUP BY c.id) a
 	) total,CONCAT(joai.flight_no,' / ',joai.voyage_no) vessel_voyage,
 
 (select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
-			CONCAT(c.name,': ',sum(exchange_total_amount)) total
+			CONCAT(c.name,': ',convert(sum(exchange_total_amount),decimal(10,2))) total
 		FROM
 			job_order_arap joa
 		LEFT JOIN currency c ON c.id = joa.exchange_currency_id
@@ -336,7 +336,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			</staticText>
 			<staticText>
 				<reportElement x="487" y="186" width="68" height="17" uuid="bc8a67e4-7eb6-43be-9c03-e5534890e96a"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Amount]]></text>
@@ -440,7 +440,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			</textField>
 			<textField pattern="###0.000" isBlankWhenNull="true">
 				<reportElement x="193" y="2" width="54" height="18" uuid="e277945f-55f4-4bf9-a963-4139f33381f1"/>
-				<textElement>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
@@ -453,8 +453,8 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[X]]></text>
 			</staticText>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="487" y="2" width="68" height="18" uuid="1f9c03f7-862e-464e-8349-51535fe382be"/>
-				<textElement>
+				<reportElement x="481" y="2" width="68" height="18" uuid="1f9c03f7-862e-464e-8349-51535fe382be"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{exchange_total_amount}]]></textFieldExpression>
@@ -467,14 +467,14 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{unit_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="358" y="2" width="46" height="18" uuid="380d8cb2-4564-4ca6-ac2d-c2b7d3741910"/>
-				<textElement>
+				<reportElement x="357" y="2" width="46" height="18" uuid="380d8cb2-4564-4ca6-ac2d-c2b7d3741910"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="404" y="0" width="19" height="15" uuid="5bcb8635-38d1-4493-bb7b-66617ace222e"/>
+				<reportElement x="405" y="0" width="19" height="15" uuid="5bcb8635-38d1-4493-bb7b-66617ace222e"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="10"/>
 				</textElement>
@@ -487,7 +487,7 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{exchange_rate}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.000" isBlankWhenNull="true">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="261" y="2" width="34" height="18" uuid="68b39a5f-6f5f-4fb4-a0ed-81d9b21c7bab"/>
 				<textElement>
 					<font size="8"/>

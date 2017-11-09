@@ -81,7 +81,7 @@
 	IFNULL(pr.address_eng, pr.address) address,
 	pr.phone,
 	(select GROUP_CONCAT(total SEPARATOR '\n') from (SELECT
-			CONCAT(c.name,': ',sum(total_amount)) total
+			CONCAT(c.name,': ',convert(sum(total_amount),decimal(10,2))) total
 		FROM
 			job_order_arap joa
 		LEFT JOIN currency c ON c.id = joa.currency_id
@@ -363,7 +363,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[Unit Price]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="294" y="186" width="110" height="17" uuid="cdd36543-5977-49d5-9d3b-ba5cd05d5a0b"/>
+				<reportElement x="276" y="186" width="110" height="17" uuid="cdd36543-5977-49d5-9d3b-ba5cd05d5a0b"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -378,7 +378,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			</staticText>
 			<staticText>
 				<reportElement x="487" y="185" width="68" height="17" uuid="bc8a67e4-7eb6-43be-9c03-e5534890e96a"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Amount]]></text>
@@ -480,7 +480,7 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 			</textField>
 			<textField pattern="###0.000" isBlankWhenNull="true">
 				<reportElement x="208" y="2" width="54" height="18" uuid="e277945f-55f4-4bf9-a963-4139f33381f1"/>
-				<textElement>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
@@ -493,22 +493,22 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				<text><![CDATA[X]]></text>
 			</staticText>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="487" y="2" width="68" height="18" uuid="1f9c03f7-862e-464e-8349-51535fe382be"/>
-				<textElement>
+				<reportElement x="481" y="2" width="68" height="18" uuid="1f9c03f7-862e-464e-8349-51535fe382be"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{exchange_total_amount}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="328" y="2" width="30" height="18" uuid="defe1bad-5e7a-4372-8c16-9a947da617f9"/>
+				<reportElement x="310" y="2" width="50" height="18" uuid="defe1bad-5e7a-4372-8c16-9a947da617f9"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{unit_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="358" y="2" width="46" height="18" uuid="380d8cb2-4564-4ca6-ac2d-c2b7d3741910"/>
-				<textElement>
+				<reportElement x="352" y="2" width="50" height="18" uuid="380d8cb2-4564-4ca6-ac2d-c2b7d3741910"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
@@ -527,8 +527,8 @@ AND   $X{IN,joa.id,order_id} group by joa.id]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{exchange_rate}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.000" isBlankWhenNull="true">
-				<reportElement x="294" y="2" width="34" height="17" uuid="68b39a5f-6f5f-4fb4-a0ed-81d9b21c7bab"/>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="276" y="2" width="37" height="17" uuid="68b39a5f-6f5f-4fb4-a0ed-81d9b21c7bab"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>

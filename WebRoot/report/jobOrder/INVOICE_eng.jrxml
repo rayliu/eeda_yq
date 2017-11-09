@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="INVOICE_ENG" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="23"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -303,21 +303,21 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				<text><![CDATA[Description]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="140" y="187" width="68" height="17" uuid="0c832077-31b2-40be-9b6b-47f6c7c62ea3"/>
+				<reportElement x="140" y="187" width="58" height="17" uuid="0c832077-31b2-40be-9b6b-47f6c7c62ea3"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Currency]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="208" y="187" width="69" height="17" uuid="c3ba15f8-7281-4b62-bc5d-6eb94500f02f"/>
-				<textElement>
+				<reportElement x="200" y="187" width="69" height="17" uuid="c3ba15f8-7281-4b62-bc5d-6eb94500f02f"/>
+				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Unit Price]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="294" y="187" width="110" height="17" uuid="cdd36543-5977-49d5-9d3b-ba5cd05d5a0b"/>
+				<reportElement x="270" y="187" width="137" height="17" uuid="cdd36543-5977-49d5-9d3b-ba5cd05d5a0b"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -332,7 +332,7 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 			</staticText>
 			<staticText>
 				<reportElement x="487" y="186" width="68" height="17" uuid="bc8a67e4-7eb6-43be-9c03-e5534890e96a"/>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Amount]]></text>
@@ -423,43 +423,43 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				<textFieldExpression><![CDATA[$F{charge_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="140" y="2" width="68" height="18" uuid="43672bca-27de-4633-b106-507d58822e0e"/>
+				<reportElement x="140" y="2" width="58" height="18" uuid="43672bca-27de-4633-b106-507d58822e0e"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{currency_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.000" isBlankWhenNull="true">
-				<reportElement x="208" y="2" width="54" height="18" uuid="e277945f-55f4-4bf9-a963-4139f33381f1"/>
-				<textElement>
+				<reportElement x="200" y="2" width="54" height="18" uuid="e277945f-55f4-4bf9-a963-4139f33381f1"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="262" y="2" width="15" height="18" uuid="3a5eba6e-4507-4b1b-9722-1623735a3c75"/>
+				<reportElement x="255" y="2" width="15" height="18" uuid="3a5eba6e-4507-4b1b-9722-1623735a3c75"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[X]]></text>
 			</staticText>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="487" y="2" width="68" height="18" uuid="1f9c03f7-862e-464e-8349-51535fe382be"/>
-				<textElement>
+				<reportElement x="480" y="2" width="66" height="18" uuid="1f9c03f7-862e-464e-8349-51535fe382be"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{exchange_total_amount}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="328" y="2" width="30" height="18" uuid="defe1bad-5e7a-4372-8c16-9a947da617f9"/>
+				<reportElement x="310" y="2" width="50" height="18" uuid="defe1bad-5e7a-4372-8c16-9a947da617f9"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{unit_name}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0.00" isBlankWhenNull="true">
-				<reportElement x="358" y="2" width="46" height="18" uuid="380d8cb2-4564-4ca6-ac2d-c2b7d3741910"/>
-				<textElement>
+				<reportElement x="354" y="2" width="46" height="18" uuid="380d8cb2-4564-4ca6-ac2d-c2b7d3741910"/>
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{total_amount}]]></textFieldExpression>
@@ -478,8 +478,8 @@ AND  $X{IN,jor.id,order_id} group by jor.id]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{exchange_rate}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.000" isBlankWhenNull="true">
-				<reportElement x="294" y="2" width="34" height="18" uuid="68b39a5f-6f5f-4fb4-a0ed-81d9b21c7bab"/>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="268" y="2" width="45" height="18" uuid="68b39a5f-6f5f-4fb4-a0ed-81d9b21c7bab"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
