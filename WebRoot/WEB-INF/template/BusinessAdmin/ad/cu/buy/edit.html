@@ -22,6 +22,14 @@
 		                 	</tr>
                			 </thead>
 		                <tbody>
+		                	<tr>
+		                        <td>标题</td>
+		                        <td ><input id="title" type="text" name="title" required /></td>
+		                    </tr>
+		                    <tr>
+		                        <td>内容</td>
+		                        <td ><input id="content" type="text" name="content" required /></td>
+		                    </tr>
 		                    <tr>
 		                        <td width="20%">广告开始时间</td>
 		                  			<td width="58%">
@@ -29,7 +37,7 @@
 		                            		<input type="date" class="input_text" id="begin_date" name="begin_date" />
 		                            	</span>
 		                        	</td>
-		                      		<td rowspan="5"><textarea rows="20" cols="15" id="remark" placecholder="还有什么要说的?"></textarea></td>
+		                      		<td rowspan="7"><textarea rows="20" cols="15" id="remark" placecholder="还有什么要说的?"></textarea></td>
 		                    </tr>
 		                    <tr>
 		                        <td>广告结束时间</td>
@@ -49,11 +57,11 @@
 		                    </tr>
 		                    <tr>
 		                        <td>结算</td>
-		                        <td><span class="anchorbutton" id="price">100</span>元人民币</td>
+		                        <td><span class="anchorbutton" id="price">0</span>元人民币</td>
 		                    </tr>
 		                    <tr>
 		                        <td>提交申请</td>
-		                        <td><input type="button" class="stdbtn btn_yellow" value="保存"   id="saveBtn" /></td>
+		                        <td><input type="button" class="stdbtn btn_yellow" value="保存" id="saveBtn" /></td>
 		                    </tr>
 		                </tbody>
             </table>

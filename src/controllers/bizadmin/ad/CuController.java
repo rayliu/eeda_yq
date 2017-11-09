@@ -99,6 +99,8 @@ public class CuController extends Controller {
         String end_date=(String) dto.get("end_date");
         String total_day=(String) dto.get("total_day");
         String remark=(String) dto.get("remark");
+        String title=(String) dto.get("title");
+        String content=(String) dto.get("content");
         String price=(String) dto.get("price");
         Long user_id = LoginUserController.getLoginUserId(this);
         
@@ -108,12 +110,32 @@ public class CuController extends Controller {
 		order.set("order_no", format.format(new Date()));
     	order.set("begin_date", begin_date);
     	order.set("end_date", end_date);
+    	order.set("title", title);
+    	order.set("content", content);
     	order.set("total_day", total_day);
     	order.set("price", price);
     	order.set("remark", remark);
     	order.set("create_time", new Date());
     	order.set("creator",user_id);
+    	order.set("status","开启");
     	Db.save("wc_ad_cu", order);
     	renderJson(order);
 	}
+	
+	@Before(Tx.class)
+	public void changeStatus(){
+		String id = getPara("id");
+		String status = getPara("status");
+		
+		Record order = Db.findById("wc_ad_cu", id);
+		if("开启".equals(status)){
+			order.set("status", "开启");
+		}else{
+			order.set("status", "已关闭");
+		}
+		Db.update("wc_ad_cu",order);
+		
+		renderJson(true);
+	}
+	
 }

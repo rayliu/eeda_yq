@@ -7,11 +7,13 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             serverSide: true, //不打开会出现排序不对
             ajax: "/WebAdmin/ad/cu/list",
             columns: [
-	                     { "data":"ORDER_NO","width": "80px" },
-	                     { "data":"TITLE","width": "80px" },
-	                     { "data": "C_NAME", "width":"120px"},
-	                     { "data": "TOTAL_DAYS", "width":"90px"}, 
-	                     { "data": "LEAVE_DAYS", "width":"60px"}, 
+	                     { "data":"ORDER_NO","width": "60px" },
+	                     { "data": "C_NAME", "width":"80px"},
+	                     { "data":"TITLE","width": "120px" },
+	                     { "data":"CONTENT","width": "150px" },
+	                     { "data": "TOTAL_DAYS", "width":"50px"}, 
+	                     { "data": "LEAVE_DAYS", "width":"50px"}, 
+	                     { "data": "PRICE", "width":"50px"}, 
 	                     { "data": "END_DATE", "width":"60px"},
 	                     { "data": "LOC_NAME", "width":"60px"},
 	                     { "data": "REMARK", "width":"60px"},
