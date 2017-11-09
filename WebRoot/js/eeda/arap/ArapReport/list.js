@@ -187,24 +187,38 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
 	
 	$('#singleSearchBtn').click(function(){
+		 $("#orderForm")[0].reset();
 	     var selectField = $('#selected_field').val();
 	     var selectFieldValue = '';
 	     if(selectField=='order_no'||selectField=='fin_name'){
 	    	 selectFieldValue = $("#public_text").val();
-	     }
-	     if(selectField=='sp_id'){
+	     }else if(selectField=='sp_id'){
 	    	 selectFieldValue = $("#single_sp_id").val();
-	      }
-	     if(selectField=='flag'){
+	     }else if(selectField=='flag'){
 	    	 selectFieldValue = $("#single_flag").val();
-	      }
-	     if(selectField=="customer_name"){
+	     }else if(selectField=="customer_name"){
 	    	 selectFieldValue = $("#single_customer_name_input").val();
 	    	 selectFieldValue +="&customer_id="+$("#single_customer_name").val();
-	     }
-	     if(selectField=="order_export_date"){
+	     }else if(selectField=="order_export_date"){
 	    	  var export_date_start_date = $("#single_export_date_begin_time").val();
 	    	  var export_date_end_date = $("#single_export_date_end_time").val();
+	     }
+	     
+	     if(selectField == 'order_no'){
+	    	 $("#order_no").val(selectFieldValue);
+	     }else if(selectField == 'fin_name'){
+	    	 $("#fin_item_input").val(selectFieldValue);
+	     }else if(selectField == 'sp_id'){
+	    	 $("#sp").val(selectFieldValue);
+	    	 $("#sp_input").val($("#single_sp_id_input").val());
+	     }else if(selectField == 'flag'){
+	    	 $("#flag").val(selectFieldValue);
+	     }else if(selectField == 'customer_name'){
+	    	 $("#customer").val(selectFieldValue);
+	    	 $("#customer_input").val($("#single_customer_name_input").val());
+	     }else if(selectField == 'order_export_date'){
+	    	 $("#order_export_date_begin_time").val($("#single_export_date_begin_time").val());
+	    	 $("#order_export_date_end_time").val($("#single_export_date_end_time").val());
 	     }
 	     var url = "/arapReport/list?"+selectField+"="+selectFieldValue
 	     		 +"&order_export_date_begin_time="+export_date_start_date
