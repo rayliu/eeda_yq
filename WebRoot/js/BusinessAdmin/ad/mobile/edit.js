@@ -135,5 +135,12 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
       var refleshTable = function(){
     	  dataTable.ajax.url("/BusinessAdmin/ad/mobilelist").load();
       }
+      
+      var diamond_flag = $('#diamond_flag').val();
+      if(diamond_flag=='Y'){
+    	  $('#diamond').text("会员价格")
+      }else{
+    	  $('#diamond').text("普通价格")
+      }
   });
 });

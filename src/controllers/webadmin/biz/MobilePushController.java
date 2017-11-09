@@ -127,9 +127,10 @@ public class MobilePushController extends Controller {
    public void updateDiamond(){
 	   String price = getPara("price");
 
-       Record re = Db.findFirst("select * from price_maintain where type='钻石商家'");
+       Record re = Db.findFirst("select * from price_maintain where type='钻石推送广告'");
 	   if(re == null){
 		   re = new Record();
+		   re.set("type", "钻石推送广告");
 		   re.set("price", price);
 		   re.set("update_time", new Date());
 		   Db.save("price_maintain",re);
@@ -150,6 +151,7 @@ public class MobilePushController extends Controller {
 	   if(re == null){
 		   re = new Record();
 		   re.set("price", price);
+		   re.set("type", "推送广告");
 		   re.set("update_time", new Date());
 		   Db.save("price_maintain",re);
 	   }else {
