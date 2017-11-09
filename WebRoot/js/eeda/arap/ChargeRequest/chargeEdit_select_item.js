@@ -415,6 +415,10 @@ var itemIds=[];
                  $('#modal_usd').val((parseFloat(data.MODAL_USD)).toFixed(2));
                  $('#modal_hkd').val((parseFloat(data.MODAL_HKD)).toFixed(2));
                  $('#modal_jpy').val((parseFloat(data.MODAL_JPY)).toFixed(2));
+                 $('#comfirm_modal_cny').val((parseFloat(data.MODAL_CNY)).toFixed(2));
+                 $('#comfirm_modal_usd').val((parseFloat(data.MODAL_USD)).toFixed(2));
+                 $('#comfirm_modal_hkd').val((parseFloat(data.MODAL_HKD)).toFixed(2));
+                 $('#comfirm_modal_jpy').val((parseFloat(data.MODAL_JPY)).toFixed(2));
                  $('#add_charge_item').attr('disabled',true);
                  
 
