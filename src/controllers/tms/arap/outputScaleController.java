@@ -47,8 +47,17 @@ public class outputScaleController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         
+        String car_id = "";
+        String car_no ="";
+        if(StringUtils.isNotEmpty(getPara("car_id_other"))){
+        	car_id= " AND tjol.car_no ="+getPara("car_id_other");
+        }
+        if(StringUtils.isNotEmpty(getPara("car_no_other"))){
+        	car_no= " AND car.car_no ='"+getPara("car_no_other")+"'";
+        }
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        String condition = DbUtils.buildConditions(getParaMap());
         String sql = "select * from( "
         		+" SELECT tjo.id tjoid,tjol.id ,tjo.office_id,tjo.delete_flag,tjo.order_no,tjo.lading_no,p.company_name customer_name,tjo.customer_id customer_id,"
         		+" IFNULL(CONVERT (substring(tjol.cabinet_date, 1, 10),CHAR),CONVERT (substring(tjol.closing_date, 1, 10),CHAR)) c_date" 
@@ -80,15 +89,15 @@ public class outputScaleController extends Controller {
         		+" LEFT JOIN dockinfo dock3 on dock3.id = tjol.loading_wharf2 "
         		+" LEFT JOIN carinfo car on car.id = tjol.car_no  "
         		+" LEFT JOIN party p ON p.id = tjo.customer_id "
-        		+ " WHERE tjo.office_id = "+office_id
-					+ " ) A where 1=1 and delete_flag ='N' ";
+        		+ " WHERE tjo.delete_flag = 'N' and tjo.office_id = "+office_id +condition+car_id+car_no
+					+ " ) A where 1=1 GROUP BY car_id,tjoid ";
 		
-        String condition = DbUtils.buildConditions(getParaMap());
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        
+        String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by charge_time " +sLimit);
+        List<Record> orderList = Db.find(sql+ " order by charge_time " +sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -132,7 +141,7 @@ public class outputScaleController extends Controller {
 	    		
 	    		String price = "0";//获取产值
 	    		if(StringUtils.isNotBlank(rowMap.get("outputScale"))){
-	    			 price = rowMap.get("outputScale");//获取产值
+	    			 price = rowMap.get("outputScale").replaceAll(",","");//获取产值
 	    		}
 	    		Double total_amount = Double.parseDouble(price) * Double.parseDouble(amount);	    		
 	    		Double currency_total_amount = total_amount * Double.parseDouble(exchange_rate);	    		
@@ -168,8 +177,32 @@ public class outputScaleController extends Controller {
         }
 		if(sign=="导出"||sign.equals("导出")){
 			String car_no = getPara("car_no");
+			String car_id = getPara("car_id");
 			String driver = getPara("driver");
-			 String sql = "select * from( "
+			
+			String sql_car_no ="";
+			String sql_driver ="";
+			String sql_id ="";
+			String ids = getPara("itemIds");
+			String idAttr[] = ids.split(",");
+			
+			if(StringUtils.isNotBlank(car_id)){
+				 sql_car_no = " and tjol.car_no ='"+car_id+"'";
+			}
+			if(StringUtils.isNotBlank(driver)){
+				 sql_driver = " and tjol.driver='"+driver+"'";
+			}
+			if(StringUtils.isBlank(car_no)){
+				car_no=driver;
+			}
+			if(StringUtils.isNotEmpty(ids)){
+				sql_id ="and tjol.id in ("+ids+")";
+			}
+			
+			String condition =sql_car_no+sql_driver+sql_id;	
+			
+			
+			String sql = "select * from( "
 		        		+" SELECT tjo.id tjoid,tjol.id ,tjo.office_id,tjo.delete_flag,tjo.order_no,tjo.lading_no,p.company_name customer_name,tjo.customer_id customer_id,"
 		        		+" IFNULL(CONVERT (substring(tjol.cabinet_date, 1, 10),CHAR),CONVERT (substring(tjol.closing_date, 1, 10),CHAR)) c_date" 
 		        		+" ,tjo.type,dock.dock_name take_wharf_name, "
@@ -205,43 +238,11 @@ public class outputScaleController extends Controller {
 		        		+" LEFT JOIN dockinfo dock3 on dock3.id = tjol.loading_wharf2 "
 		        		+" LEFT JOIN carinfo car on car.id = tjol.car_no  "
 		        		+" LEFT JOIN party p ON p.id = tjo.customer_id "
-		        		+ " WHERE tjo.office_id = "+office_id
+		        		+ " WHERE  tjo.delete_flag = 'N' AND tjo.office_id ="+office_id+ condition
 							+ " ) A where 1=1 and delete_flag ='N' ";
-			String sql_car_no ="";
-			String sql_driver ="";
-			String sql_id ="";
-			String ids = getPara("itemIds");
-			String idAttr[] = ids.split(",");
 			
-			if(StringUtils.isNotBlank(car_no)){
-				 sql_car_no = " and car_no='"+car_no+"'";
-			}
-			if(StringUtils.isNotBlank(driver)){
-				 sql_driver = " and driver='"+driver+"'";
-			}
-			if(StringUtils.isBlank(car_no)){
-				car_no=driver;
-			}
-			for(int i = 0;i<idAttr.length;i++){
-				if(sql_id==""){
-					sql_id+= " and id = "+idAttr[i];
-				}else{
-					sql_id+=" or id = "+idAttr[i];
-				}
-			}
-//			if(outputScale_detail!=null){
-//				for (Map<String, String> rowMap : outputScale_detail) {//获取每一行	
-//					String rowId = rowMap.get("id");
-//					if(sql_id==""){
-//						sql_id+= " and id = "+rowId;
-//					}else{
-//						sql_id+=" or id = "+rowId;
-//					}
-//					
-//				}
-//		    	
-//		    }
-			String sqlExport = sql+sql_car_no+sql_driver+sql_id;
+
+			String sqlExport = sql;
 			String[] headers = new String[]{"提单号", "提/收柜日期", "客户", "类型", "拖柜地址", "柜号", "柜型", "提柜类型", "结算车牌","司机","移柜车牌","移柜司机", "产值","运费","街车运费","其他费用",
 					"备注"};
 			String[] fields = new String[]{"LADING_NO", "C_DATE", "CUSTOMER_NAME", "TYPE", "COMBINE_WHARF", "CONTAINER_NO", "CABINET_TYPE", "COMBINE_UNLOAD_TYPE", "COMBINE_CAR_NO","COMBINE_DRIVER",

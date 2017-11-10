@@ -11,7 +11,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				eeda.dt_float_header('eeda_table_exported');
 			},
 			serverSide: false, //不打开会出现排序不对 
-			ajax: '/outputScale/list?export_flag='+$("#export_flag_exported").val(),
+//			ajax: '/outputScale/list?export_flag='+$("#export_flag_exported").val(),
 			columns:[
 			         	{	"width": "10px",
 			         		"render": function ( data, type, full, meta ) {
@@ -134,8 +134,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			+"&customer_id="+customer
 			//+"&customer_name="+customer_name
 			//+"&sp_id="+sp
-			+"&car_id="+car_id
-			+"&car_no="+car_no
+			+"&car_id_other="+car_id
+			+"&car_no_other="+car_no
 			+"&driver_equals="+driver
 			+"&export_flag="+export_flag
 			+"&charge_time_begin_time="+start_date
@@ -270,7 +270,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				if(car_no||driver||itemIds){
 					var order_id = $('#order_id_exported').val();
 					var company_name = $('#company_name_exported').val();
-					$.post('/outputScale/downloadList?itemIds='+itemIds,{params:JSON.stringify(order),car_no:car_no,driver:driver,sign:sign},function(data){
+					$.post('/outputScale/downloadList?itemIds='+itemIds,{params:JSON.stringify(order),car_no:car_no,car_id:car_id,driver:driver,sign:sign},function(data){
 						if(data){
 							window.open(data);
 							$.scojs_message('生成产值表PDF成功', $.scojs_message.TYPE_OK);

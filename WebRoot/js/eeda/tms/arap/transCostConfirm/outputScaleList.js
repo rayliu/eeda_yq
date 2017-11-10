@@ -14,7 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				eeda.dt_float_header('eeda_table');
 			},
 			serverSide: false, //不打开会出现排序不对 
-			ajax: '/outputScale/list?export_flag='+$("#export_flag").val(),
+//			ajax: '/outputScale/list?export_flag='+$("#export_flag").val(),
 			columns:[
 			         	{	"width": "10px",
 			         		"render": function ( data, type, full, meta ) {
@@ -170,8 +170,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			+"&customer_id="+customer
 			//+"&customer_name="+customer_name
 			//+"&sp_id="+sp
-			+"&car_id="+car_id
-			+"&car_no="+car_no
+			+"&car_id_other="+car_id
+			+"&car_no_other="+car_no
 			+"&driver_equals="+driver
 			+"&export_flag="+export_flag
 			+"&charge_time_begin_time="+start_date
