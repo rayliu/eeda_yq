@@ -94,8 +94,8 @@ public class VideoController extends Controller {
         Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class);
         Record video = new Record();
         video.set("name", dto.get("name"));
-        video.set("title_img", dto.get("title_img"));
-        video.set("youku_url", dto.get("youku_address"));
+        video.set("cover", dto.get("cover"));
+        video.set("video_url", dto.get("video_url"));
         video.set("creator", userId);
         video.set("create_time", new Date());
         Db.save("video_case", video);
@@ -105,9 +105,8 @@ public class VideoController extends Controller {
 	@Before(Tx.class)
 	public void delete(){
 		String id=getPara("id");
-		String sql="delete from video_case where id="+id;
-		deletePicture(Db.findFirst("select * from video_case where id = "+id).getStr("title_img"));
-		Db.update(sql);
+		deletePicture(Db.findFirst("select * from video_case where id = "+id).getStr("cover"));
+		Db.deleteById("video_case", id);
 		renderJson(true);
 	}
 }

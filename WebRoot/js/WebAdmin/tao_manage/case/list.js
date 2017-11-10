@@ -14,7 +14,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	              { "data": "CREATE_TIME", "width":"90px"}, 
 	              { "data": "PICTURE_NAME", "width":"90px",
 	            	"render":function(data,type,full,meta){
-	            		var img ="<img src='/upload/"+data+"' style='width:120px;height:90px;'/>";
+	            		var img ="<img src='/upload/"+data+"' class='shadow' style='width:120px;height:90px;'/>";
 	            		return img;
 	            	}  
 	              }, 

@@ -12,13 +12,13 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
                 },
                 {	"data": "LOCATION", "width":"120px"},
 	              { "data": "NAME", "width":"90px"}, 
-	              { "data": "TITLE_IMG", "width":"60px",
+	              { "data": "COVER", "width":"60px",
 	            	  "render":function(data,type,full,meta){
-	            		  var img="<img src='/upload/"+data+"' style='width:120px;height:90px'/>";
+	            		  var img="<img class='shadow' src='/upload/"+data+"' style='width:120px;height:90px'/>";
 	            		  return img;
 	            	  }
 	              }, 
-	              { "data": "YOUKU_URL", "width":"90px",
+	              { "data": "VIDEO_URL", "width":"90px",
 	            	  "render":function(data,type,full,meta){
 	            		  var url = data;
 	            		  if(data.indexOf('http')<0){
@@ -29,10 +29,9 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	            		  return url;
 	            	  }
 	              },
-	              { "data": "YOUKU_URL", "width":"90px",
+	              { "data": "ID", "width":"90px",
 	            	"render":function(data,type,full,meta){
-	            		data="<button  class='delete-btn  delete' " +
-       					" data-id="+full.ID+" >删除</button>";
+	            		data="<button  class='delete-btn  delete' data-id="+full.ID+" >删除</button>";
 	            		return data
 	            	}  
 	              }
