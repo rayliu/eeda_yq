@@ -43,13 +43,13 @@ define(['jquery', 'sco', 'jquery_ui', 'validate_cn'], function ($) {
 		  self.disabled = true;
 		  $.post("/BusinessAdmin/ad/diamond_save",{jsonStr:JSON.stringify(order)},function(data){
 			  if(data){
-				  $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+				  $.scojs_message('支付成功', $.scojs_message.TYPE_OK);
 				  //新开支付页面
 				  $('#WIDout_trade_no').val(data.ID);
 				  $('#WIDtotal_amount').val($("#total_price").text());
 				  $('#diamond_alipayment_form').submit();
 			  }else{
-				  $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+				  $.scojs_message('支付失败', $.scojs_message.TYPE_ERROR);
 			  }
 			  self.disabled = false;
 		  });
