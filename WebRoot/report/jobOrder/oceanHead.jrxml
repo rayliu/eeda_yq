@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanHead" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="83"/>
+	<property name="ireport.y" value="80"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -11,7 +11,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     o.logo_path,o.office_name,pown.logo_path p_logo_path,pown.company_name p_company_name,u.email user_email,jos.*,josi.*,josh.*,p.company_name head_company,p1.company_name carrier_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,
+     o.logo_path,o.office_name,pown.logo_path p_logo_path,pown.company_name p_company_name,u.email user_email,jos.*,josi.*,josh.*,p.company_name head_company,p1.company_name carrier_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,o.homepage ownHomepage,o.office_tel ownOffice_tel,
 ifnull(
 (select GROUP_CONCAT(CN_no SEPARATOR '  ;  ') from
 (SELECT
@@ -308,6 +308,8 @@ where jos.order_id=$P{order_id}]]>
 	<field name="pol_name" class="java.lang.String"/>
 	<field name="pod_name" class="java.lang.String"/>
 	<field name="fnd_name" class="java.lang.String"/>
+	<field name="ownHomepage" class="java.lang.String"/>
+	<field name="ownOffice_tel" class="java.lang.String"/>
 	<field name="CN_SN" class="java.lang.String"/>
 	<field name="Vessel_voyage" class="java.lang.String"/>
 	<columnHeader>
@@ -621,9 +623,17 @@ where jos.order_id=$P{order_id}]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="22" y="0" width="211" height="20" uuid="ee419ef5-b19f-4cd3-a6d2-4c00172e7188"/>
 				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="243" y="0" width="156" height="20" uuid="3634b444-8af4-4903-a9a7-3ec4666a6e8a"/>
+				<textFieldExpression><![CDATA[$F{ownHomepage}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="0" width="135" height="20" uuid="84578fcc-49d0-4cd8-a2a7-9032a6e4343a"/>
+				<textFieldExpression><![CDATA[($F{ownOffice_tel}.equals(null)?"":"Tel:"+$F{ownOffice_tel})]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>

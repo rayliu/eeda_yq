@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="truckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6e032343-152e-4328-9fc1-a87e482c2444">
 	<property name="ireport.zoom" value="1.100000000000001"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="145"/>
+	<property name="ireport.y" value="142"/>
 	<parameter name="itemId" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -31,6 +31,8 @@ ul.user_tel,
 ul.user_fax,
 oe.office_name,
 oe.logo_path,
+oe.homepage ownHomepage,
+oe.office_tel own_office_tel,
 pown.company_name p_company_name,
 pown.logo_path p_logo_path
 from job_order jo
@@ -106,6 +108,8 @@ where joli.id=$P{itemId}]]>
 	<field name="logo_path" class="java.lang.String">
 		<fieldDescription><![CDATA[logo路径]]></fieldDescription>
 	</field>
+	<field name="ownHomepage" class="java.lang.String"/>
+	<field name="own_office_tel" class="java.lang.String"/>
 	<field name="p_company_name" class="java.lang.String"/>
 	<field name="p_logo_path" class="java.lang.String"/>
 	<background>
@@ -349,13 +353,28 @@ where joli.id=$P{itemId}]]>
 		<band splitType="Stretch"/>
 	</detail>
 	<columnFooter>
-		<band height="15" splitType="Stretch">
+		<band height="16" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="10" y="0" width="154" height="15" uuid="20afb023-11bd-4087-a1ee-d601911e78c8"/>
+				<reportElement x="10" y="0" width="183" height="15" uuid="20afb023-11bd-4087-a1ee-d601911e78c8"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="193" y="0" width="175" height="15" uuid="b34251ef-b4a8-46a6-8b66-0ed0a1c532a0"/>
+				<textElement textAlignment="Center">
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ownHomepage}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="354" y="0" width="169" height="15" uuid="fac40c10-c1ca-4353-878b-f0ac528fc957"/>
+				<textElement textAlignment="Right">
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{own_office_tel}.equals(null)?"":"Tel:"+$F{own_office_tel})
+]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>
