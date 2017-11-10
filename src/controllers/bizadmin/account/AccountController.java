@@ -38,17 +38,20 @@ public class AccountController extends Controller {
 	    String sql_user = "select * from user_login where id = "+userId;
 	    Record re_user = Db.findFirst(sql_user);
 	    setAttr("user",re_user);
-	    String sql_diamond = "select ifnull(DATEDIFF(max(end_date),now()),0)leave_days from wc_ad_diamond where creator = "+userId;
-	    Record re_diamond = Db.findFirst(sql_diamond);
-	    setAttr("diamond",re_diamond);
-	    String sql_cu = "select count(*) count_cu from wc_ad_cu where DATEDIFF(end_date,now())>0 and creator = "+userId;
+	    
+	    Record diamond = Db.findFirst("select *,ifnull(DATEDIFF(end_date,now()),0) leave_days from wc_ad_diamond"
+    			+ " where creator = ? and (now() BETWEEN begin_date and end_date) and status = '已开通' order by end_date desc",userId);
+	    setAttr("diamond",diamond);
+	   
+	    String sql_cu = "select count(*) count_cu from wc_ad_cu where (now() BETWEEN begin_date and end_date) and creator = "+userId;
 	    Record re_cu = Db.findFirst(sql_cu);
 	    setAttr("cu",re_cu);
-	    String sql_hui = "select ifnull(is_active,'N') is_active from wc_ad_hui where creator = "+userId;
+	    
+	    String sql_hui = "select * from wc_ad_hui where creator = "+userId;
 	    Record re_hui = Db.findFirst(sql_hui);
 	    if(re_hui == null){
 	    	re_hui = new Record();
-	    	re_hui.set("status", "N");
+	    	re_hui.set("status", "关闭");
 	    }
 	    setAttr("hui",re_hui);
 	    setAttr("notice", noticeRec);

@@ -9,7 +9,7 @@
                 <div class="xx-detail">
                     <h3>珠海维多利亚摄影</h3>
                     <p>商家邀请码 ：<strong class="red anchorbutton" >${user.invitation_code!''}</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;影响力 ：<strong class="red anchorbutton">109</strong></p>
-                    <p>您成功用邀请码邀请109对新人使用婚礼帮并注册，您的影响力是：109 。 影响力有助商家排名上升。      </p>
+                    <p>您成功用邀请码邀请 1 对新人使用婚礼帮并注册，您的影响力是：1 。 影响力有助商家排名上升。      </p>
                 </div>
                 <div class="product-table">
                     <table cellpadding="0" cellspacing="0" border="0" class="stdtable">
@@ -38,17 +38,7 @@
                         </tr>
                         <tr>
                             <td>优“惠“广告服务</td>
-                            <%
-                            	var status = hui.is_active;
-                            	if(status == 'B'){
-                            		status = "禁止";
-                            	}else if(status == 'Y'){
-                            		status = "开启";
-                            	}else if(status == 'N'){
-                            		status = "关闭";
-                            	}
-                            %>
-                            <td><span class="fail-verify">状态：${status!'无'}</span></td>
+                            <td><span class="fail-verify">状态：${hui.status!'无'}</span></td>
                             <td><a style="color:white;text-decoration:none;" class="stdbtn btn_yellow" href='/BusinessAdmin/ad/hui'>免费开通</a></td>
                         </tr>
                         <tr>
