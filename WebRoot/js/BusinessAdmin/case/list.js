@@ -134,14 +134,17 @@ $(document).ready(function() {
         serverSide: true, 
         ajax: "/BusinessAdmin/case/list",
         columns: [
-            { "data": "NAME" ,"width": "50px"},
-            { "data": "CREATE_TIME","class":"title", "width": "100px"},
-            { "data": "BEGIN_DATE", "width": "100px",
+			{ "data": "PICTURE_NAME", "width": "150px",
+				render: function(data,type,full,meta){
+					return "<img class='shadow' src='/upload/"+data+"' style='width:100px;height:75px' />";
+				} 
+			},
+            { "data": "NAME" ,"width": "300px"},
+            { "data": "CREATE_TIME","class":"title", "width": "200px"},
+            { "data": "ID",
             	render: function(data,type,full,meta){
-            		
             			data =  "<a class='stdbtn btn_warning delBtn' " +
               				" data-id="+full.ID+" href='#eeda_table'>删除</a>";
-            	
             		return data;
             	} 
             }

@@ -17,12 +17,12 @@
              </div>
              <span class="red">*图片要求: 200*150, 小于500Kb</span>
              <div class="form-control" style="margin-left:100px">
-	              <img src="/images/fengmianpic.png"  class="shadow" style="width:200px;height:150px" id="title_img"/>
+	              <img src="/images/fengmianpic.png"  class="shadow" style="width:200px;height:150px" id="cover"/>
              </div>
 	        <div class="mt10">
 	        <div style="width:500px">
 	             <label>视频地址： </label>
-	             <input type="text" class="input_text" id="youku_address" name="youku_address"/>
+	             <input type="text" class="input_text" id="video_url" name="video_url"/>
 	        </div>
 	        <div class="mt10"><input type="button" style="width:200px;" class="stdbtn btn_blue" value="保存" id="upload"/> </div>
         </div>
@@ -31,7 +31,7 @@
 	      <%include("/eeda/component/form/detailTable.html", 
 	          {
 	              id:'eeda_table', 
-	              headers:['视屏名字', '优酷地址', '创建时间','操作']
+	              headers:['封面', '案例名称', '视频地址', '创建时间','操作']
 	      }){} %> 
  	</div>
 <%}%>

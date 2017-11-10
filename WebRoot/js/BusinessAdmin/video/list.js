@@ -8,9 +8,9 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload','dataTablesBootstrap'], fu
 			    dataType: 'json',
 		        done: function (e, data) {
 	        		if(data){
-			    		$('#title_img').val(data.result.NAME);
+			    		$('#cover').val(data.result.NAME);
 			    	
-			    		var imgPre =Id("title_img");
+			    		var imgPre =Id("cover");
 			  		    imgPre.src = '/upload/'+data.result.NAME;
 			    	}else{
 			    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
@@ -29,9 +29,9 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload','dataTablesBootstrap'], fu
   		var self=this;
   		var video={};
   			video.name=$("#name").val();
-  			video.title_img=$("#title_img").val();
-  			video.youku_address=$("#youku_address").val();
-  			if($.trim(video.name) == ""||$.trim(video.youku_address) == ""){
+  			video.cover=$("#cover").val();
+  			video.video_url=$("#video_url").val();
+  			if($.trim(video.name) == ""||$.trim(video.video_url) == ""){
   				alert("案例名称和优酷地址都必须要填！！！")
   				return;
   			}
@@ -52,14 +52,19 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload','dataTablesBootstrap'], fu
 	          serverSide: true, 
 	          ajax: "/BusinessAdmin/video/list",
 	          columns: [
-	            { "data": "NAME" ,"width": "50px"},
-	            { "data": "YOUKU_URL","class":"title", "width": "100px"},
-	            { "data": "CREATE_TIME","width": "100px"},
-	            { "data": "BEGIN_DATE", "width": "100px",
+				{ "data": "COVER", "width": "150px",
+					render: function(data,type,full,meta){
+						return "<img class='shadow' src='/upload/"+data+"' style='width:100px;height:75px' />";
+					} 
+				},
+	            { "data": "NAME" ,"width": "300px"},
+	            { "data": "VIDEO_URL","class":"title", "width": "200px"},
+	            { "data": "CREATE_TIME","width": "150px"},
+	            { "data": "ID", 
 	            	render: function(data,type,full,meta){
 	            		
-	            			data =  "<a class='stdbtn btn_warning delBtn' " +
-	              				" data-id="+full.ID+" href='#eeda_table'>删除</a>";
+	            			data =  "<button class='stdbtn btn_warning delBtn' " +
+	              				" data-id="+full.ID+" href='#eeda_table'>删除</button>";
 	            	
 	            		return data;
 	            	} 
