@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cabinetTruckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="101"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -11,7 +11,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     jo.order_no,IFNULL(p5.company_name,p5.company_name_eng) carrier_name,o.logo_path,o.office_name,jos.*,josh.*,IFNULL(p6.company_name,p6.company_name_eng) consignor_name,joli.consignor_contact_man,joli.consignor_phone,IFNULL(p4.company_name,p4.company_name_eng) transport_company_name,p.company_name head_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,CONCAT(lo1.name,' - ',lo1.code) pol_name,CONCAT(lo2.name,' - ',lo2.name) pod_name,CONCAT(lo3.name,' - ',lo3.code) fnd_name,CONCAT(lo4.name,' - ',lo4.code) hub_name,CONCAT(IFNULL(CONCAT('MBL:',jos.mbl_no),'')) bookingNo,
+     jo.order_no,IFNULL(p5.company_name,p5.company_name_eng) carrier_name,o.logo_path,o.office_name,o.homepage ownHomepage,o.office_tel ownOffice_tel,jos.*,josh.*,IFNULL(p6.company_name,p6.company_name_eng) consignor_name,joli.consignor_contact_man,joli.consignor_phone,IFNULL(p4.company_name,p4.company_name_eng) transport_company_name,p.company_name head_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,CONCAT(lo1.name,' - ',lo1.code) pol_name,CONCAT(lo2.name,' - ',lo2.name) pod_name,CONCAT(lo3.name,' - ',lo3.code) fnd_name,CONCAT(lo4.name,' - ',lo4.code) hub_name,CONCAT(IFNULL(CONCAT('MBL:',jos.mbl_no),'')) bookingNo,
 IF(jo.amount_20gp is not null or jo.amount_40gp is not null or jo.amount_40hq is not null or jo.amount_45gp is not null,
 	CONCAT(
 		IF(jo.amount_20gp is not null,CONCAT('20\'GP X',jo.amount_20gp,';'),''),
@@ -72,6 +72,8 @@ where joli.id=$P{item_id}]]>
 	<field name="office_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="ownHomepage" class="java.lang.String"/>
+	<field name="ownOffice_tel" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -174,7 +176,7 @@ where joli.id=$P{item_id}]]>
 	<field name="etd" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="eta" class="java.sql.Date">
+	<field name="eta" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="gross_weight" class="java.lang.Double">
@@ -228,6 +230,9 @@ where joli.id=$P{item_id}]]>
 	<field name="si_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="hbl_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="mbl_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -250,6 +255,12 @@ where joli.id=$P{item_id}]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="sailing_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deadline_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[截关日期]]></fieldDescription>
+	</field>
+	<field name="aboutShipment_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="head_end_place" class="java.lang.String">
@@ -668,11 +679,22 @@ where joli.id=$P{item_id}]]>
 	<columnFooter>
 		<band height="18">
 			<textField isBlankWhenNull="true">
-				<reportElement x="21" y="0" width="201" height="17" uuid="965f9b9b-1e6b-4644-a864-4884fb8f906f"/>
+				<reportElement x="21" y="0" width="225" height="17" uuid="965f9b9b-1e6b-4644-a864-4884fb8f906f"/>
 				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="252" y="1" width="185" height="17" uuid="b8758501-508c-4631-be10-d0195b782542"/>
+				<textElement>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ownHomepage}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="418" y="2" width="153" height="15" uuid="edce1c8d-3db0-4b95-b616-d78164b8ad44"/>
+				<textFieldExpression><![CDATA[($F{ownOffice_tel}.equals(null)?"":"Tel:"+$F{ownOffice_tel})]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>
