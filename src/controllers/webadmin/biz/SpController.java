@@ -46,25 +46,45 @@ public class SpController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	 public void edit(){ 
 		String id = getPara("id");
-        String sql_user = "select ca.name trade_name,ul.id uid,ul.invitation_code,ul.user_name,wc.* from user_login ul "
-			        		+ "left join wc_company wc on wc.creator = ul.id "
-			        		+"left join category ca on ca.id=wc.trade_type "
-			        		+ "where ul.id = "+id;
-        String sql_diamond = "select if(DATEDIFF(max(end_date),now())>0,'Y','N') whether,DATEDIFF(max(end_date),"
-        					+ "now()) leave_days,max(end_date) last_date from wc_ad_diamond where status = '已开通' and creator = "+id;
-        String sql_cu  = "SELECT if(DATEDIFF(max(end_date),now())>0,cast(DATEDIFF(max(end_date),now()) as char),'0') leave_days,max(end_date) end_date FROM `wc_ad_cu` "
-        					+ "where status='开启' and creator ="+id;
+        String sql_user = "select ca.name trade_name,ul.id uid,ul.invitation_code,ul.user_name,wc.* "
+        		+ " from user_login ul "
+        		+ " left join wc_company wc on wc.creator = ul.id "
+        		+ " left join category ca on ca.id = wc.trade_type "
+        		+ " where ul.id = ?";
+        Record re_user = Db.findFirst(sql_user,id);
+        
+        Record diamond = Db.findFirst("select  'Y' is_diamond, DATEDIFF(end_date, now()) leave_days,end_date last_date from wc_ad_diamond"
+    			+ " where creator = ? and (now() BETWEEN begin_date and end_date) and status = '已开通' order by end_date desc",id);
+        if(diamond != null){
+        	setAttr("diamond",diamond);
+        }else{
+        	diamond = new Record();
+        	diamond.set("is_diamond", "N");
+        	diamond.set("leave_days", 0);
+        	diamond.set("last_date", "");
+        	setAttr("diamond",diamond);
+        }
+        
+        String sql_cu  = "SELECT 'Y' is_cu,DATEDIFF(end_date,now()) leave_days, end_date end_date FROM `wc_ad_cu` "
+        					+ " where creator = ? and (now() BETWEEN begin_date and end_date) and status = '开启' order by end_date desc";
+        Record re_cu = Db.findFirst(sql_cu,id);
+        if(re_cu != null){
+        	setAttr("cu",re_cu);
+        }else{
+        	diamond = new Record();
+        	diamond.set("is_cu", "N");
+        	diamond.set("leave_days", 0);
+        	diamond.set("end_date", "");
+        	setAttr("cu",re_cu);
+        }
+        
+        
         String sql_hui="select * from wc_ad_hui where creator = "+id;
-        Record re_user = Db.findFirst(sql_user);
-        Record re_diamond = Db.findFirst(sql_diamond);
-        Record re_cu = Db.findFirst(sql_cu);
         Record re_hui = Db.findFirst(sql_hui);
         setAttr("user",re_user);
-        setAttr("diamond",re_diamond);
-        setAttr("cu",re_cu);
         setAttr("hui",re_hui);
         render(getRequest().getRequestURI()+".html");
-	    }
+	}
 	
 	public void editList(){
 		String id = getPara("id");
@@ -73,18 +93,19 @@ public class SpController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-    	String sql=	"SELECT id,'促销' type,"
-    			+" create_time,order_no, cast(CONCAT(begin_date, '-', end_date) as char) duringday,"
-    			+" if(DATEDIFF(end_date,begin_date)<0,'over time',cast(DATEDIFF(end_date,begin_date) as char)) total_day, price "
-    			+" FROM  wc_ad_cu  WHERE creator = "+id
-    			+" UNION ALL"
-    			+" SELECT id, '钻石会员' type, create_time, order_no, cast(CONCAT(begin_date, '-', end_date) as char) duringday,"
-    			+" if(DATEDIFF(end_date,begin_date)<0,'over time',cast(DATEDIFF(end_date,begin_date) as char)) total_day, total_price  price"
-    			+" FROM wc_ad_diamond WHERE creator = "+ id;
+    	String sql=	"SELECT id,'促销广告' type,"
+    			+ " create_time,order_no, cast(CONCAT(begin_date, ' ~ ', end_date) as char) duringday,"
+    			+ " cast(DATEDIFF(end_date,begin_date) as char) total_day, price "
+    			+ " FROM  wc_ad_cu "
+    			+ " WHERE creator = "+id
+    			+ " UNION ALL"
+    			+ " SELECT id, '钻石会员' type, create_time, order_no, cast(CONCAT(begin_date, ' ~ ', end_date) as char) duringday,"
+    			+ " cast(DATEDIFF(end_date,begin_date) as char) total_day, total_price  price"
+    			+ " FROM wc_ad_diamond"
+    			+ " WHERE creator = "+ id;
     	String sqlTotal = "select count(1) total from ("+sql+ ") B";
         Record rec = Db.findFirst(sqlTotal);
-        logger.debug("total records:" + rec.getLong("total"));
-        List<Record> orderList = Db.find(sql+ " order by create_time desc " +sLimit);
+        List<Record> orderList = Db.find(sql +sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
@@ -98,10 +119,10 @@ public class SpController extends Controller {
 		DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
 		String id = getPara("id");
 		String endDate = getPara("end_date");
-		String beginDate = (String) (getPara("begin_date").equals("begin_date")?new Date():getPara("begin_date"));
+		//String beginDate = (String) (getPara("begin_date").equals("begin_date")?new Date():getPara("begin_date"));
 		Record re = new Record();
-		re.set("order_no", "A"+format.format(new Date()));
-		re.set("begin_date", beginDate);
+		re.set("order_no", "admin"+format.format(new Date()));
+		re.set("begin_date", new Date());
 		re.set("end_date", endDate);
 		re.set("status", "已开通");
 		re.set("creator", id);
@@ -117,10 +138,10 @@ public class SpController extends Controller {
 		DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
 		String id = getPara("id");
 		String endDate = getPara("end_date");
-		String beginDate = getPara("begin_date");
+		//String beginDate = getPara("begin_date");
 		Record re = new Record();
-		re.set("order_no", "A"+format.format(new Date()));
-		re.set("begin_date", beginDate);
+		re.set("order_no", "admin"+format.format(new Date()));
+		re.set("begin_date", new Date());
 		re.set("end_date", endDate);
 		re.set("status", "开启");
 		re.set("creator", id);
@@ -132,11 +153,13 @@ public class SpController extends Controller {
 	}
 	
     @Before(Tx.class)
-	public void updateStatus(){
-    	String status=getPara("status");
-    	String id=getPara("id");
-    	String sql="update wc_ad_hui set is_active='"+status+"' where creator="+id;
+	public void updateHui(){
+    	String status = getPara("status");
+    	String id = getPara("id");
+    	
+    	String sql="update wc_ad_hui set status ='"+status+"' where creator="+id;
     	Db.update(sql);
+    	
     	renderJson(true);
     }
 	
@@ -184,7 +207,6 @@ public class SpController extends Controller {
     
     public void list(){
     	UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id=user.getLong("office_id");
         //主列表
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -204,12 +226,15 @@ public class SpController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-    	String sql="select 	A.leave_days,ca.name trade_type_name,ifnull(loc.name,'暂无') location,ul.id uid,ul.user_name,ul.phone,wc.* from user_login ul  "
-	    			+ "left join  wc_company wc ON wc.creator = ul.id  "
-	    			+ "LEFT JOIN category ca on ca.id = wc.trade_type "
-	    			+ "left join location loc on loc.code = ifnull(wc.city,wc.province)  and loc.code <>''"
-	    			+ "left join (select creator,datediff(max(end_date),now()) leave_days from wc_ad_diamond wad  group by creator) A  on A.creator = ul.id "
-	    			+ "where ul.status = '通过' ";
+    	String sql="select A.leave_days,ca.name trade_type_name,ifnull(loc.name,'暂无') location,"
+    			+ " ul.id uid,ul.user_name,ul.phone,wc.* "
+    			+ " from user_login ul  "
+    			+ " left join  wc_company wc ON wc.creator = ul.id  "
+    			+ " LEFT JOIN category ca on ca.id = wc.trade_type "
+    			+ " left join location loc on loc.code = ifnull(wc.city,wc.province)  and loc.code <>''"
+    			+ " left join (select creator,datediff(max(end_date),now()) leave_days "
+    			+ " from wc_ad_diamond wad  group by creator) A  on A.creator = ul.id "
+    			+ " where ul.status = '通过' ";
         String sqlTotal = "select count(1) total from ("+sql+condition+ ") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));

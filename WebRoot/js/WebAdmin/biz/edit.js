@@ -91,18 +91,21 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		  
 	  })
 	  
-      $("#closeButton,#openButton,#banButton").click(function(){
-      	var self=$(this);
+      $(".huiBtn").click(function(){
+      	var self = $(this);
       	self.attr("disabled",true);
-      	var id=$("#user_id").val();
-      	var status=self.attr('status');
-      	$.post("/WebAdmin/biz/updateStatus",{id:id,status:status},function(data){
+      	var user_id = $("#user_id").val();
+      	var status = self.val();
+      	$.post("/WebAdmin/biz/updateHui",{id:user_id,status:status},function(data){
       		if(data){
       			$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
-      			self.siblings().attr('disabled',false);
-      			$("#hui_status").val(status);
+      			$('.huiBtn').attr("disabled",false);
+      			self.attr("disabled",true);
+      			$('#hui_status').text(status);
+      			
       		}else{
       			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+      			self.attr("disabled",false);
       		}
       	});
       });

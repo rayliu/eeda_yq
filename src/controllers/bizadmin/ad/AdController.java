@@ -52,13 +52,24 @@ public class AdController extends Controller {
 	public void hui_save(){
         Long userId = LoginUserController.getLoginUserId(this);
         Record rec = Db.findFirst("select * from wc_ad_hui where creator = ?", userId);
+        String is_active = getPara("is_active");
         if(rec != null){
-            rec.set("is_active", getPara("is_active"));
+            rec.set("is_active", is_active);
+            if("Y".equals(is_active)){
+            	rec.set("status", "开启");
+            }else{
+            	rec.set("status", "关闭");
+            }
             rec.set("discount", getPara("discount"));
             Db.update("wc_ad_hui", rec);
         }else {
         	rec = new Record();
-        	rec.set("is_active",getPara("is_active"));
+        	if("Y".equals(is_active)){
+            	rec.set("status", "开启");
+            }else{
+            	rec.set("status", "关闭");
+            }
+        	rec.set("is_active",is_active);
         	rec.set("discount", getPara("discount"));
         	rec.set("creator", userId);
         	Db.save("wc_ad_hui", rec);
