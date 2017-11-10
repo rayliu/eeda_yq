@@ -39,9 +39,15 @@ public class AccountController extends Controller {
 	    Record re_user = Db.findFirst(sql_user);
 	    setAttr("user",re_user);
 	    
-	    Record diamond = Db.findFirst("select *,ifnull(DATEDIFF(end_date,now()),0) leave_days from wc_ad_diamond"
+	    Record diamond = Db.findFirst("select *,'Y' is_diamond ,ifnull(DATEDIFF(end_date,now()),0) leave_days from wc_ad_diamond"
     			+ " where creator = ? and (now() BETWEEN begin_date and end_date) and status = '已开通' order by end_date desc",userId);
+	    if(diamond == null){
+	    	diamond = new Record();
+	    	diamond.set("is_diamond", "N");
+	    	diamond.set("leave_days",0);
+	    }
 	    setAttr("diamond",diamond);
+	    
 	   
 	    String sql_cu = "select count(*) count_cu from wc_ad_cu where (now() BETWEEN begin_date and end_date) and creator = "+userId;
 	    Record re_cu = Db.findFirst(sql_cu);

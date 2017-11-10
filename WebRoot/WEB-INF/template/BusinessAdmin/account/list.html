@@ -22,8 +22,8 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><%if(diamond.leave_days!'0'>0){%>钻石商家<%} else{%>普通商家<%}%></td>
-                                <td><span class="fail-verify"><%if(diamond.leave_days!'0'>0){%>剩余${diamond.leave_days!''}天<%}%></span>&nbsp;&nbsp;</td>
+                                <td><%if(diamond.is_diamond == 'Y'){%>钻石商家<%} else{%>普通商家<%}%></td>
+                                <td><span class="fail-verify">剩余${diamond.leave_days!''}天</span>&nbsp;&nbsp;</td>
                              <td><a style="color:white;text-decoration:none;" type="button" class=" stdbtn btn_red" href='/BusinessAdmin/ad/diamond' >开通钻石</a></td>
                             </tr>
                         <tr>
