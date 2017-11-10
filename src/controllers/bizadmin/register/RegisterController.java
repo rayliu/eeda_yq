@@ -70,10 +70,10 @@ public class RegisterController extends Controller {
         //参数length，表示生成几位随机数  
         for(int i = 0; i < length; i++) {  
             //输出字母还是数字  
-            if( i<2 ) {  
+            if( i<1 ) {  
                 //输出是大写字母还是小写字母  
-                int temp = random.nextInt(2) % 2 == 0 ? 65 : 97;  
-                val += (char)(random.nextInt(26) + temp);  
+                //int temp = random.nextInt(2) % 2 == 0 ? 65 : 97;  
+                val += (char)(random.nextInt(26) + 97);  //默认小写
             } else  {  
                 val += String.valueOf(random.nextInt(10));  
             }  
@@ -86,8 +86,7 @@ public class RegisterController extends Controller {
 		String jsonStr=getPara("jsonStr");
 		Gson gson=new Gson();
 		Map<String,?> dto = gson.fromJson(jsonStr, HashMap.class);
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String invitation_code = getStringRandom(6);
+			
 		//user
 		String type=(String)dto.get("type");
 		String user_name = (String) dto.get("user_name");
@@ -110,6 +109,16 @@ public class RegisterController extends Controller {
 		String c_name = (String)dto.get("company_name");
 		String id_card = (String) dto.get("id_card");
 		
+		//查询随机生成的邀请码是否在系统中存在
+		String invitation_code = getStringRandom(5);
+		for(int i = 0; i <= 10; i++){
+			Record re = Db.findFirst("select * from user_login where invitation_code = ?",invitation_code);
+			if(re != null){
+				invitation_code = getStringRandom(5);
+			}else{
+				break;
+			}
+		}
 		//user_login
 		Record order = new Record();
 		order.set("user_name", user_name);
@@ -121,7 +130,7 @@ public class RegisterController extends Controller {
 		order.set("invitation_code", invitation_code);
 		Db.save("user_login", order);
 		//wc_company
-		Long creator_id = order.get("id");
+		Long creator_id = order.getLong("id");
 		if(StringUtils.isNotBlank(creator_id.toString())){
 			Record item = new Record();
 			if("1".equals(type)){

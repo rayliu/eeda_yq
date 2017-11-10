@@ -12,22 +12,50 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 		});
 		
 		//校验规则
-		$("#first_feorm").validate({
+		$("#two_form").validate({
 			rules:{
-				phone:{
-					required:true,
-					isMobile:true
-				}
-			},
-			messages:{
-				login_name:{
-					remote:"用户名已存在"
+				contact_1 :{
+					required:true
 				},
-				phone:{
-					isMobile:"不合法手机号码"
-				}
-			}
-		})
+				contact_2 :{
+					required:true
+				},
+				telephone_1:{
+					required:true,
+					isPhone:true
+				},
+				telephone_2:{
+					required:true,
+					isPhone:true
+				},
+				shop_telephone_1:{
+					isPhone:true
+				},
+				shop_telephone_2:{
+					isPhone:true
+				},
+				qq_1: {
+			    	  number:true,
+			    	  rangelength:[5,15]
+			    },
+			    qq_2: {
+			    	  number:true,
+			    	  rangelength:[5,15]
+			    }
+			 },
+			 messages: {
+			    rangelength: $.validator.format("请输入长度在 {0} 到 {1} 之间的字符串dd"),
+			 }
+		});
+		
+		jQuery.validator.addMethod("isPhone", function(value,element) { 
+			  var length = value.length; 
+			  var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/; 
+			  var tel = /^\d{3,4}-?\d{7,9}$/; 
+			  return this.optional(element) || (tel.test(value) || mobile.test(value)); 
+
+		}, "请正确填写您的联系电话"); 
+		
 		$('.hornav a').click(function(){
 	        $('.hornav li').removeClass('current');
 	        $(this).parent().addClass('current');
@@ -46,6 +74,10 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 		
 		//点击下一步
 		$("#nextBtn").click(function(){
+			if(!$("#two_form").valid()){
+				return false;
+			}
+			
 			var type=$("#register_type").val();
 			var user={};
 			user.type=type;
