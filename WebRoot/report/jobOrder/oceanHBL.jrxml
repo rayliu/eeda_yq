@@ -558,7 +558,7 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[B/L No.]]></text>
 			</staticText>
 			<image>
-				<reportElement x="276" y="-5" width="135" height="35" uuid="f58114fa-3e37-475f-a3b3-12254af307e8"/>
+				<reportElement x="276" y="2" width="135" height="28" uuid="f58114fa-3e37-475f-a3b3-12254af307e8"/>
 				<imageExpression><![CDATA[($F{p_logo_path}.equals(null)?$F{logo_path}:"http://forwarder.esimplev.com/upload/partyLOGO/"+$F{p_logo_path})]]></imageExpression>
 			</image>
 			<staticText>
