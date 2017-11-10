@@ -54,7 +54,10 @@ public class SupplierRatingController extends Controller {
         render("/eeda/profile/serviceProvider/serviceProviderMarkList.html");
     }
     
+    @Before(EedaMenuInterceptor.class)
     public void create() { 
+    	Record re = new Record();
+        setAttr("party_mark", re);
     	render("/eeda/profile/serviceProvider/serviceProviderMarkEdit.html");
     }
     
