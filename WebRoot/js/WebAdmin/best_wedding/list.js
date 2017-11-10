@@ -27,7 +27,7 @@ $(document).ready(function() {
 				        { "data": "NAME", "width":"100px"},
 				        { "data": "PICTURE_NAME" ,"width":"120px",
 				        	  "render":function(data){
-				        		  return"<img src='/upload/"+data+"' style='width:120px; height:90px'/>"
+				        		  return"<img class='shadow' src='/upload/"+data+"' style='width:120px; height:90px'/>"
 				        	  }
 				        },
 				        { "data": "ID" ,"width":"50px",
