@@ -11,14 +11,14 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
           serverSide: true, 
           ajax: "/BusinessAdmin/product/list",
           columns: [
-            { "data": "COVER" ,"width": "130px",
+            { "data": "COVER" ,"width": "120px",
               render: function(data,type,full,meta){
                 var str = "";
                 if(!data){
                 	data = 'nophoto.png';
                 }
                 str ="<a href='/BusinessAdmin/product/edit?id="+full.ID+"'>" +
-                  		"<img style='width:120px; height: 90px;' src='/upload/"+data+"' </a>";
+                  		"<img style='width:100px;  height:75px;' class='shadow'  src='/upload/"+data+"' </a>";
                 return str;
               }
             },
@@ -27,6 +27,7 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
                    return "<a href='/BusinessAdmin/product/edit?id="+full.ID+"'>"+data+"</a>";
               }
             },
+            { "data": "CONTENT", "width": "200px"},
             { "data": "PRICE","width": "60px",
             	"render":function(data,type,full,meta){
             		if(data=="-1"){
