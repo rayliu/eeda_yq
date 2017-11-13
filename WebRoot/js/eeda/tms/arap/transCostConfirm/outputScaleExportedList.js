@@ -42,18 +42,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         		{ "data": "COMBINE_UNLOAD_TYPE", "width": "80px"},
 		         		{ "data": "COMBINE_CAR_NO", "width": "75px"},
 		         		{ "data": "OUTPUTSCALE","width": "40px","class":"outputScale",
-		         			"render":function(data,type,full,meta){
+		         			"render":function(data,type,full,meta){		         				
 		         				var cabinet_type= full.COMBINE_UNLOAD_TYPE;
+		         				var freight =full.FREIGHT;
 		         				if(cabinet_type=="全程"){
-		         					if(data){
+		         					if(data){		         						
 		         						return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
 		         					}
-		         					return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3);
+		         					return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(freight/1).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(freight/1).toFixed(2),3);
 		         				}else{
 		         					if(data){
+		         						
 		         						return '<input type="text" style="width:60px" value = "'+eeda.numFormat(parseFloat(data).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(data).toFixed(2),3);
 		         					}
-		         					return '<input type="text" value = "'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((full.FREIGHT/2)).toFixed(2),3);
+		         					return '<input type="text" value = "'+eeda.numFormat(parseFloat((freight/2)).toFixed(2),3)+'" style="width:60px">'+eeda.numFormat(parseFloat((freight/2)).toFixed(2),3);
 		         				}
 		         			}
 		         		},

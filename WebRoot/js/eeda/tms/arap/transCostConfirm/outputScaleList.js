@@ -58,7 +58,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		         							if(!full.FREIGHT){
 		         								return '<input type="text" class="output_scale" value = "" style="width:60px">';
 		         							}else{
-		         								return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.FREIGHT).toFixed(2),3);
+		         								return '<input type="text" class="output_scale" style="width:60px" value = "'+eeda.numFormat(parseFloat(full.FREIGHT/1).toFixed(2),3)+'">'+eeda.numFormat(parseFloat(full.FREIGHT/1).toFixed(2),3);
 		         							}
 		         						}
 		         						if(full.CAR_OWNED=="街车"){
