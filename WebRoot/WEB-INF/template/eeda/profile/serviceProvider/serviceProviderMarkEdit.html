@@ -109,7 +109,7 @@
                  		<input type="radio" value="plus" <%if(party_mark.score_type!'' != 'reduce'){%> checked <% }%> id="plus_score" /><span style="font-weight:bold;">&nbsp加分</span>
                  		<input type="radio" value="reduce" id="reduce_score" <%if(party_mark.score_type=='reduce'){%>checked<%}%> style="margin-left:15px;" /><span style="font-weight:bold;">&nbsp减分</span>
                			</label>
-               			<input type="text" id="score" name="score" value="${party_mark.score!''}" style="margin-bottom:0.5%">
+               			<input type="text" id="score" name="score" placeHolder="请输入0-20的整数" value="${party_mark.score!''}" style="margin-bottom:0.5%">
                		</div>
 				</div>
 				<div class="row">

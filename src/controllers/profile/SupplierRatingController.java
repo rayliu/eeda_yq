@@ -13,7 +13,6 @@ import java.util.Map;
 import models.ParentOfficeModel;
 import models.PartyMark;
 import models.UserLogin;
-import models.eeda.oms.jobOrder.JobOrderDoc;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -103,7 +102,7 @@ public class SupplierRatingController extends Controller {
 	    UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         //判断与登陆用户的office_id是否一致
-        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("customer_contract", Long.valueOf(id), office_id)){
+        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("party_mark", Long.valueOf(id), office_id)){
         	renderError(403);// no permission
             return;
         }
