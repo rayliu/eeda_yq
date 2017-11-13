@@ -26,7 +26,9 @@
             file_upload: 'jQuery-File-Upload-9.9.3/js/jquery.fileupload',
             echarts: 'echarts3.1.10/echarts.common.min',
             ueditor: 'ueditor/ueditor.all.min',
-            printMe: 'printMe/jquery-printme.min'
+            printMe: 'printMe/jquery-printme.min',
+            hui: '../../theme/H-ui.admin.page3.1.1/static/h-ui/js/H-ui',
+            hui_admin: '../../theme/H-ui.admin.page3.1.1/static/h-ui.admin/js/H-ui.admin.page'
         },
         shim: {
             jquery_ui: {
@@ -82,6 +84,12 @@
             },
             printMe:{
                 deps: ['jquery']
+            },
+            hui:{
+                deps: ['jquery']
+            },
+            hui_admin:{
+                deps: ['hui']
             }
         }
     });

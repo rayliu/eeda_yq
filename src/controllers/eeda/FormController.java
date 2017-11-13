@@ -29,6 +29,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.form.FormService;
+import controllers.form.TemplateService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 
@@ -394,6 +395,8 @@ public class FormController extends Controller {
         String form_name = formRec.getStr("name");
         
         String template_content = formRec.getStr("template_content");
+        template_content = TemplateService.getInstance().processTab(template_content);
+        
         for (Record fieldRec : fieldList) {
             String fieldDisplayName=fieldRec.getStr("field_display_name");
             String fieldName=fieldRec.getStr("field_name");

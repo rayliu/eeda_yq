@@ -1,6 +1,11 @@
-define(['jquery', '../btns', '../add/detail_table', '../value_change', '../drop_list_change', '../table_drop_list', '../city_list'],
-    function ($, btnCont, tableCont) {
+define(['jquery', 'hui', '../btns', '../add/detail_table', '../value_change', '../drop_list_change', 
+    '../table_drop_list', '../city_list'],
+    function ($, huiCont, btnCont, tableCont) {
         document.title = '编辑 | ' + document.title;
+
+        $(".HuiTab").Huitab({
+            index:0
+        });
 
         var form_define_json = JSON.parse($("#form_define").text());
 

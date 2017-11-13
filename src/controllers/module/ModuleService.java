@@ -355,7 +355,7 @@ public class ModuleService {
         if ("复选框".equals(fieldType)) {
             saveCheckBox(field, field_id);
         }else if ("自动编号".equals(fieldType)) {
-            saveAutoNo(field, field_id);
+//            saveAutoNo(field, field_id);
         }else if ("从表引用".equals(fieldType)) {
             saveDetailRef(field, field_id);
         }else if ("字段引用".equals(fieldType)) {

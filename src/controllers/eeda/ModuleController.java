@@ -249,7 +249,7 @@ public class ModuleController extends Controller {
         // 处理打印模板
         handlePrintTemplate(dto, form_id);
         // 处理数据接口
-        ms.saveInterface(dto, form_id);
+        //ms.saveInterface(dto, form_id);
 
         Record orderRec = Db.findById("eeda_modules", module_id);
         renderJson(orderRec);
