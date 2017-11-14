@@ -248,7 +248,7 @@ public class ChargeRequestController extends Controller {
         		+" 		LEFT JOIN charge_application_order_rel c ON c.charge_order_id = aco.id "
         		+" 		LEFT JOIN party p ON p.id = aco.sp_id "
         		+" 		WHERE "
-        		+" 			aco. STATUS = '已确认' "
+        		+" 			aco. STATUS = '已确认' AND aco.audit_status is null"
         		+" 		AND aco.office_id = "+office_id+" "
         		+" 		GROUP BY "
         		+" 			aco.id "
@@ -1400,7 +1400,7 @@ public class ChargeRequestController extends Controller {
     		 Record re = Db.findFirst("select * from arap_charge_item where ref_order_id=?",itemid);
 			 Long charge_order_id=re.getLong("charge_order_id");
     		 ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
-    		 arapChargeOrder.set("audit_status", "新建").update();
+    		 //arapChargeOrder.set("audit_status", "").update();
     		 
     		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("create_flag", "N");

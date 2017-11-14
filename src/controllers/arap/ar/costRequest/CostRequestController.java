@@ -209,7 +209,7 @@ public class CostRequestController extends Controller {
         				+" from arap_cost_order aco"
         				+" left join cost_application_order_rel c on c.cost_order_id=aco.id"
         				+" left join party p on p.id=aco.sp_id "
-        				+" where aco.status='已确认' and aco.office_id = "+office_id+" "
+        				+" where aco.status='已确认' and aco.audit_status is null and aco.office_id = "+office_id+" "
         				+" group by aco.id"
         				+ " ) A where ((CONVERT (ifnull(usd, 0), DECIMAL) - CONVERT (paid_usd, DECIMAL) !=0) OR convert(ifnull(cny, 0), decimal) > convert(IFNULL(paid_cny,0), decimal) OR convert(ifnull(hkd, 0), decimal) > convert(paid_hkd, decimal) OR (CONVERT (ifnull(jpy, 0), DECIMAL) - CONVERT (paid_jpy, DECIMAL)  !=0))" ;
 		
@@ -1341,7 +1341,7 @@ public class CostRequestController extends Controller {
     		 Record re = Db.findFirst("select * from arap_cost_item where ref_order_id=?",itemid);
 			 Long cost_order_id=re.getLong("cost_order_id");
     		 ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
-			 arapCostOrder.set("audit_status", "新建").update();
+			 //arapCostOrder.set("audit_status", "").update();
     		 
     		 JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemid);
     		 jobOrderArap.set("create_flag", "N");
