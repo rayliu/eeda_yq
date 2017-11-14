@@ -4,7 +4,9 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -243,6 +245,19 @@ public class FormController extends Controller {
             if(key.startsWith("form_"+form_id)){
                 String colName = key.split("-")[1];
                 String value = String.valueOf(entry.getValue()).trim();
+                //处理-自动编号
+                String fieldId = colName.split("_")[0].substring(1);
+                String fieldName = colName.split("_")[1];
+                Record fieldRec = 
+                        Db.findFirst("select * from eeda_form_field where form_id=? and field_name=?",
+                                form_id, fieldName);
+                if(fieldRec != null){
+                    String field_type = fieldRec.getStr("field_type");
+                    if("自动编号".equals(field_type) && StrKit.isBlank(value)){
+                        String orderNo = handleAutoNo(form_id, colName, fieldId);
+                        value = orderNo;
+                    }
+                }
                 rec.set(colName, value);
             }
         }
@@ -304,6 +319,47 @@ public class FormController extends Controller {
         }
         return rec;
     }
+    private String handleAutoNo(Long form_id, String colName, String fieldId) {
+        List<Record> fieldRecs = 
+                Db.find("select * from eeda_form_field_type_auto_no_item where field_id=? order by id",
+                        fieldId);
+        String strNo="";
+        for (Record record : fieldRecs) {
+            String type = record.getStr("type");
+            if("固定文字".equals(type)){
+                strNo += record.getStr("value");
+            }else if("日期变量".equals(type)){
+                Date d=new Date();
+                SimpleDateFormat sf=new SimpleDateFormat(record.getStr("value"));
+                strNo += sf.format(d);
+            }else if("流水号位数".equals(type)){
+                String seqLength = record.getStr("value");
+                int iSeqLength = Integer.parseInt(seqLength);
+                Record order_rec = Db.findFirst("select * from form_"+form_id+" where "+colName+" like '%"+strNo+"%' order by id desc ");
+                String latestNo = "0";
+                if(order_rec!=null){
+                    latestNo = order_rec.getStr(colName).replaceAll(strNo, "");
+                }
+                
+                int iSeqNo = Integer.parseInt(latestNo)+1;
+                
+                String serial = String.valueOf(iSeqNo);   //构造后的序号
+                int length = serial.length();
+                if( length < iSeqLength){
+                    int c = iSeqLength - length;
+                    String zero = "";
+                    for (int j = 0; j < c; j++) {
+                        zero += "0";
+                    }
+                    serial = zero+serial;
+                }
+                strNo += serial;
+                
+            }
+        }
+        return strNo;
+    }
+    
     private List<Record> list(Long form_id){
         setAttr("btnList", getFormBtns(form_id, "list"));
         
@@ -406,10 +462,10 @@ public class FormController extends Controller {
             String replaceNameDest ="";
             String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
             
-            if("编码".equals(fieldType)){
+            if("自动编号".equals(fieldType)){
                 replaceNameDest = "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
                         + "<div class='formControls col-xs-8 col-sm-9'>"
-                        + "  <input type='text' name='"+inputId+"' class='input-text' autocomplete='off'  placeholder='系统自动生成' >"
+                        + "  <input type='text' name='"+inputId+"' class='input-text' autocomplete='off'  placeholder='系统自动生成' disabled>"
                         + "</div>";
             }else if("文本".equals(fieldType)){
                 String disabled = "";

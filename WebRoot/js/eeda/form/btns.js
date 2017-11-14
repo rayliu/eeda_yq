@@ -77,7 +77,12 @@ define(['jquery', './print', 'sco'], function ($, printCont) {
         });
 
         function getFormData($form){
+            // Find disabled inputs, and remove the "disabled" attribute
+            var disabled = $form.find(':input:disabled').removeAttr('disabled');
             var unindexed_array = $form.serializeArray();
+            // re-disabled the set of inputs that you previously enabled
+            disabled.attr('disabled','disabled');
+
             var indexed_array = {};
 
             $.map(unindexed_array, function(n, i){

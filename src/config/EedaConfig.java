@@ -132,8 +132,8 @@ public class EedaConfig extends JFinalConfig {
 
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
         
-        me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);//全国城市
-        /*
+        /*me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);//全国城市
+        
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
        
         me.add("/unit", UnitController.class, contentPath);

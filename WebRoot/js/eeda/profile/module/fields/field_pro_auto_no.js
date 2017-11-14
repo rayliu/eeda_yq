@@ -24,10 +24,23 @@ define(['jquery'], function ($) {
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                          data='';
+                    var opt1 = '<option>固定文字</option>';
+                    var opt2 = '<option>日期变量</option>';
+                    var opt3 = '<option>流水号位数</option>';
+                    
+                    if(data=='固定文字'){
+                        opt1 = '<option selected>固定文字</option>';
+                    }
+                    if(data=='日期变量'){
+                        opt2 = '<option selected>日期变量</option>';
+                    }
+                    if(data=='流水号位数'){
+                        opt3 = '<option selected>流水号位数</option>';
+                    }
                     return '<select name="type" class="form-control" style="width:100%">'
-                          +'<option>固定文字</option>'
-                          +'<option>日期变量</option>'
-                          +'<option>流水号位数</option>'
+                          +opt1
+                          +opt2
+                          +opt3
                           +'</select>' ;
                   }
               },
