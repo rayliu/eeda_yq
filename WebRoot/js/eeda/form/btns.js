@@ -120,6 +120,8 @@ define(['jquery', './print', 'sco'], function ($, printCont) {
                 if(dto){
                     var url = '/form/'+data.module_id+'-edit-'+dto.ID;
                     window.location.href=url;
+                }else{
+                    $('.Huialert-error').show();
                 }
             });
         }
@@ -127,9 +129,9 @@ define(['jquery', './print', 'sco'], function ($, printCont) {
         function doUpdate(data){
             $.post('/form/'+data.module_id+'-doUpdate', {data: JSON.stringify(data)}, function(dto){
                 if(dto){
-                    $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+                    $('.Huialert-success').show();
                 }else{
-                    $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+                    $('.Huialert-error').show();
                 }
             });
         }

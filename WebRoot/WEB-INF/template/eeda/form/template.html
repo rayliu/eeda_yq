@@ -7,8 +7,15 @@
             资讯列表
             <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
         </nav>
+
         <div class="Hui-article">
             <article class="cl pd-20">
+                <div class="Huialert Huialert-success" style="display: none;">
+                    <i class="Hui-iconfont">&#xe6a6;</i>操作成功。
+                </div>
+                <div class="Huialert Huialert-error"  style="display: none;">
+                    <i class="Hui-iconfont">&#xe6a6;</i>操作失败，原因：未知，请重新尝试或联系客服。
+                </div>
                 <form id="module_form">
                     <input type="hidden" id="module_id" name="module_id" value="${module_id!''}">
                     <input type="hidden"  id="order_id" name="order_id" value="${order_id!''}">
