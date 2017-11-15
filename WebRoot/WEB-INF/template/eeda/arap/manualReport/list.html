@@ -1,0 +1,172 @@
+<%layout("/eeda/layout.html"){%>
+<div id="page-wrapper">
+	<div class="row simple_search_div">
+    	<div class="panel panel-default">
+				<div class="panel-body" id="ChargeDiv">
+					<div class="col-lg-12">
+						<a data-target='#createDetail' data-toggle='modal'>
+							<button id="designBtn" type="button"  style="float:right;" class="btn btn_green">自定义</button>
+					    </a>
+					    <div <% if(manual.id!''==''){%>style="display:none"<% }%> id="show_line_div">
+							<h4>查询条件</h4>
+							<form id="orderForm">
+							<div class="row">
+	                               <div class="col-lg-4 inputDiv" style="display:none;">
+	                                   <%include("/eeda/component/form/inputField.html", 
+	                                                       {   id: 'order_no', 
+	                                                           label: '工作单', 
+	                                                           value: ''
+	                                                       }){}%>
+	                                </div>
+	                                <div class="col-lg-4 inputDiv" style="display:none;">
+                                            <%include("/eeda/component/form/inputSpField.html", 
+                                                {
+                                                    id:'sp_id', 
+                                                    label:'结算公司',
+                                                    value: ''
+                                            }){} %>
+                                   </div>
+	                               <div class="col-lg-4 inputDiv" style="display:none;">
+	                                   <%include("/eeda/component/form/inputCustomerField.html", 
+	                                                       {   id: 'customer_id', 
+	                                                           label: '客户', 
+	                                                           value: ''
+	                                                       }){}%>
+	                               </div>
+	                               
+	                               <div class="col-lg-4 inputDiv" style="display:none;">
+	                 				   <%include("/eeda/component/form/inputDateQueryField.html",
+	                 									 {   id:'create_stamp', 
+	                 									 	 label:'创建时间',
+	                 									     value:''
+	                 									  }){} %>
+	                               </div>
+	                               <div class="col-lg-4 inputDiv" style="display:none;">
+	                 				   <%include("/eeda/component/form/inputDateQueryField.html",
+	                 									 {   id:'export_date', 
+	                 									 	 label:'出货日期',
+	                 									     value:''
+	                 									  }){} %>
+	                               </div>
+	                           </div>
+							<div class="form-group button-bar" >
+	                        	<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+	                        	<button id="exportTotaledExcel" type="button" class="btn btn_green">导出</button>
+	                        	<button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+							</div><br>
+							</form>
+						</div>
+					</div>
+				</div>  
+		</div>
+	</div>
+	
+	<div style="float:right;margin-right:15px">
+		<div class="paDiv" style="z-index:999;width:15px;position:absolute;background-color:#FCFCFC"></div>
+	</div>	
+	<input type="hidden" id="manual_id" value="${manual.id!''}">
+	<div style="display:none;margin-top:20px;" id="tableDiv">
+		<%include("/eeda/component/form/detailTable.html", 
+                {
+                    id:'eeda_table', 
+                    style:'width:'+tableWidth!''+'px',
+                    fixedheader:true,
+                    headers:['工作单','客户','出货日期','订舱代理','船公司','头程公司','SO NO','HBL号','MBL号','船名','航次','航线','ETD','ETA','结算公司','费用名称','对账金额','结算金额','创建人','创建时间'
+                    ]
+                }){} %>
+	</div>
+</div>
+
+
+	
+	<div class="modal fade" id="createDetail">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header"><h4>自定义报表设计</h4></div>
+               	<div class="modal-body">
+                   	<input id="delete_id" type="hidden">
+                    <form id="deleteReasonDetailForm">
+                    	<input type="hidden" id="show_line_value" value="${manual.show_line!''}">
+                    	<input type="hidden" id="summary_value" value="${manual.summary!''}">
+                    	<input type="hidden" id="summary_show_value" value="${manual.summary_show!''}">
+                    	<input type="hidden" id="search_condition_value" value="${manual.search_condition!''}">
+	                 	<h5 style="font-weight:bold;">显示列</h5>
+	                    <div class="form-group">
+		                    <div class="checkbox" id="show_line">
+								<label class="checkbox-inline"> <input type="checkbox">工作单</label>
+								<label class="checkbox-inline"> <input type="checkbox">客户</label>
+								<label class="checkbox-inline"> <input type="checkbox">出货日期</label>
+								<label class="checkbox-inline"> <input type="checkbox">订舱代理</label>
+								<label class="checkbox-inline"> <input type="checkbox">船公司</label>
+								<label class="checkbox-inline"> <input type="checkbox">头程公司</label>
+								<label class="checkbox-inline"> <input type="checkbox">SO NO</label>
+								<label class="checkbox-inline"> <input type="checkbox">HBL号</label>
+								<label class="checkbox-inline"> <input type="checkbox">MBL号</label>
+								<label class="checkbox-inline"> <input type="checkbox">船名</label>
+								<label class="checkbox-inline"> <input type="checkbox">航次</label>
+								<label class="checkbox-inline"> <input type="checkbox">航线</label>
+								<label class="checkbox-inline"> <input type="checkbox">ETD</label>
+								<label class="checkbox-inline"> <input type="checkbox">ETA</label>
+								<label class="checkbox-inline"> <input type="checkbox">结算公司</label>
+								<label class="checkbox-inline"> <input type="checkbox">费用名称</label>
+								<label class="checkbox-inline"> <input type="checkbox">对账金额</label>
+								<label class="checkbox-inline"> <input type="checkbox">结算金额</label>
+								<label class="checkbox-inline"> <input type="checkbox">创建人</label>
+								<label class="checkbox-inline"> <input type="checkbox">创建时间</label>
+							</div>
+	                 	</div>
+	                 	<h5 style="font-weight:bold;">汇总单位</h5>
+	                    <div class="form-group">
+		                    <div class="checkbox" id="summary">
+								<label class="checkbox-inline"> <input type="checkbox">工作单 </label>
+								<label class="checkbox-inline"> <input type="checkbox">客户</label>
+								<label class="checkbox-inline"> <input type="checkbox">出货日期</label>
+								<label class="checkbox-inline"> <input type="checkbox">结算公司</label>
+								<label class="checkbox-inline"> <input type="checkbox">费用名称</label>
+								<label class="checkbox-inline"> <input type="checkbox">订舱代理</label>
+								<label class="checkbox-inline"> <input type="checkbox">船公司</label>
+								<label class="checkbox-inline"> <input type="checkbox">头程公司</label>
+								<label class="checkbox-inline"> <input type="checkbox">SO NO</label>
+								<label class="checkbox-inline"> <input type="checkbox">HBL号</label>
+								<label class="checkbox-inline"> <input type="checkbox">MBL号</label>
+								<label class="checkbox-inline"> <input type="checkbox">船名</label>
+								<label class="checkbox-inline"> <input type="checkbox">航次</label>
+								<label class="checkbox-inline"> <input type="checkbox">航线</label>
+								<label class="checkbox-inline"> <input type="checkbox">ETD</label>
+								<label class="checkbox-inline"> <input type="checkbox">ETA</label>
+							</div>
+	                 	</div>
+	                 	<!-- <h5 style="font-weight:bold;">汇总显示列</h5>
+	                    <div class="form-group">
+		                    <div class="checkbox" id="summary_show">
+								<label class="checkbox-inline"> <input type="checkbox">对账金额</label>
+								<label class="checkbox-inline"> <input type="checkbox">结算金额</label>
+							</div>
+	                 	</div> -->
+	                 	<hr/>
+	                 	<h5 style="font-weight:bold;">查询条件</h5>
+	                    <div class="form-group">
+		                    <div class="checkbox" id="search_condition">
+								<label class="checkbox-inline"> <input type="checkbox">工作单 </label>
+								<label class="checkbox-inline"> <input type="checkbox">客户</label>
+								<label class="checkbox-inline"> <input type="checkbox">结算公司</label>
+								<label class="checkbox-inline"> <input type="checkbox">出货日期</label>
+								<label class="checkbox-inline"> <input type="checkbox">创建时间</label>
+							</div>
+	                 	</div>
+                   	</form>
+               	</div>
+            	<div class="modal-footer">
+                	<button id="confirmBtn" class="btn btn_green confirm" >确定</button>
+                	<button class="btn  btn-default return" data-dismiss="modal">返回</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/arap/manualReport/list']);
+    });
+</script>
