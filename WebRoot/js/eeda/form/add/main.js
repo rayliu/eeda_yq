@@ -1,6 +1,11 @@
 define(['jquery', 'hui', './detail_table', '../btns', '../value_change', '../drop_list_change', 
-    '../table_drop_list', 'datetimepicker_CN', '../city_list'], 
-    function ($, huiCont, tableCont) {
+    '../table_drop_list', 'datetimepicker_CN', '../city_list'], function ($, huiCont, tableCont) {
+    
+    $(".Hui-aside").Huifold({
+        titCell:'.menu_dropdown dl dt',
+        mainCell:'.menu_dropdown dl dd',
+    });
+    
     document.title = '新增 | ' + document.title;
 
     $(".HuiTab").Huitab({index:0});
