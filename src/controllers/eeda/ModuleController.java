@@ -353,10 +353,12 @@ public class ModuleController extends Controller {
             eventOpen.set("condition",
                     openDto.get("condition") == null ? openDto.get("CONDITION")
                             : openDto.get("condition"));
-            eventOpen.set(
-                    "module_name",
-                    openDto.get("module_name") == null ? openDto
-                            .get("MODULE_NAME") : openDto.get("module_name"));
+            String moduleName = openDto.get("module_name") == null ? openDto
+                    .get("MODULE_NAME").toString() : openDto.get("module_name").toString();
+            eventOpen.set("module_name",moduleName);
+            
+            Record rec = Db.findFirst("select * from eeda_form_define where name=?", moduleName);
+            eventOpen.set("module_id", rec.get("module_id"));
             eventOpen.set("open_type",
                     openDto.get("open_type") == null ? openDto.get("OPEN_TYPE")
                             : openDto.get("open_type"));
@@ -365,7 +367,11 @@ public class ModuleController extends Controller {
             eventOpen = new Record();
             eventOpen.set("event_id", event_id);
             eventOpen.set("condition", openDto.get("condition"));
-            eventOpen.set("module_name", openDto.get("module_name"));
+            String moduleName = openDto.get("module_name").toString();
+            eventOpen.set("module_name", moduleName);
+            
+            Record rec = Db.findFirst("select * from eeda_form_define where name=?", moduleName);
+            eventOpen.set("module_id", rec.get("module_id"));
             eventOpen.set("open_type", openDto.get("open_type"));
             Db.save("eeda_form_event_open", eventOpen);
         }

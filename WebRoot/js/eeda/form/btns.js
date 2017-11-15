@@ -1,4 +1,4 @@
-define(['jquery', './print', 'sco'], function ($, printCont) {
+define(['jquery', './print'], function ($, printCont) {
         //按钮事件响应
         $('body').on('click', 'button', function(event) {
             event.preventDefault();

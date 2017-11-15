@@ -507,19 +507,17 @@ public class FormController extends Controller {
                         "</div>";
             }else if("日期".equals(fieldType)){
                 replaceNameDest = "<div id='"+inputId+"_div'>"
-                        + " <label class='search-label'>"+fieldDisplayName+"</label>"
-                        + "<span class='add-on'>"
-                        + " <i class='fa fa-calendar' data-time-icon='icon-time' data-date-icon='icon-calendar'></i>"
-                        +"</span> "
-                        + " <input id='"+inputId+"' name='"+inputId+"' class='form-control' type='text' data_type='date'/>"
+                        + "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
+                        + " <div class='formControls col-xs-8 col-sm-9'>"
+                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd\"})' id='"+inputId+"' class='input-text Wdate'>"
+                        + " </div> "
                         + "</div> ";
             }else if("日期时间".equals(fieldType)){
                 replaceNameDest = "<div id='"+inputId+"_div'>"
-                        + " <label class='search-label'>"+fieldDisplayName+"</label>"
-                        + "<span class='add-on'>"
-                        + " <i class='fa fa-calendar' data-time-icon='icon-time' data-date-icon='icon-calendar'></i>"
-                        +"</span> "
-                        + " <input id='"+inputId+"' name='"+inputId+"' class='form-control' type='text' data_type='date_time'/>"
+                        + "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
+                        + " <div class='formControls col-xs-8 col-sm-9'>"
+                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd HH:mm:ss\"})' id='"+inputId+"' class='input-text Wdate'>"
+                        + " </div> "
                         + "</div> ";
             }else if("复选框".equals(fieldType)){
                 FormService fs = new FormService(this);

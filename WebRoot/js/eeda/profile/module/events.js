@@ -97,9 +97,10 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
       var btns = [];
       $.post('/module/searchFormBtns', {form_id: $('#form_id').val(), type:'list'}, 
           function(data){
-              if(data){
-                for (var i=0; i<data.length; i++) {
-                    var btn = data[i];
+              if(data && data.TOOL_BAR_BTNS){
+                var tool_bar_btns = data.TOOL_BAR_BTNS;
+                for (var i=0; i<tool_bar_btns.length; i++) {
+                    var btn = tool_bar_btns[i];
                     var node = {
                       id:btn.ID,
                       formId: btn.FORM_ID,
