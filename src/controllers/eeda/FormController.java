@@ -509,14 +509,21 @@ public class FormController extends Controller {
                 replaceNameDest = "<div id='"+inputId+"_div'>"
                         + "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
                         + " <div class='formControls col-xs-8 col-sm-9'>"
-                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd\"})' id='"+inputId+"' class='input-text Wdate'>"
+                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd\"})' name='"+inputId+"' class='input-text Wdate'>"
                         + " </div> "
                         + "</div> ";
             }else if("日期时间".equals(fieldType)){
                 replaceNameDest = "<div id='"+inputId+"_div'>"
                         + "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
                         + " <div class='formControls col-xs-8 col-sm-9'>"
-                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd HH:mm:ss\"})' id='"+inputId+"' class='input-text Wdate'>"
+                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd HH:mm:ss\"})' name='"+inputId+"' class='input-text Wdate'>"
+                        + " </div> "
+                        + "</div> ";
+            }else if("多行文本".equals(fieldType)){
+                replaceNameDest = "<div id='"+inputId+"_div'>"
+                        + "<label class='search-label col-xs-4 col-sm-1'>"+fieldDisplayName+"</label>"
+                        + " <div class='formControls col-xs-8 col-sm-11'>"
+                        + "    <textarea class='textarea valid' placeholder='' name='"+inputId+"' ></textarea>"
                         + " </div> "
                         + "</div> ";
             }else if("复选框".equals(fieldType)){
