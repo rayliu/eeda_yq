@@ -194,7 +194,7 @@ public class ManualReportController extends Controller {
 				if(array[i].trim().equals("工作单")){
 					summary_eng += "A.order_no,";
 				}
-				if(array[i].trim().equals("出货时间")){
+				if(array[i].trim().equals("出货日期")){
 					summary_eng += "A.export_date,";
 				}
 				if(array[i].trim().equals("结算公司")){
