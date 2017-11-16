@@ -1,0 +1,355 @@
+<%layout("/eeda/layout.html"){%>
+<link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
+	<div id="page-wrapper" style="min-height:800px" >
+		<div class="row simple_search_div">
+             <div class="col-lg-12">
+                <form id="orderForm">
+                		<input id="order_id" type="hidden" value="${order.id!''}">
+            			<div class="row">                       
+                            <div class="col-lg-4">
+                                <div class="guide_target1">
+                                    <%include("/eeda/component/form/inputField.html",
+                                        {   id:'order_no', 
+	                                        label:'评比单号', 
+	                                        value: order.order_no!'',
+	                                        disabled:'disabled' 
+	                                    }){} %>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+								<%include("/eeda/component/form/inputField.html", 
+										{   id:'order_name',
+											label:'评比单名称',
+											value:order.order_name!''
+										}){}%>
+							</div>
+							<div class="col-lg-4">
+								<div id="invoiceDiv">
+                                <%include("/eeda/component/form/inputField.html", 
+                                		{   id:'status',
+											label:'状态', 
+											value:order.status!'',
+											disabled:'disabled'
+										}){}%>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-4">
+                                <div class="guide_target1">
+                                    <%include("/eeda/component/form/inputField.html",
+                                        {   id:'creator_name', 
+	                                        label:'创建人', 
+	                                        value: order.creator_name!'',
+											disabled:'disabled' 
+	                                     }){} %>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+								<%include("/eeda/component/form/inputField.html", 
+										{   id:'create_stamp',
+											label:'创建时间',
+											value:order.create_stamp!'',
+											disabled:'disabled'
+										}){}%>
+							</div>
+                        </div>
+                        <div class="row">
+							<div class="col-lg-4">
+                                <div class="guide_target1">
+                                    <%include("/eeda/component/form/inputField.html",
+                                        {   id:'auditor', 
+	                                        label:'审核人', 
+	                                        value: '',
+											disabled:'disabled' 
+	                                    }){} %>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+								<%include("/eeda/component/form/inputField.html", 
+										{   id:'audit_stamp',
+											label:'审核时间',
+											value:order.audit_stamp!'',
+											disabled:'disabled'
+										}){}%>
+							</div>
+                        </div>
+                        <div class="row">
+							<div class="col-lg-12">
+    							<label>对比结果评价</label>
+    							<textarea id='comment' class="form-control" rows="3" name="comment">${order.comment!''}</textarea>
+						    </div>
+                        </div><br>
+                        <h4>对比条件</h4><br>
+                        <div class="row">
+                        	<div class="col-lg-8">
+                        		<div class="form-group" id="billing_method"  >
+                        			<input id = "service_typeRadio" type="hidden" value="${order.service_type!''}">
+	                        		<label class="search-label">服务项目</label>
+	                        		<label class="checkbox-inline" style="margin:7px 0px 0px -20px">
+	                        			<input type="radio" name="service_type" value="ocean">海运</input>                        			
+	                        		</label>
+	                        		<label class="checkbox-inline" style="margin-right:0px">
+	                        			<input type="radio" name="service_type" value="air">空运</input>                        			
+	                        		</label>
+	                        		<label class="checkbox-inline" style="margin-right:0px">
+	                        			<input type="radio" name="service_type" value="land">陆运</input>                        			
+	                        		</label>
+	                        		<label class="checkbox-inline" style="margin-right:0px">
+	                        			<input type="radio" name="service_type" value="doorToPort">门到港</input>                        			
+	                        		</label>
+                        		</div>
+                        	</div>                        	
+                        </div>
+                        <div class="row">
+                        	<div class="col-lg-4">
+                                <%include("/eeda/component/form/selectField.html", 
+                                    {   id:'trans_clause', 
+                                        label:'运输条款', 
+                                        value:order.trans_clause!'',
+                                        value_list:[
+                                        	{code:'CY-CY', value:'CY-CY'},
+                                        	{code:'CY-DOOR', value:'CY-DOOR'},
+                                            {code:'CFS-CFS', value:'CFS-CFS'},
+                                            {code:'CFS-DOOR', value:'CFS-DOOR'},                                            
+                                            {code:'DOOR-DOOR', value:'DOOR-DOOR'},
+                                            {code:'DOOR-CFS', value:'DOOR-CFS'},
+                                            {code:'DOOR-CY', value:'DOOR-CY'},                                            
+                                            {code:'CY-FOR', value:'CY-FOR'},
+                                        	{code:'CY-CFS', value:'CY-CFS'},                                        	
+                                        	{code:'CY-TACKLE', value:'CY-TACKLE'},
+                                        	{code:'CY-RAMP', value:'CY-RAMP'},                                        	
+                                        	{code:'CY-FREE OUT', value:'CY-FREE OUT'},
+                                        	{code:'CY-LINER OUT', value:'CY-LINER OUT'},                                        	
+                                        	{code:'CFS-CY', value:'CFS-CY'},                                        	                                           
+                                            {code:'DOOR-FREE OUT', value:'DOOR-FREE OUT'},
+                                            {code:'DOOR-LINER OUT', value:'DOOR-LINER OUT'},
+                                            {code:'TACKLE-CY', value:'TACKLE-CY'},                                            
+                                            {code:'TACKLE-CFS', value:'TACKLE-CFS'},                                        	
+                                        	{code:'RAMP-CY', value:'RAMP-CY'},                                        	
+                                        	{code:'FREE IN-CY', value:'FREE IN-CY'},
+                                        	{code:'FREE IN-DOOR', value:'FREE IN-DOOR'},                                        	
+                                        	{code:'FREE IN-FREE OUT', value:'FREE IN-FREE OUT'},
+                                        	{code:'LINER IN-CY', value:'LINER IN-CY'},
+                                        	{code:'LINER INCY-DOOR', value:'LINER IN-DOOR'},                                        	
+                                        	{code:'CY-HOOK', value:'CY-HOOK'},
+                                        	{code:'CY-WATER', value:'CY-WATER'},                                        	
+                                        	{code:'CY-BARGE', value:'CY-BARGE'},
+                                        	{code:'CY-MOTOR', value:'CY-MOTOR'},                                        	
+                                        	{code:'CY-RAIL', value:'CY-RAIL'},
+                                        	{code:'CY-RAIL+TRUCK', value:'CY-RAIL+TRUCK'},                                        	
+                                        	{code:'CY-CY TRANSSHIP', value:'CY-CY TRANSSHIP'},                                        	
+                                        	{code:'FREE IN-WATER', value:'FREE IN-WATER'},
+                                        	{code:'HOOK-HOOK', value:'HOOK-HOOK'},                                         	
+                                        	{code:'PIER-PIER', value:'PIER-PIER'}                                  	
+                                        	
+                                        ]
+                                    }){}%>
+                            </div>
+                            <div class="col-lg-4" >
+                            	<%include("/eeda/component/form/selectField.html", 
+		                            	{	id:"trade_type",
+		                            		label:"贸易类型",
+		                            		value:order.trade_type!'',
+		                            		value_list:[
+		                            			{code:'FOB', value:'FOB'},
+		                                        {code:'CIF', value:'CIF'},
+		                                        {code:'CFR', value:'CFR'},
+		                                        {code:'DDU', value:'DDU'},
+		                                        {code:'DDP', value:'DDP'},
+		                                        {code:'OTHER', value:'OTHER'}
+		                            		]
+		                            	}){}%>                            	
+                            </div>
+                            <div class="col-lg-4">
+                        		<%include("/eeda/component/form/selectField.html",
+			                        	{	id:"type",
+			                        		label:"类型",
+			                        		value:order.type!'',
+			                        		value_list:[
+			                        			{code:'出口柜货', value:'出口柜货'},
+	                                            {code:'进口柜货', value:'进口柜货'}, 
+	                                            {code:'出口散货', value:'出口散货'},
+	                                            {code:'进口散货', value:'进口散货'},
+	                                            {code:'出口空运', value:'出口空运'},
+	                                            {code:'进口空运', value:'进口空运'},
+	                                            {code:'内贸海运', value:'内贸海运'},
+	                                            {code:'香港头程', value:'香港头程'},
+	                                            {code:'香港游', value:'香港游'},
+	                                            {code:'陆运', value:'陆运'},
+	                                            {code:'报关', value:'报关'},
+	                                            {code:'快递', value:'快递'},
+	                                            {code:'加贸', value:'加贸'},
+	                                            {code:'贸易', value:'贸易'},
+	                                            {code:'园区游', value:'园区游'}
+			                        		]                     	
+			                        	}){}%>                        	
+                        	</div> 
+                        
+                        </div>
+                        <div class="row">
+                        	<div class="col-lg-4">
+	                        	<%include("/eeda/component/form/inputLandAddressField.html", 
+	                        			{  id:'pickup_loc', 
+				                           label:'提货地', 
+				                           value:order.pickup_loc!'',
+				                           display_value:order.loc_name!''
+				                       }){}%>                        	
+                        	</div>
+                        	<div class="col-lg-4">
+	                        	<%include("/eeda/component/form/inputPortField.html", 
+	                        			{  id:'por', 
+				                           label:'POR', 
+				                           value:order.por!'',
+				                           display_value:order.por_name!''
+				                       }){}%>                        	
+                        	</div>
+                        </div>
+                        <div class="row">                   
+                        	<div class="col-lg-4">
+	                        	<%include("/eeda/component/form/inputPortField.html", 
+	                        			{  id:'pol', 
+				                           label:'POL', 
+				                           value:order.pol!'',
+				                           display_value:order.pol_name!''
+				                       }){}%>                        	
+                        	</div>
+                        	<div class="col-lg-4">
+                        		<%include("/eeda/component/form/inputPortField.html", 
+                        			{  id:'pod', 
+			                           label:'POD', 
+			                           value:order.pod!'',
+			                           display_value:order.pod_name!''
+			                       }){}%>                     	
+                        	</div>
+                        </div>
+                     </form>
+                </div><br><br>
+                <div class="simple_order_list_div">
+                	 <div  id="invoice_list">
+                	 	<div class="col-lg-12">
+                	 		 <h4>供应商列表</h4>
+                	    </div>
+                             <%include("/oms/costComparison/selectSupplier.html", {}){} %>
+                     </div><hr>
+                    	<div class="col-lg-12" style="margin-top:20px">
+                    		<div class="col-lg-3">
+							<%include("/eeda/component/form/inputField.html", 
+									{   id:'cny',
+										label:'CNY',
+										value:order.payee_name!''
+									}){}%>
+						</div>
+						<div class="col-lg-3">
+							<%include("/eeda/component/form/inputField.html",
+									{	id:"usd",
+										label:"USD",
+										value:""										
+									}){}%>
+						
+						</div>
+						<div class="col-lg-3">
+							<%include("/eeda/component/form/inputField.html", 
+									{   id:'jpy',
+										label:'JPY',
+										value:order.payee_name!''
+									}){}%>
+						</div>
+						<div class="col-lg-3">
+							<%include("/eeda/component/form/inputField.html",
+									{	id:"hkd",
+										label:"HKD",
+										value:""										
+									}){}%>
+						
+						</div>
+                     </div>
+                     <div class="col-lg-12" >
+                    		<div class="col-lg-3">
+							<%include("/eeda/component/form/inputField.html", 
+									{   id:'cny_rate',
+										label:'汇率',
+										value:order.cny_rate!''
+									}){}%>
+						</div>
+						<div class="col-lg-3">
+							<%include("/eeda/component/form/inputField.html",
+									{	id:"usd_rate",
+										label:"汇率",
+										value:order.usd_rate!''							
+									}){}%>
+						
+						</div>
+						<div class="col-lg-3">
+							<%include("/eeda/component/form/inputField.html", 
+									{   id:'jpy_rate',
+										label:'汇率',
+										value:order.jpy_rate!''
+									}){}%>
+						</div>
+						<div class="col-lg-3">
+							<%include("/eeda/component/form/inputField.html",
+									{	id:"hkd_rate",
+										label:"汇率",
+										value:order.hkd_rate!''									
+									}){}%>
+						
+						</div>
+                     </div>
+                     
+                     <div class="col-lg-12" >
+						<div class="col-lg-3">
+                            <%include("/eeda/component/form/inputCurrencyField.html", 
+                                {   id:'target_currency',
+                                    label:'统一兑换成',
+                                    value:order.target_currency!'',
+                                    display_value:order.currency_name!''
+                                }){}%>
+                        </div>
+						<div class="col-lg-3">
+							<button id="unity" class="btn btn_green">兑换</button>
+						</div>
+						<div class="col-lg-3">
+						</div>
+						<div class="col-lg-3">
+							<%include("/eeda/component/form/inputField.html",
+									{	id:"total",
+										label:"汇总",
+										value:order.total!''									
+									}){}%>
+						
+						</div>
+                     </div>
+                     
+                     
+                     <div class="tab-pane " id="invoice_list">
+                     	<div class="col-lg-12"><hr>
+                	 		 <h4>报价明细列表</h4>
+                	    </div>
+                             <%include("/oms/costComparison/quotationItem.html", {}){} %>
+                     </div>
+                </div>
+              
+                <div class="col-lg-12" style="margin-bottom:20px">
+                	 <div class="button-bar" >
+	                    <button id='saveBtn' type="button" class="btn btn_green" href="#">保存</button>
+	                    <button id='submitBtn' type="button" class="btn btn_green" href="#">提交</button>
+	                    <button id='auditBtn' type="button" class="btn btn_green" href="#">审核</button>
+	                    <button id='auditBtnDeny' type="button" class="btn btn_green" href="#">审核不通过</button>
+	                    <a class="btn  btn_white" href="/costComparison">返回</a>
+	                    <a href="/costComparison/create" class="btn btn_green" style="float:right" type="button">创建新报价单</a>
+	                </div>
+                </div> 
+
+            </div>
+	</div>
+<%}%>
+
+<%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
+<!-- <%include("/oms/costComparison/create_guide.html",{}){} %> -->
+<script>
+    var itemOrder = {};
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/arap/CostComparison/comparisonEdit']);
+    });
+</script>

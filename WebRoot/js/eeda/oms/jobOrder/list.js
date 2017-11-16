@@ -104,7 +104,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
             		  }
             		  return data;
             	  	}
-            	  },
+              },
               { "data": null,
                   "render": function ( data, type, full, meta ) {
                     if(data){

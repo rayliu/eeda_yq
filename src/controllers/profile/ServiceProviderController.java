@@ -628,11 +628,16 @@ public class ServiceProviderController extends Controller {
     public void searchCompany(){
     	String input = getPara("input");
     	String type = getPara("type");
+    	String para = getPara("para");
     	String sp_type = getPara("sp_type");
     	String sql_type = "and p.type='"+type+"'";
+    	String sql_para = "and p.type='"+para+"'";
     	String sql_sp_type = "and p.sp_type like '%"+sp_type+"%'";
     	if(StringUtils.isEmpty(type)){
     		sql_type="";
+    	}
+    	if(StringUtils.isEmpty(para)){
+    		sql_para="";
     	}
     	if(StringUtils.isEmpty(sp_type)){
     		sql_sp_type="";
@@ -642,11 +647,11 @@ public class ServiceProviderController extends Controller {
 		
 		List<Record> spList = Collections.EMPTY_LIST;
 		if(StrKit.isBlank(input)){//从历史记录查找
-            String sql = "select h.ref_id, p.id, p.abbr name,p.ref_office_id from user_query_history h, party p "
+            String sql = "select h.ref_id, p.id, p.abbr name,p.ref_office_id,p.sp_type from user_query_history h, party p "
                     + " where h.ref_id=p.id and h.type='ARAP_COM' and h.user_id=? "+sql_sp_type;
             spList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
             if(spList.size()==0){
-            	String sql2 = "select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "+sql_type+sql_sp_type
+            	String sql2 = "select p.id,p.abbr name,p.ref_office_id,p.sp_type  from party p, office o where o.id = p.office_id "+sql_type+sql_para+sql_sp_type
                         + " and (p.abbr like '%"
                         + input
                         + "%' or p.code like '%"
@@ -662,7 +667,7 @@ public class ServiceProviderController extends Controller {
             renderJson(spList);
         }else{
             if (input !=null && input.trim().length() > 0) {
-            	String sql = " select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "+sql_type+sql_sp_type
+            	String sql = " select p.id,p.abbr name,p.ref_office_id,p.sp_type  from party p, office o where o.id = p.office_id "+sql_type+sql_para+sql_sp_type
                                 + " and (p.abbr like '%"
                                 + input
                                 + "%' or p.code like '%"
@@ -682,7 +687,7 @@ public class ServiceProviderController extends Controller {
                 	return;                
                 }
             } else {
-                spList = Db.find("select p.id,p.abbr name,p.ref_office_id from party p, office o where o.id = p.office_id "+sql_type+sql_sp_type
+                spList = Db.find("select p.id,p.abbr name,p.ref_office_id,p.sp_type  from party p, office o where o.id = p.office_id "+sql_type+sql_para+sql_sp_type
                                 + " and (p.is_stop is null or p.is_stop = 0) and (o.id = ? or o.belong_office =?) "
                                 + " order by convert(p.abbr using gb2312) asc limit 25", parentID, parentID);
             }
@@ -1001,11 +1006,11 @@ public class ServiceProviderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
         String name = getPara("input");
-        String sp_id = getPara("sp_id");
-        if(StringUtils.isEmpty(sp_id)){
-        	return;
-        }
-        sp_id = " and p.id="+sp_id;
+        String spId = getPara("sp_id");
+        String sp_id ="";
+        if(StringUtils.isNotEmpty(spId)){
+        	sp_id = " and p.id="+spId;
+        }        
         String addressInputStr = getPara("addressInputStr");
         String addStr = "";
         String conditon = "";
@@ -1016,9 +1021,11 @@ public class ServiceProviderController extends Controller {
         List<Record> rec = null;
         String sql = " SELECT dock.* from dockinfo dock LEFT JOIN party p on dock.party_id = p.id"
         		+ " WHERE p.office_id = "+office_id+sp_id+ addStr;
+        if(StringUtils.isEmpty(spId)){
+        	sql = " SELECT dock.* from dockinfo dock WHERE dock.office_id="+office_id+ addStr;
+        }
         
-        
-        rec = Db.find(sql);
+        rec = Db.find(sql + " limit 25" );
         renderJson(rec);
     }
     

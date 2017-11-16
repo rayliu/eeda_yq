@@ -1,0 +1,1 @@
+package models;import com.jfinal.plugin.activerecord.Model;@SuppressWarnings("serial")public class SpCostCompareOrderItem extends Model<SpCostCompareOrderItem> {	public static final SpCostCompareOrderItem dao = new SpCostCompareOrderItem();}

@@ -1,0 +1,83 @@
+
+
+    <div class="group-form" >
+        <div class="col-lg-12" ><br/>
+        	<div class="">
+             <button class="btn btn_green" id="quotation_btn" type="button">查询</button> 
+            </div>
+	       <div>
+	               <%include("/eeda/component/form/detailTable.html", 
+	                  {   id:'quotation_table',
+	                      style:'width:1500px',
+	                      headers:[
+	                      	  '',
+	                          '供应商名称',
+	                          '船东公司',
+	                          '合同编号',
+	                          '运输条款',
+	                          '贸易类型',
+	                          'POR',
+	                          'POL',
+	                          'POD',
+	                          '费用名称',
+	                          '单价',
+	                          '币种',
+	                          '单位',
+	                          '柜型',
+	                          '体积(CBM)',
+	                          '-',
+	                          '区间',
+	                          '重量(KG)',
+	                          '-',
+	                          '区间',
+	                          'item_sp_id',
+	                          'carrier_id',
+	                          'por_id',
+	                          'pol_id',
+	                          'pod_id',
+	                          'fee_id',
+	                          'currency_id',
+	                          'uom_id',
+	                          'contract_id',
+	                          'contact_loc_id',
+	                          'contact_item_id'
+	                      ],
+	                      field_list:[
+	                      	  'ID',
+	                          'item_sp_id',
+	                          'carrier_id',
+	                          'contract_no',
+	                          'trans_clause',
+	                          'trade_type',
+	                          'por_id',
+	                          'pol_id', 
+	                          'pod_id', 
+	                          'fee_id',
+	                          'price',
+	                          'currency_id',	                          
+	                          'volume1',
+	                          '-',
+	                          'volume2',
+	                          'gross_weight1',
+	                          '-',
+	                          'gross_weight2',	                          
+	                          'uom_id',
+	                          'sp_abbr',
+	                          'carrier_abbr',
+	                          'por_name',
+	                          'pol_name',
+	                          'pod_name',
+	                          'fee_name',
+	                          'currency_name',
+	                          'uom_name',
+	                          'contract_id',
+	                          'contact_loc_id',
+	                          'contact_item_id',
+	                          'contact_item_id'
+	                      ],
+	                      value_list:quotation_list![]
+	                  }){} %>
+	       </div>
+       </div>
+    </div>
+        

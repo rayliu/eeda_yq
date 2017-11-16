@@ -40,6 +40,9 @@ import models.SpAirTransportItem;
 import models.SpBulkCargo;
 import models.SpBulkCargoItem;
 import models.SpCargoInsurance;
+import models.SpCostCompareOrder;
+import models.SpCostCompareOrderItem;
+import models.SpCostCompareOrderSps;
 import models.SpCustom;
 import models.SpInternalTrade;
 import models.SpLandTransport;
@@ -433,7 +436,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/chargeConfirm", controllers.arap.ar.ChargeConfirmController.class, contentPath);
         
         //ap 应付条目处理
-//        me.add("/costComparison", controllers.arap.ap.CostComparisonController.class, contentPath);
+        me.add("/costComparison", controllers.arap.ap.CostComparisonController.class, contentPath);
         me.add("/costConfirmList", controllers.arap.ap.CostItemConfirmController.class, contentPath);
         me.add("/costCheckOrder", controllers.arap.ap.CostCheckOrderController.class, contentPath);
 //        me.add("/costAdjustOrder", controllers.arap.ap.CostAdjustOrderController.class, contentPath);
@@ -659,7 +662,7 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("trans_arap_charge_order", TransArapChargeOrder.class);
         arp.addMapping("trans_arap_charge_item", TransArapChargeItem.class);
         
-        //保险供应商
+        //供应商
         arp.addMapping("sp_ocean_cargo", SpOceanCargo.class);
         arp.addMapping("sp_ocean_cargo_item", SpOceanCargoItem.class);
         arp.addMapping("sp_internal_trade", SpInternalTrade.class);
@@ -674,6 +677,10 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("sp_custom", SpCustom.class);  
         arp.addMapping("sp_picking_crane", SpPickingCrane.class);  
         arp.addMapping("sp_cargo_insurance", SpCargoInsurance.class); 
+        //供应商成本对比查询
+        arp.addMapping("sp_cost_compare_order", SpCostCompareOrder.class);
+        arp.addMapping("sp_cost_compare_order_item", SpCostCompareOrderItem.class);
+        arp.addMapping("sp_cost_compare_order_sps", SpCostCompareOrderSps.class);
         
         //tr 贸易工作单
         arp.addMapping("trade_job_order", TradeJobOrder.class);

@@ -46,6 +46,7 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
               || url.indexOf('/dockInfo/searchDock')!=-1
               || url.indexOf('/carInfo/search')!=-1 
               || url.indexOf('/trJobOrder/searchCommodity')!=-1 
+              || url.indexOf('/costComparison/searchSpcomparison')!=-1               
           ){
             return;
           }
@@ -368,7 +369,7 @@ eeda.refreshUrl = refreshUrl;
 	     }else{
 	    	 str = "<a href='/jobOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }
-
+	 	costComparison/searchSpcomparison
 	     return str;
 	 };
  
@@ -498,6 +499,7 @@ eeda.refreshUrl = refreshUrl;
       var cpLock = false;
       var isEmpty = 0;
       
+      
       $('#'+table_id+' input[name='+el_name+'_input]').on('compositionstart', function () {
           cpLock = true;
       }).on('compositionend', function () {
@@ -505,6 +507,22 @@ eeda.refreshUrl = refreshUrl;
       });
       	  $('#'+table_id+' input[name='+el_name+'_input]').off("keyup click");
 		  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
+			  var paraJson="";
+			  if(para=="spConditionJson"){
+				  paraJson= itemOrder.spConditionJson();
+				    var obj = null;
+				    try{
+					    obj = eval(paraJson);
+					}catch(e){
+					}
+					var xy = Object.prototype.toString.call(obj);
+					if (xy == "[object Object]" || xy == "[object Array]") {
+						paraJson = JSON.stringify(paraJson);
+					} else {
+					    console.log("不是json格式");
+					}
+			  }
+			    
 			  var me = this;
 			  var inputField = $(this);
 			  var hiddenField = $(this).parent().find('input[name='+el_name+']');
@@ -526,7 +544,7 @@ eeda.refreshUrl = refreshUrl;
         	}
         	return ;
         }else{
-			  $.get(url, {input:inputStr,para:para}, function(data){
+			  $.get(url, {input:inputStr,para:para,paraJson}, function(data){
   				  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
   					  return;
   				  }
@@ -562,7 +580,7 @@ eeda.refreshUrl = refreshUrl;
             }else{
             	if(data!="无记录"){
             		for(var i = 0; i < data.length; i++){
-                        tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID+"' dataName='"+data[i].NAME+"' >"+data[i].NAME+"</a></li>");
+                        tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID+"' dataName='"+data[i].NAME+"' sp_type='"+data[i].SP_TYPE+"' >"+data[i].NAME+"</a></li>");
                     }
             	}
             }
