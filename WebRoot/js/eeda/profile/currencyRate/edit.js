@@ -25,6 +25,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             id: $('#id').val(),
             currency_code: $('#cost_currency_input').val(),
             currency_id: $('#cost_currency').val(),
+            to_currency_code: $('#to_currency_input').val(),
+            to_currency_id: $('#to_currency').val(),
             rate: $('#rate').val(),
             from_stamp: $('#peroid_begin_time').val(),
             to_stamp: $('#peroid_end_time').val(),
@@ -61,7 +63,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 				$("#remark").val(result.REMARK);
 			}
 		})
-		
 	})*/
 	
 	$('#accountFrom').validate({

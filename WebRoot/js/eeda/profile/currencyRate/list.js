@@ -14,6 +14,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'sco'], funct
                     }
                 }
             },
+            {  "data": "TO_CURRENCY_CODE"},
             {"data":"RATE"},
             {"data":"FROM_STAMP",
             	"render":function(data,type,full,meta){

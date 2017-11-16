@@ -82,7 +82,7 @@ $(document).ready(function() {
             		  return data;
             	  }
             },
-            {"data":"COMMENT",'class':'hkd',
+            {"data":"COMMENT",
                 "render": function(data, type, full, meta) {
                     if(!data){
                     	data='';

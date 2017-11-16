@@ -43,7 +43,7 @@ public class CostComparisonController extends Controller {
     private Log logger = Log.getLog(CostComparisonController.class);
     Subject currentUser = SecurityUtils.getSubject();
     
-//    @Before(EedaMenuInterceptor.class)
+    @Before(EedaMenuInterceptor.class)
     public void index() {
 		UserLogin user = LoginUserController.getLoginUser(this);
         long user_id = user.getLong("id");
@@ -52,7 +52,7 @@ public class CostComparisonController extends Controller {
     	render("/oms/CostComparison/CostComparisonList.html");
     }
     
-//    @Before(EedaMenuInterceptor.class) 
+    @Before(EedaMenuInterceptor.class) 
     public void create() {
 		render("/oms/CostComparison/costComparisonEdit.html");
 	}
@@ -247,7 +247,7 @@ public class CostComparisonController extends Controller {
     	List<Record> rec = Db.find(sp_sql);
     	renderJson(rec);   	
     }
-//    @Before(EedaMenuInterceptor.class)
+
     public void searchShowItem(){    	
     	String sLimit = "";
         String pageIndex = getPara("draw");
