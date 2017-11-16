@@ -142,8 +142,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       			{ "data": "ETA", "width": "100px"},
       			{ "data": "SP_NAME", "width": "120px"},
       			{ "data": "FIN_NAME", "width": "80px"},
-      			{ "data": "CHECK_AMOUNT", "width": "80px"},
-      			{ "data": "TOTAL_AMOUNT", "width": "80px"},
+      			{ "data": "COST_CHECK_AMOUNT", "width": "80px"},
+      			{ "data": "CHARGE_CHECK_AMOUNT", "width": "80px"},
+      			{ "data": "COST_TOTAL_AMOUNT", "width": "80px"},
+      			{ "data": "CHARGE_TOTAL_AMOUNT", "width": "80px"},
       			{ "data": "CREATOR_NAME", "width": "80px"},
       			{ "data": "CREATE_STAMP", "width": "80px"}
       			
@@ -152,13 +154,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       
       var resetCol = function(){
     	  var table = $('#eeda_table').dataTable();
-    	  for(var i =0; i < 20; i++){
+    	  for(var i =0; i < 22; i++){
     		  table.fnSetColumnVis(i, false);
     	  }
       }
       
       var showCol = function(value){
-    	  for(var i = 0; i < 20; i++){
+    	  for(var i = 0; i < 22; i++){
     		  var colText = $($('#eeda_table').DataTable().column(i).header()).text();
     		  if(colText == value){
     			  $('#eeda_table').dataTable().fnSetColumnVis(i, true);
