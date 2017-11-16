@@ -196,7 +196,7 @@ public class outputScaleController extends Controller {
 				car_no=driver;
 			}
 			if(StringUtils.isNotEmpty(ids)){
-				sql_id ="and tjol.id in ("+ids+")";
+				sql_id =" and tjol.id in ("+ids+")";
 			}
 			
 			String condition =sql_car_no+sql_driver+sql_id;	
