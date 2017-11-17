@@ -315,9 +315,7 @@ $("#quotation_table").on('click', '.delete', function(){
 
           //data table data 对象
           quotationItemTable.data().each(function(item, index) {
-              //dom 对象的checkbox 是否勾上了？
               var id = item.ID;
-
                   if(item.CURRENCY_NAME=='CNY'){
                       CNY+=item.PRICE;
                   }else if(item.CURRENCY_NAME=='USD'){

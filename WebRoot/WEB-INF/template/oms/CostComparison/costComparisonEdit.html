@@ -237,14 +237,16 @@
 							<%include("/eeda/component/form/inputField.html", 
 									{   id:'cny',
 										label:'CNY',
-										value:order.payee_name!''
+										value:'',
+										disabled:'disabled'
 									}){}%>
 						</div>
 						<div class="col-lg-3">
 							<%include("/eeda/component/form/inputField.html",
 									{	id:"usd",
 										label:"USD",
-										value:""										
+										value:"",
+										disabled:'disabled'										
 									}){}%>
 						
 						</div>
@@ -252,14 +254,16 @@
 							<%include("/eeda/component/form/inputField.html", 
 									{   id:'jpy',
 										label:'JPY',
-										value:order.payee_name!''
+										value:'',
+										disabled:'disabled'
 									}){}%>
 						</div>
 						<div class="col-lg-3">
 							<%include("/eeda/component/form/inputField.html",
 									{	id:"hkd",
 										label:"HKD",
-										value:""										
+										value:"",
+										disabled:'disabled'										
 									}){}%>
 						
 						</div>
@@ -306,18 +310,18 @@
                                     display_value:order.currency_name!''
                                 }){}%>
                         </div>
-						<div class="col-lg-3">
-							<button id="unity" class="btn btn_green">兑换</button>
-						</div>
-						<div class="col-lg-3">
-						</div>
-						<div class="col-lg-3">
+                        <div class="col-lg-3">
 							<%include("/eeda/component/form/inputField.html",
 									{	id:"total",
-										label:"汇总",
+										label:"统一汇总",
 										value:order.total!''									
 									}){}%>
 						
+						</div>
+						<div class="col-lg-3" style="display:none">
+							<button id="unity" class="btn btn_green">兑换</button>
+						</div>
+						<div class="col-lg-3">
 						</div>
                      </div>
                      

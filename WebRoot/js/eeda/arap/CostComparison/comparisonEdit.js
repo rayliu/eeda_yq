@@ -72,14 +72,43 @@ $(document).ready(function() {
 	        });
 	});
 	
-	$('#unity').click(function(){
+	$('#target_currency_list').on('mousedown','.fromLocationItem',function(){
+		var to_currency_name=$(this).text();
+		$.post('/currencyRate/gainRateList',{params:to_currency_name},function(data){
+			if(data){
+				$('#cny_rate').val('');
+				$('#usd_rate').val('');
+				$('#jpy_rate').val('');
+				$('#hkd_rate').val('');
+				for(var i=0;i<data.length;i++){
+					var currency_code = data[i].CURRENCY_CODE;
+					if(currency_code=='CNY'){
+						$('#cny_rate').val(data[i].RATE);					
+					}else if(currency_code=='USD'){
+						$('#usd_rate').val(data[i].RATE);
+					}else if(currency_code=='JPY'){
+						$('#jpy_rate').val(data[i].RATE);
+					}else if(currency_code=='HKD'){
+						$('#hkd_rate').val(data[i].RATE);
+					}
+				}
+				sum_total();
+			}
+		},'json');
+	});
+	
+	$("#cny_rate,#usd_rate,#jpy_rate,#hkd_rate").on('keyup',function(){
+		sum_total();
+	});
+	
+	var sum_total=function(){
 		var cny_total = parseFloat($('#cny').val()*$('#cny_rate').val());
 		var usd_total = parseFloat($('#usd').val()*$('#usd_rate').val());
 		var jpy_total = parseFloat($('#jpy').val()*$('#jpy_rate').val());
 		var hkd_total = parseFloat($('#hkd').val()*$('#hkd_rate').val());
 		var total =parseFloat(cny_total+usd_total+jpy_total+hkd_total).toFixed(2);
 		$('#total').val(total);
-	});
+	}
 	
 	
 	

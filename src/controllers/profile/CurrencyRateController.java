@@ -142,6 +142,24 @@ public class CurrencyRateController extends Controller {
     	}
     	    	
     }
+    
+    public void gainRateList(){
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	long office_id = user.getLong("office_id");    	
+    	String to_currency_name = getPara("params");
+    	if(StringUtils.isEmpty(to_currency_name)){
+    		to_currency_name="";
+    	}
+    	String sql = "SELECT * from currency_rate "
+    			+ " where to_currency_code = '"+to_currency_name+"' AND office_id = "+office_id;
+    	List<Record> rec = Db.find(sql);
+    	if(rec==null){
+    		renderJson("{\"result\":true}");
+    	}else{
+    		renderJson(rec);
+    	}
+    	    	
+    }
 
     // 列出
     public void list() {

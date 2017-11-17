@@ -46,7 +46,8 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
               || url.indexOf('/dockInfo/searchDock')!=-1
               || url.indexOf('/carInfo/search')!=-1 
               || url.indexOf('/trJobOrder/searchCommodity')!=-1 
-              || url.indexOf('/costComparison/searchSpcomparison')!=-1               
+              || url.indexOf('/costComparison/searchSpcomparison')!=-1
+              || url.indexOf('/currencyRate/gainRateList')!=-1
           ){
             return;
           }
