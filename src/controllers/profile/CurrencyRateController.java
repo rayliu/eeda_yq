@@ -129,10 +129,18 @@ public class CurrencyRateController extends Controller {
     	long office_id = user.getLong("office_id");    	
     	String para_currency = getPara("para_currency");
     	String para_exchange_currency = getPara("para_exchange_currency");
+    	if(StringUtils.isEmpty(para_currency)){
+    		para_currency="";
+    	}
     	String sql = "SELECT * from currency_rate "
     			+ " where currency_code = '"+para_currency+"' AND to_currency_code = '"+para_exchange_currency+"' AND office_id = "+office_id;
     	Record rec = Db.findFirst(sql);
-    	renderJson(rec);    	
+    	if(rec==null){
+    		renderJson("{\"result\":true}");
+    	}else{
+    		renderJson(rec);
+    	}
+    	    	
     }
 
     // 列出
