@@ -200,14 +200,24 @@ public class SupplierContractController extends Controller {
     
     public List<Record> getItems(String contract_id,String type){
     	String sql = "";
-    	if("land_loc".equals(type) || "tour_loc".equals(type)){
+    	if("land_loc".equals(type)){
             sql = " SELECT ccl.*, "
-                    + " l.dock_name pol_name, "
-                    + " l1.dock_name pod_name"
-                    +" from supplier_contract_location ccl"
-                    +" LEFT JOIN dockinfo l on l.id = ccl.pol_id"
-                    +" LEFT JOIN dockinfo l1 on l1.id = ccl.pod_id"
-                    +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' "; 
+                    + " IFNULL(dpol.dock_name,lpol.name) pol_name, "
+                    + " IFNULL(dpod.dock_name,lpod.name) pod_name"
+                    + " from supplier_contract_location ccl"
+                    + " LEFT JOIN dockinfo dpol ON (dpol.id = ccl.pol_id and ccl.pol_id_type='land')"
+                    + " LEFT JOIN dockinfo dpod ON (dpod.id = ccl.pod_id and ccl.pod_id_type='land')"
+                    + " LEFT JOIN location lpol ON (lpol.id = ccl.pol_id and ccl.pol_id_type='port')"
+                    + " LEFT JOIN location lpod ON (lpod.id = ccl.pod_id and ccl.pod_id_type='port')"
+                    + " WHERE ccl.contract_id = ? and ccl.type='"+type+"' "; 
+    	}else if("tour_loc".equals(type)){
+    		sql = " SELECT ccl.*, "
+                    + " dpol.dock_name pol_name, "
+                    + " dpod.dock_name pod_name"
+                    + " from supplier_contract_location ccl"
+                    + " LEFT JOIN dockinfo dpol ON dpol.id = ccl.pol_id"
+                    + " LEFT JOIN dockinfo dpod ON dpod.id = ccl.pod_id"
+                    + " WHERE ccl.contract_id = ? and ccl.type='"+type+"' "; 
     	}else if(type.indexOf("_loc")>0){
                 sql = " SELECT ccl.*,p.abbr carrier_name,air_p.company_name air_company_name,"
                         + " CONCAT(l.name,' -', l.code) pol_name, "

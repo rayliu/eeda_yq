@@ -77,6 +77,12 @@ $(document).ready(function() {
                  	}else{
                  		item.is_select = 'N';
                  	}
+            	}else if(name=='pol_id_type'){
+            		var value = $(row.childNodes[i]).parent().find('[name=POL_ID]').attr('loc_type');
+            		item[name] = value;
+            	}else if(name=='pod_id_type'){
+            		var value = $(row.childNodes[i]).parent().find('[name=POD_ID]').attr('loc_type');
+            		item[name] = value;
             	}else{
                     var value = $(row.childNodes[i]).find('input,select').val();
                     if(name){
@@ -301,14 +307,16 @@ $(document).ready(function() {
 				        return '<input type="radio" '+select+' name="checkLandRoute" style="margin-right:20px;" />';
 				    }
 				}, 
-				{  "width": "30px",
+				{  "data": "POL_ID_TYPE","width": "30px",
 				    "render": function ( data, type, full, meta ) {
-				        return '<button type="button" class="copy btn table_btn delete_btn btn-xs" > 复制</button></button>';
+				        return '<button type="button" class="copy btn table_btn delete_btn btn-xs" > 复制</button></button>'				        
+				        +"<input type='hidden' id='pol_id_type' name='pol_id_type' value='"+data+"' >";
 				    }
 				},
-                {  "width": "50px",
-                    "render": function ( data, type, full, meta ) {
-                        return '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>';
+                {  "data": "POD_ID_TYPE","width": "50px",
+                    "render": function ( data, type, full, meta ) {                    	
+                        return '<button type="button" class="delete btn table_btn delete_btn btn-xs" ><i class="fa fa-trash-o"></i> 删除</button></button>'
+                        +"<input type='hidden' id='pod_id_type' name='pod_id_type' value='"+data+"' >";
                     }
                 },
                 { "data": "POL_ID", "width":"130px",

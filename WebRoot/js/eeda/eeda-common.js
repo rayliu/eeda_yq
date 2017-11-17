@@ -1472,10 +1472,17 @@ eeda.refreshUrl = refreshUrl;
                     }else if(inputStr.length>0 && data.length==10){
                       tableFieldList.append('<span style="font-size: 10px;color: gray;">最多只显示'+data.length+'行记录, 如无想要记录, 请输入更多查询条件</span>');
                     }
-                  for(var i = 0; i < data.length; i++)
-                      tableFieldList.append("<li tabindex='"+i+"'><a class='item' dataId='"+data[i].ID
-                              +"' >"+data[i].DOCK_NAME
-                              +"</a></li>");
+                  for(var i = 0; i < data.length; i++){
+                	  if(data[i].DOCK_ID){
+                		  tableFieldList.append("<li tabindex='"+i+"'><a class='item' loc_type='land' dataId='"+data[i].DOCK_ID
+                                  +"' >"+data[i].LOC_NAME
+                                  +"</a></li>");
+                	  }else if(data[i].PORT_ID){
+                		  tableFieldList.append("<li tabindex='"+i+"'><a class='item' loc_type='port' dataId='"+data[i].PORT_ID
+                                  +"' >"+data[i].LOC_NAME
+                                  +"</a></li>");
+                	  }
+                  } 
                   tableFieldList.css({ 
                       left:$(me).offset().left+"px", 
                       top:$(me).offset().top+28+"px" 
@@ -1485,9 +1492,14 @@ eeda.refreshUrl = refreshUrl;
                   eeda._hiddenField = hiddenField;
                   if(data.length==0)
 		                hiddenField.val('');
-		            if(data.length==1&&data[0].ID){
+		            if(data.length==1&&data[0].LOC_NAME){
 //                     inputField.val(data[0].DOCK_NAME);
-		                  hiddenField.val(data[0].ID);
+		            	if(data[0].DOCK_ID){
+		            		hiddenField.val(data[0].DOCK_ID);
+		            	}else if(data[0].PORT_ID){
+		            		hiddenField.val(data[0].PORT_ID);
+		            	}
+		                  
                     }
 		            if(!inputStr && data.length>1){
 			                hiddenField.val('');
@@ -1499,6 +1511,7 @@ eeda.refreshUrl = refreshUrl;
           tableFieldList.on('click', '.item', function(e){
               var inputField = eeda._inputField;
               var hiddenField = eeda._hiddenField;
+              hiddenField.attr('loc_type',$(this).attr('loc_type'))
               inputField.val($(this).text());//名字
               tableFieldList.hide();
               hiddenField.val($(this).attr('dataId'));
