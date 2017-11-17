@@ -70,7 +70,20 @@ $(document).ready(function() {
 	            $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 	            $('#saveBtn').attr('disabled', false);
 	        });
-	}); 
+	});
+	
+	$('#unity').click(function(){
+		var cny_total = parseFloat($('#cny').val()*$('#cny_rate').val());
+		var usd_total = parseFloat($('#usd').val()*$('#usd_rate').val());
+		var jpy_total = parseFloat($('#jpy').val()*$('#jpy_rate').val());
+		var hkd_total = parseFloat($('#hkd').val()*$('#hkd_rate').val());
+		var total =parseFloat(cny_total+usd_total+jpy_total+hkd_total).toFixed(2);
+		$('#total').val(total);
+	});
+	
+	
+	
+	
 	
 	setTimeout(function(){
 		itemOrder.searchShowItem();

@@ -690,14 +690,16 @@ eeda.refreshUrl = refreshUrl;
 		  
 	  eeda.bindTableFieldCurrencyId = function(table_id, el_name,url,para) {
 		  var tableFieldList = $('#table_currency_input_field_list');
+
 		  $('#'+table_id+' input[name='+el_name+'_input]').off('keyup click');
 		  $('#'+table_id+' input[name='+el_name+'_input]').on('keyup click', function(event){
-			  
+//			  eeda.para_middle=para;
 			  var me = this;
 			  var inputField = $(this);
 			  var hiddenField = $(this).parent().find('input[name='+el_name+']');
 			  var inputStr = inputField.val();
-			  
+			  var CURRENCY_ID_input = "";
+
 			  if (event.keyCode == 40) {
 				  tableFieldList.find('li').first().focus();
 				  return false;
@@ -744,7 +746,6 @@ eeda.refreshUrl = refreshUrl;
 			  
 			  //datatable里按照   币制，汇率，转换后金额 相邻排列
 			  
-			  
 			  var td = inputField.parent().parent();
 			  var exchange_currency_rate = 1.000000;
 			  td.parent().find('.cny_to_other input').val($(this).text());
@@ -758,17 +759,38 @@ eeda.refreshUrl = refreshUrl;
               
               td.parent().find('.exchange_currency_rate_rmb input').val(currency_rate);
               if(class_name==' cny_to_other'&&td.parent().find('[name=CURRENCY_ID_input]').val()!=$(this).text()){
+            	   var para_currency=td.parent().find('[name=CURRENCY_ID_input]').val()
             	   td.parent().find('.exchange_currency_rate input').val('');
             	   td.parent().find('.exchange_total_amount input').val('');
-                 td.parent().find('.exchange_total_amount_rmb input').val('');
-                 td.parent().find('.rmb_difference input').val('');
+                   td.parent().find('.exchange_total_amount_rmb input').val('');
+                   td.parent().find('.rmb_difference input').val('');
             	   exchange_currency_rate='';
+            	   $.get('/currencyRate/gainRate',{para_exchange_currency:inputField.val(),para_currency:para_currency},function(data){
+            		   if(data.RATE){
+            			   exchange_currency_rate=data.RATE;
+            			   td.parent().find('.exchange_currency_rate input').val(exchange_currency_rate);
+            		   }
+            		   var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
+                       if(exchange_currency_rate!=''&&currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
+                     	  if(class_name==' cny_to_other'){
+                     		  td.next().next().children().val((total*exchange_currency_rate).toFixed(3));//转换后的金额
+                     	   }else{
+                     		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
+                     		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(3));
+                     	  }
+                         var exchange_total = td.parent().find('.exchange_total_amount input').val();//此币种的金额
+                         	td.parent().find('.exchange_total_amount_rmb input').val((exchange_total*currency_rate).toFixed(3));
+                         var cny_total_amount=parseFloat(td.parent().find('.cny_total_amount input').val());
+                         var exchange_total_amount_rmb=parseFloat(td.parent().find('.exchange_total_amount_rmb input').val());
+                         	td.parent().find('.rmb_difference input').val((exchange_total_amount_rmb-cny_total_amount).toFixed(3));
+                       }            		   
+            	   },'json');            	   
             	   
             	  }else{
-            	   td.parent().find('[name=exchange_currency_rate]').val(exchange_currency_rate); 
+        				  td.parent().find('[name=exchange_currency_rate]').val(exchange_currency_rate);           		  
             	  }
 
-            	  var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
+              var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
               if(exchange_currency_rate!=''&&currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
             	  if(class_name==' cny_to_other'){
             		  td.next().next().children().val((total*exchange_currency_rate).toFixed(3));//转换后的金额
@@ -776,14 +798,14 @@ eeda.refreshUrl = refreshUrl;
             		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
             		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(3));
             	  }
-                 var exchange_total = td.parent().find('.exchange_total_amount input').val();//此币种的金额
-                td.parent().find('.exchange_total_amount_rmb input').val((exchange_total*currency_rate).toFixed(3));
-                var  cny_total_amount=parseFloat(td.parent().find('.cny_total_amount input').val());
+                var exchange_total = td.parent().find('.exchange_total_amount input').val();//此币种的金额
+                	td.parent().find('.exchange_total_amount_rmb input').val((exchange_total*currency_rate).toFixed(3));
+                var cny_total_amount=parseFloat(td.parent().find('.cny_total_amount input').val());
                 var exchange_total_amount_rmb=parseFloat(td.parent().find('.exchange_total_amount_rmb input').val());
-                td.parent().find('.rmb_difference input').val((exchange_total_amount_rmb-cny_total_amount).toFixed(3));
+                	td.parent().find('.rmb_difference input').val((exchange_total_amount_rmb-cny_total_amount).toFixed(3));
               }
 		  });
-		  
+//		  eeda.para_middle="";
 		  tableFieldList.on('keydown', 'li', function(e){
               if (e.keyCode == 13) {
                   var inputField = eeda._inputField;
@@ -1763,7 +1785,7 @@ eeda.refreshUrl = refreshUrl;
                          
 		  });
 		  
-		  tableFieldList.on('keydown', 'li', function(e){debugger
+		  tableFieldList.on('keydown', 'li', function(e){
               if (e.keyCode == 13) {
                   var inputField = eeda._inputField;
                   var hiddenField = eeda._hiddenField;                  

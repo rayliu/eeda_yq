@@ -19,12 +19,6 @@ $(document).ready(function() {
         serverSide: true, 
         ajax: "/costComparison/list?status=新建",
           columns: [
-	        { "width": "10px", "orderable": false,
-	            "render": function ( data, type, full, meta ) {
-	                var strcheck='<input type="checkbox" class="checkBox" name="order_check_box" value="'+full.ID+'">';
-	                return strcheck;
-	            }
-	        },
             {"data":"ORDER_NO",
                 "render": function(data, type, full, meta) {
                 	var other ='';

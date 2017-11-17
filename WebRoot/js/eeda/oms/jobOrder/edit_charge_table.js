@@ -321,7 +321,7 @@ $(document).ready(function() {
         eeda.bindTableField('charge_table','CHARGE_ENG_ID','/finItem/search_eng','');
         eeda.bindTableField('charge_table','UNIT_ID','/serviceProvider/searchChargeUnit','');
         eeda.bindTableFieldCurrencyId('charge_table','CURRENCY_ID','/serviceProvider/searchCurrency','');
-        eeda.bindTableFieldCurrencyId('charge_table','exchange_currency_id','/serviceProvider/searchCurrency','');
+        eeda.bindTableFieldCurrencyId('charge_table','exchange_currency_id','/serviceProvider/searchCurrency','TO');
     };
     
     //------------事件处理

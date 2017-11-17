@@ -124,6 +124,16 @@ public class CurrencyRateController extends Controller {
     		renderJson(false);
     	}
     }
+    public void gainRate(){
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	long office_id = user.getLong("office_id");    	
+    	String para_currency = getPara("para_currency");
+    	String para_exchange_currency = getPara("para_exchange_currency");
+    	String sql = "SELECT * from currency_rate "
+    			+ " where currency_code = '"+para_currency+"' AND to_currency_code = '"+para_exchange_currency+"' AND office_id = "+office_id;
+    	Record rec = Db.findFirst(sql);
+    	renderJson(rec);    	
+    }
 
     // 列出
     public void list() {
