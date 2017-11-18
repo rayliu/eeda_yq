@@ -6,10 +6,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	var item = {};
         	item['id'] = $('#shipment_id').val();
         	item['customer_id'] = $('#customer_id').val();
-        	item['release_type'] = $('#shipmentForm input[type="radio"]:checked').val();
+        	item['release_type'] = $('#release_radio_div input[type="radio"]:checked').val();
+        	item['agent_type'] = $('#overseaAgent_radio_div input[type="radio"]:checked').val();
         	item['prepaid'] = $('#prepaid').val($('#prepaid').prop('checked')==true?'Y':'N');
             item['agent_prepaid'] = $('#agent_prepaid').val($('#agent_prepaid').prop('checked')==true?'Y':'N');
         	item['wait_overseaCustom'] = $('#wait_overseaCustom').val($('#wait_overseaCustom').prop('checked')==true?'Y':'N');
+        	item['is_need_afr'] = $('#is_need_afr').val($('#is_need_afr').prop('checked')==true?'Y':'N');
+        	item['is_need_custom_apply'] = $('#is_need_custom_apply').val($('#is_need_custom_apply').prop('checked')==true?'Y':'N');
+        	item['is_need_delivery'] = $('#is_need_delivery').val($('#is_need_delivery').prop('checked')==true?'Y':'N');
         	var shipmentForm = $('#shipmentForm input,#shipmentForm select,#shipmentForm textarea');
         	for(var i = 0; i < shipmentForm.length; i++){
         		var name = shipmentForm[i].id;
@@ -119,36 +123,66 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         
         //放货方式radio回显
         var radioVal = $('#hidden_release_type').val();
-        $('#shipmentForm input[type="radio"]').each(function(){
+        $('#release_radio_div input[type="radio"]').each(function(){
         	var checkValue = $(this).val();
         	if(radioVal==checkValue){
         		$(this).attr("checked",true);
         	}
         });
+        
+        //国外代理回显
+        var agentTypeRedio = $('#hidden_agent_type').val();
+        $('#overseaAgent_radio_div input[type="radio"]').each(function(){
+        	var checkValue = $(this).val();
+        	if(agentTypeRedio==checkValue){
+        		$(this).attr('checked',true);
+        	}
+        });
+        
         //预付回显
         var checkBoxVal = $('#hidden_prepaid').val();
         if(checkBoxVal=='Y'){
             $('#prepaid').attr("checked",true);    	
-        }
-        else{
+        }else{
         	$('#prepaid').attr("checked",false);
         }
         //代理预付回显
         var checkBoxVal = $('#hidden_agent_prepaid').val();
         if(checkBoxVal=='Y'){
             $('#agent_prepaid').attr("checked",true);     
-        }
-        else{
+        }else{
             $('#agent_prepaid').attr("checked",false);
         }
         //待海外报关回显
         var checkBoxVal = $('#hidden_wait_overseaCustom').val();
         if(checkBoxVal=='Y'){
             $('#wait_overseaCustom').attr("checked",true);    	
-        }
-        else{
+        }else{
         	$('#wait_overseaCustom').attr("checked",false);
         }
+        
+        //AFR申报回显
+        var checkBoxVal = $('#hidden_is_need_afr').val();
+        if(checkBoxVal=='Y'){
+        	$('#is_need_afr').attr("checked",true);
+        }else{
+        	$('#is_need_afr').attr("checked",false);
+        }
+        
+        //海外报关回显
+        var checkBoxVal = $('#hidden_is_need_custom_apply').val();
+        if(checkBoxVal=='Y'){
+        	$('#is_need_custom_apply').attr("checked",true);
+        }else{
+        	$('#is_need_custom_apply').attr("checked",false);
+        }        
+        //海外陆运配送回显
+        var checkBoxVal = $('#hidden_is_need_delivery').val();
+        if(checkBoxVal=='Y'){
+        	$('#is_need_delivery').attr("checked",true);
+        }else{
+        	$('#is_need_delivery').attr("checked",false);
+        }  
 
         //选择卸货港时自动填上目的港
         $('#pod_list').on('mousedown', '.fromLocationItem', function(){

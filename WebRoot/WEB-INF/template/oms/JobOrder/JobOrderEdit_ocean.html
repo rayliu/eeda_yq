@@ -560,10 +560,15 @@
                 if(boolOcean){
                 	oversea_agent = 'oversea_agent';
                 }
-                 %>        
+                 %>
+                 <input type="hidden" id="hidden_agent_type" value="${shipment.agent_type!''}">       
                  <%include("/eeda/component/form/inputSelectAreaOfOverseaAgent.html", 
 	                    {   id:oversea_agent,
-	                        label: '海外代理', 
+	                        label: '海外代理',
+	                        lable_msg:'<span id="overseaAgent_radio_div" style="display:none;" >'	                        			
+	                        			+'<label class="radio-inline"><input type="radio" name="overseaAgent" value="domestic">国内</input></label>'
+	                        			+'<nbsp><label class="radio-inline" style="margin-left:10px"><input type="radio" name="overseaAgent" value="oversea">国外</input></label><nbsp>'
+	                        		+'</span>', 	                        		   
 	                        type:'oversea_agent',
 	                        value: shipment.oversea_agent!'',
 	                        display_value: shipment.oversea_agent_name!'',
@@ -572,8 +577,21 @@
 	                    }){}%>
               </div>
               <div class="col-lg-4">
-
-
+              	<div style="margin-top:50px;display:none;" >
+					<button type="button" class="btn btn_green" id="submitOverseaAgent" >提交给海外代理</button><br>
+					<input type="hidden" id="hidden_is_need_afr" value="${shipment.is_need_afr!''}"><br>
+	                <label class="checkbox-inline">       
+	                      <input id="is_need_afr" type="checkbox" >AFR申报
+	                </label>
+	                <input type="hidden" id="hidden_is_need_custom_apply" value="${shipment.is_need_custom_apply!''}">
+	                <label class="checkbox-inline">       
+	                      <input id="is_need_custom_apply" type="checkbox" >报关
+	                </label>
+	                <input type="hidden" id="hidden_is_need_delivery" value="${shipment.is_need_delivery!''}">
+	                <label class="checkbox-inline">       
+	                      <input id="is_need_delivery" type="checkbox" >陆运配送
+	                </label>
+				</div>
               </div>
               <div class="col-lg-4">
                   
