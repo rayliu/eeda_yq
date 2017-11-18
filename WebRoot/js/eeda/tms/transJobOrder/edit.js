@@ -162,11 +162,6 @@ $(document).ready(function() {
 		
 	}
 	
-	/*$("input[name='CLOSING_DATE']").on('changeDate', function(ev){
-		if($("input[name='CLOSING_DATE']").val()){
-	    	$("#charge_time").val($("input[name='CLOSING_DATE']").val());
-	    }
-     });*/
 	
 	
 	

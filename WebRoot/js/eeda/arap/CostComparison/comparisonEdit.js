@@ -110,9 +110,6 @@ $(document).ready(function() {
 		$('#total').val(total);
 	}
 	
-	
-	
-	
 	if($('#order_id').val()){
 		setTimeout(function(){
 			itemOrder.searchShowItem();

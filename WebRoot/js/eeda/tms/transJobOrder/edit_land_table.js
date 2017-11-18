@@ -466,6 +466,28 @@ $(document).ready(function() {
             {"UNLOAD_TYPE":"收重柜","TRUCK_TYPE":"40HQ"}]).draw();
     };
     
+    //选择客户回填装货地点1，装货地点2
+	$('#customer_id_list').on('mousedown',' .fromLocationItem',function(){
+		var companyId = $(this).attr('partyId');
+			$.post('/transJobOrder/getCustomerQuotationAddress',{companyId:companyId},function(data){
+				if(data){
+					var loading_wharf1_name =$($("#land_table tr:eq(1) td").find('input[name=LOADING_WHARF1_input]'));
+					var loading_wharf2_name =$($("#land_table tr:eq(1) td").find("input[name=LOADING_WHARF2_input]"));
+						$('#customer_id_input').val(data.CUSTOMER_ABBR);
+						$('#customer_id').val(data.PARTY_ID);
+						loading_wharf1_name.val(data.LOADING_WHARF1_NAME);
+						$($("#land_table tr:eq(1) td").find('input[name=LOADING_WHARF1]')).val(data.LOADING_WHARF1);
+	
+						loading_wharf2_name.val(data.LOADING_WHARF2_NAME);
+						$($("#land_table tr:eq(1) td").find("input[name=LOADING_WHARF2]")).val(data.LOADING_WHARF2);
+					
+				}
+			},'json').fail(function(){
+				
+			});
+	});
+    
+    
     //把提柜码头和还柜码头带到table中
    $('#take_wharf_input,#back_wharf_input').click(function(){
 	   if($('#take_wharf_input').val()!=''){

@@ -582,7 +582,7 @@ GROUP BY jo.id ORDER BY jo.order_export_date,jo.order_no]]>
 				<textFieldExpression><![CDATA[$F{officeName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="330" y="0" width="199" height="20" uuid="e3959e79-dafd-4f3c-8ef5-ce6ccbf12b2d"/>
+				<reportElement x="330" y="0" width="206" height="20" uuid="e3959e79-dafd-4f3c-8ef5-ce6ccbf12b2d"/>
 				<textFieldExpression><![CDATA[$F{homePage}]]></textFieldExpression>
 			</textField>
 		</band>

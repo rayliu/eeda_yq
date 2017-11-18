@@ -887,6 +887,21 @@ public class TransJobOrderController extends Controller {
     }
     
     
+    public void getCustomerQuotationAddress(){
+    	String companyId = getPara("companyId");
+    	String sql="SELECT py.id party_id,py.abbr customer_abbr,pq.id,pq.loading_wharf1,pq.loading_wharf2,dock1.dock_name loading_wharf1_name,dock2.dock_name loading_wharf2_name "
+    			+ " from party_quotation pq "
+    			+ " LEFT JOIN party py on py.id = pq.party_id"
+    			+ " LEFT JOIN dockinfo dock1 on dock1.id = pq.loading_wharf1"
+    			+ " LEFT JOIN dockinfo dock2 on dock2.id = pq.loading_wharf2"
+    			+ "  WHERE pq.party_id ="+companyId
+    			+ " ORDER BY id";
+    	Record rec = Db.findFirst(sql);
+    	renderJson(rec);
+    }
+    
+    
+    
     
     //使用common-email, javamail
     @Before(Tx.class)
