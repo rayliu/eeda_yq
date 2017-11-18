@@ -468,7 +468,7 @@ ORDER BY
 				<text><![CDATA[对账时间：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="436" y="29" width="10" height="17" uuid="fc703c0a-7ebc-4da9-a0f8-6e6eb5b4ee09"/>
+				<reportElement x="435" y="29" width="10" height="17" uuid="fc703c0a-7ebc-4da9-a0f8-6e6eb5b4ee09"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -508,14 +508,14 @@ ORDER BY
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="383" y="50" width="145" height="20" uuid="5a74d299-d50e-4a81-bcf4-5bb52f200237"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[java.util.Calendar.getInstance().getTime()]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
-				<reportElement x="448" y="31" width="77" height="20" uuid="a80bf60b-9489-4e9f-936c-05f387586cd2"/>
+				<reportElement x="447" y="31" width="77" height="20" uuid="a80bf60b-9489-4e9f-936c-05f387586cd2"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{end_time}]]></textFieldExpression>
 			</textField>
@@ -552,7 +552,7 @@ ORDER BY
 			<textField pattern="yyyy-MM-dd" isBlankWhenNull="true">
 				<reportElement x="383" y="31" width="60" height="20" uuid="b28b9c6d-09a8-42bc-af8d-5139d1a84861"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{begin_time}]]></textFieldExpression>
 			</textField>
