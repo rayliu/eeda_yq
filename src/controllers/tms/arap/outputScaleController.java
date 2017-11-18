@@ -204,7 +204,7 @@ public class outputScaleController extends Controller {
 			
 			String sql = "select * from( "
 		        		+" SELECT tjo.id tjoid,tjol.id ,tjo.office_id,tjo.delete_flag,tjo.order_no,tjo.lading_no,p.company_name customer_name,tjo.customer_id customer_id,"
-		        		+" IFNULL(CONVERT (substring(tjol.cabinet_date, 1, 10),CHAR),CONVERT (substring(tjol.closing_date, 1, 10),CHAR)) c_date" 
+		        		+" if(tjol.unload_type='移柜',CONVERT (substring(tjo.charge_time, 1, 10),CHAR),IFNULL(CONVERT (substring(tjol.cabinet_date, 1, 10),CHAR),CONVERT (substring(tjol.closing_date, 1, 10),CHAR))) c_date" 
 		        		+" ,tjo.type,dock.dock_name take_wharf_name, "
 		        		+" dock1.dock_name back_wharf_name,dock2.dock_name loading_wharf1_name,dock3.dock_name " 
 		        		+" loading_wharf2_name,tjo.container_no,tjo.cabinet_type,tjol.unload_type,car.car_no,tjol.car_no car_id,tjo.remark, "

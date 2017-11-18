@@ -113,10 +113,10 @@ $(document).ready(function() {
 	
 	
 	
-	
-	setTimeout(function(){
-		itemOrder.searchShowItem();
-	},100)
-	
+	if($('#order_id').val()){
+		setTimeout(function(){
+			itemOrder.searchShowItem();
+		},100)
+	}	
 });
 });
