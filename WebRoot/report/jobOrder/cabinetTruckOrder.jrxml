@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cabinetTruckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="45"/>
+	<property name="ireport.y" value="42"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -11,7 +11,8 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-     IFNULL(p5.company_name,p5.company_name_eng) carrier_name,o.logo_path,o.office_name,pown.logo_path p_logo_path,pown.company_name p_company_name,jos.*,josi.*,josh.*,IFNULL(p4.company_name,p4.company_name_eng) transport_company_name,p.company_name head_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,lo4.name hub_name,IFNULL(jos.SONO,'') bookingNo,
+     IFNULL(p5.company_name,p5.company_name_eng) carrier_name,o.logo_path,o.office_name,IFNULL(pown.homepage,o.homepage) own_homepage,IFNULL(pown.phone,o.office_tel) own_office_tel,
+pown.logo_path p_logo_path,pown.company_name p_company_name,jos.*,josi.*,josh.*,IFNULL(p4.company_name,p4.company_name_eng) transport_company_name,p.company_name head_company,p1.abbr carrier_abbr,p2.phone shipper_phone,lo.name por_name,lo1.name pol_name,lo2.name pod_name,lo3.name fnd_name,lo4.name hub_name,IFNULL(jos.SONO,'') bookingNo,
 ifnull(
 (select GROUP_CONCAT(CN_no SEPARATOR '  ;  ') from
 (SELECT
@@ -48,6 +49,8 @@ where joli.id=$P{item_id}]]>
 	<field name="office_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="own_homepage" class="java.lang.String"/>
+	<field name="own_office_tel" class="java.lang.String"/>
 	<field name="p_logo_path" class="java.lang.String"/>
 	<field name="p_company_name" class="java.lang.String"/>
 	<field name="id" class="java.lang.Long">
@@ -238,6 +241,27 @@ where joli.id=$P{item_id}]]>
 	</field>
 	<field name="aboutShipment_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="agent_type" class="java.lang.String">
+		<fieldDescription><![CDATA[Domestic-国内，oversea-海外]]></fieldDescription>
+	</field>
+	<field name="is_need_afr" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要AFR]]></fieldDescription>
+	</field>
+	<field name="is_need_custom_apply" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要报关]]></fieldDescription>
+	</field>
+	<field name="is_need_delivery" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要配送]]></fieldDescription>
+	</field>
+	<field name="afr_done_time" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[AFR完成时间，填写即表示已完成]]></fieldDescription>
+	</field>
+	<field name="custom_done" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[报关完成时间]]></fieldDescription>
+	</field>
+	<field name="delivery_done" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[配送完成时间]]></fieldDescription>
 	</field>
 	<field name="type" class="java.lang.String">
 		<fieldDescription><![CDATA[进出口]]></fieldDescription>
@@ -654,10 +678,25 @@ where joli.id=$P{item_id}]]>
 			<textField isBlankWhenNull="true">
 				<reportElement x="28" y="0" width="215" height="17" uuid="965f9b9b-1e6b-4644-a864-4884fb8f906f"/>
 				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="246" y="0" width="169" height="17" uuid="0df93c12-0778-41ef-9f44-404bbd9ad43b"/>
+				<textFieldExpression><![CDATA[$F{own_homepage}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="441" y="0" width="125" height="17" uuid="f8309273-931e-4e61-a89b-31c319c2c8ae"/>
+				<textFieldExpression><![CDATA[$F{own_office_tel}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="411" y="0" width="30" height="17" uuid="779684fb-257e-4010-ac75-28158f6d6705"/>
+				<textElement>
+					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<text><![CDATA[TEL：]]></text>
+			</staticText>
 		</band>
 	</columnFooter>
 </jasperReport>
