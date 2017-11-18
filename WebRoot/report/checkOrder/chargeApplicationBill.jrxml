@@ -475,7 +475,7 @@ ORDER BY
 				<text><![CDATA[--]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="474" y="70" width="90" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4b91e4d8-9c05-4954-af1b-ad510c81bcc1"/>
+				<reportElement mode="Transparent" x="476" y="70" width="90" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4b91e4d8-9c05-4954-af1b-ad510c81bcc1"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -542,7 +542,7 @@ ORDER BY
 				<text><![CDATA[ATTN:]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="359" y="70" width="90" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="be42f302-6928-47a2-b86f-246c74583f7a"/>
+				<reportElement mode="Transparent" x="357" y="70" width="112" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="be42f302-6928-47a2-b86f-246c74583f7a"/>
 				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
 					<font fontName="黑体" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -565,7 +565,7 @@ ORDER BY
 				<text><![CDATA[TO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="449" y="70" width="25" height="20" uuid="fd565df8-8fc4-49d1-8562-3b1d0e136b4d"/>
+				<reportElement x="452" y="70" width="25" height="20" uuid="fd565df8-8fc4-49d1-8562-3b1d0e136b4d"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
