@@ -49,14 +49,16 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
-	oe.logo_path,
-	oe.office_name,
-	oe.eng_office_name,
-	oe.address,
-	oe.zip_code,
-	oe.homepage,
-	oe.office_fax,
-	oe.office_tel,
+	oe.logo_path,pown.logo_path own_logo_path,
+	IFNULL(pown.company_name,oe.office_name) own_company_name,
+	IFNULL(pown.company_name_eng,oe.eng_office_name) own_company_name_eng,
+	IFNULL(pown.address,oe.address) own_address,
+	IFNULL(pown.zip_code,oe.zip_code) own_zip_code,
+	IFNULL(pown.homepage,oe.homepage) own_homepage,
+	IFNULL(pown.fax,oe.office_fax) own_fax,
+	IFNULL(pown.phone,oe.office_tel) own_tel,
+	IFNULL(pown.email,oe.email) own_email,
+	u.email user_email,
 	u.c_name,
 	u.user_tel,
 	joa.id,
@@ -137,6 +139,7 @@ LEFT JOIN charge_application_order_rel caol ON caol.job_order_arap_id = joa.id
 LEFT JOIN arap_charge_application_order acao ON caol.application_order_id = acao.id
 LEFT JOIN arap_charge_order aco ON aco.id = caol.charge_order_id
 LEFT JOIN office oe on oe.id = aco.office_id
+LEFT JOIN (SELECT * from party where type='OWN') pown on  pown.office_id = oe.id
 LEFT JOIN user_login u on u.id = acao.create_by
 WHERE
 	acao.id = $P{order_id}
@@ -149,27 +152,18 @@ ORDER BY
 	<field name="logo_path" class="java.lang.String">
 		<fieldDescription><![CDATA[logo路径]]></fieldDescription>
 	</field>
-	<field name="office_name" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="own_logo_path" class="java.lang.String"/>
+	<field name="own_company_name" class="java.lang.String"/>
+	<field name="own_company_name_eng" class="java.lang.String">
+		<fieldDescription><![CDATA[本公司英文名称]]></fieldDescription>
 	</field>
-	<field name="eng_office_name" class="java.lang.String">
-		<fieldDescription><![CDATA[公司英文名称]]></fieldDescription>
-	</field>
-	<field name="address" class="java.lang.String">
-		<fieldDescription><![CDATA[公司英文地址]]></fieldDescription>
-	</field>
-	<field name="zip_code" class="java.lang.String">
-		<fieldDescription><![CDATA[邮政编码]]></fieldDescription>
-	</field>
-	<field name="homepage" class="java.lang.String">
-		<fieldDescription><![CDATA[公司主页]]></fieldDescription>
-	</field>
-	<field name="office_fax" class="java.lang.String">
-		<fieldDescription><![CDATA[公司传真]]></fieldDescription>
-	</field>
-	<field name="office_tel" class="java.lang.String">
-		<fieldDescription><![CDATA[公司电话]]></fieldDescription>
-	</field>
+	<field name="own_address" class="java.lang.String"/>
+	<field name="own_zip_code" class="java.lang.String"/>
+	<field name="own_homepage" class="java.lang.String"/>
+	<field name="own_fax" class="java.lang.String"/>
+	<field name="own_tel" class="java.lang.String"/>
+	<field name="own_email" class="java.lang.String"/>
+	<field name="user_email" class="java.lang.String"/>
 	<field name="c_name" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -297,7 +291,7 @@ ORDER BY
 		<band height="58" splitType="Stretch">
 			<image>
 				<reportElement x="-14" y="-10" width="190" height="51" uuid="d7c0123f-4c00-4bb2-b117-c27a6b980223"/>
-				<imageExpression><![CDATA[$F{logo_path}]]></imageExpression>
+				<imageExpression><![CDATA[($F{own_logo_path}.equals(null)?$F{logo_path}:"http://forwarder.esimplev.com/upload/partyLOGO/"+$F{own_logo_path})]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="496" y="-7" width="20" height="20" uuid="16dc522e-d6b6-4432-b343-57afec126daf"/>
@@ -352,6 +346,13 @@ ORDER BY
 				</textElement>
 				<text><![CDATA[制单人：]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="427" y="42" width="144" height="15" uuid="859aedcc-4f69-4f3e-b158-ae000915f5e9"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{user_email}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -665,7 +666,7 @@ ORDER BY
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{own_company_name}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Transparent" x="370" y="30" width="30" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="f2edbf15-2336-4e45-9fe2-9ffd1fcf76b7"/>
@@ -720,35 +721,43 @@ ORDER BY
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{own_address}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="30" y="45" width="340" height="15" uuid="19bd5e03-6fa6-42ac-a8b7-b0cbbbd605b2"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{homepage}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{own_homepage}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="30" y="30" width="340" height="15" uuid="0d429077-d894-4adb-b0c7-a02124975739"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{zip_code}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{own_zip_code}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="30" width="171" height="15" uuid="38e00010-65d8-4714-aeb0-42343a4dbbff"/>
+				<reportElement x="401" y="30" width="171" height="15" uuid="38e00010-65d8-4714-aeb0-42343a4dbbff"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{office_fax}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{own_fax}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="15" width="171" height="15" uuid="c87526f1-3c7f-46f6-900a-f9f07868715d"/>
+				<reportElement x="401" y="15" width="171" height="15" uuid="c87526f1-3c7f-46f6-900a-f9f07868715d"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{office_tel}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{own_tel}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="401" y="44" width="170" height="15" forecolor="#000000" backcolor="#FFFFFF" uuid="e0b407fc-23fd-4820-942b-059e5bf2bd10"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="黑体" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="STSong-Light" pdfEncoding="Identity-H" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{own_email}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
