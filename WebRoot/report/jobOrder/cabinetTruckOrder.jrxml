@@ -687,7 +687,10 @@ where joli.id=$P{item_id}]]>
 				<textFieldExpression><![CDATA[$F{own_homepage}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="436" y="0" width="125" height="17" uuid="f8309273-931e-4e61-a89b-31c319c2c8ae"/>
+				<reportElement x="436" y="1" width="125" height="17" uuid="f8309273-931e-4e61-a89b-31c319c2c8ae"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{own_office_tel}]]></textFieldExpression>
 			</textField>
 			<staticText>
