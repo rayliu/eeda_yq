@@ -687,13 +687,13 @@ where joli.id=$P{item_id}]]>
 				<textFieldExpression><![CDATA[$F{own_homepage}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="441" y="0" width="125" height="17" uuid="f8309273-931e-4e61-a89b-31c319c2c8ae"/>
+				<reportElement x="436" y="0" width="125" height="17" uuid="f8309273-931e-4e61-a89b-31c319c2c8ae"/>
 				<textFieldExpression><![CDATA[$F{own_office_tel}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="411" y="0" width="30" height="17" uuid="779684fb-257e-4010-ac75-28158f6d6705"/>
 				<textElement>
-					<font fontName="黑体" size="12" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+					<font fontName="黑体" size="10" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[TEL：]]></text>
 			</staticText>
