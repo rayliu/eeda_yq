@@ -447,7 +447,7 @@ GROUP BY aci.id]]>
 				<textFieldExpression><![CDATA[$F{homePage}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="666" y="0" width="138" height="20" uuid="401c6893-f06a-4616-a3a6-2eeca1ffa367"/>
+				<reportElement x="662" y="0" width="138" height="19" uuid="401c6893-f06a-4616-a3a6-2eeca1ffa367"/>
 				<textFieldExpression><![CDATA[$F{officeTel}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -458,7 +458,7 @@ GROUP BY aci.id]]>
 				<textFieldExpression><![CDATA[$F{officeName}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="639" y="0" width="27" height="20" uuid="730510ca-3651-4801-9768-52db92a5f4df"/>
+				<reportElement x="639" y="-1" width="27" height="20" uuid="730510ca-3651-4801-9768-52db92a5f4df"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
