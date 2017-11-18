@@ -567,7 +567,7 @@ ORDER BY
 			<staticText>
 				<reportElement x="449" y="70" width="25" height="20" uuid="fd565df8-8fc4-49d1-8562-3b1d0e136b4d"/>
 				<textElement>
-					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
 				<text><![CDATA[FAX:]]></text>
 			</staticText>
