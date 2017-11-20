@@ -47,6 +47,7 @@ $(document).ready(function() {
             	continue;
             
             var id = $(row).attr('id');
+            
             if(!id){
                 id='';
             }
@@ -62,6 +63,13 @@ $(document).ready(function() {
             	if(el && name){
                 	var value = el.val();//元素的值
                 	item[name] = value;
+                	if(name=='take_address_type'){
+                		value = $(row.childNodes[i]).parent().find('[name=TAKE_ADDRESS]').attr('loc_type');
+                		item[name] = value;
+                	}else if(name=='delivery_address_type'){
+                		value = $(row.childNodes[i]).parent().find('[name=DELIVERY_ADDRESS]').attr('loc_type');
+                		item[name] = value;
+                	}
             	}
             }
             item.action = id.length > 0?'UPDATE':'CREATE';
@@ -118,17 +126,20 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" style="width:20px" disabled>';
 			    }
 			},
-            { "width": "40px",
+            {"data": "TAKE_ADDRESS_TYPE", "width": "40px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" style="width:60px" class="delete btn table_btn delete_btn btn-xs" >删除</button>';
+                	return '<button type="button" style="width:60px" class="delete btn table_btn delete_btn btn-xs" >删除</button>'
+                	+"<input type='hidden' id='take_address_type' name='take_address_type' value='"+data+"' >";
                 }
             },
-            { "width": "40px",
+            {"data": "DELIVERY_ADDRESS_TYPE", "width": "40px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ID){
-            			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs" >费用</button>';	
+            			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs" >费用</button>'
+            				+"<input type='hidden' id='delivery_address_type' name='delivery_address_type' value='"+data+"' >";	
             		}else{
-            			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>';
+            			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>'
+            				+"<input type='hidden' id='delivery_address_type' name='delivery_address_type' value='"+data+"' >";
             		}
             	}
             },

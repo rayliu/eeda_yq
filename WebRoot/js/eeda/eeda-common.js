@@ -49,6 +49,7 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
               || url.indexOf('/costComparison/searchSpcomparison')!=-1
               || url.indexOf('/currencyRate/gainRateList')!=-1
               || url.indexOf('/transJobOrder/getCustomerQuotationAddress')!=-1
+              || url.indexOf('/currencyRate/gainRate')!=-1
           ){
             return;
           }
@@ -1002,12 +1003,13 @@ eeda.refreshUrl = refreshUrl;
                   return false;
               }
 
-              $.get('/serviceProvider/searchTruckOut', {input:inputStr}, function(data){
+              $.get('/serviceProvider/searchTruck', {input:inputStr,land_party_type:"CONSIGNOR"}, function(data){
                   if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
                       return;
                   }
                   tableFieldList.empty();
                   for(var i = 0; i < data.length; i++)
+                	  
                       tableFieldList.append("<li tabindex='"+i+"'><a class='item' dataId='"+data[i].ID
                               +"' dataName='"+data[i].NAME+"' "
                               +" phone='"+data[i].PHONE+"' "
@@ -1111,7 +1113,7 @@ eeda.refreshUrl = refreshUrl;
                   return false;
               }
 
-              $.get('/serviceProvider/searchTruckIn', {input:inputStr}, function(data){
+              $.get('/serviceProvider/searchTruck', {input:inputStr,land_party_type:"CONSIGNEE"}, function(data){
                   if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
                       return;
                   }
@@ -1897,7 +1899,7 @@ eeda.refreshUrl = refreshUrl;
 				  var me = this;
 				  var inputField = $(this);
 				  var hiddenField = $(this).parent().find('input[name='+el_name+']');
-				  var inputStr = $(this).parents('tr').find('[name='+para+'_input]').val();
+				  var inputStr = $(this).parents('tr').find('[name='+para+']').val();
            var  addressInputStr=inputField.val();
 
 	        if(cpLock)
@@ -1933,18 +1935,28 @@ eeda.refreshUrl = refreshUrl;
 
 	            
               for(var i = 0; i < data.length; i++){
-                 var d_unions=data[i].DOCK_NAMES.split(',');
-                 if(d_unions!=undefined && d_unions!=''){
-                     for (var j=0;j< d_unions.length;j++) {
-                       var d_separate=d_unions[j].split(':');
-                       tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' " 
-                    		       +"  dataId='"+d_separate[0]+"' " 
-                    		       +"  contact_man='"+d_separate[1]+"' " 
-                    		       +"  consignor_phone='"+d_separate[2]+"' " 
-                    		       +">"+d_separate[0]+"</a></li>");
-                       
-                     };
-                  }
+            	 if(data[i].PORT_ID){
+            		 tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' loc_type='port' " 
+              		       +"  dataId='"+data[i].DOCK_NAMES+"' " 
+              		       +"  contact_man='' " 
+              		       +"  consignor_phone='' " 
+              		       +">"+data[i].DOCK_NAMES+"</a></li>");
+            	 }else{
+            		 if(data[i].DOCK_NAMES){
+            			 var d_unions=data[i].DOCK_NAMES.split(',');
+                         if(d_unions!=undefined && d_unions!=''){
+                             for (var j=0;j< d_unions.length;j++) {
+                               var d_separate=d_unions[j].split(':');
+                               tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' loc_type='land' " 
+                            		       +"  dataId='"+d_separate[0]+"' " 
+                            		       +"  contact_man='"+d_separate[1]+"' " 
+                            		       +"  consignor_phone='"+d_separate[2]+"' " 
+                            		       +">"+d_separate[0]+"</a></li>");
+                               
+                             }
+                          }  
+            		 }            		 
+            	 }
               }
 
 			        tableFieldList.css({ 
@@ -1961,6 +1973,7 @@ eeda.refreshUrl = refreshUrl;
 			  tableFieldList.on('click', '.fromLocationItem', function(e){
 				  var inputField = eeda._inputField;
 				  var hiddenField = eeda._hiddenField;
+				  hiddenField.attr('loc_type',$(this).attr('loc_type'))
 				  inputField.val($(this).text());//名字
 				  tableFieldList.hide();
 				  var dataId = $(this).attr('dataId');

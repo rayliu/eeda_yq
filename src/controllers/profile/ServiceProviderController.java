@@ -954,59 +954,84 @@ public class ServiceProviderController extends Controller {
     public void searchTruckOut(){
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id = user.getLong("office_id");
-        String name = getPara("input");
+        String party_id = getPara("input");
         String addressInputStr = getPara("addressInputStr");
         String addStr = "";
         String conditon = "";
+        String judge_sql="";
+        String sql="";
         if(StringUtils.isNotEmpty(addressInputStr)){
         	addStr=" and dock_name like '%"+addressInputStr+"%' ";
         }
         
         if(addressInputStr!=null){
-        	conditon = "  and ( p.abbr ='" + name + "' or p.company_name = '" + name + "' ) ";
+        	conditon = "  and p.id ='" + party_id + "'";
         }else{
-        	if(!StringUtils.isBlank(name)){
-        		conditon = "  and ( p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ) ";
+        	if(!StringUtils.isBlank(party_id)){
+        		conditon = "  and ( p.abbr like '%" + party_id + "%' or p.company_name like '%" + party_id + "%' ) ";
             }
         }
+        Record judge_rec = null;
+        judge_sql="SELECT p.address dock_names "
+        		+ " FROM	party p	"
+        		+ " WHERE p.office_id = "+office_id+" AND	p.id = '"+party_id+"'  and p.address like '%"+addressInputStr+"%'"
+        		+ " union "
+        		+ " SELECT	GROUP_CONCAT( CONCAT("
+        		+ " 	ifnull(di.dock_name, ''),':',ifnull(di.land_contacts, ''),':',"
+        		+ " ifnull(di.land_contact_phone, '') )	"
+        		+ " ) dock_names"
+        		+ " FROM dockinfo di WHERE	di.party_id = '"+party_id+"' and di.dock_name like '%"+addressInputStr+"%'";
+        judge_rec = Db.findFirst(judge_sql);
+        
         
         List<Record> rec = null;
-        String sql = "select  * from(SELECT p.id, p.abbr NAME,p.phone, "
-        		+" 	p.address, "
-        		+" 	p.contact_person, "
-        		+" 	CONCAT( "
-        		+" 		CONCAT(IFNULL(p.address, ''),':',IFNULL(p.contact_person, ''),':',IFNULL(p.phone, '')), "
-        		+" 		',',IFNULL((SELECT GROUP_CONCAT(CONCAT(ifnull(di.dock_name,''),':',ifnull(di.land_contacts,''),':',ifnull(di.land_contact_phone,'')))"
-        		+ " from dockinfo di WHERE di.party_id=p.id "+addStr+"),'') "
-        		+" 	) dock_names "
-    			+ " FROM user_query_history uqh"
-    			+ " LEFT JOIN party p ON p.id = uqh.ref_id"
-    			+ " WHERE uqh.type = 'TRUCKOUT'"
-    			+ conditon
-    			+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
-    			+ " ORDER BY uqh.query_stamp desc ) A"
-    			
-    			+ " UNION"
-    			
-    			+ " (SELECT "
-        		+" 	p.id,p.abbr NAME,p.phone, "
-        		+" 	p.address, "
-        		+" 	p.contact_person, "
-        		+" 	CONCAT( "
-        		+" 		CONCAT(IFNULL(p.address, ''),':',IFNULL(p.contact_person, ''),':',IFNULL(p.phone, '')), "
-        		+" 		',',IFNULL((SELECT GROUP_CONCAT(CONCAT(ifnull(di.dock_name,''),':',ifnull(di.land_contacts,''),':',ifnull(di.land_contact_phone,'')))"
-        		+ " from dockinfo di WHERE di.party_id=p.id "+addStr+"),'') "
-        		+" 	) dock_names "
-        		+" FROM party p "
-        		+" WHERE "
-        		+" p.office_id ="+office_id
-        		+ conditon+")";
-        rec = Db.find(sql);
-        if(rec.size()==0){
-        	sql = "SELECT	GROUP_CONCAT( CONCAT(ifnull(di.dock_name, ''),':',ifnull(di.land_contacts, ''),':',	ifnull(di.land_contact_phone, '')"
-        			+ "	) ) dock_names FROM dockinfo di WHERE office_id ="+office_id+addStr;
-        rec = Db.find(sql);
+        String dock_names =judge_rec.get("dock_names");
+        if(StringUtils.isBlank(dock_names)){        	
+        	sql="SELECT	* FROM ( SELECT	dock.id dock_id,"
+        			+ " GROUP_CONCAT( CONCAT(ifnull(dock.dock_name, ''),':',ifnull(dock.land_contacts, ''),':',ifnull(dock.land_contact_phone, '')	) ) dock_names,"
+        			+ " NULL port_id "
+        			+ " FROM dockinfo dock	"
+        			+ "	WHERE office_id = "+office_id+" AND ( dock.dock_name LIKE '%"+addressInputStr+"%'	)"
+        			+ "	LIMIT 0,25"
+        			+ "	UNION	SELECT	NULL dock_id, CONCAT(NAME, '-', CODE) dock_names, lo.id port_id"
+        			+ " FROM location lo"
+        			+ " WHERE type = 'port'"
+        			+ "	AND (CONCAT(NAME, '-', CODE) LIKE '%"+addressInputStr+"%')	LIMIT 0,25) A";
+        	
+//        	sql = "SELECT	GROUP_CONCAT( CONCAT(ifnull(di.dock_name, ''),':',ifnull(di.land_contacts, ''),':',	ifnull(di.land_contact_phone, '')"
+//        			+ "	) ) dock_names FROM dockinfo di WHERE office_id ="+office_id+addStr + " limit 0,25";
+        }else{
+        	sql = "select  * from(SELECT p.id, p.abbr NAME,p.phone, "
+            		+" 	p.address, "
+            		+" 	p.contact_person, "
+            		+" 	CONCAT( "
+            		+" 		CONCAT(IFNULL(p.address, ''),':',IFNULL(p.contact_person, ''),':',IFNULL(p.phone, '')), "
+            		+" 		',',IFNULL((SELECT GROUP_CONCAT(CONCAT(ifnull(di.dock_name,''),':',ifnull(di.land_contacts,''),':',ifnull(di.land_contact_phone,'')))"
+            		+ " from dockinfo di WHERE di.party_id=p.id "+addStr+"),'') "
+            		+" 	) dock_names "
+        			+ " FROM user_query_history uqh"
+        			+ " LEFT JOIN party p ON p.id = uqh.ref_id"
+        			+ " WHERE uqh.type = 'TRUCKOUT'"
+        			+ conditon
+        			+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
+        			+ " ORDER BY uqh.query_stamp desc ) A"        			
+        			+ " UNION"        			
+        			+ " (SELECT "
+            		+" 	p.id,p.abbr NAME,p.phone, "
+            		+" 	p.address, "
+            		+" 	p.contact_person, "
+            		+" 	CONCAT( "
+            		+" 		CONCAT(IFNULL(p.address, ''),':',IFNULL(p.contact_person, ''),':',IFNULL(p.phone, '')), "
+            		+" 		',',IFNULL((SELECT GROUP_CONCAT(CONCAT(ifnull(di.dock_name,''),':',ifnull(di.land_contacts,''),':',ifnull(di.land_contact_phone,'')))"
+            		+ " from dockinfo di WHERE di.party_id=p.id "+addStr+"),'') "
+            		+" 	) dock_names "
+            		+" FROM party p "
+            		+" WHERE "
+            		+" p.office_id ="+office_id
+            		+ conditon+")";
         }
+        
+        rec = Db.find(sql);
         renderJson(rec);
     }
     
@@ -1045,8 +1070,15 @@ public class ServiceProviderController extends Controller {
     
     //查询收货人下拉列表
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
-    public void searchTruckIn(){
+    public void searchTruck(){
     	String input = getPara("input");
+    	String land_party_type = getPara("land_party_type");
+    	String type_condition="";
+    	if("CONSIGNOR".equals(land_party_type)){
+    		type_condition= " uqh.type = UPPER('TRUCKOUT') ";
+    	}else if("CONSIGNEE".equals(land_party_type)){
+    		type_condition= " uqh.type = UPPER('TruckIn') ";
+    	}
     	UserLogin user = LoginUserController.getLoginUser(this);
     	long office_id = user.getLong("office_id");
     	String conditions = "";
@@ -1057,7 +1089,7 @@ public class ServiceProviderController extends Controller {
     	String sql = "select * from (SELECT p.id, p.abbr name, p.phone, p.address,p.contact_person  "
     				+ " FROM user_query_history uqh"
     				+ " LEFT JOIN party p ON p.id = uqh.ref_id"
-    				+ " WHERE uqh.type = UPPER('TruckIn')"
+    				+ " WHERE "+type_condition
     				+ conditions
     				+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
     				+ " ORDER BY uqh.query_stamp desc ) A"

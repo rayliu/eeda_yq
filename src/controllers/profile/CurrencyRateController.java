@@ -133,7 +133,10 @@ public class CurrencyRateController extends Controller {
     		para_currency="";
     	}
     	String sql = "SELECT * from currency_rate "
-    			+ " where currency_code = '"+para_currency+"' AND to_currency_code = '"+para_exchange_currency+"' AND office_id = "+office_id;
+    			+ " where currency_code = '"+para_currency+"' AND to_currency_code = '"+para_exchange_currency+"' AND office_id = "+office_id
+    			+ " AND to_stamp IN (	SELECT	max(to_stamp) to_stamp	"
+    			+ " FROM	currency_rate	WHERE office_id ="+office_id
+    			+ "	GROUP BY currency_code )";
     	Record rec = Db.findFirst(sql);
     	if(rec==null){
     		renderJson("{\"result\":true}");

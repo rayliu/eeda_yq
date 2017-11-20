@@ -1724,6 +1724,8 @@ public class JobOrderController extends Controller {
     		String truck_type = null;         //车型
     		String take_address = null;       //发货地址
     		String delivery_address = null;   //收货地点
+    		String take_address_type = null;       //发货地址类型
+    		String delivery_address_type = null;   //收货地点类型
     		if(re.get("transport_company") != null){
     			transport_company = re.get("transport_company").toString();
     		}
@@ -1732,16 +1734,20 @@ public class JobOrderController extends Controller {
     		}
     		if(re.get("take_address") != null){
     			take_address = re.get("take_address").toString();
+    			take_address_type = re.get("take_address_type").toString();
     		}
     		if(re.get("delivery_address") != null){
     			delivery_address = re.get("delivery_address").toString();
+    			delivery_address_type = re.get("delivery_address_type").toString();
     		}
     		
     		Record map = new Record();
             map.set("transport_company", transport_company);
             map.set("truck_type", truck_type);
             map.set("take_address", take_address);
+            map.set("take_address_type", take_address_type);
             map.set("delivery_address", delivery_address);
+            map.set("delivery_address_type", delivery_address_type);
             jArray.add(map);
     	}
     	
@@ -1805,20 +1811,53 @@ public class JobOrderController extends Controller {
     		String transport_company = (String)map.get("TRANSPORT_COMPANY")==null?"":dto.getStr("TRANSPORT_COMPANY");
     		String truck_type = (String)map.get("TRUCK_TYPE")==null?"":dto.getStr("TRUCK_TYPE");
     		String take_address = (String)map.get("TAKE_ADDRESS")==null?"":dto.getStr("TAKE_ADDRESS");
+    		String take_address_type = (String)map.get("TAKE_ADDRESS_TYPE")==null?"":dto.getStr("TAKE_ADDRESS_TYPE");
     		String delivery_address = (String)map.get("DELIVERY_ADDRESS")==null?"":dto.getStr("DELIVERY_ADDRESS");
+    		String delivery_address_type = (String)map.get("DELIVERY_ADDRESS_TYPE")==null?"":dto.getStr("DELIVERY_ADDRESS_TYPE");
+    		String take_address_condition ="";
+    		String delivery_address_condition ="";
+    		String take_address_condition_change ="";
+    		String delivery_address_condition_change ="";
+    		if("port".equals(take_address_type)){
+    			take_address_condition= " and ((ifnull(CONCAT(lpol.name,'-',lpol.code),'') = '"+take_address+"' ";
+    		}else{
+    			take_address_condition= " and ((ifnull(dc_f.dock_name,'') = '"+take_address+"' ";
+    		}
+    		if("port".equals(delivery_address_type)){
+    			delivery_address_condition= " and ifnull(CONCAT(lpod.name,'-',lpod.code),'') = '"+delivery_address+"' )";
+    		}else{
+    			delivery_address_condition= " and ifnull(dc_t.dock_name,'') = '"+delivery_address+"' )";
+    		}
+    		
+    		
+    		if("port".equals(take_address_type)){
+    			take_address_condition_change= " and ifnull(CONCAT(lpod.name,'-',lpod.code),'') = '"+take_address+"')) ";
+    		}else{
+    			take_address_condition_change= " and ifnull(dc_t.dock_name,'') = '"+take_address+"')) ";
+    		}
+    		
+    		if("port".equals(delivery_address_type)){
+    			delivery_address_condition_change= " and (ifnull(CONCAT(lpol.name,'-',lpol.code),'') = '"+delivery_address+"') ";
+    		}else{
+    			delivery_address_condition_change= " and (ifnull(dc_f.dock_name,'') = '"+delivery_address+"') ";
+    		}
     		
     		String sql = "select sci.*,sc.contract_begin_time,sc.contract_end_time"
         			+ " from supplier_contract_location scl"
-        			+ " LEFT JOIN dockinfo dc_f on dc_f.id = scl.pol_id"
-        			+ " LEFT JOIN dockinfo dc_t on dc_t.id = scl.pod_id"
+        			+ " LEFT JOIN dockinfo dc_f on (dc_f.id = scl.pol_id and scl.pol_id_type='land')"
+        			+ " LEFT JOIN dockinfo dc_t on (dc_t.id = scl.pod_id and scl.pod_id_type='land')"
+        			+ " LEFT JOIN location lpol ON (lpol.id = scl.pol_id and scl.pol_id_type='port')"
+                    + " LEFT JOIN location lpod ON (lpod.id = scl.pod_id and scl.pod_id_type='port')"
         			+ " LEFT JOIN supplier_contract sc on sc.id = scl.contract_id"
         			+ " LEFT JOIN supplier_contract_item sci on sci.supplier_loc_id = scl.id"
         			+ " where "
         			+ " ifnull(sc.customer_id,'') = '"+transport_company+"' "
         			+ " and ('"+order_export_date+"' BETWEEN sc.contract_begin_time and sc.contract_end_time)"
-        			+ " and ((ifnull(dc_f.dock_name,'') = '"+take_address+"' and ifnull(dc_t.dock_name,'') = '"+delivery_address+"') "
+        			+ take_address_condition        			
+        			+ delivery_address_condition
         			+ " or"
-        			+ " (ifnull(dc_f.dock_name,'') = '"+delivery_address+"' and ifnull(dc_t.dock_name,'') = '"+take_address+"'))"
+        			+ delivery_address_condition_change
+        			+ take_address_condition_change
         			+ " and (ifnull(sci.truck_type,'') = '"+truck_type+"'"
         			+ " or ifnull(sci.truck_type,'') ='')"
         			+ " AND contract_type = 'land'"
