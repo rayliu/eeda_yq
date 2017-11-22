@@ -83,6 +83,7 @@ public class JobOrderController extends Controller {
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/jobOrder");
         setAttr("listConfigList", configList);
+        setAttr("user", user);
         if("lock".equals(type)){
         	render("/oms/JobOrder/JobOrderLockList.html");
         }else{
