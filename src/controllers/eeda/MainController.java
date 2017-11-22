@@ -82,6 +82,12 @@ public class MainController extends Controller {
     }
     
     public void index() {
+    	String serverName = getRequest().getServerName();
+        String basePath = getRequest().getScheme()+"://"+getRequest().getServerName()+":"+getRequest().getServerPort()+"/";
+        
+        logger.debug(serverName);
+        OfficeConfig of = OfficeConfig.dao.findFirst("select * from office_config where domain like '"+serverName +"%' or domain like '%"+serverName +"%'");
+        setAttr("SYS_CONFIG",of);
         render("/eeda/index.html");
     }
     @Before(EedaMenuInterceptor.class)
@@ -233,8 +239,14 @@ public class MainController extends Controller {
     }
     
     private void handleLoginSubtitle(){
-        String systemName = "检单供应链管理系统";
+        
         StringBuffer url = getRequest().getRequestURL();
+        String systemName = "";
+        if(url.toString().contains("enkyosys")){
+        	systemName = "远桥供应链管理系统";
+        }else{
+        	systemName = "检单供应链管理系统";
+        }
         String prefix = url.toString().substring(7).split("\\.")[0];
         logger.debug("prefix:"+prefix);
         if("booking".equals(prefix)){

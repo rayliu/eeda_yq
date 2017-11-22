@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
+<% var isEnkyo = SYS_CONFIG.css_path; %>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta property="qc:admins" content="1621525725152022123671306654" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+	
   
     <title>${_res.pageTitle}</title>
 	
@@ -16,11 +17,20 @@
     <link href="/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="/css/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="/css/sb-admin.css" rel="stylesheet">
-    <link href="/css/simple.css" rel="stylesheet">
+    <% if(isEnkyo=="/css/enkyo.css"){ %>
+    	<link href="/css/enkyo.css" rel="stylesheet">
+    <% }else{ %>
+    	<link href="/css/simple.css" rel="stylesheet">
+    <% } %>
 </head>
 
 <body>
+	
     <section class="login_back_top">
+    <% if(isEnkyo=="/css/enkyo.css"){ %>
+        <h2 class="login_logo"><strong>远桥供应链</strong>
+        </h2>
+   <% }else{ %>
         <div class="login_logo">
         </div>
         <div class="login_slogan">
@@ -30,9 +40,41 @@
             <button class="simple_btn">日语</button>
             <button class="simple_btn">English</button>
         </div>
+    <% } %>
     </section>
     <section class="login_back_middle">
-        <div class="row">
+    	<% if(isEnkyo=="/css/enkyo.css"){ %>
+        	<div class="row">
+	            <div>
+	                <div class="index_circle">
+	                    <a href="http://booking.enkyosys.com/login">
+	                        <img src="/images/BookingSystem.png">
+	                    </a>
+	                </div>
+	                <div class="index_circle">
+	                    <a href="http://trade.enkyosys.com/login">
+	                        <img src="/images/TradeSystem.png">
+	                    </a>
+	                </div>
+	                <div class="index_circle">
+	                    <a href="http://forwarder.enkyosys.com/login">
+	                        <img src="/images/ForwarderSystem.png">
+	                    </a>
+	                </div class="index_circle">
+	                <div class="index_circle">
+	                    <a href="http://custom.enkyosys.com/login">
+	                        <img src="/images/CustomSystem.png">
+	                    </a>
+	                </div>
+	                <div class="index_circle">
+	                    <a href="http://trans.enkyosys.com/login">
+	                        <img src="/images/TransSystem.png">
+	                    </a>
+	                </div>
+	            </div>
+	        </div>
+        <% }else{ %>
+        	<div class="row">
             <div>
                 <div class="index_circle">
                     <a href="http://booking.esimplev.com/login">
@@ -61,12 +103,13 @@
                 </div>
             </div>
         </div>
+        <% } %>
     </section>
     <section class="login_back_half_down">
         <div class="login_half_down_icons">
             <div class="icon">
                 <img src="/images/simple/login_icon1.png">
-                <p>
+                <p >
                     Shared Resource
                 </p>
                 <p>
@@ -94,9 +137,15 @@
         </div>
         
     </section>
-    <section class="login_back_footer">
-        Copyright © 2017-2027 ESIMPLEV
-    </section>
+    <% if(isEnkyo=="/css/enkyo.css"){ %>
+	    <section class="login_back_footer">
+	        Copyright © 2017-2027 ENKYO
+	    </section>
+	<% }else{%>
+		<section class="login_back_footer">
+	        Copyright © 2017-2027 ESIMPLEV
+	    </section>	
+	<%}%>
 
     <!-- Core Scripts - Include with every page 
     <script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" data-appid="101116610" data-redirecturi="http://56.eeda123.com" charset="utf-8"></script>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<% var isEnkyo = SYS_CONFIG.css_path; %>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta property="qc:admins" content="1621525725152022123671306654" />
@@ -18,11 +19,19 @@
     <link href="/css/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="/css/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="/css/sb-admin.css" rel="stylesheet">
-    <link href="/css/simple.css" rel="stylesheet">
+    <% if(isEnkyo=="/css/enkyo.css"){ %>
+    	<link href="/css/enkyo.css" rel="stylesheet">
+    <% }else{ %>
+    	<link href="/css/simple.css" rel="stylesheet">
+    <% } %>
 </head>
 
 <body>
     <section class="login_back_half_up">
+   <% if(isEnkyo=="/css/enkyo.css"){ %>
+        <h1 class="login_logo"><strong>远桥供应链</strong>
+        </h1>
+   <% }else{ %>
         <div class="login_logo">
         </div>
         <div class="login_slogan">
@@ -32,6 +41,7 @@
             <button class="simple_btn">日语</button>
             <button class="simple_btn">English</button>
         </div>
+    <% } %>
     </section>
     <section class="login_back_half_down">
         <div class="login_half_down_icons">
@@ -64,9 +74,15 @@
             </div>
         </div>
         <div class="login_form">
+        <% if(isEnkyo=="/css/enkyo.css"){ %>
             <div class="login_form_eng_title">
-                Esimplev Supply Management
+               Enkyo Supply Management
             </div>
+        <% }else{%>
+        	<div class="login_form_eng_title">
+               Esimplev Supply Management
+            </div>        
+        <%}%>
             <div class="login_form_cn_title">
                 ${system_name!'检单-供应链管理系统'} <span style="display: none;">- 注册新用户</span>
             </div>
@@ -89,9 +105,15 @@
                     </div>
             </form>
     </section>
-    <section class="login_back_footer">
-        Copyright © 2017-2027 ESIMPLEV
-    </section>
+    <% if(isEnkyo=="/css/enkyo.css"){ %>
+	    <section class="login_back_footer">
+	        Copyright © 2017-2027 ENKYO
+	    </section>
+	<% }else{%>
+		<section class="login_back_footer">
+	        Copyright © 2017-2027 ESIMPLEV
+	    </section>	
+	<%}%>
     <script src="/js/lib/jquery/jquery-1.10.2.js" type="text/javascript"></script>
     <script src="/js/lib/validate/jquery.validate.min.js"></script>
     <script src="/js/lib/validate/jvalidate.messages_cn.js"></script>
