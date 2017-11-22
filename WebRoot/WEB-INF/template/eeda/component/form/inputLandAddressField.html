@@ -14,7 +14,7 @@
 	    style="top: 22%; left: 33%;">
     </ul>
 </div>
-<input id="${id}" style="display: none;" name="${id}" value="${value!''}"/>
+<input id="${id}" style="display: none;" name="${id}" value="${value!''}" loc_type="${loc_type!''}"/>
 <script>
 
 $(document).ready(function() {
@@ -45,7 +45,7 @@ $(document).ready(function() {
             return false;
         }
 
-	     $.get("/serviceProvider/landAddress", {addressInputStr:inputStr}, function(data){
+	     $.get("/dockInfo/searchLoading", {input:inputStr}, function(data){
 	    	if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
 				return;
 			}
@@ -65,14 +65,16 @@ $(document).ready(function() {
 
 	        if(data!="无记录"){
 	        	for(var i = 0; i < data.length; i++){
-	                 addressFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dock_id='"+data[i].ID+"' dock_name='"+data[i].DOCK_NAME+"' cantact='"+data[i].LAND_CONTACTS+"' contact_phone='"+data[i].LAND_CONTACT_PHONE+"' bill_remark='"+data[i].BILL_REMARK+"' picture_link='"+data[i].PICTURE_LINK+"'  >"+data[i].DOCK_NAME+"</a></li>");
-	                /*  if(i == 0){
-	                	 $('#warehouse_contact').val(data[i].LAND_CONTACTS);
-	                	 $('#warehouse_contact_tel').val(data[i].LAND_CONTACT_PHONE);
-	                	 $('#warehouse_bill_remark').val(data[i].BILL_REMARK);
-	                	 $('#warehouse_adddress_input').val(data[i].DOCK_NAME);
-	                	 $('#warehouse_adddress').val(data[i].ID);
-	                 } */
+	        		if(data[i].PORT_ID){
+	        			addressFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' loc_type='port' dock_id='"+data[i].PORT_ID
+		                		 +"' dock_name='"+data[i].LOC_NAME+"' cantact='"+data[i].LAND_CONTACTS+"' contact_phone='"+data[i].LAND_CONTACT_PHONE
+		                		 +"' bill_remark='"+data[i].BILL_REMARK+"' picture_link='"+data[i].PICTURE_LINK+"'  >"+data[i].LOC_NAME+"</a></li>");
+	        		}else{
+	        			addressFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' loc_type='land' dock_id='"+data[i].DOCK_ID
+		                		 +"' dock_name='"+data[i].LOC_NAME+"' cantact='"+data[i].LAND_CONTACTS+"' contact_phone='"+data[i].LAND_CONTACT_PHONE
+		                		 +"' bill_remark='"+data[i].BILL_REMARK+"' picture_link='"+data[i].PICTURE_LINK+"'  >"+data[i].LOC_NAME+"</a></li>");
+	        		}
+	                 
 	              }
 	        }
 	            
@@ -104,6 +106,7 @@ $(document).ready(function() {
 		  addressFieldList.hide();
 		  var dataId = $(this).attr('dock_id');
 		  hiddenField.val(dataId);//id
+		  hiddenField.attr('loc_type',$(this).attr('loc_type'));//loc_type
 	});
 
 	//回车处理

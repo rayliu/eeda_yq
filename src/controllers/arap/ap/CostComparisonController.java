@@ -196,94 +196,268 @@ public class CostComparisonController extends Controller {
         renderJson(map); 
     } 
     
-    //
+    //海、空条件
     @SuppressWarnings("unchecked")
-    private String searchCondition(String condition_json){
+    private String searchCondition(Map<String,?> dto){
     	String condition = "";
-    	Gson gson = new Gson();    	
-		Map<String,?> dto = gson.fromJson(condition_json,HashMap.class);
+    	
 		if(dto!=null){
-			for (Entry<String, ?> entry : dto.entrySet()) { 
-				String key = entry.getKey();
-	            	String preValue = String.valueOf(entry.getValue()).trim();
-	            	String value = ToDBCUtil.ToDBC(preValue);//全角转半角函数
-//	            		logger.debug(key+":"+value);
-	            		if(StringUtils.isNotEmpty(value)){
-	                       if(key.contains("service_typeRadio")){
-	                    	   condition+=" and scl.type like '%"+value+"%'";
-	                       }else if(key.contains("trans_clause")){
-	                    	   condition+=" and spCon.trans_clause ='"+value+"'";
-	                       }else if(key.contains("trade_type")){
-	                    	   condition+=" and spCon.trade_type ='"+value+"'";
-	                       }else if(key.contains("por")){
-	                    	   condition+=" and scl.por_id ="+value;
-	                       }else if(key.contains("pod")){
-	                    	   condition+=" and scl.pod_id ="+value;
-	                       }                       
-	                    }
-			}
+			String service_typeRadio = (String) dto.get("service_typeRadio");
+				for (Entry<String, ?> entry : dto.entrySet()) { 
+					String key = entry.getKey();
+		            	String preValue = String.valueOf(entry.getValue()).trim();
+		            	String value = ToDBCUtil.ToDBC(preValue);//全角转半角函数
+//		            		logger.debug(key+":"+value);
+		            	    	if(key.contains("service_typeRadio")){
+		            	    		if("doorToPort".contains(service_typeRadio)){
+		            	    			condition+=StringUtils.isNotBlank(value)?" and scl.type like '%ocean%'":" and scl.type like '%%'";
+		            	    		}else{
+		            	    			condition+=StringUtils.isNotBlank(value)?" and scl.type like '%"+value+"%'":" and scl.type like '%%'";
+		            	    		}
+			                       }else if(key.contains("trans_clause")){
+			                    	   condition+=" and spCon.trans_clause ='"+value+"'";
+			                       }else if(key.contains("trade_type")){
+			                    	   condition+=" and spCon.trade_type ='"+value+"'";
+			                       }else if(key.contains("pol")){
+			                    	   condition+=StringUtils.isNotBlank(value)?" and scl.pol_id ="+value:" and scl.pol_id is null";
+			                       }else if(key.contains("pod")){
+			                    	   condition+=StringUtils.isNotBlank(value)?" and scl.pod_id ="+value:" and scl.pod_id is null";
+			                       }
+			                       if("ocean,doorToPort".contains(service_typeRadio)){
+			                    	   if(key.contains("por")){
+				                    	   condition+=StringUtils.isNotBlank(value)?" and scl.por_id ="+value:" and scl.por_id is null";
+				                       }  
+			                       }                   
+				}
+
 		}
     	return condition;
     }
+    //陆运条件
+    @SuppressWarnings("unchecked")
+    private String searchLandCondition(Map<String,?> dto){
+    	String condition = "";
+		if(dto!=null){
+				for (Entry<String, ?> entry : dto.entrySet()) { 
+					String key = entry.getKey();
+		            	String preValue = String.valueOf(entry.getValue()).trim();
+		            	String value = ToDBCUtil.ToDBC(preValue);//全角转半角函数
+//		            		logger.debug(key+":"+value);		            	    
+		            	    	if(key.contains("service_typeRadio")){		                    	   
+			                    	   condition+=StringUtils.isNotBlank(value)?" and scl.type like '%land%'":" and scl.type like '%%'";
+			                       }else if(key.contains("trans_clause")){
+			                    	   condition+=" and spCon.trans_clause ='"+value+"'";
+			                       }else if(key.contains("trade_type")){
+			                    	   condition+=" and spCon.trade_type ='"+value+"'";
+			                       }else if(key.contains("pickup_loc")){
+			                    	   condition+=" AND (IF (scl.pol_id_type = 'land',dpol.id = '"+value+"',lpol.id = '"+value+"'))";
+			                       }else if(key.contains("delivery_loc")){
+			                    	   condition+=" AND (IF (scl.pod_id_type = 'land',dpod.id = '"+value+"',lpod.id = '"+value+"'))";
+			                       }
+		            	    }                          
+
+		}
+    	return condition;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
   	
   	//获取供应商
-    
+    @SuppressWarnings("unchecked")
     public void searchSpcomparison(){
     	UserLogin user = LoginUserController.getLoginUser(this);
     	long office_id = user.getLong("office_id");
     	String condition_json = getPara("paraJson");
     	String input =getPara("input");
+    	
+    	Gson gson = new Gson();   	
+		
+		Map<String,?> dto = gson.fromJson(condition_json,HashMap.class);
+    	
     	if(StringUtils.isNotEmpty(input)){
     		input = " and py.abbr like '%"+getPara("input")+"%'";
     	}
     	
-    	String condition= searchCondition(condition_json);
+    	String service_typeRadio = (String)dto.get("service_typeRadio");
+    	String condition="";
+    	if("ocean,air,doorToPort".contains(service_typeRadio)){
+    		condition = searchCondition(dto);
+    	}
     	
-    	String sp_sql="SELECT py.id,py.abbr name,py.sp_type from supplier_contract spCon"
-    			+ " LEFT JOIN supplier_contract_location scl on spCon.id = scl.contract_id"
-    			+ " LEFT JOIN party py on py.id = spCon.customer_id"
-    			+ " where spCon.office_id ="+office_id+condition+input
-    			+ " GROUP BY spCon.customer_id";
+    	String land_condition="";
+    	if("land,doorToPort".contains(service_typeRadio)){
+    		land_condition=searchLandCondition(dto);
+    	}
+    	String sp_sql ="";
+    	String land_sp_sql ="";
+    	
+    	if("ocean,air".contains(service_typeRadio)){
+    		sp_sql="SELECT py.id,py.abbr name,py.sp_type from supplier_contract spCon"
+        			+ " LEFT JOIN supplier_contract_location scl on spCon.id = scl.contract_id"
+        			+ " LEFT JOIN party py on py.id = spCon.customer_id"
+        			+ " where spCon.office_id ="+office_id+condition+input
+        			+ " GROUP BY spCon.customer_id";
+    	}else if("land".contains(service_typeRadio)){
+    		sp_sql="SELECT py.id,py.abbr name,py.sp_type from supplier_contract spCon"
+        			+ " LEFT JOIN supplier_contract_location scl on spCon.id = scl.contract_id"
+        			+ " LEFT JOIN party py on py.id = spCon.customer_id"
+        			+ " LEFT JOIN dockinfo dpol ON (dpol.id = scl.pol_id AND scl.pol_id_type = 'land')"
+        			+ "	LEFT JOIN dockinfo dpod ON (dpod.id = scl.pod_id AND scl.pod_id_type = 'land')"
+        			+ "	LEFT JOIN location lpol ON (lpol.id = scl.pol_id AND scl.pol_id_type = 'port')"
+        			+ " LEFT JOIN location lpod ON (lpod.id = scl.pod_id AND scl.pod_id_type = 'port')"
+        			+ " where spCon.office_id ="+office_id+land_condition+input
+        			+ " GROUP BY spCon.customer_id";
+    	}else if("doorToPort".contains(service_typeRadio)){
+    		sp_sql="SELECT py.id,py.abbr name,py.sp_type from supplier_contract spCon"
+        			+ " LEFT JOIN supplier_contract_location scl on spCon.id = scl.contract_id"
+        			+ " LEFT JOIN party py on py.id = spCon.customer_id"
+        			+ " where spCon.office_id ="+office_id+condition+input
+        			+ " GROUP BY spCon.customer_id";
+    		land_sp_sql="SELECT py.id,py.abbr name,py.sp_type from supplier_contract spCon"
+        			+ " LEFT JOIN supplier_contract_location scl on spCon.id = scl.contract_id"
+        			+ " LEFT JOIN party py on py.id = spCon.customer_id"
+        			+ " LEFT JOIN dockinfo dpol ON (dpol.id = scl.pol_id AND scl.pol_id_type = 'land')"
+        			+ "	LEFT JOIN dockinfo dpod ON (dpod.id = scl.pod_id AND scl.pod_id_type = 'land')"
+        			+ "	LEFT JOIN location lpol ON (lpol.id = scl.pol_id AND scl.pol_id_type = 'port')"
+        			+ " LEFT JOIN location lpod ON (lpod.id = scl.pod_id AND scl.pod_id_type = 'port')"
+        			+ " where spCon.office_id ="+office_id+land_condition+input
+        			+ " GROUP BY spCon.customer_id";
+    		
+    		sp_sql=sp_sql+" union "+land_sp_sql;
+    	}
+    	
     	List<Record> rec = Db.find(sp_sql);
     	renderJson(rec);   	
     }
-
+    
+    
+    @SuppressWarnings("unchecked")
     public void searchShowItem(){    	
     	String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
-        			
+        }        			
         UserLogin user = LoginUserController.getLoginUser(this);
     	long office_id = user.getLong("office_id");
     	String conditionJson = getPara("paraJson");
-    	String condition = searchCondition(conditionJson);
+    	Gson gson = new Gson();    	
+		
+		Map<String,?> dto = gson.fromJson(conditionJson,HashMap.class);
+    	
+    	String service_typeRadio = (String)dto.get("service_typeRadio");
     	String sp_id_string = " and spCon.customer_id in("+getPara("sp_id_string")+")"; 
     	if(StringUtils.isEmpty(getPara("sp_id_string"))){
     		sp_id_string="";
     	}
+    	String condition="";
+    	if("ocean,air,doorToPort".contains(service_typeRadio)){
+    		condition = searchCondition(dto);
+    	}
+    	
+    	String land_condition="";
+    	if("land,doorToPort".contains(service_typeRadio)){
+    		land_condition=searchLandCondition(dto);
+    	}
+    	
+    	String item_sql="";
+    	String land_item_sql="";
+    	
+        if("ocean,air".contains(service_typeRadio)){
+        	item_sql = "SELECT py.id item_sp_id,scl.carrier_id,spCon.contract_no,spCon.trans_clause,spCon.trade_type,"
+        			+ " scl.por_id,scl.pol_id,scl.pod_id,sci.fee_id,sci.price,sci.currency_id,py.abbr sp_abbr,"
+        			+ " ifnull(pcar.abbr,pair.abbr) carrier_abbr,lpor.name por_name,lpol.name pol_name,lpod.name pod_name,fi.name fee_name,  sci.uom uom,"
+        			+ "	ut.name uom_name,sci.contract_type,	sci.volume1, sci.volume2, sci.gross_weight1,sci.gross_weight2,"
+        			+ "	sci.container_type,	sci.truck_type,"
+        			+ " cy.name currency_name,spCon.id con_id,spCon.id contract_id,scl.id contact_loc_id,sci.id contact_item_id,py.sp_type"
+        			+ " from  supplier_contract_item sci"
+        			+ " LEFT JOIN supplier_contract_location scl on sci.supplier_loc_id = scl.id"
+        			+ " LEFT JOIN supplier_contract spCon on spCon.id = scl.contract_id"
+        			+ " LEFT JOIN party py on py.id = spCon.customer_id"
+        			+ " LEFT JOIN party pcar ON pcar.id = scl.carrier_id"
+        			+ " LEFT JOIN party pair ON pair.id = scl.air_company"
+        			+ " LEFT JOIN location lpor ON lpor.id = scl.por_id"
+        			+ " LEFT JOIN location lpol ON lpol.id = scl.pol_id"
+        			+ " LEFT JOIN location lpod ON lpod.id = scl.pod_id"
+        			+ " LEFT JOIN fin_item fi ON fi.id = sci.fee_id"
+        			+ " LEFT JOIN unit ut on ut.id = sci.uom"
+        			+ " LEFT JOIN currency cy on cy.id = sci.currency_id"    			
+        			+ " where spCon.office_id ="+office_id+ condition+sp_id_string 
+        			+ " order by fi.name";
+        }else if("land".contains(service_typeRadio)){
+        	item_sql=" SELECT	py.id item_sp_id,scl.carrier_id,spCon.contract_no,spCon.trans_clause,spCon.trade_type,"
+        			+ "	null carrier_abbr,scl.por_id,	scl.pol_id,	scl.pod_id,	sci.fee_id,	sci.price,	sci.currency_id,"
+        			+ " py.abbr sp_abbr,null por_name,IFNULL(dpol.dock_name,lpol.name) pol_name,	IFNULL(dpod.dock_name,lpod.name) pod_name,"
+        			+ "	fi. NAME fee_name,sci.uom uom,ut. NAME uom_name,sci.contract_type,sci.volume1,sci.volume2,"
+        			+ "	sci.gross_weight1,sci.gross_weight2,sci.container_type,	sci.truck_type,	cy. NAME currency_name,"
+        			+ "	spCon.id con_id,spCon.id contract_id,scl.id contact_loc_id,	sci.id contact_item_id,	py.sp_type"
+        			+ " FROM	supplier_contract_item sci"
+        			+ " LEFT JOIN supplier_contract_location scl ON sci.supplier_loc_id = scl.id"
+        			+ " LEFT JOIN supplier_contract spCon ON spCon.id = scl.contract_id "
+        			+ " LEFT JOIN party pcar ON pcar.id = scl.carrier_id"
+        			+ " LEFT JOIN party py ON py.id = spCon.customer_id"
+        			+ " LEFT JOIN dockinfo dpol ON (dpol.id = scl.pol_id and scl.pol_id_type = 'land')"
+        			+ " LEFT JOIN dockinfo dpod ON (dpod.id = scl.pod_id and scl.pod_id_type = 'land')"
+        			+ " LEFT JOIN location lpol ON (lpol.id = scl.pol_id and scl.pol_id_type = 'port')"
+        			+ " LEFT JOIN location lpod ON (lpod.id = scl.pod_id and scl.pod_id_type = 'port')"
+        			+ " LEFT JOIN fin_item fi ON fi.id = sci.fee_id"
+        			+ " LEFT JOIN unit ut ON ut.id = sci.uom"
+        			+ " LEFT JOIN currency cy ON cy.id = sci.currency_id"
+        			+ " WHERE	spCon.office_id ="+office_id+land_condition+sp_id_string			
+        			+ " ORDER BY fi. NAME";
+        }else if("doorToPort".contains(service_typeRadio)){
+        	item_sql = "SELECT py.id item_sp_id,scl.carrier_id,spCon.contract_no,spCon.trans_clause,spCon.trade_type,"
+        			+ " scl.por_id,scl.pol_id,scl.pod_id,sci.fee_id,sci.price,sci.currency_id,py.abbr sp_abbr,"
+        			+ " ifnull(pcar.abbr,pair.abbr) carrier_abbr,lpor.name por_name,lpol.name pol_name,lpod.name pod_name,fi.name fee_name,  sci.uom uom,"
+        			+ "	ut.name uom_name,sci.contract_type,	sci.volume1, sci.volume2, sci.gross_weight1,sci.gross_weight2,"
+        			+ "	sci.container_type,	sci.truck_type,"
+        			+ " cy.name currency_name,spCon.id con_id,spCon.id contract_id,scl.id contact_loc_id,sci.id contact_item_id,py.sp_type"
+        			+ " from  supplier_contract_item sci"
+        			+ " LEFT JOIN supplier_contract_location scl on sci.supplier_loc_id = scl.id"
+        			+ " LEFT JOIN supplier_contract spCon on spCon.id = scl.contract_id"
+        			+ " LEFT JOIN party py on py.id = spCon.customer_id"
+        			+ " LEFT JOIN party pcar ON pcar.id = scl.carrier_id"
+        			+ " LEFT JOIN party pair ON pair.id = scl.air_company"
+        			+ " LEFT JOIN location lpor ON lpor.id = scl.por_id"
+        			+ " LEFT JOIN location lpol ON lpol.id = scl.pol_id"
+        			+ " LEFT JOIN location lpod ON lpod.id = scl.pod_id"
+        			+ " LEFT JOIN fin_item fi ON fi.id = sci.fee_id"
+        			+ " LEFT JOIN unit ut on ut.id = sci.uom"
+        			+ " LEFT JOIN currency cy on cy.id = sci.currency_id"    			
+        			+ " where spCon.office_id ="+office_id+ condition+sp_id_string ;
+        	
+        	land_item_sql=" SELECT	py.id item_sp_id,scl.carrier_id,spCon.contract_no,spCon.trans_clause,spCon.trade_type,"
+        			+ "	scl.por_id,	scl.pol_id,	scl.pod_id,	sci.fee_id,	sci.price,	sci.currency_id,"
+        			+ " py.abbr sp_abbr,null carrier_abbr,null por_name,IFNULL(dpol.dock_name,lpol.name) pol_name,	IFNULL(dpod.dock_name,lpod.name) pod_name,"
+        			+ "	fi. NAME fee_name,sci.uom uom,ut. NAME uom_name,sci.contract_type,sci.volume1,sci.volume2,"
+        			+ "	sci.gross_weight1,sci.gross_weight2,sci.container_type,	sci.truck_type,	cy. NAME currency_name,"
+        			+ "	spCon.id con_id,spCon.id contract_id,scl.id contact_loc_id,	sci.id contact_item_id,	py.sp_type"
+        			+ " FROM	supplier_contract_item sci"
+        			+ " LEFT JOIN supplier_contract_location scl ON sci.supplier_loc_id = scl.id"
+        			+ " LEFT JOIN supplier_contract spCon ON spCon.id = scl.contract_id "
+        			+ " LEFT JOIN party pcar ON pcar.id = scl.carrier_id"
+        			+ " LEFT JOIN party py ON py.id = spCon.customer_id"
+        			+ " LEFT JOIN dockinfo dpol ON (dpol.id = scl.pol_id and scl.pol_id_type = 'land')"
+        			+ " LEFT JOIN dockinfo dpod ON (dpod.id = scl.pod_id and scl.pod_id_type = 'land')"
+        			+ " LEFT JOIN location lpol ON (lpol.id = scl.pol_id and scl.pol_id_type = 'port')"
+        			+ " LEFT JOIN location lpod ON (lpod.id = scl.pod_id and scl.pod_id_type = 'port')"
+        			+ " LEFT JOIN fin_item fi ON fi.id = sci.fee_id"
+        			+ " LEFT JOIN unit ut ON ut.id = sci.uom"
+        			+ " LEFT JOIN currency cy ON cy.id = sci.currency_id"
+        			+ " WHERE	spCon.office_id ="+office_id+land_condition+sp_id_string;
+        	item_sql ="SELECT * FROM ( " + item_sql +" union "+land_item_sql+" ) A ORDER BY fee_name ";
+        }
+    	
         
-    	String item_sql = "SELECT py.id item_sp_id,scl.carrier_id,spCon.contract_no,spCon.trans_clause,spCon.trade_type,"
-    			+ " scl.por_id,scl.pol_id,scl.pod_id,sci.fee_id,sci.price,sci.currency_id,py.abbr sp_abbr,"
-    			+ " pcar.abbr carrier_abbr,lpor.name por_name,lpol.name pol_name,lpod.name pod_name,fi.name fee_name,  sci.uom uom,"
-    			+ "	ut.name uom_name,sci.contract_type,	sci.volume1, sci.volume2, sci.gross_weight1,sci.gross_weight2,"
-    			+ "	sci.container_type,	sci.truck_type,"
-    			+ " cy.name currency_name,spCon.id con_id,spCon.id contract_id,scl.id contact_loc_id,sci.id contact_item_id,py.sp_type"
-    			+ " from  supplier_contract_item sci"
-    			+ " LEFT JOIN supplier_contract_location scl on sci.supplier_loc_id = scl.id"
-    			+ " LEFT JOIN supplier_contract spCon on spCon.id = scl.contract_id"
-    			+ " LEFT JOIN party py on py.id = spCon.customer_id"
-    			+ " LEFT JOIN party pcar ON pcar.id = scl.carrier_id"
-    			+ " LEFT JOIN location lpor ON lpor.id = scl.por_id"
-    			+ " LEFT JOIN location lpol ON lpol.id = scl.pol_id"
-    			+ " LEFT JOIN location lpod ON lpod.id = scl.pod_id"
-    			+ " LEFT JOIN fin_item fi ON fi.id = sci.fee_id"
-    			+ " LEFT JOIN unit ut on ut.id = sci.uom"
-    			+ " LEFT JOIN currency cy on cy.id = sci.currency_id"    			
-    			+ " where spCon.office_id ="+office_id+ condition+sp_id_string 
-    			+ " order by fi.name";
-
         String sqlTotal = "select count(1) total from ("+item_sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
@@ -309,15 +483,19 @@ public class CostComparisonController extends Controller {
 		UserLogin user = LoginUserController.getLoginUser(this);
 		long office_id = user.getLong("office_id");
 		
-		String Sql = "SELECT spCom.*,dock.dock_name loc_name,lor.name por_name,lol.name pol_name,lod.name pod_name,ul.c_name creator_name,cy.name currency_name"
+		String Sql = "SELECT spCom.*,ifnull(dockp.dock_name,concat(lpol.name,' -',lpol.code)) pickup_loc_name,ifnull(dockd.dock_name,concat(lpod.name,' -',lpod.code)) delivery_loc_name,concat(lor.name,' -',lor.code) por_name,"
+				+ " lol.name pol_name,lod.name pod_name,ul.c_name creator_name,cy.name currency_name"
 				+ " from sp_cost_compare_order spCom"
-				+ " LEFT JOIN dockinfo dock on dock.id = spCom.pickup_loc"
+				+ " LEFT JOIN dockinfo dockp on (dockp.id = spCom.pickup_loc and spCom.pickup_loc_type='land')"
+				+ " LEFT JOIN dockinfo dockd on (dockd.id = spCom.delivery_loc and spCom.delivery_loc_type='land')"
+				+ " LEFT JOIN location lpol  on (lpol.id = spCom.pickup_loc and spCom.pickup_loc_type='port')"
+				+ " LEFT JOIN location lpod  on (lpod.id = spCom.delivery_loc and spCom.delivery_loc_type='port')"
 				+ " LEFT JOIN location lor on lor.id = spCom.por"
 				+ " LEFT JOIN location lol on lol.id = spCom.pol"
 				+ " LEFT JOIN location lod on lod.id = spCom.pod"
 				+ " LEFT JOIN user_login ul on ul.id = spCom.creator"
 				+ " LEFT JOIN currency cy on cy.id = spCom.target_currency"
-				+ "  WHERE spCom.office_id = ? and spCom.id = ?";
+				+ " WHERE spCom.office_id = ? and spCom.id = ?";
 
 		Record order = Db.findFirst(Sql,office_id,id);
 		setAttr("order", order);
@@ -353,7 +531,6 @@ public class CostComparisonController extends Controller {
     				+ " LEFT JOIN currency cy on cy.id = sci.currency_id"
     				+ " WHERE scco.id = ?";
     	}
-    	
     	itemList = Db.find(itemSql, orderId);
 		return itemList;
 	}

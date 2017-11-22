@@ -1057,7 +1057,9 @@ public class ServiceProviderController extends Controller {
         String sql = " SELECT dock.* from dockinfo dock LEFT JOIN party p on dock.party_id = p.id"
         		+ " WHERE p.office_id = "+office_id+sp_id+ addStr;
         if(StringUtils.isEmpty(spId)){
+        	
         	sql = " SELECT dock.* from dockinfo dock WHERE dock.office_id="+office_id+ addStr;
+        	
         }
         
         rec = Db.find(sql + " limit 25" );

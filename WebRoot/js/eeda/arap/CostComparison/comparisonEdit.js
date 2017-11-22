@@ -12,13 +12,47 @@ $(document).ready(function() {
     var buildOrder = function(){
     	var item = {};
     	item.id = $('#order_id').val();
+    	if(!item.id){
+    		item.status ='新建';
+    	}
+    	item.service_type = $('#billing_method input[type="radio"]:checked').val();
+    	//根据类型储存港口
+    	if(item.service_type=='ocean'){
+    		item.por = $('#por').val();
+        	item.pol = $('#pol').val();
+        	item.pod = $('#pod').val();
+        	item.pickup_loc = '';
+        	item.delivery_loc = '';
+    	}else if(item.service_type=='air'){
+    		item.por = '';
+        	item.pol = $('#pol').val();
+        	item.pod = $('#pod').val();
+        	item.pickup_loc = '';
+        	item.delivery_loc = '';
+    	}else if(item.service_type=='land'){
+    		item.por = '';
+        	item.pol = '';
+        	item.pod = '';
+        	item.pickup_loc = $('#pickup_loc').val();
+        	item.delivery_loc = $('#delivery_loc').val();
+    	}else if(item.service_type=='doorToPort'){
+    		item.por = $('#por').val();
+        	item.pol = $('#pol').val();
+        	item.pod = $('#pod').val();
+        	item.pickup_loc = $('#pickup_loc').val();
+        	item.delivery_loc = $('#delivery_loc').val();
+    	} 	
+    	
+    	item.pickup_loc_type = $('#pickup_loc').attr('loc_type');
+    	item.delivery_loc_type = $('#delivery_loc').attr('loc_type');
+    	
     	item.cny_rate = $('#cny_rate').val();
     	item.usd_rate = $('#usd_rate').val();
     	item.jpy_rate = $('#jpy_rate').val();
     	item.hkd_rate = $('#hkd_rate').val();
     	item.jpy_rate = $('#jpy_rate').val();
     	item.target_currency = $('#target_currency').val();
-    	item.service_type = $('#billing_method input[type="radio"]:checked').val();
+    	
     	item.total = $('#total').val();
     	item.status='新建';
     	var orderForm = $('#orderForm input,#orderForm select,#orderForm textarea');
@@ -109,6 +143,7 @@ $(document).ready(function() {
 		var total =parseFloat(cny_total+usd_total+jpy_total+hkd_total).toFixed(2);
 		$('#total').val(total);
 	}
+	
 	
 	if($('#order_id').val()){
 		setTimeout(function(){

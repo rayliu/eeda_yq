@@ -36,12 +36,19 @@ $(document).ready(function() {
                     return data;
                 }   
             },
-            {"data":"TYPE",
+            {"data":"SERVICE_TYPE",
                 "render": function(data,type,full,mate){
-                if(!data){
-                	data='';
-                }  
-                return data;
+                var str = data;
+                if(str=="ocean"){
+                	return "海运 ";
+                }else if(str=="air"){
+                	return "空运";
+                }else if(str=="land"){
+                	return "陆运";
+                }else if(str=="doorToPort"){
+                	return "门到港";
+                }
+                
               }   
             },
             {"data":"POL_NAME",

@@ -185,27 +185,37 @@
 			                        		]                     	
 			                        	}){}%>                        	
                         	</div> 
-                        
                         </div>
-                        <div class="row">
+                     </form>
+                        <div class="row" id ="land_loc">
                         	<div class="col-lg-4">
 	                        	<%include("/eeda/component/form/inputLandAddressField.html", 
 	                        			{  id:'pickup_loc', 
-				                           label:'提货地', 
+				                           label:'提货地',
+				                           loc_type:order.pickup_loc_type!'', 
 				                           value:order.pickup_loc!'',
-				                           display_value:order.loc_name!''
+				                           display_value:order.pickup_loc_name!''
 				                       }){}%>                        	
                         	</div>
                         	<div class="col-lg-4">
+	                        	<%include("/eeda/component/form/inputLandAddressField.html", 
+	                        			{  id:'delivery_loc', 
+				                           label:'目的地',
+				                           loc_type:order.delivery_loc_type!'',  
+				                           value:order.delivery_loc!'',
+				                           display_value:order.delivery_loc_name!''
+				                       }){}%>                        	
+                        	</div>
+                        </div>
+                        <div class="row" id="ocean_loc">	
+                        	<div class="col-lg-4" id ="por_div">
 	                        	<%include("/eeda/component/form/inputPortField.html", 
 	                        			{  id:'por', 
 				                           label:'POR', 
 				                           value:order.por!'',
 				                           display_value:order.por_name!''
 				                       }){}%>                        	
-                        	</div>
-                        </div>
-                        <div class="row">                   
+                        	</div>                 
                         	<div class="col-lg-4">
 	                        	<%include("/eeda/component/form/inputPortField.html", 
 	                        			{  id:'pol', 
@@ -223,7 +233,7 @@
 			                       }){}%>                     	
                         	</div>
                         </div>
-                     </form>
+                     
                 </div><br><br>
                 <div class="simple_order_list_div">
                 	 <div  id="invoice_list">

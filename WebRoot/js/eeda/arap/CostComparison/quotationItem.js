@@ -177,7 +177,8 @@ $("#quotation_table").on('click', '.delete', function(){
     		            			id: 'UOM',
     		                        value: data,
     		                        display_value:full.UOM_NAME,
-    		                        style:'width:100px'
+    		                        style:'width:100px',
+	                                disabled:'disabled'
             				});
                 		return field_html;
                 	}
@@ -186,7 +187,7 @@ $("#quotation_table").on('click', '.delete', function(){
                 	"render": function ( data, type, full, meta ) {
                 		 if(!data)
     	                        data='';
-    	                    var str = '<select name= "container_type" class="form-control search-control" style="width:70px">'
+    	                    var str = '<select name= "container_type" class="form-control search-control" disabled style="width:70px">'
     	                    		  +'<option></option>'
     	                    		  +'<option value = "20GP" '+(data=='20GP'?'selected':'')+'>20GP</option>'
     	                    		  +'<option value = "40GP"'+(data=='40GP'?'selected':'')+'>40GP</option>'
@@ -200,7 +201,7 @@ $("#quotation_table").on('click', '.delete', function(){
                 	"render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        return '<input type="text" name="volume1" value="'+data+'" class="form-control" style="width:55px"/>';
+                        return '<input type="text" disabled name="volume1" value="'+data+'" class="form-control" style="width:55px"/>';
                     }
                 },
                 { "data": "-","width": "5px",
@@ -213,7 +214,7 @@ $("#quotation_table").on('click', '.delete', function(){
                 	"render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        return '<input type="text" name="volume2" value="'+data+'" class="form-control" style="width:50px"/>';
+                        return '<input type="text" disabled name="volume2" value="'+data+'" class="form-control" style="width:50px"/>';
                     }
                 },
                 { "data": "GROSS_WEIGHT1", "width": "40px",
@@ -221,7 +222,7 @@ $("#quotation_table").on('click', '.delete', function(){
                     	 if(!data)
     	                        data='';
     	                    
-    	                    return '<input type="text" style="width:50px" name="gross_weight1" value = "'+data+'" class="form-control notsave" >';
+    	                    return '<input type="text" disabled style="width:50px" name="gross_weight1" value = "'+data+'" class="form-control notsave" >';
                     }
                 },
                 { "data": "-","width": "5px",
@@ -235,7 +236,7 @@ $("#quotation_table").on('click', '.delete', function(){
                     	 if(!data)
     	                        data='';
     	                    
-    	                    return '<input type="text" style="width:50px" name="gross_weight2" value = "'+data+'" class="form-control notsave" >';
+    	                    return '<input type="text" disabled style="width:50px" name="gross_weight2" value = "'+data+'" class="form-control notsave" >';
                     }
                 },
                 {"data":"SP_ABBR","visible":false,
@@ -401,5 +402,98 @@ $("#quotation_table").on('click', '.delete', function(){
           deletedTableIds = [];
           return cargo_items_array;
       };
+      
+    //显示地点条件
+      var show_loc_concition=function(checkValue){
+    	  if(checkValue=="ocean"){
+    			$('#ocean_loc').show();
+    			$('#por_div').show();
+    			$('#land_loc').hide();
+    			$('#pol').attr('port_type','port');
+    			$('#pod').attr('port_type','port');
+    			$('#quotation_table_head th').each(function(){
+    				var head_name=$(this).text();
+    				var i =$(this).index()+1;
+    				if(i==3){
+    					if(head_name!="船东(航空)公司"){
+        					$('#quotation_table').dataTable().fnSetColumnVis(2, true);
+        	    			$('#quotation_table').dataTable().fnSetColumnVis(6, true);
+        				}
+    				}
+    				
+    			});
+    		}else if(checkValue=="air"){
+    			$('#ocean_loc').show();
+    			$('#land_loc').hide();
+    			$('#por_div').hide();
+    			$('#pol').attr('port_type','air_port');
+    			$('#pod').attr('port_type','air_port');
+    			$('#quotation_table_head th').each(function(){
+    				var head_name=$(this).text();
+    				var i =$(this).index()+1;
+    				if(i==3){
+    					if(head_name!="船东(航空)公司"){
+    						$('#quotation_table').dataTable().fnSetColumnVis(2, true);
+        	    			$('#quotation_table').dataTable().fnSetColumnVis(6, true);
+        				}
+    				}
+    				
+    			});
+    			
+    		}else if(checkValue=="land"){
+    			$('#ocean_loc').hide();
+    			$('#land_loc').show();
+    			$('#quotation_table_head th').each(function(){
+    				var head_name=$(this).text();
+    				var i =$(this).index()+1;
+    				if(i==3){
+    					if(head_name!="船东(航空)公司"){
+    						$('#quotation_table').dataTable().fnSetColumnVis(2, false);
+    		    			$('#quotation_table').dataTable().fnSetColumnVis(6, false);
+        				}
+    				}
+    				
+    			});			
+    		}else if(checkValue=="doorToPort"){
+    			$('#ocean_loc').show();
+    			$('#por_div').show();
+    			$('#land_loc').show();
+    			$('#pol').attr('port_type','port');
+    			$('#pod').attr('port_type','port');    			
+    			$('#quotation_table_head th').each(function(){
+    				var head_name=$(this).text();
+    				var i =$(this).index()+1;
+    				if(i==3){
+    					if(head_name!="船东(航空)公司"){
+        					$('#quotation_table').dataTable().fnSetColumnVis(2, true);
+        	    			$('#quotation_table').dataTable().fnSetColumnVis(6, true);
+        				}
+    				}
+    				
+    			});
+    		}
+      }
+      
+      //服务项目回显
+      var radioVal = $('#service_typeRadio').val();
+      $('#billing_method input[type="radio"]').each(function(){
+      	var checkValue = $(this).val();
+      	if(radioVal==checkValue){
+      		$(this).attr("checked",true);
+      	    //显示地点条件
+      		show_loc_concition(checkValue);
+      	}
+      });
+      
+      //显示地点条件
+      $('#billing_method input[name=service_type]').change(function(){
+    	  var checkValue=$('input[name=service_type]:checked').val();
+    	  show_loc_concition(checkValue);
+      });
+      
+      
+      
+      
+      
 
 });

@@ -14,6 +14,7 @@
 			  condition_json.trans_clause =$('#trans_clause').val();
 			  condition_json.trade_type =$('#trade_type').val();
 			  condition_json.pickup_loc =$('#pickup_loc').val();
+			  condition_json.delivery_loc =$('#delivery_loc').val();
 			  condition_json.por =$('#por').val();
 			  condition_json.pol =$('#pol').val();
 			  condition_json.pod =$('#pod').val();
@@ -119,15 +120,7 @@
           });
     	  eeda._inputField.parent().parent().parent().find('[name=SP_TYPE]').val(str);
       });
-      
-      //服务项目回显
-      var radioVal = $('#service_typeRadio').val();
-      $('#billing_method input[type="radio"]').each(function(){
-      	var checkValue = $(this).val();
-      	if(radioVal==checkValue){
-      		$(this).attr("checked",true);
-      	}
-      });
+
       
       
     //刷新明细表
