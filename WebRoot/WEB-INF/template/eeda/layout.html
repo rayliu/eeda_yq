@@ -45,7 +45,7 @@
 <body>
 
     <div id="wrapper">
-
+		<% var isEnkyo =SYS_CONFIG.css_path; %>
         <nav id="headDiv" class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
@@ -55,7 +55,9 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="">
-                <h3 style="color:white;margin-top:-15px">远桥供应链</h3>
+                <% if(isEnkyo=="/css/enkyo.css"){ %>
+                	<h3 style="color:white;margin-top:-15px">远桥供应链</h3>
+                <% } %>
                 </a>
                 
             </div>
