@@ -145,6 +145,8 @@ public class SpController extends Controller {
 		re.set("end_date", endDate);
 		re.set("status", "开启");
 		re.set("creator", id);
+		re.set("title", "默认标题");
+		re.set("content", "暂无");
 		re.set("remark", "管理员续费");
 		re.set("create_time", new Date());
 		re.set("price", 0);

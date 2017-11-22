@@ -34,14 +34,15 @@ public class AppTaoController extends Controller {
     			+ " if(photo = '' || photo is null, default_photo, photo) photo"
     			+ " FROM"
     			+ " `wc_ad_banner_photo`; ");
-    	//横幅广告
+    	//促销广告
     	List<Record> cuList = Db.find(" select "
-    			+ " cast(wcu.id as char) id ,cgr.`name` trade_type,"
+    			+ " wcu.id id ,cgr.`name` trade_type,"
     			+ " com.c_name compnay_name,wcu.begin_date,wcu.end_date,wcu.title,wcu.content,"
-    			+ " cast(wcu.creator as char) user_id"
+    			+ " wcu.creator user_id"
     			+ " from wc_ad_cu wcu "
     			+ " LEFT JOIN wc_company com on com.creator = wcu.creator"
-    			+ " LEFT JOIN category cgr on cgr.id = com.trade_type");
+    			+ " LEFT JOIN category cgr on cgr.id = com.trade_type"
+    			+ " where ifnull(wcu.title,'') != '' ");
     	Record data = new Record();
     	data.set("bannerList", bannerList);
     	data.set("cuList", cuList);

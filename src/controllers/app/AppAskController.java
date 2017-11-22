@@ -28,7 +28,7 @@ public class AppAskController extends Controller {
     	String conditions = getRequest().getHeader("conditions");
     	
     	//商家列表
-    	List<Record> askList = Db.find(" select cast(wq.id as char) id,wq.create_time,wq.title,wc.c_name shop_name"
+    	List<Record> askList = Db.find(" select wq.id id,wq.create_time,wq.title,wc.c_name shop_name"
     			+ " from wc_question wq"
     			+ " left join wc_company wc on wc.creator = wq.creator");
     	
@@ -45,7 +45,7 @@ public class AppAskController extends Controller {
     	String question_id = getRequest().getHeader("question_id");
     	
     	//商家列表
-    	List<Record> responseList = Db.find(" select cast(wr.id as char) id,wr.create_time,wr.value,wc.c_name shop_name"
+    	List<Record> responseList = Db.find(" select wr.id id,wr.create_time,wr.value,wc.c_name shop_name"
     			+ " from wc_response wr"
     			+ " left join wc_company wc on wc.creator = wr.creator"
     			+ " where question_id = ?",question_id);

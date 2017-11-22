@@ -54,16 +54,17 @@ public class ProductController extends Controller {
 	public void list() {
 	    String sLimit = "";
         String pageIndex = getPara("draw");
+        Long userId = LoginUserController.getLoginUserId(this);
+        
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        Long userId = LoginUserController.getLoginUserId(this);
+        
+        //String condition = DbUtils.buildConditions(getParaMap());
         String sql = "select * from wc_product where creator = "+ userId;
-        String condition = DbUtils.buildConditions(getParaMap());
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
-        Record rec = Db.findFirst(sqlTotal);
-        logger.debug("total records:" + rec.getLong("total"));
-        List<Record> orderList = Db.find(sql+ condition + " order by seq " +sLimit);
+        
+        Record rec = Db.findFirst("select count(1) total from ("+sql+") B");
+        List<Record> orderList = Db.find(sql + " order by id desc " +sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
