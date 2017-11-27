@@ -1735,11 +1735,16 @@ public class JobOrderController extends Controller {
     		}
     		if(re.get("take_address") != null){
     			take_address = re.get("take_address").toString();
-    			take_address_type = re.get("take_address_type").toString();
+    			if(re.get("take_address_type") !=null){
+    				take_address_type = re.get("take_address_type").toString();
+    			}    			
     		}
     		if(re.get("delivery_address") != null){
     			delivery_address = re.get("delivery_address").toString();
-    			delivery_address_type = re.get("delivery_address_type").toString();
+    			if(re.get("delivery_address_type") !=null){
+    				delivery_address_type = re.get("delivery_address_type").toString();
+    			}
+    			
     		}
     		
     		Record map = new Record();
@@ -1832,15 +1837,15 @@ public class JobOrderController extends Controller {
     		
     		
     		if("port".equals(take_address_type)){
-    			take_address_condition_change= " and ifnull(CONCAT(lpod.name,'-',lpod.code),'') = '"+take_address+"')) ";
+    			take_address_condition_change= " and ifnull(CONCAT(lpod.name,'-',lpod.code),'') = '"+take_address+"') ";
     		}else{
-    			take_address_condition_change= " and ifnull(dc_t.dock_name,'') = '"+take_address+"')) ";
+    			take_address_condition_change= " and ifnull(dc_t.dock_name,'') = '"+take_address+"') ";
     		}
     		
     		if("port".equals(delivery_address_type)){
-    			delivery_address_condition_change= " and (ifnull(CONCAT(lpol.name,'-',lpol.code),'') = '"+delivery_address+"') ";
+    			delivery_address_condition_change= " (ifnull(CONCAT(lpol.name,'-',lpol.code),'') = '"+delivery_address+"' ";
     		}else{
-    			delivery_address_condition_change= " and (ifnull(dc_f.dock_name,'') = '"+delivery_address+"') ";
+    			delivery_address_condition_change= " (ifnull(dc_f.dock_name,'') = '"+delivery_address+"' ";
     		}
     		
     		String sql = "select sci.*,sc.contract_begin_time,sc.contract_end_time"
@@ -4126,6 +4131,76 @@ public class JobOrderController extends Controller {
     	}
         renderJson(jobOrderDoc);
     }
+    
+    //提交给代理
+    @SuppressWarnings("unchecked")
+    public void subToAgent(){
+    	String subAgentCondition =getPara("params");
+    	Gson gson =new Gson();
+    	Map<String,?> dto = gson.fromJson(subAgentCondition, HashMap.class);
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	long office_id = user.getLong("office_id");
+    	
+    	String order_id = (String)dto.get("order_id");
+    	String oversea_agent = (String)dto.get("oversea_agent");
+    	String agent_type = (String)dto.get("agent_type");
+    	String is_need_afr = (String)dto.get("is_need_afr");
+    	String is_need_custom_apply = (String)dto.get("is_need_custom_apply");
+    	String is_need_delivery = (String)dto.get("is_need_delivery");
+    	
+    	String agentPartySql = "select * from party where id =?";    	
+    	Record agentParty = Db.findFirst(agentPartySql,oversea_agent);
+    	Long ref_office_id = agentParty.getLong("ref_office_id");
+    	
+    	//主表复制
+    	String orderSql=" select * from job_order where id=?";
+    	Record jobOrder = Db.findFirst(orderSql,order_id);
+    	jobOrder.set("id",null);
+    	jobOrder.set("create_stamp",new Date());
+    	jobOrder.set("updator",jobOrder.getLong("creator"));
+    	jobOrder.set("update_stamp",null);
+    	jobOrder.set("office_id",ref_office_id);
+    	jobOrder.set("from_office_id",office_id);
+    	jobOrder.set("from_order_id",order_id);
+    	jobOrder.set("from_order_no",jobOrder.get("order_no"));
+    	jobOrder.set("from_order_type","forwarderJobOrder");
+    	String order_no = OrderNoGenerator.getOrderNo("jobOrder",ref_office_id); 	
+    	jobOrder.set("order_no",order_no);
+    	Db.save("job_order", jobOrder);
+    	
+    	//海运detail表复制
+    	String oceanSql="SELECT * from job_order_shipment where order_id = ?";
+    	Record oceanDetail=Db.findFirst(oceanSql,order_id);
+    	oceanDetail.set("id",null);
+    	oceanDetail.set("order_id",jobOrder.getLong("id"));
+    	Db.save("job_order_shipment", oceanDetail);
+    	
+    	String oceanItemSql = "SELECT * from job_order_shipment_item where order_id = ?";
+    	List<Record> copyOceanItemList=Db.find(oceanItemSql,order_id);
+    	for(Record copyOceanItem: copyOceanItemList){
+    		copyOceanItem.set("id", null);
+    		copyOceanItem.set("order_id", jobOrder.getLong("id"));
+    		Db.save("job_order_shipment_item", copyOceanItem);
+    	}
+    	//陆运Item表复制
+    	String landItemSql="SELECT * from job_order_land_item where order_id = ?";
+    	Record landItem=Db.findFirst(landItemSql,order_id);
+    	if(landItem!=null){
+    		landItem.set("id",null);
+    		landItem.set("order_id",jobOrder.getLong("id"));
+        	Db.save("job_order_land_item", landItem);
+    	}
+    	
+    	
+    	//报关Item表复制
+    	String customItemSql="";
+    	
+    	
+    	
+    	renderJson("{\"result\":true}");
+    	
+    }
+
     public void updateOceanFive(){
     	
     }
