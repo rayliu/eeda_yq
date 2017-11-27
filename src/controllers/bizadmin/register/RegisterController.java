@@ -83,31 +83,27 @@ public class RegisterController extends Controller {
 	
 	@Before(Tx.class)
 	public void done(){
-		String jsonStr=getPara("jsonStr");
-		Gson gson=new Gson();
-		Map<String,?> dto = gson.fromJson(jsonStr, HashMap.class);
-			
 		//user
-		String type=(String)dto.get("type");
-		String user_name = (String) dto.get("user_name");
-		String password = (String) dto.get("password");
+		String type = getPara("type");
+		String user_name = getPara("user_name");
+		String password = getPara("password");
 		String sha1Pwd = MD5Util.encode("SHA1", password);
-		String phone = (String) dto.get("phone");
+		String phone = getPara("phone");
 		//info
-		String telephone = (String) dto.get("telephone");
-		String contact = (String) dto.get("contact");
-		String shop_address = (String) dto.get("shop_address");
-		String shop_telephone = (String) dto.get("shop_telephone");
-		String about = (String)dto.get("about");
-		String shop_city = (String) dto.get("shop_city");
-		String shop_province = (String) dto.get("shop_province");
-		String shop_district = (String) dto.get("shop_district");
-		String trade_type = (String) dto.get("trade_type");
-		String qq = (String) dto.get("qq");
-		String logo = (String) dto.get("logo");
-		String company_pic = (String)dto.get("company_pic");
-		String c_name = (String)dto.get("company_name");
-		String id_card = (String) dto.get("id_card");
+		String telephone = getPara("telephone");
+		String contact = getPara("contact");
+		String shop_address = getPara("shop_address");
+		String shop_telephone = getPara("shop_telephone");
+		String about = getPara("about");
+		String shop_city = getPara("shop_city");
+		String shop_province = getPara("shop_province");
+		String shop_district = getPara("shop_district");
+		String trade_type = getPara("trade_type");
+		String qq = getPara("qq");
+		String logo = getPara("logo");
+		String company_pic = getPara("company_pic");
+		String c_name = getPara("company_name");
+		String id_card = getPara("id_card");
 		
 		//查询随机生成的邀请码是否在系统中存在
 		String invitation_code = getStringRandom(5);
@@ -135,13 +131,16 @@ public class RegisterController extends Controller {
 			Record item = new Record();
 			if("1".equals(type)){
 				item.set("id_card", id_card);
+				item.set("contact", contact);
+				item.set("c_name", contact);
 			}else{
 				item.set("company_pic", company_pic);
+				item.set("company_name", c_name);
 				item.set("c_name", c_name);
+				item.set("contact", contact);
 			}
 			
 			item.set("create_time", new Date());
-			item.set("contact", contact);
 			item.set("telephone", telephone);
 			item.set("shop_telephone", shop_telephone);
 			item.set("trade_type", trade_type);

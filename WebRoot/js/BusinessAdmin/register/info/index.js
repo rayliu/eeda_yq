@@ -78,33 +78,58 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 				return false;
 			}
 			
-			var type=$("#register_type").val();
-			var user={};
-			user.type=type;
-			if(type=='1'){
-				user.id_card=$("#img_id_card").attr('value');
+			var type = $("#register_type").val();
+			var id_card = '';
+			var company_pic = '';
+			var company_name = '';
+			if(type == '1'){
+				id_card = $("#img_id_card").attr('value');
 			}else if(type=="2"){
-				user.company_pic=$("#img_company_pic_2").attr("value")
-				user.company_name=$(":input[name=company_name]").val()
+				company_pic = $("#img_company_pic_2").attr("value")
+				company_name = $(":input[name=company_name]").val()
 				
 			}
-			user.user_name = $("#user_name").val();
-			user.password = $("#user_pass").val();
-			user.phone = $("#user_phone").val();
-			user.contact = $(":input[name=contact_"+type+"]").val();
-			user.telephone = $(":input[name=telephone_"+type+"]").val();
-			user.trade_type = $(":input[name=trade_type_"+type+"]").val();
-			user.shop_address = $(":input[name=shop_address_"+type+"]").val();
-			user.shop_telephone = $(":input[name=shop_telephone_"+type+"]").val();
-			user.qq = $(":input[name=qq_"+type+"]").val();
-			user.about = $(":input[name=about_"+type+"]").val();
-			user.logo = $("#img_logo_"+type+"").attr("value");
+			var user_name = $("#user_name").val();
+			var password = $("#user_pass").val();
+			var phone = $("#user_phone").val();
+			var contact = $(":input[name=contact_"+type+"]").val();
+			var telephone = $(":input[name=telephone_"+type+"]").val();
+			var trade_type = $(":input[name=trade_type_"+type+"]").val();
+			var shop_address = $(":input[name=shop_address_"+type+"]").val();
+			var shop_telephone = $(":input[name=shop_telephone_"+type+"]").val();
+			var qq = $(":input[name=qq_"+type+"]").val();
+			var about = $(":input[name=about_"+type+"]").val();
+			var logo = $("#img_logo_"+type+"").attr("value");
+			
 			var p_c_d = $("#p_c_d_"+type+"").val();
 			var address = p_c_d.split('-'); 
-			user.shop_province = address[0];
-			user.shop_city = address[1];
-			user.shop_district = address[2];
-			window.location.href="/BusinessAdmin/register/done?jsonStr="+JSON.stringify(user);
+			
+			var shop_province = address[0];
+			var shop_city = address[1];
+			var shop_district = '';
+			if(p_c_d.length > 15){
+				shop_district = address[2];
+			}
+			
+			var shop_district = address[2];
+			window.location.href="/BusinessAdmin/register/done?id_card="+id_card
+								+"&type="+type
+								+"&company_pic="+company_pic
+								+"&company_name="+company_name
+								+"&user_name="+user_name
+								+"&password="+password
+								+"&phone="+phone
+								+"&contact="+contact
+								+"&telephone="+telephone
+								+"&trade_type="+trade_type
+								+"&shop_address="+shop_address
+								+"&shop_telephone="+shop_telephone
+								+"&qq="+qq
+								+"&about="+about
+								+"&logo="+logo
+								+"&shop_province="+shop_province
+								+"&shop_city="+shop_city
+								+"&shop_district="+shop_district;
 		});
 		
 		  //定义id选择器

@@ -19,10 +19,18 @@
 $().ready(function(){
 	$.post('/BusinessAdmin/getLoginUser',function(data){
 		if(data){
-			$('#head_name').text(data.C_NAME);
+			if(data.C_NAME){
+				$('#head_name').text(data.C_NAME);
+			}else{
+				$('#head_name').text(data.USER_NAME);
+			}
 			$('#phone').text(data.TELEPHONE);
 			$('#diamond_flag').val(data.DIAMOND);
-			$('.s_logo').attr('src','/upload/'+data.LOGO);
+			if(!data.LOGO){
+				$('.s_logo').attr('src','/images/thumbs/avatarbig.png');
+			}else{
+				$('.s_logo').attr('src','/upload/'+data.LOGO);
+			}
 		}
 	});
 });

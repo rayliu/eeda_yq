@@ -211,7 +211,8 @@ public class BizAdminController extends Controller {
     			+ " where creator = ? and (now() BETWEEN begin_date and end_date) and status = '已开通'",user_id);
     	
     	
-    	String sql = "select * from wc_company wc "
+    	String sql = "select *,ul.user_name from wc_company wc "
+    			+ "	left join user_login ul on ul.id = wc.creator"
     			+ " where creator = "+user_id;
     	Record user = Db.findFirst(sql);
     	
