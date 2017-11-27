@@ -111,22 +111,21 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 				shop_district = address[2];
 			}
 			
-			var shop_district = address[2];
-			window.location.href="/BusinessAdmin/register/done?id_card="+id_card
+			window.location.href="/BusinessAdmin/register/done?id_card="+encodeURI(encodeURI(id_card))
 								+"&type="+type
-								+"&company_pic="+company_pic
-								+"&company_name="+company_name
-								+"&user_name="+user_name
+								+"&company_pic="+encodeURI(encodeURI(company_pic))
+								+"&company_name="+encodeURI(encodeURI(company_name))
+								+"&user_name="+encodeURI(encodeURI(user_name))
 								+"&password="+password
 								+"&phone="+phone
-								+"&contact="+contact
+								+"&contact="+encodeURI(encodeURI(contact))
 								+"&telephone="+telephone
 								+"&trade_type="+trade_type
-								+"&shop_address="+shop_address
+								+"&shop_address="+encodeURI(encodeURI(shop_address))
 								+"&shop_telephone="+shop_telephone
 								+"&qq="+qq
-								+"&about="+about
-								+"&logo="+logo
+								+"&about="+encodeURI(encodeURI(about))
+								+"&logo="+encodeURI(encodeURI(logo))
 								+"&shop_province="+shop_province
 								+"&shop_city="+shop_city
 								+"&shop_district="+shop_district;
