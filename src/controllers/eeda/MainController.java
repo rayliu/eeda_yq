@@ -250,15 +250,15 @@ public class MainController extends Controller {
         String prefix = url.toString().substring(7).split("\\.")[0];
         logger.debug("prefix:"+prefix);
         if("booking".equals(prefix)){
-            systemName = "检单-Booking管理系统";
+            systemName = "Booking管理系统";
         }else if("forwarder".equals(prefix)){
-             systemName = "检单-货代管理系统";
+             systemName = "货代管理系统";
         }else if("custom".equals(prefix)){
-            systemName = "检单-关务管理系统";
+            systemName = "关务管理系统";
         }else if("trans".equals(prefix)){
-            systemName = "检单-运输管理系统";
+            systemName = "运输管理系统";
         }else if("trade".equals(prefix)){
-            systemName = "检单-贸易管理系统";
+            systemName = "贸易管理系统";
         }
            
         setAttr("system_name", systemName);
