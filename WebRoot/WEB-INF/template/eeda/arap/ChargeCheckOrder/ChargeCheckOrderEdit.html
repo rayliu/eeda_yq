@@ -82,6 +82,12 @@
 					label:'对账时间', begin_value:order.begin_time!'', end_value:order.end_time!'', disabled: 'disabled' 
 					}){}%>
 				</div>
+				<%if(shiro.hasPermission("chargeCheckOrder.newProcessFlag")){%>
+					<div class="col-lg-4">	
+						<label class="">新流程</label>
+						 <input type="checkbox" id="newProcessFlag" checked/>
+					</div>
+				<%}%>
 			</div>
 			<div class="row">
 				<div class="col-lg-12">

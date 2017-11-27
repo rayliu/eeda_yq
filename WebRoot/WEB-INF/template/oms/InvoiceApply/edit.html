@@ -1,0 +1,283 @@
+<%layout("/eeda/layout.html"){%>
+<link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
+<div id="page-wrapper">
+	<div class="row">
+		<div class="col-lg-12">
+			<form id="orderForm">
+			<input id='order_id' name='order_id' type="hidden" value="${order.id!''}">
+			<input id='selected_item_ids' name='selected_item_ids' type='hidden' value='${order.selected_item_ids!""}'>
+				<div class="row">
+	                <div class="col-lg-4">
+	                	<div>
+		                    <%include("/eeda/component/form/inputSpField.html",
+		                            { 	id:'party_id', 
+		                                label:'结算公司',  
+		                                value:order.party_id!'',
+		                                display_value:order.party_name!''
+		                            }){} %>
+	                     </div>
+	                     <div>
+		                	<%include("/eeda/component/form/inputField.html",
+		                			{ 	id:'payer',
+										label:'付款人',
+										value:order.payer!''
+									}){}%>
+						</div>
+						<div id="invoiceDiv">
+                             <%include("/eeda/component/form/inputField.html",
+                             		{ 	id:'billing_unit',
+										label:'开票单位',
+										value:order.billing_unit!''
+									}){}%>
+						</div>
+						<div>
+							<%include("/eeda/component/form/inputCurrencyField.html",
+									{ 	id:'currency',
+										label:'币制', 
+										value:order.currency!'',
+		                                display_value:order.currency_name!''
+									}){}%>
+						</div>
+						<div>
+							<%include("/eeda/component/form/inputField.html",
+									{ 	id:'currency_rate',
+										label:'汇率', 
+										value:order.currency_rate!''
+									}){}%>
+						</div>
+	                </div>
+	                <div class="col-lg-4">
+	                    <%include("/eeda/component/form/selectField.html", 
+                                {   id:'charge_type',
+                                    label:'收款方式', 
+                                    value:order.charge_type!'',
+                                    value_list:[
+                                    	{code:'',value:''},
+                                        {code:'cash', value:'现金'},
+                                        {code:'transfers', value:'转账'},
+                                        {code:'checkTransfers', value:'支票转账'}
+                                    ]
+                                }){}%>
+                    	<!-- <div id="transfers_massage" <% if(payment_method!'cash'=='cash'){%>style="display:none"<% }%>> -->
+                    	<div id="transfers_massage" style="display:none;">
+		                	<%include("/eeda/component/form/inputAccountField.html", 
+		                    	{	id:'bank_id',
+									label:'开户行',
+								    value:order.bank_id!'',
+								    display_value:order.bank_name!''
+								}){}%>
+							<%include("/eeda/component/form/inputField.html", 
+								{	id:'account_no',
+									label:'收款账号', 
+									value:order.account_no!''
+								}){}%>
+							<%include("/eeda/component/form/inputField.html", 
+								{	id:'account_name',
+									label:'账户名',
+									value:order.account_name!''
+								}){}%>
+                    	</div>
+						<div>
+							<%include("/eeda/component/form/inputDateQueryField.html",
+									{ 	id:'biz_period',
+										label:'业务发生月', 
+										begin_value:order.biz_period_from!'', 
+										end_value:order.biz_period_to!'', 
+										required:'required' 
+									}){}%>
+						</div>
+	                </div>
+	                <div class="col-lg-4">
+	                    <%include("/eeda/component/form/selectField.html", 
+                                {   id:'invoice_type',
+                                    label:'发票类型', 
+                                    value:order.invoice_type!'',
+                                    value_list:[
+                                    	{code:'',value:''},
+                                        {code:'wbill', value:'无发票'},
+                                        {code:'ordinarybill', value:'增值税普通发票'},
+                                        {code:'specialbill', value:'增值税专用发票'},
+                                        {code:'dbill', value:'代开发票'},
+                                        {code:'HKINVbill', value:'HK INV'}
+                                    ]
+                                }){}%>
+                    	<div id="projectFee" style="display:none;">
+                    		<%include("/eeda/component/form/selectField.html", 
+                                {   id:'fee_type',
+                                    label:'项目', 
+                                    value:order.fee_type!'',
+                                    value_list:[
+                                    	{code:'',value:''},
+                                        {code:'代理货运服务费', value:'代理货运服务费'},
+                                        {code:'代理报关服务费', value:'代理报关服务费'},
+                                        {code:'咨询服务费', value:'咨询服务费'},
+                                        {code:'国际货代服务费', value:'国际货代服务费'},
+                                        {code:'代垫付费', value:'代垫付费'},
+                                        {code:'国外货款', value:'国外货款'},
+                                        {code:'国税退税', value:'国税退税'}
+                                    ]
+                                }){}%>
+                    	</div>
+                    	<div>
+                    		<%include("/eeda/component/form/inputField.html", 
+								{	id:'invoice_no',
+									label:'发票号', 
+									value:order.invoice_no!''
+								}){}%>
+                    	</div>
+                    	<div>
+                    		<%include("/eeda/component/form/inputField.html", 
+								{	id:'identification_no',
+									label:'纳税人识别号', 
+									disabled:'disabled',
+									value:order.identification_no!''
+								}){}%>
+                    	</div>
+                    	<div>
+                    		<%include("/eeda/component/form/inputField.html", 
+								{	id:'status',
+									label:'单据状态', 
+									disabled:'disabled',
+									value:order.status!''
+								}){}%>
+                    	</div>
+	                </div>
+                </div>
+			</form>
+		</div>
+	</div><br><br>
+	<div class="simple_order_list_div" >
+		<ul id="orderTabs" class="nav nav-tabs">
+			<li class="active">
+				<a href="#list" data-toggle="tab" id="Item">发票明细</a>
+			</li>
+			<li class="">
+                <a href="#item_list" data-toggle="tab" id="costCheckOrderSelectItem">对账单明细列表</a>
+            </li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane fade active in" id="list">
+				<div class="col-lg-12"><br><br>
+               		<button type="button" class="btn btn_green" id="add_invoice_item">添加明细</button><br><br>
+               		<%include("/eeda/component/form/detailTable.html", 
+                            {
+                                id:'invoice_item_table',
+                                style:'width:700px',
+                                headers:['',
+                                '费用',
+                                '数量',
+                                '金额（含税）',
+                                '税率（%）',
+                                '金额（不含税）',
+                                '税金',
+                                '含税总金额'
+                                ]
+                            }){} %>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="item_list">
+                <div class="col-lg-12"><br><br>
+                	<button type="button" class="btn btn_green" id="add_item">添加明细</button><br><br>
+               		<%include("/eeda/component/form/detailTable.html", 
+                            {
+                                id:'item_table',
+                                style:'width:700px',
+                                headers:['',
+                                '对账单',
+                                '工作单',
+                                '结算公司',
+                                '费用',
+                                '结算币制',
+                                '结算金额'
+                                ]
+                            }){} %>
+                </div>
+            </div>
+		</div>
+		<div class="col-lg-12"><br><br><br><br>
+          	<button id="saveBtn" type="button" class="btn  btn_green">保存</button>
+          	<button id="submitBtn" type="button" class="btn  btn_green guide_target10">提交</button>
+          	<%if(shiro.hasPermission("invoiceApply.check")){ %>
+	            <button id="checkBtn" type="button" class="btn  btn_green guide_target10">复核</button>
+	            <button id="cancelcheckBtn" class="btn btn-danger btn-xs guide_target11" style="background-color:#d9534f">复核不通过</button>
+            <%}%>
+            <a href="/chargeRequest/create" class="btn btn_green" type="button" >创建收款申请单</a>
+            <a class="btn  btn_white" href="/invoiceApply">返回</a>
+        </div>
+	</div>
+	
+	<a id='item_table_msg_btn' data-target='#item_table_msg' data-toggle='modal' style='display:none'></a>
+  	<div class="modal fade" id="item_table_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog modal-lg">
+        	<div class="modal-content">
+            	<div class="modal-body">
+					<div class="row">
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputSpField.html", 
+                                {
+                                    id:'que_sp', 
+                                    label:'结算公司', 
+                                    value: '',
+                                    disabled:'disabled',
+                                    required: 'required'
+                            }){} %>
+                        </div>
+                        <div class="col-lg-4">
+                            <%include("/eeda/component/form/inputFinItem.html", 
+                                {   id: 'charge_id', 
+                                    label: '费用', 
+                                    value: ''
+                                }){}%>
+                        </div>    
+					</div>    
+					<div class="form-group button-bar">
+                        <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+                        <button id="resetBtn" class="btn btn_white btn-sm" type="button">清空条件</button>
+                    </div>
+				  	<br>
+				  	<%include("/eeda/component/form/detailTable.html", 
+			      		{
+					         id:'eeda_charge_table',
+					         style:'width:870px',
+					         headers:['<input type="checkbox" id="allCharge">','对账单号','工作单','结算公司','费用','币制','结算金额']
+			      		}){} %>
+				</div>
+            	<div class="modal-footer">
+	           		<button id="add_charge_item" type="button" class="btn btn_green save" data-dismiss="modal">添加</button>
+	            	<button type="button" class="btn  btn_white" data-dismiss="modal">返回</button>
+           		</div>
+        	</div>
+    	</div>
+	</div>
+	
+	<a id='itemList_msg_btn' data-target='#itemList_msg' data-toggle='modal' style='display:none'></a>
+  	<div class="modal fade" id="itemList_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-dialog modal-lg">
+        	<div class="modal-content">
+            	<div class="modal-body">
+				  	<%include("/eeda/component/form/detailTable.html", 
+			      		{
+					         id:'itemList_table',
+					         style:'width:870px',
+					          headers:['<input type="checkbox" id="allChargeItem">','对账单号','工作单','结算公司','费用','币制','结算金额'],
+			          		 field_list:['', 'order_no', 'order_no', 'fin_name','jine', 'currency', 'amount'],
+			         		 value_list: chargeList![]
+			      		}){} %>
+				</div>
+            	<div class="modal-footer">
+	           		<button id="confirmBtn" type="button" class="btn btn_green save" data-dismiss="modal">确认</button>
+           		</div>
+        	</div>
+    	</div>
+	</div>
+</div>
+<%}%>
+<%include("/eeda/component/jsTemplate/tableInputFinItemField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputFieldCurrencyId.js",{}){} %>
+
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/arap/InvoiceApply/edit']);
+    });
+</script>

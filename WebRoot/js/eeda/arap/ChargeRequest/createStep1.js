@@ -5,13 +5,23 @@
     
     var billIds=[];
     var pageBoolean=false;
+    var chargeAccept_table_url = "";
+    var orderUrl = "";
+    var new_process_flag = $("#newProcessFlag").prop("checked");
+    if(new_process_flag){
+    	chargeAccept_table_url = "/chargeRequest/newOrderList";
+    	orderUrl = "/invoiceApply/edit";
+    }else{
+    	chargeAccept_table_url = "/chargeRequest/OrderList";
+    	orderUrl = "/chargeCheckOrder/edit";
+    }
     
 	var costAccept_table = eeda.dt({
 	    id: 'chargeAccept_table',
 	    autoWidth: true,
 	    paging: pageBoolean,
 	    serverSide: true, //不打开会出现排序不对 
-	    ajax: "/chargeRequest/OrderList?pageBoolean="+pageBoolean,
+	    ajax: chargeAccept_table_url,
 	    columns: [
 				{ 
 				    "render": function(data, type, full, meta) {
@@ -36,12 +46,12 @@
 				},
 				{"data":"ORDER_NO","width":"90px",
 					"render": function(data, type, full, meta) {
-						return "<a href='/chargeCheckOrder/edit?id="+full.ID+"'  target='_blank'>"+data+"</a>";
+						return "<a href='"+orderUrl+"?id="+full.ID+"'  target='_blank'>"+data+"</a>";
 					}
 				},
 				{"width":"70px",
 					"render": function(data, type, full, meta) {
-						return full.BEGIN_TIME+'到'+full.END_TIME;
+						return full.BEGIN_TIME.substring(0,10)+'到'+full.END_TIME.substring(0,10);
 					}
 				},  
 				{"data":"STATUS","width":"30px"},
@@ -239,6 +249,7 @@
 	})
 	
 	$('#resetBtn').click(function(e){
+		$("#sp").val('');
 	  	$("#sp_input").val('');
 	  	$("#orderNo_filter1").val('');
 	  	$("#create_stamp_begin_time").val('');
@@ -254,7 +265,7 @@
 	    var check_time_1_begin_time = $("#check_time_1_begin_time").val();
 	    var check_time_1_end_time = $("#check_time_1_end_time").val();
    
-        var url = "/chargeRequest/OrderList?sp_id="+sp
+        var url = chargeAccept_table_url+"?sp_id="+sp
       	   +"&order_no="+order_no
            +"&status="+status
            +"&order_type="+orderType
@@ -354,7 +365,7 @@
 	
 	
     var refleshSelectTable = function(){
-	    var url = "/chargeRequest/OrderList";
+	    var url = chargeAccept_table_url;
 	    costAccept_table.ajax.url(url).load();
     }
 
@@ -384,6 +395,8 @@
       		 $('#sp_id').val('');
       		 $('#check_time_begin_time').val('');
         	 $('#check_time_end_time').val('');
+//      	 $("#orderForm")[0].reset();
+//      	 $("#invoiceDiv,#transfers_massage,#projectFee").hide();
   		     selectContr.refleshSelectTable(idsArray);
   		     $("#allCheck1").prop("checked",$("#chargeAccept_table tr:has(td) input[type=checkbox]").length == $("#chargeAccept_table tr:has(td) input[type=checkbox]:checked").length ? true : false);
   		    return;

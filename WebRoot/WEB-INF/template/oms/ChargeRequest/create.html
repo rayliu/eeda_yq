@@ -80,6 +80,14 @@
 		                                    <option value="HKINVbill" <% if(order.bill_type!''=='HKINVbill'){%>selected<%}%>>HK INV</option>
 	                                    </select>
 	                            </div>
+	                            <div class="form-group">
+		                            <%if(shiro.hasPermission("chargeRequest.newProcessFlag")){%>
+			                            <div class="form-group">
+			                                    <label class="">新流程</label>
+			                                    <input id="newProcessFlag" type="checkbox" checked/>
+			                            </div>
+		                            <%}%>
+	                            </div>
                             </div>
                             <div id="projectFee">
                                 <div class="col-lg-4">

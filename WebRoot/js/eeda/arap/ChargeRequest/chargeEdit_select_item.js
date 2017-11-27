@@ -1,7 +1,12 @@
 ﻿define(['jquery','metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
-    
 var itemIds=[];
-
+var itemTable_url = "";
+var new_process_flag = $("#newProcessFlag").prop("checked");
+if(new_process_flag){
+	itemTable_url = "/invoiceApply/itemList?new_process_flag=Y&";
+}else{
+	itemTable_url = "/chargeCheckOrder/tableList?";
+}
         var itemTable = eeda.dt({
             id: 'select_item_table',
             initComplete: function( settings ) {
@@ -257,11 +262,10 @@ var itemIds=[];
           		$('#selected_ids').val(selected_ids);
                 
             };
-            	var url = "/chargeCheckOrder/tableList?order_ids="+order_ids+"&order_id=N";
+            	var url = itemTable_url+"order_ids="+order_ids+"&order_id=N";
                 itemTable.ajax.url(url).load(callback);
         };
         
-       
 
         var calcTotal=function() {
             //$("#ChargeOrder-table").DataTable()
@@ -316,7 +320,7 @@ var itemIds=[];
             var ids=$('#ids').val();
             var query_exchange_currency=$('#query_currency').val();
             var fin_ids=$('#fin_ids').val();
-            var url = "/chargeCheckOrder/tableList?order_ids="+ids+"&order_id=N"
+            var url = itemTable_url+"order_ids="+ids+"&order_id=N"
                             +"&table_type=item"
                             +"&query_exchange_currency="+query_exchange_currency
                             +"&query_fin_name="+fin_ids;
@@ -465,7 +469,7 @@ var itemIds=[];
        });
 
         var refleshCreateTable = function(appApplication_id){
-    		var url = "/chargeCheckOrder/tableList?appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
+    		var url = itemTable_url+"appApplication_id="+appApplication_id+"&order_id=N&bill_flag=create";
             itemTable.ajax.url(url).load();
 		    };
 		//全选  

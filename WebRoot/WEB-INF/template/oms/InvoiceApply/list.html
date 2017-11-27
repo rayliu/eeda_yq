@@ -1,0 +1,85 @@
+<%layout("/eeda/layout.html"){%>
+<div id="page-wrapper">
+	<div class="row simple_search_div">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row"><!--  第1行  -->
+                	<div class="three_tab"><!--  三列排版  -->
+                    	<div class="search_single">
+                        	<select id="selected_field" name="selected_field" class="form-control search-label">
+                            	<option value="order_no">申请单号</option>
+                            	<option value="invoice_no">发票号</option>
+                            </select>
+
+		                    <input type="text" id="public_text" class="form-control search-control"/>
+						</div>
+ 					</div>
+					<div class="three_tab"><!--  三列排版  -->
+						<div class="search_single">
+							<button id="singleSearchBtn" class="btn btn_grey" type="button">查询</button>
+							<a href="/invoiceApply/create" class="btn btn_green">创建开票单</a>
+						</div>
+					</div>
+					<div class="three_tab"><!--  三列排版  -->
+                    	<h4 class="panel-title pull-right" style="padding-top: 5px;">
+                        	<a data-toggle="collapse" data-parent="#accordion" href="#collapseChargeInfo" aria-expanded="false" class="complex_search collapsed">
+                            	<i id="collapseChargeIcon" class="fa fa-angle-double-down"></i> 查询条件
+                            </a>
+						</h4>
+					</div>
+				</div>
+			</div>
+			
+			<div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
+					<div class="panel-body">
+						<div class="col-lg-12">
+							<form id="orderForm">
+								<div class="row">
+	                                <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id: 'order_no', 
+	                                            label: '申请单号', 
+	                                            value: ''
+	                                        }){}%>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <%include("/eeda/component/form/inputField.html", 
+	                                        {   id: 'invoice_no', 
+	                                            label: '发票号', 
+	                                            value: ''
+	                                        }){}%>
+                                    </div>
+	                                <div class="col-lg-4" style="display:none;">
+	                           				<%include("/eeda/component/form/inputDateQueryField.html",
+	                           									 {   id:'order_export_date', 
+	                           									 	 label:'出货时间',
+	                           									     value:''
+	                           									  }){} %>
+	                                </div>
+								</div>
+							</form><br>
+							<div class="form-group button-bar" >
+	                        	<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
+	                        	<a href="/invoiceApply/create" class="btn btn_green">创建开票单</a>
+	                        	<a href="/chargeRequest/create" class="btn btn_green" type="button" >创建收款申请单</a>
+	                        	<button id="resetBtn" class="btn btn-default btn-sm" type="button">清空条件</button>
+							</div><br>
+						</div>
+					</div>  
+				</div>
+       	</div>
+	</div>
+	<div class="row simple_list_div">
+	    <%include("/eeda/component/form/detailTable.html", 
+	        {
+	            id:'eeda_table',
+	            headers:['','申请单号','结算公司','发票号','状态','操作','创建人','创建日期']
+	        }){} %>
+	</div>
+</div>
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['app/arap/InvoiceApply/list']);
+    });
+</script>

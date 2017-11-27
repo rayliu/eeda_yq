@@ -1,7 +1,13 @@
 ﻿define(['jquery', 'metisMenu', 'sb_admin','./createStep1', './chargeEdit_select_item','dataTablesBootstrap', 
         'validate_cn', 'sco', 'pageguide'], function ($, metisMenu, sb, createStep1Contr, selectContr) {
 $(document).ready(function() {
-
+	var save_url = "";
+    var new_process_flag = $("#newProcessFlag").prop("checked");
+    if(new_process_flag){
+    	save_url = "newSave";
+    }else{
+    	save_url = "save";
+    }
 	tl.pg.init({
         pg_caption: '本页教程'
     });
@@ -86,7 +92,7 @@ $(document).ready(function() {
 		order.ids=$('#ids').val();
 		order.sp_id=$('#sp_id').val();
 		order.sp_name=$('#sp_id_input').val();
-		$.post('/chargeRequest/save',{params:JSON.stringify(order)}, function(data){
+		$.post('/chargeRequest/'+save_url,{params:JSON.stringify(order)}, function(data){
 			$("#createSave").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('创建新申请成功', $.scojs_message.TYPE_OK);

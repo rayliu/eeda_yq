@@ -10,6 +10,14 @@ $(document).ready(function() {
     }
     $('.row.search_panel').hide();
     
+    var save_url = "";
+    var new_process_flag = $("#newProcessFlag").prop("checked");
+    if(new_process_flag){
+    	save_url = "newSave";
+    }else{
+    	save_url = "save";
+    }
+    
     //构造主表json
     var buildOrder = function(){
     	var item = {};
@@ -99,7 +107,7 @@ $(document).ready(function() {
 		order.ids=$('#ids').val();
 		//发票明细
 		order.InvoiceItem_list = itemOrder.buildInvoiceItem();
-		$.post('/chargeRequest/save',{params:JSON.stringify(order)}, function(data){
+		$.post('/chargeRequest/'+save_url,{params:JSON.stringify(order)}, function(data){
 			$("#saveBtn").attr("disabled", false);
 			if(data.ID>0){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);

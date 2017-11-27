@@ -76,6 +76,7 @@ $(document).ready(function() {
         order.id = $('#order_id').val();
         order.item_list = itemOrder.buildItemDetail();
         order.currency_list = buildCurJson();
+        order.newProcessFlag = $("#newProcessFlag").prop("checked")==true?"Y":"N";
         
         //异步向后台提交数据
         $.post('/chargeCheckOrder/save', {params:JSON.stringify(order)}, function(data){

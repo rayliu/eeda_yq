@@ -18,6 +18,8 @@ import models.ArapCostOrder;
 import models.ArapMiscCostOrder;
 import models.Category;
 import models.ChargeApplicationOrderRel;
+import models.ChargeInvoiceOrder;
+import models.ChargeInvoiceOrderItem;
 import models.CostApplicationOrderRel;
 import models.CustomArapAccountAuditLog;
 import models.CustomArapChargeApplicationOrder;
@@ -443,6 +445,9 @@ public class EedaConfig extends JFinalConfig {
         me.add("/costAcceptOrder", controllers.arap.ap.CostAcceptOrderController.class, contentPath);
 //        me.add("/costConfirm", controllers.arap.ap.CostConfirmController.class, contentPath);
         
+        //货代开票单
+        me.add("/invoiceApply", controllers.arap.InvoiceApplyController.class, contentPath);
+        
         //货代运营报表
         me.add("/arapReport", controllers.arap.ArapReportController.class, contentPath);
         me.add("/profitReport", controllers.report.ProfitReportController.class, contentPath);
@@ -628,6 +633,8 @@ public class EedaConfig extends JFinalConfig {
         arp.addMapping("charge_application_order_rel", ChargeApplicationOrderRel.class);
         arp.addMapping("app_invoice_doc", AppInvoiceDoc.class);
         arp.addMapping("rate_contrast", RateContrast.class);
+        arp.addMapping("charge_invoice_order", ChargeInvoiceOrder.class);
+        arp.addMapping("charge_invoice_order_item", ChargeInvoiceOrderItem.class);
         
         //账户
         arp.addMapping("fin_account", FinAccount.class);

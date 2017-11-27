@@ -76,6 +76,7 @@ public class ChargeCheckOrderController extends Controller {
    			//需后台处理的字段
    			order.set("update_by", user.getLong("id"));
    			order.set("update_stamp", new Date());
+   			order.set("newProcessFlag",(String)dto.get("newProcessFlag"));
    			order.update();
    		} else {
    			//create 
