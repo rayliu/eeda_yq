@@ -1837,9 +1837,9 @@ public class JobOrderController extends Controller {
     		
     		
     		if("port".equals(take_address_type)){
-    			take_address_condition_change= " and ifnull(CONCAT(lpod.name,'-',lpod.code),'') = '"+take_address+"') ";
+    			take_address_condition_change= " and ifnull(CONCAT(lpod.name,'-',lpod.code),'') = '"+take_address+"')) ";
     		}else{
-    			take_address_condition_change= " and ifnull(dc_t.dock_name,'') = '"+take_address+"') ";
+    			take_address_condition_change= " and ifnull(dc_t.dock_name,'') = '"+take_address+"')) ";
     		}
     		
     		if("port".equals(delivery_address_type)){
