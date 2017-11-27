@@ -108,7 +108,7 @@ $(document).ready(function() {
     				}
     			}
     		}
-    		order['photo'+i] = photo_name;
+    		example['photo'+i] = photo_name;
     	}
 	  	
 		if($.trim(example.name)==""){
