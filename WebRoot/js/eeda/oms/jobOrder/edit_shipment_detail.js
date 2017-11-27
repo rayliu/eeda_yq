@@ -393,6 +393,37 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             ]
         });
         
+        //提交给海外代理
+        $('#submitOverseaAgent').on('click',function(){
+        	var oversea_agent=$('#oversea_agent').val()
+        	if(!oversea_agent){
+        		$.scojs_message('请选择代理', $.scojs_message.TYPE_ERROR);
+        		$('#oversea_agent_input').focus();
+        		return;
+        	}
+        	var oversea_agentRadio=$('#overseaAgent_radio_div input[type="radio"]:checked').val()
+        	if(!oversea_agentRadio){
+        		$.scojs_message('请选择代理类型：国内或者国外', $.scojs_message.TYPE_ERROR);
+        		return;
+        	}
+        	var subAgentCondition_json={};
+        	subAgentCondition_json.order_id=$('#order_id').val();
+        	subAgentCondition_json.oversea_agent=$('#oversea_agent').val();
+        	subAgentCondition_json.agent_type=$('#overseaAgent_radio_div input[type="radio"]:checked').val();
+        	subAgentCondition_json.is_need_afr=($('#is_need_afr').prop('checked')==true?'Y':'N');
+        	subAgentCondition_json.is_need_custom_apply=($('#is_need_custom_apply').prop('checked')==true?'Y':'N');
+        	subAgentCondition_json.is_need_delivery=($('#is_need_delivery').prop('checked')==true?'Y':'N');
+        	$.post('/jobOrder/subToAgent',{params:JSON.stringify(subAgentCondition_json)},function(data){
+        		if(data){
+        			$.scojs_message('提交成功', $.scojs_message.TYPE_OK);
+        		}
+        		
+        	},'json').fail(function(){
+        		$.scojs_message('提交失败', $.scojs_message.TYPE_ERROR);
+        	});
+        	        	
+        })
+        
         
         
     });

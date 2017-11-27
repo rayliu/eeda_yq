@@ -565,7 +565,7 @@
                  <%include("/eeda/component/form/inputSelectAreaOfOverseaAgent.html", 
 	                    {   id:oversea_agent,
 	                        label: '海外代理',
-	                        lable_msg:'<span id="overseaAgent_radio_div" style="display:none;" >'	                        			
+	                        lable_msg:'<span id="overseaAgent_radio_div" >'	                        			
 	                        			+'<label class="radio-inline"><input type="radio" name="overseaAgent" value="domestic">国内</input></label>'
 	                        			+'<nbsp><label class="radio-inline" style="margin-left:10px"><input type="radio" name="overseaAgent" value="oversea">国外</input></label><nbsp>'
 	                        		+'</span>', 	                        		   
@@ -577,7 +577,7 @@
 	                    }){}%>
               </div>
               <div class="col-lg-4">
-              	<div style="margin-top:50px;display:none;" >
+              	<div style="margin-top:50px;" >
 					<button type="button" class="btn btn_green" id="submitOverseaAgent" >提交给海外代理</button><br>
 					<input type="hidden" id="hidden_is_need_afr" value="${shipment.is_need_afr!''}"><br>
 	                <label class="checkbox-inline">       
