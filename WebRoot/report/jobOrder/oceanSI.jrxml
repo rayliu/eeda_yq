@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="oceanSI" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="20" uuid="ffccd584-ac08-4c05-86f7-49b1fb387974">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="19"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="262"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -265,7 +265,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="afr_done_time" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[AFR完成时间，填写即表示已完成]]></fieldDescription>
 	</field>
-	<field name="custom_done" class="java.sql.Timestamp">
+	<field name="custom_done_time" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[报关完成时间]]></fieldDescription>
 	</field>
 	<field name="delivery_done" class="java.sql.Timestamp">
@@ -384,7 +384,7 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[  PORT OF DISCHARGE 目的港：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="228" y="404" width="326" height="165" uuid="5745ef5a-5d84-4205-8ee1-0b919de7f6d0"/>
+				<reportElement style="table" x="228" y="403" width="326" height="166" uuid="5745ef5a-5d84-4205-8ee1-0b919de7f6d0"/>
 				<textElement>
 					<font pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -398,7 +398,7 @@ where jos.order_id=$P{order_id}]]>
 				<text><![CDATA[ PKGS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="table" x="1" y="404" width="227" height="165" uuid="d465902e-d5f4-490e-8dfe-98cd22d81fa0"/>
+				<reportElement style="table" x="1" y="403" width="227" height="166" uuid="d465902e-d5f4-490e-8dfe-98cd22d81fa0"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
@@ -503,7 +503,7 @@ where jos.order_id=$P{order_id}]]>
 				<textFieldExpression><![CDATA[$F{pol_name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="6" y="387" width="221" height="17" uuid="52fb0524-d2b3-4fa4-ad10-e00f16fb2d28"/>
+				<reportElement x="6" y="387" width="221" height="16" uuid="52fb0524-d2b3-4fa4-ad10-e00f16fb2d28"/>
 				<textElement>
 					<font fontName="黑体" size="8" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
