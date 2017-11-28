@@ -298,6 +298,9 @@ WHERE
 	<field name="print_shipmentHead_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="submit_agent_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[提交给代理的标记位]]></fieldDescription>
+	</field>
 	<field name="order_id" class="java.lang.Long">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -480,6 +483,27 @@ WHERE
 	</field>
 	<field name="aboutShipment_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="agent_type" class="java.lang.String">
+		<fieldDescription><![CDATA[Domestic-国内，oversea-海外]]></fieldDescription>
+	</field>
+	<field name="is_need_afr" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要AFR]]></fieldDescription>
+	</field>
+	<field name="is_need_custom_apply" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要报关]]></fieldDescription>
+	</field>
+	<field name="is_need_delivery" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要配送]]></fieldDescription>
+	</field>
+	<field name="afr_done_time" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[AFR完成时间，填写即表示已完成]]></fieldDescription>
+	</field>
+	<field name="custom_done_time" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[报关完成时间]]></fieldDescription>
+	</field>
+	<field name="delivery_done" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[配送完成时间]]></fieldDescription>
 	</field>
 	<field name="por_name" class="java.lang.String"/>
 	<field name="pol_name" class="java.lang.String"/>
@@ -1220,8 +1244,7 @@ WHERE
 				<textElement textAlignment="Center">
 					<font fontName="黑体" size="16" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[
-($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{p_company_name}.equals(null)?$F{office_name}:$F{p_company_name})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="329" y="159" width="223" height="20" uuid="7c652868-ecdc-4a27-a3df-ff6ad3b048e6"/>

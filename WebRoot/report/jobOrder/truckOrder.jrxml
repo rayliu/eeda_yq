@@ -373,8 +373,7 @@ where joli.id=$P{itemId}]]>
 				<textElement textAlignment="Right">
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[($F{own_office_tel}.equals(null)?"":"Tel:"+$F{own_office_tel})
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{own_office_tel}.equals(null)?"":"Tel:"+$F{own_office_tel})]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>

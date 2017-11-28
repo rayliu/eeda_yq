@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cabinetTruckOrder" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="71c0ca7a-fe5c-464e-a4f4-3ff174e921bd">
 	<property name="ireport.zoom" value="1.0000000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="101"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="order_id" class="java.lang.String">
 		<property name="order_id" value="$P{order_id}"/>
 	</parameter>
@@ -262,6 +262,27 @@ where joli.id=$P{item_id}]]>
 	</field>
 	<field name="aboutShipment_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="agent_type" class="java.lang.String">
+		<fieldDescription><![CDATA[Domestic-国内，oversea-海外]]></fieldDescription>
+	</field>
+	<field name="is_need_afr" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要AFR]]></fieldDescription>
+	</field>
+	<field name="is_need_custom_apply" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要报关]]></fieldDescription>
+	</field>
+	<field name="is_need_delivery" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要配送]]></fieldDescription>
+	</field>
+	<field name="afr_done_time" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[AFR完成时间，填写即表示已完成]]></fieldDescription>
+	</field>
+	<field name="custom_done_time" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[报关完成时间]]></fieldDescription>
+	</field>
+	<field name="delivery_done" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[配送完成时间]]></fieldDescription>
 	</field>
 	<field name="head_end_place" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>

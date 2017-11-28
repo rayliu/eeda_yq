@@ -257,7 +257,7 @@ where joli.id=$P{item_id}]]>
 	<field name="afr_done_time" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[AFR完成时间，填写即表示已完成]]></fieldDescription>
 	</field>
-	<field name="custom_done" class="java.sql.Timestamp">
+	<field name="custom_done_time" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[报关完成时间]]></fieldDescription>
 	</field>
 	<field name="delivery_done" class="java.sql.Timestamp">

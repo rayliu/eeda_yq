@@ -206,7 +206,7 @@ where jos.order_id=$P{order_id}]]>
 	<field name="etd" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="eta" class="java.sql.Date">
+	<field name="eta" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="booking_mark" class="java.lang.String">
@@ -248,6 +248,9 @@ where jos.order_id=$P{order_id}]]>
 	<field name="si_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="hbl_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="mbl_flag" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
@@ -268,6 +271,36 @@ where jos.order_id=$P{order_id}]]>
 	</field>
 	<field name="ata" class="java.sql.Date">
 		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sailing_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="deadline_date" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[截关日期]]></fieldDescription>
+	</field>
+	<field name="aboutShipment_flag" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="agent_type" class="java.lang.String">
+		<fieldDescription><![CDATA[Domestic-国内，oversea-海外]]></fieldDescription>
+	</field>
+	<field name="is_need_afr" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要AFR]]></fieldDescription>
+	</field>
+	<field name="is_need_custom_apply" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要报关]]></fieldDescription>
+	</field>
+	<field name="is_need_delivery" class="java.lang.String">
+		<fieldDescription><![CDATA[是否需要配送]]></fieldDescription>
+	</field>
+	<field name="afr_done_time" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[AFR完成时间，填写即表示已完成]]></fieldDescription>
+	</field>
+	<field name="custom_done_time" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[报关完成时间]]></fieldDescription>
+	</field>
+	<field name="delivery_done" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[配送完成时间]]></fieldDescription>
 	</field>
 	<field name="por_name" class="java.lang.String"/>
 	<field name="pol_name" class="java.lang.String"/>
