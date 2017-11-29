@@ -140,7 +140,8 @@
 		    										<select id="order_type" class="form-control search-control ">
 		    										<% if(chargeFinItemPermission&&costFinItemPermission){ %>
 		    											<option></option>
-		    											<option value="charge">应收费用</option>		    											
+		    											<option value="charge">应收费用</option>
+		    											<option value="cost">应付费用</option>		    											
 		    										<% } else if(chargeFinItemPermission){%>
 		    											<option value="charge">应收费用</option>
 		    										<% } else if(costFinItemPermission){%>
