@@ -281,10 +281,12 @@
                                 '柜号',
                                 'POD',
                                 '费用',
+                                '业务状态',
+                                '单据状态',
                                 '创建人',
                                 '更新人',
                                 '创建时间',
-                                '状态','']
+                                '']
                         }){} %>
                 
             </div><!-- /.row 列表结束-->
@@ -323,7 +325,14 @@
 <%}%>
 
 <script>
+	  <%
+	  		var chargeFinItem = shiro.hasPermission("jobOrder.chargeFinItem");
+	  		var costFinItem = shiro.hasPermission("jobOrder.costFinItem");
+	  %>
+	  var chargeFinItemPermission=${chargeFinItem}
+	  var costFinItemPermission=${costFinItem}
       var type = "${type!''}";
+      
  </script>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], 
