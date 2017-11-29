@@ -1,5 +1,11 @@
 ﻿<%layout("/eeda/layout.html"){%>
 <div id="page-wrapper">
+	
+	<%
+      //如果只有edit, 没指定特定的, 默认都有编辑权限
+      var chargeFinItemPermission = shiro.hasPermission("jobOrder.chargeFinItem");
+	  var costFinItemPermission = shiro.hasPermission("jobOrder.costFinItem");
+    %>
     <div class="row simple_search_div">
     	<div class="panel panel-default">
         	<div class="panel-heading">
@@ -132,9 +138,17 @@
 		                                        <div class="form-group">
 		    									<label class="search-label">收付类型</label>
 		    										<select id="order_type" class="form-control search-control ">
+		    										<% if(chargeFinItemPermission&&costFinItemPermission){ %>
 		    											<option></option>
-		    											<option value="cost">应付费用</option>
+		    											<option value="charge">应收费用</option>		    											
+		    										<% } else if(chargeFinItemPermission){%>
 		    											<option value="charge">应收费用</option>
+		    										<% } else if(costFinItemPermission){%>
+		    											<option value="cost">应付费用</option>
+		    										<%} %>
+		    											
+		    											
+		    											
 		    										</select>
 		    									</div>
 	    									</div>

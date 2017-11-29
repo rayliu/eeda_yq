@@ -20,6 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
           $('.search_single').show();
         }
     });
+  	
   	//datatable, 动态处理
       var dataTable = eeda.dt({
           id: 'eeda-table',
@@ -115,31 +116,38 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                     var charge = full.CHARGE;
                     var costShow="";
                     var chargeShow="";
+                    
                     if(cost){
                       var costArray = cost.split(',');
                       costShow='<h5><strong>应付费用</strong>  <strong>对账币制</strong></h5>';
                       for (var i = 0; i < costArray.length; i++) {
                         costShow += '<li>'+costArray[i]+'</li>';
-              }
+                      }
                     }
+                    
                     if(charge){
                       chargeShow='<h5><strong>应收费用</strong>  <strong>对账币制</strong></h5>';
                       var chargeArray = charge.split(',');
                       for (var i = 0; i < chargeArray.length; i++) {
                         chargeShow += '<li>'+chargeArray[i]+'</li>';
                 
-              }
+                      }
                     }
-                    if(cost){
-                      data += '<span class="other" width="50" '
-                          +' data-content="<div'
-                          +' height=&quot;140&quot; >'+costShow+'</div>" ><span class="badge" style="">￥付</span></span>';
+                    if(costFinItemPermission){
+                    	if(cost){
+                            data += '<span class="other" width="50" '
+                                +' data-content="<div'
+                                +' height=&quot;140&quot; >'+costShow+'</div>" ><span class="badge" style="">￥付</span></span>';
+                          }
+                    }                    
+                    if(chargeFinItemPermission){
+                    	if(charge){
+                            data += ' <span class="other" width="50" '
+                                    +' data-content="<div'
+                                    +' height=&quot;140&quot; >'+chargeShow+'</div>" ><span class="badge" style="">￥收</span></span>';
+                          }
                     }
-                    if(charge){
-                      data += ' <span class="other" width="50" '
-                              +' data-content="<div'
-                              +' height=&quot;140&quot; >'+chargeShow+'</div>" ><span class="badge" style="">￥收</span></span>';
-                    }
+                    
 
                     $('.other').popover({
                         html: true,
@@ -150,10 +158,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                     return data;
                   }
               },
+              { "data": "CREATOR_NAME","visible":false},
+              { "data": "STATUS"},
               { "data": "CREATOR_NAME"},
               { "data": "UPDATOR_NAME"}, 
-              { "data": "CREATE_STAMP"}, 
-              { "data": "STATUS"},
+              { "data": "CREATE_STAMP"},              
               {"data": "NEW_COUNT","visible":false}
           ]
       });

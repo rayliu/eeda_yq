@@ -7,6 +7,9 @@
 	<%
       //如果只有edit, 没指定特定的, 默认都有编辑权限
       var orderPermission = shiro.hasPermission("jobOrder.order");
+      var chargeFinItemPermission = shiro.hasPermission("jobOrder.chargeFinItem");
+	  var costFinItemPermission = shiro.hasPermission("jobOrder.costFinItem");
+      
       var boolOrder= orderPermission;
     %>
         <div id="page-wrapper">
@@ -41,9 +44,11 @@
                         <input id="plan_order_id" type="hidden" name="plan_order_id" value="${planOrder.id!''}"/>
                         <input id="plan_order_item_id" type="hidden" value="${planOrderItem.id!order.plan_order_item_id!order.from_order_id!''}"/>
                         <input id="booking_order_id" type="hidden" value="${order.from_order_id!''}"/>
+                        <input id="from_order_id" type="hidden" value="${order.from_order_id!''}"/>
                         <input id="updator_id" type="hidden" name="updator_id" value="${order.updator!''}"/>
                         <input id="update_stamp" type="hidden" name="update_stamp" value="${order.update_stamp!''}"/>
                         <input id="rateExpired" type="hidden"  name="rateExpired" value="${rateExpired!''}"/>
+                        <input id="from_order_type" type="hidden" name="from_order_type" value="${order.from_order_type!''}"/>
                         <div class="row"><!--  第1行  -->
                             <div class="col-lg-4"><!--  三列排版  -->
                                 <%include("/eeda/component/form/inputField.html", 
@@ -480,7 +485,7 @@
                             </table>
                             
                         </div><!-- end of .col-lg-12-->
-
+					<% if(chargeFinItemPermission){ %>
                         <div class="col-lg-12">
                         <div class="row simple_rectangle_title_div"><div class="font_style">Charge Information 应收信息</div></div>
                             <div class="panel panel-default">
@@ -667,7 +672,9 @@
                                       </div>           
                                   </div>
                           </div>
-
+                    <% } %>     
+					<% if(costFinItemPermission){ %>
+						
                         <div class="col-lg-12"  style="margin-top:15px">
                         <div class="row simple_rectangle_title_div"><div class="font_style">Cost Information 应付信息</div></div>
                             <div class="panel panel-default">
@@ -702,6 +709,7 @@
                                     value_list: costList![]
                                 }){} %>
                         </div>
+                     <% } %>
                         
                     </div>
                     <div class="tab-pane fade in" id="docDetail">
@@ -867,6 +875,8 @@
     var custom_self_status_hidden = '${customSelf.status!''}';
     
     var entrust_or_self_custom_str = '${order.entrust_or_self_custom!''}';
+    
+    
 </script>
 
 <script>
