@@ -69,7 +69,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                 		  other = ' <span class="" '+new_count
                           +'><img src="/images/order_from_outside.png" style="height:15px;" title="Outside Order"></span>';
                 	  }
-                      return "<a href='/jobOrder/edit?id="+full.ID+"'target='_blank'>"+data+other+"</a>";
+                	  if(editPermission){
+                		  return "<a href='/jobOrder/edit?id="+full.ID+"'target='_blank'>"+data+other+"</a>"; 
+                	  }else{
+                		  return data+other; 
+                	  }
+                      
                   }
               },
               { "data": "TYPE",
@@ -158,7 +163,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                     return data;
                   }
               },
-              { "data": "CREATOR_NAME","visible":false},
+              { "data": "OPERATION_STATUS"},
               { "data": "STATUS"},
               { "data": "CREATOR_NAME"},
               { "data": "UPDATOR_NAME"}, 

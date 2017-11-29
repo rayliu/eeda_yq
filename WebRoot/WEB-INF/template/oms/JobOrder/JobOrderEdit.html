@@ -6,11 +6,9 @@
 <link rel="stylesheet" href="/js/lib/jQuery-File-Upload-9.9.3/css/jquery.fileupload.css">
 	<%
       //如果只有edit, 没指定特定的, 默认都有编辑权限
-      var orderPermission = shiro.hasPermission("jobOrder.order");
       var chargeFinItemPermission = shiro.hasPermission("jobOrder.chargeFinItem");
 	  var costFinItemPermission = shiro.hasPermission("jobOrder.costFinItem");
       
-      var boolOrder= orderPermission;
     %>
         <div id="page-wrapper">
             <a data-target='#pdfAlertDetail' data-toggle='modal'>
@@ -756,9 +754,6 @@
                 
                 <div class="button-bar" >
                     <a id='saveBtn' class="btn btn_green" href="#">保存</a>
-                    <%if(boolOrder){%>
-                    <button id="confirmCompleted" class="btn btn_white">工作单锁单</button>
-                    <%}%>
                     <a class="btn  btn_white" href="/jobOrder">返回</a>
                     <a href="/jobOrder/create" class="btn btn_green" style="float:right" type="button">创建新工作单</a>
                 </div>

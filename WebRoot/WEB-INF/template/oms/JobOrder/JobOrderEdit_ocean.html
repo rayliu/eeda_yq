@@ -105,12 +105,12 @@
 
 
 	<%
-      //如果只有edit, 没指定特定的, 默认都有编辑权限
+      //如果只有edit, 没指定特定的, 默认都有编辑权限,编辑权限没有在其他地方控制,entrustCustomPermission:委托报关
       var editPermission = shiro.hasPermission("jobOrder.edit");
       var oceanPermission = shiro.hasPermission("jobOrder.edit.ocean");
       var airPermission = shiro.hasPermission("jobOrder.edit.air");
       var landPermission = shiro.hasPermission("jobOrder.edit.land");
-      var customPermission = shiro.hasPermission("jobOrder.edit.custom");
+      
       var insurPermission = shiro.hasPermission("jobOrder.edit.insur");
       var boolEdit= editPermission;
       var boolOcean = oceanPermission;
@@ -344,13 +344,13 @@
                 	<input type="hidden" id="hidden_release_type" value="${shipment.release_type!''}">
                     <label class="search-label">放货方式</label>
                     <label class="radio-inline">
-                        <input type="radio" name='release_radio' value='tlx' checked>电放
+                        <input type="radio" name='release_radio' value='tlx' checked ${disableStr}>电放
                     </label><nbsp>
                     <label class="radio-inline">
-                        <input type="radio" name='release_radio' value='swb'>SeaWayBill
+                        <input type="radio" name='release_radio' value='swb' ${disableStr}>SeaWayBill
                     </label><nbsp>
                     <label class="radio-inline">
-                        <input type="radio" name='release_radio' value='obl'>OBL
+                        <input type="radio" name='release_radio' value='obl' ${disableStr}>OBL
                     </label>
                 </div>
             </div>
@@ -531,25 +531,38 @@
            </div>
            <div class="row">
            		<div class="col-lg-4">
-           			<%include("/eeda/component/form/dateInputField.html", 
-                    {   id:'atd', 
-                        label:'ATD', 
-                        value:shipment.atd!''
-                    }){}%>
+           			<% if(boolOcean){ %>
+	                   <%include("/eeda/component/form/dateInputField.html", 
+	                    {   id:'atd', 
+	                        label:'ATD', 
+	                        value:shipment.atd!''
+	                    }){}%>
+                   <%}else{%>
+              		   <label class="search-label">ATD</label> <span class='search-control'>${shipment.atd!''}</span>
+                   <%}%>
            		</div>
            		<div class="col-lg-4">
-           			<%include("/eeda/component/form/dateInputField.html", 
-                    {   id:'ata', 
-                        label:'ATA', 
-                        value:shipment.ata!''
-                    }){}%>
+           			<% if(boolOcean){ %>
+	                   <%include("/eeda/component/form/dateInputField.html", 
+		                    {   id:'ata', 
+		                        label:'ATA', 
+		                        value:shipment.ata!''
+		                    }){}%>
+                   <%}else{%>
+              		   <label class="search-label">ATA</label> <span class='search-control'>${shipment.ata!''}</span>
+                   <%}%>           			
            		</div>
            		<div class="col-lg-4">
-           			<%include("/eeda/component/form/dateInputField.html", 
-                    {   id:'sailing_date', 
-                        label:'驳船开船日', 
-                        value:shipment.sailing_date!''
-                    }){}%>
+           			<% if(boolOcean){ %>
+	                   <%include("/eeda/component/form/dateInputField.html", 
+		                    {   id:'sailing_date', 
+		                        label:'驳船开船日', 
+		                        value:shipment.sailing_date!''
+		                    }){}%>
+                   <%}else{%>
+              		   <label class="search-label">驳船开船日</label> <span class='search-control'>${shipment.sailing_date!''}</span>
+                   <%}%>  
+           			
            		</div>
            </div>
            
@@ -561,14 +574,26 @@
                 	oversea_agent = 'oversea_agent';
                 }
                  %>
-                 <input type="hidden" id="hidden_agent_type" value="${shipment.agent_type!''}">       
+                 <input type="hidden" id="hidden_agent_type" value="${shipment.agent_type!''}"> 
+                 <%
+                 var lable_msg='';
+                 if(boolOcean){
+                 	lable_msg='<span id="overseaAgent_radio_div" disabled>'	                        			
+	                        			+'<label class="radio-inline"><input type="radio" name="overseaAgent" value="domestic" >国内</input></label>'
+	                        			+'<nbsp><label class="radio-inline" style="margin-left:10px"><input type="radio" name="overseaAgent" value="oversea" >国外</input></label><nbsp>'
+	                        		+'</span>';
+                 }else{
+                 	lable_msg='<span id="overseaAgent_radio_div" >'	                        			
+	                        			+'<label class="radio-inline"><input type="radio" name="overseaAgent" value="domestic" disabled >国内</input></label>'
+	                        			+'<nbsp><label class="radio-inline" style="margin-left:10px"><input type="radio" name="overseaAgent" value="oversea" disabled>国外</input></label><nbsp>'
+	                        		+'</span>';
+                 }
+                 
+                 %>      
                  <%include("/eeda/component/form/inputSelectAreaOfOverseaAgent.html", 
 	                    {   id:oversea_agent,
 	                        label: '海外代理',
-	                        lable_msg:'<span id="overseaAgent_radio_div" style="display:none" >'	                        			
-	                        			+'<label class="radio-inline"><input type="radio" name="overseaAgent" value="domestic">国内</input></label>'
-	                        			+'<nbsp><label class="radio-inline" style="margin-left:10px"><input type="radio" name="overseaAgent" value="oversea">国外</input></label><nbsp>'
-	                        		+'</span>', 	                        		   
+	                        lable_msg:lable_msg, 	                        		   
 	                        type:'oversea_agent',
 	                        value: shipment.oversea_agent!'',
 	                        display_value: shipment.oversea_agent_name!'',
@@ -576,26 +601,51 @@
 	                        disabled:disableStr
 	                    }){}%>
               </div>
-              <div class="col-lg-4">
-              	<div style="margin-top:50px;display:none" >
-					<button type="button" class="btn btn_green" id="submitOverseaAgent" >提交给海外代理</button><br>
+              <div class="col-lg-4" id="submitAgentDiv">
+              	<div style="margin-top:50px;" >
+					<button type="button" class="btn btn_green" id="submitOverseaAgent" ${disableStr}>提交给海外代理</button><br>
 					<input type="hidden" id="hidden_is_need_afr" value="${shipment.is_need_afr!''}"><br>
 	                <label class="checkbox-inline">       
-	                      <input id="is_need_afr" type="checkbox" >AFR申报
+	                      <input id="is_need_afr" type="checkbox" ${disableStr}>AFR申报
 	                </label>
 	                <input type="hidden" id="hidden_is_need_custom_apply" value="${shipment.is_need_custom_apply!''}">
 	                <label class="checkbox-inline">       
-	                      <input id="is_need_custom_apply" type="checkbox" >报关
+	                      <input id="is_need_custom_apply" type="checkbox" ${disableStr}>报关
 	                </label>
 	                <input type="hidden" id="hidden_is_need_delivery" value="${shipment.is_need_delivery!''}">
 	                <label class="checkbox-inline">       
-	                      <input id="is_need_delivery" type="checkbox" >陆运配送
+	                      <input id="is_need_delivery" type="checkbox" ${disableStr}>陆运配送
 	                </label>
 				</div>
               </div>
-              <div class="col-lg-4">
-                  
-              </div>   
+             <div id="agentDiv">
+              <div class="col-lg-4" >
+              		<div style="margin-top:50px;" >
+	                	<label class="checkbox-inline" style="font-size:18px">       
+		                      <input id="is_needed_land" type="checkbox" style="height:20px;width:20px;" disabled >要求配送
+		                </label><br><br>
+	                </div>
+                	
+              </div>
+              <div class="col-lg-4" >
+              		<div style="margin-top:50px;" >
+              			<button type="button" class="btn btn_green" id="AFR_done" >AFR 已申报</button>
+	                	<%include("/eeda/component/form/dateInputField.html", 
+	                    {   id:'afr_done_time', 
+	                        label:'AFR申报时间', 
+	                        value:shipment.afr_done_time!''
+	                    }){}%><br>
+		                <button type="button" class="btn btn_green" id="custom_done" >报关已放行</button>
+		                <%include("/eeda/component/form/dateInputField.html", 
+		                {   id:'custom_done_time', 
+	                        label:'放行时间', 
+	                        value:shipment.custom_done_time!''
+	                    }){}%>
+              		
+              		</div>
+              
+              </div>
+             </div>    
            </div>
            
            <div class="row">
@@ -942,6 +992,9 @@
                  <li class="active">
                      <a id='oceanItemTab' href="#oceanItem" data-toggle="tab" >箱量明细</a>
                  </li>
+                 <li >
+                     <a id='oceanDocumentShareTab' href="#oceanDocumentShare" data-toggle="tab" >文档共享</a>
+                 </li>
 		</ul>
 		<div class="tab-content">
 				<div class="tab-pane fade" id="oceanTotalItem" style="dispaly:none">
@@ -979,6 +1032,27 @@
 				                    field_list:['id', '', 'load_type', 'container_type', 'container_no', 'seal_no', 'pieces','unit_id','pallet_desc', 'gross_weight', 'volume', 'vgm','unit_name'],
 				                    value_list: shipmentList![]
 				                }){} %>
+				        </div>
+                    </div>
+				</div>
+				<div class="tab-pane" id="oceanDocumentShare">
+					<div class="form-group"><br>
+						<div class="col-lg-12">
+				         	<span class="btn btn_grey btn-xs fileinput-button" id="fileuploadSpanOfOcean"> 
+		    	                 <i class="glyphicon glyphicon-plus"></i> 
+		    	                 <span>选择文件</span> 
+		    	                 <input id="fileuploadOfOcean" type="file" name="files[]" multiple> 
+		    	             </span> 
+				            <hr/>
+		    	             <%include("/eeda/component/form/detailTable.html", 
+		    	                 {
+		    	                     id:'ocean_doc_table',
+		    	                     style:'width:1400px',
+		    	                     headers:['<input id="allCheckOfOceanDoc" type="checkbox" style="width:30px">是否共享','操作', '文档名称', '备注', '上传人', '上传时间', 'share_flag','REF_JOB_ORDER_ID'],
+		    	                     field_list:['id','', 'doc_name','remark','c_name','upload_time', 'share_flag','REF_JOB_ORDER_ID'],
+		    	                     value_list: oceanDocList![]
+		    	                 }){} %>
+		    	              <br>
 				        </div>
                     </div>
 				</div>

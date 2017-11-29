@@ -1,5 +1,8 @@
  
-          
+          <% 
+          	//entrustCustomPermission:委托报关
+          	var entrustCustomPermission = shiro.hasPermission("jobOrder.edit.entrustCustom"); 
+          %>
           
            <div class="form-group" id="custom_type">
                <label class="search-label">报关类型</label>
@@ -34,8 +37,8 @@
                         <div class="form-group">
                             <br>
                             <div class="row" id="entrust_or_self_custom" style="margin-left:0px">
-                            <% var user_office_id = office_id;
-                            if(user_office_id==1){%>
+                            <% 
+                            if(entrustCustomPermission){%>
     				               <label class="checkbox-inline">
     				                   <input type="radio" name="entrust_or_self_custom" value='entrust_custom' checked>委托报关
     				               </label>

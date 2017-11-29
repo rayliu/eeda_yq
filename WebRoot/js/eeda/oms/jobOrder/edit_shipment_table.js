@@ -357,6 +357,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         	$("#volume").val(volume_total);
         }
         
+        //disableStr 海运编辑权限控制
+        if(disableStr){
+      	  $('#ocean_cargo_table input,#ocean_cargo_table select,#ocean_cargo_table button').attr('disabled',true);
+        }
+        
         
     });
 });

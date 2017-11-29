@@ -1,10 +1,5 @@
 <%layout("/eeda/layout.html"){%>
 <div id="page-wrapper">
-        <%
-	      //如果只有edit, 没指定特定的, 默认都有编辑权限
-	      var orderPermission = shiro.hasPermission("jobOrder.order");
-	      var boolOrder= orderPermission;
-    	%>
 
 	<input type="hidden" value = "${type!''}" id = "order_type">
 	<div class="row simple_search_div">
@@ -227,9 +222,6 @@
                                         <button id="searchBtn" class="btn btn_grey" type="button">查询</button>
                                         <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>
                                         <a href="/jobOrder/create" class="btn btn_green" type="button">创建工作单</a>
-                                        <%if(boolOrder){%>
-                                        <button id="lockBtn" class="btn btn_green" style="float:right" type="button" disabled>工作单锁单</button>
-                                        <%}%>
                                     </div>
                                 </form>
                             </div>
@@ -328,9 +320,11 @@
 	  <%
 	  		var chargeFinItem = shiro.hasPermission("jobOrder.chargeFinItem");
 	  		var costFinItem = shiro.hasPermission("jobOrder.costFinItem");
+	  		var edit = shiro.hasPermission("jobOrder.edit");
 	  %>
 	  var chargeFinItemPermission=${chargeFinItem}
 	  var costFinItemPermission=${costFinItem}
+	  var editPermission=${edit}
       var type = "${type!''}";
       
  </script>
