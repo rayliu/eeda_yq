@@ -78,7 +78,7 @@ public class profitController extends Controller {
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
         		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
         		+" LEFT JOIN user_login ul on ul.id = cs.salesman_id"
-        		+"  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ")"
+        		+"  WHERE 1=1 and joa.pay_flag!='B' and (jo.office_id="+office_id+ ref_office+ ")"
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1 "+condition+" GROUP BY A.customer_id  ORDER BY abbr";
 		
@@ -143,7 +143,7 @@ public class profitController extends Controller {
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
         		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
         		+" LEFT JOIN user_login ul on ul.id = cs.salesman_id"
-        		+"  WHERE 1=1 and (jo.office_id="+office_id+ ref_office+ ")"
+        		+"  WHERE 1=1 and joa.pay_flag!='B' and (jo.office_id="+office_id+ ref_office+ ")"
         		+ conditions
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1 ";
@@ -163,6 +163,13 @@ public class profitController extends Controller {
 		String order_export_date_begin_time = getPara("begin_time");
 		String order_export_date_end_time = getPara("end_time");
 		String customerId = "";
+		
+		String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+		
 		if(customer_id == ""||customer_id.equals("")){
 			customerId = "";
 		}else{
@@ -195,7 +202,7 @@ public class profitController extends Controller {
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
         		+" LEFT JOIN customer_salesman cs on cs.party_id = jo.customer_id"
         		+ " LEFT JOIN user_login ul on ul.id = cs.salesman_id"
-        		+"  WHERE p.office_id ="+office_id+" "
+        		+"  WHERE p.office_id ="+office_id+" and joa.pay_flag!='B' and (jo.office_id="+office_id+ ref_office+ ")"
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1 "+condition+" GROUP BY A.customer_id  ORDER BY abbr";
 		

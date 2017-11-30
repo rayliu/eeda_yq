@@ -86,7 +86,7 @@ public class TotalProfitController extends Controller {
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
-        		+"  WHERE p.office_id ="+office_id+" and (jo.office_id="+office_id+ ref_office+ ") " 
+        		+"  WHERE p.office_id ="+office_id+" and joa.pay_flag!='B' and (jo.office_id="+office_id+ ref_office+ ") " 
         		+ conditions
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1  GROUP BY A.date_time";
@@ -141,7 +141,7 @@ public class TotalProfitController extends Controller {
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
-        		+"  WHERE p.office_id ="+office_id+" and (jo.office_id="+office_id+ ref_office+ ") " 
+        		+"  WHERE p.office_id ="+office_id+" and joa.pay_flag!='B' and (jo.office_id="+office_id+ ref_office+ ") " 
         		+ conditions
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1 ";
@@ -206,7 +206,7 @@ public class TotalProfitController extends Controller {
 	        		+"  from job_order jo "
 	        		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 	        		+"  LEFT JOIN party p on p.id = jo.customer_id"
-	        		+"  WHERE p.office_id ="+office_id+" and (jo.office_id="+office_id+ ref_office+ ") " 
+	        		+"  WHERE p.office_id ="+office_id+" and joa.pay_flag!='B' and (jo.office_id="+office_id+ ref_office+ ") " 
 	        		+ conditions
 	        		+ " and jo.delete_flag = 'N'"
 	    			+" ) A where 1=1  GROUP BY A.date_time";

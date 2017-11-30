@@ -77,16 +77,16 @@ public class ChargeBalanceReportController extends Controller {
         		+ " AND joa.currency_id = 8,total_amount,0) charge_jpy,"
         		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 9,"
         		+ " total_amount,0) charge_hkd,"
-        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 3 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 3 AND pay_flag='N',"
         		+ " total_amount,0) uncharge_cny,"
-        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 6 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 6 AND pay_flag='N',"
         		+ " total_amount,0) uncharge_usd,"
-        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 8 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 8 AND pay_flag='N',"
         		+ " total_amount,0) uncharge_jpy,"
-        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 9 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 9 AND pay_flag='N',"
         		+ " total_amount,0) uncharge_hkd,"
         		+ " IF (joa.order_type = 'charge',currency_total_amount,0) charge_rmb,"
-        		+ " IF (joa.order_type = 'charge' AND pay_flag!='Y',currency_total_amount,0) uncharge_rmb"
+        		+ " IF (joa.order_type = 'charge' AND pay_flag='N',currency_total_amount,0) uncharge_rmb"
         		+ " FROM job_order jo"
         		+ " LEFT JOIN job_order_arap joa ON jo.id = joa.order_id"
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"
@@ -195,7 +195,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
 			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.currency_id = 3 "
-			+"	  and joa.order_type = 'charge' and pay_flag!='Y'  "+condition
+			+"	  and joa.order_type = 'charge' and pay_flag='N'  "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncharge_cny,"
 			+"	(SELECT "
@@ -205,7 +205,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
 			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.currency_id = 6 "
-			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
+			+"	  and joa.order_type = 'charge' and pay_flag='N' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncharge_usd,"
 			+"	(SELECT "
@@ -215,7 +215,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
 			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.currency_id = 8 "
-			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
+			+"	  and joa.order_type = 'charge' and pay_flag='N' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncharge_jpy,"
 			+"	(SELECT "
@@ -225,7 +225,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
 			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.currency_id = 9 "
-			+"	  and joa.order_type = 'charge' and pay_flag!='Y' "+condition
+			+"	  and joa.order_type = 'charge' and pay_flag='N' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncharge_hkd, "
 			+"	(SELECT "
@@ -243,7 +243,7 @@ public class ChargeBalanceReportController extends Controller {
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
 			+"	WHERE 	1=1 and (jo.office_id="+office_id+ ref_office+ ")"
-			+"	AND joa.order_type = 'charge' and pay_flag!='Y' "+condition
+			+"	AND joa.order_type = 'charge' and pay_flag='N' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_uncharge";
 		
@@ -294,16 +294,16 @@ public class ChargeBalanceReportController extends Controller {
         		+ " AND joa.currency_id = 8,total_amount,0) charge_jpy,"
         		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 9,"
         		+ " total_amount,0) charge_hkd,"
-        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 3 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 3 AND pay_flag='N',"
         		+ " total_amount,0) uncharge_cny,"
-        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 6 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 6 AND pay_flag='N',"
         		+ " total_amount,0) uncharge_usd,"
-        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 8 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 8 AND pay_flag='N',"
         		+ " total_amount,0) uncharge_jpy,"
-        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 9 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'charge' AND joa.currency_id = 9 AND pay_flag='N',"
         		+ " total_amount,0) uncharge_hkd,"
         		+ " IF (joa.order_type = 'charge',currency_total_amount,0) charge_rmb,"
-        		+ " IF (joa.order_type = 'charge' AND pay_flag!='Y',currency_total_amount,0) uncharge_rmb"
+        		+ " IF (joa.order_type = 'charge' AND pay_flag='N',currency_total_amount,0) uncharge_rmb"
         		+ " FROM job_order jo"
         		+ " LEFT JOIN job_order_arap joa ON jo.id = joa.order_id"
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"

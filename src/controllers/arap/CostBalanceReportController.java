@@ -75,16 +75,16 @@ public class CostBalanceReportController extends Controller {
         		+ " AND joa.currency_id = 8,total_amount,0) cost_jpy,"
         		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 9,"
         		+ " total_amount,0) cost_hkd,"
-        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 3 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 3 AND pay_flag='N',"
         		+ " total_amount,0) uncost_cny,"
-        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 6 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 6 AND pay_flag='N',"
         		+ " total_amount,0) uncost_usd,"
-        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 8 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 8 AND pay_flag='N',"
         		+ " total_amount,0) uncost_jpy,"
-        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 9 AND pay_flag!='Y',"
+        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 9 AND pay_flag='N',"
         		+ " total_amount,0) uncost_hkd,"
         		+ " IF (joa.order_type = 'cost',currency_total_amount,0) cost_rmb,"
-        		+ " IF (joa.order_type = 'cost' AND pay_flag!='Y',currency_total_amount,0) uncost_rmb"
+        		+ " IF (joa.order_type = 'cost' AND pay_flag='N',currency_total_amount,0) uncost_rmb"
         		+ " FROM job_order jo"
         		+ " LEFT JOIN job_order_arap joa ON jo.id = joa.order_id"
         		+ " LEFT JOIN party p ON p.id = joa.sp_id"
@@ -191,7 +191,7 @@ public class CostBalanceReportController extends Controller {
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
 			+"	WHERE 	(jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.currency_id = 3 "
-			+"	  and joa.order_type = 'cost' and pay_flag!='Y'  "+condition
+			+"	  and joa.order_type = 'cost' and pay_flag='N'  "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncost_cny,"
 			+"	(SELECT "
@@ -201,7 +201,7 @@ public class CostBalanceReportController extends Controller {
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
 			+"	WHERE 	(jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.currency_id = 6 "
-			+"	  and joa.order_type = 'cost' and pay_flag!='Y' "+condition
+			+"	  and joa.order_type = 'cost' and pay_flag='N' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncost_usd,"
 			+"	(SELECT "
@@ -211,7 +211,7 @@ public class CostBalanceReportController extends Controller {
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
 			+"	WHERE 	(jo.office_id="+office_id+ ref_office+ ")"
 			+" and joa.currency_id = 8 "
-			+"	  and joa.order_type = 'cost' and pay_flag!='Y' "+condition
+			+"	  and joa.order_type = 'cost' and pay_flag='N' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncost_jpy,"
 			+"	(SELECT "
@@ -221,7 +221,7 @@ public class CostBalanceReportController extends Controller {
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
 			+"	WHERE 	(jo.office_id="+office_id+ ref_office+ ")"
 			+ " and joa.currency_id = 9 "
-			+"	  and joa.order_type = 'cost' and pay_flag!='Y' "+condition
+			+"	  and joa.order_type = 'cost' and pay_flag='N' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+"	) uncost_hkd, "
 			+"	(SELECT "
@@ -239,7 +239,7 @@ public class CostBalanceReportController extends Controller {
 			+"	LEFT JOIN job_order_arap joa ON jo.id = joa.order_id "
 			+"  LEFT JOIN party p on p.id = joa.sp_id"
 			+"	WHERE 	(jo.office_id="+office_id+ ref_office+ ")"
-			+"	AND joa.order_type = 'cost' and pay_flag!='Y' "+condition
+			+"	AND joa.order_type = 'cost' and pay_flag='N' "+condition
 			+ " and jo.delete_flag = 'N'"
 			+") total_uncost";
 		
@@ -289,16 +289,16 @@ public class CostBalanceReportController extends Controller {
 	        		+ " AND joa.currency_id = 8,total_amount,0) cost_jpy,"
 	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 9,"
 	        		+ " total_amount,0) cost_hkd,"
-	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 3 AND pay_flag!='Y',"
+	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 3 AND pay_flag='N',"
 	        		+ " total_amount,0) uncost_cny,"
-	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 6 AND pay_flag!='Y',"
+	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 6 AND pay_flag='N',"
 	        		+ " total_amount,0) uncost_usd,"
-	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 8 AND pay_flag!='Y',"
+	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 8 AND pay_flag='N',"
 	        		+ " total_amount,0) uncost_jpy,"
-	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 9 AND pay_flag!='Y',"
+	        		+ " IF (joa.order_type = 'cost' AND joa.currency_id = 9 AND pay_flag='N',"
 	        		+ " total_amount,0) uncost_hkd,"
 	        		+ " IF (joa.order_type = 'cost',currency_total_amount,0) cost_rmb,"
-	        		+ " IF (joa.order_type = 'cost' AND pay_flag!='Y',currency_total_amount,0) uncost_rmb"
+	        		+ " IF (joa.order_type = 'cost' AND pay_flag='N',currency_total_amount,0) uncost_rmb"
 	        		+ " FROM job_order jo"
 	        		+ " LEFT JOIN job_order_arap joa ON jo.id = joa.order_id"
 	        		+ " LEFT JOIN party p ON p.id = joa.sp_id"
