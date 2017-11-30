@@ -38,10 +38,9 @@ $(document).ready(function() {
     $("#cost_table").on('click', '.cancelCostConfirm', function(){
     	var id = $(this).parent().parent().parent().attr('id');
     	$.post('/trJobOrder/feeCancelConfirm',{id:id},function(data){
-    		if(data.BILL_FLAG == 'Y'){
+    		if(data==false){
     			$.scojs_message('该单据已生成对账单，不能取消确认', $.scojs_message.TYPE_ERROR);
-    		}
-    		else{
+    		}else{
 	    		var order_id = $('#order_id').val();
 	    		itemOrder.refleshCostTable(order_id); 
 	    		$.scojs_message('取消确认成功', $.scojs_message.TYPE_OK);

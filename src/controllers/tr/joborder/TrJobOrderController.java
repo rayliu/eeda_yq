@@ -1120,12 +1120,13 @@ public class TrJobOrderController extends Controller {
     public void uploadCustomDoc() throws Exception{
         try {
             String order_id = getPara("order_id");
+            String bill_type = "custom";
             List<UploadFile> fileList = getFiles("doc");
             Long userId = LoginUserController.getLoginUserId(this);
             UserLogin userLogin=LoginUserController.getLoginUser(this);
 			String reString="select * from office where id="+userLogin.getOfficeId();
 			Record record=Db.findFirst(reString);
-            FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,record.get("type").toString());
+            FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,record.get("type").toString(),bill_type);
             
             renderJson("{\"result\":true}");
         } catch (Exception e) {
@@ -1881,6 +1882,7 @@ public class TrJobOrderController extends Controller {
         	TradeJobOrderArap joa = TradeJobOrderArap.dao.findFirst("select * from trade_job_order_arap where id = ?",id);
         	if( joa.get("audit_flag").equals("Y")&&joa.get("bill_flag").equals("N")){
         		joa.set("audit_flag", "N");
+        		result = true;
         	 } else if(joa.get("audit_flag").equals("Y")&&joa.get("bill_flag").equals("Y")){
         		String sql = " select apoa.* from trade_job_order_arap apoa"
         				+ " LEFT JOIN trade_arap_charge_item caci on caci.ref_order_id = apoa.id and apoa.bill_flag = 'Y'"
