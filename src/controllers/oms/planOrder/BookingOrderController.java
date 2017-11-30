@@ -1039,12 +1039,13 @@ public class BookingOrderController extends Controller {
     public void uploadCustomDoc() throws Exception{
         try {
             String order_id = getPara("order_id");
+            String bill_type = "bookingOrder";
             List<UploadFile> fileList = getFiles("doc");
             Long userId = LoginUserController.getLoginUserId(this);
             Office office=LoginUserController.getLoginUserOffice(this);
 
 //            FileUploadUtil.uploadFile(fileList, order_id, userId, "job_order_custom_doc", false);
-			 FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,office.get("type").toString());
+			 FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,office.get("type").toString(),bill_type);
             renderJson("{\"result\":true}");
         } catch (Exception e) {
             String msg = e.getMessage();

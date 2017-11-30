@@ -2,19 +2,13 @@ package controllers.util;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import models.UserLogin;
-
-import com.hp.hpl.sparta.xpath.ThisNodeTest;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
-
-import controllers.profile.LoginUserController;
 
 public class FileUploadUtil {
 	public static void uploadFile(List<UploadFile> fileList, 
@@ -46,7 +40,7 @@ public class FileUploadUtil {
 	public static void uploadTypeFile(List<UploadFile> fileList, 
 	        String orderId,
 	        Long userId, 
-	        String tableName, boolean isLand,String type) throws Exception {
+	        String tableName, boolean isLand,String type,String bill_type) throws Exception {
 	    for (int i = 0; i < fileList.size(); i++) {
             File file = fileList.get(i).getFile();
             //file.length()/1024/1024
@@ -64,6 +58,7 @@ public class FileUploadUtil {
     		r.set("order_type",type);
             r.set("uploader", userId);
             r.set("doc_name", fileName);
+            r.set("bill_type", bill_type);            
             r.set("upload_time", new Date());
             Db.save(tableName, r);
         }

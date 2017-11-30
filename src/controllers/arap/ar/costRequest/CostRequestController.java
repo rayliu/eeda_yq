@@ -1322,7 +1322,7 @@ public class CostRequestController extends Controller {
 				caor.save();
 				
 				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(cost_order_id);
-				arapCostOrder.set("audit_status", "收款申请中").update();
+				arapCostOrder.set("audit_status", "付款申请中").update();
 				//更新job_order_arap的create_flag
 				JobOrderArap joa=JobOrderArap.dao.findById(item);
 				joa.set("create_flag", "Y");

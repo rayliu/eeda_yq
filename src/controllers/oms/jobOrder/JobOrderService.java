@@ -61,7 +61,6 @@ import controllers.eeda.ListConfigController;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.FileUploadUtil;
-import controllers.util.OrderCheckOfficeUtil;
 import controllers.util.OrderNoGenerator;
 import controllers.util.ParentOffice;
 
@@ -2571,6 +2570,7 @@ public class JobOrderService extends Controller {
     public void uploadCustomDoc() throws Exception{
         try {
             String order_id = getPara("order_id");
+            String bill_type = "custom";
             List<UploadFile> fileList = getFiles("doc");
             Long userId = LoginUserController.getLoginUserId(this);
             
@@ -2578,7 +2578,7 @@ public class JobOrderService extends Controller {
             UserLogin userLogin=LoginUserController.getLoginUser(this);
 			String reString="select * from office where id="+userLogin.getOfficeId();
 			Record record=Db.findFirst(reString);
-            FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,record.get("type").toString());
+            FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,record.get("type").toString(),bill_type);
             
             
             renderJson("{\"result\":true}");
