@@ -1814,12 +1814,12 @@ public class JobOrderController extends Controller {
     	for (int i = 0; i < jArray.size(); i++) {
     		Record map=new Record();  
     		map = jArray.get(i);
-    		String transport_company = (String)map.get("TRANSPORT_COMPANY")==null?"":dto.getStr("TRANSPORT_COMPANY");
-    		String truck_type = (String)map.get("TRUCK_TYPE")==null?"":dto.getStr("TRUCK_TYPE");
-    		String take_address = (String)map.get("TAKE_ADDRESS")==null?"":dto.getStr("TAKE_ADDRESS");
-    		String take_address_type = (String)map.get("TAKE_ADDRESS_TYPE")==null?"":dto.getStr("TAKE_ADDRESS_TYPE");
-    		String delivery_address = (String)map.get("DELIVERY_ADDRESS")==null?"":dto.getStr("DELIVERY_ADDRESS");
-    		String delivery_address_type = (String)map.get("DELIVERY_ADDRESS_TYPE")==null?"":dto.getStr("DELIVERY_ADDRESS_TYPE");
+    		String transport_company = (String)map.get("TRANSPORT_COMPANY")==null?"":(String)map.get("TRANSPORT_COMPANY");
+    		String truck_type = (String)map.get("TRUCK_TYPE")==null?"":(String)map.get("TRUCK_TYPE");
+    		String take_address = (String)map.get("TAKE_ADDRESS")==null?"":(String)map.get("TAKE_ADDRESS");
+    		String take_address_type = (String)map.get("TAKE_ADDRESS_TYPE")==null?"":(String)map.get("TAKE_ADDRESS_TYPE");
+    		String delivery_address = (String)map.get("DELIVERY_ADDRESS")==null?"":(String)map.get("DELIVERY_ADDRESS");
+    		String delivery_address_type = (String)map.get("DELIVERY_ADDRESS_TYPE")==null?"":(String)map.get("DELIVERY_ADDRESS_TYPE");
     		String take_address_condition ="";
     		String delivery_address_condition ="";
     		String take_address_condition_change ="";
@@ -2871,6 +2871,7 @@ public class JobOrderController extends Controller {
     public void uploadCustomDoc() throws Exception{
         try {
             String order_id = getPara("order_id");
+            String bill_type = "custom";
             List<UploadFile> fileList = getFiles("doc",20971520);
             Long userId = LoginUserController.getLoginUserId(this);
             
@@ -2878,7 +2879,7 @@ public class JobOrderController extends Controller {
             UserLogin userLogin=LoginUserController.getLoginUser(this);
 			String reString="select * from office where id="+userLogin.getOfficeId();
 			Record record=Db.findFirst(reString);
-            FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,record.get("type").toString());
+            FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,record.get("type").toString(),bill_type);
             
             
             renderJson("{\"result\":true}");
@@ -2894,6 +2895,39 @@ public class JobOrderController extends Controller {
             renderJson(rec);
         }
     }
+    
+    //海运文档上传
+    @Before(Tx.class)
+    public void uploadOceanDoc() throws Exception{
+        try {
+            String order_id = getPara("order_id");
+            String bill_type = "ocean";
+            List<UploadFile> fileList = getFiles("doc",20971520);
+            Long userId = LoginUserController.getLoginUserId(this);
+            
+//            FileUploadUtil.uploadFile(fileList, order_id, userId, "job_order_custom_doc", false);
+            UserLogin userLogin=LoginUserController.getLoginUser(this);
+			String reString="select * from office where id="+userLogin.getOfficeId();
+			Record record=Db.findFirst(reString);
+            FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,record.get("type").toString(),bill_type);
+            
+            
+            renderJson("{\"result\":true}");
+        } catch (Exception e) {
+            String msg = e.getMessage();
+            Record rec = new Record();
+            rec.set("result", false);
+            if(msg.indexOf("Posted content")>0){
+                rec.set("errMsg", "文件不能大于20M.");
+            }else{
+                rec.set("errMsg", msg);
+            }
+            renderJson(rec);
+        }
+    }
+    
+    
+    
     
     //上传陆运签收文件描述
     @Before(Tx.class)
@@ -3178,7 +3212,43 @@ public class JobOrderController extends Controller {
                     + " where cpo.ref_job_order_id=? "
                     + " and ifnull(cpo.delete_flag,'N') = 'N' and (u.office_id = "+office.getLong("id")+" or u1.office_id = "+office.getLong("id")+") ";
 	    	itemList = Db.find(itemSql, orderId, orderId);
-	    }else if("custom_app".equals(type)){
+	    }else if("ocean_doc".equals(type)){
+	    	String orderSql="select * from job_order where id = ?";
+	    	Record jobOrder = Db.findFirst(orderSql,orderId);
+	    	String from_order_type = jobOrder.get("from_order_type");
+	    	String ownSql =" SELECT null ref_job_order_id,jocd.id,jocd.doc_name,jocd.upload_time, "
+	    			+" 	jocd.remark,ul.c_name c_name,jocd.uploader,jocd.share_flag,jocd.bill_type "
+	    			+" FROM job_order_custom_doc jocd "
+	    			+" LEFT JOIN user_login ul ON ul.id = jocd.uploader "
+	    			+" WHERE jocd.order_id ="+orderId
+	    			+" AND jocd.order_type = 'forwarderCompany' "
+	    			+" AND jocd.bill_type = 'ocean' ";
+	    	String otherSql="";
+	    	if("forwarderJobOrder".equals(from_order_type)){
+	    		otherSql=" UNION "
+	    				+" SELECT fjo.from_order_id ref_job_order_id,jocd.id,jocd.doc_name,jocd.upload_time, "
+	    				+" 	jocd.remark,ul.c_name c_name,jocd.uploader,jocd.share_flag,jocd.bill_type "
+	    				+" FROM job_order_custom_doc jocd  "
+	    				+" LEFT JOIN (SELECT * from job_order jo where jo.id ="+orderId+" and jo.from_order_type ='forwarderJobOrder') fjo on fjo.from_order_id = jocd.order_id  "
+	    				+" LEFT JOIN user_login ul ON ul.id = jocd.uploader  "
+	    				+" WHERE "
+	    				+" 	 jocd.order_type = 'forwarderCompany' "
+	    				+" AND jocd.bill_type = 'ocean' "
+	    				+" and jocd.share_flag='Y' ";
+	    	}else{
+	    		otherSql=" UNION "
+	    				+" SELECT tjo.id ref_job_order_id,jocd.id,jocd.doc_name,jocd.upload_time, "
+	    				+" 	jocd.remark,ul.c_name c_name,jocd.uploader,jocd.share_flag,jocd.bill_type "
+	    				+"  from job_order_custom_doc jocd RIGHT JOIN  "
+	    				+" (SELECT * from job_order jo where jo.from_order_id = "+orderId+" and jo.from_order_type ='forwarderJobOrder') tjo on tjo.id = jocd.order_id "
+	    				+" LEFT JOIN user_login ul ON ul.id = jocd.uploader " 
+	    				+" where jocd.order_type = 'forwarderCompany' " 
+	    				+" AND jocd.bill_type = 'ocean' " 
+	    				+" and jocd.share_flag='Y' " ;
+	    	}
+		    itemSql = ownSql+otherSql;
+			itemList = Db.find(itemSql);
+		}else if("custom_app".equals(type)){
 	    	itemSql = "SELECT"
 	    			+ " cjo.id, cjo.order_no custom_plan_no, o.office_name custom_bank,cjo.status applybill_status,"
 	    			+ " cjo.ref_no custom_order_no, cjo.custom_state custom_status, ul.c_name creator,"
@@ -3247,6 +3317,8 @@ public class JobOrderController extends Controller {
    		setAttr("customSelf", Db.findFirst("select * from job_order_custom joc where order_id = ? and custom_type = ?",id,"china_self"));
    		setAttr("customSelfItemList", getItems(id,"china_self"));
    		setAttr("customDocList", getItems(id,"custom_doc"));
+   		//海运文档回显
+   		setAttr("oceanDocList", getItems(id,"ocean_doc"));
     	//保险
     	setAttr("insurance", getItemDetail(id,"insure"));
     	//快递
@@ -3641,7 +3713,8 @@ public class JobOrderController extends Controller {
         			//+ " and isnull(joc.customs_broker) and isnull(jocc.custom_bank)" ;
         }
        
-         sql = 		"SELECT * from (select jor.*, loc.name as pod_name,jos.sono,jos.mbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\" / \",jos.mbl_no), \"\")) AS sono_mbl,"
+         sql = 		"SELECT * from (select jor.*, loc.name as pod_name,jos.sono,jos.afr_done_time,jos.custom_done_time,SUBSTR(joli.eta,1,10) land_eta,jos.atd ocean_atd,"
+         			+ " jos.ata ocean_ata,jos.mbl_no,concat(ifnull(jos.sono, \"\"),ifnull(concat(\" / \",jos.mbl_no), \"\")) AS sono_mbl,ifnull(joc.customs_broker,ifnull(jocc.custom_bank,jocc.status)) cleared,"
                     + " if(jor.from_office_id is not null, 'other', if(jor.office_id != "+office_id+",'other','self') ) other_flag,"
          			+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE  jod0.order_id =jor.id and (jod0.type='one' or jod0.type='three') and   jod0.send_status='已发送' ) new_count,"
          			+" (SELECT GROUP_CONCAT(josi.container_no SEPARATOR '<br>' ) "
@@ -4159,6 +4232,7 @@ public class JobOrderController extends Controller {
     	jobOrder.set("create_stamp",new Date());
     	jobOrder.set("updator",jobOrder.getLong("creator"));
     	jobOrder.set("update_stamp",null);
+    	jobOrder.set("status","待审核");
     	jobOrder.set("office_id",ref_office_id);
     	jobOrder.set("from_office_id",office_id);
     	jobOrder.set("from_order_id",order_id);
@@ -4171,38 +4245,90 @@ public class JobOrderController extends Controller {
     	//海运detail表复制
     	String oceanSql="SELECT * from job_order_shipment where order_id = ?";
     	Record oceanDetail=Db.findFirst(oceanSql,order_id);
-    	oceanDetail.set("id",null);
-    	oceanDetail.set("order_id",jobOrder.getLong("id"));
-    	Db.save("job_order_shipment", oceanDetail);
+    	if(oceanDetail!=null){
+    		oceanDetail.set("id",null);
+        	oceanDetail.set("order_id",jobOrder.getLong("id"));
+        	Db.save("job_order_shipment", oceanDetail);
+    	}
+    	
     	
     	String oceanItemSql = "SELECT * from job_order_shipment_item where order_id = ?";
     	List<Record> copyOceanItemList=Db.find(oceanItemSql,order_id);
-    	for(Record copyOceanItem: copyOceanItemList){
-    		copyOceanItem.set("id", null);
-    		copyOceanItem.set("order_id", jobOrder.getLong("id"));
-    		Db.save("job_order_shipment_item", copyOceanItem);
+    	if(copyOceanItemList.size()!=0){
+    		for(Record copyOceanItem: copyOceanItemList){
+        		copyOceanItem.set("id", null);
+        		copyOceanItem.set("order_id", jobOrder.getLong("id"));
+        		Db.save("job_order_shipment_item", copyOceanItem);
+        	}
     	}
+    	
     	//陆运Item表复制
-    	String landItemSql="SELECT * from job_order_land_item where order_id = ?";
-    	Record landItem=Db.findFirst(landItemSql,order_id);
-    	if(landItem!=null){
-    		landItem.set("id",null);
-    		landItem.set("order_id",jobOrder.getLong("id"));
-        	Db.save("job_order_land_item", landItem);
+    	if(jobOrder.get("transport_type").toString().contains("land")){
+    		String landItemSql = "SELECT * from job_order_land_item where order_id = ?";
+        	List<Record> copyLandItemList=Db.find(landItemSql,order_id);
+        	if(copyLandItemList.size()!=0){
+        		for(Record copyLandItem: copyLandItemList){
+            		copyLandItem.set("id", null);
+            		copyLandItem.set("order_id", jobOrder.getLong("id"));
+            		Db.save("job_order_land_item", copyLandItem);
+            	}
+        	}
     	}
+    	//回填标记位
+    	String jobSql=" select * from job_order where id=?";
+    	JobOrder job = JobOrder.dao.findFirst(jobSql,order_id);
+    	job.set("submit_agent_flag", "Y");
+    	job.update();
+    	renderJson(job);
     	
-    	
-    	//报关Item表复制
-    	String customItemSql="";
-    	
-    	
-    	
-    	renderJson("{\"result\":true}");
-    	
+//    	renderJson("{\"result\":true}");
     }
 
-    public void updateOceanFive(){
+    public void AFRCustomDone(){
+    	String thisVal=getPara("thisVal");
+    	String afr_done_time=getPara("afr_done_time");
+    	String custom_done_time=getPara("custom_done_time");
+    	String order_id=getPara("order_id");
+    	String from_order_id=getPara("from_order_id");
+    	String from_order_type=getPara("from_order_type");
+    	String ownSql="select * from job_order_shipment where order_id = ?";
+    	JobOrderShipment ownJob = JobOrderShipment.dao.findFirst(ownSql,order_id);
+    	if("AFR_done".equals(thisVal)){
+    		if(StringUtils.isBlank(afr_done_time)){
+    			ownJob.set("afr_done_time", new Date());
+    		}else{
+    			ownJob.set("afr_done_time", afr_done_time);
+    		}
+    	}
+    	if("custom_done".equals(thisVal)){
+    		if(StringUtils.isBlank(custom_done_time)){
+    			ownJob.set("custom_done_time", new Date());
+    		}else{
+    			ownJob.set("custom_done_time", custom_done_time);
+    		}
+    	}
+    	ownJob.update();
+    	if("forwarderJobOrder".equals(from_order_type)){
+    		String fromJobSql="SELECT * from job_order_shipment where order_id = ?";
+    		Record fromJob = Db.findFirst(fromJobSql,from_order_id);
+        	if("AFR_done".equals(thisVal)){
+        		if(StringUtils.isBlank(afr_done_time)){
+        			fromJob.set("afr_done_time", new Date());
+        		}else{
+        			fromJob.set("afr_done_time", afr_done_time);
+        		}
+        	}
+        	if("custom_done".equals(thisVal)){
+        		if(StringUtils.isBlank(custom_done_time)){
+        			fromJob.set("custom_done_time", new Date());
+        		}else{
+        			fromJob.set("custom_done_time", custom_done_time);
+        		}
+        	}
+        	Db.update("job_order_shipment",fromJob);
+    	}
     	
+    	renderJson(ownJob);    	
     }
 
 
