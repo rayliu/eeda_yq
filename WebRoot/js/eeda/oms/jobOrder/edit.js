@@ -4,7 +4,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     './edit_express_detail','./edit_insurance_detail','./edit_party_detail', './edit_doc_table', './edit_file_upload','./job_order_report',
     './edit_trade_cost_table', './edit_trade_charge_sale_table', './edit_trade_charge_service_table','./edit_trade_detail',
     './edit_custom_china_self_table', './edit_custom_doc_table','./edit_land_charge_table','./edit_land_shipment_table',
-    './edit_arap_detail','./edit_shipment_doc_detail'], function ($, metisMenu) {
+    './edit_arap_detail','./edit_shipment_doc_detail','./edit_ocean_doc_table'], function ($, metisMenu) {
 
 $(document).ready(function() {
 	//主工作单的校验

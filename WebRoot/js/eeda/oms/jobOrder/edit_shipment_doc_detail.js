@@ -631,6 +631,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	          	var url = "/jobOrder/docTableList?order_id="+order_id+"&type=zero";
 	          	zeroTable.ajax.url(url).load();
           }
+          
 
         if($('.badge').length>0){
                 $('a[href="#collapseDocInfo"]').append('<span class="badge title" style="background-color:white;color:red;margin-left:5px;">新</span>');

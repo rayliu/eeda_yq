@@ -92,7 +92,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
             	  }
               }, 
               { "data": "CUSTOMER_NAME"}, 
-              { "data": "SONO_MBL", "width": "80px",
+              { "data": "SONO_MBL","width":"80px",
             	"render":function(data){
             		if(data){
             			return data;
@@ -163,11 +163,32 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                     return data;
                   }
               },
-              { "data": "OPERATION_STATUS"},
+              { "width": "110px",
+            	"render":function(data, type, full, meta){
+            		var strStatus="";
+            		if(full.LAND_ETA){
+            			strStatus+="陆运派车："+full.LAND_ETA+"<br>";
+            		}
+            		if(full.CLEARED||full.CLEARED){
+            			strStatus+="已报关 <br>";
+            		}
+            		if(full.AFR_DONE_TIME){
+            			strStatus+="AFR："+full.AFR_DONE_TIME+"<br>";
+            		}
+            		if(full.OCEAN_ATD){
+            			strStatus+="ATD："+full.OCEAN_ATD+"<br>";
+            		}
+            		
+            		if(full.OCEAN_ATA){
+            			strStatus+="ATA："+full.OCEAN_ATA;
+            		}
+            		return strStatus;
+            	}  
+              },
               { "data": "STATUS"},
               { "data": "CREATOR_NAME"},
               { "data": "UPDATOR_NAME"}, 
-              { "data": "CREATE_STAMP"},              
+              { "data": "CREATE_STAMP","width":"80px"},              
               {"data": "NEW_COUNT","visible":false}
           ]
       });

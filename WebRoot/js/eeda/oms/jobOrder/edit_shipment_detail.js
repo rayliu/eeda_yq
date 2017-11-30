@@ -180,8 +180,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         var checkBoxVal = $('#hidden_is_need_delivery').val();
         if(checkBoxVal=='Y'){
         	$('#is_need_delivery').attr("checked",true);
+        	$('#is_needed_land').attr("checked",true);
         }else{
         	$('#is_need_delivery').attr("checked",false);
+        	$('#is_needed_land').attr("checked",false);
         }  
 
         //选择卸货港时自动填上目的港
@@ -423,8 +425,52 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	});
         	        	
         })
+        //海外代理的内容隐藏已显示
+        var from_order_type = $("#from_order_type").val();
+        var from_order_no= $("#plan_order_no").val();
+        if(from_order_type=="forwarderJobOrder"){
+        	if(from_order_no){
+        		$('#submitAgentDiv').hide();
+        		$('#agentDiv').show();
+        		if($('#is_need_delivery').val()){
+        			$('#is_need_delivery').prop('checked',true);
+        		}else{
+        			$('#is_need_delivery').prop('checked',false);
+        		}
+        	}
+            $('#shipmentForm input,#shipmentForm textarea').attr('disabled',true);
+            $('#ocean_cargo_table input,#ocean_cargo_table select,#ocean_cargo_table button').attr('disabled',true);
+            $('#orderForm input,#orderForm textarea,#orderForm select,#orderForm text').attr('disabled',true);
+            $('#add_ocean_cargo').hide(); 
+            $('#transport_type input,#supplier_contract_type input,#customer_contract_type input').attr('disabled',false);
+        }else{
+        	$('#submitAgentDiv').show();
+    		$('#agentDiv').hide();
+        }
         
-        
-        
+        //AFR已申报 ， 报关已放行
+        $('#AFR_done,#custom_done').click(function(){
+        	var thisVal=$(this).attr("id");
+        	var afr_done_time=$('#afr_done_time').val();
+        	var custom_done_time=$('#custom_done_time').val();
+        	var order_id = $('#order_id').val();
+    		var from_order_id = $('#from_order_id').val();
+    		var from_order_type = $('#from_order_type').val();        		
+    		$.post('/jobOrder/AFRCustomDone',{order_id:order_id,from_order_id:from_order_id,from_order_type:from_order_type,
+    			thisVal:thisVal,afr_done_time:afr_done_time,custom_done_time:custom_done_time},function(data){
+    				if(data){
+    					if(data.AFR_DONE_TIME){
+    						$('#afr_done_time').val(data.AFR_DONE_TIME);
+    					}
+    					if(data.CUSTOM_DONE_TIME){
+    						$('#custom_done_time').val(data.CUSTOM_DONE_TIME);
+    					}
+    					$.scojs_message('AFR已申报回填成功', $.scojs_message.TYPE_OK);
+    				}
+    			
+    		},'json').fail(function(){
+    			$.scojs_message('提交失败', $.scojs_message.TYPE_ERROR);
+    		});
+        });
     });
 });
