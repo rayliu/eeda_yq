@@ -444,7 +444,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             $('#add_ocean_cargo').hide(); 
             $('#transport_type input,#supplier_contract_type input,#customer_contract_type input').attr('disabled',false);
         }else{
-        	$('#submitAgentDiv').show();
+        	$('#submitAgentDiv').hide();
+//        	$('#submitAgentDiv').show();
     		$('#agentDiv').hide();
         }
         
