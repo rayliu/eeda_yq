@@ -45,6 +45,12 @@ public class TotalProfitController extends Controller {
         long office_id=user.getLong("office_id");
         String conditions = "";
         
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
+        
         String customer_id =getPara("customer");
     	if(StringUtils.isNotEmpty(getPara("customer"))){    		
     		//常用结算公司保存进入历史记录
@@ -80,7 +86,7 @@ public class TotalProfitController extends Controller {
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
-        		+"  WHERE p.office_id ="+office_id+" "
+        		+"  WHERE p.office_id ="+office_id+" and (jo.office_id="+office_id+ ref_office+ ") " 
         		+ conditions
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1  GROUP BY A.date_time";
@@ -101,6 +107,11 @@ public class TotalProfitController extends Controller {
 	public void listTotal() {
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        String ref_office = "";
+        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+        if(relist!=null){
+        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+        }
 		
         String conditions = "";
         String customer = getPara("customer");
@@ -130,7 +141,7 @@ public class TotalProfitController extends Controller {
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
-        		+"  WHERE p.office_id ="+office_id+" "
+        		+"  WHERE p.office_id ="+office_id+" and (jo.office_id="+office_id+ ref_office+ ") " 
         		+ conditions
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1 ";
@@ -147,6 +158,12 @@ public class TotalProfitController extends Controller {
 			String exportName = "";
 		    UserLogin user = LoginUserController.getLoginUser(this);
 	        long office_id=user.getLong("office_id");
+	        
+	        String ref_office = "";
+	        Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
+	        if(relist!=null){
+	        	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
+	        }
 	        String conditions = "";
 	        String customer = getPara("customer");
 	        String begin_time = getPara("order_export_date_begin_time");
@@ -176,20 +193,20 @@ public class TotalProfitController extends Controller {
 	        		+" sum(cost_jpy) cost_jpy,SUM(cost_hkd) cost_hkd,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb "
 	        		+ " FROM ("
 	        		+" SELECT jo.id,cast(CONCAT(year(jo.order_export_date),'-',month(jo.order_export_date)) as char) date_time,"
-	        		+" IF(joa.order_type='charge' and joa.exchange_currency_id = 3,exchange_total_amount,0) charge_cny,"
-	        		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 6,exchange_total_amount,0) charge_usd,"
-	        		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 8,exchange_total_amount,0) charge_jpy,"
-		    		+"	IF(joa.order_type='charge' and joa.exchange_currency_id = 9,exchange_total_amount,0) charge_hkd,"
-		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 3,exchange_total_amount,0) cost_cny,"
-		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 6,exchange_total_amount,0) cost_usd,"
-		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 8,exchange_total_amount,0) cost_jpy,"
-		    		+"	IF(joa.order_type='cost' and joa.exchange_currency_id = 9,exchange_total_amount,0) cost_hkd,"
+	        		+" IF(joa.order_type='charge' and joa.currency_id = 3,total_amount,0) charge_cny,"
+	        		+"	IF(joa.order_type='charge' and joa.currency_id = 6,total_amount,0) charge_usd,"
+	        		+"	IF(joa.order_type='charge' and joa.currency_id = 8,total_amount,0) charge_jpy,"
+		    		+"	IF(joa.order_type='charge' and joa.currency_id = 9,total_amount,0) charge_hkd,"
+		    		+"	IF(joa.order_type='cost' and joa.currency_id = 3,total_amount,0) cost_cny,"
+		    		+"	IF(joa.order_type='cost' and joa.currency_id = 6,total_amount,0) cost_usd,"
+		    		+"	IF(joa.order_type='cost' and joa.currency_id = 8,total_amount,0) cost_jpy,"
+		    		+"	IF(joa.order_type='cost' and joa.currency_id = 9,total_amount,0) cost_hkd,"
 		    		+"	if(joa.order_type='charge',currency_total_amount,0) charge_rmb,"
 		    		+"	if(joa.order_type='cost',currency_total_amount,0) cost_rmb"
 	        		+"  from job_order jo "
 	        		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
 	        		+"  LEFT JOIN party p on p.id = jo.customer_id"
-	        		+"  WHERE p.office_id ="+office_id+" "
+	        		+"  WHERE p.office_id ="+office_id+" and (jo.office_id="+office_id+ ref_office+ ") " 
 	        		+ conditions
 	        		+ " and jo.delete_flag = 'N'"
 	    			+" ) A where 1=1  GROUP BY A.date_time";
