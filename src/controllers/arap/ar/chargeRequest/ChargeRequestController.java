@@ -77,7 +77,6 @@ public class ChargeRequestController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         
-        
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String sql = " select * from ("
@@ -119,6 +118,7 @@ public class ChargeRequestController extends Controller {
         
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
         String sql = " SELECT "
         		+" 	* "
         		+" FROM "
@@ -248,7 +248,7 @@ public class ChargeRequestController extends Controller {
         		+" 		LEFT JOIN charge_application_order_rel c ON c.charge_order_id = aco.id "
         		+" 		LEFT JOIN party p ON p.id = aco.sp_id "
         		+" 		WHERE "
-        		+" 			aco. STATUS = '已确认' "
+        		+" 			aco. STATUS = '已确认' and aco.newProcessFlag!='Y'"
         		+" 		AND aco.office_id = "+office_id+" "
         		+" 		GROUP BY "
         		+" 			aco.id "
@@ -292,6 +292,133 @@ public class ChargeRequestController extends Controller {
         renderJson(map); 
     }
     
+    //新流程显示开票单明细方法
+    public void newOrderList(){
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id=user.getLong("office_id");
+        String condition = DbUtils.buildConditions(getParaMap());
+        
+    	String sql = "select cio.id,cio.order_no,cio.biz_period_from begin_time,cio.biz_period_to end_time,cio.status,joa.sp_id sp_id,p.abbr sp_name,"
+    			+ " sum(IFNULL((SELECT SUM(exchange_total_amount_rmb) from job_order_arap joa_son"
+    			+ " where joa_son.order_type = 'charge' AND joa_son.exchange_currency_id = 3 AND joa_son.id = joa.id),0)) cny,"
+    			+ " sum(IFNULL((SELECT SUM(exchange_total_amount_rmb) from job_order_arap joa_son "
+    			+ " where joa_son.order_type = 'charge' AND joa_son.exchange_currency_id = 6 AND joa_son.id = joa.id),0)) usd,"
+    			+ " sum(IFNULL((SELECT SUM(exchange_total_amount_rmb) from job_order_arap joa_son "
+    			+ " where joa_son.order_type = 'charge' AND joa_son.exchange_currency_id = 8 AND joa_son.id = joa.id),0)) jpy,"
+    			+ " sum(IFNULL((SELECT SUM(exchange_total_amount_rmb) from job_order_arap joa_son "
+    			+ " where joa_son.order_type = 'charge' AND joa_son.exchange_currency_id = 9 AND joa_son.id = joa.id),0)) hkd,"
+    			+ " sum(IFNULL((SELECT SUM(exchange_total_amount_rmb) from job_order_arap joa_son "
+    			+ " where joa_son.order_type = 'charge' AND joa_son.pay_flag = 'Y' AND joa_son.exchange_currency_id = 3 AND joa_son.id = joa.id),0)) paid_cny,"
+    			+ " sum(IFNULL((SELECT SUM(exchange_total_amount_rmb) from job_order_arap joa_son "
+    			+ " where joa_son.order_type = 'charge' AND joa_son.exchange_currency_id = 6 AND joa_son.id = joa.id),0)) paid_usd,"
+    			+ " sum(IFNULL((SELECT SUM(exchange_total_amount_rmb) from job_order_arap joa_son "
+    			+ " where joa_son.order_type = 'charge' AND joa_son.exchange_currency_id = 8 AND joa_son.id = joa.id),0)) paid_jpy,"
+    			+ " sum(IFNULL((SELECT SUM(exchange_total_amount_rmb) from job_order_arap joa_son "
+    			+ " where joa_son.order_type = 'charge' AND joa_son.exchange_currency_id = 9 AND joa_son.id = joa.id),0)) paid_hkd"
+    			+ " from charge_invoice_order cio "
+    			+ " LEFT JOIN charge_invoice_order_item_charge_item cioici ON cioici.order_id = cio.id "
+    			+ " LEFT JOIN job_order_arap joa ON joa.id = cioici.job_order_arap_item_id "
+    			+ " LEFT JOIN party p ON p.id = joa.sp_id "
+    			+ " where joa.invoice_check_flag='Y' and joa.create_flag='N' and cio.office_id="+office_id+condition
+    			+ " GROUP BY cio.id";
+    	
+    	 String sqlTotal = "select count(1) total from ("+sql+ condition +") B";
+         Record rec = Db.findFirst(sqlTotal);
+         logger.debug("total records:" + rec.getLong("total"));
+         
+    	 List<Record> orderList = Db.find(sql);
+         Map<String, Object> map = new HashMap<String, Object>();
+         map.put("recordsTotal", rec.getLong("total"));
+         map.put("recordsFiltered", rec.getLong("total"));
+         map.put("data", orderList);
+         renderJson(map); 
+    }
+    
+    //新流程保存+创建方法
+    public void newSave(){
+    	String jsonStr=getPara("params");
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
+            
+        ArapChargeApplication order = new ArapChargeApplication();
+   		String id = (String) dto.get("id");
+   		String ids=(String) dto.get("ids");
+   		String status = (String) dto.get("status");
+		String selected_item_ids= (String) dto.get("selected_ids"); //获取申请单据的id,用于回显
+		String sp_id=(String) dto.get("sp_id");
+		String sp_name=(String) dto.get("sp_name");
+   		
+   		UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id=user.getLong("office_id");
+   		String action_type = "add";
+   		if (StringUtils.isNotBlank(id)) {
+   		    action_type = "update";
+   			//update
+   			order = ArapChargeApplication.dao.findById(id);
+   			DbUtils.setModelValues(dto, order); 
+   			
+   			//需后台处理的字段
+   			if("复核不通过".equals(status)){
+   				order.set("status", "新建");
+   			}
+   			//需后台处理的字段
+   			order.set("update_by", user.getLong("id"));
+   			order.set("update_stamp", new Date());
+   			order.update();
+   			
+   		} else {
+   			//create 
+   			DbUtils.setModelValues(dto, order);
+   			
+   			//需后台处理的字段
+   			order.set("order_no", OrderNoGenerator.getNextOrderNo("YSSQ", user.getLong("office_id")));
+   			order.set("create_by", user.getLong("id"));
+   			order.set("create_stamp", new Date());
+   			order.set("office_id", office_id);
+   			order.set("sp_id", sp_id);
+   			if(!"".equals(selected_item_ids)){
+   				order.set("selected_item_ids", selected_item_ids);
+   			}
+   			order.save();
+   			id = order.getLong("id").toString();
+   			
+		String itemId="";
+   		ChargeApplicationOrderRel caor = null;
+   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
+		for(Map<String, String> item :itemList){
+			String action = item.get("action");
+				   itemId = item.get("id");
+			if("CREATE".equals(action)){
+				caor = new ChargeApplicationOrderRel();
+				caor.set("application_order_id", id);
+				Record cioici = Db.findFirst("select * from charge_invoice_order_item_charge_item where id=?",itemId);
+				caor.set("job_order_arap_id", cioici.getLong("job_order_arap_item_id"));
+				Long invoice_order_id = cioici.getLong("order_id");
+				Long charge_order_id = cioici.getLong("charge_order_id");
+				caor.set("charge_order_id", charge_order_id);
+				caor.set("invoice_order_id", invoice_order_id);
+				caor.set("order_type", "开票单");
+				caor.save();
+				
+				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(cioici.get("charge_order_id"));
+				arapChargeOrder.set("audit_status", "收款申请中").update();
+				
+				//更新勾选的job_order_arap item creat_flag,改变创建标记位
+				String ySql ="update job_order_arap set create_flag='Y' where id ="+ cioici.getLong("job_order_arap_item_id");
+		        Db.update(ySql);
+			}
+		}
+	}
+		
+   		saveLog(jsonStr, id, user, action_type);
+		long create_by = order.getLong("create_by");
+   		String user_name = LoginUserController.getUserNameById(create_by);
+		Record r = order.toRecord();
+   		r.set("creator_name", user_name);
+   		r.set("idsArray", ids);
+   		r.set("sp_name",sp_name);
+   		renderJson(r);
+    }
     
     @Before(EedaMenuInterceptor.class) 
     public void billDetailed() {
@@ -508,7 +635,6 @@ public class ChargeRequestController extends Controller {
 		String selected_item_ids= (String) dto.get("selected_ids"); //获取申请单据的id,用于回显
 		String sp_id=(String) dto.get("sp_id");
 		String sp_name=(String) dto.get("sp_name");
-   		
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id=user.getLong("office_id");
    		String action_type = "add";
@@ -750,7 +876,7 @@ public class ChargeRequestController extends Controller {
 
    		  
   		Record re = new Record();
-  		if(StringUtils.isNotEmpty(application_id)){
+  		if(StringUtils.isNotBlank(application_id)){
   			ArapChargeApplication order = ArapChargeApplication.dao.findById(application_id);
   			if("cancelcheckBtn".equals(selfId)){
 	    		 order.set("status", "复核不通过");
@@ -770,7 +896,7 @@ public class ChargeRequestController extends Controller {
 	  		 re = order.toRecord();
 	  		 re.set("check_name",user_name);
   		}  		
-  		if(StringUtils.isNotEmpty(ids)){
+  		if(StringUtils.isNotBlank(ids)){
   			String[] arr= ids.split(",");
   			for(int i=0;i<arr.length;i++){
   				String id=arr[i];
@@ -826,7 +952,7 @@ public class ChargeRequestController extends Controller {
                 }
                 arapChargeInvoiceApplication.update();
               //坏账的标记位
-        		String paySql ="update job_order_arap set pay_flag='B' "
+        		String paySql ="update job_order_arap set pay_flag='Bad' "
         				+ " where id in (SELECT job_order_arap_id FROM charge_application_order_rel WHERE application_order_id ="+application_id+")" ; //chargeOrderId.substring(1) 去掉第一位
                 Db.update(paySql);
               //更改原始单据状态
@@ -905,7 +1031,7 @@ public class ChargeRequestController extends Controller {
                 for (Record re : res) {
           			Long charge_order_id = re.getLong("charge_order_id");
           			String order_type = re.getStr("order_type");
-          			if(order_type.equals("应收对账单")){
+          			if(order_type.equals("应收对账单")||order_type.equals("开票单")){
         				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
                         Double usd = arapChargeOrder.getDouble("usd");
                         Double cny = arapChargeOrder.getDouble("cny");
