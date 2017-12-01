@@ -35,7 +35,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               },
               { "data": "ORDER_NO",  "width": "80px",
                   "render": function ( data, type, full, meta ) {
-                      return "<a href='/transJobOrder/edit?id="+full.ID+"'target='_blank'>"+data+"</a>";
+                	  var other = '';
+                	  var updateApply = '';
+                	  if(full.FROM_ORDER_ID!=undefined){
+                		  other = '<img src="/images/order_from_outside.png" style="height:15px;" title="Outside Order">';
+                	  }
+                	  if(full.UPDATE_APPLY_FLAG=='Y'){
+                		  updateApply = '&nbsp<span style="color:red;">修改申请<span>';
+                	  }
+                      return "<a href='/transJobOrder/edit?id="+full.ID+"'target='_blank'>"+data+other+updateApply+"</a>";
                   }
               },
               { "data": "CUSTOMER_NAME","width":"60px"},

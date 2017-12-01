@@ -36,6 +36,8 @@ import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
+import models.eeda.tms.TransJobOrder;
+import models.eeda.tms.TransJobOrderLandItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -3728,7 +3730,8 @@ public class JobOrderController extends Controller {
 					+ " cast( (SELECT GROUP_CONCAT(CONCAT(fi.name,':',joa.currency_total_amount,' ',c.name)) from job_order_arap joa"
 					+ " LEFT JOIN fin_item fi on fi.id = joa.charge_id "
 					+ " LEFT JOIN currency c ON c.id = joa.currency_id "
-					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge, "
+					+ " WHERE joa.order_id=jor.id and joa.order_type='charge'  group by joa.order_type) as char) charge,"
+					+ " (select COUNT(if(approval_update='Y',1,NULL)) from job_order_land_item joli where joli.order_id = jor.id) approval_update, "
          		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code,ifnull(u1.c_name, u1.user_name) updator_name"
          		+ "	from job_order jor"
          		+ " LEFT JOIN job_order_custom joc on joc.order_id = jor.id"
@@ -4330,6 +4333,119 @@ public class JobOrderController extends Controller {
     	
     	renderJson(ownJob);    	
     }
-
-
+    
+    public void landSubmit() throws Exception {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+   		long office_id = user.getLong("office_id");
+    	String jsonStr=getPara("params");
+       	Gson gson = new Gson();  
+        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+        
+		//时间处理
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//转换后的格式
+	    SimpleDateFormat parseFormat = new SimpleDateFormat("yyyyMMdd");//分析日期
+	    
+		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("landList");
+		for (Map<String, String> rowMap : land_item) {//获取每一行
+    		String rowId = rowMap.get("id");
+			Party p = Party.dao.findById(dto.get("customer_id"));
+    		TransJobOrderLandItem tjoli = new TransJobOrderLandItem();
+    		TransJobOrder transJobOrder = new TransJobOrder();
+    		Record re = Db.findFirst("select*from trans_job_order where from_order_item_id="+rowId);
+    		if(re==null){
+    			String ETA = (String)rowMap.get("ETA");
+    			Date date = sdf.parse(ETA);
+    			String jobOrderDate = parseFormat.format(date).toString();
+    			//需后台处理的字段
+    			String order_no = OrderNoGenerator.getNextOrderNo("HT", office_id);
+    			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
+    			sb.replace(2, 5, jobOrderDate);
+    			order_no =sb.toString();
+    			
+    			//提交后更改允许申请标记位
+    			JobOrderLandItem joli = JobOrderLandItem.dao.findById(rowId);
+    			joli.set("approval_update", "N");
+    			joli.update();
+    			
+    			//往表trans_job_order存入数据
+    			transJobOrder.set("order_no", order_no);
+    			transJobOrder.set("creator", user.getLong("id"));
+    			transJobOrder.set("create_stamp", new Date());
+    			transJobOrder.set("office_id", p.get("ref_office_id"));
+    			transJobOrder.set("from_office_id", office_id);
+    			transJobOrder.set("from_order_id", dto.get("order_id"));
+    			transJobOrder.set("from_order_item_id", rowMap.get("id"));
+    			transJobOrder.set("type", dto.get("type"));
+    			transJobOrder.set("trade_type", dto.get("trade_type"));
+    			transJobOrder.set("customer_id", dto.get("customer_id"));
+    			transJobOrder.save();
+    			
+    			//往表trans_job_order_land_item存入数据
+    			tjoli.set("order_id", transJobOrder.get("id"));
+    			tjoli.set("truck_type", rowMap.get("truck_type"));
+    			tjoli.set("item_type", "shipment");
+    			if(StringUtils.isNotBlank(rowMap.get("ETA"))){
+    				tjoli.set("cabinet_date", rowMap.get("ETA"));
+    			}
+    			tjoli.set("consignor", rowMap.get("CONSIGNOR"));
+    			tjoli.set("consignor_phone", rowMap.get("consignor_phone"));
+    			tjoli.set("consignee", rowMap.get("CONSIGNEE"));
+    			tjoli.set("consignee_phone", rowMap.get("consignee_phone"));
+    			tjoli.set("delivery_address", rowMap.get("DELIVERY_ADDRESS"));
+    			tjoli.set("consignor", rowMap.get("CONSIGNOR"));
+    			tjoli.set("pieces", rowMap.get("pieces"));
+    			if(StringUtils.isNotBlank(rowMap.get("volume"))){
+    				tjoli.set("volume", rowMap.get("volume"));
+    			}
+    			tjoli.save();
+    		}else{
+    			//提交后更改允许申请标记位
+    			JobOrderLandItem joli = JobOrderLandItem.dao.findById(rowId);
+    			joli.set("approval_update", "N");
+    			joli.update();
+    			
+    			//往表trans_job_order存入数据
+    			transJobOrder = TransJobOrder.dao.findFirst("select*from trans_job_order where from_order_item_id="+rowId);
+    			transJobOrder.set("type", dto.get("type"));
+    			transJobOrder.set("trade_type", dto.get("trade_type"));
+    			transJobOrder.set("customer_id", dto.get("customer_id"));
+    			transJobOrder.update();
+    			
+    			//往表trans_job_order_land_item存入数据
+    			Record re1 = Db.findFirst("SELECT min(id) FROM trans_job_order_land_item WHERE order_id ="+transJobOrder.get("id"));
+    			tjoli = TransJobOrderLandItem.dao.findById(re1.get("min(id)"));
+    			tjoli.set("truck_type", rowMap.get("truck_type"));
+    			if(StringUtils.isNotBlank(rowMap.get("ETA"))){
+    				tjoli.set("cabinet_date", rowMap.get("ETA"));
+    			}
+    			tjoli.set("consignor", rowMap.get("CONSIGNOR"));
+    			tjoli.set("consignor_phone", rowMap.get("consignor_phone"));
+    			tjoli.set("consignee", rowMap.get("CONSIGNEE"));
+    			tjoli.set("consignee_phone", rowMap.get("consignee_phone"));
+    			tjoli.set("delivery_address", rowMap.get("DELIVERY_ADDRESS"));
+    			tjoli.set("consignor", rowMap.get("CONSIGNOR"));
+    			tjoli.set("pieces", rowMap.get("pieces"));
+    			if(StringUtils.isNotBlank(rowMap.get("volume"))){
+    				tjoli.set("volume", rowMap.get("volume"));
+    			}
+    			tjoli.update();
+    		}
+		}
+		
+		
+		//id = transJobOrder.getLong("id").toString();
+		renderJson("{\"result\":true}");
+    }
+    
+    //发送修改申请到车队
+    public void updateApply(){
+    	String land_item_ids = getPara("land_item_ids");
+    	String[] land_item_id = land_item_ids.split(",");
+    	for(int i = 0;i<land_item_id.length;i++){
+    		TransJobOrder tjo = TransJobOrder.dao.findFirst("select * from trans_job_order where from_order_item_id="+land_item_id[i]);
+        	tjo.set("update_apply_flag", "Y");
+        	tjo.update();
+    	}
+    	renderJson("{\"result\":true}");
+    }
 }

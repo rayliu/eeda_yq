@@ -13,7 +13,7 @@ $(document).ready(function() {
     }); 
     //添加一行
     $('#add_land').on('click', function(){
-        var item={"TRUCK_TYPE":"40HQ"};
+        var item={};
         cargoTable.row.add(item).draw(true);
     });
     
@@ -232,6 +232,20 @@ $(document).ready(function() {
                     return '<input type="text" name="loading_platform" value="'+data+'" class="form-control" style="width:100px" />';
                 }
             },
+            { "data": "REACH_WHARF_TIME", "width": "100px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+                        data='';
+                    var field_html = template('table_date_field_template',
+	                    {
+	                        id: 'REACH_WHARF_TIME',
+	                        value: data,
+	                        style:'width:120px'
+	                    }
+	                );
+                    return field_html;
+            	}
+            },
             { "data": "CAR_NO", "width": "80px",
             	"render": function ( data, type, full, meta ) {
                     if(!data)
@@ -366,7 +380,13 @@ $(document).ready(function() {
             		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:80px"/>';
             	}
             },
-            
+            { "data": "DELIVERY_ADDRESS","width": "80px",  "className":"delivery_address",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return '<input type="text" name="delivery_address" value="'+data+'" class="form-control" style="width:100px"/>';
+            	}
+            },
             { "data": "CARGO_DESC", "width": "180px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -458,7 +478,8 @@ $(document).ready(function() {
             { "data": "LOADING_WHARF2_NAME", "visible": false}
         ]
     });
-
+	 eeda.bindTableFieldTruckOut('land_table', 'CONSIGNOR');
+     eeda.bindTableFieldTruckIn('land_table', 'CONSIGNEE');
     //默认加两行, 提空柜, 还重柜
     var addDefaultRows=function(){
         cargoTable.rows.add([
@@ -587,6 +608,39 @@ $(document).ready(function() {
 			});
 	});
     
+    if($("#update_apply_flag").val()=='Y'){
+    	$("#approvalUpdate").attr("disabled",false);
+    }
+    $("#approvalUpdate").click(function(){
+    	var order_id = $("#order_id").val();
+    	$.post("/transJobOrder/approvalUpdate",{order_id:order_id},function(data){
+    		if(data){
+    			$.scojs_message('允许成功', $.scojs_message.TYPE_OK);
+    			$("#approvalUpdate").attr("disabled",true);
+    		}else{
+    			$.scojs_message('允许失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	});
+    });
+    
+    //拼接字段，以便回显货代工作单陆运信息
+    itemOrder.transInfos = function(){
+	var transInfo = "";
+		$("#land_table tbody tr").each(function(){
+			var unload_type = $(this).find("[name='unload_type']").val();
+			var cabinet_date = $(this).find("[name='CABINET_DATE']").val();
+			var closing_date = $(this).find("[name='CLOSING_DATE']").val();
+			var reach_wharf_time = $(this).find("[name='REACH_WHARF_TIME']").val();
+			var car_no = $(this).find("[name='CAR_NO_input']").val();
+			var driver = $(this).find("[name='driver']").val();
+			var driver_tel = $(this).find("[name='driver_tel']").val();
+			
+			transInfo += unload_type+"/"+cabinet_date+"/"+closing_date+"/到码头时间："+reach_wharf_time+"/车牌："+car_no+"/司机："+driver+"/司机电话："+driver_tel+"；";
+		});
+		return transInfo;
+    }
+    
+    //校验
     $('#land_table').on("blur","[name=loading_platform],[name=toca_weight],[name=head_weight],[name=pieces],[name=volume],"
 			   +"[name=driver],[name=driver_tel],[name=consignor_phone],[name=consignee_phone],[name=cargo_desc],[name=required_time_remark]",function(){
 		var data = $(this).val();
@@ -598,7 +652,7 @@ $(document).ready(function() {
 				return;
 			}
 		}
-		if(name=="toca_weight"||name=="head_weight"){
+		if(name=="toca_weight"||name=="head_weight"||name=="driver"){
 			if(len>45){
 				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度45以内的字符串</span>")
 				return;
@@ -613,12 +667,6 @@ $(document).ready(function() {
 		if(name=="cargo_desc"||name=="required_time_remark"){
 			if(len>255){
 				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度255以内的字符串</span>")
-				return;
-			}
-		}
-		if(name=="driver"){
-			if(len>100){
-				$(this).parent().append("<span style='color:red' class='error_span'>请输入长度100以内的字符串</span>")
 				return;
 			}
 		}

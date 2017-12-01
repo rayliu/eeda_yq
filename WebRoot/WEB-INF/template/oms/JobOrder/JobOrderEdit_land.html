@@ -66,7 +66,9 @@
                      <div class="tab-content">
 		                     <div class="tab-pane  active" id="land_Car_TotalItem">
 									<div class="form-group">
-                               		<button class="btn btn_green" id="add_land" style="margin-top:15px;margin-left:15px;">添加陆运</button> 
+                               		<button class="btn btn_green" id="add_land" style="margin-top:15px;margin-left:15px;">添加陆运</button>
+                               		<button class="btn btn_green" id="submitBtn" style="margin-top:15px;margin-left:15px;" disabled>提交</button>
+                               		<button class="btn btn_green" id="updateApplyBtn" style="margin-top:15px;margin-left:15px;" disabled>修改申请</button>
 										<div class="col-lg-12">
 			                                <%include("/eeda/component/form/detailTable.html", 
 			                                    {
@@ -84,7 +86,8 @@
 			                                            '收货公司',
 			                                            '收货地点',
 			                                            '收货联系人',
-			                                            '收货人电话',			                                            
+			                                            '收货人电话',	
+			                                            '到码头时间',		                                            
 			                                            '车牌',
 			                                            '货品描述',
 			                                            '柜型',
@@ -95,11 +98,11 @@
 			                                            '毛重(KG)',
 			                                            '体积(CBM)',
 			                                            '运输及时间要求',
-			                                            '运单号','司机', '司机电话',
+			                                            '运单号','运输信息',
 			                                            '', 
 			                                            '签收文件描述', 
 			                                            '签收状态',
-			                                            'TRANSPORT_COMPANY_NAME','CONSIGNOR_NAME',  'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID'],
+			                                            'TRANSPORT_COMPANY_NAME','CONSIGNOR_NAME',  'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID','APPROVAL_UPDATE'],
 			                                        field_list:[
 			                                            'id',
 			                                            '','',   'doc_name','unload_type', 
@@ -112,18 +115,19 @@
 			                                            'consignee',
 			                                            'delivery_address',
 			                                            'consignee_contact_man',			                                            
-			                                            'consignee_phone',			                                            			                                            
+			                                            'consignee_phone',	
+			                                            'reach_wharf_time',		                                            			                                            
 			                                            'car_no',
 			                                            'cargo_desc',
 			                                            'land_container_type',
 			                                            'land_container_no',
 			                                            'land_seal_no',
 			                                            'pieces', 'unit_id','gross_weight','volume',
-			                                            'required_time_remark','trans_no','driver','driver_tel',
+			                                            'required_time_remark','trans_no','trans_info',
 			                                            'id', 
 			                                            'doc_name',
 			                                            'sign_status',
-			                                            'TRANSPORT_COMPANY_NAME','CONSIGNOR_NAME',   'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID'],
+			                                            'TRANSPORT_COMPANY_NAME','CONSIGNOR_NAME',   'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID','APPROVAL_UPDATE'],
 			                                        value_list: landList![]
 			                                    }){} %>
 											  </div>
@@ -302,6 +306,24 @@
             </div>
             <div class="modal-footer">
                 <button type="button" id="land_btnConfirm" class="btn  btn-primary" data-dismiss="modal">确认</button>
+                <button type="button" class="btn  btn-default" data-dismiss="modal">返回</button>
+            </div>
+      </div>
+    </div>
+  </div>
+  
+  <a id='transInfo_btn' data-target='#transInfo_msg' data-toggle='modal' style='display:none'></a>
+    <div class="modal fade" id="transInfo_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">运输信息</div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <textarea id='transInfo_showNote' class="form-control" rows="5" ></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="transInfo_btnConfirm" class="btn  btn-primary" data-dismiss="modal">确认</button>
                 <button type="button" class="btn  btn-default" data-dismiss="modal">返回</button>
             </div>
       </div>

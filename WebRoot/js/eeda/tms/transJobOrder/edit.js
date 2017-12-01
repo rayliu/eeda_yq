@@ -81,9 +81,9 @@ $(document).ready(function() {
 	        	$('#land_bulk_cargoTab').parent().addClass("active");
 	        	$('#land_bulk_cargoDetail').addClass("active");
 	        }else{
-	        	if(!$('#cabinet_type').val()){
+	        	/*if(!$('#cabinet_type').val()){
 	        		$('#cabinet_type').val('40HQ');
-	        	}
+	        	}*/
 
 	        	var take_wharf = $('#take_wharf_input');
 	        	take_wharf.attr('required',true);
@@ -274,6 +274,8 @@ $(document).ready(function() {
         order.allCost_template = itemOrder.buildAllCostTemplate();
         //相关文档
         order.doc_list = eeda.buildTableDetail("doc_table","");
+        //拼接的运输信息
+        order.transInfos = itemOrder.transInfos();
        
         //异步向后台提交数据
         $.post('/transJobOrder/save', {params:JSON.stringify(order)}, function(data){

@@ -7,7 +7,7 @@
     <%}%>
     </label>
     <input type="text" class="${class!'form-control search-control'}" 
-    id="${id}_input" name="${id}_input" placeholder="${placeholder!'请选择客户'}" value="${display_value!''}" style="${style!''};"  ${required!''} ${disabled!''}>
+    id="${id}_input" name="${id}_input" placeholder="${placeholder!'请选择客户'}" list ="${list!''}" value="${display_value!''}" style="${style!''};"  ${required!''} ${disabled!''}>
     
     <ul id='${id}_list' tabindex="-1" 
 	    class="pull-right dropdown-menu default dropdown-scroll" 
@@ -134,19 +134,20 @@ $(document).ready(function() {
 	companyList.on('mousedown', function(){
 	    return false;//阻止事件回流，不触发 $('#spMessage').on('blur'
 	});
-
+	
 	// 没选中item，焦点离开，隐藏列表
-	$(document).on('click', function(event){
+	$(document).on('blur', function(event){
         var clickedEl_id = $(event.target).attr('id');
         var inputField_id = inputField.attr('id');
-
+        var list = inputField.attr("list");
 	    if (clickedEl_id!=inputField_id && companyList.is(':visible') ){
 		    companyList.hide();
 	    }
-
-        if(clickedEl_id!=inputField_id && hiddenField.val()==''){
-            inputField.val('');
-        }
+	    if(!list){
+			if (hiddenField.val().trim().length ==0) {
+				inputField.val('');
+			};
+		}
     });
 
 });

@@ -3,7 +3,8 @@ $(document).ready(function() {
 
     var order_id = $('#order_id').val();
 	var deletedTableIds=[];
-	
+	var land_ids_true = [];
+	var land_ids_false = [];
     //删除一行
     $("#land_table").on('click', '.delete', function(e){
         e.preventDefault();
@@ -47,7 +48,6 @@ $(document).ready(function() {
             	continue;
             
             var id = $(row).attr('id');
-            
             if(!id){
                 id='';
             }
@@ -63,10 +63,10 @@ $(document).ready(function() {
             	if(el && name){
                 	var value = el.val();//元素的值
                 	item[name] = value;
-                	if(name=='take_address_type'){
+                	if(name='take_address_type'){
                 		value = $(row.childNodes[i]).parent().find('[name=TAKE_ADDRESS]').attr('loc_type');
                 		item[name] = value;
-                	}else if(name=='delivery_address_type'){
+                	}else if(name='delivery_address_type'){
                 		value = $(row.childNodes[i]).parent().find('[name=DELIVERY_ADDRESS]').attr('loc_type');
                 		item[name] = value;
                 	}
@@ -116,30 +116,34 @@ $(document).ready(function() {
 	        autoWidth: true,
 	        drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
 	        	bindFieldEvent();
+	        	huidiao();
 	        },
 	        columns:[
 			{ "data":"ID","width": "20px",
 			    "render": function ( data, type, full, meta ) {
 			    	if(data)
-			    		return '<input type="checkbox" class="checkBox" style="width:20px">';
+			    		return '<input type="checkbox" class="checkBox" name="checkBox" style="width:20px">';
 			    	else 
 			    		return '<input type="checkbox" style="width:20px" disabled>';
 			    }
 			},
-            {"data": "TAKE_ADDRESS_TYPE", "width": "40px",
+            { "width": "40px",
                 "render": function ( data, type, full, meta ) {
-                	return '<button type="button" style="width:60px" class="delete btn table_btn delete_btn btn-xs" >删除</button>'
-                	+"<input type='hidden' id='take_address_type' name='take_address_type' value='"+data+"' >";
+                	if(full.APPROVAL_UPDATE=="N"){
+                		land_ids_true.push(full.ID);
+                	}
+                	if(full.APPROVAL_UPDATE=="Y"){
+                		land_ids_false.push(full.ID);
+                	}
+                	return '<button type="button" style="width:60px" name="delete" class="delete btn table_btn delete_btn btn-xs" >删除</button>';
                 }
             },
-            {"data": "DELIVERY_ADDRESS_TYPE", "width": "40px",
+            { "width": "40px",
             	"render": function ( data, type, full, meta ) {
             		if(full.ID){
-            			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs" >费用</button>'
-            				+"<input type='hidden' id='delivery_address_type' name='delivery_address_type' value='"+data+"' >";	
+            			return '<button type="button" style="width:60px" name="land_charge" class="land_charge btn table_btn btn_green btn-xs" >费用</button>';	
             		}else{
-            			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>'
-            				+"<input type='hidden' id='delivery_address_type' name='delivery_address_type' value='"+data+"' >";
+            			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>';
             		}
             	}
             },
@@ -253,7 +257,8 @@ $(document).ready(function() {
             	"render": function ( data, type, full, meta ) {
             		if(!data)
             			data='';
-            		return '<input type="text" name="consignor_phone" value="'+data+'" class="form-control" style="width:100px"/>';
+            		return '<input type="text" name="consignor_phone" value="'+data+'" class="form-control" style="width:100px"/>'
+            		+'<input type="hidden" name="take_address_id" value=""/><input type="hidden" name="delivery_address_id" value=""/>';
             	}
             },
             
@@ -303,6 +308,20 @@ $(document).ready(function() {
             		return '<input type="text" name="consignee_phone" value="'+data+'" class="form-control" style="width:120px"/>';
             	}
             },
+            { "data": "REACH_WHARF_TIME", "width": "130px",
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+                        data='';
+                    var field_html = template('table_date_field_template',
+	                    {
+	                        id: 'REACH_WHARF_TIME',
+	                        value: data.substr(0,19),
+	                        style:'width:150px'
+	                    }
+	                );
+                    return field_html;
+            	}
+            },
             { "data": "CAR_NO", "width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -323,10 +342,10 @@ $(document).ready(function() {
                         data='';
                     var str = '<select name="land_container_type" class="form-control search-control" style="width:70px">'
                     			+'<option></option>'
-			                   +'<option value="20\'GP" '+(data=='20\'GP' ? 'selected':'')+'>20GP</option>'
-			                   +'<option value="40\'GP" '+(data=='40\'GP' ? 'selected':'')+'>40GP</option>'
-                               +'<option value="40\'HQ" '+(data=='40\'HQ' ? 'selected':'')+'>40HQ</option>'
-			                   +'<option value="45\'GP" '+(data=='45\'GP' ? 'selected':'')+'>45GP</option>'
+			                   +'<option value="20\'GP" '+(data=='20\'GP'||data=='20GP' ? 'selected':'')+'>20GP</option>'
+			                   +'<option value="40\'GP" '+(data=='40\'GP'||data=='40GP' ? 'selected':'')+'>40GP</option>'
+                               +'<option value="40\'HQ" '+(data=='40\'HQ'||data=='40HQ' ? 'selected':'')+'>40HQ</option>'
+			                   +'<option value="45\'GP" '+(data=='45\'GP'||data=='25GP' ? 'selected':'')+'>45GP</option>'
 			                   +'</select>';
                     return str;
                 }
@@ -395,7 +414,14 @@ $(document).ready(function() {
                     return '<input type="text" name="trans_no" value="'+data+'" class="form-control" style="width:100px" />';
                 }
             },
-            { "data": "DRIVER", "width": "60px",
+            { "data": "TRANS_INFO", "width": "80px",
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                        data='';
+                    return '<input type="text" name="trans_info" value="'+data+'" class="form-control" style="width:100px" />';
+                }
+            },
+            /*{ "data": "DRIVER", "width": "60px",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                         data='';
@@ -408,7 +434,7 @@ $(document).ready(function() {
                         data='';
                     return '<input type="text" name="driver_tel" value="'+data+'" class="form-control" style="width:100px" />';
                 }
-            },
+            },*/
             { "data":"ID","width": "80px",
             	"render": function ( data, type, full, meta ) {
             		if(data)
@@ -477,7 +503,14 @@ $(document).ready(function() {
             			data='';
             		return data;
             	}
-            }
+            },
+            { "data": "APPROVAL_UPDATE", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return data;
+            	}
+            },
         ]
     });
 	 
@@ -558,14 +591,18 @@ $(document).ready(function() {
     	})
     	if(hava_check>0){
     		$('#truckOrderPDF').attr('disabled',false);
-	    	 $('#cabinet_truck').attr('disabled',false);
-	    	 $('#cabinet_truck').attr('disabled',false);
+	    	$('#cabinet_truck').attr('disabled',false);
+	    	$('#cabinet_truck').attr('disabled',false);
 	    	$('#cabinet_truckMBL').attr('disabled',false);
+	    	$("#submitBtn").attr("disabled",false);
+        	$("#updateApplyBtn").attr("disabled",false);
     	}else{
     		$('#truckOrderPDF').attr('disabled',true);
-	    	 $('#cabinet_truck').attr('disabled',true);
-	    	 $('#cabinet_truckMBL').attr('disabled',true);
+	    	$('#cabinet_truck').attr('disabled',true);
+	    	$('#cabinet_truckMBL').attr('disabled',true);
 	    	$('#land_print_debit_note').attr('disabled',true);
+	    	$("#submitBtn").attr("disabled",true);
+        	$("#updateApplyBtn").attr("disabled",true);
     	}
     });
     
@@ -581,11 +618,15 @@ $(document).ready(function() {
 	    	$('#cabinet_truck').attr('disabled',false);
 	    	$('#cabinet_truckMBL').attr('disabled',false);
 	    	$('#land_print_debit_note').attr('disabled',false);
+	    	$("#submitBtn").attr("disabled",false);
+        	$("#updateApplyBtn").attr("disabled",false);
 	    }else{
 	    	$('#truckOrderPDF').attr('disabled',true);
 	    	 $('#cabinet_truck').attr('disabled',true);
 	    	 $('#cabinet_truckMBL').attr('disabled',true);
 	    	$('#land_print_debit_note').attr('disabled',true);
+	    	$("#submitBtn").attr("disabled",true);
+        	$("#updateApplyBtn").attr("disabled",true);
 	    }
     });
     
@@ -650,6 +691,17 @@ $(document).ready(function() {
 		self.val(showNote);
 	});
     
+    var transInfo;
+    $('#land_table').on('click','[name=trans_info]',function(){
+    	transInfo = $(this);
+    	$('#transInfo_showNote').val(transInfo.val());
+    	$('#transInfo_btn').click();
+    });
+    $('#transInfo_btnConfirm').click(function(){
+		var showNote = $('#transInfo_showNote').val();
+		transInfo.val(showNote);
+	});
+    
     if(truck_type_hidden!=null && truck_type_hidden!=""){
     	var arrays = truck_type_hidden.split(",");
         var landtable = $('#land_table').DataTable();
@@ -676,6 +728,101 @@ $(document).ready(function() {
      		$('#mblNoLand').show()
      	}
      });
+    
+    //提交按钮单击事件
+    $("#submitBtn").click(function(){
+    	$("#allCheckOfLand").attr("disabled",true);
+    	
+    	var order = {};
+    	order.order_id = $("#order_id").val();
+    	order.customer_id = $("#customer_id").val();
+    	order.type = $("#type").val();
+    	order.trade_type = $("#trade_type").val();
+    	order.landList = land_item();
+    	$.post("/jobOrder/landSubmit",{params:JSON.stringify(order)},function(data){
+    		if(data){
+    			$.scojs_message('提交成功', $.scojs_message.TYPE_OK);
+    		}
+    	},'json').fail(function() {
+            $.scojs_message('提交失败', $.scojs_message.TYPE_ERROR);
+        });
+    });
+    
+    //修改申请单击事件
+    $("#updateApplyBtn").click(function(){
+    	var land_item_ids = [];
+    	$('#land_table input[type="checkbox"]:checked').each(function(){
+    		var row_id = $(this).parent().parent().attr("id");
+    		land_item_ids.push(row_id);
+    	});
+    	$.post("/jobOrder/updateApply",{land_item_ids:land_item_ids.toString()},function(data){
+    		if(data){
+    			$.scojs_message('发送请求成功', $.scojs_message.TYPE_OK);
+    		}else{
+    			$.scojs_message('发送请求失败', $.scojs_message.TYPE_ERROR);
+    		}
+    	});
+    });
+    
+    //循环获取td还有禁用td
+    var land_item = function(){
+    	var land_item = [];
+    	$('#land_table input[type="checkbox"]:checked').each(function(){
+    		var row_id = $(this).parent().parent().attr("id");
+    		var item={}
+    		item.id = row_id;
+    		$("#land_table tr[id='"+row_id+"'] td").each(function(){
+    			var name = $(this).children().attr("name");
+    			item[name] = $(this).children().val();
+    			if(name!='checkBox'){
+    				$(this).children().attr("disabled",true);
+    			}
+    		});
+        	$("#land_table tr[id='"+row_id+"'] td div input").each(function(){
+        		var name = $(this).attr("name");
+        		item[name] = $(this).val();
+        		$(this).attr("disabled",true);
+        	});
+    		
+			land_item.push(item);
+    	});
+    	return land_item;
+    }
+    
+    var huidiao = function(){
+    	 //刷新时，控制td
+        if(land_ids_true.length>0){
+        	for(var i = 0;i<land_ids_true.length;i++){
+        		var row_id = land_ids_true[i];
+        		$("#land_table tr[id='"+row_id+"'] td").each(function(){
+            		var name = $(this).children().attr("name");
+            		if(name!='checkBox'&&name!='trans_info'){
+            			$(this).children().attr("disabled",true);
+            		}
+            	});
+            	$("#land_table tr[id='"+row_id+"'] td div input").each(function(){
+            		var name = $(this).attr("name");
+            		$(this).attr("disabled",true);
+            	});
+        	}
+        }
+        //刷新时，控制td
+        if(land_ids_false.length>0){
+        	for(var i = 0;i<land_ids_false.length;i++){
+        		var row_id = land_ids_false[i];
+        		$("#land_table tr[id='"+row_id+"'] td").each(function(){
+            		var name = $(this).children().attr("name");
+            		if(name!='checkBox'){
+            			$(this).children().attr("disabled",false);
+            		}
+            	});
+            	$("#land_table tr[id='"+row_id+"'] td div input").each(function(){
+            		var name = $(this).attr("name");
+            		$(this).attr("disabled",false);
+            	});
+        	}
+        }
+    }
     
 	});
 });

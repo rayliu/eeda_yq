@@ -96,6 +96,7 @@
                                     label:'类型', 
                                     value:order.type!'',
                                     value_list:[
+                                    	{code:'', value:''},
                                         {code:'出口柜货', value:'出口柜货'},
                                         {code:'进口柜货', value:'进口柜货'}, 
                                         {code:'出口散货', value:'出口散货'},
@@ -138,11 +139,11 @@
 			                        label:'柜型', 
 			                        value:order.cabinet_type!'',
 			                        value_list:[
+			                        	{code:'', value:''},
                                         {code:'40HQ', value:'40HQ'},
 			                            {code:'20GP', value:'20GP'},
 			                            {code:'40GP', value:'40GP'}, 
-			                            {code:'45GP', value:'45GP'},
-                                        {code:'', value:''}
+			                            {code:'45GP', value:'45GP'}
 			                        ]
 			                    }){}%>
 			            </div>
@@ -245,6 +246,7 @@
 	                                    label:'贸易类型', 
 	                                    value:order.trade_type!'',
 	                                    value_list:[
+	                                    	{code:'', value:''},
 	                                        {code:'FOB', value:'FOB'},
 	                                        {code:'CIF', value:'CIF'},
 	                                        {code:'CFR', value:'CFR'},

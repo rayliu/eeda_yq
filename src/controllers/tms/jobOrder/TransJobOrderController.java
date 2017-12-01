@@ -19,6 +19,7 @@ import models.UserCustomer;
 import models.UserLogin;
 import models.eeda.oms.PlanOrder;
 import models.eeda.oms.PlanOrderItem;
+import models.eeda.oms.jobOrder.JobOrderLandItem;
 import models.eeda.oms.jobOrder.JobOrderSendMail;
 import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.tms.TransJobOrder;
@@ -353,7 +354,16 @@ public class TransJobOrderController extends Controller {
    		
 		Record r = transJobOrder.toRecord();
    		r.set("creator_name", user_name);
-	
+   		
+   		JobOrderLandItem joli = JobOrderLandItem.dao.findFirst("select*from job_order_land_item where id="+r.get("FROM_ORDER_ITEM_ID"));
+   		if(joli!=null){
+   			joli.set("land_container_type",r.get("cabinet_type"));
+   			joli.set("land_container_no",r.get("container_no"));
+   			joli.set("land_seal_no",r.get("seal_no"));
+   			joli.set("trans_info",dto.get("transInfos"));
+   			joli.update();
+   		}
+   		
    		//保存空运填写模板
 
    		renderJson(r);
@@ -742,7 +752,7 @@ public class TransJobOrderController extends Controller {
     	String itemSql = "";
     	List<Record> itemList = null;
     	 if("land".equals(type)){
-    		itemSql = " select tjol.*,ci.car_no car_no_name,d1.dock_name take_address_name,d2.dock_name delivery_address_name,d3.dock_name loading_wharf1_name,d4.dock_name loading_wharf2_name,"
+    		itemSql = " select tjol.*,ci.car_no car_no_name,d1.dock_name take_address_name,d2.dock_name delivery_address_name,IFNULL(d3.dock_name,(select address from party where id = tjol.consignor)) loading_wharf1_name,d4.dock_name loading_wharf2_name,"
     				+ " p.abbr transport_company_name,CAST(GROUP_CONCAT(tjold.id) as char ) trans_job_order_land_doc_id, GROUP_CONCAT(tjold.doc_name) doc_name,"
     				+ " p1.abbr consignor_name, p2.abbr consignee_name from trans_job_order_land_item tjol"
     				+ " left join carinfo ci on ci.id=tjol.car_no"
@@ -1019,7 +1029,7 @@ public class TransJobOrderController extends Controller {
         }
         else{
 		         sql = "SELECT * from (select GROUP_CONCAT(cast(substring(tjol.cabinet_date, 1, 10) AS CHAR)) cabinet_date,"
-		         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,p.charge_company_id sp_id,"
+		         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,tjo.from_order_id,tjo.update_apply_flag,p.charge_company_id sp_id,"
 		         		+ " tjo.status,tjo.land_export_stamp sent_out_time,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
 		         		+ " (SELECT SUM(tjoa.currency_total_amount) from trans_job_order_arap tjoa WHERE tjoa.order_id=tjo.id and tjoa.order_type='CHARGE' and tjoa.charge_id= " 
@@ -1378,6 +1388,16 @@ public class TransJobOrderController extends Controller {
     	renderJson("{\"result\":true}");
     }
     
-    
+    //允许货代工作单修改陆运明细
+    public void approvalUpdate(){
+    	String order_id = getPara("order_id");
+    	TransJobOrder tjo = TransJobOrder.dao.findById(order_id);
+    	tjo.set("update_apply_flag", "N");
+    	tjo.update();
+    	JobOrderLandItem joli =JobOrderLandItem.dao.findById(tjo.get("from_order_item_id"));
+    	joli.set("approval_update", "Y");
+    	joli.update();
+    	renderJson("{\"result\":true}");
+    }
 
 }

@@ -1,5 +1,6 @@
 
             <input type="hidden" id="land_id" value="${land.id!''}">
+            <input type="hidden" id="update_apply_flag" value="${order.update_apply_flag!''}">
             <div class="form-group">  <!--  form row  -->
                     <div class="row">
                         <div class="form-group">
@@ -24,7 +25,8 @@
                        <div class="form-group">
                            <div class="col-lg-12">   
                            		<div class="col-lg-12">
-                                	<button type='button' class="btn btn_green" id="add_land">添加柜货</button> 
+                                	<button type='button' class="btn btn_green" id="add_land">添加柜货</button>
+                                	<button type='button' class="btn btn_green" id="approvalUpdate" disabled>允许修改</button>
                                 </div>      	
                                 <%include("/eeda/component/form/detailTable.html", 
                                     {
@@ -40,6 +42,7 @@
                                             '装货地点1',
                                             '装货地点2',
                                             '装货平台',
+                                            '到码头时间',
                                             '车牌',
                                             '车型',
                                             '拖卡重量',
@@ -53,7 +56,8 @@
                                             '发货人',
                                             '发货人电话', 
                                             '收货人',
-                                            '收货人电话', 
+                                            '收货人电话',
+                                            '收货地点',
                                             '货品描述',
                                             '备注',
                                             '签收文件描述', 
@@ -61,7 +65,7 @@
                                             '',
                                             'TRANSPORT_COMPANY_NAME',
                                             'CONSIGNOR_NAME', 
-                                            'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID','','','','',''],
+                                            'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID','CAR_NO_NAME','','','',''],
                                         field_list:[
                                             'id',
                                             '',
@@ -72,6 +76,7 @@
                                             'loading_wharf1',
                                             'loading_wharf2',
                                             'loading_platform',
+                                            'reach_wharf_time',
                                             'car_no',
                                             'truck_type',
                                             'toca_weight',
@@ -86,6 +91,7 @@
                                             'consignor_phone',
                                             'consignee',
                                             'consignee_phone',
+                                            'delivery_address',
                                             'cargo_desc',
                                             'required_time_remark',
                                             'doc_name',
@@ -93,8 +99,8 @@
                                             'id',
                                             'TRANSPORT_COMPANY_NAME',
                                             'CONSIGNOR_NAME', 
-                                            'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID','CAR_NO_NAME'
-                                            ,'TAKE_ADDRESS_NAME','DELIVERY_ADDRESS_NAME','LOADING_WHARF1_NAME','LOADING_WHARF2_NAME'],
+                                            'CONSIGNEE_NAME','JOB_ORDER_LAND_DOC_ID','CAR_NO_NAME',
+                                            'TAKE_ADDRESS_NAME','DELIVERY_ADDRESS_NAME','LOADING_WHARF1_NAME','LOADING_WHARF2_NAME'],
                                         value_list: landList![]
                                     }){} %>
                                     
