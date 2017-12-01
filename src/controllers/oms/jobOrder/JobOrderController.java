@@ -294,6 +294,7 @@ public class JobOrderController extends Controller {
         String customer_id = (String)dto.get("customer_id");
         String supplier_contract_type = (String) dto.get("supplier_contract_type");
         String customer_contract_type = (String) dto.get("customer_contract_type");
+        String from_order_type = (String) dto.get("from_order_type");
         
         JobOrder jobOrder = new JobOrder();
         
@@ -369,7 +370,7 @@ public class JobOrderController extends Controller {
    			//create 
    			DbUtils.setModelValues(dto, jobOrder);
 //   			String newOrder_on ="EKYZH"+generateJobPrefix(type);
-   			if(office_id!=6){
+   			if(office_id==1){
    			//需后台处理的字段
    	   			String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
    	   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
@@ -390,14 +391,31 @@ public class JobOrderController extends Controller {
    	                   planOrderItem.set("is_gen_job", "Y");
    	                   planOrderItem.update();
    	   			}
-   			}
-   			if(office_id==6){
-   			//需后台处理的字段
+   			}else if(office_id==6){
+   			    //需后台处理的字段
    	   			String order_no = OrderNoGenerator.getNextOrderNo("KF", newDateStr, office_id);
    	   			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
    	   			sb.insert(2, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
    	   			sb.insert(5, newDateStrMM);//在指定的位置1，插入指定的字符串
    	   			order_no = sb.toString();
+   	            jobOrder.set("order_no", order_no);
+   	   			jobOrder.set("creator", user.getLong("id"));
+   	   			jobOrder.set("create_stamp", new Date());
+   	   			jobOrder.set("updator", user.getLong("id"));
+   	            jobOrder.set("update_stamp", new Date());
+   	   			jobOrder.set("office_id", office_id);
+   	   			jobOrder.save();
+   	   			id = jobOrder.getLong("id").toString();
+   	   			
+   	   			//创建过工作单，设置plan_order_item的字段
+   	   			PlanOrderItem planOrderItem = PlanOrderItem.dao.findById(planOrderItemID);
+   	   			if(planOrderItem!=null){
+   	                   planOrderItem.set("is_gen_job", "Y");
+   	                   planOrderItem.update();
+   	   			}
+   			}else{
+   			//需后台处理的字段
+   				String order_no = OrderNoGenerator.getOrderNo("jobOrder",office_id); 
    	            jobOrder.set("order_no", order_no);
    	   			jobOrder.set("creator", user.getLong("id"));
    	   			jobOrder.set("create_stamp", new Date());
@@ -446,6 +464,14 @@ public class JobOrderController extends Controller {
 		DbUtils.handleList(land_item, id, JobOrderLandItem.class, "order_id");
 		List<Map<String, String>> land_shipment_item = (ArrayList<Map<String, String>>)dto.get("land_shipment_list");
 		DbUtils.handleList(land_shipment_item, id, JobOrderLandItem.class, "order_id");
+		
+		
+		//货代陆运信息回显给提交单据
+		if("forwarderJobOrder".equals(from_order_type)){
+			
+		}
+		
+		
 		
 		//快递
 		List<Map<String, String>> express_detail = (ArrayList<Map<String, String>>)dto.get("express_detail");

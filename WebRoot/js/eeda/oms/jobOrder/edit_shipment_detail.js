@@ -395,6 +395,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             ]
         });
         
+        
+        
+        //海运内容disabled
+        var oceanInfoShowHide=function(){
+        	$('#shipmentForm input,#shipmentForm textarea').attr('disabled',true);
+            $('#ocean_cargo_table input,#ocean_cargo_table select,#ocean_cargo_table button').attr('disabled',true);
+            $('#orderForm input,#orderForm textarea,#orderForm select,#orderForm text').attr('disabled',true);
+            $('#add_ocean_cargo').hide(); 
+            $('#transport_type input,#supplier_contract_type input,#customer_contract_type input').attr('disabled',false);
+        }
+        
+        
+        
         //提交给海外代理
         $('#submitOverseaAgent').on('click',function(){
         	var oversea_agent=$('#oversea_agent').val()
@@ -418,6 +431,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	$.post('/jobOrder/subToAgent',{params:JSON.stringify(subAgentCondition_json)},function(data){
         		if(data){
         			$.scojs_message('提交成功', $.scojs_message.TYPE_OK);
+        			if(data.SUBMIT_AGENT_FLAG=='Y'){
+        				$('#submit_agent_flag').val(data.SUBMIT_AGENT_FLAG);
+        				oceanInfoShowHide();
+        			}
         		}
         		
         	},'json').fail(function(){
@@ -432,22 +449,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	if(from_order_no){
         		$('#submitAgentDiv').hide();
         		$('#agentDiv').show();
+        		$('#auditBtn').show();
         		if($('#is_need_delivery').val()){
         			$('#is_need_delivery').prop('checked',true);
         		}else{
         			$('#is_need_delivery').prop('checked',false);
         		}
+        		oceanInfoShowHide();
         	}
-            $('#shipmentForm input,#shipmentForm textarea').attr('disabled',true);
-            $('#ocean_cargo_table input,#ocean_cargo_table select,#ocean_cargo_table button').attr('disabled',true);
-            $('#orderForm input,#orderForm textarea,#orderForm select,#orderForm text').attr('disabled',true);
-            $('#add_ocean_cargo').hide(); 
-            $('#transport_type input,#supplier_contract_type input,#customer_contract_type input').attr('disabled',false);
         }else{
-        	$('#submitAgentDiv').hide();
-//        	$('#submitAgentDiv').show();
+        	$('#submitAgentDiv').show();
     		$('#agentDiv').hide();
+    		$('#auditBtn').hide();
         }
+        
+       var submit_agent_flag = $('#submit_agent_flag').val();
+       if(submit_agent_flag=='Y'){
+    	   oceanInfoShowHide(); 
+       }
+        
+        
         
         //AFR已申报 ， 报关已放行
         $('#AFR_done,#custom_done').click(function(){

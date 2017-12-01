@@ -47,6 +47,7 @@
                         <input id="update_stamp" type="hidden" name="update_stamp" value="${order.update_stamp!''}"/>
                         <input id="rateExpired" type="hidden"  name="rateExpired" value="${rateExpired!''}"/>
                         <input id="from_order_type" type="hidden" name="from_order_type" value="${order.from_order_type!''}"/>
+                        <input id="submit_agent_flag" type="hidden" name="submit_agent_flag" value="${order.submit_agent_flag!''}"/>
                         <div class="row"><!--  第1行  -->
                             <div class="col-lg-4"><!--  三列排版  -->
                                 <%include("/eeda/component/form/inputField.html", 
@@ -754,6 +755,11 @@
                 
                 <div class="button-bar" >
                     <a id='saveBtn' class="btn btn_green" href="#">保存</a>
+                    <span id="auditBtn">
+	                    <button id="passBtn" class="btn btn_green" >审核通过</button>
+	                    <button id="refuseBtn" class="btn btn-danger">审核不通过</button>
+	                    <button id="cancelAuditBtn" class="btn btn-danger" style="display:none">取消审核</button>
+	                </span>
                     <a class="btn  btn_white" href="/jobOrder">返回</a>
                     <a href="/jobOrder/create" class="btn btn_green" style="float:right" type="button">创建新工作单</a>
                 </div>

@@ -856,9 +856,9 @@ public class ServiceProviderController extends Controller {
     	   	condition+=" and (c.name like '%" + input + "%' or c.english_name like '%" + input + "%' or c.code like '%" + input + "%') ";
        }
         
-        if("TO".equals(TO)){
-        	currency_condition="";
-        }
+//        if("TO".equals(TO)){
+//        	currency_condition="";
+//        }
         
         String sql = "SELECT"
     			+ "	to_stamp,"
