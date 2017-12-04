@@ -19,10 +19,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
             columns: [
 					{ "width": "10px",
 					    "render": function ( data, type, full, meta ) {
-					    	if(full.AUDIT_FLAG != 'Y')
-					    		return '<input type="checkbox" class="checkBox">';
-					    	else 
+					    	if(full.AUDIT_FLAG != 'Y'){
+					    		if(full.ID){
+					    			return '<input type="checkbox" class="checkBox">';
+					    		}else{
+					    			return '<input type="checkbox" disabled>';
+					    		}
+					    	}else{
 					    		return '<input type="checkbox" disabled>';
+					    	} 
+					    		
 					    }
 					},
 					{ "data": "ORDER_NO", "width": "80px",
@@ -131,27 +137,33 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco', 'dtColR
       })
 
       var searchData=function(){
+    	  var audit_flagStr="";
           var order_no = $.trim($("#order_no").val()); 
 //          var customer = $("#customer").val();
-//          var customer_name = $("#customer_input").val(); 
+          var customer_name = $("#customer_input").val(); 
           var sp_name = $("#sp_id_input").val(); 
           var start_date = $("#charge_time_begin_time").val();
           var end_date = $("#charge_time_end_time").val();
           var cabinet_date_begin_time = $("#cabinet_date_begin_time").val();
           var cabinet_date_end_time = $("#cabinet_date_end_time").val();
           var audit_flag = $("#audit_flag").val();
+          if(audit_flag=='N'){
+        	  audit_flagStr="&auditFlag="+audit_flag
+          }else{
+        	  audit_flagStr="&audit_flag="+audit_flag
+          }
           var cabinet_type=$("#cabinet_type").val();
        
           var url = "/transChargeConfirm/list?order_no="+order_no
 //			           +"&customer_id="+customer
-//			           +"&customer_name_like="+customer_name
+			           +"&customer_like="+customer_name
 //			           +"&sp_id="+sp
 			           +"&sp_name="+sp_name
 		               +"&charge_time_begin_time="+start_date
 		               +"&charge_time_end_time="+end_date
 		               +"&cabinet_date_begin_time="+cabinet_date_begin_time
 		          	   +"&cabinet_date_end_time="+cabinet_date_end_time
-          			   +"&audit_flag="+audit_flag
+          			   +audit_flagStr
           			   +"&cabinet_type="+cabinet_type;
 
           dataTable.ajax.url(url).load();

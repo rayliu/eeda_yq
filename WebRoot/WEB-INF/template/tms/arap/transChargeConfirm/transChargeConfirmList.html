@@ -11,14 +11,15 @@
 											value: ''
 										}){} %>
 								</div>
-								
 								<div class="col-lg-4">
-					           		<%include("/eeda/component/form/inputField.html", 
-					                	{   id:'order_no', 
-					                    	label:'工作单号',	                                                    
-					                        value:jobOrder.order_no!order.order_no!''
-					            		}){}%>
-					           	</div>
+									<%include("/eeda/component/form/inputCustomerField.html",
+										{	id:'customer',
+											label:'客户名称',
+											list:'list',
+											value: ''
+										}){} %>
+								</div>
+
 					           	<div class="col-lg-4">
 	                                  <%include("/eeda/component/form/selectField.html", 
 	                                    {   id:'audit_flag', 
@@ -33,6 +34,13 @@
 	                			</div>
 	                	</div>
 	                    <div class="row">
+	                    		<div class="col-lg-4">
+					           		<%include("/eeda/component/form/inputField.html", 
+					                	{   id:'order_no', 
+					                    	label:'工作单号',	                                                    
+					                        value:jobOrder.order_no!order.order_no!''
+					            		}){}%>
+					           	</div>
 	                			<div class="col-lg-4">
 	                                  <%include("/eeda/component/form/selectField.html", 
 	                                    {   id:'cabinet_type', 
@@ -47,6 +55,8 @@
 	                                        ]
 	                                    }){}%>
 	                			</div>
+						</div>
+						<div class="row">
 								<div class="col-lg-4" id="month" style="display:block;">        
 		                    		<%include("/eeda/component/form/inputDateQueryField.html",
 		                    			{	id:'cabinet_date',

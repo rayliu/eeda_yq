@@ -48,6 +48,12 @@ public class TransChargeConfirmController extends Controller {
         
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        String auditFlag =getPara("auditFlag");
+        if("N".equals(auditFlag)){
+        	auditFlag=" and (audit_flag='N' or audit_flag is null)";
+        }else{
+        	auditFlag="";
+        }
      
         String sql = "select * from( "
         		+ " select tjoa.*,tjo.order_no,tjo.id jobid,tjo.container_no,tjo.so_no,CONVERT(substring(GROUP_CONCAT(tjo.create_stamp), 1, 10),char) create_stamp,tjo.customer_id,tjo.cabinet_type,"
@@ -71,16 +77,16 @@ public class TransChargeConfirmController extends Controller {
 				+ " LEFT JOIN dockinfo dock3 ON dock3.id = tjol.loading_wharf2"
 				+ " where ifnull(tjoa.order_type ,'')!='cost' and tjo.office_id = "+office_id
 				+ " and tjo.delete_flag = 'N'"
-				+ " group by tjoa.id"
+				+ " group by tjoa.id,tjo.id"
 				+ " ) A where 1=1 ";
         
         String condition = DbUtils.buildConditions(getParaMap());
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+" ) B ";
+        String sqlTotal = "select count(1) total from ("+sql+ condition+auditFlag+" ) B ";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         //+sLimit
-        List<Record> orderList = Db.find(sql+ condition +"order by charge_time"  );
+        List<Record> orderList = Db.find(sql+ condition +auditFlag+"order by charge_time"  );
         Map orderListMap = new HashMap();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
