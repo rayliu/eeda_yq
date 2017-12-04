@@ -491,7 +491,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		oceanInfoShowHide();
         	}
         }else{
-        		$('#submitAgentDiv').show();
+        		$('#submitAgentDiv').hide();
         		if($("#afr_done_time").val()||$("#custom_done_time").val()){
         			$('#agent_time_show').css("display","");
         			$('#agent_time_show input').attr("disabled",true);

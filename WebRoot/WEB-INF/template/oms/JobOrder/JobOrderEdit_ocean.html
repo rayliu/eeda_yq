@@ -578,7 +578,7 @@
                  <%
                  var lable_msg='';
                  if(boolOcean){
-                 	lable_msg='<span id="overseaAgent_radio_div" disabled   >'	                        			
+                 	lable_msg='<span id="overseaAgent_radio_div" disabled style="display:none"  >'	                        			
 	                        			+'<label class="radio-inline"><input type="radio" name="overseaAgent" value="domestic" >国内</input></label>'
 	                        			+'<nbsp><label class="radio-inline" style="margin-left:10px"><input type="radio" name="overseaAgent" value="oversea" >国外</input></label><nbsp>'
 	                        		+'</span>';
@@ -602,7 +602,7 @@
 	                        disabled:disableStr
 	                    }){}%>
               </div>
-              <div id="submitAgentDiv">
+              <div id="submitAgentDiv" style="display:none" >
 	              <div class="col-lg-4" >
 	              	<div style="margin-top:50px;">
 						<button type="button" class="btn btn_green" id="submitOverseaAgent" ${disableStr}>提交给代理</button><br>
@@ -636,7 +636,7 @@
 	              </div>
               </div>
               
-             <div id="agentDiv">
+             <div id="agentDiv" style="display:none" >
               <div class="col-lg-4" >
               		<div style="margin-top:50px;" >
 	                	<label class="checkbox-inline" style="font-size:18px">       
@@ -1009,7 +1009,7 @@
                      <a id='oceanItemTab' href="#oceanItem" data-toggle="tab" >箱量明细</a>
                  </li>
                  <li >
-                     <a id='oceanDocumentShareTab' href="#oceanDocumentShare" data-toggle="tab" >文档共享</a>
+                     <a id='oceanDocumentShareTab' href="#oceanDocumentShare" data-toggle="tab" style="display:none" >文档共享</a>
                  </li>
 		</ul>
 		<div class="tab-content">
