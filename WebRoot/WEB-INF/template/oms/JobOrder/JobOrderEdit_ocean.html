@@ -595,6 +595,7 @@
 	                        label: '下游代理',
 	                        lable_msg:lable_msg, 	                        		   
 	                        type:'oversea_agent',
+	                        ref_office_id:shipment.oversea_agent_ref_office_id!'',
 	                        value: shipment.oversea_agent!'',
 	                        display_value: shipment.oversea_agent_name!'',
 	                        textarea_value:shipment.oversea_agent_info!'',
@@ -621,13 +622,13 @@
 	              </div>
 	              <div class="col-lg-4" id="agent_time_show" >
 	              	<div style="margin-top:50px;" >
-	              		<%include("/eeda/component/form/dateInputField.html", 
-	                    {   id:'afr_done_time', 
+	              		<%include("/eeda/component/form/inputField.html", 
+	                    {   id:'afr_done_time1', 
 	                        label:'AFR申报时间', 
 	                        value:shipment.afr_done_time!''
 	                    }){}%><br>
-	              		<%include("/eeda/component/form/dateInputField.html", 
-		                {   id:'custom_done_time', 
+	              		<%include("/eeda/component/form/inputField.html", 
+		                {   id:'custom_done_time1', 
 	                        label:'放行时间', 
 	                        value:shipment.custom_done_time!''
 	                    }){}%>

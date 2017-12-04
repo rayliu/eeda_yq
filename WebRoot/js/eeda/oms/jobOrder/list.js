@@ -163,7 +163,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                     return data;
                   }
               },
-              { "width": "110px","visible":false,
+              { "width": "110px",
             	"render":function(data, type, full, meta){
             		var strStatus="";
             		if(full.LAND_ETA){

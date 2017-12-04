@@ -3120,7 +3120,7 @@ public class JobOrderController extends Controller {
     	if("shipment".equals(type)){
     		re = Db.findFirst("select jos.*, p1.abbr MBLshipperAbbr , p2.abbr MBLconsigneeAbbr, p3.abbr MBLnotify_partyAbbr, "
     				+ " p8.abbr HBLshipperAbbr , p9.abbr HBLconsigneeAbbr, p10.abbr HBLnotify_partyAbbr,p4.abbr carrier_name,"
-    				+ " p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p7.abbr booking_agent_name,"
+    				+ " p5.abbr head_carrier_name,p6.abbr oversea_agent_name,p6.ref_office_id oversea_agent_ref_office_id,p7.abbr booking_agent_name,"
     				+ " CONCAT(lo.name,' -', lo.code) por_name, "
     				+ " CONCAT(lo1.name,' -', lo1.code) pol_name, "
     				+ " CONCAT(lo2.name,' -', lo2.code) pod_name, "
@@ -3308,7 +3308,7 @@ public class JobOrderController extends Controller {
 	    				+" SELECT fjo.from_order_id ref_job_order_id,jocd.id,jocd.doc_name,jocd.upload_time, "
 	    				+" 	jocd.remark,ul.c_name c_name,jocd.uploader,jocd.share_flag,jocd.bill_type "
 	    				+" FROM job_order_custom_doc jocd  "
-	    				+" LEFT JOIN (SELECT * from job_order jo where jo.id ="+orderId+" and jo.from_order_type ='forwarderJobOrder') fjo on fjo.from_order_id = jocd.order_id  "
+	    				+" RIGHT JOIN (SELECT * from job_order jo where jo.id ="+orderId+" and jo.from_order_type ='forwarderJobOrder') fjo on fjo.from_order_id = jocd.order_id  "
 	    				+" LEFT JOIN user_login ul ON ul.id = jocd.uploader  "
 	    				+" WHERE "
 	    				+" 	 jocd.order_type = 'forwarderCompany' "
@@ -4308,9 +4308,13 @@ public class JobOrderController extends Controller {
     	
     	
     	if("Y".equals(submit_agent_flag)){
-    		//主表复制
+
     		String orderSql = "select * from job_order where id = ? and office_id =?";    		
     		Record jobOrder = Db.findFirst(orderSql,order_id,office_id);
+    		//自己状态的改变
+    		jobOrder.set("status","待审核");
+    		Db.update("job_order", jobOrder);
+    		//主表复制
     		String toOrderSql="select * from job_order where from_order_id= ? and from_order_type=? and office_id=?";
     		Record toJobOrder = Db.findFirst(toOrderSql,order_id,"forwarderJobOrder",ref_office_id);
     		String toOrder_id =toJobOrder.getLong("id").toString();
@@ -4324,7 +4328,8 @@ public class JobOrderController extends Controller {
         	jobOrder.set("from_order_no",jobOrder.get("order_no"));
         	jobOrder.set("from_order_type","forwarderJobOrder");
         	jobOrder.set("order_no",toJobOrder.get("order_no"));
-        	Db.update("job_order", jobOrder);
+        	Db.update("job_order", jobOrder);        	
+        	
         	//海运detail表复制
         	
         	String oceanSql="SELECT * from job_order_shipment where order_id = ?";
@@ -4336,7 +4341,7 @@ public class JobOrderController extends Controller {
         	if(toOceanDetail!=null){
         		oceanDetail.set("id",toOceanDetail_id);
         		oceanDetail.set("order_id",toOrder_id);
-            	Db.save("job_order_shipment", oceanDetail);
+            	Db.update("job_order_shipment", oceanDetail);
         	}
     		//海运明细表复制
         	String oceanItemSql = "SELECT * from job_order_shipment_item where order_id = ?";
@@ -4366,7 +4371,7 @@ public class JobOrderController extends Controller {
 							Db.update("job_order_land_item", copyOceanItem);
 						}else{
 							copyOceanItem.set("from_ocean_item_id", copyOceanItem.getLong("id"));
-	                		copyOceanItem.set("order_id", jobOrder.getLong("id"));
+	                		copyOceanItem.set("order_id", jobOrder.get("id"));
 	                		copyOceanItem.set("id", null);
 	                		Db.save("job_order_shipment_item", copyOceanItem);
 						}

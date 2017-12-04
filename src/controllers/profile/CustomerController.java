@@ -389,12 +389,14 @@ public class CustomerController extends Controller {
             customerName = "";
         }
         long userId = LoginUserController.getLoginUserId(this);
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
         
         List<Record> resultList = Collections.EMPTY_LIST;
         if(StrKit.isBlank(customerName)){//从历史记录查找
             String sql = "select h.ref_id, p.id, p.abbr from user_query_history h, party p "
-                    + "where h.ref_id=p.id and h.type='CUSTOMER' and h.user_id=?";
-            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
+                    + "where h.ref_id=p.id and h.type='CUSTOMER' and h.user_id=? and p.office_id=?";
+            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId,office_id);
             if(resultList.size()==0){
                 sql = "select p.id, p.abbr from party p where p.type = 'CUSTOMER' "
                         + " and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') ";
@@ -497,13 +499,15 @@ public class CustomerController extends Controller {
         if(StringUtils.isEmpty(customerName)){
             customerName = "";
         }
-        long userId = LoginUserController.getLoginUserId(this); 
+        long userId = LoginUserController.getLoginUserId(this);
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
         List<Record> resultList = Collections.EMPTY_LIST;
         if(StrKit.isBlank(customerName)){//从历史记录查找
             String sql = "select h.ref_id, p.id, p.abbr,ifnull(p.contact_person_eng, p.contact_person) contact_person, "
                     + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info from user_query_history h, party p "
-                    + "where h.ref_id=p.id and (h.type='CUSTOMER' OR h.type='OWN') and h.user_id=?";
-            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
+                    + "where h.ref_id=p.id and (h.type='CUSTOMER' OR h.type='OWN') and h.user_id=? and p.office_id =?";
+            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId,office_id);
             if(resultList.size()==0){
                 sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
                     + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
@@ -545,8 +549,8 @@ public class CustomerController extends Controller {
             String sql = "select h.ref_id, p.id, p.abbr,ifnull(p.contact_person_eng, p.contact_person) contact_person, "
                     + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
                     + " from user_query_history h, party p "
-                    + "where h.ref_id=p.id  and h.user_id=?";
-            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId);
+                    + "where h.ref_id=p.id  and h.user_id=? and p.office_id=?";
+            resultList = Db.find(sql+" ORDER BY query_stamp desc limit 25", userId,office_id);
             if(resultList.size()==0){
                 sql = "select p.id, p.abbr, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
                     + " ifnull(p.address_eng, p.address) address, p.phone ,p.fax,p.zip_code,p.bill_of_lading_info"
@@ -616,7 +620,7 @@ public class CustomerController extends Controller {
         }
 
         String sql = "select  * from(SELECT p.id, p.abbr,p.abbr name, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                + " ifnull(p.address_eng, p.address) address, p.phone,p.bill_of_lading_info"
+                + " ifnull(p.address_eng, p.address) address, p.phone,p.ref_office_id,p.bill_of_lading_info"
 				+ " FROM user_query_history uqh"
 				+ " LEFT JOIN party p ON p.id = uqh.ref_id"
 				+ " and uqh.type = upper('"+type+"')"
@@ -626,7 +630,7 @@ public class CustomerController extends Controller {
 				+ " ORDER BY uqh.query_stamp desc ) A"
 				+ " UNION "
 				+ " (select p.id, p.abbr,p.abbr name, ifnull(p.contact_person_eng, p.contact_person) contact_person, "
-                + " ifnull(p.address_eng, p.address) address, p.phone,p.bill_of_lading_info"
+                + " ifnull(p.address_eng, p.address) address, p.phone,p.bill_of_lading_info,p.ref_office_id"
                 + " from party p where sp_type like '%"+type+"%' "
                 + condition+officeConditon+")";
         

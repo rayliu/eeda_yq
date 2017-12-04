@@ -432,6 +432,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		$.scojs_message('请选择代理类型：国内或者国外', $.scojs_message.TYPE_ERROR);
         		return;
         	}
+        	var oversea_agent_ref_office_id=$('#oversea_agent_input').attr("ref_office_id")
+        	if(!oversea_agent_ref_office_id||oversea_agent_ref_office_id=='undefined'){
+        		$.scojs_message('不能提交给该代理', $.scojs_message.TYPE_ERROR);
+        		return;
+        	}
+        	
         	var subAgentCondition_json={};
         	subAgentCondition_json.order_id=$('#order_id').val();
         	subAgentCondition_json.oversea_agent=$('#oversea_agent').val();
@@ -443,6 +449,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	$.post('/jobOrder/subToAgent',{params:JSON.stringify(subAgentCondition_json)},function(data){
         		if(data){
         			$.scojs_message('提交成功', $.scojs_message.TYPE_OK);
+        			 $('#submitOverseaAgent').attr('disabeld',true);
         			if(data.SUBMIT_AGENT_FLAG=='Y'){
         				$('#submit_agent_flag').val(data.SUBMIT_AGENT_FLAG);
         				oceanInfoShowHide();
@@ -460,14 +467,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         if(from_order_type=="forwarderJobOrder"){
         	if(from_order_no){
         		$('#submitAgentDiv').hide();
+        		$('#agent_time_show').css("display","none");
         		if($('#status').val()!="审核通过"){
         			$('#saveBtn').css('display','none');
         			$("#passBtn").attr('disabled',false);
         			if($('#status').val()=="审核不通过"){
         				$("#refuseBtn").attr('disabled',true);
         			}
+        			$("#AFR_done").attr('disabled',true);
+        			$("#custom_done").attr('disabled',true);
         		}else{
         			$("#passBtn").attr('disabled',true);
+        			$("#AFR_done").attr('disabled',false);
+        			$("#custom_done").attr('disabled',false);
         		}        		
         		$('#agentDiv').show();
         		$('#auditBtn').show();
@@ -480,6 +492,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	}
         }else{
         		$('#submitAgentDiv').show();
+        		if($("#afr_done_time").val()||$("#custom_done_time").val()){
+        			$('#agent_time_show').css("display","");
+        			$('#agent_time_show input').attr("disabled",true);
+        		}else{
+        			$('#agent_time_show').css("display","none");
+        		}
             	$('#saveBtn').css('display','');
         		$('#agentDiv').hide();
         		$('#auditBtn').hide();

@@ -693,6 +693,11 @@ $(document).ready(function() {
  				   var status = data.STATUS;
  				   if(status=="审核通过"){
  					  $('#saveBtn').css('display','');
+ 					  $("#AFR_done").attr('disabled',false);
+         			  $("#custom_done").attr('disabled',false);
+ 				   }else{
+ 					  $("#AFR_done").attr('disabled',true);
+          			  $("#custom_done").attr('disabled',true);
  				   }
  				   $('#status').val(data.STATUS);
  			   }

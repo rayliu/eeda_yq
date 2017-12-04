@@ -6,7 +6,7 @@
     </label>
     ${lable_msg!''}
     <input type="text" class="form-control" autocomplete="false"
-    id="${id}_input" name="${id}_input"
+    id="${id}_input" name="${id}_input" ref_office_id="${ref_office_id!''}"
     placeholder="${placeholder!'请选择'}"  value="${display_value!''}" ${required!''} ${disabled!''}>
     <ul id='${id}_list' tabindex="-1" 
         class="pull-right dropdown-menu default dropdown-scroll" 
@@ -34,7 +34,7 @@ $(document).ready(function() {
             }
             companyList.empty();
             for(var i = 0; i < data.length; i++)
-                companyList.append("<li><a tabindex='-1' class='fromLocationItem' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' contact_person_eng='"+data[i].CONTACT_PERSON_ENG+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' fax='"+data[i].FAX+"' partyId='"+data[i].ID+"' zip_code='"+data[i].ZIP_CODE+"' address='"+data[i].ADDRESS+"' address_eng='"+data[i].ADDRESS_ENG+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+"</a></li>");
+                companyList.append("<li><a tabindex='-1' class='fromLocationItem' ref_office_id='"+data[i].REF_OFFICE_ID+"' post_code='"+data[i].POSTAL_CODE+"' contact_person='"+data[i].CONTACT_PERSON+"' contact_person_eng='"+data[i].CONTACT_PERSON_ENG+"' email='"+data[i].EMAIL+"' phone='"+data[i].PHONE+"' fax='"+data[i].FAX+"' partyId='"+data[i].ID+"' zip_code='"+data[i].ZIP_CODE+"' address='"+data[i].ADDRESS+"' address_eng='"+data[i].ADDRESS_ENG+"', company_name='"+data[i].COMPANY_NAME+"', >"+data[i].ABBR+"</a></li>");
                 
             companyList.css({ 
                 left:$(me).position().left+"px", 
@@ -56,6 +56,7 @@ $(document).ready(function() {
     
     companyList.on('click', '.fromLocationItem', function(e){
         inputField.val($(this).text());
+        inputField.attr("ref_office_id",$(this).attr("ref_office_id"));
         companyList.hide();
         var companyId = $(this).attr('partyId');
         hiddenField.val(companyId);
