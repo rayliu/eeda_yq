@@ -414,6 +414,10 @@ $(document).ready(function() {
         order.fee_count = $("#fee_count").val();
         order.land_export_date = $('#land_export_date').val();
         order.order_export_date = $('#order_export_date').val();
+        
+        order.from_order_type = $('#from_order_type').val();
+        order.from_order_id = $('#from_order_id').val();
+        
         //报关类型
         order.custom_type = custom_type_str;
         //自理报关还是委托报关
@@ -676,6 +680,46 @@ $(document).ready(function() {
     }
     
     
+    //工作单审核动作
+    $("#passBtn,#refuseBtn").click(function(){
+ 	   var thisVal=$(this).attr('id');
+ 	   var order_id = $('#order_id').val();
+ 	   var from_order_id = $('#from_order_id').val();
+ 	   var from_order_type = $('#from_order_type').val();
+ 	  $(this).attr('disabled',true);
+ 	   $.post('/jobOrder/auditOperation',{thisVal:thisVal,order_id:order_id,
+ 		   from_order_id:from_order_id,from_order_type:from_order_type},function(data){
+ 			   if(data){
+ 				   var status = data.STATUS;
+ 				   if(status=="审核通过"){
+ 					  $('#saveBtn').css('display','');
+ 				   }
+ 				   $('#status').val(data.STATUS);
+ 			   }
+ 	   },'json').fail(function(){
+ 		   $.scojs_message('审核出错', $.scojs_message.TYPE_ERROR);
+ 	   });
+    });
+    
+    
+    
+    
+//    $('#setTimeout').click(function(){
+//    	$('#setTimeout').hide();
+//    	$('#setTimeoutStart').show();
+//    	var count =3;
+//        var t;
+//        t=setInterval(function(){
+//        	count=count-1;
+//        	$('#setTimeoutStart').text(count);
+//        	if(count==0){
+//        		clearInterval(t);
+//        	}
+//        },1000)
+//    });
+    
+    
+    
     
     //放货方式radio回显
     var radioVal = $('#hidden_billing_method').val();
@@ -702,8 +746,6 @@ $(document).ready(function() {
     if(land_sendTruckHide=='Y'){
     	$('#land_sendTruck').attr('disabled', true);
     }  
-    
-    
 });
 
 //

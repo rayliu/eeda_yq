@@ -407,6 +407,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         }
         
         
+        var submit_agent_flag = $('#submit_agent_flag').val();
+        if(submit_agent_flag=='Y'){
+     	   if($('#status').val()!="审核不通过"){
+     		   oceanInfoShowHide();
+     		   $('#submitOverseaAgent').attr('disabled',true);    		   
+     	   }else{
+     		   $('#submitOverseaAgent').attr('disabled',false);  
+     	   }    	   
+        }
+        
+        
         
         //提交给海外代理
         $('#submitOverseaAgent').on('click',function(){
@@ -428,6 +439,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	subAgentCondition_json.is_need_afr=($('#is_need_afr').prop('checked')==true?'Y':'N');
         	subAgentCondition_json.is_need_custom_apply=($('#is_need_custom_apply').prop('checked')==true?'Y':'N');
         	subAgentCondition_json.is_need_delivery=($('#is_need_delivery').prop('checked')==true?'Y':'N');
+        	subAgentCondition_json.submit_agent_flag=$('#submit_agent_flag').val();
         	$.post('/jobOrder/subToAgent',{params:JSON.stringify(subAgentCondition_json)},function(data){
         		if(data){
         			$.scojs_message('提交成功', $.scojs_message.TYPE_OK);
@@ -448,6 +460,15 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         if(from_order_type=="forwarderJobOrder"){
         	if(from_order_no){
         		$('#submitAgentDiv').hide();
+        		if($('#status').val()!="审核通过"){
+        			$('#saveBtn').css('display','none');
+        			$("#passBtn").attr('disabled',false);
+        			if($('#status').val()=="审核不通过"){
+        				$("#refuseBtn").attr('disabled',true);
+        			}
+        		}else{
+        			$("#passBtn").attr('disabled',true);
+        		}        		
         		$('#agentDiv').show();
         		$('#auditBtn').show();
         		if($('#is_need_delivery').val()){
@@ -458,16 +479,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		oceanInfoShowHide();
         	}
         }else{
-        	$('#submitAgentDiv').show();
-    		$('#agentDiv').hide();
-    		$('#auditBtn').hide();
+        		$('#submitAgentDiv').show();
+            	$('#saveBtn').css('display','');
+        		$('#agentDiv').hide();
+        		$('#auditBtn').hide();
         }
         
-       var submit_agent_flag = $('#submit_agent_flag').val();
-       if(submit_agent_flag=='Y'){
-    	   oceanInfoShowHide(); 
-       }
-        
+       
+       
         
         
         //AFR已申报 ， 报关已放行
