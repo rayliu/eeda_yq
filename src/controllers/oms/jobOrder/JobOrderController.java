@@ -4287,6 +4287,7 @@ public class JobOrderController extends Controller {
     
     //提交给代理
     @SuppressWarnings("unchecked")
+    @Before(Tx.class)
     public void subToAgent(){
     	String subAgentCondition =getPara("params");
     	Gson gson =new Gson();
@@ -4364,11 +4365,11 @@ public class JobOrderController extends Controller {
 						String from_ocean_item_id=null;
 						if(toCopyOceanItem!=null){
 							item_id=toCopyOceanItem.getLong("id").toString();
-							from_ocean_item_id=toCopyOceanItem.getLong("from_land_item_id").toString();
+							from_ocean_item_id=toCopyOceanItem.getLong("from_ocean_item_id").toString();
 							copyOceanItem.set("id", item_id);
-							copyOceanItem.set("from_land_item_id", from_ocean_item_id);
+							copyOceanItem.set("from_ocean_item_id", from_ocean_item_id);
 							copyOceanItem.set("order_id", toOrder_id);
-							Db.update("job_order_land_item", copyOceanItem);
+							Db.update("job_order_shipment_item", copyOceanItem);
 						}else{
 							copyOceanItem.set("from_ocean_item_id", copyOceanItem.getLong("id"));
 	                		copyOceanItem.set("order_id", jobOrder.get("id"));
@@ -4507,7 +4508,7 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("landList");
 		for (Map<String, String> rowMap : land_item) {//获取每一行
     		String rowId = rowMap.get("id");
-			Party p = Party.dao.findById(dto.get("customer_id"));
+			Party p = Party.dao.findById(dto.get("TRANSPORT_COMPANY"));
     		TransJobOrderLandItem tjoli = new TransJobOrderLandItem();
     		TransJobOrder transJobOrder = new TransJobOrder();
     		Record re = Db.findFirst("select*from trans_job_order where from_order_item_id="+rowId);

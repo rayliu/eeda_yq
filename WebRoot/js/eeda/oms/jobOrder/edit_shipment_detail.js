@@ -449,7 +449,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	$.post('/jobOrder/subToAgent',{params:JSON.stringify(subAgentCondition_json)},function(data){
         		if(data){
         			$.scojs_message('提交成功', $.scojs_message.TYPE_OK);
-        			 $('#submitOverseaAgent').attr('disabeld',true);
+        			 $('#submitOverseaAgent').attr('disabled',true);
         			if(data.SUBMIT_AGENT_FLAG=='Y'){
         				$('#submit_agent_flag').val(data.SUBMIT_AGENT_FLAG);
         				oceanInfoShowHide();
