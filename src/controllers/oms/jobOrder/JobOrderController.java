@@ -4508,7 +4508,7 @@ public class JobOrderController extends Controller {
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("landList");
 		for (Map<String, String> rowMap : land_item) {//获取每一行
     		String rowId = rowMap.get("id");
-			Party p = Party.dao.findById(dto.get("TRANSPORT_COMPANY"));
+			Party p = Party.dao.findById(rowMap.get("TRANSPORT_COMPANY"));
     		TransJobOrderLandItem tjoli = new TransJobOrderLandItem();
     		TransJobOrder transJobOrder = new TransJobOrder();
     		Record re = Db.findFirst("select*from trans_job_order where from_order_item_id="+rowId);

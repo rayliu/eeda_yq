@@ -55,7 +55,7 @@ $(document).ready(function() {
             		return str;
 			    }
             },
-            {"width":"90px",
+            {"data": "JOB_ORDER_STATUS","width":"90px",
                 "render": function ( data, type, full, meta ) {
                       var str = '';
                        if($("#status").val()=='已确认'){
@@ -63,7 +63,11 @@ $(document).ready(function() {
                            str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;" disabled >编辑</button>';                         
                        }else{                    	
                           str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px" >删除</button>&nbsp'
-                          str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;"  >编辑</button>';
+                    	  if(data=="已完成"){
+                          	str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;" disabled title="已锁单">编辑</button>';
+                          }else{
+                          	str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;" >编辑</button>';
+                          }
                        }
                       return str;
                   }

@@ -357,7 +357,7 @@ public class ChargeCheckOrderController extends Controller {
     			+ "joa.total_amount total_amount,joa.exchange_rate exchange_rate," 
     			+ " jo.net_weight gross_weight,"
     			+ " cur.name currency_name,"
-    			+ " jo.ref_no ref_no,"
+    			+ " jo.ref_no ref_no,jo.status job_order_status,"
     			+ " p1.company_name sp_name,jos.mbl_no,l.name fnd,joai.destination,jos.hbl_no,jols.truck_type truck_type,"
     			+ " GROUP_CONCAT(josi.container_no) container_no,GROUP_CONCAT(josi.container_type) container_amount ,"
     			+ " fi.name fin_name "
@@ -379,7 +379,7 @@ public class ChargeCheckOrderController extends Controller {
 			}else{				
 			sql = " select if(joa.contract_amount != joa.total_amount and joa.cus_contract_flag = 'Y','Y','N') diff_flag,joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
 					+" aco.order_no check_order_no, jo.id job_order_id, jo.order_no,jo.order_export_date,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
-					+ " jo.ref_no ref_no,"
+					+ " jo.ref_no ref_no,jo.status job_order_status,"
 						+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
 						+" ifnull((select rc.new_rate from rate_contrast rc"
 						    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
@@ -434,7 +434,7 @@ public class ChargeCheckOrderController extends Controller {
 		}
 			if("create".equals(bill_flag)){
 				sql = " select joa.id,joa.create_flag,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
-						+" aco.order_no check_order_no,jo.id job_order_id, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
+						+" aco.order_no check_order_no,jo.id job_order_id, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type,jo.status job_order_status," 
 							+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
 							+" ifnull((select rc.new_rate from rate_contrast rc"
 							    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
@@ -468,7 +468,7 @@ public class ChargeCheckOrderController extends Controller {
 				
 			}else{
 				sql = "select joa.id,joa.sp_id,joa.order_type,joa.total_amount,joa.exchange_rate,joa.currency_total_amount,"
-						+" aco.order_no check_order_no,jo.id job_order_id, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type," 
+						+" aco.order_no check_order_no,jo.id job_order_id, jo.order_no,jo.create_stamp,jo.customer_id,jo.volume,jo.net_weight,jo.type,jo.status job_order_status," 
 							+" p.abbr sp_name,p1.abbr customer_name,jos.mbl_no,l.name fnd,joai.destination,"
 							+" ifnull((select rc.new_rate from rate_contrast rc"
 							    +"  where rc.currency_id = joa.currency_id and rc.order_id = aco.id),cast(joa.exchange_rate as char)) new_rate,"
