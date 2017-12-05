@@ -545,6 +545,9 @@ $(document).ready(function() {
           var begin_date_begin_time = $('#begin_date_begin_time').val();
           var begin_date_end_time = $('#begin_date_end_time').val();
           
+          var service_stamp_beginTime = $('#service_stamp_begin_time').val();          
+          var service_stamp_endTime = $('#service_stamp_end_time').val(); 
+          
           var check_begin_date_begin_time = $('#check_begin_date_begin_time').val();
           var check_begin_date_end_time = $('#check_begin_end_begin_time').val();
           
@@ -561,6 +564,9 @@ $(document).ready(function() {
             +"&invoices_no_like="+invoices_no
             
             +"&service_stamp_between="+service_stamp
+            
+            +"&service_stamp_beginTime="+service_stamp_beginTime
+            +"&service_stamp_endTime="+service_stamp_endTime
 
             +"&create_stamp_begin_time="+begin_date_begin_time
             +"&create_stamp_end_time="+begin_date_end_time

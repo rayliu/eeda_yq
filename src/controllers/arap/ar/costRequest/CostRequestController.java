@@ -270,6 +270,22 @@ public class CostRequestController extends Controller {
           	Long userId = LoginUserController.getLoginUserId(this);
           	JobOrderController.addHistoryRecord(userId,sp_id,"ARAP_COM");
     	}
+        
+        String service_stamp_beginTime =getPara("service_stamp_beginTime");
+    	String service_stamp_endTime =getPara("service_stamp_endTime");
+    	String serviceStampBeginEnd ="";
+    	if(StringUtils.isNotBlank(service_stamp_beginTime)){
+    		serviceStampBeginEnd+=" and ('"+service_stamp_beginTime+"' <=acao.begin_time";
+    	}else{
+    		serviceStampBeginEnd+=" and ('1970-01-01'<=acao.begin_time ";
+    	}
+    	if(StringUtils.isNotBlank(service_stamp_endTime)){
+    		serviceStampBeginEnd+=" and '"+service_stamp_endTime+"' >=acao.end_time )";
+    	}else{
+    		serviceStampBeginEnd+=" and '2050-12-31'>=acao.end_time )";
+    	}
+        
+        
     	
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
@@ -287,7 +303,7 @@ public class CostRequestController extends Controller {
 				+ " left join arap_cost_order aco on aco.id = caor.cost_order_id"
 				+ " left join user_login u on u.id = acao.create_by"
 				+ " LEFT JOIN party p on p.id=acao.sp_id"
-				+ "	where acao.office_id = "+office_id
+				+ "	where acao.office_id = "+office_id+serviceStampBeginEnd
 				+ " group by acao.id"
 				+ " order by acao.begin_time"
 				+ " ) B where 1=1 ";

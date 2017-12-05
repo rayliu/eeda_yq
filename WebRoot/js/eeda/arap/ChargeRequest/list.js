@@ -553,6 +553,10 @@ $(document).ready(function() {
           var status2 = $('#status2').val().trim();
           
           var service_stamp = $('#service_stamp').val();
+          
+          var service_stamp_beginTime = $('#service_stamp_begin_time').val();          
+          var service_stamp_endTime = $('#service_stamp_end_time').val();  
+          
           var fee_type = $('#fee_type').val();
           var invoices_no = $('#invoices_no').val();
           
@@ -577,6 +581,9 @@ $(document).ready(function() {
 
             +"&create_stamp_begin_time="+begin_date_begin_time
             +"&create_stamp_end_time="+begin_date_end_time
+            
+            +"&service_stamp_beginTime="+service_stamp_beginTime
+            +"&service_stamp_endTime="+service_stamp_endTime
             
             +"&check_stamp_begin_time="+check_begin_date_begin_time
             +"&check_stamp_end_time="+check_begin_date_end_time

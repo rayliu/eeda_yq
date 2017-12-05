@@ -454,6 +454,20 @@ public class ChargeRequestController extends Controller {
 //        }
     	
     	String sp_id =getPara("sp_id");
+    	String service_stamp_beginTime =getPara("service_stamp_beginTime");
+    	String service_stamp_endTime =getPara("service_stamp_endTime");
+    	String serviceStampBeginEnd ="";
+    	if(StringUtils.isNotBlank(service_stamp_beginTime)){
+    		serviceStampBeginEnd+=" and ('"+service_stamp_beginTime+"' <=acao.begin_time";
+    	}else{
+    		serviceStampBeginEnd+=" and ('1970-01-01'<=acao.begin_time ";
+    	}
+    	if(StringUtils.isNotBlank(service_stamp_endTime)){
+    		serviceStampBeginEnd+=" and '"+service_stamp_endTime+"' >=acao.end_time )";
+    	}else{
+    		serviceStampBeginEnd+=" and '2050-12-31'>=acao.end_time )";
+    	}
+    	
         if(StringUtils.isNotEmpty(getPara("sp_id"))){
     		//常用结算公司保存进入历史记录
           	Long userId = LoginUserController.getLoginUserId(this);
@@ -475,8 +489,8 @@ public class ChargeRequestController extends Controller {
 				+ " left join charge_application_order_rel caor on caor.application_order_id = acao.id "
 				+ " left join arap_charge_order aco on aco.id = caor.charge_order_id"
 				+ " left join user_login u on u.id = acao.create_by"
-				+ " LEFT JOIN party p on p.id=acao.sp_id"
-				+ "	where acao.office_id = "+office_id
+				+ " LEFT JOIN party p on p.id=acao.sp_id "
+				+ "	where acao.office_id = "+office_id+serviceStampBeginEnd
 				+ " group by acao.id"
 				+ " order by acao.begin_time "
 				+ " ) B where 1=1 ";
