@@ -437,15 +437,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		$.scojs_message('不能提交给该代理', $.scojs_message.TYPE_ERROR);
         		return;
         	}
-        	
-        	var subAgentCondition_json={};
-        	subAgentCondition_json.order_id=$('#order_id').val();
-        	subAgentCondition_json.oversea_agent=$('#oversea_agent').val();
-        	subAgentCondition_json.agent_type=$('#overseaAgent_radio_div input[type="radio"]:checked').val();
-        	subAgentCondition_json.is_need_afr=($('#is_need_afr').prop('checked')==true?'Y':'N');
-        	subAgentCondition_json.is_need_custom_apply=($('#is_need_custom_apply').prop('checked')==true?'Y':'N');
-        	subAgentCondition_json.is_need_delivery=($('#is_need_delivery').prop('checked')==true?'Y':'N');
-        	subAgentCondition_json.submit_agent_flag=$('#submit_agent_flag').val();
+        	$("#confirmType").val($("#type").val());
+        	$("#confirm").click();
+        });
+        $("#confirmSub").click(function(){
+        	$("#type").val($("#confirmType").val());
+        	$("#returnBtn").click();
+        	var subAgentCondition_json = {};
+        	subAgentCondition_json.order_id = $('#order_id').val();
+        	subAgentCondition_json.type = $("#confirmType").val();
+        	subAgentCondition_json.oversea_agent = $('#oversea_agent').val();
+        	subAgentCondition_json.agent_type = $('#overseaAgent_radio_div input[type="radio"]:checked').val();
+        	subAgentCondition_json.is_need_afr = ($('#is_need_afr').prop('checked')==true?'Y':'N');
+        	subAgentCondition_json.is_need_custom_apply = ($('#is_need_custom_apply').prop('checked')==true?'Y':'N');
+        	subAgentCondition_json.is_need_delivery = ($('#is_need_delivery').prop('checked')==true?'Y':'N');
+        	subAgentCondition_json.submit_agent_flag = $('#submit_agent_flag').val();
         	$.post('/jobOrder/subToAgent',{params:JSON.stringify(subAgentCondition_json)},function(data){
         		if(data){
         			$.scojs_message('提交成功', $.scojs_message.TYPE_OK);
@@ -455,19 +461,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         				oceanInfoShowHide();
         			}
         		}
-        		
         	},'json').fail(function(){
         		$.scojs_message('提交失败', $.scojs_message.TYPE_ERROR);
         	});
-        	        	
-        })
+        });
         //海外代理的内容隐藏已显示
         var from_order_type = $("#from_order_type").val();
         var from_order_no= $("#plan_order_no").val();
         if(from_order_type=="forwarderJobOrder"){
         	if(from_order_no){
+        		var type = $("#type").val();
         		$('#submitAgentDiv').hide();
-        		$('#agent_time_show').css("display","none");
         		if($('#status').val()!="审核通过"){
         			$('#saveBtn').css('display','none');
         			$("#passBtn").attr('disabled',false);
@@ -480,15 +484,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         			$("#passBtn").attr('disabled',true);
         			$("#AFR_done").attr('disabled',false);
         			$("#custom_done").attr('disabled',false);
-        		}        		
-        		$('#agentDiv').show();
-        		$('#auditBtn').show();
-        		if($('#is_need_delivery').val()){
-        			$('#is_need_delivery').prop('checked',true);
-        		}else{
-        			$('#is_need_delivery').prop('checked',false);
-        		}
-        		oceanInfoShowHide();
+        		} 
+        		
+        		if(type.indexOf('出口')>-1){
+            		$('#agent_time_show').css("display","none");
+            		$('#agentDiv').show();
+            		$('#auditBtn').show();
+            		if($('#is_need_delivery').val()){
+            			$('#is_need_delivery').prop('checked',true);
+            		}else{
+            			$('#is_need_delivery').prop('checked',false);
+            		}
+            		oceanInfoShowHide();
+            	}else if(type.indexOf('进口')>-1){
+            		$('#orderForm input,#orderForm textarea,#orderForm select,#orderForm text,.imported input,.imported textarea').attr('disabled',true);
+            		$("#agentDiv").hide();
+            	}
         	}
         }else{
         		$('#submitAgentDiv').hide();

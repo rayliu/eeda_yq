@@ -154,7 +154,7 @@
 <form id = "shipmentForm">
     <div class="form-group">  <!--  form row  -->
       <h4>MBL联系人信息</h4>
-        <div class="row">
+        <div class="row imported">
         	
             <div class="col-lg-4"><!--  三列排版  -->
             <% 
@@ -208,7 +208,7 @@
            </div>
         </div>
       <h4>HBL联系人信息</h4>
-        <div class="row">
+        <div class="row imported">
         	
             <div class="col-lg-4"><!--  三列排版  -->
             <% 
@@ -567,7 +567,7 @@
            </div>
            
            <div class="row">
-             <div class="col-lg-4">
+             <div class="col-lg-4 imported">
                <% 
                 var oversea_agent = '458dsfs4y54';
                 if(boolOcean){
@@ -1077,7 +1077,52 @@
         
     </div>
 </div>
-
+<div class="row">
+	<a data-target='#confirmTypeBox' data-toggle='modal'>
+		<button id="confirm" style="display:none"></button>
+	</a>
+	<div class="modal fade" id="confirmTypeBox">
+		<div class="modal-dialog">
+			<div class="modal-content">
+		    	<div class="modal-header">确认出货类型</div>
+		      	<div class="modal-body">
+					<div class="form-group">
+						<div class="row">
+				            <div class="col-lg-6">
+				               		<%include("/eeda/component/form/selectField.html", 
+	                                    {   id:'confirmType', 
+	                                        label:'类型', 
+	                                        value:order.type!planOrderItem.JOB_ORDER_TYPE!'',
+	                                        value_list:[
+	                                            {code:'出口柜货', value:'出口柜货'},
+	                                            {code:'进口柜货', value:'进口柜货'}, 
+	                                            {code:'出口散货', value:'出口散货'},
+	                                            {code:'进口散货', value:'进口散货'},
+	                                            {code:'出口空运', value:'出口空运'},
+	                                            {code:'进口空运', value:'进口空运'},
+	                                            {code:'内贸海运', value:'内贸海运'},
+	                                            {code:'香港头程', value:'香港头程'},
+	                                            {code:'香港游', value:'香港游'},
+	                                            {code:'陆运', value:'陆运'},
+	                                            {code:'报关', value:'报关'},
+	                                            {code:'快递', value:'快递'},
+	                                            {code:'加贸', value:'加贸'},
+	                                            {code:'贸易', value:'贸易'},
+	                                            {code:'园区游', value:'园区游'}
+	                                        ]
+	                                    }){}%>
+				        	</div>
+				    	</div>
+					</div>   
+		        </div>
+		        <div class="modal-footer">
+		        	<button id="confirmSub" class="btn btn_green" disableStr>确认</button>
+		        	<button id="returnBtn" class="btn btn-default" data-dismiss="modal" disableStr>返回</button>
+		    	</div>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
     var editPermission=${editPermission!''};
     var boolOcean = ${boolOcean!''};//updatePermission || oceanPermission;
