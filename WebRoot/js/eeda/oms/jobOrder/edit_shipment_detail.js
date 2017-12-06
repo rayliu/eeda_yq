@@ -433,7 +433,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         		return;
         	}
         	var oversea_agent_ref_office_id=$('#oversea_agent_input').attr("ref_office_id")
-        	if(!oversea_agent_ref_office_id||oversea_agent_ref_office_id=='undefined'){
+        	if(!oversea_agent_ref_office_id||oversea_agent_ref_office_id=='undefined'||oversea_agent_ref_office_id=='null'){
         		$.scojs_message('不能提交给该代理', $.scojs_message.TYPE_ERROR);
         		return;
         	}
@@ -502,7 +502,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	}
         	}
         }else{
-        		$('#submitAgentDiv').hide();
+        		$('#submitAgentDiv').show();
         		if($("#afr_done_time").val()||$("#custom_done_time").val()){
         			$('#agent_time_show').css("display","");
         			$('#agent_time_show input').attr("disabled",true);
