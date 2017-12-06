@@ -740,16 +740,18 @@ $(document).ready(function() {
        var tableAmount =$('#cost_table').find('[name=total_amount]');
        var currencyTotalAmountCost = $('#cost_table').find('[name=currency_total_amount]');
        for(var i = 0;i<tableCur.length;i++){
-           if(tableCur[i].value=='CNY'){               
-               totalCostRMB += parseFloat(tableAmount[i].value);   //parseFloat(data)
-           }else if(tableCur[i].value=='USD'){
-               totalCostUSD += parseFloat(tableAmount[i].value);
-           }else if(tableCur[i].value=='JPY'){
-               totalCostJPY += parseFloat(tableAmount[i].value);
-           }else if(tableCur[i].value=='HKD'){
-               totalCostHKD += parseFloat(tableAmount[i].value);
+    	   if(tableAmount[i].value!=""&&tableAmount[i].value!='null'&&tableAmount[i].value!="undefined"){
+	           if(tableCur[i].value=='CNY'){               
+	               totalCostRMB += parseFloat(tableAmount[i].value);   //parseFloat(data)
+	           }else if(tableCur[i].value=='USD'){
+	               totalCostUSD += parseFloat(tableAmount[i].value);
+	           }else if(tableCur[i].value=='JPY'){
+	               totalCostJPY += parseFloat(tableAmount[i].value);
+	           }else if(tableCur[i].value=='HKD'){
+	               totalCostHKD += parseFloat(tableAmount[i].value);
+	           }
+	           profitTotalCost+= parseFloat(currencyTotalAmountCost[i].value);
            }
-           profitTotalCost+= parseFloat(currencyTotalAmountCost[i].value);
        }
        //隐藏应付人民币汇总字段
        $('[name=profitTotalCost]').text(profitTotalCost).hide();   
