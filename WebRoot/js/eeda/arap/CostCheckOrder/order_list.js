@@ -137,8 +137,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     	  var order_no = $("#order_no1").val().trim(); 
           var sp = $("#sp1").val(); 
           var sp1_input = $("#sp1_input").val().trim(); 
+          
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
+          
+          var check_time_beginTime = $("#check_time_begin_time").val();
+          var check_time_endTime = $("#check_time_end_time").val();
+          
           var order_export_date_begin_time = $("#order_export_date1_begin_time").val();
           var order_export_date_end_time = $("#order_export_date1_end_time").val();
           var status = $("#status").val();
@@ -153,10 +158,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var url = "/costCheckOrder/orderList?order_no="+order_no
 			           +"&sp_id="+sp
 			           +"&sp_name_like="+sp1_input
+			           
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
+		               
 		               +"&order_export_date_begin_time="+order_export_date_begin_time
 		               +"&order_export_date_end_time="+order_export_date_end_time
+		               
+		               +"&check_time_beginTime="+check_time_beginTime
+		               +"&check_time_endTime="+check_time_endTime
+		               
           			   +"&toStatus_equals="+status
           			   +"&audit_slot_between="+audit_slot;
 

@@ -454,6 +454,7 @@ public class ChargeRequestController extends Controller {
 //        }
     	
     	String sp_id =getPara("sp_id");
+    	
     	String service_stamp_beginTime =getPara("service_stamp_beginTime");
     	String service_stamp_endTime =getPara("service_stamp_endTime");
     	String serviceStampBeginEnd ="";

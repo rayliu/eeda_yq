@@ -194,7 +194,7 @@
 	                              			<option value="order_no">对账单号</option>
 		                                	<option value="toStatus_equals">状态</option>
 		                                	<option value="create_stamp">创建时间</option>
-		                                	<option value="audit_slot_between">对账时间段</option>
+		                                	<option value="audit_slot_between">对账时间段(包含)</option>
 	                            		</select>
 	
 										<div  style="position:absolute;left:34%;bottom:-5px;" id="sp_name_show">
@@ -297,10 +297,17 @@
 		                                   	<div class="col-lg-4">   
 		                                    	<%include("/eeda/component/form/dateInputField.html",
 						                     		{	id:'audit_slot',
+						                     			label:'对账时间段(包含)',
+						                     			value:''
+						                     		}){} %>
+		                     				</div>
+		                     				<div class="col-lg-4">   
+		                                    	<%include("/eeda/component/form/inputDateQueryField.html",
+						                     		{	id:'check_time',
 						                     			label:'对账时间段',
 						                     			value:''
 						                     		}){} %>
-		                     				</div>  
+		                     				</div>   
 		                                </div><!-- /.row-->
                                     <div class="form-group button-bar" >
                                         <button id="searchBtn1" class="btn btn_grey" type="button">查询</button>

@@ -307,10 +307,27 @@ public class ChargeCheckOrderController extends Controller {
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
-        			
+        }        			
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
+        
+        String check_time_beginTime =getPara("check_time_beginTime");
+    	String check_time_endTime =getPara("check_time_endTime");
+    	String checkTimeBeginEnd ="";
+    	if(StringUtils.isNotBlank(check_time_beginTime)||StringUtils.isNotBlank(check_time_endTime)){
+    		if(StringUtils.isNotBlank(check_time_beginTime)){
+        		checkTimeBeginEnd+=" and ('"+check_time_beginTime+"' <=begin_time";
+        	}else{
+        		checkTimeBeginEnd+=" and ('1970-01-01'<=begin_time ";
+        	}
+        	if(StringUtils.isNotBlank(check_time_endTime)){
+        		checkTimeBeginEnd+=" and '"+check_time_endTime+"' >=end_time )";
+        	}else{
+        		checkTimeBeginEnd+=" and '2050-12-31'>=end_time )";
+        	}
+    	}
+    	
+        
         
         String sp_id = getPara("sp");
         Long userId = LoginUserController.getLoginUserId(this);
@@ -323,7 +340,7 @@ public class ChargeCheckOrderController extends Controller {
         		+ " select aco.*,IFNULL(aco.audit_status,aco.status) toStatus, p.abbr sp_name,CAST(CONCAT(begin_time,' 到 <br>',end_time) AS char) check_time_slot "
 				+ " from arap_charge_order aco "
 				+ " left join party p on p.id=aco.sp_id "
-				+ " where aco.office_id = "+office_id+" order by aco.begin_time DESC "
+				+ " where aco.office_id = "+office_id+checkTimeBeginEnd+" order by aco.begin_time DESC "
 				+ " ) B where 1=1 ";
         String condition = DbUtils.buildConditions(getParaMap());
 

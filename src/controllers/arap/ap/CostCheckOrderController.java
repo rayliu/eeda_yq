@@ -453,6 +453,22 @@ public class CostCheckOrderController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
+        String check_time_beginTime =getPara("check_time_beginTime");
+    	String check_time_endTime =getPara("check_time_endTime");
+    	String checkTimeBeginEnd ="";
+    	if(StringUtils.isNotBlank(check_time_beginTime)||StringUtils.isNotBlank(check_time_endTime)){
+    		if(StringUtils.isNotBlank(check_time_beginTime)){
+        		checkTimeBeginEnd+=" and ('"+check_time_beginTime+"' <=begin_time";
+        	}else{
+        		checkTimeBeginEnd+=" and ('1970-01-01'<=begin_time ";
+        	}
+        	if(StringUtils.isNotBlank(check_time_endTime)){
+        		checkTimeBeginEnd+=" and '"+check_time_endTime+"' >=end_time )";
+        	}else{
+        		checkTimeBeginEnd+=" and '2050-12-31'>=end_time )";
+        	}
+    	}
+        
         String sp_id = getPara("sp_id");
         Long userId = LoginUserController.getLoginUserId(this);
         if(StringUtils.isNotEmpty(getPara("sp_id"))){
@@ -464,7 +480,7 @@ public class CostCheckOrderController extends Controller {
         		+ " select aco.*,IFNULL(aco.audit_status,aco.status) toStatus,p.abbr sp_name,CAST(CONCAT(substring(begin_time,1,10),' 到 <br>',substring(end_time,1,10)) AS CHAR) audit_slot"
 				+ " from arap_cost_order aco "
 				+ " left join party p on p.id=aco.sp_id "
-				+ " where aco.office_id = "+ office_id
+				+ " where aco.office_id = "+ office_id+checkTimeBeginEnd
 				+ " order by aco.id desc"
 				+ " ) B where 1=1 ";
       

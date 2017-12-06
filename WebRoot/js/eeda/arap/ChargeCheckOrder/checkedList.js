@@ -149,6 +149,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
           var sp = $('#sp1').val().trim();
           var start_date = $("#create_stamp1_begin_time").val();
           var end_date = $("#create_stamp1_end_time").val();
+          
+          var check_time_beginTime = $("#check_time_begin_time").val();
+          var check_time_endTime = $("#check_time_end_time").val();
+          
           var toStatus = $("#status").val();
           var check_time_slot = $("#check_time_slot").val();
           /*  
@@ -163,6 +167,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColRe
                +"&sp="+sp
                +"&create_stamp_begin_time="+start_date
                +"&create_stamp_end_time="+end_date
+               
+               +"&check_time_beginTime="+check_time_beginTime
+               +"&check_time_endTime="+check_time_endTime
+               
                +"&toStatus_equals="+toStatus
                +"&check_time_slot_between="+check_time_slot
           
