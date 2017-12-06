@@ -49,7 +49,8 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
               || url.indexOf('/costComparison/searchSpcomparison')!=-1
               || url.indexOf('/currencyRate/gainRateList')!=-1
               || url.indexOf('/transJobOrder/getCustomerQuotationAddress')!=-1
-              || url.indexOf('/currencyRate/gainRate')!=-1
+              || url.indexOf('/currencyRate/gainRate')!=-1  
+              || url.indexOf('/loginUser/searchCustomer')!=-1  
           ){
             return;
           }
@@ -264,7 +265,7 @@ eeda.dt_float_header =  function(table_id){
 
       console.log('scroll_top='+scroll_top);
       var scroll_bottom =$('body').scrollTop() - $("#"+table_id+"_info").offset().top+50 ;
-      //debugger;
+
       var tbody_left = $("#"+table_id+" tbody").offset().left
 
       if (scroll_top > 0 && scroll_bottom < 0 ) {
@@ -525,6 +526,11 @@ eeda.refreshUrl = refreshUrl;
 					    console.log("不是json格式");
 					}
 			  }
+			  
+			  var paraCustomerSelectIds="";			  
+			  if(para=="userCustomerSelectIds"){
+				  paraCustomerSelectIds=itemOrder.userCustomerIdFunction().toString();
+			  }
 			    
 			  var me = this;
 			  var inputField = $(this);
@@ -547,7 +553,7 @@ eeda.refreshUrl = refreshUrl;
         	}
         	return ;
         }else{
-			  $.get(url, {input:inputStr,para:para,paraJson}, function(data){
+			  $.get(url, {input:inputStr,para:para,paraJson,paraCustomerSelectIds:paraCustomerSelectIds}, function(data){
   				  if(inputStr!=inputField.val()){//查询条件与当前输入值不相等，返回
   					  return;
   				  }

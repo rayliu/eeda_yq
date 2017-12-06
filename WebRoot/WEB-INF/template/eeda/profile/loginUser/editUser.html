@@ -26,14 +26,17 @@
 						                         <label class="control-label">中文名(<span style="color:red">必填</span>)</label>
 						                         <input id="name" name="name" type="text" class="form-control" value="${lu.c_name!''}" autocomplete="off" placeholder="请输入员工名称">
 					                        </div>
-					                        <div class="form-group">
-						                         <label class="control-label">密码(<span style="color:red">必填</span>)</label>
-						                         <input type="password" class="form-control" id="password" name="password" value="" autocomplete="off">
+					                        <div id="password_div">
+					                        	<div class="form-group">
+						                         	<label class="control-label">密码(<span style="color:red">必填</span>)</label>
+						                         	<input type="password" class="form-control" id="password" name="password" value="" autocomplete="off">
+						                        </div>
+						                        <div class="form-group">
+							                         <label class="control-label">确认输入密码(<span style="color:red">必填</span>)</label>
+							                         <input type="password" class="form-control" id="confirm_password" name="confirm_password" autocomplete="off" value="">
+						                        </div>
 					                        </div>
-					                        <div class="form-group">
-						                         <label class="control-label">确认输入密码(<span style="color:red">必填</span>)</label>
-						                         <input type="password" class="form-control" id="confirm_password" name="confirm_password" autocomplete="off" value="">
-					                        </div>
+					                        
 					                        
 				                      </div><!-- col-md-4 -->		
 			                      <div class="col-lg-4">
@@ -124,8 +127,20 @@
 				                        			<% var ul= lu!'';
 				                        				if(ul!='' && ul.all_customer=='Y'){ %> checked <% } %> id ="selectAllCustomer">
 				                        		</div>
-				                          	</div>
-			                          		<table class="table table-striped table-bordered table-hover" id="customer-table" >
+				                          	</div><br>
+				                          	
+				                          	<% include("/eeda/component/form/detailTable.html",
+				                          	{	
+				                          		id:'customer-table',
+				                          		style:'width:400px',
+				                          		headers:['','客户','操作',''],
+				                          		field_list:['id','customer_id','id','customer_name'],
+				                          		value_list:userCustomerList![]
+				                          	
+				                          	}){} %><br>
+				                          	 <button id="addCustomer" type="button" class="btn btn_green btn-sm">添加客户</button>
+				                          	 <br>
+			                          		<table class="table table-striped table-bordered table-hover" id="customer-table" style="display:none">
 				                              	<thead>
 				                                  <tr>
 				                                      <th>客户  <button id="addCustomer" type="button" class="btn  btn-primary btn-sm">添加</button></th>
@@ -163,6 +178,8 @@
 <div class="blockUI" style="display:none"></div>
 <div class="blockUI blockOverlay" style="z-index: 1000; border: none; margin: 0px; padding: 0px; width: 100%; height: 100%; top: 0px; left: 0px; background-color: rgb(0, 0, 0); opacity: 0.6; cursor: wait; position: fixed;"></div>
 <div class="blockUI blockMsg blockPage" style="z-index: 1011; position: fixed; padding: 0px; margin: 0px; width: 30%; top: 40%; left: 35%; text-align: center; color: rgb(0, 0, 0); border: 3px solid rgb(170, 170, 170); background-color: rgb(255, 255, 255); cursor: wait;"><h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"></h4></div>
+
+<%include("/eeda/component/jsTemplate/tableInputField.js",{}){} %>
 
 <script>
 var itemOrder = {};

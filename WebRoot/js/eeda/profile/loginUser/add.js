@@ -1,5 +1,5 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','validate_cn', 'sco', 'datetimepicker_CN', 
-        'jq_blockui','./employee_detail'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu','template', 'sb_admin',  'dataTablesBootstrap','validate_cn', 'sco', 'datetimepicker_CN', 
+        'jq_blockui','./employee_detail'], function ($, metisMenu, template) { 
 
 	
 var queryOffice=function(){
@@ -225,6 +225,80 @@ var customerList = function(){
 	},'json');
 };
 $(document).ready(function(){
+	
+	var deletedTableIds=[];	
+	//删除一行
+    $("#customer-table").on('click', '.customerDelete', function(e){
+        e.preventDefault();
+        var tr = $(this).parent().parent();
+        $("#selectAllCustomer").prop("checked",false);
+        deletedTableIds.push(tr.attr('id'));
+        
+        customerTable.row(tr).remove().draw();
+    }); 
+	
+	
+	
+	//添加一行
+	$('#addCustomer').click(function(){
+		var item={};
+		customerTable.row.add(item).draw(true);
+	});
+	
+	var bindFieldEvent=function(){
+		eeda.bindTableField('customer-table','CUSTOMER_ID','/loginUser/searchCustomer','userCustomerSelectIds');
+	};
+	
+	//获取Ids
+	itemOrder.userCustomerIdFunction= function(){
+	var userCustomerIds=[];
+		$("#customer-table input[name=CUSTOMER_ID]").each(function(){
+			if($(this).val()!=null&&$(this).val()!=""){
+				userCustomerIds.push($(this).val());
+			}		
+			});
+		return userCustomerIds;
+	}
+	
+	
+	var customerTable=eeda.dt({
+		id:'customer-table',
+		autoWidth:true,
+		drawCallback:function(settings){//生成相关下拉组件，需要再次绑定事件
+			bindFieldEvent();			
+		},
+		columns:[
+		   {"data":"ID","visible":false},
+		   {"data":"CUSTOMER_ID","width":"280px",
+			   "render":function(data, type , full, meta){
+				   if(!data){
+					   data="";
+				   }
+				   var field_html = template('table_dropdown_template',
+					{
+					   id:'CUSTOMER_ID',
+					   value:data,//对应数据库字段
+					   display_value:full.CUSTOMER_NAME,
+					   style:'width:300px',
+					}
+				   );
+				   return field_html;
+			   }
+		   },
+		   {"data":"ID","width":"100px",
+			   "render":function(data, type , full, meta){
+				   if(data){
+					   return '<button type="button" value="'+data+'" class="customerDelete btn table_btn delete_btn btn_xs ">删除</button>';
+				   }else{
+					   return '<button type="button" class="customerDelete btn table_btn delete_btn btn_xs ">删除</button>';
+				   }
+			   }
+		   },
+		   {"data":"CUSTOMER_NAME","visible":false}		         
+	 ]
+	});
+	
+	
   	$("#addOffice").on('click',function(){
 		$("#tobdy").append('<tr><td><select class="form-control sOffice" name="officeSelect"></select>'
                    +' </td><td><input type="radio"  class="is_main" name="isMain_radio" value=""></td>'
@@ -233,12 +307,12 @@ $(document).ready(function(){
 	});
 	
 	//添加客户
-	$("#addCustomer").on('click',function(){
-		$("#customerTbody").append('<tr><td>'
-				+'<select class="form-control customer" name="customerSelect"></select></td>'
-                +' <td><a class="btn removeCustomer" title="删除"><i class="fa fa-trash-o fa-fw"></i></a></td></tr>');
-		queryCustomer();
-	});
+//	$("#addCustomer").on('click',function(){
+//		$("#customerTbody").append('<tr><td>'
+//				+'<select class="form-control customer" name="customerSelect"></select></td>'
+//                +' <td><a class="btn removeCustomer" title="删除"><i class="fa fa-trash-o fa-fw"></i></a></td></tr>');
+//		queryCustomer();
+//	});
 	/*---移除---*/
 	//移除网点
 	$("#tobdy").on('click','.removeOffice',function(){
@@ -250,12 +324,12 @@ $(document).ready(function(){
 		queryOffice();
 	});
 	//移除客户
-	$("#customerTbody").on('click','.removeCustomer',function(){
-		$(this).parent().parent().remove();
-		$(this).parent().parent().remove();
-		$("#selectAllCustomer").prop("checked",false);
-		queryCustomer();
-	});
+//	$("#customerTbody").on('click','.removeCustomer',function(){
+//		$(this).parent().parent().remove();
+//		$(this).parent().parent().remove();
+//		$("#selectAllCustomer").prop("checked",false);
+//		queryCustomer();
+//	});
 	
 	/*分配岗位*/
 	$("#assigning_role").click(function(){
@@ -277,7 +351,7 @@ $(document).ready(function(){
 	//查询
 	var userId = $("#userId").val();
 	officeList();
-	customerList();
+//	customerList();
 	//选择默认的网点
 	$("#tobdy").on('click','.is_main',function(){
 		//保存默认网点
@@ -321,6 +395,13 @@ $(document).ready(function(){
 		};
 		
 	});
+	
+	//刷新分配客户表
+	itemOrder.refleshCustomerTable = function(userId){
+		var url = "/loginUser/customerList?userId="+userId;
+		customerTable.ajax.url(url).load();
+	}
+	
 	//添加全部客户
 	$("#selectAllCustomer").on('click',function(){
 		var is_check = $("#selectAllCustomer").prop("checked");
@@ -330,12 +411,17 @@ $(document).ready(function(){
                 message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
             });
 			$.post('/loginUser/selectAllCustomer',{is_check:is_check,userId:userId},function(data){
-				customerList();
+				
+				itemOrder.refleshCustomerTable(userId);
 				$.scojs_message('更新成功', $.scojs_message.TYPE_OK);
 				$.unblockUI();
 			},'json');
 		};
 	});
+	
+	
+	
+	
 	
 	
 	 //------------save
@@ -360,17 +446,15 @@ $(document).ready(function(){
         $(this).attr('disabled', true);
         
         var officeIds=[];
-		var customerIds=[];
-		$("select[name='officeSelect']").each(function(){
-			if($(this).val()!=null&&$(this).val()!=""){
-				officeIds.push($(this).val());
-			}		
-   		});
+        
 		$("select[name='customerSelect']").each(function(){
 			if($(this).val()!=null&&$(this).val()!=""){
 				customerIds.push($(this).val());
 			}
    		});
+		
+		var customerIds=itemOrder.userCustomerIdFunction();
+		
 		$("#officeIds").val(officeIds.toString());
 		$("#customerIds").val(customerIds.toString());
 		order.employee_json = itemOrder.buildEmployeeDetail();
@@ -409,6 +493,11 @@ $(document).ready(function(){
 		$("#assigning_role").show();
 	}
 	});
+	
+	if($('#userId').val()){
+		$('#password_div').hide();
+	}
+
 	$.unblockUI();
 
 });
