@@ -37,15 +37,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
       });
       $("#singleSearchBtn").click(function(){
     	  var sp_id = $("#single_sp_id").val();
-     	 var url = "/supplierRating/list?sp_id="+sp_id;
-     	 dataTable.ajax.url(url).load();
+    	  var sp_name = $("#single_sp_id_input").val();
+    	  $("#orderForm")[0].reset();
+      	  $("#sp_id_input").val($("#single_sp_id_input").val());
+     	  var url = "/supplierRating/list?sp_id="+sp_id
+     	  		  + "&&sp_name="+sp_name;
+     	  dataTable.ajax.url(url).load();
       })
       
       $("#searchBtn").click(function(){
     	  var sp_id = $("#sp_id").val();
+    	  var sp_name = $("#sp_id_input").val();
     	  var status = $("#status").val();
     	  var creator = $("#creator").val();
      	 var url = "/supplierRating/list?sp_id="+sp_id
+     	 			+"&&sp_name="+sp_name
 			     	+"&&status="+status
 			     	+"&&creator_name="+creator;
      	 dataTable.ajax.url(url).load();

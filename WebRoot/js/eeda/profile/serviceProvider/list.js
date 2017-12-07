@@ -136,6 +136,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //简单查询
         $('#singleSearchBtn').click(function(){
         	$('#checked_application_table').empty();
+        	$("#orderForm")[0].reset();
+        	$("#COMPANY_NAME").val($("#single_company_name").val());
         	singleSearchData();
         });
     	var singleSearchData = function(){ 
