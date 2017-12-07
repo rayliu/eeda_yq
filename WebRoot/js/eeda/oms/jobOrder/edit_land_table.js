@@ -755,6 +755,7 @@ $(document).ready(function() {
     	order.customer_id = $("#customer_id").val();
     	order.type = $("#type").val();
     	order.trade_type = $("#trade_type").val();
+    	order.order_no = $("#order_no").val();
     	order.landList = land_item();
     	$.post("/jobOrder/landSubmit",{params:JSON.stringify(order)},function(data){
     		if(data){

@@ -4541,7 +4541,7 @@ public class JobOrderController extends Controller {
     	String jsonStr=getPara("params");
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
-        
+        String type = (String)dto.get("type");
 		//时间处理
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//转换后的格式
 	    SimpleDateFormat parseFormat = new SimpleDateFormat("yyyyMMdd");//分析日期
@@ -4570,13 +4570,14 @@ public class JobOrderController extends Controller {
     			
     			//往表trans_job_order存入数据
     			transJobOrder.set("order_no", order_no);
+    			transJobOrder.set("plan_order_no", dto.get("order_no"));
     			transJobOrder.set("creator", user.getLong("id"));
     			transJobOrder.set("create_stamp", new Date());
     			transJobOrder.set("office_id", p.get("ref_office_id"));
     			transJobOrder.set("from_office_id", office_id);
     			transJobOrder.set("from_order_id", dto.get("order_id"));
     			transJobOrder.set("from_order_item_id", rowMap.get("id"));
-    			transJobOrder.set("type", dto.get("type"));
+    			transJobOrder.set("type", type);
     			transJobOrder.set("trade_type", dto.get("trade_type"));
     			transJobOrder.set("customer_id", dto.get("customer_id"));
     			transJobOrder.save();
@@ -4584,7 +4585,11 @@ public class JobOrderController extends Controller {
     			//往表trans_job_order_land_item存入数据
     			tjoli.set("order_id", transJobOrder.get("id"));
     			tjoli.set("truck_type", rowMap.get("truck_type"));
-    			tjoli.set("item_type", "shipment");
+    			if(type.indexOf("散货")>-1){
+    				tjoli.set("item_type", "bulk");
+    			}else{
+    				tjoli.set("item_type", "shipment");
+    			}
     			if(StringUtils.isNotBlank(rowMap.get("ETA"))){
     				tjoli.set("cabinet_date", rowMap.get("ETA"));
     			}
@@ -4614,7 +4619,7 @@ public class JobOrderController extends Controller {
     			
     			//往表trans_job_order存入数据
     			transJobOrder = TransJobOrder.dao.findFirst("select*from trans_job_order where from_order_item_id="+rowId);
-    			transJobOrder.set("type", dto.get("type"));
+    			transJobOrder.set("type", type);
     			transJobOrder.set("trade_type", dto.get("trade_type"));
     			transJobOrder.set("customer_id", dto.get("customer_id"));
     			transJobOrder.update();
