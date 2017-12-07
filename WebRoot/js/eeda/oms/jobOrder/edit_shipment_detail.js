@@ -497,6 +497,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             		}
             		oceanInfoShowHide();
             	}else if(type.indexOf('进口')>-1){
+            		$("#shipmentForm input,#shipmentForm textarea,#oceanItem input,#oceanItem select").attr("disabled",false);
             		$('#orderForm input,#orderForm textarea,#orderForm select,#orderForm text,.imported input,.imported textarea').attr('disabled',true);
             		$("#agentDiv").hide();
             	}
