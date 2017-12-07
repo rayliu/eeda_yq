@@ -46,6 +46,14 @@ $(document).ready(function() {
             	if(el && name){
                 	var value = el.val();//元素的值
                 	item[name] = value;
+                	
+                	if(name=='LOADING_WHARF1'){
+                		item['loading_wharf1_type'] = el.attr('locType');
+                	}else if(name=='LOADING_WHARF2'){
+                		item['loading_wharf2_type'] = el.attr('locType');
+                	}else if(name=='DELIVERY_ADDRESS'){
+                		item['delivery_address_type'] = el.attr('locType');
+                	}
             	}
             }
             item.action = id.length > 0?'UPDATE':'CREATE';
@@ -78,6 +86,7 @@ $(document).ready(function() {
         eeda.bindTableFieldCarInfo('land_table', 'CAR_NO');
         eeda.bindTableFieldDockInfo('land_table','LOADING_WHARF1');
         eeda.bindTableFieldDockInfo('land_table','LOADING_WHARF2');
+        eeda.bindTableFieldDockInfo('land_table','DELIVERY_ADDRESS');
         
         
         $('#land_table [name=CLOSING_DATE_div]').datetimepicker({
@@ -204,6 +213,7 @@ $(document).ready(function() {
                                 id: 'LOADING_WHARF1',
                                 value: data,
                                 display_value: full.LOADING_WHARF1_NAME,
+                                locType:full.LOADING_WHARF1_TYPE,
                                 style:'width:120px',
                             }
                         );
@@ -219,6 +229,7 @@ $(document).ready(function() {
                                 id: 'LOADING_WHARF2',
                                 value: data,
                                 display_value: full.LOADING_WHARF2_NAME,
+                                locType:full.LOADING_WHARF2_TYPE,
                                 style:'width:120px',
                             }
                         );
@@ -382,10 +393,19 @@ $(document).ready(function() {
             },
             { "data": "DELIVERY_ADDRESS","width": "80px",  "className":"delivery_address",
             	"render": function ( data, type, full, meta ) {
-            		if(!data)
-            			data='';
-            		return '<input type="text" name="delivery_address" value="'+data+'" class="form-control" style="width:100px"/>';
-            	}
+                    if(!data)
+                            data='';
+                        var field_html = template('table_dock_no_field_template',
+                            {
+                                id: 'DELIVERY_ADDRESS',
+                                value: data,
+                                locType:full.DELIVERY_ADDRESS_TYPE,
+                                display_value: full.DELIVERY_ADDRESS_NAME,
+                                style:'width:100px',
+                            }
+                        );
+                        return field_html;
+                    }
             },
             { "data": "CARGO_DESC", "width": "180px",
             	"render": function ( data, type, full, meta ) {
@@ -475,7 +495,11 @@ $(document).ready(function() {
             { "data": "TAKE_ADDRESS_NAME", "visible": false},
             { "data": "DELIVERY_ADDRESS_NAME", "visible": false},
             { "data": "LOADING_WHARF1_NAME", "visible": false},
-            { "data": "LOADING_WHARF2_NAME", "visible": false}
+            { "data": "LOADING_WHARF2_NAME", "visible": false},
+            { "data": "DELIVERY_ADDRESS_TYPE", "visible": false},
+            { "data": "LOADING_WHARF1_TYPE", "visible": false},
+            { "data": "LOADING_WHARF2_TYPE", "visible": false}
+            
         ]
     });
 	 eeda.bindTableFieldTruckOut('land_table', 'CONSIGNOR');

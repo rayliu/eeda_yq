@@ -4588,9 +4588,16 @@ public class JobOrderController extends Controller {
     			}
     			tjoli.set("consignor", rowMap.get("CONSIGNOR"));
     			tjoli.set("consignor_phone", rowMap.get("consignor_phone"));
+    			if(StringUtils.isNotBlank(rowMap.get("take_address_id"))){
+    				tjoli.set("loading_wharf1", rowMap.get("take_address_id"));
+    				tjoli.set("loading_wharf1_type", rowMap.get("take_address_type"));
+    			}
     			tjoli.set("consignee", rowMap.get("CONSIGNEE"));
     			tjoli.set("consignee_phone", rowMap.get("consignee_phone"));
-    			tjoli.set("delivery_address", rowMap.get("DELIVERY_ADDRESS"));
+    			if(StringUtils.isNotBlank(rowMap.get("delivery_address_id"))){
+    				tjoli.set("delivery_address", rowMap.get("delivery_address_id"));
+    				tjoli.set("delivery_address_type", rowMap.get("delivery_address_type"));
+    			}
     			tjoli.set("consignor", rowMap.get("CONSIGNOR"));
     			tjoli.set("pieces", rowMap.get("pieces"));
     			if(StringUtils.isNotBlank(rowMap.get("volume"))){
@@ -4619,9 +4626,16 @@ public class JobOrderController extends Controller {
     			}
     			tjoli.set("consignor", rowMap.get("CONSIGNOR"));
     			tjoli.set("consignor_phone", rowMap.get("consignor_phone"));
+    			if(StringUtils.isNotBlank(rowMap.get("take_address_id"))){
+    				tjoli.set("loading_wharf1", rowMap.get("take_address_id"));
+    				tjoli.set("loading_wharf1_type", rowMap.get("take_address_type"));
+    			}
     			tjoli.set("consignee", rowMap.get("CONSIGNEE"));
     			tjoli.set("consignee_phone", rowMap.get("consignee_phone"));
-    			tjoli.set("delivery_address", rowMap.get("DELIVERY_ADDRESS"));
+    			if(StringUtils.isNotBlank(rowMap.get("delivery_address_id"))){
+    				tjoli.set("delivery_address", rowMap.get("delivery_address_id"));
+    				tjoli.set("delivery_address_type", rowMap.get("delivery_address_type"));
+    			}
     			tjoli.set("consignor", rowMap.get("CONSIGNOR"));
     			tjoli.set("pieces", rowMap.get("pieces"));
     			if(StringUtils.isNotBlank(rowMap.get("volume"))){

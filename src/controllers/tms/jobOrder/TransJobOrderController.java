@@ -752,19 +752,22 @@ public class TransJobOrderController extends Controller {
     	String itemSql = "";
     	List<Record> itemList = null;
     	 if("land".equals(type)){
-    		itemSql = " select tjol.*,ci.car_no car_no_name,d1.dock_name take_address_name,d2.dock_name delivery_address_name,IFNULL(d3.dock_name,(select address from party where id = tjol.consignor)) loading_wharf1_name,d4.dock_name loading_wharf2_name,"
-    				+ " p.abbr transport_company_name,CAST(GROUP_CONCAT(tjold.id) as char ) trans_job_order_land_doc_id, GROUP_CONCAT(tjold.doc_name) doc_name,"
-    				+ " p1.abbr consignor_name, p2.abbr consignee_name from trans_job_order_land_item tjol"
-    				+ " left join carinfo ci on ci.id=tjol.car_no"
-    				+ " left join dockinfo d1 on d1.id=tjol.take_wharf"
-    				+ " left join dockinfo d2 on d2.id=tjol.back_wharf"
-    				+ " left join dockinfo d3 on d3.id=tjol.loading_wharf1"
-    				+ " left join dockinfo d4 on d4.id=tjol.loading_wharf2"
-    				+ " left join party p on p.id=tjol.transport_company"
-    				+ " left join party p1 on p1.id=tjol.consignor"
-    				+ " left join party p2 on p2.id=tjol.consignee"
-    				+ " left join trans_job_order_land_doc tjold on tjold.land_id=tjol.id"
-    				+ " where tjol.order_id=? and tjol.item_type='shipment' GROUP BY tjol.id order by tjol.id";
+    		itemSql = " SELECT tjol.*, ci.car_no car_no_name,IFNULL(IFNULL(d1.dock_name, l1. NAME),p1.address) loading_wharf1_name,IFNULL(d2.dock_name, l2. NAME) loading_wharf2_name,"
+    				+ " IFNULL(IFNULL(d3.dock_name, l3. NAME),p2.address) delivery_address_name,p.abbr transport_company_name,"
+    				+ " CAST(GROUP_CONCAT(tjold.id) AS CHAR) trans_job_order_land_doc_id,GROUP_CONCAT(tjold.doc_name) doc_name,p1.abbr consignor_name,p2.abbr consignee_name "
+    				+ "	FROM trans_job_order_land_item tjol"
+    				+ " LEFT JOIN carinfo ci ON ci.id = tjol.car_no"
+    				+ " LEFT JOIN dockinfo d1 ON (d1.id = tjol.loading_wharf1 AND tjol.loading_wharf1_type = 'land') "
+    				+ " LEFT JOIN dockinfo d2 ON (d2.id = tjol.loading_wharf2 AND tjol.loading_wharf2_type = 'land')"
+    				+ " LEFT JOIN dockinfo d3 ON (d3.id = tjol.delivery_address AND tjol.delivery_address_type = 'land')"
+    				+ " LEFT JOIN location l1 ON (l1.id = tjol.loading_wharf1 AND tjol.loading_wharf1_type = 'port')"
+    				+ " LEFT JOIN location l2 ON (l2.id = tjol.loading_wharf2 AND tjol.loading_wharf2_type = 'port')"
+    				+ " LEFT JOIN location l3 ON (l3.id = tjol.delivery_address AND tjol.delivery_address_type = 'port')"
+    				+ " LEFT JOIN party p ON p.id = tjol.transport_company "
+    				+ " LEFT JOIN party p1 ON p1.id = tjol.consignor "
+    				+ " LEFT JOIN party p2 ON p2.id = tjol.consignee "
+    				+ " LEFT JOIN trans_job_order_land_doc tjold ON tjold.land_id = tjol.id "
+    				+ " WHERE tjol.order_id =? AND tjol.item_type = 'shipment' GROUP BY tjol.id ORDER BY tjol.id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("land_bulk".equals(type)){
     		itemSql = " select tjol.*,ci.car_no car_no_name,d1.dock_name take_address_name,d2.dock_name delivery_address_name,d3.dock_name loading_wharf1_name,d4.dock_name loading_wharf2_name,"

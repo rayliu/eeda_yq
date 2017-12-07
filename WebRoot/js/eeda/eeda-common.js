@@ -1524,6 +1524,16 @@ eeda.refreshUrl = refreshUrl;
               inputField.val($(this).text());//名字
               tableFieldList.hide();
               hiddenField.val($(this).attr('dataId'));
+
+              var input_name = hiddenField.attr('name');
+			  var row = inputField.parent().parent().parent();
+			  if(input_name=="LOADING_WHARF1"){
+	              row.find('.consigner_addr input[name="LOADING_WHARF1"]').attr("locType",$(this).attr('loc_type'));
+			  }else if(input_name=="LOADING_WHARF2"){
+				  row.find('.consigner_addr input[name="LOADING_WHARF2"]').attr("locType",$(this).attr('loc_type'));
+			  }else if(input_name=="DELIVERY_ADDRESS"){
+				  row.find('.delivery_address input[name="DELIVERY_ADDRESS"]').attr("locType",$(this).attr('loc_type'));
+			  }
           });
 
           tableFieldList.on('keydown', 'li', function(e){
@@ -1946,6 +1956,7 @@ eeda.refreshUrl = refreshUrl;
               		       +"  dataId='"+data[i].DOCK_NAMES+"' " 
               		       +"  contact_man='' " 
               		       +"  consignor_phone='' " 
+              		       +"  dockId='" +data[i].PORT_ID+"' "
               		       +">"+data[i].DOCK_NAMES+"</a></li>");
             	 }else{
             		 if(data[i].DOCK_NAMES){
@@ -1957,6 +1968,7 @@ eeda.refreshUrl = refreshUrl;
                             		       +"  dataId='"+d_separate[0]+"' " 
                             		       +"  contact_man='"+d_separate[1]+"' " 
                             		       +"  consignor_phone='"+d_separate[2]+"' " 
+                            		       +"  dockId='" +data[i].DOCK_ID+"' "
                             		       +">"+d_separate[0]+"</a></li>");
                                
                              }
@@ -1990,10 +2002,14 @@ eeda.refreshUrl = refreshUrl;
 				  if(input_name=="TAKE_ADDRESS"){
 					  row.find('.consignor_phone input').val($(this).attr('consignor_phone'));
 		              row.find('.consignor_contact_man input').val($(this).attr('contact_man')); 
+		              row.find('.consignor_contact_id input[name="take_address_id"]').val($(this).attr('dockId')); 
+		              row.find('.consignor_contact_id input[name="take_address_id"]').attr("loc_type",$(this).attr('loc_type'));
 				  }
 				  if(input_name=="DELIVERY_ADDRESS"){
 					  row.find('.consignee_phone input').val($(this).attr('consignor_phone'));
 		              row.find('.consignee_contact_man input').val($(this).attr('contact_man')); 
+		              row.find('.consignee_contact_id input[name="delivery_address_id"]').val($(this).attr('dockId')); 
+		              row.find('.consignee_contact_id input[name="delivery_address_id"]').attr("loc_type",$(this).attr('loc_type')); 
 				  }
 	              
 				  

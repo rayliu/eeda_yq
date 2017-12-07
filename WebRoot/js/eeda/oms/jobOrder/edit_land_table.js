@@ -63,12 +63,12 @@ $(document).ready(function() {
             	if(el && name){
                 	var value = el.val();//元素的值
                 	item[name] = value;
-                	if(name='take_address_type'){
+                	if(name=='take_address_id'){
                 		value = $(row.childNodes[i]).parent().find('[name=TAKE_ADDRESS]').attr('loc_type');
-                		item[name] = value;
-                	}else if(name='delivery_address_type'){
+                		item['take_address_type'] = value;
+                	}else if(name=='delivery_address_id'){
                 		value = $(row.childNodes[i]).parent().find('[name=DELIVERY_ADDRESS]').attr('loc_type');
-                		item[name] = value;
+                		item['delivery_address_type'] = value;
                 	}
             	}
             }
@@ -127,7 +127,7 @@ $(document).ready(function() {
 			    		return '<input type="checkbox" style="width:20px" disabled>';
 			    }
 			},
-            { "width": "40px",
+            { "data":"TAKE_ADDRESS_ID","width": "40px","className":"consignor_contact_id",
                 "render": function ( data, type, full, meta ) {
                 	if(full.APPROVAL_UPDATE=="N"){
                 		land_ids_true.push(full.ID);
@@ -135,15 +135,18 @@ $(document).ready(function() {
                 	if(full.APPROVAL_UPDATE=="Y"){
                 		land_ids_false.push(full.ID);
                 	}
-                	return '<button type="button" style="width:60px" name="delete" class="delete btn table_btn delete_btn btn-xs" >删除</button>';
+                	return '<button type="button" style="width:60px" name="delete" dockId class="delete btn table_btn delete_btn btn-xs" >删除</button>'
+                		   +'<input type="text" name="take_address_id" value="'+data+'" loc_type="'+full.TAKE_ADDRESS_TYPE+'" style="display:none;"/>';
                 }
             },
-            { "width": "40px",
+            { "data":"DELIVERY_ADDRESS_ID","width": "40px","className":"consignee_contact_id",
             	"render": function ( data, type, full, meta ) {
             		if(full.ID){
-            			return '<button type="button" style="width:60px" name="land_charge" class="land_charge btn table_btn btn_green btn-xs" >费用</button>';	
+            			return '<button type="button" style="width:60px" name="land_charge" class="land_charge btn table_btn btn_green btn-xs" >费用</button>'
+            					+'<input type="text" name="delivery_address_id" loc_type="'+full.DELIVERY_ADDRESS_TYPE+'" value="'+data+'" style="display:none;"/>';	
             		}else{
-            			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>';
+            			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>'
+            			+'<input type="text" name="delivery_address_id" loc_type="'+full.DELIVERY_ADDRESS_TYPE+'" value="'+data+'" style="display:none;"/>';
             		}
             	}
             },
@@ -511,6 +514,20 @@ $(document).ready(function() {
             		return data;
             	}
             },
+            { "data": "TAKE_ADDRESS_TYPE", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return data;
+            	}
+            },
+            { "data": "DELIVERY_ADDRESS_TYPE", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return data;
+            	}
+            }
         ]
     });
 	 
@@ -554,7 +571,7 @@ $(document).ready(function() {
 		data = $.trim(data)
 		var mobile = /^((1[34578]\d{9})|(0\d{2,3}-\d{7,8}))$/;
 		
-		if(!mobile.test(data)){   
+		if(!mobile.test(data)&&data!=''){   
 			self.parent().append("<span style='color:red' class='error_span'>请输入正确的电话或者手机号码</span>")
 		}
 	})
@@ -773,7 +790,15 @@ $(document).ready(function() {
     		item.id = row_id;
     		$("#land_table tr[id='"+row_id+"'] td").each(function(){
     			var name = $(this).children().attr("name");
-    			item[name] = $(this).children().val();
+    			if(name=='delete'){
+    				item['take_address_id'] = $(this).find("input").val();
+    				item['take_address_type'] = $(this).find("input").attr("loc_type");
+    			}else if(name=='land_charge'){
+    				item['delivery_address_id'] = $(this).find("input").val();
+    				item['delivery_address_type'] = $(this).find("input").attr("loc_type");
+    			}else{
+    				item[name] = $(this).children().val();
+    			}
     			if(name!='checkBox'){
     				$(this).children().attr("disabled",true);
     			}
@@ -788,7 +813,6 @@ $(document).ready(function() {
     	});
     	return land_item;
     }
-    
     var huidiao = function(){
     	 //刷新时，控制td
         if(land_ids_true.length>0){
