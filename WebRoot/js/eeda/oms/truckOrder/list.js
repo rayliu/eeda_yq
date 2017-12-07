@@ -82,17 +82,23 @@ $(document).ready(function() {
      });
 	
 	$('#singleSearchBtn').click(function(){
+		$("#orderForm")[0].reset();
 	     var selectField = $('#selected_field').val();
 	     if(selectField=='order_no'){
 	    	 var order_no = $("#single_order_no").val();
+	    	 $("#order_no").val($("#single_order_no").val());
 	     }
 	     if(selectField=='status'){
 	    	 var status = $("#single_status").val();
+	    	 $("#status").val($("#single_status").val());
 	      }
 	     if(selectField=="create_stamp"){
 	    	var start_date = $("#single_create_stamp_begin_time").val();
 	    	var end_date = $("#single_create_stamp_end_time").val();
+	    	$("#create_stamp_begin_time").val($("#single_create_stamp_begin_time").val());
+	    	$("#create_stamp_end_time").val($("#single_create_stamp_end_time").val());
 	      }
+	     
 	     var url = "/truckOrder/list?order_no="+order_no
 	 				+"&status="+status
 	 				+"&create_stamp_begin_time="+start_date

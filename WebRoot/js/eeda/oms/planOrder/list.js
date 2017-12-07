@@ -122,21 +122,29 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       });
 
       $('#singleSearchBtn').click(function(){
+    	  $("#orderForm")[0].reset();
           var selectField = $('#selected_field').val();
           var selectFieldValue ="";
           if(selectField == 'order_no'){//计划订单号
             selectFieldValue = $('#single_order_no').val();
-          }else if(selectField == 'order_status'){//单据状态
+            $("#order_no").val($('#single_order_no').val());
+          }else if(selectField == 'order_status'){
             selectFieldValue = $('#single_order_status_list').val();
-          }else if(selectField == 'status'){//业务状态
+            $("#order_status").val($('#single_order_status_list').val());
+          }else if(selectField == 'status'){
             selectFieldValue = $('#single_status_list').val();
+            $("#status").val($('#single_status_list').val());
           }else if(selectField == 'sp_name'){//被委托方
             selectFieldValue = $('#single_sp_name_input').val();
             selectFieldValue+="&partyId="+$("#single_sp_name").val().trim();
+            $("#sp_name_input").val($('#single_sp_name_input').val());
           }else if(selectField == 'create_stamp'){//创建时间
         	var start_date = $("#single_create_stamp_begin_time").val();
         	var end_date = $("#single_create_stamp_end_time").val();
+        	$("#create_stamp_begin_time").val($("#single_create_stamp_begin_time").val());
+      	  $("#create_stamp_end_time").val($("#single_create_stamp_end_time").val());
           }
+          
           var url = "/planOrder/list?"+selectField+"="+selectFieldValue
           			+"&type_="+type
           			+"&create_stamp_begin_time="+start_date

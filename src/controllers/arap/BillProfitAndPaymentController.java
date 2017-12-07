@@ -109,6 +109,7 @@ public class BillProfitAndPaymentController extends Controller {
 	public void listTotal() {
 		String checked = getPara("checked");
 		String customer =(String) getPara("customer");
+		String customer_name =(String) getPara("customer_name");
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
 		
@@ -121,11 +122,17 @@ public class BillProfitAndPaymentController extends Controller {
         	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
         }
 		
+        String customerId = "";
+        if(StringUtils.isBlank(customer)){
+        	customerId="";
+        }else{
+        	customerId =" and customer_id ="+customer;
+        }
         String customerName = "";
-        if(customer==null||StringUtils.isBlank(customer)){
+        if(StringUtils.isBlank(customer_name)){
         	customerName="";
         }else{
-        	customerName =" and customer_id ="+customer;
+        	customerName =" and customer_name like '%"+customer_name+"%'";
         }
 		if(order_export_date_begin_time==null){
 			order_export_date_begin_time="";
@@ -139,7 +146,7 @@ public class BillProfitAndPaymentController extends Controller {
 		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
 			order_export_date="";
 		}
-		String condition = customerName+order_export_date;
+		String condition = customerId+customerName+order_export_date;
 		
 		String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){

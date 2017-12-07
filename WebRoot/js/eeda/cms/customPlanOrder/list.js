@@ -259,41 +259,53 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder'
        });
   	
 	  $('#singleSearchBtn').click(function(){
-	  	var orderStatus = $("#orderTabs li.active a").attr("name").trim();
-	  	singleSearchData(orderStatus);
+		  $("#orderForm")[0].reset();
+	  	  var orderStatus = $("#orderTabs li.active a").attr("name").trim();
+	  	  singleSearchData(orderStatus);
 	  });
       var singleSearchData = function(paraStr){
-    	  var selectField = $('#selected_field').val();
+    	 var selectField = $('#selected_field').val();
    	     var selectFieldValue = '';
  	     if(selectField=='receive_company_name'){
  	    	 selectFieldValue = $("#single_customer_name_input").val();
- 	    	selectFieldValue +="&customer="+$("#single_customer_name").val();
+ 	    	 selectFieldValue +="&customer="+$("#single_customer_name").val();
+ 	    	 $("#customer_input").val($("#single_customer_name_input").val());
  	     }
  	     if(selectField=='order_no'){
  	    	 selectFieldValue = $("#single_order_no").val();
+ 	    	$("#order_no").val($("#single_order_no").val());
  	     }
  	     if(selectField=="booking_no_equals"){
  	    	 selectFieldValue = $("#single_booking_no").val();
+ 	    	$("#booking_no").val($("#single_booking_no").val());
  	     }
  	     if(selectField=="status"){
  	    	 selectFieldValue = $("#single_status").val();
+ 	    	 $("#status").val($("#single_status").val());
  	     }
- 	    if(selectField=="lock_bill_status"){
+ 	     if(selectField=="lock_bill_status"){
 	    	 selectFieldValue = $("#single_lock_bill_status").val();
+	    	 $("#lock_bill_status").val($("#single_lock_bill_status").val());
 	     }
- 	      if(selectField=="custom_state_equals"){
+ 	     if(selectField=="custom_state_equals"){
  	    	 selectFieldValue = $("#single_custom_state").val();
+ 	    	 $("#custom_state").val($("#single_custom_state").val());
  	     }
  	     if(selectField=="type_equals"){
- 	    	 selectFieldValue = $("#single_type").val();
+ 	    	  selectFieldValue = $("#single_type").val();
+ 	    	 $("#type").val($("#single_type").val());
  	     }
  	     if(selectField=="date_custom"){
  	    	 var custom_start_date = $("#public_time_begin_time").val();
  	    	 var custom_end_date = $("#public_time_end_time").val();
+ 	    	 $("#date_custom_begin_time").val($("#public_time_begin_time").val());
+ 	    	 $("#date_custom_end_time").val($("#public_time_end_time").val());
  	     }
  	     if(selectField=="create_stamp"){
  	    	 var start_date = $("#public_time_begin_time").val();
  	    	 var end_date = $("#public_time_end_time").val();
+ 	    	 $("#create_stamp_begin_time").val($("#public_time_begin_time").val());
+ 	    	 $("#create_stamp_end_time").val($("#public_time_end_time").val());
  	     }
  	     var confirmFee = "";
  	     if(paraStr=="未完成费用确认"){
