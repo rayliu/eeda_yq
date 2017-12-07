@@ -451,40 +451,42 @@ public class JobOrderController extends Controller {
 		
 		//如果有from_order_id的，保存信息的时候覆盖货代初始单的海运信息
 		if(StringUtils.isNotBlank(from_order_id)){
-			//海运信息表复制回填
-			Record oceanDetailed = Db.findFirst("select*from job_order_shipment where order_id="+jobOrder.get("id"));
-			Record fromOceanDetailed = Db.findFirst("select*from job_order_shipment where order_id="+from_order_id);
-			oceanDetailed.set("id",fromOceanDetailed.get("id"));
-			oceanDetailed.set("order_id",from_order_id);
-			Db.update("job_order_shipment",oceanDetailed);
-			
-			//海运明细表复制回填
-        	List<Record> copyOceanItemList = Db.find("SELECT * from job_order_shipment_item where order_id ="+jobOrder.get("id"));
-        	if(copyOceanItemList.size()!=0){
-            	List<Record> toCopyOceanItemList = Db.find("SELECT * from job_order_shipment_item where order_id ="+from_order_id);
-            	if(toCopyOceanItemList.size() == 0){
-            		for(Record copyOceanItem : copyOceanItemList){
-            			copyOceanItem.set("id", null);
-                		copyOceanItem.set("order_id", from_order_id);
-                		Db.save("job_order_shipment_item", copyOceanItem);
-					}
-            	}else{
-            		for(Record copyOceanItem : copyOceanItemList){
-						Record CopyOceanItem = Db.findFirst("select*from job_order_shipment_item where id="+copyOceanItem.get("id"));
-						Record toCopyOceanItem = Db.findFirst("select*from job_order_shipment_item where id="+CopyOceanItem.get("from_ocean_item_id"));
-						if(toCopyOceanItem!=null){
-							CopyOceanItem.set("id", toCopyOceanItem.get("id"));
-							CopyOceanItem.set("order_id", from_order_id);
-							Db.update("job_order_shipment_item",CopyOceanItem);
-						}else{
-							CopyOceanItem.set("id", null);
-							CopyOceanItem.set("order_id", from_order_id);
-							Db.save("job_order_shipment_item",CopyOceanItem);
+			if("forwarderJobOrder".equals(from_order_type)){
+				//海运信息表复制回填
+				Record oceanDetailed = Db.findFirst("select*from job_order_shipment where order_id="+jobOrder.get("id"));
+				Record fromOceanDetailed = Db.findFirst("select*from job_order_shipment where order_id="+from_order_id);
+				oceanDetailed.set("id",fromOceanDetailed.get("id"));
+				oceanDetailed.set("order_id",from_order_id);
+				Db.update("job_order_shipment",oceanDetailed);
+				
+				//海运明细表复制回填
+	        	List<Record> copyOceanItemList = Db.find("SELECT * from job_order_shipment_item where order_id ="+jobOrder.get("id"));
+	        	if(copyOceanItemList.size()!=0){
+	            	List<Record> toCopyOceanItemList = Db.find("SELECT * from job_order_shipment_item where order_id ="+from_order_id);
+	            	if(toCopyOceanItemList.size() == 0){
+	            		for(Record copyOceanItem : copyOceanItemList){
+	            			copyOceanItem.set("id", null);
+	                		copyOceanItem.set("order_id", from_order_id);
+	                		Db.save("job_order_shipment_item", copyOceanItem);
 						}
-						
+	            	}else{
+	            		for(Record copyOceanItem : copyOceanItemList){
+							Record CopyOceanItem = Db.findFirst("select*from job_order_shipment_item where id="+copyOceanItem.get("id"));
+							Record toCopyOceanItem = Db.findFirst("select*from job_order_shipment_item where id="+CopyOceanItem.get("from_ocean_item_id"));
+							if(toCopyOceanItem!=null){
+								CopyOceanItem.set("id", toCopyOceanItem.get("id"));
+								CopyOceanItem.set("order_id", from_order_id);
+								Db.update("job_order_shipment_item",CopyOceanItem);
+							}else{
+								CopyOceanItem.set("id", null);
+								CopyOceanItem.set("order_id", from_order_id);
+								Db.save("job_order_shipment_item",CopyOceanItem);
+							}
+							
+						}
 					}
-				}
-        	}
+	        	}
+			}
 		}
 		
 		//空运
@@ -3857,7 +3859,7 @@ public class JobOrderController extends Controller {
          		+ "	left join party p on p.id = jor.customer_id"
          		+ "	left join user_login u on u.id = jor.creator"
          		+ " left join user_login u1 ON u1.id = jor.updator"
-         		+ " WHERE (jor.office_id="+office_id+ ref_office+ ")"
+         		+ " WHERE (jor.office_id="+office_id+ ref_office+ ") and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') "
          		+ dai_condition
          	    + " and jor.delete_flag = 'N'"
          	    + " GROUP BY jor.id "
