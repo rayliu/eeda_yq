@@ -109,21 +109,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#customer_id_show").hide();
 	    	  $("#fin_item_show").hide();
 	    	  $("#single_flag").hide();
-	    	  $("#order_no").hide();
+	    	  $("#single_order_no").hide();
 	    	  $("#order_export_date_show").show();
 	      }
 	      if(selectField=='sp_id'){
 	    	  $("#customer_id_show").hide();
 	    	  $("#fin_item_show").hide();
 	    	  $("#single_flag").hide();
-	    	  $("#order_no").hide();
+	    	  $("#single_order_no").hide();
 	    	  $("#order_export_date_show").hide();
 	    	  $("#sp_id_show").show();
 	      }
 	      if(selectField=='customer_name'){
 	    	  $("#fin_item_show").hide();
 	    	  $("#single_flag").hide();
-	    	  $("#order_no").hide();
+	    	  $("#single_order_no").hide();
 	    	  $("#order_export_date_show").hide();
 	    	  $("#sp_id_show").hide();
 	    	  $("#customer_id_show").show();
@@ -134,21 +134,21 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#order_export_date_show").hide();
 	    	  $("#sp_id_show").hide();
 	    	  $("#customer_id_show").hide();
-	    	  $("#order_no").show();
+	    	  $("#single_order_no").show();
 	      }
-	      if(selectField=='fin_item_like'){
+	      if(selectField=='fin_item'){
 	    	  $("#single_flag").hide();
 	    	  $("#order_export_date_show").hide();
 	    	  $("#sp_id_show").hide();
 	    	  $("#customer_id_show").hide();
-	    	  $("#order_no").hide();
+	    	  $("#single_order_no").hide();
 	    	  $("#fin_item_show").show();
 	      }
-	      if(selectField=='flag_equals'){
+	      if(selectField=='flag'){
 	    	  $("#order_export_date_show").hide();
 	    	  $("#sp_id_show").hide();
 	    	  $("#customer_id_show").hide();
-	    	  $("#order_no").hide();
+	    	  $("#single_order_no").hide();
 	    	  $("#fin_item_show").hide();
 	    	  $("#single_flag").show();
 	      }
@@ -156,32 +156,31 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
 	
 	$('#singleSearchBtn').click(function(){
+		 $("#orderForm")[0].reset();
 	     var selectField = $('#selected_field').val();
-	     var selectValue = "";
 	     if(selectField=="order_export_date"){
-	    	 var begin_time = $("#single_order_export_date_begin_time").val();
-	    	 var end_time = $("#single_order_export_date_end_time").val();
+	    	 $("#order_export_date_begin_time").val($("#single_order_export_date_begin_time").val());
+	    	 $("#order_export_date_end_time").val($("#single_order_export_date_end_time").val());
 	      }
 	     if(selectField=='sp_id'){
-	    	 selectValue = $("#single_sp_id").val();
+	    	 $("#sp").val($("#single_sp_id").val());
+	    	 $("#sp_input").val($("#single_sp_id_input").val());
 	      }
 	     if(selectField=='customer_name'){
-	    	 selectValue = $("#single_customer_input").val();
+	    	 $("#customer").val($("#single_customer").val());
+	    	 $("#customer_input").val($("#single_customer_input").val());
 	      }
 	     if(selectField=='order_no'){
-	    	 selectValue = $("#order_no").val();
+	    	 $("#order_no").val($("#single_order_no").val());
 	      }
-	     if(selectField=='fin_item_like'){
-	    	 selectValue = $("#single_fin_item_input").val();
+	     if(selectField=='fin_item'){
+	    	 $("#fin_item").val($("#single_fin_item").val());
+	    	 $("#fin_item_input").val($("#single_fin_item_input").val());
 	      }
-	     if(selectField=='flag_equals'){
-	    	 selectValue = $("#single_flag").val();
+	     if(selectField=='flag'){
+	    	 $("#flag").val($("#single_flag").val());
 	      }
-	     var url = "/tradeArapReport/list?"+selectField+"="+selectValue
-			+"&order_export_date_begin_time="+begin_time
-	        +"&order_export_date_end_time="+end_time;
-	     dataTable.ajax.url(url).load();
-	     
+	     $('#searchBtn').click();
 	}); 
       
       $('#resetBtn').click(function(e){

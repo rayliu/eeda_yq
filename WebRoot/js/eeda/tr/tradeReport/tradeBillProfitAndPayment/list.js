@@ -86,23 +86,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	     });
 		
 		$('#singleSearchBtn').click(function(){
+			 $("#orderForm")[0].reset();
 			 var selectField = $("#selected_field").val();
-			 var checked = "";
-			 var customer_name = "";
-			 var single_export_date_begin_time = "";
-			 var single_export_date_end_time = "";
 		     if(selectField=='customer_name'){
-		    	  customer_name = $("#single_customer_name_input").val();
+		    	  $("#customer").val($("#single_customer_name").val());
+		    	  $("#customer_input").val($("#single_customer_name_input").val());
 		      }
 		      if(selectField=='order_export_date'){
-		    	  single_export_date_begin_time = $("#single_export_date_begin_time").val();
-		          single_export_date_end_time = $("#single_export_date_end_time").val();
+		          $("#order_export_date_begin_time").val($("#single_export_date_begin_time").val());
+		          $("#order_export_date_end_time").val($("#single_export_date_end_time").val());
 		      }
-		      listTotalMoney(checked,customer_name,single_export_date_begin_time,single_export_date_end_time);
-		     var url = "/tradeBillProfitAndPayment/list?customer_name="+customer_name
-		     		 +"&order_export_date_begin_time="+single_export_date_begin_time
-		     		 +"&order_export_date_end_time="+single_export_date_end_time;
-		     dataTable.ajax.url(url).load();
+		      $('#searchBtn').click();
 		});
 	      
 	      $('#searchBtn').click(function(){
@@ -180,11 +174,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	        	 var total_profit = parseFloat(data.TOTAL_PROFIT).toFixed(2);
 	        	 var total_profit_rate = parseFloat(data.TOTAL_PROFIT_RATE).toFixed(2);
 	        	 var total=parseFloat(data.TOTAL);
-	        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
-	        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("应收(合计):"+eeda.numFormat(charge_total,3));
-	        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("应付(合计):"+eeda.numFormat(cost_total,3));
-	        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("利润(合计)："+total_profit);
-	        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("平均利润率："+total_profit_rate);
+	        	 if(data.ID){
+	        		 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
+		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("应收(合计):"+eeda.numFormat(charge_total,3));
+		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("应付(合计):"+eeda.numFormat(cost_total,3));
+		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("利润(合计)："+total_profit);
+		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("平均利润率："+total_profit_rate);
+	        	 }else{
+	        		 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
+		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("应收(合计):0.00");
+		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("应付(合计):0.00");
+		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("利润(合计)：0.00");
+		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("平均利润率：0.00");
+	        	 }
 	         });
 		 }
 	      listTotalMoney();

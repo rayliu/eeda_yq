@@ -124,7 +124,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       //简单查询
       $('#selected_field').change(function(event) {
 	      var selectField = $('#selected_field').val();
-	      if(selectField == 'sono_like'||selectField == 'container_no'||selectField == 'old_order_no'||selectField == 'order_no'||selectField == 'customer_code_like'){
+	      if(selectField == 'order_no'||selectField == 'customer_code'){
 	    	  $('#public_text').val("");
 	    	  $('#customer_name_show').hide();
 	    	  $('#single_status_list').hide();
@@ -160,30 +160,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
     });
 	
 	$('#singleSearchBtn').click(function(){
+		 $("#orderForm")[0].reset();
 	     var selectField = $('#selected_field').val();
-	     var selectFieldValue = '';
-	     if(selectField == 'sono_like'||selectField == 'container_no'||selectField == 'old_order_no'||selectField == 'order_no'||selectField == 'customer_code_like'){
-	    	  selectFieldValue = $("#public_text").val();
+	     if(selectField == 'order_no'||selectField == 'customer_code'){
+	    	  $("#"+selectField).val($("#public_text").val());
 	      }else if(selectField == 'status'){
-	    	  selectFieldValue = $("#single_status_list").val();
+	    	  $("#status").val($("#single_status_list").val());
 	      }else if(selectField == 'customer_name'){
-	    	  selectFieldValue = $("#single_customer_name_input").val();
+	    	  $("#customer_name").val($("#single_customer_name").val());
+	    	  $("#customer_name_input").val($("#single_customer_name_input").val());
           }else if(selectField == 'create_stamp'){
-        	  var start_date = $("#public_time_begin_time").val();
-              var end_date = $("#public_time_end_time").val();
+              $("#create_stamp_begin_time").val($("#public_time_begin_time").val());
+              $("#create_stamp_end_time").val($("#public_time_end_time").val());
           }else if(selectField == 'sent_out_time'){
-              var sent_out_time_begin_time = $("#public_time_begin_time").val();
-              var sent_out_time_end_time = $("#public_time_end_time").val();
+              $("#sent_out_time_begin_time").val($("#public_time_begin_time").val());
+              $("#sent_out_time_end_time").val($("#public_time_end_time").val());
           }
-	     
-     
-	     var url = "/trJobOrder/list?"+selectField+"="+selectFieldValue
-	     			+"&create_stamp_begin_time="+start_date
-	     			+"&create_stamp_end_time="+end_date
-	     			+"&order_export_date_begin_time="+sent_out_time_begin_time
-	     			+"&order_export_date_end_time="+sent_out_time_end_time;
-	
-	     dataTable.ajax.url(url).load();
+	     $('#searchBtn').click();
 	});
       
       

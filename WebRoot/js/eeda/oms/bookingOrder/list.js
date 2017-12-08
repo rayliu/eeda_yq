@@ -99,33 +99,24 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       });
       //简单查询按钮
       $('#singleSearchBtn').click(function(){
+    	  $("#orderForm")[0].reset();
           var selectField = $('#selected_field').val();
-          var orderStatus = $("#orderTabs li.active").text().trim();
-          var selectFieldValue = "";
-          if(orderStatus=='全部'){
-    		  orderStatus = "";
-    	  }
-          if(selectField == "booking_no"||selectField == "creator_name"||selectField == 'sp_name'){
-            selectFieldValue = $('#public_text').val();
+          if(selectField == "booking_no"||selectField == "creator_name"){
+            $("#"+selectField).val($('#public_text').val());
           }
-          /*if(selectField == 'sp_name'){
-            selectFieldValue = $('#sp_name_k_input').val();
-          }*/
+          if(selectField == 'sp_name'){
+        	$("#sp_name").val($('#sp_name_k').val());
+            $("#sp_name_input").val($('#public_text').val());
+          }
           if(selectField == 'create_stamp'){
-        	var create_stamp_k_begin_time = $('#create_stamp_k_begin_time').val();
-        	var create_stamp_k_end_time = $('#create_stamp_k_end_time').val();
+        	$('#create_stamp_begin_time').val($('#create_stamp_k_begin_time').val());
+        	$('#create_stamp_end_time').val($('#create_stamp_k_end_time').val());
           }
           if(selectField == 'sent_out_time'){
-        	var sent_out_time_k_begin_time = $('#sent_out_time_k_begin_time').val();
-          	var sent_out_time_k_end_time = $('#sent_out_time_k_end_time').val();
+          	$('#sent_out_time_begin_time').val($('#sent_out_time_k_begin_time').val());
+          	$('#sent_out_time_end_time').val($('#sent_out_time_k_end_time').val());
             }
-          var url = "/bookingOrder/list?"+selectField+"="+selectFieldValue
-                   +"&order_status="+orderStatus
-                   +"&create_stamp_begin_time="+create_stamp_k_begin_time
-                   +"&create_stamp_end_time="+create_stamp_k_end_time
-                   +"&order_export_date_begin_time="+sent_out_time_k_begin_time
-                   +"&order_export_date_end_time="+sent_out_time_k_end_time;
-          dataTable.ajax.url(url).load();
+          $('#searchBtn').click();
       });
       
       $('#resetBtn').click(function(e){
