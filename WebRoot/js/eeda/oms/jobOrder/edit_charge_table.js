@@ -972,7 +972,7 @@ $(document).ready(function() {
 		self = $(this);
 		data = self.val();
 		data = $.trim(data);
-		re = /^\d{0,9}(\.\d{1,5})?$/;
+		re = /^\d{0,9}(\.\d{1,6})?$/;
 		if(!re.test(data)){   
 			self.parent().append("<span style='color:red' class='error_span'>请输入合法的数字</span>");
 		}
