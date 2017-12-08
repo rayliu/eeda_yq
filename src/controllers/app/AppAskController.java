@@ -18,6 +18,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.util.EedaHttpKit;
 import controllers.util.MD5Util;
 
 public class AppAskController extends Controller {
@@ -55,7 +56,8 @@ public class AppAskController extends Controller {
     	List<Record> responseList = Db.find(" select wr.id id,wr.create_time,wr.value,ul.user_name user_name"
     			+ " from wc_response wr"
     			+ " left join user_login ul on ul.id = wr.creator"
-    			+ " where question_id = ?",question_id);
+    			+ " where question_id = ?"
+    			+ " order by wr.id desc",question_id);
     	
     	Record data = new Record();
     	data.set("responseList", responseList);
@@ -68,7 +70,7 @@ public class AppAskController extends Controller {
      */
     @Before(Tx.class)
     public void save_question(){
-    	String value = changeStr(getRequest().getHeader("questionValue"));
+    	String value = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("questionValue"));
     	String user_id = getRequest().getHeader("userId");
 
     	Record question = new Record();
@@ -82,14 +84,22 @@ public class AppAskController extends Controller {
         renderJson(data);  
     }
     
-    public String changeStr(String ascii) {  
-        int n = ascii.length() / 6;  
-        StringBuilder sb = new StringBuilder(n);  
-        for (int i = 0, j = 2; i < n; i++, j += 6) {  
-            String code = ascii.substring(j, j + 4);  
-            char ch = (char) Integer.parseInt(code, 16);  
-            sb.append(ch);  
-        }  
-        return sb.toString();  
-    }  
+    @Before(Tx.class)
+    public void save_answer(){
+    	String value = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("answerValue"));
+    	String user_id = getRequest().getHeader("userId");
+    	String question_id = getRequest().getHeader("questionId");
+
+    	Record answer = new Record();
+    	answer.set("value", value);
+    	answer.set("question_id", question_id);
+    	answer.set("create_time", new Date());
+    	answer.set("creator", user_id);
+    	Db.save("wc_response", answer);
+
+    	Record data = new Record();
+    	data.set("result", true);
+        renderJson(data);  
+    }
+
 }
