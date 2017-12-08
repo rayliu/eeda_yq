@@ -35,11 +35,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorde
         	singleSearchData();
         });
     	var singleSearchData = function(){ 
-    		var code = $("#single_code").val() ;
-    		var name = "";
-    		var name_eng = "";
-    		var url = "/unit/list?name="+name+"&code="+code+"&name_eng="+name_eng;
-    	    dataTable.ajax.url(url).load() ;
+    		$("#orderForm")[0].reset();
+    		$("#code").val($("#single_code").val());
+    		$('#searchBtn').click();
     	}
         
       //base on config hide cols
@@ -71,7 +69,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorde
           var name = $("#name").val().trim();
           var name_eng = $("#name_eng").val().trim();
           
-          var url = "/unit/list?name="+name+"&code="+code+"&name_eng="+name_eng;
+          var url = "/unit/list?name_equals="+name+"&code_equals="+code+"&name_eng_equals="+name_eng;
           dataTable.ajax.url(url).load();
       };
     	

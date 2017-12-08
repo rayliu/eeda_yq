@@ -74,22 +74,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
 	
 	$('#singleSearchBtn').click(function(){
+		 $("#orderForm")[0].reset();
 	     var selectField = $('#selected_field').val();
 	     if(selectField=='order_export_date'){
-	    	 var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
-	    	 var order_export_date_end_time = $("#single_order_export_date_end_time").val();
+	    	 $("#order_export_date_begin_time").val($("#single_order_export_date_begin_time").val());
+	    	 $("#order_export_date_end_time").val($("#single_order_export_date_end_time").val());
 	      }
 	      if(selectField=='customer'){
-	    	 var customer = $("#single_customer").val();
+	    	 $("#customer").val($("#single_customer").val());
+	    	 $("#customer_input").val($("#single_customer_input").val());
 	      }
-	      
-	      listTotalMoney(customer,order_export_date_begin_time,order_export_date_end_time);
-          
-          var url = "/tradeProfit/list?customer_id="+customer
-				          +"&order_export_date_begin_time="+order_export_date_begin_time
-				          +"&order_export_date_end_time="+order_export_date_end_time;
-          dataTable.ajax.url(url).load(cssTd);
-	 
+	      $('#searchBtn').click();
 	}); 
 	
 	 var listTotalMoney = function(customer,order_export_date_begin_time,order_export_date_end_time){
@@ -206,7 +201,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           */
           
           //合计字段
-          listTotalMoney(customer,"",order_export_date_begin_time,order_export_date_end_time);
+          listTotalMoney(customer,order_export_date_begin_time,order_export_date_end_time);
           var cssTd=function(){
         	  $("#eeda_table th:eq(6)").css('background-color','#f5f5dc');
         	  $("#eeda_table td:nth-child(6)").css('background-color','#f5f5dc');

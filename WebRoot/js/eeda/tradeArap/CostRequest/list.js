@@ -689,14 +689,15 @@ $(document).ready(function() {
       });
       
   	var singleSearchData = function(){ 
+  		$('#applicationForm')[0].reset();
   		var sp_id = $("#single_sp_id").val();
   		var service_stamp = $("#service_stamp_n").val();
   		var status = $("#status").val();
-  	    var url = "/tradeCostRequest/applicationList?sp_id="+sp_id
-  	     		 +"&service_stamp_between="+service_stamp
-  	     		 +"&status="+encodeURI(status);
-  	     application_table.ajax.url(url).load();
-  	     totalMoney();
+  		$("#sp_id").val($("#single_sp_id").val());
+  		$("#sp_id_input").val($("#single_sp_id_input").val());
+  		$("#service_stamp").val($("#service_stamp_n").val());
+  		$("#status2").val($("#status").val());
+  		$("#searchBtn1").click();
   	}
       
       

@@ -62,25 +62,13 @@ public class UnitController extends Controller {
     }
     
     public void list() {
-    	String code = getPara("code");
-        String name = getPara("name");
-        String name_eng = getPara("name_eng");
-        
         String sLimit = "";
         String pageIndex = getPara("sEcho");
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
         }
-        
-        String sql = "";
-        if(code==null&&name==null&&name_eng==null){
-        	sql = "SELECT id,code,name_eng,name from unit ";
-        }else{
-        	sql = "SELECT id,code,name_eng,name from unit where"
-        			+ "  code like '%"+code
-        			+"%' and name like '%"+name
-        			+"%' and name_eng like '%"+name_eng+"%'";
-        }
+        String condition = DbUtils.buildConditions(getParaMap());
+        String sql = "SELECT id,code,name_eng,name from unit where 1=1 "+condition;
 
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);

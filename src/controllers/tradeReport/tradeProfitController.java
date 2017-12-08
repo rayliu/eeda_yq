@@ -80,8 +80,8 @@ public class tradeProfitController extends Controller {
 	
 	public void listTotal() {
 		String customer_id =(String) getPara("customer");
-		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
-		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
+		String order_export_date_begin_time = getPara("order_export_date_begin_time");
+		String order_export_date_end_time = getPara("order_export_date_end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");

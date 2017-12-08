@@ -132,25 +132,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
 	
 	$('#singleSearchBtn').click(function(){
-	     var selectField = $('#selected_field').val();
-	     var selectFieldValue = '';
-	      if(selectField=='order_no'){
-	    	  selectFieldValue = $("#single_order_no1").val();
-	      }
-	      if(selectField=='sp_name'){
-	    	  selectFieldValue = $("#single_sp_name_input").val();
-	      }
-	      if(selectField=="toStatus_equals"){
-	    	  selectFieldValue = $("#single_status").val();
-	      }
-	      if(selectField=="create_stamp"){
-	    	  var start_date = $("#single_create_stamp1_begin_time").val();
-	    	  var end_date = $("#single_create_stamp1_end_time").val();
-	      }
-	     var url = "/tradeCostCheckOrder/orderList?"+selectField+"="+selectFieldValue
-	     		+"&create_stamp_begin_time="+start_date
-	     		+"&create_stamp_end_time="+end_date;
-	     	dataTable.ajax.url(url).load();
+		$("#orderSearchForm")[0].reset();
+	    var selectField = $('#selected_field').val();
+	    if(selectField=='order_no'){
+	    	$("#order_no1").val($("#single_order_no1").val());
+	    }
+	    if(selectField=='sp_name'){
+	    	$("#sp1").val($("#single_sp_name").val());
+	    	$("#sp1_input").val($("#single_sp_name_input").val());
+	    }
+	    if(selectField=="toStatus_equals"){
+	    	$("#status").val($("#single_status").val());
+	    }
+	    if(selectField=="create_stamp"){
+	    	$("#create_stamp1_begin_time").val($("#single_create_stamp1_begin_time").val());
+	    	$("#create_stamp1_end_time").val($("#single_create_stamp1_end_time").val());
+	    }
+	    $('#searchOrderBtn').click();
 	});
       
       

@@ -179,22 +179,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
 	
 	$('#singleSearchBtn').click(function(){
+		$("#orderForm")[0].reset();
 		var selectField = $("#selected_field").val();
 		  if(selectField=='sp_id'){
-			  var sp_id = $("#single_sp_id").val();
+			  $("#sp_id").val($("#single_sp_id").val());
+			  $("#sp_id_input").val($("#single_sp_id_input").val());
 	      }
 	      if(selectField=="order_export_date"){
-	    	  var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
-			  var order_export_date_end_time = $("#single_order_export_date_end_time").val();
+			  $("#order_export_date_begin_time").val($("#single_order_export_date_begin_time").val());
+			  $("#order_export_date_end_time").val($("#single_order_export_date_end_time").val());
 	      }
-	      
-	      var url = "/tradeProfitAndPaymentRate/list?sp_id="+sp_id
-			+"&order_export_date_begin_time="+order_export_date_begin_time
-	        +"&order_export_date_end_time="+order_export_date_end_time;
-	      	dataTable.ajax.url(url).load(tableStyle);
-	      	
-	      	listTotalMoney(sp_id,order_export_date_begin_time,order_export_date_end_time)
-	 
+	      $('#searchBtn').click();
 	}); 
       
     var tableStyle = function(){

@@ -22,6 +22,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.util.DbUtils;
 import controllers.util.OrderCheckOfficeUtil;
 
 @RequiresAuthentication
@@ -112,42 +113,16 @@ public class FinItemController extends Controller {
     
 
     public void list() {
-    	
-        String code = getPara("code");
-        String name = getPara("name");
-        String name_eng = getPara("name_eng");
         UserLogin user = LoginUserController.getLoginUser(this);
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
-        String	office_id="";
-        String que_code="";
-        String que_name="";
-        String que_name_eng="";
-        if(code !=null && code.trim().length() > 0){
-        	que_code= " and code like '%"+code+"%' ";
-        }
-        if(name !=null && name.trim().length() > 0){
-        	que_name= " and name like '%"+name+"%' ";
-        }
-        if(name_eng !=null && name_eng.trim().length() > 0){
-        	que_name_eng= " and name_eng like '%"+name_eng+"%' ";
-        }
-        office_id="and f.office_id="+officeId;
         String sLimit = "";
         String pageIndex = getPara("sEcho");
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
         }
-        
-        String sql = "";
-        if(code==null&&name==null&&name_eng==null){
-        	sql = "SELECT * from fin_item f where 1 =1 "+office_id;
-        }else{
-        	sql = "SELECT * from fin_item f where 1 =1 "+office_id
-        			+que_code
-        			+que_name
-        			+que_name_eng;
-        }
+        String condition = DbUtils.buildConditions(getParaMap());
+        String sql = "SELECT * from fin_item f where office_id="+officeId+condition;
 
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);

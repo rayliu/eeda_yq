@@ -36,12 +36,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
         	singleSearchData();
         });
     	var singleSearchData = function(){ 
-    		  var code = $("#single_code").val().trim();
-              var name = "";
-              var name_eng = "";
-              
-              var url = "/finItem/list?name="+name+"&code="+code+"&name_eng="+name_eng;
-              dataTable.ajax.url(url).load();
+    		$("#orderForm")[0].reset();
+            $("#code").val($("#single_code").val());
+            $('#searchBtn').click();
     	}
       
       $('#resetBtn').click(function(e){
@@ -57,7 +54,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
           var name = $("#name").val().trim();
           var name_eng = $("#name_eng").val().trim();
           
-          var url = "/finItem/list?name="+name+"&code="+code+"&name_eng="+name_eng;
+          var url = "/finItem/list?name_equals="+name+"&code_equals="+code+"&name_eng_equals="+name_eng;
           dataTable.ajax.url(url).load();
       };
     	
