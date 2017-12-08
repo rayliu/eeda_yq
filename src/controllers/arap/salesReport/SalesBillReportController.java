@@ -73,7 +73,7 @@ public class SalesBillReportController extends Controller {
         		+ "         SUM(cost_total) sum_cost_total "
         		+" from( "
         		+"		SELECT jo.id,jo.order_no,jo.fee_count,jo.customer_id,jos.mbl_no,jo.order_export_date,IFNULL(locean1.name,lair1.name) pol_name,"
-        		+ "		IFNULL(locean2.name,lair2.name) pod_name,ul.c_name user_name,p.abbr,cs.royalty_rate,"
+        		+ "		IFNULL(locean2.name,lair2.name) pod_name,ul.c_name user_name,p.abbr customer_name,cs.royalty_rate,"
         		+ " (SELECT contract_no from customer_contract ccon"
         		+ "		LEFT JOIN customer_contract_location ccl ON ccl.contract_id = ccon.id"
         		+ "		WHERE	ccon.type = jo.type	AND ccon.customer_id = jo.customer_id"
@@ -133,6 +133,7 @@ public class SalesBillReportController extends Controller {
 	
 	public void listTotal() {
 		String customer_id = getPara("customer_id");
+		String customer_name = getPara("customer_name");
 		String user_name = getPara("user_name");
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
@@ -152,6 +153,12 @@ public class SalesBillReportController extends Controller {
 		}else{
 			customerId =" and customer_id="+customer_id;
 		}
+		String customerName = "";
+		if(StringUtils.isBlank(customer_name)){
+			customerName="";
+		}else{
+			customerName =" and customer_name like '%"+customer_name+"%'";
+		}
 		String userName = "";
 		if(StringUtils.isBlank(user_name)){
 			userName="";
@@ -170,7 +177,7 @@ public class SalesBillReportController extends Controller {
 		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
 			order_export_date="";
 		}
-		String condition = customerId+userName+order_export_date;
+		String condition = customerId+customerName+userName+order_export_date;
 		
 		String sql = " SELECT IFNULL(SUM(sum_charge_total),0.00) sum_foot_charge_total,IFNULL(SUM(sum_cost_total),0.00) sum_foot_cost_total,IFNULL(SUM(sum_pay_charge_total),0.00) sum_foot_pay_charge_total "
 				+ " FROM(SELECT A.*,"
@@ -181,7 +188,7 @@ public class SalesBillReportController extends Controller {
 				+ " CAST(IFNULL(round(SUM(pay_charge_total), 2) - round(SUM(cost_total), 2),'') as char) current_profit"
         		+" from( "
         		+"		SELECT jo.id,jo.order_no,jo.fee_count,jo.customer_id,jo.order_export_date,"
-        		+ "		ul.c_name user_name,p.abbr,cs.royalty_rate, "
+        		+ "		ul.c_name user_name,p.abbr customer_name,cs.royalty_rate, "
         		+"		if(joa.order_type='charge',joa.currency_total_amount,0) charge_total, "
         		+"		if(joa.order_type='charge' AND joa.pay_flag='Y',joa.currency_total_amount,0) pay_charge_total, "
         		+"		if(joa.order_type='cost',joa.currency_total_amount,0) cost_total "

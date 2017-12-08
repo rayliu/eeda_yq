@@ -20,7 +20,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       			{ "data": "MBL_NO", "width": "100px","className":"mbl_no"},
 	            { "data": "ORDER_EXPORT_DATE", "width": "90px" ,"className":"order_export_date"},
 	            { "data": "USER_NAME", "width": "100px","className":"user_name"},
-	            { "data": "ABBR", "width": "100px","className":"abbr"},
+	            { "data": "CUSTOMER_NAME", "width": "100px","className":"abbr"},
 	            { "data": "CONTRACT_NO", "width": "80px","className":"contract_no"},
 	            { "data": "POL_NAME", "width": "80px","className":"pol_name"},
 	            { "data": "POD_NAME", "width": "80px","className":"pod_name"},
@@ -237,52 +237,20 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
 	
 	$('#singleSearchBtn').click(function(){
+		$("#orderForm")[0].reset();
 	    var selectField = $('#selected_field').val();
-	    var customer_id = '';
 		if(selectField=='customer_id'){
-			customer_id = $("#single_customer_id").val();
+			$("#customer_id_input").val($("#single_customer_id_input").val());
 		}
 		if(selectField=='user_id'){
-			var user_name = $("#single_user_id_input").val();
+			$("#user_id_input").val($("#single_user_id_input").val());
 		}
 		if(selectField=="order_export_date"){
-			var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
-			var order_export_date_end_time = $("#single_order_export_date_end_time").val();
+			$("#order_export_date_begin_time").val($("#single_order_export_date_begin_time").val());
+			$("#order_export_date_end_time").val($("#single_order_export_date_end_time").val());
 		}
 		
-		//合计字段
-        $.post('salesBillReport/listTotal',{
-        	customer_id:customer_id,
-        	user_name:user_name,
-      		order_export_date_begin_time:order_export_date_begin_time,
-      		order_export_date_end_time:order_export_date_end_time
-        },function(data){
-      	  var sum_foot_charge_total = parseFloat(data.SUM_FOOT_CHARGE_TOTAL).toFixed(2);
-      	  var sum_foot_cost_total = parseFloat(data.SUM_FOOT_COST_TOTAL).toFixed(2);
-      	  var sum_foot_gross_profit = parseFloat(data.SUM_FOOT_CHARGE_TOTAL-data.SUM_FOOT_COST_TOTAL).toFixed(2);
-      	  var sum_foot_pay_charge_total = parseFloat(data.SUM_FOOT_PAY_CHARGE_TOTAL).toFixed(2);
-      	  var sum_foot_current_profit = parseFloat(data.SUM_FOOT_PAY_CHARGE_TOTAL-data.SUM_FOOT_COST_TOTAL).toFixed(2);
-      	 // var foot_commission_money = parseFloat(data.FOOT__MONEY).toFixed(2);
-
-
-      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_charge_total]').html("折合应收CNY:<br>"+eeda.numFormat(sum_foot_charge_total,3));
-      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_pay_charge_total]').html("折合实收CNY:<br>"+eeda.numFormat(sum_foot_pay_charge_total,3));
-      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=sum_cost_total]').html("折合应付CNY:<br>"+eeda.numFormat(sum_foot_cost_total,3));
-      	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=gross_profit]').html("毛利润CNY:<br>"+eeda.numFormat(sum_foot_gross_profit,3));
-      	  if(sum_foot_current_profit<0){
-      		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","red");
-      	  }else{
-      		  $($('.dataTables_scrollFoot tr')[0]).find('th[class=current_profit]').html("当前盈亏CNY:<br>"+eeda.numFormat(sum_foot_current_profit,3)).css("color","");; 
-      	  }
-      	 // $($('.dataTables_scrollFoot tr')[0]).find('th[class=commission_money]').html("提成金额CNY:<br>"+eeda.numFormat(foot_commission_money,3));
-        });
-		
-	     var url = "/salesBillReport/list?customer_id="+customer_id
-	     	+"&user_name="+user_name
-			+"&order_export_date_begin_time="+order_export_date_begin_time
-	        +"&order_export_date_end_time="+order_export_date_end_time;
-	     dataTable.ajax.url(url).load();
-	     
+	    $("#searchBtn").click();
 	  }); 
       
       $('#resetBtn').click(function(e){
@@ -302,6 +270,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	
      var searchData=function(){
      	var customer_id = $("#customer_id").val();
+     	var customer_name = $("#customer_id_input").val();
      	var order_export_date_begin_time = $("#order_export_date_begin_time").val();
      	var order_export_date_end_time = $("#order_export_date_end_time").val();
      	var user_name = $("#user_id_input").val();
@@ -309,6 +278,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         //合计字段
           $.post('salesBillReport/listTotal',{
         	  customer_id:customer_id,
+        	  customer_name:customer_name,
         	  user_name:user_name,
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
@@ -340,6 +310,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/salesBillReport/list?customer_id="+customer_id
+          				+"&customer_name="+customer_name  
           				+"&user_name_equals="+user_name  
           				+"&order_export_date_begin_time="+order_export_date_begin_time
 				        +"&order_export_date_end_time="+order_export_date_end_time;
