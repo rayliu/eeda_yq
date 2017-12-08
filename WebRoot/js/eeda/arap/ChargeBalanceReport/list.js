@@ -180,67 +180,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
 	
 	$('#singleSearchBtn').click(function(){
+		$("#orderForm")[0].reset();
 	     var selectField = $('#selected_field').val();
-	     var sp_id='';
 	     if(selectField=='sp_id'){
-	    	 sp_id = $("#single_sp_id").val();
+	    	 $("#sp_id_input").val($("#single_sp_id_input").val());
 	      }
 	      if(selectField=="order_export_date"){
-	    	 var order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
-	    	 var order_export_date_end_time = $("#single_order_export_date_end_time").val();
+	    	 $("#order_export_date_begin_time").val($("#single_order_export_date_begin_time").val());
+	    	 $("#order_export_date_end_time").val($("#single_order_export_date_end_time").val());
 	      }
-	     var url = "/chargeBalanceReport/list?sp_id="+sp_id
-			+"&order_export_date_begin_time="+order_export_date_begin_time
-	        +"&order_export_date_end_time="+order_export_date_end_time;
-	     dataTable.ajax.url(url).load(tableStyle);
-	     
-	   //合计字段
-         $.post('chargeBalanceReport/listTotal',{
-       	  sp_id:sp_id,
-       	  order_export_date_begin_time:order_export_date_begin_time,
-       	  order_export_date_end_time:order_export_date_end_time
-         },function(data){
-       	  var charge_cny = parseFloat(data.CHARGE_CNY).toFixed(2);
-       	  var charge_usd = parseFloat(data.CHARGE_USD).toFixed(2);
-       	  var charge_jpy = parseFloat(data.CHARGE_JPY).toFixed(2);
-       	  var charge_hkd = parseFloat(data.CHARGE_HKD).toFixed(2);
-       	  var total_charge = parseFloat(data.TOTAL_CHARGE).toFixed(2);
-       	  var uncharge_cny = parseFloat(data.UNCHARGE_CNY).toFixed(2);
-       	  var uncharge_usd = parseFloat(data.UNCHARGE_USD).toFixed(2);
-       	  var uncharge_jpy = parseFloat(data.UNCHARGE_JPY).toFixed(2);
-       	  var uncharge_hkd = parseFloat(data.UNCHARGE_HKD).toFixed(2);
-       	  var total_uncharge = parseFloat(data.TOTAL_UNCHARGE).toFixed(2);
-       	  var total=parseFloat(data.TOTAL);
-       	  $('#CNY_charge_tatol').text(eeda.numFormat(charge_cny,3));
-       	  $('#USD_charge_tatol').text(eeda.numFormat(charge_usd,3));
-       	  $('#JPY_charge_tatol').text(eeda.numFormat(charge_jpy,3));
-       	  $('#HKD_charge_tatol').text(eeda.numFormat(charge_hkd,3));
-       	  $('#total_charge').text(eeda.numFormat(total_charge,3));
-       	  $('#CNY_uncharge_tatol').text(eeda.numFormat(uncharge_cny,3)).css('color','red');
-       	  $('#USD_uncharge_tatol').text(eeda.numFormat(uncharge_usd,3)).css('color','red');
-       	  $('#JPY_uncharge_tatol').text(eeda.numFormat(uncharge_jpy,3)).css('color','red');
-       	  $('#HKD_uncharge_tatol').text(eeda.numFormat(uncharge_hkd,3)).css('color','red');
-       	  $('#total_uncharge').text(eeda.numFormat(total_uncharge,3)).css('color','red');
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_cny]').html("应收CNY:<br>"+eeda.numFormat(charge_cny,3));
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_usd]').html("应收USD:<br>"+eeda.numFormat(charge_usd,3));
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_jpy]').html("应收JPY:<br>"+eeda.numFormat(charge_jpy,3));
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_hkd]').html("应收HKD:<br>"+eeda.numFormat(charge_hkd,3));
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=charge_rmb]').html("应收折合(CNY):<br>"+eeda.numFormat(total_charge,3));
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_cny]').html("未收CNY:<br>"+eeda.numFormat(uncharge_cny,3)).css('color','red');
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_usd]').html("未收USD:<br>"+eeda.numFormat(uncharge_usd,3)).css('color','red');
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_jpy]').html("未收JPY:<br>"+eeda.numFormat(uncharge_jpy,3)).css('color','red');
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_hkd]').html("未收HKD:<br>"+eeda.numFormat(uncharge_hkd,3)).css('color','red');
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncharge_rmb]').html("未收折合(CNY):<br>"+eeda.numFormat(total_uncharge,3)).css('color','red');
-       	  
-       	  var total_profit=parseFloat(total_charge-total_uncharge).toFixed(2);
-       	  if(total_profit<0){
-       		  $('#total_profit').text(total_profit).css('color','red');
-       	  }else(
-       		  $('#total_profit').text(total_profit)
-       	  )
-
-         });
+	      $('#searchBtn').click();
 	}); 
       
       $('#resetBtn').click(function(e){
@@ -255,7 +204,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	
      var searchData=function(){
           var sp_id = $("#sp_id").val();
-          var abbr_name=$('#sp_id_input').val();
+          var sp_name = $('#sp_id_input').val();
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
           
@@ -263,6 +212,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         //合计字段
           $.post('chargeBalanceReport/listTotal',{
         	  sp_id:sp_id,
+        	  abbr_like:sp_name,
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
           },function(data){
@@ -317,7 +267,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               时间字段需成双定义  *_begin_time *_end_time   between
           */
           var url = "/chargeBalanceReport/list?sp="+sp_id
-          				+"&abbr_equals="+abbr_name
+          				+"&abbr_like="+sp_name
           				+"&order_export_date_begin_time="+order_export_date_begin_time
 				        +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load(tableStyle);

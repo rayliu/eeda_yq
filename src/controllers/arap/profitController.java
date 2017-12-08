@@ -98,6 +98,10 @@ public class profitController extends Controller {
 	
 	public void listTotal() {
 		String user_id =(String) getPara("user_id");
+		String customer = getPara("customer");
+		String customer_name = getPara("abbr_like");
+        String begin_time = getPara("order_export_date_begin_time");
+        String end_time = getPara("order_export_date_end_time");
 		UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
 		
@@ -108,12 +112,13 @@ public class profitController extends Controller {
         }
         
         String conditions = "";
-        String customer = getPara("customer");
-        String begin_time = getPara("order_export_date_begin_time");
-        String end_time = getPara("order_export_date_end_time");
         
         if(StringUtils.isNotBlank(customer)){
         	conditions += " and jo.customer_id = "+ customer;
+        }
+        
+        if(StringUtils.isNotBlank(customer_name)){
+        	conditions += " and p.abbr like '%"+ customer_name + "%'";
         }
         
         if(StringUtils.isNotBlank(user_id)){

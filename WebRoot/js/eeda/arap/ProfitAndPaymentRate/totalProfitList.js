@@ -91,61 +91,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
 	
 	$('#singleSearchBtn').click(function(){
+		 $("#orderForm")[0].reset();
 	     var selectField = $('#selected_field').val();
-	     var order_export_date_begin_time = '';
-	     var order_export_date_end_time  = '';
-	     var customer = '';
 	     if(selectField=='order_export_date'){
-	    	  order_export_date_begin_time = $("#single_order_export_date_begin_time").val();
-	    	  order_export_date_end_time = $("#single_order_export_date_end_time").val();
-	      }
-	      if(selectField=='customer'){
-	    	 customer = $("#single_customer").val();
-	      }
-	      
-	      //合计字段
-          $.post('/totalProfit/listTotal',{
-        	  customer:customer,
-        	  order_export_date_begin_time:order_export_date_begin_time,
-        	  order_export_date_end_time:order_export_date_end_time
-          },function(data){
-        	  var total_charge = parseFloat(data.TOTAL_CHARGE).toFixed(2);
-        	  var total_cost = parseFloat(data.TOTAL_COST).toFixed(2);
-        	  $('#total_charge').text(total_charge);
-        	  $('#total_cost').text(total_cost);
-        	  
-        	  
-        	  var total_profit = parseFloat(total_charge-total_cost).toFixed(2);
-        	  var average_profit_rate = parseFloat((total_profit/total_cost)*100).toFixed(2);
-        	  if(!average_profit_rate){
-        		  average_profit_rate=0.00;
-        	  }
-        	  if(isNaN(average_profit_rate)){
-        		  average_profit_rate = 0.00;
-        	  }
-        	  if(total_profit<0){
-        		  $('#total_profit').text(total_profit).css('color','red');
-        	  }else(
-        		  $('#total_profit').text(total_profit)
-        	  )
-        	  var total=parseFloat(data.TOTAL);
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(1).html("折合应收(CNY):<br>"+eeda.numFormat(total_charge,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("折合应付(CNY):<br>"+eeda.numFormat(total_cost,3));
-        	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("平均利润率(%):<br>"+average_profit_rate);
-        	  if(total_profit<0){
-        		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(CNY):<br>"+eeda.numFormat(total_profit,3)).css('color','red');
-        	  }else(
-        		$($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(CNY):<br>"+eeda.numFormat(total_profit,3))
-        	  )
-
-          });
-          
-          var url = "/totalProfit/list?customer="+customer
-				          +"&order_export_date_begin_time="+order_export_date_begin_time
-				          +"&order_export_date_end_time="+order_export_date_end_time;
-          dataTable.ajax.url(url).load(cssTd);
-	 
+	    	  $("#order_export_date_begin_time").val($("#single_order_export_date_begin_time").val());
+	    	  $("#order_export_date_end_time").val($("#single_order_export_date_end_time").val());
+	     }
+	     if(selectField=='customer'){
+	    	$("#customer").val($("#single_customer").val());
+	    	$("#customer_input").val($("#single_customer_input").val());
+	     }
+	     $('#searchBtn').click();
 	}); 
       
       $('#resetBtn').click(function(e){
@@ -158,6 +114,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var customer = $("#customer").val(); 
+          var customer_name = $("#customer_input").val(); 
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
           /*  
@@ -171,6 +128,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           //合计字段
           $.post('totalProfit/listTotal',{
         	  customer:customer,
+        	  abbr_like:customer_name,
         	  order_export_date_begin_time:order_export_date_begin_time,
         	  order_export_date_end_time:order_export_date_end_time
           },function(data){
@@ -205,6 +163,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
           
           var url = "/totalProfit/list?customer="+customer
+         				  +"&abbr_like="+customer_name
 				          +"&order_export_date_begin_time="+order_export_date_begin_time
 				          +"&order_export_date_end_time="+order_export_date_end_time;
           dataTable.ajax.url(url).load();

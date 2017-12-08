@@ -22,6 +22,7 @@ import com.jfinal.plugin.activerecord.Record;
 
 import controllers.oms.jobOrder.JobOrderController;
 import controllers.profile.LoginUserController;
+import controllers.util.DbUtils;
 import controllers.util.PoiUtils;
 
 @RequiresAuthentication
@@ -58,7 +59,7 @@ public class TotalProfitController extends Controller {
           	JobOrderController.addHistoryRecord(userId,customer_id,"CUSTOMER");
     	}
         
-        String customer = getPara("customer");
+        /*String customer = getPara("customer");
         String begin_time = getPara("order_export_date_begin_time");
         String end_time = getPara("order_export_date_end_time");
         if(StringUtils.isNotBlank(customer)){
@@ -73,21 +74,21 @@ public class TotalProfitController extends Controller {
         }else{
         	end_time = end_time + " 23:59:59";
         }
-        conditions += " and (jo.order_export_date between '"+begin_time+"' and '"+end_time+"')";
+        conditions += " and (jo.order_export_date between '"+begin_time+"' and '"+end_time+"')";*/
         	
-        
+    	String condition = DbUtils.buildConditions(getParaMap());
         String sql = " SELECT A.date_time,"
         		+ " ifnull(SUM(charge_rmb),0) charge_rmb,"
         		+ " ifnull(sum(cost_rmb),0) cost_rmb "
         		+ " FROM ("
         		+" SELECT cast(CONCAT(year(jo.order_export_date),'-',month(jo.order_export_date)) as char) date_time,"
 	    		+"	if(joa.order_type='charge',currency_total_amount,0) charge_rmb,"
-	    		+"	if(joa.order_type='cost',currency_total_amount,0) cost_rmb"
+	    		+"	if(joa.order_type='cost',currency_total_amount,0) cost_rmb,p.abbr"
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p on p.id = jo.customer_id"
         		+"  WHERE p.office_id ="+office_id+" and joa.pay_flag!='B' and (jo.office_id="+office_id+ ref_office+ ") " 
-        		+ conditions
+        		+ condition
         		+ " and jo.delete_flag = 'N'"
     			+" ) A where 1=1  GROUP BY A.date_time";
 		
@@ -115,12 +116,15 @@ public class TotalProfitController extends Controller {
 		
         String conditions = "";
         String customer = getPara("customer");
+        String customer_name = getPara("abbr_like");
         String begin_time = getPara("order_export_date_begin_time");
         String end_time = getPara("order_export_date_end_time");
         if(StringUtils.isNotBlank(customer)){
         	conditions += " and jo.customer_id = "+ customer;
         }
-        
+        if(StringUtils.isNotBlank(customer_name)){
+        	conditions += " and p.abbr like '%"+ customer_name +"%'";
+        }
         if(StringUtils.isBlank(begin_time)){
         	begin_time = " 2000-1-1";
         }
@@ -137,7 +141,7 @@ public class TotalProfitController extends Controller {
         		+ " FROM ("
         		+" SELECT cast(CONCAT(year(jo.order_export_date),'-',month(jo.order_export_date)) as char) date_time,"
 	    		+"	if(joa.order_type='charge',currency_total_amount,0) charge_rmb,"
-	    		+"	if(joa.order_type='cost',currency_total_amount,0) cost_rmb"
+	    		+"	if(joa.order_type='cost',currency_total_amount,0) cost_rmb,p.abbr"
         		+"  from job_order jo "
         		+"  LEFT JOIN job_order_arap joa on jo.id = joa.order_id "
         		+"  LEFT JOIN party p on p.id = jo.customer_id"

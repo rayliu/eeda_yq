@@ -117,6 +117,7 @@ public class ChargeBalanceReportController extends Controller {
 	
 	public void listTotal() {
 		String spid =(String) getPara("sp_id");
+		String sp_name = (String) getPara("abbr_like");
 		String order_export_date_begin_time =(String) getPara("order_export_date_begin_time");
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
 		
@@ -133,6 +134,10 @@ public class ChargeBalanceReportController extends Controller {
 		if(StringUtils.isBlank(spid)){
 			sp_id="";
 		}
+		String spName = "";
+		if(StringUtils.isNotBlank(sp_name)){
+			spName =" and abbr like '%"+sp_name+"%'";
+		}
 		if(order_export_date_begin_time==null){
 			order_export_date_begin_time="";
 		}
@@ -145,7 +150,7 @@ public class ChargeBalanceReportController extends Controller {
 		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
 			order_export_date="";
 		}
-		String condition = sp_id+order_export_date;
+		String condition = sp_id+spName+order_export_date;
 		
 		String sql=" SELECT "
 			+"	(SELECT "
