@@ -967,7 +967,7 @@ public class ChargeRequestController extends Controller {
                 }
                 arapChargeInvoiceApplication.update();
               //坏账的标记位
-        		String paySql ="update job_order_arap set pay_flag='Bad' "
+        		String paySql ="update job_order_arap set pay_flag='B' "
         				+ " where id in (SELECT job_order_arap_id FROM charge_application_order_rel WHERE application_order_id ="+application_id+")" ; //chargeOrderId.substring(1) 去掉第一位
                 Db.update(paySql);
               //更改原始单据状态
