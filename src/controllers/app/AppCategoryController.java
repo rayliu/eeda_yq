@@ -14,6 +14,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.util.EedaHttpKit;
 import controllers.util.MD5Util;
 
 public class AppCategoryController extends Controller {
@@ -26,37 +27,11 @@ public class AppCategoryController extends Controller {
      */
     public void searchShopByType() throws IOException{
     	String category_name = getRequest().getHeader("category_name");
-    	
+    	category_name = EedaHttpKit.decodeHeadInfo(category_name);
     	String conditions = "";
-    	if("weddingDress".equals(category_name)){
-    		category_name = "婚纱";
-    		conditions += " and ctg.name = '"+category_name+"'";
-    	}
-		if("studio".equals(category_name)){
-			category_name = "影楼";
-			conditions += " and ctg.name = '"+category_name+"'";
-		}
-		if("marriagePackage".equals(category_name)){
-			category_name = "婚策套餐";
-			conditions += " and ctg.name = '"+category_name+"'";
-		}
-		if("hotel".equals(category_name)){
-			category_name = "酒店";
-			conditions += " and ctg.name = '"+category_name+"'";
-		}
-		if("camera".equals(category_name)){
-			category_name = "摄像";
-			conditions += " and ctg.name = '"+category_name+"'";
-		}
-		if("makeup".equals(category_name)){
-			category_name = "化妆";
-			conditions += " and ctg.name = '"+category_name+"'";
-		}
-		if("honeymoon".equals(category_name)){
-			category_name = "蜜月";
-			conditions += " and ctg.name = '"+category_name+"'";
-		}
-		
+    	
+    	conditions += " and ctg.name = '"+category_name+"'";
+    	
     	//商家列表
     	List<Record> shopList = Db.find(" select ul.id shop_id, "
     			+ " ifnull(wc.c_name,wc.company_name) company_name,"

@@ -44,6 +44,16 @@ public class EedaHttpKit {
     private static Log logger = Log.getLog(EedaHttpKit.class);
 	private EedaHttpKit() {}
 	
+	public static String decodeHeadInfo(String info) {  
+        int n = info.length() / 6;  
+        StringBuilder sb = new StringBuilder(n);  
+        for (int i = 0, j = 2; i < n; i++, j += 6) {  
+            String code = info.substring(j, j + 4);  
+            char ch = (char) Integer.parseInt(code, 16);  
+            sb.append(ch);  
+        }  
+        return sb.toString();  
+    }  
 	/**
 	 * https 域名校验
 	 */
