@@ -135,19 +135,36 @@ $(document).ready(function() {
                 	if(full.APPROVAL_UPDATE=="Y"){
                 		land_ids_false.push(full.ID);
                 	}
-                	return '<button type="button" style="width:60px" name="delete" dockId class="delete btn table_btn delete_btn btn-xs" >删除</button>'
-                		   +'<input type="text" name="take_address_id" value="'+data+'" loc_type="'+full.TAKE_ADDRESS_TYPE+'" style="display:none;"/>';
+                	if(!data){
+                		return '<button type="button" style="width:60px" name="delete" dockId class="delete btn table_btn delete_btn btn-xs" >删除</button>'
+             		   +'<input type="text" name="take_address_id" loc_type="'+full.TAKE_ADDRESS_TYPE+'" style="display:none;"/>';
+                	}else{
+                		return '<button type="button" style="width:60px" name="delete" dockId class="delete btn table_btn delete_btn btn-xs" >删除</button>'
+             		   +'<input type="text" name="take_address_id" value="'+data+'" loc_type="'+full.TAKE_ADDRESS_TYPE+'" style="display:none;"/>';
+                	}
+                	
                 }
             },
             { "data":"DELIVERY_ADDRESS_ID","width": "40px","className":"consignee_contact_id",
             	"render": function ( data, type, full, meta ) {
-            		if(full.ID){
-            			return '<button type="button" style="width:60px" name="land_charge" class="land_charge btn table_btn btn_green btn-xs" >费用</button>'
-            					+'<input type="text" name="delivery_address_id" loc_type="'+full.DELIVERY_ADDRESS_TYPE+'" value="'+data+'" style="display:none;"/>';	
+            		if(!data){
+            			if(full.ID){
+                			return '<button type="button" style="width:60px" name="land_charge" class="land_charge btn table_btn btn_green btn-xs" >费用</button>'
+                					+'<input type="hidden" name="delivery_address_id" loc_type="'+full.DELIVERY_ADDRESS_TYPE+'"  />';	
+                		}else{
+                			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>'
+                			+'<input type="hidden" name="delivery_address_id" loc_type="'+full.DELIVERY_ADDRESS_TYPE+'"  />';
+                		}
             		}else{
-            			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>'
-            			+'<input type="text" name="delivery_address_id" loc_type="'+full.DELIVERY_ADDRESS_TYPE+'" value="'+data+'" style="display:none;"/>';
+            			if(full.ID){
+                			return '<button type="button" style="width:60px" name="land_charge" class="land_charge btn table_btn btn_green btn-xs" >费用</button>'
+                					+'<input type="hidden" name="delivery_address_id" loc_type="'+full.DELIVERY_ADDRESS_TYPE+'" value="'+data+'" />';	
+                		}else{
+                			return '<button type="button" style="width:60px" class="land_charge btn table_btn btn_green btn-xs"  disabled>费用</button>'
+                			+'<input type="hidden" name="delivery_address_id" loc_type="'+full.DELIVERY_ADDRESS_TYPE+'" value="'+data+'" />';
+                		}
             		}
+            		
             	}
             },
             
