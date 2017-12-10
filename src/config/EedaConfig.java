@@ -52,6 +52,7 @@ import controllers.app.AppAskController;
 import controllers.app.AppBestCaseController;
 import controllers.app.AppCategoryController;
 import controllers.app.AppControllerForMobile;
+import controllers.app.AppLoginController;
 import controllers.app.AppProductController;
 import controllers.app.AppShopController;
 import controllers.app.AppTaoController;
@@ -152,6 +153,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/app/ask", AppAskController.class);
         me.add("/app/shop", AppShopController.class);
         me.add("/app/product", AppProductController.class);
+        me.add("/app/login", AppLoginController.class);
     }
 
 	private void setWeddingRoute(Routes me) {

@@ -28,7 +28,7 @@ public class AppBestCaseController extends Controller {
     	String conditions = getRequest().getHeader("conditions");
     	
     	//精选婚礼
-    	List<Record> caseList = Db.find(" SELECT id, name title,picture_name photo "
+    	List<Record> caseList = Db.find(" SELECT id, name title,picture_name cover "
     			+ " FROM"
     			+ " `wc_case`"
     			+ " where flag = '1'");
