@@ -27,7 +27,9 @@ public class AppCategoryController extends Controller {
      */
     public void searchShopByType() throws IOException{
     	String category_name = getRequest().getHeader("category_name");
+    	System.out.println("before:"+category_name);
     	category_name = EedaHttpKit.decodeHeadInfo(category_name);
+    	System.out.println("after:"+category_name);
     	String conditions = "";
     	
     	conditions += " and ctg.name = '"+category_name+"'";

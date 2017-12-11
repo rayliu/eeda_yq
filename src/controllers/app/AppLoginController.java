@@ -91,6 +91,29 @@ public class AppLoginController extends Controller {
     }
     
     @Before(Tx.class)
+    public void login(){
+    	boolean result = false;
+    	String errMsg = null;
+    	String user_id = null;
+    	String password = URLDecoder.decode(getRequest().getHeader("password"));
+    	String mobile = URLDecoder.decode(getRequest().getHeader("mobile"));
+
+    	Record user = Db.findFirst("select * from user_login where phone = ? and password = ?",mobile, password);
+    	if(user != null){
+    		result = true;
+    		user_id = user.getLong("id").toString();
+    	}else{
+    		errMsg = "用户名或密码不正确";
+    	}
+    	
+    	Record data = new Record();
+    	data.set("result", result);
+    	data.set("user_id", user_id);
+    	data.set("errMsg", errMsg);
+        renderJson(data);  
+    }
+    
+    @Before(Tx.class)
     public void save_answer(){
     	String value = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("answerValue"));
     	String user_id = getRequest().getHeader("userId");
