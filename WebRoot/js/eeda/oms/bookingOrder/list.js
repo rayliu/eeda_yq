@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-
+	  $('.search_single input,.search_single select').on('input',function(){
+  		  $("#orderForm")[0].reset();
+  	  });
       
     $('.complex_search').click(function(event) {
         if($('.search_single').is(':visible')){

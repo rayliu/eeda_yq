@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','dtColReorder','validate_cn', 'sco'], function ($, metisMenu) { 
-
     $(document).ready(function() {
+    	$('.search_single input,.search_single select').on('input',function(){
+    		  $("#orderForm")[0].reset();
+    	});
     	document.title = '报关申请单列表 | '+document.title;
 
     	if(type != ""){
