@@ -1,6 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-
+	  $('.search_single input,.search_single select').on('input',function(){
+  		  $("#orderForm")[0].reset();
+  	  });
+	  
       var dataTable = eeda.dt({
           id: 'eeda_table',
           colReorder: true,
@@ -163,49 +166,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
 	
 	$('#singleSearchBtn').click(function(){
+		$("#orderForm")[0].reset();
 		var selectField = $("#selected_field").val();
 		  if(selectField=='sp_id'){
-			  var sp_id = $("#single_sp_id").val();
+			  $("#sp_id").val($("#single_sp_id").val());
+			  $("#sp_id_input").val($("#single_sp_id_input").val());
 	      }
 	      if(selectField=="date_custom"){
-	    	  var date_custom_begin_time = $("#single_date_custom_begin_time").val();
-			  var date_custom_end_time = $("#single_date_custom_end_time").val();
+			  $("#date_custom_begin_time").val($("#single_date_custom_begin_time").val());
+			  $("#date_custom_end_time").val($("#single_date_custom_end_time").val());
 	      }
-	      
-	      
-	      
-	      var url = "/customCostBalanceReport/list?sp_id="+sp_id
-			+"&date_custom_begin_time="+date_custom_begin_time
-	        +"&date_custom_end_time="+date_custom_end_time;
-	      	dataTable.ajax.url(url).load(tableStyle);
-	      	
-	      //合计字段
-	         $.post('customCostBalanceReport/listTotal',{
-	       	  sp_id:sp_id,
-	       	date_custom_begin_time:date_custom_begin_time,
-	       	date_custom_end_time:date_custom_end_time
-	         },function(data){
-	       	  var cost_cny = parseFloat(data.COST_CNY).toFixed(2);
-	       	  var cost_usd = parseFloat(data.COST_USD).toFixed(2);
-	       	  var cost_jpy = parseFloat(data.COST_JPY).toFixed(2);
-	       	  var cost_hkd = parseFloat(data.COST_HKD).toFixed(2);
-	       	  var total_cost = parseFloat(data.TOTAL_COST).toFixed(2);
-	       	  var uncost_cny = parseFloat(data.UNCOST_CNY).toFixed(2);
-	       	  var uncost_usd = parseFloat(data.UNCOST_USD).toFixed(2);
-	       	  var uncost_jpy = parseFloat(data.UNCOST_JPY).toFixed(2);
-	       	  var uncost_hkd = parseFloat(data.UNCOST_HKD).toFixed(2);
-	       	  var total_uncost = parseFloat(data.TOTAL_UNCOST).toFixed(2);
-	       	  $('#CNY_cost_tatol').text(eeda.numFormat(cost_cny,3));
-	       	  $('#USD_cost_tatol').text(eeda.numFormat(cost_usd,3));
-	       	  $('#JPY_cost_tatol').text(eeda.numFormat(cost_jpy,3));
-	       	  $('#HKD_cost_tatol').text(eeda.numFormat(cost_hkd,3));
-	       	  $('#total_cost').text(eeda.numFormat(total_cost,3));
-	       	  $('#CNY_uncost_tatol').text(eeda.numFormat(uncost_cny,3)).css('color','red');
-	       	  $('#USD_uncost_tatol').text(eeda.numFormat(uncost_usd,3)).css('color','red');
-	       	  $('#JPY_uncost_tatol').text(eeda.numFormat(uncost_jpy,3)).css('color','red');
-	       	  $('#HKD_uncost_tatol').text(eeda.numFormat(uncost_hkd,3)).css('color','red');
-	       	  $('#total_uncost').text(eeda.numFormat(total_uncost,3)).css('color','red');
-	         });
+	      $('#searchBtn').click();
 	}); 
 	
     var tableStyle = function(){

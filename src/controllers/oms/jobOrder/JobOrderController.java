@@ -4569,15 +4569,6 @@ public class JobOrderController extends Controller {
     			sb.replace(2, 5, jobOrderDate);
     			order_no =sb.toString();
     			
-    			//提交后更改允许申请标记位
-    			JobOrderLandItem joli = JobOrderLandItem.dao.findById(rowId);
-    			joli.set("submit_flag", "Y");
-    			joli.update();
-    			//回填关联单号到货代工作单
-    			JobOrder jo = JobOrder.dao.findById(joli.get("order_id"));
-    			jo.set("plan_order_no", order_no);
-    			jo.update();
-    			
     			//往表trans_job_order存入数据
     			transJobOrder.set("order_no", order_no);
     			transJobOrder.set("plan_order_no", dto.get("order_no"));
@@ -4621,13 +4612,16 @@ public class JobOrderController extends Controller {
     				tjoli.set("volume", rowMap.get("volume"));
     			}
     			tjoli.save();
-    		}else{
+    			
     			//提交后更改允许申请标记位
     			JobOrderLandItem joli = JobOrderLandItem.dao.findById(rowId);
     			joli.set("submit_flag", "Y");
-    			joli.set("approval_update", "N");
     			joli.update();
-    			
+    			//回填关联单号到货代工作单
+    			JobOrder jo = JobOrder.dao.findById(joli.get("order_id"));
+    			jo.set("plan_order_no", order_no);
+    			jo.update();
+    		}else{
     			//往表trans_job_order存入数据
     			transJobOrder = TransJobOrder.dao.findFirst("select*from trans_job_order where from_order_item_id="+rowId);
     			transJobOrder.set("type", type);
@@ -4660,6 +4654,12 @@ public class JobOrderController extends Controller {
     				tjoli.set("volume", rowMap.get("volume"));
     			}
     			tjoli.update();
+    			
+    			//提交后更改允许申请标记位
+    			JobOrderLandItem joli = JobOrderLandItem.dao.findById(rowId);
+    			joli.set("submit_flag", "Y");
+    			joli.set("approval_update", "N");
+    			joli.update();
     		}
 		}
 		

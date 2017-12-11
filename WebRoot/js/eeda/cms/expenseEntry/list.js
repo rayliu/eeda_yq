@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
-
     $(document).ready(function() {
+    	$('.search_single input,.search_single select').on('input',function(){
+    		  $("#orderForm")[0].reset();
+    	  });
     	
     	//datatable, 动态处理
 		var cnames = [];
@@ -99,22 +101,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
         }
         
     	$('#singleSearchBtn').click(function(){
+    	 $("#orderForm")[0].reset();
    	     var selectField = $('#selected_field').val();
    	     var selectValue = "";
    	     if(selectField=='customer_name'){
    	    	 selectValue = $("#single_customer_id_input").val();
+   	    	$("#customer").val($("#single_customer_id").val());
+   	    	$("#customer_input").val($("#single_customer_id_input").val());
    	      }
    	      if(selectField=='order_no'||selectField=='tracking_no'){
-   	    	 selectValue = $("#public_text").val();
+   	    	$("#"+selectField).val($("#public_text").val());
    	      }
    	      if(selectField=="date_custom"){
-   	    	 var begin_time = $("#single_date_custom_begin_time").val();
-   	    	 var end_time = $("#single_date_custom_end_time").val();
+   	    	$("#date_custom_begin_time").val($("#single_date_custom_begin_time").val());
+   	    	$("#date_custom_end_time").val($("#single_date_custom_end_time").val());
    	      }
-   	   var url = "/expenseEntry/list?"+selectField+"="+selectValue
-       +"&date_custom_begin_time="+begin_time
-       +"&date_custom_end_time="+end_time;
-   	   	dataTable.ajax.url(url).load();
+   	   $('#searchBtn').click();
    	}); 
 
 

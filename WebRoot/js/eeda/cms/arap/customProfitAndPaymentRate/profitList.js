@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	  
+	  $('.search_single input,.search_single select').on('input',function(){
+		  $("#orderForm")[0].reset();
+  	  	});
       var dataTable = eeda.dt({
           id: 'eeda_table',
           colReorder: true,
@@ -76,72 +78,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
       
   	$('#singleSearchBtn').click(function(){
+  		$("#orderForm")[0].reset();
 	     var selectField = $('#selected_field').val();
 	     if(selectField=='date_custom'){
-	    	 var begin_time = $("#single_date_custom_begin_time").val();
-	    	 var end_time = $("#single_date_custom_end_time").val();
+	    	 $("#date_custom_begin_time").val($("#single_date_custom_begin_time").val());
+	    	 $("#date_custom_end_time").val($("#single_date_custom_end_time").val());
 	     }
 	     if(selectField=='customer'){
-	    	 var customer = $("#single_customer").val();
+	    	 $("#customer").val($("#single_customer").val());
+	    	 $("#customer_input").val($("#single_customer_input").val());
 	     }
-	      
-	      //合计字段
-         $.post('/customProfit/listTotal',{
-       	  customer:customer,
-       	  begin_time:begin_time,
-       	  end_time:end_time
-         },function(data){
-       	  var charge_cny = parseFloat(data.CHARGE_CNY).toFixed(2);
-       	  var charge_usd = parseFloat(data.CHARGE_USD).toFixed(2);
-       	  var charge_jpy = parseFloat(data.CHARGE_JPY).toFixed(2);
-       	  var charge_hkd = parseFloat(data.CHARGE_HKD).toFixed(2);
-       	  var total_charge = parseFloat(data.TOTAL_CHARGE).toFixed(2);
-       	  var cost_cny = parseFloat(data.COST_CNY).toFixed(2);
-       	  var cost_usd = parseFloat(data.COST_USD).toFixed(2);
-       	  var cost_jpy = parseFloat(data.COST_JPY).toFixed(2);
-       	  var cost_hkd = parseFloat(data.COST_HKD).toFixed(2);
-       	  var total_cost = parseFloat(data.TOTAL_COST).toFixed(2);
-       	  $('#CNY_charge_tatol').text(charge_cny);
-       	  $('#USD_charge_tatol').text(charge_usd);
-       	  $('#JPY_charge_tatol').text(charge_jpy);
-       	  $('#HKD_charge_tatol').text(charge_hkd);
-       	  $('#total_charge').text(total_charge);
-       	  $('#CNY_cost_tatol').text(cost_cny);
-       	  $('#USD_cost_tatol').text(cost_usd);
-       	  $('#JPY_cost_tatol').text(cost_jpy);
-       	  $('#HKD_cost_tatol').text(cost_hkd);
-       	  $('#total_cost').text(total_cost);
-       	  
-       	  
-       	  var total_profit=parseFloat(total_charge-total_cost).toFixed(2);
-       	  var average_profit_rate = parseFloat((total_profit/total_charge)*100).toFixed(2);
-       	  if(!average_profit_rate){
-       		  average_profit_rate=0.00;
-       	  }
-       	  if(total_profit<0){
-       		  $('#total_profit').text(total_profit).css('color','red');
-       	  }else(
-       		  $('#total_profit').text(total_profit)
-       	  )
-       	  var total=parseFloat(data.TOTAL);
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(1).html("折合应收(CNY):<br>"+eeda.numFormat(total_charge,3));
-       	  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(2).html("折合应付(CNY):<br>"+eeda.numFormat(total_cost,3));
-       	 
-       	  if(total_profit<0){
-       		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(CNY):<br>"+eeda.numFormat(total_profit,3)).css('color','red');
-       	  }else(
-       		  $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("利润(CNY):<br>"+eeda.numFormat(total_profit,3))
-       	  )
-       	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("平均利润率(%):<br>"+average_profit_rate);
-
-         });
-         
-         var url = "/customProfit/list?receive_sent_consignee_equals="+customer
-         +"&date_custom_begin_time="+begin_time
-         +"&date_custom_end_time="+end_time;
-			dataTable.ajax.url(url).load();
-	 
+	     $('#searchBtn').click();
 	});
 
       
@@ -155,6 +102,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
      var searchData=function(){
           var customer = $("#customer").val(); 
+          var customer_name = $("#customer_input").val(); 
           var begin_time = $("#date_custom_begin_time").val();
           var end_time = $("#date_custom_end_time").val();
           /*  
@@ -223,6 +171,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
          
           
           var url = "/customProfit/list?receive_sent_consignee="+customer
+          				  +"&p.abbr_like="+customer_name
 				          +"&date_custom_begin_time="+begin_time
 				          +"&date_custom_end_time="+end_time;
           				dataTable.ajax.url(url).load(cssTd);
