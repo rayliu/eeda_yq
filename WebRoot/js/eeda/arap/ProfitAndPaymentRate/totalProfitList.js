@@ -1,5 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
+	  $('.search_single input,.search_single select').on('input',function(){
+  		  $("#orderForm")[0].reset();
+  	  });
+	  
       eeda.hideSideBar();//打开报表时自动收起左边菜单
       
       var windowHeight = $(window).height();        //获取浏览器窗口高度

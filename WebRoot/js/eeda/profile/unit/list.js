@@ -1,7 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorder'], function ($, metisMenu) { 
-
     $(document).ready(function() {
-
+    	$('.search_single input,.search_single select').on('input',function(){
+    		  $("#orderForm")[0].reset();
+    	  });
+    	
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda-table',

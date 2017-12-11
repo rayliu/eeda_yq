@@ -1,7 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn',  'dtColReorder',  'file_upload' ], function ($, metisMenu) {
-
     $(document).ready(function() {
-
+    	$('.search_single input,.search_single select').on('input',function(){
+    		  $("#orderForm")[0].reset();
+    	  });
 
         var dataTable = eeda.dt({
             id: 'eeda-table',

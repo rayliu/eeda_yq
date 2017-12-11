@@ -1,8 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','dtColReorder','validate_cn'], function ($, metisMenu) { 
-
     $(document).ready(function() {
-    	
-
+    	$('.search_single input,.search_single select').on('input',function(){
+    		$("#orderSearchForm")[0].reset();
+    	  });
 
     	//datatable, 动态处理
         var dataTable = eeda.dt({
