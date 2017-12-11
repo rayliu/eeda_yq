@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco', 'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-
+	  $('.search_single input,.search_single select').on('input',function(){
+		  $("#orderForm")[0].reset();
+	  });
   	 
       var dataTable = eeda.dt({
           id: 'eeda_table',
@@ -136,26 +138,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
       
       $("#singleSearchBtn").click(function(){
+    	  $("#orderForm")[0].reset();
     	  var selectField = $('#selected_field').val();
-    	  var selectValue = "";
 	      if(selectField=='sp_name'){
-	    	  selectValue = $("#single_sp_input").val();
+	    	  $("#sp").val($("#single_sp").val());
+	    	  $("#sp_input").val($("#single_sp_input").val());
 	      }
 	      if(selectField=='order_no'){
-	    	  selectValue = $("#public_text").val();
+	    	  $("#order_no").val($("#public_text").val());
 	      }
 	      if(selectField=='customer_name'){
-	    	  selectValue = $("#single_customer_input").val();
+	    	  $("#customer").val($("#single_customer").val());
+	    	  $("#customer_input").val($("#single_customer_input").val());
 	      }
 	      if(selectField=='fin_item_id'){
-	    	  selectValue = $("#single_fin_item").val();
+	    	  $("#fin_item").val($("#single_fin_item").val());
+	    	  $("#fin_item_input").val($("#single_fin_item_input").val());
 	      }
 	      if(selectField=='flag_equals'){
-	    	  selectValue = $("#single_flag").val();
+	    	  $("#flag").val($("#single_flag").val());
 	      }
-
-	      var url = "/transArapReport/list?"+selectField+"="+selectValue
-          dataTable.ajax.url(url).load();
+	      $('#searchBtn').click();
       });
       
       $('#resetBtn').click(function(e){
@@ -169,10 +172,12 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      var searchData=function(){
           var order_no = $.trim($("#order_no").val()); 
           var customer = $("#customer").val();
+          var customer_name = $("#customer_input").val();
           var fin_item_id = $("#fin_item").val();
           var fin_name = $("#fin_item_input").val();
           var flag = $("#flag").val();
           var sp = $("#sp").val(); 
+          var sp_name = $("#sp_input").val(); 
           var order_export_date_start_date = $("#order_export_date_begin_time").val();
           var order_export_date_end_date = $("#order_export_date_end_time").val();
           var start_date = $("#create_stamp_begin_time").val();
@@ -186,9 +191,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           */
           var url = "/transArapReport/list?order_no="+order_no
 			           +"&customer_id="+customer
+			           +"&customer_name="+customer_name
 			           +"&fin_item_id="+fin_item_id
 			           +"&fin_name_equals="+fin_name
 			           +"&sp_id="+sp
+			           +"&sp_name="+sp_name
 			           +"&flag="+flag
 			           +"&order_export_date_begin_time="+order_export_date_start_date
 		               +"&order_export_date_end_time="+order_export_date_end_date;

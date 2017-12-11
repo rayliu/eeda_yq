@@ -1,6 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-  	
+	  $('.search_single input,.search_single select').on('input',function(){
+		  $("#orderSearchForm")[0].reset();
+  	    });
+	  
   	  $('#cost_check_order_tab').click(function(){
           $('#order_table').DataTable().draw();
       });
@@ -104,29 +107,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
       
       $("#singleSearchBtn").click(function(){
+    	  $("#orderSearchForm")[0].reset();
     	  var selectField = $('#selected_field').val();
-    	  var selectValue = "";
     	  if(selectField=='car_no_like'){
-	    	  selectValue = $("#single_car_no1_input").val();
+    		  $("#car_no1").val($("#single_car_no1").val());
+	    	  $("#car_no1_input").val($("#single_car_no1_input").val());
 	      }
 	      if(selectField=='order_no'){
-	    	  selectValue = $("#public_text").val();
+	    	  $("#order_no1").val($("#public_text").val());
 	      }
 	      if(selectField=='sp_name_like'){
-	    	  selectValue = $("#single_sp1_id_input").val();
+	    	  $("#sp1").val($("#single_sp1_id").val());
+	    	  $("#sp1_input").val($("#single_sp1_id_input").val());
 	      }
 	      if(selectField=='status_equals'){
-	    	  selectValue = $("#single_status1").val();
+	    	  $("#single_status1").val($("#single_status1").val());
 	      }
 	      if(selectField=='create_stamp'){
-	    	  var create_stamp1_begin = $("#single_create_stamp1_begin_time").val();
-	    	  var create_stamp1_end = $("#single_create_stamp1_end_time").val();
+	    	  $("#create_stamp1_begin_time").val($("#single_create_stamp1_begin_time").val());
+	    	  $("#create_stamp1_end_time").val($("#single_create_stamp1_end_time").val());
 	      }
-	      
-          var url = "/transCostCheckOrder/orderList?"+selectField+"="+selectValue
-               +"&create_stamp_begin_time="+create_stamp1_begin
-               +"&create_stamp_end_time="+create_stamp1_end;
-          dataTable.ajax.url(url).load();
+	      $('#searchOrderBtn').click();
       });
       
       $('#resetOrderBtn').click(function(e){

@@ -1,6 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco',  'dtColReorder'], function ($, metisMenu) {
   $(document).ready(function() {
-  	
+	  $('.search_single input,.search_single select').on('input',function(){
+		  $("#orderForm")[0].reset();
+	  });
   	  
       var dataTable = eeda.dt({
           id: 'eeda_table',
@@ -177,68 +179,18 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
       
       $("#singleSearchBtn").click(function(){
+    	  $("#orderForm")[0].reset();
     	  var selectField = $('#selected_field').val();
     	  if(selectField=='sp_id'){
 	    	 var sp_id = $("#single_sp_id").val();
+	    	 $("#sp_id").val($("#single_sp_id").val());
+	    	 $("#sp_id_input").val($("#single_sp_id_input").val());
 	      }
 	      if(selectField=='charge_time'){
-	    	 var single_charge_time_begin_time = $("#single_charge_time_begin_time").val();
-	    	 var single_charge_time_end_time = $("#single_charge_time_end_time").val();
+	    	 $("#charge_time_begin_time").val($("#single_charge_time_begin_time").val());
+	    	 $("#charge_time_end_time").val($("#single_charge_time_end_time").val());
 	      }
-	      
-	      
-	    //合计字段
-	         $.post('transProfitAndPaymentRate/listTotal',{
-	        	 sp_id:sp_id,
-	        	 charge_time_begin_time:single_charge_time_begin_time,
-	        	 charge_time_end_time:single_charge_time_end_time
-	         },function(data){
-	       	  var cost_cny = parseFloat(data.COST_CNY).toFixed(2);
-	       	  var cost_usd = parseFloat(data.COST_USD).toFixed(2);
-	       	  var cost_jpy = parseFloat(data.COST_JPY).toFixed(2);
-	       	  var cost_hkd = parseFloat(data.COST_HKD).toFixed(2);
-	       	  var total_cost = parseFloat(data.TOTAL_COST).toFixed(2);
-	       	  var uncost_cny = parseFloat(data.UNCOST_CNY).toFixed(2);
-	       	  var uncost_usd = parseFloat(data.UNCOST_USD).toFixed(2);
-	       	  var uncost_jpy = parseFloat(data.UNCOST_JPY).toFixed(2);
-	       	  var uncost_hkd = parseFloat(data.UNCOST_HKD).toFixed(2);
-	       	  var total_uncost = parseFloat(data.TOTAL_UNCOST).toFixed(2);
-	       	  $('#CNY_cost_tatol').text(eeda.numFormat(cost_cny,3));
-	       	  $('#USD_cost_tatol').text(eeda.numFormat(cost_usd,3));
-	       	  $('#JPY_cost_tatol').text(eeda.numFormat(cost_jpy,3));
-	       	  $('#HKD_cost_tatol').text(eeda.numFormat(cost_hkd,3));
-	       	  $('#total_cost').text(eeda.numFormat(total_cost,3));
-	       	  $('#CNY_uncost_tatol').text(eeda.numFormat(uncost_cny,3)).css('color','red');
-	       	  $('#USD_uncost_tatol').text(eeda.numFormat(uncost_usd,3)).css('color','red');
-	       	  $('#JPY_uncost_tatol').text(eeda.numFormat(uncost_jpy,3)).css('color','red');
-	       	  $('#HKD_uncost_tatol').text(eeda.numFormat(uncost_hkd,3)).css('color','red');
-	       	  $('#total_uncost').text(eeda.numFormat(total_uncost,3)).css('color','red');
-//	       	 var total=parseFloat(data.TOTAL);
-//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=abbr]').html('共'+total+'项汇总：');
-//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_cny]').html("CNY:"+eeda.numFormat(cost_cny,3));
-//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_usd]').html("USD:"+eeda.numFormat(cost_usd,3));
-//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_jpy]').html("JPY:"+eeda.numFormat(cost_jpy,3));
-//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_hkd]').html("HKD:"+eeda.numFormat(cost_hkd,3));
-//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=cost_rmb]').html("应付折合(CNY):"+eeda.numFormat(total_cost,3));
-//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_cny]').html("CNY:"+eeda.numFormat(uncost_cny,3)).css('color','red');
-//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_usd]').html("USD:"+eeda.numFormat(uncost_usd,3)).css('color','red');
-//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_jpy]').html("JPY:"+eeda.numFormat(uncost_jpy,3)).css('color','red');
-//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_hkd]').html("HKD:"+eeda.numFormat(uncost_hkd,3)).css('color','red');
-//	  	  $($('.dataTables_scrollFoot tr')[0]).find('th[class=uncost_rmb]').html("未付折合(CNY):"+eeda.numFormat(total_uncost,3)).css('color','red');
-	       	  
-	       	  var total_profit=parseFloat(total_cost-total_uncost).toFixed(2);
-	       	  if(total_profit<0){
-	       		  $('#total_profit').text(total_profit).css('color','red');
-	       	  }else(
-	       		  $('#total_profit').text(total_profit)
-	       	  )
-
-	         });
-	      
-          var url = "/transProfitAndPaymentRate/list?sp_id="+sp_id
-               +"&charge_time_begin_time="+single_charge_time_begin_time
-               +"&charge_time_end_time="+single_charge_time_end_time
-          dataTable.ajax.url(url).load(cssTd);
+	      $('#searchBtn').click();
       });
       
       $('#resetBtn').click(function(e){
@@ -250,7 +202,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       })
 
      var searchData=function(){
-          var sp_id = $("#sp_id").val(); 
+          var sp_id = $("#sp_id").val();
+          var sp_name = $("#sp_id_input").val();
           var charge_time_begin_time = $("#charge_time_begin_time").val();
           var charge_time_end_time = $("#charge_time_end_time").val();
           /*  
@@ -310,6 +263,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           });
           
           var url = "/transProfitAndPaymentRate/list?sp_id="+sp_id
+          				  +"&p.abbr_like="+sp_name
 				          +"&charge_time_begin_time="+charge_time_begin_time
 				          +"&charge_time_end_time="+charge_time_end_time;
           dataTable.ajax.url(url).load(cssTd);

@@ -1,6 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn','./import', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-
+	  $('.search_single input,.search_single select').on('input',function(){
+		  $("#orderForm")[0].reset();
+	  });
+	  
   	  if(type!=""){
   		  $('#menu_todo_list').addClass('active').find('ul').addClass('in');
   		  $('#menu_order').removeClass('active').find('ul').removeClass('in');
@@ -202,47 +205,38 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
      });
       
       $("#singleSearchBtn").click(function(){
+    	  $("#orderForm")[0].reset();
     	  var selectField = $('#selected_field').val();
-    	  var selectValue = "";
 	      if(selectField=='order_no'||selectField=='container_no'){
-	    	  selectValue = $("#public_text").val();
+	    	  $("#"+selectField).val($("#public_text").val());
 	      }
 	      if(selectField=='customer_name_like'){
-	    	  selectValue = $("#single_customer_name_input").val();
+	    	  $("#customer_name").val($("#single_customer_name").val());
+	    	  $("#customer_name_input").val($("#single_customer_name_input").val());
 	      }
 	      if(selectField=='car_id'){
-	    	  selectValue = $("#single_car_id").val();
+	    	  $("#car_id").val($("#single_car_id").val());
+	    	  $("#car_id_input").val($("#single_car_id_input").val());
 	      }
 	      if(selectField=='cabinet_type'){
-	    	  var single_cabinet_type = $("#single_cabinet_type").val();
+	    	  $("#cabinet_type").val($("#single_cabinet_type").val());
 	      }
 	      if(selectField=='status'){
-	    	  selectValue = $("#single_status").val();
+	    	  $("#status").val($("#single_status").val());
 	      }
 	      if(selectField=='cabinet_date'){
-	    	  var cabinet_date_begin = $("#single_public_time_begin_time").val();
-	    	  var cabinet_date_end = $("#single_public_time_end_time").val();
+	    	  $("#cabinet_date_begin_time").val($("#single_public_time_begin_time").val());
+	    	  $("#cabinet_date_end_time").val($("#single_public_time_end_time").val());
 	      }
 	      if(selectField=='charge_time'){
-	    	 var charge_time_begin = $("#single_public_time_begin_time").val();
-	    	 var charge_time_end = $("#single_public_time_end_time").val();
+	    	 $("#charge_time_begin_time").val($("#single_public_time_begin_time").val());
+	    	 $("#charge_time_end_time").val($("#single_public_time_end_time").val());
 	      }
 	      if(selectField=='create_time'){
-	    	  var create_stamp_begin = $("#single_public_time_begin_time").val();
-	    	  var create_stamp_end = $("#single_public_time_end_time").val();
+	    	  $("#create_time_begin_time").val($("#single_public_time_begin_time").val());
+	    	  $("#create_time_end_time").val($("#single_public_time_begin_time").val());
 	      }
-	      
-	      //增加出口日期查询
-          var url = "/dispatchSend/list?"+selectField+"="+selectValue
-               +"&charge_time_begin_time="+charge_time_begin
-               +"&charge_time_end_time="+charge_time_end
-          	   +"&cabinet_date_begin_time="+cabinet_date_begin
-          	   +"&cabinet_date_end_time="+cabinet_date_end   
-          	   +"&create_stamp_begin_time="+create_stamp_begin
-        	   +"&create_stamp_end_time="+create_stamp_end   
-          	   +"&cabinet_type="+single_cabinet_type
-          	   +"&status="+status;
-          dataTable.ajax.url(url).load();
+	      $('#searchBtn').click();
       });
       
       $('#resetBtn').click(function(e){

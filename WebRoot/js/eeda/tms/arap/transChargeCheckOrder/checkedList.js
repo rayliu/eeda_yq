@@ -1,8 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validate_cn'], function ($, metisMenu) { 
-
     $(document).ready(function() {
-    	
-
+    	$('.search_single input,.search_single select').on('input',function(){
+  		  $("#orderForm1")[0].reset();
+  	    });
 
     	//datatable, 动态处理
         var dataTable = eeda.dt({
@@ -106,31 +106,27 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
        });
         
         $("#singleSearchBtn").click(function(){
+          $("#orderForm1")[0].reset();
       	  var selectField = $('#selected_field').val();
-      	  var selectValue = "";
 	      if(selectField=='order_no'){
-	    	  selectValue = $("#public_text").val();
+	    	  $("#order_no1").val($("#public_text").val());
 	      }
 	      if(selectField=='sp_name'){
-	    	  selectValue = $("#single_sp1_id_input").val();
+	    	  $("#sp1").val($("#single_sp1_id").val());
+	    	  $("#sp1_input").val($("#single_sp1_id_input").val());
 	      }
 	      if(selectField=='toStatus_equals'){
-	    	  selectValue = $("#single_status").val();
+	    	  $("#status").val($("#single_status").val());
 	      }
 	      if(selectField=='create_stamp1'){
-	    	  var create_stamp1_begin = $("#single_create_stamp1_begin_time").val();
-	    	  var create_stamp1_end = $("#single_create_stamp1_end_time").val();
+	    	  $("#create_stamp1_begin_time").val($("#single_create_stamp1_begin_time").val());
+	    	  $("#create_stamp1_end_time").val($("#single_create_stamp1_end_time").val());
 	      }
-  	      
-  	      //增加出口日期查询
-            var url = "/transChargeCheckOrder/checkedList?"+selectField+"="+selectValue
-                 +"&create_stamp_begin_time="+create_stamp1_begin
-                 +"&create_stamp_end_time="+create_stamp1_end;
-            dataTable.ajax.url(url).load();
+	      $('#searchBtn1').click();
         });
         
       $('#resetBtn1').click(function(e){
-          $("#orderForm")[0].reset();
+          $("#orderForm1")[0].reset();
       });
 
       $('#searchBtn1').click(function(){
