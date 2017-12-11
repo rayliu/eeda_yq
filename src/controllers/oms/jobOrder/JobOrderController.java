@@ -3753,6 +3753,12 @@ public class JobOrderController extends Controller {
         	ref_office = " or jor.office_id in ("+relist.getStr("office_id")+")";
         }
         
+        String p_id_condition = "";
+        
+        if(office_id==1){
+        	p_id_condition = " and (p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"')) ";
+        }
+        
         //代办事项条件
         String dai_condition = "";
         if("sowait".equals(type)){
@@ -3859,7 +3865,7 @@ public class JobOrderController extends Controller {
          		+ "	left join party p on p.id = jor.customer_id"
          		+ "	left join user_login u on u.id = jor.creator"
          		+ " left join user_login u1 ON u1.id = jor.updator"
-         		+ " WHERE (jor.office_id="+office_id+ ref_office+ ") and p.id in (select customer_id from user_customer where user_name='"+currentUser.getPrincipal()+"') "
+         		+ " WHERE (jor.office_id="+office_id+ ref_office+ ") "+p_id_condition
          		+ dai_condition
          	    + " and jor.delete_flag = 'N'"
          	    + " GROUP BY jor.id "
