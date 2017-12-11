@@ -4565,8 +4565,12 @@ public class JobOrderController extends Controller {
     			
     			//提交后更改允许申请标记位
     			JobOrderLandItem joli = JobOrderLandItem.dao.findById(rowId);
-    			joli.set("approval_update", "N");
+    			joli.set("submit_flag", "Y");
     			joli.update();
+    			//回填关联单号到货代工作单
+    			JobOrder jo = JobOrder.dao.findById(joli.get("order_id"));
+    			jo.set("plan_order_no", order_no);
+    			jo.update();
     			
     			//往表trans_job_order存入数据
     			transJobOrder.set("order_no", order_no);
@@ -4614,6 +4618,7 @@ public class JobOrderController extends Controller {
     		}else{
     			//提交后更改允许申请标记位
     			JobOrderLandItem joli = JobOrderLandItem.dao.findById(rowId);
+    			joli.set("submit_flag", "Y");
     			joli.set("approval_update", "N");
     			joli.update();
     			

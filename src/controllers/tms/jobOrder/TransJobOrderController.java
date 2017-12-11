@@ -1399,6 +1399,7 @@ public class TransJobOrderController extends Controller {
     	tjo.set("update_apply_flag", "N");
     	tjo.update();
     	JobOrderLandItem joli =JobOrderLandItem.dao.findById(tjo.get("from_order_item_id"));
+    	joli.set("submit_flag", "N");
     	joli.set("approval_update", "Y");
     	joli.update();
     	renderJson("{\"result\":true}");

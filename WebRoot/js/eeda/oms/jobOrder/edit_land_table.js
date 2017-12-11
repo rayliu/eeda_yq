@@ -64,9 +64,15 @@ $(document).ready(function() {
                 	var value = el.val();//元素的值
                 	item[name] = value;
                 	if(name=='take_address_id'){
+                		if(value==undefined){
+                			item[name] = "";
+                		}
                 		value = $(row.childNodes[i]).parent().find('[name=TAKE_ADDRESS]').attr('loc_type');
                 		item['take_address_type'] = value;
                 	}else if(name=='delivery_address_id'){
+                		if(value==undefined){
+                			item[name] = "";
+                		}
                 		value = $(row.childNodes[i]).parent().find('[name=DELIVERY_ADDRESS]').attr('loc_type');
                 		item['delivery_address_type'] = value;
                 	}
@@ -129,7 +135,7 @@ $(document).ready(function() {
 			},
             { "data":"TAKE_ADDRESS_ID","width": "40px","className":"consignor_contact_id",
                 "render": function ( data, type, full, meta ) {
-                	if(full.APPROVAL_UPDATE=="N"){
+                	if(full.SUBMIT_FLAG=="Y"){
                 		land_ids_true.push(full.ID);
                 	}
                 	if(full.APPROVAL_UPDATE=="Y"){
@@ -524,6 +530,13 @@ $(document).ready(function() {
             		return data;
             	}
             },
+            { "data": "SUBMIT_FLAG", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return data;
+            	}
+            },
             { "data": "APPROVAL_UPDATE", "visible": false,
             	"render": function ( data, type, full, meta ) {
             		if(!data)
@@ -809,10 +822,10 @@ $(document).ready(function() {
     		$("#land_table tr[id='"+row_id+"'] td").each(function(){
     			var name = $(this).children().attr("name");
     			if(name=='delete'){
-    				item['take_address_id'] = $(this).find("input").val();
+    				item['take_address_id'] = $(this).find("input").val()==null?"":$(this).find("input").val();
     				item['take_address_type'] = $(this).find("input").attr("loc_type");
     			}else if(name=='land_charge'){
-    				item['delivery_address_id'] = $(this).find("input").val();
+    				item['delivery_address_id'] = $(this).find("input").val()==null?"":$(this).find("input").val();
     				item['delivery_address_type'] = $(this).find("input").attr("loc_type");
     			}else{
     				item[name] = $(this).children().val();

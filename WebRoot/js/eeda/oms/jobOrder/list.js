@@ -58,10 +58,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                       +'<i class="fa fa-trash-o"></i> 删除</button>';
                   }
               },
-              { "data": "ORDER_NO", 
+              { "data": "ORDER_NO", "width": "60px",
                   "render": function ( data, type, full, meta ) {
-                	  var other = '';
+                	var other = '';
                     var new_count='';
+                    var update = '';
                     if(full.NEW_COUNT>0){
                       new_count='style="background-color:white;color:red;"';
                     }
@@ -69,8 +70,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
                 		  other = ' <span class="" '+new_count
                           +'><img src="/images/order_from_outside.png" style="height:15px;" title="Outside Order"></span>';
                 	  }
+                	  if(full.APPROVAL_UPDATE>0){
+                		  update = '\n<span style="color:red">允许修改</spand>'
+                	  }
                 	  if(editPermission){
-                		  return "<a href='/jobOrder/edit?id="+full.ID+"'target='_blank'>"+data+other+"</a>"; 
+                		  return "<a href='/jobOrder/edit?id="+full.ID+"'target='_blank'>"+data+other+update+"</a>"; 
                 	  }else{
                 		  return data+other; 
                 	  }
