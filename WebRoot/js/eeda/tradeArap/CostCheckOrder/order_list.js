@@ -1,6 +1,9 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-  	
+	  $('.search_single input,.search_single select').on('input',function(){
+		  $("#orderSearchForm")[0].reset();
+	  });
+	  
   	  $('#cost_check_order_tab').click(function(){
           $('#order_table').DataTable().draw();
       });

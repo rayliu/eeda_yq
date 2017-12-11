@@ -1,5 +1,8 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn','pageguide','sco', 'datetimepicker_CN', 'dtColReorder'], function ($, metisMenu) {
 $(document).ready(function() {
+	$('.search_single input,.search_single select').on('input',function(){
+		$('#applicationForm')[0].reset();
+	  });
 	tl.pg.init({
         pg_caption: '本页教程'
     });
