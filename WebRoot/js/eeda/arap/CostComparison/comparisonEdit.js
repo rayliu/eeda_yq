@@ -12,9 +12,7 @@ $(document).ready(function() {
     var buildOrder = function(){
     	var item = {};
     	item.id = $('#order_id').val();
-    	if(!item.id){
-    		item.status ='新建';
-    	}
+    	
     	item.service_type = $('#billing_method input[type="radio"]:checked').val();
     	//根据类型储存港口
     	if(item.service_type=='ocean'){
@@ -54,7 +52,6 @@ $(document).ready(function() {
     	item.target_currency = $('#target_currency').val();
     	
     	item.total = $('#total').val();
-    	item.status='新建';
     	var orderForm = $('#orderForm input,#orderForm select,#orderForm textarea');
     	for(var i = 0; i < orderForm.length; i++){
     		var name = orderForm[i].id;
@@ -70,6 +67,9 @@ $(document).ready(function() {
             	}
         		item[name] = value;
         	}
+    	}
+    	if(!item.id){
+    		item.status ='新建';
     	}
         return item;
     }
@@ -94,6 +94,8 @@ $(document).ready(function() {
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 				$("#order_no").val(data.ORDER_NO);
 				$("#order_id").val(data.ID);
+				$("#status").val(data.STATUS);
+				statusControl();
 				itemOrder.refleshSupplierTable(data.ID);
 //				itemOrder.refleshQuotationTable(data.ID);
 				eeda.contactUrl("edit?id",data.ID);				
@@ -143,12 +145,57 @@ $(document).ready(function() {
 		var total =parseFloat(cny_total+usd_total+jpy_total+hkd_total).toFixed(2);
 		$('#total').val(total);
 	}
+	//按钮控制
+	var statusControl = function(){
+		var status = $('#status').val();
+		if(status=="已提交"){
+			$('#submitBtn').attr('disabled',true);
+			$('#saveBtn').attr('disabled',true);
+			$('#auditBtn').attr('disabled',false);
+			$('#auditBtnDeny').attr('disabled',false);
+		}else if(status=="审核通过"){
+			$('#submitBtn').attr('disabled',true);
+			$('#saveBtn').attr('disabled',true);
+			$('#auditBtn').attr('disabled',true);
+			$('#auditBtnDeny').attr('disabled',true);
+		}else if(status=="审核不通过"||status=="新建"){
+			$('#submitBtn').attr('disabled',false);
+			$('#saveBtn').attr('disabled',false);
+			$('#auditBtn').attr('disabled',true);
+			$('#auditBtnDeny').attr('disabled',true);
+		}else{
+			$('#submitBtn').attr('disabled',true);
+			$('#saveBtn').attr('disabled',false);
+			$('#auditBtn').attr('disabled',true);
+			$('#auditBtnDeny').attr('disabled',true);
+		} 
+	}
+	
+	//提交供应商评比单
+	$('#submitBtn,#auditBtn,#auditBtnDeny').click(function(){
+		var thisId = $(this).attr('id');
+		var order_id = $('#order_id').val();
+		$.post('/costComparison/submit',{order_id:order_id,thisId:thisId},function(data){
+			if(data){
+				$('#status').val(data.STATUS);
+				statusControl();
+				$.scojs_message('操作成功', $.scojs_message.TYPE_OK);
+			}
+		},'json').fail(function(){
+			$.scojs_message('操作失败', $.scojs_message.TYPE_OK);
+		});
+	});
+	
+	
+	
+	
 	
 	
 	if($('#order_id').val()){
 		setTimeout(function(){
 			itemOrder.searchShowItem();
 		},100)
-	}	
+	}
+	statusControl();
 });
 });

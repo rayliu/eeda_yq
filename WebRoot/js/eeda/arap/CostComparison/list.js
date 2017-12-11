@@ -159,14 +159,11 @@ $(document).ready(function() {
     	singleSearchData();
     });
 	var singleSearchData = function(){ 
-		var sp_id = $("#single_sp_id").val();
-		var service_stamp = $("#service_stamp_n").val();
+		var order_no = $("#orderNo").val();
 		var status = $("#status").val();
-	    var url = "/costComparison/CostComparisonList?sp_id="+sp_id
-	     		 +"&service_stamp_between="+service_stamp
+	    var url = "/costComparison/list?order_no="+order_no
 	     		 +"&status="+encodeURI(status);
 	     CostComparison_table.ajax.url(url).load();
-	     totalMoney();
 	}
 
     //查询动作
@@ -217,7 +214,6 @@ $(document).ready(function() {
             +"&receive_time_begin_time="+confirmBegin_date_begin_time
             +"&receive_time_end_time="+confirmBegin_date_end_time;
        CostComparison_table.ajax.url(url).load();
-       totalMoney();
        saveConditions();
     };
     

@@ -7,13 +7,12 @@
             	<div class="row"><!--  第1行  -->
             		<div class="search_single">
 	                	<div class="col-lg-3"><!--  三列排版  -->
-                           	<div class="form-group"  id="sp_id_show">
-                                <%include("/eeda/component/form/inputSpField.html", 
-                                         {   id: 'single_sp_id', 
-                                         	label:'结算公司',
-                                             value: ''
-                                         }){}%>
-	                   	 	</div>
+                           	<div class="form-group">      
+	                                    <%include("/eeda/component/form/inputField.html", 
+	                                    { id:'orderNo',
+	                                      label:'评比单号'	                                     
+	                                     }){} %>
+							</div>
 						</div>
 	                	
 						<div class="col-lg-3"><!--  三列排版  -->
@@ -21,10 +20,9 @@
 									<label class="search-label">状态</label>
 									<select id="status" class="form-control search-control status">
 											<option value="新建">新建</option>
-											<option value="已复核">已复核</option>
-											<option value="复核不通过">复核不通过</option>
-											<option value="已收款">已收款</option>
-                      						<option value="该笔为坏账">该笔为坏账</option>
+											<option value="已提交">已提交</option>
+											<option value="审核通过">审核通过</option>
+											<option value="审核不通过">审核不通过</option>
 											<option value=""></option>
 									</select>
 							</div>
@@ -46,7 +44,7 @@
 		
 			<div id="collapseChargeInfo" class="panel-collapse collapse" aria-expanded="false" style="height: auto;">
 				<div class="panel-body" id="ChargeDiv">
-            		<div class="col-lg-12">
+            		<div class="col-lg-12" style="display:none">
                 		<form id="CostComparisonForm" role="form">
 							<input id='back' name='back' type="hidden" value="${back!''}">
 	                		<input id="confirmVal" type="hidden">
@@ -54,33 +52,7 @@
 								<div class="col-lg-4">
 									<input id="rowIndex" type="text" hidden>
 	                                <input id="table_id" type="text" hidden>
-	                                <div class="form-group">      
-	                                    <%include("/eeda/component/form/inputField.html", 
-	                                    { id:'orderNo',
-	                                      label:'评比单号'	                                     
-	                                     }){} %>
-									</div>
-								</div>
-								<div class="col-lg-4">
-									<div class="form-group">      
-		                     			<%include("/eeda/component/form/dateInputField.html", 
-		                     			{id:'service_stamp', label:'业务发生月', value:''}){} %>
-									</div>
-									<div class="form-group">
-										<label class="search-label">发票号</label>
-										<input type="text" class="form-control search-control CostComparisonOrderNo" id="invoices_no" value="">
-									</div>
-								</div>
-								<div class="col-lg-4">
-									<div class="form-group">      
-                            			<%include("/eeda/component/form/inputDateQueryField.html", {id:'check_begin_date', label:'复核时间', value:''}){} %>
-									</div>
-									<div class="form-group">      
-                                		<%include("/eeda/component/form/inputDateQueryField.html", {id:'confirmBegin_date', label:'收款时间', value:''}){} %>
-									</div>
-									<div class="form-group">      
-                                		<%include("/eeda/component/form/inputDateQueryField.html", {id:'begin_date', label:'创建时间', value:''}){} %>
-									</div>
+	                                
 								</div>
 							</div>
 							<button id="searchBtn" class="btn btn_grey" type="button">查询</button>

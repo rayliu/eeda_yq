@@ -172,15 +172,22 @@ public class CostComparisonController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         
-        String sql = "SELECT spCom.*,dock.dock_name loc_name,lor.name por_name,lol.name pol_name,lod.name pod_name,ul.c_name creator_name,cy.name currency_name"
-				+ " from sp_cost_compare_order spCom"
-				+ " LEFT JOIN dockinfo dock on dock.id = spCom.pickup_loc"
-				+ " LEFT JOIN location lor on lor.id = spCom.por"
-				+ " LEFT JOIN location lol on lol.id = spCom.pol"
-				+ " LEFT JOIN location lod on lod.id = spCom.pod"
-				+ " LEFT JOIN user_login ul on ul.id = spCom.creator"
-				+ " LEFT JOIN currency cy on cy.id = spCom.target_currency"
-				+ "  WHERE spCom.office_id = "+office_id;
+        String sql = " SELECT 	spCom.*,lor. NAME por_name, "
+				+" IF(service_type = 'doorToPort',ifnull(dockp.dock_name,concat(lpol.name,' -',lpol.code)), "
+				+" IFNULL(lol. NAME,ifnull(dockp.dock_name,concat(lpol.name,' -',lpol.code)))) pol_name, "
+				+" IFNULL(lod. NAME,ifnull(dockd.dock_name,concat(lpod.name,' -',lpod.code))) pod_name, "
+				+" 	ul.c_name creator_name,	cy. NAME currency_name "
+				+" FROM sp_cost_compare_order spCom "
+				+" LEFT JOIN dockinfo dockp on (dockp.id = spCom.pickup_loc and spCom.pickup_loc_type='land') "
+				+" LEFT JOIN dockinfo dockd on (dockd.id = spCom.delivery_loc and spCom.delivery_loc_type='land') "
+				+" LEFT JOIN location lpol  on (lpol.id = spCom.pickup_loc and spCom.pickup_loc_type='port') "
+				+" LEFT JOIN location lpod  on (lpod.id = spCom.delivery_loc and spCom.delivery_loc_type='port') "
+				+" LEFT JOIN location lor on lor.id = spCom.por "
+				+" LEFT JOIN location lol on lol.id = spCom.pol "
+				+" LEFT JOIN location lod on lod.id = spCom.pod "
+				+" LEFT JOIN user_login ul ON ul.id = spCom.creator "
+				+" LEFT JOIN currency cy ON cy.id = spCom.target_currency "
+				+" WHERE spCom.office_id ="+office_id;
 		
         String condition = DbUtils.buildConditions(getParaMap());
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
@@ -549,5 +556,23 @@ public class CostComparisonController extends Controller {
         map.put("iTotalDisplayRecords", list.size());
         map.put("aaData", list);
         renderJson(map); 
-    }    
+    }
+    
+    //提交供应商成本评比单
+    public void submit(){
+    	String order_id = getPara("order_id");
+    	String thisId = getPara("thisId");
+    	String orderSql = "select * from sp_cost_compare_order where id =?";
+    	
+    	Record orderRec = Db.findFirst(orderSql,order_id);
+		if("submitBtn".equals(thisId)){
+			orderRec.set("status", "已提交");		
+		}else if("auditBtn".equals(thisId)){
+			orderRec.set("status", "审核通过");	
+		}else if("auditBtnDeny".equals(thisId)){
+			orderRec.set("status", "审核不通过");
+		}   	
+    	Db.update("sp_cost_compare_order", orderRec);
+    	renderJson(orderRec);
+    }
 }
