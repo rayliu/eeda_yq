@@ -9,10 +9,13 @@ import models.eeda.oms.jobOrder.JobOrderShipment;
 
 import com.jfinal.log.Log;
 
-public class JobOrderJob implements Runnable {
+import cron4j.ITask;
+
+public class JobOrderJob implements ITask {
 	private Log logger = Log.getLog(JobOrderJob.class);
 
 	@Override
+	// 这里放被执行的任务代码
 	public void run() {
 		String sql = "SELECT id,etd,atd,eta,ata FROM job_order_shipment where ((atd is  null or atd ='') and (etd is not null or etd!='')) or ((ata is  null or ata ='') and (eta is not null or eta!='')) ;";
 
@@ -66,5 +69,11 @@ public class JobOrderJob implements Runnable {
 				
 		}
 	}
+
+    @Override
+    public void stop() {
+        // 这里的代码会在 task 被关闭前调用
+        
+    }
 
 }
