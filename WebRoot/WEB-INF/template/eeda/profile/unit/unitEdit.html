@@ -36,6 +36,22 @@
                                 }){}%>
                         </div>
                     </div>
+                    <div class="row"><!--  第2行  -->
+                    	<div class="col-lg-4"><!--  三列排版  --></div>
+                    	<div class="col-lg-4"><!--  三列排版  --></div>
+                    	<div class="col-lg-4"><!--  三列排版  -->
+                            <%include("/eeda/component/form/selectField.html", 
+                                {   id:'type', 
+                                    label:'单位类型', 
+                                    value:order.type!'',
+                                    value_list:[
+                                        	{code:'',value:''},
+                                            {code:'order', value:'业务单位'},
+                                            {code:'charge', value:'财务单位'}
+                                        ]
+                                }){}%>
+                        </div>
+                    </div>
                 </form>
             </div><!-- /.row -->
 

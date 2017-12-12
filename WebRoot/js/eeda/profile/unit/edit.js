@@ -79,6 +79,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 code: $('#code').val(),
                 name: $('#name').val(),
                 name_eng: $('#name_eng').val(),
+                type: $('#type').val()
             };
             //异步向后台提交数据
             $.post('/unit/save', {params:JSON.stringify(order)}, function(data){
@@ -88,6 +89,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 	$("#code").val(order.CODE);
                 	$("#name").val(order.NAME);
                 	$("#name_eng").val(order.NAME_ENG);
+                	$("#type").val(order.TYPE);
                     
                     eeda.contactUrl("edit?id",order.ID);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
