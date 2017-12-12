@@ -204,6 +204,7 @@ $(document).ready(function() {
                             {
                                 id: 'TRANSPORT_COMPANY',
                                 value: data,
+                                ref_office_id:full.REF_OFFICE_ID,
                                 display_value: full.TRANSPORT_COMPANY_NAME,
                                 style:'width:120px'
                             }
@@ -557,6 +558,13 @@ $(document).ready(function() {
             			data='';
             		return data;
             	}
+            },
+            { "data": "REF_OFFICE_ID", "visible": false,
+            	"render": function ( data, type, full, meta ) {
+            		if(!data)
+            			data='';
+            		return data;
+            	}
             }
         ]
     });
@@ -779,21 +787,30 @@ $(document).ready(function() {
     //提交按钮单击事件
     $("#submitBtn").click(function(){
     	$("#allCheckOfLand").attr("disabled",true);
-    	
-    	var order = {};
-    	order.order_id = $("#order_id").val();
-    	order.customer_id = $("#customer_id").val();
-    	order.type = $("#type").val();
-    	order.trade_type = $("#trade_type").val();
-    	order.order_no = $("#order_no").val();
-    	order.landList = land_item();
-    	$.post("/jobOrder/landSubmit",{params:JSON.stringify(order)},function(data){
-    		if(data){
-    			$.scojs_message('提交成功', $.scojs_message.TYPE_OK);
-    		}
-    	},'json').fail(function() {
-            $.scojs_message('提交失败', $.scojs_message.TYPE_ERROR);
-        });
+    	var ref_office_id = $("#TRANSPORT_COMPANY_input").attr("ref_office_id");
+    	if(ref_office_id==undefined||ref_office_id==null){
+    		$.scojs_message('不能提交给该公司', $.scojs_message.TYPE_ERROR);
+    	}else{
+    		var order = {};
+        	order.order_id = $("#order_id").val();
+        	order.customer_id = $("#customer_id").val();
+        	order.type = $("#type").val();
+        	order.trade_type = $("#trade_type").val();
+        	order.order_no = $("#order_no").val();
+        	order.landList = land_item();
+    		$.post("/jobOrder/landSubmit",{params:JSON.stringify(order)},function(data){
+        		if(data.RESULT){
+        			$.scojs_message('提交成功', $.scojs_message.TYPE_OK);
+        		}else if(data.error){
+            		var error = "（"+data.error+"）";
+                    $.scojs_message('提交失败'+error, $.scojs_message.TYPE_ERROR);
+        			relieve();
+        		}
+        	},'json').fail(function() {
+                $.scojs_message('提交失败', $.scojs_message.TYPE_ERROR);
+                relieve();
+            });
+    	}
     });
     
     //修改申请单击事件
@@ -879,5 +896,20 @@ $(document).ready(function() {
         }
     }
     
+    var relieve = function(){
+    	$('#land_table input[type="checkbox"]:checked').each(function(){
+    		var row_id = $(this).parent().parent().attr("id");
+    		$("#land_table tr[id='"+row_id+"'] td").each(function(){
+    			var name = $(this).children().attr("name");
+    			if(name!='checkBox'){
+    				$(this).children().attr("disabled",false);
+    			}
+    		});
+        	$("#land_table tr[id='"+row_id+"'] td div input").each(function(){
+        		var name = $(this).attr("name");
+        		$(this).attr("disabled",false);
+        	});
+    	});
+    }
 	});
 });

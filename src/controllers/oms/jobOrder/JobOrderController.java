@@ -3225,7 +3225,7 @@ public class JobOrderController extends Controller {
     		itemSql = "select * from job_order_air_cargodesc where order_id=? order by id";
     		itemList = Db.find(itemSql, orderId);
     	}else if("land".equals(type)){
-    		itemSql = "select jol.*, p.abbr transport_company_name,CAST(GROUP_CONCAT(jold.id) as char ) job_order_land_doc_id, GROUP_CONCAT(jold.doc_name) doc_name,"
+    		itemSql = "select jol.*, p.abbr transport_company_name,p.ref_office_id,CAST(GROUP_CONCAT(jold.id) as char ) job_order_land_doc_id, GROUP_CONCAT(jold.doc_name) doc_name,"
     		        + " p1.abbr consignor_name, p2.abbr consignee_name, CONCAT(u.name,u.name_eng) unit_name "
     		        + " from job_order_land_item jol "
     				+ " left join party p on p.id=jol.transport_company"
@@ -4561,10 +4561,19 @@ public class JobOrderController extends Controller {
     		Record re = Db.findFirst("select*from trans_job_order where from_order_item_id="+rowId);
     		if(re==null){
     			String ETA = (String)rowMap.get("ETA");
+    			if(StringUtils.isBlank(ETA)){
+    				renderJson("{\"error\":\"预约到达时间必填，否则不可提交\"}");
+    				return;
+    			}
     			Date date = sdf.parse(ETA);
     			String jobOrderDate = parseFormat.format(date).toString();
     			//需后台处理的字段
-    			String order_no = OrderNoGenerator.getNextOrderNo("HT", office_id);
+    			String order_no = "";
+    			if(office_id == 4){
+    				order_no = OrderNoGenerator.getNextOrderNo("HT", office_id);
+    			}else{
+    				order_no = OrderNoGenerator.getOrderNo("jobOrder",office_id);
+    			}
     			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
     			sb.replace(2, 5, jobOrderDate);
     			order_no =sb.toString();

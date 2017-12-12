@@ -589,7 +589,7 @@ eeda.refreshUrl = refreshUrl;
             }else{
             	if(data!="无记录"){
             		for(var i = 0; i < data.length; i++){
-                        tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID+"' dataName='"+data[i].NAME+"' sp_type='"+data[i].SP_TYPE+"' >"+data[i].NAME+"</a></li>");
+                        tableFieldList.append("<li tabindex='"+i+"'><a class='fromLocationItem' dataId='"+data[i].ID+"' dataName='"+data[i].NAME+"' sp_type='"+data[i].SP_TYPE+"' ref_office_id='"+data[i].REF_OFFICE_ID+"'>"+data[i].NAME+"</a></li>");
                     }
             	}
             }
@@ -623,6 +623,7 @@ eeda.refreshUrl = refreshUrl;
 			  tableFieldList.hide();
 			  var dataId = $(this).attr('dataId');
 			  hiddenField.val(dataId);//id
+			  inputField.attr("ref_office_id",$(this).attr("ref_office_id"));
 		  });
 
       tableFieldList.on('keydown', 'li', function(e){

@@ -6,7 +6,7 @@
 	                   name="{{id}}_input" placeholder="{{placeholder}}" value="{{display_value}}" style="{{style}}" >
             {{else}}
 	            <input type="text" {{disabled}} class="form-control search-control" 
-	                name="{{id}}_input" placeholder="请选择" value="{{display_value}}" style="{{style}}" >
+	                name="{{id}}_input" placeholder="请选择" value="{{display_value}}" style="{{style}}" ref_office_id="{{ref_office_id}}">
             {{/if}} 
         </div> 
 </script>

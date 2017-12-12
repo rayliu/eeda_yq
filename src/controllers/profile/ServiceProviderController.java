@@ -738,7 +738,7 @@ public class ServiceProviderController extends Controller {
     		conditions = " and (p.abbr like '%" + input + "%' or p.company_name like '%" + input + "%')";
     	}
     			
-    	String sql = "select * from (SELECT p.id, p.abbr name "
+    	String sql = "select * from (SELECT p.id, p.abbr name,p.ref_office_id "
     				+ " FROM user_query_history uqh"
     				+ " LEFT JOIN party p ON p.id = uqh.ref_id"
     				+ " and uqh.type = UPPER('"+sp_type+"')"
@@ -747,7 +747,7 @@ public class ServiceProviderController extends Controller {
     				+ " and uqh.user_id = "+LoginUserController.getLoginUserId(this)
     				+ " ORDER BY uqh.query_stamp desc limit 0,25) A"
     				+ " UNION "
-    				+ " (select p.id,p.abbr name from party p"
+    				+ " (select p.id,p.abbr name,p.ref_office_id from party p"
     				+ " where office_id="+office_id+" and p.type = 'SP'"
     				+ " and p.sp_type like '%"+sp_type+"%'"
     				+ conditions+") limit 0,25";
