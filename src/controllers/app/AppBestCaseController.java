@@ -46,4 +46,30 @@ public class AppBestCaseController extends Controller {
     	data.set("caseList", caseList);
         renderJson(data);  
     }
+    
+    /*
+     * 精选明细
+     */
+    public void find_case_by_id(){
+    	String case_id = getRequest().getHeader("case_id");
+    	
+    	//店铺信息
+    	List<Record> shop = Db.find(""
+    			+ " select wc.*,cor.name category_name"
+    			+ " from wc_case cc "
+    			+ " left join wc_company wc on wc.creator = cc.creator"
+    			+ " left join category cor on cor.id = wc.trade_type"
+    			+ " where cc.id = ?",case_id);
+    	//案例明细
+    	List<Record> caseList = Db.find(""
+    			+ " select * from wc_case_item"
+    			+ " where order_id = ?",case_id);
+    	
+    	Record data = new Record();
+    	data.set("shop", shop);
+    	data.set("caseList", caseList);
+        renderJson(data);  	
+    }
+    
+    
 }
