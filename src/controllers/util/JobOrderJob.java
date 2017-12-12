@@ -52,10 +52,10 @@ public class JobOrderJob implements ITask {
 		
 		
 		Calendar c = Calendar.getInstance();
-//		int current_day=c.get(Calendar.DATE);//获取当前日
+		int current_day=c.get(Calendar.DATE);//获取当前日
 		int current_month = c.get(Calendar.MONTH )+1;//获取当前月份
 		int month_int = 0;
-		int current_day = 12;
+//		int current_day = 20;
 		if(current_day==20){
 			JobOrder jobOrder = new JobOrder();
 			List<JobOrder> jobOrederList = jobOrder.find("select id,status,order_export_date from job_order where office_id=1 and status!='已完成' and Date(order_export_date)>='2017-01-01'; ");
