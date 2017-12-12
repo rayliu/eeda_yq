@@ -424,7 +424,7 @@ $(document).ready(function() {
             { "data": "TOTAL_AMOUNT", "width": "80px","className":"currency_total_amount",
                 "render": function ( data, type, full, meta ) {
                 	if(data)
-                        var str =  parseFloat(data).toFixed(3);
+                        var str =  parseFloat(data).toFixed(2);
                     else
                     	str = '';
                 	return '<input type="text" name="total_amount" style="width:150px" value="'+str+'" class="form-control notsave" disabled />';
@@ -710,7 +710,7 @@ $(document).ready(function() {
                     $(row.find('[name=rmb_difference]')).val('');
                 }
                 if(exchange_currency_rate!=''&&!isNaN(exchange_currency_rate)){
-                    $(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate)).toFixed(2));
+                    $(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate)).toFixed(4));
                       if(exchange_currency_rate_rmb==''){
                          $(row.find('[name=exchange_total_amount_rmb]')).val('');
                          $(row.find('[name=rmb_difference]')).val('');

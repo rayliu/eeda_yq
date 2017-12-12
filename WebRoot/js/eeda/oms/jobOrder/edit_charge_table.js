@@ -781,7 +781,7 @@ $(document).ready(function() {
                      $(row.find('[name=rmb_difference]')).val('');
         		}
     			if(exchange_currency_rate!=''&&!isNaN(exchange_currency_rate)){
-                    $(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate)).toFixed(2));
+                    $(row.find('[name=exchange_total_amount]')).val((total_amount*parseFloat(exchange_currency_rate)).toFixed(4));
         		      if(exchange_currency_rate_rmb==''){
                          $(row.find('[name=exchange_total_amount_rmb]')).val('');
                          $(row.find('[name=rmb_difference]')).val('');
