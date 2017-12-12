@@ -15,7 +15,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'file_upload' ,'sco','dataTablesBoot
                  { "data": "REMARK"},
                  {"data": null, 
                     "render": function ( data, type, full, meta ) {
-                      var str = "<a class='btn  btn-primary btn-sm' href='/tradeItem/edit?id="+full.ID+"' target='_blank'>"+
+                      var str = "<a class='btn table_btn btn-success btn-sm' href='/tradeItem/edit?id="+full.ID+"' target='_blank'>"+
                         "<i class='fa fa-edit fa-fw'></i>"+
                         "编辑"+"</a> ";
                       return str;

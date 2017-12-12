@@ -39,14 +39,14 @@
                                         <div class="col-lg-4"><!--  三列排版  -->
                                             <%include("/eeda/component/form/inputField.html", 
                                                                 {   id: 'name', 
-                                                                    label: '单位', 
+                                                                    label: '包装单位', 
                                                                     value: ''
                                                                 }){}%>
                                         </div>
                                         <div class="col-lg-4"><!--  三列排版  -->
                                             <%include("/eeda/component/form/inputField.html", 
                                                                 {   id: 'name_eng', 
-                                                                    label: '单位(英)', 
+                                                                    label: '包装单位(英)', 
                                                                     value: ''
                                                                 }){}%>
                                         </div>
@@ -73,7 +73,7 @@
 	                            <%include("/eeda/component/form/detailTable.html", 
 	                                {
 	                                    id:'eeda-table', 
-	                                    headers:['代码','单位','单位(英)', '']
+	                                    headers:['代码','包装单位','包装单位(英)', '单位类型','']
 	                                }){} %>
 	                        </div>
 	                    </div>

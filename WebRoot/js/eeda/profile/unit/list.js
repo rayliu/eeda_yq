@@ -12,10 +12,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap',  'dtColReorde
             columns:[
 	              { "data": "CODE"},          
                   { "data": "NAME"},          
-                  { "data": "NAME_ENG"},          
-                  {"data": null, 
+                  { "data": "NAME_ENG"}, 
+                  { "data": "TYPE",
+                	  "render": function ( data, type, full, meta ) {
+                         if(data=="order"){
+                        	 return "<span>业务单位</span>";
+                         }else if(data=="charge"){
+                        	 return "<span>财务单位</span>";
+                         }
+                      }  
+                  }, 
+                  {"data": null,
                     "render": function ( data, type, full, meta ) {
-                      var str = "<a class='btn  btn-primary btn-sm' href='/unit/edit?id="+full.ID+"' target='_blank' style='display:none;'>"+
+                      var str = "<a class='btn table_btn btn-success btn-sm' href='/unit/edit?id="+full.ID+"' target='_blank' style=''>"+
                         "<i class='fa fa-edit fa-fw'></i>"+
                         "编辑"+"</a> ";
                       return str;

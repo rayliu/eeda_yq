@@ -62,13 +62,15 @@ public class UnitController extends Controller {
     }
     
     public void list() {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("sEcho");
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
         }
         String condition = DbUtils.buildConditions(getParaMap());
-        String sql = "SELECT id,code,name_eng,name from unit where 1=1 "+condition;
+        String sql = "SELECT id,code,name_eng,name,type from unit where 1=1 "+condition+" and office_id="+office_id+" or office_id is null";
 
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
@@ -117,7 +119,9 @@ public class UnitController extends Controller {
     @RequiresPermissions(value = { PermissionConstant.PERMSSION_T_CREATE,
             PermissionConstant.PERMSSION_T_UPDATE }, logical = Logical.OR)
     public void save() {
-        String jsonStr=getPara("params");
+    	UserLogin user = LoginUserController.getLoginUser(this);
+        long office_id = user.getLong("office_id");
+        String jsonStr = getPara("params");
         Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         String id = (String) dto.get("id");
@@ -125,6 +129,7 @@ public class UnitController extends Controller {
         if (StringUtils.isBlank(id)) {
         	//create
    			DbUtils.setModelValues(dto, u);
+   			u.set("office_id", office_id);
             u.save();
             id = u.getLong("id").toString();
         } else {
