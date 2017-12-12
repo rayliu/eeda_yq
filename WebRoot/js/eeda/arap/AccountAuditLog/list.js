@@ -99,22 +99,22 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                 {"data":"DATE"},
                 {"data": "INIT_AMOUNT",  //期初
                     "render": function(data, type, full, meta) {
-                        return eeda.numFormat(data,3);
+                        return eeda.numFormat(data.toFixed(2),3);
                     }
                 },
-                {"data": "TOTAL_CHARGE",  //本期收入
+                {"data": "TOTAL_CHARGE_AMOUNT",  //本期收入
                     "render": function(data, type, full, meta) {
-                        return eeda.numFormat(data,3);
+                        return eeda.numFormat(data.toFixed(2),3);
                     }
                 }, 
-                {"data":"TOTAL_COST",  //本期支出
+                {"data":"TOTAL_COST_AMOUNT",  //本期支出
                     "render": function(data, type, full, meta) {
-                        return eeda.numFormat(data,3);
+                        return eeda.numFormat(data.toFixed(2),3);
                     }
                 },  
                 {"data":"BALANCE_AMOUNT",   //期末结余    
                     "render": function(data, type, full, meta) {
-                        return eeda.numFormat(data,3);
+                        return eeda.numFormat(data.toFixed(2),3);
                     }
                 }
             ]
