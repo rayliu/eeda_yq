@@ -164,7 +164,6 @@ import com.jfinal.ext.plugin.shiro.ShiroInterceptor;
 import com.jfinal.ext.plugin.shiro.ShiroKit;
 import com.jfinal.ext.plugin.shiro.ShiroPlugin;
 import com.jfinal.i18n.I18nInterceptor;
-import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
@@ -217,7 +216,6 @@ import controllers.tradeArap.TradeCostRequestController;
 import controllers.tradeArap.TradeItemChargeConfirmController;
 import controllers.tradeArap.TradeItemCostConfirmController;
 import controllers.tradeArap.TradeJobOrderReportController;
-import cron4j.Cron4jPlugin;
 
 
 public class EedaConfig extends JFinalConfig {
@@ -506,7 +504,7 @@ public class EedaConfig extends JFinalConfig {
     	me.add(new ShiroPlugin(routes));
     	
     	//job启动
-    	me.add(new Cron4jPlugin(PropKit.use("job.properties")));
+//    	me.add(new Cron4jPlugin(PropKit.use("job.properties")));
     	
         mailUser = getProperty("mail_user_name");
         mailPwd = getProperty("mail_pwd");
