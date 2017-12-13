@@ -784,11 +784,18 @@ $(document).ready(function() {
      	}
      });
     
+   
     //提交按钮单击事件
     $("#submitBtn").click(function(){
+    	var error_num = 0;
     	$("#allCheckOfLand").attr("disabled",true);
-    	var ref_office_id = $("#TRANSPORT_COMPANY_input").attr("ref_office_id");
-    	if(ref_office_id==undefined||ref_office_id==null){
+    	$('#land_table input[type="checkbox"]:checked').each(function(){
+    		var ref_office_id = $(this).parent().parent().find("input[name='TRANSPORT_COMPANY_input']").attr("ref_office_id");
+    		if(ref_office_id==undefined||ref_office_id=="null"||ref_office_id==""){
+    			error_num++;
+    		}
+    	});
+    	if(error_num>0){
     		$.scojs_message('不能提交给该公司', $.scojs_message.TYPE_ERROR);
     	}else{
     		var order = {};

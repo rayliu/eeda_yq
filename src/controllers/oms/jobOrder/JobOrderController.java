@@ -4471,7 +4471,7 @@ public class JobOrderController extends Controller {
         	}
         	
         	//陆运Item表复制
-        	if(jobOrder.get("transport_type").toString().contains("land")){
+        	/*if(jobOrder.get("transport_type").toString().contains("land")){
         		String landItemSql = "SELECT * from job_order_land_item where order_id = ?";
             	List<Record> copyLandItemList=Db.find(landItemSql,order_id);
             	if(copyLandItemList.size()!=0){
@@ -4481,7 +4481,7 @@ public class JobOrderController extends Controller {
                 		Db.save("job_order_land_item", copyLandItem);
                 	}
             	}
-        	}
+        	}*/
         	//回填标记位
         	String jobSql=" select * from job_order where id=?";
         	JobOrder job = JobOrder.dao.findFirst(jobSql,order_id);
