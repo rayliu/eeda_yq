@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AIR_Receivable" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" scriptletClass="controllers.yh.report.ReportScriptlet" uuid="3a229599-7a9a-404d-9301-b0c480fc4146">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1"/>
+	<property name="ireport.y" value="243"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -13,16 +13,8 @@
 			<pen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
-	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
+	<style name="table_CH"/>
+	<style name="table_TD"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
@@ -54,7 +46,9 @@ ifnull(pr.contact_person,pr.contact_person_eng) personEng,
 	) company_name,
 	IFNULL(pr.address_eng, pr.address) address,
 	pr.phone,
-
+acao.deposit_bank_input,
+acao.account_name,
+acao.account_no,
 		(SELECT
 			sum(total_amount) total
 		FROM
@@ -115,6 +109,8 @@ GROUP BY c.id) a
 FROM
 	 job_order jo
 LEFT JOIN job_order_arap joa ON jo.id = joa.order_id
+LEFT JOIN charge_application_order_rel caor ON caor.job_order_arap_id = joa.id
+LEFT JOIN arap_charge_application_order acao ON acao.id = caor.application_order_id
 LEFT JOIN party pr ON pr.id = joa.sp_id
 LEFT JOIN job_order_air joair ON joair.order_id = joa.order_id
 LEFT JOIN job_order_air_item joai ON joai.order_id = jo.id
@@ -195,6 +191,9 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 	</field>
 	<field name="vessel_voyage" class="java.lang.String"/>
 	<field name="ex_total" class="java.lang.String"/>
+	<field name="deposit_bank_input" class="java.lang.String"/>
+	<field name="account_name" class="java.lang.String"/>
+	<field name="account_no" class="java.lang.String"/>
 	<variable name="sum_hkd" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{total_amount}]]></variableExpression>
 	</variable>
@@ -383,13 +382,6 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="43" y="0" width="285" height="24" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
-				<textElement>
-					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
 				<reportElement x="43" y="26" width="285" height="15" uuid="84f0a969-bfd6-4f4d-9a12-ec14a167a8f9"/>
 				<textElement>
 					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
@@ -420,6 +412,17 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 				<reportElement x="427" y="165" width="128" height="16" uuid="8ee1f3ad-d78b-4556-86bb-611743af982f"/>
 				<text><![CDATA[PACKAGES]]></text>
 			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="43" y="0" width="285" height="24" uuid="c706ac6c-9eab-42a2-8ea0-83bb9932e437"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="171" y="102" width="100" height="20" uuid="163602aa-66e1-4525-9c17-4d4f8e4d1bb7"/>
+				<textFieldExpression><![CDATA[$F{sp_id}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
@@ -503,59 +506,56 @@ AND  $X{IN,joa.id,order_id} group by joa.id]]>
 			</staticText>
 		</band>
 	</detail>
-	<pageFooter>
-		<band height="90" splitType="Stretch">
+	<columnFooter>
+		<band height="100">
 			<staticText>
-				<reportElement x="8" y="0" width="153" height="15" uuid="f143d8af-bc0f-4b0f-943f-704902dd8950"/>
-				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[银行信息:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="8" y="14" width="153" height="15" uuid="f77458ed-3298-4aae-8acc-ceaeaf327496"/>
-				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[账户名称：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="8" y="29" width="153" height="15" uuid="b49158ea-f904-46f7-93af-29aef9333601"/>
-				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[账    号：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="8" y="44" width="154" height="15" uuid="c2745b55-21a5-4968-87df-d544ce9de735"/>
-				<textElement>
-					<font fontName="黑体" size="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
-				</textElement>
-				<text><![CDATA[开户银行：]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="349" y="38" width="134" height="15" uuid="c988c4f1-aec1-4f51-a6aa-f49aee505d23"/>
+				<reportElement x="352" y="47" width="134" height="15" uuid="76ad1122-19ba-4753-b40f-0f41935bf3d7"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[FOR AND ON BEHALF OF]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="349" y="53" width="221" height="20" uuid="5b9627c8-f98a-49c2-88c5-aa22ebf1f6ba"/>
+				<reportElement x="352" y="62" width="221" height="20" uuid="bab9b767-e44f-40a0-a288-6602f5fc163f"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[ENKYO SCM (H.K.) CO., LIMITED]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="349" y="72" width="159" height="16" uuid="42d6b9e9-dc8a-4907-a285-2d626777ce83"/>
+				<reportElement x="352" y="81" width="159" height="16" uuid="b58139be-e1db-46b1-8e34-900bb9e59e36"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[AUTHORISED SIGNATURE:]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="11" y="10" width="153" height="15" uuid="f09e3397-aa65-409a-9165-4a0def75f07b"/>
+				<textElement>
+					<font fontName="黑体" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ACCOUNT INFORMATION:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="40" width="317" height="15" uuid="8afc7e09-046f-4643-a2a9-7919a03409e0"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{account_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="25" width="317" height="15" uuid="6cc8b347-1442-4dbf-93a5-f1e19903a078"/>
+				<textElement>
+					<font fontName="黑体" pdfFontName="STSong-Light" pdfEncoding="Identity-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deposit_bank_input}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="54" width="317" height="45" uuid="fce2756e-d8c4-4474-a49d-b46274ab621d"/>
+				<textFieldExpression><![CDATA[$F{account_no}]]></textFieldExpression>
+			</textField>
 		</band>
-	</pageFooter>
+	</columnFooter>
 	<summary>
 		<band height="59" splitType="Stretch">
 			<line>
