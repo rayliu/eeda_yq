@@ -28,10 +28,12 @@ public class AppBestCaseController extends Controller {
     	String conditions = getRequest().getHeader("conditions");
     	
     	//精选婚礼
-    	List<Record> caseList = Db.find(" SELECT id, name title,picture_name cover "
+    	List<Record> caseList = Db.find(" SELECT cas.id, cas.name title,cas.picture_name cover,"
+    			+ " wc.c_name shop_name ,wc.logo shop_logo "
     			+ " FROM"
-    			+ " `wc_case`"
-    			+ " where flag = '1'");
+    			+ " `wc_case` cas"
+    			+ " left join wc_company wc on wc.creator = cas.creator"
+    			+ " where cas.flag = '1'");
     	
     	//案例明细表关联
     	for (Record item : caseList) {
@@ -68,6 +70,25 @@ public class AppBestCaseController extends Controller {
     	Record data = new Record();
     	data.set("shop", shop);
     	data.set("caseList", caseList);
+        renderJson(data);  	
+    }
+    
+    /*
+     * 视频案例
+     */
+    public void video_case(){
+    	String case_id = getRequest().getHeader("case_id");
+    	
+    	//店铺信息
+    	List<Record> caseData = Db.find(""
+    			+ " select wc.*,cor.name category_name,vc.name title,vc.video_url "
+    			+ " from video_case vc "
+    			+ " left join wc_company wc on wc.creator = vc.creator"
+    			+ " left join category cor on cor.id = wc.trade_type"
+    			+ " where vc.id = ?",case_id);
+    	
+    	Record data = new Record();
+    	data.set("data", caseData);
         renderJson(data);  	
     }
     
