@@ -1,7 +1,6 @@
 define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesBootstrap','validate_cn', 'sco', 'pageguide'], function ($, metisMenu, sb, template,itemTable) {
 	$(document).ready(function() {
 		var cioiciIds = null;
-		var cioiciIds_hide = [];
 		var deletedTableIds=[];
 		var order_ids = $("#selected_item_ids").val();
 		var id = $("#order_id").val();
@@ -184,8 +183,8 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
 		    autoWidth: false,
 		    //ajax: "/chargeRequest/OrderList?pageBoolean="+pageBoolean,
 		    drawCallback: function( settings ) {//生成相关下拉组件后, 需要再次绑定事件
-		    	huidiao();
-	        },
+
+		    },
 		    columns: [
 					{"width":"30px",
 					    "render": function(data, type, full, meta) {
@@ -212,22 +211,6 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
 					{"data":"EXCHANGE_TOTAL_AMOUNT","width":"120px"}
 	        ]      
 	    });
-		var huidiao = function(){
-			var num = 0;
-			$("#itemList_table tbody tr").each(function(){
-            	var tr_id = $(this).attr("id");
-            	for(var i = 0;i<cioiciIds_hide.length;i++){
-            		if(cioiciIds.length>0&&cioiciIds[num]==tr_id){
-            			continue;
-            		}
-        			if(cioiciIds_hide[i]==tr_id){
-	        			$(this).remove();
-	        		}
-            		num++;
-            	}
-            });
-			
-		}
 		
 		var bindFieldEvent=function(){
 			eeda.bindTableFieldChargeId('invoice_item_table','FEE_ID','/finItem/search','');
@@ -235,7 +218,7 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
 	    };
 		
 		//选中开户行带出收款账号跟账户名
-		$('#bank_name_list').on('mousedown','a',function(){
+		$('#bank_id_list').on('mousedown','a',function(){
 			   $('#account_no').val( $(this).attr('account_no'));
 		 	   $('#account_name').val( $(this).attr('account_name'));
 		    })
@@ -361,24 +344,30 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
             if(cioiciIds=="undefined"){
             	cioiciIds = "";
             }
-            cioiciIds_hide = [];
-            var num = 0;
-            $("[name='invoice_ids']").each(function(){
-            	var id = ($(this).val()).split(",");
-            	if(id!='undefined'){
-	            	for(var i = 0;i<id.length;i++){
-	            		if(cioiciIds[num]==id[i]){
-	            			continue;
-	            		}
-	            		cioiciIds_hide.push(id[i]);
-	            	}        	
-            	}
-            });
+            var ids = [];
+            $("#invoice_item_table tbody td [name='invoice_ids']").each(function(){
+				var list = ($(this).val()).split(",");
+				for(var i = 0;i<list.length;i++){
+					if(list[i]!="undefined"){
+						ids.push(list[i]);
+					}
+				}
+			});
+            if(cioiciIds!=""&&ids!=""){
+            	for(var i = 0;i<cioiciIds.length;i++){
+            		for(var j = 0;j<ids.length;j++){
+    					if(cioiciIds[i]==ids[j]){
+    						ids.splice($.inArray(cioiciIds[i],ids),1);
+    					}
+    				}
+				}
+            }
             //判断是否有发票明细id
             invoice_id = $(this).parent().parent().attr("id");
             
             var url = "/invoiceApply/itemList?order_ids="+order_id
-            		+ "&cioiciIds="+cioiciIds;
+            		+ "&cioiciIds="+cioiciIds
+            		+ "&ids="+ids;;
             itemListTable.ajax.url(url).load();
 		});
 		
@@ -396,13 +385,6 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
 					$(this).val(charge_itemlist);
 				}
 			});
-			
-			//如果有发票明细id，点击确认时直接保存费用明细进发票明细表
-			if(invoice_id){
-				$.post("/invoiceApply/saveInvoiceItem",{invoice_id:invoice_id,charge_itemlist:charge_itemlist.toString()},function(data){
-					invoiceRefreshDetail(id);
-				});
-			}
 		});
 		
 		//添加明细里的全选按钮

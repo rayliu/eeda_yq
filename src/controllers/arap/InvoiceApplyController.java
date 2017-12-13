@@ -387,13 +387,17 @@ public class InvoiceApplyController  extends Controller {
         long office_id=user.getLong("office_id");
     	String order_id = getPara("order_ids");
     	String cioiciIds = getPara("cioiciIds");
+    	String ids = getPara("ids");
     	String new_process_flag = getPara("new_process_flag");
     	String condition = "";
     	if(StringUtils.isNotBlank(order_id)){
     		order_id = " and cioici.order_id IN ("+order_id+")";
     	}
-    	if(StringUtils.isNotBlank(cioiciIds)){
+    	/*if(StringUtils.isNotBlank(cioiciIds)){
     		condition += " and (cioici.id IN ("+cioiciIds+") or cioici.order_item_id is null)";
+    	}*/
+    	if(StringUtils.isNotBlank(ids)){
+    		condition += " and cioici.id not in ("+ids+")";
     	}
     	String sql = "";
     	if(StringUtils.isBlank(new_process_flag)||!new_process_flag.equals("Y")){
@@ -527,21 +531,6 @@ public class InvoiceApplyController  extends Controller {
     	}
     }
     
-    public void saveInvoiceItem(){
-    	String invoice_id = getPara("invoice_id");
-    	String charge_itemlist = getPara("charge_itemlist");
-    	String[] charge_item_id = charge_itemlist.split(",");
-    	Db.update("update charge_invoice_order_item_charge_item set order_item_id=null where order_item_id="+invoice_id);
-    	if(StringUtils.isNotBlank(charge_itemlist)){
-    		for(int i = 0;i<charge_item_id.length;i++){
-        		Record cioici = Db.findById("charge_invoice_order_item_charge_item", charge_item_id[i]);
-        		cioici.set("order_item_id", invoice_id);
-    			Db.update("charge_invoice_order_item_charge_item", cioici);
-        	}
-    	}else{
-    		Db.update("update charge_invoice_order_item_charge_item set order_item_id=null where order_item_id="+invoice_id);
-    	}
-    }
     
     //保存发票明细方法
     public void handleList(List<Map<String, String>> invoiceList,String order_id){
