@@ -21,8 +21,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -32,6 +35,10 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+
+import sun.io.ByteToCharConverter;
 
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
@@ -45,15 +52,39 @@ public class EedaHttpKit {
 	private EedaHttpKit() {}
 	
 	public static String decodeHeadInfo(String info) {  
-        int n = info.length() / 6;  
-        StringBuilder sb = new StringBuilder(n);  
-        for (int i = 0, j = 2; i < n; i++, j += 6) {  
-            String code = info.substring(j, j + 4);  
-            char ch = (char) Integer.parseInt(code, 16);  
-            sb.append(ch);  
-        }  
-        return sb.toString();  
+		String value = "";
+		String afterInfo = info;
+		while(afterInfo.length() > 0){
+			if(afterInfo.contains("\\u")){
+				int index = afterInfo.indexOf("\\u");
+				if(index > 0){
+					value += afterInfo.substring(0,index);
+				}
+				String m_code = afterInfo.substring(index+2, index+6);  //单个
+				char ch = (char) Integer.parseInt(m_code, 16);  
+				value += ch;
+				afterInfo = afterInfo.substring(index+6,afterInfo.length());
+			}else{
+				value += afterInfo;
+				break;
+			}
+		}
+		return value;
     }  
+	
+
+	
+	public String getValue(String info){
+		int index = info.indexOf("\\u");
+		if(index > 0){
+			//value = info.substring(0,index);
+		}
+		String m_code = info.substring(index+2, index+6);  //单个
+		
+		String afterInfo = info.substring(index+6,info.length());
+		return null;
+	}
+	
 	/**
 	 * https 域名校验
 	 */
