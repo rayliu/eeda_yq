@@ -72,14 +72,17 @@ public class AppLoginController extends Controller {
     @Before(Tx.class)
     public void save_register(){
     	
-    	String invite_code = URLDecoder.decode(getRequest().getHeader("invite_code"));
-    	String pwd = URLDecoder.decode(getRequest().getHeader("pwd"));
-    	String mobile = URLDecoder.decode(getRequest().getHeader("mobile"));
+    	String invite_code = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("invite_code"));
+    	String pwd = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("pwd"));
+    	String mobile = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("mobile"));
+    	String user_name = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("user_name"));
+    	String wedding_date = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("wedding_date"));
 
     	Record user_login = new Record();
     	user_login.set("invitation_code", invite_code);
     	user_login.set("phone", mobile);
-    	user_login.set("user_name", mobile);
+    	user_login.set("wedding_date", wedding_date);
+    	user_login.set("user_name", user_name);
     	user_login.set("system_type", "mobile");
     	user_login.set("password", pwd);
     	user_login.set("password_hint", pwd);
@@ -94,21 +97,27 @@ public class AppLoginController extends Controller {
     public void login(){
     	boolean result = false;
     	String errMsg = null;
-    	String user_id = null;
-    	String password = URLDecoder.decode(getRequest().getHeader("password"));
-    	String mobile = URLDecoder.decode(getRequest().getHeader("mobile"));
+    	String login_id = null;
+    	String wedding_date = null;
+    	String user_name = null;
+    	String password = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("password"));
+    	String mobile = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("mobile"));
 
     	Record user = Db.findFirst("select * from user_login where phone = ? and password = ?",mobile, password);
     	if(user != null){
     		result = true;
-    		user_id = user.getLong("id").toString();
+    		login_id = user.getLong("id").toString();
+    		user_name = user.getStr("user_name");
+    		wedding_date = user.get("wedding_date").toString();
     	}else{
     		errMsg = "用户名或密码不正确";
     	}
     	
     	Record data = new Record();
     	data.set("result", result);
-    	data.set("user_id", user_id);
+    	data.set("login_id", login_id);
+    	data.set("wedding_date", wedding_date);
+    	data.set("user_name", user_name);
     	data.set("errMsg", errMsg);
         renderJson(data);  
     }

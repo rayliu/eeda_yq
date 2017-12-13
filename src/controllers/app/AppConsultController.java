@@ -16,6 +16,7 @@ import sun.nio.cs.UnicodeEncoder;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.HttpKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
@@ -36,10 +37,10 @@ public class AppConsultController extends Controller {
     public void save_consult(){
     	String shop_id = getRequest().getHeader("shop_id");
     	String login_id = getRequest().getHeader("login_id");
-    	String user_name = URLDecoder.decode(getRequest().getHeader("user_name"));
-    	String mobile = URLDecoder.decode(getRequest().getHeader("mobile"));
-    	String wedding_date = URLDecoder.decode(getRequest().getHeader("wedding_date"));
-    	String remark = URLDecoder.decode(getRequest().getHeader("remark"));
+    	String user_name = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("user_name"));
+    	String mobile = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("mobile"));
+    	String wedding_date = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("wedding_date"));
+    	String remark = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("remark"));
 
     	Record consult = new Record();
     	consult.set("shop_id", shop_id);

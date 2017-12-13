@@ -28,7 +28,10 @@ public class AppProductController extends Controller {
     	String product_id = getRequest().getHeader("product_id");
     	
     	//产品信息
-    	List<Record> product = Db.find("SELECT * FROM wc_product WHERE id = ?",product_id);
+    	List<Record> product = Db.find("SELECT pro.*,com.c_name shop_name,cat.name category_name FROM wc_product pro"
+    			+ " left join wc_company com on com.creator = pro.creator"
+    			+ " left join category cat on cat.id = com.trade_type"
+    			+ " WHERE pro.id = ?",product_id);
     	//明细表信息
     	List<Record> productItemList = Db.find("SELECT * FROM wc_product_pic WHERE order_id = ?",product_id);
     	
