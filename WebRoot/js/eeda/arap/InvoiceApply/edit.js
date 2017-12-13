@@ -348,7 +348,7 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
             $("#invoice_item_table tbody td [name='invoice_ids']").each(function(){
 				var list = ($(this).val()).split(",");
 				for(var i = 0;i<list.length;i++){
-					if(list[i]!="undefined"){
+					if(list[i]!="undefined"&&list[i]!=""&&list[i]!="null"){
 						ids.push(list[i]);
 					}
 				}
