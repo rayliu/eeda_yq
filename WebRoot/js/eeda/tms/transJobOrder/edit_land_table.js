@@ -659,7 +659,7 @@ $(document).ready(function() {
 			var driver = $(this).find("[name='driver']").val();
 			var driver_tel = $(this).find("[name='driver_tel']").val();
 			
-			transInfo += unload_type+"/"+cabinet_date+"/"+closing_date+"/到码头时间："+reach_wharf_time+"/车牌："+car_no+"/司机："+driver+"/司机电话："+driver_tel+"；";
+			transInfo += unload_type+"/提柜时间："+cabinet_date+"/收柜时间："+closing_date+"/到码头时间："+reach_wharf_time+"/车牌："+car_no+"/司机："+driver+"/司机电话："+driver_tel+"；";
 		});
 		return transInfo;
     }
