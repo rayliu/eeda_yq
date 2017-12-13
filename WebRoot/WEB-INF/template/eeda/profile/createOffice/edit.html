@@ -102,7 +102,7 @@
             $('#nextBtn').click(function(e){
                 var office_name=$('#office_name').val();
                 var user=$('#user').val();
-                var pwd=$('#office_name').val();
+                var pwd=$('#pwd').val();
                 var type= $('#type').val();
 
                 $.post('/createOffice/step1', {office_name:office_name, user:user, pwd:pwd, type:type}, function(data){

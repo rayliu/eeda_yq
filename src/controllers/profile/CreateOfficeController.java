@@ -54,6 +54,7 @@ public class CreateOfficeController extends Controller {
         String sha1Pwd = MD5Util.encode("SHA1", pwd);
         userRec.set("password", sha1Pwd);
         userRec.set("office_id", officeId);
+        userRec.set("c_name", user);
         userRec.save();
         Long userId = userRec.getLong("id");
         logger.debug("userId:" + userId);
