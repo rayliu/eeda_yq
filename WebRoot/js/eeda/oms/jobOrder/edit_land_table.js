@@ -806,7 +806,7 @@ $(document).ready(function() {
         	order.order_no = $("#order_no").val();
         	order.landList = land_item();
     		$.post("/jobOrder/landSubmit",{params:JSON.stringify(order)},function(data){
-        		if(data.RESULT){
+        		if(data.result){
         			$.scojs_message('提交成功', $.scojs_message.TYPE_OK);
         		}else if(data.error){
             		var error = "（"+data.error+"）";

@@ -57,10 +57,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			    		  var str="";
 			    		  if(!data)
 			    			  data='';
-	            			if(full.ORDER_TYPE=="charge"){
-	            				str="<a href='/chargeCheckOrder/edit?id="+full.CHECK_ORDER_ID+"'target='_blank'>"+data+"</a>";
-	            			}else if(full.ORDER_TYPE=="cost"){
-	            				str="<a href='/costCheckOrder/edit?id="+full.CHECK_ORDER_ID+"'target='_blank'>"+data+"</a>";
+	            			if(full.CHARGE_ORDER_ID){
+	            				str="<a href='/chargeCheckOrder/edit?id="+full.CHARGE_ORDER_ID+"'target='_blank'>"+data+"</a>";
+	            			}else if(full.COST_ORDER_ID){
+	            				str="<a href='/costCheckOrder/edit?id="+full.COST_ORDER_ID+"'target='_blank'>"+data+"</a>";
 	            			}
 	                      return str;
 	                  }
@@ -70,15 +70,19 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			    		  var str="";
 			    		  if(!data)
 			    			  data='';
-	            			if(full.ORDER_TYPE=="charge"){
-	            				str="<a href='/chargeRequest/edit?id="+full.APPLICATION_ORDER_ID+"'target='_blank'>"+data+"</a>";
-	            			}else if(full.ORDER_TYPE=="cost"){
-	            				str="<a href='/costRequest/edit?id="+full.APPLICATION_ORDER_ID+"'target='_blank'>"+data+"</a>";
+	            			if(full.CHARGE_APPLICATION_ORDER_ID){
+	            				str="<a href='/chargeRequest/edit?id="+full.CHARGE_APPLICATION_ORDER_ID+"'target='_blank'>"+data+"</a>";
+	            			}else if(full.COST_CHARGE_APPLICATION_ORDER_ID){
+	            				str="<a href='/costRequest/edit?id="+full.COST_CHARGE_APPLICATION_ORDER_ID+"'target='_blank'>"+data+"</a>";
 	            			}
 	                      return str;
 	                  }
 	            },
-	            { "data": "CREATE_STAMP", "width": "100px"}
+	            { "data": "CREATE_STAMP", "width": "100px"},
+	            { "data": "CHARGE_ORDER_ID", "visible":false},
+	            { "data": "COST_ORDER_ID", "visible":false},
+	            { "data": "CHARGE_APPLICATION_ORDER_ID", "visible":false},
+	            { "data": "COST_CHARGE_APPLICATION_ORDER_ID", "visible":false}
 	          ]
 	      });
  //base on config hide cols
