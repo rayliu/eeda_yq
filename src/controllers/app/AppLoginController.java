@@ -71,25 +71,33 @@ public class AppLoginController extends Controller {
      */
     @Before(Tx.class)
     public void save_register(){
-    	
+    	boolean result = false;
+    	String errMsg = "";
     	String invite_code = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("invite_code"));
     	String pwd = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("pwd"));
     	String mobile = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("mobile"));
     	String user_name = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("user_name"));
     	String wedding_date = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("wedding_date"));
 
-    	Record user_login = new Record();
-    	user_login.set("invitation_code", invite_code);
-    	user_login.set("phone", mobile);
-    	user_login.set("wedding_date", wedding_date);
-    	user_login.set("user_name", user_name);
-    	user_login.set("system_type", "mobile");
-    	user_login.set("password", pwd);
-    	user_login.set("password_hint", pwd);
-    	Db.save("user_login", user_login);
-
+    	Record user = Db.findFirst("select * from user_login where phone = ?", mobile);
+    	if(user == null){
+    		Record user_login = new Record();
+        	user_login.set("invitation_code", invite_code);
+        	user_login.set("phone", mobile);
+        	user_login.set("wedding_date", wedding_date);
+        	user_login.set("user_name", user_name);
+        	user_login.set("system_type", "mobile");
+        	user_login.set("password", pwd);
+        	user_login.set("password_hint", pwd);
+        	Db.save("user_login", user_login);
+        	result = true;
+    	} else {
+    		errMsg = "手机号码已被注册";
+    	}
+    	
     	Record data = new Record();
-    	data.set("result", true);
+    	data.set("result", result);
+    	data.set("errMsg", errMsg);
         renderJson(data);  
     }
     
