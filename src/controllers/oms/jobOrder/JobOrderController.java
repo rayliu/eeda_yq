@@ -3387,6 +3387,10 @@ public class JobOrderController extends Controller {
     	JobOrder jobOrder = JobOrder.dao.findById(id);
     	Long job_office_id=jobOrder.getLong("office_id");
     	setAttr("order", jobOrder);
+    	JobOrder jo_oecan = JobOrder.dao.findFirst("select*from job_order where from_order_id="+id);
+    	setAttr("jo_oecan", jo_oecan);
+    	TransJobOrder tjo = TransJobOrder.dao.findFirst("select*from trans_job_order where from_order_id="+id);
+    	setAttr("tjo", tjo);
     	UserLogin user1 = LoginUserController.getLoginUser(this);
         long office_id=user1.getLong("office_id");
         
@@ -4569,7 +4573,7 @@ public class JobOrderController extends Controller {
     			String jobOrderDate = parseFormat.format(date).toString();
     			//需后台处理的字段
     			String order_no = "";
-    			if(office_id == 4){
+    			if(p.getLong("ref_office_id") == 4){
     				order_no = OrderNoGenerator.getNextOrderNo("HT", office_id);
     			}else{
     				order_no = OrderNoGenerator.getOrderNo("jobOrder",office_id);
@@ -4626,10 +4630,6 @@ public class JobOrderController extends Controller {
     			JobOrderLandItem joli = JobOrderLandItem.dao.findById(rowId);
     			joli.set("submit_flag", "Y");
     			joli.update();
-    			//回填关联单号到货代工作单
-    			JobOrder jo = JobOrder.dao.findById(joli.get("order_id"));
-    			jo.set("plan_order_no", order_no);
-    			jo.update();
     		}else{
     			//往表trans_job_order存入数据
     			transJobOrder = TransJobOrder.dao.findFirst("select*from trans_job_order where from_order_item_id="+rowId);
