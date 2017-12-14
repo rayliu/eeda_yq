@@ -92,17 +92,14 @@ public class OrderStatusController extends Controller {
     			+ " LEFT JOIN job_order_arap joa on joa.id = relf.job_order_arap_id"
     			+ " WHERE joa.order_id = jor.id"
     			+ " ) charge_app_no,"
-    			+ " ("
-    			+ " SELECT GROUP_CONCAT(distinct CONCAT(cast(app.id as char),':',app.order_no,'-',app.status) SEPARATOR '<br/>')"
-    			+ " FROM arap_cost_application_order app"
-    			+ " LEFT JOIN cost_application_order_rel relf on relf.application_order_id = app.id"
-    			+ " LEFT JOIN job_order_arap joa on joa.id = relf.job_order_arap_id"
-    			+ " WHERE joa.order_id = jor.id"
-    			+ " ) cost_app_no"
+    			+ " GROUP_CONCAT(DISTINCT CONCAT(cast(app_cost.id AS CHAR),':',app_cost.order_no,'-',app_cost. STATUS) SEPARATOR '<br/>') cost_app_no"
     			+ " from job_order jor"
     			+ " LEFT JOIN party p on p.id = jor.customer_id"
+    			+ " LEFT JOIN job_order_arap joa ON joa.order_id = jor.id"
+    			+ " LEFT JOIN cost_application_order_rel relf_cost ON relf_cost.job_order_arap_id = joa.id"
+    			+ " LEFT JOIN arap_cost_application_order app_cost ON app_cost.id = relf_cost.application_order_id"
     			+ " where (jor.office_id = "+office_id + ref_office+")"
-    			 + " and jor.delete_flag = 'N'"
+    			 + " and jor.delete_flag = 'N' GROUP BY id"
  				+") a where 1 = 1";
     	
     	String condition = DbUtils.buildConditions(getParaMap());

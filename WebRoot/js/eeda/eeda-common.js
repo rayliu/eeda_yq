@@ -373,7 +373,7 @@ eeda.refreshUrl = refreshUrl;
 	     }else{
 	    	 str = "<a href='/jobOrder/edit?id="+id+"' target='_blank'>"+orderNo+"</a>";
 	     }
-	 	costComparison/searchSpcomparison
+	 	//costComparison/searchSpcomparison
 	     return str;
 	 };
  
