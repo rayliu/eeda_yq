@@ -1033,7 +1033,7 @@ public class TransJobOrderController extends Controller {
         }
         else{
 		         sql = "SELECT * from (select GROUP_CONCAT(cast(substring(tjol.cabinet_date, 1, 10) AS CHAR)) cabinet_date,"
-		         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,tjo.from_order_id,tjo.update_apply_flag,p.charge_company_id sp_id,"
+		         		+ " tjo.create_stamp create_stamp,tjo.order_no,tjo.type,tjo.cabinet_type,tjol.truck_type,tjo.container_no,tjo.so_no,tjo.head_carrier,tjo.id,tjo.from_order_id,tjo.update_apply_flag,tjo.take_wharf,p.charge_company_id sp_id,"
 		         		+ " tjo.status,tjo.land_export_stamp sent_out_time,"
 		         		+ " ifnull(u.c_name, u.user_name) creator_name,p.abbr customer_name,p.company_name,p.code customer_code, "
 		         		+ " (SELECT SUM(tjoa.currency_total_amount) from trans_job_order_arap tjoa WHERE tjoa.order_id=tjo.id and tjoa.order_type='CHARGE' and tjoa.charge_id= " 

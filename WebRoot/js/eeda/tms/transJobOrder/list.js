@@ -154,6 +154,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_cabinet_type").hide();
 	    	  $("#public_time").hide();
 	    	  $("#car_id_show").hide();
+	    	  $("#take_wharf_show").hide();
 	    	  $("#public_text").show();
 	      }
 	      if(selectField=='customer_name_like'){
@@ -162,6 +163,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#public_time").hide();
 	    	  $("#public_text").hide();
 	    	  $("#car_id_show").hide();
+	    	  $("#take_wharf_show").hide();
 	    	  $("#single_customer").show();
 	      }
 	      if(selectField=='car_id'){
@@ -170,6 +172,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#public_time").hide();
 	    	  $("#public_text").hide();
 	    	  $("#single_customer").hide();
+	    	  $("#take_wharf_show").hide();
 	    	  $("#car_id_show").show();
 	      }
 	      if(selectField=='cabinet_type'){
@@ -178,6 +181,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#public_text").hide();
 	    	  $("#single_customer").hide();
 	    	  $("#car_id_show").hide();
+	    	  $("#take_wharf_show").hide();
 	    	  $("#single_cabinet_type").show();
 	      }
 	      if(selectField=='status'){
@@ -186,6 +190,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_customer").hide();
 	    	  $("#single_cabinet_type").hide();
 	    	  $("#car_id_show").hide();
+	    	  $("#take_wharf_show").hide();
 	    	  $("#single_status").show();
 	      }
 	      if(selectField=='cabinet_date'){
@@ -194,6 +199,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_cabinet_type").hide();
 	    	  $("#single_status").hide();
 	    	  $("#car_id_show").hide();
+	    	  $("#take_wharf_show").hide();
 	    	  $("#public_time").show();
 	      }
 	      if(selectField=='charge_time'){
@@ -202,6 +208,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_cabinet_type").hide();
 	    	  $("#single_status").hide();
 	    	  $("#car_id_show").hide();
+	    	  $("#take_wharf_show").hide();
 	    	  $("#public_time").show();
 	      }
 	      if(selectField=='create_time'){
@@ -210,7 +217,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	    	  $("#single_cabinet_type").hide();
 	    	  $("#single_status").hide();
 	    	  $("#car_id_show").hide();
+	    	  $("#take_wharf_show").hide();
 	    	  $("#public_time").show();
+	      }
+	      if(selectField=='take_wharf'){
+	    	  $("#public_text").hide();
+	    	  $("#single_customer").hide();
+	    	  $("#single_cabinet_type").hide();
+	    	  $("#single_status").hide();
+	    	  $("#car_id_show").hide();
+	    	  $("#public_time").hide();
+	    	  $("#take_wharf_show").show();
 	      }
      });
       
@@ -233,6 +250,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	      }
 	      if(selectField=='status'){
 	    	  $("#status").val($("#single_status").val());
+	      }
+	      if(selectField=='take_wharf'){
+	    	  $("#take_wharf").val($("#single_take_wharf").val());
+	    	  $("#take_wharf_input").val($("#single_take_wharf_input").val());
 	      }
 	      if(selectField=='cabinet_date'){
 	    	  $("#cabinet_date_begin_time").val($("#single_public_time_begin_time").val());
@@ -272,6 +293,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var cabinet_type=$("#cabinet_type").val().trim();
           var container_no= $.trim($("#container_no").val());
           var creator_name= $.trim($("#creator_name").val());
+          var take_wharf = $('#take_wharf').val();
           //增加出口日期查询
           var url = "/transJobOrder/list?order_no="+order_no
           	   +"&sp_id="+sp_id
@@ -286,7 +308,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	   +"&create_stamp_end_time="+create_stamp_end_time
           	   +"&cabinet_type="+cabinet_type
           	   +"&container_no="+container_no
-          	   +"&creator_name="+creator_name;
+          	   +"&creator_name="+creator_name
+          	   +"&take_wharf_equals="+take_wharf;
           dataTable.ajax.url(url).load();
       };
       
