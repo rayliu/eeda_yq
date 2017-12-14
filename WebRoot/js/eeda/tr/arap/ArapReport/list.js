@@ -57,9 +57,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			    		  if(!data)
 			    			  data='';
 	            			if(full.ORDER_TYPE=="charge"){
-	            				str="<a href='/tradeChargeCheckOrder/edit?id="+full.CHECK_ORDER_ID+"'target='_blank'>"+data+"</a>";
+	            				str="<a href='/tradeChargeCheckOrder/edit?id="+full.CHARGE_ORDER_ID+"'target='_blank'>"+data+"</a>";
 	            			}else if(full.ORDER_TYPE=="cost"){
-	            				str="<a href='/tradeCostCheckOrder/edit?id="+full.CHECK_ORDER_ID+"'target='_blank'>"+data+"</a>";
+	            				str="<a href='/tradeCostCheckOrder/edit?id="+full.COST_ORDER_ID+"'target='_blank'>"+data+"</a>";
 	            			}
 	                      return str;
 	                  }
@@ -70,9 +70,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			    		  if(!data)
 			    			  data='';
 	            			if(full.ORDER_TYPE=="charge"){
-	            				str="<a href='/tradeChargeRequest/edit?id="+full.APPLICATION_ORDER_ID+"'target='_blank'>"+data+"</a>";
+	            				str="<a href='/tradeChargeRequest/edit?id="+full.CHARGE_APPLICATION_ORDER_ID+"'target='_blank'>"+data+"</a>";
 	            			}else if(full.ORDER_TYPE=="cost"){
-	            				str="<a href='/tradeCostRequest/edit?id="+full.APPLICATION_ORDER_ID+"'target='_blank'>"+data+"</a>";
+	            				str="<a href='/tradeCostRequest/edit?id="+full.COST_CHARGE_APPLICATION_ORDER_ID+"'target='_blank'>"+data+"</a>";
 	            			}
 	                      return str;
 	                  }
