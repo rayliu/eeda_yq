@@ -6,6 +6,7 @@
             	<div class="btn-header"></div>
                     <div class="panel-body">
                         <%
+                        	var isEnkyo = SYS_CONFIG.css_path;
 			                var title = SYS_CONFIG.system_title!'易达物流';
 			                var show = 'none';
 			                if(title=='易达物流'){
@@ -31,26 +32,46 @@
 				                    { id: 'wait9', name: '待电放提单',title:'ETD时间等于当天提醒，未点击已电放结束提醒。', url:'/jobOrder?type=tlxOrderwait',row:'1'},
 				                    { id: 'wait10', name: '工作单待报关',title:'服务类型勾上了报关，且报关信息的Tab中，报关行的信息为空的工作单', url:'/jobOrder?type=customwait'}
 				                  ];
+				                  
+				              if(isEnkyo=="/css/enkyo.css"){
 				                for(info in alertItems![]){%>
 						                    <div class="interval">
-						                    	
-						                        <div class="panel <% if(info.row=='1'){%>panel-blue<%}else{%>panel-gray<%}%> li">
+						                        <div class="panel <% if(info.row=='1'){%>panel-gray<%}else{%>panel-gray<%}%> li">
 						                            <div class="panel-heading">
 						                                <div class="row">
 						                                	<div class="col-xs-8">
-						                                		<a href='${info.url}' style="<% if(info.row=='1'){%>color:white<%}%>">
-						                                			<div class="huge" id="${info.id}" style="font-size:55px;"></div>
-						                                        	<div style="font-size:12px;">${info.name}</div>
+						                                		<a href='${info.url}' style="color:#595757;">
+						                                			<div class="huge" id="${info.id}" style="font-size:55px;color:#595757;"></div>
+						                                        	<div style="font-size:12px;color:#595757;">${info.name}</div>
 						                                		</a>
 						                                    </div>
-						                                    <div style="font-size:10px;line-height:115%">${info.title}</div>
+						                                    <div style="font-size:10px;line-height:115%;color:#595757;">${info.title}</div>
 						                                    
 						                                </div>
 						                            </div>
 						                        </div>
 						                    </div>
-						         <%}%>
-						         </div>
+						         <%}  
+						         }else{
+						         	for(info in alertItems![]){ %>
+						         	<div class="interval">
+				                        <div class="panel <% if(info.row=='1'){%>panel-blue<%}else{%>panel-gray<%}%> li">
+				                            <div class="panel-heading">
+				                                <div class="row">
+				                                	<div class="col-xs-8">
+				                                		<a href='${info.url}' style="<% if(info.row=='1'){%>color:white<%}%>;">
+				                                			<div class="huge" id="${info.id}" style="font-size:55px;"></div>
+				                                        	<div style="font-size:12px;">${info.name}</div>
+				                                		</a>
+				                                    </div>
+				                                    <div style="font-size:10px;line-height:115%;">${info.title}</div>
+				                                    
+				                                </div>
+				                            </div>
+				                        </div>
+				                    </div>
+						         <% }  }%>
+						       </div>
 						   </div>            
 						</div>
 			            

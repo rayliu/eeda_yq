@@ -27,11 +27,81 @@
 </head>
 
 <body>
-    <section class="login_back_half_up">
+    
    <% if(isEnkyo=="/css/enkyo.css"){ %>
-        <h1 class="login_logo"><strong>远桥供应链</strong>
-        </h1>
+	   <section class="login_back_half_up">
+	        <h1 class="login_logo"><strong>远桥供应链</strong>
+	        </h1>
+	        <div class="login_langs">
+	            <button class="simple_btn active">中文</button>
+	            <button class="simple_btn">日语</button>
+	            <button class="simple_btn">English</button>
+	        </div>
+	   </section>
+	   <section class="login_back_half_down">
+        <div class="login_half_down_icons">
+            <div class="icon">
+                <img src="/images/enkyo/login_icon1.png">
+                <p>
+                    Shared Resource
+                </p>
+                <p>
+                    资源共享
+                </p>
+            </div>
+            <div class="icon">
+                <img src="/images/enkyo/login_icon2.png">
+                <p>
+                    Full Controllable
+                </p>
+                <p>
+                    全程可控
+                </p>
+            </div>
+            <div class="icon">
+                <img src="/images/enkyo/login_icon3.png">
+                <p>
+                    Professional & Efficient
+                </p>
+                <p>
+                    专业高效
+                </p>
+            </div>
+        </div>
+        <div class="login_form">
+        <% if(isEnkyo=="/css/enkyo.css"){ %>
+            <div class="login_form_eng_title">
+               Enkyo Supply Management
+            </div>
+        <% }else{%>
+        	<div class="login_form_eng_title">
+               Esimplev Supply Management
+            </div>        
+        <%}%>
+            <div class="login_form_cn_title">
+                ${system_name!'检单-供应链管理系统'} <span style="display: none;">- 注册新用户</span>
+            </div>
+            <form  id="loginForm"  >
+                    <div class="form-group" >
+                        <input class="form-control" placeholder="Email / 用户名" id="username" name="username" type="text" autofocus value="" autocomplete="on" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" data-container="body" 
+							data-toggle="popover" data-placement="bottom" 
+							data-content="大写锁定已打开" 
+							placeholder="Password / 密码" id="password" name="password" type="password" value="" required>
+                    </div>
+                   
+                    <div class="form-group">
+                        <div id="signInBtn" class="btn"><div style="margin-top:3px;font-size:14px;color:white;">Sign In 登录</div></div>
+                    </div>
+                    <div class="form-group">
+                        <a href="/" style="margin-top:20px;margin-left:200px;color:#233248;font-weight:bold;">首页</a>
+                    </div>
+            </form>
+    </section>
    <% }else{ %>
+   <section class="login_back_half_up">
         <div class="login_logo">
         </div>
         <div class="login_slogan">
@@ -41,7 +111,6 @@
             <button class="simple_btn">日语</button>
             <button class="simple_btn">English</button>
         </div>
-    <% } %>
     </section>
     <section class="login_back_half_down">
         <div class="login_half_down_icons">
@@ -105,6 +174,7 @@
                     </div>
             </form>
     </section>
+    <% } %>
     <% if(isEnkyo=="/css/enkyo.css"){ %>
 	    <section class="login_back_footer">
 	        Copyright © 2017-2027 ENKYO

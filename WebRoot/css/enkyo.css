@@ -42,7 +42,7 @@ body ::-webkit-scrollbar-corner {
 }
 
 .login_back_middle{
-    background-color: #4cae4c; /* background-color: #DAE000; */
+    background-color: #10A07A; /* background-color: #DAE000; */
 }
 
 .index_circle{
@@ -57,11 +57,11 @@ body ::-webkit-scrollbar-corner {
     margin-left: 90px;
     height-max: 50px;
     width-max: 500px;
-    color:green;
+    color:#10A07A;
 /*     background: url(/images/simple/logo_50.png) no-repeat; */
     background-color: #fff;
     display: inline-block;
-    //border: solid 1px red;
+   /*  border: solid 1px red; */
 }
 
 .login_slogan{
@@ -102,6 +102,7 @@ body ::-webkit-scrollbar-corner {
     white-space: nowrap;
     padding: 2px 15px;
     border-radius: 15px;
+    background-color: #b5b5b6;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -110,15 +111,16 @@ body ::-webkit-scrollbar-corner {
 }
 
 .simple_btn.active{
-    background-color: #DAE000;
+    background-color: #10A07A; /* #DAE000 */
 }
 
 .login_back_half_down{
-    height: 60%;
-    background-color: #4cae4c;
-    background-image: url(/images/simple/login_background_lines-h50.png) ;
+	padding-top:30px;
+    height: 57%;
+    background-color: #10A07A;
+    background-image: url(/images/enkyo/login_background_lines-h50.png) ;
     background-repeat: no-repeat;
-    background-position: 80% 10%;
+    background-position: 80% 30%;
 }
 .login_half_down_icons{
     padding-top: 50px;
@@ -144,7 +146,7 @@ body ::-webkit-scrollbar-corner {
     position:relative;
     height: 35px;
     margin-top: -35px;
-    background-color: #005BAC;
+    background-color: #233248;   /* #005BAC */
     text-align:center;
     padding: 10px;
     color: white;
@@ -165,15 +167,22 @@ body ::-webkit-scrollbar-corner {
 .login_form_eng_title{
     margin-top: 40px;
     margin-left: 15px;
-    color: #005BAC;
+    color: #233248; 
     font-size: 15px;
+    font-weight:bold;
 }
 
 .login_form_cn_title{
+	font-weight:bold;
     margin-top: 7px;
     margin-left: 15px;
-    color: #005BAC;
+    color: #233248;
     font-size: 15px;
+    
+}
+::-webkit-input-placeholder{
+/* 	font-weight:bold;
+	font-size: 10px;	 */
 }
 .login_form form{
     margin-top: 30px;
@@ -208,7 +217,7 @@ body ::-webkit-scrollbar-corner {
 
 
 .login_form .btn{
-    background-color: #4cae4c;  /* background-color: #DAE000; */
+    background-color: #10A07A;  /* background-color: #DAE000; */
     border-radius: 0px;
     height: 25px;
     width: 100%;
@@ -379,7 +388,8 @@ select.form-control{
 }
 
 .btn_green{
-    background-color: #4cae4c;   /* background-color: #DAE000; */
+    background-color: #10A07A;
+    color:white;   /* background-color: #DAE000; */
 }
 .btn_blue{
     background-color: #005BAC;
@@ -460,6 +470,8 @@ div.dataTables_wrapper div.dataTables_paginate{
 .nav-tabs>li>a {
     border-radius: 15px 15px 0 0;
     padding: 2px 40px;
+    color:#233248;
+    
 }
 .dataTables_scrollHead {
     margin-top: -5px;
@@ -498,6 +510,7 @@ div.dataTables_wrapper div.dataTables_paginate{
 .simple_order_list_div ul.nav{
     background-color: #f7f7f7;
 }
+
 
 .simple_order_list_div .dataTables_scroll {
     padding: 0px 15px; 
@@ -569,7 +582,7 @@ h4.panel-title  {
 }
 
 .head_style{
-	background-color: #005bac;
+	background-color: #233248;
 	color:#fff; 
 	height:28px;
 	margin-top:0px;
@@ -600,7 +613,7 @@ h4.panel-title  {
 
 
 .panel-blue{
-	background-color: #127ccb;
+	background-color: #10a07a;
 	color:#fff;
 }
 
@@ -650,7 +663,7 @@ h4.panel-title  {
 	margin-top: 7px;
 	margin-left: 15px;
 	font-size:13px;
-	color:#005BAC;
+	color:#233248;
 }
 
 

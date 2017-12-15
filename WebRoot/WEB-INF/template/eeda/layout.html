@@ -115,7 +115,55 @@
         </div>
         <!-- /.navbar-static-top -->
 
-        <nav  id='left_side_bar' class="navbar-default navbar-static-side" role="navigation">
+        <nav  id='left_side_bar' class="navbar-default navbar-static-side" role="navigation">       	
+        	
+        <% if(isEnkyo=="/css/enkyo.css"){ %>
+        	<div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <%  
+                        var map = permissionMap!'';
+                    
+                        for(module in modules![]){
+                        %>
+                            <li id="${module.id!}">
+
+                                <% if('Y' == module.is_one_module!) {
+                                    first_moudle = module.orders[0];
+                                %>
+                                    <a href="${first_moudle.url!''}" style="color:#595757;">
+                                        <i class="fa fa-file-text fa-fw"></i>
+                                        ${first_moudle.module_name!}
+                                    </a>
+                                <%} else {%>
+                                    <a href="#">
+                                        <% 
+                                            if(module.icon!=null){ 
+                                            %>
+                                                <img src="/images/enkyo/${module.icon!}" style="width: 12px;margin-top: -3px;">
+                                        <%  }else {%>
+                                                <i class="fa fa-file-text fa-fw"></i>
+                                        <%  } %>
+                                        <span style="padding-left: 5px;color:#595757;">${module.module_name!}</span>
+                                            <span class="fa arrow"></span>
+                                    </a>
+                                    <% if(module.orders != null ){%>
+                                        <ul class="nav nav-second-level">
+                                            <%
+                                            for(menu_order in module.orders){
+                                            %>
+                                                <li id="${menu_order.id}" style="color:#595757;">
+                                                    <a href="${menu_order.url!''}" style="color:#595757;">${menu_order.module_name!}</a>
+                                                </li>
+                                            <%}%>
+                                        </ul>
+                                    <%}%>
+                                <%}%>
+                            </li>
+                    <%  }%>
+                </ul>
+                <!--  /#side-menu -->
+            </div>
+        <% } else {%>  	
             <div class="sidebar-collapse">
                 <ul class="nav" id="side-menu">
                     <%  
@@ -161,7 +209,8 @@
                 </ul>
                 <!--  /#side-menu -->
 
-            </div>
+            </div>            
+          <% } %>
             <div class="version">版本号: <span id="version_no">170428.0152</span></div>
             <!-- /.sidebar-collapse -->
         </nav>

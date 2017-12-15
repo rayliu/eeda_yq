@@ -42,38 +42,71 @@
         </div>
     <% } %>
     </section>
-    <section class="login_back_middle">
-    	<% if(isEnkyo=="/css/enkyo.css"){ %>
+      <% if(isEnkyo=="/css/enkyo.css"){ %>
+    	<section class="login_back_middle">
         	<div class="row">
 	            <div>
 	                <div class="index_circle">
-	                    <a href="http://booking.enkyosys.com/login">
-	                        <img src="/images/BookingSystem.png">
+	                    <a  href="http://booking.enkyosys.com/login">
+	                        <img src="/images/enkyo/BookingSystem150.png">
 	                    </a>
 	                </div>
 	                <div class="index_circle">
 	                    <a href="http://trade.enkyosys.com/login">
-	                        <img src="/images/TradeSystem.png">
+	                        <img src="/images/enkyo/TradeSystem150.png">
 	                    </a>
 	                </div>
 	                <div class="index_circle">
 	                    <a href="http://forwarder.enkyosys.com/login">
-	                        <img src="/images/ForwarderSystem.png">
+	                        <img src="/images/enkyo/ForwarderSystem150.png">
 	                    </a>
 	                </div class="index_circle">
 	                <div class="index_circle">
 	                    <a href="http://custom.enkyosys.com/login">
-	                        <img src="/images/CustomSystem.png">
+	                        <img src="/images/enkyo/CustomSystem150.png">
 	                    </a>
 	                </div>
 	                <div class="index_circle">
 	                    <a href="http://trans.enkyosys.com/login">
-	                        <img src="/images/TransSystem.png">
+	                        <img src="/images/enkyo/TransSystem150.png">
 	                    </a>
 	                </div>
 	            </div>
 	        </div>
+	     </section>
+	     <section   class="login_back_half_down">
+        <div class="login_half_down_icons">
+            <div class="icon">
+                <img src="/images/enkyo/login_icon1.png">
+                <p >
+                    Shared Resource
+                </p>
+                <p>
+                    资源共享
+                </p>
+            </div>
+            <div class="icon">
+                <img src="/images/enkyo/login_icon2.png">
+                <p>
+                    Full Controllable
+                </p>
+                <p>
+                    全程可控
+                </p>
+            </div>
+            <div class="icon">
+                <img src="/images/enkyo/login_icon3.png">
+                <p>
+                    Professional & Efficient
+                </p>
+                <p>
+                    专业高效
+                </p>
+            </div>
+        </div>
+    </section>   
         <% }else{ %>
+        <section class="login_back_middle">
         	<div class="row">
             <div>
                 <div class="index_circle">
@@ -103,9 +136,9 @@
                 </div>
             </div>
         </div>
-        <% } %>
+        
     </section>
-    <section class="login_back_half_down">
+    <section   class="login_back_half_down">
         <div class="login_half_down_icons">
             <div class="icon">
                 <img src="/images/simple/login_icon1.png">
@@ -135,8 +168,8 @@
                 </p>
             </div>
         </div>
-        
     </section>
+   <% } %>
     <% if(isEnkyo=="/css/enkyo.css"){ %>
 	    <section class="login_back_footer">
 	        Copyright © 2017-2027 ENKYO
