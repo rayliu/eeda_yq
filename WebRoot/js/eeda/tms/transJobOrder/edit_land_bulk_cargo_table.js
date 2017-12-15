@@ -271,5 +271,18 @@ $(document).ready(function() {
 		        }
 			});
 	});
+    
+    //拼接字段，以便回显货代工作单陆运信息
+    itemOrder.transInfos_bulk = function(){
+    	var transInfo = "";
+		$("#land_bulk_cargo_table tbody tr").each(function(){
+			var car_no = $("#car_no_input").val();
+			var cabinet_date = $(this).find("[name='CABINET_DATE']").val();
+			
+			transInfo = "车牌："+car_no+"/提货时间："+cabinet_date+"；";
+		});
+		return transInfo;
+    }
+    
 });
 });

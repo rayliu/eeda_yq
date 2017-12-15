@@ -275,7 +275,7 @@ $(document).ready(function() {
         //相关文档
         order.doc_list = eeda.buildTableDetail("doc_table","");
         //拼接的运输信息
-        order.transInfos = itemOrder.transInfos();
+        order.transInfos = order.type.indexOf('散货')>-1?itemOrder.transInfos_bulk():itemOrder.transInfos();
        
         //异步向后台提交数据
         $.post('/transJobOrder/save', {params:JSON.stringify(order)}, function(data){
