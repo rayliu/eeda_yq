@@ -389,7 +389,7 @@ $(document).ready(function() {
 			});
 	});
     
-    var self;
+   /* var self;
     $('#land_shipment_table').on('click','[name=required_time_remark]',function(){
     	self = $(this);
     	$('#land_showNote').val(self.val());
@@ -398,7 +398,7 @@ $(document).ready(function() {
     $('#land_btnConfirm').click(function(){
 		var showNote = $('#land_showNote').val();
 		self.val(showNote);
-	});
+	});*/
     
     if(truck_type_hidden!=null && truck_type_hidden!=""){
     	var arrays = truck_type_hidden.split(",");
