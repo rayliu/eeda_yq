@@ -93,7 +93,8 @@ public class QuotationController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql="SELECT wc.phone,wc.contact_person,null company,wq.* "
+        String sql="SELECT wc.telephone phone, "
+        		+ " wc.contact contact_person,null company,wq.* "
         		+ " from wc_quotation wq "
         		+ " LEFT JOIN wc_company wc on wq.creator=wc.creator "
         		+ " where wq.creator = "+user_id;

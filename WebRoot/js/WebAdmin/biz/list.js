@@ -27,9 +27,6 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data": "TELEPHONE", "width":"60px"},
 	                     { "data": "LOCATION", "width":"60px"},
 	                     { "data": "CREATE_TIME", "width":"60px"},
-	                     { "data": "LEAVE_DAYS", "width":"60px"
-	                    	 		
-	                     },
 	                     { "data": "LEAVE_DAYS", "width":"60px",
 	                    	 "render":function(data,type,full,meta){
 	                    		 if(data<0){
