@@ -87,8 +87,10 @@ public class MobilePushController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
          
-        String sql="select wc.id wc_id, wc.c_name productor,map.* from wc_ad_mobile_promotion map "
-        		+ "LEFT JOIN wc_company wc on wc.creator=map.creator order by create_time desc";
+        String sql="select wc.id wc_id, wc.c_name productor,map.* "
+        		+ " from wc_ad_mobile_promotion map "
+        		+ " LEFT JOIN wc_company wc on wc.creator = map.creator"
+        		+ " order by create_time desc";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
