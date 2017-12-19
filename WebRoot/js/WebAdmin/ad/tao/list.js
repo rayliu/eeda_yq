@@ -100,22 +100,22 @@ define(['jquery', 'validate_cn',  'dataTablesBootstrap', 'sco', 'file_upload'], 
         	var id = "";
         	switch(loc){
 	        	case "first":{
-	        			id=6;
-	        			info=$("#first_ad").val()
+	        			id = self.parent().find(".pdr10").attr("id");
+	        			info = $("#first_ad").val()
 	        			break;
 	        	}
 	        	case "second":{
-	        			id=7;
-		        		info=$("#second_ad").val()
+	        			id = self.parent().find(".pdr10").attr("id");
+		        		info = $("#second_ad").val()
 	        			break;
 	        	}
 	        	case "third":{
-	        			id=8;
+	        			id = self.parent().find(".pdr10").attr("id");
 		        		info=$("#third_ad").val()
 	        			break;
 	        	}
 	        	case "fourth":{ 
-	        			id=9;
+	        			id = self.parent().find(".pdr10").attr("id");
 		        		info=$("#fourth_ad").val()
 	        			break;
 	        	}

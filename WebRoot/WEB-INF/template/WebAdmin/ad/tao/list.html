@@ -3,23 +3,23 @@
       <h3>修改淘婚品广告价格</h3>
       <div class="bdgray mt10">
 	        <div class = "line">
-	        	<span class="pdr10">第一张广告</span> 
-	        	<input type="text" style="width:80px;" class="input_text" id="first_ad" value="${first_price!''}"/>元/每天            
+	        	<span class="pdr10" id="${first.id!''}">第一张广告</span> 
+	        	<input type="text" style="width:80px;" class="input_text" id="first_ad" value="${first.price!''}"/>元/每天            
 	        	<input class="modifibtn update" type="button" value="修改"   loc="first" id="update_first"/>
 	        </div>
 	        <div class = "line">
-	        	<span class="pdr10">第二张广告</span> 
-	        	<input type="text" style="width:80px;" class="input_text" id="second_ad" value="${second_price!''}" />元/每天 
+	        	<span class="pdr10" id="${second.id!''}">第二张广告</span> 
+	        	<input type="text" style="width:80px;" class="input_text" id="second_ad" value="${second.price!''}" />元/每天 
 	        	<input class="modifibtn update" type="button" loc="second" value="修改" id="update_second"/>
 	        </div>
 	    	<div class = "line">
-	    		<span class="pdr10">第三张广告</span> 
-	    		<input type="text" style="width:80px;" class="input_text" id="third_ad" value="${third_price!''}" />元/每天 
+	    		<span class="pdr10" id="${third.id!''}">第三张广告</span> 
+	    		<input type="text" style="width:80px;" class="input_text" id="third_ad" value="${third.price!''}" />元/每天 
 	    		<input class="modifibtn update" type="button"  loc="third" value="修改" id="update_third"/>
 	    	</div>
 	    	<div class = "line">
-	    		<span class="pdr10">第四张广告</span> 
-	    		<input type="text" style="width:80px;" class="input_text" id="fourth_ad" value="${fourth_price!''}"/>元/每天 
+	    		<span class="pdr10" id="${fourth.id!''}">第四张广告</span> 
+	    		<input type="text" style="width:80px;" class="input_text" id="fourth_ad" value="${fourth.price!''}"/>元/每天 
 	    		<input class="modifibtn update" type="button"  loc="fourth" value="修改" id="update_fourth"/>
 	    	</div>
       </div>

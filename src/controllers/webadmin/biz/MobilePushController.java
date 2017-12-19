@@ -34,7 +34,7 @@ public class MobilePushController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		List prices=Db.find("select price from price_maintain ");
+		List<Record> prices = Db.find("select price from price_maintain where id in (18,20)");
 		setAttr("prices", prices);
 		render(getRequest().getRequestURI()+"/list.html");
 	}
