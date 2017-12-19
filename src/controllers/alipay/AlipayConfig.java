@@ -56,10 +56,10 @@ public class AlipayConfig {
             //"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhWV2Zf8EP1T6ojbEhsGt+MDgHaS1PpmgiBFBLi4fh+Itnwz+rKgOWe4mwZxQSBmDjJgtCgsTw2Y8xTw8QcJb8fuFMbjYbJRodIJfyzxAvsrsjej9G4f7pXL9ZYRZyrGhu35sly8I4Uix5GEOgKAdLmwLC30DiSYO7uiHyG/Gs8NA9t+Y5DRg6l4Q9HtdUBOr5a1DwJX4fDrrq7i4G6fJMLq556kvM2HNhtMHaDsZeu3+SlgkSbkSU4Bd5o9R/LsbRTWX1yJj7GQIVvNf1FldPnetj09G22iUy/Ygiv9jJr2LT5gVymltJw44FudmiOduwMmdSlMExG8tU/N9GEiUDwIDAQAB";
 
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String notify_url = "http://www.iwedclub.com/alipay/notify";//"http://工程公网访问地址/alipay.trade.page.pay-JAVA-UTF-8/notify_url.jsp";
+	public static String notify_url = "http://www.iwedclub.com/alipay/ali_notify";//"http://工程公网访问地址/alipay.trade.page.pay-JAVA-UTF-8/notify_url.jsp";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String return_url = "http://www.iwedclub.com/alipay/return";//"http://工程公网访问地址/alipay.trade.page.pay-JAVA-UTF-8/return_url.jsp";
+	public static String return_url = "http://www.iwedclub.com/alipay/ali_return";//"http://工程公网访问地址/alipay.trade.page.pay-JAVA-UTF-8/return_url.jsp";
 
 	// 签名方式
 	public static String sign_type = "RSA2";
