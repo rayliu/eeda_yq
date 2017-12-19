@@ -28,11 +28,20 @@ public class AppShopController extends Controller {
     	String shop_id = getRequest().getHeader("shop_id");
     	
     	//商家列表
-    	List<Record> shopList = Db.find(" select wc.logo,ifnull(wc.c_name,wc.company_name) company_name,"
+    	List<Record> shopList = Db.find(" select wc.logo,ul.influence, "
+    			+ " ifnull(wc.c_name,wc.company_name) company_name,"
+    			+ " if(dio.id >0 ,'Y','N') diamond,"
+    			+ " if(cu.id >0 ,'Y','N') cu,"
+    			+ " if(hui.is_active = 'Y' ,'Y','N') hui,"
     			+ " ctg.name category_name,wc.address,wc.about"
     			+ " from user_login ul"
     			+ " left join wc_company wc on wc.creator = ul.id"
     			+ " left join category ctg on ctg.id = wc.trade_type"
+    			+ " left join wc_ad_diamond dio on dio.creator = ul.id"
+    			+ " and ((now() BETWEEN dio.begin_date and dio.end_date) and dio.status = '已开通')"
+    			+ " left join wc_ad_cu cu on cu.creator = ul.id"
+    			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
+    			+ " left join wc_ad_hui hui on hui.creator = ul.id"
     			+ " where ul.id = ?",shop_id);
     	
     	

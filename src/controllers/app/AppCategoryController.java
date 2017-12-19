@@ -35,14 +35,22 @@ public class AppCategoryController extends Controller {
     	conditions += " and ctg.name = '"+category_name+"'";
     	
     	//商家列表
-    	List<Record> shopList = Db.find(" select ul.id shop_id, "
+    	List<Record> shopList = Db.find(" select ul.id shop_id,ul.influence, "
     			+ " ifnull(wc.c_name,wc.company_name) company_name,"
+    			+ " if(dio.id >0 ,'Y','N') diamond,"
+    			+ " if(cu.id >0 ,'Y','N') cu,"
+    			+ " if(hui.is_active = 'Y' ,'Y','N') hui,"
     			+ " ctg.name category_name,ul.create_time,"
     			+ " wc.logo"
     			+ " from user_login ul"
     			+ " left join wc_company wc on wc.creator = ul.id"
     			+ " left join category ctg on ctg.id = wc.trade_type"
-    			+ " where 1 = 1 "
+    			+ " left join wc_ad_diamond dio on dio.creator = ul.id"
+    			+ " and ((now() BETWEEN dio.begin_date and dio.end_date) and dio.status = '已开通')"
+    			+ " left join wc_ad_cu cu on cu.creator = ul.id"
+    			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
+    			+ " left join wc_ad_hui hui on hui.creator = ul.id"
+    			+ " where 1 = 1 and system_type ='商家后台' "
     			+ conditions);
     	
     	Record data = new Record();

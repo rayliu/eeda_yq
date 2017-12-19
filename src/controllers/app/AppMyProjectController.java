@@ -32,13 +32,22 @@ public class AppMyProjectController extends Controller {
      */
     public void orderData() throws IOException{
     	String conditions = getRequest().getHeader("conditions");
+    	String login_id = getRequest().getHeader("login_id");
     	
     	//商家列表
-    	List<Record> orderList = Db.find("select * from wc_my_project LIMIT 10");
+    	List<Record> orderList = Db.find("select * from wc_my_project");
     	for(Record re :orderList){
     		Long order_id = re.getLong("id");
-    		List<Record> item = Db.find("select * from wc_my_project_item where order_id = ?",order_id);
+    		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check from wc_my_project_item item"
+    				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
+    				+ " where item.order_id = ?",login_id, order_id);
+    		
+    		List<Record> checkItem = Db.find("select * from wc_my_project_ref ref"
+    				+ " left join wc_my_project_item item on item.id = ref.item_id"
+    				+ " where item.order_id = ? and ref.user_id = ?",order_id,login_id);
     		re.set("item_list", item);
+    		re.set("check_item", checkItem);
+    		
     	}
     	
     	Record data = new Record();
