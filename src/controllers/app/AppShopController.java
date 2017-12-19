@@ -1,6 +1,7 @@
 package controllers.app;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,9 @@ public class AppShopController extends Controller {
      * @throws IOException
      */
     public void shopList() throws IOException{
-    	String shop_id = getRequest().getHeader("shop_id");
+    	//String shop_id = getRequest().getHeader("shop_id");
+    	String shop_id = getPara();
+    	shop_id = URLDecoder.decode(shop_id, "UTF-8");
     	
     	//商家列表
     	List<Record> shopList = Db.find(" select wc.logo,ul.influence, "
