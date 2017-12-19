@@ -38,26 +38,23 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 
         //是否审批
         $("#eeda_table").on("click"," .wherether_approve",function(){
-        	var result = confirm("确定要这样做吗？");
         	var self = $(this);
         	var id = self.data('id');
         	var status = self.attr("status");
-        	if(result){
-        		$.post("/WebAdmin/biz/bannerApplication/whetherApprove",{id:id,status:status},function(data){
-            		if(data){
-            			if(status == "Y"){
-            				$.scojs_message("审批成功",$.scojs_message.TYPE_OK);
-            			}
-            			if(status == "N"){
-            				$.scojs_message("已拒绝",$.scojs_message.TYPE_OK);
-            			}
-            			refleshTable();
-            			checkMessage();
-            		}else{
-            			$.scojs.message("审批失败",$.scojs_message.TYPE_OK);
-            		}
-            	})
-        	}
+    		$.post("/WebAdmin/biz/bannerApplication/whetherApprove",{id:id,status:status},function(data){
+        		if(data){
+        			if(status == "Y"){
+        				$.scojs_message("审批成功",$.scojs_message.TYPE_OK);
+        			}
+        			if(status == "N"){
+        				$.scojs_message("已拒绝",$.scojs_message.TYPE_OK);
+        			}
+        			refleshTable();
+        			checkMessage();
+        		}else{
+        			$.scojs.message("审批失败",$.scojs_message.TYPE_OK);
+        		}
+        	})
         });
         
    	 	var refleshTable = function(){
