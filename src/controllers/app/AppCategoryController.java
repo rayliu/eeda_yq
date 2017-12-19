@@ -51,7 +51,8 @@ public class AppCategoryController extends Controller {
     			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
     			+ " left join wc_ad_hui hui on hui.creator = ul.id"
     			+ " where 1 = 1 and system_type ='商家后台' "
-    			+ conditions);
+    			+ conditions
+    			+ "group by ul.id");
     	
     	Record data = new Record();
     	data.set("shopList", shopList);
