@@ -1,6 +1,7 @@
 package controllers.app;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,10 +27,9 @@ public class AppCategoryController extends Controller {
      * @throws IOException
      */
     public void searchShopByType() throws IOException{
-    	String category_name = getRequest().getHeader("category_name");
-    	System.out.println("before:"+category_name);
-    	category_name = EedaHttpKit.decodeHeadInfo(category_name);
-    	System.out.println("after:"+category_name);
+    	String category_name = getPara();
+    	category_name = URLDecoder.decode(category_name, "UTF-8");
+    	
     	String conditions = "";
     	
     	conditions += " and ctg.name = '"+category_name+"'";
