@@ -38,53 +38,25 @@ public class AskController extends Controller {
 	}
 	
 	@Before(EedaMenuInterceptor.class)
-	 public void edit(){
-	        String id = getPara("id");
-//	      String title = getPara("edit_radioTitle");
-//	      String content = getPara("edit_radioContent");
-//	      Record r= Db.findById("msg_board", id);
-//	      r.set("title", title);
-//	      r.set("content", content);
-//	      r.set("update_stamp", new Date());
-//	      r.set("updator", LoginUserController.getLoginUserId(this));
-//	      Db.update("msg_board", r);
-	        render("/WebAdmin/customer/edit.html");
-	    }
+	public void details(){
+	    String id = getPara("id");
+	    String question = "SELECT wq.id,wq.title,SUBSTR(wq.create_time,1,19) create_time,ul.user_name"
+	    		+ " FROM wc_question wq "
+	    		+ " left join user_login ul on ul.id = wq.creator"
+	    		+ " where wq.id = ?";
+	    Record questionRe = Db.findFirst(question, id);
+	    
+	    String response = "SELECT wr.id,SUBSTR(wr.create_time,1,19) create_time,wr.value,ul.user_name,ul.wedding_date"
+	    		+ " FROM wc_response wr "
+	    		+ " left join user_login ul on ul.id = wr.creator"
+    			+ " where wr.question_id =?";
+	    List<Record> responseList = Db.find(response, id);
+	    setAttr("question", questionRe);
+	    setAttr("responseList", responseList);
+	    render("/WebAdmin/user/ask/details.html");
+	}
 	 
-    @Before(Tx.class)
-   	public void save() throws Exception {
-    	String title = getPara("radioTitle");
-    	String content = getPara("radioContent");
-    	UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id=user.getLong("office_id");
-    	Record r= new Record();
-        r.set("title", title);
-        r.set("content", content);
-        r.set("office_id", office_id);
-        r.set("create_stamp", new Date());
-        r.set("creator", LoginUserController.getLoginUserId(this));
-        Db.save("msg_board", r);
-        redirect("/");
-   	}
-    
-    @Before(Tx.class)
-    public void saveOfMsgBoard() throws Exception {
-    	String title = getPara("radioTitle");
-    	String content = getPara("radioContent");
-    	UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id=user.getLong("office_id");
-    	Record r= new Record();
-    	r.set("title", title);
-    	r.set("content", content);
-    	r.set("office_id", office_id);
-    	r.set("create_stamp", new Date());
-    	r.set("creator", LoginUserController.getLoginUserId(this));
-    	Db.save("msg_board", r);
-    	redirect("/msgBoard");
-    }
-    
     public void list(){
-    	
     	UserLogin user = LoginUserController.getLoginUser(this);
         long office_id=user.getLong("office_id");
         String sLimit = "";
@@ -94,12 +66,10 @@ public class AskController extends Controller {
         }
          
     	String sql = "select * from ("
-    			+ " select m.*, u.c_name create_name, u1.c_name update_name"
-        		+ " from msg_board m "
-        		+ " left join user_login u on u.id = m.creator"
-        		+ " left join user_login u1 on u1.id = m.updator"
-        		+ " where m.office_id="+office_id
-        		+ " ) A where 1=1 ";
+    			+ " select wc_q.id,wc_q.create_time,wc_q.title,"
+    			+ " (select COUNT(id) from wc_response wc_r where wc_r.question_id=wc_q.id) reply_number "
+    			+ " from wc_question wc_q) A "
+    			+ " where 1=1 ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
@@ -107,8 +77,8 @@ public class AskController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
-        Map map = new HashMap();
+        List<Record> orderList = Db.find(sql+ condition + " order by create_time desc " +sLimit);
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -117,12 +87,21 @@ public class AskController extends Controller {
     	
     }
     
-   
-
-    public void seeMsgBoardDetail(){
+    public void deleteQuestion(){
     	String id = getPara("id");
-    	Record r= Db.findById("msg_board", id);
-    	renderJson(r);
+    	Record  question = Db.findById("wc_question", id);
+    	List<Record>  responseList = Db.find("select*from wc_response where question_id = ?",id);
+    	Db.delete("wc_question", question);
+    	for (Record record : responseList) {
+			Db.delete("wc_response", record);
+		}
+    	renderJson("{\"result\":true}");
     }
-    
+
+    public void deleteResponse(){
+    	String id = getPara("id");
+    	Record r= Db.findById("wc_response", id);
+    	boolean result = Db.delete("wc_response", r);
+    	renderJson("{\"result\":"+result+"}");
+    }
 }

@@ -1,0 +1,27 @@
+<%layout("/WebAdmin/layout.html"){%>
+<div class="content">
+	<div class="pageheader notab overhide">
+    	<div class="newproject-wrap bdgray">
+	        <h3 class="tipsred2">问：${question.title!''}</h3>
+	        <h4 class="chzn-disabled mt10">${question.create_time!''}</h4>
+	        <input type="text" value="${question.id!''}" id="order_id" style="display:none;">
+	        <hr>
+	        <ul class="mt10">
+	        <% for(list in responseList![]){%>
+       	  	<li>
+       	  	<div class="row">
+       	  		<input type="button" class="delete-btn delete" value="删除" id="${list.id!''}"> <h4 class="chatsearch" >  ${list.value!''}</h4>
+       	  		<span class="tipsred2">用户：${list.user_name!''} </span>&nbsp&nbsp&nbsp&nbsp&nbsp<span class="chzn-disabled mt10"> ${list.create_time!''} </span>
+       	  	</div>
+		   	</li>
+		   	<% }%>
+        	</ul>
+      	</div>
+	</div>
+ </div>
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['/js/WebAdmin/user/ask/details.js']);
+    });
+</script>
