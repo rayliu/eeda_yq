@@ -1,6 +1,8 @@
 package controllers.app;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +27,6 @@ public class AppBestCaseController extends Controller {
      * @throws IOException
      */
     public void orderData() throws IOException{
-    	String conditions = getRequest().getHeader("conditions");
-    	
     	//精选婚礼
     	List<Record> caseList = Db.find(" SELECT cas.id, cas.name title,cas.picture_name cover,"
     			+ " wc.c_name shop_name ,wc.logo shop_logo "
@@ -52,9 +52,9 @@ public class AppBestCaseController extends Controller {
     /*
      * 精选明细
      */
-    public void find_case_by_id(){
-    	String case_id = getRequest().getHeader("case_id");
-    	
+    public void findById() throws UnsupportedEncodingException{
+    	String case_id = getPara();
+    	case_id = URLDecoder.decode(case_id, "UTF-8");
     	//店铺信息
     	List<Record> shop = Db.find(""
     			+ " select wc.*,cor.name category_name"
@@ -76,8 +76,9 @@ public class AppBestCaseController extends Controller {
     /*
      * 视频案例
      */
-    public void video_case(){
-    	String case_id = getRequest().getHeader("case_id");
+    public void video_case() throws UnsupportedEncodingException{
+    	String case_id = getPara();
+    	case_id = URLDecoder.decode(case_id, "UTF-8");
     	
     	//店铺信息
     	List<Record> caseData = Db.find(""

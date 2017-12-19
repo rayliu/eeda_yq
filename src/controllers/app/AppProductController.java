@@ -1,6 +1,7 @@
 package controllers.app;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,8 @@ public class AppProductController extends Controller {
      * @throws IOException
      */
     public void orderData() throws IOException{
-    	String product_id = getRequest().getHeader("product_id");
+    	String product_id = getPara();
+    	product_id = URLDecoder.decode(product_id, "UTF-8");
     	
     	//产品信息
     	List<Record> product = Db.find("SELECT pro.*,com.c_name shop_name,cat.name category_name FROM wc_product pro"

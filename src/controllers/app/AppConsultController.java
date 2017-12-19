@@ -1,6 +1,7 @@
 package controllers.app;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
@@ -31,16 +32,22 @@ public class AppConsultController extends Controller {
    
     /**
      * 回复列表内容
+     * @throws UnsupportedEncodingException 
      * @throws IOException
      */
     @Before(Tx.class)
-    public void save_consult(){
-    	String shop_id = getRequest().getHeader("shop_id");
-    	String login_id = getRequest().getHeader("login_id");
-    	String user_name = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("user_name"));
-    	String mobile = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("mobile"));
-    	String wedding_date = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("wedding_date"));
-    	String remark = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("remark"));
+    public void save_consult() throws UnsupportedEncodingException{
+    	String shop_id = getPara("shop_id");
+    	shop_id = URLDecoder.decode(shop_id, "UTF-8");
+    	String login_id = getPara("login_id");
+    	login_id = URLDecoder.decode(login_id, "UTF-8");
+    	String remark = getPara("value");
+    	remark = URLDecoder.decode(remark, "UTF-8");
+    	
+    	Record user = Db.findById("user_login", login_id);
+    	String user_name = user.getStr("user_name");
+    	String mobile = user.getStr("phone");
+    	String wedding_date = user.getStr("wedding_date");
 
     	Record consult = new Record();
     	consult.set("shop_id", shop_id);

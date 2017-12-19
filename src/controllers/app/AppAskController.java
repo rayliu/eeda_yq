@@ -1,6 +1,8 @@
 package controllers.app;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
@@ -31,8 +33,6 @@ public class AppAskController extends Controller {
      * @throws IOException
      */
     public void askList() throws IOException{
-    	String conditions = getRequest().getHeader("conditions");
-    	
     	//商家列表
     	List<Record> askList = Db.find(""
     			+ " select wq.id id,wq.create_time,wq.title,ul.user_name login_name,"
@@ -52,8 +52,8 @@ public class AppAskController extends Controller {
      * @throws IOException
      */
     public void responseList() throws IOException{
-    	String question_id = getRequest().getHeader("question_id");
-    	
+    	String question_id = getPara();
+    	question_id = URLDecoder.decode(question_id, "UTF-8");
     	//商家列表
     	List<Record> responseList = Db.find(" select wr.id id,wr.create_time,wr.value,ul.user_name user_name"
     			+ " from wc_response wr"
@@ -69,12 +69,15 @@ public class AppAskController extends Controller {
     
     /**
      * 回复列表内容
+     * @throws UnsupportedEncodingException 
      * @throws IOException
      */
     @Before(Tx.class)
-    public void save_question(){
-    	String value = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("questionValue"));
-    	String login_id = getRequest().getHeader("login_id");
+    public void save_question() throws UnsupportedEncodingException{
+    	String value = getPara("value");
+    	String login_id = getPara("login_id");
+    	value = URLDecoder.decode(value, "UTF-8");
+    	login_id = URLDecoder.decode(login_id, "UTF-8");
 
     	Record question = new Record();
     	question.set("title", value);
@@ -88,11 +91,15 @@ public class AppAskController extends Controller {
     }
     
     @Before(Tx.class)
-    public void save_answer(){
-    	String value = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("answerValue"));
-    	String login_id = getRequest().getHeader("login_id");
-    	String question_id = getRequest().getHeader("questionId");
-
+    public void save_answer() throws UnsupportedEncodingException{
+    	String value = getPara("value");
+    	String login_id = getPara("login_id");
+    	String question_id = getPara("question_id");
+    	value = URLDecoder.decode(value, "UTF-8");
+    	login_id = URLDecoder.decode(login_id, "UTF-8");
+    	question_id = URLDecoder.decode(question_id, "UTF-8");
+    	
+    	
     	Record answer = new Record();
     	answer.set("value", value);
     	answer.set("question_id", question_id);

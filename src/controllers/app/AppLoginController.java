@@ -1,6 +1,7 @@
 package controllers.app;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
@@ -26,59 +27,23 @@ public class AppLoginController extends Controller {
 
     private Logger logger = Logger.getLogger(AppLoginController.class);
     
-    /**
-     * 问问
-     * @throws IOException
-     */
-    public void askList() throws IOException{
-    	String conditions = getRequest().getHeader("conditions");
-    	
-    	//商家列表
-    	List<Record> askList = Db.find(""
-    			+ " select wq.id id,wq.create_time,wq.title,wc.c_name shop_name,"
-    			+ " cast((select count(0) from wc_response where question_id = wq.id) as char) answer_count"
-    			+ " from wc_question wq"
-    			+ " left join wc_company wc on wc.creator = wq.creator"
-    			+ " order by wq.id desc");
-    	
-    	Record data = new Record();
-    	data.set("askList", askList);
-        renderJson(data);  
-    }
     
     /**
      * 回复列表内容
-     * @throws IOException
-     */
-    public void responseList() throws IOException{
-    	String question_id = getRequest().getHeader("question_id");
-    	
-    	//商家列表
-    	List<Record> responseList = Db.find(" select wr.id id,wr.create_time,wr.value,ul.user_name user_name"
-    			+ " from wc_response wr"
-    			+ " left join user_login ul on ul.id = wr.creator"
-    			+ " where question_id = ?"
-    			+ " order by wr.id desc",question_id);
-    	
-    	Record data = new Record();
-    	data.set("responseList", responseList);
-        renderJson(data);  
-    }
-    
-    /**
-     * 回复列表内容
+     * @throws UnsupportedEncodingException 
      * @throws IOException
      */
     @Before(Tx.class)
-    public void save_register(){
+    public void save_register() throws UnsupportedEncodingException{
     	boolean result = false;
     	String errMsg = "";
-    	String invite_code = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("invite_code"));
-    	String pwd = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("pwd"));
-    	String mobile = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("mobile"));
-    	String user_name = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("user_name"));
-    	String wedding_date = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("wedding_date"));
 
+    	String invite_code = URLDecoder.decode(getPara("invite_code"), "UTF-8");
+    	String user_name = URLDecoder.decode(getPara("user_name"), "UTF-8");
+    	String wedding_date = URLDecoder.decode(getPara("wedding_date"), "UTF-8");
+    	String pwd = URLDecoder.decode(getPara("pwd"), "UTF-8");
+    	String mobile = URLDecoder.decode(getPara("mobile"), "UTF-8");
+    	
     	Record user = Db.findFirst("select * from user_login where phone = ?", mobile);
     	if(user == null){
     		Record user_login = new Record();
@@ -102,14 +67,14 @@ public class AppLoginController extends Controller {
     }
     
     @Before(Tx.class)
-    public void login(){
+    public void login() throws UnsupportedEncodingException{
     	boolean result = false;
     	String errMsg = null;
     	String login_id = null;
     	String wedding_date = null;
     	String user_name = null;
-    	String password = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("password"));
-    	String mobile = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("mobile"));
+    	String password = URLDecoder.decode(getPara("password"), "UTF-8");
+    	String mobile = URLDecoder.decode(getPara("mobile"), "UTF-8");
 
     	Record user = Db.findFirst("select * from user_login where phone = ? and password = ?",mobile, password);
     	if(user != null){
@@ -130,22 +95,4 @@ public class AppLoginController extends Controller {
         renderJson(data);  
     }
     
-    @Before(Tx.class)
-    public void save_answer(){
-    	String value = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("answerValue"));
-    	String user_id = getRequest().getHeader("userId");
-    	String question_id = getRequest().getHeader("questionId");
-
-    	Record answer = new Record();
-    	answer.set("value", value);
-    	answer.set("question_id", question_id);
-    	answer.set("create_time", new Date());
-    	answer.set("creator", user_id);
-    	Db.save("wc_response", answer);
-
-    	Record data = new Record();
-    	data.set("result", true);
-        renderJson(data);  
-    }
-
 }
