@@ -78,8 +78,11 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 	  
 	  $("#img_item").on('click','.delete_item',function(){
 		  var code = $(this).attr('code');
-		  $('#img_photo'+code).parent().remove();
-		  img_num--;
+		  var value = $(this).parent().find("img").attr("value");
+		  $.post("/BusinessAdmin/product/deletePicture",{value:value},function(data){
+			  $('#img_photo'+code).parent().remove();
+			  img_num--;
+		  });
 	  });
 	  
 	  $("#img_item").on('click','.delete_item_id',function(){

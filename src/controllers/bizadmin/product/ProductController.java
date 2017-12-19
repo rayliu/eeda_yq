@@ -84,7 +84,18 @@ public class ProductController extends Controller {
 		}
 		return result;
 	}
-	
+	public void deletePicture(){
+		String pic_name = getPara("value");
+		String path = getRequest().getServletContext().getRealPath("/");
+    	String filePath = path+"\\upload\\"+pic_name;
+		File file = new File(filePath);
+		boolean result = false;
+		if(file.exists()&&file.isFile()){
+			result = file.delete();
+			result = true;
+		}
+		renderJson(result);
+	}
 	@Before(Tx.class)
 	public void deleteItem(){
 		String item_id = getPara("item_id");
@@ -267,6 +278,4 @@ public class ProductController extends Controller {
         }
     	renderJson(re);
     }
-    
-
 }
