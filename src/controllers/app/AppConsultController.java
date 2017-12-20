@@ -41,13 +41,13 @@ public class AppConsultController extends Controller {
     	shop_id = URLDecoder.decode(shop_id, "UTF-8");
     	String login_id = getPara("login_id");
     	login_id = URLDecoder.decode(login_id, "UTF-8");
-    	String remark = getPara("value");
+    	String remark = getPara("values");
     	remark = URLDecoder.decode(remark, "UTF-8");
     	
     	Record user = Db.findById("user_login", login_id);
     	String user_name = user.getStr("user_name");
     	String mobile = user.getStr("phone");
-    	String wedding_date = user.getStr("wedding_date");
+    	Date wedding_date = user.getDate("wedding_date");
 
     	Record consult = new Record();
     	consult.set("shop_id", shop_id);

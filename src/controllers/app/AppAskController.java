@@ -74,7 +74,7 @@ public class AppAskController extends Controller {
      */
     @Before(Tx.class)
     public void save_question() throws UnsupportedEncodingException{
-    	String value = getPara("value");
+    	String value = getPara("values");
     	String login_id = getPara("login_id");
     	value = URLDecoder.decode(value, "UTF-8");
     	login_id = URLDecoder.decode(login_id, "UTF-8");
@@ -92,7 +92,7 @@ public class AppAskController extends Controller {
     
     @Before(Tx.class)
     public void save_answer() throws UnsupportedEncodingException{
-    	String value = getPara("value");
+    	String value = getPara("values");
     	String login_id = getPara("login_id");
     	String question_id = getPara("question_id");
     	value = URLDecoder.decode(value, "UTF-8");
