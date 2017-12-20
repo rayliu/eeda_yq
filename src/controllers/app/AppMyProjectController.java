@@ -35,13 +35,13 @@ public class AppMyProjectController extends Controller {
      */
     public void orderData() throws IOException{
 //    	String conditions = getRequest().getHeader("conditions");
-    	String login_id = getPara("login_id");
+    	String login_id = URLDecoder.decode(getPara(), "UTF-8");
     	
     	//筹备列表
     	List<Record> orderList = Db.find("select * from wc_my_project");
     	for(Record re :orderList){
     		Long order_id = re.getLong("id");
-    		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check from wc_my_project_item item"
+    		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date from wc_my_project_item item"
     				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
     				+ " where item.order_id = ?",login_id, order_id);
     		
@@ -65,45 +65,46 @@ public class AppMyProjectController extends Controller {
      */
     @Before(Tx.class)
     public void save_date() throws UnsupportedEncodingException{
-        String user_id = getPara(0);
-    	String item_id = getPara(1);
-    	String date= getPara(2);
-    	date = URLDecoder.decode(date, "UTF-8");
+    	String user_id = URLDecoder.decode(getPara("user_id"), "UTF-8");
+    	String item_id = URLDecoder.decode(getPara("item_id"), "UTF-8");
+    	String is_check = URLDecoder.decode(getPara("is_check"), "UTF-8");
+    	String complete_date = URLDecoder.decode(getPara("complete_date"), "UTF-8");
 
     	Record return_data = new Record();
-    	Record rec = Db.findById("wc_my_project_item", item_id);
-    	if(rec!=null){
-        	rec.set("complete_date", date);
-        	Db.update("wc_my_project_item", rec);
-        	
-        	return_data.set("result", true);
-    	}else{
-    	    return_data.set("result", false);
-    	}
+        Record rec = Db.findFirst("select * from wc_my_project_ref where user_id="+user_id+" and item_id="+ item_id);
+        if(rec != null){
+        	rec.set("complete_date", complete_date);
+        	Db.update("wc_my_project_ref", rec);
+        }
+        return_data.set("result", true);
 
         renderJson(return_data);  
     }
     
     @Before(Tx.class)
-    public void save_check(){
-        String user_id = getPara(0);
-        String item_id = getPara(1);
-        String is_check= getPara(2);
+    public void save_check() throws UnsupportedEncodingException{
+    	String user_id = URLDecoder.decode(getPara("user_id"), "UTF-8");
+    	String item_id = URLDecoder.decode(getPara("item_id"), "UTF-8");
+    	String is_check = URLDecoder.decode(getPara("is_check"), "UTF-8");
+    	String complete_date = URLDecoder.decode(getPara("complete_date"), "UTF-8");
 
         Record return_data = new Record();
-        Record rec = Db.findFirst("select * from wc_my_project_ref where user_id="+user_id+"and item_id="+ item_id);
-        if(rec!=null && "N".equals(is_check)){
-            Db.delete("wc_my_project_ref", rec);
-            return_data.set("result", true);
-        }else if(rec==null && "Y".equals(is_check)){
-            rec = new Record();
+        Record rec = Db.findFirst("select * from wc_my_project_ref where user_id="+user_id+" and item_id="+ item_id);
+        if(rec != null){
+        	if("N".equals(is_check)){
+        		Db.delete("wc_my_project_ref", rec);
+        	}
+        }else{
+        	rec = new Record();
             rec.set("item_id", item_id);
             rec.set("user_id", user_id);
+            if(StringUtils.isNotBlank(complete_date)){
+                rec.set("complete_date", complete_date);
+            }
+            rec.set("user_id", user_id);
             Db.save("wc_my_project_ref", rec);
-            return_data.set("result", true);
-        }else{
-            return_data.set("result", false);
         }
+        return_data.set("result", true);
 
         renderJson(return_data);  
     }
