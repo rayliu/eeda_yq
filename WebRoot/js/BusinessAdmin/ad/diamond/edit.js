@@ -43,7 +43,6 @@ define(['jquery', 'sco', 'jquery_ui', 'validate_cn'], function ($) {
 		  self.disabled = true;
 		  $.post("/BusinessAdmin/ad/diamond_save",{jsonStr:JSON.stringify(order)},function(data){
 			  if(data){
-				  $.scojs_message('支付成功', $.scojs_message.TYPE_OK);
 				  //新开支付页面
 				  $('#WIDout_trade_no').val(data.ID);
 				  $('#WIDtotal_amount').val($("#total_price").text());

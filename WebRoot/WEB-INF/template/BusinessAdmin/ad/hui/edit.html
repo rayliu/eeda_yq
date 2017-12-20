@@ -30,8 +30,8 @@
                 折优惠，包括已享有优惠的商品仍然可能享此折扣。
             </div>
             <div style="margin:10px 0;">
-                <label><input class="radio" type="radio" name="DiscountOpen" <%if(hui.is_active!'' == 'Y'){%>checked<%}%> value="Y" />开启“惠”</label> 
-                <label><input class="radio" type="radio" name="DiscountOpen" <%if(hui.is_active!'' == 'N'){%>checked<%}%> value="N" />关闭“惠”</label>
+                <label><input class="radio" type="radio" name="DiscountOpen" id="open" <%if(hui.is_active!'' == 'Y'){%>checked<%}%> value="Y" />开启“惠”</label> 
+                <label><input class="radio" type="radio" name="DiscountOpen" id="close" <%if(hui.is_active!'' == 'N'){%>checked<%}%> value="N" />关闭“惠”</label>
             </div>
             <button id="saveBtn" type="button" class="stdbtn btn_blue" > 确 认</button>
             <span  id="ban_tip" style="color:red;" ></span>

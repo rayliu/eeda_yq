@@ -53,6 +53,8 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 				var per_price = $("#per_price").text();
 				var sum=v*per_price;
 				$("#price").text(sum);
+			}else{
+				$("#saveBtn").attr("disabled",true);
 			}
 		});
 		

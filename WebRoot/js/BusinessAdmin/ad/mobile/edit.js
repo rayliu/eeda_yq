@@ -9,7 +9,7 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
           ajax: "/BusinessAdmin/ad/mobilelist",
           columns: [
             { "data": "ORDER_NO","width": "120px"},
-            { "data": "AMOUNT","class":"title", "width": "60px"},
+            { "data": "AMOUNT", "width": "60px"},
             { "data": "PUT_IN_TIME","width": "90px"},
             { "data": "PRICE","width": "60px" },
             { "data": "TOTAL_PRICE", "width": "60px" },

@@ -8,7 +8,10 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
           ajax: "/BusinessAdmin/ad/cu/list",
           columns: [
             { "data": "ORDER_NO" ,"width": "80px"},
-            { "data": "TITLE","class":"title", "width": "100px"},
+            { "data": "TITLE", "width": "100px"},
+            { "data": "BEGIN_DATE","width": "100px" },
+            { "data": "END_DATE", "width": "100px" },
+            { "data": "PRICE", "width": "100px"},
             { "data": "STATUS","width": "100px" ,
                 render: function(data,type,full,meta){
                 	var status = '开启';
@@ -18,9 +21,6 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
                     return data + " <button class='stdbtn btn_blue statusBtn' id='"+full.ID+"' content='"+full.CONTENT+"' href='#title'>"+status+"</button>";
                 }
             },
-            { "data": "BEGIN_DATE","width": "100px" },
-            { "data": "END_DATE", "width": "100px" },
-            { "data": "PRICE", "width": "100px"},
             { "data": null, "width": "100px",
               render: function(data,type,full,meta){
                 return "<button class='stdbtn btn_blue editBtn' id='"+full.ID+"' content='"+full.CONTENT+"' href='#title'>编辑</button>";

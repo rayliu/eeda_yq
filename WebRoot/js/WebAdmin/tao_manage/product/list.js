@@ -79,25 +79,22 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         });
               //更新状态 
         $("#eeda_table").on("click"," .wherether_carriage",function(){
-        	var result = confirm("确定要这样做吗？");
         	var self = $(this);
         	var id = self.data('id');
         	var status = self.attr("status");
-        	if(result){
-        		$.post("/WebAdmin/tao_manage/product/whetherCarriage",{id:id,status:status},function(data){
-            		if(data){
-            			if(status == "toUp"){
-            				$.scojs_message("上架成功",$.scojs_message.TYPE_OK);
-            			}
-            			if(status == "toDown"){
-            				$.scojs_message("已下架",$.scojs_message.TYPE_OK);
-            			}
-            			refleshTable();
-            		}else{
-            			$.scojs.message("操作失败",$.scojs_message.TYPE_OK);
-            		}
-            	})
-        	}
+    		$.post("/WebAdmin/tao_manage/product/whetherCarriage",{id:id,status:status},function(data){
+        		if(data){
+        			if(status == "toUp"){
+        				$.scojs_message("上架成功",$.scojs_message.TYPE_OK);
+        			}
+        			if(status == "toDown"){
+        				$.scojs_message("已下架",$.scojs_message.TYPE_OK);
+        			}
+        			refleshTable();
+        		}else{
+        			$.scojs.message("操作失败",$.scojs_message.TYPE_OK);
+        		}
+        	})
         });
 
         var refleshTable = function(){

@@ -32,5 +32,12 @@ define(['jquery', 'sco'], function ($, metisMenu) {
               slef.disabled = false;
           });
       });
+	  
+	  if($("#open").attr("checked")){
+		  $("#close").attr("checked",false);
+	  }else{
+		  $("#close").attr("checked",true);
+	  }
+	  
   });
 });
