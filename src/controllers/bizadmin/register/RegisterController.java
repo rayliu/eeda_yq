@@ -146,7 +146,9 @@ public class RegisterController extends Controller {
 			item.set("shop_telephone", shop_telephone);
 			item.set("trade_type", trade_type);
 			item.set("province", shop_province);
-			item.set("city", shop_city);
+			if(!shop_city.equals("undefined")){
+				item.set("city", shop_city);
+			}
 			item.set("district", shop_district);
 			item.set("address", shop_address);
 			item.set("qq", qq);
