@@ -47,13 +47,14 @@ public class AppLoginController extends Controller {
     	
     	Record user = Db.findFirst("select * from user_login where phone = ? and system_type = 'mobile'", mobile);
     	if(user == null){
+    		String sha1Pwd = MD5Util.encode("SHA1",pwd);
     		Record user_login = new Record();
         	user_login.set("invitation_code", invite_code);
         	user_login.set("phone", mobile);
         	user_login.set("wedding_date", wedding_date);
         	user_login.set("user_name", user_name);
         	user_login.set("system_type", "mobile");
-        	user_login.set("password", pwd);
+        	user_login.set("password", sha1Pwd);
         	user_login.set("password_hint", pwd);
         	user_login.set("create_time", new Date());
         	Db.save("user_login", user_login);
