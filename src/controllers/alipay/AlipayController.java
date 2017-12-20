@@ -29,23 +29,15 @@ public class AlipayController extends Controller {
             String trade_status = getPara("trade_status");
             logger.debug("getPara(\"trade_status\") =" + trade_status);
             rec.set("trade_status", trade_status);
-            if("TRADE_SUCCESS".equals(trade_status)){
-                rec.set("status", "已付款");
-                
-                Db.update("update pb_album_pic set buy_flag = 'Y' where buy_id = ?",out_trade_no);
-            }else{
-                rec.set("status", "付款失败");
-            }
-            
             Db.update("wc_ad_diamond", rec);
         }
         
-    	redirect("/");
+    	redirect("/BusinessAdmin/ad/diamond");
         //renderText("notify...");
     }
     
     public void ali_return(){
         //renderText("return...");
-    	redirect("/");
+    	redirect("/BusinessAdmin/ad/diamond");
     }
 }
