@@ -1,6 +1,9 @@
 package controllers.app;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -27,14 +30,14 @@ public class AppMyProjectController extends Controller {
     private Logger logger = Logger.getLogger(AppMyProjectController.class);
     
     /**
-     * 问问
+     * 筹备项目
      * @throws IOException
      */
     public void orderData() throws IOException{
-    	String conditions = getRequest().getHeader("conditions");
-    	String login_id = getRequest().getHeader("login_id");
+//    	String conditions = getRequest().getHeader("conditions");
+    	String login_id = getPara("login_id");
     	
-    	//商家列表
+    	//筹备列表
     	List<Record> orderList = Db.find("select * from wc_my_project");
     	for(Record re :orderList){
     		Long order_id = re.getLong("id");
@@ -56,61 +59,53 @@ public class AppMyProjectController extends Controller {
     }
     
     /**
-     * 回复列表内容
-     * @throws IOException
-     */
-    public void responseList() throws IOException{
-    	String question_id = getRequest().getHeader("question_id");
-    	
-    	//商家列表
-    	List<Record> responseList = Db.find(" select wr.id id,wr.create_time,wr.value,ul.user_name user_name"
-    			+ " from wc_response wr"
-    			+ " left join user_login ul on ul.id = wr.creator"
-    			+ " where question_id = ?"
-    			+ " order by wr.id desc",question_id);
-    	
-
-    	Record data = new Record();
-    	data.set("responseList", responseList);
-        renderJson(data);  
-    }
-    
-    /**
-     * 回复列表内容
+     * 设置日期
+     * @throws UnsupportedEncodingException 
      * @throws IOException
      */
     @Before(Tx.class)
-    public void save_question(){
-    	String value = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("questionValue"));
-    	String login_id = getRequest().getHeader("login_id");
+    public void save_date() throws UnsupportedEncodingException{
+        String user_id = getPara(0);
+    	String item_id = getPara(1);
+    	String date= getPara(2);
+    	date = URLDecoder.decode(date, "UTF-8");
 
-    	Record question = new Record();
-    	question.set("title", value);
-    	question.set("create_time", new Date());
-    	question.set("creator", login_id);
-    	Db.save("wc_question", question);
+    	Record return_data = new Record();
+    	Record rec = Db.findById("wc_my_project_item", item_id);
+    	if(rec!=null){
+        	rec.set("complete_date", date);
+        	Db.update("wc_my_project_item", rec);
+        	
+        	return_data.set("result", true);
+    	}else{
+    	    return_data.set("result", false);
+    	}
 
-    	Record data = new Record();
-    	data.set("result", true);
-        renderJson(data);  
+        renderJson(return_data);  
     }
     
     @Before(Tx.class)
-    public void save_answer(){
-    	String value = EedaHttpKit.decodeHeadInfo(getRequest().getHeader("answerValue"));
-    	String login_id = getRequest().getHeader("login_id");
-    	String question_id = getRequest().getHeader("questionId");
+    public void save_check(){
+        String user_id = getPara(0);
+        String item_id = getPara(1);
+        String is_check= getPara(2);
 
-    	Record answer = new Record();
-    	answer.set("value", value);
-    	answer.set("question_id", question_id);
-    	answer.set("create_time", new Date());
-    	answer.set("creator", login_id);
-    	Db.save("wc_response", answer);
+        Record return_data = new Record();
+        Record rec = Db.findFirst("select * from wc_my_project_ref where user_id="+user_id+"and item_id="+ item_id);
+        if(rec!=null && "N".equals(is_check)){
+            Db.delete("wc_my_project_ref", rec);
+            return_data.set("result", true);
+        }else if(rec==null && "Y".equals(is_check)){
+            rec = new Record();
+            rec.set("item_id", item_id);
+            rec.set("user_id", user_id);
+            Db.save("wc_my_project_ref", rec);
+            return_data.set("result", true);
+        }else{
+            return_data.set("result", false);
+        }
 
-    	Record data = new Record();
-    	data.set("result", true);
-        renderJson(data);  
+        renderJson(return_data);  
     }
 
 }
