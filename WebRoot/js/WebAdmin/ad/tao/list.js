@@ -9,6 +9,25 @@ define(['jquery', 'validate_cn',  'dataTablesBootstrap', 'sco', 'file_upload'], 
   				autoUpload: true, 
   			    url: '/BusinessAdmin/account/saveFile',
   			    dataType: 'json',
+  			    add: function(e, data) {
+			        var uploadErrors = [];
+			        var acceptFileTypes = /^image\/(jpe?g)$/i;
+
+					//文件类型判断
+			        if(data.originalFiles[0]['type'] && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+			        	//uploadErrors.push('图片类型不对');
+			        	$.scojs_message('图片类型不对', $.scojs_message.TYPE_ERROR);
+			        	return;
+			        }
+
+					//文件大小判断
+			        if(data.originalFiles[0]['size'] > 1024000) {
+			            $.scojs_message('文件不能大于1000K', $.scojs_message.TYPE_ERROR);
+			            return;
+			        }else{
+			        	data.submit();
+			        }
+				},
   		        done: function (e, data) {
   	        		if(data){
   			    		//$("#img_"+str).val(data.result.NAME);
@@ -66,26 +85,23 @@ define(['jquery', 'validate_cn',  'dataTablesBootstrap', 'sco', 'file_upload'], 
     	 
         //是否审批
         $("#eeda_table").on("click"," .wherether_approve",function(){
-        	var result = confirm("确定要这样做吗？");
         	var self = $(this);
         	var id = self.data('id');
         	var status = self.attr("status");
-        	if(result){
-        		$.post("/WebAdmin/biz/bannerApplication/whetherApprove",{id:id,status:status},function(data){
-            		if(data){
-            			if(status == "Y"){
-            				$.scojs_message("审批成功",$.scojs_message.TYPE_OK);
-                			
-            			}
-            			if(status == "N"){
-            				$.scojs_message("已拒绝",$.scojs_message.TYPE_OK);
-            			}
-            			refleshTable();
-            		}else{
-            			$.scojs.message("审批失败",$.scojs_message.TYPE_OK);
-            		}
-            	})
-        	}
+    		$.post("/WebAdmin/biz/bannerApplication/whetherApprove",{id:id,status:status},function(data){
+        		if(data){
+        			if(status == "Y"){
+        				$.scojs_message("审批成功",$.scojs_message.TYPE_OK);
+            			
+        			}
+        			if(status == "N"){
+        				$.scojs_message("已拒绝",$.scojs_message.TYPE_OK);
+        			}
+        			refleshTable();
+        		}else{
+        			$.scojs.message("审批失败",$.scojs_message.TYPE_OK);
+        		}
+        	})
         });
         
    	 	var refleshTable = function(){

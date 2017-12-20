@@ -145,6 +145,25 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 					autoUpload: true, 
 				    url: '/BusinessAdmin/register/saveFile',
 				    dataType: 'json',
+				    add: function(e, data) {
+				        var uploadErrors = [];
+				        var acceptFileTypes = /^image\/(jpe?g)$/i;
+
+						//文件类型判断
+				        if(data.originalFiles[0]['type'] && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+				        	//uploadErrors.push('图片类型不对');
+				        	$.scojs_message('图片类型不对', $.scojs_message.TYPE_ERROR);
+				        	return;
+				        }
+
+						//文件大小判断
+				        if(data.originalFiles[0]['size'] > 2048000) {
+				            $.scojs_message('文件不能大于2M', $.scojs_message.TYPE_ERROR);
+				            return;
+				        }else{
+				        	data.submit();
+				        }
+					},
 			        done: function (e, data) {
 		        		if(data){
 				    		$.scojs_message('已选择', $.scojs_message.TYPE_OK);

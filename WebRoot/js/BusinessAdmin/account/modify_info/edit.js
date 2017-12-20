@@ -7,6 +7,25 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 				autoUpload: true, 
 			    url: '/BusinessAdmin/account/saveFile',
 			    dataType: 'json',
+			    add: function(e, data) {
+			        var uploadErrors = [];
+			        var acceptFileTypes = /^image\/(jpe?g)$/i;
+
+					//文件类型判断
+			        if(data.originalFiles[0]['type'] && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+			        	//uploadErrors.push('图片类型不对');
+			        	$.scojs_message('图片类型不对', $.scojs_message.TYPE_ERROR);
+			        	return;
+			        }
+
+					//文件大小判断
+			        if(data.originalFiles[0]['size'] > 1024000) {
+			            $.scojs_message('文件不能大于1000K', $.scojs_message.TYPE_ERROR);
+			            return;
+			        }else{
+			        	data.submit();
+			        }
+				},
 		        done: function (e, data) {
 	        		if(data){
 			    		$('#img_logo').attr('value', data.result.NAME);

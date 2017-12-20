@@ -31,11 +31,13 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 
 						//文件类型判断
 				        if(data.originalFiles[0]['type'] && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-				            uploadErrors.push('图片类型不对');
+				        	//uploadErrors.push('图片类型不对');
+				        	$.scojs_message('图片类型不对', $.scojs_message.TYPE_ERROR);
+				        	return;
 				        }
 
 						//文件大小判断
-				        if(data.originalFiles[0]['size'] > 500000) {
+				        if(data.originalFiles[0]['size'] > 512000) {
 				            $.scojs_message('文件不能大于500K', $.scojs_message.TYPE_ERROR);
 				            return;
 				        }else{
@@ -72,7 +74,6 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 			  
 			  
 			  $('#file_'+str).fileupload({
-			  	    maxFileSize: 10000,
 					validation: {allowedExtensions: ['*']},
 					autoUpload: true, 
 				    url: '/BusinessAdmin/product/saveFile',
@@ -83,11 +84,12 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 
 						//文件类型判断
 				        if(data.originalFiles[0]['type'] && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
-				            uploadErrors.push('图片类型不对');
+				            //uploadErrors.push('图片类型不对');
+				        	$.scojs_message('图片类型不对', $.scojs_message.TYPE_ERROR);
 				        }
 
 						//文件大小判断
-				        if(data.originalFiles[0]['size'] > 500000) {
+				        if(data.originalFiles[0]['size'] > 512000) {
 				            $.scojs_message('文件不能大于500K', $.scojs_message.TYPE_ERROR);
 				            return;
 				        }else{
