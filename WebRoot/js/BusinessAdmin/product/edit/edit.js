@@ -25,6 +25,23 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 					autoUpload: true, 
 				    url: '/BusinessAdmin/product/saveFile',
 				    dataType: 'json',
+				    add: function(e, data) {
+				        var uploadErrors = [];
+				        var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+
+						//文件类型判断
+				        if(data.originalFiles[0]['type'] && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+				            uploadErrors.push('图片类型不对');
+				        }
+
+						//文件大小判断
+				        if(data.originalFiles[0]['size'] > 500000) {
+				            $.scojs_message('文件不能大于500K', $.scojs_message.TYPE_ERROR);
+				            return;
+				        }else{
+				        	data.submit();
+				        }
+					},
 			        done: function (e, data) {
 		        		if(data){
 				    		$('#img_'+str).attr('value',data.result.NAME);
@@ -55,10 +72,28 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 			  
 			  
 			  $('#file_'+str).fileupload({
+			  	    maxFileSize: 10000,
 					validation: {allowedExtensions: ['*']},
 					autoUpload: true, 
 				    url: '/BusinessAdmin/product/saveFile',
 				    dataType: 'json',
+				    add: function(e, data) {
+				        var uploadErrors = [];
+				        var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+
+						//文件类型判断
+				        if(data.originalFiles[0]['type'] && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+				            uploadErrors.push('图片类型不对');
+				        }
+
+						//文件大小判断
+				        if(data.originalFiles[0]['size'] > 500000) {
+				            $.scojs_message('文件不能大于500K', $.scojs_message.TYPE_ERROR);
+				            return;
+				        }else{
+				        	data.submit();
+				        }
+					},
 			        done: function (e, data) {
 		        		if(data){
 		        			$('#img_item').append(img);
@@ -69,7 +104,8 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 				    	}else{
 				    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
 				    	}
-				     },error: function () {
+				    },
+				    error: function () {
 			            alert('上传的时候出现了错误！');
 			        }
 			   });
