@@ -7,13 +7,26 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             serverSide: true, //不打开会出现排序不对
             ajax: "/WebAdmin/biz/diamond/list",
             columns: [
-	                     { "data":"ORDER_NO","width": "20%" },
-	                     { "data": "C_NAME", "width":"15%"},
-	                     { "data": "DAYS", "width":"5%"}, 
+	                     { "data":"ORDER_NO","width": "15%" },
+	                     { "data": "C_NAME", "width":"13%"},
+	                     { "data": "DAYS", "width":"7%"}, 
 	                     { "data": "BEGIN_DATE", "width":"10%"},
 	                     { "data": "END_DATE", "width":"10%"},
 	                     { "data": "TOTAL_PRICE", "width":"5%"},
-	                     { "data": "REMARK", "width":"20%"},
+	                     { "data": "TRADE_STATUS", "width":"7%",
+	                    	 render: function(data,type,full,meta){
+	                    		 var result = '';
+	                    		 if(data == null){
+	                    			 result = "<span>未付款</span>";
+	                    		 }else{
+	                    			 if(data=='TRADE_SUCCESS'||data=='TRADE_FINISHED'){
+	                    				 result = "<span>已付款</span>";
+	                    			 }
+	                    		 }
+	     	            		return result;
+	     	            	 } 
+	                     },
+	                     { "data": "REMARK", "width":"18%"},
 	                     { "data": "STATUS", "width":"15%",
 	                    	 render: function(data,type,full,meta){
 	                    		 var result = '';

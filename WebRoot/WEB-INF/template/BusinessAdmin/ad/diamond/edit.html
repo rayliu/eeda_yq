@@ -1,106 +1,111 @@
 <%layout("/BusinessAdmin/layout.html"){%>
-      <div class="pageheader notab">
-      <h1 class="pagetitle">广告购买</h1>
-  </div>
-  <ul class="hornav">
-
-
-    <li  class="current"><a href="#shengji">升级钻石商家</a></li>
-
-  </ul>
-  <div id="contentwrapper" class="contentwrapper">
-
-    <!-- #tab3 -->
-     <div id="shengji" class="subcontent" >
-    <div class="" style="float:left; width:70%;"><!-- #left -->
-        <h3>升级钻石商家</h3>
+	<div class="pageheader notab">
+    	<h1 class="pagetitle">广告购买</h1>
+  	</div>
+  	
+  	<ul class="hornav">
+		<li  class="current"><a href="#shengji">升级钻石商家</a></li>
+	</ul>
+	
+  	<div id="contentwrapper" class="contentwrapper">
+    	<!-- #tab3 -->
+    	<div id="shengji" class="subcontent" >
+    		<div class="" style="float:left; width:70%;"><!-- #left -->
+        		<h3>升级钻石商家</h3>
                 <div class="mt10"></div>
-        <div class="product-table">
-            <form method="post" action="ad-buy-confirm.php">
-            <input type="hidden" name="Act" value="Diamond" />
-            <table cellpadding="0" cellspacing="0" border="0" class="stdtable">
-                <thead>
-                    <tr>
-                        <th colspan="2" class="head0">订单</th>
-                        <th class="head0">备注</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td width="13%">两年钻石商家服务</td>
-                        <td width="65%">
-                            <span class="">
-                                <input type="radio" name="years" value="2" style="vertical-align:middle;" />
-                                <strong class="ud-year">两年</strong>
-                                <span class="fail-verify"> 至 </span>&nbsp&nbsp&nbsp&nbsp<strong id="tow_year"></strong>
-                            </span>
-                        </td>
-                        <td rowspan="5"><textarea rows="20" cols="10" id="remark"></textarea></td>
-                    </tr>
-                    <tr>
-                        <td>一年钻石商家服务</td>
-                        <td>
-                            <span class="">
-                                <input type="radio" name="years" value="1" checked style="vertical-align:middle;" />
-                                <strong class="ud-year">一年</strong>
-                                <span class="fail-verify"> 至 </span>&nbsp&nbsp&nbsp&nbsp<strong id="one_year"></strong>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>总投放时间</td>
-                        <td ><span id="put_in_days">365</span>天</td>
-                    </tr>
-                    <tr>
-                        <td>结算</td>
-                        <input type="hidden" id="price" value="${damond_price!''}">
-                        <td><span class="anchorbutton" id="total_price" >${damond_price!'0.0'}</span>人民币(元)</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><input id="payBtn" type="button" value="在线支付" class="stdbtn btn_yellow" /></td>
-                    </tr>
-                </tbody>
-            </table>
-            </form>
-        </div>
-    </div>
-    <!-- #left -->
-    <form id="diamond_alipayment_form" action="/alipay/alipay.trade.page.pay.jsp" method="post" target="_blank" style="display: none;">
-        <div id="body1" class="tab-content" name="divcontent">
-            <dl class="content">
-                <dt>商户订单号 ：</dt>
-                <dd>
-                    <input id="WIDout_trade_no" name="WIDout_trade_no">
-                </dd>
-                <hr class="one_line">
-                <dt>订单名称 ：</dt>
-                <dd>
-                    <input id="WIDsubject" name="WIDsubject" value="升级钻石商家付款">
-                </dd>
-                <hr class="one_line">
-                <dt>付款金额 ：</dt>
-                <dd>
-                    <input id="WIDtotal_amount" name="WIDtotal_amount">
-                </dd>
-                <hr class="one_line">
-                <dt>商品描述：</dt>
-                <dd>
-                    <input id="WIDbody" name="WIDbody" value="升级钻石商家付款">
-                </dd>
-                <hr class="one_line">
-                <dt></dt>
-                <dd id="btn-dd">
-                    <span class="new-btn-login-sp">
-                        <button class="new-btn-login" type="submit" style="text-align: center;">付 款</button>
-                    </span> <span class="note-help">如果您点击“付款”按钮，即表示您同意该次的执行操作。</span>
-                </dd>
-            </dl>
-        </div>
-    </form>
-</div>
-    <!--contentwrapper-->
-  </div>
+        		<div class="product-table">
+            		<form method="post" action="ad-buy-confirm.php">
+            			<input type="hidden" name="Act" value="Diamond" />
+           				<table cellpadding="0" cellspacing="0" border="0" class="stdtable">
+			                <thead>
+			                    <tr>
+			                        <th colspan="2" class="head0">订单</th>
+			                        <th class="head0">备注</th>
+			                    </tr>
+			            	</thead>
+                			<tbody>
+	                    		<tr>
+			                        <td width="13%">两年钻石商家服务</td>
+			                        <td width="65%">
+			                            <span class="">
+			                                <input type="radio" name="years" value="2" style="vertical-align:middle;" />
+			                                <strong class="ud-year">两年</strong>
+			                                <span class="fail-verify"> 至 </span>&nbsp&nbsp&nbsp&nbsp<strong id="tow_year"></strong>
+			                            </span>
+			                        </td>
+			                        <td rowspan="5"><textarea rows="20" cols="10" id="remark"></textarea></td>
+			                    </tr>
+			                    <tr>
+			                        <td>一年钻石商家服务</td>
+			                        <td>
+			                            <span class="">
+			                                <input type="radio" name="years" value="1" checked style="vertical-align:middle;" />
+			                                <strong class="ud-year">一年</strong>
+			                                <span class="fail-verify"> 至 </span>&nbsp&nbsp&nbsp&nbsp<strong id="one_year"></strong>
+			                            </span>
+			                        </td>
+			                    </tr>
+			                    <tr>
+			                        <td>总投放时间</td>
+			                        <td ><span id="put_in_days">365</span>天</td>
+			                    </tr>
+			                    <tr>
+			                        <td>结算</td>
+			                        <input type="hidden" id="price" value="${damond_price!''}">
+			                        <td><span class="anchorbutton" id="total_price" >${damond_price!'0.0'}</span>人民币(元)</td>
+			                    </tr>
+			                    <tr>
+			                        <td></td>
+			                        <td><input id="payBtn" type="button" value="在线支付" class="stdbtn btn_yellow" /></td>
+			                    </tr>
+	                		</tbody>
+            			</table>
+            		</form>
+        		</div>
+        		<div class="product-table">
+					<%include("/eeda/component/form/detailTable.html", 
+				          {
+				              id:'eeda_table', 
+				              style:'width:100%',
+				              headers:['订单号','开通天数','开始时间','结束时间','金额','付款状态','状态']
+				          }){} %>
+				</div>
+    		</div><!-- #left -->
+    
+    		<form id="diamond_alipayment_form" action="/alipay/alipay.trade.page.pay.jsp" method="post" target="_blank" style="display: none;">
+	        	<div id="body1" class="tab-content" name="divcontent">
+		            <dl class="content">
+		                <dt>商户订单号 ：</dt>
+		                <dd>
+		                    <input id="WIDout_trade_no" name="WIDout_trade_no">
+		                </dd>
+		                <hr class="one_line">
+		                <dt>订单名称 ：</dt>
+		                <dd>
+		                    <input id="WIDsubject" name="WIDsubject" value="升级钻石商家付款">
+		                </dd>
+		                <hr class="one_line">
+		                <dt>付款金额 ：</dt>
+		                <dd>
+		                    <input id="WIDtotal_amount" name="WIDtotal_amount">
+		                </dd>
+		                <hr class="one_line">
+		                <dt>商品描述：</dt>
+		                <dd>
+		                    <input id="WIDbody" name="WIDbody" value="升级钻石商家付款">
+		                </dd>
+		                <hr class="one_line">
+		                <dt></dt>
+		                <dd id="btn-dd">
+		                    <span class="new-btn-login-sp">
+		                        <button class="new-btn-login" type="submit" style="text-align: center;">付 款</button>
+		                    </span> <span class="note-help">如果您点击“付款”按钮，即表示您同意该次的执行操作。</span>
+		                </dd>
+	            	</dl>
+				</div>
+    		</form>
+		</div><!--contentwrapper-->
+	</div>
 
 
 <%}%>

@@ -78,6 +78,15 @@ public class AdController extends Controller {
         renderJson(rec);
     }
 	
+	public void list(){
+		Long userId = LoginUserController.getLoginUserId(this);
+		String sql = "select*from wc_ad_diamond wad where creator = ?";
+		List<Record> diamondList = Db.find(sql,userId);
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("data",diamondList);
+		renderJson(map);
+	}
+	
 	public void diamond(){
 		String sql="select * from price_maintain where type = '钻石会员'";
 		Record re = Db.findFirst(sql);
@@ -341,7 +350,12 @@ public class AdController extends Controller {
 		return result;
 	}
 	
-
+	public void diamondDelete(){
+		String id = getPara("id");
+		Record re = Db.findById("wc_ad_diamond", id);
+		boolean result = Db.delete("wc_ad_diamond", re);
+		renderJson("{\"result\":"+result+"}");
+	}
     
     
     public void saveFile() throws Exception{
