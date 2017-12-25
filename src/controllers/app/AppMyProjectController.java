@@ -35,7 +35,11 @@ public class AppMyProjectController extends Controller {
      */
     public void orderData() throws IOException{
 //    	String conditions = getRequest().getHeader("conditions");
-    	String login_id = URLDecoder.decode(getPara(), "UTF-8");
+    	String login_id = getPara();
+    	
+    	if(StringUtils.isNotBlank(login_id)){
+    		login_id = URLDecoder.decode(login_id, "UTF-8");
+    	}
     	
     	//筹备列表
     	List<Record> orderList = Db.find("select * from wc_my_project");
@@ -45,9 +49,10 @@ public class AppMyProjectController extends Controller {
     				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
     				+ " where item.order_id = ?",login_id, order_id);
     		
-    		List<Record> checkItem = Db.find("select * from wc_my_project_ref ref"
+    		List<Record> checkItem = Db.find("select ref.id from wc_my_project_ref ref"
     				+ " left join wc_my_project_item item on item.id = ref.item_id"
-    				+ " where item.order_id = ? and ref.user_id = ?",order_id,login_id);
+    				+ " where item.order_id = ? and ref.user_id = ?"
+    				+ " group by ref.id",order_id,login_id);
     		re.set("item_list", item);
     		re.set("check_item", checkItem);
     		
@@ -95,14 +100,16 @@ public class AppMyProjectController extends Controller {
         		Db.delete("wc_my_project_ref", rec);
         	}
         }else{
-        	rec = new Record();
-            rec.set("item_id", item_id);
-            rec.set("user_id", user_id);
-            if(StringUtils.isNotBlank(complete_date)){
-                rec.set("complete_date", complete_date);
-            }
-            rec.set("user_id", user_id);
-            Db.save("wc_my_project_ref", rec);
+        	if("Y".equals(is_check)){
+	        	rec = new Record();
+	            rec.set("item_id", item_id);
+	            rec.set("user_id", user_id);
+	            if(StringUtils.isNotBlank(complete_date)){
+	                rec.set("complete_date", complete_date);
+	            }
+	            rec.set("user_id", user_id);
+	            Db.save("wc_my_project_ref", rec);
+        	}
         }
         return_data.set("result", true);
 

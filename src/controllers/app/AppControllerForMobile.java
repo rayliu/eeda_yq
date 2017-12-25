@@ -32,6 +32,7 @@ public class AppControllerForMobile extends Controller {
             getResponse().setHeader("WWW-authenticate", "Basic Realm=\"test\"");
             
             String errMsg = "用户名或密码不正确";
+            returnData.set("result", false);
             returnData.set("errMsg", errMsg);
             renderJson(returnData);
         }else{
