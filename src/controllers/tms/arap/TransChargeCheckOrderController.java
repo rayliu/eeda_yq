@@ -892,18 +892,21 @@ public class TransChargeCheckOrderController extends Controller {
                          
                          	//求每张应收对账单的总金额
                          String sql = "SELECT "
-                         		+" IFNULL((SELECT SUM(joa.total_amount) from  trans_job_order_arap joa LEFT JOIN trans_arap_charge_item aci on joa.id = aci.ref_order_id"
-                 				+" where  joa.currency_id =3 and aci.charge_order_id="+id
-                 				+" ),0) cny,"
-                 				+" IFNULL((SELECT SUM(joa.total_amount) from  trans_job_order_arap joa LEFT JOIN trans_arap_charge_item aci on joa.id = aci.ref_order_id"
-                 				+" where  joa.currency_id =6 and aci.charge_order_id="+id
-                 				+" ),0) usd,"
-                 				+" IFNULL((SELECT SUM(joa.total_amount) from  trans_job_order_arap joa LEFT JOIN trans_arap_charge_item aci on joa.id = aci.ref_order_id"
-                 				+" where  joa.currency_id =8 and aci.charge_order_id="+id
-                 				+" ),0) jpy,"
-                 				+" IFNULL((SELECT SUM(joa.total_amount) from  trans_job_order_arap joa LEFT JOIN trans_arap_charge_item aci on joa.id = aci.ref_order_id"
-                 				+" where  joa.currency_id =9 and aci.charge_order_id="+id
-                 				+" ),0) hkd ";
+                         		+ " IFNULL((SELECT SUM(IF(joa.order_type='charge',joa.total_amount,0))-SUM(IF(joa.order_type='cost',joa.total_amount,0)) "
+                         		+ " FROM trans_job_order_arap joa "
+                         		+ " LEFT JOIN trans_arap_charge_item aci ON joa.id = aci.ref_order_id "
+                         		+ " WHERE joa.currency_id = 3 AND aci.charge_order_id = "+id+"),0) cny,"
+                         		+ " IFNULL((SELECT SUM(IF(joa.order_type='charge',joa.total_amount,0))-SUM(IF(joa.order_type='cost',joa.total_amount,0)) "
+                         		+ " FROM trans_job_order_arap joa "
+                         		+ " LEFT JOIN trans_arap_charge_item aci ON joa.id = aci.ref_order_id "
+                         		+ " WHERE joa.currency_id = 6 AND aci.charge_order_id = "+id+"),0) usd,"
+                         		+ " IFNULL((SELECT SUM(IF(joa.order_type='charge',joa.total_amount,0))-SUM(IF(joa.order_type='cost',joa.total_amount,0)) "
+                         		+ " FROM trans_job_order_arap joa LEFT JOIN trans_arap_charge_item aci ON joa.id = aci.ref_order_id "
+                         		+ " WHERE joa.currency_id = 8 AND aci.charge_order_id = "+id+"),0) jpy,"
+                         		+ " IFNULL((SELECT SUM(IF(joa.order_type='charge',joa.total_amount,0))-SUM(IF(joa.order_type='cost',joa.total_amount,0)) "
+                         		+ " FROM trans_job_order_arap joa "
+                         		+ " LEFT JOIN trans_arap_charge_item aci ON joa.id = aci.ref_order_id "
+                         		+ " WHERE joa.currency_id = 9 AND aci.charge_order_id = "+id+"),0) hkd ";
                             
                             Record r = Db.findFirst(sql);
                             Double cny = r.getDouble("cny");//greate_flay=Y的arap item 汇总金额
