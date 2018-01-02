@@ -57,8 +57,9 @@ public class AppBestCaseController extends Controller {
     	case_id = URLDecoder.decode(case_id, "UTF-8");
     	//店铺信息
     	List<Record> shop = Db.find(""
-    			+ " select wc.*,cor.name category_name"
-    			+ " from wc_case cc "
+    			+ " select wc.*,cor.name category_name,ul.influence"
+    			+ " from wc_case cc"
+    			+ " left join user_login ul on ul.id = cc.reator"
     			+ " left join wc_company wc on wc.creator = cc.creator"
     			+ " left join category cor on cor.id = wc.trade_type"
     			+ " where cc.id = ?",case_id);
