@@ -401,7 +401,7 @@ public class InvoiceApplyController  extends Controller {
     	}
     	String sql = "";
     	if(StringUtils.isBlank(new_process_flag)||!new_process_flag.equals("Y")){
-    		sql = "SELECT cioici.id,jo.id joId,aco.order_no check_order_no,jo.order_no order_no,p.abbr sp_name,f.name fin_name,cur.name currency_name ,joa.exchange_total_amount"
+    		sql = "SELECT cioici.id,jo.id joId,aco.order_no check_order_no,jo.order_no order_no,p.abbr sp_name,f.name fin_name,cur.id currency_id,cur.name currency_name ,joa.exchange_total_amount"
     				+ " FROM charge_invoice_order cio "
     				+ " LEFT JOIN charge_invoice_order_item_charge_item cioici on cioici.order_id = cio.id"
     				+ " LEFT JOIN job_order_arap joa on joa.id = cioici.job_order_arap_item_id "
@@ -464,10 +464,11 @@ public class InvoiceApplyController  extends Controller {
     //发票明细list
     public void invoiceList(){
     	String id = getPara("id");
-    	String sql = "SELECT cioi.*,fi.name fee_name,"
+    	String sql = "SELECT cioi.*,c.name currency_name,fi.name fee_name,"
     			   + " (select CAST(GROUP_CONCAT(cioici.id) AS char) from charge_invoice_order_item_charge_item cioici where cioici.order_item_id = cioi.id) charge_ids "
     			   + " FROM charge_invoice_order_item cioi "
     			   + " LEFT JOIN fin_item fi on fi.id = cioi.fee_id "
+    			   + " LEFT JOIN currency c on c.id = cioi.currency_id "
     			   + " where cioi.order_id="+id
     			   + " ORDER BY cioi.id";
     	List<Record> orderList = Db.find(sql);

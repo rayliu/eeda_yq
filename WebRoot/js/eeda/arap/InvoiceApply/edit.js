@@ -29,6 +29,10 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
 	        return item;
 	    }
 	   
+	    var bindFieldEvent=function(){
+	    	  eeda.bindTableFieldCurrencyId('invoice_table','CURRENCY_ID','/serviceProvider/searchCurrency','notRate');
+	    };
+	    
 	    var buildInvoiceDetail = function(){
 	        var table_rows = $("#invoice_item_table tr");
 	        var items_array=[];
@@ -135,6 +139,21 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
 							return '<input type="text" style="width:60px" name="amount" value="">';
 						}	
 					},
+					{ "data": "CURRENCY_ID" ,"width": "80px",
+		            	 "render": function ( data, type, full, meta ) {
+		 	                	if(!data)
+		 	                        data='';
+		 	                    var field_html = template('table_dropdown_template',
+		 	                        {
+		 	                            id: 'CURRENCY_ID',
+		 	                            value: data,
+		 	                            display_value: full.CURRENCY_NAME,
+		 	                            style:'width:100px'
+		 	                        }
+		 	                    );
+		 	                    return field_html;
+		                 }
+		            },
 					{"data":"TOTAL_AMOUNT","width":"80px",
 						"render": function(data, type, full, meta) {
 							if(data){
@@ -207,8 +226,12 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
 	                },
 					{"data":"SP_NAME","width":"120px"},
 					{"data":"FIN_NAME","width":"120px"},
-					{"data":"CURRENCY_NAME","width":"120px"},
-					{"data":"EXCHANGE_TOTAL_AMOUNT","width":"120px"}
+					{"data":"CURRENCY_NAME","className":"CURRENCY_NAME","width":"120px",
+						"render": function ( data, type, full, meta ) {
+			           		  return "<span CURRENCY_id="+full.CURRENCY_ID+">"+data+"</span>";
+			           	 }
+					},
+					{"data":"EXCHANGE_TOTAL_AMOUNT","className":"EXCHANGE_TOTAL_AMOUNT","width":"120px"}
 	        ]      
 	    });
 		
@@ -374,8 +397,14 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
 		//发票明细-明细-确定按钮动作
 		$("#confirmBtn").click(function(){
 			var charge_itemlist = [];
-			$("#itemList_table input[name=order_check_box]:checked").each(function(){
+			var exchange_total_amount = 0;
+			var currency_id = 0;
+			var currency_name = "";
+			$("#itemList_table input[name='order_check_box']:checked").each(function(){
 				var id = $(this).parent().parent().attr("id");
+				exchange_total_amount += $(this).parent().parent().find(".EXCHANGE_TOTAL_AMOUNT").text()*1;
+				currency_id = $(this).parent().parent().find(".CURRENCY_NAME").children().attr("currency_id");
+				currency_name = $(this).parent().parent().find(".CURRENCY_NAME").text();
 				charge_itemlist.push(id);
 			});
 			
@@ -383,13 +412,56 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
 				var sign = $(this).attr("sign");
 				if(sign==1){
 					$(this).val(charge_itemlist);
+					$(this).parent().parent().find("[name='total_amount']").val(exchange_total_amount);
+					$(this).parent().parent().find("[name='CURRENCY_ID']").val(currency_id);
+					$(this).parent().parent().find("[name='CURRENCY_ID_input']").val(currency_name);
 				}
 			});
 		});
 		
 		//添加明细里的全选按钮
 		$("#allChargeItem").click(function(){
-			$("input[type='checkbox']").prop("checked",$(this).prop("checked"));
+			var currency_name = "";
+			var result = true;
+			var self = $(this);
+			
+			$("#itemList_table tbody tr").each(function(){
+				currency_name = $(this).find(".CURRENCY_NAME").text();
+			});
+			
+			$("#itemList_table tbody tr").each(function(){
+				if(currency_name==$(this).find(".CURRENCY_NAME").text()){
+					currency_name = $(this).find(".CURRENCY_NAME").text();
+				}else{
+					self.attr("checked",false);
+					result = false;
+				}
+			});
+			
+			if(result){
+				$("input[type='checkbox']").prop("checked",$(this).prop("checked"));
+			}else{
+				$.scojs_message('请选择同一个币制', $.scojs_message.TYPE_ERROR);
+			}
+		});
+		
+		//添加明细里的checkBox单击
+		$("#itemList_table").on("click","[name='order_check_box']",function(){
+			var self = $(this);
+			var currency_name = $(this).parent().parent().find(".CURRENCY_NAME").text();
+			var result = true;
+			$("#itemList_table [name='order_check_box']:checked").each(function(){
+				if(currency_name==$(this).parent().parent().find(".CURRENCY_NAME").text()){
+					currency_name = $(this).parent().parent().find(".CURRENCY_NAME").text()
+				}else{
+					self.attr("checked",false);
+					result = false;
+				}
+			});
+			
+			if(!result){
+				$.scojs_message('请选择同一个币制', $.scojs_message.TYPE_ERROR);
+			}
 		});
 		
 		//发票明细-删除按钮动作
@@ -425,16 +497,15 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
 			$("button").attr("disabled",true);
 		}
 		
-		$("#invoice_item_table").on("keyup","input[name=amount],input[name=total_amount],input[name=tax_rate]",function(){
+		$("#invoice_item_table").on("keyup","input[name=total_amount],input[name=tax_rate]",function(){
 			var tr = $(this).parent().parent();
-			var amount = tr.find("[name=amount]").val();
 			var total_amount = tr.find("[name=total_amount]").val();
 			var tax_rate = tr.find("[name=tax_rate]").val();
-			var total_amount_no_tax = amount*total_amount-amount*total_amount*(tax_rate*0.01);
-			var tax_amount = amount*total_amount*(tax_rate*0.01);
+			var total_amount_no_tax = total_amount-total_amount*(tax_rate*0.01);
+			var tax_amount = total_amount*(tax_rate*0.01);
 			tr.find("[name=total_amount_no_tax]").val(total_amount_no_tax.toFixed(3));
 			tr.find("[name=tax_amount]").val(tax_amount.toFixed(3));
-			tr.find("[name=tax_total_amount]").val((amount*total_amount).toFixed(3));
+			tr.find("[name=tax_total_amount]").val(total_amount.toFixed(3));
 		});
 		
 	});
