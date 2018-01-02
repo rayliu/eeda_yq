@@ -503,9 +503,9 @@ define(['jquery', 'metisMenu', 'sb_admin','template','./item_table','dataTablesB
 			var tax_rate = tr.find("[name=tax_rate]").val();
 			var total_amount_no_tax = total_amount-total_amount*(tax_rate*0.01);
 			var tax_amount = total_amount*(tax_rate*0.01);
-			tr.find("[name=total_amount_no_tax]").val(total_amount_no_tax.toFixed(3));
-			tr.find("[name=tax_amount]").val(tax_amount.toFixed(3));
-			tr.find("[name=tax_total_amount]").val(total_amount.toFixed(3));
+			tr.find("[name=total_amount_no_tax]").val((total_amount_no_tax*1).toFixed(3));
+			tr.find("[name=tax_amount]").val((tax_amount*1).toFixed(3));
+			tr.find("[name=tax_total_amount]").val((total_amount*1).toFixed(3));
 		});
 		
 	});
