@@ -59,7 +59,7 @@ public class AppBestCaseController extends Controller {
     	List<Record> shop = Db.find(""
     			+ " select wc.*,cor.name category_name,ul.influence"
     			+ " from wc_case cc"
-    			+ " left join user_login ul on ul.id = cc.reator"
+    			+ " left join user_login ul on ul.id = cc.creator"
     			+ " left join wc_company wc on wc.creator = cc.creator"
     			+ " left join category cor on cor.id = wc.trade_type"
     			+ " where cc.id = ?",case_id);
