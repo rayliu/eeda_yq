@@ -8,8 +8,8 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             ajax: "/WebAdmin/tao_manage/product/list",
             columns:[
                      {"data":"PRODUCTOR","width": "80px" },
-                     {"data": "NAME", "width":"120px"},
-                     {"data": "COVER", "width":"150px",
+                     {"data": "NAME", "width":"100px"},
+                     {"data": "COVER", "width":"120px",
                     	 "render":function(data){
                     		 return "<img class='shadow' src='/upload/"+data+"' width='120' height='90'/>"
                     	 }
@@ -32,6 +32,8 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
                     		return data;
                     	}
                      },
+                     {"data": "CREATE_STAMP", "width":"80px"},
+                     {"data": "UPDATE_STAMP", "width":"80px"},
                      {"data": "ID", "width":"100px",
                     	 "render":function(data,type,full,meta){
                     			var status = "";

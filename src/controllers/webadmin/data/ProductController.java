@@ -112,7 +112,7 @@ public class ProductController extends Controller {
         }
 
         String sql = "select wc.c_name productor,wp.* from wc_product wp "
-        		+ "LEFT JOIN wc_company wc on wc.creator = wp.creator order by create_time asc ";
+        		+ "LEFT JOIN wc_company wc on wc.creator = wp.creator order by create_time desc ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
@@ -194,6 +194,8 @@ public class ProductController extends Controller {
         	order.set("is_active", "Y");
         	order.set("content", content);
         	order.set("cover", cover);
+        	order.set("update_stamp", new Date());
+        	order.set("updater", userId);
         	Db.update("wc_product", order);
         	
         	List<Record> orderItem = Db.find("select * from wc_product_pic where order_id = ? order by seq asc",order_id);

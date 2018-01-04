@@ -5,7 +5,7 @@
                         <%include("/eeda/component/form/detailTable.html", 
           {
               id:'eeda_table', 
-              headers:['商家', '产品名', '封面','价格','状态','操作']
+              headers:['商家', '产品名', '封面','价格','状态','创建时间','修改时间','操作']
           }){} %>
             </div>
         </div>
@@ -14,6 +14,6 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-    	 requirejs(['/js/WebAdmin/tao_manage/product/list.js']);
+    	 requirejs(['/js/WebAdmin/tao_manage/product/list.js?v=1.0']);
     });
 </script>
