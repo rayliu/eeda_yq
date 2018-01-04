@@ -9,12 +9,12 @@
      		<dl>
 	            <dt>
 	              <div class="fm-label-wrap ">
-	                <label for="fm-login-id">公司名称：<span style="color:red">*</span></label>
+	                <label for="fm-login-id">公司名称：</label>
 	              </div>
 	            </dt>
 	            <dd>
 	              <div class="textin">
-	                <input type="text" id="company_name" name="company_name" value="${company.company_name!''}" required/>
+	                <input type="text" id="company_name" disabled name="company_name" value="${company.company_name!''}" required/>
 	              </div>
 	            </dd>
           </dl>
@@ -138,6 +138,6 @@
 <script>
   //onerror='this.src="/upload/default_logo.png"'
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-         requirejs(['/js/BusinessAdmin/account/modify_info/edit.js']);
+         requirejs(['/js/BusinessAdmin/account/modify_info/edit.js?v=1.0']);
     });
 </script>

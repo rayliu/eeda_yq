@@ -99,7 +99,6 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		 
 		 var order = {};
 		 order.id = $('#order_id').val();
-		 order.company_name = $('#company_name').val();
 		 order.c_name = $('#c_name').val();
 		 order.contact = $('#contact_person').val();
 		 order.telephone = $('#tel_phone').val();
