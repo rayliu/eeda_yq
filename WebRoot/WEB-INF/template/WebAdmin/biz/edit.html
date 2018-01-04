@@ -56,25 +56,25 @@
       
       <div class="mt10 bdgray">
       <h4>升级钻石商家</h4>
-      <p class="bd"><span>状态：<%if(diamond.is_diamond=='Y') {%>钻石会员<%}else {%>非钻石会员<% }%></span>  剩余【<span style="color:red">${diamond.leave_days!'0'}</span>】天</p>
+      <p class="bd"><span>状态：<%if(diamond.is_diamond!''=='Y') {%>钻石会员<%}else {%>非钻石会员<% }%></span>  剩余【<span style="color:red">${diamond.leave_days!'0'}</span>】天</p>
       <div><span>设置结束时间</span><input type='date' last_date="${diamond.last_date!''}" value="${diamond.last_date!''}" id="new_date"/><input type="button" class="modifibtn" style="width:130px; margin-left:10px;" value="升级/延期钻石商家" id="update_dimond"></div>
       </div>
       
       <div class="mt10 bdgray">
       <h4>”促“广告服务</h4>
-      <p class="bd"><span>状态：<%if(cu.is_cu=='Y') {%>开启<%}else {%>没开通<% }%></span>  <% if(cu.LEAVE_DAYS!'0'=='0'){%><span>暂无开通促广告</span><%} else {%>促广告服务 剩余【<span style="color:red">${cu.LEAVE_DAYS!'0'}</span>】天 <%}%></p>
+      <p class="bd"><span>状态：<%if(cu.is_cu!''=='Y') {%>开启<%}else {%>没开通<% }%></span>  <% if(cu.LEAVE_DAYS!'0'=='0'){%><span>暂无开通促广告</span><%} else {%>促广告服务 剩余【<span style="color:red">${cu.LEAVE_DAYS!'0'}</span>】天 <%}%></p>
       <div><span>设置结束时间</span> <input type="date" last_date="${cu.end_date!''}"  value="${cu.end_date!''}" id='cu_date'/><input type="button" class="modifibtn" style="width:130px; margin-left:10px;" value="开启/延期服务" id='update_cu'></div>
       </div>
       
       <div class="mt10 bdgray">
 	      <h4>”惠“ 广告</h4>
-	      <div class="bd">状态：<span id="hui_status">${hui.status!''}</span> 
+	      <div class="bd">状态：<span id="hui_status">${hui.status!'关闭'}</span> 
 		      <input type="button" type="button"
-		       <% if(hui.status=='开启'){%>disabled="disabled"<%}%> class="modifibtn huiBtn" value="开启">  
+		       <% if(hui.status!''=='开启'){%>disabled="disabled"<%}%> class="modifibtn huiBtn" value="开启">  
 		      <input type="button"
-		      <% if(hui.status=='关闭'){%>disabled="disabled"<%}%> class="modifibtn huiBtn"  value="关闭">
+		      <% if(hui.status!'关闭'=='关闭'){%>disabled="disabled"<%}%> class="modifibtn huiBtn"  value="关闭">
 		      <input type="button" type="button" 
-		      <% if(hui.status=='禁用'){%>disabled="disabled"<%}%> class="modifibtn huiBtn" value="禁用">
+		      <% if(hui.status!''=='禁用'){%>disabled="disabled"<%}%> class="modifibtn huiBtn" value="禁用">
 	      </div>
       </div>
       
