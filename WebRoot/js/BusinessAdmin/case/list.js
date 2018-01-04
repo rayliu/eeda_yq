@@ -10,7 +10,7 @@ $(document).ready(function() {
 			dataType:"json",
 			done:function (e, data) {
         		if(data){
-		    		$('#example_img').val(data.result.NAME);
+        			$('#example_img').attr('value',data.result.NAME);
 		    	
 		    		var imgPre =Id("example_img");
 		  		    imgPre.src = '/upload/'+data.result.NAME;
@@ -23,7 +23,6 @@ $(document).ready(function() {
 		});
 	});
 	  
-	  
 	$("#file_photo").on('click',function(){
 		//算图片数量
 		var diamond_flag = $('#diamond_flag').val();
@@ -34,22 +33,20 @@ $(document).ready(function() {
 				return false;
 			}
 		}
-		
 		img_num = $('[name=img_photo]').size();
 		img_num = img_num+1;
 		var img = "<i><img style='width: 200px; height: 150px;margin-left:20px;display:none' name='img_photo'  class='shadow' id='img_photo"+img_num+"'>" +
-				"<span style='color:red;cursor:pointer' class='delete_item' code='"+img_num+"' ><strong> 删除 </strong></span></i>";
-		  
+		"<span style='color:red;cursor:pointer' class='delete_item' code='"+img_num+"' ><strong> 删除 </strong></span></i>";
+		
 		$(this).fileupload({
 			validation: {allowedExtensions: ['*']},
 			autoUpload: true, 
-		    url: '/BusinessAdmin/case/saveFile',
+		    url: '/WebAdmin/tao_manage/case/saveFile',
 		    dataType: 'json',
 	        done: function (e, data) {
         		if(data){
         			$('#img_item').append(img);
         			$('#img_photo'+img_num).show();
-		    		$.scojs_message('已选择', $.scojs_message.TYPE_OK);
 		    		$('#img_photo'+img_num).attr('value',data.result.NAME);
 		    		var imgPre =Id('img_photo'+img_num);
 		  		    imgPre.src = '/upload/'+data.result.NAME;
@@ -61,8 +58,8 @@ $(document).ready(function() {
 		     }
 		});
 	  });
-	
-	
+	  
+
 	  function Id(id){
 		  return document.getElementById(id);
 	  }
@@ -88,44 +85,64 @@ $(document).ready(function() {
 			  alert('后台报错')
 		  });
 	  });
-	  
-	  
+
+	
 	$("#save_btn").click(function(){
 		var self = $(this);
-		
 		var example = {};
 		example.img_num = img_num;
-		example.id=$("#id").val();
+		example.id=$("#case_id").val();
 		example.name=$("#name").val();
-		example.picture_name=$("#example_img").val();
+		example.picture_name=$("#example_img").attr('value');
 	  	for(var i = 1;i <= img_num;i++){
-    		var photo_name = $('#img_photo'+i).attr('value');
-    		if(photo_name == undefined){
-    			for(var j = i+1 ; j < 100 ; j++){
-    				if($('#img_photo'+j).attr('value') != undefined){
-    					photo_name = $('#img_photo'+j).attr('value');
-    					break;
-    				}
-    			}
-    		}
-    		example['photo'+i] = photo_name;
+    		example['photo'+i] = $('#img_photo'+i).attr('value');
     	}
-	  	
 		if($.trim(example.name)==""){
 			alert("案例名称必须要填！！")
 			return;
 		}
-		self.attr('disabled',true);
 		$.post("/BusinessAdmin/case/save",{jsonStr:JSON.stringify(example)},function(data){
   			if(data){
 				$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
 				self.attr('disabled',false);
-				window.location.href="/BusinessAdmin/case";
+				
+				setTimeout(function(){
+					location.href="/BusinessAdmin/case";
+				},2000)
+				refleshTable();
 			}else{
 				$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 			}  
 		});
 	});
+	
+	$("#img_item").on('click','.delete_item',function(){
+		  var code = $(this).attr('code');
+		  $('#img_photo'+code).parent().remove();
+		  img_num--;
+	  });
+	
+	 $("#img_item").on('click','.delete_item_id',function(){
+		  var item_id = $(this).attr('item_id');
+		  var photo = $(this).attr('photo');
+		  var product_id = $('#case_id').val();
+		  
+		  var result = confirm("你真的要删除这张图片吗?");
+ 		  if(!result){
+ 			  return;
+ 		  }
+		  $.post('/BusinessAdmin/case/deleteItem',{item_id:item_id,photo:photo,product_id:product_id},function(data){
+			  if(data){
+				  location.reload();
+			  }else{
+				  $.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+			  }
+		  }).fail(function(){
+			  alert('后台报错')
+		  });
+	  });
+	
+	
 	
 	var dataTable = eeda.dt({
 		id: 'eeda_table',
@@ -143,7 +160,9 @@ $(document).ready(function() {
             { "data": "CREATE_TIME","class":"title", "width": "200px"},
             { "data": "ID",
             	render: function(data,type,full,meta){
-            			data =  "<a class='stdbtn btn_warning delBtn' " +
+            			data =  "<a class='stdbtn btn_primary editBtn' " +
+              				" data-id="+full.ID+" href='#eeda_table'>编辑</a>" +
+              				"<a class='stdbtn btn_warning delBtn' " +
               				" data-id="+full.ID+" href='#eeda_table'>删除</a>";
             		return data;
             	} 
@@ -154,6 +173,13 @@ $(document).ready(function() {
 	var refleshTable = function(){
 		dataTable.ajax.url("/BusinessAdmin/case/list").load();
 	}
+	
+	//编辑
+	$("#eeda_table").on("click",".editBtn",function(){
+		 var self=$(this);
+		 var id=self.data("id");
+		 window.location.href="/BusinessAdmin/case?id="+id;
+	});
 		 
 		 
 	$("#eeda_table").on("click",".delBtn",function(){

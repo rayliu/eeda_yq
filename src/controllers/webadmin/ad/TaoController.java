@@ -119,7 +119,6 @@ public class TaoController extends Controller {
     @Before(Tx.class)
    	public void save() throws Exception {
     	String user_id = getPara("user_id");
-    	String product_id = getPara("product_id");
     	String begin_date = getPara("begin_date");
     	String end_date = getPara("end_date");
     	String photo = getPara("photo");
@@ -135,16 +134,10 @@ public class TaoController extends Controller {
     			if(StringUtils.isNotBlank(user_id)){
     				order.set("default_user_id", user_id);
     			}
-    			if(StringUtils.isNotBlank(product_id)){
-    				order.set("default_product_id", product_id);
-    			}
     	    }else{
     	    	order.set("photo", photo);
     	    	if(StringUtils.isNotBlank(user_id)){
     				order.set("user_id", user_id);
-    			}
-    			if(StringUtils.isNotBlank(product_id)){
-    				order.set("product_id", product_id);
     			}
     			if(StringUtils.isNotBlank(begin_date)){
     				order.set("begin_date", begin_date);
@@ -160,11 +153,9 @@ public class TaoController extends Controller {
     		if("Y".equals(default_flag)){
     			order.set("default_photo", photo);
     			order.set("default_user_id", user_id);
-        		order.set("default_product_id", product_id);
     	    }else{
     	    	order.set("photo", photo);
     	    	order.set("user_id", user_id);
-        		order.set("product_id", product_id);
         		order.set("begin_date", begin_date);
         		order.set("end_date", end_date);
     	    }

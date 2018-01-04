@@ -32,7 +32,18 @@ public class CaseController extends Controller {
 	Subject currentUser = SecurityUtils.getSubject();
 
 	public void index() {
-		setAttr("example", new Record());
+		String id = getPara("id");
+		if(StringUtils.isNotBlank(id)){
+			Record order = Db.findById("wc_case", id);
+			setAttr("wccase", order);
+			
+			String itemList="select * from wc_case_item where order_id=?";
+	    	List<Record> pictures = Db.find(itemList ,id);
+	    	setAttr("pictures",pictures);
+		}else{//编辑
+			setAttr("wccase", new Record());
+		}
+		
 		render(getRequest().getRequestURI()+"/list.html");
 	}
 	
@@ -128,6 +139,7 @@ public class CaseController extends Controller {
         renderJson(example);
 	}
 	
+	
 	public boolean deletePicture(String pic_name){
 		String path = getRequest().getServletContext().getRealPath("/");
     	String filePath = path+"\\upload\\"+pic_name;
@@ -157,5 +169,25 @@ public class CaseController extends Controller {
 			result=true;
 		}
 		renderJson(result);
+	}
+	
+	@Before(Tx.class)
+	public void deleteItem(){
+		String item_id = getPara("item_id");
+		String photo = getPara("photo");
+		String product_id = getPara("product_id");
+		
+		Db.deleteById("wc_case_item", item_id);
+		deletePicture(photo);
+		
+		//重新排序
+		List<Record> items = Db.find("select * from wc_case_item where order_id = ? order by create_time asc",product_id);
+		int i = 1;
+		for (Record item : items) {
+			item.set("seq", i);
+			Db.update("wc_case_item",item);
+			++ i;
+		}
+		renderJson(true);
 	}
 }

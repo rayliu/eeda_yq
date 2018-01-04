@@ -25,13 +25,11 @@ public class AppTaoController extends Controller {
      * @throws IOException
      */
     public void orderData() throws IOException{
-    	String conditions = getRequest().getHeader("conditions");
-    	
     	//横幅广告
     	List<Record> bannerList = Db.find(" SELECT  id,  ad_index, "
-    			+ " ifnull(user_id, default_user_id) user_id, "
+    			+ " if((now() BETWEEN begin_date and end_date),user_id,default_user_id) user_id,"
     			+ " ifnull( product_id, default_product_id ) product_id,"
-    			+ " if(photo = '' || photo is null, default_photo, photo) photo"
+    			+ " if((now() BETWEEN begin_date and end_date),photo,default_photo) photo"
     			+ " FROM"
     			+ " `wc_ad_banner_photo`; ");
     	//促销广告

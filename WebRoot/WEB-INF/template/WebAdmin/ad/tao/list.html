@@ -47,7 +47,7 @@
 	                        value:one.user_id!''
 	                    }){} %>
 	      </div>
-	      <div class="rowDiv">
+	      <div class="rowDiv" style="display:none">
 	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
 	                    {
 	                        id:'product1', 
@@ -95,7 +95,7 @@
 	                        value:two.user_id!''
 	                    }){} %>
 	      </div>
-	      <div class="rowDiv">
+	      <div class="rowDiv" style="display:none">
 	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
 	                    {
 	                        id:'product2', 
@@ -143,7 +143,7 @@
 	                        value:three.user_id!''
 	                    }){} %>
 	      </div>
-	      <div class="rowDiv">
+	      <div class="rowDiv" style="display:none">
 	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
 	                    {
 	                        id:'product3', 
@@ -192,7 +192,7 @@
 	                        value: four.user_id!''
 	                    }){} %>
 	      </div>
-	      <div class="rowDiv">
+	      <div class="rowDiv" style="display:none">
 	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
 	                    {
 	                        id:'product4', 
@@ -244,7 +244,7 @@
 	                        value:one.default_user_id!''
 	                    }){} %>
 	      </div>
-	      <div class="rowDiv">
+	      <div class="rowDiv" style="display:none">
 	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
 	                    {
 	                        id:'product5', 
@@ -284,7 +284,7 @@
 	                        value:two.default_user_id!''
 	                    }){} %>
 	      </div>
-	      <div class="rowDiv">
+	      <div class="rowDiv" style="display:none">
 	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
 	                    {
 	                        id:'product6', 
@@ -324,7 +324,7 @@
 	                        value:three.default_user_id!''
 	                    }){} %>
 	      </div>
-	      <div class="rowDiv">
+	      <div class="rowDiv" style="display:none">
 	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
 	                    {
 	                        id:'product7', 
@@ -365,7 +365,7 @@
 	                        value:four.default_user_id!''
 	                    }){} %>
 	      </div>
-	      <div class="rowDiv">
+	      <div class="rowDiv" style="display:none">
 	          <%include("/WebAdmin/ad/tao/inputWcProduct.html", 
 	                    {
 	                        id:'product8', 
@@ -397,6 +397,6 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-    	 requirejs(['/js/WebAdmin/ad/tao/list.js']);
+    	 requirejs(['/js/WebAdmin/ad/tao/list.js?v=1.0']);
     });
 </script>
