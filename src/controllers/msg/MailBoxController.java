@@ -50,6 +50,8 @@ public class MailBoxController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
         long user_id = user.getLong("id");
         List<Record> configList = ListConfigController.getConfig(user_id,
                 "/mailBox");
@@ -65,6 +67,8 @@ public class MailBoxController extends Controller {
 
     public void configList() {
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
         long office_id = user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -96,6 +100,8 @@ public class MailBoxController extends Controller {
         String title = getPara("radioTitle");
         String content = getPara("radioContent");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
         long office_id = user.getLong("office_id");
         Record r = new Record();
         r.set("title", title);
@@ -112,6 +118,8 @@ public class MailBoxController extends Controller {
         String title = getPara("radioTitle");
         String content = getPara("radioContent");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
         long office_id = user.getLong("office_id");
         Record r = new Record();
         r.set("title", title);
@@ -126,6 +134,8 @@ public class MailBoxController extends Controller {
     public void list() {
 
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
         long office_id = user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");
@@ -169,6 +179,8 @@ public class MailBoxController extends Controller {
     public void receivceMail() {
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
         long office_id = user.getLong("office_id");
         
         List<Record> configList = Db.find("select * from mail_box_config where office_id=?", office_id);

@@ -33,6 +33,8 @@ public class ListController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
         long user_id = user.getLong("id");
         long office_id = user.getLong("office_id");
         
@@ -42,13 +44,16 @@ public class ListController extends Controller {
             c.setHttpServletRequest(this.getRequest());
             c.index();
             
-            
             Map<String, String> templateMap = EedaMenuInterceptor.menuUrlTemplateCache.get(user_id);
-            String templatePath = templateMap.get("/list/"+module_name);
-            if(StrKit.isBlank(templatePath)){
-                redirect("/");
-                return;
+            String templatePath = null;
+            if(templateMap != null){
+            	templatePath = templateMap.get("/list/"+module_name);
+                if(StrKit.isBlank(templatePath)){
+                    redirect("/");
+                    return;
+                }
             }
+            
             render(templatePath);
         }else{
             String url = "list/"+module_name;

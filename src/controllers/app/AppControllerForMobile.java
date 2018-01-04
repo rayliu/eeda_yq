@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 
@@ -56,7 +57,10 @@ public class AppControllerForMobile extends Controller {
 
             String decodedAuth = getFromBASE64(auth);
             System.out.println("auth decoded from base64 is " + decodedAuth);
-            String[] authArr = decodedAuth.split(":");
+            String[] authArr = null;
+            if(StringUtils.isNotBlank(decodedAuth)){
+            	authArr = decodedAuth.split(":");
+            }
             String sha1Pwd = MD5Util.encode("SHA1", authArr[1]);
             Record rec = Db.findFirst(
                     "select * from user_login where user_name=? and password=?",

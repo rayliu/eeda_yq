@@ -32,10 +32,6 @@ public class QueryController extends Controller {
     
     @SuppressWarnings("unchecked")
     public void index() {
-        UserLogin user = LoginUserController.getLoginUser(this);
-        long user_id = user.getLong("id");
-        long office_id = user.getLong("office_id");
-        
         String module_name = getPara(0);
         String action = getPara(1);
         

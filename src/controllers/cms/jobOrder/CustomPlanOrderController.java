@@ -55,6 +55,8 @@ public class CustomPlanOrderController extends Controller {
 		String type=getPara("type");
 		setAttr("type", type);
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user == null)
+   			return;
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/customPlanOrder");
         setAttr("listConfigList", configList);
@@ -99,9 +101,15 @@ public class CustomPlanOrderController extends Controller {
         setAttr("to_office_id", to_office_id);
 
         Office office=LoginUserController.getLoginUserOffice(this);
+        if(office == null)
+   			return;
+        String officeType = null;
+        if(office != null){
+        	officeType = office.get("type");
+        }
         List<Record> re = Db.find("select null id ,joc.doc_name,joc.upload_time,joc.remark,ul.c_name c_name,joc.uploader from job_order_custom_doc joc"
         		+ " left join user_login ul on joc.uploader = ul.id"
-        		+ " where joc.order_id = ? and joc.order_type = '"+office.get("type")+"' and joc.share_flag = 'Y'",jobId);
+        		+ " where joc.order_id = ? and joc.order_type = '"+officeType+"' and joc.share_flag = 'Y'",jobId);
         setAttr("docList", re);
         
         render("/cms/customPlanOrder/CustomPlanOrderEdit.html");
@@ -122,6 +130,8 @@ public class CustomPlanOrderController extends Controller {
         
         newDateStr=sdf.format(new Date());
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+   			return;
    		long office_id = user.getLong("office_id");
 //   		if(StringUtils.isNotEmpty(to_office_id)){
 //   			office_id =Long.parseLong(to_office_id);
@@ -538,6 +548,8 @@ public class CustomPlanOrderController extends Controller {
     public void edit() {
     	String id = getPara("id");
     	UserLogin user_login = LoginUserController.getLoginUser(this);
+    	if(user_login == null)
+   			return;
         long office_id=user_login.getLong("office_id");
         //判断与登陆用户的office_id是否一致
 //        if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("custom_plan_order", Long.valueOf(id), office_id)){
@@ -639,6 +651,8 @@ public class CustomPlanOrderController extends Controller {
 	public void list() {
 		String confirmFee = getPara("confirmFee");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
         long office_id=user.getLong("office_id");
     	
         String sLimit = "";
@@ -762,8 +776,8 @@ public class CustomPlanOrderController extends Controller {
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords", list != null?list.size():0);
+        map.put("iTotalDisplayRecords", list != null?list.size():0);
         map.put("aaData", list);
         renderJson(map); 
     }
@@ -781,6 +795,8 @@ public class CustomPlanOrderController extends Controller {
     	CustomPlanOrder order = CustomPlanOrder.dao.findById(id);
     	if("confirmCompleted".equals(btnId)){
     		UserLogin user = LoginUserController.getLoginUser(this);
+    		if(user == null)
+       			return;
        		long office_id = user.getLong("office_id");
        		if(office_id!=2){
        			sendMail(id,plan_order_no,office_id);
@@ -797,6 +813,8 @@ public class CustomPlanOrderController extends Controller {
     		r.set("customer_id", customer_id);
     		
        		UserLogin user = LoginUserController.getLoginUser(this);
+       		if(user == null)
+       			return;
        		long office_id = user.getLong("office_id");
        		r.set("creator", user.getLong("id"));
    			r.set("create_stamp", new Date());
@@ -833,6 +851,8 @@ public class CustomPlanOrderController extends Controller {
 			r.set("doc_name", fileName);
 			r.set("upload_time", new Date());
 			Office office=LoginUserController.getLoginUserOffice(this);
+			if(office == null)
+				return;
 			r.set("order_type",office.get("type"));
 			Db.save("custom_plan_order_doc",r);
 		}
@@ -939,7 +959,6 @@ public class CustomPlanOrderController extends Controller {
         String item_id = getPara("item_id");
         String check = getPara("check");
         String order_id = getPara("order_id");
-		Office office=LoginUserController.getLoginUserOffice(this);
         
         if(StringUtils.isEmpty(item_id)){//全选
             Db.update("update custom_plan_order_doc set cms_share_flag =? where order_id = ?   ",check,order_id);
@@ -956,6 +975,8 @@ public class CustomPlanOrderController extends Controller {
     	 //获取office_id
     	String id = getPara("id");
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+   			return;
    		long office_id = user.getLong("office_id");
    		if(office_id!=1&&office_id!=2){
    			Db.update("update job_order_custom_doc set new_flag ='N' where id = ?",id);
@@ -1005,7 +1026,7 @@ public class CustomPlanOrderController extends Controller {
     	String id = getPara("id"); 
     	String[] idArray = id.split(",");
     	String action = getPara("action");
-    	long user_id = LoginUserController.getLoginUser(this).getLong("id");
+    	long user_id = LoginUserController.getLoginUserId(this);
     	String order_type = "customPlanOrderLock";
     	Date action_time = new Date();
     	if(action=="lock"||action.equals("lock")){

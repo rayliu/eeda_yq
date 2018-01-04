@@ -67,6 +67,8 @@ public class BookOrderController extends Controller {
 		String type = getPara("type");
 		setAttr("type",type);
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user == null)
+   			return;
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/bookOrder");
         setAttr("listConfigList", configList);
@@ -77,6 +79,8 @@ public class BookOrderController extends Controller {
     public void create() {
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user == null)
+   			return;
    		long office_id = user.getLong("office_id");
    		Office office = Office.dao.findById(office_id);
    		setAttr("office", office);
@@ -209,6 +213,8 @@ public class BookOrderController extends Controller {
         
         //获取office_id
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+   			return;
    		long office_id = user.getLong("office_id");
 
         String newDateStr = "";
@@ -1469,6 +1475,8 @@ public class BookOrderController extends Controller {
      
     public void list() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
         long office_id=user.getLong("office_id");
         
     	String type=getPara("type");
@@ -1608,6 +1616,8 @@ public class BookOrderController extends Controller {
             
         Party order = new Party();
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+   			return;
    		
    		if (true)  {
    			//create 
@@ -1820,6 +1830,8 @@ public class BookOrderController extends Controller {
         //获取office_id
     	String id = getPara("id");
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+   			return;
    		long office_id = user.getLong("office_id");
    		if(office_id!=1&&office_id!=2){
    			Db.update("update book_order_custom_doc set new_flag ='N' where id = ?",id);
@@ -1833,6 +1845,8 @@ public class BookOrderController extends Controller {
     	String input = getPara("input");
     	List<Record> recs = null;
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+   			return;
    		long office_id = user.getLong("office_id");
     	String sql = "select * from trade_item where 1=1 and office_id = "+office_id;
     	if(StringUtils.isNotEmpty(input)){
@@ -1949,6 +1963,8 @@ public class BookOrderController extends Controller {
     	String booking_id = getPara("order_id");
     	JobOrder order  = JobOrder.dao.findFirst("select * from job_order where from_order_id = ? and from_order_type = 'booking' ",booking_id);
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+   			return;
    		long office_id = user.getLong("office_id");
    		
    		

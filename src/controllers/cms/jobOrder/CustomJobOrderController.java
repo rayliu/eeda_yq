@@ -95,28 +95,38 @@ public class CustomJobOrderController extends Controller {
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
         
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+   			return;
+   		
    		long office_id = user.getLong("office_id");
    		Record r = new Record();
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			r = Db.findById("custom_job_order", id);
-   			
-   			if(type!=r.get("type")){
-	   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
-	            r.set("order_no", order_no);
+   			if(r != null){
+   				if(StringUtils.isNotBlank(type)){
+	   				if(type.equals(r.get("type"))){
+	   					String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
+	   					r.set("order_no", order_no);
+	   				}
+   				}
+   				
+   				r.set("updator", user.getLong("id"));
+   				r.set("update_stamp", new Date());
+   				DbUtils.setModelValues(dto, r, "custom_job_order");;
+   				
+   				Db.update("custom_job_order",r);
    			}
-            
-   			r.set("updator", user.getLong("id"));
-   			r.set("update_stamp", new Date());
-   			DbUtils.setModelValues(dto, r, "custom_job_order");;
-   			
-   			Db.update("custom_job_order",r);
    		} else {
    			//create 
    			DbUtils.setModelValues(dto, r, "custom_job_order");
    			
    			//需后台处理的字段
-   			String order_no = OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
+   			String order_no = null;
+   			if(StringUtils.isNotBlank(type)){
+   				OrderNoGenerator.getNextOrderNo(generateJobPrefix(type), office_id);
+   			}
+   					
             r.set("order_no", order_no);
    			r.set("creator", user.getLong("id"));
    			r.set("create_stamp", new Date());
@@ -467,6 +477,8 @@ public class CustomJobOrderController extends Controller {
      
     public void list() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
         long office_id=user.getLong("office_id");
     	
         String sLimit = "";
@@ -509,8 +521,8 @@ public class CustomJobOrderController extends Controller {
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords", list!=null?list.size():0);
+        map.put("iTotalDisplayRecords", list!=null?list.size():0);
         map.put("aaData", list);
         renderJson(map); 
     }

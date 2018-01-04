@@ -53,6 +53,8 @@ public class FeeBatchInputController extends Controller {
 		String type=getPara("type");
 		setAttr("type", type);
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user == null)
+   			return;
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/customPlanOrder");
         setAttr("listConfigList", configList);
@@ -111,6 +113,8 @@ public class FeeBatchInputController extends Controller {
         
         newDateStr=sdf.format(new Date());
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+   			return;
    		long office_id = user.getLong("office_id");
    		if (StringUtils.isNotEmpty(id)) {
    			//update
@@ -611,6 +615,8 @@ public class FeeBatchInputController extends Controller {
 	public void list() {
 		String confirmFee = getPara("confirmFee");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
         long office_id=user.getLong("office_id");
     	
         String sLimit = "";
@@ -726,8 +732,8 @@ public class FeeBatchInputController extends Controller {
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords", list != null?list.size():0);
+        map.put("iTotalDisplayRecords", list != null?list.size():0);
         map.put("aaData", list);
         renderJson(map); 
     }
@@ -745,6 +751,8 @@ public class FeeBatchInputController extends Controller {
     	CustomPlanOrder order = CustomPlanOrder.dao.findById(id);
     	if("confirmCompleted".equals(btnId)){
     		UserLogin user = LoginUserController.getLoginUser(this);
+    		if(user == null)
+       			return;
        		long office_id = user.getLong("office_id");
        		if(office_id!=2){
        			sendMail(id,plan_order_no,office_id);
@@ -761,6 +769,8 @@ public class FeeBatchInputController extends Controller {
     		r.set("customer_id", customer_id);
     		
        		UserLogin user = LoginUserController.getLoginUser(this);
+       		if(user == null)
+       			return;
        		long office_id = user.getLong("office_id");
        		r.set("creator", user.getLong("id"));
    			r.set("create_stamp", new Date());
@@ -797,6 +807,8 @@ public class FeeBatchInputController extends Controller {
 			r.set("doc_name", fileName);
 			r.set("upload_time", new Date());
 			Office office=LoginUserController.getLoginUserOffice(this);
+			if(office == null)
+	   			return;
 			r.set("order_type",office.get("type"));
 			Db.save("custom_plan_order_doc",r);
 		}
@@ -910,6 +922,8 @@ public class FeeBatchInputController extends Controller {
     	 //获取office_id
     	String id = getPara("id");
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+   			return;
    		long office_id = user.getLong("office_id");
    		if(office_id!=1&&office_id!=2){
    			Db.update("update job_order_custom_doc set new_flag ='N' where id = ?",id);
@@ -983,28 +997,29 @@ public class FeeBatchInputController extends Controller {
 				Gson gson = new Gson();  
 				Map<String, ?> dto= gson.fromJson("{array:"+jsonValue+"}",HashMap.class);  
 				List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("array");
-				
-				for (int j = 0; j < charge_template.size(); j++) {
-					Map<String, String> map = charge_template.get(j);
-					Record item = new Record();
-					item.set("order_type", map.get("order_type"));
-					item.set("type", map.get("type"));
-					item.set("sp_id", map.get("SP_ID"));
-					item.set("charge_id", map.get("CHARGE_ID"));
-					//item.set("charge_eng_id", map.get("CHARGE_ENG_ID"));
-					item.set("price", map.get("price"));
-					item.set("amount", map.get("amount"));
-					//item.set("unit_id", map.get("UNIT_ID"));
-					item.set("total_amount", map.get("total_amount"));
-					item.set("currency_id", map.get("CURRENCY_ID"));
-					//item.set("exchange_rate", map.get("exchange_rate"));
-					//item.set("currency_total_amount", map.get("currency_total_amount"));
-					//item.set("exchange_currency_id", map.get("exchange_currency_id"));
-					//item.set("exchange_currency_rate", map.get("exchange_currency_rate"));
-					//item.set("exchange_total_amount", map.get("exchange_total_amount"));
-					item.set("remark", map.get("remark"));
-					item.set("order_id", id);
-					Db.save("custom_plan_order_arap", item);
+				if(charge_template != null){
+					for (int j = 0; j < charge_template.size(); j++) {
+						Map<String, String> map = charge_template.get(j);
+						Record item = new Record();
+						item.set("order_type", map.get("order_type"));
+						item.set("type", map.get("type"));
+						item.set("sp_id", map.get("SP_ID"));
+						item.set("charge_id", map.get("CHARGE_ID"));
+						//item.set("charge_eng_id", map.get("CHARGE_ENG_ID"));
+						item.set("price", map.get("price"));
+						item.set("amount", map.get("amount"));
+						//item.set("unit_id", map.get("UNIT_ID"));
+						item.set("total_amount", map.get("total_amount"));
+						item.set("currency_id", map.get("CURRENCY_ID"));
+						//item.set("exchange_rate", map.get("exchange_rate"));
+						//item.set("currency_total_amount", map.get("currency_total_amount"));
+						//item.set("exchange_currency_id", map.get("exchange_currency_id"));
+						//item.set("exchange_currency_rate", map.get("exchange_currency_rate"));
+						//item.set("exchange_total_amount", map.get("exchange_total_amount"));
+						item.set("remark", map.get("remark"));
+						item.set("order_id", id);
+						Db.save("custom_plan_order_arap", item);
+					}
 				}
 			}
 		}

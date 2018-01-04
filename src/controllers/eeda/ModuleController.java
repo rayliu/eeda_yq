@@ -44,15 +44,22 @@ public class ModuleController extends Controller {
     @RequiresRoles("admin")
     @Before(EedaMenuInterceptor.class)
     public void index() {
-        List<UserLogin> users = UserLogin.dao.find("select * from user_login where office_id=?", LoginUserController.getLoginUser(this).get("office_id"));
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+   			return;
+    	
+        List<UserLogin> users = UserLogin.dao.find("select * from user_login where office_id=?", user.get("office_id"));
         setAttr("users", users);
         render("/profile/module/moduleList.html");
     }
 
     public void getActiveModules() {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+   			return;
         String sql = "select id, module_name, parent_id, office_id, seq from eeda_modules "
                 + "where status = '启用' and sys_only ='N' and office_id="
-                + LoginUserController.getLoginUser(this).get("office_id");
+                + user.get("office_id");
 
         List<Record> modules = Db.find(sql);
         if (modules == null) {
@@ -104,6 +111,9 @@ public class ModuleController extends Controller {
     }
 
     public void searchModule() {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+   			return;
         String parent_id = getPara("id");
         String cons = "";
         String sql = "SELECT "
@@ -118,7 +128,7 @@ public class ModuleController extends Controller {
                 +" if((select count(1)>0 from eeda_modules m where m.parent_id = e.id), 'Y','N') is_parent"
             +" FROM "
              +"    eeda_modules e where office_id="
-                + LoginUserController.getLoginUser(this).get("office_id");
+                + user.get("office_id");
 
         List<Record> modules = null;
         if (StringUtils.isEmpty(parent_id)) {
@@ -134,7 +144,10 @@ public class ModuleController extends Controller {
         String id = getPara("id");
         String parent_id = getPara("parent_id");
         String module_name = getPara("name");
-        Long office_id = LoginUserController.getLoginUser(this)
+        UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+   			return;
+        Long office_id = user
                 .get("office_id");
 
         Module module = new Module();
@@ -176,6 +189,9 @@ public class ModuleController extends Controller {
 
     @Before(Tx.class)
     public void updateModuleSeq() {
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+   			return;
         String node_id = getPara("node_id");
         String target_node_id = getPara("target_node_id");
         String move_type = getPara("move_type");
@@ -204,7 +220,7 @@ public class ModuleController extends Controller {
 
         // 重新算序号
         String sql = "select id, module_name, parent_id, office_id, seq from eeda_modules where office_id="
-                + LoginUserController.getLoginUser(this).get("office_id")
+                + user.get("office_id")
                 + " order by seq";
         List<Module> modules = Module.dao.find(sql);
         int newSeq = 1;
@@ -227,6 +243,8 @@ public class ModuleController extends Controller {
         String is_public = ((Boolean)dto.get("is_public")==true?"Y":"N");
         String url = (String) dto.get("url");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+   			return;
 
         Db.update(" update eeda_modules set url = ?, is_public=? where id=?", url, is_public, module_id);
 
@@ -237,6 +255,7 @@ public class ModuleController extends Controller {
 
         List<Map<String, ?>> auth_list = (ArrayList<Map<String, ?>>) dto
                 .get("auth_list");
+        if(auth_list != null){
         for (Map<String, ?> map : auth_list) {
             String rowId = (String) map.get("id");
             String role_id = (String) map.get("role_id");
@@ -257,20 +276,23 @@ public class ModuleController extends Controller {
 
                     List<Map<String, String>> permissionList = (List) map
                             .get("permission_list");
-                    for (Map<String, ?> p : permissionList) {
-                        String permissionId = (String) p.get("permission_id");
-                        String permissionCode = (String) p
-                                .get("permission_code");
-                        boolean is_auth = (Boolean) p.get("is_authorize");
-                        RolePermission rp = new RolePermission();
-                        rp.set("module_id", module_id);
-                        rp.set("role_id", role_id);
-                        rp.set("role_code", role_code);
-                        rp.set("permission_id", permissionId);
-                        rp.set("permission_code", permissionCode);
-                        rp.set("module_role_id", module_role_id);
-                        rp.set("is_authorize", is_auth);
-                        rp.save();
+                    if(permissionList != null){
+                    	for (Map<String, ?> p : permissionList) {
+                            String permissionId = (String) p.get("permission_id");
+                            String permissionCode = (String) p
+                                    .get("permission_code");
+                            
+                            boolean is_auth = (Boolean) p.get("is_authorize");
+                            RolePermission rp = new RolePermission();
+                            rp.set("module_id", module_id);
+                            rp.set("role_id", role_id);
+                            rp.set("role_code", role_code);
+                            rp.set("permission_id", permissionId);
+                            rp.set("permission_code", permissionCode);
+                            rp.set("module_role_id", module_role_id);
+                            rp.set("is_authorize", is_auth);
+                            rp.save();
+                        }
                     }
                 }
             } else {
@@ -289,37 +311,39 @@ public class ModuleController extends Controller {
                     String mr_id = mr.getLong("id").toString();
                     List<Map<String, String>> permissionList = (List) map
                             .get("permission_list");
-                    for (Map<String, ?> p : permissionList) {
-                        String row_id = (String) p.get("id");
-                        String permissionId = (String) p.get("permission_id");
-                        String permissionCode = (String) p
-                                .get("permission_code");
-                        boolean is_auth = (Boolean) p.get("is_authorize");
-                        RolePermission rp = RolePermission.dao.findById(row_id);
-                        if (rp != null) {
-                            rp.set("module_id", module_id);
-                            rp.set("role_id", role_id);
-                            rp.set("role_code", role_code);
-                            rp.set("permission_id", permissionId);
-                            rp.set("permission_code", permissionCode);
-                            rp.set("is_authorize", is_auth);
-                            rp.set("module_role_id", mr_id);
-                            rp.update();
-                        } else {
-                            rp = new RolePermission();
-                            rp.set("module_id", module_id);
-                            rp.set("role_id", role_id);
-                            rp.set("role_code", role_code);
-                            rp.set("permission_id", permissionId);
-                            rp.set("permission_code", permissionCode);
-                            rp.set("is_authorize", is_auth);
-                            rp.set("module_role_id", mr_id);
-                            rp.save();
-                        }
+                    if(permissionList != null){
+                    	for (Map<String, ?> p : permissionList) {
+                    		String row_id = (String) p.get("id");
+                    		String permissionId = (String) p.get("permission_id");
+                    		String permissionCode = (String) p
+                    				.get("permission_code");
+                    		boolean is_auth = (Boolean) p.get("is_authorize");
+                    		RolePermission rp = RolePermission.dao.findById(row_id);
+                    		if (rp != null) {
+                    			rp.set("module_id", module_id);
+                    			rp.set("role_id", role_id);
+                    			rp.set("role_code", role_code);
+                    			rp.set("permission_id", permissionId);
+                    			rp.set("permission_code", permissionCode);
+                    			rp.set("is_authorize", is_auth);
+                    			rp.set("module_role_id", mr_id);
+                    			rp.update();
+                    		} else {
+                    			rp = new RolePermission();
+                    			rp.set("module_id", module_id);
+                    			rp.set("role_id", role_id);
+                    			rp.set("role_code", role_code);
+                    			rp.set("permission_id", permissionId);
+                    			rp.set("permission_code", permissionCode);
+                    			rp.set("is_authorize", is_auth);
+                    			rp.set("module_role_id", mr_id);
+                    			rp.save();
+                    		}
+                    	}
                     }
                 }
             }
-
+        }
         }
         Record orderRec = Db.findById("eeda_modules", module_id);
         renderJson(orderRec);
@@ -329,7 +353,10 @@ public class ModuleController extends Controller {
         String searchStr = (String) dto.get("search_obj");
         Map<String, ?> searchDto = new Gson()
                 .fromJson(searchStr, HashMap.class);
-        String viewName = searchDto.get("view_name").toString();
+        String viewName = null;
+        if(searchDto != null){
+        	viewName = searchDto.get("view_name").toString();
+        }
         if (StringUtils.isEmpty(viewName)) {
             Db.update(
                     "delete from eeda_module_customize_search where module_id=?",
@@ -354,16 +381,21 @@ public class ModuleController extends Controller {
     private void eventHandle(Map<String, ?> dto, String module_id) {
         List<Map<String, ?>> event_list = (ArrayList<Map<String, ?>>) dto
                 .get("event_list");
+        if (event_list == null)
+            return;
+        
         if (event_list.size() == 0)
             return;
 
         // 先处理删除
         List<String> deleteIds = new ArrayList<String>();
         for (Map<String, ?> row : event_list) {
-            if (row.get("id") == null)
-                continue;
-            String event_id = row.get("id").toString();
-            deleteIds.add(event_id);
+        	if(row != null){
+        		if (row.get("id") == null)
+        			continue;
+        		String event_id = row.get("id").toString();
+        		deleteIds.add(event_id);
+        	}
         }
         if (deleteIds.size() > 0)
             Db.update(
@@ -371,36 +403,42 @@ public class ModuleController extends Controller {
                     module_id, StringUtils.join(deleteIds, ","));
 
         for (Map<String, ?> row : event_list) {
-            String id = row.get("id").toString();
-            String event_name = row.get("event_name").toString();
-            String event_type = row.get("event_type").toString();
-            String event_script = row.get("event_script").toString();
-            Record rec = Db
-                    .findFirst(
-                            "select * from eeda_module_event where module_id=? and id=? ",
-                            module_id, id);
-            if (rec != null) {// update
-                String sql = "update eeda_module_event set event_name=?, event_type=?, event_script=? where id=?";
-                int updateCount = Db.update(sql, event_name, event_type,
-                        event_script, id);
-            } else {// insert
-                String sql = "insert into eeda_module_event (module_id, event_name, event_type, event_script) values(?, ?, ?, ?)";
-                Db.update(sql, module_id, event_name, event_type, event_script);
-            }
+        	if(row != null){
+        		String id = row.get("id").toString();
+                String event_name = row.get("event_name").toString();
+                String event_type = row.get("event_type").toString();
+                String event_script = row.get("event_script").toString();
+                Record rec = Db
+                        .findFirst(
+                                "select * from eeda_module_event where module_id=? and id=? ",
+                                module_id, id);
+                if (rec != null) {// update
+                    String sql = "update eeda_module_event set event_name=?, event_type=?, event_script=? where id=?";
+                    int updateCount = Db.update(sql, event_name, event_type,
+                            event_script, id);
+                } else {// insert
+                    String sql = "insert into eeda_module_event (module_id, event_name, event_type, event_script) values(?, ?, ?, ?)";
+                    Db.update(sql, module_id, event_name, event_type, event_script);
+                }
+        	}
         }
     }
 
     private void authHandle(Map<String, ?> dto, String module_id) {
         List<Map<String, ?>> auth_list = (ArrayList<Map<String, ?>>) dto
                 .get("auth_list");
+        if (auth_list == null)
+            return;
         if (auth_list.size() == 0)
             return;
         List<String> roleIds = new ArrayList<String>();
         for (Map<String, ?> row : auth_list) {
-            if (row.get("role_id") == null)
-                continue;
-            String role_id = row.get("role_id").toString();
-            roleIds.add(role_id);
+        	if(row != null){
+        		if (row.get("role_id") == null)
+        			continue;
+        		String role_id = row.get("role_id").toString();
+        		roleIds.add(role_id);
+        	}
         }
         if (roleIds.size() > 0)
             Db.update(
@@ -408,18 +446,23 @@ public class ModuleController extends Controller {
                     module_id, StringUtils.join(roleIds, ","));
 
         for (Map<String, ?> row : auth_list) {
-
+        	if(row == null){
+        		continue;
+        	}
             List<Map<String, String>> role_auth = (List<Map<String, String>>) row
                     .get("role_auth_list");
+            if(role_auth == null){
+            	continue;
+            }
             if (row.get("role_id") == null && role_auth.size() == 0)
                 continue;
-            String role_id = row.get("role_id").toString();
+            String role_id = (String)row.get("role_id");
             logger.debug("role_id=" + role_id);
             
             for (Map<String, ?> role_auth_map : role_auth) {
-                String permission_id = role_auth_map.get("id").toString();
+                String permission_id = (String)role_auth_map.get("id");
                 if (StringUtils.isEmpty(permission_id)) {
-                    String action_name = role_auth_map.get("name").toString();
+                    String action_name = (String)role_auth_map.get("name");
                     String sql = "select * from eeda_structure_action where module_id=? and action_name=?";
                     Record rec = Db.findFirst(sql, module_id, action_name);
                     if (rec != null) {
@@ -553,7 +596,6 @@ public class ModuleController extends Controller {
     }
 
     private List<Record> getActionList(String module_id) {
-        UserLogin user = LoginUserController.getLoginUser(this);
         List<Record> action_list = null;
         if (true) {// user.isAdmin()
             String authSql = "select  sa.*, 'Y' is_auth from eeda_structure_action sa where sa.module_id=? ";
@@ -595,12 +637,16 @@ public class ModuleController extends Controller {
             for (Map dto : commandList) {
                 Record commandRec = new Record();
 
-                String commandName = dto.get("COMMAND_NAME").toString();
+                String commandName = (String)dto.get("COMMAND_NAME");
                 commandRec.set("COMMAND_NAME", commandName);
                 // TODO condition 没处理
 
                 Map operation_obj = (Map) dto.get("OPERATION_OBJ");
-                String operation_obj_exp = operation_obj.get("EXP").toString();
+                String operation_obj_exp = null;
+                if(operation_obj != null){
+                	operation_obj_exp = (String)operation_obj.get("EXP");
+                }
+                
                 String operation_obj_exp_key = operation_obj_exp;
 
                 String[] objs = operation_obj_exp.split(";");
@@ -633,10 +679,13 @@ public class ModuleController extends Controller {
     private List<Record> buildValueRecList(Map dto) {
         List<Record> setValueRecList = new ArrayList<Record>();
         List<Map> setValueList = (List) dto.get("SETVALUELIST");
+        if(setValueList == null){
+        	return setValueRecList;
+        }
         for (Map expMap : setValueList) {
             Record expRec = new Record();
-            String exp = expMap.get("EXP").toString();
-            String exp_key = expMap.get("EXP").toString();
+            String exp = (String)expMap.get("EXP");
+            String exp_key = (String)expMap.get("EXP");
             exp_key = exp_key.replaceAll("<-", "=");
             String target_field = exp_key.split("=")[0];// 报关商品.总价
             Record field = getFieldByName(target_field);
@@ -780,7 +829,10 @@ public class ModuleController extends Controller {
     }
 
     public void getRoleList() {
-        Long office_id = LoginUserController.getLoginUser(this)
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+   			return;
+        Long office_id = user
                 .get("office_id");
         List<Record> recs = Db.find("select * from role where office_id=?",
                 office_id);

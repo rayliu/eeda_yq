@@ -35,6 +35,8 @@ public class YqDashBoardController extends Controller {
 	public void index() {
 	  //公告
         UserLogin u = LoginUserController.getLoginUser(this);
+        if(u == null)
+   			return;
         long office_id=u.getLong("office_id");
         String sql = "select m.id, m.create_stamp, u.c_name,"
                 + " (case when length(m.title)>50 then CONCAT(substr(m.title,1,70),'....') else m.title end) title,"
@@ -53,6 +55,8 @@ public class YqDashBoardController extends Controller {
     	String title = getPara("radioTitle");
     	String content = getPara("radioContent");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+   			return;
         long office_id=user.getLong("office_id");
     	Record r= new Record();
         r.set("title", title);
@@ -69,6 +73,8 @@ public class YqDashBoardController extends Controller {
     	String title = getPara("radioTitle");
     	String content = getPara("radioContent");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+   			return;
         long office_id=user.getLong("office_id");
     	Record r= new Record();
     	r.set("title", title);
@@ -83,6 +89,8 @@ public class YqDashBoardController extends Controller {
     public void list(){
     	
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+   			return;
         long office_id=user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");

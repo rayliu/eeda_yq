@@ -39,7 +39,8 @@ public class FormController extends Controller {
         logger.debug("thread["+Thread.currentThread().getName()+
                 "] -------------Eeda form---------------");
         UserLogin user = LoginUserController.getLoginUser(this);
-        long user_id = user.getLong("id");
+        if(user == null)
+   			return;
         long office_id = user.getLong("office_id");
         
         String module_name = getPara(0);
