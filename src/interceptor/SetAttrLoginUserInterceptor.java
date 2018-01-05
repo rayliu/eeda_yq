@@ -19,6 +19,8 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 	private Log logger = Log.getLog(SetAttrLoginUserInterceptor.class);
 	@Override
 	public void intercept(Invocation ai) {
+        Controller controller = ai.getController();
+
 		Subject currentUser = SecurityUtils.getSubject();
 		if(currentUser.isAuthenticated()){
 			UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=?",currentUser.getPrincipal());
@@ -36,6 +38,24 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 	        
 			ai.getController().setAttr("user_login_id", currentUser.getPrincipal());
 			ai.getController().setAttr("permissionMap", ai.getController().getSessionAttr("permissionMap"));
+			
+			if(user != null){
+	            String type = user.getStr("system_type");
+	            String servletPath = controller.getRequest().getServletPath();
+	            if(servletPath.contains("/WebAdmin")){  //商家后台
+	                if(!"管理后台".equals(type)){
+	                	currentUser.logout();
+	                    controller.redirect("/WebAdmin/login");
+	                    return;
+	                }
+	            }else if(servletPath.contains("/BusinessAdmin")){//管理后台
+	            	if(!"商家后台".equals(type)){
+	            		currentUser.logout();
+	                    controller.redirect("/BusinessAdmin/login");
+	                    return;
+	                }
+	            }
+	        }
 		}
 		setSysTitle(ai.getController());
 		ai.invoke();

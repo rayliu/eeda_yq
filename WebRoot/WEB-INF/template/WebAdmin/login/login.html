@@ -3,11 +3,33 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet"> 
 <title>管理员后台登陆页</title>
 <link rel="stylesheet" href="/css/wedding/style.default.css" type="text/css" />
 <script type="text/javascript" src="/js/lib/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="/js/lib/sco/js/sco.message.js"></script>
 <script type="text/javascript" src="/js/BusinessAdmin/plugins/jquery-ui-1.8.16.custom.min.js"></script>
 <script type="text/javascript" src="/js/BusinessAdmin/plugins/jquery.cookie.js"></script>
+<style type="text/css">
+.login_btn {
+	border-style:none;
+	border-radius:3px;
+	background-color: #FF8000;
+	width:60px;
+	
+	height:30px;
+	cursor: pointer;
+	color:white;
+	font-weight:bold;
+}
+.login_btn:hover{
+	background-color: #6C6C6C;
+}
+.login_btn:visited{
+	background-color: #FF8000;
+}
+p {margin-left: 20px}
+</style>
 </head>
 <body class="loginpage reg_header">
 <div class="loginbox">
@@ -26,21 +48,39 @@
                 </div>
             </div><!--loginf-->
         </div><!--nopassword-->
-        <form action="/WebAdmin/login" method="post" enctype="application/x-www-form-urlencoded;charset=UTF-8">
+        <form >
             <div class="username">
                 <div class="usernameinner">
-                    <input type="text" name="username" />
+                    <input type="text" name="username" id="username"/>
                 </div>
             </div>
             <div class="password">
                 <div class="passwordinner">
-                    <input type="password" name="password" />
+                    <input type="password" name="password" id="password"/>
                 </div>
             </div>
-            <input type="submit" value="登录" />
+            <input type="button" class="login_btn"  id="loginBtn" value="登录" />
             <div class="keep"><input type="checkbox" /> 记住密码</div>
         </form>
     </div><!--loginboxinner-->
 </div><!--loginbox-->
+
+<script type="text/javascript">
+	$('#loginBtn').on('click',function(){
+		var username = encodeURI($('#username').val());
+		var password = encodeURI($('#password').val());
+		
+		$.post("/WebAdmin/dologin",{username:username,password:password},function(data){
+			if(data.RESULT){
+				location.href='/WebAdmin';
+				$('#username').focus();
+			}else{
+				$.scojs_message(data.ERRMSG, $.scojs_message.TYPE_OK);
+				$('#username').focus();
+			}
+		});
+	});
+</script>
 </body>
+
 </html>

@@ -81,7 +81,7 @@ public class BizAdminController extends Controller {
     }
     
     
-    @Before(EedaMenuInterceptor.class)
+    @Before({EedaMenuInterceptor.class,SetAttrLoginUserInterceptor.class})
     public void index() {
         if (isAuthenticated()) {
             redirect("/BusinessAdmin/account");
@@ -96,92 +96,77 @@ public class BizAdminController extends Controller {
 		user.update();
 	}
 
-    public void login() throws UnsupportedEncodingException {
-        
+	public void login(){
+		render("/BusinessAdmin/login/login.html");
+	}
+
+    public void dologin() throws UnsupportedEncodingException {
         String strLoginPagePath = getRequest().getRequestURI()+"/login.html";
-        
         HttpServletRequest request = getRequest();
         String serverName = request.getServerName();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
-        
+        String errMsg = "";
+        boolean result = false;
     	if (isAuthenticated()) {//如果已经登录, 跳转到管理平台首页
-    		redirect("/BusinessAdmin");
+    		//redirect("/WebAdmin");
+    		result=true;
     	}else{
     	    String method = getRequest().getMethod();
-    	    if("GET".equals(method)){
-    	        render(strLoginPagePath);
-    	        return;
-    	    }
-    	}
-        String username = URLDecoder.decode(getPara("username"), "UTF-8");
-        String password = URLDecoder.decode(getPara("password"), "UTF-8");
-        
-        setSysTitle();
-        
-        if (username == null) {
-            render(strLoginPagePath);
-            return;
+//    	    if("GET".equals(method)){
+//    	        render(strLoginPagePath);
+//    	        return;
+//    	    }
+    	
+	    	String username = URLDecoder.decode(getPara("username"), "UTF-8");
+	        String password = URLDecoder.decode(getPara("password"), "UTF-8");
+	        
+	        //setSysTitle();
+	        String sha1Pwd = MD5Util.encode("SHA1", password);
+	        UsernamePasswordToken token = new UsernamePasswordToken(username, sha1Pwd );
+	        if (getPara("remember") != null && "Y".equals(getPara("remember")))
+	            token.setRememberMe(true);
+	        try {
+	            currentUser.login(token);
+	            if (getPara("remember") != null && "Y".equals(getPara("remember"))){
+	                // timeout:-1000ms 这样设置才能永不超时 
+	            	currentUser.getSession().setTimeout(-1000L);
+	            }
+	        } catch (UnknownAccountException uae) {
+	            errMsg = "用户名不存在";
+	            errMsg = "用户名/密码不正确";
+	            uae.printStackTrace();
+	        } catch (IncorrectCredentialsException ice) {
+	            errMsg = "密码不正确";
+	            errMsg = "用户名/密码不正确";
+	            ice.printStackTrace();
+	        } catch (LockedAccountException lae) {
+	            errMsg = "用户名已被停用";
+	            lae.printStackTrace();
+	        } catch (AuthenticationException ae) {
+	            errMsg = "用户名/密码不正确";
+	            ae.printStackTrace();
+	        }
+	        if (errMsg.length()==0) {
+	        	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=? and (is_stop = 0 or is_stop is null) and system_type = '商家后台'",currentUser.getPrincipal());
+	        	if(user == null){
+	        		currentUser.logout();
+	            	errMsg = "用户名不存在或已被停用";
+	            	setAttr("errMsg", errMsg);
+	            }else{
+	            	result = true;
+	            };
+    		}
         }
-        String sha1Pwd = MD5Util.encode("SHA1", password);
-        UsernamePasswordToken token = new UsernamePasswordToken(username, sha1Pwd );
-
-        if (getPara("remember") != null && "Y".equals(getPara("remember")))
-            token.setRememberMe(true);
-
-        String errMsg = "";
-        try {
-            currentUser.login(token);
-            if (getPara("remember") != null && "Y".equals(getPara("remember"))){
-                // timeout:-1000ms 这样设置才能永不超时 
-            	currentUser.getSession().setTimeout(-1000L);
-            }
-
-        } catch (UnknownAccountException uae) {
-            errMsg = "用户名不存在";
-            errMsg = "用户名/密码不正确";
-            uae.printStackTrace();
-        } catch (IncorrectCredentialsException ice) {
-            errMsg = "密码不正确";
-            errMsg = "用户名/密码不正确";
-            ice.printStackTrace();
-        } catch (LockedAccountException lae) {
-            errMsg = "用户名已被停用";
-            lae.printStackTrace();
-        } catch (AuthenticationException ae) {
-            errMsg = "用户名/密码不正确";
-            ae.printStackTrace();
-        }
-
-        if (errMsg.length()==0) {
-        	String systen_type = "商家后台";
-        	
-        	UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=? and (is_stop = 0 or is_stop is null) and system_type = ?",currentUser.getPrincipal(),systen_type);
-        	
-        	if(user==null){
-        		currentUser.logout();
-            	errMsg = "用户名不存在或已被停用";
-            	setAttr("errMsg", errMsg);
-            	render(strLoginPagePath);
-            }else if(user.get("c_name") != null && !"".equals(user.get("c_name"))){
-            	setAttr("userId", user.get("c_name"));
-            	
-            	redirect("/BusinessAdmin");
-            }else{
-            	setAttr("userId",currentUser.getPrincipal());
-            	
-            	redirect("/BusinessAdmin");
-            };
-          
-            
-        } else {
-            setAttr("errMsg", errMsg);
-            render(strLoginPagePath);
-        }
+    	Record re = new Record();
+    	re.set("result", result);
+    	re.set("errMsg", errMsg);
+    	
+    	renderJson(re);
     }
     
     public void logOut(){
     	currentUser.logout();
-    	redirect("/BusinessAdmin/");
+    	redirect("/BusinessAdmin/login");
     }
 
 	private void setSysTitle() {
