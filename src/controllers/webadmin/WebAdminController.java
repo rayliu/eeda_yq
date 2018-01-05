@@ -3,6 +3,8 @@ package controllers.webadmin;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -122,7 +124,7 @@ public class WebAdminController extends Controller {
 		user.update();
 	}
 
-    public void login() {
+    public void login() throws UnsupportedEncodingException {
         
         String strLoginPagePath = getRequest().getRequestURI()+"/login.html";
         
@@ -130,8 +132,6 @@ public class WebAdminController extends Controller {
         String serverName = request.getServerName();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
        
-        
-        
     	if (isAuthenticated()) {//如果已经登录, 跳转到管理平台首页
     		redirect("/WebAdmin");
     	}else{
@@ -141,7 +141,8 @@ public class WebAdminController extends Controller {
     	        return;
     	    }
     	}
-        String username = getPara("username");
+    	String username = URLDecoder.decode(getPara("username"), "UTF-8");
+        String password = URLDecoder.decode(getPara("password"), "UTF-8");
         
         setSysTitle();
         
@@ -149,7 +150,7 @@ public class WebAdminController extends Controller {
             render(strLoginPagePath);
             return;
         }
-        String sha1Pwd = MD5Util.encode("SHA1", getPara("password"));
+        String sha1Pwd = MD5Util.encode("SHA1", password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, sha1Pwd );
 
         if (getPara("remember") != null && "Y".equals(getPara("remember")))

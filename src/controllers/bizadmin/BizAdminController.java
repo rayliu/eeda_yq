@@ -3,6 +3,8 @@ package controllers.bizadmin;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -94,7 +96,7 @@ public class BizAdminController extends Controller {
 		user.update();
 	}
 
-    public void login() {
+    public void login() throws UnsupportedEncodingException {
         
         String strLoginPagePath = getRequest().getRequestURI()+"/login.html";
         
@@ -111,7 +113,8 @@ public class BizAdminController extends Controller {
     	        return;
     	    }
     	}
-        String username = getPara("username");
+        String username = URLDecoder.decode(getPara("username"), "UTF-8");
+        String password = URLDecoder.decode(getPara("password"), "UTF-8");
         
         setSysTitle();
         
@@ -119,7 +122,7 @@ public class BizAdminController extends Controller {
             render(strLoginPagePath);
             return;
         }
-        String sha1Pwd = MD5Util.encode("SHA1", getPara("password"));
+        String sha1Pwd = MD5Util.encode("SHA1", password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, sha1Pwd );
 
         if (getPara("remember") != null && "Y".equals(getPara("remember")))
