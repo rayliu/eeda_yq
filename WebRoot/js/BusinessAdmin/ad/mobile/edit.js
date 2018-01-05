@@ -106,6 +106,7 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
 			$.post('/BusinessAdmin/ad/mobile_save',{jsonStr:JSON.stringify(order)},function(data) {
 				if(data){
 					$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+					$('#borderDiv').css('border','5px solid green');
 					refleshTable();
 				}else{
 					$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
@@ -117,6 +118,8 @@ define(['jquery', 'sco','dataTablesBootstrap', 'validate_cn'], function ($) {
       
       //编辑按钮
       $('#eeda_table').on('click','.editBtn',function(){
+    	  $('#borderDiv').css('border','5px solid red');
+    	  $("div").scrollTop()
     	  	var id = $(this).attr('id');
     	  	var amount = $(this).attr('amount');
     	  	var put_in_time = $(this).attr('put_in_time');
