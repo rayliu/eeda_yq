@@ -77,7 +77,7 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 			if(!$("#two_form").valid()){
 				return false;
 			}
-			
+			this.disabled = true;
 			var type = $("#register_type").val();
 			var id_card = '';
 			var company_pic = '';
