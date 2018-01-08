@@ -294,7 +294,9 @@ public class MainController extends Controller {
                  //根据网卡获取本机配置的IP地址
                  InetAddress inetAddress = null;
                  try {
-                     inetAddress = InetAddress.getLocalHost();
+                	 if(inetAddress != null){
+                		 inetAddress = InetAddress.getLocalHost();
+                	 }
                  } catch (UnknownHostException e) {
                      e.printStackTrace();
                  }
@@ -479,44 +481,6 @@ public class MainController extends Controller {
         render(page);
     }
     
-    /*
-    @Before(Tx.class)
-    public void m_save() {
-        String jsonStr=getPara("params");
-        Gson gson = new Gson();  
-        Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
-        String orderId = dto.get("id").toString();
-        if(StringUtils.isNotEmpty(orderId)){//update
-            EedaCommonHandler.commonUpdate(dto);
-        }else{//insert
-            orderId = EedaCommonHandler.commonInsert(dto);
-        }
-        
-        //返回order
-//        String module_id = dto.get("module_id").toString();
-//        ModuleController mc = new ModuleController();
-//        Record sRec = mc.getOrderStructureDto(module_id);
-//        sRec.set("id", orderId);
-//        Record orderDto =EedaCommonHandler.getOrderDto(sRec.toJson());
-        Record orderDto = new Record();
-        orderDto.set("id", orderId);
-        renderJson(orderDto);
-    }
-
-    
-    public void m_getOrderData() {
-        Record orderDto = new Record();
-        String jsonStr=getPara("params");
-        orderDto = EedaCommonHandler.getOrderDto(jsonStr);
-        renderJson(orderDto);
-    }
-    
-    public void m_search() {
-        Enumeration<String>  paraNames= getParaNames();
-        Map map= EedaCommonHandler.searchOrder(paraNames, getRequest());
-        renderJson(map);
-    }
-    */
     public void layui() {
         render("/larrycms/admin/index.html");
     }

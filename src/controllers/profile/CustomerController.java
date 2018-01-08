@@ -795,8 +795,8 @@ public class CustomerController extends Controller {
     	list = getItems(order_id,type);
     	Map map = new HashMap();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords", list != null?list.size():0);
+        map.put("iTotalDisplayRecords", list != null?list.size():0);
         map.put("aaData", list);
         renderJson(map); 
     }
@@ -855,6 +855,7 @@ public class CustomerController extends Controller {
 			String error_msg = "";
 			try {
 				for (Map<String, String> line :lines) {
+					if(line != null){
 					String quick_search_code = line.get("助记码").trim();
 					String company_name = line.get("公司中文名称").trim();
 					String abbr = line.get("公司简称").trim();
@@ -905,6 +906,7 @@ public class CustomerController extends Controller {
 		   			
 					rowNumber++;
 				}
+				}
 				
 				if(StringUtils.isNotBlank(error_msg)){
 					throw new Exception();
@@ -933,6 +935,7 @@ public class CustomerController extends Controller {
 			conn.setAutoCommit(false);// 自动提交变成false
 			
 			for (Map<String, String> line :lines) {
+				if(line != null){
 				String quick_search_code = line.get("助记码").trim();
 				String company_name = line.get("公司中文名称").trim();
 				String abbr = line.get("公司简称").trim();
@@ -990,6 +993,7 @@ public class CustomerController extends Controller {
 //				}
 
 				rowNumber++;
+				}
 			}
 			conn.commit();
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！");

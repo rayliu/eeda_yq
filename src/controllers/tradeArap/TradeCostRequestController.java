@@ -470,24 +470,27 @@ public class TradeCostRequestController extends Controller {
 			String itemId="";
 	   		TradeCostApplicationOrderRel caor = null;
 	   		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-			for(Map<String, String> item :itemList){
-				String action = item.get("action");
-					   itemId = item.get("id");
-				if("CREATE".equals(action)){
-					caor = new TradeCostApplicationOrderRel();
-					caor.set("application_order_id", id);
-					caor.set("job_order_arap_id", itemId);
-					Record aci = Db.findFirst("select * from trade_arap_cost_item where ref_order_id=?",itemId);
-					Long cost_order_id=aci.getLong("cost_order_id");
-					caor.set("cost_order_id", cost_order_id);
-					caor.set("order_type", "应付对账单");
-					caor.save();
-					
-					TradeArapCostOrder tradeArapCostOrder = TradeArapCostOrder.dao.findById(cost_order_id);
-					tradeArapCostOrder.set("audit_status", "付款申请中").update();
-			            
-			          }
+	   		if(itemList != null){
+	   			for(Map<String, String> item :itemList){
+					String action = item.get("action");
+						   itemId = item.get("id");
+					if("CREATE".equals(action)){
+						caor = new TradeCostApplicationOrderRel();
+						caor.set("application_order_id", id);
+						caor.set("job_order_arap_id", itemId);
+						Record aci = Db.findFirst("select * from trade_arap_cost_item where ref_order_id=?",itemId);
+						Long cost_order_id=aci.getLong("cost_order_id");
+						caor.set("cost_order_id", cost_order_id);
+						caor.set("order_type", "应付对账单");
+						caor.save();
+						
+						TradeArapCostOrder tradeArapCostOrder = TradeArapCostOrder.dao.findById(cost_order_id);
+						tradeArapCostOrder.set("audit_status", "付款申请中").update();
+				            
+				    }
 				}
+	   		}
+			
 			//selected_item_ids,改变创建标记位
 //			if("".equals(selected_item_ids)){
 //				String textError="您创建的申请单中选中没有明细";
@@ -654,15 +657,18 @@ public class TradeCostRequestController extends Controller {
     	   res = Db.find(str);
     	   re1.set("ids",ids);
         }
-  		for (Record re : res) {
-  			Long id = re.getLong("cost_order_id");
-  			String order_type = re.getStr("order_type");
+        if(res != null){
+        	for (Record re : res) {
+      			Long id = re.getLong("cost_order_id");
+      			String order_type = re.getStr("order_type");
 
-  			if("应付对账单".equals(order_type)){
-			    TradeArapCostOrder tradeArapCostOrder = TradeArapCostOrder.dao.findById(id);
-				tradeArapCostOrder.set("audit_status", "已复核").update();
-			}
-  		}
+      			if("应付对账单".equals(order_type)){
+    			    TradeArapCostOrder tradeArapCostOrder = TradeArapCostOrder.dao.findById(id);
+    				tradeArapCostOrder.set("audit_status", "已复核").update();
+    			}
+      		}
+        }
+  		
   		renderJson(re1);
     }
   	
@@ -691,7 +697,7 @@ public class TradeCostRequestController extends Controller {
         	TradeArapCostApplicationOrder arapCostInvoiceApplication = TradeArapCostApplicationOrder.dao.findById(application_id);
         	application_office_id = arapCostInvoiceApplication.get("office_id").toString();
         	if(dto.get("receive_bank_id")!=null){
-      			 receive_bank_id =  dto.get("receive_bank_id").toString();
+      			 receive_bank_id =  (String)dto.get("receive_bank_id");
       		}else{
       			String str2="select id from fin_account where bank_name='现金' and office_id="+application_office_id;
       	        Record rec = Db.findFirst(str2);

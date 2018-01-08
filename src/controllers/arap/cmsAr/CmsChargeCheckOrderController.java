@@ -97,15 +97,17 @@ public class CmsChargeCheckOrderController extends Controller {
 
    			CustomArapChargeItem aci = null;
    			List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-   			for(Map<String, String> item :itemList){
-   				aci = new CustomArapChargeItem();
-				aci.set("ref_order_type", "报关申请单");
-				aci.set("ref_order_id", item.get("id"));
-				aci.set("custom_charge_order_id", id);
-				aci.save();
-				
-				Db.update("update custom_plan_order_arap set bill_flag = 'Y',audit_flag='Y' where id = ?",item.get("id"));
-			}
+   			if(itemList != null){
+   				for(Map<String, String> item :itemList){
+   	   				aci = new CustomArapChargeItem();
+   					aci.set("ref_order_type", "报关申请单");
+   					aci.set("ref_order_id", item.get("id"));
+   					aci.set("custom_charge_order_id", id);
+   					aci.save();
+   					
+   					Db.update("update custom_plan_order_arap set bill_flag = 'Y',audit_flag='Y' where id = ?",item.get("id"));
+   				}
+   			}
    		}
 
    		SysInfoController.saveLog(jsonStr, id, user, action_type, "应收对账单", "custom");
@@ -568,7 +570,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		     	String empty = (String) dto.get("deposit_bank");
 		     	
 		     	if(StringUtils.isNotEmpty(empty)){
-		   			 deposit_bank =  dto.get("deposit_bank").toString();
+		   			 deposit_bank = (String) dto.get("deposit_bank");
 		   		}else{
 		   			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
 		   	        Record rec = Db.findFirst(str2);

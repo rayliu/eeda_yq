@@ -1256,6 +1256,7 @@ public class ServiceProviderController extends Controller {
    			String error_msg = "";
    			try {
    				for (Map<String, String> line :lines) {
+   					if(line != null){
    					String quick_search_code = line.get("助记码").trim();
    					String company_name = line.get("公司中文名称").trim();
    					String abbr = line.get("公司简称").trim();
@@ -1312,6 +1313,7 @@ public class ServiceProviderController extends Controller {
 					}
    					
    					rowNumber++;
+   					}
    				}
    				
    				if(StringUtils.isNotBlank(error_msg)){
@@ -1341,6 +1343,7 @@ public class ServiceProviderController extends Controller {
    			conn.setAutoCommit(false);// 自动提交变成false
    			
    			for (Map<String, String> line :lines) {
+   				if(line != null){
    				String quick_search_code = line.get("助记码").trim();
 				String company_name = line.get("公司中文名称").trim();
 				String abbr = line.get("公司简称").trim();
@@ -1396,6 +1399,7 @@ public class ServiceProviderController extends Controller {
    	   			Db.save("party", order);
 
    				rowNumber++;
+   				}
    			}
    			conn.commit();
    			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！");
