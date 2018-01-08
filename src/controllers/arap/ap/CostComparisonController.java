@@ -488,6 +488,9 @@ public class CostComparisonController extends Controller {
 		String id = getPara("id");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if (user==null) {
+            return;
+        }
 		long office_id = user.getLong("office_id");
 		
 		String Sql = "SELECT spCom.*,ifnull(dockp.dock_name,concat(lpol.name,' -',lpol.code)) pickup_loc_name,ifnull(dockd.dock_name,concat(lpod.name,' -',lpod.code)) delivery_loc_name,concat(lor.name,' -',lor.code) por_name,"

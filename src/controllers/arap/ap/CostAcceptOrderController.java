@@ -597,6 +597,9 @@ public class CostAcceptOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
    		long office_id=user.getLong("office_id");
         String sql = "select * from(  "
         		+ " select acao.*, acao.order_no application_order_no, "

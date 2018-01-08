@@ -60,6 +60,9 @@ public class LclOrderController extends Controller {
     public void create() {
 		String ids = getPara("ids");
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if (user==null) {
+            return;
+        }
    		long office_id = user.getLong("office_id");
    		Office office = Office.dao.findById(office_id);
    		setAttr("office", office);
@@ -231,6 +234,9 @@ public class LclOrderController extends Controller {
     public void createBookOrder(PlanOrderItem item,String id){
     	Long item_id = item.getLong("id");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
    		long office_id = user.getLong("office_id");
    		String job_order_type =item.getStr("job_order_type");
    		String delivery = item.get("delivery");
@@ -698,6 +704,9 @@ public class LclOrderController extends Controller {
     	Long plan_order_id = item.getLong("order_id");
     	JobOrder order  = JobOrder.dao.findFirst("select * from job_order where plan_order_item_id = ? ",plan_order_item_id);
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
    		long office_id = user.getLong("office_id");
    		
    		String transport_type = "";

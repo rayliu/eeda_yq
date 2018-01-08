@@ -115,6 +115,9 @@ public class SupplierContractController extends Controller {
         String id = getPara("id");
         String signal = getPara("signal");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
    		long office_id = user.getLong("office_id");
 	     //判断与登陆用户的office_id是否一致
 	     if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("supplier_contract", Long.valueOf(id), office_id)){
@@ -142,6 +145,9 @@ public class SupplierContractController extends Controller {
     public void copyJobOrder(){
     	String id = getPara("id");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
      	long office_id = user.getLong("office_id");
      	Record order = Db.findById("supplier_contract", id);
      	order.set("id", null);

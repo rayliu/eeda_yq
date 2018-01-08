@@ -100,6 +100,9 @@ public class SupplierRatingController extends Controller {
     public void edit() {
     	String id = getPara("id");
 	    UserLogin user = LoginUserController.getLoginUser(this);
+	    if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         //判断与登陆用户的office_id是否一致
         if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("party_mark", Long.valueOf(id), office_id)){
@@ -198,6 +201,9 @@ public class SupplierRatingController extends Controller {
     
     public void checkMethod(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
     	String id = getPara("id");
     	String type = getPara("type");
     	Record re = Db.findById("party_mark", id);

@@ -81,6 +81,9 @@ public class CustomReportController extends Controller {
     
 	public void downloadExcelList(){
 	    UserLogin user = LoginUserController.getLoginUser(this);
+	    if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
     	String sql = "select * from(select p.abbr sp_name,date(jor.create_stamp) create_stamp,joa.sp_id sp_id,joa.order_type,ifnull(joa.currency_total_amount,0) total_amount,"
     			+ " (select GROUP_CONCAT(custom_order_no SEPARATOR '/n') from job_order_custom where order_id = joa.order_id) custom_order_no"

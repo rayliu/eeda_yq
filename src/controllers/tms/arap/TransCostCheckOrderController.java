@@ -97,6 +97,9 @@ public class TransCostCheckOrderController extends Controller {
 		order.set("currencyList", getCurrencyList(ids,""));
 		setAttr("order", order);
 		UserLogin u3=LoginUserController.getLoginUser(this);
+		if (u3==null) {
+            return;
+        }
 		setAttr("user",u3);		
 		render("/tms/arap/transCostCheckOrder/tmsCostCheckOrderEdit.html");
 	}
@@ -591,6 +594,9 @@ public class TransCostCheckOrderController extends Controller {
 	public void edit(){
 		String id = getPara("id");//arap_cost_order id
 		UserLogin user1 = LoginUserController.getLoginUser(this);
+		if (user1==null) {
+            return;
+        }
 	    long office_id=user1.getLong("office_id");
 	    //判断与登陆用户的office_id是否一致
 	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("trans_arap_cost_order", Long.valueOf(id), office_id)){
@@ -787,6 +793,9 @@ public class TransCostCheckOrderController extends Controller {
    	@Before(Tx.class)
  	public void confirmOrder(){
 		   		 UserLogin user = LoginUserController.getLoginUser(this);
+		   		if (user==null) {
+		            return;
+		        }
 		   		String jsonStr=getPara("params");
 		  
 		        	Gson gson = new Gson();  
@@ -884,6 +893,9 @@ public class TransCostCheckOrderController extends Controller {
             String receive_bank_id, String receive_time, String pay_amount, String currency_code) {
         //新建日记账表数据
   		UserLogin user = LoginUserController.getLoginUser(this);
+  		if (user==null) {
+            return;
+        }
         long office_id = user.getLong("office_id");
 		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
         auditLog.set("payment_method", payment_method);

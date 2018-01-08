@@ -613,6 +613,9 @@ public class CostCheckOrderController extends Controller {
 		String id = getPara("id");//arap_cost_order id
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if (user==null) {
+            return;
+        }
         long office_id=user.getOfficeId();
         //判断单office_id与登陆用户的office_id是否一致
         if(!OrderCheckOfficeUtil.checkOfficeEqual("arap_cost_order", Long.valueOf(id), office_id)){

@@ -51,6 +51,9 @@ public class AccountController extends Controller {
     public void edit() {
         String id = getPara("id");
 	    UserLogin user1 = LoginUserController.getLoginUser(this);
+	    if (user1==null) {
+            return;
+        }
 	    long office_id=user1.getLong("office_id");
 	    //判断与登陆用户的office_id是否一致
 	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("fin_account", Long.valueOf(id), office_id)){

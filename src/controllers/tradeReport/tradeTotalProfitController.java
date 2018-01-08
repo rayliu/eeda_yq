@@ -147,6 +147,9 @@ public class tradeTotalProfitController extends Controller {
 		public void downloadExcelList(){
 			String exportName = "";
 		    UserLogin user = LoginUserController.getLoginUser(this);
+		    if (user==null) {
+	            return;
+	        }
 	        long office_id=user.getLong("office_id");
 	        
 	        String ref_office = "";

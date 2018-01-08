@@ -115,6 +115,9 @@ public class CustomerContractController extends Controller {
     public void edit() {
         String id = getPara("id");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         //判断与登陆用户的office_id是否一致
         if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("customer_contract", Long.valueOf(id), office_id)){

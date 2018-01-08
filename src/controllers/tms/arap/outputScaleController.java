@@ -116,6 +116,9 @@ public class outputScaleController extends Controller {
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         
         

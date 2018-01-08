@@ -143,6 +143,9 @@ public class TransAccountAgingController extends Controller {
 	//导出Excel
 	public void downloadExcelList(){
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if (user==null) {
+            return;
+        }
 		long office_id = user.getLong("office_id");
 		String sp_id = getPara("sp_id");
 		String spId = "";

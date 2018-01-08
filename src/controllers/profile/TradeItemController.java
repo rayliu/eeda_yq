@@ -180,6 +180,9 @@ public class TradeItemController extends Controller {
     public void edit() {
         String id = getPara("id");
 	    UserLogin user1 = LoginUserController.getLoginUser(this);
+	    if (user1==null) {
+            return;
+        }
 	    long office_id=user1.getLong("office_id");
 	    //判断与登陆用户的office_id是否一致
 	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("trade_item", Long.valueOf(id), office_id)){
@@ -259,6 +262,9 @@ public class TradeItemController extends Controller {
     
 	public void downloadExcelList(){
   	  UserLogin user = LoginUserController.getLoginUser(this);
+      	if (user==null) {
+            return;
+        }
       long userId = user.getLong("id");
       Long officeId = user.getLong("office_id");
       
@@ -305,6 +311,9 @@ public class TradeItemController extends Controller {
     	String para = getPara("commodity_name");
     	String order_id = getPara("order_id");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         long userId = user.getLong("id");
         long officeId = user.getLong("office_id");
     	
@@ -335,6 +344,9 @@ public class TradeItemController extends Controller {
     public void checkNameExist(){
     	String para= getPara("name");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         Long officeId = user.getLong("office_id");
     	String sql = "select * from fin_item where name = ? and office_id=?";
     	boolean ifExist;
@@ -351,6 +363,9 @@ public class TradeItemController extends Controller {
     public void checkNameEngExist(){
     	String para= getPara("name_eng");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         Long officeId = user.getLong("office_id");
     	String sql = "select * from fin_item where name_eng =? and office_id=?";
     	boolean ifExist;

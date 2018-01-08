@@ -232,6 +232,9 @@ public class ProfitAndPaymentRateController extends Controller {
 	
 	public void downloadExcelList(){
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if (user==null) {
+            return;
+        }
 		long office_id = user.getLong("office_id");
 		String sp_id = getPara("sp_id");
 		String begin_time = getPara("begin_time");

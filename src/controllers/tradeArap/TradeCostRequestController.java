@@ -260,6 +260,9 @@ public class TradeCostRequestController extends Controller {
 //        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
@@ -510,6 +513,9 @@ public class TradeCostRequestController extends Controller {
   	public void edit() throws ParseException {
 		String id = getPara("id");
 		UserLogin user1 = LoginUserController.getLoginUser(this);
+		if (user1==null) {
+            return;
+        }
 	    long office_id=user1.getLong("office_id");
 	    //判断与登陆用户的office_id是否一致
 	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("trade_arap_cost_application_order", Long.valueOf(id), office_id)){
@@ -665,6 +671,9 @@ public class TradeCostRequestController extends Controller {
   	@Before(Tx.class)
 	public void confirmOrder(){
  		UserLogin user = LoginUserController.getLoginUser(this);
+ 		if (user==null) {
+            return;
+        }
   		String jsonStr=getPara("params");
  
        	Gson gson = new Gson();  

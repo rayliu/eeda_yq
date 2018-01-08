@@ -281,6 +281,9 @@ public class ManualReportController extends Controller {
 	
 	public void exportExcel(){
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id = user.getLong("office_id");
         
         String customer_id = getPara("customer_id");

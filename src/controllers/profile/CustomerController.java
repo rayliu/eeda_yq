@@ -121,6 +121,9 @@ public class CustomerController extends Controller {
         Party party =null;
         
         UserLogin user1 = LoginUserController.getLoginUser(this);
+        if (user1==null) {
+            return;
+        }
         long office_id=user1.getLong("office_id");
         
         if("OWN".equals(type)){

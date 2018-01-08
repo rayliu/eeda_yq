@@ -200,6 +200,8 @@ public class CustomCostReuqestrController extends Controller {
 //        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null)
+            return;
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
@@ -599,6 +601,9 @@ public class CustomCostReuqestrController extends Controller {
   	@Before(Tx.class)
 	public void confirmOrder(){
  		UserLogin user = LoginUserController.getLoginUser(this);
+ 		if (user==null) {
+            return;
+        }
   		String jsonStr=getPara("params");
  
        	Gson gson = new Gson();  
@@ -716,6 +721,9 @@ public class CustomCostReuqestrController extends Controller {
             String receive_bank_id, String receive_time, String pay_amount, String currency_code) {
         //新建日记账表数据\
   		UserLogin user = LoginUserController.getLoginUser(this);
+  		if (user==null) {
+            return;
+        }
         long office_id = user.getLong("office_id");
 		CustomArapAccountAuditLog auditLog = new CustomArapAccountAuditLog();
         auditLog.set("payment_method", payment_method);

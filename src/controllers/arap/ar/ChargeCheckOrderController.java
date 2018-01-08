@@ -309,6 +309,9 @@ public class ChargeCheckOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }        			
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         
         String check_time_beginTime =getPara("check_time_beginTime");
@@ -544,6 +547,9 @@ public class ChargeCheckOrderController extends Controller {
     @Before(EedaMenuInterceptor.class)
 	public void create(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
     	long office_id = user.getLong("office_id");
 		String ids = getPara("idsArray");//job_order_arap ids
 		String total_amount = getPara("totalAmount");
@@ -605,6 +611,9 @@ public class ChargeCheckOrderController extends Controller {
 		String condition = "select ref_order_id from arap_charge_item where charge_order_id ="+id;
 		
 		UserLogin user1 = LoginUserController.getLoginUser(this);
+		if (user1==null) {
+            return;
+        }
         long office_id=user1.getLong("office_id");
 		//判断单office_id与登陆用户的office_id是否一致
         if(!OrderCheckOfficeUtil.checkOfficeEqual("arap_charge_order", Long.valueOf(id), office_id)){

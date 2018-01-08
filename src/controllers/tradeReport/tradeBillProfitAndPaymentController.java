@@ -147,6 +147,9 @@ public class tradeBillProfitAndPaymentController extends Controller{
 	//导出excel对账单
 	public void downloadExcelList(){
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if (user==null) {
+            return;
+        }
 	    long office_id=user.getLong("office_id");
 		String customer_id = getPara("customer_id");
 		String order_export_date_begin_time = getPara("begin_time");

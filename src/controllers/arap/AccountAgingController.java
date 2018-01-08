@@ -148,6 +148,9 @@ public class AccountAgingController extends Controller {
 	// 导出excel对账单
 	public void downloadExcelList() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if (user==null) {
+            return;
+        }
 		long office_id = user.getLong("office_id");
 		String sp_id = getPara("sp_id");
 		String type = getPara("type")==null?"new":getPara("type").trim();

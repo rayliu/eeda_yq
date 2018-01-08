@@ -826,6 +826,9 @@ public class TransJobOrderController extends Controller {
     public void edit() {
     	String id = getPara("id");
 	    UserLogin user1 = LoginUserController.getLoginUser(this);
+	    if (user1==null) {
+            return;
+        }
 	    long office_id=user1.getLong("office_id");
 	    //判断与登陆用户的office_id是否一致
 	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("trans_job_order", Long.valueOf(id), office_id)){
@@ -1252,6 +1255,9 @@ public class TransJobOrderController extends Controller {
 		
 		Map<String, ?> dto = gson.fromJson(jsonStr, HashMap.class);
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         String condition = "";
         String company_name = (String) dto.get("customer_name_like");

@@ -104,6 +104,9 @@ public class FinItemController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void create() {
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         Long officeId = user.getLong("office_id");
         
         List<Record> currency = Db.find("select * from currency where office_id=?",officeId);
@@ -144,6 +147,9 @@ public class FinItemController extends Controller {
     public void edit() {
         String id = getPara("id");
 	    UserLogin user1 = LoginUserController.getLoginUser(this);
+	    if (user1==null) {
+            return;
+        }
 	    long office_id=user1.getLong("office_id");
 	    //判断与登陆用户的office_id是否一致
 	    if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("fin_item", Long.valueOf(id), office_id)){
@@ -224,6 +230,9 @@ public class FinItemController extends Controller {
     	String para= getPara("code");
     	String id= getPara("id");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         
@@ -249,6 +258,9 @@ public class FinItemController extends Controller {
     	String para= getPara("name");
     	String id= getPara("id");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         Long officeId = user.getLong("office_id");
     	String sql = "select * from fin_item where name = ? and office_id=?";
     	String sql1 = "select * from fin_item where id = ? and office_id=?";
@@ -273,6 +285,9 @@ public class FinItemController extends Controller {
     	String para= getPara("name_eng");
     	String id= getPara("id");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         Long officeId = user.getLong("office_id");
     	String sql = "select * from fin_item where name_eng =? and office_id=?";
     	String sql1 = "select * from fin_item where id = ? and office_id=?";

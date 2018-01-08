@@ -65,6 +65,9 @@ public class TransOrderShortCutController extends Controller {
 		
 		TransJobOrderController tjc=new TransJobOrderController();
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if (user==null) {
+            return;
+        }
    		long office_id = user.getLong("office_id");
    		for(int i=0;i<(itemList != null?itemList.size():0);i++){
    			TransJobOrder transJobOrder=new TransJobOrder();

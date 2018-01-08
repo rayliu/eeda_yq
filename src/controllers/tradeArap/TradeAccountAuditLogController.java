@@ -162,6 +162,9 @@ public class TradeAccountAuditLogController extends Controller {
     		sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
     	}
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
     	long office_id = user.getLong("office_id");
     	
     	String sqlTotal = "select count(1) total from fin_account where office_id=?";

@@ -1311,6 +1311,9 @@ public class JobOrderService extends Controller {
      */
     private void getAirSpContractMsg(String order_id,String jsonStr){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
@@ -1510,6 +1513,9 @@ public class JobOrderService extends Controller {
      */
     private void getAirCustomerContractMsg(String order_id,String jsonStr){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
@@ -2900,6 +2906,9 @@ public class JobOrderService extends Controller {
     	Long job_office_id=jobOrder.getLong("office_id");
     	setAttr("order", jobOrder);
     	UserLogin user1 = LoginUserController.getLoginUser(this);
+    	if (user1==null) {
+            return;
+        }
         long office_id=user1.getLong("office_id");
         
         //判断工作单与登陆用户的office_id是否一致

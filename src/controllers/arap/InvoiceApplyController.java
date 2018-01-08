@@ -55,6 +55,9 @@ public class InvoiceApplyController  extends Controller {
   	public void edit() throws ParseException {
     	String id = getPara("id");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
     	String sql = "select cio.*,p.abbr party_name,u.c_name creator_name,c.name currency_name,fa.bank_name bank_name from charge_invoice_order cio "
     			   + " LEFT JOIN party p on p.id = cio.party_id "
@@ -440,6 +443,9 @@ public class InvoiceApplyController  extends Controller {
     
     public void addItemList(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
     	String condition = DbUtils.buildConditions(getParaMap());
     	 

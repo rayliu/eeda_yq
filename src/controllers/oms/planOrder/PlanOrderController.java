@@ -65,6 +65,9 @@ public class PlanOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
     public void create() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if (user==null) {
+            return;
+        }
    		long office_id = user.getLong("office_id");
    		Office office = Office.dao.findById(office_id);
    		setAttr("office", office);
@@ -159,6 +162,9 @@ public class PlanOrderController extends Controller {
     public void createBookOrder(PlanOrderItem item,String id){
     	Long item_id = item.getLong("id");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
    		long office_id = user.getLong("office_id");
    		String job_order_type =item.getStr("job_order_type");
    		String delivery = item.get("delivery");
@@ -371,6 +377,9 @@ public class PlanOrderController extends Controller {
     public void edit() {
     	String id = getPara("id");
     	UserLogin user1 = LoginUserController.getLoginUser(this);
+    	if (user1==null) {
+            return;
+        }
         long office_id=user1.getLong("office_id");
         //判断与登陆用户的office_id是否一致
         if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("plan_order", Long.valueOf(id), office_id)){
@@ -586,6 +595,9 @@ public class PlanOrderController extends Controller {
     	Long plan_order_id = item.getLong("order_id");
     	JobOrder order  = JobOrder.dao.findFirst("select * from job_order where plan_order_item_id = ? ",plan_order_item_id);
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
    		long office_id = user.getLong("office_id");
    		
    		String transport_type = "";

@@ -288,6 +288,9 @@ public class CostRequestController extends Controller {
         
     	
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
@@ -623,6 +626,9 @@ public class CostRequestController extends Controller {
     	setAttr("docList", list);
     	
     	UserLogin user1 = LoginUserController.getLoginUser(this);
+    	if (user1==null) {
+            return;
+        }
         long office_id=user1.getLong("office_id");
         //判断与登陆用户的office_id是否一致
         if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("arap_cost_application_order", Long.valueOf(id), office_id)){
@@ -755,6 +761,9 @@ public class CostRequestController extends Controller {
   	@Before(Tx.class)
 	public void confirmOrder(){
  		UserLogin user = LoginUserController.getLoginUser(this);
+ 		if (user==null) {
+            return;
+        }
   		String jsonStr=getPara("params");
  
        	Gson gson = new Gson();  
@@ -1090,6 +1099,9 @@ public class CostRequestController extends Controller {
             String receive_bank_id, String receive_time, String pay_amount, String currency_code) {
         //新建日记账表数据\
   		UserLogin user = LoginUserController.getLoginUser(this);
+  		if (user==null) {
+            return;
+        }
         long office_id = user.getLong("office_id");
 		ArapAccountAuditLog auditLog = new ArapAccountAuditLog();
         auditLog.set("payment_method", payment_method);
