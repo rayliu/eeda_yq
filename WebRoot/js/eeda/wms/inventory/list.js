@@ -157,7 +157,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
 	            if(data){
 	            	window.open(data);
 	            }
-	            self.diabled = true;
+	            self.diabled = false;
 	            $(self).text(text_value);
 	        });
 	    });

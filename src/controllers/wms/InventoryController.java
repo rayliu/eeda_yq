@@ -433,7 +433,10 @@ public class InventoryController extends Controller {
 			+ conditions
 			+ " group by gi.id "
 			+ " union all"
-			+ " select pro.part_no,pro.part_name,0 quantity"
+			+ " select pro.part_no,"
+			+ " substring_index(pro.part_name, ';', 1) part_name,"
+		    + " substring(pro.part_name,CHAR_LENGTH(substring_index(pro.part_name, ';', 1))+2,100) desc_value,"
+			+ " 0 quantity"
 			+ " from wmsproduct pro"
 			+ " where pro.office_id="+office_id
 			+ conditions 
