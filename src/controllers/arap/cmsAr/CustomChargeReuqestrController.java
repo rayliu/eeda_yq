@@ -69,6 +69,9 @@ public class CustomChargeReuqestrController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+   			return;
+   		}
         long office_id=user.getLong("office_id");
         String sql = " select * from ("
         		+ " select  aco.*, p.company_name sp_name, "
@@ -108,6 +111,9 @@ public class CustomChargeReuqestrController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+   			return;
+   		}
         long office_id=user.getLong("office_id");
         String sql =" SELECT "
         		+" 	* "
@@ -389,6 +395,9 @@ public class CustomChargeReuqestrController extends Controller {
 		String sp_name=(String) dto.get("sp_name");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+   			return;
+   		}
    		long office_id=user.getLong("office_id");
    		
    		if (StringUtils.isNotEmpty(id)) {
@@ -559,7 +568,7 @@ public class CustomChargeReuqestrController extends Controller {
     //收款确认
   	@Before(Tx.class)
 	public void confirmOrder(){
-  		 UserLogin user = LoginUserController.getLoginUser(this);
+  		UserLogin user = LoginUserController.getLoginUser(this);
   		if (user==null) {
             return;
         }
@@ -823,6 +832,9 @@ public class CustomChargeReuqestrController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+   			return;
+   		}
         long office_id=user.getLong("office_id");
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){

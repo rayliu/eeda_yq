@@ -84,6 +84,9 @@ public class ChargeAcceptOrderController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         String sql = " select * from ("
         		+ " select  aco.*, p.company_name sp_name, "
@@ -300,6 +303,9 @@ public class ChargeAcceptOrderController extends Controller {
    		
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if (user==null) {
+            return;
+        }
    		long office_id=user.getLong("office_id");
    		
    		if (StringUtils.isNotEmpty(id)) {

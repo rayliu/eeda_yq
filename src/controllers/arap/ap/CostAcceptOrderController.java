@@ -85,6 +85,9 @@ public class CostAcceptOrderController extends Controller {
 		String total_app_jpy = getPara("total_app_jpy")==""?"0.00":getPara("total_app_jpy");   //申请总金额
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
    		long office_id=user.getLong("office_id");
 		
 		if (!"".equals(application_id) && application_id != null) {
@@ -559,6 +562,9 @@ public class CostAcceptOrderController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
    		long office_id=user.getLong("office_id");
         String sql = " select * from ("
         		+ " select  aco.*, p.company_name sp_name, "

@@ -146,7 +146,9 @@ public class ChargeInvoiceOrderController extends Controller {
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
-   		
+   		if(user==null){
+   			return;
+   		}
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			order = ArapChargeInvoice.dao.findById(id);

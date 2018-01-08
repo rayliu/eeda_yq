@@ -37,6 +37,9 @@ public class AccountAuditLogController extends Controller {
     	List<ArapAccountAuditLog> accountlist = ArapAccountAuditLog.dao.find("SELECT DISTINCT a.bank_name FROM arap_account_audit_log aaa left join fin_account a on a.id = aaa.account_id");
     	setAttr("accountList", accountlist);
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/accountAuditLog");
         setAttr("listConfigList", configList);
@@ -102,6 +105,9 @@ public class AccountAuditLogController extends Controller {
     	}
     	
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
     	long office_id = user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");

@@ -63,6 +63,9 @@ public class CmsChargeCheckOrderController extends Controller {
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+   			return;
+   		}
    		long office_id = user.getLong("office_id");
    		
    		String action_type="add";
@@ -124,6 +127,9 @@ public class CmsChargeCheckOrderController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+   			return;
+   		}
         long office_id=user.getLong("office_id");
         String sql = "";
         String checkCondition = "";

@@ -76,6 +76,9 @@ public class CostReimbursementOrder extends Controller {
 		String orderNo = null;
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if (user==null) {
+            return;
+        }
         long officeId= user.getLong("office_id");
         
 		ReimbursementOrder rei = null;

@@ -254,6 +254,9 @@ public class TransferAccountsController extends Controller {
 	   		}
 			
 			UserLogin user = LoginUserController.getLoginUser(this);
+			if (user==null) {
+	            return;
+	        }
 			if(!"".equals(transferOrderId) && transferOrderId != null){
 			    transferaccounts =TransferAccountsOrder.dao.findById(transferOrderId);
 				transferaccounts.set("create_id",user.get("id"));

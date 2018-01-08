@@ -35,6 +35,9 @@ public class BillProfitAndPaymentController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/billProfitAndPayment");
 		setAttr("listConfigList", configList);
@@ -49,6 +52,9 @@ public class BillProfitAndPaymentController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+			return;
+		}
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         
@@ -114,6 +120,9 @@ public class BillProfitAndPaymentController extends Controller {
 		String order_export_date_end_time =(String) getPara("order_export_date_end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+			return;
+		}
         long office_id=user.getLong("office_id");
         
 		String ref_office = "";

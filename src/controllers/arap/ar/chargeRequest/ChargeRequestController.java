@@ -59,6 +59,9 @@ public class ChargeRequestController extends Controller {
     	String back =getPara("back");
     	setAttr("back",back);
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if (user==null) {
+            return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/chargeRequest");
         setAttr("listConfigList", configList);
@@ -78,6 +81,9 @@ public class ChargeRequestController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         String sql = " select * from ("
         		+ " select  aco.*, p.company_name sp_name, "
@@ -117,6 +123,9 @@ public class ChargeRequestController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         
         String sql = " SELECT "
@@ -295,6 +304,9 @@ public class ChargeRequestController extends Controller {
     //新流程显示开票单明细方法
     public void newOrderList(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         
@@ -349,6 +361,9 @@ public class ChargeRequestController extends Controller {
 		String sp_name=(String) dto.get("sp_name");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if (user==null) {
+            return;
+        }
    		long office_id=user.getLong("office_id");
    		String action_type = "add";
    		if (StringUtils.isNotBlank(id)) {
@@ -654,6 +669,9 @@ public class ChargeRequestController extends Controller {
 		String sp_id=(String) dto.get("sp_id");
 		String sp_name=(String) dto.get("sp_name");
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if (user==null) {
+            return;
+        }
    		long office_id=user.getLong("office_id");
    		String action_type = "add";
    		if (StringUtils.isNotEmpty(id)) {
@@ -1426,6 +1444,9 @@ public class ChargeRequestController extends Controller {
         }
 
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         
         String ref_office = "";

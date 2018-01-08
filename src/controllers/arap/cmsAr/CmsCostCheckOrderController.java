@@ -62,6 +62,9 @@ public class CmsCostCheckOrderController extends Controller {
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+   			return;
+   		}
    		long office_id = user.getLong("office_id");
    		String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {
@@ -120,6 +123,9 @@ public class CmsCostCheckOrderController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+   			return;
+   		}
         long office_id=user.getLong("office_id");
         String sql = "";
         String checkCondition = "";
@@ -620,7 +626,7 @@ public class CmsCostCheckOrderController extends Controller {
     //收款确认
    	@Before(Tx.class)
  	public void confirmOrder(){
-		   		 UserLogin user = LoginUserController.getLoginUser(this);
+		   		UserLogin user = LoginUserController.getLoginUser(this);
 		   		if (user==null) {
 		            return;
 		        }

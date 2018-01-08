@@ -46,6 +46,9 @@ public class CostComparisonController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/CostComparison");
         setAttr("listConfigList", configList);
@@ -70,6 +73,9 @@ public class CostComparisonController extends Controller {
    		String id = (String) dto.get("id");
    		String status = (String) dto.get("status");   		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id=user.getLong("office_id");
    		String action_type = "add";
    		if (StringUtils.isNotEmpty(id)) {
@@ -170,6 +176,9 @@ public class CostComparisonController extends Controller {
     	}
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         
         String sql = " SELECT 	spCom.*,lor. NAME por_name, "
@@ -282,6 +291,9 @@ public class CostComparisonController extends Controller {
     @SuppressWarnings("unchecked")
     public void searchSpcomparison(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+    		return;
+    	}
     	long office_id = user.getLong("office_id");
     	String condition_json = getPara("paraJson");
     	String input =getPara("input");
@@ -355,6 +367,9 @@ public class CostComparisonController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }        			
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
     	long office_id = user.getLong("office_id");
     	String conditionJson = getPara("paraJson");
     	Gson gson = new Gson();    	

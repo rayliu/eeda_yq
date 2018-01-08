@@ -48,6 +48,9 @@ public class ChargeCheckOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if (user==null) {
+            return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/chargeCheckOrder");
         setAttr("listConfigList", configList);
@@ -65,6 +68,9 @@ public class ChargeCheckOrderController extends Controller {
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if (user==null) {
+            return;
+        }
    		long office_id = user.getLong("office_id");
    		String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {
@@ -190,6 +196,9 @@ public class ChargeCheckOrderController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if (user==null) {
+            return;
+        }
         long office_id=user.getLong("office_id");
         
         String sp_id = getPara("sp");
