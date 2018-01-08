@@ -35,6 +35,7 @@ import models.eeda.oms.jobOrder.JobOrderSendMailTemplate;
 import models.eeda.oms.jobOrder.JobOrderShipment;
 import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
@@ -255,14 +256,16 @@ public class BookingOrderController extends Controller {
    			//update
    			jobOrder = JobOrder.dao.findById(id);
    			//版本(时间戳)校验，不对的话就不让更新保存
-   			Timestamp page_update_stamp = Timestamp.valueOf(dto.get("update_stamp").toString());
-   			Timestamp order_update_stamp = jobOrder.getTimestamp("update_stamp");
-   			if(!order_update_stamp.equals(page_update_stamp)){
-   			    Record rec = new Record();
-   			    rec.set("err_code", "update_stamp_not_equal");
-   			    rec.set("err_msg", "当前单据已被更改，请刷新页面获取最新数据，重新操作。");
-   			    renderJson(rec);
-   			    return;
+   			if(dto.get("update_stamp")!=null){
+       			Timestamp page_update_stamp = Timestamp.valueOf(dto.get("update_stamp").toString());
+       			Timestamp order_update_stamp = jobOrder.getTimestamp("update_stamp");
+       			if(!order_update_stamp.equals(page_update_stamp)){
+       			    Record rec = new Record();
+       			    rec.set("err_code", "update_stamp_not_equal");
+       			    rec.set("err_msg", "当前单据已被更改，请刷新页面获取最新数据，重新操作。");
+       			    renderJson(rec);
+       			    return;
+       			}
    			}
    			
    			Date old_export_date=jobOrder.get("order_export_date");
@@ -274,7 +277,7 @@ public class BookingOrderController extends Controller {
    			String oldOrderNo=jobOrder.get("order_no");
    			String oldOrderNoDate = oldOrderNo.substring(3, 7);
    			logger.debug("工作单号 旧日期："+oldOrderNoDate);
-   			if(!type.equals(jobOrder.get("type")) || 
+   			if((jobOrder.get("type")!=null && !type.equals(jobOrder.get("type"))) || 
    			        ( 
    			             StrKit.notBlank(oldDateStr) && 
    			             !newDateStr.equals(oldDateStr) && 
@@ -301,7 +304,8 @@ public class BookingOrderController extends Controller {
    			//需后台处理的字段
    			String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
    			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
-   			sb.insert(5, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
+   			if(type!=null)
+   			    sb.insert(5, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
    			order_no = sb.toString();
             jobOrder.set("order_no", order_no);
    			jobOrder.set("creator", user.getLong("id"));
@@ -319,8 +323,11 @@ public class BookingOrderController extends Controller {
                    planOrderItem.update();
    			}
    		}
-   		long customerId = Long.valueOf(dto.get("customer_id").toString());
-   		saveCustomerQueryHistory(customerId);
+   		long customerId = -1;
+   		if(dto.get("customer_id")!=null){
+   		    customerId = Long.valueOf(dto.get("customer_id").toString());
+   		    saveCustomerQueryHistory(customerId);
+   		}
 		//海运
 		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
 		DbUtils.handleList(shipment_detail, id, JobOrderShipment.class, "order_id");
@@ -1717,6 +1724,10 @@ public class BookingOrderController extends Controller {
     	List<Record> list = null;
     	list = getItems(order_id,type);
     	
+    	if(list ==null){
+    	    renderNull();
+    	    return;
+    	}
     	Map map = new HashMap();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
@@ -1760,6 +1771,8 @@ public class BookingOrderController extends Controller {
             
         Party order = new Party();
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+            return;
    		
    		if (true)  {
    			//create 
@@ -1895,7 +1908,9 @@ public class BookingOrderController extends Controller {
     	String check = getPara("check");
     	String order_id = getPara("order_id");
 		Office office=LoginUserController.getLoginUserOffice(this);
-    	
+		if(office == null)
+            return;
+		
     	if(StringUtils.isEmpty(item_id)){//全选
     		Db.update("update job_order_custom_doc set share_flag =? where order_id = ? and order_type = '"+office.get("type")+"' ",check,order_id);
     	}else{//单选
@@ -1939,21 +1954,23 @@ public class BookingOrderController extends Controller {
         String order_id = (String) dto.get("order_id");
         String land_item_id = (String) dto.get("land_item_id");
     	
-        List<Map<String, String>> land_charge_item = (ArrayList<Map<String, String>>)dto.get("land_charge_item");
-        Model<?> model = (Model<?>) JobOrderArap.class.newInstance();
-        for(int i=0;i<land_charge_item.size();i++){
-        	Map<String, String> map=land_charge_item.get(i);
-        	
-        	DbUtils.setModelValues(map,model);
-        	model.set("land_item_id", land_item_id);
-        	model.set("order_id", order_id);
-        	if("UPDATE".equals(map.get("action"))){
-        		model.update();
-        	}else if("DELETE".equals(map.get("action"))){
-        		model.delete();
-        	}else{
-        		model.save();
-        	}
+        if(dto.get("land_charge_item") !=null){
+            List<Map<String, String>> land_charge_item = (ArrayList<Map<String, String>>)dto.get("land_charge_item");
+            Model<?> model = (Model<?>) JobOrderArap.class.newInstance();
+            for(int i=0;i<land_charge_item.size();i++){
+            	Map<String, String> map=land_charge_item.get(i);
+            	
+            	DbUtils.setModelValues(map,model);
+            	model.set("land_item_id", land_item_id);
+            	model.set("order_id", order_id);
+            	if("UPDATE".equals(map.get("action"))){
+            		model.update();
+            	}else if("DELETE".equals(map.get("action"))){
+            		model.delete();
+            	}else{
+            		model.save();
+            	}
+            }
         }
       //保存陆运费用模版
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
@@ -1973,6 +1990,9 @@ public class BookingOrderController extends Controller {
         //获取office_id
     	String id = getPara("id");
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+   		    return;
+   		
    		long office_id = user.getLong("office_id");
    		if(office_id!=1&&office_id!=2){
    			Db.update("update job_order_custom_doc set new_flag ='N' where id = ?",id);
@@ -1986,6 +2006,9 @@ public class BookingOrderController extends Controller {
     	String input = getPara("input");
     	List<Record> recs = null;
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+            return;
+    	
    		long office_id = user.getLong("office_id");
     	String sql = "select * from trade_item where 1=1 and office_id = "+office_id;
     	if(StringUtils.isNotEmpty(input)){

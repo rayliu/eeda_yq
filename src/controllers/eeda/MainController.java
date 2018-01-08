@@ -41,7 +41,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.profile.LoginUserController;
-import controllers.util.EedaCommonHandler;
+
 import controllers.util.MD5Util;
 import controllers.util.ParentOffice;
 import controllers.util.getCurrentPermission;
@@ -479,6 +479,7 @@ public class MainController extends Controller {
         render(page);
     }
     
+    /*
     @Before(Tx.class)
     public void m_save() {
         String jsonStr=getPara("params");
@@ -515,7 +516,7 @@ public class MainController extends Controller {
         Map map= EedaCommonHandler.searchOrder(paraNames, getRequest());
         renderJson(map);
     }
-    
+    */
     public void layui() {
         render("/larrycms/admin/index.html");
     }
