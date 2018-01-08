@@ -424,6 +424,9 @@ public class PlanOrderController extends Controller {
    		
 		//forwarderCompany货代公司打开该单时，new_submit_flag标志为n
    		UserLogin login_user = LoginUserController.getLoginUser(this);
+   		if(login_user==null){
+   			return;
+   		}
    		Office office2=Office.dao.findById(login_user.getLong("office_id"));
    		 setAttr("login_office", office2);
    		if(office2.getStr("type")!=null&&"forwarderCompany".equals(office2.getStr("type"))){

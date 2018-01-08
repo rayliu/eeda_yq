@@ -310,6 +310,9 @@ public class CmsChargeCheckOrderController extends Controller {
 		UserLogin ul = UserLogin.dao.findById(create_by);
 		UserLogin ul2 = UserLogin.dao.findById(confirm_by);
 		UserLogin u3=LoginUserController.getLoginUser(this);
+		if(u3==null){
+        	return;
+        }
 		
 		Party sp = Party.dao.findById(sp_id);
 		

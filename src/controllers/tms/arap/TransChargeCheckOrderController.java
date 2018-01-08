@@ -576,6 +576,9 @@ public class TransChargeCheckOrderController extends Controller {
 		Record rec =Db.findFirst(sql,id);
 
 		UserLogin u3=LoginUserController.getLoginUser(this);
+		if(u3==null){
+			return;
+		}
 		rec.set("user", u3);
 		String sqlString="SELECT  (aco.cny-IFNULL(SUM(tacri.receive_cny),0))residual_cny FROM trans_arap_charge_order aco  "
 				 +" LEFT JOIN trans_arap_charge_receive_item tacri on aco.id=tacri.charge_order_id "

@@ -321,7 +321,9 @@ public class CmsCostCheckOrderController extends Controller {
 		UserLogin ul = UserLogin.dao.findById(create_by);
 		UserLogin ul2 = UserLogin.dao.findById(confirm_by);
 		UserLogin u3=LoginUserController.getLoginUser(this);
-		
+		if(u3==null){
+        	return;
+        }
 		Party sp = Party.dao.findById(sp_id);
 		
 		String sqlString="SELECT  residual_cny FROM custom_arap_cost_receive_item WHERE custom_charge_order_id="+id+" ORDER BY id DESC";

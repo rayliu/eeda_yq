@@ -1135,6 +1135,9 @@ public class TrJobOrderController extends Controller {
             List<UploadFile> fileList = getFiles("doc");
             Long userId = LoginUserController.getLoginUserId(this);
             UserLogin userLogin=LoginUserController.getLoginUser(this);
+            if(userLogin==null){
+            	return;
+            }
 			String reString="select * from office where id="+userLogin.getOfficeId();
 			Record record=Db.findFirst(reString);
             FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,record.get("type").toString(),bill_type);

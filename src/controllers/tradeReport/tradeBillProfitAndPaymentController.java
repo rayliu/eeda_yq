@@ -49,7 +49,7 @@ public class tradeBillProfitAndPaymentController extends Controller{
         }
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
-        	return;
+        	return 0;
         }
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
