@@ -76,6 +76,9 @@ public class InvoiceApplyController  extends Controller {
     
     public void list() {
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
         long office_id=user.getLong("office_id");
     	String sql = "select cio.id,cio.order_no,cio.party_id,p.abbr party_name,cio.invoice_no,cio.status,cio.creator,u.c_name creator_name,cio.create_time from charge_invoice_order cio "
     			   + " LEFT JOIN party p on p.id=cio.party_id "
@@ -97,6 +100,9 @@ public class InvoiceApplyController  extends Controller {
 		String selected_item_ids= (String) dto.get("selected_item_ids"); //获取申请单据的id,用于回显
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+			return;
+		}
    		long office_id=user.getLong("office_id");
    		
    		ChargeInvoiceOrder order = new ChargeInvoiceOrder();
@@ -224,6 +230,9 @@ public class InvoiceApplyController  extends Controller {
     
     public void requestList(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
         long office_id=user.getLong("office_id");
         String sql = " SELECT "
         		+" 	* "
@@ -387,6 +396,9 @@ public class InvoiceApplyController  extends Controller {
     
     public void itemList(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
         long office_id=user.getLong("office_id");
     	String order_id = getPara("order_ids");
     	String cioiciIds = getPara("cioiciIds");

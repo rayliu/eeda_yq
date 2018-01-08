@@ -57,6 +57,9 @@ public class ServiceProviderController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/serviceProvider");
         setAttr("listConfigList", configList);
@@ -414,6 +417,9 @@ public class ServiceProviderController extends Controller {
 		
 		long userId = LoginUserController.getLoginUserId(this);
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
 		long office_id = user.getLong("office_id");
 		
 		List<Record> spList = Collections.EMPTY_LIST;
@@ -704,6 +710,9 @@ public class ServiceProviderController extends Controller {
     	String input = getPara("input");
     	String sp_type = getPara("para");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
     	long office_id = user.getLong("office_id");
     	String conditions = "";
     	if(StringUtils.isNotBlank(input)){
@@ -735,6 +744,9 @@ public class ServiceProviderController extends Controller {
     	String input = getPara("input");
     	String sp_type = getPara("para");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
     	long office_id = user.getLong("office_id");
     	String conditions = "";
     	if(StringUtils.isNotBlank(input)){
@@ -849,6 +861,9 @@ public class ServiceProviderController extends Controller {
     	String d = sf.format(new Date());
     	List<Record> recs = null;
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         String condition = "";
         String currency_condition = " and c.to_currency_code='CNY'";
     	long office_id = user.getLong("office_id");
@@ -893,6 +908,9 @@ public class ServiceProviderController extends Controller {
     	String d = sf.format(new Date());
     	List<Record> recs = null;
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long office_id = user.getLong("office_id");
     	/*String sql = "select cr.office_id,c.id,c.code,c.name,cast( if(cr.from_stamp<'"+d+"' and cr.to_stamp>'"+d+"',cr.rate,'') as char ) rate from currency c"
     			+ " left join currency_rate cr on cr.currency_code = c.code  where 1=1 and cr.office_id= "+office_id+" group by name";*/
@@ -914,6 +932,9 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchAccount(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long office_id = user.getLong("office_id");
     	String input = getPara("input");
     	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -932,6 +953,9 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchPartyAccount(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
 //        long office_id = user.getLong("office_id");
     	String input = getPara("input");
     	String order_id = getPara("order_id");
@@ -956,6 +980,9 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchTruckOut(){
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id = user.getLong("office_id");
         String party_id = getPara("input");
         String addressInputStr = getPara("addressInputStr");
@@ -1042,6 +1069,9 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void landAddress(){
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id = user.getLong("office_id");
         String name = getPara("input");
         String spId = getPara("sp_id");
@@ -1085,6 +1115,9 @@ public class ServiceProviderController extends Controller {
     		type_condition= " uqh.type = UPPER('TruckIn') ";
     	}
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
     	long office_id = user.getLong("office_id");
     	String conditions = "";
     	if(StringUtils.isNotBlank(input)){
@@ -1168,6 +1201,9 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchCompanyCustomCode(){
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id = user.getLong("office_id");
         
     	String input = getPara("input");
@@ -1209,6 +1245,9 @@ public class ServiceProviderController extends Controller {
         
        	String  sp_id=(String) dto.get("sp_id");
        	UserLogin user = LoginUserController.getLoginUser(this);
+       	if(user==null){
+        	return;
+        }
        	long userId = LoginUserController.getLoginUserId(this);
 		long office_id = user.getLong("office_id");
        	 

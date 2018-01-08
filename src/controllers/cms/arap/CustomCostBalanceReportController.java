@@ -34,6 +34,9 @@ public class CustomCostBalanceReportController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+			return;
+		}
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/costBalanceReport");
 		 setAttr("listConfigList", configList);
@@ -47,6 +50,9 @@ public class CustomCostBalanceReportController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+			return 0;
+		}
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = " SELECT A.id,A.receive_sent_consignee,A.abbr,A.sp_id,sum(cost_cny) cost_cny,"
@@ -101,6 +107,9 @@ public class CustomCostBalanceReportController extends Controller {
 		String date_custom_end_time =(String) getPara("date_custom_end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+			return;
+		}
         long office_id=user.getLong("office_id");
 		
 		String sp_id =" and sp_id="+spid;

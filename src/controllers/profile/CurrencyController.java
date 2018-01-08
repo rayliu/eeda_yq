@@ -65,6 +65,9 @@ public class CurrencyController extends Controller {
         String jsonStr=getPara("params");
       //获取office_id
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
         Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  

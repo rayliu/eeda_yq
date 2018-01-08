@@ -58,6 +58,9 @@ public class CustomerController extends Controller {
     @Before(EedaMenuInterceptor.class) 
     public void index() {
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/customer");
         setAttr("listConfigList", configList);
@@ -393,6 +396,9 @@ public class CustomerController extends Controller {
         }
         long userId = LoginUserController.getLoginUserId(this);
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id = user.getLong("office_id");
         
         List<Record> resultList = Collections.EMPTY_LIST;
@@ -456,6 +462,9 @@ public class CustomerController extends Controller {
     public void search_company_title() {
         String customerName = getPara("customerName");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
 
         if(StringUtils.isEmpty(customerName)){
@@ -504,6 +513,9 @@ public class CustomerController extends Controller {
         }
         long userId = LoginUserController.getLoginUserId(this);
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id = user.getLong("office_id");
         List<Record> resultList = Collections.EMPTY_LIST;
         if(StrKit.isBlank(customerName)){//从历史记录查找
@@ -541,6 +553,9 @@ public class CustomerController extends Controller {
     public void search_party() {
         String partyName = getPara("customerName");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
        
         if(StringUtils.isEmpty(partyName)){
@@ -610,6 +625,9 @@ public class CustomerController extends Controller {
         String partyName = getPara("input")==null?getPara("partyName"):getPara("input");
         String type = getPara("type")==null?getPara("para"):getPara("type");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
         
    		String officeConditon = "";

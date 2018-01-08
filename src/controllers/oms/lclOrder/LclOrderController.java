@@ -49,6 +49,9 @@ public class LclOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/clcOrder");
         setAttr("listConfigList", configList);
@@ -169,6 +172,9 @@ public class LclOrderController extends Controller {
    		String action_type = "";
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		
    		if (StringUtils.isNotEmpty(id)) {
@@ -482,6 +488,9 @@ public class LclOrderController extends Controller {
     
     public void list() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         
     	String type = getPara("type_");
@@ -570,6 +579,9 @@ public class LclOrderController extends Controller {
     
     public void orderList() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         
     	String type = getPara("type_");

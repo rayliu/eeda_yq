@@ -34,6 +34,9 @@ public class FinItemController extends Controller {
     public void search() {
         String input = getPara("input");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         
@@ -83,6 +86,9 @@ public class FinItemController extends Controller {
     public void search_eng() {
     	String input = getPara("input");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         
@@ -117,6 +123,9 @@ public class FinItemController extends Controller {
 
     public void list() {
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         String sLimit = "";
@@ -159,6 +168,9 @@ public class FinItemController extends Controller {
         FinItem u = FinItem.dao.findById(id);
         setAttr("order", u);
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         Long officeId = user.getLong("office_id");
         
         List<Record> currency = Db.find("select * from currency where office_id=?",officeId);
@@ -190,6 +202,9 @@ public class FinItemController extends Controller {
     public void save() {
         String jsonStr=getPara("params");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         Gson gson = new Gson();  

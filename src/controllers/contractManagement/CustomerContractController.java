@@ -40,6 +40,9 @@ public class CustomerContractController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/customerContract");
         setAttr("listConfigList", configList);
@@ -49,7 +52,9 @@ public class CustomerContractController extends Controller {
     
     public void list() {
         UserLogin user = LoginUserController.getLoginUser(this);
-        
+        if(user==null){
+			return;
+		}
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
@@ -211,6 +216,9 @@ public class CustomerContractController extends Controller {
    		String type = (String) dto.get("type");//根据合同类型生成不同前缀
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+			return;
+		}
    		long office_id = user.getLong("office_id");
    		CustomerContract  customerContract= new CustomerContract();
    		String id = (String) dto.get("contract_id");

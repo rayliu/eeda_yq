@@ -55,6 +55,9 @@ public class EmployeeFilingController extends Controller {
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
         String id = (String) dto.get("id");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		UserLogin user1 = new UserLogin();
         if (StringUtils.isBlank(id)) {
@@ -78,6 +81,9 @@ public class EmployeeFilingController extends Controller {
 		
 		String confirmFee = getPara("confirmFee");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
     	
         String sLimit = "";
@@ -245,6 +251,9 @@ public class EmployeeFilingController extends Controller {
 	public void searchEmployee(){
 		String employee_name= getPara("employee_name");
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		List<Record> employeeList = Collections.EMPTY_LIST;
    		String sql = "SELECT *  FROM employee em WHERE office_id="+office_id;

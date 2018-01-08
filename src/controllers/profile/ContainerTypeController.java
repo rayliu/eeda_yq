@@ -52,6 +52,9 @@ public class ContainerTypeController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/containerType");
         setAttr("listConfigList", configList);
@@ -66,6 +69,9 @@ public class ContainerTypeController extends Controller {
     public void list() {
         String sLimit = "";
         UserLogin user1 = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user1.getLong("office_id");
         String pageIndex = getPara("sEcho");
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
@@ -135,6 +141,9 @@ public class ContainerTypeController extends Controller {
     public void save() {
         String jsonStr=getPara("params");
         UserLogin user1 = LoginUserController.getLoginUser(this);
+        if(user1==null){
+        	return;
+        }
         long office_id=user1.getLong("office_id");
         Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  

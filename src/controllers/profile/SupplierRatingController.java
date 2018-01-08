@@ -46,6 +46,9 @@ public class SupplierRatingController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/supplierRating");
         setAttr("listConfigList", configList);
@@ -62,6 +65,9 @@ public class SupplierRatingController extends Controller {
     
     public void list() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
     	
         String sLimit = "";
@@ -128,6 +134,9 @@ public class SupplierRatingController extends Controller {
     
     public void save(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
     	String jsonStr=getPara("params");
     	Gson gson = new Gson();  
@@ -189,6 +198,9 @@ public class SupplierRatingController extends Controller {
     
     public void submitMethod(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String id = getPara("id");
         Record re = Db.findById("party_mark", id);

@@ -237,6 +237,9 @@ public class BookingOrderController extends Controller {
         
         //获取office_id
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		
    		String export_date = (String)dto.get("order_export_date");
@@ -1598,6 +1601,9 @@ public class BookingOrderController extends Controller {
      
     public void list() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         
     	String type=getPara("type");

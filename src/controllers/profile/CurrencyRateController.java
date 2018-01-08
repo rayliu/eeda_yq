@@ -76,6 +76,9 @@ public class CurrencyRateController extends Controller {
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
       //获取office_id
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
         CurrencyRate order = new CurrencyRate();
         String id = (String) dto.get("id");
@@ -154,6 +157,9 @@ public class CurrencyRateController extends Controller {
     
     public void gainRateList(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
     	long office_id = user.getLong("office_id");    	
     	String to_currency_name = getPara("params");
     	if(StringUtils.isEmpty(to_currency_name)){
@@ -176,6 +182,9 @@ public class CurrencyRateController extends Controller {
         String pageIndex = getPara("sEcho");
       //获取office_id
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");

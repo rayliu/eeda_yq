@@ -31,6 +31,9 @@ public class CustomAccountAuditLogController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
     	long office_id = user.getLong("office_id");
     	List<ArapAccountAuditLog> list = ArapAccountAuditLog.dao.find("SELECT DISTINCT source_order FROM arap_account_audit_log where office_id ="+office_id);
     	setAttr("List", list);
@@ -100,6 +103,9 @@ public class CustomAccountAuditLogController extends Controller {
     	}
     	
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
     	long office_id = user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");

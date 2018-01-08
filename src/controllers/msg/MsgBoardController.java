@@ -35,6 +35,9 @@ public class MsgBoardController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 	    UserLogin user = LoginUserController.getLoginUser(this);
+	    if(user==null){
+			return;
+		}
 	    long user_id = user.getLong("id");
 	    
 	    List<Record> configList = ListConfigController.getConfig(user_id, "/msgBoard");
@@ -48,6 +51,9 @@ public class MsgBoardController extends Controller {
     	String title = getPara("radioTitle");
     	String content = getPara("radioContent");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
         long office_id=user.getLong("office_id");
     	Record r= new Record();
         r.set("title", title);
@@ -64,6 +70,9 @@ public class MsgBoardController extends Controller {
     	String title = getPara("radioTitle");
     	String content = getPara("radioContent");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
         long office_id=user.getLong("office_id");
     	Record r= new Record();
     	r.set("title", title);
@@ -78,6 +87,9 @@ public class MsgBoardController extends Controller {
     public void list(){
     	
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+			return;
+		}
         long office_id=user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");

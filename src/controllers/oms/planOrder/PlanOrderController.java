@@ -52,6 +52,9 @@ public class PlanOrderController extends Controller {
 		setAttr("type", type);
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
    		long office_id = user.getLong("office_id");
    		Office office = Office.dao.findById(office_id);
@@ -97,6 +100,9 @@ public class PlanOrderController extends Controller {
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		
    		String action_type="add";
@@ -432,6 +438,9 @@ public class PlanOrderController extends Controller {
     
     public void list() {
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
 
     	String type=getPara("type_");

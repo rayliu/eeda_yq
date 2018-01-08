@@ -43,6 +43,9 @@ public class profitController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+			return 0;
+		}
         long office_id=user.getLong("office_id");
         
         String customer_id =getPara("customer_id");
@@ -103,6 +106,9 @@ public class profitController extends Controller {
         String begin_time = getPara("order_export_date_begin_time");
         String end_time = getPara("order_export_date_end_time");
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+			return;
+		}
         long office_id=user.getLong("office_id");
 		
         String ref_office = "";

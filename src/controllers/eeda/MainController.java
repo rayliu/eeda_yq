@@ -467,6 +467,9 @@ public class MainController extends Controller {
         }
 
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+			return;
+		}
         //查询当前用户菜单
         String sql ="select distinct module.* from modules o, modules module "
                 +"where o.parent_id = module.id and o.office_id=? and o.status = '启用' order by seq";

@@ -65,6 +65,9 @@ public class TradeItemController extends Controller {
     */
     	
     	  UserLogin user = LoginUserController.getLoginUser(this);
+    	  if(user==null){
+          	return;
+          }
           long userId = user.getLong("id");
           Long officeId = user.getLong("office_id");
           
@@ -111,6 +114,9 @@ public class TradeItemController extends Controller {
     public void search_eng() {
     	String input = getPara("input");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         
@@ -141,6 +147,9 @@ public class TradeItemController extends Controller {
         String name = getPara("name");
         String name_eng = getPara("name_eng");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         
@@ -219,6 +228,9 @@ public class TradeItemController extends Controller {
     public void save() {
         String jsonStr=getPara("params");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         Gson gson = new Gson();  

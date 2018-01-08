@@ -57,11 +57,6 @@ public class BookingOrderController extends Controller {
 	private Logger logger = Logger.getLogger(BookingOrderController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 	private Object type;
-
-	
-	if(dto != null){
-		
-	}
 	
 	@Before(EedaMenuInterceptor.class)
 	public void index() {

@@ -42,6 +42,9 @@ public class CustomProfitController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+			return 0;
+		}
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = " SELECT A.id,A.receive_sent_consignee,A.abbr,SUM(charge_rmb) charge_rmb,sum(cost_rmb) cost_rmb,"
@@ -85,6 +88,9 @@ public class CustomProfitController extends Controller {
 		String end_time =(String) getPara("end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+			return;
+		}
         long office_id=user.getLong("office_id");
 		
 		String receive_sent_consignee =" and receive_sent_consignee="+customer_id;

@@ -44,6 +44,9 @@ public class ImportOrder extends Controller {
 		String fileName = file.getName();
 
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+			return;
+		}
         Long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
 		Record resultMap = new Record();

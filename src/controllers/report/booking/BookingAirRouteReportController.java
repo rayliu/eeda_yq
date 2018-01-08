@@ -33,6 +33,9 @@ public class BookingAirRouteReportController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/bookingAirRouteReport");
 		setAttr("listConfigList", configList);
@@ -46,6 +49,9 @@ public class BookingAirRouteReportController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return 0;
+        }
         long office_id=user.getLong("office_id");
         String customer_id = getPara("customer_id");
         String begin_date = getPara("begin_date");
@@ -163,6 +169,9 @@ public class BookingAirRouteReportController extends Controller {
     
     public void listTotal(){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String customer_id = getPara("customer_id");
         String begin_date = getPara("begin_date");

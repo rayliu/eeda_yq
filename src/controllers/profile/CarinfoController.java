@@ -48,6 +48,9 @@ public class CarinfoController extends Controller {
         String input = getPara("input");
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         Long office_id = user.getLong("office_id");
       
         
@@ -91,6 +94,9 @@ public class CarinfoController extends Controller {
         
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         Long office_id = user.getLong("office_id");
         
         // 获取总条数
@@ -200,6 +206,9 @@ public class CarinfoController extends Controller {
     public void save() {
         String id = getPara("carId");
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         Long office_id = user.getLong("office_id");
         Carinfo carinfo = null;
         Carinfo contact = null;

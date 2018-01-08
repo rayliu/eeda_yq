@@ -51,6 +51,9 @@ public class TruckOrderController extends Controller {
 	public void index() {
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/truckOrder");
         setAttr("listConfigList", configList);

@@ -39,6 +39,9 @@ public class ManualReportController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+			return;
+		}
 		Long office_id = user.getLong("office_id");
 		Long user_id = user.getLong("id");
 		Record order = Db.findFirst("select * from manual_report where order_type = '费用明细' and creator = ? and office_id = ?",user_id,office_id);
@@ -63,6 +66,9 @@ public class ManualReportController extends Controller {
     public void save(){
 		String jsonStr = getPara("jsonStr");
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+			return;
+		}
 		Long office_id = user.getLong("office_id");
 		Long user_id = user.getLong("id");
 		
@@ -115,6 +121,9 @@ public class ManualReportController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+			return;
+		}
         long office_id = user.getLong("office_id");
         
         String customer_id = getPara("customer_id");
