@@ -210,8 +210,10 @@ public class JobOrderReportController extends Controller {
    		String order_id = (String) dto.get("order_id");
 		String SONO = (String) dto.get("SONO");
 		if(StringUtils.isNotBlank(SONO)){
-			if(SONO.contains("/")){
-				SONO = SONO.replaceAll("/", ",");
+			if(SONO != null){
+				if(SONO.contains("/")){
+					SONO = SONO.replaceAll("/", ",");
+				}
 			}
 		}
    		

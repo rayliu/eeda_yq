@@ -63,6 +63,9 @@ public class BookingOrderController extends Controller {
 		String type = getPara("type");
 		setAttr("type",type);
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user == null)
+			return;
+		
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/bookOrder");
         setAttr("listConfigList", configList);
@@ -73,6 +76,8 @@ public class BookingOrderController extends Controller {
     public void create() {
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user == null)
+			return;
    		long office_id = user.getLong("office_id");
    		Office office = Office.dao.findById(office_id);
    		setAttr("office", office);
@@ -207,6 +212,8 @@ public class BookingOrderController extends Controller {
         
         //获取office_id
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+			return;
    		long office_id = user.getLong("office_id");
 
         String newDateStr = "";
@@ -602,6 +609,9 @@ public class BookingOrderController extends Controller {
     public void edit() {
     	String id = getPara("id");
     	UserLogin user1 = LoginUserController.getLoginUser(this);
+    	if(user1 == null)
+			return;
+    	
         long office_id=user1.getLong("office_id");
         //判断与登陆用户的office_id是否一致
         if(office_id !=1 && !OrderCheckOfficeUtil.checkOfficeEqual("booking_order", Long.valueOf(id), office_id)){
@@ -819,6 +829,8 @@ public class BookingOrderController extends Controller {
 
     public void list() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+			return;
         long office_id=user.getLong("office_id");
         
     	String type=getPara("type");
@@ -918,8 +930,8 @@ public class BookingOrderController extends Controller {
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords", list != null?list.size():0);
+        map.put("iTotalDisplayRecords", list != null?list.size():0);
         map.put("aaData", list);
         renderJson(map); 
     }
@@ -933,6 +945,8 @@ public class BookingOrderController extends Controller {
             
         Party order = new Party();
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+			return;
    		
    		if (true)  {
    			//create 
@@ -1007,6 +1021,8 @@ public class BookingOrderController extends Controller {
         //获取office_id
     	String id = getPara("id");
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+			return;
    		long office_id = user.getLong("office_id");
    		if(office_id!=1&&office_id!=2){
    			Db.update("update book_order_custom_doc set new_flag ='N' where id = ?",id);
@@ -1137,6 +1153,8 @@ public class BookingOrderController extends Controller {
     	BookingOrder booking = BookingOrder.dao.findById(booking_id);
     	String entrust_type = booking.getStr("entrust_type");
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+			return;
     	Long customer_office_id = user.getLong("office_id");
 
     	//booking主表信息
@@ -1388,11 +1406,13 @@ public class BookingOrderController extends Controller {
 		                JobOrderLandItem take_land  = JobOrderLandItem.dao.findFirst("select * from job_order_land_item where order_id = ? ",to_order_id);
 		                if(take_land==null){
 		                	take_land  = new JobOrderLandItem();
-		                	if(reLand.get("take_eta")!=null){
-		                		take_land.set("order_id", to_order_id);
-		                		take_land.set("eta", reLand.get("take_eta"));
-		                		take_land.set("truck_type", truck_type);
-		                	}	                	
+		                	if(reLand != null){
+		                		if(reLand.get("take_eta")!=null){
+			                		take_land.set("order_id", to_order_id);
+			                		take_land.set("eta", reLand.get("take_eta"));
+			                		take_land.set("truck_type", truck_type);
+			                	}	  
+		                	}
 		                	take_land.save();
 		                }
 	                }
@@ -1417,7 +1437,11 @@ public class BookingOrderController extends Controller {
     	
     	Party air_agent = Party.dao.findById(booking.getLong("air_party_id"));
  		if(ocean_agent!=null||air_agent!=null){
- 			Office ocean_agent_office = Office.dao.findById(ocean_agent.getLong("ref_office_id"));
+ 			Office ocean_agent_office = null;
+ 			if(ocean_agent.getLong("ref_office_id") != null){
+ 				ocean_agent_office = Office.dao.findById(ocean_agent.getLong("ref_office_id"));
+ 			}
+ 					
  			Office air_agent_office = Office.dao.findById(air_agent.getLong("ref_office_id")); 
  		//entrust_office信息
      	Long ocean_officeNo = null;//生成单号要用到的office_id

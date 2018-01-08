@@ -1575,8 +1575,8 @@ public class BookOrderController extends Controller {
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords", list != null?list.size():0);
+        map.put("iTotalDisplayRecords", list != null?list.size():0);
         map.put("aaData", list);
         renderJson(map); 
     }
@@ -1798,18 +1798,20 @@ public class BookOrderController extends Controller {
     	
         List<Map<String, String>> land_charge_item = (ArrayList<Map<String, String>>)dto.get("land_charge_item");
         Model<?> model = (Model<?>) BookOrderArap.class.newInstance();
-        for(int i=0;i<land_charge_item.size();i++){
-        	Map<String, String> map=land_charge_item.get(i);
-        	
-        	DbUtils.setModelValues(map,model);
-        	model.set("land_item_id", land_item_id);
-        	model.set("order_id", order_id);
-        	if("UPDATE".equals(map.get("action"))){
-        		model.update();
-        	}else if("DELETE".equals(map.get("action"))){
-        		model.delete();
-        	}else{
-        		model.save();
+        if(land_charge_item != null){
+        	for(int i=0;i<land_charge_item.size();i++){
+        		Map<String, String> map=land_charge_item.get(i);
+        		
+        		DbUtils.setModelValues(map,model);
+        		model.set("land_item_id", land_item_id);
+        		model.set("order_id", order_id);
+        		if("UPDATE".equals(map.get("action"))){
+        			model.update();
+        		}else if("DELETE".equals(map.get("action"))){
+        			model.delete();
+        		}else{
+        			model.save();
+        		}
         	}
         }
       //保存陆运费用模版

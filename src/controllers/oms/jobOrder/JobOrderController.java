@@ -82,6 +82,8 @@ public class JobOrderController extends Controller {
 		setAttr("type",type);
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user == null)
+			return;
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/jobOrder");
         setAttr("listConfigList", configList);
@@ -301,6 +303,8 @@ public class JobOrderController extends Controller {
         
         //获取office_id
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+			return;
    		long office_id = user.getLong("office_id");
    		
    		String export_date = (String)dto.get("order_export_date");
@@ -324,7 +328,7 @@ public class JobOrderController extends Controller {
    			//update
    			jobOrder = JobOrder.dao.findById(id);
    			//版本(时间戳)校验，不对的话就不让更新保存
-   			Timestamp page_update_stamp = Timestamp.valueOf(dto.get("update_stamp").toString());
+   			Timestamp page_update_stamp = Timestamp.valueOf((String)dto.get("update_stamp"));
    			Timestamp order_update_stamp = jobOrder.getTimestamp("update_stamp");
    			if(!order_update_stamp.equals(page_update_stamp)){
    			    Record rec = new Record();
@@ -343,6 +347,9 @@ public class JobOrderController extends Controller {
    			String oldOrderNo=jobOrder.get("order_no");
    			String oldOrderNoDate = oldOrderNo.substring(3, 7);
    			logger.debug("工作单号 旧日期："+oldOrderNoDate);
+   			if(type==null){
+   				type = "";
+   			}
    			if(( 
    			             StrKit.notBlank(oldDateStr) && 
    			             !newDateStr.equals(oldDateStr) && 
@@ -371,6 +378,9 @@ public class JobOrderController extends Controller {
    			//create 
    			DbUtils.setModelValues(dto, jobOrder);
 //   			String newOrder_on ="EKYZH"+generateJobPrefix(type);
+   			if(type == null){
+   				type = "";
+   			}
    			if(office_id==1){
    			//需后台处理的字段
    	   			String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
@@ -435,7 +445,7 @@ public class JobOrderController extends Controller {
    			}
    			
    		}
-   		long customerId = Long.valueOf(dto.get("customer_id").toString());
+   		long customerId = Long.valueOf(dto!=null?(String)dto.get("customer_id"):"");
    		
 		//海运
 		List<Map<String, String>> shipment_detail = (ArrayList<Map<String, String>>)dto.get("shipment_detail");
@@ -753,31 +763,36 @@ public class JobOrderController extends Controller {
    		}
    		
    		//海 陆 空运带出合同费用信息(供应商)
-   		if(supplier_contract_type.indexOf("ocean")>-1){
-   			if(type.indexOf("柜货")>-1){
-   	   			saveJobOceanGHSpContractConditions(jobOrder);
-   	   		}else if(type.indexOf("散货")>-1){
-   	   			saveJobOceanSHSpContractConditions(jobOrder);
+   		if(supplier_contract_type != null){
+   			if(supplier_contract_type.indexOf("ocean")>-1){
+   	   			if(type.indexOf("柜货")>-1){
+   	   	   			saveJobOceanGHSpContractConditions(jobOrder);
+   	   	   		}else if(type.indexOf("散货")>-1){
+   	   	   			saveJobOceanSHSpContractConditions(jobOrder);
+   	   	   		}
+   	   		}
+   	   		if(supplier_contract_type.indexOf("air")>-1){
+   	   			saveJobAirSpContractConditions(jobOrder);
+   	   		}
+   	   		if(supplier_contract_type.indexOf("land")>-1){
+   	   			saveJobLandSpContractConditions(jobOrder);
    	   		}
    		}
-   		if(supplier_contract_type.indexOf("air")>-1){
-   			saveJobAirSpContractConditions(jobOrder);
-   		}
-   		if(supplier_contract_type.indexOf("land")>-1){
-   			saveJobLandSpContractConditions(jobOrder);
-   		}
+   		
    		
    		//海 陆 空运带出合同费用信息(客户)
-   		if(customer_contract_type.indexOf("ocean")>-1){
-   			saveJobOceanCustomerContractConditions(jobOrder);
+   		if(customer_contract_type != null){
+   			if(customer_contract_type.indexOf("ocean")>-1){
+   	   			saveJobOceanCustomerContractConditions(jobOrder);
+   	   		}
+   	   		if(customer_contract_type.indexOf("air")>-1){
+   	   			saveJobAirCustomerContractConditions(jobOrder);
+   	   		}
+   	   		if(customer_contract_type.indexOf("land")>-1){
+   	   			saveJobLandCustomerContractConditions(jobOrder);
+   	   		}
    		}
-   		if(customer_contract_type.indexOf("air")>-1){
-   			saveJobAirCustomerContractConditions(jobOrder);
-   		}
-   		if(customer_contract_type.indexOf("land")>-1){
-   			saveJobLandCustomerContractConditions(jobOrder);
-   		}
-
+   		
 /*   		//空运带出合同费用信息(供应商)
    		saveJobAirSpContractConditions(jobOrder);
    		//陆运带出合同费用信息(供应商)
@@ -904,6 +919,8 @@ public class JobOrderController extends Controller {
      */
     private void getOceanCustomerContractMsg(String order_id,String jsonStr,List<Record> jArray,String order_export_date){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+			return;
         long office_id=user.getLong("office_id");
         
         Gson gson = new Gson();
@@ -1117,6 +1134,8 @@ public class JobOrderController extends Controller {
      */
     private void getOceanGHSpContractMsg(String order_id,String jsonStr,List<Record> jArray,String sailing_date){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+			return;
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
@@ -1313,6 +1332,8 @@ public class JobOrderController extends Controller {
      */
     private void getOceanSHSpContractMsg(String order_id,String jsonStr,String sailing_date){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+			return;
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
@@ -1521,6 +1542,8 @@ public class JobOrderController extends Controller {
      */
     private void getAirSpContractMsg(String order_id,String jsonStr){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+			return;
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
@@ -1721,6 +1744,8 @@ public class JobOrderController extends Controller {
      */
     private void getAirCustomerContractMsg(String order_id,String jsonStr){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+			return;
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
@@ -1923,6 +1948,8 @@ public class JobOrderController extends Controller {
      */
     private void getLandSpContractMsg(String order_id,String jsonStr,List<Record> jArray){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+			return;
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
@@ -2128,6 +2155,8 @@ public class JobOrderController extends Controller {
      */
     private void getLandCustomerContractMsg(String order_id,String jsonStr,List<Record> jArray){
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+			return;
         long office_id=user.getLong("office_id");
         Gson gson = new Gson();
         Record dto= gson.fromJson(jsonStr, Record.class);   
@@ -2995,6 +3024,8 @@ public class JobOrderController extends Controller {
             
 //            FileUploadUtil.uploadFile(fileList, order_id, userId, "job_order_custom_doc", false);
             UserLogin userLogin=LoginUserController.getLoginUser(this);
+            if(userLogin == null)
+    			return;
 			String reString="select * from office where id="+userLogin.getOfficeId();
 			Record record=Db.findFirst(reString);
             FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,record.get("type").toString(),bill_type);
@@ -3025,6 +3056,8 @@ public class JobOrderController extends Controller {
             
 //            FileUploadUtil.uploadFile(fileList, order_id, userId, "job_order_custom_doc", false);
             UserLogin userLogin=LoginUserController.getLoginUser(this);
+            if(userLogin == null)
+    			return;
 			String reString="select * from office where id="+userLogin.getOfficeId();
 			Record record=Db.findFirst(reString);
             FileUploadUtil.uploadTypeFile(fileList, order_id, userId, "job_order_custom_doc", false,record.get("type").toString(),bill_type);
@@ -3207,6 +3240,8 @@ public class JobOrderController extends Controller {
      	String itemSql = "";
     	List<Record> itemList = null;	
     	Office office=LoginUserController.getLoginUserOffice(this);
+    	if(office == null)
+    		return null;
     	if("shipment".equals(type)){
     		itemSql = "select jos.*,CONCAT(u.name,u.name_eng) unit_name from job_order_shipment_item jos"
     				+ " left join unit u on u.id=jos.unit_id"
@@ -3392,6 +3427,8 @@ public class JobOrderController extends Controller {
     	TransJobOrder tjo = TransJobOrder.dao.findFirst("select*from trans_job_order where from_order_id="+id);
     	setAttr("tjo", tjo);
     	UserLogin user1 = LoginUserController.getLoginUser(this);
+    	if(user1 == null)
+			return;
         long office_id=user1.getLong("office_id");
         
         //判断工作单与登陆用户的office_id是否一致
@@ -3728,6 +3765,8 @@ public class JobOrderController extends Controller {
      
     public void list() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user == null)
+			return;
         long office_id=user.getLong("office_id");
         
     	String type = getPara("type_");
@@ -3929,8 +3968,8 @@ public class JobOrderController extends Controller {
     	
     	Map<String, Object> map = new HashMap<String, Object>();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords",list!=null? list.size():0);
+        map.put("iTotalDisplayRecords", list!=null? list.size():0);
         map.put("aaData", list);
         renderJson(map); 
     }
@@ -3970,6 +4009,8 @@ public class JobOrderController extends Controller {
             
         Party order = new Party();
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+			return;
    		
    		if (true)  {
    			//create 
@@ -3996,7 +4037,10 @@ public class JobOrderController extends Controller {
     	String id = getPara("id"); 
     	String[] idArray = id.split(",");
     	String action = getPara("action");
-    	long user_id = LoginUserController.getLoginUser(this).getLong("id");
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user != null)
+    		return;
+    	long user_id = user.getLong("id");
     	String order_type = "jobOrderLock";
     	Date action_time = new Date();
     	if(action=="lock"||action.equals("lock")){
@@ -4140,6 +4184,8 @@ public class JobOrderController extends Controller {
     	String check = getPara("check");
     	String order_id = getPara("order_id");
     	Office office=LoginUserController.getLoginUserOffice(this);
+    	if(office == null)
+    		return;
     	if(StringUtils.isEmpty(item_id)){//全选
     		Db.update("update job_order_custom_doc set share_flag =? where order_id = ? and order_type = '"+office.get("type")+"' ",check,order_id);
     	}else{//单选
@@ -4185,20 +4231,23 @@ public class JobOrderController extends Controller {
     	
         List<Map<String, String>> land_charge_item = (ArrayList<Map<String, String>>)dto.get("land_charge_item");
         Model<?> model = JobOrderArap.class.newInstance();
-        for(int i=0;i<land_charge_item.size();i++){
-        	Map<String, String> map=land_charge_item.get(i);
-        	
-        	DbUtils.setModelValues(map,model);
-        	model.set("land_item_id", land_item_id);
-        	model.set("order_id", order_id);
-        	if("UPDATE".equals(map.get("action"))){
-        		model.update();
-        	}else if("DELETE".equals(map.get("action"))){
-        		model.delete();
-        	}else{
-        		model.save();
-        	}
+        if(land_charge_item != null){
+        	for(int i=0;i<land_charge_item.size();i++){
+            	Map<String, String> map=land_charge_item.get(i);
+            	
+            	DbUtils.setModelValues(map,model);
+            	model.set("land_item_id", land_item_id);
+            	model.set("order_id", order_id);
+            	if("UPDATE".equals(map.get("action"))){
+            		model.update();
+            	}else if("DELETE".equals(map.get("action"))){
+            		model.delete();
+            	}else{
+            		model.save();
+            	}
+            }
         }
+        
         renderJson("{\"result\":true}");
     }
     
@@ -4208,6 +4257,8 @@ public class JobOrderController extends Controller {
         //获取office_id
     	String id = getPara("id");
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user == null)
+			return;
    		long office_id = user.getLong("office_id");
    		if(office_id!=1&&office_id!=2){
    			Db.update("update job_order_custom_doc set new_flag ='N' where id = ?",id);
@@ -4221,6 +4272,8 @@ public class JobOrderController extends Controller {
     	String input = getPara("input");
     	List<Record> recs = null;
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+			return;
    		long office_id = user.getLong("office_id");
     	String sql = "select * from trade_item where 1=1 and office_id = "+office_id;
     	if(StringUtils.isNotEmpty(input)){
@@ -4342,6 +4395,8 @@ public class JobOrderController extends Controller {
     	Gson gson =new Gson();
     	Map<String,?> dto = gson.fromJson(subAgentCondition, HashMap.class);
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+			return;
     	long office_id = user.getLong("office_id");
     	
     	String order_id = (String)dto.get("order_id");
@@ -4547,6 +4602,8 @@ public class JobOrderController extends Controller {
     
     public void landSubmit() throws Exception {
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user == null)
+			return;
    		long office_id = user.getLong("office_id");
     	String jsonStr=getPara("params");
        	Gson gson = new Gson();  

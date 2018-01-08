@@ -38,7 +38,10 @@ public class JobOrderControllerForMobile extends Controller {
 
             String decodedAuth = getFromBASE64(auth);
             System.out.println("auth decoded from base64 is " + decodedAuth);
-            String[] authArr = decodedAuth.split(":");
+            String[] authArr = null;
+            if(decodedAuth != null){
+            	authArr = decodedAuth.split(":");
+            }
             String sha1Pwd = MD5Util.encode("SHA1", authArr[1]);
             Record rec = Db.findFirst(
                     "select * from user_login where user_name=? and password=?",
