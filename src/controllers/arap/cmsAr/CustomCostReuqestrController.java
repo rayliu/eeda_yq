@@ -418,24 +418,27 @@ public class CustomCostReuqestrController extends Controller {
 		String itemId="";
    		CustomCostApplicationOrderRel caor = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-		for(Map<String, String> item :itemList){
-			String action = item.get("action");
-				   itemId = item.get("id");
-			if("CREATE".equals(action)){
-				caor = new CustomCostApplicationOrderRel();
-				caor.set("application_order_id", id);
-				caor.set("job_order_arap_id", itemId);
-				Record aci = Db.findFirst("select * from custom_arap_cost_item where ref_order_id=?",itemId);
-				Long cost_order_id=aci.getLong("custom_cost_order_id");
-				caor.set("cost_order_id", cost_order_id);
-				caor.set("order_type", "应付对账单");
-				caor.save();
-				
-				CustomArapCostOrder arapCostOrder = CustomArapCostOrder.dao.findById(cost_order_id);
-				arapCostOrder.set("audit_status", "付款申请中").update();
-		            
-		          }
-			}
+   		if(itemList != null){
+   			for(Map<String, String> item :itemList){
+   				String action = item.get("action");
+   					   itemId = item.get("id");
+   				if("CREATE".equals(action)){
+   					caor = new CustomCostApplicationOrderRel();
+   					caor.set("application_order_id", id);
+   					caor.set("job_order_arap_id", itemId);
+   					Record aci = Db.findFirst("select * from custom_arap_cost_item where ref_order_id=?",itemId);
+   					Long cost_order_id=aci.getLong("custom_cost_order_id");
+   					caor.set("cost_order_id", cost_order_id);
+   					caor.set("order_type", "应付对账单");
+   					caor.save();
+   					
+   					CustomArapCostOrder arapCostOrder = CustomArapCostOrder.dao.findById(cost_order_id);
+   					arapCostOrder.set("audit_status", "付款申请中").update();
+   			            
+   			          }
+   				}
+   		}
+		
 			//selected_item_ids,改变创建标记位
 //			if("".equals(selected_item_ids)){
 //				String textError="您创建的申请单中选中没有明细";
@@ -593,15 +596,18 @@ public class CustomCostReuqestrController extends Controller {
     	   res = Db.find(str);
     	   re1.set("ids",ids);
         }
-  		for (Record re : res) {
-  			Long id = re.getLong("cost_order_id");
-  			String order_type = re.getStr("order_type");
+        if(res != null){
+        	for (Record re : res) {
+      			Long id = re.getLong("cost_order_id");
+      			String order_type = re.getStr("order_type");
 
-  			if("应付对账单".equals(order_type)){
-			    CustomArapCostOrder arapCostOrder = CustomArapCostOrder.dao.findById(id);
-				arapCostOrder.set("audit_status", "已复核").update();
-			}
-  		}
+      			if("应付对账单".equals(order_type)){
+    			    CustomArapCostOrder arapCostOrder = CustomArapCostOrder.dao.findById(id);
+    				arapCostOrder.set("audit_status", "已复核").update();
+    			}
+      		}
+        }
+  		
   		renderJson(re1);
     }
   	
@@ -620,105 +626,107 @@ public class CustomCostReuqestrController extends Controller {
         String ids="";
         
         List<Map<String, ?>> costList = (ArrayList<Map<String, ?>>)dto.get("costList"); 
-        
-        for(int i=0;i<costList.size();i++){
-        	Map<String, ?> map=(Map<String, ?>) costList.get(i);
-        	String id=(String) map.get("id");
-        	ids=id+","+ids;
-        	String receive_time=(String) map.get("receive_time");
-        	String receive_bank_id = "";
-        	String payment_method=(String) map.get("payment_method");
-        	
-        	if(map.get("receive_bank_id")!=null){
-      			 receive_bank_id = (String) map.get("receive_bank_id");
-      		}else{
-      			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
-      	        Record rec = Db.findFirst(str2);
-      	        if(rec!=null){
-      	        	receive_bank_id = rec.getLong("id").toString();
-      	        }
-      		}
-        	CustomArapCostApplicationOrder arapCostInvoiceApplication = CustomArapCostApplicationOrder.dao.findById(id);
-	          arapCostInvoiceApplication.set("status", "已付款");
-	          arapCostInvoiceApplication.set("receive_time", receive_time);
-	          arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
-	          arapCostInvoiceApplication.set("confirm_stamp", new Date());
-	          arapCostInvoiceApplication.update();
-        	//已付款的标记位
-      		String paySql ="update custom_plan_order_arap set pay_flag='Y' "
-      				+ " where id in (SELECT job_order_arap_id FROM custom_cost_application_order_rel WHERE application_order_id ="+id+")" ; 
-             Db.update(paySql);
-              //更改原始单据状态
-            List<Record> res = Db.find("select * from custom_cost_application_order_rel where application_order_id = ?",id);
-    		for (Record re : res) {
-    			Long cost_order_id = re.getLong("cost_order_id");
-    			String order_type = re.getStr("order_type");
+        if(costList != null){
+        	for(int i=0;i<costList.size();i++){
+            	Map<String, ?> map=(Map<String, ?>) costList.get(i);
+            	String id=(String) map.get("id");
+            	ids=id+","+ids;
+            	String receive_time=(String) map.get("receive_time");
+            	String receive_bank_id = "";
+            	String payment_method=(String) map.get("payment_method");
+            	
+            	if(map.get("receive_bank_id")!=null){
+          			 receive_bank_id = (String) map.get("receive_bank_id");
+          		}else{
+          			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
+          	        Record rec = Db.findFirst(str2);
+          	        if(rec!=null){
+          	        	receive_bank_id = rec.getLong("id").toString();
+          	        }
+          		}
+            	CustomArapCostApplicationOrder arapCostInvoiceApplication = CustomArapCostApplicationOrder.dao.findById(id);
+    	          arapCostInvoiceApplication.set("status", "已付款");
+    	          arapCostInvoiceApplication.set("receive_time", receive_time);
+    	          arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
+    	          arapCostInvoiceApplication.set("confirm_stamp", new Date());
+    	          arapCostInvoiceApplication.update();
+            	//已付款的标记位
+          		String paySql ="update custom_plan_order_arap set pay_flag='Y' "
+          				+ " where id in (SELECT job_order_arap_id FROM custom_cost_application_order_rel WHERE application_order_id ="+id+")" ; 
+                 Db.update(paySql);
+                  //更改原始单据状态
+                List<Record> res = Db.find("select * from custom_cost_application_order_rel where application_order_id = ?",id);
+        		for (Record re : res) {
+        			Long cost_order_id = re.getLong("cost_order_id");
+        			String order_type = re.getStr("order_type");
 
-    			if(order_type.equals("应付对账单")){
-  				CustomArapCostOrder arapCostOrder = CustomArapCostOrder.dao.findById(cost_order_id);
-                  Double usd = arapCostOrder.getDouble("usd");
-                  Double cny = arapCostOrder.getDouble("cny");
-                  Double hkd = arapCostOrder.getDouble("hkd");
-                  Double jpy = arapCostOrder.getDouble("jpy");
-                  if(usd==null)usd=0.0;
-     			 if(cny==null)cny=0.0;
-     			 if(hkd==null)hkd=0.0;
-     			 if(jpy==null)jpy=0.0;
-     			 
-                  String sql = "SELECT "
-                  		+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_cost_item aci on joa.id = aci.ref_order_id"
-          				+" where joa.create_flag = 'Y' AND joa.currency_id =3 and aci.custom_cost_order_id="+cost_order_id
-          				+" ),0) paid_cny,"
-          				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_cost_item aci on joa.id = aci.ref_order_id"
-          				+" where joa.create_flag = 'Y' AND joa.currency_id =6 and aci.custom_cost_order_id="+cost_order_id
-          				+" ),0) paid_usd,"
-          				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_cost_item aci on joa.id = aci.ref_order_id"
-          				+" where joa.create_flag = 'Y' AND joa.currency_id =8 and aci.custom_cost_order_id="+cost_order_id
-          				+" ),0) paid_jpy,"
-          				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_cost_item aci on joa.id = aci.ref_order_id"
-          				+" where joa.create_flag = 'Y' AND joa.currency_id =9 and aci.custom_cost_order_id="+cost_order_id
-          				+" ),0) paid_hkd ";
-                     
-                     Record r = Db.findFirst(sql);
-                     Double paid_cny = r.getDouble("paid_cny");//greate_flay=Y的arap item 汇总金额
-                     Double paid_usd = r.getDouble("paid_usd");
-                     Double paid_jpy = r.getDouble("paid_jpy");
-                     Double paid_hkd = r.getDouble("paid_hkd");
-                     
-  				if(cny>paid_cny||usd>paid_usd||jpy>paid_jpy||hkd>paid_hkd){
-  					arapCostOrder.set("audit_status", "部分已付款").update();
-  				}else{
-  					arapCostOrder.set("audit_status", "已付款").update();
-  				}
-  			}
-    		}
-            //新建日记账表数据
-      		String cny_pay_amount ="0.0"; 
-      		if(arapCostInvoiceApplication.getDouble("modal_cny")!=null)
-      			cny_pay_amount=arapCostInvoiceApplication.getDouble("modal_cny").toString();
-      		if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
-      			createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
-      		}
-            String usd_pay_amount = "0.0"; 
-            if(arapCostInvoiceApplication.getDouble("modal_usd")!=null)
-            	usd_pay_amount =arapCostInvoiceApplication.getDouble("modal_usd").toString();
-            if(!"0.0".equals(usd_pay_amount)&&StringUtils.isNotEmpty(usd_pay_amount)){
-            	createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
-            }
-            
-            String jpy_pay_amount = "0.0";
-            if(arapCostInvoiceApplication.getDouble("modal_jpy")!=null)
-            	jpy_pay_amount =arapCostInvoiceApplication.getDouble("modal_jpy").toString();
-            if(!"0.0".equals(jpy_pay_amount)&&StringUtils.isNotEmpty(jpy_pay_amount)){
-            	createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
-            }
-            String hkd_pay_amount = "0.0";
-            if(arapCostInvoiceApplication.getDouble("modal_hkd")!=null)
-            	hkd_pay_amount =arapCostInvoiceApplication.getDouble("modal_hkd").toString();
-            if(!"0.0".equals(hkd_pay_amount)&&StringUtils.isNotEmpty(hkd_pay_amount)){
-            	createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
+        			if(order_type.equals("应付对账单")){
+      				CustomArapCostOrder arapCostOrder = CustomArapCostOrder.dao.findById(cost_order_id);
+                      Double usd = arapCostOrder.getDouble("usd");
+                      Double cny = arapCostOrder.getDouble("cny");
+                      Double hkd = arapCostOrder.getDouble("hkd");
+                      Double jpy = arapCostOrder.getDouble("jpy");
+                      if(usd==null)usd=0.0;
+         			 if(cny==null)cny=0.0;
+         			 if(hkd==null)hkd=0.0;
+         			 if(jpy==null)jpy=0.0;
+         			 
+                      String sql = "SELECT "
+                      		+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_cost_item aci on joa.id = aci.ref_order_id"
+              				+" where joa.create_flag = 'Y' AND joa.currency_id =3 and aci.custom_cost_order_id="+cost_order_id
+              				+" ),0) paid_cny,"
+              				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_cost_item aci on joa.id = aci.ref_order_id"
+              				+" where joa.create_flag = 'Y' AND joa.currency_id =6 and aci.custom_cost_order_id="+cost_order_id
+              				+" ),0) paid_usd,"
+              				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_cost_item aci on joa.id = aci.ref_order_id"
+              				+" where joa.create_flag = 'Y' AND joa.currency_id =8 and aci.custom_cost_order_id="+cost_order_id
+              				+" ),0) paid_jpy,"
+              				+" IFNULL((SELECT SUM(joa.total_amount) from  custom_plan_order_arap joa LEFT JOIN custom_arap_cost_item aci on joa.id = aci.ref_order_id"
+              				+" where joa.create_flag = 'Y' AND joa.currency_id =9 and aci.custom_cost_order_id="+cost_order_id
+              				+" ),0) paid_hkd ";
+                         
+                         Record r = Db.findFirst(sql);
+                         Double paid_cny = r.getDouble("paid_cny");//greate_flay=Y的arap item 汇总金额
+                         Double paid_usd = r.getDouble("paid_usd");
+                         Double paid_jpy = r.getDouble("paid_jpy");
+                         Double paid_hkd = r.getDouble("paid_hkd");
+                         
+      				if(cny>paid_cny||usd>paid_usd||jpy>paid_jpy||hkd>paid_hkd){
+      					arapCostOrder.set("audit_status", "部分已付款").update();
+      				}else{
+      					arapCostOrder.set("audit_status", "已付款").update();
+      				}
+      			}
+        		}
+                //新建日记账表数据
+          		String cny_pay_amount ="0.0"; 
+          		if(arapCostInvoiceApplication.getDouble("modal_cny")!=null)
+          			cny_pay_amount=arapCostInvoiceApplication.getDouble("modal_cny").toString();
+          		if(!"0.0".equals(cny_pay_amount)&&StringUtils.isNotEmpty(cny_pay_amount)){
+          			createAuditLog(id, payment_method, receive_bank_id, receive_time, cny_pay_amount, "CNY");
+          		}
+                String usd_pay_amount = "0.0"; 
+                if(arapCostInvoiceApplication.getDouble("modal_usd")!=null)
+                	usd_pay_amount =arapCostInvoiceApplication.getDouble("modal_usd").toString();
+                if(!"0.0".equals(usd_pay_amount)&&StringUtils.isNotEmpty(usd_pay_amount)){
+                	createAuditLog(id, payment_method, receive_bank_id, receive_time, usd_pay_amount, "USD");
+                }
+                
+                String jpy_pay_amount = "0.0";
+                if(arapCostInvoiceApplication.getDouble("modal_jpy")!=null)
+                	jpy_pay_amount =arapCostInvoiceApplication.getDouble("modal_jpy").toString();
+                if(!"0.0".equals(jpy_pay_amount)&&StringUtils.isNotEmpty(jpy_pay_amount)){
+                	createAuditLog(id, payment_method, receive_bank_id, receive_time, jpy_pay_amount, "JPY");
+                }
+                String hkd_pay_amount = "0.0";
+                if(arapCostInvoiceApplication.getDouble("modal_hkd")!=null)
+                	hkd_pay_amount =arapCostInvoiceApplication.getDouble("modal_hkd").toString();
+                if(!"0.0".equals(hkd_pay_amount)&&StringUtils.isNotEmpty(hkd_pay_amount)){
+                	createAuditLog(id, payment_method, receive_bank_id, receive_time, hkd_pay_amount, "HKD");
+                }
             }
         }
+        
         Record r = new Record();
 		r.set("confirm_name", LoginUserController.getLoginUserName(this));
 		r.set("status", "已付款");

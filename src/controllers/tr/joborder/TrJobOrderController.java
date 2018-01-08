@@ -268,7 +268,7 @@ public class TrJobOrderController extends Controller {
    		    action_type="update";
    			jobOrder = TradeJobOrder.dao.findById(id);
    			//版本(时间戳)校验，不对的话就不让更新保存
-   			Timestamp page_update_stamp = Timestamp.valueOf(dto.get("update_stamp").toString());
+   			Timestamp page_update_stamp = Timestamp.valueOf((String)dto.get("update_stamp"));
    			Timestamp order_update_stamp = jobOrder.getTimestamp("update_stamp");
    			if(!order_update_stamp.equals(page_update_stamp)){
    			    Record rec = new Record();
@@ -287,6 +287,9 @@ public class TrJobOrderController extends Controller {
    			String oldOrderNo=jobOrder.get("order_no");
    			String oldOrderNoDate = oldOrderNo.substring(3, 7);
    			logger.debug("工作单号 旧日期："+oldOrderNoDate);
+   			if(type == null){
+   				type = "";
+   			}
    			if(!type.equals(jobOrder.get("type")) || 
    			        ( 
    			             StrKit.notBlank(oldDateStr) && 
@@ -310,7 +313,9 @@ public class TrJobOrderController extends Controller {
    			//create 
    			DbUtils.setModelValues(dto, jobOrder);
 //   			String newOrder_on ="EKYZH"+generateJobPrefix(type);
-   			
+   			if(type == null){
+   				type = "";
+   			}
    			//需后台处理的字段
    			String order_no = OrderNoGenerator.getNextOrderNo("EKYZH", newDateStr, office_id);
    			StringBuilder sb = new StringBuilder(order_no);//构造一个StringBuilder对象
@@ -332,7 +337,7 @@ public class TrJobOrderController extends Controller {
                    planOrderItem.update();
    			}
    		}
-   		long customerId = Long.valueOf(dto.get("customer_id").toString());
+   		long customerId = Long.valueOf((String)dto.get("customer_id"));
    		saveCustomerQueryHistory(customerId);
 		
 		//费用明细，应收应付
@@ -1720,8 +1725,8 @@ public class TrJobOrderController extends Controller {
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords", list != null?list.size():0);
+        map.put("iTotalDisplayRecords", list != null?list.size():0);
         map.put("aaData", list);
         renderJson(map); 
     }
@@ -1965,20 +1970,23 @@ public class TrJobOrderController extends Controller {
     	
         List<Map<String, String>> land_charge_item = (ArrayList<Map<String, String>>)dto.get("land_charge_item");
         Model<?> model = (Model<?>) TradeJobOrderArap.class.newInstance();
-        for(int i=0;i<land_charge_item.size();i++){
-        	Map<String, String> map=land_charge_item.get(i);
-        	
-        	DbUtils.setModelValues(map,model);
-        	model.set("land_item_id", land_item_id);
-        	model.set("order_id", order_id);
-        	if("UPDATE".equals(map.get("action"))){
-        		model.update();
-        	}else if("DELETE".equals(map.get("action"))){
-        		model.delete();
-        	}else{
-        		model.save();
-        	}
+        if(land_charge_item != null){
+        	for(int i=0;i<land_charge_item.size();i++){
+            	Map<String, String> map=land_charge_item.get(i);
+            	
+            	DbUtils.setModelValues(map,model);
+            	model.set("land_item_id", land_item_id);
+            	model.set("order_id", order_id);
+            	if("UPDATE".equals(map.get("action"))){
+            		model.update();
+            	}else if("DELETE".equals(map.get("action"))){
+            		model.delete();
+            	}else{
+            		model.save();
+            	}
+            }
         }
+        
       //保存陆运费用模版
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
         String customer_id = (String)dto.get("customer_id");
@@ -2041,6 +2049,7 @@ public class TrJobOrderController extends Controller {
 			conn.setAutoCommit(false);// 自动提交变成false
 			
 			for (Map<String, String> line :lines) {
+				if(line != null){
 				String commodity_name = line.get("商品名称").trim();
 				String number = line.get("数量").trim();
 				String legal_unit = line.get("单位").trim();
@@ -2112,6 +2121,7 @@ public class TrJobOrderController extends Controller {
 	   			
 	   			Db.save("trade_job_order_trade_cost", order);
 				rowNumber++;
+				}
 			}
 			conn.commit();
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！");
