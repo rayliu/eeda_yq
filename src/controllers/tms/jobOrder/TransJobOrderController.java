@@ -234,6 +234,9 @@ public class TransJobOrderController extends Controller {
 		
         TransJobOrder transJobOrder = new TransJobOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		if (StringUtils.isNotEmpty(id)) {
    			//update
@@ -1016,6 +1019,9 @@ public class TransJobOrderController extends Controller {
      
     public void list() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         
     	String type=getPara("type");
@@ -1111,7 +1117,9 @@ public class TransJobOrderController extends Controller {
             
         Party order = new Party();
    		UserLogin user = LoginUserController.getLoginUser(this);
-   		
+   		if(user==null){
+        	return;
+        }
    		if (true)  {
    			//create 
    			DbUtils.setModelValues(dto, order);

@@ -51,6 +51,9 @@ public class TransChargeCheckOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/transChargeCheckOrder");
         setAttr("listConfigList", configList);	
@@ -67,6 +70,9 @@ public class TransChargeCheckOrderController extends Controller {
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		
    		if (StringUtils.isNotEmpty(id)) {
@@ -166,6 +172,9 @@ public class TransChargeCheckOrderController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){

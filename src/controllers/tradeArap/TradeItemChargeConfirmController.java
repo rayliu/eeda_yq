@@ -33,6 +33,9 @@ public class TradeItemChargeConfirmController extends Controller {
 	public void index() {
 
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/tradeItemChargeConfirmList");
         setAttr("listConfigList", configList);
@@ -47,6 +50,9 @@ public class TradeItemChargeConfirmController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
         String sColumn =  getPara("order[0][column]");
@@ -89,6 +95,9 @@ public class TradeItemChargeConfirmController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
         String sColumn =  getPara("order[0][column]");

@@ -42,6 +42,9 @@ public class TransProfitController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return 0;
+        }
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = " SELECT A.id,A.customer_id,A.abbr,sum(charge_cny) charge_cny,SUM(charge_usd) charge_usd,SUM(charge_jpy) charge_jpy,sum(charge_hkd) charge_hkd,SUM(cost_cny) cost_cny,SUM(cost_usd) cost_usd,"
@@ -84,6 +87,9 @@ public class TransProfitController extends Controller {
 		String charge_time_end_time =(String) getPara("charge_time_end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
 		
 		String customerid =" and customer_id="+customer_id;

@@ -48,6 +48,9 @@ public class TradeCostCheckOrderController extends Controller {
 	public void index() {
 
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/tradeCostCheckOrder");
         setAttr("listConfigList", configList);
@@ -308,6 +311,9 @@ public class TradeCostCheckOrderController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = "";
@@ -377,6 +383,9 @@ public class TradeCostCheckOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
@@ -413,6 +422,9 @@ public class TradeCostCheckOrderController extends Controller {
         
         TradeArapCostOrder aco = new TradeArapCostOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {

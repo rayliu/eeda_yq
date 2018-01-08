@@ -75,6 +75,9 @@ public class TrJobOrderController extends Controller {
 		setAttr("type",type);
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/trJobOrder");
         setAttr("listConfigList", configList);
@@ -243,6 +246,9 @@ public class TrJobOrderController extends Controller {
         
         //获取office_id
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		
    		String export_date = (String)dto.get("order_export_date");
@@ -1643,6 +1649,9 @@ public class TrJobOrderController extends Controller {
      
     public void list() {    	
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         
     	String type=getPara("type");
@@ -1752,7 +1761,9 @@ public class TrJobOrderController extends Controller {
             
         Party order = new Party();
    		UserLogin user = LoginUserController.getLoginUser(this);
-   		
+   		if(user==null){
+        	return;
+        }
    		if (true)  {
    			//create 
    			DbUtils.setModelValues(dto, order);
@@ -1986,6 +1997,9 @@ public class TrJobOrderController extends Controller {
         //获取office_id
     	String id = getPara("id");
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		if(office_id!=1&&office_id!=2){
    			Db.update("update custom_plan_order_doc set new_flag ='N' where id = ?",id);
@@ -1999,6 +2013,9 @@ public class TrJobOrderController extends Controller {
     	String input = getPara("input");
     	List<Record> recs = null;
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
     	String sql = "select * from trade_item where 1=1 and office_id = "+office_id;
     	if(StringUtils.isNotEmpty(input)){

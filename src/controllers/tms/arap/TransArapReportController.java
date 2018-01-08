@@ -32,6 +32,9 @@ public class TransArapReportController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
     	UserLogin user = LoginUserController.getLoginUser(this);
+    	if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/transArapReport");
 		setAttr("listConfigList", configList);
@@ -45,6 +48,9 @@ public class TransArapReportController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = "select * ,if(B.order_type='charge',(SELECT GROUP_CONCAT(aco.order_no SEPARATOR ',') from trans_arap_charge_order aco "

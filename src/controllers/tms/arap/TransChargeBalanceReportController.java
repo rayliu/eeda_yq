@@ -34,6 +34,9 @@ public class TransChargeBalanceReportController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/chargeBalanceReport");
         setAttr("listConfigList", configList);
@@ -47,6 +50,9 @@ public class TransChargeBalanceReportController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = " SELECT D.id,D.customer_id,D.abbr,D.sp_id,charge_cny,charge_usd,charge_jpy,charge_hkd,	"
@@ -111,6 +117,9 @@ public class TransChargeBalanceReportController extends Controller {
 		String charge_time_end_time =(String) getPara("charge_time_end_time");
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
 		
 		String sp_id =" and sp_id="+spid;

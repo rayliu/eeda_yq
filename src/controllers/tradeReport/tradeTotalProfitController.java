@@ -43,6 +43,9 @@ public class tradeTotalProfitController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return 0;
+        }
         long office_id=user.getLong("office_id");
         String conditions = "";
         
@@ -100,6 +103,9 @@ public class tradeTotalProfitController extends Controller {
 	
 	public void listTotal() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String ref_office = "";
         Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);

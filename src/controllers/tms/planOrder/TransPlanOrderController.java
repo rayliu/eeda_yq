@@ -63,6 +63,9 @@ public class TransPlanOrderController extends Controller {
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		if (StringUtils.isNotEmpty(id)) {
    			//update
@@ -138,6 +141,9 @@ public class TransPlanOrderController extends Controller {
     
     public void list() {
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         
     	String type=getPara("type");

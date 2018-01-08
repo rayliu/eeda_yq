@@ -43,6 +43,9 @@ public class TransCostConfirmController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String sql = "select * from( "
         		+ " select tjoa.*,tjo.id jobid,tjo.order_no,tjo.create_stamp,tjo.charge_time,tjo.customer_id,p.company_name customer,p1.company_name sp_name,f.name charge_name,u.name unit_name,"

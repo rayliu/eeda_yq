@@ -33,6 +33,9 @@ public class TransChargeConfirmController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {	
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/transChargeConfirm");
         setAttr("listConfigList", configList);	
@@ -47,6 +50,9 @@ public class TransChargeConfirmController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String auditFlag =getPara("auditFlag");
         if("N".equals(auditFlag)){

@@ -53,6 +53,9 @@ public class TransCostCheckOrderController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/transCostCheckOrder");
         setAttr("listConfigList", configList);	
@@ -339,6 +342,9 @@ public class TransCostCheckOrderController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = "";
@@ -470,6 +476,9 @@ public class TransCostCheckOrderController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
@@ -511,6 +520,9 @@ public class TransCostCheckOrderController extends Controller {
         
         TransArapCostOrder aco = new TransArapCostOrder();
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		DateFormat dateTimeformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
    		if (StringUtils.isNotEmpty(id)) {

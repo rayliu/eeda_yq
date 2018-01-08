@@ -33,6 +33,9 @@ public class TradeAccountAgingController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/tradeAccountAging");
 		 setAttr("listConfigList", configList);
@@ -48,6 +51,9 @@ public class TradeAccountAgingController extends Controller {
         String sp_id = getPara("sp_id");
         String type = getPara("type")==null?"new":getPara("type").trim();
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String condition = "";
         if(StringUtils.isNotEmpty(sp_id)){

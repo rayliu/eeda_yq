@@ -56,6 +56,9 @@ public class outputScaleController extends Controller {
         	car_no= " AND car.car_no ='"+getPara("car_no_other")+"'";
         }
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return null;
+        }
         long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = "select * from( "

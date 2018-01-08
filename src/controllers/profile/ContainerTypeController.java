@@ -69,7 +69,7 @@ public class ContainerTypeController extends Controller {
     public void list() {
         String sLimit = "";
         UserLogin user1 = LoginUserController.getLoginUser(this);
-        if(user==null){
+        if(user1==null){
         	return;
         }
         long office_id=user1.getLong("office_id");

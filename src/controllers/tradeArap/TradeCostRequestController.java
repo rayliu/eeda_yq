@@ -57,6 +57,9 @@ public class TradeCostRequestController extends Controller {
     	String back =getPara("back");
     	setAttr("back",back);
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/tradeCostRequest");
         setAttr("listConfigList", configList);
@@ -76,6 +79,9 @@ public class TradeCostRequestController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String sql = " select * from ("
         		+ " select  aco.*, p.abbr sp_name, "
@@ -115,6 +121,9 @@ public class TradeCostRequestController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String sql = " select * from ("
         				+"select  aco.*, p.abbr sp_name, "
@@ -434,6 +443,9 @@ public class TradeCostRequestController extends Controller {
 		String sp_name=(String) dto.get("sp_name");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id=user.getLong("office_id");
    		
    		String action_type="add";
@@ -1049,6 +1061,9 @@ public class TradeCostRequestController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){

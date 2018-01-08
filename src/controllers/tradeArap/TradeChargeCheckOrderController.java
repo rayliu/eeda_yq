@@ -50,6 +50,9 @@ public class TradeChargeCheckOrderController extends Controller {
 	public void index() {
 
 		UserLogin user = LoginUserController.getLoginUser(this);
+		if(user==null){
+        	return;
+        }
         long user_id = user.getLong("id");
 		List<Record> configList = ListConfigController.getConfig(user_id, "/tradeChargeCheckOrder");
         setAttr("listConfigList", configList);
@@ -67,6 +70,9 @@ public class TradeChargeCheckOrderController extends Controller {
    		String id = (String) dto.get("id");
    		
    		UserLogin user = LoginUserController.getLoginUser(this);
+   		if(user==null){
+        	return;
+        }
    		long office_id = user.getLong("office_id");
    		String action_type="add";
    		if (StringUtils.isNotEmpty(id)) {
@@ -170,6 +176,9 @@ public class TradeChargeCheckOrderController extends Controller {
         }
         
         UserLogin user = LoginUserController.getLoginUser(this);
+        if(user==null){
+        	return;
+        }
         long office_id=user.getLong("office_id");
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
