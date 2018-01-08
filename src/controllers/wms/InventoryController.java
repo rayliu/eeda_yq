@@ -422,7 +422,10 @@ public class InventoryController extends Controller {
     	
     	
 		sql = "select A.*,sum(A.quantity) total_quantity from ("
-		    + " select gi.part_no,pro.part_name,gi.quantity "
+		    + " select gi.part_no,"
+		    + " substring_index(pro.part_name, ';', 1) part_name,"
+		    + " substring(pro.part_name,CHAR_LENGTH(substring_index(pro.part_name, ';', 1))+2,100) desc_value,"
+		    + " gi.quantity "
 			+ " from gate_in gi "
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
@@ -437,8 +440,8 @@ public class InventoryController extends Controller {
 			+ " ) A group by A.part_no "; 
     	
         String exportSql = sql;
-        String[] headers = new String[]{"part_no", "part_name","total_quantity","A&P"};
-        String[] fields = new String[]{"part_no", "part_name", "total_quantity",""};
+        String[] headers = new String[]{"part_no", "part_name","desc_value","total_quantity","A&P"};
+        String[] fields = new String[]{"part_no", "part_name","desc_value", "total_quantity",""};
         String fileName = generateExcel(headers, fields, exportSql,excelName);
         renderText(fileName);
     }

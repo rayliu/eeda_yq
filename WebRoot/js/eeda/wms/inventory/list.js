@@ -146,11 +146,19 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         };
         
         $('#downloadBtn').click(function(e){
+        	var self = this;
+        	self.diabled = true;
+        	var text_value = $(self).text();
+        	$(self).text("导出中...");
+        	
 	        var item_no = $('#itemNoHidden').val();
 	        var url = "/inventory/downloadList?item_no="+item_no;
 	        $.post(url, function(data){
-	            if(data)
-	                window.open(data);
+	            if(data){
+	            	window.open(data);
+	            }
+	            self.diabled = true;
+	            $(self).text(text_value);
 	        });
 	    });
         
