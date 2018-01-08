@@ -66,7 +66,7 @@ public class TransOrderShortCutController extends Controller {
 		TransJobOrderController tjc=new TransJobOrderController();
    		UserLogin user = LoginUserController.getLoginUser(this);
    		long office_id = user.getLong("office_id");
-   		for(int i=0;i<itemList.size();i++){
+   		for(int i=0;i<(itemList != null?itemList.size():0);i++){
    			TransJobOrder transJobOrder=new TransJobOrder();
 //   			//create 
 //			DbUtils.setModelValues(dto, transJobOrder);
@@ -127,7 +127,7 @@ public class TransOrderShortCutController extends Controller {
 			transJobOrder.set("office_id", office_id);
 			transJobOrder.save();
 			id = transJobOrder.getLong("id").toString();
-			indexs+=itemMap.get("index").toString()+',';
+			indexs+=(String)itemMap.get("index")+',';
 			System.out.println("test: "+ id);
 			//获取结算公司id：charge_company_id
 			Party party = Party.dao.findById(customer_id);		

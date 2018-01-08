@@ -378,34 +378,36 @@ public class TradeItemController extends Controller {
 			conn.setAutoCommit(false);// 自动提交变成false
 			
 			for (Map<String, String> line :lines) {
-				String commodity_name = line.get("商品名称").trim();
-				String commodity_code = line.get("商品编码").trim();
-				String legal_unit = line.get("单位").trim();
-				String vat_rate = line.get("增值税率").trim();
-				String rebate_rate = line.get("退税率").trim();
-				String remark = line.get("备注").trim();
-	   			Long commodity_id = null;
-	   			Record commodity = Db.findFirst("select * from trade_item where commodity_name = ? and office_id = ?",commodity_name,office_id);
-	   			Record order = new Record();
-	   			if(commodity != null){
-	   				commodity_id = commodity.getLong("id");
-	   				commodity.set("unit_name", legal_unit);
-	   				commodity.set("commodity_code", commodity_code);
-	   				commodity.set("VAT_rate", vat_rate);
-	   				commodity.set("rebate_rate", rebate_rate);
-	   				commodity.set("remark", remark);
-	   				commodity.set("office_id", office_id);
-		   			Db.update("trade_item", commodity);
-	   			}else{
-	   				order.set("commodity_code", commodity_code);
-		   			order.set("commodity_name", commodity_name);
-		   			order.set("unit_name", legal_unit);
-		   			order.set("VAT_rate", vat_rate);
-		   			order.set("rebate_rate", rebate_rate);
-		   			order.set("remark", remark);  
-		   			order.set("office_id", office_id);
-		   			Db.save("trade_item", order);
-	   			}
+				if(line != null){
+					String commodity_name = line.get("商品名称").trim();
+					String commodity_code = line.get("商品编码").trim();
+					String legal_unit = line.get("单位").trim();
+					String vat_rate = line.get("增值税率").trim();
+					String rebate_rate = line.get("退税率").trim();
+					String remark = line.get("备注").trim();
+		   			Long commodity_id = null;
+		   			Record commodity = Db.findFirst("select * from trade_item where commodity_name = ? and office_id = ?",commodity_name,office_id);
+		   			Record order = new Record();
+		   			if(commodity != null){
+		   				commodity_id = commodity.getLong("id");
+		   				commodity.set("unit_name", legal_unit);
+		   				commodity.set("commodity_code", commodity_code);
+		   				commodity.set("VAT_rate", vat_rate);
+		   				commodity.set("rebate_rate", rebate_rate);
+		   				commodity.set("remark", remark);
+		   				commodity.set("office_id", office_id);
+			   			Db.update("trade_item", commodity);
+		   			}else{
+		   				order.set("commodity_code", commodity_code);
+			   			order.set("commodity_name", commodity_name);
+			   			order.set("unit_name", legal_unit);
+			   			order.set("VAT_rate", vat_rate);
+			   			order.set("rebate_rate", rebate_rate);
+			   			order.set("remark", remark);  
+			   			order.set("office_id", office_id);
+			   			Db.save("trade_item", order);
+		   			}
+				}
 				rowNumber++;
 			}
 			conn.commit();

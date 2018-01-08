@@ -183,39 +183,41 @@ public class DispatchSendController extends Controller {
 		
 		
 		if("出口散货".equals(type)||"进口散货".equals(type)){
-			
-			for(int i=0;i<land_bulk_item.size();i++){
-				Map<String, ?> map=land_bulk_item.get(i);
-				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
-					loadingWharf1=(String) map.get("LOADING_WHARF1");
-				}
-				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
-					loadingWharf2=(String) map.get("LOADING_WHARF2");
-				}
-				if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
-					CABINET_DATE=(String) map.get("CABINET_DATE");
-				}
-				if(StringUtils.isNotEmpty((String) map.get("CAR_NO"))){
-					String car_id =(String) map.get("CAR_NO");
-					carId_list.add(car_id);
+			if(land_bulk_item != null){
+				for(int i=0;i<land_bulk_item.size();i++){
+					Map<String, ?> map=land_bulk_item.get(i);
+					if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
+						loadingWharf1=(String) map.get("LOADING_WHARF1");
+					}
+					if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
+						loadingWharf2=(String) map.get("LOADING_WHARF2");
+					}
+					if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
+						CABINET_DATE=(String) map.get("CABINET_DATE");
+					}
+					if(StringUtils.isNotEmpty((String) map.get("CAR_NO"))){
+						String car_id =(String) map.get("CAR_NO");
+						carId_list.add(car_id);
+					}
 				}
 			}
-			
 		}else{
-			for(int i=0;i<land_item.size();i++){
-				Map<String, ?> map=land_item.get(i);
-				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
-					loadingWharf1=(String) map.get("LOADING_WHARF1");
-				}
-				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
-					loadingWharf2=(String) map.get("LOADING_WHARF2");
-				}
-				if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
-					CABINET_DATE=(String) map.get("CABINET_DATE");
-				}
-				if(StringUtils.isNotEmpty((String) map.get("CAR_NO"))){
-					String car_id =(String) map.get("CAR_NO");
-					carId_list.add(car_id);
+			if(land_item != null){
+				for(int i=0;i<land_item.size();i++){
+					Map<String, ?> map=land_item.get(i);
+					if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
+						loadingWharf1=(String) map.get("LOADING_WHARF1");
+					}
+					if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
+						loadingWharf2=(String) map.get("LOADING_WHARF2");
+					}
+					if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
+						CABINET_DATE=(String) map.get("CABINET_DATE");
+					}
+					if(StringUtils.isNotEmpty((String) map.get("CAR_NO"))){
+						String car_id =(String) map.get("CAR_NO");
+						carId_list.add(car_id);
+					}
 				}
 			}
 		}
@@ -279,7 +281,7 @@ public class DispatchSendController extends Controller {
    			id = transJobOrder.getLong("id").toString();
    		}
    		//常用客户保存进入历史记录
-   		long customerId = Long.valueOf(dto.get("customer_id").toString());
+   		long customerId = Long.valueOf((String)dto.get("customer_id"));
    		saveCustomerQueryHistory(customerId);
    		
    		//陆运柜货明细保存
@@ -329,18 +331,13 @@ public class DispatchSendController extends Controller {
 			if(re_car_no.getStr("count_carId")!=null){
 				count_carId =re_car_no.getStr("count_carId");
 			}
-			
+			if(count_carId != null){
 				for(int i=0;i<carId_list.size();i++){
 					String car_id= carId_list.get(i);
 					updateCarStatus(count_carId,car_id,id);
-					
 				}
-			
+			}
 		}
-		
-		
-		
-		
 		
 		 //费用明细，应收应付
 		List<Map<String, String>> charge_template = (ArrayList<Map<String, String>>)dto.get("charge_template");
@@ -1129,8 +1126,8 @@ public class DispatchSendController extends Controller {
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords", list != null?list.size():0);
+        map.put("iTotalDisplayRecords", list != null?list.size():0);
         map.put("aaData", list);
         renderJson(map); 
     }

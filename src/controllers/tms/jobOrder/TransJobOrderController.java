@@ -187,30 +187,33 @@ public class TransJobOrderController extends Controller {
 		List<Map<String, String>> land_item = (ArrayList<Map<String, String>>)dto.get("land_list");
 		List<Map<String, String>> land_bulk_item = (ArrayList<Map<String, String>>)dto.get("land_bulk_list");
 		if("出口散货".equals(type)||"进口散货".equals(type)){
-			
-			for(int i=0;i<land_bulk_item.size();i++){
-				Map<String, ?> map=land_bulk_item.get(i);
-				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
-					loadingWharf1=(String) map.get("LOADING_WHARF1");
-				}
-				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
-					loadingWharf2=(String) map.get("LOADING_WHARF2");
-				}
-				if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
-					CABINET_DATE=(String) map.get("CABINET_DATE");
+			if(land_bulk_item != null){
+				for(int i=0;i<land_bulk_item.size();i++){
+					Map<String, ?> map=land_bulk_item.get(i);
+					if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
+						loadingWharf1=(String) map.get("LOADING_WHARF1");
+					}
+					if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
+						loadingWharf2=(String) map.get("LOADING_WHARF2");
+					}
+					if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
+						CABINET_DATE=(String) map.get("CABINET_DATE");
+					}
 				}
 			}
 		}else{
-			for(int i=0;i<land_item.size();i++){
-				Map<String, ?> map=land_item.get(i);
-				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
-					loadingWharf1=(String) map.get("LOADING_WHARF1");
-				}
-				if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
-					loadingWharf2=(String) map.get("LOADING_WHARF2");
-				}
-				if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
-					CABINET_DATE=(String) map.get("CABINET_DATE");
+			if(land_item != null){
+				for(int i=0;i<land_item.size();i++){
+					Map<String, ?> map=land_item.get(i);
+					if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF1"))){
+						loadingWharf1=(String) map.get("LOADING_WHARF1");
+					}
+					if(StringUtils.isNotEmpty((String) map.get("LOADING_WHARF2"))){
+						loadingWharf2=(String) map.get("LOADING_WHARF2");
+					}
+					if(StringUtils.isNotEmpty((String) map.get("CABINET_DATE"))){
+						CABINET_DATE=(String) map.get("CABINET_DATE");
+					}
 				}
 			}
 		}
@@ -285,7 +288,7 @@ public class TransJobOrderController extends Controller {
    			id = transJobOrder.getLong("id").toString();
    		}
    		//常用客户保存进入历史记录
-   		long customerId = Long.valueOf(dto.get("customer_id").toString());
+   		long customerId = Long.valueOf((String)dto.get("customer_id"));
    		saveCustomerQueryHistory(customerId);
    		
    		//陆运柜货明细保存
@@ -1090,8 +1093,8 @@ public class TransJobOrderController extends Controller {
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords", list != null?list.size():0);
+        map.put("iTotalDisplayRecords", list != null?list.size():0);
         map.put("aaData", list);
         renderJson(map); 
     }
@@ -1272,13 +1275,17 @@ public class TransJobOrderController extends Controller {
             		key = key.replaceAll("_begin_time", "");
             		Map<String, String> valueMap = dateFieldMap.get(key)==null?new HashMap<String, String>():dateFieldMap.get(key);
             		valueMap.put("_begin_time", filterValue);
-            		dateFieldMap.put(key, valueMap);
+            		if(valueMap != null){
+            			dateFieldMap.put(key, valueMap);
+            		}
             		continue;
             	}else if(key.endsWith("_end_time")){
             		key = key.replaceAll("_end_time", "");
             		Map<String, String> valueMap = dateFieldMap.get(key)==null?new HashMap<String, String>():dateFieldMap.get(key);
             		valueMap.put("_end_time", filterValue);
-            		dateFieldMap.put(key, valueMap);
+            		if(valueMap != null){
+            			dateFieldMap.put(key, valueMap);
+            		}
             		continue;
             	}
             }        

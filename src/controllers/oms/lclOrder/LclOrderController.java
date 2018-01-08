@@ -196,17 +196,19 @@ public class LclOrderController extends Controller {
    		if("create".equals(action_type)){
    			List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("itemList");
    			//DbUtils.handleList(itemList, id, PlanOrderItem.class, "order_id");
-   	   		for(Map<String, String> map : itemList){
-   	   			String job_id = map.get("id");
-   	   			Record jobRe = Db.findById("job_order", job_id);
-   	   			jobRe.set("lcl_order_flag", "Y");
-   	   			Db.update("job_order",jobRe);
-   	   			
-   	   			Record item = new Record();
-   	   			item.set("job_order_id", job_id);
-   	   			item.set("order_id", id);
-   	   			Db.save("lcl_order_item", item);
-   	   		}
+   			if(itemList != null){
+   				for(Map<String, String> map : itemList){
+   					String job_id = map.get("id");
+   					Record jobRe = Db.findById("job_order", job_id);
+   					jobRe.set("lcl_order_flag", "Y");
+   					Db.update("job_order",jobRe);
+   					
+   					Record item = new Record();
+   					item.set("job_order_id", job_id);
+   					item.set("order_id", id);
+   					Db.save("lcl_order_item", item);
+   				}
+   			}
    		}
    		
 		
@@ -639,8 +641,8 @@ public class LclOrderController extends Controller {
 
     	Map BillingOrderListMap = new HashMap();
         BillingOrderListMap.put("sEcho", 1);
-        BillingOrderListMap.put("iTotalRecords", list.size());
-        BillingOrderListMap.put("iTotalDisplayRecords", list.size());
+        BillingOrderListMap.put("iTotalRecords", list != null?list.size():0);
+        BillingOrderListMap.put("iTotalDisplayRecords", list != null?list.size():0);
 
         BillingOrderListMap.put("aaData", list);
 

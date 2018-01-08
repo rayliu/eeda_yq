@@ -435,54 +435,58 @@ public class TradeCostCheckOrderController extends Controller {
 			
 			
 			//设置已创建过对账单flag
-			String idAttr[] = ids.split(",");
-			for(int i=0 ; i<idAttr.length ; i++){
-				Record joa = Db.findById("trade_job_order_arap", idAttr[i]);
-				joa.set("bill_flag", "Y");
-				String hedge_order_type = joa.getStr("order_type");
-				if("charge".equals(hedge_order_type)){
-					joa.set("hedge_flag", "Y");
-                }
-				Db.update("trade_job_order_arap", joa);
-				
-				TradeArapCostItem arapCostItem = new TradeArapCostItem();
-				arapCostItem.set("ref_order_id", idAttr[i]);
-				arapCostItem.set("cost_order_id", id);
-				arapCostItem.save();
+			if(ids != null){
+				String idAttr[] = ids.split(",");
+				for(int i=0 ; i<idAttr.length ; i++){
+					Record joa = Db.findById("trade_job_order_arap", idAttr[i]);
+					joa.set("bill_flag", "Y");
+					String hedge_order_type = joa.getStr("order_type");
+					if("charge".equals(hedge_order_type)){
+						joa.set("hedge_flag", "Y");
+	                }
+					Db.update("trade_job_order_arap", joa);
+					
+					TradeArapCostItem arapCostItem = new TradeArapCostItem();
+					arapCostItem.set("ref_order_id", idAttr[i]);
+					arapCostItem.set("cost_order_id", id);
+					arapCostItem.save();
+				}
 			}
    		}
    		
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("currency_list");
-		for(Map<String, String> item :itemList){
-			String new_rate = item.get("new_rate");
-			String rate = item.get("rate");
-			String order_type = item.get("order_type");
-			String currency_id = item.get("currency_id");
-			String rate_id = item.get("rate_id");
-			String order_id = (String) dto.get("id");
-			
-			RateContrast rc = null;
-			if(StringUtils.isEmpty(rate_id)){
-				rc = new RateContrast();
-				rc.set("order_id", id);
-				rc.set("new_rate", new_rate);
-				rc.set("rate", rate);
-				rc.set("currency_id", currency_id);
-				rc.set("order_type", order_type);
-				rc.set("create_by", LoginUserController.getLoginUserId(this));
-				rc.set("create_stamp", new Date());
-				rc.save();
-			}else{
-				rc = RateContrast.dao.findById(rate_id);
-				if(rc == null){
-					rc = RateContrast.dao.findFirst("select * from rate_contrast where order_id = ? and currency_id = ?",order_id,currency_id);
-				}
-				rc.set("new_rate", new_rate);
-				rc.set("update_by", LoginUserController.getLoginUserId(this));
-				rc.set("update_stamp", new Date());
-				rc.update();
-			}	
-		}
+   		if(itemList != null){
+   			for(Map<String, String> item :itemList){
+   				String new_rate = item.get("new_rate");
+   				String rate = item.get("rate");
+   				String order_type = item.get("order_type");
+   				String currency_id = item.get("currency_id");
+   				String rate_id = item.get("rate_id");
+   				String order_id = (String) dto.get("id");
+   				
+   				RateContrast rc = null;
+   				if(StringUtils.isEmpty(rate_id)){
+   					rc = new RateContrast();
+   					rc.set("order_id", id);
+   					rc.set("new_rate", new_rate);
+   					rc.set("rate", rate);
+   					rc.set("currency_id", currency_id);
+   					rc.set("order_type", order_type);
+   					rc.set("create_by", LoginUserController.getLoginUserId(this));
+   					rc.set("create_stamp", new Date());
+   					rc.save();
+   				}else{
+   					rc = RateContrast.dao.findById(rate_id);
+   					if(rc == null){
+   						rc = RateContrast.dao.findFirst("select * from rate_contrast where order_id = ? and currency_id = ?",order_id,currency_id);
+   					}
+   					rc.set("new_rate", new_rate);
+   					rc.set("update_by", LoginUserController.getLoginUserId(this));
+   					rc.set("update_stamp", new Date());
+   					rc.update();
+   				}	
+   			}
+   		}
 		SysInfoController.saveLog(jsonStr, id, user, action_type, "应付对账单", "trade");
    		String sql = " select aco.*, p.company_name company_name, u.c_name creator_name from trade_arap_cost_order aco "
    				+ " left join party p on p.id=aco.sp_id "

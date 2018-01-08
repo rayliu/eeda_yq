@@ -58,6 +58,11 @@ public class BookingOrderController extends Controller {
 	Subject currentUser = SecurityUtils.getSubject();
 	private Object type;
 
+	
+	if(dto != null){
+		
+	}
+	
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
 		String type = getPara("type");

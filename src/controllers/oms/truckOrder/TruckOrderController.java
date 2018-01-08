@@ -172,8 +172,8 @@ public class TruckOrderController extends Controller {
     	
     	Map map = new HashMap();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords", list != null? list.size():0);
+        map.put("iTotalDisplayRecords",  list != null? list.size():0);
 
         map.put("aaData", list);
 
