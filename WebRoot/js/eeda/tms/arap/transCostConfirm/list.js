@@ -8,7 +8,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             eeda.dt_float_header('eeda_table');
           },
           serverSide: false, //不打开会出现排序不对 
-          ajax: "/transCostConfirm/list?audit_flag_notequals="+$("#audit_flag").val(),
+          //ajax: "/transCostConfirm/list?audit_flag_notequals="+$("#audit_flag").val(),
           columns: [
 			{ "width": "10px",
 				    "render": function ( data, type, full, meta ) {
