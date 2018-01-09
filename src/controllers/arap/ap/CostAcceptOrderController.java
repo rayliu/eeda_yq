@@ -237,10 +237,10 @@ public class CostAcceptOrderController extends Controller {
 	            String ySql ="update job_order_arap set pay_flag='Y' where id in("+selected_item_ids+")";
 	            Db.update(ySql);
 				
-                if(order_type.equals("应付对账单")){
+                if("应付对账单".equals(order_type)){
 					ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
 					arapCostOrder.set("audit_status", "付款申请中").update();
-				}else if(order_type.equals("成本单")){
+				}else if("成本单".equals(order_type)){
 					ArapMiscCostOrder arapMiscCostOrder = ArapMiscCostOrder.dao.findById(id);
 					arapMiscCostOrder.set("audit_status", "付款申请中").update();
 				}
@@ -281,7 +281,7 @@ public class CostAcceptOrderController extends Controller {
 			String order_type = (String)map.get("order_type");
 
 			
-			if(order_type.equals("应付对账单")){
+			if("应付对账单".equals(order_type)){
 				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
 				Double usd = arapCostOrder.getDouble("usd"); //结算应付的金额
 				Double cny = arapCostOrder.getDouble("cny");
@@ -345,7 +345,7 @@ public class CostAcceptOrderController extends Controller {
 			String order_type = (String)map.get("order_type");
 
 			
-			if(order_type.equals("应付对账单")){
+			if("应付对账单".equals(order_type)){
 				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
 				arapCostOrder.set("status", "付款申请中").update();
 			}
@@ -372,7 +372,7 @@ public class CostAcceptOrderController extends Controller {
 			String order_type = crel.getStr("order_type");
 			
 			//修改相关单据状态
-			if(order_type.equals("应付对账单")){
+			if("应付对账单".equals(order_type)){
 				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
 				arapCostOrder.set("status", "已确认").update();
 			}
@@ -430,7 +430,7 @@ public class CostAcceptOrderController extends Controller {
 			String id = (String)map.get("id");
 			String order_type = (String)map.get("order_type");
 
-			if(order_type.equals("应付对账单")){
+			if("应付对账单".equals(order_type)){
 				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
                 Double usd = arapCostOrder.getDouble("usd");
                 Double cny = arapCostOrder.getDouble("cny");
@@ -531,7 +531,7 @@ public class CostAcceptOrderController extends Controller {
 			String id = (String)map.get("id");
 			String order_type = (String)map.get("order_type");
 
-			if(order_type.equals("应付对账单")){
+			if("应付对账单".equals(order_type)){
 				ArapCostOrder arapCostOrder = ArapCostOrder.dao.findById(id);
 				Double total_amount = arapCostOrder.getDouble("cost_amount");
 				Record re = Db.findFirst("select sum(pay_amount) total from cost_application_order_rel where cost_order_id =? and order_type = '应付对账单'",id);

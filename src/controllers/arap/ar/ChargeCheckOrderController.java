@@ -101,57 +101,63 @@ public class ChargeCheckOrderController extends Controller {
 
    		ArapChargeItem aci = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-		for(Map<String, String> item :itemList){
-			String action = item.get("action");
-			String itemId = item.get("id");
-			if("CREATE".equals(action)){
-				aci = new ArapChargeItem();
-				aci.set("ref_order_type", "工作单");
-				aci.set("ref_order_id", itemId);
-				aci.set("charge_order_id", id);
-				aci.save();
-                JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
-                jobOrderArap.set("bill_flag", "Y");
-                String hedge_order_type = jobOrderArap.getStr("order_type");
-                if("cost".equals(hedge_order_type)){
-                	jobOrderArap.set("hedge_flag", "Y");
-                }
-                jobOrderArap.update();
-			}
-		}
+   		if(itemList != null){
+   			for(Map<String, String> item :itemList){
+   				String action = item.get("action");
+   				String itemId = item.get("id");
+   				if("CREATE".equals(action)){
+   					aci = new ArapChargeItem();
+   					aci.set("ref_order_type", "工作单");
+   					aci.set("ref_order_id", itemId);
+   					aci.set("charge_order_id", id);
+   					aci.save();
+   	                JobOrderArap jobOrderArap = JobOrderArap.dao.findById(itemId);
+   	                jobOrderArap.set("bill_flag", "Y");
+   	                String hedge_order_type = jobOrderArap.getStr("order_type");
+   	                if("cost".equals(hedge_order_type)){
+   	                	jobOrderArap.set("hedge_flag", "Y");
+   	                }
+   	                jobOrderArap.update();
+   				}
+   			}
+   		}
+		
 		
 		
 		List<Map<String, String>> currencyList = (ArrayList<Map<String, String>>)dto.get("currency_list");
-		for(Map<String, String> item :currencyList){
-			String new_rate = item.get("new_rate");
-			String rate = item.get("rate");
-			String order_type = item.get("order_type");
-			String currency_id = item.get("currency_id");
-			String rate_id = item.get("rate_id");
-			String order_id = (String) dto.get("id");
-			
-			RateContrast rc = null;
-			if(StringUtils.isEmpty(rate_id) && StringUtils.isEmpty(order_id)){
-				rc = new RateContrast();
-				rc.set("order_id", id);
-				rc.set("new_rate", new_rate);
-				rc.set("rate", rate);
-				rc.set("currency_id", currency_id);
-				rc.set("order_type", order_type);
-				rc.set("create_by", LoginUserController.getLoginUserId(this));
-				rc.set("create_stamp", new Date());
-				rc.save();
-			}else{
-				rc = RateContrast.dao.findById(rate_id);
-				if(rc == null){
-					rc = RateContrast.dao.findFirst("select * from rate_contrast where order_id = ? and currency_id = ?",order_id,currency_id);
-				}
-				rc.set("new_rate", new_rate);
-				rc.set("update_by", LoginUserController.getLoginUserId(this));
-				rc.set("update_stamp", new Date());
-				rc.update();
-			}	
+		if(currencyList != null){
+			for(Map<String, String> item :currencyList){
+				String new_rate = item.get("new_rate");
+				String rate = item.get("rate");
+				String order_type = item.get("order_type");
+				String currency_id = item.get("currency_id");
+				String rate_id = item.get("rate_id");
+				String order_id = (String) dto.get("id");
+				
+				RateContrast rc = null;
+				if(StringUtils.isEmpty(rate_id) && StringUtils.isEmpty(order_id)){
+					rc = new RateContrast();
+					rc.set("order_id", id);
+					rc.set("new_rate", new_rate);
+					rc.set("rate", rate);
+					rc.set("currency_id", currency_id);
+					rc.set("order_type", order_type);
+					rc.set("create_by", LoginUserController.getLoginUserId(this));
+					rc.set("create_stamp", new Date());
+					rc.save();
+				}else{
+					rc = RateContrast.dao.findById(rate_id);
+					if(rc == null){
+						rc = RateContrast.dao.findFirst("select * from rate_contrast where order_id = ? and currency_id = ?",order_id,currency_id);
+					}
+					rc.set("new_rate", new_rate);
+					rc.set("update_by", LoginUserController.getLoginUserId(this));
+					rc.set("update_stamp", new Date());
+					rc.update();
+				}	
+			}
 		}
+		
 		
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);

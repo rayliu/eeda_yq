@@ -48,13 +48,17 @@ public class DbUtils {
             		key = key.replaceAll("_begin_time", "");
             		Map<String, String> valueMap = dateFieldMap.get(key)==null?new HashMap<String, String>():dateFieldMap.get(key);
             		valueMap.put("_begin_time", filterValue);
-            		dateFieldMap.put(key, valueMap);
+            		if(valueMap != null){
+            			dateFieldMap.put(key, valueMap);
+            		}
             		continue;
             	}else if(key.endsWith("_end_time")){
             		key = key.replaceAll("_end_time", "");
             		Map<String, String> valueMap = dateFieldMap.get(key)==null?new HashMap<String, String>():dateFieldMap.get(key);
             		valueMap.put("_end_time", filterValue+" 23:59:59");
-            		dateFieldMap.put(key, valueMap);
+            		if(valueMap != null){
+            			dateFieldMap.put(key, valueMap);
+            		}
             		continue;
             	}else if(key.endsWith("_between")){
             		key = key.replaceAll("_between", "");
@@ -137,7 +141,7 @@ public class DbUtils {
     		Object model_id = null;
     		Object rowId = rowMap.get("id");
     		Object action = rowMap.get("action");
-    		if(StringUtils.isEmpty(rowId.toString())){
+    		if(StringUtils.isEmpty((String)rowId)){
 				setModelValues(rowMap, model);
     			model.set(master_col_name, master_order_id);
     			model.save();	
@@ -159,7 +163,7 @@ public class DbUtils {
     			String key = entry.getKey();
     			if(key.endsWith("_list")){
     				List<Map<String, ?>> list = (ArrayList<Map<String, ?>>)rowMap.get(key);
-    				handleLists(list, model_id.toString(), itemClazz,itemClazz, "order_id");
+    				handleLists(list, (String)model_id, itemClazz,itemClazz, "order_id");
     			}
     		}
     			
@@ -226,6 +230,10 @@ public class DbUtils {
 			if(!key.endsWith("_list")){
             	String preValue = String.valueOf(entry.getValue()).trim();
             	String value = ToDBCUtil.ToDBC(preValue);//全角转半角函数
+            	
+            	if(value == null){
+            		value = "";
+            	}
             	//忽略  action 字段
             	if(!"action".equals(key)){
 //            		logger.debug(key+":"+value);

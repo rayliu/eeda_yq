@@ -359,8 +359,12 @@ public class ReceiveMail {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }finally{
-            bos.close();
-            bis.close();
+        	if(bos != null){
+        		bos.close();
+        	}
+        	if(bis != null){
+        		bis.close();
+        	}
         }
         
     }

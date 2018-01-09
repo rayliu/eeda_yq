@@ -38,17 +38,20 @@ public class BookOrderControllerForMobile extends Controller {
 
             String decodedAuth = getFromBASE64(auth);
             System.out.println("auth decoded from base64 is " + decodedAuth);
-            String[] authArr = decodedAuth.split(":");
-            String sha1Pwd = MD5Util.encode("SHA1", authArr[1]);
-            Record rec = Db.findFirst(
-                    "select * from user_login where user_name=? and password=?",
-                    authArr[0], sha1Pwd);
-            
-            if (rec != null) {
-                request.getSession().setAttribute("authKey", decodedAuth);
-                return true;
+            if(decodedAuth != null){
+            	 String[] authArr = decodedAuth.split(":");
+                 String sha1Pwd = MD5Util.encode("SHA1", authArr[1]);
+                 Record rec = Db.findFirst(
+                         "select * from user_login where user_name=? and password=?",
+                         authArr[0], sha1Pwd);
+                 if (rec != null) {
+                     request.getSession().setAttribute("authKey", decodedAuth);
+                     return true;
+                 }  else {
+                     return false;
+                 }
             } else {
-                return false;
+                 return false;
             }
         } else {
             return false;

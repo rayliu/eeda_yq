@@ -383,45 +383,47 @@ public class ChargeAcceptOrderController extends Controller {
    		
    		ChargeApplicationOrderRel caor = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-		for(Map<String, String> item :itemList){
-			String action = item.get("action");
-				   itemId = item.get("id");
-			String order_type = item.get("order_type");
-			if("CREATE".equals(action)){
-				caor = new ChargeApplicationOrderRel();
-				caor.set("application_order_id", id);
-				caor.set("charge_order_id", itemId);
-				
-				caor.set("order_type", order_type);
-				caor.set("paid_usd", app_usd);
-				caor.set("paid_hkd", app_hkd);
-				caor.set("paid_cny", app_cny);
-				caor.set("paid_jpy", app_jpy);
-				caor.save();
-				
-                if("应收对账单".equals(order_type)){
-					ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(itemId);
-					arapChargeOrder.set("audit_status", "收款申请中").update();
-				}
-			}else{
-				caor = ChargeApplicationOrderRel.dao.findFirst("select * from charge_application_order_rel where charge_order_id =? and application_order_id = ?",itemId,id);
-				caor.set("paid_usd", app_usd);
-				caor.set("paid_hkd", app_hkd);
-				caor.set("paid_cny", app_cny);
-				caor.set("paid_jpy", app_jpy);
-				caor.update();
-			}
-			
-			//更新勾选的job_order_arap item pay_flag
-			if(!"".equals(selected_item_ids)){
-				String sql =" update job_order_arap set pay_flag='N' where id in ("
-	                    + " select ref_order_id from arap_charge_item where charge_order_id in("+itemId+"))"  //costOrderId.substring(1) 去掉第一位
-	                    + " and id not in("+selected_item_ids+")";
-	            Db.update(sql);
-	            String ySql ="update job_order_arap set pay_flag='Y' where id in("+selected_item_ids+")";
-	            Db.update(ySql);
+   		if(itemList != null){
+   			for(Map<String, String> item :itemList){
+   				String action = item.get("action");
+   					   itemId = item.get("id");
+   				String order_type = item.get("order_type");
+   				if("CREATE".equals(action)){
+   					caor = new ChargeApplicationOrderRel();
+   					caor.set("application_order_id", id);
+   					caor.set("charge_order_id", itemId);
+   					
+   					caor.set("order_type", order_type);
+   					caor.set("paid_usd", app_usd);
+   					caor.set("paid_hkd", app_hkd);
+   					caor.set("paid_cny", app_cny);
+   					caor.set("paid_jpy", app_jpy);
+   					caor.save();
+   					
+   	                if("应收对账单".equals(order_type)){
+   						ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(itemId);
+   						arapChargeOrder.set("audit_status", "收款申请中").update();
+   					}
+   				}else{
+   					caor = ChargeApplicationOrderRel.dao.findFirst("select * from charge_application_order_rel where charge_order_id =? and application_order_id = ?",itemId,id);
+   					caor.set("paid_usd", app_usd);
+   					caor.set("paid_hkd", app_hkd);
+   					caor.set("paid_cny", app_cny);
+   					caor.set("paid_jpy", app_jpy);
+   					caor.update();
+   				}
+   				
+   				//更新勾选的job_order_arap item pay_flag
+   				if(!"".equals(selected_item_ids)){
+   					String sql =" update job_order_arap set pay_flag='N' where id in ("
+   		                    + " select ref_order_id from arap_charge_item where charge_order_id in("+itemId+"))"  //costOrderId.substring(1) 去掉第一位
+   		                    + " and id not in("+selected_item_ids+")";
+   		            Db.update(sql);
+   		            String ySql ="update job_order_arap set pay_flag='Y' where id in("+selected_item_ids+")";
+   		            Db.update(ySql);
+   	   			}
    			}
-		}
+   		}
 		
 		long create_by = order.getLong("create_by");
    		String user_name = LoginUserController.getUserNameById(create_by);

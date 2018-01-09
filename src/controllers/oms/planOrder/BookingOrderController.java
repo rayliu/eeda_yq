@@ -235,6 +235,9 @@ public class BookingOrderController extends Controller {
         
         JobOrder jobOrder = new JobOrder();
         
+        if(type == null){
+        	type = "";
+        }
         //获取office_id
    		UserLogin user = LoginUserController.getLoginUser(this);
    		if(user==null){
@@ -260,7 +263,7 @@ public class BookingOrderController extends Controller {
    			jobOrder = JobOrder.dao.findById(id);
    			//版本(时间戳)校验，不对的话就不让更新保存
    			if(dto.get("update_stamp")!=null){
-       			Timestamp page_update_stamp = Timestamp.valueOf(dto.get("update_stamp").toString());
+       			Timestamp page_update_stamp = Timestamp.valueOf((String)dto.get("update_stamp"));
        			Timestamp order_update_stamp = jobOrder.getTimestamp("update_stamp");
        			if(!order_update_stamp.equals(page_update_stamp)){
        			    Record rec = new Record();
@@ -328,7 +331,7 @@ public class BookingOrderController extends Controller {
    		}
    		long customerId = -1;
    		if(dto.get("customer_id")!=null){
-   		    customerId = Long.valueOf(dto.get("customer_id").toString());
+   		    customerId = Long.valueOf((String)dto.get("customer_id"));
    		    saveCustomerQueryHistory(customerId);
    		}
 		//海运
@@ -1736,8 +1739,8 @@ public class BookingOrderController extends Controller {
     	}
     	Map map = new HashMap();
         map.put("sEcho", 1);
-        map.put("iTotalRecords", list.size());
-        map.put("iTotalDisplayRecords", list.size());
+        map.put("iTotalRecords", list != null?list.size():0);
+        map.put("iTotalDisplayRecords", list != null?list.size():0);
         map.put("aaData", list);
         renderJson(map); 
     }
@@ -1963,20 +1966,23 @@ public class BookingOrderController extends Controller {
         if(dto.get("land_charge_item") !=null){
             List<Map<String, String>> land_charge_item = (ArrayList<Map<String, String>>)dto.get("land_charge_item");
             Model<?> model = (Model<?>) JobOrderArap.class.newInstance();
-            for(int i=0;i<land_charge_item.size();i++){
-            	Map<String, String> map=land_charge_item.get(i);
-            	
-            	DbUtils.setModelValues(map,model);
-            	model.set("land_item_id", land_item_id);
-            	model.set("order_id", order_id);
-            	if("UPDATE".equals(map.get("action"))){
-            		model.update();
-            	}else if("DELETE".equals(map.get("action"))){
-            		model.delete();
-            	}else{
-            		model.save();
-            	}
+            if(land_charge_item != null){
+            	for(int i=0;i<land_charge_item.size();i++){
+                	Map<String, String> map=land_charge_item.get(i);
+                	
+                	DbUtils.setModelValues(map,model);
+                	model.set("land_item_id", land_item_id);
+                	model.set("order_id", order_id);
+                	if("UPDATE".equals(map.get("action"))){
+                		model.update();
+                	}else if("DELETE".equals(map.get("action"))){
+                		model.delete();
+                	}else{
+                		model.save();
+                	}
+                }
             }
+            
         }
       //保存陆运费用模版
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀

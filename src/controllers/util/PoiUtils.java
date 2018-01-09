@@ -162,7 +162,9 @@ public class PoiUtils {
 			e.printStackTrace();
 		} finally {
 			try {
-				out.close();
+				if(out != null){
+					out.close();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -325,6 +327,7 @@ public class PoiUtils {
     @SuppressWarnings("deprecation")
     public static String generateExcel(String[] headers, String[] fields, String sql){
         String fileName="";
+        FileOutputStream fileOut = null;
         try {
             System.out.println("generateExcel begin...");
             String filePath = "WebRoot/download/list";//"/home/default/ROOT/download/list";
@@ -362,13 +365,21 @@ public class PoiUtils {
 
             fileName = filePath+"/"+outFileName;
             System.out.println("fileName: "+fileName);
-            FileOutputStream fileOut = new FileOutputStream(fileName);
+            fileOut = new FileOutputStream(fileName);
             workbook.write(fileOut);
-            fileOut.close();
+            //fileOut.close();
             System.out.println("Your excel file has been generated!");
             fileName = "/download/list/"+outFileName;
         } catch ( Exception ex ) {
             ex.printStackTrace();
+        } finally {
+        	try {
+				if(fileOut != null){
+					fileOut.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
         }
         return fileName;
     }

@@ -1,5 +1,6 @@
 package interceptor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -54,6 +55,9 @@ public class EedaMenuInterceptor implements Interceptor {
                         || "/home".equals(ai.getActionKey())){
                     
                 }else if(!"/module".equals(ai.getActionKey())){
+                	if(userUrlList == null){
+                		userUrlList = new ArrayList<String>();
+                	}
                 	if(!"/".equals(ai.getActionKey()) && !userUrlList.contains(key) 
                 	        && !userUrlList.contains(actionUrl)){//actionKey是否存在于授权模块中？
                         ai.getController().renderError(403);

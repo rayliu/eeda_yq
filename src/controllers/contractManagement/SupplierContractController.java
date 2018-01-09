@@ -211,6 +211,9 @@ public class SupplierContractController extends Controller {
     
     public List<Record> getItems(String contract_id,String type){
     	String sql = "";
+    	if(type == null){
+			type="";
+		}
     	if("land_loc".equals(type)){
             sql = " SELECT ccl.*, "
                     + " IFNULL(dpol.dock_name,lpol.name) pol_name, "
@@ -337,6 +340,9 @@ public class SupplierContractController extends Controller {
    			//需后台处理的字段
    	   			String contract_no = OrderNoGenerator.getNextOrderNo("KF", newDateStr, office_id);
    	   			StringBuilder sb = new StringBuilder(contract_no);//构造一个StringBuilder对象
+   	   			if(type == null){
+   	   				type="";
+   	   			}
    	   			sb.insert(2, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
    	   			contract_no = sb.toString();
    	   		supplierContract.set("contract_no", contract_no);

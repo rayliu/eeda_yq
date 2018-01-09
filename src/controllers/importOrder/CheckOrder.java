@@ -222,6 +222,7 @@ public class CheckOrder extends Controller {
 			String error_msg = "";
 			try {
 				for (Map<String, String> line :lines) {
+					if(line != null){
 					String customer_name = line.get("客户简称").trim();
 					String type = line.get("类型").trim();
 					String container_no = line.get("柜号").trim();
@@ -382,6 +383,7 @@ public class CheckOrder extends Controller {
 						}
 					}
 					rowNumber++;
+					}
 				}
 				
 				if(StringUtils.isNotBlank(error_msg)){
@@ -411,6 +413,7 @@ public class CheckOrder extends Controller {
 			conn.setAutoCommit(false);// 自动提交变成false
 			
 			for (Map<String, String> line :lines) {
+				if(line != null){
 				String customer_name = line.get("客户简称").trim();
 				String type = line.get("类型").trim();
 				String container_no = line.get("柜号").trim();
@@ -484,7 +487,9 @@ public class CheckOrder extends Controller {
 	   			Long cross_border_travel = null;
 	   			Record cbt = Db.findFirst("select p.* from dockinfo p where p.dock_name = ? and  p.office_id=?",cross_border_travel_name,office_id);
 	   			if(cbt != null){
-	   				cross_border_travel = tw.getLong("id");
+	   				if(tw != null){
+	   					cross_border_travel = tw.getLong("id");
+	   				}
 	   				order.set("cross_border_travel", cross_border_travel);
 	   			}
 	   			
@@ -673,6 +678,7 @@ public class CheckOrder extends Controller {
 				 
 
 				rowNumber++;
+				}
 			}
 			conn.commit();
 			result.set("cause","成功导入( "+(rowNumber-1)+" )条数据！");

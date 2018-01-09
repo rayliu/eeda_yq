@@ -235,6 +235,10 @@ public class ReaderXLS{
     	InputStream is = new FileInputStream(xlsFile);
         ReaderXLS excelReader = new ReaderXLS();
         excelReader.readExcelTitle(is);
+        
+        if(is != null){
+        	is.close();
+        }
     	return xlsTitle;
     }
     //读取Excel表格内容
@@ -242,6 +246,10 @@ public class ReaderXLS{
     	InputStream is = new FileInputStream(xlsFile);
     	ReaderXLS excelReader = new ReaderXLS();
     	xlsContent = excelReader.readExcelContent(is);
+    	
+    	if(is != null){
+        	is.close();
+        }
     	return xlsContent;
     }
     /*public static void main(String[] args) {

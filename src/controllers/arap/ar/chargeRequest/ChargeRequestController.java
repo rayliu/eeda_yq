@@ -400,29 +400,32 @@ public class ChargeRequestController extends Controller {
 		String itemId="";
    		ChargeApplicationOrderRel caor = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-		for(Map<String, String> item :itemList){
-			String action = item.get("action");
-				   itemId = item.get("id");
-			if("CREATE".equals(action)){
-				caor = new ChargeApplicationOrderRel();
-				caor.set("application_order_id", id);
-				Record cioici = Db.findFirst("select * from charge_invoice_order_item_charge_item where id=?",itemId);
-				caor.set("job_order_arap_id", cioici.getLong("job_order_arap_item_id"));
-				Long invoice_order_id = cioici.getLong("order_id");
-				Long charge_order_id = cioici.getLong("charge_order_id");
-				caor.set("charge_order_id", charge_order_id);
-				caor.set("invoice_order_id", invoice_order_id);
-				caor.set("order_type", "开票单");
-				caor.save();
-				
-				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(cioici.get("charge_order_id"));
-				arapChargeOrder.set("audit_status", "收款申请中").update();
-				
-				//更新勾选的job_order_arap item creat_flag,改变创建标记位
-				String ySql ="update job_order_arap set create_flag='Y' where id ="+ cioici.getLong("job_order_arap_item_id");
-		        Db.update(ySql);
-			}
-		}
+   		if(itemList != null){
+   			for(Map<String, String> item :itemList){
+   				String action = item.get("action");
+   					   itemId = item.get("id");
+   				if("CREATE".equals(action)){
+   					caor = new ChargeApplicationOrderRel();
+   					caor.set("application_order_id", id);
+   					Record cioici = Db.findFirst("select * from charge_invoice_order_item_charge_item where id=?",itemId);
+   					caor.set("job_order_arap_id", cioici.getLong("job_order_arap_item_id"));
+   					Long invoice_order_id = cioici.getLong("order_id");
+   					Long charge_order_id = cioici.getLong("charge_order_id");
+   					caor.set("charge_order_id", charge_order_id);
+   					caor.set("invoice_order_id", invoice_order_id);
+   					caor.set("order_type", "开票单");
+   					caor.save();
+   					
+   					ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(cioici.get("charge_order_id"));
+   					arapChargeOrder.set("audit_status", "收款申请中").update();
+   					
+   					//更新勾选的job_order_arap item creat_flag,改变创建标记位
+   					String ySql ="update job_order_arap set create_flag='Y' where id ="+ cioici.getLong("job_order_arap_item_id");
+   			        Db.update(ySql);
+   				}
+   			}
+   		}
+		
 	}
 		
    		saveLog(jsonStr, id, user, action_type);
@@ -708,24 +711,27 @@ public class ChargeRequestController extends Controller {
 		String itemId="";
    		ChargeApplicationOrderRel caor = null;
    		List<Map<String, String>> itemList = (ArrayList<Map<String, String>>)dto.get("item_list");
-		for(Map<String, String> item :itemList){
-			String action = item.get("action");
-				   itemId = item.get("id");
-			if("CREATE".equals(action)){
-				caor = new ChargeApplicationOrderRel();
-				caor.set("application_order_id", id);
-				caor.set("job_order_arap_id", itemId);
-				Record aci = Db.findFirst("select * from arap_charge_item where ref_order_id=?",itemId);
-				Long charge_order_id=aci.getLong("charge_order_id");
-				caor.set("charge_order_id", charge_order_id);
-				caor.set("order_type", "应收对账单");
-				caor.save();
-				
-				ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
-				arapChargeOrder.set("audit_status", "收款申请中").update();
-				
-			}
-		}
+   		if(itemList != null){
+   			for(Map<String, String> item :itemList){
+   				String action = item.get("action");
+   					   itemId = item.get("id");
+   				if("CREATE".equals(action)){
+   					caor = new ChargeApplicationOrderRel();
+   					caor.set("application_order_id", id);
+   					caor.set("job_order_arap_id", itemId);
+   					Record aci = Db.findFirst("select * from arap_charge_item where ref_order_id=?",itemId);
+   					Long charge_order_id=aci.getLong("charge_order_id");
+   					caor.set("charge_order_id", charge_order_id);
+   					caor.set("order_type", "应收对账单");
+   					caor.save();
+   					
+   					ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(charge_order_id);
+   					arapChargeOrder.set("audit_status", "收款申请中").update();
+   					
+   				}
+   			}
+   		}
+		
 		
 		//selected_item_ids,改变创建标记位
 //		if("".equals(selected_item_ids)){
@@ -948,15 +954,18 @@ public class ChargeRequestController extends Controller {
      	   res = Db.find(str);
      	   re.set("ids",ids);
   		}
-  		for (Record re1 : res) {
-  			Long id = re1.getLong("charge_order_id");
-  			String order_type = re1.getStr("order_type");
+  		if(res != null){
+  			for (Record re1 : res) {
+  	  			Long id = re1.getLong("charge_order_id");
+  	  			String order_type = re1.getStr("order_type");
 
-  			if("应收对账单".equals(order_type)){
-			    ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(id);
-				arapChargeOrder.set("audit_status", "已复核").update();
-			}
+  	  			if("应收对账单".equals(order_type)){
+  				    ArapChargeOrder arapChargeOrder = ArapChargeOrder.dao.findById(id);
+  					arapChargeOrder.set("audit_status", "已复核").update();
+  				}
+  	  		}
   		}
+  		
   	    renderJson(re);
     }
   	
@@ -1044,7 +1053,7 @@ public class ChargeRequestController extends Controller {
             	String empty = (String) dto.get("receive_bank_id");
             	
             	if(StringUtils.isNotEmpty(empty)){
-          			 receive_bank_id =  dto.get("receive_bank_id").toString();
+          			 receive_bank_id = (String) dto.get("receive_bank_id");
           		}else{
           			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");
           	        Record rec = Db.findFirst(str2);

@@ -165,6 +165,10 @@ public class ReaderXlSX {
     	InputStream is = new FileInputStream(xlsFile);
     	ReaderXlSX excelReader = new ReaderXlSX();
         excelReader.readExcelTitle(is);
+        
+        if(is != null){
+        	is.close();
+        }
     	return xlsxTitle;
     }
     
@@ -173,6 +177,10 @@ public class ReaderXlSX {
     	InputStream is = new FileInputStream(xlsFile);
     	ReaderXlSX excelReader = new ReaderXlSX();
     	xlsxContent = excelReader.readExcelContent(is);
+    	
+    	if(is != null){
+        	is.close();
+        }
     	return xlsxContent;
     }
     //获取xls文件内容
@@ -189,6 +197,13 @@ public class ReaderXlSX {
         xlsData.put("title", xlsxTitle);
         xlsData.put("content", xlsxContent);
 	        
+        
+        if(is != null){
+        	is.close();
+        }
+        if(is2 != null){
+        	is2.close();
+        }
     	return xlsData;
     	
     }
