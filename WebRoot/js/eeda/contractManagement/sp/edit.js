@@ -123,14 +123,5 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	            element.addClass('valid').closest('.form-group').removeClass('has-error').addClass('has-success');
 	        }
 	    });
-	  
-	  
     });
-    
-    
-    $('.tab-content').on('change','[type=radio]',function(){
-    	$("#saveBtn").click();
-    })
-    
-    
 });
