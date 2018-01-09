@@ -89,7 +89,6 @@ public class FinItemController extends Controller {
     	if(user==null){
         	return;
         }
-        long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         
     	List<Record> finItems = null;
@@ -126,7 +125,7 @@ public class FinItemController extends Controller {
         if(user==null){
         	return;
         }
-        long userId = user.getLong("id");
+        //long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("sEcho");
@@ -141,7 +140,7 @@ public class FinItemController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> BillingOrders = Db.find(sql + " order by id desc " +sLimit);
-        Map BillingOrderListMap = new HashMap();
+        Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", pageIndex);
         BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
         BillingOrderListMap.put("iTotalDisplayRecords", rec.getLong("total"));
@@ -205,7 +204,7 @@ public class FinItemController extends Controller {
         if(user==null){
         	return;
         }
-        long userId = user.getLong("id");
+        //long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
@@ -248,7 +247,7 @@ public class FinItemController extends Controller {
     	if (user==null) {
             return;
         }
-        long userId = user.getLong("id");
+        //long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         
     	String sql = "select * from fin_item where code = ? and office_id=?";

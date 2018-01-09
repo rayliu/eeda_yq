@@ -90,7 +90,7 @@ public class PlanOrderController extends Controller {
     }
     
     @Before(Tx.class)
-   	public void save() throws Exception {		
+   	public void save() throws InstantiationException, IllegalAccessException {		
    		String jsonStr=getPara("params");
        	
        	Gson gson = new Gson();  
@@ -178,7 +178,7 @@ public class PlanOrderController extends Controller {
    		String pol_id = item.get("pol");
    		
    		String pod_id = item.get("pod");
-   		String container_type = item.get("container_type");
+   		//String container_type = item.get("container_type");
    		String truck_type = item.get("truck_type");
    		
    		String cargo_name = item.get("cargo_name");
@@ -289,7 +289,7 @@ public class PlanOrderController extends Controller {
                     	for (int i = 0; i < array.length; i++) {
                     		String[] ctypeMsg = array[i].split("X");
                     		String tr_type = ctypeMsg[0];
-                    		String number = ctypeMsg[1];
+                    		//String number = ctypeMsg[1];
                     		take_land.set("truck_type", tr_type);
                     	}
                 	}
@@ -531,7 +531,7 @@ public class PlanOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by  " + sName +" "+ sort + sLimit);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));

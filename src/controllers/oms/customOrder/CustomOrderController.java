@@ -74,7 +74,7 @@ public class CustomOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -107,7 +107,7 @@ public class CustomOrderController extends Controller {
 	}
 
 	@Before(Tx.class)
-   	public void save() throws Exception {		
+   	public void save() {		
    		String jsonStr=getPara("params");
        	
        	Gson gson = new Gson();  

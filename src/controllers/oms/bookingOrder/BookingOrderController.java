@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -201,7 +202,7 @@ public class BookingOrderController extends Controller {
     
     @SuppressWarnings("unchecked")
 	@Before(Tx.class)
-   	public void save() throws Exception {	
+   	public void save() throws InstantiationException, IllegalAccessException {	
     	
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
@@ -318,7 +319,7 @@ public class BookingOrderController extends Controller {
     
     //上传相关文档
     @Before(Tx.class)
-    public void saveDocFile() throws Exception{
+    public void saveDocFile() {
     	try {
             String order_id = getPara("order_id");
             List<UploadFile> fileList = getFiles("doc");
@@ -345,7 +346,7 @@ public class BookingOrderController extends Controller {
 	public void uploadFile(List<UploadFile> fileList, 
 	        String orderId,
 	        Long userId, String type,
-	        String tableName, boolean isLand) throws Exception {
+	        String tableName, boolean isLand) throws IOException, Exception {
 	    for (int i = 0; i < fileList.size(); i++) {
             File file = fileList.get(i).getFile();
             //file.length()/1024/1024
@@ -367,7 +368,7 @@ public class BookingOrderController extends Controller {
     
     //报关的文档上传
     @Before(Tx.class)
-    public void uploadCustomDoc() throws Exception{
+    public void uploadCustomDoc() {
         try {
             String order_id = getPara("order_id");
             List<UploadFile> fileList = getFiles("doc");
@@ -485,7 +486,7 @@ public class BookingOrderController extends Controller {
     private List<Record> getItems(String orderId,String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
-		Office office=LoginUserController.getLoginUserOffice(this);
+		//Office office=LoginUserController.getLoginUserOffice(this);
     	if("shipment".equals(type)){
     		itemSql = "select jos.*,CONCAT(u.name,u.name_eng) unit_name from book_order_shipment_item jos"
     				+ " left join unit u on u.id=jos.unit_id"
@@ -833,8 +834,6 @@ public class BookingOrderController extends Controller {
 			return;
         long office_id=user.getLong("office_id");
         
-    	String type=getPara("type");
-    	
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
@@ -912,7 +911,7 @@ public class BookingOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by order_export_date desc " +sLimit);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -928,7 +927,7 @@ public class BookingOrderController extends Controller {
     	List<Record> list = null;
     	list = getItems(order_id,type);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list != null?list.size():0);
         map.put("iTotalDisplayRecords", list != null?list.size():0);
@@ -1066,7 +1065,7 @@ public class BookingOrderController extends Controller {
     	List<Record> list = null;
     	list = getDocItems(order_id,type);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());

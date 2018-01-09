@@ -60,7 +60,7 @@ public class TradeChargeCheckOrderController extends Controller {
 	}
 	
 	@Before(Tx.class)
-   	public void save() throws Exception {		
+   	public void save() {		
    		String jsonStr=getPara("params");
        	
        	Gson gson = new Gson();  
@@ -169,11 +169,7 @@ public class TradeChargeCheckOrderController extends Controller {
     public void list() {
     	String checked = getPara("checked");
     	
-        String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
@@ -301,7 +297,7 @@ public class TradeChargeCheckOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -312,17 +308,11 @@ public class TradeChargeCheckOrderController extends Controller {
     }
     
 	public void list2() {
-        String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
 
-		List<Record> BillingOrders = null;
-
-		Map BillingOrderListMap = new HashMap();
+		Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
 		BillingOrderListMap.put("draw", pageIndex);
-		BillingOrderListMap.put("data", BillingOrders);
+		BillingOrderListMap.put("data", null);
 
 		renderJson(BillingOrderListMap);
 	}
@@ -747,7 +737,6 @@ public class TradeChargeCheckOrderController extends Controller {
 		aco.update();
 		
 		//设置y，已生成对账单o
-		String itemList=aco.get("ref_order_id");
 		String sql="UPDATE trade_job_order_arap joa set billConfirm_flag='Y' "
 					+"where joa.id in (select aci.ref_order_id FROM trade_arap_charge_item aci where charge_order_id="+id+" )";
 		Db.update(sql);

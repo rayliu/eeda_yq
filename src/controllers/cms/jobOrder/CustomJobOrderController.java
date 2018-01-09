@@ -16,6 +16,7 @@ import models.UserLogin;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -86,7 +87,7 @@ public class CustomJobOrderController extends Controller {
     
     @SuppressWarnings("unchecked")
 	@Before(Tx.class)
-   	public void save() throws Exception {	
+   	public void save(){	
     	
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
@@ -386,7 +387,7 @@ public class CustomJobOrderController extends Controller {
     
     //使用common-email, javamail
     @Before(Tx.class)
-    public void sendMail() throws Exception {
+    public void sendMail() throws EmailException {
     	String order_id = getPara("order_id");
     	String userEmail = getPara("email");
     	String ccEmail = getPara("ccEmail");
@@ -503,7 +504,7 @@ public class CustomJobOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -519,7 +520,7 @@ public class CustomJobOrderController extends Controller {
     	List<Record> list = null;
     	list = getItems(order_id,type);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list!=null?list.size():0);
         map.put("iTotalDisplayRecords", list!=null?list.size():0);

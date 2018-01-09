@@ -160,7 +160,7 @@ public class ContainerTypeController extends Controller {
             }
         } else {
             ContainerType toll = ContainerType.dao.findById(id);
-            boolean b = toll.set("container_type", container_type).update();
+            //boolean b = toll.set("container_type", container_type).update();
             renderJson(toll);
         }
 

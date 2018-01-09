@@ -24,6 +24,7 @@ import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -610,8 +611,7 @@ public class TradeChargeRequestController extends Controller {
 			confirm_name = userLogin.get("c_name");
 		}
 		
-		List<Record> list = null;
-    	list = getItems(id);
+		List<Record> list  = getItems(id);
     	setAttr("docList", list);
 		
 		Record r = order.toRecord();
@@ -628,7 +628,7 @@ public class TradeChargeRequestController extends Controller {
   	
   	
   	@Before(Tx.class)
-    public void sendMail(String order_id,String order_no,String creator_name) throws Exception {
+    public void sendMail(String order_id,String order_no,String creator_name) {
     	UserLogin userlogin = UserLogin.dao.findFirst("SELECT * from user_login where c_name='"+creator_name+"'");
     	String mailTitle = "您有一份复核不通过的收款申请单";
     	String mailContent = "收款申请单为<a href=\"http://www.esimplev.com/chargeRequest/edit?id="+order_id+"\">"+order_no+"</a>";
@@ -660,7 +660,7 @@ public class TradeChargeRequestController extends Controller {
         
         	//email.setCharset("UTF-8"); 
         	email.send();
-        }catch(Exception e){
+        }catch(EmailException e){
         	e.printStackTrace();
         }
        
@@ -669,7 +669,7 @@ public class TradeChargeRequestController extends Controller {
   	
     //复核
   	@Before(Tx.class)
-    public void checkOrder() throws Exception{
+    public void checkOrder(){
         String application_id=getPara("order_id");
         String selfId = getPara("selfId");
         String ids = getPara("ids");
@@ -1164,11 +1164,7 @@ public class TradeChargeRequestController extends Controller {
     public void itemList(){
     	String checked = getPara("checked");
     	
-        String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
@@ -1243,7 +1239,7 @@ public class TradeChargeRequestController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -1262,7 +1258,6 @@ public class TradeChargeRequestController extends Controller {
     	String itemList= getPara("charge_itemlist");
     	String[] itemArray =  itemList.split(",");
     	String appOrderId=getPara("order_id");
-    	TradeArapChargeApplicationOrder order = TradeArapChargeApplicationOrder.dao.findById(appOrderId);
     	
    		TradeChargeApplicationOrderRel caor = null;
 		for(String item :itemArray){

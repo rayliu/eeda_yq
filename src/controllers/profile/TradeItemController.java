@@ -68,7 +68,7 @@ public class TradeItemController extends Controller {
     	  if(user==null){
           	return;
           }
-          long userId = user.getLong("id");
+          //long userId = user.getLong("id");
           Long officeId = user.getLong("office_id");
           
           String sLimit = "";
@@ -100,7 +100,7 @@ public class TradeItemController extends Controller {
     	        Record rec = Db.findFirst(sqlTotal);
     	        logger.debug("total records:" + rec.getLong("total"));
     	        List<Record> BillingOrders = Db.find(sql + " order by id desc " +sLimit);
-    	        Map BillingOrderListMap = new HashMap();
+    	        Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
     	        BillingOrderListMap.put("sEcho", pageIndex);
     	        BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
     	        BillingOrderListMap.put("iTotalDisplayRecords", rec.getLong("total"));
@@ -117,7 +117,7 @@ public class TradeItemController extends Controller {
     	if(user==null){
         	return;
         }
-        long userId = user.getLong("id");
+        //long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         
     	List<Record> finItems = null;
@@ -150,7 +150,7 @@ public class TradeItemController extends Controller {
         if(user==null){
         	return;
         }
-        long userId = user.getLong("id");
+        //long userId = user.getLong("id");
         Long officeId = user.getLong("office_id");
         
         String sLimit = "";
@@ -174,7 +174,7 @@ public class TradeItemController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> BillingOrders = Db.find(sql + " order by id desc " +sLimit);
-        Map BillingOrderListMap = new HashMap();
+        Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", pageIndex);
         BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
         BillingOrderListMap.put("iTotalDisplayRecords", rec.getLong("total"));
@@ -277,14 +277,14 @@ public class TradeItemController extends Controller {
       	if (user==null) {
             return;
         }
-      long userId = user.getLong("id");
+      //long userId = user.getLong("id");
       Long officeId = user.getLong("office_id");
       
-      String sLimit = "";
-      String pageIndex = getPara("sEcho");
-      if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-          sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
-      }
+//      String sLimit = "";
+//      String pageIndex = getPara("sEcho");
+//      if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
+//          sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
+//      }
 		String name = getPara("commodity_name");
 		String c = getPara("commodity_code");
 		String[]codes = c.split(",");
@@ -326,7 +326,7 @@ public class TradeItemController extends Controller {
     	if (user==null) {
             return;
         }
-        long userId = user.getLong("id");
+        //long userId = user.getLong("id");
         long officeId = user.getLong("office_id");
     	
     	boolean ifExist = true;

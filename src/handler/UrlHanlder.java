@@ -14,10 +14,10 @@ public class UrlHanlder extends Handler {
 	@Override
 	public void handle(String target, HttpServletRequest request,
 			HttpServletResponse response, boolean[] isHandled) {
-		String ip = getRemortIP(request);// 返回发出请求的IP地址
-		String params = request.getQueryString();// 返回请求行中的参数部分
-		String host = request.getRemoteHost();// 返回发出请求的客户机的主机名
-		int port = request.getRemotePort();// 返回发出请求的客户机的端口号。
+//		String ip = getRemortIP(request);// 返回发出请求的IP地址
+//		String params = request.getQueryString();// 返回请求行中的参数部分
+//		String host = request.getRemoteHost();// 返回发出请求的客户机的主机名
+//		int port = request.getRemotePort();// 返回发出请求的客户机的端口号。
 
 		String queryString = "";  //获取Post参数
 		Map<String, String[]> postParams = request.getParameterMap(); 

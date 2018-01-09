@@ -83,7 +83,7 @@ public class UnitController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> BillingOrders = Db.find(sql + " order by id desc " +sLimit);
-        Map BillingOrderListMap = new HashMap();
+        Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", pageIndex);
         BillingOrderListMap.put("iTotalRecords", rec.getLong("total"));
         BillingOrderListMap.put("iTotalDisplayRecords", rec.getLong("total"));

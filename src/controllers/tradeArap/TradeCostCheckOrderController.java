@@ -61,11 +61,11 @@ public class TradeCostCheckOrderController extends Controller {
 	public void create(){
 		
 		String ids = getPara("itemId");//job_order_arap ids
-		String totalAmount = getPara("totalAmount");
-		String cny_totalAmount = getPara("cny_totalAmount");
-		String usd_totalAmount = getPara("usd_totalAmount");
-		String hkd_totalAmount = getPara("hkd_totalAmount");
-		String jpy_totalAmount = getPara("jpy_totalAmount");
+		//String totalAmount = getPara("totalAmount");
+//		String cny_totalAmount = getPara("cny_totalAmount");
+//		String usd_totalAmount = getPara("usd_totalAmount");
+//		String hkd_totalAmount = getPara("hkd_totalAmount");
+//		String jpy_totalAmount = getPara("jpy_totalAmount");
 		String exchange_totalAmount = getPara("exchange_totalAmount");
 		String exchange_cny_totalAmount = getPara("exchange_cny_totalAmount");
 		String exchange_usd_totalAmount = getPara("exchange_usd_totalAmount");
@@ -266,7 +266,7 @@ public class TradeCostCheckOrderController extends Controller {
 	
 	public void createList() {
 		String ids = getPara("itemIds");
-		String order_id = getPara("order_id")==null?"":getPara("order_id");
+		//String order_id = getPara("order_id")==null?"":getPara("order_id");
 		String sLimit = "";
 		String pageIndex = getPara("draw");
 		if (getPara("start") != null && getPara("length") != null) {
@@ -304,11 +304,7 @@ public class TradeCostCheckOrderController extends Controller {
 	public void list() {
 		String checked = getPara("checked");
 		
-		String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
@@ -368,7 +364,7 @@ public class TradeCostCheckOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by order_export_date desc " );
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -413,7 +409,7 @@ public class TradeCostCheckOrderController extends Controller {
 	
 	
 	@Before(Tx.class)
-	public void save() throws Exception{
+	public void save(){
 		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  

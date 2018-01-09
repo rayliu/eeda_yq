@@ -22,6 +22,7 @@ import models.eeda.tr.tradeJoborder.TradeJobOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -116,14 +117,13 @@ public class CustomPlanOrderController extends Controller {
     }
     
     @Before(Tx.class)
-   	public void save() throws Exception {		
+   	public void save() throws InstantiationException, IllegalAccessException {		
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
             
         CustomPlanOrder customPlanOrder = new CustomPlanOrder();
    		String id = (String) dto.get("id");
-   		String to_office_id = (String) dto.get("to_office_id");
    		String ref_job_order_id = (String) dto.get("ref_job_order_id");
         SimpleDateFormat sdf = new SimpleDateFormat("MM");//转换后的格式
         String newDateStr = "";
@@ -769,12 +769,11 @@ public class CustomPlanOrderController extends Controller {
     public void tableList(){
     	String order_id = getPara("order_id");
     	String type = getPara("type");
-    	Boolean showHide = Boolean.valueOf(getPara("showHide"));
     	
     	List<Record> list = null;
     	list = getItems(order_id, type);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list != null?list.size():0);
         map.put("iTotalDisplayRecords", list != null?list.size():0);
@@ -787,7 +786,7 @@ public class CustomPlanOrderController extends Controller {
 
     
     //提交申请单给报关行
-    public void confirmCompleted() throws Exception{
+    public void confirmCompleted() {
     	String id = getPara("id");
     	String plan_order_no = getPara("plan_order_no");
     	String customer_id= getPara("customer_id");
@@ -987,7 +986,7 @@ public class CustomPlanOrderController extends Controller {
   
 
     @Before(Tx.class)
-    public void sendMail(String order_id,String order_no,long office_id) throws Exception {
+    public void sendMail(String order_id,String order_no,long office_id){
     	String mailTitle = "您有一份报关单待处理";
     	String mailContent = "报关申请单号为<a href=\"http://www.esimplev.com/customPlanOrder/edit?id="+order_id+"\">"+order_no+"</a>";
     	
@@ -1015,7 +1014,7 @@ public class CustomPlanOrderController extends Controller {
         
         	//email.setCharset("UTF-8"); 
         	email.send();
-        }catch(Exception e){
+        }catch(EmailException e){
         	e.printStackTrace();
         }
     }

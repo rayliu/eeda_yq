@@ -87,7 +87,7 @@ public class MailBoxController extends Controller {
 
         List<Record> orderList = Db.find(sql + condition
                 + " order by create_time desc " + sLimit);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -96,7 +96,7 @@ public class MailBoxController extends Controller {
     }
     
     @Before(Tx.class)
-    public void save() throws Exception {
+    public void save() {
         String title = getPara("radioTitle");
         String content = getPara("radioContent");
         UserLogin user = LoginUserController.getLoginUser(this);
@@ -114,7 +114,7 @@ public class MailBoxController extends Controller {
     }
 
     @Before(Tx.class)
-    public void saveOfMsgBoard() throws Exception {
+    public void saveOfMsgBoard(){
         String title = getPara("radioTitle");
         String content = getPara("radioContent");
         UserLogin user = LoginUserController.getLoginUser(this);

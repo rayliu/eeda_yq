@@ -46,7 +46,7 @@ public class PersonalMsgController extends Controller {
 	}
 	
     @Before(Tx.class)
-   	public void save() throws Exception {
+   	public void save() {
     	String title = getPara("radioTitle");
     	String content = getPara("radioContent");
     	UserLogin user = LoginUserController.getLoginUser(this);

@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +31,7 @@ import models.eeda.tms.TransJobOrderLandItem;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -152,7 +154,7 @@ public class TransJobOrderController extends Controller {
     
     @SuppressWarnings("unchecked")
 	@Before(Tx.class)
-   	public void save() throws Exception {	
+   	public void save() throws InstantiationException, IllegalAccessException, ParseException{	
     	
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
@@ -163,7 +165,6 @@ public class TransJobOrderController extends Controller {
         
 //      SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//转换后的格式
-        String newDateStrMM = "";
         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyyMMdd");//分析日期
         
         
@@ -229,7 +230,7 @@ public class TransJobOrderController extends Controller {
 		    return;
 		}
 		Date date = sdf.parse(CABINET_DATE);
-		String jobOrderDate = parseFormat.format(date).toString();
+		String jobOrderDate = (String)parseFormat.format(date);
 		
 		
         TransJobOrder transJobOrder = new TransJobOrder();
@@ -261,10 +262,9 @@ public class TransJobOrderController extends Controller {
    			        ) 
    			  ){
    			   //需后台处理的字段
-   	   			String order_no = "";
    	   			StringBuilder sb = new StringBuilder(oldOrderNo);//构造一个StringBuilder对象
    	   			sb.replace(2, 10, jobOrderDate);
-   	   			order_no =sb.toString();
+   	   			String order_no =sb.toString();
 	   			transJobOrder.set("order_no", order_no);
 	   		}
             
@@ -928,7 +928,7 @@ public class TransJobOrderController extends Controller {
     
     //使用common-email, javamail
     @Before(Tx.class)
-    public void sendMail() throws Exception {
+    public void sendMail() throws EmailException {
     	String order_id = getPara("order_id");
     	String userEmail = getPara("email");
     	String ccEmail = getPara("ccEmail");
@@ -1097,10 +1097,9 @@ public class TransJobOrderController extends Controller {
     	String order_id = getPara("order_id");
     	String type = getPara("type");
     	
-    	List<Record> list = null;
-    	list = getItems(order_id,type);
+    	List<Record> list = getItems(order_id,type);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list != null?list.size():0);
         map.put("iTotalDisplayRecords", list != null?list.size():0);

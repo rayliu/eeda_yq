@@ -3,6 +3,7 @@ package controllers.tms.jobOrder;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,7 +53,7 @@ public class TransOrderShortCutController extends Controller {
 	
 	@SuppressWarnings("null")
 	@Before(EedaMenuInterceptor.class)
-    public void create() throws Exception {
+    public void create() throws ParseException {
 		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
@@ -63,7 +64,7 @@ public class TransOrderShortCutController extends Controller {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");//转换后的格式
         
 		
-		TransJobOrderController tjc=new TransJobOrderController();
+		//TransJobOrderController tjc=new TransJobOrderController();
    		UserLogin user = LoginUserController.getLoginUser(this);
    		if (user==null) {
             return;
@@ -368,12 +369,12 @@ public class TransOrderShortCutController extends Controller {
 //		   		r.set("ids",ids);
 		   		
 		   		
-		   		Record rerOrderId= new Record();
+		   		
 		        
 		        String sqlOrderId = "SELECT * FROM trans_job_contract_relation pq "
 		        		+ " WHERE order_id="+order_id
 		        		+ " and sp_id ="+charge_company_id;
-		        rerOrderId = Db.findFirst(sqlOrderId);
+		        Record rerOrderId = Db.findFirst(sqlOrderId);
 		        if(rerOrderId!=null&&rer==null){
 		        	long Arap_id = rerOrderId.get("arap_id");
 		        	long contractId =rerOrderId.get("id");

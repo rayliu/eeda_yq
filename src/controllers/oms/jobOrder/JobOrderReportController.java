@@ -288,7 +288,7 @@ public class JobOrderReportController extends Controller {
     	}
     	
 		String outFileName = "/download/进仓单资料-"+customer_name;
-		String FileName = "进仓单资料-"+customer_name;
+		//String FileName = "进仓单资料-"+customer_name;
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);
@@ -587,8 +587,8 @@ public class JobOrderReportController extends Controller {
 		String order_id = getPara("id");
 		String fileName = "";
 		String outFileName = "";
-			outFileName = "/download/报关应收对账单 PDF";
-			fileName = "/report/cms/cmsChargeCheckedOrder.jasper";
+		outFileName = "/download/报关应收对账单 PDF";
+		fileName = "/report/cms/cmsChargeCheckedOrder.jasper";
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("order_id", order_id);

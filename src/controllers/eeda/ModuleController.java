@@ -115,7 +115,6 @@ public class ModuleController extends Controller {
     	if(user == null)
    			return;
         String parent_id = getPara("id");
-        String cons = "";
         String sql = "SELECT "
                 +" id,"
                 +" module_name,"
@@ -141,7 +140,6 @@ public class ModuleController extends Controller {
     }
 
     public void addModule() {
-        String id = getPara("id");
         String parent_id = getPara("parent_id");
         String module_name = getPara("name");
         UserLogin user = LoginUserController.getLoginUser(this);
@@ -414,7 +412,7 @@ public class ModuleController extends Controller {
                                 module_id, id);
                 if (rec != null) {// update
                     String sql = "update eeda_module_event set event_name=?, event_type=?, event_script=? where id=?";
-                    int updateCount = Db.update(sql, event_name, event_type,
+                    Db.update(sql, event_name, event_type,
                             event_script, id);
                 } else {// insert
                     String sql = "insert into eeda_module_event (module_id, event_name, event_type, event_script) values(?, ?, ?, ?)";
@@ -436,7 +434,7 @@ public class ModuleController extends Controller {
         	if(row != null){
         		if (row.get("role_id") == null)
         			continue;
-        		String role_id = row.get("role_id").toString();
+        		String role_id = (String)row.get("role_id");
         		roleIds.add(role_id);
         	}
         }
@@ -477,7 +475,7 @@ public class ModuleController extends Controller {
                                 module_id, role_id, permission_id);
                 if (rec != null) {// update
                     String sql = "update eeda_module_permission set permission_id=?, is_auth=?, office_id=? where id=?";
-                    int updateCount = Db.update(sql, permission_id, is_auth,
+                    Db.update(sql, permission_id, is_auth,
                             null, rec.get("id"));
                 } else {// insert
                     String sql = "insert into eeda_module_permission (module_id, role_id, permission_id, is_auth, office_id) values(?, ?, ?, ?, ?)";
@@ -563,7 +561,7 @@ public class ModuleController extends Controller {
                 module_id);
         String sys_only = module.getStr("sys_only");
 
-        List<Record> structure_list = null;// getStructureRecs(module_id);
+        //List<Record> structure_list = null;// getStructureRecs(module_id);
         // List<Record> action_list = getActionList(module_id);
         // List<Record> event_list = getEventList(module_id);
         List<Record> permission_list = getPermissionList(module_id);
@@ -693,7 +691,7 @@ public class ModuleController extends Controller {
                     + field.getLong("id") + "_" + field.getStr("field_name");
             exp_key = exp_key.replaceAll(target_field, transFieldName);
 
-            String exp_post = exp_key.split("=")[1];// "报关商品.数量*报关商品.单价"
+            //String exp_post = exp_key.split("=")[1];// "报关商品.数量*报关商品.单价"
             // Stack<String> paramStack =
             // ExpCalculator.getParamsStack(exp_post);
             // for (String paramFieldName : paramStack) {

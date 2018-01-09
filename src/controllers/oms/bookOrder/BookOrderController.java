@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +30,7 @@ import models.eeda.oms.jobOrder.JobOrderDoc;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -202,7 +204,7 @@ public class BookOrderController extends Controller {
     
     @SuppressWarnings("unchecked")
 	@Before(Tx.class)
-   	public void save() throws Exception {	
+   	public void save() throws InstantiationException, IllegalAccessException {	
     	
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
@@ -256,9 +258,6 @@ public class BookOrderController extends Controller {
 		List<Map<String, String>> doc_list = (ArrayList<Map<String, String>>)dto.get("doc_list");
 		DbUtils.handleList(doc_list, id, BookOrderDoc.class, "order_id");
 
-		long creator = bookOrder.getLong("creator");
-   		String user_name = LoginUserController.getUserNameById(creator);
-   		
 		Record r = bookOrder.toRecord();
 
    		renderJson(r);
@@ -803,7 +802,7 @@ public class BookOrderController extends Controller {
     
     //上传相关文档
     @Before(Tx.class)
-    public void saveDocFile() throws Exception{
+    public void saveDocFile() {
     	try {
             String order_id = getPara("order_id");
             List<UploadFile> fileList = getFiles("doc");
@@ -830,7 +829,7 @@ public class BookOrderController extends Controller {
 	public void uploadFile(List<UploadFile> fileList, 
 	        String orderId,
 	        Long userId, String type,
-	        String tableName, boolean isLand) throws Exception {
+	        String tableName, boolean isLand) throws IOException, Exception {
 	    for (int i = 0; i < fileList.size(); i++) {
             File file = fileList.get(i).getFile();
             //file.length()/1024/1024
@@ -852,7 +851,7 @@ public class BookOrderController extends Controller {
     
     //报关的文档上传
     @Before(Tx.class)
-    public void uploadCustomDoc() throws Exception{
+    public void uploadCustomDoc(){
         try {
             String order_id = getPara("order_id");
             List<UploadFile> fileList = getFiles("doc");
@@ -876,7 +875,7 @@ public class BookOrderController extends Controller {
     
     //上传陆运签收文件描述
     @Before(Tx.class)
-    public void uploadSignDesc() throws Exception{
+    public void uploadSignDesc(){
         try {
             String id = getPara("id");
             List<UploadFile> fileList = getFiles("doc");
@@ -1029,7 +1028,6 @@ public class BookOrderController extends Controller {
     private List<Record> getItems(String orderId,String type) {
     	String itemSql = "";
     	List<Record> itemList = null;
-		Office office=LoginUserController.getLoginUserOffice(this);
     	if("shipment".equals(type)){
     		itemSql = "select jos.*,CONCAT(u.name,u.name_eng) unit_name from book_order_shipment_item jos"
     				+ " left join unit u on u.id=jos.unit_id"
@@ -1384,7 +1382,7 @@ public class BookOrderController extends Controller {
     
     //使用common-email, javamail
     @Before(Tx.class)
-    public void sendMail() throws Exception {
+    public void sendMail() throws EmailException {
     	String order_id = getPara("order_id");
     	String userEmail = getPara("email");
     	String ccEmail = getPara("ccEmail");
@@ -1479,8 +1477,6 @@ public class BookOrderController extends Controller {
    			return;
         long office_id=user.getLong("office_id");
         
-    	String type=getPara("type");
-    	
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
@@ -1557,7 +1553,7 @@ public class BookOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by order_export_date desc " +sLimit);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -1893,7 +1889,7 @@ public class BookOrderController extends Controller {
     	List<Record> list = null;
     	list = getDocItems(order_id,type);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());
@@ -1977,7 +1973,7 @@ public class BookOrderController extends Controller {
        		
         	String pol_id = re.getStr("pol_id");
         	String pod_id = re.getStr("pod_id");
-        	String transport_type = pol_id+pol_id;
+        	String transport_type = pol_id+pod_id;
 //        	if(StringUtils.isNotBlank(truct_type)){
 //        		if(StringUtils.isBlank(transport_type)){
 //        			transport_type += "land";

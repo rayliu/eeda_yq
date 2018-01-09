@@ -25,6 +25,7 @@ import models.eeda.tr.tradeJoborder.TradeJobOrderArap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -580,7 +581,7 @@ public class TradeCostRequestController extends Controller {
 	}
   	
     @Before(Tx.class)
-    public void sendMail(String order_id,String order_no,String creator_name) throws Exception {
+    public void sendMail(String order_id,String order_no,String creator_name) {
     	UserLogin userlogin = UserLogin.dao.findFirst("SELECT * from user_login where c_name='"+creator_name+"'");
     	String mailTitle = "您有一份复核不通过的付款申请单";
     	String mailContent = "付款申请单为<a href=\"http://www.esimplev.com/costRequest/edit?id="+order_id+"\">"+order_no+"</a>";
@@ -612,7 +613,7 @@ public class TradeCostRequestController extends Controller {
         
         	//email.setCharset("UTF-8"); 
         	email.send();
-        }catch(Exception e){
+        }catch(EmailException e){
         	e.printStackTrace();
         }
        
@@ -625,7 +626,7 @@ public class TradeCostRequestController extends Controller {
   	
     //复核
   	@Before(Tx.class)
-    public void checkOrder() throws Exception{
+    public void checkOrder(){
         String application_id=getPara("order_id");
         String selfId = getPara("selfId");
    		String ids = getPara("ids");
@@ -1054,11 +1055,7 @@ public class TradeCostRequestController extends Controller {
     //添加明细的查询
     public void itemList(){
     	String checked = getPara("checked");
-        String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
@@ -1133,7 +1130,7 @@ public class TradeCostRequestController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -1147,7 +1144,7 @@ public class TradeCostRequestController extends Controller {
     	String itemList= getPara("cost_itemlist");
     	String[] itemArray =  itemList.split(",");
     	String appOrderId=getPara("order_id");
-    	TradeArapCostApplicationOrder order = TradeArapCostApplicationOrder.dao.findById(appOrderId);
+    	//TradeArapCostApplicationOrder order = TradeArapCostApplicationOrder.dao.findById(appOrderId);
     	
    		TradeCostApplicationOrderRel caor = null;
 		for(String item :itemArray){

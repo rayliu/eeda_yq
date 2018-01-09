@@ -85,7 +85,7 @@ public class TruckOrderController extends Controller {
     
     
     @Before(Tx.class)
-   	public void save() throws Exception {	
+   	public void save(){	
     	
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  

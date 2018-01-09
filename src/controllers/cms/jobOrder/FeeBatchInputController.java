@@ -21,6 +21,7 @@ import models.eeda.tr.tradeJoborder.TradeJobOrder;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -100,7 +101,7 @@ public class FeeBatchInputController extends Controller {
     }
     
     @Before(Tx.class)
-   	public void save() throws Exception {		
+   	public void save() throws InstantiationException, IllegalAccessException{		
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
@@ -725,12 +726,11 @@ public class FeeBatchInputController extends Controller {
     public void tableList(){
     	String order_id = getPara("order_id");
     	String type = getPara("type");
-    	Boolean showHide = Boolean.valueOf(getPara("showHide"));
     	
     	List<Record> list = null;
     	list = getItems(order_id, type);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list != null?list.size():0);
         map.put("iTotalDisplayRecords", list != null?list.size():0);
@@ -905,7 +905,7 @@ public class FeeBatchInputController extends Controller {
         String item_id = getPara("item_id");
         String check = getPara("check");
         String order_id = getPara("order_id");
-		Office office=LoginUserController.getLoginUserOffice(this);
+		//Office office=LoginUserController.getLoginUserOffice(this);
         
         if(StringUtils.isEmpty(item_id)){//全选
             Db.update("update custom_plan_order_doc set cms_share_flag =? where order_id = ?   ",check,order_id);
@@ -934,7 +934,7 @@ public class FeeBatchInputController extends Controller {
   
 
     @Before(Tx.class)
-    public void sendMail(String order_id,String order_no,long office_id) throws Exception {
+    public void sendMail(String order_id,String order_no,long office_id){
     	String mailTitle = "您有一份报关单待处理";
     	String mailContent = "报关申请单号为<a href=\"http://www.esimplev.com/customPlanOrder/edit?id="+order_id+"\">"+order_no+"</a>";
     	
@@ -962,7 +962,7 @@ public class FeeBatchInputController extends Controller {
         
         	//email.setCharset("UTF-8"); 
         	email.send();
-        }catch(Exception e){
+        }catch(EmailException e){
         	e.printStackTrace();
         }
        

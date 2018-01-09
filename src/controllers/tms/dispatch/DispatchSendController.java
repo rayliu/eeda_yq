@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +30,7 @@ import models.yh.profile.Carinfo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -145,7 +147,7 @@ public class DispatchSendController extends Controller {
     
     @SuppressWarnings("unchecked")
 	@Before(Tx.class)
-   	public void save() throws Exception {	
+   	public void save() throws ParseException, InstantiationException, IllegalAccessException {	
     	
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
@@ -156,7 +158,6 @@ public class DispatchSendController extends Controller {
         
 //      SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//转换后的格式
-        String newDateStrMM = "";
         SimpleDateFormat parseFormat = new SimpleDateFormat("yyyyMMdd");//分析日期
         
         
@@ -961,7 +962,7 @@ public class DispatchSendController extends Controller {
     
     //使用common-email, javamail
     @Before(Tx.class)
-    public void sendMail() throws Exception {
+    public void sendMail() throws EmailException {
     	String order_id = getPara("order_id");
     	String userEmail = getPara("email");
     	String ccEmail = getPara("ccEmail");
