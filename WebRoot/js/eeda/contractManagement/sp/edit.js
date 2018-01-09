@@ -126,4 +126,11 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
 	  
 	  
     });
+    
+    
+    $('.tab-content').on('change','[type=radio]',function(){
+    	$("#saveBtn").click();
+    })
+    
+    
 });

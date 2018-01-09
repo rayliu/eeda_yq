@@ -133,7 +133,8 @@ public class SupplierContractController extends Controller {
         setAttr("tour_charge_items", getItems(id,"tour"));
         setAttr("tour_locations", getItems(id,"tour_loc"));
         
-   		 Record order=Db.findFirst("select cc.*,p.abbr  from supplier_contract cc "
+   		 Record order=Db.findFirst("select cc.*,p.abbr,ul.c_name  from supplier_contract cc "
+   		 		+ " left join user_login ul on ul.id = cc.creator"
    				+ " LEFT JOIN party p on p.id = cc.customer_id  where cc.id = ? ",id);
    		setAttr("order",order);
         render("/eeda/contractManagement/sp/edit.html");
@@ -280,7 +281,7 @@ public class SupplierContractController extends Controller {
         SimpleDateFormat sdfMM = new SimpleDateFormat("MM");//转换后的格式
         	newDateStr = sdf.format(new Date());
         	newDateStrMM = sdfMM.format(new Date());
-   		if (StringUtils.isNotEmpty(id)) {
+   		if (StringUtils.isNotBlank(id)) {
    			//update
    			supplierContract = SupplierContract.dao.findById(id);
    			
@@ -309,15 +310,13 @@ public class SupplierContractController extends Controller {
 //   	   			sb.insert(2, generateJobPrefix(type));//在指定的位置，插入指定的字符串（类型代表）
    	   			sb.insert(4, newDateStrMM);//在指定的位置，插入指定的字符串(月份)
    	   			contract_no = sb.toString();
-   	   		supplierContract.set("contract_no", contract_no);
-   	   		supplierContract.set("creator", user.getLong("id"));
-   	   		supplierContract.set("create_date", new Date());
-   	   		supplierContract.set("status", "新建");
-   	   		supplierContract.set("updator", user.getLong("id"));
-   	   		supplierContract.set("update_stamp", new Date());
-   	   		supplierContract.set("office_id", office_id);
-   	   		supplierContract.save();
-   	   		id = supplierContract.getLong("id").toString();
+	   	   		supplierContract.set("contract_no", contract_no);
+	   	   		supplierContract.set("creator", user.getLong("id"));
+	   	   		supplierContract.set("create_date", new Date());
+	   	   		supplierContract.set("status", "新建");
+	   	   		supplierContract.set("office_id", office_id);
+	   	   		supplierContract.save();
+	   	   		id = supplierContract.getLong("id").toString();
    			}
    			if(office_id==6){
    			//需后台处理的字段
@@ -325,15 +324,13 @@ public class SupplierContractController extends Controller {
    	   			StringBuilder sb = new StringBuilder(contract_no);//构造一个StringBuilder对象
    	   			sb.insert(2, generateJobPrefix(type));//在指定的位置1，插入指定的字符串
    	   			contract_no = sb.toString();
-   	   		supplierContract.set("contract_no", contract_no);
-   	   		supplierContract.set("creator", user.getLong("id"));
-   	   		supplierContract.set("create_date", new Date());
-   	   		supplierContract.set("status", "新建");
-   	   		supplierContract.set("updator", user.getLong("id"));
-   	   		supplierContract.set("update_stamp", new Date());
-   	   		supplierContract.set("office_id", office_id);
-   	   		supplierContract.save();
-   	   		id = supplierContract.getLong("id").toString();
+	   	   		supplierContract.set("contract_no", contract_no);
+	   	   		supplierContract.set("creator", user.getLong("id"));
+	   	   		supplierContract.set("create_date", new Date());
+	   	   		supplierContract.set("status", "新建");
+	   	   		supplierContract.set("office_id", office_id);
+	   	   		supplierContract.save();
+	   	   		id = supplierContract.getLong("id").toString();
    	   			
    			}
    			
