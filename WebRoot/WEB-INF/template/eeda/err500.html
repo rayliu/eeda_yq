@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta property="qc:admins" content="1621525725152022123671306654" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>出错啦！</title>
+
+    <link href="/css/bootstrap/bootstrap.min.3.3.6.css" rel="stylesheet">
+
+    <link href="/js/lib/sb-admin/css/sb-admin.css" rel="stylesheet">
+    <link href="/css/eeda.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+     
+            <div class="col-md-4 col-md-offset-4">
+            	
+                <div class="login-panel panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group" >
+                            
+                            <% var errStr = err!'';
+                                if(errStr!='') { %>
+                                <span>${err.MSG}</span>
+                            <%} else { %>
+                                <span>十分对不起，系统内部出错了，请联系管理员查看错误原因。</span>
+                            <%} %>
+                        </div>
+                        <br>
+                        <button id="returnBtn" type="button" class="btn" style="border: 1px solid;">返回上一页</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Core Scripts - Include with every page -->
+    <script src="/js/lib/jquery/jquery-1.10.2.js"></script>
+   
+    <script>
+        $('#returnBtn').click(function(){
+            history.back();
+        });
+    </script>
+</body>
+</html>
