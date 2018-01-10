@@ -87,7 +87,6 @@ public class CostReimbursementOrder extends Controller {
 			orderNo = OrderNoGenerator.getNextOrderNo("YFBX", officeId);
 			Long userId = user.getLong("id");
 			rei = new ReimbursementOrder();
-			String a =accId.replaceAll(" ", "");
 			if(accId!=null){
 				if(accId==""){
 					accId = null;
@@ -243,7 +242,7 @@ public class CostReimbursementOrder extends Controller {
     public void accountPayable() {
         String id = getPara();
         if (id == null || id.equals("")) {
-            Map orderMap = new HashMap();
+            Map<String,Object> orderMap = new HashMap<String,Object>();
             orderMap.put("sEcho", 0);
             orderMap.put("iTotalRecords", 0);
             orderMap.put("iTotalDisplayRecords", 0);
@@ -251,11 +250,7 @@ public class CostReimbursementOrder extends Controller {
             renderJson(orderMap);
             return;
         }
-        String sLimit = "";
         String pageIndex = getPara("sEcho");
-        if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-            sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
-        }
 
         // 获取总条数
         String totalWhere = "";
@@ -269,7 +264,7 @@ public class CostReimbursementOrder extends Controller {
         		+ " left join fin_item f2 on f2.id = f1.parent_id"
                 + " where d.order_id =" + id);
 
-        Map orderMap = new HashMap();
+        Map<String,Object> orderMap = new HashMap<String,Object>();
         orderMap.put("sEcho", pageIndex);
         orderMap.put("iTotalRecords", rec.getLong("total"));
         orderMap.put("iTotalDisplayRecords", rec.getLong("total"));
@@ -326,7 +321,7 @@ public class CostReimbursementOrder extends Controller {
     public void findAllMilestone() {
         String id = getPara();
         if (id == null || id.equals("")) {
-            Map orderMap = new HashMap();
+            Map<String,Object> orderMap = new HashMap<String,Object>();
             orderMap.put("sEcho", 0);
             orderMap.put("iTotalRecords", 0);
             orderMap.put("iTotalDisplayRecords", 0);
@@ -334,11 +329,7 @@ public class CostReimbursementOrder extends Controller {
             renderJson(orderMap);
             return;
         }
-        String sLimit = "";
         String pageIndex = getPara("sEcho");
-        if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {
-            sLimit = " LIMIT " + getPara("iDisplayStart") + ", " + getPara("iDisplayLength");
-        }
 
         // 获取总条数
         String totalWhere = "";
@@ -349,7 +340,7 @@ public class CostReimbursementOrder extends Controller {
         // 获取当前页的数据
         List<Record> orders = Db.find("select d.*,u.user_name,u.c_name from delivery_order_milestone d left join user_login u on u.id = d.create_by where d.reimbursement_id = " + id);
 
-        Map orderMap = new HashMap();
+        Map<String,Object> orderMap = new HashMap<String,Object>();
         orderMap.put("sEcho", pageIndex);
         orderMap.put("iTotalRecords", rec.getLong("total"));
         orderMap.put("iTotalDisplayRecords", rec.getLong("total"));
@@ -359,7 +350,6 @@ public class CostReimbursementOrder extends Controller {
     }
     
     public void findItem(){
-    	String name = getPara("name");
     	String value = getPara("value");
     	
     	List<Record> parentItemList  = Db.find("select * from fin_item where type='报销费用' and parent_id !=0 and parent_id = '"+value+"'");

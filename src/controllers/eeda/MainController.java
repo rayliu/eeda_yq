@@ -22,6 +22,7 @@ import models.eeda.OfficeConfig;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -41,7 +42,6 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.profile.LoginUserController;
-
 import controllers.util.MD5Util;
 import controllers.util.ParentOffice;
 import controllers.util.getCurrentPermission;
@@ -316,7 +316,7 @@ public class MainController extends Controller {
     
 	private void setSysTitle() {
 		String serverName = getRequest().getServerName();
-        String basePath = getRequest().getScheme()+"://"+getRequest().getServerName()+":"+getRequest().getServerPort()+"/";
+        //String basePath = getRequest().getScheme()+"://"+getRequest().getServerName()+":"+getRequest().getServerPort()+"/";
         
         logger.debug(serverName);
         OfficeConfig of = OfficeConfig.dao.findFirst("select * from office_config where domain like '"+serverName +"%' or domain like '%"+serverName +"%'");
@@ -339,7 +339,7 @@ public class MainController extends Controller {
     }
 
     // 使用common-email, javamail
-    public void testMail() throws Exception {
+    public void testMail() throws EmailException{
         Email email = new SimpleEmail();
         email.setHostName("smtp.exmail.qq.com");
         email.setSmtpPort(465);
@@ -355,7 +355,7 @@ public class MainController extends Controller {
     }
     
     public void getTodoList(){
-        Map orderMap = new HashMap();
+        Map<String,Object> orderMap = new HashMap<String,Object>();
         String pageIndex = getPara("sEcho");
         String sLimit = "";
         if (getPara("iDisplayStart") != null && getPara("iDisplayLength") != null) {

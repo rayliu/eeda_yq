@@ -4,6 +4,7 @@ import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,6 +40,7 @@ import models.eeda.oms.jobOrder.JobOrderShipmentItem;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -292,7 +294,7 @@ public class JobOrderService extends Controller {
     
     @SuppressWarnings("unchecked")
 	@Before(Tx.class)
-   	public void save() throws Exception {	
+   	public void save() throws InstantiationException, IllegalAccessException {	
     	
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
@@ -825,7 +827,6 @@ public class JobOrderService extends Controller {
      */
     private void saveJobOceanGHSpContractConditions(JobOrder order){
     	String order_id =  order.get("id").toString();
-    	String type = order.getStr("type");//类型
     	
     	Record oseanRe = Db.findFirst("select * from job_order_shipment where order_id = ?",order_id);
     	String pol = null;
@@ -1035,7 +1036,6 @@ public class JobOrderService extends Controller {
      */
     private void saveJobOceanSHSpContractConditions(JobOrder order){
     	String order_id =  order.get("id").toString();
-    	String type = order.getStr("TYPE");//类型
     	String billing_method =  order.getStr("BILLING_METHOD");//计费方式
     	String fee_count =  order.getStr("FEE_COUNT")==null?"1":order.getStr("FEE_COUNT");//计费数量
     	
@@ -1235,7 +1235,6 @@ public class JobOrderService extends Controller {
      */
     private void saveJobAirSpContractConditions(JobOrder order){
     	String order_id =  order.get("ID").toString();
-    	String type = order.getStr("TYPE");//类型
     	String billing_method =  order.getStr("BILLING_METHOD");//计费方式
     	String fee_count =  order.getStr("FEE_COUNT")==null?"1":order.getStr("FEE_COUNT");//计费数量
     	
@@ -1654,7 +1653,6 @@ public class JobOrderService extends Controller {
      */
     private void saveJobLandSpContractConditions(JobOrder order){
     	String order_id =  order.get("ID").toString();
-    	String type = order.getStr("TYPE");//类型
     	String order_export_date = order.get("order_export_date").toString();//出货日期
     	
     	List<Record> itemReList = Db.find("select * from job_order_land_item where order_id = ? order by id",order_id);
@@ -1741,7 +1739,6 @@ public class JobOrderService extends Controller {
         Record dto= gson.fromJson(jsonStr, Record.class);   
     	String order_export_date =  dto.getStr("ORDER_EXPORT_DATE");
     	
-    	String container_types = "''";
     	for (int i = 0; i < jArray.size(); i++) {
     		Record map=new Record();  
     		map = (Record) jArray.get(i);
@@ -1831,7 +1828,6 @@ public class JobOrderService extends Controller {
      */
     private void saveJobLandCustomerContractConditions(JobOrder order){
     	String order_id =  order.get("ID").toString();
-    	String type = order.getStr("TYPE");//类型
     	String customer_id = order.getStr("CUSTOMER_ID");//类型
     	String order_export_date = order.get("ORDER_EXPORT_DATE").toString();//出货日期
     	
@@ -2553,7 +2549,7 @@ public class JobOrderService extends Controller {
     
     //上传相关文档
     @Before(Tx.class)
-    public void saveDocFile() throws Exception{
+    public void saveDocFile(){
     	try {
             String order_id = getPara("order_id");
             List<UploadFile> fileList = getFiles("doc");
@@ -2606,7 +2602,7 @@ public class JobOrderService extends Controller {
     
     //报关的文档上传
     @Before(Tx.class)
-    public void uploadCustomDoc() throws Exception{
+    public void uploadCustomDoc(){
         try {
             String order_id = getPara("order_id");
             String bill_type = "custom";
@@ -2639,7 +2635,7 @@ public class JobOrderService extends Controller {
     
     //上传陆运签收文件描述
     @Before(Tx.class)
-    public void uploadSignDesc() throws Exception{
+    public void uploadSignDesc(){
         try {
             String id = getPara("id");
             List<UploadFile> fileList = getFiles("doc");
@@ -2939,7 +2935,6 @@ public class JobOrderService extends Controller {
     public void edit() {
     	String id = getPara("id");
     	JobOrder jobOrder = JobOrder.dao.findById(id);
-    	Long job_office_id=jobOrder.getLong("office_id");
     	setAttr("order", jobOrder);
     	UserLogin user1 = LoginUserController.getLoginUser(this);
     	if (user1==null) {
@@ -3027,8 +3022,7 @@ public class JobOrderService extends Controller {
     }
     
     public List<Record> getDocItems(String orderId,String type){
-    	String  itemSql = "";
-   		 itemSql = "SELECT * ,"
+    	String  itemSql = "SELECT * ,"
      			+ " (SELECT  count(jod0.id) FROM job_order_doc jod0 WHERE "
      			+ " jod0.order_id ="+orderId+" 	AND jod0.type ='"+type+"' and   jod0.send_status='已发送' ) new_count"
      			+ " FROM("
@@ -3048,10 +3042,9 @@ public class JobOrderService extends Controller {
     	String order_id = getPara("order_id");
     	String type = getPara("type");
     	
-    	List<Record> list = null;
-    	list = getDocItems(order_id,type);
+    	List<Record> list = getDocItems(order_id,type);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());
@@ -3166,7 +3159,7 @@ public class JobOrderService extends Controller {
     
     //使用common-email, javamail
     @Before(Tx.class)
-    public void sendMail() throws Exception {
+    public void sendMail() throws EmailException {
     	String order_id = getPara("order_id");
     	String userEmail = getPara("email");
     	String ccEmail = getPara("ccEmail");
@@ -3500,10 +3493,9 @@ public class JobOrderService extends Controller {
     	String order_id = getPara("order_id");
     	String type = getPara("type");
     	
-    	List<Record> list = null;
-    	list = getItems(order_id,type);
+    	List<Record> list = getItems(order_id,type);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list != null?list.size():0);
         map.put("iTotalDisplayRecords", list != null?list.size():0);
@@ -3807,7 +3799,6 @@ public class JobOrderService extends Controller {
     //商品名名称下拉列表
     public void searchCommodity(){
     	String input = getPara("input");
-    	List<Record> recs = null;
     	UserLogin user = LoginUserController.getLoginUser(this);
     	if(user==null){
         	return;
@@ -3817,7 +3808,7 @@ public class JobOrderService extends Controller {
     	if(StringUtils.isNotEmpty(input)){
     		sql+=" and commodity_name like '%"+ input +"%' ";
     	}
-    	recs = Db.find(sql);
+    	List<Record> recs = Db.find(sql);
     	renderJson(recs);
     }
     
@@ -3871,7 +3862,6 @@ public class JobOrderService extends Controller {
     public void confirmSend(){
     	String id = getPara("docId");
     	String plan_order_item_id = getPara("plan_order_item_id");
-    	String plan_order_id = getPara("plan_order_id");
     	JobOrderDoc jobOrderDoc = JobOrderDoc.dao.findById(id);
     	jobOrderDoc.set("sender", LoginUserController.getLoginUserId(this));
     	jobOrderDoc.set("send_time", new Date());

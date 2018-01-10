@@ -48,11 +48,11 @@ public class CostItemConfirmController extends Controller {
 	}
      
 	public void list() {
-		String sLimit = "";
+		//String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
@@ -102,7 +102,7 @@ public class CostItemConfirmController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         List<Record> orderList = Db.find(sql+ condition + " order by "+ sName +" "+ sort);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -112,20 +112,20 @@ public class CostItemConfirmController extends Controller {
 	} 
 	
 	public void listTotal(){
-		String sLimit = "";
-        String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+		//String sLimit = "";
+        //String pageIndex = getPara("draw");
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
         	return;
         }
         long office_id=user.getLong("office_id");
-        String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
-        String sColumn =  getPara("order[0][column]");
-        String sName =  getPara("columns["+sColumn+"][data]")==null?"order_export_date":getPara("columns["+sColumn+"][data]") ;
+        //String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
+        //String sColumn =  getPara("order[0][column]");
+        //String sName =  getPara("columns["+sColumn+"][data]")==null?"order_export_date":getPara("columns["+sColumn+"][data]") ;
         String ref_office = "";
         Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
         if(relist!=null){
@@ -147,7 +147,7 @@ public class CostItemConfirmController extends Controller {
 				+ " ) A where 1=1 ";
         String condition = DbUtils.buildConditions(getParaMap());
         List<Record>total_money = Db.find(sql_money +condition+" group by currency_name");
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("total_money", total_money);
         renderJson(map); 
 	}

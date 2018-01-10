@@ -69,8 +69,7 @@ public class ChargeAcceptOrderController extends Controller {
         String selected_item_ids = Db.findFirst(sql).getStr("selected_item_ids");
         setAttr("selected_item_ids", selected_item_ids);
 			
-		List<Record> Account = null;
-		Account = Db.find("select * from fin_account where bank_name != '现金'");
+		List<Record> Account = Db.find("select * from fin_account where bank_name != '现金'");
 		setAttr("accountList", Account);
 		
 		render("/eeda/arap/ChargeAcceptOrder/chargeEdit.html");
@@ -269,7 +268,7 @@ public class ChargeAcceptOrderController extends Controller {
 					+"	GROUP BY aco.id";
   		}
   		
-  		Map BillingOrderListMap = new HashMap();
+  		Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
   		List<Record> recordList= Db.find(sql);
         BillingOrderListMap.put("draw", recordList.size());
         BillingOrderListMap.put("recordsTotal", recordList.size());
@@ -461,8 +460,7 @@ public class ChargeAcceptOrderController extends Controller {
 			confirm_name = userLogin.get("c_name");
 		}
 		
-		List<Record> list = null;
-    	list = getItems(id);
+		List<Record> list = getItems(id);
     	setAttr("docList", list);
 		
 		Record r = order.toRecord();
@@ -588,10 +586,9 @@ public class ChargeAcceptOrderController extends Controller {
     public void tableList(){
     	String order_id = getPara("order_id");
     	
-    	List<Record> list = null;
-    	list = getItems(order_id);
+    	List<Record> list = getItems(order_id);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());

@@ -26,6 +26,7 @@ import models.eeda.oms.jobOrder.RequestInvoices;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -833,8 +834,7 @@ public class ChargeRequestController extends Controller {
 			confirm_name = userLogin.get("c_name");
 		}
 		
-		List<Record> list = null;
-    	list = getItems(id);
+		List<Record> list = getItems(id);
     	setAttr("docList", list);
 		
 		Record r = order.toRecord();
@@ -867,7 +867,7 @@ public class ChargeRequestController extends Controller {
   	
   	
   	@Before(Tx.class)
-    public void sendMail(String order_id,String order_no,String creator_name) throws Exception {
+    public void sendMail(String order_id,String order_no,String creator_name) {
     	UserLogin userlogin = UserLogin.dao.findFirst("SELECT * from user_login where c_name='"+creator_name+"'");
     	String mailTitle = "您有一份复核不通过的收款申请单";
     	String mailContent = "收款申请单为<a href=\"http://www.esimplev.com/chargeRequest/edit?id="+order_id+"\">"+order_no+"</a>";
@@ -900,7 +900,7 @@ public class ChargeRequestController extends Controller {
         
         	//email.setCharset("UTF-8"); 
         	email.send();
-        }catch(Exception e){
+        }catch(EmailException e){
         	e.printStackTrace();
         }
        
@@ -909,7 +909,7 @@ public class ChargeRequestController extends Controller {
   	
     //复核
   	@Before(Tx.class)
-    public void checkOrder() throws Exception{
+    public void checkOrder(){
         String application_id=getPara("order_id");
         String selfId = getPara("selfId");
         String ids = getPara("ids");
@@ -989,7 +989,7 @@ public class ChargeRequestController extends Controller {
   		try{
   			 pay_remark=(String) dto.get("pay_remark");
   		}catch(Exception e){
-  			
+  			e.printStackTrace();
   		}
   		
         if(StringUtils.isNotEmpty(application_id)){
@@ -1446,11 +1446,11 @@ public class ChargeRequestController extends Controller {
     public void itemList(){
     	String checked = getPara("checked");
     	
-        String sLimit = "";
+        //String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
 
         UserLogin user = LoginUserController.getLoginUser(this);
         if (user==null) {
@@ -1530,7 +1530,7 @@ public class ChargeRequestController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -1549,7 +1549,7 @@ public class ChargeRequestController extends Controller {
     	String itemList= getPara("charge_itemlist");
     	String[] itemArray =  itemList.split(",");
     	String appOrderId=getPara("order_id");
-    	ArapChargeApplication order = ArapChargeApplication.dao.findById(appOrderId);
+    	//ArapChargeApplication order = ArapChargeApplication.dao.findById(appOrderId);
     	
    		ChargeApplicationOrderRel caor = null;
 		for(String item :itemArray){

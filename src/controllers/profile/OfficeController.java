@@ -91,7 +91,7 @@ public class OfficeController extends Controller {
          */
         String id = getPara("officeId");
         if (id != "") {
-            UserLogin user = UserLogin.dao.findById(id);
+            //UserLogin user = UserLogin.dao.findById(id);
         }
         Record office;
         if(id != null && id !=""){
@@ -206,8 +206,8 @@ public class OfficeController extends Controller {
         
         ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
         
-        Long parentID = pom.getParentOfficeId();
-        Long parent_id = pom.getBelongOffice();
+        Long parentID = (Long)pom.getParentOfficeId();
+        Long parent_id = (Long)pom.getBelongOffice();
         
         String sql ="";
         String list_sql= "";

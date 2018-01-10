@@ -102,13 +102,13 @@ public class BillProfitAndPaymentController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+" ORDER BY order_export_date desc "+sLimit);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
         map.put("data", orderList);
         renderJson(map); 
-        final long totalBack = rec.getLong("total");
+        //final long totalBack = rec.getLong("total");
 		
 	}
 	
@@ -150,10 +150,10 @@ public class BillProfitAndPaymentController extends Controller {
 			order_export_date_end_time="";
 		}
 		
-		String order_export_date =  " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
+		String order_export_date = "";
 
-		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
-			order_export_date="";
+		if(StringUtils.isNotBlank(order_export_date_begin_time)||StringUtils.isNotBlank(order_export_date_end_time)){
+			order_export_date = " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
 		}
 		String condition = customerId+customerName+order_export_date;
 		

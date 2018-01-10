@@ -19,17 +19,15 @@ public class OrderNoGenerator {
 
     //根据日期生成当月序列号
     public synchronized static String getNextOrderNo(String orderPrefix, String dateStr, long officeId) {
-        String orderNo = "";
-        orderNo = generateNo(orderPrefix, officeId, dateStr);
+        String orderNo = generateNo(orderPrefix, officeId, dateStr);
         return orderNo;
     }
     
 	public synchronized static String getNextOrderNo(String orderPrefix, long officeId) {
-	    String orderNo = "";
 	    SimpleDateFormat sdf = new SimpleDateFormat("yy");
         String nowdate = sdf.format(new Date());
         
-		orderNo = generateNo(orderPrefix, officeId, nowdate);
+        String orderNo = generateNo(orderPrefix, officeId, nowdate);
 		
 		return orderNo;
 	}
@@ -45,8 +43,7 @@ public class OrderNoGenerator {
 	    		int serial_length = re.getInt("serial_length");
 	    		int last_serial_no = re.getInt("last_serial_no")+1;
 	    		
-	    		SimpleDateFormat sdf = null;
-	    		sdf = new SimpleDateFormat(date_type);
+	    		SimpleDateFormat sdf = new SimpleDateFormat(date_type);
 	    		String middle_name = sdf.format(new Date());  //中间
 	    		
 	    		String serial = String.valueOf(last_serial_no);   //构造后的序号

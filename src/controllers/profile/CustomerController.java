@@ -87,7 +87,7 @@ public class CustomerController extends Controller {
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
         List<Record> orderList = Db.find(sql+ condition + " order by create_date desc " +sLimit);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -665,7 +665,7 @@ public class CustomerController extends Controller {
     @Before(Tx.class)
     public void saveDocFile(){
     	String id = getPara("order_id");
-    	String type = getPara("type");
+    	//String type = getPara("type");
     	List<UploadFile> fileList = getFiles("customer_doc");
     	
 		for (int i = 0; i < fileList.size(); i++) {
@@ -743,7 +743,7 @@ public class CustomerController extends Controller {
     @Before(Tx.class)
     public void saveLandDocFile(){
     	String id = getPara("id");
-    	String type = getPara("type");
+    	//String type = getPara("type");
     	Record rLandDoc = Db.findFirst("select * from dockinfo where id =?",id);
     	
     	
@@ -809,9 +809,8 @@ public class CustomerController extends Controller {
     	String order_id = getPara("order_id");
     	String type = getPara("type");
     	
-    	List<Record> list = null;
-    	list = getItems(order_id,type);
-    	Map map = new HashMap();
+    	List<Record> list = getItems(order_id,type);
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list != null?list.size():0);
         map.put("iTotalDisplayRecords", list != null?list.size():0);

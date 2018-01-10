@@ -33,6 +33,7 @@ import models.eeda.tr.tradeJoborder.TradeJobOrderSendMailTemplate;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -232,7 +233,7 @@ public class TrJobOrderController extends Controller {
     
     @SuppressWarnings("unchecked")
 	@Before(Tx.class)
-   	public void save() throws Exception {	
+   	public void save() throws InstantiationException, IllegalAccessException {	
     	
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
@@ -240,7 +241,6 @@ public class TrJobOrderController extends Controller {
         String id = (String) dto.get("id");
         String planOrderItemID = (String) dto.get("plan_order_item_id");
         String type = (String) dto.get("type");//根据工作单类型生成不同前缀
-        String customer_id = (String)dto.get("customer_id");
         
         TradeJobOrder jobOrder = new TradeJobOrder();
         
@@ -1104,7 +1104,7 @@ public class TrJobOrderController extends Controller {
     
     //上传相关文档
     @Before(Tx.class)
-    public void saveDocFile() throws Exception{
+    public void saveDocFile(){
     	try {
             String order_id = getPara("order_id");
             List<UploadFile> fileList = getFiles("doc");
@@ -1128,7 +1128,7 @@ public class TrJobOrderController extends Controller {
     
     //报关的文档上传
     @Before(Tx.class)
-    public void uploadCustomDoc() throws Exception{
+    public void uploadCustomDoc(){
         try {
             String order_id = getPara("order_id");
             String bill_type = "custom";
@@ -1158,7 +1158,7 @@ public class TrJobOrderController extends Controller {
     
     //上传陆运签收文件描述
     @Before(Tx.class)
-    public void uploadSignDesc() throws Exception{
+    public void uploadSignDesc(){
         try {
             String id = getPara("id");
             List<UploadFile> fileList = getFiles("doc");
@@ -1566,7 +1566,7 @@ public class TrJobOrderController extends Controller {
     
     //使用common-email, javamail
     @Before(Tx.class)
-    public void sendMail() throws Exception {
+    public void sendMail() throws EmailException {
     	String order_id = getPara("order_id");
     	String userEmail = getPara("email");
     	String ccEmail = getPara("ccEmail");
@@ -1710,7 +1710,7 @@ public class TrJobOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by order_export_date desc " +sLimit);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -1723,10 +1723,9 @@ public class TrJobOrderController extends Controller {
     	String order_id = getPara("order_id");
     	String type = getPara("type");
     	
-    	List<Record> list = null;
-    	list = getItems(order_id,type);
+    	List<Record> list = getItems(order_id,type);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list != null?list.size():0);
         map.put("iTotalDisplayRecords", list != null?list.size():0);
@@ -2022,7 +2021,6 @@ public class TrJobOrderController extends Controller {
     //商品名名称下拉列表
     public void searchCommodity(){
     	String input = getPara("input");
-    	List<Record> recs = null;
     	UserLogin user = LoginUserController.getLoginUser(this);
     	if(user==null){
         	return;
@@ -2032,7 +2030,7 @@ public class TrJobOrderController extends Controller {
     	if(StringUtils.isNotEmpty(input)){
     		sql+=" and commodity_name like '%"+ input +"%' ";
     	}
-    	recs = Db.find(sql);
+    	List<Record> recs = Db.find(sql);
     	renderJson(recs);
     }
     

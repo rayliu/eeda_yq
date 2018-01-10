@@ -223,14 +223,11 @@ public class CustomerContractController extends Controller {
    		CustomerContract  customerContract= new CustomerContract();
    		String id = (String) dto.get("contract_id");
 
-        String newDateStr = "";
-        	
-        String newDateStrMM = "";
-        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
+        //SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
         SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
         SimpleDateFormat sdfMM = new SimpleDateFormat("MM");//转换后的格式
-        	newDateStr = sdf.format(new Date());
-        	newDateStrMM = sdfMM.format(new Date());
+        String newDateStr = sdf.format(new Date());
+        String newDateStrMM = sdfMM.format(new Date());
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			customerContract = CustomerContract.dao.findById(id);
@@ -365,8 +362,7 @@ public class CustomerContractController extends Controller {
         tourItemRes.add(new Record().set("type", "charge_unit").set("param", "UOM"));
    		PlanOrderController.saveItemParamHistory(charge_tour_items, tourItemRes, user.getLong("id"));
         
-   		Record rcon = new Record();
-   		rcon= Db.findFirst("select * from customer_contract joc where id = ? ",id);
+   		Record rcon = Db.findFirst("select * from customer_contract joc where id = ? ",id);
 //   		rcon.set("charge_items", getItems(id));
        
         setAttr("saveOK", true);
@@ -378,7 +374,6 @@ public class CustomerContractController extends Controller {
 
   //异步刷新字表
     public void clickItem(){
-    	String contract_id = getPara("contract_id");
     	String type = getPara("type");
     	String costomer_loc_id = getPara("customer_loc_id");
 
@@ -396,7 +391,7 @@ public class CustomerContractController extends Controller {
     	
     	List<Record> list = Db.find(sql,costomer_loc_id);
 
-    	Map BillingOrderListMap = new HashMap();
+    	Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", 1);
         BillingOrderListMap.put("iTotalRecords", list.size());
         BillingOrderListMap.put("iTotalDisplayRecords", list.size());
@@ -410,10 +405,9 @@ public class CustomerContractController extends Controller {
     public void tableList(){
     	String contract_id = getPara("contract_id");
     	String type = getPara("type");
-    	List<Record> list = null;
-    	list = getItems(contract_id,type);
+    	List<Record> list = getItems(contract_id,type);
 
-    	Map BillingOrderListMap = new HashMap();
+    	Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", 1);
         BillingOrderListMap.put("iTotalRecords", list.size());
         BillingOrderListMap.put("iTotalDisplayRecords", list.size());

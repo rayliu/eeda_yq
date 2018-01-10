@@ -53,7 +53,7 @@ public class BookingProfitReportController extends Controller {
         	return 0;
         }
         long office_id=user.getLong("office_id");
-        String customer_id = getPara("customer_id");
+        //String customer_id = getPara("customer_id");
         String customer_name = getPara("customer_name");
         String begin_date = getPara("begin_date");
         String end_date = getPara("end_date");
@@ -201,7 +201,7 @@ public class BookingProfitReportController extends Controller {
         	return;
         }
         long office_id=user.getLong("office_id");
-        String customer_id = getPara("customer_id");
+        //String customer_id = getPara("customer_id");
         String customer_name = getPara("customer_name");
         String begin_date = getPara("begin_date");
         String end_date = getPara("end_date");
@@ -388,7 +388,7 @@ public class BookingProfitReportController extends Controller {
             return;
         }
 		long office_id = user.getLong("office_id");
-		String customer_id = getPara("customer_id");
+		//String customer_id = getPara("customer_id");
 		String customer_name = getPara("customer_name");
 		String begin_date = getPara("begin_date");
 		String end_date = getPara("end_date");

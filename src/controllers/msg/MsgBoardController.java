@@ -47,7 +47,7 @@ public class MsgBoardController extends Controller {
 	}
 	
     @Before(Tx.class)
-   	public void save() throws Exception {
+   	public void save() {
     	String title = getPara("radioTitle");
     	String content = getPara("radioContent");
     	UserLogin user = LoginUserController.getLoginUser(this);
@@ -66,7 +66,7 @@ public class MsgBoardController extends Controller {
    	}
     
     @Before(Tx.class)
-    public void saveOfMsgBoard() throws Exception {
+    public void saveOfMsgBoard() {
     	String title = getPara("radioTitle");
     	String content = getPara("radioContent");
     	UserLogin user = LoginUserController.getLoginUser(this);

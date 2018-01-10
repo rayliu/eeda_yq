@@ -29,7 +29,6 @@ public class ChargeMiscOrderHelper {
 	public ArapMiscCostOrder buildNewCostMiscOrder(
 			ArapMiscChargeOrder originOrder, UserLogin user)
 			throws IllegalAccessException, InvocationTargetException {
-		long originId = originOrder.getLong("id");
 
 		ArapMiscCostOrder orderDest = new ArapMiscCostOrder();
 		orderDest.set("type", originOrder.getStr("type"));

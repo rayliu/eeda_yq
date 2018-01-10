@@ -49,13 +49,12 @@ public class ExpenseEntryController extends Controller {
 			return;
 		}
         long office_id=user.getLong("office_id");
-        String sql = "";
         String checkCondition = "";
         if(!"Y".equals(checked)){
         	checkCondition = "and cpoa.order_type='charge'";
         }
 
-		sql = " SELECT * from ( "
+        String sql = " SELECT * from ( "
 				+" SELECT "
 				+" 	cpo.receive_sent_consignee_input customer_name, "
 				+" 	cpo.order_no, "
@@ -119,7 +118,7 @@ public class ExpenseEntryController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition  +sLimit);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));

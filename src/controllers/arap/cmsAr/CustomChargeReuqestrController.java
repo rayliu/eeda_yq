@@ -502,8 +502,7 @@ public class CustomChargeReuqestrController extends Controller {
 			confirm_name = userLogin.get("c_name");
 		}
 		
-		List<Record> list = null;
-    	list = getItems(id);
+		List<Record> list = getItems(id);
     	setAttr("docList", list);
 		
 		Record r = order.toRecord();
@@ -835,11 +834,11 @@ public class CustomChargeReuqestrController extends Controller {
     public void itemList(){
     	String checked = getPara("checked");
     	
-        String sLimit = "";
+        //String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
@@ -895,7 +894,7 @@ public class CustomChargeReuqestrController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -910,7 +909,7 @@ public class CustomChargeReuqestrController extends Controller {
     	String itemList= getPara("charge_itemlist");
     	String[] itemArray =  itemList.split(",");
     	String appOrderId=getPara("order_id");
-    	CustomArapChargeApplicationOrder order = CustomArapChargeApplicationOrder.dao.findById(appOrderId);
+    	//CustomArapChargeApplicationOrder order = CustomArapChargeApplicationOrder.dao.findById(appOrderId);
     	
    		CustomChargeApplicationOrderRel caor = null;
 		for(String item :itemArray){

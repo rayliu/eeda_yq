@@ -56,8 +56,8 @@ public class CustomAccountAuditLogController extends Controller {
     	String condiction = "";
     	//升降序
     	String sortColIndex = getPara("iSortCol_0");
-		String sortBy = getPara("sSortDir_0");
-		String colName = getPara("mDataProp_"+sortColIndex);
+//		String sortBy = getPara("sSortDir_0");
+//		String colName = getPara("mDataProp_"+sortColIndex);
 		
 		String orderByStr = " order by A.create_date desc ";
 //        if(!StrKit.isBlank(colName)){

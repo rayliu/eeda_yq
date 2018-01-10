@@ -325,7 +325,6 @@ public class TradeJobOrderReportController extends Controller {
 	//打印应收对账单(合计)
 	public void printTotaledReceiveDetailPDF(){
 		String order_id = getPara("order_id");
-		String company_name = getPara("company_name");
 		String fileName = "";
 
 		fileName = "/report/tradeCheckOrder/TotaledReceivableDetails.jasper";

@@ -159,7 +159,6 @@ public class AccountAgingController extends Controller {
         }
 		long office_id = user.getLong("office_id");
 		String sp_id = getPara("sp_id");
-		String type = getPara("type")==null?"new":getPara("type").trim();
 		String spId = "";
 		if (StringUtils.isBlank(sp_id)) {
 			spId = "";

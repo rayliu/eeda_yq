@@ -49,12 +49,10 @@ public class PoiUtils {
 	 * @param filePath excel路径
 	 */
 	public static Map<String, List<Object>> readExcel(String filePath){
-		Workbook book = null;
 		Map<String, List<Object>> map = new HashMap<String, List<Object>>();
 		List<Object> headList = new ArrayList<Object>();
-		List<Object> content = null;
 		try {
-			book = getExcelWorkbook(filePath);
+			Workbook book = getExcelWorkbook(filePath);
 			Sheet sheet = getSheetByNum(book,1);
 			
 			int lastRowNum = sheet.getLastRowNum();
@@ -73,7 +71,7 @@ public class PoiUtils {
 							}
 						}
 					else{
-						content = new ArrayList<Object>();
+						List<Object> content = new ArrayList<Object>();
 						for(int j=0;j<lastCellNum;j++){
 							cell = row.getCell(j);
 							if(j == 0){
@@ -232,11 +230,10 @@ public class PoiUtils {
 	 */
 	public static Workbook getExcelWorkbook(String filePath) throws IOException{
 		Workbook book = null;
-		File file  = null;
 		FileInputStream fis = null;	
 		
 		try {
-			file = new File(filePath);
+			File file = new File(filePath);
 			if(!file.exists()){
 				throw new RuntimeException("文件不存在");
 			}else{

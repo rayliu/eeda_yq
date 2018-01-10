@@ -76,9 +76,7 @@ public class ChargeInvoiceOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "";
-        
-    	sql = " select * from (select acor.id,acor.order_no,acor.total_amount,acor.status,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
+        String sql = " select * from (select acor.id,acor.order_no,acor.total_amount,acor.status,p.abbr payee_name,acor.create_stamp, ul.c_name create_name"
     			+ " from arap_charge_order acor"
     			+ " LEFT JOIN party p on p.id = acor.sp_id"
     			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
@@ -92,7 +90,7 @@ public class ChargeInvoiceOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition  +sLimit);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -109,9 +107,7 @@ public class ChargeInvoiceOrderController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "";
-        
-    	sql = " select * from (select acor.id,acor.order_no ,acor.total_amount,p.abbr payee_name ,acor.`status`,acor.create_stamp, ul.c_name create_name"
+        String sql = " select * from (select acor.id,acor.order_no ,acor.total_amount,p.abbr payee_name ,acor.`status`,acor.create_stamp, ul.c_name create_name"
     			+ " from arap_charge_invoice acor"
     			+ " LEFT JOIN party p on p.id = acor.sp_id"
     			+ " LEFT JOIN user_login ul on ul.id = acor.create_by"
@@ -124,7 +120,7 @@ public class ChargeInvoiceOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition  +sLimit);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -136,7 +132,7 @@ public class ChargeInvoiceOrderController extends Controller {
     
 
     @Before(Tx.class)
-   	public void save() throws Exception {		
+   	public void save(){		
    		String jsonStr=getPara("params");
        	
        	Gson gson = new Gson();  
@@ -225,11 +221,10 @@ public class ChargeInvoiceOrderController extends Controller {
   //异步刷新字表
     public void tableList(){
     	String order_id = getPara("order_id");
-    	List<Record> list = null;
     	String condition = "select id from arap_charge_order where invoice_order_id ="+order_id;
-    	list = getItemList(condition);
+    	List<Record> list = getItemList(condition);
 
-    	Map BillingOrderListMap = new HashMap();
+    	Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", 1);
         BillingOrderListMap.put("iTotalRecords", list.size());
         BillingOrderListMap.put("iTotalDisplayRecords", list.size());

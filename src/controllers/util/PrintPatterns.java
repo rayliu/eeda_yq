@@ -122,7 +122,7 @@ public class PrintPatterns{
 	}
 	
 	public static void main(String[] args) {
-        String outFileName ="http://yqdemo.eeda123.com/download/工作单空运bookingEKO2016082600014-20160906150156757.pdf";
+        //String outFileName ="http://yqdemo.eeda123.com/download/工作单空运bookingEKO2016082600014-20160906150156757.pdf";
 //        try {
 //            com.lowagie.tools.Executable.printDocumentSilent(outFileName);
 //        } catch (IOException e) {

@@ -58,7 +58,7 @@ public class ChargeCheckOrderController extends Controller {
 	}
 	
 	@Before(Tx.class)
-   	public void save() throws Exception {		
+   	public void save() {		
    		String jsonStr=getPara("params");
        	
        	Gson gson = new Gson();  
@@ -188,7 +188,7 @@ public class ChargeCheckOrderController extends Controller {
     public void list() {
     	String checked = getPara("checked");
     	
-        String sLimit = "";
+        //String sLimit = "";
         String pageIndex = getPara("draw");
         String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
         String sColumn =  getPara("order[0][column]");
@@ -197,9 +197,9 @@ public class ChargeCheckOrderController extends Controller {
         	sName = "order_export_date,order_no";
         	sort ="desc";
         }
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if (user==null) {
@@ -290,7 +290,7 @@ public class ChargeCheckOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+condition +" order by " + sName +" "+ sort );
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -301,17 +301,17 @@ public class ChargeCheckOrderController extends Controller {
     }
     
 	public void list2() {
-        String sLimit = "";
+        //String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
 
-		List<Record> BillingOrders = null;
+		//List<Record> BillingOrders = null;
 
-		Map BillingOrderListMap = new HashMap();
+		Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
 		BillingOrderListMap.put("draw", pageIndex);
-		BillingOrderListMap.put("data", BillingOrders);
+		BillingOrderListMap.put("data", null);
 
 		renderJson(BillingOrderListMap);
 	}
@@ -759,7 +759,7 @@ public class ChargeCheckOrderController extends Controller {
     		    list = getItemList(condition,order_id,currency_code);
     	}
 
-    	Map BillingOrderListMap = new HashMap();
+    	Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", 1);
         BillingOrderListMap.put("iTotalRecords", list.size());
         BillingOrderListMap.put("iTotalDisplayRecords", list.size());

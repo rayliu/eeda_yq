@@ -44,11 +44,11 @@ public class TransCostBalanceReportController extends Controller {
 	}
 
 	public long list() {
-		String sLimit = "";
+		//String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
         	return 0;
@@ -92,7 +92,7 @@ public class TransCostBalanceReportController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         long total = rec.getLong("total");
         List<Record> orderList = Db.find(sql);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));

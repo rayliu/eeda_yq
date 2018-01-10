@@ -399,7 +399,7 @@ public class CostAcceptOrderController extends Controller {
         String pay_bank_id = getPara("pay_bank");
         String pay_time = getPara("pay_time");
         
-        if( pay_time==null||pay_time.equals("")){
+        if( pay_time==null||pay_time.length()==0){
    			pay_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
    		}
         
@@ -407,12 +407,12 @@ public class CostAcceptOrderController extends Controller {
         
         arapCostInvoiceApplication.set("status", "已付款");
         arapCostInvoiceApplication.set("pay_type", pay_type);
-        if(pay_bank_id != null && !pay_bank_id.equals(""))
+        if(pay_bank_id != null && pay_bank_id.length()>0)
         	arapCostInvoiceApplication.set("confirm_bank_id", pay_bank_id);
         else{
         	arapCostInvoiceApplication.set("confirm_bank_id", 4);
         }
-        if(pay_time==null || pay_time.equals("")){
+        if(pay_time==null || pay_time.length()==0){
         		arapCostInvoiceApplication.set("pay_time", new Date());
         	}else{
         		arapCostInvoiceApplication.set("pay_time", pay_time);
@@ -498,7 +498,7 @@ public class CostAcceptOrderController extends Controller {
         auditLog.set("amount", pay_amount);
         auditLog.set("creator", LoginUserController.getLoginUserId(this));
         auditLog.set("create_date", pay_time);
-        if(pay_bank_id!=null && !pay_bank_id.equals("") ){
+        if(pay_bank_id!=null && pay_bank_id.length()>0){
         		auditLog.set("account_id", pay_bank_id);
         	}else{
         		auditLog.set("account_id", 4);
@@ -793,8 +793,7 @@ public class CostAcceptOrderController extends Controller {
         String selected_item_ids = Db.findFirst(sql).getStr("selected_item_ids");
         setAttr("selected_item_ids", selected_item_ids);
         
-        List<Record> Account = null;
-        Account = Db.find("select * from fin_account where bank_name != '现金'");
+        List<Record> Account = Db.find("select * from fin_account where bank_name != '现金'");
         setAttr("accountList", Account);
         
         setAttr("submit_name", LoginUserController.getLoginUserName(this));
@@ -833,8 +832,7 @@ public class CostAcceptOrderController extends Controller {
 			setAttr("confirm_name", confirm_name);
 		}
 		
-		List<Record> list = null;
-    	list = getItems(id);
+		List<Record> list = getItems(id);
     	setAttr("docList", list);
 		
 		List<Record> Account = Db.find("select * from fin_account where bank_name != '现金'");
@@ -870,10 +868,9 @@ public class CostAcceptOrderController extends Controller {
     public void tableList(){
     	String order_id = getPara("order_id");
     	
-    	List<Record> list = null;
-    	list = getItems(order_id);
+    	List<Record> list = getItems(order_id);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());

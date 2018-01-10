@@ -48,7 +48,6 @@ public class ProductController extends Controller {
     public void list() {
         String searchStr = getPara("sSearch");// 查询文本框
         String sLimit = "";
-        Map productListMap = null;
         String categoryId = getPara("categoryId");
         String pageIndex = getPara("sEcho");
         if (getPara("iDisplayStart") != null
@@ -56,7 +55,7 @@ public class ProductController extends Controller {
             sLimit = " LIMIT " + getPara("iDisplayStart") + ", "
                     + getPara("iDisplayLength");
         }
-        String category = getPara("category");
+        //String category = getPara("category");
         String sql = "";
         String sqlTotal = "";
         String searchConditions = "";
@@ -82,7 +81,7 @@ public class ProductController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         List<Record> products = Db.find(sql);
-        productListMap = new HashMap();
+        Map<String,Object> productListMap = new HashMap<String,Object>();
         productListMap.put("sEcho", pageIndex);
         productListMap.put("iTotalRecords", rec.getLong("total"));
         productListMap.put("iTotalDisplayRecords", rec.getLong("total"));
@@ -174,7 +173,7 @@ public class ProductController extends Controller {
             String itemDesc = getPara("item_desc");
             String size = getPara("size");
             String width = getPara("width");
-            String unit = getPara("unit");
+            //String unit = getPara("unit");
             String volume = getPara("volume");
             String weight = getPara("weight");
             String height = getPara("height");

@@ -43,11 +43,11 @@ public class TransChargeConfirmController extends Controller {
 	}
 	
     public void list() {
-        String sLimit = "";
+        //String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
@@ -93,7 +93,7 @@ public class TransChargeConfirmController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         //+sLimit
         List<Record> orderList = Db.find(sql+ condition +auditFlag+"order by charge_time"  );
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));

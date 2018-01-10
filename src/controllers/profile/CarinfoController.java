@@ -100,7 +100,7 @@ public class CarinfoController extends Controller {
         Long office_id = user.getLong("office_id");
         
         // 获取总条数
-        String totalWhere = "";
+        //String totalWhere = "";
 //        String sql = "select count(1) total from carinfo c left join office o on c.office_id = o.id where c.type = '" + Carinfo.CARINFO_TYPE_OWN +"' and (o.id = " + office_id + " or o.belong_office = " + office_id + ")";
         String sql = "select * from (select c.* from carinfo c left join office o on c.office_id = o.id where c.type = '" + Carinfo.CARINFO_TYPE_OWN +"' "
         		+ " and (o.id = " + office_id + " or o.belong_office = " + office_id + ")"
@@ -116,7 +116,7 @@ public class CarinfoController extends Controller {
         List<Record>  orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
 //        String sql2 = "select c.* from carinfo c left join office o on c.office_id = o.id where c.type = '" + Carinfo.CARINFO_TYPE_OWN +"' and (o.id = " + office_id + " or o.belong_office = " + office_id + ")" + sLimit;
        
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
 //        orderMap.put("sEcho", pageIndex);
 //        orderMap.put("iTotalRecords", rec.getLong("total"));
 //        orderMap.put("iTotalDisplayRecords", rec.getLong("total"));
@@ -274,8 +274,8 @@ public class CarinfoController extends Controller {
     // 添加司机保存
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_D_CREATE, PermissionConstant.PERMSSION_D_UPDATE}, logical=Logical.OR)
     public void driversave() {
-        String id = getPara("driverId");
-        Party party = null;
+        //String id = getPara("driverId");
+        //Party party = null;
         /*Contact contact = null;
         Date createDate = Calendar.getInstance().getTime();
         if (!id.isEmpty()) {
@@ -302,7 +302,7 @@ public class CarinfoController extends Controller {
         }
         */
         setAttr("saveOK", true);
-        	redirect("/driverinfo/driverinfoIndex");
+        redirect("/driverinfo/driverinfoIndex");
     }
 
     
@@ -371,7 +371,7 @@ public class CarinfoController extends Controller {
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_D_UPDATE})
     public void driveredit() {
         String id = getPara();
-        Party party = Party.dao.findById(id);
+        //Party party = Party.dao.findById(id);
 //        Contact contact = Contact.dao.findById(party.get("contact_id"));
 //        
 //        setAttr("lu", party);
@@ -413,7 +413,7 @@ public class CarinfoController extends Controller {
             // 获取当前页的数据
             orders = Db.find("select c.* from carinfo c left join office o on c.office_id = o.id where c.type = '" + Carinfo.CARINFO_TYPE_SP +"' and (o.id = " + parentID + " or o.belong_office = " + parentID + ")" + limit + sLimit);
          }
-        Map orderMap = new HashMap();
+        Map<String,Object> orderMap = new HashMap<String,Object>();
         orderMap.put("sEcho", pageIndex);
         orderMap.put("iTotalRecords", rec.getLong("total"));
         orderMap.put("iTotalDisplayRecords", rec.getLong("total"));
@@ -513,8 +513,8 @@ public class CarinfoController extends Controller {
     }
 
     public void saveSpDriver() {
-    	String id = getPara("driverId");
-        Party party = null;
+    	//String id = getPara("driverId");
+        //Party party = null;
         /*Contact contact = null;
         if (!"".equals(id) && id != null) {
             party = Party.dao.findById(id);
@@ -543,7 +543,7 @@ public class CarinfoController extends Controller {
         }
         */
         setAttr("saveOK", true);
-        	redirect("/spdriverinfo/spdriverinfoIndex");
+        redirect("/spdriverinfo/spdriverinfoIndex");
     }    
 
 //    @RequiresPermissions(value = {PermissionConstant.PERMSSION_PD_DELETE})

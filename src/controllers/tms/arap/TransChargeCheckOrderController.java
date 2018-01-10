@@ -61,7 +61,7 @@ public class TransChargeCheckOrderController extends Controller {
 	}
 	
 	@Before(Tx.class)
-   	public void save() throws Exception {		
+   	public void save() {		
    		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
@@ -168,11 +168,11 @@ public class TransChargeCheckOrderController extends Controller {
     public void list() {
     	String checked = getPara("checked");
     	
-        String sLimit = "";
+        //String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
@@ -251,7 +251,7 @@ public class TransChargeCheckOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition +" order by charge_time");
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -262,17 +262,17 @@ public class TransChargeCheckOrderController extends Controller {
     }
     
 	public void list2() {
-        String sLimit = "";
+        //String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
 
-		List<Record> BillingOrders = null;
+		//List<Record> BillingOrders = null;
 
-		Map BillingOrderListMap = new HashMap();
+		Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
 		BillingOrderListMap.put("draw", pageIndex);
-		BillingOrderListMap.put("data", BillingOrders);
+		BillingOrderListMap.put("data", null);
 
 		renderJson(BillingOrderListMap);
 	}
@@ -486,8 +486,7 @@ public class TransChargeCheckOrderController extends Controller {
     
   //报关例外，获取每次收款的记录
     public List<Record> getReceiveItemList(String order_id){
-    	String sql = null;
-   		 sql = "  SELECT caci.*,c.`name` currency_name ,ul.c_name receive_name"
+    	String sql = "  SELECT caci.*,c.`name` currency_name ,ul.c_name receive_name"
    				+" from trans_arap_charge_order caco  "
    				+" left join trans_arap_charge_receive_item caci on caci.charge_order_id = caco.id "
    				+" LEFT JOIN currency c on c.id=caci.currency_id "
@@ -698,7 +697,7 @@ public class TransChargeCheckOrderController extends Controller {
     		    list = getItemList(condition,order_id,currency_code);
     	}
     	String  type=getPara("table_type");
-    	if(order_id!=""&&"receive".equals(type)){
+    	if(order_id.length()>0&&"receive".equals(type)){
     		list=getReceiveItemList(order_id);
     		setAttr("receive_itemList",list);
     	}
@@ -748,7 +747,7 @@ public class TransChargeCheckOrderController extends Controller {
 			aco.update();
 			
 			//设置y，已生成对账单o
-			String itemList=aco.get("ref_order_id");
+			//String itemList=aco.get("ref_order_id");
 			String sql="UPDATE trans_job_order_arap joa set billConfirm_flag='Y' "
 						+"where joa.id in (select aci.ref_order_id FROM trans_arap_charge_item aci where charge_order_id="+id+" )";
 			Db.update(sql);
@@ -881,8 +880,6 @@ public class TransChargeCheckOrderController extends Controller {
 		         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class); 
 		         String id=(String)dto.get("charge_order_id");
 			   	 String itemids= (String) dto.get("itemids");
-		   		
-		   		String pay_remark=(String) dto.get("pay_remark");
 		   		
 		   		TransArapChargeReceiveItem cacritem=new TransArapChargeReceiveItem();
 		   		String receive_time = (String) dto.get("receive_time");

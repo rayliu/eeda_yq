@@ -53,7 +53,7 @@ public class CmsChargeCheckOrderController extends Controller {
 	}
 	
 	@Before(Tx.class)
-   	public void save() throws Exception {		
+   	public void save() {		
    		String jsonStr=getPara("params");
        	
        	Gson gson = new Gson();  
@@ -122,11 +122,11 @@ public class CmsChargeCheckOrderController extends Controller {
     public void list() {
     	String checked = getPara("checked");
     	
-        String sLimit = "";
+        //String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
@@ -162,7 +162,7 @@ public class CmsChargeCheckOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition  );
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -173,17 +173,17 @@ public class CmsChargeCheckOrderController extends Controller {
     }
     
 	public void list2() {
-        String sLimit = "";
+        //String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
 
-		List<Record> BillingOrders = null;
+		//List<Record> BillingOrders = null;
 
-		Map BillingOrderListMap = new HashMap();
+		Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
 		BillingOrderListMap.put("draw", pageIndex);
-		BillingOrderListMap.put("data", BillingOrders);
+		BillingOrderListMap.put("data", null);
 
 		renderJson(BillingOrderListMap);
 	}
@@ -564,7 +564,7 @@ public class CmsChargeCheckOrderController extends Controller {
 		         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
 		         String id=(String)dto.get("custom_charge_order_id");
 		   		
-		   		String pay_remark=(String) dto.get("pay_remark");
+		   		//String pay_remark=(String) dto.get("pay_remark");
 		   		String itemids= (String) dto.get("itemids");
 		   		CustomArapChargeReceiveItem cacritem=new CustomArapChargeReceiveItem();
 		   		String receive_time = (String) dto.get("receive_time");
@@ -850,14 +850,9 @@ public class CmsChargeCheckOrderController extends Controller {
 //			HashSet list_id_remove_repeat=new HashSet(list_id);
 //			HashSet list_name_remove_repeat=new HashSet(list_name);
 			
-			
-			String sum_sql_total = "";
-			String head_id_sql_total = "";
-			String head_name_sql_total = "";
-			
-			sum_sql_total = StringUtils.join(list.toArray(), ",");
-			head_id_sql_total = StringUtils.join(list_id.toArray(), ",");
-			head_name_sql_total = StringUtils.join(list_name.toArray(), ",");
+			String sum_sql_total = StringUtils.join(list.toArray(), ",");
+			String head_id_sql_total = StringUtils.join(list_id.toArray(), ",");
+			String head_name_sql_total = StringUtils.join(list_name.toArray(), ",");
 	
 			
 			String sqlExport = "SELECT "

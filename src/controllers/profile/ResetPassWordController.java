@@ -8,6 +8,7 @@ import models.UserLogin;
 import org.apache.commons.lang.ObjectUtils.Null;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 
 import com.jfinal.core.Controller;
@@ -24,7 +25,7 @@ public class ResetPassWordController extends Controller{
 		render("/eeda/profile/resetPassword/inputPass.html");
 	}
 	  // 使用common-email, javamail
-    public void sendMail() throws Exception {
+    public void sendMail() throws EmailException {
     	String userEmail = getPara("userEmail");
     	
     	  

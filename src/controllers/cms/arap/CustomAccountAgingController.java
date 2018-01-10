@@ -49,7 +49,7 @@ public class CustomAccountAgingController extends Controller {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sp_id = getPara("sp_id");
-        String type = getPara("type")==null?"new":getPara("type").trim();
+        //String type = getPara("type")==null?"new":getPara("type").trim();
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
 			return;
@@ -102,7 +102,7 @@ public class CustomAccountAgingController extends Controller {
         String sqlTotal = "select count(1) total from ("+sql+") C";
         Record rec = Db.findFirst(sqlTotal);
         List<Record> orderList = Db.find(sql + sLimit);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));

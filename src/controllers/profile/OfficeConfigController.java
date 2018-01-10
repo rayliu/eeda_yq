@@ -61,7 +61,7 @@ public class OfficeConfigController extends Controller{
 		
 		//Contact contact = null;
 		//Party party = null;
-		Date createDate = Calendar.getInstance().getTime();
+		//Date createDate = Calendar.getInstance().getTime();
 		if (id != null && !id.equals("")) {
 			//party = Party.dao.findFirst("select * from party where id = ?", getPara("notifyPartyId"));
 			//contact = Contact.dao.findFirst("select * from contact where id = ?", party.get("contact_id"));
@@ -237,7 +237,6 @@ public class OfficeConfigController extends Controller{
         render("/yh/profile/officeConfig/edit.html");
     }
 	public void searchAllOffice() {	
-		String a="select o.id,o.office_name,o.is_stop from office o where o.id IN (SELECT office_id FROM user_office WHERE user_name = '"+currentUser.getPrincipal()+"')";
 		List<Record> offices = Db.find("select o.id,o.office_name,o.is_stop from office o where o.id IN (SELECT office_id FROM user_office WHERE user_name = '"+currentUser.getPrincipal()+"')");
 		renderJson(offices); 
 	}
@@ -276,8 +275,7 @@ public class OfficeConfigController extends Controller{
 	            Date date = new Date();
 	            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 	            String newDate = sf.format(date);
-	            String basePath=null;
-	            basePath =newDate + "邮箱" + email + "测试成功。";
+	            String basePath =newDate + "邮箱" + email + "测试成功。";
 	            emailTo.setMsg(basePath);
 	            //添加邮件收件人
 	            emailTo.addTo(email);//设置收件人

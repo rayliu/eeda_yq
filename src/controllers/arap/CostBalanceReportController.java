@@ -45,11 +45,7 @@ public class CostBalanceReportController extends Controller {
 	}
 	
 	public long list() {
-		String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
 			return 0;
@@ -106,7 +102,7 @@ public class CostBalanceReportController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         long total = rec.getLong("total");
         List<Record> orderList = Db.find(sql);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -150,10 +146,10 @@ public class CostBalanceReportController extends Controller {
 			order_export_date_end_time="";
 		}
 		
-		String order_export_date =  " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
+		String order_export_date =  "";
 
-		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
-			order_export_date="";
+		if(StringUtils.isNotBlank(order_export_date_begin_time)||StringUtils.isNotBlank(order_export_date_begin_time)){
+			order_export_date = " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
 		}
 		String condition = sp_id+spName+order_export_date;
 		

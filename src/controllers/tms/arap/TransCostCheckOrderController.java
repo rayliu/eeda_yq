@@ -125,8 +125,7 @@ public class TransCostCheckOrderController extends Controller {
 	
 	//报关例外，获取每次收款的记录
     public List<Record> getReceiveItemList(String order_id){
-    	String sql = null;
-   		 sql = "  SELECT caci.*,c.`name` currency_name ,ul.c_name receive_name"
+    	String sql = "  SELECT caci.*,c.`name` currency_name ,ul.c_name receive_name"
    				+" from trans_arap_cost_order caco  "
    				+" left join trans_arap_cost_receive_item caci on caci.charge_order_id = caco.id "
    				+" LEFT JOIN currency c on c.id=caci.currency_id "
@@ -298,7 +297,7 @@ public class TransCostCheckOrderController extends Controller {
 	
 	public void createList() {
 		String ids = getPara("itemIds");
-		String order_id = getPara("order_id")==null?"":getPara("order_id");
+		//String order_id = getPara("order_id")==null?"":getPara("order_id");
 		String sLimit = "";
 		String pageIndex = getPara("draw");
 		if (getPara("start") != null && getPara("length") != null) {
@@ -323,7 +322,7 @@ public class TransCostCheckOrderController extends Controller {
 		logger.debug("total records:" + rec.getLong("total"));
 		
 		List<Record> orderList = Db.find(sql + " order by create_stamp desc " +sLimit);
-		Map map = new HashMap();
+		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("draw", pageIndex);
 		map.put("recordsTotal", rec.getLong("total"));
 		map.put("recordsFiltered", rec.getLong("total"));
@@ -335,17 +334,17 @@ public class TransCostCheckOrderController extends Controller {
 	public void list() {
 		String checked = getPara("checked");
 		
-		String sLimit = "";
+		//String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
         	return;
         }
-        long office_id=user.getLong("office_id");
+        //long office_id=user.getLong("office_id");
         String condition = DbUtils.buildConditions(getParaMap());
         String sql = "";
         if(checked!=null&&!"".equals(checked)&&checked.equals("Y")){
@@ -461,7 +460,7 @@ public class TransCostCheckOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by land_export_date desc " );
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -511,7 +510,7 @@ public class TransCostCheckOrderController extends Controller {
 	
 	
 	@Before(Tx.class)
-	public void save() throws Exception{
+	public void save(){
 		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
@@ -751,11 +750,11 @@ public class TransCostCheckOrderController extends Controller {
     		list = getItemList(ids,order_id,currency_code);
     	}
     	String  type=getPara("table_type");
-    	if(order_id!=""&&"receive".equals(type)){
+    	if(order_id.length()>0&&"receive".equals(type)){
     		list=getReceiveItemList(order_id);
     		setAttr("receive_itemList",list);
     	}
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());
@@ -822,8 +821,6 @@ public class TransCostCheckOrderController extends Controller {
 		         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
 		         String id=(String)dto.get("charge_order_id");
 			   	 String itemids= (String) dto.get("itemids");
-		   		
-		   		String pay_remark=(String) dto.get("pay_remark");
 		   		
 		   		TransArapCostReceiveItem cacritem=new TransArapCostReceiveItem();
 		   		String receive_time = (String) dto.get("receive_time");

@@ -224,22 +224,22 @@ public class CheckOrder extends Controller {
 				for (Map<String, String> line :lines) {
 					if(line != null){
 					String customer_name = line.get("客户简称").trim();
-					String type = line.get("类型").trim();
-					String container_no = line.get("柜号").trim();
-					String so_no = line.get("SO号").trim();
-					String cabinet_type = line.get("柜型").trim();
+//					String type = line.get("类型").trim();
+//					String container_no = line.get("柜号").trim();
+//					String so_no = line.get("SO号").trim();
+//					String cabinet_type = line.get("柜型").trim();
 					String head_carrier_name = line.get("头程船公司").trim();
-					String lading_no = line.get("提单号").trim();
-					String customer_salesman = line.get("客户业务员").trim();
-					String contract_no = line.get("合同号").trim();
-					String toca_no = line.get("拖卡号").trim();
+//					String lading_no = line.get("提单号").trim();
+//					String customer_salesman = line.get("客户业务员").trim();
+//					String contract_no = line.get("合同号").trim();
+//					String toca_no = line.get("拖卡号").trim();
 					String cross_border_travel_name = line.get("跨境").trim();
 					String take_wharf_name = line.get("提柜码头").trim();
 					String back_wharf_name = line.get("还柜码头").trim();
 					String charge_time = line.get("结算时间").trim();
 					String loading_wharf1_name = line.get("装货地点1").trim();
 					String loading_wharf2_name = line.get("装货地点2").trim();
-					String loading_platform = line.get("装货平台").trim();
+//					String loading_platform = line.get("装货平台").trim();
 					String cabinet_date = line.get("提柜/货日期").trim();
 					String closing_date = line.get("收柜日期").trim();
 					String tj_car_no = line.get("提吉车牌（含 拖卡重量、拖头重量、司机、司机电话）").trim();
@@ -250,7 +250,7 @@ public class CheckOrder extends Controller {
 					String call_fee = line.get("打单费").trim();
 					String weighing_fee = line.get("过磅费").trim();
 					String high_speed_fee = line.get("高速费").trim();
-					String remark = line.get("备注").trim();
+//					String remark = line.get("备注").trim();
 					
 					if(StringUtils.isNotBlank(customer_name)){
 						Record customer = Db.findFirst("select * from party where abbr = ?  and type = 'CUSTOMER'  and office_id = ?",customer_name,office_id);

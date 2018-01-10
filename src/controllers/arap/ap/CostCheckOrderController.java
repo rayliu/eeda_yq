@@ -59,11 +59,11 @@ public class CostCheckOrderController extends Controller {
 	public void create(){
 		
 		String ids = getPara("itemId");//job_order_arap ids
-		String totalAmount = getPara("totalAmount");
-		String cny_totalAmount = getPara("cny_totalAmount");
-		String usd_totalAmount = getPara("usd_totalAmount");
-		String hkd_totalAmount = getPara("hkd_totalAmount");
-		String jpy_totalAmount = getPara("jpy_totalAmount");
+//		String totalAmount = getPara("totalAmount");
+//		String cny_totalAmount = getPara("cny_totalAmount");
+//		String usd_totalAmount = getPara("usd_totalAmount");
+//		String hkd_totalAmount = getPara("hkd_totalAmount");
+//		String jpy_totalAmount = getPara("jpy_totalAmount");
 		String exchange_totalAmount = getPara("exchange_totalAmount");
 		String exchange_cny_totalAmount = getPara("exchange_cny_totalAmount");
 		String exchange_usd_totalAmount = getPara("exchange_usd_totalAmount");
@@ -297,11 +297,11 @@ public class CostCheckOrderController extends Controller {
 	
 	public void createList() {
 		String ids = getPara("itemIds");
-		String order_id = getPara("order_id")==null?"":getPara("order_id");
+		//String order_id = getPara("order_id")==null?"":getPara("order_id");
 		String sLimit = "";
-		String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
-        String sColumn =  getPara("order[0][column]");
-        String sName =  getPara("columns["+sColumn+"][data]")==null?"order_export_date":getPara("columns["+sColumn+"][data]") ;
+		//String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
+        //String sColumn =  getPara("order[0][column]");
+        //String sName =  getPara("columns["+sColumn+"][data]")==null?"order_export_date":getPara("columns["+sColumn+"][data]") ;
 		String pageIndex = getPara("draw");
 		if (getPara("start") != null && getPara("length") != null) {
 			sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
@@ -330,7 +330,7 @@ public class CostCheckOrderController extends Controller {
 		logger.debug("total records:" + rec.getLong("total"));
 		
 		List<Record> orderList = Db.find(sql + " order by create_stamp desc " +sLimit);
-		Map map = new HashMap();
+		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("draw", pageIndex);
 		map.put("recordsTotal", rec.getLong("total"));
 		map.put("recordsFiltered", rec.getLong("total"));
@@ -342,7 +342,7 @@ public class CostCheckOrderController extends Controller {
 	public void list() {
 		String checked = getPara("checked");
 		
-		String sLimit = "";
+		//String sLimit = "";
         String pageIndex = getPara("draw");
         String sort = getPara("order[0][dir]")==null?"desc":getPara("order[0][dir]");
         String sColumn =  getPara("order[0][column]");
@@ -351,9 +351,9 @@ public class CostCheckOrderController extends Controller {
         	sName = "order_export_date,order_no";
         	sort ="desc";
         }
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
@@ -443,7 +443,7 @@ public class CostCheckOrderController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by "+ sName +" "+ sort );
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -510,7 +510,7 @@ public class CostCheckOrderController extends Controller {
 	
 	
 	@Before(Tx.class)
-	public void save() throws Exception{
+	public void save() {
 		String jsonStr=getPara("params");
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
@@ -886,7 +886,7 @@ public class CostCheckOrderController extends Controller {
     		list = getItemList(ids,order_id,currency_code);
     	}
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());
@@ -995,7 +995,7 @@ public class CostCheckOrderController extends Controller {
 		String total_name_header = "申请单号, 出货日期, 客户, 结算公司, 类型, 提单号(MBL), 提单号(HBL), SO号, 起运港,目的港, 箱号, 箱量类型, 费用名称, 币制, 金额";// 目的港,体积,件数,毛重,发票号,
 		String[] headers = total_name_header.split(",");
 		
-		String head_id_sql_total = "ORDER_NO, ORDER_EXPORT_DATE, CUSTOMER_ABBR, SP_ABBR, TYPE, MBL, HBL, SO_NO, POL, POD, CONTAINER_NO, CONTAINER_AMOUNT, FEE_NAME, CURRENCY_NAME, TOTAL_AMOUNT";// 目的港,体积,件数,毛重,发票号,
+		//String head_id_sql_total = "ORDER_NO, ORDER_EXPORT_DATE, CUSTOMER_ABBR, SP_ABBR, TYPE, MBL, HBL, SO_NO, POL, POD, CONTAINER_NO, CONTAINER_AMOUNT, FEE_NAME, CURRENCY_NAME, TOTAL_AMOUNT";// 目的港,体积,件数,毛重,发票号,
 		String[] fields = {"ORDER_NO", "ORDER_EXPORT_DATE", "CUSTOMER_ABBR", "SP_ABBR", "TYPE", "MBL", "HBL", "SO_NO", "POL", "POD", "CONTAINER_NO", "CONTAINER_AMOUNT", "FEE_NAME", "CURRENCY_NAME", "TOTAL_AMOUNT"};
 		String fileName = PoiUtils.generateExcel(headers, fields, sqlExport,sp_name);
 		renderText(fileName);

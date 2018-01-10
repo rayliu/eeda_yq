@@ -84,7 +84,7 @@ public class ServiceProviderController extends Controller {
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
         List<Record> orderList = Db.find(sql+ condition + " order by create_date desc " +sLimit);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -142,7 +142,7 @@ public class ServiceProviderController extends Controller {
         }
         Party party = Party.dao.findById(id);
         
-        String code = party.get("location");
+        //String code = party.get("location");
 
 //        Record re = Db.findFirst("select get_loc_full_name('"+code+"') as loc_name");
 //        setAttr("location", re.getStr("loc_name"));
@@ -160,12 +160,10 @@ public class ServiceProviderController extends Controller {
     public void tableList(){
     	String order_id = getPara("order_id");
     	String type = getPara("type");
-    	List<Record> list = null;
+    	List<Record> list = getItemDetail(order_id, type);
 //    	list = Db.find("SELECT * FROM fin_account WHERE order_id = ?",order_id);
     	
-    	list=getItemDetail(order_id, type);
-    	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list.size());
         map.put("iTotalDisplayRecords", list.size());
@@ -196,7 +194,7 @@ public class ServiceProviderController extends Controller {
     public void save() throws Exception { {
         String id = getPara("party_id");
         Party party = null;
-        Party contact = null;
+        //Party contact = null;
         Party contact1 = null;
         Party contact2 = null;
         Date createDate = Calendar.getInstance().getTime();
@@ -616,7 +614,6 @@ public class ServiceProviderController extends Controller {
         	condition = " and p.abbr like '%" + name + "%' or p.company_name like '%" + name + "%' ";
         }
         
-        List<Record> recs = null;
         String sql = "select  * from(SELECT p.id,p.abbr name"
 				+ " FROM user_query_history uqh"
 				+ " LEFT JOIN party p ON p.id = uqh.ref_id"
@@ -628,7 +625,7 @@ public class ServiceProviderController extends Controller {
 				+ " (select id,abbr name from party p where p.type = 'SP' and p.sp_type like '%carrier%' "
 				+ condition+")";
        
-        recs = Db.find(sql);
+        List<Record> recs = Db.find(sql);
         renderJson(recs);
     }
     
@@ -856,10 +853,9 @@ public class ServiceProviderController extends Controller {
     public void searchCurrency(){
     	String input = getPara("input");
     	String TO = getPara("para");
-    	String CURRENCY_name = getPara("CURRENCY_ID_input");
+    	//String CURRENCY_name = getPara("CURRENCY_ID_input");
     	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    	String d = sf.format(new Date());
-    	List<Record> recs = null;
+    	//String d = sf.format(new Date());
     	UserLogin user = LoginUserController.getLoginUser(this);
     	if(user==null){
         	return;
@@ -897,7 +893,7 @@ public class ServiceProviderController extends Controller {
         if("TO".equals(TO)){
         	sql="select * from ("+sql+") A group by CODE";
         }
-    	recs = Db.find(sql);
+        List<Record> recs = Db.find(sql);
     	renderJson(recs);
     }
     
@@ -905,8 +901,7 @@ public class ServiceProviderController extends Controller {
     public void searchCurrency_create(){
     	String input = getPara("input");
     	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    	String d = sf.format(new Date());
-    	List<Record> recs = null;
+    	//String d = sf.format(new Date());
     	UserLogin user = LoginUserController.getLoginUser(this);
     	if(user==null){
         	return;
@@ -922,7 +917,7 @@ public class ServiceProviderController extends Controller {
         if(!StringUtils.isBlank(input)){
     		sql+=" and (c.name like '%" + input + "%' or c.english_name like '%" + input + "%' or c.code like '%" + input + "%') ";
     	}
-    	recs = Db.find(sql+" group by name");
+        List<Record> recs = Db.find(sql+" group by name");
     	renderJson(recs);
     }
     
@@ -938,14 +933,13 @@ public class ServiceProviderController extends Controller {
         long office_id = user.getLong("office_id");
     	String input = getPara("input");
     	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    	String d = sf.format(new Date());
-    	List<Record> recs = null;
+    	//String d = sf.format(new Date());
     	
     	String sql = "select * from fin_account fa where fa.bank_name!='现金' and (fa.is_stop is null or fa.is_stop !=1) and office_id="+office_id;
     	if(!StringUtils.isBlank(input)){
     		sql+=" and (fa.bank_name like '%" + input + "%') ";
     	}
-    	recs = Db.find(sql);
+    	List<Record> recs = Db.find(sql);
     	renderJson(recs);
     }
     
@@ -959,16 +953,15 @@ public class ServiceProviderController extends Controller {
 //        long office_id = user.getLong("office_id");
     	String input = getPara("input");
     	String order_id = getPara("order_id");
-    	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    	//SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 //    	String d = sf.format(new Date());
-    	List<Record> recs = null;
     	
     	String sql = "select fa.*,cy.code currency_name from fin_account fa "
     			+ "LEFT JOIN currency cy on cy.id = fa.currency_id where order_id="+order_id;
     	if(!StringUtils.isBlank(input)){
     		sql+=" and (fa.bank_name like '%" + input + "%') ";
     	}
-    	recs = Db.find(sql);
+    	List<Record> recs = Db.find(sql);
     	renderJson(recs);
     }
     
@@ -1013,8 +1006,6 @@ public class ServiceProviderController extends Controller {
         		+ " FROM dockinfo di WHERE	di.party_id = '"+party_id+"' and di.dock_name like '%"+addressInputStr+"%'";
         judge_rec = Db.findFirst(judge_sql);
         
-        
-        List<Record> rec = null;
         String dock_names =judge_rec.get("dock_names");
         if(StringUtils.isBlank(dock_names)){        	
         	sql="SELECT	* FROM ( SELECT	dock.id dock_id,"
@@ -1061,7 +1052,7 @@ public class ServiceProviderController extends Controller {
             		+ conditon+")";
         }
         
-        rec = Db.find(sql);
+        List<Record> rec = Db.find(sql);
         renderJson(rec);
     }
     
@@ -1073,7 +1064,7 @@ public class ServiceProviderController extends Controller {
         	return;
         }
         long office_id = user.getLong("office_id");
-        String name = getPara("input");
+        //String name = getPara("input");
         String spId = getPara("sp_id");
         String sp_id ="";
         if(StringUtils.isNotEmpty(spId)){
@@ -1081,12 +1072,11 @@ public class ServiceProviderController extends Controller {
         }        
         String addressInputStr = getPara("addressInputStr");
         String addStr = "";
-        String conditon = "";
+        //String conditon = "";
         if(StringUtils.isNotEmpty(addressInputStr)){
         	addStr=" and dock_name like '%"+addressInputStr+"%' ";
         }
         
-        List<Record> rec = null;
         String sql = " SELECT dock.* from dockinfo dock LEFT JOIN party p on dock.party_id = p.id"
         		+ " WHERE p.office_id = "+office_id+sp_id+ addStr;
         if(StringUtils.isEmpty(spId)){
@@ -1095,7 +1085,7 @@ public class ServiceProviderController extends Controller {
         	
         }
         
-        rec = Db.find(sql + " limit 25" );
+        List<Record> rec = Db.find(sql + " limit 25" );
         renderJson(rec);
     }
     
@@ -1145,12 +1135,11 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchSupervisionMethod(){
         String name = getPara("input");
-        List<Record> rec = null;
         String sql = "select * from supervision_method s where 1=1 ";
         if(!StringUtils.isBlank(name)){
             sql+=" and s.name like '%" + name + "%' ";
         }
-        rec = Db.find(sql + " limit 25");
+        List<Record> rec = Db.find(sql + " limit 25");
         renderJson(rec);
     }
     
@@ -1158,12 +1147,11 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchCustomExemptionNature(){
     	String input = getPara("input");
-    	List<Record> rec = null;
     	String sql = "select id,concat(code,' ',name) name from custom_exemption_nature where 1=1 ";
     	if(!StringUtils.isBlank(input)){
     		sql+=" and (code like '%" + input + "%' or name like '%" + input + "%') ";
     	}
-    	rec = Db.find(sql + " limit 25");
+    	List<Record> rec = Db.find(sql + " limit 25");
     	renderJson(rec);
     }
     
@@ -1171,14 +1159,13 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchGoodsSupply(){
     	String input = getPara("input");
-    	List<Record> rec = null;
     	String sql = "select id,concat(code,' ',name) name from custom_goods_supply where 1=1 ";
     	if(!StringUtils.isBlank(input)){
     		sql+=" and (code like '%" + input + "%' "
     				+ " or name like '%" + input + "%'"
     				+ " or concat(code,' ',name) like '%" + input + "%') ";
     	}
-    	rec = Db.find(sql + " limit 25");
+    	List<Record> rec = Db.find(sql + " limit 25");
     	renderJson(rec);
     }
     
@@ -1186,14 +1173,13 @@ public class ServiceProviderController extends Controller {
     @Clear({SetAttrLoginUserInterceptor.class, EedaMenuInterceptor.class})// 清除指定的拦截器, 这个不需要查询个人和菜单信息
     public void searchExportPort(){
     	String input = getPara("input");
-    	List<Record> rec = null;
     	String sql = "select id,concat(under_code,' ',under_port) name from custom_port where 1=1 ";
     	if(!StringUtils.isBlank(input)){
     		sql+=" and (code like '%" + input + "%' or under_port like '%" + input + "%' "
     				+ " or under_code like '%" + input + "%'"
     			    + " or concat(under_code,' ',under_port) like '%" + input + "%') ";
     	}
-    	rec = Db.find(sql + " limit 25");
+    	List<Record> rec = Db.find(sql + " limit 25");
     	renderJson(rec);
     }
     
@@ -1207,7 +1193,6 @@ public class ServiceProviderController extends Controller {
         long office_id = user.getLong("office_id");
         
     	String input = getPara("input");
-    	List<Record> rec = null;
     	String sql = "select id,concat(abbr,' ',ifnull(custom_registration,'')) name,"
     			+ " concat(ifnull(ifnull(address_eng, address),''),'\n',ifnull(ifnull(contact_person_eng, contact_person),''),'\n',ifnull(phone,''),ifnull(fax,'')) str"
     			+ " from party where office_id="+office_id + " and type in('CUSTOMER', 'SP')";
@@ -1216,21 +1201,21 @@ public class ServiceProviderController extends Controller {
     			+ " or abbr like '%" + input + "%' or company_name like '%" + input + "%'"
     			+ " or concat(abbr,' ',ifnull(custom_registration,'')) like '%" + input + "%') ";
     	}
-    	rec = Db.find(sql + " limit 25");
+    	List<Record> rec = Db.find(sql + " limit 25");
     	renderJson(rec);
     }
     
     //打分
     public void markCustormerList(){
     	String sp_id=getPara("sp_id");
-    	String office_id= pom.getCurrentOfficeId().toString();
+    	//String office_id= pom.getCurrentOfficeId().toString();
         String sql="select pm.*,p.abbr,ul.c_name creator_name FROM party_mark pm "
 					+" LEFT JOIN party p on p.id=pm.sp_id "
 					+" LEFT JOIN user_login ul on ul.id=pm.creator "
 					+" WHERE pm.sp_id = " +sp_id;
         
         List<Record> orderList = Db.find(sql);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("data", orderList);
         renderJson(map);
     }
@@ -1248,8 +1233,8 @@ public class ServiceProviderController extends Controller {
        	if(user==null){
         	return;
         }
-       	long userId = LoginUserController.getLoginUserId(this);
-		long office_id = user.getLong("office_id");
+       	//long userId = LoginUserController.getLoginUserId(this);
+		//long office_id = user.getLong("office_id");
        	 
         
        	List<Map<String, String>> item_list = (ArrayList<Map<String, String>>)dto.get("item_list");

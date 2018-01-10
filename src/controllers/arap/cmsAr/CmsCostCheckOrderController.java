@@ -52,7 +52,7 @@ public class CmsCostCheckOrderController extends Controller {
 	}
 	
 	@Before(Tx.class)
-   	public void save() throws Exception {		
+   	public void save() {		
    		String jsonStr=getPara("params");
        	
        	Gson gson = new Gson();  
@@ -119,24 +119,23 @@ public class CmsCostCheckOrderController extends Controller {
     public void list() {
     	String checked = getPara("checked");
     	
-        String sLimit = "";
+        //String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
         
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
    			return;
    		}
         long office_id=user.getLong("office_id");
-        String sql = "";
         String checkCondition = "";
         if(!"Y".equals(checked)){
         	checkCondition = "and cpoa.order_type='cost'";
         }
 
-		sql = "select B.* from(  "
+        String sql = "select B.* from(  "
 			+" SELECT cpo.order_no,cpoa.order_type ,cpo.receive_sent_consignee_input,cpoa.id arap_id,cpo.id order_id,cpo.date_custom,cpo.tracking_no,p.abbr sp_name,f.name fin_name,cpoa.amount, cpoa.price, "
 			 +" IF(cpoa.currency_id = 3,'人民币','') currency_name,cpoa.total_amount,cpoa.remark,cpo.customs_billCode,cpo.create_stamp "
 			 +" from custom_plan_order_arap cpoa "
@@ -157,8 +156,8 @@ public class CmsCostCheckOrderController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         List<Record> orderList = Db.find(sql+ condition  );
-        String sqq=sql+condition;
-        Map orderListMap = new HashMap();
+        //String sqq=sql+condition;
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -169,17 +168,17 @@ public class CmsCostCheckOrderController extends Controller {
     }
     
 	public void list2() {
-        String sLimit = "";
+        //String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
 
-		List<Record> BillingOrders = null;
+		//List<Record> BillingOrders = null;
 
-		Map BillingOrderListMap = new HashMap();
+		Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
 		BillingOrderListMap.put("draw", pageIndex);
-		BillingOrderListMap.put("data", BillingOrders);
+		BillingOrderListMap.put("data", null);
 
 		renderJson(BillingOrderListMap);
 	}
@@ -508,7 +507,7 @@ public class CmsCostCheckOrderController extends Controller {
     		setAttr("receive_itemList",list);
     	}
 
-    	Map BillingOrderListMap = new HashMap();
+    	Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", 1);
         BillingOrderListMap.put("iTotalRecords", list.size());
         BillingOrderListMap.put("iTotalDisplayRecords", list.size());
@@ -528,7 +527,7 @@ public class CmsCostCheckOrderController extends Controller {
 		aco.update();
 		
 		//设置y，已生成对账单o
-				String itemList=aco.get("ref_order_id");
+				//String itemList=aco.get("ref_order_id");
 				String sql="UPDATE custom_plan_order_arap cpoa set billConfirm_flag='Y' "
 							+"where cpoa.id in (select aci.ref_order_id FROM custom_arap_cost_item aci where custom_cost_order_id="+id+" )";
 				Db.update(sql);
@@ -642,7 +641,7 @@ public class CmsCostCheckOrderController extends Controller {
 		         String id=(String)dto.get("custom_charge_order_id");
 			   	 String itemids= (String) dto.get("itemids");
 		   		
-		   		String pay_remark=(String) dto.get("pay_remark");
+		   		//String pay_remark=(String) dto.get("pay_remark");
 		   		
 		   		CustomArapCostReceiveItem cacritem=new CustomArapCostReceiveItem();
 		   		String receive_time = (String) dto.get("receive_time");

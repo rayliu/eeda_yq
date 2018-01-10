@@ -118,7 +118,6 @@ public class SupplierContractController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void edit() {
         String id = getPara("id");
-        String signal = getPara("signal");
         UserLogin user = LoginUserController.getLoginUser(this);
         if (user==null) {
             return;
@@ -129,7 +128,6 @@ public class SupplierContractController extends Controller {
 	     	renderError(403);// no permission
 	         return;
 	     }
-   		SupplierContract  supplierContract= new SupplierContract();
         setAttr("user", LoginUserController.getLoginUser(this));
         setAttr("charge_items", getItems(id,"ocean"));
         setAttr("ocean_locations", getItems(id,"ocean_loc"));
@@ -160,13 +158,11 @@ public class SupplierContractController extends Controller {
      	order.set("contract_end_time", null);
      	order.set("customer_id", null);
      	//生成工作单号
-     	String newDateStr = "";
-        String newDateStrMM = "";
-        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
+        //SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
         SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
         SimpleDateFormat sdfMM = new SimpleDateFormat("MM");//转换后的格式
-        newDateStr = sdf.format(new Date());
-        newDateStrMM = sdfMM.format(new Date());
+        String newDateStr = sdf.format(new Date());
+        String newDateStrMM = sdfMM.format(new Date());
         String contract_no = OrderNoGenerator.getNextOrderNo("EK", newDateStr, office_id);
 		StringBuilder sb = new StringBuilder(contract_no);//构造一个StringBuilder对象
 		sb.insert(4, newDateStrMM);//在指定的位置，插入指定的字符串(月份)
@@ -182,7 +178,6 @@ public class SupplierContractController extends Controller {
      		Db.save("supplier_contract_location", loc);
      		List<Record> chargeItems = Db.find("select * from supplier_contract_item where supplier_loc_id = "+loc_id);
      		for(Record charge : chargeItems){
-         		Long charge_id = loc.getLong("id");
          		charge.set("id", null);
          		charge.set("supplier_loc_id", loc.getLong("id"));
          		charge.set("contract_id", order.getLong("id"));
@@ -289,14 +284,11 @@ public class SupplierContractController extends Controller {
    		SupplierContract  supplierContract= new SupplierContract();
    		String id = (String) dto.get("contract_id");
 
-        String newDateStr = "";
-        	
-        String newDateStrMM = "";
-        SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
+        //SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd");//分析日期
         SimpleDateFormat sdf = new SimpleDateFormat("yy");//转换后的格式
         SimpleDateFormat sdfMM = new SimpleDateFormat("MM");//转换后的格式
-        	newDateStr = sdf.format(new Date());
-        	newDateStrMM = sdfMM.format(new Date());
+        String newDateStr = sdf.format(new Date());
+        String newDateStrMM = sdfMM.format(new Date());
    		if (StringUtils.isNotEmpty(id)) {
    			//update
    			supplierContract = SupplierContract.dao.findById(id);
@@ -411,8 +403,7 @@ public class SupplierContractController extends Controller {
 			DbUtils.handleList(charge_tour_items, "supplier_contract_item", reTour.get("id").toString(),"supplier_loc_id");
 		}
    		
-   		Record rcon = new Record();
-   		rcon= Db.findFirst("select * from supplier_contract joc where id = ? ",id);
+   		Record rcon = Db.findFirst("select * from supplier_contract joc where id = ? ",id);
         //rcon.set("charge_items", getItems(id));
        
         setAttr("saveOK", true);
@@ -424,12 +415,10 @@ public class SupplierContractController extends Controller {
     
   //异步刷新字表
     public void clickItem(){
-    	String contract_id = getPara("contract_id");
     	String type = getPara("type");
     	String supplier_loc_id = getPara("supplier_loc_id");
 
-    	String sql = "";
-    		sql = " SELECT cci.*, fi.name fee_name, "
+    	String sql = " SELECT cci.*, fi.name fee_name, "
     		        + " u.name uom_name,c.name currency_name,p.company_name air_company_name"
 					+" from supplier_contract_item cci"
 					+ " left join supplier_contract_location ccl on ccl.id = cci.supplier_loc_id"
@@ -442,7 +431,7 @@ public class SupplierContractController extends Controller {
     	
     	List<Record> list = Db.find(sql,supplier_loc_id);
 
-    	Map BillingOrderListMap = new HashMap();
+    	Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", 1);
         BillingOrderListMap.put("iTotalRecords", list.size());
         BillingOrderListMap.put("iTotalDisplayRecords", list.size());
@@ -459,10 +448,9 @@ public class SupplierContractController extends Controller {
     public void tableList(){
     	String contract_id = getPara("contract_id");
     	String type = getPara("type");
-    	List<Record> list = null;
-    	list = getItems(contract_id,type);
+    	List<Record> list = getItems(contract_id,type);
 
-    	Map BillingOrderListMap = new HashMap();
+    	Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", 1);
         BillingOrderListMap.put("iTotalRecords", list.size());
         BillingOrderListMap.put("iTotalDisplayRecords", list.size());

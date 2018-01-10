@@ -57,7 +57,7 @@ public class UserRoleController extends Controller {
 		String totalWhere ="";
 		String sql = "";
 		
-		Long parentID =pom.getBelongOffice();
+		Long parentID = (Long)pom.getBelongOffice();
 		if(parentID == null || "".equals(parentID)){
 			parentID = pom.getParentOfficeId();
 			totalWhere ="select count(1) total from user_role ur "
@@ -83,12 +83,12 @@ public class UserRoleController extends Controller {
 		
 		String condition = DbUtils.buildConditions(getParaMap());
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        //String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(totalWhere);
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -136,7 +136,7 @@ public class UserRoleController extends Controller {
 	/*列出没有角色的用户*/
 	public void userList(){
 		String sql = "";
-		Long parentID = pom.getBelongOffice();
+		Long parentID = (Long)pom.getBelongOffice();
 		//系统管理员
 		if(parentID == null || "".equals(parentID)){
 			sql = "select u.*, ur.role_code from user_login u left join office o on u.office_id = o.id left join user_role ur on u.user_name = ur.user_name where ur.role_id is null and (o.id = " + pom.getParentOfficeId() +" or o.belong_office= "+ pom.getParentOfficeId() +")";
@@ -203,15 +203,15 @@ public class UserRoleController extends Controller {
 	public void roleList() {
 		//获取选中的用户
 		String username = getPara("username");
-		String sLimit = "";
+		//String sLimit = "";
 		String pageIndex = getPara("sEcho");
-		if (getPara("iDisplayStart") != null
-		        && getPara("iDisplayLength") != null) {
-			sLimit = " LIMIT " + getPara("iDisplayStart") + ", "
-			        + getPara("iDisplayLength");
-		}
+//		if (getPara("iDisplayStart") != null
+//		        && getPara("iDisplayLength") != null) {
+//			sLimit = " LIMIT " + getPara("iDisplayStart") + ", "
+//			        + getPara("iDisplayLength");
+//		}
 
-		Long officeId = pom.getBelongOffice();
+		Long officeId = (Long)pom.getBelongOffice();
 		if(officeId == null || "".equals(officeId)){
 		    officeId = pom.getParentOfficeId();
 		}
@@ -230,7 +230,7 @@ public class UserRoleController extends Controller {
 		// 获取当前页的数据
 		List<Record> orders = Db.find(sql,username, officeId);
 		
-		Map orderMap = new HashMap();
+		Map<String,Object> orderMap = new HashMap<String,Object>();
 		orderMap.put("sEcho", pageIndex);
 		orderMap.put("iTotalRecords", rec.getLong("total"));
 		orderMap.put("iTotalDisplayRecords", rec.getLong("total"));
@@ -253,7 +253,7 @@ public class UserRoleController extends Controller {
 		String username = getPara("username");
 		//查询当前用户的父类公司的id
 		Office parentOffice = getCurrentUserOffice();
-		Long parentID = parentOffice.get("belong_office");
+		Long parentID = (Long)parentOffice.get("belong_office");
 		if(parentID == null || "".equals(parentID)){
 			parentID = parentOffice.getLong("id");
 		}

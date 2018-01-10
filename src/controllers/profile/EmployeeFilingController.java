@@ -78,24 +78,19 @@ public class EmployeeFilingController extends Controller {
     }
 	
 	public void list() {
-		
-		String confirmFee = getPara("confirmFee");
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
         	return;
         }
         long office_id=user.getLong("office_id");
     	
-        String sLimit = "";
-        String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
-        String sql = "";
-        String condition="";
-        String ref_office = "";
-
-        sql = "SELECT*FROM( SELECT	ul.*, GROUP_CONCAT( DISTINCT r. NAME) station_name FROM	user_login ul "
+//        String sLimit = "";
+          String pageIndex = getPara("draw");
+//        if (getPara("start") != null && getPara("length") != null) {
+//            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+//        }
+          
+        String sql = "SELECT*FROM( SELECT	ul.*, GROUP_CONCAT( DISTINCT r. NAME) station_name FROM	user_login ul "
         		+ " LEFT JOIN user_role ur on ur.user_name = ul.user_name"
         		+ " LEFT JOIN role r ON r.id = ur.role_id "
         		+ " where ul.office_id= "+office_id
@@ -103,14 +98,14 @@ public class EmployeeFilingController extends Controller {
         		+ " ) A where 1=1";
         
 
-        condition = DbUtils.buildConditions(getParaMap());
+        String condition = DbUtils.buildConditions(getParaMap());
         
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition );
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -165,7 +160,7 @@ public class EmployeeFilingController extends Controller {
 	/*列出没有角色的用户*/
 	public void userList(){
 		String sql = "";
-		Long parentID = pom.getBelongOffice();
+		Long parentID = (Long)pom.getBelongOffice();
 		//系统管理员
 		if(parentID == null || "".equals(parentID)){
 			sql = "select u.*, ur.role_code from user_login u left join office o on u.office_id = o.id left join user_role ur on u.user_name = ur.user_name where ur.role_id is null and (o.id = " + pom.getParentOfficeId() +" or o.belong_office= "+ pom.getParentOfficeId() +")";

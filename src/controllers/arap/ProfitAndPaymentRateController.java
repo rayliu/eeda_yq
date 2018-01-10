@@ -45,11 +45,7 @@ public class ProfitAndPaymentRateController extends Controller {
 	}
 	
 	public long list() {
-		String sLimit = "";
         String pageIndex = getPara("draw");
-        if (getPara("start") != null && getPara("length") != null) {
-            sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
-        }
         UserLogin user = LoginUserController.getLoginUser(this);
         if(user==null){
 			return 0;
@@ -96,7 +92,7 @@ public class ProfitAndPaymentRateController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         long total = rec.getLong("total");
         List<Record> orderList = Db.find(sql);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
@@ -123,9 +119,9 @@ public class ProfitAndPaymentRateController extends Controller {
         	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
         }
         
-		String sp_id =" and sp_id="+spid;
-		if(StringUtils.isBlank(spid)){
-			sp_id="";
+		String sp_id = "";
+		if(StringUtils.isNotBlank(spid)){
+			sp_id = " and sp_id="+spid;
 		}
 		if(order_export_date_begin_time==null){
 			order_export_date_begin_time="";
@@ -134,10 +130,10 @@ public class ProfitAndPaymentRateController extends Controller {
 			order_export_date_end_time="";
 		}
 		
-		String order_export_date =  " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
+		String order_export_date = "";
 
-		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
-			order_export_date="";
+		if(StringUtils.isNotBlank(order_export_date_begin_time)||StringUtils.isNotBlank(order_export_date_end_time)){
+			order_export_date = " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
 		}
 		String condition = sp_id+order_export_date;
 		
