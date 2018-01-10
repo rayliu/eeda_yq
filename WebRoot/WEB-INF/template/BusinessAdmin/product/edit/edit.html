@@ -35,7 +35,7 @@
                         </div>
                     </dd>
                 </dl>
-                <dl style="display:none">
+                <dl style="">
                     <dt class="fm-label">
                         <div class="fm-label-wrap ">
                             <label for="fm-login-password">分类：</label>
@@ -48,7 +48,7 @@
 							            		<%
 							                    	for(category in categorys!){ 
 							                    %>
-							                    	<option value='${category.id!''}' <% if(category.id==product.category){%> selected<%}%> >${category.name!''}</option>
+							                    	<option value='${category.name!''}' <% if(category.id==product.category){%> selected<%}%> >${category.name!''}</option>
 							                   
 							                    <%
 							                    	}

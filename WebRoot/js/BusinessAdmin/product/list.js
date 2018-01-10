@@ -22,6 +22,7 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
                 return str;
               }
             },
+            { "data": "CATEGORY_NAME", "width": "80px"},
             { "data": "NAME", "width": "200px",
               render:function(data,type,full,meta){
                    return "<a href='/BusinessAdmin/product/edit?id="+full.ID+"'>"+data+"</a>";
@@ -135,5 +136,12 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
       var refleshTable = function(){
     	  dataTable.ajax.url("/BusinessAdmin/product/list").load();
       }
+      
+      $('.searchBtn').on('click',function(){
+    	  var name = this.value;
+    	  
+    	  var sql = "/BusinessAdmin/product/list?name="+name;
+    	  dataTable.ajax.url(sql).load();
+      });
   });
 });

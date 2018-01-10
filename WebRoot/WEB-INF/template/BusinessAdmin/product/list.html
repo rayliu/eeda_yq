@@ -4,23 +4,18 @@
             </h1>
              <a class="stdbtn btn_blue" id="uploadBtn" style="margin-left:20px" href="/BusinessAdmin/product/edit">上传产品</a>
       </div>
-        <div class="pageheader notab">
-<!--         <%
-        	var flag_info="";
-        	var status = hui_status!'';
-        	if(status == "Y"){
-        		flag_info = "checked";
-        	}else if(status == "B"){
-        		flag_info = "disabled";
-        	}
-        %>
-          <input type='checkbox' style="margin-left:10px;" id = "update_hui" ${flag_info!''}> 惠 -->
-          <input type = "hidden"  id ="cu_leave_days" value="${cu.leave_days!'-1'}"/>
+      <div style="margin:20px 0 0 10px">
+        <% for(name in categoryList![]){%>
+      	<input class="stdbtn btn_default searchBtn" style="margin-right:5px" type="button" value="${name.name!''}" >
+      	<%}%>
+      </div>
+        <div class="pageheader notab" >
+          <input type = "hidden"  id ="cu_leave_days" value="${cu.leave_days!'0'}"/>
           <div class="product-table">
             <%include("/eeda/component/form/detailTable.html", 
             {
                 id:'eeda_table', 
-                headers:['封 面','产品名','描述','价 格','上 架','促(剩余'+cu.leave_days!'0'+'天)','']
+                headers:['封 面','类别','产品名','描述','价 格','上 架','促(剩余'+cu.leave_days!'0'+'天)','']
             }){} %>
           </div>
         </div>

@@ -39,7 +39,7 @@ public class ProductController extends Controller {
 
 	public void index() {
 		Long userId = LoginUserController.getLoginUserId(this);
-		String sql_cu  = "SELECT if(DATEDIFF(max(end_date),now())>0,cast(DATEDIFF(max(end_date),now()) as char),'-1') leave_days,max(end_date) end_date "
+		String sql_cu  = "SELECT if(DATEDIFF(max(end_date),now())>0,cast(DATEDIFF(max(end_date),now()) as char),'0') leave_days,max(end_date) end_date "
 				+ "FROM `wc_ad_cu` "
 				+ "where status='开启' and creator ="+userId;
 		Record re_cu = Db.findFirst(sql_cu);
@@ -48,20 +48,49 @@ public class ProductController extends Controller {
 			re_cu.set("leave_days", 0);
 		}
 		setAttr("cu",re_cu);
+		
+    	List<Record> categoryList = Db.find("select * from category ");
+    	setAttr("categoryList",categoryList);
+    	
 		render(getRequest().getRequestURI()+"/list.html");
 	}
+	
+	
+	public void edit(){
+    	String id = getPara("id");
+   		String sql_cat = "select * from category ";
+    	List<Record> categorys = Db.find(sql_cat);
+    	setAttr("categorys",categorys);
+        if(StringUtils.isBlank(id)){
+            render(getRequest().getRequestURI()+"/edit.html");
+            setAttr("product", new Record());
+        }else{
+            Record rec = Db.findFirst("select * from wc_product where id = ?",id);
+            setAttr("product", rec);
+            List<Record> productItem = Db.find("select * from wc_product_pic where order_id = ? order by seq asc ", id);
+            setAttr("productItem", productItem);
+            render(getRequest().getRequestURI()+"/edit.html");
+        }
+        
+    }
 	
 	public void list() {
 	    String sLimit = "";
         String pageIndex = getPara("draw");
         Long userId = LoginUserController.getLoginUserId(this);
-        
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         
+        String condition = "";
+        String name = getPara("name");
+        if(StringUtils.isNotBlank(name)){
+        	condition += " and pro.category_name = '"+name+"'";
+        }
         //String condition = DbUtils.buildConditions(getParaMap());
-        String sql = "select * from wc_product where creator = "+ userId;
+        String sql = "select * from wc_product pro"
+        		+ "  where creator = "+ userId
+        		+ condition;
         
         Record rec = Db.findFirst("select count(1) total from ("+sql+") B");
         List<Record> orderList = Db.find(sql + " order by id desc " +sLimit);
@@ -173,23 +202,7 @@ public class ProductController extends Controller {
 		renderJson(true);
 	}
 	
-	public void edit(){
-    	String id = getPara("id");
-   		String sql_cat = "select * from category ";
-    	List<Record> categorys = Db.find(sql_cat);
-    	setAttr("categorys",categorys);
-        if(StringUtils.isBlank(id)){
-            render(getRequest().getRequestURI()+"/edit.html");
-            setAttr("product", new Record());
-        }else{
-            Record rec = Db.findFirst("select * from wc_product where id = ?",id);
-            setAttr("product", rec);
-            List<Record> productItem = Db.find("select * from wc_product_pic where order_id = ? order by seq asc ", id);
-            setAttr("productItem", productItem);
-            render(getRequest().getRequestURI()+"/edit.html");
-        }
-        
-    }
+	
 	
 	@Before(Tx.class)
 	public void save(){
@@ -212,7 +225,7 @@ public class ProductController extends Controller {
         Record order = null;
         if(StringUtils.isNotBlank(order_id)){
         	order = Db.findById("wc_product", order_id);
-        	order.set("category", category);
+        	order.set("category_name", category);
         	order.set("name", name);
         	order.set("price_type", price_type);
         	order.set("price", price);
@@ -240,7 +253,7 @@ public class ProductController extends Controller {
         }else{
         	order = new Record();
         	order.set("name", name);
-        	order.set("category", category);
+        	order.set("category_name", category);
         	order.set("price_type", price_type);
         	order.set("price", price);
         	order.set("unit", unit);
