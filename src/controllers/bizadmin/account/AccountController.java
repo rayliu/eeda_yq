@@ -35,7 +35,9 @@ public class AccountController extends Controller {
 	public void index() {
 	    Record noticeRec = Db.findFirst("select * from wc_notice order by create_time desc;");
 	    Long userId = LoginUserController.getLoginUserId(this);
-	    String sql_user = "select * from user_login where id = "+userId;
+	    String sql_user = "select ul.*,com.company_name from user_login ul"
+	    		+ " left join wc_company com on com.creator = ul.id"
+	    		+ "  where ul.id = "+userId;
 	    Record re_user = Db.findFirst(sql_user);
 	    setAttr("user",re_user);
 	    

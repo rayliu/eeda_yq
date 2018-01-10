@@ -31,7 +31,8 @@ public class AppTaoController extends Controller {
     			+ " ifnull( product_id, default_product_id ) product_id,"
     			+ " if((now() BETWEEN begin_date and end_date),photo,default_photo) photo"
     			+ " FROM"
-    			+ " `wc_ad_banner_photo`; ");
+    			+ " `wc_ad_banner_photo`"
+    			+ " order by ad_index asc; ");
     	//促销广告
     	List<Record> cuList = Db.find(" select "
     			+ " wcu.id id ,cgr.`name` trade_type,"
@@ -40,7 +41,9 @@ public class AppTaoController extends Controller {
     			+ " from wc_ad_cu wcu "
     			+ " LEFT JOIN wc_company com on com.creator = wcu.creator"
     			+ " LEFT JOIN category cgr on cgr.id = com.trade_type"
-    			+ " where ifnull(wcu.title,'') != '' ");
+    			+ " where ifnull(wcu.title,'') != '' "
+    			+ "	and (now() BETWEEN wcu.begin_date and wcu.end_date)"
+    			+ " order by wcu.create_time desc");
     	Record data = new Record();
     	data.set("bannerList", bannerList);
     	data.set("cuList", cuList);
