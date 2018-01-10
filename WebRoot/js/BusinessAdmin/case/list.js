@@ -41,7 +41,7 @@ $(document).ready(function() {
 		$(this).fileupload({
 			validation: {allowedExtensions: ['*']},
 			autoUpload: true, 
-		    url: '/WebAdmin/tao_manage/case/saveFile',
+		    url: '/BusinessAdmin/case/saveFile',
 		    dataType: 'json',
 	        done: function (e, data) {
         		if(data){
