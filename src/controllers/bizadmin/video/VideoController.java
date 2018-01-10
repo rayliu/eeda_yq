@@ -8,6 +8,7 @@ import java.util.Map;
 
 import interceptor.SetAttrLoginUserInterceptor;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -92,13 +93,28 @@ public class VideoController extends Controller {
         Long userId = LoginUserController.getLoginUserId(this);
         Gson gson = new Gson();  
         Map<String, String> dto= gson.fromJson(jsonStr, HashMap.class);
-        Record video = new Record();
-        video.set("name", dto.get("name"));
-        video.set("cover", dto.get("cover"));
-        video.set("video_url", dto.get("video_url"));
-        video.set("creator", userId);
-        video.set("create_time", new Date());
-        Db.save("video_case", video);
+        
+        String order_id = dto.get("order_id");
+        Record video = null;
+        if(StringUtils.isNotBlank(order_id)){  //更新
+        	video = Db.findById("video_case", order_id);
+            video.set("name", dto.get("name"));
+            video.set("cover", dto.get("cover"));
+            video.set("video_url", dto.get("video_url"));
+            video.set("updater", userId);
+            video.set("update_time", new Date());
+            Db.update("video_case", video);
+        }else{  //新建
+        	video = new Record();
+            video.set("name", dto.get("name"));
+            video.set("cover", dto.get("cover"));
+            video.set("video_url", dto.get("video_url"));
+            video.set("creator", userId);
+            video.set("create_time", new Date());
+            Db.save("video_case", video);
+        }
+        
+        
         renderJson(video);
 	}
 	

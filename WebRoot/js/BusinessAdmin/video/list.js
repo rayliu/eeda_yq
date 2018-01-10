@@ -25,26 +25,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload','dataTablesBootstrap'], fu
 		  return document.getElementById(id);
 	  }
   	  
-  	  $("#upload").on("click",function(){
-  		var self=this;
-  		var video={};
-  			video.name=$("#name").val();
-  			video.cover=$("#cover").val();
-  			video.video_url=$("#video_url").val();
-  			if($.trim(video.name) == ""||$.trim(video.video_url) == ""){
-  				alert("案例名称和优酷地址都必须要填！！！")
-  				return;
-  			}
-  		  $.post("/BusinessAdmin/video/save",{jsonStr:JSON.stringify(video)},function(data){
-  			 if(data){
-				 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-				 $(self).attr('disabled',false);
-				 refleshTable();
-			 }else{
-				 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-			 }  
-  		  })
-  	  })
+  	 
 		var dataTable = eeda.dt({
 	          id: 'eeda_table',
 	          paging: true,
@@ -63,8 +44,11 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload','dataTablesBootstrap'], fu
 	            { "data": "ID", 
 	            	render: function(data,type,full,meta){
 	            		
-	            			data =  "<button class='stdbtn btn_warning delBtn' " +
-	              				" data-id="+full.ID+" href='#eeda_table'>删除</button>";
+	            			data =  "<button class='stdbtn btn_primary editBtn' " +
+	              				" data-id='"+full.ID+"' data-cover='"+full.COVER+"' data-url='"+full.VIDEO_URL+"'" +
+	              				" data-name='"+full.NAME+"' href='#eeda_table'>编辑</button> " +
+	              				"<button class='stdbtn btn_warning delBtn' " +
+	              				" data-id='"+full.ID+"' href='#eeda_table'>删除</button>";
 	            	
 	            		return data;
 	            	} 
@@ -73,14 +57,15 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload','dataTablesBootstrap'], fu
 			});
 			
 		 var refleshTable = function(){
-		    	  dataTable.ajax.url("/BusinessAdmin/video/list").load();
-		     }
+	    	 dataTable.ajax.url("/BusinessAdmin/video/list").load();
+	     }
+		 
+		 
 		 $("#eeda_table").on("click",".delBtn",function(){
 			 var self=$(this);
 			 var id=self.data("id");
 			 $.post("/BusinessAdmin/video/delete",{"id":id},function(data){
   			 if(data){
-				// $('#order_id').val(data.ID);
 				 $.scojs_message('删除成功', $.scojs_message.TYPE_OK);
 				 refleshTable();
 			 }else{
@@ -88,6 +73,52 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload','dataTablesBootstrap'], fu
 			 }  
   		  })
 		 })
+		 
+		 
+		$("#upload").on("click",function(){
+			var self = this;
+	  		var video = {};
+	  		video.order_id = $("#order_id").val();
+  			video.name = $("#name").val();
+  			video.cover = $("#cover").val();
+  			video.video_url = $("#video_url").val();
+  			if($.trim(video.name) == ""||$.trim(video.video_url) == ""){
+  				alert("案例名称和优酷地址都必须要填！！！")
+  				return;
+  			}
+	  		  $.post("/BusinessAdmin/video/save",{jsonStr:JSON.stringify(video)},function(data){
+	  			 if(data){
+					 $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+					 $(self).attr('disabled',false);
+					 refleshTable();
+					 
+					 //清空
+					 $('#order_id').val("");
+					 $('#name').val("");
+					 $('#cover').prop('src',"/images/fengmianpic.png")
+					 $("#cover").val("");
+					 $('#video_url').val("");
+				 }else{
+					 $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+				 }  
+	  		  });
+  	     });
+		 
+		 
+		 $("#eeda_table").on("click",".editBtn",function(){
+			 var self = $(this);
+			 var order_id = self.data("id");
+			 var cover = self.data("cover");
+			 var name = self.data("name");
+			 var video_url = self.data("url");
+			 
+			 $('#order_id').val(order_id);
+			 $('#name').val(name);
+			 $("#cover").val(cover);
+			 $('#cover').prop('src',"/upload/"+cover)
+			 $('#video_url').val(video_url);
+			 
+  		  });
     	
     });
 });
