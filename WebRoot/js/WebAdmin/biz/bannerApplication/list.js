@@ -8,6 +8,11 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             ajax: "/WebAdmin/biz/bannerApplication/list",
             columns: [
 	                     { "data": "PRODUCTOR", "width":"120px"},
+	                     { "data": "PICTURE", "width":"120px",
+	                    	 render: function(data,type,full,meta){
+	                    		 return '<img src="/upload/'+data+'" style="width:120px">';
+	                    	 }
+	                     },
 	                     { "data": "PHONE", "width":"90px"}, 
 	                     { "data": "AD_LOCATION", "width":"60px"}, 
 	                     { "data": "BEGIN_DATE", "width":"60px"}, 
