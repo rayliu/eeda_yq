@@ -50,15 +50,15 @@ public class AppShopController extends Controller {
     	
     	//产品信息
     	List<Record> productList = Db.find(" select pro.id, pro.cover, pro.name,pro.price from wc_product pro"
-    			+ " where pro.creator = ?",shop_id);
+    			+ " where pro.creator = ? order by pro.id desc limit 0,3",shop_id);
     	
     	//案例信息
     	List<Record> caseList = Db.find(" select wc.*  from wc_case wc"
-    			+ " where wc.creator = ?",shop_id);
+    			+ " where wc.creator = ? order by wc.id desc limit 0,3",shop_id);
     	
     	//视频信息
     	List<Record> videoList = Db.find("select vc.*  from video_case vc"
-    			+ " where vc.creator = ?",shop_id);
+    			+ " where vc.creator = ? order by vc.id desc limit 0,3",shop_id);
     	
     	Record data = new Record();
     	data.set("shopList", shopList);
