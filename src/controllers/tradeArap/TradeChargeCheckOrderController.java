@@ -716,7 +716,7 @@ public class TradeChargeCheckOrderController extends Controller {
     		    list = getItemList(condition,order_id,currency_code);
     	}
 
-    	Map BillingOrderListMap = new HashMap();
+    	Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", 1);
         BillingOrderListMap.put("iTotalRecords", list.size());
         BillingOrderListMap.put("iTotalDisplayRecords", list.size());

@@ -55,12 +55,12 @@ public class BalanceReportController extends Controller {
         String date_type = getPara("date_type");
         String balance = getPara("balance");
         
-        
+        StringBuffer condition_sb = new StringBuffer();
         String condition = "";
         String group_condition=""; 
         
         if(!"total".equals(balance)){
-        	condition += " and joa.order_type = '"+balance+"'";
+        	condition_sb.append(" and joa.order_type = '"+balance+"'");
         }
         
         if("year".equals(date_type)){
@@ -110,9 +110,12 @@ public class BalanceReportController extends Controller {
             }
         }
         
-        condition += " and jor.create_stamp between '"+begin_date+"' and '"+end_date+"' "; 
+        condition_sb.append(" and jor.create_stamp between '"+begin_date+"' and '"+end_date+"' "); 
+        condition = condition_sb.toString();
         
         String sp_names = getPara("sp_names");
+        StringBuffer sp_name_col_sb = new StringBuffer();
+        StringBuffer sp_name_con_sb = new StringBuffer();
         String sp_name_col = "";
         String sp_name_con = "";
         String [] names = sp_names.split(",");
@@ -121,30 +124,31 @@ public class BalanceReportController extends Controller {
         for (int i = 0; i < 20; i++) {
         	if(i<names.length){
         		if(!"total".equals(balance)){
-        			sp_name_col += " sum(IF ( p.abbr = '"+ names[i] +"' and order_type='"+ balance +"', joa.currency_total_amount, 0 )) sp_name"+(i+1)+",";
+        			sp_name_col_sb.append(" sum(IF ( p.abbr = '"+ names[i] +"' and order_type='"+ balance +"', joa.currency_total_amount, 0 )) sp_name"+(i+1)+",");
         		}else{
-        			sp_name_col += " sum(IF ( p.abbr = '"+ names[i] +"', "
+        			sp_name_col_sb.append(" sum(IF ( p.abbr = '"+ names[i] +"', "
         					+ " ifnull((SELECT sum(ifnull(joap.currency_total_amount,0)) "
         					+ " FROM job_order_arap joap where joap.id = joa.id and joap.order_type = 'charge'),0)"
         					+ " - "
         					+ " ifnull((SELECT sum(ifnull(joap.currency_total_amount,0)) "
         					+ " FROM job_order_arap joap where joap.id = joa.id and joap.order_type = 'cost'),0)"
-        					+ ", 0 )) sp_name"+(i+1)+",";
+        					+ ", 0 )) sp_name"+(i+1)+",");
         		}
         	} else{
-        		sp_name_col += "null sp_name"+(i+1)+",";
+        		sp_name_col_sb.append("null sp_name"+(i+1)+",");
         	}	
 		}
         
         //构造查询条件
         for (int i = 0; i < names.length; i++) {
         	if(i != names.length-1){
-        		sp_name_con += "'" + names[i] + "',";
+        		sp_name_con_sb.append("'" + names[i] + "',");
         	}else{
-        		sp_name_con += "'" + names[i] + "'";
+        		sp_name_con_sb.append("'" + names[i] + "'");
         	}
         }
-        
+        sp_name_col = sp_name_col_sb.toString();
+        sp_name_con = sp_name_con_sb.toString();
         
     	String sql = "SELECT "
     			+group_condition+" create_stamp,"
@@ -167,7 +171,7 @@ public class BalanceReportController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql +sLimit);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -243,6 +247,8 @@ public class BalanceReportController extends Controller {
 	        condition += " and jor.create_stamp between '"+begin_date+"' and '"+end_date+"' "; 
 	        
 	        String sp_names = getPara("sp_names");
+	        StringBuffer sp_name_col_sb = new StringBuffer();
+	        StringBuffer sp_name_con_sb = new StringBuffer();
 	        String sp_name_col = "";
 	        String sp_name_con = "";
 	        String [] names = sp_names.split(",");
@@ -251,31 +257,31 @@ public class BalanceReportController extends Controller {
 	        for (int i = 0; i < 20; i++) {
 	        	if(i<names.length){
 	        		if(!"total".equals(balance)){
-	        			sp_name_col += " sum(IF ( p.abbr = '"+ names[i] +"' and order_type='"+ balance +"', joa.currency_total_amount, 0 )) sp_name"+(i+1)+",";
+	        			sp_name_col_sb.append(" sum(IF ( p.abbr = '"+ names[i] +"' and order_type='"+ balance +"', joa.currency_total_amount, 0 )) sp_name"+(i+1)+",");
 	        		}else{
-	        			sp_name_col += " sum(IF ( p.abbr = '"+ names[i] +"', "
+	        			sp_name_col_sb.append(" sum(IF ( p.abbr = '"+ names[i] +"', "
 	        					+ " ifnull((SELECT sum(ifnull(joap.currency_total_amount,0)) "
 	        					+ " FROM job_order_arap joap where joap.id = joa.id and joap.order_type = 'charge'),0)"
 	        					+ " - "
 	        					+ " ifnull((SELECT sum(ifnull(joap.currency_total_amount,0)) "
 	        					+ " FROM job_order_arap joap where joap.id = joa.id and joap.order_type = 'cost'),0)"
-	        					+ ", 0 )) sp_name"+(i+1)+",";
+	        					+ ", 0 )) sp_name"+(i+1)+",");
 	        		}
 	        	} else{
-	        		sp_name_col += "null sp_name"+(i+1)+",";
+	        		sp_name_col_sb.append("null sp_name"+(i+1)+",");
 	        	}	
 			}
 	        
 	        //构造查询条件
 	        for (int i = 0; i < names.length; i++) {
 	        	if(i != names.length-1){
-	        		sp_name_con += "'" + names[i] + "',";
+	        		sp_name_con_sb.append("'" + names[i] + "',");
 	        	}else{
-	        		sp_name_con += "'" + names[i] + "'";
+	        		sp_name_con_sb.append("'" + names[i] + "'");
 	        	}
 	        }
-	        
-	        
+	        sp_name_col = sp_name_col_sb.toString();
+	        sp_name_con = sp_name_con_sb.toString();
 	    	String sql = "SELECT "
 	    			+group_condition+" create_stamp,"
 	    			+ sp_name_col

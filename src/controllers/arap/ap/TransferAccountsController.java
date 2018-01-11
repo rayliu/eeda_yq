@@ -16,6 +16,7 @@ import models.eeda.profile.Account;
 import models.yh.arap.ArapAccountAuditSummary;
 import models.yh.arap.TransferAccountsOrder;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -143,7 +144,7 @@ public class TransferAccountsController extends Controller {
 			String remark =getPara("remark");
 			String transfer_time =getPara("transfer_time");
 			
-			if( transfer_time==null||transfer_time.equals("")){
+			if(StringUtils.isBlank(transfer_time)){
 				transfer_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 	   		}
 			
@@ -152,7 +153,7 @@ public class TransferAccountsController extends Controller {
 			List<UserLogin> users = UserLogin.dao
 					.find("select * from user_login where user_name='" + name + "'");
 			TransferAccountsOrder transferaccounts =TransferAccountsOrder.dao.findById(transferOrderId);
-			if(!"".equals(transferOrderId) && transferOrderId != null){
+			if(StringUtils.isNotBlank(transferOrderId)){
 			    transferaccounts =TransferAccountsOrder.dao.findById(transferOrderId);
 			    transferaccounts.set("STATUS","已确认");
 				transferaccounts.set("confirm_id",users.get(0).get("id"));
@@ -161,7 +162,7 @@ public class TransferAccountsController extends Controller {
 			}
 			
 			//更新账户金额
-			if(!"".equals(in_filter) && in_filter != null){
+			if(StringUtils.isNotBlank(in_filter)){
 				Account account= Account.dao.findById(in_filter);
 				double account_aounmt=0.0;
 				if(account.getDouble("amount")!=null){
@@ -186,7 +187,7 @@ public class TransferAccountsController extends Controller {
 				arapaccountauditlog.set("invoice_order_id", transferOrderId);
 				arapaccountauditlog.save();
 			}
-			if(!"".equals(out_filter) && in_filter != null){
+			if(StringUtils.isNotBlank(out_filter)){
 				ArapAccountAuditLog arapaccountauditlog = new ArapAccountAuditLog();
 				Account account= Account.dao.findById(out_filter);
 				double account_aounmt=0.0;
@@ -249,7 +250,7 @@ public class TransferAccountsController extends Controller {
 			String remark =getPara("remark");
 			String transferOrderId =getPara("transferOrderId");
 			
-			if( transfer_time==null||transfer_time.equals("")){
+			if( StringUtils.isBlank(transfer_time)){
 				transfer_time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 	   		}
 			
@@ -257,7 +258,7 @@ public class TransferAccountsController extends Controller {
 			if (user==null) {
 	            return;
 	        }
-			if(!"".equals(transferOrderId) && transferOrderId != null){
+			if(StringUtils.isNotBlank(transferOrderId)){
 			    transferaccounts =TransferAccountsOrder.dao.findById(transferOrderId);
 				transferaccounts.set("create_id",user.get("id"));
 				transferaccounts.set("create_stamp",new Date());

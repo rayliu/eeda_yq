@@ -73,16 +73,16 @@ public class CostAcceptOrderController extends Controller {
 		
 		String payee_name = getPara("payee_name");    //收款人
 		String payee_unit = getPara("payee_unit");      //收款单位
-		String payee_id = getPara("payee_id")==""?null:getPara("payee_id");         //付款给
+		String payee_id = "".equals(getPara("payee_id"))?null:getPara("payee_id");         //付款给
 		String billing_unit = getPara("billing_unit"); //收款单位
 		String billtype = getPara("invoice_type");   //开票类型
 		String invoice_no= getPara("invoice_no");
 		String selected_item_ids= getPara("selected_ids"); 
 		
-		String total_app_usd = getPara("total_app_usd")==""?"0.00":getPara("total_app_usd");   //申请总金额
-		String total_app_cny = getPara("total_app_cny")==""?"0.00":getPara("total_app_cny");   //申请总金额
-		String total_app_hkd = getPara("total_app_hkd")==""?"0.00":getPara("total_app_hkd");   //申请总金额
-		String total_app_jpy = getPara("total_app_jpy")==""?"0.00":getPara("total_app_jpy");   //申请总金额
+		String total_app_usd = "".equals(getPara("total_app_usd"))?"0.00":getPara("total_app_usd");   //申请总金额
+		String total_app_cny = "".equals(getPara("total_app_cny"))?"0.00":getPara("total_app_cny");   //申请总金额
+		String total_app_hkd = "".equals(getPara("total_app_hkd"))?"0.00":getPara("total_app_hkd");   //申请总金额
+		String total_app_jpy = "".equals(getPara("total_app_jpy"))?"0.00":getPara("total_app_jpy");   //申请总金额
 		
 		UserLogin user = LoginUserController.getLoginUser(this);
 		if(user==null){
@@ -90,7 +90,7 @@ public class CostAcceptOrderController extends Controller {
         }
    		long office_id=user.getLong("office_id");
 		
-		if (!"".equals(application_id) && application_id != null) {
+		if (StringUtils.isNotBlank(application_id)) {
 			aca = ArapCostApplication.dao.findById(application_id);
 			aca.set("last_modified_by",LoginUserController.getLoginUserId(this));
 			aca.set("last_modified_stamp", new Date());
@@ -115,16 +115,16 @@ public class CostAcceptOrderController extends Controller {
 			
 			aca.set("invoice_no", invoice_no);
 			aca.set("selected_item_ids", selected_item_ids);
-			if (total_app_usd != null && !"".equals(total_app_usd)) {
+			if (StringUtils.isNotBlank(total_app_usd)) {
 				aca.set("app_usd",total_app_usd);
 			}
-			if (total_app_hkd != null && !"".equals(total_app_hkd)) {
+			if (StringUtils.isNotBlank(total_app_hkd)) {
 				aca.set("app_hkd",total_app_hkd);
 			}
-			if (total_app_cny != null && !"".equals(total_app_cny)) {
+			if (StringUtils.isNotBlank(total_app_cny)) {
 				aca.set("app_cny",total_app_cny);
 			}
-			if (total_app_jpy != null && !"".equals(total_app_jpy)) {
+			if (StringUtils.isNotBlank(total_app_jpy)) {
 				aca.set("app_jpy",total_app_jpy);
 			}
 			
@@ -187,16 +187,16 @@ public class CostAcceptOrderController extends Controller {
 
 			aca.set("payee_id", payee_id);
 			aca.set("selected_item_ids", selected_item_ids);//选中的明细item
-			if (total_app_usd != null && !"".equals(total_app_usd)) {
+			if (StringUtils.isNotBlank(total_app_usd)) {
 				aca.set("app_usd",total_app_usd);
 			}
-			if (total_app_hkd != null && !"".equals(total_app_hkd)) {
+			if (StringUtils.isNotBlank(total_app_hkd)) {
 				aca.set("app_hkd",total_app_hkd);
 			}
-			if (total_app_cny != null && !"".equals(total_app_cny)) {
+			if (StringUtils.isNotBlank(total_app_cny)) {
 				aca.set("app_cny",total_app_cny);
 			}
-			if (total_app_jpy != null && !"".equals(total_app_jpy)) {
+			if (StringUtils.isNotBlank(total_app_jpy)) {
 				aca.set("app_jpy",total_app_jpy);
 			}
 			aca.save();
@@ -638,7 +638,7 @@ public class CostAcceptOrderController extends Controller {
         String ids = getPara("ids");//cost_order_id
         String application_id = getPara("application_id");
         String sql = "";
-        if("".equals(application_id)||application_id==null){
+        if(StringUtils.isBlank(application_id)){
 		
 			sql = " SELECT aco.*, p.company_name payee_name, '应付对账单' order_type,"
 					+ " p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"

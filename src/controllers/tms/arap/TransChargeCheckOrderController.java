@@ -886,7 +886,7 @@ public class TransChargeCheckOrderController extends Controller {
 		   		String deposit_bank = "";
 		     	String payment_method = (String) dto.get("payment_method");
 		     	
-		     	if(dto.get("deposit_bank")!=null && !"".equals(dto.get("deposit_bank"))){
+		     	if(StringUtils.isNotBlank((String)dto.get("deposit_bank"))){
 		   			 deposit_bank =  (String)dto.get("deposit_bank");
 		   		}else{
 		   			String str2="select id from fin_account where bank_name='现金' and office_id="+user.get("office_id");

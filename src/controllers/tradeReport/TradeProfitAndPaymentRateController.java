@@ -169,7 +169,7 @@ public class TradeProfitAndPaymentRateController extends Controller {
 		
 		String order_export_date =  " and (order_export_date between '"+order_export_date_begin_time+"' and '"+order_export_date_end_time+"')";
 
-		if(order_export_date_begin_time==""||order_export_date_begin_time==""){
+		if(StringUtils.isBlank(order_export_date_begin_time)||StringUtils.isBlank(order_export_date_end_time)){
 			order_export_date="";
 		}
 		String condition = sp_id+order_export_date;

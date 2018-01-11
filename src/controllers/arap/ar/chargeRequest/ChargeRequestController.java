@@ -538,7 +538,7 @@ public class ChargeRequestController extends Controller {
           String application_id = getPara("application_id");
           String sql = "";
           
-          if("".equals(application_id)||application_id==null){
+          if(StringUtils.isBlank(application_id)){
   	       
           	sql =  " SELECT aco.*, p.company_name payee_name, '应收对账单' order_type, "
           			+" p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
@@ -703,7 +703,7 @@ public class ChargeRequestController extends Controller {
    			order.set("create_stamp", new Date());
    			order.set("office_id", office_id);
    			order.set("sp_id", sp_id);
-   			if(!"".equals(selected_item_ids)){
+   			if(StringUtils.isNotBlank(selected_item_ids)){
    				order.set("selected_item_ids", selected_item_ids);
    			}
    			order.save();

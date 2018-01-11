@@ -544,10 +544,9 @@ public class PlanOrderController extends Controller {
 	//异步刷新字表
     public void tableList(){
     	String order_id = getPara("order_id");
-    	List<Record> list = null;
-    	list = getPlanOrderItems(order_id);
+    	List<Record> list = getPlanOrderItems(order_id);
 
-    	Map BillingOrderListMap = new HashMap();
+    	Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", 1);
         BillingOrderListMap.put("iTotalRecords", list.size());
         BillingOrderListMap.put("iTotalDisplayRecords", list.size());

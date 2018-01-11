@@ -29,7 +29,7 @@ public class JobOrderJob implements ITask {
 			Date ata = jobOrderShipmentList.get(i).getDate("ata");
 			
 			Date time = new Date();
-			if(atd==null||atd.equals("")){
+			if(atd==null||"".equals(atd)){
 				if(etd!=null&&!"".equals(etd)){
 					if(time.getTime()>etd.getTime()){
 						atd=etd;
@@ -39,7 +39,7 @@ public class JobOrderJob implements ITask {
 				}
 			}
 			
-			if(ata==null||ata.equals("")){
+			if(ata==null||"".equals(ata)){
 				if(eta!=null&&!"".equals(eta)){
 					if(time.getTime()>eta.getTime()){
 						ata=eta;

@@ -805,20 +805,20 @@ public class BookingOrderController extends Controller {
     	String cargo_desc = recMap.get("cargo_desc");
     	String shipping_mark = recMap.get("shipping_mark");
         
-        if(por!=null&&!"".equals(por)){
+        if(StringUtils.isNotBlank(por)){
         	 savePortQueryHistory(por);
         }
-        if(pol!=null&&!"".equals(pol)){
+        if(StringUtils.isNotBlank(pol)){
         	 savePortQueryHistory(pol);
         }
-        if(pod!=null&&!"".equals(pod)){
+        if(StringUtils.isNotBlank(pod)){
         	 savePortQueryHistory(pod);
         }
-        if(fnd!=null&&!"".equals(fnd)){
+        if(StringUtils.isNotBlank(fnd)){
         	 savePortQueryHistory(fnd);
         }
         String content = MBLshipper+MBLconsignee+MBLnotify_party+HBLshipper+HBLconsignee+HBLnotify_party+por+pol+pod+fnd+booking_agent+carrier+head_carrier+oversea_agent;
-        if("".equals(content)){
+        if(StringUtils.isBlank(content)){
         	return;
         }
         
@@ -987,7 +987,7 @@ public class BookingOrderController extends Controller {
     	String shipping_mark = recMap.get("shipping_mark");
     	
     	String content = shipper+consignee+notify_party+booking_agent+shipping_mark+goods_mark;
-        if("".equals(content)){
+        if(StringUtils.isBlank(content)){
         	return;
         }
     	String sql = "select 1 from job_order_air_template where"

@@ -219,6 +219,7 @@ public class CheckOrder extends Controller {
 		result.set("result",true);
 		//if ("true".equals(importResult.get("result"))) {
 			int rowNumber = 2;//最左边的编码行
+			StringBuffer error_msg_sb = new StringBuffer();
 			String error_msg = "";
 			try {
 				for (Map<String, String> line :lines) {
@@ -255,57 +256,57 @@ public class CheckOrder extends Controller {
 					if(StringUtils.isNotBlank(customer_name)){
 						Record customer = Db.findFirst("select * from party where abbr = ?  and type = 'CUSTOMER'  and office_id = ?",customer_name,office_id);
 			   			if(customer == null){
-			   				error_msg += "第"+rowNumber+"行【客户简称】，系统无此数据，请核对是否有误<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【客户简称】，系统无此数据，请核对是否有误<br/>");
 			   			}
 					}else{
-						error_msg += "第"+rowNumber+"行【客户简称】，字段不能为空<br/>";
+						error_msg_sb.append("第"+rowNumber+"行【客户简称】，字段不能为空<br/>");
 					}
 					
 					if(StringUtils.isNotBlank(head_carrier_name)){
 						Record carrier = Db.findFirst("select * from party where abbr = ? and type = 'SP'  and office_id = ?",head_carrier_name,office_id);
 			   			if(carrier == null){
-			   				error_msg += "第"+rowNumber+"行【头程船公司】，系统无此数据，请核对是否有误<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【头程船公司】，系统无此数据，请核对是否有误<br/>");
 			   			}
 					}else{
-						error_msg += "第"+rowNumber+"行【头程船公司】，字段不能为空<br/>";
+						error_msg_sb.append("第"+rowNumber+"行【头程船公司】，字段不能为空<br/>");
 					}
 		   			
 					if(StringUtils.isNotBlank(back_wharf_name)){
 			   			Record bf = Db.findFirst("select p.* from dockinfo p where p.dock_name = ? and  p.office_id=?",back_wharf_name,office_id);
 			   			if(bf == null){
-			   				error_msg += "第"+rowNumber+"行【还柜码头】，系统无此数据，请核对是否有误<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【还柜码头】，系统无此数据，请核对是否有误<br/>");
 			   			}
 					}else{
-						error_msg += "第"+rowNumber+"行【还柜码头】，字段不能为空<br/>";
+						error_msg_sb.append("第"+rowNumber+"行【还柜码头】，字段不能为空<br/>");
 					}
 		   			
 					if(StringUtils.isNotBlank(take_wharf_name)){
 						Record tw = Db.findFirst("select p.* from dockinfo p where p.dock_name = ? and  p.office_id=?",take_wharf_name,office_id);
 			   			if(tw == null){
-			   				error_msg += "第"+rowNumber+"行【提柜码头】，系统无此数据，请核对是否有误<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【提柜码头】，系统无此数据，请核对是否有误<br/>");
 			   			}
 					}else{
-						error_msg += "第"+rowNumber+"行【提柜码头】，字段不能为空<br/>";
+						error_msg_sb.append("第"+rowNumber+"行【提柜码头】，字段不能为空<br/>");
 					}
 		   			
 					if(StringUtils.isNotBlank(cross_border_travel_name)){
 			   			Record cbt = Db.findFirst("select p.* from dockinfo p where p.dock_name = ? and  p.office_id=?",cross_border_travel_name,office_id);
 			   			if(cbt == null){
-			   				error_msg += "第"+rowNumber+"行【跨境】，系统无此数据，请核对是否有误<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【跨境】，系统无此数据，请核对是否有误<br/>");
 			   			}
 					}
 
 					if(StringUtils.isNotBlank(loading_wharf1_name)){
 			   			Record lw1 = Db.findFirst("select p.* from dockinfo p where p.dock_name = ? and  p.office_id=?",loading_wharf1_name,office_id);
 			   			if(lw1 == null){
-			   				error_msg += "第"+rowNumber+"行【装货地点1】，系统无此数据，请核对是否有误<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【装货地点1】，系统无此数据，请核对是否有误<br/>");
 			   			}
 					}
 		   			
 					if(StringUtils.isNotBlank(loading_wharf2_name)){
 			   			Record lw2 = Db.findFirst("select p.* from dockinfo p where p.dock_name = ? and  p.office_id=?",loading_wharf2_name,office_id);
 			   			if(lw2 == null){
-			   				error_msg += "第"+rowNumber+"行【装货地点2】，系统无此数据，请核对是否有误<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【装货地点2】，系统无此数据，请核对是否有误<br/>");
 			   			}
 					}
 					
@@ -313,7 +314,7 @@ public class CheckOrder extends Controller {
 						Record car = Db.findFirst("select c.*,p.abbr sp_name from carinfo c left join party p on p.id=c.parent_id "
 								+ " where c.type='OWN' and c.office_id = ? and c.car_no = ? ", office_id,tj_car_no);
 			   			if(car == null){
-			   				error_msg += "第"+rowNumber+"行【提吉车牌（含 拖卡重量、拖头重量、司机、司机电话）】，系统无此数据，请核对是否有误<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【提吉车牌（含 拖卡重量、拖头重量、司机、司机电话）】，系统无此数据，请核对是否有误<br/>");
 			   			}
 					}
 					
@@ -321,7 +322,7 @@ public class CheckOrder extends Controller {
 						Record car = Db.findFirst("select c.*,p.abbr sp_name from carinfo c left join party p on p.id=c.parent_id "
 								+ " where c.type='OWN' and c.office_id = ? and c.car_no = ? ", office_id,all_car_no);
 			   			if(car == null){
-			   				error_msg += "第"+rowNumber+"行【全程车牌】，系统无此数据，请核对是否有误<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【全程车牌】，系统无此数据，请核对是否有误<br/>");
 			   			}
 					}
 					
@@ -329,7 +330,7 @@ public class CheckOrder extends Controller {
 						Record car = Db.findFirst("select c.*,p.abbr sp_name from carinfo c left join party p on p.id=c.parent_id "
 								+ " where c.type='OWN' and c.office_id = ? and c.car_no = ? ", office_id,yg_car_no);
 			   			if(car == null){
-			   				error_msg += "第"+rowNumber+"行【移柜车牌】，系统无此数据，请核对是否有误<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【移柜车牌】，系统无此数据，请核对是否有误<br/>");
 			   			}
 					}
 					
@@ -337,49 +338,49 @@ public class CheckOrder extends Controller {
 						Record car = Db.findFirst("select c.*,p.abbr sp_name from carinfo c left join party p on p.id=c.parent_id "
 								+ " where c.type='OWN' and c.office_id = ? and c.car_no = ? ", office_id,sz_car_no);
 			   			if(car == null){
-			   				error_msg += "第"+rowNumber+"行【收重车牌】，系统无此数据，请核对是否有误<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【收重车牌】，系统无此数据，请核对是否有误<br/>");
 			   			}
 					}
 		   			
 					if(StringUtils.isNotBlank(charge_time)){
 						if(!checkDate(charge_time)){
-							error_msg += "第"+rowNumber+"行【结算时间】，日期格式不正确<br/>";
+							error_msg_sb.append("第"+rowNumber+"行【结算时间】，日期格式不正确<br/>");
 						}
 					}
 					
 					if(StringUtils.isNotBlank(cabinet_date)){
 						if(!checkDate(cabinet_date)){
-							error_msg += "第"+rowNumber+"行【提柜/货日期】，日期格式不正确<br/>";
+							error_msg_sb.append("第"+rowNumber+"行【提柜/货日期】，日期格式不正确<br/>");
 						}
 					}
 					
 					if(StringUtils.isNotBlank(closing_date)){
 						if(!checkDate(closing_date)){
-							error_msg += "第"+rowNumber+"行【收柜日期】，日期格式不正确<br/>";
+							error_msg_sb.append("第"+rowNumber+"行【收柜日期】，日期格式不正确<br/>");
 						}
 					}
 					
 					if(StringUtils.isNotBlank(trans_fee)){
 						if(!checkDouble(trans_fee)){
-							error_msg += "第"+rowNumber+"行【运费】，数字格式不正确<br/>";
+							error_msg_sb.append("第"+rowNumber+"行【运费】，数字格式不正确<br/>");
 						}
 					}
 					
 					if(StringUtils.isNotBlank(call_fee)){
 						if(!checkDouble(call_fee)){
-							error_msg += "第"+rowNumber+"行【打单费】，数字格式不正确<br/>";
+							error_msg_sb.append("第"+rowNumber+"行【打单费】，数字格式不正确<br/>");
 						}
 					}
 					
 					if(StringUtils.isNotBlank(weighing_fee)){
 						if(!checkDouble(weighing_fee)){
-							error_msg += "第"+rowNumber+"行【过磅费】，数字格式不正确<br/>";
+							error_msg_sb.append("第"+rowNumber+"行【过磅费】，数字格式不正确<br/>");
 						}
 					}
 					
 					if(StringUtils.isNotBlank(high_speed_fee)){
 						if(!checkDouble(high_speed_fee)){
-							error_msg += "第"+rowNumber+"行【高速费】，数字格式不正确<br/>";
+							error_msg_sb.append("第"+rowNumber+"行【高速费】，数字格式不正确<br/>");
 						}
 					}
 					rowNumber++;

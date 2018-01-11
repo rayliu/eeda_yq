@@ -14,6 +14,7 @@ import models.UserOffice;
 import models.UserRole;
 import models.eeda.OfficeConfig;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -62,7 +63,7 @@ public class OfficeController extends Controller {
         Office office = Office.dao.findById(id);
         setAttr("ul", office);
         logger.debug("abbr:"+office.getStr("abbr"));
-        if(office.get("location") != null && !"".equals(office.get("location"))){
+        if(StringUtils.isNotBlank((String) office.get("location"))){
 	        String code = office.get("location");
 	
 	        List<Location> provinces = Location.dao.find("select * from location where pcode ='1'");
@@ -90,11 +91,11 @@ public class OfficeController extends Controller {
          * if (!isAuthenticated()) return;
          */
         String id = getPara("officeId");
-        if (id != "") {
+        if (StringUtils.isNotBlank(id)) {
             //UserLogin user = UserLogin.dao.findById(id);
         }
         Record office;
-        if(id != null && id !=""){
+        if(StringUtils.isNotBlank(id)){
         	office = Db.findById("office", id);
         }else{
         	office = new Record();
@@ -110,7 +111,7 @@ public class OfficeController extends Controller {
         office.set("location", getPara("location"));
         office.set("abbr", getPara("abbr"));
         //判断当前是更新还是新建
-        if (id != "") {
+        if (StringUtils.isNotBlank(id)) {
             Db.update("office", office);
         } else {
             //记录分公司的总公司
@@ -118,7 +119,7 @@ public class OfficeController extends Controller {
 			//根据登陆用户获取公司的的父公司的ID
 			UserOffice user_office = UserOffice.dao.findFirst("select * from user_office where user_name = ? and is_main = ?",name,true);
 			Office parentOffice = Office.dao.findFirst("select * from office where id = ?",user_office.get("office_id"));
-			if(parentOffice.get("belong_office") != null && !"".equals(parentOffice.get("belong_office"))){
+			if(StringUtils.isNotBlank((String)parentOffice.get("belong_office"))){
 				office.set("belong_office",parentOffice.get("belong_office"));
 			}else{
 				office.set("belong_office",parentOffice.get("id"));
@@ -267,7 +268,7 @@ public class OfficeController extends Controller {
         String sqlTotal = "";
         Record rec = null;
         String sql = "";
-    	if(office_id != ""){
+    	if(StringUtils.isNotBlank(office_id)){
 	        sqlTotal = "select count(0) total from warehouse where office_id ="+office_id+";";
 	        logger.debug("sql :" + sqlTotal);
 	        rec = Db.findFirst(sqlTotal);

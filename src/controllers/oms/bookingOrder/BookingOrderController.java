@@ -93,22 +93,22 @@ public class BookingOrderController extends Controller {
    			if(StringUtils.isEmpty(address)){
    				address="";
    			}
-   			if(contact_person==""||contact_person=="undefined"||contact_person==null){
+   			if(contact_person==null||"undefined".equals(contact_person)||"".equals(contact_person)){
                 contact_person="";
 	        }else{
 	         	contact_person="ATTN:"+contact_person+'\r';
 	        }
-   			if(phone==""||phone=="undefined"||phone==null){
+   			if(phone==null||"undefined".equals(phone)||"".equals(phone)){
                 phone="";
    			}else{
    				phone = "TEL:"+phone+" ";
    			}
-   			if(fax==""||fax=="undefined"||fax==null){
+   			if(fax==null||"undefined".equals(fax)||"".equals(fax)){
    	            fax="";
    	        }else{
    	        	fax = "FAX:"+fax;
    	        }
-   			if(zip_code==""||zip_code=="undefined"||zip_code==null){
+   			if(zip_code==null||"undefined".equals(zip_code)||"".equals(zip_code)){
    	        	zip_code="";
    	        }else{
    	        	zip_code = "ZIP CODE:"+zip_code+'\r';

@@ -215,7 +215,7 @@ public class tradeProfitController extends Controller {
 		String order_export_date_begin_time = getPara("begin_time");
 		String order_export_date_end_time = getPara("end_time");
 		String customerId = "";
-		if(customer_id == ""||customer_id.equals("")){
+		if(StringUtils.isBlank(customer_id)){
 			customerId = "";
 		}else{
 			customerId = " and customer_id = "+customer_id;

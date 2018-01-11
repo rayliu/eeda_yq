@@ -473,7 +473,7 @@ public class TradeCostRequestController extends Controller {
    			order.set("create_stamp", new Date());
    			order.set("office_id", office_id);
    			order.set("sp_id", sp_id);
-   			if(!"".equals(selected_item_ids)){
+   			if(StringUtils.isNotBlank(selected_item_ids)){
    				order.set("selected_item_ids", selected_item_ids);
    			}
    			order.save();

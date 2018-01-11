@@ -105,7 +105,7 @@ public class TransProfitController extends Controller {
 		
 		String charge_time =  " and (charge_time between '"+charge_time_begin_time+"' and '"+charge_time_end_time+"')";
 
-		if(charge_time_begin_time==""||charge_time_end_time==""){
+		if(StringUtils.isBlank(charge_time_begin_time)||StringUtils.isBlank(charge_time_end_time)){
 			charge_time="";
 		}
 		String condition = customerid+charge_time;

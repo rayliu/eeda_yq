@@ -877,7 +877,7 @@ public class CostCheckOrderController extends Controller {
     		if(StringUtils.isNotEmpty(appliction_id)){
     			list = getCostItemList(appliction_id,bill_flag,currency_code,exchange_currency,fin_name,order_no,currency_name);
         	}else{
-	    		if("".equals(order_ids)){
+	    		if(StringUtils.isBlank(order_ids)){
 	    			order_ids=null;
 	    				}
 	    		list = getCostItemList(order_ids,"",currency_code,exchange_currency,fin_name,order_no,currency_name);

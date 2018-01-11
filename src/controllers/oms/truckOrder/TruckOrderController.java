@@ -91,10 +91,8 @@ public class TruckOrderController extends Controller {
        	Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);  
    		String id = (String) dto.get("id");
-   		JobOrderLandItem truckOrder = new JobOrderLandItem();
+   		JobOrderLandItem truckOrder = JobOrderLandItem.dao.findById(id);
    	
-		//update
-		truckOrder =JobOrderLandItem.dao.findById(id);
 		DbUtils.setModelValues(dto, truckOrder);
 		truckOrder.update();
    		

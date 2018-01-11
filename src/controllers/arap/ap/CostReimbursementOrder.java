@@ -15,6 +15,7 @@ import models.eeda.profile.Account;
 import models.yh.arap.ReimbursementOrder;
 import models.yh.arap.ReimbursementOrderFinItem;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -82,13 +83,13 @@ public class CostReimbursementOrder extends Controller {
         long officeId= user.getLong("office_id");
         
 		ReimbursementOrder rei = null;
-		if (id == null || "".equals(id)) {
+		if (StringUtils.isBlank(id)) {
 			// 单号
 			orderNo = OrderNoGenerator.getNextOrderNo("YFBX", officeId);
 			Long userId = user.getLong("id");
 			rei = new ReimbursementOrder();
 			if(accId!=null){
-				if(accId==""){
+				if("".equals(accId)){
 					accId = null;
 				}
 				rei.set("fin_account_id", accId);
@@ -109,7 +110,7 @@ public class CostReimbursementOrder extends Controller {
 
 			rei = ReimbursementOrder.dao.findById(id);
 			if(accId!=null){
-				if(accId==""){
+				if("".equals(accId)){
 					accId=null;
 				}
 				rei.set("fin_account_id", accId);
@@ -241,7 +242,7 @@ public class CostReimbursementOrder extends Controller {
 	// 应付list
     public void accountPayable() {
         String id = getPara();
-        if (id == null || id.equals("")) {
+        if (StringUtils.isNotBlank(id)) {
             Map<String,Object> orderMap = new HashMap<String,Object>();
             orderMap.put("sEcho", 0);
             orderMap.put("iTotalRecords", 0);
@@ -320,7 +321,7 @@ public class CostReimbursementOrder extends Controller {
     // 应付list
     public void findAllMilestone() {
         String id = getPara();
-        if (id == null || id.equals("")) {
+        if (StringUtils.isBlank(id)) {
             Map<String,Object> orderMap = new HashMap<String,Object>();
             orderMap.put("sEcho", 0);
             orderMap.put("iTotalRecords", 0);

@@ -1028,7 +1028,7 @@ public class CustomPlanOrderController extends Controller {
     	long user_id = LoginUserController.getLoginUserId(this);
     	String order_type = "customPlanOrderLock";
     	Date action_time = new Date();
-    	if(action=="lock"||action.equals("lock")){
+    	if(action=="lock"||"lock".equals(action)){
     		for (int i = 0; i < idArray.length; i++) {
     			CustomPlanOrder order = CustomPlanOrder.dao.findById(idArray[i]);
             	order.set("lock_bill_status", "已锁单");
@@ -1042,7 +1042,7 @@ public class CustomPlanOrderController extends Controller {
             	Db.save("status_audit", re);
     		}
     	}
-    	if(action=="unLock"||action.equals("unLock")){
+    	if(action=="unLock"||"unLock".equals(action)){
     		for (int i = 0; i < idArray.length; i++) {
     			CustomPlanOrder order = CustomPlanOrder.dao.findById(idArray[i]);
             	order.set("lock_bill_status", "未锁");

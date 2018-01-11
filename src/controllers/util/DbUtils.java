@@ -17,6 +17,7 @@ public class DbUtils {
 	private static Log logger = Log.getLog(DbUtils.class);
 	
 	public static String buildConditions(Map<String, String[]> paraMap) {
+		StringBuffer condition_sb = new StringBuffer();
 		String condition = "";
 		Map<String, Map<String, String>> dateFieldMap = new HashMap<String, Map<String, String>>();
 
@@ -27,22 +28,22 @@ public class DbUtils {
             if(StringUtils.isNotBlank(filterValue) && !"undefined".equals(filterValue)){
 //            	logger.debug(key + ":" + filterValue);
             	if(key.endsWith("_equals")){
-            		condition += " and " + key.replace("_equals", "") + " = '" + filterValue + "' ";
+            		condition_sb.append(" and " + key.replace("_equals", "") + " = '" + filterValue + "' ");
             		continue;
             	}else if(key.endsWith("_notequals")){
-            		condition += " and ifnull(" + key.replace("_notequals", "") + ",'') != '" + filterValue + "' ";
+            		condition_sb.append(" and ifnull(" + key.replace("_notequals", "") + ",'') != '" + filterValue + "' ");
             		continue;
             	}else if(key.endsWith("_like")){
-            		condition += " and " + key.replace("_like", "") + " like '%" + filterValue + "%' ";
+            		condition_sb.append(" and " + key.replace("_like", "") + " like '%" + filterValue + "%' ");
             		continue;
             	}else if(key.endsWith("_no") || key.endsWith("_name")){
-            		condition += " and " + key + " like '%" + filterValue + "%' ";
+            		condition_sb.append(" and " + key + " like '%" + filterValue + "%' ");
             		continue;
             	}else if(key.endsWith("_id") || key.endsWith("status") ||key.endsWith("_type")||key.endsWith("flag")){
-            		condition += " and " + key + " = '" + filterValue + "' ";
+            		condition_sb.append(" and " + key + " = '" + filterValue + "' ");
             		continue;
             	}else if(key.endsWith("_mark")){
-            		condition += " and " + key.replace("_mark", "") + " like \"%" + filterValue + "%\" ";
+            		condition_sb.append(" and " + key.replace("_mark", "") + " like \"%" + filterValue + "%\" ");
             		continue;
             	}else if(key.endsWith("_begin_time")){
             		key = key.replaceAll("_begin_time", "");
@@ -94,8 +95,9 @@ public class DbUtils {
 //        	if(endTime.length()==10){
 //        	    endTime += " 23:59:59";
 //            }
-        	condition += " and (" + key + " between '" + beginTime + "' and '" + endTime+ "' )";
+        	condition_sb.append(" and (" + key + " between '" + beginTime + "' and '" + endTime+ "' )");
         }
+        condition = condition_sb.toString();
         logger.debug("condition: "+condition);
         return condition;
 	}

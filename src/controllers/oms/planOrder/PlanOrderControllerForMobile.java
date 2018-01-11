@@ -69,7 +69,6 @@ public class PlanOrderControllerForMobile extends Controller {
             sLimit = " LIMIT 50 ";
         }
         String sql = "";
-        String condition="";
         if("todo".equals(type)){
         	sql =" SELECT po.*, ifnull(u.c_name, u.user_name) creator_name ,p.abbr customer_name "
         			+ " FROM plan_order po "
@@ -100,7 +99,7 @@ public class PlanOrderControllerForMobile extends Controller {
     			+ " and po.delete_flag = 'N'"
     			+ " ) A where 1=1 ";
         }
-        condition = DbUtils.buildConditions(getParaMap());
+        String condition = DbUtils.buildConditions(getParaMap());
         
         
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
@@ -108,7 +107,7 @@ public class PlanOrderControllerForMobile extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by create_stamp desc " +sLimit);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));
@@ -121,10 +120,9 @@ public class PlanOrderControllerForMobile extends Controller {
     //异步刷新字表
     public void tableList(){
     	String order_id = getPara("order_id");
-    	List<Record> list = null;
-    	list = getPlanOrderItems(order_id);
+    	List<Record> list = getPlanOrderItems(order_id);
 
-    	Map BillingOrderListMap = new HashMap();
+    	Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", 1);
         BillingOrderListMap.put("iTotalRecords", list.size());
         BillingOrderListMap.put("iTotalDisplayRecords", list.size());

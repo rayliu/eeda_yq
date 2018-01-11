@@ -79,21 +79,23 @@ public class TradeItemController extends Controller {
     		String name = getPara("commodity_name");
     		String c = getPara("commodity_code");
     		String[]codes = c.split(",");
+    		StringBuffer condition_sb = new StringBuffer();
     		String condition = "";
     		if(StringUtils.isNotBlank(name)){
-    			condition += "and commodity_name like '%"+name+"%' ";
+    			condition_sb.append("and commodity_name like '%"+name+"%' ");
     		}
     		if(codes.length > 0 && StringUtils.isNotBlank(c)){
     			for (int i = 0; i < codes.length; i++){
     				String code = codes[i];
     				code = code.trim();
     				if(i == 0){
-    					condition += "and ( commodity_code like '%"+code+"%' ";
+    					condition_sb.append("and ( commodity_code like '%"+code+"%' ");
     				}else{
-    					condition += "or commodity_code like '%"+code+"%' ";
+    					condition_sb.append("or commodity_code like '%"+code+"%' ");
     				}
     			}
-    			condition += ")";
+    			condition_sb.append(")");
+    			condition = condition_sb.toString();
     		}
     		String sql = "select * from trade_item t where 1=1 and t.office_id="+officeId+" "+condition;
     		   String sqlTotal = "select count(1) total from ("+sql+") B";
@@ -334,7 +336,7 @@ public class TradeItemController extends Controller {
 		String sql1 = "select * from trade_item where commodity_name = ? and office_id=?";
 		Record r = Db.findFirst(sql,order_id, officeId);
 		Record r1 = Db.findFirst(sql1,para, officeId);
-    	if(order_id!=null&&order_id!=""){
+    	if(order_id!=null&&!"".equals(order_id)){
     		if(para.equals(r.get("commodity_name"))||r1==null){
     			ifExist = true;
     		}else{

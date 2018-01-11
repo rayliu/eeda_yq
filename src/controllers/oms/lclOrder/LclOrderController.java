@@ -583,8 +583,6 @@ public class LclOrderController extends Controller {
         }
         long office_id=user.getLong("office_id");
         
-    	String type = getPara("type_");
-    	
         String sLimit = "";
         String pageIndex = getPara("draw");
         

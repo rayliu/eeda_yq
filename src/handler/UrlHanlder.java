@@ -19,13 +19,13 @@ public class UrlHanlder extends Handler {
 //		String host = request.getRemoteHost();// 返回发出请求的客户机的主机名
 //		int port = request.getRemotePort();// 返回发出请求的客户机的端口号。
 
-		String queryString = "";  //获取Post参数
+		StringBuffer queryString = new StringBuffer();  //获取Post参数
 		Map<String, String[]> postParams = request.getParameterMap(); 
         for (String key : postParams.keySet()) {  
             String[] values = postParams.get(key);  
             for (int i = 0; i < values.length; i++) {  
                 String value = values[i];  
-                queryString += key + "=" + value + "&";  
+                queryString.append(key + "=" + value + "&");
             }  
         }  
 		

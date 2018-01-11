@@ -292,7 +292,7 @@ public class ServiceProviderController extends Controller {
     	contact.set("bill_of_lading_info", getPara("bill_of_lading_info"));
         contact.set("company_name_eng", getPara("company_name_eng"));
         contact.set("contact_person", getPara("contact_person"));
-        contact.set("contact_person_eng", getPara("contact_person_eng")==""?null:getPara("contact_person_eng"));
+        contact.set("contact_person_eng", "".equals(getPara("contact_person_eng"))?null:getPara("contact_person_eng"));
         contact.set("location", getPara("location"));
         contact.set("email", getPara("email"));
         contact.set("abbr", getPara("abbr"));
@@ -318,7 +318,7 @@ public class ServiceProviderController extends Controller {
         contact.set("mobile", getPara("mobile"));
         contact.set("phone", getPara("phone"));
         contact.set("address", getPara("address"));
-        contact.set("address_eng", getPara("address_eng")==""?null:getPara("address_eng"));
+        contact.set("address_eng", "".equals(getPara("address_eng"))?null:getPara("address_eng"));
         contact.set("introduction", getPara("introduction"));
         contact.set("city", getPara("city"));
         contact.set("postal_code", getPara("postal_code"));
@@ -1278,6 +1278,7 @@ public class ServiceProviderController extends Controller {
    		//if ("true".equals(importResult.get("result"))) {
    			int rowNumber = 2;//最左边的编码行
    			String error_msg = "";
+   			StringBuffer error_msg_sb = new StringBuffer();
    			try {
    				for (Map<String, String> line :lines) {
    					if(line != null){
@@ -1303,27 +1304,27 @@ public class ServiceProviderController extends Controller {
    					String remark = line.get("备注").trim();
    					
    					if(StringUtils.isBlank(quick_search_code)){
-   						error_msg += "第"+rowNumber+"行【助记码】，字段不能为空<br/>";
+   						error_msg_sb.append("第"+rowNumber+"行【助记码】，字段不能为空<br/>");
    					}
    					
    					if(StringUtils.isNotBlank(company_name)){
    						Party party = Party.dao.findFirst("select * from party where company_name =? and type='SP' and office_id = ?",company_name,office_id);
    						if(party != null){
-   							error_msg += "第"+rowNumber+"行【公司中文名称】，系统已存在【"+company_name+"】此供应商<br/>";
+   							error_msg_sb.append("第"+rowNumber+"行【公司中文名称】，系统已存在【"+company_name+"】此供应商<br/>");
    						}
    					}else{
-   						error_msg += "第"+rowNumber+"行【公司中文名称】，字段不能为空<br/>";
+   						error_msg_sb.append("第"+rowNumber+"行【公司中文名称】，字段不能为空<br/>");
    					}
    					
    					if(StringUtils.isNotBlank(abbr)){
    						Record customer = Db.findFirst("select * from party where abbr = ?  and type = 'SP'  and office_id = ?",abbr,office_id);
    			   			if(customer != null){
-   			   				error_msg += "第"+rowNumber+"行【公司简称】，系统已存在【"+abbr+"】此供应商<br/>";
+   			   			error_msg_sb.append("第"+rowNumber+"行【公司简称】，系统已存在【"+abbr+"】此供应商<br/>");
    			   			}
    					}else{
-   						error_msg += "第"+rowNumber+"行【公司简称】，字段不能为空<br/>";
+   						error_msg_sb.append("第"+rowNumber+"行【公司简称】，字段不能为空<br/>");
    					}
-   					
+   					error_msg = error_msg_sb.toString();
    					if(StringUtils.isNotBlank(email)){
 						if(!CheckOrder.checkEmail(email)){
 							error_msg += "第"+rowNumber+"行【邮箱】，【"+abbr+"】邮箱格式不合法<br/>";

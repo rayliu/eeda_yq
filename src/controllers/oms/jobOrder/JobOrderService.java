@@ -738,8 +738,7 @@ public class JobOrderService extends Controller {
     	
     	String container_types = "''";
     	for (int i = 0; i < jArray.size(); i++) {
-    		Record map=new Record();  
-    		map = (Record) jArray.get(i);
+    		Record map = (Record) jArray.get(i);
     		String container_type = (String)map.get("container_type");
     		if(i==0){
     			container_types = "'"+container_type+"'";
@@ -769,8 +768,7 @@ public class JobOrderService extends Controller {
     		Double amount = 1.0;
     		String thsi_container_type = re.getStr("container_type");
     		for (int i = 0; i < jArray.size(); i++) {
-    			Record map=new Record();  
-        		map = (Record) jArray.get(i);
+    			Record map = (Record) jArray.get(i);
         		String json_container_type = (String)map.get("container_type");
         		String json_amount = (String)map.get("count");
         		if(json_container_type.equals(thsi_container_type)){
@@ -944,17 +942,17 @@ public class JobOrderService extends Controller {
     	String hub =  dto.getStr("HUB")==null?"":dto.getStr("HUB");
     	String carrier =  dto.getStr("CARRIER")==null?"":dto.getStr("CARRIER");
 
-    	String container_types = "''";
+    	StringBuffer container_types_str = new StringBuffer("''");
     	for (int i = 0; i < jArray.size(); i++) {
-    		Record map=new Record();  
-    		map = (Record) jArray.get(i);
+    		Record map = (Record) jArray.get(i);
     		String container_type = (String)map.get("container_type");
     		if(i==0){
-    			container_types = "'"+container_type+"'";
+    			container_types_str.append("'"+container_type+"'") ;
     		}else{
-    			container_types += ",'"+container_type+"'";
+    			container_types_str.append(",'"+container_type+"'");
     		}
 		}
+    	String container_types =container_types_str.toString();
 
     	String sql = "select sci.*,sc.contract_begin_time,sc.contract_end_time from supplier_contract_location scl"
     			+ " LEFT JOIN supplier_contract sc on sc.id = scl.contract_id"
@@ -979,8 +977,7 @@ public class JobOrderService extends Controller {
     		Double amount = 1.0;
     		String thsi_container_type = re.getStr("container_type");
     		for (int i = 0; i < jArray.size(); i++) {
-    			Record map=new Record();  
-        		map = (Record) jArray.get(i);
+    			Record map = (Record) jArray.get(i);
         		String json_container_type = (String)map.get("container_type");
         		String json_amount = (String)map.get("count");
         		if(json_container_type.equals(thsi_container_type)){
@@ -1740,8 +1737,7 @@ public class JobOrderService extends Controller {
     	String order_export_date =  dto.getStr("ORDER_EXPORT_DATE");
     	
     	for (int i = 0; i < jArray.size(); i++) {
-    		Record map=new Record();  
-    		map = (Record) jArray.get(i);
+    		Record map = (Record) jArray.get(i);
     		String transport_company = (String)map.get("TRANSPORT_COMPANY")==null?"":dto.getStr("TRANSPORT_COMPANY");
     		String truck_type = (String)map.get("TRUCK_TYPE")==null?"":dto.getStr("TRUCK_TYPE");
     		String take_address = (String)map.get("TAKE_ADDRESS")==null?"":dto.getStr("TAKE_ADDRESS");
@@ -1913,8 +1909,7 @@ public class JobOrderService extends Controller {
     	String customer_id =  dto.getStr("CUSTOMER_ID");
     	
     	for (int i = 0; i < jArray.size(); i++) {
-    		Record map=new Record();  
-    		map = (Record) jArray.get(i);
+    		Record map = (Record) jArray.get(i);
     		String truck_type = (String)map.get("TRUCK_TYPE")==null?"":dto.getStr("TRUCK_TYPE");
     		String take_address = (String)map.get("TAKE_ADDRESS")==null?"":dto.getStr("TAKE_ADDRESS");
     		String delivery_address = (String)map.get("DELIVERY_ADDRESS")==null?"":dto.getStr("DELIVERY_ADDRESS");
@@ -2328,20 +2323,20 @@ public class JobOrderService extends Controller {
     	String cargo_desc = recMap.get("cargo_desc");
     	String shipping_mark = recMap.get("shipping_mark");
         
-        if(por!=null&&!"".equals(por)){
+        if(StringUtils.isNotBlank(por)){
         	 savePortQueryHistory(por);
         }
-        if(pol!=null&&!"".equals(pol)){
+        if(StringUtils.isNotBlank(pol)){
         	 savePortQueryHistory(pol);
         }
-        if(pod!=null&&!"".equals(pod)){
+        if(StringUtils.isNotBlank(pod)){
         	 savePortQueryHistory(pod);
         }
-        if(fnd!=null&&!"".equals(fnd)){
+        if(StringUtils.isNotBlank(fnd)){
         	 savePortQueryHistory(fnd);
         }
         String content = MBLshipper+MBLconsignee+MBLnotify_party+HBLshipper+HBLconsignee+HBLnotify_party+por+pol+pod+fnd+booking_agent+carrier+head_carrier+oversea_agent;
-        if("".equals(content)){
+        if(StringUtils.isBlank(content)){
         	return;
         }
         
@@ -2510,7 +2505,7 @@ public class JobOrderService extends Controller {
     	String shipping_mark = recMap.get("shipping_mark");
     	
     	String content = shipper+consignee+notify_party+booking_agent+shipping_mark+goods_mark;
-        if("".equals(content)){
+        if(StringUtils.isBlank(content)){
         	return;
         }
     	String sql = "select 1 from job_order_air_template where"
@@ -3569,7 +3564,7 @@ public class JobOrderService extends Controller {
     	long user_id = LoginUserController.getLoginUser(this).getLong("id");
     	String order_type = "jobOrderLock";
     	Date action_time = new Date();
-    	if(action=="lock"||action.equals("lock")){
+    	if(action=="lock"||"lock".equals(action)){
     		for (int i = 0; i < idArray.length; i++) {
         		JobOrder order = JobOrder.dao.findById(idArray[i]);
             	order.set("status", "已完成");
@@ -3583,7 +3578,7 @@ public class JobOrderService extends Controller {
             	Db.save("status_audit", re);
     		}
     	}
-    	if(action=="unLock"||action.equals("unLock")){
+    	if(action=="unLock"||"unLock".equals(action)){
     		for (int i = 0; i < idArray.length; i++) {
         		JobOrder order = JobOrder.dao.findById(idArray[i]);
             	order.set("status", "新建");

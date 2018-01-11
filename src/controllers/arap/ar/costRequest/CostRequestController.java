@@ -341,7 +341,7 @@ public class CostRequestController extends Controller {
           String application_id = getPara("application_id");
           String sql = "";
           
-          if("".equals(application_id)||application_id==null){
+          if(StringUtils.isBlank(application_id)){
   	       
           	sql =  " SELECT aco.*, p.company_name payee_name, '应付对账单' order_type, "
           			+" p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"

@@ -184,7 +184,7 @@ public class profitController extends Controller {
         	ref_office = " or jo.office_id in ("+relist.getStr("office_id")+")";
         }
 		
-		if(customer_id == ""||customer_id.equals("")){
+		if(StringUtils.isBlank(customer_id)){
 			customerId = "";
 		}else{
 			customerId = " and customer_id = "+customer_id;

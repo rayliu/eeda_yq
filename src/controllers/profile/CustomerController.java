@@ -185,7 +185,7 @@ public class CustomerController extends Controller {
         Long userId = LoginUserController.getLoginUserId(this);
         Date createDate = Calendar.getInstance().getTime();
         
-        if (!"".equals(id) && id != null) {
+        if (StringUtils.isNotBlank(id)) {
         	
             party = Party.dao.findById(id);
             party.set("last_modified_by", userId);
@@ -870,6 +870,7 @@ public class CustomerController extends Controller {
 		//if ("true".equals(importResult.get("result"))) {
 			int rowNumber = 2;//最左边的编码行
 			String error_msg = "";
+			StringBuffer error_msg_sb = new StringBuffer();
 			try {
 				for (Map<String, String> line :lines) {
 					if(line != null){
@@ -894,37 +895,37 @@ public class CustomerController extends Controller {
 					String remark = line.get("备注").trim();
 					
 					if(StringUtils.isBlank(quick_search_code)){
-						error_msg += "第"+rowNumber+"行【助记码】，字段不能为空<br/>";
+						error_msg_sb.append("第"+rowNumber+"行【助记码】，字段不能为空<br/>");
 					}
 					
 					if(StringUtils.isNotBlank(company_name)){
 						Party party = Party.dao.findFirst("select * from party where company_name =? and type='CUSTOMER' and office_id = ?",company_name,office_id);
 						if(party != null){
-							error_msg += "第"+rowNumber+"行【公司中文名称】，系统已存在【"+company_name+"】此客户<br/>";
+							error_msg_sb.append("第"+rowNumber+"行【公司中文名称】，系统已存在【"+company_name+"】此客户<br/>");
 						}
 					}else{
-						error_msg += "第"+rowNumber+"行【公司中文名称】，字段不能为空<br/>";
+						error_msg_sb.append("第"+rowNumber+"行【公司中文名称】，字段不能为空<br/>");
 					}
 					
 					if(StringUtils.isNotBlank(abbr)){
 						Record customer = Db.findFirst("select * from party where abbr = ?  and type = 'CUSTOMER'  and office_id = ?",abbr,office_id);
 			   			if(customer != null){
-			   				error_msg += "第"+rowNumber+"行【公司简称】，系统已存在【"+abbr+"】此客户<br/>";
+			   				error_msg_sb.append("第"+rowNumber+"行【公司简称】，系统已存在【"+abbr+"】此客户<br/>");
 			   			}
 					}else{
-						error_msg += "第"+rowNumber+"行【公司简称】，字段不能为空<br/>";
+						error_msg_sb.append("第"+rowNumber+"行【公司简称】，字段不能为空<br/>");
 					}
 					
 					if(StringUtils.isNotBlank(email)){
 						if(!CheckOrder.checkEmail(email)){
-							error_msg += "第"+rowNumber+"行【邮箱】，【"+abbr+"】邮箱格式不合法<br/>";
+							error_msg_sb.append("第"+rowNumber+"行【邮箱】，【"+abbr+"】邮箱格式不合法<br/>");
 						}
 					}
 		   			
 					rowNumber++;
 				}
 				}
-				
+				error_msg = error_msg_sb.toString();
 				if(StringUtils.isNotBlank(error_msg)){
 					throw new Exception();
 				}

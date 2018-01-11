@@ -55,7 +55,7 @@ public class CustomAccountAuditLogController extends Controller {
     	String money = getPara("money");
     	String condiction = "";
     	//升降序
-    	String sortColIndex = getPara("iSortCol_0");
+    	//String sortColIndex = getPara("iSortCol_0");
 //		String sortBy = getPara("sSortDir_0");
 //		String colName = getPara("mDataProp_"+sortColIndex);
 		
@@ -78,16 +78,16 @@ public class CustomAccountAuditLogController extends Controller {
     	}
     	
     	
-    	if(sourceOrder != null && !sourceOrder.equals("")){
+    	if(sourceOrder != null && !"".equals(sourceOrder)){
     		condiction +=" and A.source_order ='" + sourceOrder + "' ";
     	}
-    	if(orderNo != null && !orderNo.equals("")){
+    	if(orderNo != null && !"".equals(orderNo)){
     		condiction +=" and A.invoice_order_no like '%" + orderNo + "%' ";
     	}
-    	if(bankName != null && !bankName.equals("")){
+    	if(bankName != null && !"".equals(bankName)){
     		condiction +=" and A.bank_name = '" + bankName + "' ";
     	}
-    	if(money != null && !money.equals("")){
+    	if(money != null && !"".equals(money)){
     		String amount = money.replaceAll(",","");
     		condiction +=" and A.amount like '%" + amount + "%' ";
     	}
@@ -139,7 +139,7 @@ public class CustomAccountAuditLogController extends Controller {
 
         
         
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));

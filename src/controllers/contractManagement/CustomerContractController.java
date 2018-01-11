@@ -72,7 +72,7 @@ public class CustomerContractController extends Controller {
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
         Record rec = Db.findFirst(sqlTotal);
         List<Record> orderList = Db.find(sql+ condition + " order by create_date desc " +sLimit);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));

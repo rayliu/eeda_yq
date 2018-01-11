@@ -27,18 +27,19 @@ public class PingYinUtil {
  
         char[] input = inputString.trim().toCharArray();
         String output = "";
- 
+        StringBuffer output_sb = new StringBuffer();
         try {
             for (int i = 0; i < input.length; i++) {
                 if (java.lang.Character.toString(input[i]).matches("[\\u4E00-\\u9FA5]+")) {
                     String[] temp = PinyinHelper.toHanyuPinyinStringArray(input[i], format);
-                    output += temp[0];
+                    output_sb.append(temp[0]);
                 } else
-                    output += java.lang.Character.toString(input[i]);
+                	output_sb.append(java.lang.Character.toString(input[i]));
             }
         } catch (BadHanyuPinyinOutputFormatCombination e) {
             e.printStackTrace();
         }
+        output = output_sb.toString();
         return output;
     }
     /**  

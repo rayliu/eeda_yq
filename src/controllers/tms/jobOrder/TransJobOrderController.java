@@ -315,18 +315,18 @@ public class TransJobOrderController extends Controller {
 		saveFinItemQueryHistory(chargeCost_list);
 		
 		//常用提还柜码头进入使用历史  
-		if(!"".equals(takeWharf)){
+		if(StringUtils.isNotBlank(takeWharf)){
 			saveWharfQueryHistory(takeWharf);
 		}
-		if(!"".equals(backWharf)){
+		if(StringUtils.isNotBlank(backWharf)){
 			saveWharfQueryHistory(backWharf);
 		}
 		
 		//装货地点进入使用历史表
-		if(!"".equals(loadingWharf1)){
+		if(StringUtils.isNotBlank(loadingWharf1)){
 			saveLoadingWharfQueryHistory(loadingWharf1);
 		}
-		if(!"".equals(loadingWharf2)){
+		if(StringUtils.isNotBlank(loadingWharf2)){
 			saveLoadingWharfQueryHistory(loadingWharf2);
 		}
 		//获取结算公司id：charge_company_id
@@ -608,7 +608,7 @@ public class TransJobOrderController extends Controller {
     	String shipping_mark = recMap.get("shipping_mark");
     	
     	String content = shipper+consignee+notify_party+booking_agent+shipping_mark+goods_mark;
-        if("".equals(content)){
+        if(StringUtils.isBlank(content)){
         	return;
         }
     	String sql = "select 1 from job_order_air_template where"
@@ -1266,6 +1266,7 @@ public class TransJobOrderController extends Controller {
             return;
         }
         long office_id=user.getLong("office_id");
+        StringBuffer condition_sb = new StringBuffer();
         String condition = "";
         String company_name = (String) dto.get("customer_name_like");
     	Map<String, Map<String, String>> dateFieldMap = new HashMap<String, Map<String, String>>();
@@ -1276,13 +1277,13 @@ public class TransJobOrderController extends Controller {
             if(StringUtils.isNotEmpty(filterValue) && !"undefined".equals(filterValue)){
 //            	logger.debug(key + ":" + filterValue);
             	if(key.endsWith("_equals")){
-            		condition += " and " + key.replace("_equals", "") + " = '" + filterValue + "' ";
+            		condition_sb.append(" and " + key.replace("_equals", "") + " = '" + filterValue + "' ");
             		continue;
             	}else if(key.endsWith("_id")){
-            		condition += " and " + key.replace("", "") + " = '" + filterValue + "' ";
+            		condition_sb.append(" and " + key.replace("", "") + " = '" + filterValue + "' ");
             		continue;
             	}else if(key.endsWith("_like")){
-            		condition += " and " + key.replace("_like", "") + " like '%" + filterValue + "%' ";
+            		condition_sb.append(" and " + key.replace("_like", "") + " like '%" + filterValue + "%' ");
             		continue;
             	}else if(key.endsWith("_begin_time")){
             		key = key.replaceAll("_begin_time", "");
@@ -1321,7 +1322,8 @@ public class TransJobOrderController extends Controller {
             		continue;
             	}
 			}
-        	condition += " and (" + key + " between '" + beginTime + "' and '" + endTime+ "' )";
+        	condition_sb.append(" and (" + key + " between '" + beginTime + "' and '" + endTime+ "' )");
+        	condition = condition_sb.toString();
         }
     }
     	
@@ -1381,7 +1383,7 @@ public class TransJobOrderController extends Controller {
     	long user_id = LoginUserController.getLoginUser(this).getLong("id");
     	String order_type = "transJobOrderLock";
     	Date action_time = new Date();
-    	if(action=="lock"||action.equals("lock")){
+    	if(action!=null||"lock".equals(action)){
     		for (int i = 0; i < idArray.length; i++) {
     			TransJobOrder order = TransJobOrder.dao.findById(idArray[i]);
             	order.set("status", "已完成");
@@ -1395,7 +1397,7 @@ public class TransJobOrderController extends Controller {
             	Db.save("status_audit", re);
     		}
     	}
-    	if(action=="unLock"||action.equals("unLock")){
+    	if(action!=null||"unLock".equals(action)){
     		for (int i = 0; i < idArray.length; i++) {
     			TransJobOrder order = TransJobOrder.dao.findById(idArray[i]);
             	order.set("status", "新建");

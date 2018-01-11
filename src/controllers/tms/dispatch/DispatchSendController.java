@@ -309,18 +309,18 @@ public class DispatchSendController extends Controller {
 		saveFinItemQueryHistory(chargeCost_list);
 		
 		//常用提还柜码头进入使用历史  
-		if(!"".equals(takeWharf)){
+		if(StringUtils.isNotBlank(takeWharf)){
 			saveWharfQueryHistory(takeWharf);
 		}
-		if(!"".equals(backWharf)){
+		if(StringUtils.isNotBlank(backWharf)){
 			saveWharfQueryHistory(backWharf);
 		}
 		
 		//装货地点进入使用历史表
-		if(!"".equals(loadingWharf1)){
+		if(StringUtils.isNotBlank(loadingWharf1)){
 			saveLoadingWharfQueryHistory(loadingWharf1);
 		}
-		if(!"".equals(loadingWharf2)){
+		if(StringUtils.isNotBlank(loadingWharf2)){
 			saveLoadingWharfQueryHistory(loadingWharf2);
 		}
 
@@ -661,7 +661,7 @@ public class DispatchSendController extends Controller {
     	String shipping_mark = recMap.get("shipping_mark");
     	
     	String content = shipper+consignee+notify_party+booking_agent+shipping_mark+goods_mark;
-        if("".equals(content)){
+        if(StringUtils.isBlank(content)){
         	return;
         }
     	String sql = "select 1 from job_order_air_template where"

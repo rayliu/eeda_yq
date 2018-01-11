@@ -104,7 +104,7 @@ public class tradeBillProfitAndPaymentController extends Controller{
         }
         long office_id=user.getLong("office_id");
 		String customerName = "";
-        if(customer_name==null||StringUtils.isBlank(customer_name)){
+        if(StringUtils.isBlank(customer_name)){
         	customerName="";
         }else{
         	customerName =" and customer_name like '%"+customer_name+"%'";

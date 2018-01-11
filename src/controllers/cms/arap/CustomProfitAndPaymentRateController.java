@@ -113,10 +113,10 @@ public class CustomProfitAndPaymentRateController extends Controller {
 			date_custom_end_time="";
 		}
 		
-		String date_custom =  " and (date_custom between '"+date_custom_begin_time+"' and '"+date_custom_end_time+"')";
+		String date_custom =  "";
 
-		if(date_custom_begin_time==""||date_custom_end_time==""){
-			date_custom="";
+		if(StringUtils.isNotBlank(date_custom_begin_time)||StringUtils.isNotBlank(date_custom_end_time)){
+			date_custom = " and (date_custom between '"+date_custom_begin_time+"' and '"+date_custom_end_time+"')";
 		}
 		String condition = sp_id+date_custom;
 		

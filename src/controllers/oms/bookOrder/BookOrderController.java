@@ -1566,10 +1566,9 @@ public class BookOrderController extends Controller {
     	String order_id = getPara("order_id");
     	String type = getPara("type");
     	
-    	List<Record> list = null;
-    	list = getItems(order_id,type);
+    	List<Record> list = getItems(order_id,type);
     	
-    	Map map = new HashMap();
+    	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);
         map.put("iTotalRecords", list != null?list.size():0);
         map.put("iTotalDisplayRecords", list != null?list.size():0);
@@ -1841,7 +1840,6 @@ public class BookOrderController extends Controller {
     //商品名名称下拉列表
     public void searchCommodity(){
     	String input = getPara("input");
-    	List<Record> recs = null;
     	UserLogin user = LoginUserController.getLoginUser(this);
     	if(user == null)
    			return;
@@ -1850,7 +1848,7 @@ public class BookOrderController extends Controller {
     	if(StringUtils.isNotEmpty(input)){
     		sql+=" and commodity_name like '%"+ input +"%' ";
     	}
-    	recs = Db.find(sql);
+    	List<Record> recs = Db.find(sql);
     	renderJson(recs);
     }
     
@@ -1886,8 +1884,7 @@ public class BookOrderController extends Controller {
     	String order_id = getPara("order_id");
     	String type = getPara("type");
     	
-    	List<Record> list = null;
-    	list = getDocItems(order_id,type);
+    	List<Record> list = getDocItems(order_id,type);
     	
     	Map<String,Object> map = new HashMap<String,Object>();
         map.put("sEcho", 1);

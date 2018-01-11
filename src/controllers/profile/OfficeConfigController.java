@@ -13,6 +13,7 @@ import models.ParentOfficeModel;
 import models.eeda.OfficeConfig;
 import models.eeda.profile.Warehouse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.SimpleEmail;
@@ -62,7 +63,7 @@ public class OfficeConfigController extends Controller{
 		//Contact contact = null;
 		//Party party = null;
 		//Date createDate = Calendar.getInstance().getTime();
-		if (id != null && !id.equals("")) {
+		if (StringUtils.isNotBlank(id)) {
 			//party = Party.dao.findFirst("select * from party where id = ?", getPara("notifyPartyId"));
 			//contact = Contact.dao.findFirst("select * from contact where id = ?", party.get("contact_id"));
 			//setContact(contact);
@@ -84,10 +85,10 @@ public class OfficeConfigController extends Controller{
             }else{
             	officeId = null;
             }
-            if(spId != null && !"".equals(spId)){
+            if(StringUtils.isNotBlank(spId)){
             	warehouse.set("sp_id", spId);
             }
-            if(officeId != null && !"".equals(officeId)){
+            if(StringUtils.isNotBlank(officeId)){
             	warehouse.set("office_id", officeId);
             }
 			warehouse.set("warehouse_type", getPara("warehouseType"));
@@ -119,10 +120,10 @@ public class OfficeConfigController extends Controller{
             }else{
             	officeId = null;
             }
-            if(spId != null && !"".equals(spId)){
+            if(StringUtils.isNotBlank(spId)){
             	warehouse.set("sp_id", spId);
             }
-            if(officeId != null && !"".equals(officeId)){
+            if(StringUtils.isNotBlank(officeId)){
             	warehouse.set("office_id", officeId);
             }
 			warehouse.set("warehouse_type", getPara("warehouseType"));
@@ -166,10 +167,10 @@ public class OfficeConfigController extends Controller{
     	String portNo = getPara("portNo");
     	String password = getPara("password");
     	String sslayer = getPara("sslayer");
-    	if(sslayer==null||sslayer==""){
+    	if(StringUtils.isBlank(sslayer)){
     		sslayer="false";
     	}
-    	if(sslayer.equals("on")){
+    	if("on".equals(sslayer)){
     		sslayer="true";
     	}
 		Office office = Office.dao.findById(office_id);
@@ -178,11 +179,11 @@ public class OfficeConfigController extends Controller{
 		office.update();
 		
 		OfficeConfig officeConfig = OfficeConfig.dao.findFirst("select * from office_config where office_id = ?",office_id);
-		if(logofileName != null && !"".equals(logofileName)){
+		if(StringUtils.isNotBlank(logofileName)){
 			logofileName=logofileName.replace(logofileName.substring(0,1), "/");
 			officeConfig.set("logo", logofileName);
 		}
-		if(bgfileName != null && !"".equals(bgfileName)){
+		if(StringUtils.isNotBlank(bgfileName)){
 			bgfileName = bgfileName.replace(bgfileName.substring(0,1), "/");
 			officeConfig.set("login_bg",bgfileName );
 		}
@@ -216,7 +217,7 @@ public class OfficeConfigController extends Controller{
 	            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 	            String newDate = sf.format(date);
 	            String basePath=null;
-	            if(secondDomain==null||"".equals(secondDomain)){
+	            if(StringUtils.isBlank(secondDomain)){
 	            	basePath =newDate + "  " + office_name + "已经删除掉了二级域名.";
 	            }else{
 	            	 basePath =newDate + "  " + office_name + "的二级域名已经更改为：" + secondDomain + "。";
@@ -243,7 +244,7 @@ public class OfficeConfigController extends Controller{
 	public void searchAllWarehouse() {
 		String officeName = getPara("office_name")==null?"":getPara("office_name");
 		List<Record> offices=null;
-		if("".equals(officeName)){
+		if(StringUtils.isBlank(officeName)){
 			 offices = Db.find("select w.* from warehouse w left join office o on o.id = w.office_id where o.id IN (SELECT office_id FROM user_office WHERE user_name = '"+currentUser.getPrincipal()+"')");
 		}else{
 			offices=Db.find("select w.* from warehouse w left join office o on o.id = w.office_id where o.id='"+officeName+"' and o.id IN (SELECT office_id FROM user_office WHERE user_name = '"+currentUser.getPrincipal()+"')");

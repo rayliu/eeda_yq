@@ -17,6 +17,7 @@ import models.Party;
 import models.UserLogin;
 import models.yh.profile.Carinfo;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -212,25 +213,25 @@ public class CarinfoController extends Controller {
         Long office_id = user.getLong("office_id");
         Carinfo carinfo = null;
         Carinfo contact = null;
-        if (id != null && !"".equals(id)) {
+        if (StringUtils.isNotBlank(id)) {
             carinfo = Carinfo.dao.findById(id);
             setCarifo(carinfo);
             carinfo.set("type", Carinfo.CARINFO_TYPE_OWN);
-            carinfo.set("hundred_fuel_standard", getPara("hundred_fuel_standard") == "" ? 0 : getPara("hundred_fuel_standard"));
-            carinfo.set("rated_load", getPara("rated_load") == "" ? 0 : getPara("rated_load"));
-            carinfo.set("rated_cube", getPara("rated_cube") == "" ? 0 : getPara("rated_cube"));
-            carinfo.set("cartype", getPara("cartype") == "" ? 0 : getPara("cartype"));
-            carinfo.set("length", getPara("length") == "" ? 0 : getPara("length"));
-            carinfo.set("toca_weight", getPara("toca_weight") == "" ? 0 : getPara("toca_weight"));
-            carinfo.set("head_weight", getPara("head_weight") == "" ? 0 : getPara("head_weight"));
-            carinfo.set("toca_num", getPara("toca_num") == "" ? 0 : getPara("toca_num"));
-            carinfo.set("short_phone", getPara("short_phone") == "" ? 0 : getPara("short_phone"));
-            carinfo.set("initial_mileage", getPara("initial_mileage") == "" ? 0 : getPara("initial_mileage"));
-            carinfo.set("parent_id", getPara("parent_id") == "" ? null : getPara("parent_id"));
-            carinfo.set("vehicle_status", getPara("vehicle_status") == "" ? null : getPara("vehicle_status"));
-            if(getPara("gongsiche")!=""&&getPara("gongsiche")!=null){
+            carinfo.set("hundred_fuel_standard", "".equals(getPara("hundred_fuel_standard"))  ? 0 : getPara("hundred_fuel_standard"));
+            carinfo.set("rated_load", "".equals(getPara("rated_load")) ? 0 : getPara("rated_load"));
+            carinfo.set("rated_cube", "".equals(getPara("rated_cube")) ? 0 : getPara("rated_cube"));
+            carinfo.set("cartype", "".equals(getPara("cartype")) ? 0 : getPara("cartype"));
+            carinfo.set("length", "".equals(getPara("length")) ? 0 : getPara("length"));
+            carinfo.set("toca_weight", "".equals(getPara("toca_weight")) ? 0 : getPara("toca_weight"));
+            carinfo.set("head_weight", "".equals(getPara("head_weight")) ? 0 : getPara("head_weight"));
+            carinfo.set("toca_num", "".equals(getPara("toca_num")) ? 0 : getPara("toca_num"));
+            carinfo.set("short_phone", "".equals(getPara("short_phone")) ? 0 : getPara("short_phone"));
+            carinfo.set("initial_mileage", "".equals(getPara("initial_mileage")) ? 0 : getPara("initial_mileage"));
+            carinfo.set("parent_id", "".equals(getPara("parent_id")) ? null : getPara("parent_id"));
+            carinfo.set("vehicle_status", "".equals(getPara("vehicle_status")) ? null : getPara("vehicle_status"));
+            if(StringUtils.isNotBlank(getPara("gongsiche"))){
             	carinfo.set("car_owned", getPara("gongsiche") == "" ? 0 : getPara("gongsiche"));
-            }else if(getPara("jieche")!=""&&getPara("jieche")!=null){
+            }else if(StringUtils.isNotBlank(getPara("jieche"))){
             	carinfo.set("car_owned", getPara("jieche") == "" ? 0 : getPara("jieche"));
             }
             System.out.println("");
@@ -258,9 +259,9 @@ public class CarinfoController extends Controller {
             carinfo.set("initial_mileage", getPara("initial_mileage") == "" ? 0 : getPara("initial_mileage"));
             carinfo.set("parent_id", getPara("parent_id") == "" ? null : getPara("parent_id"));
             
-            if(getPara("gongsiche")!=""&&getPara("gongsiche")!=null){
+            if(StringUtils.isNotBlank(getPara("gongsiche"))){
             	carinfo.set("car_owned", getPara("gongsiche") == "" ? 0 : getPara("gongsiche"));
-            }else if(getPara("jieche")!=""&&getPara("jieche")!=null){
+            }else if(StringUtils.isNotBlank(getPara("jieche"))){
             	carinfo.set("car_owned", getPara("jieche") == "" ? 0 : getPara("jieche"));
             }
             carinfo.set("office_id", office_id);
@@ -308,11 +309,11 @@ public class CarinfoController extends Controller {
     
 
     public void setCarifo(Carinfo carinfo) {
-        carinfo.set("driver", getPara("driver")== "" ? 0 : getPara("driver"));
-        carinfo.set("cartype", getPara("ctype")== "" ? 0 : getPara("ctype"));
-        carinfo.set("car_no", getPara("car_no")== "" ? 0 : getPara("car_no"));
-        carinfo.set("phone", getPara("phone")== "" ? 0 : getPara("phone"));
-        carinfo.set("length", getPara("length")== "" ? 0 : getPara("length"));
+        carinfo.set("driver", "".equals(getPara("driver")) ? 0 : getPara("driver"));
+        carinfo.set("cartype", "".equals(getPara("ctype")) ? 0 : getPara("ctype"));
+        carinfo.set("car_no", "".equals(getPara("car_no")) ? 0 : getPara("car_no"));
+        carinfo.set("phone", "".equals(getPara("phone")) ? 0 : getPara("phone"));
+        carinfo.set("length", "".equals(getPara("length")) ? 0 : getPara("length"));
     }
 //    @RequiresPermissions(value = {PermissionConstant.PERMISSION_TO_DELETE,PermissionConstant.PERMSSION_PC_DELETE},logical=Logical.OR)
     public void delect() {
@@ -335,7 +336,7 @@ public class CarinfoController extends Controller {
     public void driverdelect() {
         String id = getPara();
 
-        if(id != null && !"".equals(id)){
+        if(StringUtils.isNotBlank(id)){
     		Party party = Party.dao.findById(id);
     		Object obj = party.get("is_stop");
             if(obj == null || "".equals(obj) || obj.equals(false) || obj.equals(0)){
@@ -398,7 +399,7 @@ public class CarinfoController extends Controller {
         String totalWhere = "";
         Record rec = null;
         List<Record> orders = null;
-        if(sSearch==null || "".equals(sSearch)){
+        if(StringUtils.isBlank(sSearch)){
         	String sql = "select count(1) total from carinfo c left join office o on c.office_id = o.id where c.type = '" + Carinfo.CARINFO_TYPE_SP +"' and (o.id = " + parentID + " or o.belong_office = " + parentID + ")";
              rec = Db.findFirst(sql + totalWhere);
             logger.debug("total records:" + rec.getLong("total"));
@@ -429,7 +430,7 @@ public class CarinfoController extends Controller {
     public void saveSpCarInfo() {
         String id = getPara("carId");
         Carinfo carinfo = null;
-        if (id != "" && !"".equals(id)) {
+        if (StringUtils.isNotBlank(id)) {
             carinfo = Carinfo.dao.findById(id);
             setCarifo(carinfo);
             carinfo.set("type", Carinfo.CARINFO_TYPE_SP);
@@ -464,7 +465,7 @@ public class CarinfoController extends Controller {
     
     public void deleteSpCarInfo() {
     	String id = getPara();
-    	if(id != null && !"".equals(id)){
+    	if(StringUtils.isNotBlank(id)){
     		Carinfo carinfo = Carinfo.dao.findById(id);
         	Object obj = carinfo.get("is_stop");
             if(obj == null || "".equals(obj) || obj.equals(false) || obj.equals(0)){
@@ -550,7 +551,7 @@ public class CarinfoController extends Controller {
     public void deleteSpDriver() {
     	String id = getPara();
     	/*Party.dao.deleteById(id);*/
-    	if(id != null && !"".equals(id)){
+    	if(StringUtils.isNotBlank(id)){
     		Party party = Party.dao.findById(id);
     		Object obj = party.get("is_stop");
             if(obj == null || "".equals(obj) || obj.equals(false) || obj.equals(0)){

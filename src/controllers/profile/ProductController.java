@@ -137,7 +137,7 @@ public class ProductController extends Controller {
         Product product = null;
         String id = getPara("id");
 
-        if (id != null && !id.equals("")) {
+        if (StringUtils.isNotBlank(id)) {
             product = Product.dao.findById(id);
             String size = getPara("size");
             String width = getPara("width");
@@ -427,22 +427,22 @@ public class ProductController extends Controller {
         String item_no = getPara("item_no_update");
         String serial_no = getPara("serial_no_update");
         String item_name = getPara("item_name_update");
-        String size = getPara("size_update") == "" ? null
+        String size = "".equals(getPara("size_update")) ? null
                 : getPara("size_update");
-        String width = getPara("width_update") == "" ? null
+        String width = "".equals(getPara("width_update")) ? null
                 : getPara("width_update");
         ;
-        String height = getPara("height_update") == "" ? null
+        String height = "".equals(getPara("height_update")) ? null
                 : getPara("height_update");
         ;
-        String insurance_amount = getPara("insurance_amount_update") == "" ? null
+        String insurance_amount = "".equals(getPara("insurance_amount_update")) ? null
                 : getPara("insurance_amount_update");
         ;
         String unit = getPara("unit_update");
-        String volume = getPara("volume_update") == "" ? null
+        String volume = "".equals(getPara("volume_update")) ? null
                 : getPara("volume_update");
         ;
-        String weight = getPara("weight_update") == "" ? null
+        String weight = "".equals(getPara("weight_update")) ? null
                 : getPara("weight_update");
         ;
         String item_desc = getPara("item_desc_update");
@@ -502,7 +502,7 @@ public class ProductController extends Controller {
         String value = getPara("value");
         Product product = null;
 
-        if (id != null && !id.equals("")) {
+        if (StringUtils.isNotBlank(id)) {
             product = Product.dao.findById(id);
 
             if ("item_no".equals(filedName)) {
@@ -539,7 +539,7 @@ public class ProductController extends Controller {
         String height = getPara("height");
         String weight = getPara("weight");
         String insuranceAmount = getPara("insurance_amount");
-        if (!"".equals(item_no) && item_no != null) {
+        if (StringUtils.isNotBlank(item_no)) {
             Category category = Category.dao.findById(item.get("category_id"));
             Product product = Product.dao
                     .findFirst("select * from product p left join category c on c.id = p.category_id where p.item_no = '"
@@ -553,31 +553,31 @@ public class ProductController extends Controller {
                 // 产品型号已存在
                 returnValue = "repetition";
             }
-        } else if (!"".equals(item_name) && item_name != null) {
+        } else if (StringUtils.isNotBlank(item_name)) {
             item.set("item_name", item_name).update();
             returnValue = item_name;
-        } else if (!"".equals(itemDesc) && itemDesc != null) {
+        } else if (StringUtils.isNotBlank(itemDesc)) {
             item.set("item_desc", itemDesc).update();
             returnValue = itemDesc;
-        } else if (!"".equals(size) && size != null) {
+        } else if (StringUtils.isNotBlank(size)) {
             item.set("size", size).update();
             returnValue = size;
-        } else if (!"".equals(width) && width != null) {
+        } else if (StringUtils.isNotBlank(width)) {
             item.set("width", width).update();
             returnValue = width;
-        } else if (!"".equals(height) && height != null) {
+        } else if (StringUtils.isNotBlank(height)) {
             item.set("height", height).update();
             returnValue = height;
-        } else if (!"".equals(weight) && weight != null) {
+        } else if (StringUtils.isNotBlank(weight)) {
             item.set("weight", weight).update();
             returnValue = weight;
-        } else if (!"".equals(unit) && unit != null) {
+        } else if (StringUtils.isNotBlank(unit)) {
             item.set("unit", unit).update();
             returnValue = unit;
-        } else if (!"".equals(serial_no) && serial_no != null) {
+        } else if (StringUtils.isNotBlank(serial_no)) {
             item.set("serial_no", serial_no).update();
             returnValue = serial_no;
-        } else if (!"".equals(insuranceAmount) && insuranceAmount != null) {
+        } else if (StringUtils.isNotBlank(insuranceAmount)) {
             item.set("insurance_amount", insuranceAmount).update();
             returnValue = insuranceAmount;
         }

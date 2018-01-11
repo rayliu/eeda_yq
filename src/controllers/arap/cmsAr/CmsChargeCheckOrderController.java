@@ -423,12 +423,12 @@ public class CmsChargeCheckOrderController extends Controller {
     		    list = getItemList(condition,order_id);
     	}
     	String  type=getPara("table_type");
-    	if(order_id!=""&&"receive".equals(type)){
+    	if("".equals(order_id)&&"receive".equals(type)){
     		list=getReceiveItemList(order_id);
     		setAttr("receive_itemList",list);
     	}
 
-    	Map BillingOrderListMap = new HashMap();
+    	Map<String,Object> BillingOrderListMap = new HashMap<String,Object>();
         BillingOrderListMap.put("sEcho", 1);
         BillingOrderListMap.put("iTotalRecords", list.size());
         BillingOrderListMap.put("iTotalDisplayRecords", list.size());

@@ -10,6 +10,7 @@ import java.util.Map;
 import models.ArapAccountAuditLog;
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -66,39 +67,39 @@ public class AccountAuditLogController extends Controller {
 //        if(!StrKit.isBlank(colName)){
 //        	orderByStr = " order by A."+colName+" "+sortBy;
 //        }
-    	if(ids != null && !"".equals(ids)){
+    	if(StringUtils.isNotBlank(ids)){
     		condiction += " and account_id in("+ids+") ";
     	}
-    	if(beginTime == null || "".equals(beginTime)){
+    	if(StringUtils.isBlank(beginTime)){
     		beginTime = "1970-01-01";
     	}else{
     		beginTime = getPara("beginTime")+"-01";
     	}
-    	if(endTime == null || "".equals(endTime)){
+    	if(StringUtils.isBlank(endTime)){
     		endTime = "2037-12-31";
     	}else{
     		endTime = getPara("beginTime")+"-31 23:59:59";
     	}
     	
     	
-    	if(sourceOrder != null && !sourceOrder.equals("")){
+    	if(StringUtils.isNotBlank(sourceOrder)){
     		condiction +=" and A.source_order ='" + sourceOrder + "' ";
     	}
-    	if(orderNo != null && !orderNo.equals("")){
+    	if(StringUtils.isNotBlank(orderNo)){
     		condiction +=" and A.order_no like '%" + orderNo + "%' ";
     	}
-    	if(bankName != null && !bankName.equals("")){
+    	if(StringUtils.isNotBlank(bankName)){
     		condiction +=" and A.bank_name = '" + bankName + "' ";
     	}
-    	if(money != null && !money.equals("")){
+    	if(StringUtils.isNotBlank(money)){
     		condiction +=" and A.amount like '%" + money + "%' ";
     	}
-    	if(begin == null || "".equals(begin)){
+    	if(StringUtils.isNotBlank(begin)){
     		condiction += " and A.create_date between '" + beginTime + "' ";
     	}else{
     		condiction += " and A.create_date between '" + begin + "' ";
     	}
-    	if(end == null || "".equals(end)){
+    	if(StringUtils.isNotBlank(end)){
     		condiction += " and '" + endTime + "' ";
     	}else{
     		condiction += " and '" + end + "' ";
@@ -188,7 +189,7 @@ public class AccountAuditLogController extends Controller {
 
         
         
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));

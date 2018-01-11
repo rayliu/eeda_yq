@@ -161,7 +161,7 @@ public class ChargeAcceptOrderController extends Controller {
           String application_id = getPara("application_id");
           String sql = "";
           
-          if("".equals(application_id)||application_id==null){
+          if(StringUtils.isBlank(application_id)){
   	       
           	sql =  " SELECT aco.*, p.company_name payee_name, '应收对账单' order_type, "
           			+" p.company_name cname, ifnull(ul.c_name, ul.user_name) creator_name,"
@@ -313,20 +313,20 @@ public class ChargeAcceptOrderController extends Controller {
    			DbUtils.setModelValues(dto, order); 
    			
    			//需后台处理的字段
-   			if(!"".equals(selected_item_ids)){
+   			if(StringUtils.isNotBlank(selected_item_ids)){
    				order.set("selected_item_ids", selected_item_ids);
    			}
    			
-			if (total_app_usd != null && !"".equals(total_app_usd)) {
+			if (StringUtils.isNotBlank(total_app_usd)) {
 				order.set("app_usd",total_app_usd);
 			}
-			if (total_app_hkd != null && !"".equals(total_app_hkd)) {
+			if (StringUtils.isNotBlank(total_app_hkd)) {
 				order.set("app_hkd",total_app_hkd);
 			}
-			if (total_app_cny != null && !"".equals(total_app_cny)) {
+			if (StringUtils.isNotBlank(total_app_cny)) {
 				order.set("app_cny",total_app_cny);
 			}
-			if (total_app_jpy != null && !"".equals(total_app_jpy)) {
+			if (StringUtils.isNotBlank(total_app_jpy)) {
 				order.set("app_jpy",total_app_jpy);
 			}
    			order.set("update_by", user.getLong("id"));
@@ -344,20 +344,20 @@ public class ChargeAcceptOrderController extends Controller {
    			order.set("create_stamp", new Date());
    			order.set("office_id", office_id);
    			
-   			if(!"".equals(selected_item_ids)){
+   			if(StringUtils.isNotBlank(selected_item_ids)){
    				order.set("selected_item_ids", selected_item_ids);
    			}
    			
-   			if (total_app_usd != null && !"".equals(total_app_usd)) {
+   			if (StringUtils.isNotBlank(total_app_usd)) {
 				order.set("app_usd",total_app_usd);
 			}
-			if (total_app_hkd != null && !"".equals(total_app_hkd)) {
+			if (StringUtils.isNotBlank(total_app_hkd)) {
 				order.set("app_hkd",total_app_hkd);
 			}
-			if (total_app_cny != null && !"".equals(total_app_cny)) {
+			if (StringUtils.isNotBlank(total_app_cny)) {
 				order.set("app_cny",total_app_cny);
 			}
-			if (total_app_jpy != null && !"".equals(total_app_jpy)) {
+			if (StringUtils.isNotBlank(total_app_jpy)) {
 				order.set("app_jpy",total_app_jpy);
 			}
    			

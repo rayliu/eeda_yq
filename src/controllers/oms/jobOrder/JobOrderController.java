@@ -749,16 +749,16 @@ public class JobOrderController extends Controller {
    	    	String pol = recMap.get("pol");
    	    	String pod = recMap.get("pod");
    	    	String fnd = recMap.get("fnd");
-   	    	if(por!=null&&!"".equals(por)){
+   	    	if(StringUtils.isNotBlank(por)){
    	       	 savePortQueryHistory(por);
    	        }
-   	        if(pol!=null&&!"".equals(pol)){
+   	        if(StringUtils.isNotBlank(pol)){
    	       	 savePortQueryHistory(pol);
    	        }
-   	        if(pod!=null&&!"".equals(pod)){
+   	        if(StringUtils.isNotBlank(pod)){
    	       	 savePortQueryHistory(pod);
    	        }
-   	        if(fnd!=null&&!"".equals(fnd)){
+   	        if(StringUtils.isNotBlank(fnd)){
    	       	 savePortQueryHistory(fnd);
    	        }
    		}
@@ -934,18 +934,18 @@ public class JobOrderController extends Controller {
     	String pod =  dto.getStr("POD")==null?"":dto.getStr("POD");
 
     	
-    	String container_types = "''";
+    	StringBuffer container_types_sb = new StringBuffer("''");
     	for (int i = 0; i < jArray.size(); i++) {
     		Record map=new Record();  
     		map = jArray.get(i);
     		String container_type = (String)map.get("container_type");
     		if(i==0){
-    			container_types = "'"+container_type+"'";
+    			container_types_sb.append("'"+container_type+"'");
     		}else{
-    			container_types += ",'"+container_type+"'";
+    			container_types_sb.append(",'"+container_type+"'");
     		}
 		}
-
+    	String container_types = container_types_sb.toString();
     	String sql = "select cci.*,cc.contract_begin_time,cc.contract_end_time from customer_contract_location ccl"
     			+ " LEFT JOIN customer_contract cc on cc.id = ccl.contract_id"
     			+ " LEFT JOIN customer_contract_item cci on cci.customer_loc_id = ccl.id"

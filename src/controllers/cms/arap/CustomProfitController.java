@@ -104,10 +104,10 @@ public class CustomProfitController extends Controller {
 			end_time="";
 		}
 		
-		String date_custom =  " and (date_custom between '"+begin_time+"' and '"+end_time+"')";
+		String date_custom = "";
 
-		if(begin_time==""||end_time==""){
-			date_custom="";
+		if(StringUtils.isNotBlank(begin_time)||StringUtils.isNotBlank(end_time)){
+			date_custom = " and (date_custom between '"+begin_time+"' and '"+end_time+"')";
 		}
 		String condition = receive_sent_consignee+date_custom;
 		

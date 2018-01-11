@@ -133,10 +133,10 @@ public class TransChargeBalanceReportController extends Controller {
 			charge_time_end_time="";
 		}
 		
-		String charge_time =  " and (charge_time between '"+charge_time_begin_time+"' and '"+charge_time_end_time+"')";
+		String charge_time = "";
 
-		if(charge_time_begin_time==""||charge_time_end_time==""){
-			charge_time="";
+		if(StringUtils.isNotBlank(charge_time_begin_time)||StringUtils.isNotBlank(charge_time_end_time)){
+			charge_time = " and (charge_time between '"+charge_time_begin_time+"' and '"+charge_time_end_time+"')";
 		}
 		String condition = sp_id+charge_time;
 		

@@ -26,6 +26,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
@@ -330,7 +332,7 @@ public class ReceiveMail {
         
         if(osname.toLowerCase().indexOf("win")!=-1){
             sepatror = "//";
-            if(storedir==null||"".equals(storedir)){
+            if(StringUtils.isBlank(storedir)){
                 storedir = "d://temp";
             }
         }else{

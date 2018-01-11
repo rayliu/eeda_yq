@@ -181,7 +181,7 @@ public class outputScaleController extends Controller {
         if(StringUtils.isBlank(sign)){
         	sign="";
         }
-		if(sign=="导出"||sign.equals("导出")){
+		if("导出".equals(sign)){
 			String car_no = getPara("car_no");
 			String car_id = getPara("car_id");
 			String driver = getPara("driver");
