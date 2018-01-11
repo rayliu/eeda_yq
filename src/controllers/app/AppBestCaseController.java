@@ -96,7 +96,7 @@ public class AppBestCaseController extends Controller {
     
     
     public void get_more_case() throws UnsupportedEncodingException{
-    	String shop_id = getPara("case_id");
+    	String shop_id = getPara("shop_id");
     	shop_id = URLDecoder.decode(shop_id, "UTF-8");
     	
     	String type = getPara("type");
@@ -115,7 +115,7 @@ public class AppBestCaseController extends Controller {
     			+ " and ((now() BETWEEN dio.begin_date and dio.end_date) and dio.status = '已开通')"
     			+ " left join wc_ad_cu cu on cu.creator = ul.id"
     			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
-    			+ " left join wc_ad_hui hui on hcaseui.creator = ul.id"
+    			+ " left join wc_ad_hui hui on hui.creator = ul.id"
     			+ " where ul.id = ?",shop_id);
     	
     	
