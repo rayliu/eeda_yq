@@ -15,7 +15,7 @@
         <%include("/eeda/component/form/detailTable.html", 
           {
               id:'eeda_table', 
-              headers:['订单号', '促销标题','起始日期','结束日期','总价', '上线状态','']
+              headers:['订单号', '促销标题','崔傲图片','起始日期','结束日期','总价', '上线状态','']
           }){} %>
           
         <form id="orderForm">
@@ -23,6 +23,15 @@
         <div id="edit" class="subcontent" style="display:none;float:left; width:660px; clear:both;" >
 	        <div class="mt10">促销标题：<br>
 	          <input name="text" type="text" class="input_text" id="title" style="width:500px;" value="" required>
+	        </div>
+	        <div class="mt10">促销图片：<br>
+		        <div class="file">
+	                 <input type="file" id="title_up" name="title_up"  class="ehdel_upload" />选择图片
+	             </div>
+	             <span class="red">*图片要求: 200*150, 小于500Kb</span>
+	             <div class="form-control" style="margin-left:100px">
+		              <img src="/images/fengmianpic.png"  class="shadow" style="width:200px;height:150px" id="cover"/>
+	             </div>
 	        </div>
 	        <div class="mt10">促销内容：<br> <textarea id="content" class="input_text" rows="5" required style="width:500px;" ></textarea> <br> 
 	        <span class="red">100字以内</span></div>

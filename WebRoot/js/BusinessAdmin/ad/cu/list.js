@@ -1,6 +1,31 @@
-define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
+define(['jquery', 'dataTablesBootstrap', 'file_upload', 'validate_cn', 'sco'], function ($, metisMenu) {
 	$(document).ready(function() {
 
+		$("#title_up").on('click',function(){
+			  $(this).fileupload({
+					validation: {allowedExtensions: ['*']},
+					autoUpload: true, 
+				    url: '/BusinessAdmin/video/saveFile',
+				    dataType: 'json',
+			        done: function (e, data) {
+		        		if(data){
+				    		$('#cover').val(data.result.NAME);
+				    	
+				    		var imgPre =Id("cover");
+				  		    imgPre.src = '/upload/'+data.result.NAME;
+				    	}else{
+				    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
+				    	}
+				     },error: function () {
+			            alert('上传的时候出现了错误！');
+			        }
+			   });
+		  });
+		  //定义id选择器
+		  function Id(id){
+			  return document.getElementById(id);
+		  }
+		
 		var dataTable = eeda.dt({
           id: 'eeda_table',
           paging: false,
@@ -9,6 +34,11 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
           columns: [
             { "data": "ORDER_NO" ,"width": "80px"},
             { "data": "TITLE", "width": "100px"},
+            { "data": "COVER", "width": "100px",
+                render: function(data,type,full,meta){
+                	return "<img class='shadow' src='/upload/"+data+"' style='width:100px;height:75px' />";
+            	}
+            },
             { "data": "BEGIN_DATE","width": "100px" },
             { "data": "END_DATE", "width": "100px" },
             { "data": "PRICE", "width": "100px"},
@@ -23,7 +53,7 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
             },
             { "data": null, "width": "100px",
               render: function(data,type,full,meta){
-                return "<button class='stdbtn btn_blue editBtn' id='"+full.ID+"' content='"+full.CONTENT+"' href='#title'>编辑</button>";
+                return "<button class='stdbtn btn_blue editBtn'  title='"+full.TITLE+"' cover='"+full.COVER+"' id='"+full.ID+"' content='"+full.CONTENT+"' href='#title'>编辑</button>";
               }
             }
           ]
@@ -51,10 +81,14 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
 		 
 		$('#eeda_table').on('click','.editBtn',function(){
 			var $row = $(this).parent().parent();
-			var title = $($row.find('.title')).text();
 			var content = $(this).attr('content')=='null'?"暂无":$(this).attr('content');
 			var id = $(this).attr('id');
+			var cover = $(this).attr('cover');
+			var title = $(this).attr('title');
 			
+			
+			$("#cover").val(cover);
+			$('#cover').prop('src',"/upload/"+cover)
 			$('#item_id').val(id);
 			$('#title').val(title);
 			$('#content').val(content);
@@ -72,9 +106,10 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
 	    	  
 		    	var id = $('#item_id').val();
 		    	var title = $('#title').val();
+		    	var cover = $('#cover').val();
 				var content = $('#content').val();
 		    	
-		    	$.post('/BusinessAdmin/ad/cu/update',{id:id,title:title,content:content}, function(data, textStatus, xhr) {
+		    	$.post('/BusinessAdmin/ad/cu/update',{id:id,title:title,content:content,cover:cover}, function(data, textStatus, xhr) {
 		    		if(data){
 		    			refleshTable()
 		    			$.scojs_message('更新成功', $.scojs_message.TYPE_OK);

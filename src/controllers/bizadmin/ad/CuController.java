@@ -80,10 +80,12 @@ public class CuController extends Controller {
 	public void update(){
 		String id = getPara("id");
 		String title = getPara("title");
+		String cover = getPara("cover");
 		String content = getPara("content");
 		
 		Record order = Db.findById("wc_ad_cu", id);
 		order.set("title", title);
+		order.set("cover", cover);
 		order.set("content", content);
 		Db.update("wc_ad_cu", order);
 		
