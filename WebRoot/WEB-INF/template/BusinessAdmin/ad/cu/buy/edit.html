@@ -25,6 +25,19 @@
 		                	<tr>
 		                        <td>标题</td>
 		                        <td ><input id="title" type="text" name="title" required /></td>
+		                        <td rowspan="9"><textarea rows="25" cols="15" id="remark" placecholder="还有什么要说的?"></textarea></td>
+		                    </tr>
+		                    <tr>
+		                        <td>图片</td>
+		                        <td >
+						         <div class="file">
+					                 <input type="file" id="title_up" name="title_up"  class="ehdel_upload" />选择图片
+					             </div>
+					             <span class="red">*图片要求: 200*150, 小于500Kb</span>
+					             <div class="form-control" style="margin-left:100px">
+						              <img src="/images/fengmianpic.png"  class="shadow" style="width:200px;height:150px" id="cover"/>
+					             </div>
+					             </td>
 		                    </tr>
 		                    <tr>
 		                        <td>内容</td>
@@ -37,7 +50,6 @@
 		                            		<input type="date" class="input_text" id="begin_date" name="begin_date" />
 		                            	</span>
 		                        	</td>
-		                      		<td rowspan="7"><textarea rows="20" cols="15" id="remark" placecholder="还有什么要说的?"></textarea></td>
 		                    </tr>
 		                    <tr>
 		                        <td>广告结束时间</td>

@@ -99,6 +99,7 @@ public class CuController extends Controller {
         String end_date=(String) dto.get("end_date");
         String total_day=(String) dto.get("total_day");
         String remark=(String) dto.get("remark");
+        String cover=(String) dto.get("cover");
         String title=(String) dto.get("title");
         String content=(String) dto.get("content");
         String price=(String) dto.get("price");
@@ -110,6 +111,7 @@ public class CuController extends Controller {
 		order.set("order_no", format.format(new Date()));
     	order.set("begin_date", begin_date);
     	order.set("end_date", end_date);
+    	order.set("cover", cover);
     	order.set("title", title);
     	order.set("content", content);
     	order.set("total_day", total_day);

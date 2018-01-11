@@ -1,8 +1,37 @@
 define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) {
 	$(document).ready(function(){
 
+		 $("#title_up").on('click',function(){
+			  $(this).fileupload({
+					validation: {allowedExtensions: ['*']},
+					autoUpload: true, 
+				    url: '/BusinessAdmin/video/saveFile',
+				    dataType: 'json',
+			        done: function (e, data) {
+		        		if(data){
+				    		$('#cover').val(data.result.NAME);
+				    	
+				    		var imgPre =Id("cover");
+				  		    imgPre.src = '/upload/'+data.result.NAME;
+				    	}else{
+				    		$.scojs_message('上传失败', $.scojs_message.TYPE_ERROR);
+				    	}
+				     },error: function () {
+			            alert('上传的时候出现了错误！');
+			        }
+			   });
+		  })
+		  //定义id选择器
+		  function Id(id){
+			  return document.getElementById(id);
+		  }
+		
+		
 		$("#order_form").validate({
 			rules:{
+				cover:{
+					required:true,
+				},
 				begin_date:{
 					required:true,
 					afterToday:true
@@ -13,6 +42,9 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 				}
 			},
 			messages:{
+				cover:{
+					required:"促销图片不能为空"
+				},
 				begin_date : {
 					required:"请选择广告的开始时间！"
 				},
@@ -47,19 +79,20 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			//获取日期
 			var begin_date = $("#begin_date").val();
 			var end_date = $("#end_date").val();
-			var v = DateDiff(begin_date,end_date);
-			if(v){
-				$("#total_day").text(v);
-				var per_price = $("#per_price").text();
-				var sum=v*per_price;
-				$("#price").text(sum);
-			}else{
-				$("#saveBtn").attr("disabled",true);
+			if(begin_date != '' && end_date !=''){
+				var v = DateDiff(begin_date,end_date);
+				if(v){
+					$("#total_day").text(v);
+					var per_price = $("#per_price").text();
+					var sum=v*per_price;
+					$("#price").text(sum);
+				}else{
+					$("#saveBtn").attr("disabled",true);
+				}
 			}
 		});
 		
 		$("#saveBtn").click(function(){
-			var self = this;
 			var ad = {};
 			if(!$("#order_form").valid()){
 				return;
@@ -69,8 +102,10 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			ad.begin_date = $("#begin_date").val();
 			ad.end_date = $("#end_date").val();
 			ad.total_day = $("#total_day").text();
+			ad.cover = $("#cover").val();
 			ad.price = $("#price").text();
 			ad.remark=$("#remark").val();
+			var self = this;
 			$.post('/BusinessAdmin/ad/cu/save',{advertisement:JSON.stringify(ad)},function(data) {
 				if(data){
 		    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
@@ -79,8 +114,9 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		    		}else{
 		    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 		    		}
-		    		
 				});
+			}).fail(function(){
+				alert("操作失败");
 			});
 		
 		
