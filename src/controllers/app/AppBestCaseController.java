@@ -122,7 +122,7 @@ public class AppBestCaseController extends Controller {
     	//案例信息
     	List<Record> caseList =  null;
     	if("".equals(type)){
-    		caseList = Db.find(" select wc.*  from wc_case wc"
+    		caseList = Db.find(" select wc.*,wc.picture_name cover from wc_case wc"
         			+ " where wc.creator = ?  order by id desc",shop_id);
     	}else{
     		caseList = Db.find(" select wc.*  from video_case wc"
