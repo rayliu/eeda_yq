@@ -10,6 +10,11 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data":"ORDER_NO","width": "60px" },
 	                     { "data": "C_NAME", "width":"80px"},
 	                     { "data":"TITLE","width": "120px" },
+	                     { "data": "COVER", "width": "100px",
+	                         render: function(data,type,full,meta){
+	                         	return "<img class='shadow' src='/upload/"+data+"' style='width:100px;height:75px' />";
+	                     	}
+	                     },
 	                     { "data":"CONTENT","width": "150px" },
 	                     { "data": "TOTAL_DAYS", "width":"50px"}, 
 	                     { "data": "LEAVE_DAYS", "width":"50px"}, 
