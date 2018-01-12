@@ -42,14 +42,25 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         $("#location").change(function(){
         	var self = $(this);
         	var location = self.select().val();
-        	dataTable.ajax.url("/WebAdmin/biz/list?location="+location).load();
+        	var user_type = $("#user_type :selected").val()
+        	dataTable.ajax.url("/WebAdmin/biz/list?user_type="+user_type+"&location"+location).load();
         });
         
         //按商家类型过滤
         $("#user_type").change(function(){
         	var self = $(this);
         	var user_type = self.select().val();
-        	dataTable.ajax.url("/WebAdmin/biz/list?user_type="+user_type).load();
+        	var location = $("#location :selected").val()
+        	dataTable.ajax.url("/WebAdmin/biz/list?user_type="+user_type+"&location"+location).load();
+        });
+        
+      //按分类过滤
+        $(".searchBtn").click(function(){
+        	var self = this;
+        	var category = self.value;
+        	var user_type = $("#user_type :selected").val()
+        	var location = $("#location :selected").val()
+        	dataTable.ajax.url("/WebAdmin/biz/list?user_type="+user_type+"&location"+location+"&category="+category).load();
         });
         
         

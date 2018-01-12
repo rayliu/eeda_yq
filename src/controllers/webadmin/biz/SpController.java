@@ -12,6 +12,7 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -40,6 +41,9 @@ public class SpController extends Controller {
         				+ "left join location loc on lm.code = loc.code";
         List<Record> locations = Db.find(sql_loc);
         setAttr("locations",locations);
+        
+        List<Record> categoryList = Db.find("select * from category ");
+    	setAttr("categoryList",categoryList);
 		render(getRequest().getRequestURI()+"/list.html");
 	}
 	
@@ -214,13 +218,17 @@ public class SpController extends Controller {
         String pageIndex = getPara("draw");
         String location = getPara("location");
         String user_type = getPara("user_type");
+        String category = getPara("category");
         String condition = "";
-        if(location != "" && location != null){
-        	condition += " and city = "+location+"";
+        if(StringUtils.isNotBlank(location)){
+        	condition += " and wc.city = '"+location+"'";
         }
-        if(user_type != "" && user_type != null){
+        if(StringUtils.isNotBlank(category)){
+        	condition += " and ca.name = '"+category+"'";
+        }
+        if(StringUtils.isNotBlank(user_type)){
         	if(user_type.equals("1")){
-        		condition += " and A.leave_days  is null";
+        		condition += " and A.leave_days is null";
         	}else if(user_type.equals("2") ){
         		condition += " and A.leave_days is not null ";
         	}
@@ -236,12 +244,13 @@ public class SpController extends Controller {
     			+ " left join location loc on loc.code = ifnull(wc.city,wc.province)  and loc.code <>''"
     			+ " left join (select creator,datediff(max(end_date),now()) leave_days "
     			+ " from wc_ad_diamond wad  group by creator) A  on A.creator = ul.id "
-    			+ " where ul.status = '通过' ";
-        String sqlTotal = "select count(1) total from ("+sql+condition+ ") B";
+    			+ " where ul.status = '通过' "
+    			+ condition;
+        String sqlTotal = "select count(1) total from ("+sql+ ") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition +" order by create_time desc " +sLimit);
+        List<Record> orderList = Db.find(sql +" order by create_time desc " +sLimit);
         Map map = new HashMap();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

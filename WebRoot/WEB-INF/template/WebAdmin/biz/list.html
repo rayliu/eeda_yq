@@ -21,24 +21,12 @@
                     <option value = "2">钻石商家</option>
                 </select>
             </p>
-            <br />
-<!--             <input type="button" class="delete-btn" value="全部" onclick="GoTradeType(0);" />
-                        <input type="button" class="delete-btn" value="影楼" onclick="GoTradeType(1);">
-                        <input type="button" class="delete-btn" value="婚礼策划" onclick="GoTradeType(2);">
-                        <input type="button" class="delete-btn" value="跟拍摄影" onclick="GoTradeType(3);">
-                        <input type="button" class="delete-btn" value="跟拍摄像" onclick="GoTradeType(4);">
-                        <input type="button" class="delete-btn" value="化妆" onclick="GoTradeType(5);">
-                        <input type="button" class="delete-btn" value="主持" onclick="GoTradeType(6);">
-                        <input type="button" class="delete-btn" value="花店" onclick="GoTradeType(7);">
-                        <input type="button" class="delete-btn" value="婚品" onclick="GoTradeType(8);">
-                        <input type="button" class="delete-btn" value="甜品" onclick="GoTradeType(9);">
-                        <input type="button" class="delete-btn" value="租车" onclick="GoTradeType(10);">
-                        <input type="button" class="delete-btn" value="礼服" onclick="GoTradeType(11);">
-                        <input type="button" class="delete-btn" value="蜜月旅游" onclick="GoTradeType(12);">
-                        <input type="button" class="delete-btn" value="烟酒" onclick="GoTradeType(13);">
-                        <input type="button" class="delete-btn" value="珠宝" onclick="GoTradeType(14);">
-                        <input type="button" class="delete-btn" value="酒店" onclick="GoTradeType(15);"> -->
-             <%include("/eeda/component/form/detailTable.html", 
+        <div style="margin:20px 0 0 0px">
+			<% for(name in categoryList![]){%>
+	      	<input class="stdbtn btn_default searchBtn" style="margin-right:5px" type="button" value="${name.name!''}" >
+	      	<%}%>
+      	</div>
+         <%include("/eeda/component/form/detailTable.html", 
           {
               id:'eeda_table', 
               headers:['序号', '商家', '用户名','负责人','联系电话','分类','店铺电话','地区','注册时间','钻石剩余时间']
