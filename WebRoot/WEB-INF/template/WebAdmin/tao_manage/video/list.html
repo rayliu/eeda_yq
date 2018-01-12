@@ -1,17 +1,7 @@
 <%layout("/WebAdmin/layout.html"){%>
     <div class="pageheader notab overhide">
       <h3>视频列表</h3>
-      <!-- <div class="mt10">
-        <select>
-          <option>全国</option>
-          <option>珠海</option>
-        </select>
-        <select>
-          <option>行业分类</option>
-          <option>影楼</option>
-          <option>婚礼跟拍</option>
-        </select>
-      </div>     --> 
+      <input type="hidden" value="${shop_id!''}" id="shop_id">
       <div >
      <%include("/eeda/component/form/detailTable.html", 
           {

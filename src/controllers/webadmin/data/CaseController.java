@@ -37,7 +37,9 @@ public class CaseController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		render(getRequest().getRequestURI()+"/list.html");
+		String shop_id = getPara();
+		setAttr("shop_id", shop_id);
+		render("/WebAdmin/tao_manage/case/list.html");
 	}
 	
 	@Before(EedaMenuInterceptor.class)
@@ -138,18 +140,22 @@ public class CaseController extends Controller {
 	}
     
     public void list(){
-    	UserLogin user = LoginUserController.getLoginUser(this);
-    	   Long user_id = LoginUserController.getLoginUserId(this);
-        long office_id=user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        
+        String condition = "";
+        String shop_id = getPara("shop_id");
+        if(StringUtils.isNotBlank(shop_id)){
+        	condition += " and wc.creator = '"+shop_id+"'";
+        }
+        
         String sql = " select wco.c_name productor,wc.* from wc_case wc "
-        				+ "left join wc_company wco on wc.creator=wco.creator ";
-    	
-    	String condition = DbUtils.buildConditions(getParaMap());
+        				+ " left join wc_company wco on wc.creator=wco.creator"
+        				+ " where 1 = 1 "
+        				+ condition;
 
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);

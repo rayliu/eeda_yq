@@ -5,7 +5,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
             id: 'eeda_table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/WebAdmin/tao_manage/video/list",
+            ajax: "/WebAdmin/tao_manage/video/list?shop_id="+$('#shop_id').val(),
             columns:[
                 {	"data":"PRODUCTOR",
                 	"width": "80px"

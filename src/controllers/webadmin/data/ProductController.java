@@ -37,7 +37,9 @@ public class ProductController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		render(getRequest().getRequestURI()+"/list.html");
+		String shop_id = getPara();
+		setAttr("shop_id", shop_id);
+		render("/WebAdmin/tao_manage/product/list.html");
 	}
 	
 	@Before(EedaMenuInterceptor.class)
@@ -100,21 +102,25 @@ public class ProductController extends Controller {
 	}
     
     public void list(){
-    	
-    	UserLogin user = LoginUserController.getLoginUser(this);
-    	Long user_id = LoginUserController.getLoginUserId(this);
-
-        long office_id=user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");
+        String condition = "";
+        
+        String shop_id = getPara("shop_id");
+        if(StringUtils.isNotBlank(shop_id)){
+        	condition += " and wp.creator = '"+shop_id+"'";
+        }
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
 
-        String sql = "select wc.c_name productor,wp.* from wc_product wp "
-        		+ "LEFT JOIN wc_company wc on wc.creator = wp.creator order by create_time desc ";
+        String sql = "select wc.c_name productor,wp.* "
+        		+ " from wc_product wp "
+        		+ " LEFT JOIN wc_company wc on wc.creator = wp.creator"
+        		+ " where 1 = 1"
+        		+ condition
+        		+ " order by create_time desc ";
     	
-    	String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);

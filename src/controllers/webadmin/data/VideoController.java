@@ -11,6 +11,7 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -34,7 +35,9 @@ public class VideoController extends Controller {
 
 	@Before(EedaMenuInterceptor.class)
 	public void index() {
-		render(getRequest().getRequestURI()+"/list.html");
+		String shop_id = getPara();
+		setAttr("shop_id", shop_id);
+		render("/WebAdmin/tao_manage/video/list.html");
 	}
 	
 	public boolean deletePicture(String pic_name){
@@ -96,22 +99,26 @@ public class VideoController extends Controller {
     }
     
     public void list(){
-    	
-    	UserLogin user = LoginUserController.getLoginUser(this);
-    	Long user_id = LoginUserController.getLoginUserId(this);
-        long office_id=user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        
+        String condition = "";
+        
+        String shop_id = getPara("shop_id");
+        if(StringUtils.isNotBlank(shop_id)){
+        	condition += " and vc.creator = '"+shop_id+"'";
+        }
   
     	String sql = " SELECT vc.*, wc.c_name productor,loc.name location"
     			+ " FROM video_case vc "
-    			+ "LEFT JOIN wc_company wc ON vc.creator = wc.creator  "
-    			+ "left join location loc on loc.code = ifnull(wc.city,wc.province)";
+    			+ " LEFT JOIN wc_company wc ON vc.creator = wc.creator  "
+    			+ " left join location loc on loc.code = ifnull(wc.city,wc.province)"
+    			+ " where 1 = 1"
+    			+ condition;
 
-    	String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+") B";
         System.out.println(sqlTotal);
