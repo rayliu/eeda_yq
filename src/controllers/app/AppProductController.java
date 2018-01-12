@@ -31,10 +31,20 @@ public class AppProductController extends Controller {
     	product_id = URLDecoder.decode(product_id, "UTF-8");
     	
     	//产品信息
-    	List<Record> product = Db.find("SELECT pro.*,com.c_name shop_name,cat.name category_name FROM wc_product pro"
+    	List<Record> product = Db.find("SELECT pro.*,com.c_name shop_name,"
+    			+ " cat.name category_name,"
+    			+ " if(cu.id >0 ,'Y','N') cu,"
+    			+ " if(cu.id >0 ,cu.content,'') cu_desc,"
+    			+ " if(hui.is_active = 'Y' ,'Y','N') hui,"
+    			+ " if(hui.is_active = 'Y' ,hui.discount,'') hui_discount"
+    			+ " FROM wc_product pro"
     			+ " left join wc_company com on com.creator = pro.creator"
     			+ " left join category cat on cat.id = com.trade_type"
-    			+ " WHERE pro.id = ?",product_id);
+    			+ " left join wc_ad_cu cu on cu.creator = pro.creator"
+    			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
+    			+ " left join wc_ad_hui hui on hui.creator = pro.creator"
+    			+ " WHERE pro.id = ?"
+    			+ " group by pro.id",product_id);
     	//明细表信息
     	List<Record> productItemList = Db.find("SELECT * FROM wc_product_pic WHERE order_id = ?",product_id);
     	
