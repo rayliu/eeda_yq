@@ -36,7 +36,7 @@ public class AppTaoController extends Controller {
     	//促销广告
     	List<Record> cuList = Db.find(" select "
     			+ " wcu.id id ,cgr.`name` trade_type,wcu.cover,"
-    			+ " com.c_name compnay_name,wcu.begin_date,wcu.end_date,wcu.title,wcu.content,"
+    			+ " com.c_name company_name,wcu.begin_date,wcu.end_date,wcu.title,wcu.content,"
     			+ " wcu.creator user_id"
     			+ " from wc_ad_cu wcu "
     			+ " LEFT JOIN wc_company com on com.creator = wcu.creator"
