@@ -47,9 +47,6 @@ public class DiamondController extends Controller {
 
     
     public void list(){
-    	Long user_id = LoginUserController.getLoginUserId(this);
-    	UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id=user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
@@ -57,8 +54,10 @@ public class DiamondController extends Controller {
         }
          
 
-        String sql="select wc.c_name,DATEDIFF(dim.end_date,dim.begin_date) days,dim.* from wc_ad_diamond dim "
-        		+ "LEFT JOIN wc_company wc on dim.creator = wc.creator ";
+        String sql="select wc.c_name,DATEDIFF(dim.end_date,dim.begin_date) days,dim.* "
+        		+ " from wc_ad_diamond dim "
+        		+ " LEFT JOIN wc_company wc on dim.creator = wc.creator "
+        		+ " where dim.trade_status = 'TRADE_SUCCESS'";
     	
     	String condition = DbUtils.buildConditions(getParaMap());
 
