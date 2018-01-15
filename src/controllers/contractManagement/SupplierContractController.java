@@ -121,7 +121,7 @@ public class SupplierContractController extends Controller {
 	     	renderError(403);// no permission
 	         return;
 	     }
-   		SupplierContract  supplierContract= new SupplierContract();
+   		SupplierContract supplierContract= new SupplierContract();
         setAttr("user", LoginUserController.getLoginUser(this));
         setAttr("charge_items", getItems(id,"ocean"));
         setAttr("ocean_locations", getItems(id,"ocean_loc"));
@@ -139,6 +139,7 @@ public class SupplierContractController extends Controller {
    		setAttr("order",order);
         render("/eeda/contractManagement/sp/edit.html");
     }
+    
     @Before(Tx.class)
     public void copyJobOrder(){
     	String id = getPara("id");
@@ -234,14 +235,15 @@ public class SupplierContractController extends Controller {
                         +" LEFT JOIN location l2 on l2.id = ccl.hub_id"
                         +" LEFT JOIN location l3 on l3.id = ccl.por_id"
                         +" left join party p on p.id = ccl.carrier_id"
-                        +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' ";	
+                        +" WHERE ccl.contract_id = ? and ccl.type='"+type+"' " ;
     	}else if("trade".equals(type)){
             sql = " SELECT cci.*,fi.name fee_name,CONCAT(u.name,u.name_eng) uom_name,c.name currency_name"
                     +" from supplier_contract_item cci"
                     +" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
                     +" LEFT JOIN unit u on u.id = cci.uom"
                     +" LEFT JOIN currency c on c.id= cci.currency_id"
-                    +" WHERE cci.contract_id = ?  and cci.contract_type='trade'";
+                    +" WHERE cci.contract_id = ?  and cci.contract_type='trade'"
+                    + " order by cci.container_type,cci.id";
         }else {  
     		sql = " SELECT cci.*,fi.name fee_name, "
     		        + "u.name uom_name,c.name currency_name"
@@ -250,7 +252,8 @@ public class SupplierContractController extends Controller {
 					+" LEFT JOIN fin_item fi on fi.id = cci.fee_id"
 					+" LEFT JOIN unit u on u.id = cci.uom"
 					+" LEFT JOIN currency c on c.id= cci.currency_id"
-					+" WHERE ccl.contract_id = ? and cci.contract_type='"+type+"' and ccl.is_select = 'Y' ";
+					+" WHERE ccl.contract_id = ? and cci.contract_type='"+type+"' and ccl.is_select = 'Y' "
+					+ " order by cci.container_type,cci.id";
     	}
     	
     	
