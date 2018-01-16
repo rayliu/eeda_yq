@@ -41,7 +41,7 @@ public class AppMyProjectController extends Controller {
     	
     	String type = getPara("type");
     	if(StringUtils.isNotBlank(type)){
-    		login_id = URLDecoder.decode(type, "UTF-8");
+    		type = URLDecoder.decode(type, "UTF-8");
     	}
     	
     	List<Record> orderList = null;
@@ -49,13 +49,15 @@ public class AppMyProjectController extends Controller {
     		orderList = Db.find("select * from wc_my_project where type='byTime'");
     		for(Record re :orderList){
         		Long order_id = re.getLong("id");
-        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date from wc_my_project_item item"
+        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date"
+        				+ " from wc_my_project_item item"
         				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
         				+ " where item.by_time_order_id = ? ",login_id, order_id);
         		
+        		//计算勾选总数
         		List<Record> checkItem = Db.find("select ref.id from wc_my_project_ref ref"
         				+ " left join wc_my_project_item item on item.id = ref.item_id"
-        				+ " where item.order_id = ? and ref.user_id = ?"
+        				+ " where item.by_time_order_id = ? and ref.user_id = ?"
         				+ " group by ref.id",order_id,login_id);
         		re.set("item_list", item);
         		re.set("check_item", checkItem);
@@ -69,6 +71,7 @@ public class AppMyProjectController extends Controller {
         				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
         				+ " where item.order_id = ?",login_id, order_id);
         		
+        		//计算勾选总数
         		List<Record> checkItem = Db.find("select ref.id from wc_my_project_ref ref"
         				+ " left join wc_my_project_item item on item.id = ref.item_id"
         				+ " where item.order_id = ? and ref.user_id = ?"
