@@ -214,9 +214,44 @@ public class BizAdminController extends Controller {
     	renderJson(re);
     }
     
-    
     public void forgetPwd(){
     	 render("/BusinessAdmin/login/forgetPwd.html");
     }
 
+    public void searchPhone(){
+    	String phone = ("phone");
+    	Record user = Db.findFirst("select*from user_login where phone='"+phone+"'");
+    	boolean result = false;
+    	if(user!=null){
+    		result = true;
+    	}
+    	Record re = new Record();
+    	re.set("result", result);
+    	//re.set("user_id", user.get("id"));
+    	renderJson(re);
+    }
+    
+    public void findPwd(){
+    	String pwd = getPara("pwd");
+    	String phone = getPara("phone");
+    	String v_code = getPara("v_code");
+    	String sha1Pwd = MD5Util.encode("SHA1", pwd);
+    	String code = "123";
+    	Record user = Db.findFirst("select*from user_login where phone='"+phone+"'");
+    	boolean result = false;
+    	String errmsg = "";
+    	if(StringUtils.isNotBlank(code)){
+    		if(code.equals(v_code)){
+        		user.set("password", sha1Pwd);
+            	result = Db.update("user_login",user);
+        	}else{
+        		errmsg = "验证码不正确";
+        	}
+    	}
+    	
+    	Record re = new Record();
+    	re.set("result", result);
+    	re.set("errmsg",errmsg);
+    	renderJson(re);
+    }
 }

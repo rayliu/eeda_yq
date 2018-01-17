@@ -32,38 +32,62 @@
 	background-color: #FF8000;
 }
 p {margin-left: 20px}
+form input{ 
+    padding: 8px 5px; border: 1px solid #ccc; width: 85%; -moz-border-radius: 2px; -webkit-border-radius: 2px; 
+    border-radius: 2px; background: #fcfcfc; vertical-align: middle; -moz-box-shadow: inset 0 1px 3px #ddd; 
+    -webkit-box-shadow: inset 0 1px 3px #ddd; box-shadow: inset 0 1px 3px #ddd; color: #666;
+}
+form div{
+	color: white;
+}
 </style>
 </head>
 <body class="loginpage reg_header">
 <div class="loginbox">
     <div class="loginboxinner" >
         <form id="login" >
-            <div class="username">
-                <div class="usernameinner">
-                    <input type="text" name="username" id="username" id="username"/>
+        		<div>
+                    手机号码<input type="text" name="phone" id="phone"/>
                 </div>
-            </div>
-            <div class="password">
-                <div class="passwordinner">
-                    <input type="password" name="password" id="password" id="password"/>
+                <div>
+                    新密码<input type="password" class="" name="password" id="password"/>
                 </div>
-            </div>
-            <input type="button" class="login_btn"  id="loginBtn" value="登录" />
+                <div>
+                    确认新密码<input type="password" name="confirm_password" id="confirm_password"/>
+                </div>
+                <br>
+                <div>
+                	手机验证码<input type="text" name="v_code" id="v_code" style="width:140px;"/>
+                    <input class="login_btn" type="button" id="obtainBtn" disabled="disabled" value="获取验证码" style="width:80px;height:30px;"/>
+                </div>
+                <br>
+            <input type="button" class="login_btn" id="findPwdbtn" value="找回密码" style="width:85%;height:40px;"/>
         </form>
     </div><!--loginboxinner-->
 </div><!--loginbox-->
 <script type="text/javascript">
-	$('#loginBtn').on('click',function(){
-		var username = encodeURI($('#username').val());
-		var password = encodeURI($('#password').val());
-		
-		$.post("/BusinessAdmin/dologin",{username:username,password:password},function(data){
+	$("#phone").blur(function(){
+		var phone = encodeURI($('#phone').val());
+		$.post("/BusinessAdmin/searchPhone",{phone:phone},function(data){
 			if(data.RESULT){
-				location.href='/BusinessAdmin';
-				$('#username').focus();
+				$("#sendBtn").attr("disabled",false);
+			}
+		});
+	});
+	$('#findPwdbtn').on('click',function(){
+		var password = encodeURI($('#password').val());
+		var confirm_pwd = encodeURI($('#confirm_password').val());
+		var phone = encodeURI($('#phone').val());
+		var v_code = encodeURI($('#v_code').val());
+		var pwd = "";
+		if(password==confirm_pwd){
+			pwd = confirm_pwd;
+		}
+		$.post("/BusinessAdmin/findPwd",{pwd:pwd,phone:phone,v_code:v_code},function(data){
+			if(data.RESULT){
+				$.scojs_message("成功", $.scojs_message.TYPE_OK);
 			}else{
-				$.scojs_message(data.ERRMSG, $.scojs_message.TYPE_OK);
-				$('#username').focus();
+				$.scojs_message(data.ERRMSG, $.scojs_message.ERROR);
 			}
 		});
 	});
