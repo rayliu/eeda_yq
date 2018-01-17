@@ -221,13 +221,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           
           var customer_id = $("#customer_id").val();  
           var sp_id = $("#sp_id").val();  
+          var charge_id = $("#charge_id").val();
           var order_no = $("#order_no").val();  
           var export_date_begin_time = $("#export_date_begin_time").val();  
           var export_date_end_time = $("#export_date_end_time").val();  
           var create_stamp_begin_time = $("#create_stamp_begin_time").val();  
           var create_stamp_end_time = $("#create_stamp_end_time").val();  
           
-          $.post('/manualReport/exportExcel',{customer_id:customer_id,sp_id:sp_id,order_no:order_no,
+          $.post('/manualReport/exportExcel',{customer_id:customer_id,sp_id:sp_id,charge_id:charge_id,order_no:order_no,
         	  export_date_begin_time:export_date_begin_time,
         	  export_date_end_time:export_date_end_time,
         	  create_stamp_begin_time:create_stamp_begin_time,

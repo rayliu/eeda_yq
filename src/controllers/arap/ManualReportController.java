@@ -294,6 +294,7 @@ public class ManualReportController extends Controller {
           	JobOrderController.addHistoryRecord(userId,customer_id,"CUSTOMER");
     	}
     	String sp_id = getPara("sp_id");
+    	String charge_id = getPara("charge_id");
     	String order_no = getPara("order_no");
     	String export_date_begin_time = getPara("export_date_begin_time");
     	String export_date_end_time = getPara("export_date_end_time");
@@ -306,6 +307,9 @@ public class ManualReportController extends Controller {
     	String conditions = "";
     	if(StringUtils.isNotBlank(customer_id)){
     		conditions += " and jor.customer_id = "+customer_id;
+    	}
+    	if(StringUtils.isNotBlank(charge_id)){
+    		conditions += " and joa.charge_id = "+charge_id;
     	}
     	if(StringUtils.isNotBlank(sp_id)){
     		conditions += " and joa.sp_id = "+sp_id;
@@ -445,30 +449,48 @@ public class ManualReportController extends Controller {
 			String value = headers[i].trim();
 			if(value.equals("工作单")){
 				fields[i] = "ORDER_NO";
-			}
-			if(value.equals("客户")){
+			}else if(value.equals("客户")){
 				fields[i] = "CUSTOMER_NAME";
-			}
-			if(value.equals("出货日期")){
+			}else if(value.equals("出货日期")){
 				fields[i] = "EXPORT_DAE";
-			}
-			if(value.equals("创建人")){
+			}else if(value.equals("创建人")){
 				fields[i] = "CREATOR_NAME";
-			}
-			if(value.equals("创建时间")){
+			}else if(value.equals("创建时间")){
 				fields[i] = "CREATE_STAMP";
-			}
-			if(value.equals("结算公司")){
+			}else if(value.equals("结算公司")){
 				fields[i] = "SP_NAME";
-			}
-			if(value.equals("费用名称")){
+			}else if(value.equals("费用名称")){
 				fields[i] = "FIN_NAME";
-			}
-			if(value.equals("对账金额")){
-				fields[i] = "CHECK_AMOUNT";
-			}
-			if(value.equals("结算金额")){
-				fields[i] = "TOTAL_AMOUNT";
+			}else if(value.equals("应收对账金额")){
+				fields[i] = "CHARGE_CHECK_AMOUNT";
+			}else if(value.equals("应付对账金额")){
+				fields[i] = "COST_CHECK_AMOUNT";
+			}else if(value.equals("应付结算金额")){
+				fields[i] = "COST_TOTAL_AMOUNT";
+			}else if(value.equals("应收结算金额")){
+				fields[i] = "CHARGE_TOTAL_AMOUNT";
+			}else if(value.equals("订舱代理")){
+				fields[i] = "BOOKING_AGENT_NAME";
+			}else if(value.equals("船公司")){
+				fields[i] = "CARRIER_NAME";
+			}else if(value.equals("头程公司")){
+				fields[i] = "HEAD_CARRIER_NAME";
+			}else if(value.equals("SO NO")){
+				fields[i] = "SO NO";
+			}else if(value.equals("HBL号")){
+				fields[i] = "HBL_NO";
+			}else if(value.equals("MBL号")){
+				fields[i] = "MBL_NO";
+			}else if(value.equals("船名")){
+				fields[i] = "VESSEL";
+			}else if(value.equals("航次")){
+				fields[i] = "VOYAGE";
+			}else if(value.equals("航线")){
+				fields[i] = "ROUTE";
+			}else if(value.equals("ETD")){
+				fields[i] = "ETD";
+			}else if(value.equals("ETA")){
+				fields[i] = "ETA";
 			}
 		}
 		
