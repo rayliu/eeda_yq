@@ -48,6 +48,13 @@
 	                 									     value:''
 	                 									  }){} %>
 	                               </div>
+	                               <div class="col-lg-4 inputDiv" style="display:none;">
+	                 				   <%include("/eeda/component/form/inputFinItem.html",
+	                 									 {   id:'charge_id', 
+	                 									 	 label:'费用名称',
+	                 									     value:''
+	                 									  }){} %>
+	                               </div>
 	                           </div>
 							<div class="form-group button-bar" >
 	                        	<button id="searchBtn" class="btn btn_grey" type="button">查询</button>
@@ -152,6 +159,7 @@
 								<label class="checkbox-inline"> <input type="checkbox">工作单 </label>
 								<label class="checkbox-inline"> <input type="checkbox">客户</label>
 								<label class="checkbox-inline"> <input type="checkbox">结算公司</label>
+								<label class="checkbox-inline"> <input type="checkbox">费用名称</label>
 								<label class="checkbox-inline"> <input type="checkbox">出货日期</label>
 								<label class="checkbox-inline"> <input type="checkbox">创建时间</label>
 							</div>

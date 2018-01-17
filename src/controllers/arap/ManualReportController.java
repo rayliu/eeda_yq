@@ -124,6 +124,7 @@ public class ManualReportController extends Controller {
           	JobOrderController.addHistoryRecord(userId,customer_id,"CUSTOMER");
     	}
     	String sp_id = getPara("sp_id");
+    	String charge_id = getPara("charge_id");
     	String order_no = getPara("order_no");
     	String export_date_begin_time = getPara("export_date_begin_time");
     	String export_date_end_time = getPara("export_date_end_time");
@@ -138,6 +139,9 @@ public class ManualReportController extends Controller {
     	}
     	if(StringUtils.isNotBlank(sp_id)){
     		conditions += " and joa.sp_id = "+sp_id;
+    	}
+    	if(StringUtils.isNotBlank(charge_id)){
+    		conditions += " and joa.charge_id = "+charge_id;
     	}
 		if(StringUtils.isNotBlank(order_no)){
 			conditions += " and jor.order_no = '"+order_no+"'";
