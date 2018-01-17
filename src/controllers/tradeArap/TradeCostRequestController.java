@@ -672,10 +672,17 @@ public class TradeCostRequestController extends Controller {
         String ids = getPara("ids");
   		String application_id=getPara("application_id");
   		String application_office_id = "";
+  		String receive_time = getPara("receive_time");
+    	String pay_remark = getPara("pay_remark");
+    	
+    	if(dto !=null && dto.get("receive_time") != null){
+  			receive_time=(String) dto.get("receive_time");
+  		}
+  		if(dto !=null && dto.get("pay_remark") != null){
+  		    pay_remark=(String) dto.get("pay_remark");
+  		}
   		
   		if(StringUtils.isNotEmpty(application_id)){
-  			String receive_time = (String) dto.get("receive_time");
-        	String pay_remark=(String) dto.get("pay_remark");
         	String receive_bank_id = "";
         	String payment_method = (String) dto.get("payment_method");
         	
@@ -778,7 +785,6 @@ public class TradeCostRequestController extends Controller {
   			String[] arr= ids.split(",");
 	        for(int i=0;i<arr.length;i++){
 	        	String id=arr[i];
-	        	String receive_time =getPara("receive_time");
 	        	String receive_bank_id = "";
         	
 	        	TradeArapCostApplicationOrder arapCostInvoiceApplication = TradeArapCostApplicationOrder.dao.findById(id);
@@ -794,6 +800,7 @@ public class TradeCostRequestController extends Controller {
 	      		}
 		          arapCostInvoiceApplication.set("status", "已付款");
 		          arapCostInvoiceApplication.set("receive_time", receive_time);
+		          arapCostInvoiceApplication.set("pay_remark", pay_remark);
 		          arapCostInvoiceApplication.set("confirm_by", LoginUserController.getLoginUserId(this));
 		          arapCostInvoiceApplication.set("confirm_stamp", new Date());
 		          arapCostInvoiceApplication.update();

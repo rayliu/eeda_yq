@@ -824,7 +824,9 @@ $(document).ready(function() {
 
           }
         }
-        $.post("/tradeChargeRequest/confirmOrder", {ids:application_ids.toString(),receive_time:$('#receive_time').val()}, function(data){
+        var receive_time = $('#receive_time').val();
+        var pay_remark = $('#pay_remark').val();
+        $.post("/tradeChargeRequest/confirmOrder", {ids:application_ids.toString(),receive_time:receive_time,pay_remark:pay_remark}, function(data){
                         if(data){
                             if(data.IDS.length>0){
                                 var arr=[];
@@ -861,7 +863,7 @@ $(document).ready(function() {
                             $("#checked_application_table .confirmBtn").attr("disabled", false);
                             $.scojs_message('收款失败', $.scojs_message.TYPE_FALSE);
                         }
-                    },'json');
+                    });
      });
 
         $('#allCheck2').click(function(){

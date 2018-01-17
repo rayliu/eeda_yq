@@ -218,23 +218,29 @@
     <div class="modal-dialog" style="width:500px;">
         <div class="modal-content">
             <div class="modal-body">
-				 
-                   <div class="row">
-                        <div class="col-lg-6">
-                         <%include("/eeda/component/form/dateInputField.html",
+				<div class="row">
+                	<div class="col-lg-6">
+                        <%include("/eeda/component/form/dateInputField.html",
 				                        {    id:'receive_time', 
 				                             label:'收款时间',
 				                             value:order.receive_time!''
 	                              }){} %>
-	                     </div>
-	                     <div class="col-lg-6">
-	                      	<button id="confirmBtn"  type="button" class="btn btn_green save" data-dismiss="modal">确定</button>
-            	 			<button type="button" class="btn  btn-default" data-dismiss="modal">返回</button>
-                       </div>
-                  </div>    
-				  <br>
+	                </div>
+	            </div>   
+                <div class="row">
+                	<div class="col-lg-8">
+                    	<label>备注</label>
+                        <textarea id='pay_remark' class="form-control" rows="1" name="pay_remark">${order.pay_remark!''}</textarea>
+                    </div>                    
+                </div>
+                <br>
+                <div class="row">
+	                <div class="col-lg-6">
+	                	<button id="confirmBtn"  type="button" class="btn btn_green save" data-dismiss="modal">确定</button>
+	           	 		<button type="button" class="btn  btn-default" data-dismiss="modal">返回</button>
+	                </div>
+            	</div>
 			</div>
-           
         </div>
     </div>
 </div>

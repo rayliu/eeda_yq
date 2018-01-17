@@ -718,11 +718,15 @@ public class TradeChargeRequestController extends Controller {
         String ids = getPara("ids");
   		String application_id=getPara("application_id");
   		String confirmVal=getPara("confirmVal");
-  		String pay_remark="";
+  		String pay_remark=getPara("pay_remark");
+  		String receive_time =getPara("receive_time");
   		String application_office_id ="";
   		
   		if(dto !=null && dto.get("pay_remark") != null){
   		    pay_remark=(String) dto.get("pay_remark");
+  		}
+  		if(dto !=null && dto.get("receive_time") != null){
+  			receive_time=(String) dto.get("receive_time");
   		}
   		
         if(StringUtils.isNotEmpty(application_id)){
@@ -740,7 +744,6 @@ public class TradeChargeRequestController extends Controller {
   			String[] arr= ids.split(",");
 	        for(int i=0;i<arr.length;i++){
 	        	String id=arr[i];
-	        	String receive_time =getPara("receive_time");
 	        	String receive_bank_id = "";
 	        	
 	        	TradeArapChargeApplicationOrder arapChargeInvoiceApplication = TradeArapChargeApplicationOrder.dao.findById(id);
@@ -761,7 +764,7 @@ public class TradeChargeRequestController extends Controller {
 	            arapChargeInvoiceApplication.set("receive_time", receive_time);
 	            arapChargeInvoiceApplication.set("confirm_by", user.get("id"));
 	            arapChargeInvoiceApplication.set("confirm_stamp", new Date());
-//	            arapChargeInvoiceApplication.set("pay_remark", pay_remark);
+	            arapChargeInvoiceApplication.set("pay_remark", pay_remark);
 	            arapChargeInvoiceApplication.update();
 	            //已收款的标记位
 	    		String paySql ="update trade_job_order_arap set pay_flag='Y' "

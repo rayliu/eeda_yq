@@ -842,7 +842,9 @@ $(document).ready(function() {
 
           }
         }
-        $.post("/tradeCostRequest/confirmOrder", {ids:application_ids.toString(),receive_time:$('#receive_time').val()}, function(data){
+        var receive_time = $('#receive_time').val();
+        var pay_remark = $("#pay_remark").val();
+        $.post("/tradeCostRequest/confirmOrder", {ids:application_ids.toString(),receive_time:receive_time,pay_remark:pay_remark}, function(data){
 			        	if(data){
                             if(data.IDS.length>0){
                                 var arr=[];
