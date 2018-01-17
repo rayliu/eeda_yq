@@ -1,0 +1,72 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet"> 
+<title>重置密码</title>
+<script type="text/javascript" src="/js/lib/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="/js/lib/sco/js/sco.message.js"></script>
+<link rel="stylesheet" href="/css/wedding/style.default.css" type="text/css" />
+<script type="text/javascript" src="/js/BusinessAdmin/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="/js/BusinessAdmin/plugins/jquery.cookie.js"></script>
+
+
+<style type="text/css">
+.login_btn {
+	border-style:none;
+	border-radius:3px;
+	background-color: #FF8000;
+	width:60px;
+	
+	height:30px;
+	cursor: pointer;
+	color:white;
+	font-weight:bold;
+}
+.login_btn:hover{
+	background-color: #6C6C6C;
+}
+.login_btn:visited{
+	background-color: #FF8000;
+}
+p {margin-left: 20px}
+</style>
+</head>
+<body class="loginpage reg_header">
+<div class="loginbox">
+    <div class="loginboxinner" >
+        <form id="login" >
+            <div class="username">
+                <div class="usernameinner">
+                    <input type="text" name="username" id="username" id="username"/>
+                </div>
+            </div>
+            <div class="password">
+                <div class="passwordinner">
+                    <input type="password" name="password" id="password" id="password"/>
+                </div>
+            </div>
+            <input type="button" class="login_btn"  id="loginBtn" value="登录" />
+        </form>
+    </div><!--loginboxinner-->
+</div><!--loginbox-->
+<script type="text/javascript">
+	$('#loginBtn').on('click',function(){
+		var username = encodeURI($('#username').val());
+		var password = encodeURI($('#password').val());
+		
+		$.post("/BusinessAdmin/dologin",{username:username,password:password},function(data){
+			if(data.RESULT){
+				location.href='/BusinessAdmin';
+				$('#username').focus();
+			}else{
+				$.scojs_message(data.ERRMSG, $.scojs_message.TYPE_OK);
+				$('#username').focus();
+			}
+		});
+	});
+</script>
+</body>
+</html>
