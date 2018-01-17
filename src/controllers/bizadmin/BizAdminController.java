@@ -213,5 +213,10 @@ public class BizAdminController extends Controller {
     	
     	renderJson(re);
     }
+    
+    
+    public void forgetPwd(){
+    	 render("/BusinessAdmin/login/forgetPwd.html");
+    }
 
 }

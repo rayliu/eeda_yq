@@ -82,7 +82,6 @@ public class SpController extends Controller {
         	setAttr("cu",re_cu);
         }
         
-        
         String sql_hui="select * from wc_ad_hui where creator = "+id;
         Record re_hui = Db.findFirst(sql_hui);
         setAttr("user",re_user);
@@ -244,7 +243,7 @@ public class SpController extends Controller {
     			+ " left join location loc on loc.code = ifnull(wc.city,wc.province)  and loc.code <>''"
     			+ " left join (select creator,datediff(max(end_date),now()) leave_days "
     			+ " from wc_ad_diamond wad  group by creator) A  on A.creator = ul.id "
-    			+ " where ul.status = '通过' "
+    			+ " where ul.status = '通过' and ul.system_type = '商家后台' "
     			+ condition;
         String sqlTotal = "select count(1) total from ("+sql+ ") B";
         Record rec = Db.findFirst(sqlTotal);
