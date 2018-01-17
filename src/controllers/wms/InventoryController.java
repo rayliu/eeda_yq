@@ -421,7 +421,7 @@ public class InventoryController extends Controller {
     		conditions += " and pro.item_no = '"+item_no+"'";
     	}
     	
-    	if("all".equals(downlowd_type)){
+    	if("all".equals(downlowd_type==null?"":downlowd_type.trim())){
     		sql = "select A.*,sum(A.quantity) total_quantity from ("
     			    + " select gi.part_no,"
     			    + " substring_index(pro.part_name, ';', 1) part_name,"
