@@ -153,7 +153,7 @@ define(['jquery', 'metisMenu', 'sb_admin','dataTables',  'dataTablesBootstrap', 
         	
 	        var item_no = $('#itemNoHidden').val();
 	        var download_type = $('[name=download_type]:checked').val();
-	        var url = "/inventory/downloadList?item_no="+item_no+"&download_type="+download_type;
+	        var url = "/inventory/downloadList?item_no="+item_no+"&downlowd_type="+download_type;
 	        $.post(url, function(data){
 	            if(data){
 	            	window.open(data);
