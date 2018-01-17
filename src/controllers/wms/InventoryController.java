@@ -414,33 +414,48 @@ public class InventoryController extends Controller {
         
         String excelName = "ALL";
         String item_no = getPara("item_no");
+        String downlowd_type = getPara("downlowd_type");
     	if(StringUtils.isNotBlank(item_no)){
     		
     		excelName = item_no;
     		conditions += " and pro.item_no = '"+item_no+"'";
     	}
     	
-    	
-		sql = "select A.*,sum(A.quantity) total_quantity from ("
-		    + " select gi.part_no,"
-		    + " substring_index(pro.part_name, ';', 1) part_name,"
-		    + " substring(pro.part_name,CHAR_LENGTH(substring_index(pro.part_name, ';', 1))+2,100) desc_value,"
-		    + " gi.quantity "
-			+ " from gate_in gi "
-			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
-			+ " where gi.office_id="+office_id
-			+ " and out_flag = 'N' and error_flag = 'N'"
-			+ conditions
-			+ " group by gi.id "
-			+ " union all"
-			+ " select pro.part_no,"
-			+ " substring_index(pro.part_name, ';', 1) part_name,"
-		    + " substring(pro.part_name,CHAR_LENGTH(substring_index(pro.part_name, ';', 1))+2,100) desc_value,"
-			+ " 0 quantity"
-			+ " from wmsproduct pro"
-			+ " where pro.office_id="+office_id
-			+ conditions 
-			+ " ) A group by A.part_no "; 
+    	if("all".equals(downlowd_type)){
+    		sql = "select A.*,sum(A.quantity) total_quantity from ("
+    			    + " select gi.part_no,"
+    			    + " substring_index(pro.part_name, ';', 1) part_name,"
+    			    + " substring(pro.part_name,CHAR_LENGTH(substring_index(pro.part_name, ';', 1))+2,100) desc_value,"
+    			    + " gi.quantity "
+    				+ " from gate_in gi "
+    				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+    				+ " where gi.office_id="+office_id
+    				+ " and out_flag = 'N' and error_flag = 'N'"
+    				+ conditions
+    				+ " group by gi.id "
+    				+ " union all"
+    				+ " select pro.part_no,"
+    				+ " substring_index(pro.part_name, ';', 1) part_name,"
+    			    + " substring(pro.part_name,CHAR_LENGTH(substring_index(pro.part_name, ';', 1))+2,100) desc_value,"
+    				+ " 0 quantity"
+    				+ " from wmsproduct pro"
+    				+ " where pro.office_id="+office_id
+    				+ conditions 
+    				+ " ) A group by A.part_no "; 
+    	}else{
+    		sql = "select A.*,sum(A.quantity) total_quantity from ("
+    			    + " select gi.part_no,"
+    			    + " substring_index(pro.part_name, ';', 1) part_name,"
+    			    + " substring(pro.part_name,CHAR_LENGTH(substring_index(pro.part_name, ';', 1))+2,100) desc_value,"
+    			    + " gi.quantity "
+    				+ " from gate_in gi "
+    				+ " left join wmsproduct pro on pro.part_no = gi.part_no"
+    				+ " where gi.office_id="+office_id
+    				+ " and out_flag = 'N' and error_flag = 'N'"
+    				+ conditions
+    				+ " group by gi.id "
+    				+ " ) A group by A.part_no "; 
+    	}
     	
         String exportSql = sql;
         String[] headers = new String[]{"part_no", "part_name","desc_value","total_quantity","A&P"};
@@ -469,22 +484,6 @@ public class InventoryController extends Controller {
             for (int i = 0; i < headers.length; i++) {
                 rowhead.createCell((short)i).setCellValue(headers[i]);
             }
-
-            // 设置字体
-//            HSSFFont font = workbook.createFont();
-//            //font.setFontHeightInPoints((short) 40); //字体高度
-//            font.setColor(HSSFFont.COLOR_NORMAL); //字体颜色
-//            font.setFontName("宋体"); //字体
-//            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD); //加粗
-//            font.setItalic(false); //是否使用斜体
-//            
-//            
-//          
-//	          // 设置单元格类型
-//	        HSSFCellStyle cellStyle = workbook.createCellStyle();
-//	        //cellStyle.setFont(font);
-//	        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER); //水平布局：居中
-//	        cellStyle.setWrapText(true);
             
             List<Record> recs = Db.find(sql);
             System.out.println("sql finish!");
