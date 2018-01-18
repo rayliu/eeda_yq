@@ -231,13 +231,20 @@ public class BizAdminController extends Controller {
     	renderJson(re);
     }
     
+    public void sendCode(){
+    	
+    	renderJson(true);
+    }
+    
     public void findPwd(){
-    	String pwd = getPara("pwd");
     	String phone = getPara("phone");
     	String v_code = getPara("v_code");
+    	String pwd = getPara("pwd");
     	String sha1Pwd = MD5Util.encode("SHA1", pwd);
+    	
     	String code = "123";
-    	Record user = Db.findFirst("select*from user_login where phone='"+phone+"'");
+    	
+    	Record user = Db.findFirst("select * from user_login where phone=?",phone);
     	boolean result = false;
     	String errmsg = "";
     	if(StringUtils.isNotBlank(code)){

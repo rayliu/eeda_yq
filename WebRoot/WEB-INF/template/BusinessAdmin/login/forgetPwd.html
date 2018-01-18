@@ -40,56 +40,87 @@ form p{
     <div class="loginboxinner" >
         <form id="login" >
         	<div>
- 				<p>手机号码</p><input type="text" name="phone" id="phone"/>
-            </div>
-            <div>
-				<p>新密码</p><input type="password" class="" name="password" id="password"/>
-            </div>
-            <div>
-				<p>确认新密码</p><input type="password" name="confirm_password" id="confirm_password"/>
+ 				<p>手机号码</p><input type="text" name="phone" id="phone" autocomplete="off"/>
             </div>
             <div>
             	<p>手机验证码</p>
             	<input type="text" name="v_code" id="v_code" style="width:140px;"/>
-                <input class="login_btn" type="button" id="obtainBtn" disabled="disabled" value="获取验证码" style="background-color: #6C6C6C;width:80px;height:30px;"/>
+                <input class="login_btn" type="button" id="sendCodeBtn" disabled="disabled" value="获取验证码" style="background-color: #6C6C6C;width:80px;height:30px;" autocomplete="off"/>
             </div>
+            <div>
+				<p>新密码</p><input type="password" class="" name="password" id="password" autocomplete="off"/>
+            </div>
+            <div>
+				<p>确认新密码</p><input type="password" name="confirm_password" id="confirm_password" autocomplete="off"/>
+            </div>
+            
             <br/>
-            <input type="button" class="login_btn" id="findPwdbtn" value="找回密码" style="width:88%;height:40px;"/>
+            <input type="button" class="login_btn" id="findPwdbtn" value="重置密码" style="width:88%;height:40px;"/>
         </form>
     </div>
 </div>
 
 <script type="text/javascript">
-	$("#phone").blur(function(){
+	$("#phone").on('input',function(){
+		var mobile = /^1(3|4|5|7|8)\d{9}$/; 
 		var phone = encodeURI($('#phone').val());
+		if(!mobile.test($('#phone').val())){
+			return false;
+		}
+		
 		$.post("/BusinessAdmin/searchPhone",{phone:phone},function(data){
 			if(data.RESULT){
 				$("#obtainBtn").attr("disabled",false);
 				$("#obtainBtn").css("background-color","#FF8000");
+			}else{
+				$("#obtainBtn").attr("disabled",true);
+				$("#obtainBtn").css("background-color","#6C6C6C");
 			}
 		});
 	});
 	
 	$('#findPwdbtn').on('click',function(){
-		var password = encodeURI($('#password').val());
-		var confirm_pwd = encodeURI($('#confirm_password').val());
-		var phone = encodeURI($('#phone').val());
-		var v_code = encodeURI($('#v_code').val());
-		var pwd = "";
-		if(password==confirm_pwd){
-			pwd = confirm_pwd;
+		var password = $('#password').val();
+		var confirm_pwd = $('#confirm_password').val();
+		var phone = $('#phone').val();
+		var v_code = $('#v_code').val()
+		if(password == '' || confirm_pwd == '' || phone == '' || v_code == ''){
+			$.scojs_message("请填写完整的信息再提交", $.scojs_message.ERROR);
+			return false;
 		}
-		$.post("/BusinessAdmin/findPwd",{pwd:pwd,phone:phone,v_code:v_code},function(data){
+		
+		password = encodeURI(password);
+		confirm_pwd = encodeURI(confirm_pwd);
+		phone = encodeURI(phone);
+		v_code = encodeURI(v_code);
+		
+		if(password != confirm_pwd){
+			$.scojs_message("两次密码不相同", $.scojs_message.ERROR);
+			return false;
+		}
+		
+		$.post("/BusinessAdmin/findPwd",{pwd:password,phone:phone,v_code:v_code},function(data){
 			if(data.RESULT){
-				$.scojs_message("成功", $.scojs_message.TYPE_OK);
+				$.scojs_message("重置密码成功,请前往登录", $.scojs_message.TYPE_OK);
+				setTimeout(function(){
+					location.href = '/BusinessAdmin/login';
+				},3000);
 			}else{
 				$.scojs_message(data.ERRMSG, $.scojs_message.ERROR);
 			}
 		});
+		
 	});
 	
-	$("#obtainBtn").click(function(){
-		alert("123");
+	$("#sendCodeBtn").click(function(){
+		var password = $('#password').val();
+		$.post("/BusinessAdmin/sendCode",{pwd:password},function(data){
+			if(data){
+				
+			}else{
+				
+			}
+		}
 	});
 	
 	//鼠标移进移出事件
