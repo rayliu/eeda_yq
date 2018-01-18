@@ -4,8 +4,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet"> 
-<title>重置密码</title>
+<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet" /> 
+<title>找回密码</title>
 <script type="text/javascript" src="/js/lib/jquery/jquery-1.10.2.js"></script>
 <script type="text/javascript" src="/js/lib/sco/js/sco.message.js"></script>
 <link rel="stylesheet" href="/css/wedding/style.default.css" type="text/css" />
@@ -19,25 +19,18 @@
 	border-radius:3px;
 	background-color: #FF8000;
 	width:60px;
-	
 	height:30px;
 	cursor: pointer;
 	color:white;
 	font-weight:bold;
 }
-.login_btn:hover{
-	background-color: #6C6C6C;
-}
-.login_btn:visited{
-	background-color: #FF8000;
-}
-p {margin-left: 20px}
+
 form input{ 
     padding: 8px 5px; border: 1px solid #ccc; width: 85%; -moz-border-radius: 2px; -webkit-border-radius: 2px; 
     border-radius: 2px; background: #fcfcfc; vertical-align: middle; -moz-box-shadow: inset 0 1px 3px #ddd; 
     -webkit-box-shadow: inset 0 1px 3px #ddd; box-shadow: inset 0 1px 3px #ddd; color: #666;
 }
-form div{
+form p{
 	color: white;
 }
 </style>
@@ -46,34 +39,37 @@ form div{
 <div class="loginbox">
     <div class="loginboxinner" >
         <form id="login" >
-        		<div>
-                    手机号码<input type="text" name="phone" id="phone"/>
-                </div>
-                <div>
-                    新密码<input type="password" class="" name="password" id="password"/>
-                </div>
-                <div>
-                    确认新密码<input type="password" name="confirm_password" id="confirm_password"/>
-                </div>
-                <br>
-                <div>
-                	手机验证码<input type="text" name="v_code" id="v_code" style="width:140px;"/>
-                    <input class="login_btn" type="button" id="obtainBtn" disabled="disabled" value="获取验证码" style="width:80px;height:30px;"/>
-                </div>
-                <br>
-            <input type="button" class="login_btn" id="findPwdbtn" value="找回密码" style="width:85%;height:40px;"/>
+        	<div>
+ 				<p>手机号码</p><input type="text" name="phone" id="phone"/>
+            </div>
+            <div>
+				<p>新密码</p><input type="password" class="" name="password" id="password"/>
+            </div>
+            <div>
+				<p>确认新密码</p><input type="password" name="confirm_password" id="confirm_password"/>
+            </div>
+            <div>
+            	<p>手机验证码</p>
+            	<input type="text" name="v_code" id="v_code" style="width:140px;"/>
+                <input class="login_btn" type="button" id="obtainBtn" disabled="disabled" value="获取验证码" style="background-color: #6C6C6C;width:80px;height:30px;"/>
+            </div>
+            <br/>
+            <input type="button" class="login_btn" id="findPwdbtn" value="找回密码" style="width:88%;height:40px;"/>
         </form>
-    </div><!--loginboxinner-->
-</div><!--loginbox-->
+    </div>
+</div>
+
 <script type="text/javascript">
 	$("#phone").blur(function(){
 		var phone = encodeURI($('#phone').val());
 		$.post("/BusinessAdmin/searchPhone",{phone:phone},function(data){
 			if(data.RESULT){
-				$("#sendBtn").attr("disabled",false);
+				$("#obtainBtn").attr("disabled",false);
+				$("#obtainBtn").css("background-color","#FF8000");
 			}
 		});
 	});
+	
 	$('#findPwdbtn').on('click',function(){
 		var password = encodeURI($('#password').val());
 		var confirm_pwd = encodeURI($('#confirm_password').val());
@@ -91,6 +87,19 @@ form div{
 			}
 		});
 	});
+	
+	$("#obtainBtn").click(function(){
+		alert("123");
+	});
+	
+	//鼠标移进移出事件
+	$(".login_btn").mouseover(function(){
+		$(this).css("background-color","#6C6C6C");
+	});
+	$(".login_btn").mouseout(function(){
+		$(this).css("background-color","#FF8000");
+	});
+	
 </script>
 </body>
 </html>

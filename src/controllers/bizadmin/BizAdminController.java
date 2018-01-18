@@ -219,7 +219,7 @@ public class BizAdminController extends Controller {
     }
 
     public void searchPhone(){
-    	String phone = ("phone");
+    	String phone = getPara("phone");
     	Record user = Db.findFirst("select*from user_login where phone='"+phone+"'");
     	boolean result = false;
     	if(user!=null){
