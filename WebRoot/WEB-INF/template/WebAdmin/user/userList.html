@@ -1,17 +1,11 @@
 <%layout("/WebAdmin/layout.html"){%>
     <div class="pageheader notab overhide">
-        <p><strong>用户列表</strong><select class="ml10"><option>全国</option><option>珠海</option></select></p>
+        <h3>用户列表</h3>
 		<%include("/eeda/component/form/detailTable.html", 
             {
                 id:'eeda_table', 
-                headers:['用 户','电 话','邀请码','婚 期','注册时间']
+                headers:['用 户','电 话','邀请码','婚 期','注册时间','操作']
         }){} %>
-        <!-- <%include("/eeda/component/form/detailTable.html", 
-            {
-                id:'eeda_table', 
-                headers:['序 号','用 户','邮 箱','邀请码','婚 期',
-                    '新 郎','城 市','电 话','生 日','新 娘','电 话','生 日','注册时间']
-            }){} %> -->
      </div>
 <%}%>
 <script>

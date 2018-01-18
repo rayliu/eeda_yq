@@ -35,9 +35,17 @@ public class UserController extends Controller {
 		render(getRequest().getRequestURI()+"/userList.html");
 	}
 	
+	public void edit() {
+		String id = getPara("id");
+		
+	    Record user = Db.findById("user_login", id);
+	    setAttr("user", user);
+		
+		
+		render("/WebAdmin/user/edit.html");
+	}
+	
     public void list(){
-    	UserLogin user = LoginUserController.getLoginUser(this);
-        long office_id=user.getLong("office_id");
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
@@ -45,7 +53,7 @@ public class UserController extends Controller {
         }
          
     	String sql = "select * from ("
-    			+ " SELECT user_name,phone,invitation_code,wedding_date,create_time "
+    			+ " SELECT id,user_name,phone,invitation_code,wedding_date,create_time "
     			+ " FROM user_login where system_type='mobile'"
         		+ " ) A where 1=1 ";
     	
@@ -63,6 +71,33 @@ public class UserController extends Controller {
         map.put("data", orderList);
         renderJson(map); 
     	
+    }
+    
+    public void myprojectList(){
+    	String sLimit = "";
+    	String pageIndex = getPara("draw");
+    	String user_id = getPara("user_id");
+    	if (getPara("start") != null && getPara("length") != null) {
+    		sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+    	}
+    	
+    	String sql = "select mp.project , item.item_name,item.complete_date"
+    			+ " from wc_my_project_ref ref "
+    			+ " LEFT JOIN wc_my_project_item item on item.id = ref.item_id"
+    			+ " LEFT JOIN wc_my_project mp on mp.id = item.order_id"
+    			+ " where ref.user_id = ? "
+    			+ " group by ref.id"
+    			+ " order by mp.index asc";
+    	
+    	Record rec = Db.findFirst("select count(0) total from (" + sql + ") A",user_id);
+    	
+    	List<Record> orderList = Db.find(sql + sLimit,user_id);
+    	Map<String,Object> map = new HashMap<String,Object>();
+    	map.put("draw", pageIndex);
+    	map.put("recordsTotal", rec.getLong("total"));
+    	map.put("recordsFiltered", rec.getLong("total"));
+    	map.put("data", orderList);
+    	renderJson(map); 
     }
     
 }

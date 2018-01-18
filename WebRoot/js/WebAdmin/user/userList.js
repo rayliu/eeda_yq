@@ -1,5 +1,5 @@
 define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) { 
-    $(document).ready(function() {
+$(document).ready(function() {
     	//datatable, 动态处理
         var dataTable = eeda.dt({
             id: 'eeda_table',
@@ -15,12 +15,23 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     },
 	                     { "data": "INVITATION_CODE", "width":"120px"},
 	                     { "data": "WEDDING_DATE", "width":"120px"},
-	                     { "data": "CREATE_TIME", "width":"120px"}
+	                     { "data": "CREATE_TIME", "width":"120px"},
+	                     { "data": null, "width":"120px",
+	                    	 "render":function(data,type,full,meta){
+	                    		 return "<button class='modifibtn edit' data-id='"+full.ID+"'>编辑</button>";
+	                    	 }
+	                     }
                      ]
         });
+        
+        
+        $('#eeda_table').on('click','.edit',function(){
+        	var id = $(this).data('id');
+        	location.href = '/WebAdmin/user/edit?id='+ id;
+        })
 
- 	 var refleshTable = function(){
-   	  dataTable.ajax.url("/WebAdmin/user/quotation/list").load();
+ 	arrefleshTable = function(){
+ 		 dataTable.ajax.url("/WebAdmin/user/quotation/list").load();
     }
     	
 });

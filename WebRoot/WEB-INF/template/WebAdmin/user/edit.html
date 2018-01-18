@@ -1,33 +1,43 @@
 <%layout("/WebAdmin/layout.html"){%>
     <div class="pageheader notab overhide">
+    <input type="hidden" value="${user.id!''}" id="user_id">
       <div class="bd-detail">
-      <p class="bd"><span>123454678用户</span><span> 状况：已婚/未婚</span> <input type="button" value="删除用户" class="red-deletbtn" /></p>
+      <p class="bd"><span>用户:${user.user_name!''}</span><span> 婚期：${user.wedding_date!''}</span> <input type="button" value="删除用户" class="red-deletbtn deleteBtn" /></p>
       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="userdetailtable bdtable mt10">
         <tr>
           <td rowspan="2">账号资料</td>
-          <td><span>账号：13431949160 </span>  <span>性别：女</span></td>
+          <td><span>账号：${user.phone!''} </span>
         </tr>
         <tr>
-          <td><span>邮箱： tlewxc@gmail.com</span> <span>邀请码：ZH3324 </span>     <span>注册时间：2015-01-21 </span></td>
+          <td><span>手机： ${user.phone!''}</span> <span>邀请码：${user.invitation_code!''} </span>     <span>注册时间：${user.create_time!''} </span></td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td rowspan="2">新人资料</td>
           <td><span>周某茜</span>  <span>珠海</span> <span>1343191420</span> <span>1992-1-1</span></td>
         </tr>
         <tr>
           <td><span>陈某村</span>  <span>珠海</span> <span>1349391930</span>  <span> 2015-1-1</span></td>
-        </tr>
+        </tr> -->
       </table>
-      <div class="mt10">
-        <h4>新増婚筹项目</h4>
-        <p>XXXX项目</p>
-        <p>XXXX项目</p>
-      </div>
       <!--筹备表开始-->
-      <div class="mt10" style="float:left; width:49%;">
+      
+      
+      <div style="margin-top:20px">
+      	   <h3>用户婚筹项目记录</h3>
+      	   <%include("/eeda/component/form/detailTable.html", 
+            {
+                id:'eeda_table', 
+                headers:['项目名称','项目内容','完成时间']
+        	}){} %>
+      </div>
+      
+      
+      
+
+      <div class="mt10" style="float:left; width:49%;display:none">
         <h4>筹备项目记录</h4>
         <table class="userdetailtable" border="1" cellpadding="0" cellspacing="0" width="100%">
-  <tr>
+  	  <tr>
     <td height="19" width="72">序号</td>
     <td width="61">　</td>
     <td width="406">项目</td>
@@ -1178,7 +1188,7 @@
 </table>
       </div>
       <!--筹备表1结束-->
-      <div class="mt10" style="float:left; margin-left:10px; width:49%;">
+      <div class="mt10" style="float:left; margin-left:10px; width:49%;display:none">
         <h4>筹备时间记录</h4>
         <table class="userdetailtable" border="1" cellpadding="0" cellspacing="0" width="100%">
   <tr>
@@ -2326,65 +2336,6 @@
   </tr>
 </table>
       </div>
-      <!--筹备表3结束-->
-      <div style="clear:both;"></div>
-      <br />
-      <div class="newproject-wrap bdgray">
-        <h4>新增婚筹项目</h4>
-        <ul>
-          <li>新増婚筹项目列表</li>
-            <li>新増婚筹项目列表</li>
-            <li>新増婚筹项目列表</li>
-            <li>新増婚筹项目列表</li>
-            <li>新増婚筹项目列表</li>
-            <li>新増婚筹项目列表</li>
-        </ul>
-      </div>
-       <div style="clear:both;"></div>
-      <div class="mt10">
-        <h4>婚礼问问</h4>
-        <table class="userdetailtable" width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td>序号</td>
-            <td>时间</td>
-            <td>问题</td>
-            <td>回复数</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>2015-1-2</td>
-            <td>哪个婚庆公司好</td>
-            <td>3</td>
-            <td><input type="button" value="查看" class="modifibtn" onclick="window.location.href='wedding-ask-detail.html'" />
-              <input type="button" class="delete-btn"  value="删除" /></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>2015-1-2</td>
-            <td>哪个婚庆公司好</td>
-            <td>3</td>
-            <td><input type="button" value="查看" class="modifibtn" />
-              <input type="button" class="delete-btn"  value="删除" /></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>2015-1-2</td>
-            <td>哪个婚庆公司好</td>
-            <td>3</td>
-            <td><input type="button" value="查看" class="modifibtn" />
-              <input type="button" class="delete-btn"  value="删除" /></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>2015-1-2</td>
-            <td>哪个婚庆公司好</td>
-            <td>3</td>
-            <td><input type="button" value="查看" class="modifibtn" />
-              <input type="button" class="delete-btn"  value="删除" /></td>
-          </tr>
-        </table>
-      </div>
       </div>
       
       
@@ -2394,6 +2345,6 @@
 <%}%>
 <script>
     requirejs(['/js/eeda/eeda-common.js'], function (common) {
-    	 requirejs(['app/msgBoard/list']);
+    	 requirejs(['/js/WebAdmin/user/edit.js']);
     });
 </script>
