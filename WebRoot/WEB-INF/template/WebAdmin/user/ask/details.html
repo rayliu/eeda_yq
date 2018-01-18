@@ -1,10 +1,12 @@
 <%layout("/WebAdmin/layout.html"){%>
 <div class="content">
 	<div class="pageheader notab overhide">
+		<input id="order_id" value="${question.id!''}" type="hidden">
     	<div class="newproject-wrap bdgray">
 	        <h3 class="tipsred2">问：${question.title!''}</h3>
 	        <h4 class="chzn-disabled mt10">${question.create_time!''}</h4>
 	        <input type="text" value="${question.id!''}" id="order_id" style="display:none;">
+	        <input type = "button" class="btn" id="answerBtn" value="我要回答">
 	        <hr>
 	        <ul class="mt10">
 	        <% for(list in responseList![]){%>
@@ -17,6 +19,19 @@
 		   	<% }%>
         	</ul>
       	</div>
+      	
+      	
+      	<div id="layer">
+      	</div>
+      	<div class="pop" id="box" >
+      		<div style="margin-top:10px">
+      		  <textarea rows="8" cols="50" id="answerValue"></textarea>
+    	      <div style="margin:10px 0 0 0">
+		      <button class="btn modifibtn" id="saveBtn" >保存</button>
+    	      </div>
+      		</div>
+    	</div>
+
 	</div>
  </div>
 <%}%>

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -49,7 +50,7 @@ public class AskController extends Controller {
 	    String response = "SELECT wr.id,SUBSTR(wr.create_time,1,19) create_time,wr.value,ul.user_name,ul.wedding_date"
 	    		+ " FROM wc_response wr "
 	    		+ " left join user_login ul on ul.id = wr.creator"
-    			+ " where wr.question_id =?";
+    			+ " where wr.question_id =? order by wr.create_time desc";
 	    List<Record> responseList = Db.find(response, id);
 	    setAttr("question", questionRe);
 	    setAttr("responseList", responseList);
@@ -85,6 +86,24 @@ public class AskController extends Controller {
         map.put("data", orderList);
         renderJson(map); 
     	
+    }
+    
+    public void save(){
+    	boolean result = false;
+    	UserLogin user = LoginUserController.getLoginUser(this);
+    	String order_id = getPara("order_id");
+    	String value = getPara("value");
+    	
+    	if(StringUtils.isNotBlank(order_id)){
+    		Record order = new Record();
+    		order.set("value", value);
+    		order.set("create_time", new Date());
+    		order.set("creator", user.getLong("id"));
+    		order.set("question_id", order_id);
+    		Db.save("wc_response", order);
+    		result = true;
+    	}
+    	renderJson(result);
     }
     
     public void deleteQuestion(){
