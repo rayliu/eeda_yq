@@ -3,12 +3,17 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	  $('.search_single input,.search_single select').on('input',function(){
   		  $("#orderForm")[0].reset();
   	  });
+	  var currency_total_amount = 0.00;
+	  var exchange_total_amount = 0.00;
       var dataTable = eeda.dt({
           id: 'eeda_table',
           colReorder: true,
           paging: true,
           serverSide: true, //不打开会出现排序不对 
           ajax: "/tradeArapReport/list",
+          drawCallback: function( settings ) {
+        	  total();
+  	      },
           columns: [
       			{ "data": "ORDER_NO", "width": "60px",
 			    	  "render": function ( data, type, full, meta ) {
@@ -41,6 +46,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "EXCHANGE_RATE", "width": "60px"},
 	            { "data": "CURRENCY_TOTAL_AMOUNT", "width": "50px",
 	            	"render":function(data,type,full,meta){
+	            		currency_total_amount += data*1;
             			return parseFloat(data).toFixed(2);
             		}	
 	            },
@@ -48,6 +54,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            { "data": "EXCHANGE_CURRENCY_RATE", "width": "60px"},
 	            { "data": "EXCHANGE_TOTAL_AMOUNT", "width": "60px",
 	            	"render":function(data,type,full,meta){
+	            		exchange_total_amount += data*1;
             			return parseFloat(data).toFixed(2);
             		}	
 	            },
@@ -224,5 +231,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 
           dataTable.ajax.url(url).load();
       };
+      var total = function(){
+    	  var currency_total = parseFloat(currency_total_amount).toFixed(2);
+    	  var exchange_total = parseFloat(exchange_total_amount).toFixed(2);
+    	  currency_total_amount = 0.00;
+    	  exchange_total_amount = 0.00;
+    	  $("#currency_total_amount").text(currency_total);
+    	  $("#exchange_total_amount").text(exchange_total);
+      }
   });
 });

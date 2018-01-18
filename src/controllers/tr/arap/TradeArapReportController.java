@@ -133,7 +133,7 @@ public class TradeArapReportController extends Controller {
         logger.debug("total records:" + rec.getLong("total"));
         
         List<Record> orderList = Db.find(sql+ condition + " order by order_export_date desc " +sLimit);
-        Map map = new HashMap();
+        Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
         map.put("recordsFiltered", rec.getLong("total"));
