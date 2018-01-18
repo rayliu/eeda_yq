@@ -22,6 +22,24 @@ $(document).ready(function() {
  	arrefleshTable = function(){
  		 dataTable.ajax.url("/WebAdmin/user/quotation/list").load();
     }
+        
+        
+        $('.deleteBtn').click(function(){
+        	var self = this;
+        	var user_id = $('#user_id').val();
+        	
+        	self.disabled = true;
+        	$.post('/WebAdmin/user/deleteUser',{user_id : user_id},function(data){
+        		if(data){
+        			$.scojs_message('已停用', $.scojs_message.OK);
+        			setTimeout(function(){
+        				location.href = "/WebAdmin/user";
+        			},2000);
+        		}else{
+        			$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+        		}
+        	});
+        });
     	
 });
 });

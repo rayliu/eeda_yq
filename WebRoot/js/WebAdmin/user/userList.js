@@ -16,6 +16,7 @@ $(document).ready(function() {
 	                     { "data": "INVITATION_CODE", "width":"120px"},
 	                     { "data": "WEDDING_DATE", "width":"120px"},
 	                     { "data": "CREATE_TIME", "width":"120px"},
+	                     { "data": "STATUS", "width":"120px"},
 	                     { "data": null, "width":"120px",
 	                    	 "render":function(data,type,full,meta){
 	                    		 return "<button class='modifibtn edit' data-id='"+full.ID+"'>编辑</button>";

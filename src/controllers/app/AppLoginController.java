@@ -56,6 +56,7 @@ public class AppLoginController extends Controller {
         	user_login.set("system_type", "mobile");
         	user_login.set("password", sha1Pwd);
         	user_login.set("password_hint", pwd);
+        	user_login.set("status", "通过");
         	user_login.set("create_time", new Date());
         	Db.save("user_login", user_login);
         	
@@ -88,7 +89,7 @@ public class AppLoginController extends Controller {
     	String password = URLDecoder.decode(getPara("password"), "UTF-8");
     	String mobile = URLDecoder.decode(getPara("mobile"), "UTF-8");
 
-    	Record user = Db.findFirst("select * from user_login where phone = ? and password = ?",mobile, password);
+    	Record user = Db.findFirst("select * from user_login where phone = ? and password = ? and status != '停用'",mobile, password);
     	if(user != null){
     		result = true;
     		login_id = user.getLong("id").toString();

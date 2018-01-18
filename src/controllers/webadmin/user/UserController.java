@@ -10,6 +10,7 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -53,7 +54,7 @@ public class UserController extends Controller {
         }
          
     	String sql = "select * from ("
-    			+ " SELECT id,user_name,phone,invitation_code,wedding_date,create_time "
+    			+ " SELECT id,user_name,phone,invitation_code,wedding_date,create_time,status "
     			+ " FROM user_login where system_type='mobile'"
         		+ " ) A where 1=1 ";
     	
@@ -98,6 +99,22 @@ public class UserController extends Controller {
     	map.put("recordsFiltered", rec.getLong("total"));
     	map.put("data", orderList);
     	renderJson(map); 
+    }
+    
+    public void deleteUser(){
+    	String user_id = getPara("user_id");
+    	boolean result = false;
+    	
+    	if(StringUtils.isNotBlank(user_id)){
+    		Record user = Db.findById("user_login", user_id);
+    		if(user != null){
+    			user.set("status", "停用");
+        		Db.update("user_login",user);
+        		result = true;
+    		}
+    	}
+    	
+    	renderJson(result);
     }
     
 }
