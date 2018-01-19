@@ -47,8 +47,9 @@
         	</div>
     </div>
 	　　	<div id="layer"></div>
-    	<div class="pop" id="pop_loc">
-    			<label>请选择你要添加的地区</label>
+    	<div class="pop" id="pop_loc" style="margin-left:10%;margin-top:-10%;">
+    		<div  style="margin-top:5%;">
+    			<label>请选择你要添加的地区</label><br/><br/>
                 <%include("/eeda/component/form/inputLocationField.html", 
                 {
                     id:'address', 
@@ -56,12 +57,15 @@
                     value: address!'',
                     display_value: address!''
                 }){} %>
+                <br/>
 		      <button class="modifibtn" id="sure_add_loc">确定添加</button>
-		            
+		     </div>       
     	</div>
-    	<div class='pop' id='pop_category'>
-    	<label>分類的名字</label><input type="text" id='category_name'/>
-    	<button class="modifibtn"  id = "sure_add_category">确定添加</button>
+    	<div class='pop' id='pop_category' style="margin-left:10%;margin-top:-10%;">
+	    	<div style="margin-top:20%;">
+	    		<label>分類的名字</label><input type="text" id='category_name'/>
+    			<button class="modifibtn"  id = "sure_add_category">确定添加</button>
+	    	</div>
     	</div>
 <%}%>
 <script>

@@ -1,0 +1,55 @@
+<%layout("/WebAdmin/layout.html"){%>
+<style type="text/css">
+.Popup{
+       background-color:#fff; 
+       left:30%; 
+       padding:1px; 
+       position:fixed; 
+       top:50%; 
+       z-index:5; 
+       border-radius:6px; 
+       display:none; 
+ }
+</style>
+<div class="pageheader notab overhide">
+      <div class="newproject-wrap bdgray">
+        <h4>项目明细
+          <select name="select" class="ml10">
+            <option>全国</option>
+            <option>珠海</option>
+          </select>
+          <button type='button' class='modifibtn' id="addItemBtn">新增明细</button>
+        </h4>
+        <input type="hidden" id="order_id" value="${order_id!''}">
+        <input type="hidden" id="type" value="${type!''}">
+        <%include("/eeda/component/form/detailTable.html", 
+            {
+                id:'eeda_table', 
+                headers:['序 号','名称','类型','创建时间','操作']
+            }){} %>
+      </div>
+    </div>
+	<div id="layer"></div>
+   	<div class="Popup" id="pop_loc" style="margin-left:10%;margin-top:-10%;width:300px;height:160px;">
+   		<div style="margin:5% 0 0 10%;">
+   			<h4 style="margin-left:25%;">新增项目明细</h4><br/>
+               <p><span>明细名称：</span><input type="text" id="item_name" value=""></p><br/>
+	      	<button class="modifibtn" id="confirmAddBtn" style="margin-left:35%;">确定添加</button>
+	    </div>       
+   	</div>
+   	
+   	<div class="Popup" id="pop_update" style="margin-left:10%;margin-top:-10%;width:300px;height:160px;">
+   		<div style="margin:5% 0 0 10%;">
+   			<input type="hidden" id="id" value="">
+   			<h4 style="margin-left:25%;">修改项目明细</h4><br/>
+               <p><span>明细名称：</span><input type="text" id="update_item_name" value=""></p><br/>
+	      	<button class="modifibtn" id="confirmUpdateBtn" style="margin-left:35%;">确定修改</button>
+	    </div>       
+   	</div>
+
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['/js/WebAdmin/user/project/itemList.js']);
+    });
+</script>
