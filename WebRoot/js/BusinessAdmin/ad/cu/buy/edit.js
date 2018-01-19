@@ -1,6 +1,17 @@
 define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) {
 	$(document).ready(function(){
 
+		var DateDiff = function  DateDiff(sDate1,sDate2){   //sDate1和sDate2是2006-12-18格式  
+			var  aDate,  bDate,oDate1,  oDate2,  iDays  ;
+			aDate  =  sDate1.split("-")  
+			oDate1  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])    //转换为12-18-2006格式  
+			bDate  =  sDate2.split("-")  
+			oDate2  =  new  Date(bDate[1]  +  '-'  +  bDate[2]  +  '-'  +  bDate[0])
+			iDays  =  parseInt(Math.abs(oDate1  -  oDate2)  /  1000  /  60  /  60  /24)    //把相差的毫秒数转换为天数  
+			return  iDays  
+		}     
+		
+		
 		 $("#title_up").on('click',function(){
 			  $(this).fileupload({
 					validation: {allowedExtensions: ['*']},
@@ -75,7 +86,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 		  }, "请选择今天之后的日期"); 
 		
 		
-		$("#end_date,#begin_date").on('blur',function(){
+		$("#end_date,#begin_date").on('change',function(){
 			//获取日期
 			var begin_date = $("#begin_date").val();
 			var end_date = $("#end_date").val();
@@ -120,14 +131,6 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			});
 		
 		
-		var DateDiff = function  DateDiff(sDate1,sDate2){   //sDate1和sDate2是2006-12-18格式  
-			var  aDate,  bDate,oDate1,  oDate2,  iDays  ;
-			aDate  =  sDate1.split("-")  
-			oDate1  =  new  Date(aDate[1]  +  '-'  +  aDate[2]  +  '-'  +  aDate[0])    //转换为12-18-2006格式  
-			bDate  =  sDate2.split("-")  
-			oDate2  =  new  Date(bDate[1]  +  '-'  +  bDate[2]  +  '-'  +  bDate[0])
-			iDays  =  parseInt(Math.abs(oDate1  -  oDate2)  /  1000  /  60  /  60  /24)    //把相差的毫秒数转换为天数  
-			return  iDays  
-		}      
+		 
 	});	
 })
