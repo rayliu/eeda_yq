@@ -43,6 +43,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.profile.LoginUserController;
+import controllers.util.AliSmsUtil;
 import controllers.util.EedaCommonHandler;
 import controllers.util.MD5Util;
 import controllers.util.ParentOffice;
@@ -232,6 +233,12 @@ public class BizAdminController extends Controller {
     }
     
     public void sendCode(){
+    	String phone = getPara("phone");
+    	
+    	int code= (int)((Math.random()*9+1)*1000);//4位数随机码
+        getSession().setAttribute("register_code", String.valueOf(code));
+    	//AliSmsUtil.sendSms(String.valueOf(code), phone);
+    	
     	
     	renderJson(true);
     }
@@ -242,7 +249,7 @@ public class BizAdminController extends Controller {
     	String pwd = getPara("pwd");
     	String sha1Pwd = MD5Util.encode("SHA1", pwd);
     	
-    	String code = "123";
+    	String code = (String) getSession().getAttribute("register_code");
     	
     	Record user = Db.findFirst("select * from user_login where phone=?",phone);
     	boolean result = false;

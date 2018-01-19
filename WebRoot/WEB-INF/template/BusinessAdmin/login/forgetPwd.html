@@ -115,12 +115,13 @@ form p{
 	});
 	
 	$("#sendCodeBtn").click(function(){
-		var password = $('#password').val();
-		$.post("/BusinessAdmin/sendCode",{pwd:password},function(data){
+		
+		var phone = $('#phone').val();
+		$.post("/BusinessAdmin/sendCode",{phone:phone},function(data){
 			if(data){
-				
+				$.scojs_message("发送成功", $.scojs_message.TYPE_OK);
 			}else{
-				
+				$.scojs_message("发送失败，请重试", $.scojs_message.TYPE_OK);
 			}
 		});
 	});
