@@ -54,9 +54,15 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	    }
         
         $("#confirmBtn").click(function(){
+        	var self = this;
         	var project = $("#project").val();
         	var type = $("#type").val();
         	
+        	if(project.trim() == ''){
+        		$.scojs_message('内容不能为空', $.scojs_message.TYPE_ERROR);
+        		return ;
+        	}
+        	self.disabled = true;
         	$.post("/WebAdmin/user/project/addProject",{project:project,type:type},function(data){
         		if(data.result){
         			$.scojs_message('添加成功', $.scojs_message.TYPE_OK);
@@ -64,6 +70,7 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         			refleshTable();
         		}else{
         			$.scojs_message('添加失败', $.scojs_message.TYPE_ERROR);
+        			self.disabled = false;
         		}
         	});
         });

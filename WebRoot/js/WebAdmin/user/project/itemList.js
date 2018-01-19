@@ -1,3 +1,4 @@
+
 define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, metisMenu) { 
     $(document).ready(function() {
     	//datatable, 动态处理
@@ -70,10 +71,17 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         }
      
         $("#confirmAddBtn").click(function(){
+        	var self = this;
         	var order_id = $("#order_id").val();
         	var item_name = $("#item_name").val();
         	var type = $("#type").val();
         	
+        	if(item_name.trim() == ''){
+        		$.scojs_message('内容不能为空', $.scojs_message.TYPE_ERROR);
+        		return ;
+        	}
+        	
+        	self.disabled = true;
         	$.post("/WebAdmin/user/project/addProjectItem",{order_id:order_id,item_name:item_name,type:type},function(data){
         		if(data.result){
         			$.scojs_message('添加成功', $.scojs_message.TYPE_OK);
@@ -81,14 +89,22 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         			refleshTable();
         		}else{
         			$.scojs_message('添加失败', $.scojs_message.TYPE_ERROR);
+        			self.disabled = false;
         		}
         	});
         });
         
         $("#confirmUpdateBtn").click(function(){
+        	var self = this;
         	var id = $("#id").val();
         	var item_name = $("#update_item_name").val();
         	
+        	if(item_name.trim() == ''){
+        		$.scojs_message('内容不能为空', $.scojs_message.TYPE_ERROR);
+        		return ;
+        	}
+        	
+        	self.disabled = true;
         	$.post("/WebAdmin/user/project/updateProjectItem",{id:id,item_name:item_name},function(data){
         		if(data.resultNumber>0){
         			$.scojs_message('修改成功', $.scojs_message.TYPE_OK);
@@ -96,22 +112,30 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
         			refleshTable();
         		}else{
         			$.scojs_message('修改失败', $.scojs_message.TYPE_ERROR);
+        			self.disabled = false;
         		}
         	});
         });
         
         $("#eeda_table").on("click",".delete",function(){
+        	var self = this;
         	var id = $(this).parent().parent().attr("id");
         	var type = $("#type").val();
         	
+        	self.disabled = true;
         	$.post("/WebAdmin/user/project/deleteProjectItem",{id:id,type:type},function(data){
         		if(data.resultNumber>0){
         			$.scojs_message('刪除成功', $.scojs_message.TYPE_OK);
         			refleshTable();
         		}else{
         			$.scojs_message('刪除失败', $.scojs_message.TYPE_ERROR);
+        			self.disabled = false;
         		}
         	});
+        });
+        
+        $("#returnBtn").on("click",function(){
+        	location.href = "/WebAdmin/user/project";
         });
     });
 });
