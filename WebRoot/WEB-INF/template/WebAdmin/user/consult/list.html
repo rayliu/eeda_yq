@@ -1,0 +1,16 @@
+<%layout("/WebAdmin/layout.html"){%>
+	<div class="pageheader notab overhide">
+        <h4>用户咨询</h4>
+        <p>&nbsp; </p>
+		<%include("/eeda/component/form/detailTable.html", 
+            {
+                id:'eeda_table', 
+                headers:['用户','手机','婚期','咨询内容','提交时间']
+        }){} %>
+    </div>
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['/js/WebAdmin/user/consult/list.js']);
+    });
+</script>

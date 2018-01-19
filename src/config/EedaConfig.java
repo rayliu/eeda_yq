@@ -81,6 +81,8 @@ import controllers.webadmin.data.TaoManageController;
 import controllers.webadmin.data.VideoController;
 import controllers.webadmin.msg.DashBoardController;
 import controllers.webadmin.user.AskController;
+import controllers.webadmin.user.ConsultController;
+import controllers.webadmin.user.FeedBackController;
 import controllers.webadmin.user.ProjectController;
 import controllers.webadmin.user.QuotationController;
 import controllers.webadmin.user.UserController;
@@ -201,6 +203,9 @@ public class EedaConfig extends JFinalConfig {
         me.add("/WebAdmin/tao_manage/video", VideoController.class);
         me.add("/WebAdmin/tao_manage/case", CaseController.class);
         me.add("/WebAdmin/best_wedding", BestCaseController.class);
+        
+        me.add("/WebAdmin/user/consult", ConsultController.class);
+        me.add("/WebAdmin/user/feedback", FeedBackController.class);
         
         //地址
         me.add("/serviceProvider", LocationController.class);
