@@ -1,0 +1,16 @@
+<%layout("/WebAdmin/layout.html"){%>
+	<div class="pageheader notab overhide">
+        <h4>用户反馈</h4>
+        <p>&nbsp; </p>
+		<%include("/eeda/component/form/detailTable.html", 
+            {
+                id:'eeda_table', 
+                headers:['用户','反馈','提交时间']
+        }){} %>
+    </div>
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['/js/WebAdmin/user/feedback/list.js']);
+    });
+</script>
