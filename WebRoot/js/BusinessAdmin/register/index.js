@@ -41,7 +41,10 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 					equalTo:"前后秘密不一致"
 				}
 			}
-		})
+		});
+		
+		
+		
 		
 		
 		 jQuery.validator.addMethod("isMobile", function(value, element) { 
@@ -49,5 +52,22 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 			  var mobile = /^1(3|4|5|7|8)\d{9}$/; 
 			  return this.optional(element) || (length == 11 && mobile.test(value)); 
 		  }, "请正确填写您的手机号码"); 
+		 
+		 
+	     $('#nextBtn').on('click',function(){
+	    	 if(!$('#first_form').valid()){
+	    		 return false;
+	    	 }
+	    	 var self = this;
+	    	 var login_name = $('#login_name').val();
+	    	 var phone = $('#phone').val();
+	    	 var password = $('#password').val();
+	    	 
+	    	 self.disabled = true;
+	    	 location.href="/BusinessAdmin/register/info?login_name="+encodeURI(encodeURI(login_name))
+														    	 +'&phone='+encodeURI(encodeURI(phone))
+														    	 +'&password='+encodeURI(encodeURI(password));
+	    	 self.disabled = false;
+	     });
 	});
 });

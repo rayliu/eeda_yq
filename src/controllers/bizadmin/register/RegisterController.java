@@ -1,6 +1,7 @@
 package controllers.bizadmin.register;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,10 +36,10 @@ public class RegisterController extends Controller {
 	}
     
 	@Before(Tx.class)
-	public void info(){
-		String login_name = getPara("login_name");
-		String phone = getPara("phone");
-		String password = getPara("password");
+	public void info() throws UnsupportedEncodingException{
+		String login_name = URLDecoder.decode(getPara("login_name"), "UTF-8");
+		String phone = URLDecoder.decode(getPara("phone"), "UTF-8");
+		String password = URLDecoder.decode(getPara("password"), "UTF-8");
 		Record re = new Record();
 		re.set("user_name", login_name);
 		re.set("phone", phone);
@@ -86,25 +87,25 @@ public class RegisterController extends Controller {
 	public void done() throws UnsupportedEncodingException{
 		//user
 		String type = getPara("type");
-		String user_name =  java.net.URLDecoder.decode(getPara("user_name"), "UTF-8");
+		String user_name =  URLDecoder.decode(getPara("user_name"), "UTF-8");
 		String password = getPara("password");
 		String sha1Pwd = MD5Util.encode("SHA1", password);
 		String phone = getPara("phone");
 		//info
 		String telephone = getPara("telephone");
-		String contact =  java.net.URLDecoder.decode(getPara("contact"), "UTF-8");
-		String shop_address =  java.net.URLDecoder.decode(getPara("shop_address"), "UTF-8");
+		String contact =  URLDecoder.decode(getPara("contact"), "UTF-8");
+		String shop_address =  URLDecoder.decode(getPara("shop_address"), "UTF-8");
 		String shop_telephone = getPara("shop_telephone");
-		String about =  java.net.URLDecoder.decode(getPara("about"), "UTF-8");
+		String about =  URLDecoder.decode(getPara("about"), "UTF-8");
 		String shop_city = getPara("shop_city");
 		String shop_province = getPara("shop_province");
 		String shop_district = getPara("shop_district");
 		String trade_type = getPara("trade_type");
 		String qq = getPara("qq");
-		String logo =  java.net.URLDecoder.decode(getPara("logo"), "UTF-8");
-		String company_pic =  java.net.URLDecoder.decode(getPara("company_pic"), "UTF-8");
-		String c_name =  java.net.URLDecoder.decode(getPara("company_name"), "UTF-8");
-		String id_card =  java.net.URLDecoder.decode(getPara("id_card"), "UTF-8");
+		String logo =  URLDecoder.decode(getPara("logo"), "UTF-8");
+		String company_pic =  URLDecoder.decode(getPara("company_pic"), "UTF-8");
+		String c_name =  URLDecoder.decode(getPara("company_name"), "UTF-8");
+		String id_card =  URLDecoder.decode(getPara("id_card"), "UTF-8");
 		
 		//查询随机生成的邀请码是否在系统中存在
 		String invitation_code = getStringRandom(5);
@@ -134,6 +135,7 @@ public class RegisterController extends Controller {
 				item.set("id_card", id_card);
 				item.set("contact", contact);
 				item.set("c_name", contact);
+				item.set("company_name", contact);
 			}else{
 				item.set("company_pic", company_pic);
 				item.set("company_name", c_name);
