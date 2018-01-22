@@ -31,7 +31,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "CHARGE_USD", "width": "100px" ,"className":"charge_usd" ,
@@ -43,7 +43,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "CHARGE_JPY", "width": "100px","className":"charge_jpy",
@@ -55,7 +55,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "CHARGE_HKD", "width": "100px","className":"charge_hkd",
@@ -67,7 +67,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "CHARGE_RMB", "width": "120px","className":"charge_rmb",
@@ -79,7 +79,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "UNCHARGE_CNY", "width": "100px","className":"uncharge_cny",
@@ -91,7 +91,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "UNCHARGE_USD", "width": "100px"  ,"className":"uncharge_usd",
@@ -103,7 +103,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "UNCHARGE_JPY", "width": "100px","className":"uncharge_jpy",
@@ -115,7 +115,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "UNCHARGE_HKD", "width": "100px","className":"uncharge_hkd",
@@ -127,7 +127,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data,3);
 				  }
 	            },
 	            { "data": "UNCHARGE_RMB", "width": "120px","class":"uncharge_rmb",

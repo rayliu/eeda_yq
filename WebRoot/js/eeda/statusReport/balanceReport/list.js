@@ -22,26 +22,106 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             		  }
         		  }
         	  },
-              { "data": "SP_NAME1","visible":false},
-              { "data": "SP_NAME2","visible":false},
-              { "data": "SP_NAME3","visible":false},
-              { "data": "SP_NAME4","visible":false},
-              { "data": "SP_NAME5","visible":false},
-              { "data": "SP_NAME6","visible":false},
-              { "data": "SP_NAME7","visible":false},
-              { "data": "SP_NAME8","visible":false},
-              { "data": "SP_NAME9","visible":false},
-              { "data": "SP_NAME10","visible":false},
-              { "data": "SP_NAME11","visible":false},
-              { "data": "SP_NAME12","visible":false},
-              { "data": "SP_NAME13","visible":false},
-              { "data": "SP_NAME14","visible":false},
-              { "data": "SP_NAME15","visible":false},
-              { "data": "SP_NAME16","visible":false},
-              { "data": "SP_NAME17","visible":false},
-              { "data": "SP_NAME18","visible":false},
-              { "data": "SP_NAME19","visible":false},
-              { "data": "SP_NAME20","visible":false}
+              { "data": "SP_NAME1","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME2","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME3","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME4","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME5","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME6","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME7","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME8","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME9","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME10","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME11","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME12","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME13","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME14","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME15","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME16","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME17","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME18","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME19","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  },
+              { "data": "SP_NAME20","visible":false,
+            	  "render": function ( data, type, full, meta ) {
+            		  return eeda.numFormat(data,3);
+        		  }
+        	  }
           ]
       });
       

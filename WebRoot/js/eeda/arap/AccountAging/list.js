@@ -21,26 +21,38 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
       			{ "data": "ABBR_NAME", "width": "100px"},
 	            { "data": "CURRENCY_NAME" ,"width": "100px"},
-	            { "data": "TOTAL_AMOUNT","width": "100px"},
-	            { "data": "CURRENCY_TOTAL_AMOUNT","width": "100px"},
+	            { "data": "TOTAL_AMOUNT","width": "100px",
+	               "render":function(data,type,full,meta){
+	            	   return eeda.numFormat(data,3);
+	               }	
+	            },
+	            { "data": "CURRENCY_TOTAL_AMOUNT","width": "100px",
+		               "render":function(data,type,full,meta){
+		            	   return eeda.numFormat(data,3);
+		               }	
+		            },
 	            { "data": "THREE", "width": "100px"},
-	            { "data": "SIX", "width": "100px"},
+	            { "data": "SIX", "width": "100px",
+	               "render":function(data,type,full,meta){
+	            	   return eeda.numFormat(data,3);
+	               }	
+	            },
 	            { "data": "NINE", "width": "100px",
 	               "render":function(data,type,full,meta){
 	            	   var str = data;
 	            	   if(data>0){
-	            		   return '<span style="color:red">'+str+'</span>';
+	            		   return '<span style="color:red">'+eeda.numFormat(data,3)+'</span>';
 	            	   }
-	            	   return str;
+	            	   return eeda.numFormat(data,3);
 	               }	
 	            },
 	            { "data": "AFTER_NINE", "width": "100px",
 	            	"render":function(data,type,full,meta){
 		            	   var str = data;
 		            	   if(data>0){
-		            		   return '<span style="color:red">'+str+'</span>';
+		            		   return '<span style="color:red">'+eeda.numFormat(data,3)+'</span>';
 		            	   }
-		            	   return str;
+		            	   return eeda.numFormat(data,3);
 		             }
 	            }
 	          ]

@@ -142,10 +142,26 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
       			{ "data": "ETA", "width": "100px"},
       			{ "data": "SP_NAME", "width": "120px"},
       			{ "data": "FIN_NAME", "width": "80px"},
-      			{ "data": "COST_CHECK_AMOUNT", "width": "80px"},
-      			{ "data": "CHARGE_CHECK_AMOUNT", "width": "80px"},
-      			{ "data": "COST_TOTAL_AMOUNT", "width": "80px"},
-      			{ "data": "CHARGE_TOTAL_AMOUNT", "width": "80px"},
+      			{ "data": "COST_CHECK_AMOUNT", "width": "80px",
+	               "render":function(data,type,full,meta){
+	            	   return eeda.numFormat(data,3);
+	               }	
+	            },
+      			{ "data": "CHARGE_CHECK_AMOUNT", "width": "80px",
+	               "render":function(data,type,full,meta){
+	            	   return eeda.numFormat(data,3);
+	               }	
+	            },
+      			{ "data": "COST_TOTAL_AMOUNT", "width": "80px",
+	               "render":function(data,type,full,meta){
+	            	   return eeda.numFormat(data,3);
+	               }	
+	            },
+      			{ "data": "CHARGE_TOTAL_AMOUNT", "width": "80px",
+	               "render":function(data,type,full,meta){
+	            	   return eeda.numFormat(data,3);
+	               }	
+	            },
       			{ "data": "CREATOR_NAME", "width": "80px"},
       			{ "data": "CREATE_STAMP", "width": "80px"}
       			
