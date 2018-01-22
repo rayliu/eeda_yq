@@ -221,7 +221,7 @@ public class BizAdminController extends Controller {
 
     public void searchPhone(){
     	String phone = getPara("phone");
-    	Record user = Db.findFirst("select*from user_login where phone='"+phone+"'");
+    	Record user = Db.findFirst("select*from user_login where phone='"+phone+"' and system_type = '商家后台'");
     	boolean result = false;
     	if(user!=null){
     		result = true;
@@ -251,7 +251,7 @@ public class BizAdminController extends Controller {
     	
     	String code = (String) getSession().getAttribute("register_code");
     	
-    	Record user = Db.findFirst("select * from user_login where phone=?",phone);
+    	Record user = Db.findFirst("select * from user_login where phone=? and system_type = '商家后台'",phone);
     	boolean result = false;
     	String errmsg = "";
     	if(StringUtils.isNotBlank(code)){

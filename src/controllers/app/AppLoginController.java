@@ -21,6 +21,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.util.AliSmsUtil;
 import controllers.util.EedaHttpKit;
 import controllers.util.MD5Util;
 
@@ -104,6 +105,47 @@ public class AppLoginController extends Controller {
     	data.set("login_id", login_id);
     	data.set("wedding_date", wedding_date);
     	data.set("user_name", user_name);
+    	data.set("errMsg", errMsg);
+        renderJson(data);  
+    }
+    
+    
+    public void send_code(){
+    	String phone = getPara("mobile");
+    	
+    	int code= (int)((Math.random()*9+1)*1000);//4位数随机码
+        getSession().setAttribute("register_code", String.valueOf(code));
+    	AliSmsUtil.sendSms(String.valueOf(code), phone);
+
+    	Record data = new Record();
+    	data.set("result", true);
+    	renderJson(data);
+    }
+    
+    
+    @Before(Tx.class)
+    public void reset_pwd() throws UnsupportedEncodingException{
+    	boolean result = false;
+    	String errMsg = "";
+
+    	String mobile_code = getPara("mobile_code");
+    	String pwd = getPara("pwd");
+    	String encryptionPwd = MD5Util.encode("SHA1", pwd);
+    	String mobile = getPara("mobile");
+    	String code = (String) getSession().getAttribute("register_code");//session Code
+    	Record user = Db.findFirst("select * from user_login where phone=? and system_type = 'mobile' ",mobile);
+    	if(StringUtils.isNotBlank(code)){
+    		if(code.equals(mobile_code)){
+        		user.set("password", encryptionPwd);
+            	result = Db.update("user_login",user);
+            	result = true;
+        	}else{
+        		errMsg = "验证码不正确";
+        	}
+    	}
+    	
+    	Record data = new Record();
+    	data.set("result", result);
     	data.set("errMsg", errMsg);
         renderJson(data);  
     }
