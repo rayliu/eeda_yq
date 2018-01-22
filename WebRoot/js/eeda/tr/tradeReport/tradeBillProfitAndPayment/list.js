@@ -18,15 +18,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	                },
 	      			{ "data": "CUSTOMER_NAME", "width": "120px"},
 	      			{ "data": "ORDER_EXPORT_DATE", "width": "120px"},
-		            { "data": "CHARGE_RMB", "width": "120px"},
-		            { "data": "COST_RMB", "width": "120px"  },
+		            { "data": "CHARGE_RMB", "width": "120px",
+	      				"render": function(data, type, full, meta) {
+	      					return eeda.numFormat(data,3);
+	      				}
+		            },
+		            { "data": "COST_RMB", "width": "120px" ,
+	      				"render": function(data, type, full, meta) {
+	      					return eeda.numFormat(data,3);
+	      				}
+		             },
 		            {
 						"render": function(data, type, full, meta) {
 							var str = parseFloat(full.CHARGE_RMB - full.COST_RMB).toFixed(2);
 							if(str<0){
-								return '<span style="color:red" >'+str+'</span>';
+								return '<span style="color:red" >'+eeda.numFormat(str,3)+'</span>';
 							}
-							return str;
+							return eeda.numFormat(str,3);
 						}
 					},
 		            { "data": "CHARGE_TOTAL", "width": "120px",
@@ -35,7 +43,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 		            		if(full.COST_RMB!=0){
 		            			str = parseFloat(((full.CHARGE_RMB - full.COST_RMB)/full.CHARGE_RMB)*100).toFixed(2);
 		            		}
-							return str
+							return eeda.numFormat(str,3)
 						}
 		            }
 		          ]
@@ -182,8 +190,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	        		 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
 		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("应收(合计):"+eeda.numFormat(charge_total,3));
 		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(4).html("应付(合计):"+eeda.numFormat(cost_total,3));
-		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("利润(合计)："+total_profit);
-		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("平均利润率："+total_profit_rate);
+		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(5).html("利润(合计)："+eeda.numFormat(total_profit,3));
+		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(6).html("平均利润率："+eeda.numFormat(total_profit_rate,3));
 	        	 }else{
 	        		 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
 		        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(3).html("应收(合计):0.00");
