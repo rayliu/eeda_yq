@@ -54,19 +54,19 @@ window.calcCurrency =  function (){
 
         //人民币利润汇总字段
         var profitTotalCharge = $('[name=profitTotalCharge]').text();
-        if(profitTotalCharge ==''&&isNaN(profitTotalCharge)){
+        if(profitTotalCharge ==''||isNaN(profitTotalCharge)){
             profitTotalCharge=0;
             $('[name=profitTotalCharge]').text(profitTotalCharge);
         }
         var profitTotalCost = $('[name=profitTotalCost]').text();
-        if(profitTotalCost ==''&&isNaN(profitTotalCost)){  
+        if(profitTotalCost ==''||isNaN(profitTotalCost)){  
               profitTotalCost = 0;
               $('[name=profitTotalCost]').text(profitTotalCost);
           }
 
         var profitTotalRMB = parseFloat(profitTotalCharge)-parseFloat(profitTotalCost);
         if(profitTotalRMB>=0){
-        $('[name=profitTotalRMB]').text("CNY "+eeda.numFormat(parseFloat(profitTotalRMB).toFixed(2),3));
+        	$('[name=profitTotalRMB]').text("CNY "+eeda.numFormat(parseFloat(profitTotalRMB).toFixed(2),3));
         }else if(profitTotalRMB<0){
             $('[name=profitTotalRMB]').html("<span style='color:red'>CNY "+eeda.numFormat(parseFloat(profitTotalRMB).toFixed(2),3)+"</span>");
         } else{
@@ -838,7 +838,10 @@ $(document).ready(function() {
 	        }else if(tableCurCharge[i].value=='HKD'){
 	           totalChargeHKD += parseFloat(tableAmountCharge[i].value);
 	        }
-	        profitTotalCharge += parseFloat(currencyTotalAmount[i].value);
+	        if( currencyTotalAmount[i].value ){
+	        	profitTotalCharge += parseFloat(currencyTotalAmount[i].value);
+	        }
+	        	
 	    }
 	    //隐藏字段   应收人民币汇总字段
 	    $('.profitTotalCharge').text(profitTotalCharge).hide();
