@@ -58,7 +58,7 @@ public class AppBestCaseController extends Controller {
     	//店铺信息
     	Record re = Db.findById("wc_case", case_id);
     	//商家列表
-    	List<Record> shopList = Db.find(" select wc.logo,ul.influence, "
+    	List<Record> shopList = Db.find(" select ul.id shop_id,wc.logo,ul.influence, "
     			+ " ifnull(wc.c_name,wc.company_name) company_name,"
     			+ " if(dio.id >0 ,'Y','N') diamond,"
     			+ " if(cu.id >0 ,'Y','N') cu,"
@@ -94,7 +94,7 @@ public class AppBestCaseController extends Controller {
     	
     	//店铺信息
     	List<Record> caseData = Db.find(""
-    			+ " select wc.logo,ul.influence, "
+    			+ " select wc.creator shop_id,wc.logo,ul.influence, "
     			+ " ifnull(wc.c_name,wc.company_name) company_name,"
     			+ " if(dio.id >0 ,'Y','N') diamond,"
     			+ " if(cu.id >0 ,'Y','N') cu,"
