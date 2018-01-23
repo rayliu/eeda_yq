@@ -111,14 +111,23 @@ public class AppLoginController extends Controller {
     
     
     public void send_code(){
-    	String phone = getPara("mobile");
+    	boolean result = false;
+    	String errMsg = "";
     	
-    	int code= (int)((Math.random()*9+1)*1000);//4位数随机码
-        getSession().setAttribute("register_code", String.valueOf(code));
-    	AliSmsUtil.sendSms(String.valueOf(code), phone);
-
+    	String mobile = getPara("mobile");
+    	int code = 0;
+    	Record user = Db.findFirst("select * from user_login where phone=? and system_type = 'mobile' ",mobile);
+    	if(user != null){
+    		code= (int)((Math.random()*9+1)*1000);//4位数随机码
+        	AliSmsUtil.sendSms(String.valueOf(code), mobile);
+        	result = true;
+    	}else{
+    		errMsg = "此号码未注册";
+    	}
+    	
     	Record data = new Record();
-    	data.set("result", true);
+    	data.set("result", result);
+    	data.set("code", String.valueOf(code));
     	renderJson(data);
     }
     
@@ -128,20 +137,15 @@ public class AppLoginController extends Controller {
     	boolean result = false;
     	String errMsg = "";
 
-    	String mobile_code = getPara("mobile_code");
     	String pwd = getPara("pwd");
     	String encryptionPwd = MD5Util.encode("SHA1", pwd);
     	String mobile = getPara("mobile");
-    	String code = (String) getSession().getAttribute("register_code");//session Code
     	Record user = Db.findFirst("select * from user_login where phone=? and system_type = 'mobile' ",mobile);
-    	if(StringUtils.isNotBlank(code)){
-    		if(code.equals(mobile_code)){
-        		user.set("password", encryptionPwd);
-            	result = Db.update("user_login",user);
-            	result = true;
-        	}else{
-        		errMsg = "验证码不正确";
-        	}
+    	if(user != null){
+    		user.set("password", encryptionPwd);
+        	result = Db.update("user_login",user);
+    	}else{
+    		errMsg = "此号码未注册";
     	}
     	
     	Record data = new Record();
