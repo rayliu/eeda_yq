@@ -163,6 +163,10 @@ public class SupplierContractController extends Controller {
 		sb.insert(4, newDateStrMM);//在指定的位置，插入指定的字符串(月份)
 		contract_no = sb.toString();
      	order.set("contract_no", contract_no);
+     	order.set("creator", user.getLong("id"));
+     	order.set("create_date", new Date());
+     	order.set("updator", user.getLong("id"));
+     	order.set("update_stamp", new Date());
      	Db.save("supplier_contract", order);
      	//loc表
      	List<Record> locItems = Db.find("select * from supplier_contract_location where contract_id = "+id);
