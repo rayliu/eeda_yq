@@ -154,9 +154,9 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
         		}
         	}
         	if(name=="ACCOUNT_NO"){
-        		var re = /^.{12,30}$/;
+        		var re = /^.{0,30}$/;
         		if(!re.test(data)&&len>0){
-        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>输入银行账户的字符长度应在12-30</span>");
+        			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>输入银行账户的字符长度最多为30</span>");
         			return;
         		}
         	}
