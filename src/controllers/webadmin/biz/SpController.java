@@ -162,9 +162,29 @@ public class SpController extends Controller {
     	String status = getPara("status");
     	String id = getPara("id");
     	
-    	String sql="update wc_ad_hui set status ='"+status+"' where creator="+id;
-    	Db.update(sql);
-    	
+    	Record order = Db.findFirst("select * from wc_ad_hui where creator = ?",id);
+    	if(order != null){
+    		if("开启".equals(status)){
+        		order.set("status", status);
+        		order.set("is_active", "Y");
+        	}else{
+        		order.set("status", status);
+        		order.set("is_active", "N");
+        	}
+    		order.set("updator", LoginUserController.getLoginUserId(this));
+    		order.set("update_time", new Date());
+    		Db.update("wc_ad_hui", order);
+    	}else{
+    		order = new Record();
+    		order.set("status", status);
+    		if("开启".equals(status)){
+    			order.set("is_active", "N");
+    		}
+    		order.set("updator", LoginUserController.getLoginUserId(this));
+    		order.set("update_time", new Date());
+    		Db.save("wc_ad_hui", order);
+    	}
+
     	renderJson(true);
     }
 	
