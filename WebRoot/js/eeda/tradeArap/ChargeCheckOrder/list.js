@@ -342,6 +342,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           }
           var customer_name = $('#customer_input').val().trim();
           var type = $('#type').val();
+          var check_currency = $('#check_currency').val();
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
@@ -356,6 +357,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap','sco','validat
           */
           var url = "/tradeChargeCheckOrder/list?checked="+checked
           	   +"&order_no="+order_no
+          	   +"&currency_name="+check_currency
                +"&sp_name="+sp_name
                +"&customer_name="+customer_name
                +"&type_equals="+type

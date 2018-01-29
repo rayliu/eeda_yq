@@ -174,6 +174,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
               return;
           }
           var type = $("#type").val(); 
+          var check_currency = $("#check_currency").val(); 
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
@@ -189,7 +190,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var url = "/tradeCostCheckOrder/list?order_no="+order_no
           			   +"&checked="+checked
           			   +"&customer_id="+customer
-			           +"&customer_id="+customer
+			           +"&currency_name="+check_currency
 			           +"&customer_name_like="+customer_input
 			           +"&sp_id="+sp
 			           +"&sp_name_like="+sp_input

@@ -75,6 +75,7 @@
 					                                    ]
 					                                }){}%>
                                             </div>
+                                            
                                         </div>
                                         <div class="row">  
                                         <div class="col-lg-4">
@@ -98,6 +99,7 @@
                                                    value:''
                                                }){}%>
                                         </div>
+                                        
                                     </div>
                                     <div class="row">  
                                         <div class="col-lg-4">
@@ -130,7 +132,17 @@
 									                           value:shipment.pod!''									                          
 									                       }){}%>
 									         </div>
+	                                         <div class="col-lg-4">
+                                                <%include("/eeda/component/form/inputField.html", 
+                                                         {   id: 'check_currency', 
+                                                             label: '对账币制', 
+                                                             value: ''
+                                                         }){}%>
+                                         	</div>
                                        </div>
+                                       </div>
+                                       
+                                       
                                     </form>
 
                                     <div class="form-group button-bar" >
