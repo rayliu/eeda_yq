@@ -1,4 +1,4 @@
-define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder'], function ($, metisMenu) { 
+define(['jquery', 'metisMenu', 'sb_admin', 'sco',  'dataTablesBootstrap', 'dtColReorder'], function ($, metisMenu) { 
     $(document).ready(function() {
     	document.title = '公告信息 | ' ;//+ i18n.title
 
@@ -12,7 +12,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
             columns:[
                 { "width": "80px",
                     "render": function ( data, type, full, meta ) {
-                      return '<button type="button" class="delete btn table_btn btn-default btn-xs">'+
+                      return '<button type="button" id="'+full.ID+'" class="delete btn table_btn btn-default btn-xs">'+
                         '<i class="fa fa-trash-o"></i> 删除</button>';
                     }
                 },
@@ -28,6 +28,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'dtColReorder
 	              { "data": "UPDATE_STAMP", "width":"90px"},
             ]
         });
+        
+        $('#eeda_table').on('click','.delete',function(){
+        	var self = this;
+      	    var order_id = $(self).attr("id");
+      	    
+      	    self.disabled = true;
+      	    $.post('/msgBoard/delteItem',{order_id:order_id},function(data){
+      	    	if(data){
+      	    		$.scojs_message('删除成功', $.scojs_message.TYPE_OK);
+      	    		searchData();
+      	    	}else{
+      	    		$.scojs_message('操作失败，请重试', $.scojs_message.TYPE_ERROR);
+      	    		self.disabled = false;
+      	    	}
+      	    });
+        });
+        
 
       //base on config hide cols
       dataTable.columns().eq(0).each( function(index) {

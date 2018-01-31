@@ -10,6 +10,7 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -126,6 +127,17 @@ public class MsgBoardController extends Controller {
     	String id = getPara("id");
     	Record r= Db.findById("msg_board", id);
     	renderJson(r);
+    }
+    
+    public void delteItem(){
+    	boolean result = false;
+    	String order_id = getPara("order_id");
+    	
+    	if(StringUtils.isNotBlank(order_id)){
+    		result = Db.deleteById("msg_board", order_id);
+    	}
+    	
+    	renderJson(result);
     }
     
 }
