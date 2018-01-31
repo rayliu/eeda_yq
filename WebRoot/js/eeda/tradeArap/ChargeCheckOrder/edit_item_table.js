@@ -63,13 +63,18 @@ $(document).ready(function() {
                         return '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:50px" disabled>删除</button>';
                      }
                     return str;*/
+            	  var disabled = 'disabled';
+            	  if($('#order_id').val()){
+            		  disabled = '';
+            	  }
+            	  
             	  var str = '';
                   if($("#status").val()=='新建'||$("#status").val()=='已退单'){
                  	 str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px;" >删除</button>&nbsp'
-                      str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;" >编辑</button>';                         
+                      str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" '+disabled+' style="width:40px;" >编辑</button>';                         
                   }else{                    	
                      str += '<button type="button" class="delete btn table_btn delete_btn btn-xs" style="width:40px" disabled>删除</button>&nbsp'
-                     str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" style="width:40px;" disabled>编辑</button>';
+                     str += '<button type="button" class="itemEdit btn table_btn btn_green btn-xs" '+disabled+' style="width:40px;" disabled>编辑</button>';
                   }
                  return str;
                 }
@@ -820,6 +825,7 @@ $(document).ready(function() {
  		order.exchange_total_amount = $("input[name='exchange_total_amount']").val();
  		order.exchange_currency_rate_rmb = $("input[name='exchange_currency_rate_rmb']").val();
  		order.exchange_total_amount_rmb = $("input[name='exchange_total_amount_rmb']").val();
+ 		order.currency_total_amount = $("input[name='currency_total_amount']").val();
  		order.rmb_difference = $("input[name='rmb_difference']").val();
  		order.remark = $("input[name='remark']").val();
  		order.order_id = $("#order_id").val();

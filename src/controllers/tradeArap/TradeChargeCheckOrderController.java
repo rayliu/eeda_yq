@@ -637,6 +637,7 @@ public class TradeChargeCheckOrderController extends Controller {
         renderJson("{\"result\":true}");
     }
     
+    @Before(Tx.class)
     private Map<String, Double> updateExchangeTotal(String chargeOrderId) {
         String sql="select joa.order_type, ifnull(cur1.NAME, cur.NAME) exchange_currency_name, "
         +"       ifnull(joa.exchange_total_amount, joa.total_amount) exchange_total_amount "
@@ -786,6 +787,7 @@ public class TradeChargeCheckOrderController extends Controller {
 		renderJson(map); 
     }
     
+    @Before(Tx.class)
     public void chargeSave(){
     	String jsonStr = getPara("params");
     	
@@ -820,7 +822,6 @@ public class TradeChargeCheckOrderController extends Controller {
     	}else{
     		tjoa.set("currency_total_amount",currency_total_amount);
     	}
-    	
     	String exchange_currency_rate = (String)dto.get("exchange_currency_rate");
     	if(exchange_currency_rate.isEmpty()){
     		tjoa.set("exchange_currency_rate",0);
