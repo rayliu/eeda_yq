@@ -19,15 +19,31 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           columns: [
       			{ "data": "ABBR_NAME", "width": "100px"},
 	            { "data": "CURRENCY_NAME" ,"width": "100px"},
-	            { "data": "TOTAL_AMOUNT","width": "100px"},
-	            { "data": "CURRENCY_TOTAL_AMOUNT","width": "100px"},
-	            { "data": "THREE", "width": "100px"},
-	            { "data": "SIX", "width": "100px"},
+	            { "data": "TOTAL_AMOUNT","width": "100px",
+	            	"render":function(data,type,full,meta){
+	            		return eeda.numFormat(data);
+	            	}
+	            },
+	            { "data": "CURRENCY_TOTAL_AMOUNT","width": "100px",
+	            	"render":function(data,type,full,meta){
+	            		return eeda.numFormat(data);
+	            	}
+	            },
+	            { "data": "THREE", "width": "100px",
+	            	"render":function(data,type,full,meta){
+	            		return eeda.numFormat(data);
+	            	}
+	            },
+	            { "data": "SIX", "width": "100px",
+	            	"render":function(data,type,full,meta){
+	            		return eeda.numFormat(data);
+	            	}
+	            },
 	            { "data": "NINE", "width": "100px",
 	               "render":function(data,type,full,meta){
 	            	   var str = data;
 	            	   if(data>0){
-	            		   return '<span style="color:red">'+str+'</span>';
+	            		   return '<span style="color:red">'+eeda.numFormat(str)+'</span>';
 	            	   }
 	            	   return str;
 	               }	
@@ -36,7 +52,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	            	"render":function(data,type,full,meta){
 		            	   var str = data;
 		            	   if(data>0){
-		            		   return '<span style="color:red">'+str+'</span>';
+		            		   return '<span style="color:red">'+eeda.numFormat(str)+'</span>';
 		            	   }
 		            	   return str;
 		             }
@@ -93,14 +109,14 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           		  jpy_total += parseFloat(data);
           	  }
       		
-      		$('#cny_totalAmountSpan').html((Math.round(cny_total*100)/100).toFixed(2));
-      		$('#usd_totalAmountSpan').html((Math.round(usd_total*100)/100).toFixed(2));
-      		$('#hkd_totalAmountSpan').html((Math.round(hkd_total*100)/100).toFixed(2));
-      		$('#jpy_totalAmountSpan').html((Math.round(jpy_total*100)/100).toFixed(2));
+      		$('#cny_totalAmountSpan').html(eeda.numFormat((Math.round(cny_total*100)/100).toFixed(2)));
+      		$('#usd_totalAmountSpan').html(eeda.numFormat((Math.round(usd_total*100)/100).toFixed(2)));
+      		$('#hkd_totalAmountSpan').html(eeda.numFormat((Math.round(hkd_total*100)/100).toFixed(2)));
+      		$('#jpy_totalAmountSpan').html(eeda.numFormat((Math.round(jpy_total*100)/100).toFixed(2)));
       		if(isNaN(total_amount)){
       			$('#totalAmountSpan').html("转成人民币金额列，有空值"); 
       		}else{
-      			$('#totalAmountSpan').html((Math.round(total_amount*100)/100).toFixed(2)); 
+      			$('#totalAmountSpan').html(eeda.numFormat((Math.round(total_amount*100)/100).toFixed(2))); 
       		}
       		
           }

@@ -28,7 +28,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data);
 				  }
 	            },
 	            { "data": "CHARGE_USD", "width": "100px"  ,"class":"charge_usd",
@@ -40,7 +40,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data);
 				  }
 	            },
 	            { "data": "CHARGE_JPY", "width": "100px","class":"charge_jpy",
@@ -52,7 +52,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data);
 				  }
 	            },
 	            { "data": "CHARGE_HKD", "width": "100px","class":"charge_hkd",
@@ -64,7 +64,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data);
 				  }
 	            },
 	            { "data": "CHARGE_RMB", "width": "120px","class":"charge_rmb",
@@ -76,7 +76,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data);
 				  }
 	            },
 	            { "data": "COST_CNY", "width": "100px" ,"class":"cost_cny",
@@ -88,7 +88,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data);
 				  }
 	            },
 	            { "data": "COST_USD", "width": "100px","class":"cost_usd",
@@ -100,7 +100,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data);
 				  }
 	            },
 	            { "data": "COST_JPY", "width": "100px","class":"cost_jpy",
@@ -112,7 +112,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data);
 				  }
 	            },
 	            { "data": "COST_HKD", "width": "100px","class":"cost_hkd",
@@ -124,7 +124,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data);
 				  }
 	            },
 	            { "data": "COST_RMB", "width": "120px" ,"class":"cost_rmb",
@@ -136,7 +136,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(isNaN(data)){
             	    	data = "";
             	    }
-					return data;
+					return eeda.numFormat(data);
 				  }
 	            }
 	          ]
@@ -237,11 +237,11 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	  var charge_hkd = parseFloat(data.CHARGE_HKD).toFixed(2);
         	  var total_charge = parseFloat(data.TOTAL_CHARGE).toFixed(2);
 	      	  
-        	  $('#CNY_charge_tatol').text(charge_cny);
-        	  $('#USD_charge_tatol').text(charge_usd);
-        	  $('#JPY_charge_tatol').text(charge_jpy);
-        	  $('#HKD_charge_tatol').text(charge_hkd);
-        	  $('#total_charge').text(total_charge);
+        	  $('#CNY_charge_tatol').text(eeda.numFormat(charge_cny));
+        	  $('#USD_charge_tatol').text(eeda.numFormat(charge_usd));
+        	  $('#JPY_charge_tatol').text(eeda.numFormat(charge_jpy));
+        	  $('#HKD_charge_tatol').text(eeda.numFormat(charge_hkd));
+        	  $('#total_charge').text(eeda.numFormat(total_charge));
         	  
         	  $('#CNY_cost_tatol').text(eeda.numFormat(cost_cny,3));
 	      	  $('#USD_cost_tatol').text(eeda.numFormat(cost_usd,3));

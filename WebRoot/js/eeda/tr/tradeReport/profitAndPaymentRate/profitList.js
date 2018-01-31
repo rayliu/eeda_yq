@@ -17,7 +17,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+					return eeda.numFormat(data.toFixed(2),3);
 				  }
 	            },
 	            { "data": "COST_RMB", 
@@ -25,7 +25,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             	    if(data==0){
             	    	return '';
             	    }
-					return eeda.numFormat(data,3);
+					return eeda.numFormat(data.toFixed(2),3);
 				  }
 	            },
 	            {
@@ -107,16 +107,16 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
        	  var cost_jpy = parseFloat(data.COST_JPY).toFixed(2);
        	  var cost_hkd = parseFloat(data.COST_HKD).toFixed(2);
        	  var total_cost = parseFloat(data.TOTAL_COST).toFixed(2);
-       	  $('#CNY_charge_tatol').text(charge_cny);
-       	  $('#USD_charge_tatol').text(charge_usd);
-       	  $('#JPY_charge_tatol').text(charge_jpy);
-       	  $('#HKD_charge_tatol').text(charge_hkd);
-       	  $('#total_charge').text(total_charge);
-       	  $('#CNY_cost_tatol').text(cost_cny);
-       	  $('#USD_cost_tatol').text(cost_usd);
-       	  $('#JPY_cost_tatol').text(cost_jpy);
-       	  $('#HKD_cost_tatol').text(cost_hkd);
-       	  $('#total_cost').text(total_cost);
+       	  $('#CNY_charge_tatol').text(eeda.numFormat(charge_cny));
+       	  $('#USD_charge_tatol').text(eeda.numFormat(charge_usd));
+       	  $('#JPY_charge_tatol').text(eeda.numFormat(charge_jpy));
+       	  $('#HKD_charge_tatol').text(eeda.numFormat(charge_hkd));
+       	  $('#total_charge').text(eeda.numFormat(total_charge));
+       	  $('#CNY_cost_tatol').text(eeda.numFormat(cost_cny));
+       	  $('#USD_cost_tatol').text(eeda.numFormat(cost_usd));
+       	  $('#JPY_cost_tatol').text(eeda.numFormat(cost_jpy));
+       	  $('#HKD_cost_tatol').text(eeda.numFormat(cost_hkd));
+       	  $('#total_cost').text(eeda.numFormat(total_cost));
        	  
        	  
        	  var total_profit=parseFloat(total_charge-total_cost).toFixed(2);
@@ -125,9 +125,9 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
        		  average_profit_rate=0.00;
        	  }
        	  if(total_profit<0){
-       		  $('#total_profit').text(total_profit).css('color','red');
+       		  $('#total_profit').text(eeda.numFormat(total_profit)).css('color','red');
        	  }else(
-       		  $('#total_profit').text(total_profit)
+       		  $('#total_profit').text(eeda.numFormat(total_profit))
        	  )
        	  var total=parseFloat(data.TOTAL);
        	 $($('.dataTables_scrollFoot tr')[0]).find('th').eq(0).html('共'+total+'项汇总：');
