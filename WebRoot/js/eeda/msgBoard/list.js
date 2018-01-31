@@ -9,6 +9,7 @@ define(['jquery', 'metisMenu', 'sb_admin', 'sco',  'dataTablesBootstrap', 'dtCol
             serverSide: true, 
             colReorder: true,
             ajax: "/msgBoard/list",
+            drawCallback: function( settings ) {},
             columns:[
                 { "width": "80px",
                     "render": function ( data, type, full, meta ) {
@@ -21,7 +22,11 @@ define(['jquery', 'metisMenu', 'sb_admin', 'sco',  'dataTablesBootstrap', 'dtCol
               		  return "<a href='#' class='edit' >"+data+"</a>";
               	  }
                 },
-	              { "data": "CONTENT", "className":"content"}, 
+	              { "data": "CONTENT", "className":"content", "width":"200px",
+                	"render": function ( data, type, full, meta ) {
+                		return '<div style="width:400px; overflow: hidden; text-overflow:ellipsis; white-space: nowrap; ">'+data+'</div>';
+                	}
+	              }, 
 	              { "data": "CREATE_NAME", "width":"60px"}, 
 	              { "data": "CREATE_STAMP", "width":"90px"}, 
 	              { "data": "UPDATE_NAME", "width":"60px"},
