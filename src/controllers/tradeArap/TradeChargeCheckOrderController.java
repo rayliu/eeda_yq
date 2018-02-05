@@ -849,7 +849,7 @@ public class TradeChargeCheckOrderController extends Controller {
     	}else{
     		tjoa.set("exchange_total_amount_rmb",exchange_total_amount_rmb);
     	}
-    	tjoa.set("sp_id",(String)dto.get("sp_id"));
+    	//tjoa.set("sp_id",(String)dto.get("sp_id"));
     	tjoa.set("charge_id",(String)dto.get("charge_id"));
     	tjoa.set("currency_id",(String)dto.get("currency_id"));
     	tjoa.set("exchange_currency_id",(String)dto.get("exchange_currency_id"));
