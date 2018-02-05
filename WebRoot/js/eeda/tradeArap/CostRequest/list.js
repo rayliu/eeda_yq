@@ -159,6 +159,7 @@ $(document).ready(function() {
         				return '';
     			}
     		},
+    		 {"data":"CHECK_NAME"},
         	{"data":"CHECK_STAMP",
         		"render":function(data, type, full, meta){
         			if(data)
@@ -167,6 +168,7 @@ $(document).ready(function() {
         				return '';
     			}
         	},
+        	 {"data":"CONFIRM_NAME"},
         	{"data":"RECEIVE_TIME",
         		"render":function(data, type, full, meta){
         			if(data)

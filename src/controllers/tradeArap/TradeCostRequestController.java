@@ -263,12 +263,14 @@ public class TradeCostRequestController extends Controller {
         long office_id=user.getLong("office_id");
         
         String sql = "select * from(  "
-        		+ " select p.abbr payee_company,acao.*, acao.order_no application_order_no,CAST(CONCAT(acao.begin_time,'到',acao.end_time) AS CHAR) service_stamp, "
+        		+ " select p.abbr payee_company,acao.*,uche.c_name check_name,ucom.c_name confirm_name, acao.order_no application_order_no,CAST(CONCAT(acao.begin_time,'到',acao.end_time) AS CHAR) service_stamp, "
         		+ " '申请单' order_type,aco.order_no cost_order_no,u.c_name "
 				+ " from trade_arap_cost_application_order acao "
 				+ " left join trade_cost_application_order_rel caor on caor.application_order_id = acao.id "
 				+ " left join trade_arap_cost_order aco on aco.id = caor.cost_order_id"
 				+ " left join user_login u on u.id = acao.create_by"
+				+ " left join user_login uche on uche.id = acao.check_by"
+				+ " left join user_login ucom on ucom.id = acao.confirm_by"
 				+ " LEFT JOIN party p on p.id=acao.sp_id"
 				+ " where (acao.office_id = "+office_id+ " or acao.office_id in (select office_id from user_office where user_name='"+ user.getStr("user_name")+ "' ))"
 				+ " group by acao.id"
