@@ -21,7 +21,6 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
                         return "<a href='/supplierContract/edit?id="+full.ID+"' target='_blank'>" + data+ "</a>";
                     }
                 },
-                { "data": "TYPE", "width": "10%"}, 
                 { "data": "CUSTOMER_NAME", "width": "10%"}, 
                 { "data": "CONTRACT_PERIOD", "width": "10%"}, 
                 { "data": "CREATOR_NAME", "width": "10%"}, 
