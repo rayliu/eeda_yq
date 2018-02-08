@@ -1,10 +1,10 @@
 define(['jquery', 'hui', '../btns', '../add/detail_table', '../value_change', '../drop_list_change', 
     '../table_drop_list', '../city_list'],
     function ($, huiCont, btnCont, tableCont) {
-        $(".Hui-aside").Huifold({
-            titCell:'.menu_dropdown dl dt',
-            mainCell:'.menu_dropdown dl dd',
-        });
+//        $(".Hui-aside").Huifold({
+//            titCell:'.menu_dropdown dl dt',
+//            mainCell:'.menu_dropdown dl dd',
+//        });
         document.title = '编辑 | ' + document.title;
 
         $(".HuiTab").Huitab({

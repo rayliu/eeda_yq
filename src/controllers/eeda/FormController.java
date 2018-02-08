@@ -88,6 +88,16 @@ public class FormController extends Controller {
             return;
         }
         
+        //获取对应的title菜单栏
+        Record title = Db.findFirst("select m1.module_name level2,m2.module_name level1 from eeda_modules m1 "
+        		+ " LEFT JOIN eeda_modules m2 on m1.parent_id = m2.id"
+        		+ " where m1.id = ?",module_id);
+        
+        if(title != null){
+        	 setAttr("level1", title.get("level1"));
+             setAttr("level2", title.get("level2"));
+        }
+       
         Record formRec = Db.findFirst("select * from eeda_form_define where "
                 + " module_id=?", module_id);
         if(formRec ==null){

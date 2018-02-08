@@ -1,9 +1,9 @@
 define(['jquery', '../btns', 'hui'], function ($) {
 
-        $(".Hui-aside").Huifold({
-            titCell:'.menu_dropdown dl dt',
-            mainCell:'.menu_dropdown dl dd',
-        });
+//        $(".Hui-aside").Huifold({
+//            titCell:'.menu_dropdown dl dt',
+//            mainCell:'.menu_dropdown dl dd',
+//        });
         
         document.title = '查询 | ' + document.title;
 
