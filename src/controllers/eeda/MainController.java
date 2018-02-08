@@ -95,6 +95,7 @@ public class MainController extends Controller {
         cr.setContext(this.getRequest(), this.getResponse());
         cr.setCaptchaName(RANDOM_CODE_KEY);
         cr.render();
+        renderNull();
     }
     
     @Before(EedaMenuInterceptor.class)
