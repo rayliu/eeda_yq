@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>${SYS_CONFIG.system_title!''}</title>
+    <% var logoPath=SYS_CONFIG.logo!'';
+    if(logoPath==""){%>
+	<link rel="shortcut icon" href="/yh/img/eeda_logo.ico">
+	<%}else{%>
+	<link rel="shortcut icon" href="${SYS_CONFIG.logo!''}">
+	<%}%>
+     <!-- Core CSS - Include with every page -->
+    <link rel="stylesheet" type="text/css" href="/theme/H-ui.admin.page3.1.1/static/h-ui/css/H-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/H-ui.admin.page3.1.1/static/h-ui.admin/css/H-ui.admin.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/H-ui.admin.page3.1.1/lib/Hui-iconfont/1.0.8/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/H-ui.admin.page3.1.1/static/h-ui.admin/skin/default/skin.css" id="skin" />
+    <link rel="stylesheet" type="text/css" href="/theme/H-ui.admin.page3.1.1/static/h-ui.admin/css/style.css" />
+    
+    <link href="/css/eeda-hui.css" rel="stylesheet">
+    
+</head>
+
+<body>
+    <%include("/eeda/theme/h-ui/_header.html",{}){} %>
+    <%include("/eeda/theme/h-ui/_menu.html",{}){} %>
+
+    ${layoutContent}
+
+    <%include("/eeda/theme/h-ui/_footer.html",{}){} %>
+
+  
+</body>
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+	//Hui 动态载入左侧菜单，展开失效的解决方案。
+    $(".Hui-aside").Huifold({
+      titCell:'.menu_dropdown dl dt',
+      mainCell:'.menu_dropdown dl dd',
+    });
+</script>
+
+</html>
