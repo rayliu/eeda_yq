@@ -11,6 +11,7 @@ import java.util.Map;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -23,6 +24,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.profile.LoginUserController;
+import controllers.util.AliSmsUtil;
 import controllers.util.DbUtils;
 
 @RequiresAuthentication
@@ -64,10 +66,27 @@ public class ReminderController extends Controller {
 	public void pass(){
 		String id = getPara("id");
 		String status = getPara("status");
-		String sql="update user_login set status = '"+status+"' ,is_stop = 0 where id = "+id;
-		Db.update(sql);
-		renderJson(true);
+		boolean result = false;
+		
+		Record user = null;
+		if(StringUtils.isNotBlank(id)){
+			user = Db.findById("user_login", id);
+			user.set("status", status);
+			user.set("is_stop", 0);
+			Db.update("user_login",user);
+			result = true;
+			//短信提醒用户
+			sendMsg(user.getStr("phone"));
+		}
+		
+		renderJson(result);
 	}
+	
+	@Before(Tx.class)
+	private void sendMsg(String mobile){
+    	AliSmsUtil.sendSms(null, mobile,"sendMsg");//发送通知信息
+    }
+	
 	 
     @Before(Tx.class)
    	public void save() throws Exception {

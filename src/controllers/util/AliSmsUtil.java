@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.aliyun.mns.client.CloudAccount;
 import com.aliyun.mns.client.CloudTopic;
 import com.aliyun.mns.client.MNSClient;
@@ -32,7 +34,7 @@ public class AliSmsUtil {
     private static String signName = null;
     private static String SMSTemplateCode = null;
     
-    protected static boolean parseConf() {
+    protected static boolean parseConf(String template) {
         String confFilePath = System.getProperty("user.dir") + System.getProperty("file.separator") + "perf_test_config.properties";
 
         BufferedInputStream bis = null;
@@ -73,8 +75,13 @@ public class AliSmsUtil {
         System.out.println("topicName: " + topicName);
         signName = properties.getProperty("signName");
         System.out.println("signName: " + signName);
-        SMSTemplateCode = properties.getProperty("SMSTemplateCode");
-        System.out.println("SMSTemplateCode: " + SMSTemplateCode);
+        
+        if("sendMsg".equals(template)){
+        	SMSTemplateCode = properties.getProperty("SMSTemplateCode");//发送信息
+        }else if("sendCode".equals(template)){
+        	SMSTemplateCode = properties.getProperty("SCODETemplateCode");//发送验证码
+        }
+        System.out.println("TemplateCode: " + SMSTemplateCode);
         
         queueName = properties.getProperty("QueueName", queueName);
         System.out.println("QueueName: " + queueName);
@@ -87,11 +94,11 @@ public class AliSmsUtil {
     }
     
     public static void main(String[] args) {
-        sendSms("1234", "18578200347");
+        sendSms("1234", "18578200347","code");
     }
 
-    public static void sendSms(String code, String mobile) {
-        if (!parseConf()) {
+    public static void sendSms(String code, String mobile,String template) {
+        if (!parseConf(template)) {
             return;
         }
         /**
@@ -118,7 +125,9 @@ public class AliSmsUtil {
         batchSmsAttributes.setTemplateCode(SMSTemplateCode);
         // 3.3 设置发送短信所使用的模板中参数对应的值（在短信模板中定义的，没有可以不用设置）
         BatchSmsAttributes.SmsReceiverParams smsReceiverParams = new BatchSmsAttributes.SmsReceiverParams();
-        smsReceiverParams.setParam("code", code);
+        if(StringUtils.isNotBlank(code)){
+        	smsReceiverParams.setParam("code", code);
+        }
         // 3.4 增加接收短信的号码
         batchSmsAttributes.addSmsReceiver(mobile, smsReceiverParams);
         messageAttributes.setBatchSmsAttributes(batchSmsAttributes);

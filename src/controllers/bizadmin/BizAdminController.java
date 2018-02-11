@@ -237,7 +237,7 @@ public class BizAdminController extends Controller {
     	
     	int code= (int)((Math.random()*9+1)*1000);//4位数随机码
         getSession().setAttribute("register_code", String.valueOf(code));
-    	AliSmsUtil.sendSms(String.valueOf(code), phone);
+    	AliSmsUtil.sendSms(String.valueOf(code), phone,"sendCode");
     	
     	
     	renderJson(true);
