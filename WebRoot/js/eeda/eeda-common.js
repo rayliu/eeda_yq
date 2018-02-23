@@ -89,6 +89,7 @@ define(['jquery', 'dataTablesBootstrap', 'jq_blockui'], function($){
         if (e.keyCode == 8) {
             var d = e.srcElement || e.target;
             if (     (d.tagName.toUpperCase() == 'INPUT' && d.type.toUpperCase() =='TEXT')
+            	  ||(d.tagName.toUpperCase() == 'INPUT' && d.type.toUpperCase() =='SEARCH')
                   || (d.tagName.toUpperCase() == 'INPUT' && d.type.toUpperCase() =='PASSWORD')
                   || d.tagName.toUpperCase() == 'TEXTAREA') {
                 doPrevent = d.readOnly || d.disabled;
