@@ -4,8 +4,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap'], function ($,
 	  //------------事件处理
 	    var cargoTable =eeda.dt({
 	  	  id:'table',
+	  	stateSave:false,
+		searching:true,
 	  	  paging: true,
-	        serverSide: true, //不打开会出现排序不对
+	        serverSide: false, //不打开会出现排序不对
 	        ajax: "/userRole/list",
 		      columns:[
 					{ "data":null,

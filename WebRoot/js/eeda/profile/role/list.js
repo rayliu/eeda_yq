@@ -5,6 +5,8 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
 
 	var dataTable = eeda.dt({
 			id: 'example',
+			stateSave:false,
+			searching:true,
 	        "ajax": "/role/list",
 	        "columns": [
 	            { "data": "NAME",},

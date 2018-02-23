@@ -4,6 +4,9 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'sco'], functi
 
         eeda.dt({
             id:'example',
+            stateSave:false,
+			searching:true,
+            bFilter:true,
             "ajax": "/loginUser/listUser",
             "columns": [
                 { "data": "USER_NAME", "width": "20%",

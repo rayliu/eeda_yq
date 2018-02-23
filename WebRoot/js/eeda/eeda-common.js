@@ -185,7 +185,7 @@ eeda.dt = function(opt){
     var option = {
     	  bSort: opt.sort || false,
         deferLoading: opt.deferLoading || null, //默认null, 一装载就call ajax
-        stateSave: true,
+        stateSave: opt.stateSave || true,
         processing: opt.processing || true,
         searching: opt.searching || false,
         paging: opt.paging || false,
