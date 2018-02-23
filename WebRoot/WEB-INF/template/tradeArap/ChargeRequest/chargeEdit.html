@@ -236,7 +236,7 @@
              <hr>
              <div class="form-group button-bar" >
                    <button id="confirmBtn" type="button" class="btn btn_green guide_target5"  disabled="disabled" >收款确认</button>
-                   <a class="btn  btn_white" href="/chargeRequest?back=confirmTrue">返回</a>
+                   <a class="btn  btn_white" href="/tradeChargeRequest?back=confirmTrue">返回</a>
                    <button id="badBtn" type="button" class="btn btn-danger btn-xs guide_target6" style="background-color:#d9534f"  disabled="disabled" >坏账确认</button>
                    <button id="returnConfirmBtn" type="button" class="btn  btn-primary" style="display:none" >撤回</button>
              </div>
@@ -370,7 +370,7 @@
                      				<div class="form-group button-bar" >
 		             		          	<button id="saveBtn" type="button" disabled="disabled" class="btn  btn_green" >保存</button> 
 		             		              <button id="printBtn" type="button" disabled="disabled" class="btn btn_white guide_target9" >生成申请单PDF</button>
-		             		              <a class="btn  btn_white" href="/chargeRequest?back=true">返回</a>
+		             		              <a class="btn  btn_white" href="/tradeChargeRequest?back=true">返回</a>
 		             		              <% if(shiro.hasPermission("checkedRequest")){%>
 		             		              <button id="checkBtn" type="button" disabled="disabled" class="btn  btn_green" >复核</button>
 		             		              <button id="cancelcheckBtn" class="btn btn-danger btn-xs" style="background-color:#d9534f">复核不通过</button>
