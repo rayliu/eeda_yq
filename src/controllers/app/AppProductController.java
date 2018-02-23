@@ -97,7 +97,7 @@ public class AppProductController extends Controller {
     	
     	//产品信息
     	List<Record> productList = Db.find(" select pro.id, pro.cover, pro.name,pro.price from wc_product pro"
-    			+ " where pro.creator = ? order by id desc",shop_id);
+    			+ " where pro.creator = ? and pro.is_active != 'N' order by id desc",shop_id);
     	
     	Record data = new Record();
     	data.set("shopList", shopList);
