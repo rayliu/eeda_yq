@@ -109,7 +109,7 @@ public class CuController extends Controller {
     		 	+ " LEFT JOIN wc_company wc ON wab.creator = wc.creator "
     		 	+ " left join category cat on cat.id = wc.trade_type"
     		 	+ " left join location loc on loc.code = ifnull(wc.city,wc.province)"
-    		 	+ " where 1  = 1"+ condition
+    		 	+ " where 1  = 1 and wab.delete_flag != 'Y'"+ condition
     		 	+ " order by wab.id desc";
 
         String sqlTotal = "select count(1) total from ("+sql+") B";
@@ -165,5 +165,21 @@ public class CuController extends Controller {
     	Record r= Db.findById("msg_board", id);
     	renderJson(r);
     }
+    
+    //逻辑删除
+    @Before(Tx.class)
+    public void delete(){
+    	String id = getPara("id");
+
+    	Record re = Db.findById("wc_ad_cu", id);
+ 	   if(re != null){
+ 		  re.set("status", "关闭");
+ 		  re.set("delete_flag", "Y");
+ 		  Db.update("wc_ad_cu",re);
+ 	   }
+    	renderJson(true);
+    }
+    
+    
     
 }

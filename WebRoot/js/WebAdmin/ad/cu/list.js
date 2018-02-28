@@ -37,7 +37,9 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	     	            			info = "关闭";
 	     	            		}
 	     	            		data =  "<button  class='"+button+" wherether_carriage' " +
-	     	              					" data-id="+full.ID+" href='#begin_date' status="+status+">"+info+"</button>";
+	     	              					" data-id="+full.ID+" status="+status+">"+info+"</button>"
+	     	              				+" <button class='delete-btn delete'"
+	     	              			    +" data-id="+full.ID+">删除</button>";
 	     	            		return data;
 	     	            	} 
 		                  }
@@ -54,24 +56,40 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 
         //更新状态 
         $("#eeda_table").on("click"," .wherether_carriage",function(){
-        	var result = confirm("确定要这样做吗？");
         	var self = $(this);
         	var id = self.data('id');
         	var status = self.attr("status");
+    		$.post("/WebAdmin/ad/cu/whetherCarriage",{id:id,status:status},function(data){
+        		if(data){
+        			if(status == "toUp"){
+        				$.scojs_message("开启成功",$.scojs_message.TYPE_OK);
+        				checkMessage();
+        			}
+        			if(status == "toDown"){
+        				$.scojs_message("已关闭",$.scojs_message.TYPE_OK);
+        			}
+        			refleshTable();
+        		}else{
+        			$.scojs.message("操作失败",$.scojs_message.TYPE_OK);
+        		}
+        	});
+        });
+        
+      //更新状态 
+        $("#eeda_table").on("click"," .delete",function(){
+        	var result = confirm("确定要删除吗");
+        	var self = this;
+        	var id = $(this).data('id');
         	if(result){
-        		$.post("/WebAdmin/ad/cu/whetherCarriage",{id:id,status:status},function(data){
+        		self.disabled = true;
+        		$.post("/WebAdmin/ad/cu/delete",{id:id},function(data){
             		if(data){
-            			if(status == "toUp"){
-            				$.scojs_message("开启成功",$.scojs_message.TYPE_OK);
-            				checkMessage();
-            			}
-            			if(status == "toDown"){
-            				$.scojs_message("已关闭",$.scojs_message.TYPE_OK);
-            			}
+            			$.scojs_message("已删除",$.scojs_message.TYPE_OK);
             			refleshTable();
             		}else{
             			$.scojs.message("操作失败",$.scojs_message.TYPE_OK);
             		}
+            		self.disabled = false;
             	})
         	}
         });
