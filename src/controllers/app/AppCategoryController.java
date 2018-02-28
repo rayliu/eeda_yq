@@ -26,7 +26,7 @@ public class AppCategoryController extends Controller {
      * 商家分类
      * @throws IOException
      */
-    public void searchShopByType() throws IOException{
+    public void searchShopByType() throws IOException{ 
     	String category_name = getPara();
     	category_name = URLDecoder.decode(category_name, "UTF-8");
     	
@@ -35,7 +35,7 @@ public class AppCategoryController extends Controller {
     	conditions += " and ctg.name = '"+category_name+"'";
     	
     	//商家列表
-    	List<Record> shopList = Db.find(" select ul.id shop_id,ul.influence, "
+    	List<Record> shopList = Db.find(" select * from(select ul.id shop_id,ul.influence, "
     			+ " ifnull(wc.c_name,wc.company_name) company_name,"
     			+ " if(dio.id >0 ,'Y','N') diamond,"
     			+ " if(cu.id >0 ,'Y','N') cu,"
@@ -50,9 +50,9 @@ public class AppCategoryController extends Controller {
     			+ " left join wc_ad_cu cu on cu.creator = ul.id"
     			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
     			+ " left join wc_ad_hui hui on hui.creator = ul.id"
-    			+ " where 1 = 1 and system_type ='商家后台' "
+    			+ " where 1 = 1 and system_type ='商家后台' and ul.status = '通过'"
     			+ conditions
-    			+ "group by ul.id");
+    			+ "group by ul.id) A order by diamond desc,cu desc,hui desc");
     	
     	Record data = new Record();
     	data.set("shopList", shopList);
