@@ -119,7 +119,7 @@ public class AppLoginController extends Controller {
     	Record user = Db.findFirst("select * from user_login where phone=? and system_type = 'mobile' ",mobile);
     	if(user != null){
     		code= (int)((Math.random()*9+1)*1000);//4位数随机码
-        	AliSmsUtil.sendSms(String.valueOf(code), mobile);
+        	AliSmsUtil.sendSms(String.valueOf(code), mobile,"code");
         	result = true;
     	}else{
     		errMsg = "此号码未注册";
