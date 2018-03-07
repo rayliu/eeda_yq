@@ -225,38 +225,42 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
 
                 var print_template_dataTable = $('#print_template_table').DataTable();
                 print_template_dataTable.clear().draw();
-                for (var i = 0; i < json.PRINT_TEMPLATE_LIST.length; i++) {
-                    var template = json.PRINT_TEMPLATE_LIST[i];
-                    var item ={
-                        ID: template.ID,
-                        NAME: template.NAME,
-                        DESC: template.DESC,
-                        CONTENT: template.CONTENT
-                    };
+                if(json.PRINT_TEMPLATE_LIST && json.PRINT_TEMPLATE_LIST.length>0){
+                	for (var i = 0; i < json.PRINT_TEMPLATE_LIST.length; i++) {
+                        var template = json.PRINT_TEMPLATE_LIST[i];
+                        var item ={
+                            ID: template.ID,
+                            NAME: template.NAME,
+                            DESC: template.DESC,
+                            CONTENT: template.CONTENT
+                        };
 
-                    print_template_dataTable.row.add(item).draw(false);
+                        print_template_dataTable.row.add(item).draw(false);
+                    }
                 }
+                
 
                 var interface_dataTable = $('#interface_table').DataTable();
                 interface_dataTable.clear().draw();
-                for (var i = 0; i < json.INTERFACE_LIST.length; i++) {
-                    var inter = json.INTERFACE_LIST[i];
-                    var item ={
-                        ID: inter.ID,
-                        NAME: inter.NAME,
-                        TYPE: inter.TYPE,
-                        HEIGHT: inter.HEIGHT,
-                        WIDTH: inter.WIDTH,
-                        IS_DISTINCT: inter.IS_DISTINCT,
-                        FILTER_CONDITION: inter.FILTER_CONDITION,
-                        COLS: inter.COLS,
-                        FILTER: inter.FILTER,
-                        SOURCE: inter.SOURCE
-                    };
-
-                    interface_dataTable.row.add(item).draw(false);
+                if(json.INTERFACE_LIST && json.INTERFACE_LIST.length>0){
+	                for (var i = 0; i < json.INTERFACE_LIST.length; i++) {
+	                    var inter = json.INTERFACE_LIST[i];
+	                    var item ={
+	                        ID: inter.ID,
+	                        NAME: inter.NAME,
+	                        TYPE: inter.TYPE,
+	                        HEIGHT: inter.HEIGHT,
+	                        WIDTH: inter.WIDTH,
+	                        IS_DISTINCT: inter.IS_DISTINCT,
+	                        FILTER_CONDITION: inter.FILTER_CONDITION,
+	                        COLS: inter.COLS,
+	                        FILTER: inter.FILTER,
+	                        SOURCE: inter.SOURCE
+	                    };
+	                
+	                    interface_dataTable.row.add(item).draw(false);
+	                }
                 }
-
             }, 'json');
         };
         //---------------------------  tree handler end -------------

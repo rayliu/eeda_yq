@@ -32,6 +32,14 @@ define(['jquery', './list_tree', './fields', './template_tab', './btns', './even
                 var order = data;
                 console.log(order);
                 if(order.ID>0){
+                    var form_field_list = order.FORM_FIELD_LIST;
+                    fieldContr.dataTable.clear().draw();
+                    var fields_dataTable = fieldContr.dataTable;//$('#fields_table').DataTable();
+                    for (var i = 0; i < form_field_list.length; i++) {
+                        var field = form_field_list[i];
+                        fields_dataTable.row.add(field).draw(false);
+                    }
+                
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     btn.attr('disabled', false);
                 }else{
