@@ -5,6 +5,7 @@ import java.net.URLDecoder;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.codec.Base64;
 
@@ -25,6 +26,11 @@ public class AppControllerForMobile extends Controller {
     public void signIn() throws IOException{
         Record returnData = new Record();
         Record rec = checkHeaderAuth(getRequest());
+        
+        String deviceId = getPara("deviceId");
+    	if(StringUtils.isNotBlank(deviceId)){
+    		deviceId = URLDecoder.decode(deviceId, "UTF-8");
+    	}
         if (rec == null) {
             getResponse().setStatus(401);
             getResponse().setHeader("Cache-Control", "no-store");
@@ -36,6 +42,9 @@ public class AppControllerForMobile extends Controller {
             returnData.set("errMsg", errMsg);
             renderJson(returnData);
         }else{
+        	rec.set("device_id", deviceId);
+        	Db.update("user_login",rec);
+        	
             returnData.set("authKey", getRequest().getSession().getAttribute("authKey").toString());
             returnData.set("result", true);
             returnData.set("login_id", rec.get("id"));
