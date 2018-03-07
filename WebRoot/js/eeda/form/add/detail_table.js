@@ -12,6 +12,12 @@ define(['jquery', 'sco', '../btns'], function ($, sco, btnCont) {
     $.post('/form/'+module_id+'-tableConfig', {field_id_list: JSON.stringify(field_id_list)}, function(data, textStatus, xhr) {
         console.log('textStatus:'+textStatus);
         console.log(data);
+        if(data.length ==0){//无从表
+            if(getDataFunc){
+                getDataFunc();
+            }
+            return ;
+        }
         $.each(data, function(index, item) {
             var display_list = item.DISPLAY_FIELD_LIST;
 
