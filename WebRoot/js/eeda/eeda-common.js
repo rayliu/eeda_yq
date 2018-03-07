@@ -784,16 +784,16 @@ eeda.refreshUrl = refreshUrl;
             		   var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
                        if(exchange_currency_rate!=''&&currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
                      	  if(class_name==' cny_to_other'){
-                     		  td.next().next().children().val((total*exchange_currency_rate).toFixed(3));//转换后的金额
+                     		  td.next().next().children().val((total*exchange_currency_rate).toFixed(4));//转换后的金额
                      	   }else{
-                     		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
-                     		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(3));
+                     		  td.next().next().children().val((currency_rate*total).toFixed(4));//转换后的金额
+                     		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(4));
                      	  }
                          var exchange_total = td.parent().find('.exchange_total_amount input').val();//此币种的金额
-                         	td.parent().find('.exchange_total_amount_rmb input').val((exchange_total*currency_rate).toFixed(3));
+                         	td.parent().find('.exchange_total_amount_rmb input').val((exchange_total*currency_rate).toFixed(4));
                          var cny_total_amount=parseFloat(td.parent().find('.cny_total_amount input').val());
                          var exchange_total_amount_rmb=parseFloat(td.parent().find('.exchange_total_amount_rmb input').val());
-                         	td.parent().find('.rmb_difference input').val((exchange_total_amount_rmb-cny_total_amount).toFixed(3));
+                         	td.parent().find('.rmb_difference input').val((exchange_total_amount_rmb-cny_total_amount).toFixed(4));
                        }            		   
             	   },'json');            	   
             	   
@@ -804,16 +804,16 @@ eeda.refreshUrl = refreshUrl;
               var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
               if(exchange_currency_rate!=''&&currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
             	  if(class_name==' cny_to_other'){
-            		  td.next().next().children().val((total*exchange_currency_rate).toFixed(3));//转换后的金额
+            		  td.next().next().children().val((total*exchange_currency_rate).toFixed(4));//转换后的金额
             	   }else{
-            		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
-            		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(3));
+            		  td.next().next().children().val((currency_rate*total).toFixed(4));//转换后的金额
+            		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(4));
             	  }
                 var exchange_total = td.parent().find('.exchange_total_amount input').val();//此币种的金额
-                	td.parent().find('.exchange_total_amount_rmb input').val((exchange_total*currency_rate).toFixed(3));
+                	td.parent().find('.exchange_total_amount_rmb input').val((exchange_total*currency_rate).toFixed(4));
                 var cny_total_amount=parseFloat(td.parent().find('.cny_total_amount input').val());
                 var exchange_total_amount_rmb=parseFloat(td.parent().find('.exchange_total_amount_rmb input').val());
-                	td.parent().find('.rmb_difference input').val((exchange_total_amount_rmb-cny_total_amount).toFixed(3));
+                	td.parent().find('.rmb_difference input').val((exchange_total_amount_rmb-cny_total_amount).toFixed(4));
               }
 		  });
 //		  eeda.para_middle="";
@@ -852,16 +852,16 @@ eeda.refreshUrl = refreshUrl;
                 	  var total = td.parent().find('.currency_total_amount input').val();//此币种的金额
                   if(exchange_currency_rate!=''&&currency_rate!=undefined && total!=undefined && currency_rate!='' && total!='' && !isNaN(currency_rate) && !isNaN(total)){
                 	  if(class_name==' cny_to_other'){
-                		  td.next().next().children().val((total*exchange_currency_rate).toFixed(3));//转换后的金额
+                		  td.next().next().children().val((total*exchange_currency_rate).toFixed(4));//转换后的金额
                 	   }else{
-                		  td.next().next().children().val((currency_rate*total).toFixed(3));//转换后的金额
-                		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(3));
+                		  td.next().next().children().val((currency_rate*total).toFixed(4));//转换后的金额
+                		  td.parent().find('.exchange_total_amount input').val((total*exchange_currency_rate).toFixed(4));
                 	  }
                      var exchange_total = td.parent().find('.exchange_total_amount input').val();//此币种的金额
-                    td.parent().find('.exchange_total_amount_rmb input').val((exchange_total*currency_rate).toFixed(3));
+                    td.parent().find('.exchange_total_amount_rmb input').val((exchange_total*currency_rate).toFixed(4));
                     var  cny_total_amount=parseFloat(td.parent().find('.cny_total_amount input').val());
                     var exchange_total_amount_rmb=parseFloat(td.parent().find('.exchange_total_amount_rmb input').val());
-                    td.parent().find('.rmb_difference input').val((exchange_total_amount_rmb-cny_total_amount).toFixed(3));
+                    td.parent().find('.rmb_difference input').val((exchange_total_amount_rmb-cny_total_amount).toFixed(4));
                   }
                   
                   var row = td.parent();
