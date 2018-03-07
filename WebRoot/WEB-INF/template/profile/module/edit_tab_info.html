@@ -1,0 +1,104 @@
+<div class="form-group">
+    <div class="col-lg-12">
+        <section class='form_info'>
+            <div class="row">
+                <div class="col-lg-4">
+                    <input type="hidden" id="form_id">
+                    <%include("/eeda/component/form/inputField.html", 
+                                                {   id:'form_name', 
+                                                    label:'名称',
+                                                    disabled:'disabled',
+                                                    value:order.name!''
+                                                }){}%>
+                </div>
+                <div class="col-lg-4">
+                    <%include("/eeda/component/form/inputField.html", 
+                                                {   id:'form_code', 
+                                                    label:'编码',
+                                                    required:'required',
+                                                    value:order.code!''
+                                                }){}%>
+                </div>
+                <div class="col-lg-4">
+                    <%include("/eeda/component/form/inputField.html", 
+                                                {   id:'desc', 
+                                                    label:'描述',
+                                                    required:'required',
+                                                    value:order.desc!''
+                                                }){}%>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <%include("/eeda/component/form/inputField.html", 
+                                                {   id:'is_public', 
+                                                    type: 'checkbox',
+                                                    label:'是否公开',
+                                                    value:order.is_public!''
+                                                }){}%>
+                </div>
+                <div class="col-lg-4">
+                    <%include("/eeda/component/form/selectField.html", 
+                                {   id:'type', 
+                                    label:'按钮工具栏位置', 
+                                    value:order.type!'',
+                                    value_list:[
+                                        {code:'top', value:'顶部'},
+                                        {code:'bottom', value:'底部'}
+                                    ]
+                                }){}%>
+                </div>
+            </div>
+
+            <h4>查询列表配置</h4>
+            <div class="row">
+                <div class="col-lg-4">
+                    <%include("/eeda/component/form/inputField.html", 
+                        {   id:'is_public', 
+                            type: 'checkbox',
+                            label:'是否分页显示',
+                            checked: 'checked',
+                            value:order.is_public!''
+                        }){}%>
+                </div>
+                <div class="col-lg-4">
+                    <%include("/eeda/component/form/inputField.html", 
+                        {   id:'is_public',
+                            label:'分页显示条数',
+                            value:order.is_public!''
+                        }){}%>
+                </div>
+                <div class="col-lg-4">
+                    <%include("/eeda/component/form/inputField.html", 
+                        {   id:'is_public',
+                            label:'列表宽度(px)',
+                            value:order.is_public!''
+                        }){}%>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <%include("/eeda/component/form/selectField.html", 
+                                {   id:'type', 
+                                    label:'查询方式', 
+                                    value:order.type!'',
+                                    value_list:[
+                                        {code:'system', value:'系统默认'},
+                                        {code:'customize', value:'自定义'}
+                                    ]
+                                }){}%>
+                </div>
+                <div class="col-lg-4">
+                    <%include("/eeda/component/form/inputField.html", 
+                        {   id:'is_public',
+                            type: 'checkbox',
+                            label:'底部显示汇总行',
+                            value:order.is_public!''
+                        }){}%>
+                </div>
+                
+            </div>
+        </section>
+        
+    </div>
+</div>

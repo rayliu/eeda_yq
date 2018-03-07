@@ -1,0 +1,53 @@
+<div class="form-group">
+    <div class="col-lg-12">
+        <h5>从表引用配置</h5>
+        <div class="row">
+            <input type="hidden" id="detail_ref_id">
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id:'detail_ref_form',
+                                                label:'引用表单'
+                                            }){}%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h5>字段关联</h5>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group button-bar" >
+                            <button type="button" class="btn btn-success btn-xs" id="add_detail_ref_btn">添加</button>
+                        </div>
+                    </div>
+                </div>
+                <%include("/eeda/component/form/detailTable.html", 
+                {
+                    id:'field_detail_ref_table', 
+                    headers:['',
+                        '数据源',
+                        '操作符',
+                        '目标数据表']
+                }){} %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h5>显示字段</h5>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group button-bar" >
+                            <button type="button" class="btn btn-success btn-xs" id="add_detail_ref_display_btn">添加</button>
+                        </div>
+                    </div>
+                </div>
+                <%include("/eeda/component/form/detailTable.html", 
+                {
+                    id:'field_detail_ref_display_table', 
+                    headers:['',
+                        '字段',
+                        '值']
+                }){} %>
+            </div>
+        </div>
+    </div>
+</div>

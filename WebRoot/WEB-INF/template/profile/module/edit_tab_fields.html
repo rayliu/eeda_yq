@@ -1,0 +1,45 @@
+<div class="form-group">
+    <div class="col-lg-4">
+        <section class='left'>
+            <div class="row">
+                <div class="form-group button-bar" >
+                    <button type="button" class="btn btn-success btn-xs" id="addFieldBtn">添加</button>
+                </div>
+            </div>
+            <%include("/eeda/component/form/detailTable.html", 
+                {
+                    id:'fields_table', 
+                    headers:['','列序号',
+                        '名称',
+                        '类型',
+                        '排序']
+                }){} %>
+        </section>
+    </div>
+    <div class="col-lg-8">
+        <section class='left'>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active" >
+                    <a href="#fields_property" aria-controls="permission" role="tab" data-toggle="tab">属性</a>
+                </li>
+                <li role="presentation" >
+                    <a href="#fields_formular" aria-controls="permission" role="tab" data-toggle="tab">公式</a>
+                </li>
+                <li role="presentation" >
+                    <a href="#fields_i18n" aria-controls="permission" role="tab" data-toggle="tab">国际化</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="fields_property">
+                    <%include("/profile/module/edit_tab_fields_property.html", {}){} %>
+                </div>
+                <div class="tab-pane" id="fields_formular">
+                    建设中...
+                </div>
+                <div class="tab-pane" id="fields_i18n">
+                    建设中...
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

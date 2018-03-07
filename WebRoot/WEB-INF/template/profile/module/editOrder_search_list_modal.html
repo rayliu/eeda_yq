@@ -1,0 +1,44 @@
+<div class="modal fade" id="addRowBtn_search_list_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">从以下列表中选择数据</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id='target_structure_id'>
+                <form id='searchForm'>
+                    <section id='fields'  class="row">
+
+                    </section>
+                </form>
+                <section id='actions'  class="row">
+                    <div class="col-lg-12">
+                        <div id ='button-bar' class="form-group button-bar" >
+                            <button id="searchBtn" class="btn btn-primary btn-sm" type="button">查询</button>
+                            
+                        </div>
+                    </div>
+                </section>
+                <section id='list' class="row">
+                    <table id="modal_search_result_table" class="display" cellspacing="0" style="width: 100%;">
+                        <thead class="eeda">
+                            <tr>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+            <!-- /.modal-content -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button name="ok_btn" type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

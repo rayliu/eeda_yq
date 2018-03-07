@@ -1,0 +1,80 @@
+<div class="modal fade" id="editEventCommandModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">执行命令</h4>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm" action="">
+                    <div class="form-group ">
+                        <input name="modal_row_id" class="form-control" type="hidden">
+                        <input name="modal_command_li_index" class="form-control" type="hidden">
+                        <label class="control-label" for="inputSuccess">名称</label>
+                        <input type="text" name="command_name" class="form-control" value="">
+                        <label class="control-label" for="inputSuccess">执行条件:</label>
+                        <input name="modal_condition" class="form-control" type="text">
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="inputSuccess">操作对象:</label>
+                        <input name="modal_operation_obj" class="form-control" type="text">
+                    </div>
+                    <div id="modal_add_field_div" class="form-group">
+                        <label class="control-label" for="inputSuccess">字段赋值&nbsp;&nbsp;<button name="addField" type="button" class="addColField btn btn-success btn-xs">添加</button></label>
+                        <section class='well'>
+                            <div class="form-group">
+                                <div class="row">
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div id="modal_field_type_pop_div" class="form-group" style="display: none;">
+                        <label class="control-label" for="inputSuccess">弹出列表高级设定</label>
+                        <section class='well'>
+                            <label class="control-label" for="inputSuccess">选择表单</label>
+                            <select class="form-control" id="modal_field_type_ext_type">
+                                <option selected="">运输单</option>
+                                <option>提货单</option>
+                                <option>供应商单</option>
+                                <option>网点单</option>
+                                <option>仓库单</option>
+                                <option>产品单</option>
+                            </select>
+                            <div id="customize_list">
+                                <label class="control-label" for="inputSuccess">请输入自定义列表值（每行为一个选项）：</label>
+                                <textarea id="modal_field_type_ext_text" class="form-control" rows="3"></textarea>
+                            </div>
+                        </section>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button name="ok_btn" type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<script id="editEventCommandModal_add_field_template" type="text/html">
+        <div class="col-lg-12" style = "margin-top: 3px;">
+            <a class="delete" href="javascript:void(0)" title="删除"><i class="glyphicon glyphicon-remove"></i></a>
+            <input class="form-control" type="text" name="field_exp" style="display: initial;width: 97%;" value="{{field_value}}" >
+        </div>
+        
+</script>
+
+<script id="module_event_command_template" type="text/html">
+    <li style="margin-top: 5px;">    
+        <a class="remove delete_command" href="javascript:void(0)" title="删除">
+            <i class="glyphicon glyphicon-remove"></i>
+        </a>&nbsp;    
+        当条件 (<strong style="color: green;" name="condition"></strong>) 成立时执行...    
+        <a name="btnCommandSetting" style="cursor: pointer;"><i class="fa fa-edit"></i></a>    
+        <input name="eventCommandJson" type="text">
+    </li>
+</script>

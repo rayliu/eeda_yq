@@ -1,0 +1,48 @@
+<div class="form-group">
+    <div class="col-lg-12">
+        <h5>复选框配置</h5>
+        <div class="row">
+            <input type="hidden" id="check_box_id">
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id:'is_single_check', 
+                                                type: 'checkbox',
+                                                label:'只能单选'
+                                            }){}%>
+            </div>
+            <div class="col-lg-4">
+                <%include("/eeda/component/form/selectField.html", 
+                            {   id:'line_display_numbers', 
+                                label:'每行个数', 
+                                value:order.type!'',
+                                value_list:[
+                                    {code:'1', value:'1'},
+                                    {code:'2', value:'2'},
+                                    {code:'3', value:'3'},
+                                    {code:'4', value:'4'},
+                                    {code:'5', value:'5'},
+                                    {code:'6', value:'6'}
+                                ]
+                            }){}%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group button-bar" >
+                            <button type="button" class="btn btn-success btn-xs" id="addCheckboxBtn">添加</button>
+                        </div>
+                    </div>
+                </div>
+                <%include("/eeda/component/form/detailTable.html", 
+                {
+                    id:'field_checkbox_table', 
+                    headers:['','序号',
+                        '名称',
+                        '默认']
+                }){} %>
+            </div>
+        </div>
+    </div>
+</div>

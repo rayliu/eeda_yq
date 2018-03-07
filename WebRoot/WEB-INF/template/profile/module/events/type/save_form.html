@@ -1,0 +1,53 @@
+<div class="form-group">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-6">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id:'edit_btn_name', 
+                                                label:'名称',
+                                                value:order.name!''
+                                            }){}%>
+            </div>
+            <div class="col-lg-6">
+                <%include("/eeda/component/form/selectField.html", 
+                            {   id:'edit_btn_type', 
+                                label:'类型', 
+                                value:order.type!'',
+                                value_list:[
+                                    {code:'sys', value:'系统'},
+                                    {code:'customize', value:'用户自定义'}
+                                ]
+                            }){}%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id:'edit_btn_seq', 
+                                                label:'序号',
+                                                value:order.seq!''
+                                            }){}%>
+            </div>
+            <div class="col-lg-6">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id:'edit_btn_icon', 
+                                                label:'图标'
+                                            }){}%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id:'edit_btn_color', 
+                                                label:'颜色',
+                                                value:order.seq!''
+                                            }){}%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group button-bar" >
+                <button type="button" class="btn btn-success" id="comfirmEditBtn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>

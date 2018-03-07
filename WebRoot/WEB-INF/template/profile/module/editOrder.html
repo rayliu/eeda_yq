@@ -1,0 +1,85 @@
+<%layout("/layout.html"){%>
+<link href="/js/lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet">
+<link href="/js/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+<div id="page-wrapper">
+	<div class="row">
+		
+		<input type="hidden" id='module_id' value="${module_id!}">
+		<input type="hidden" id='module_version' value="${module_version}">
+		<input type="hidden" id='user_roles' value="${user_roles!}">
+		<input type="hidden" id='order_id' value="${order_id!}">
+		<h2><span id='module_name'></span> </h2>
+	    <section id='fields'  class="row">
+
+	    </section>
+	    <section id='list' class="row">
+
+	    </section>
+	    <section id='actions'  class="row">
+	    	<div class="col-lg-12">
+				<div class="form-group button-bar" >
+					<div id ='button-bar' style="display: inline;">
+
+				    </div>
+				    <div  style="display: none;">
+					    <button id="addBtn" type="button" class="btn btn-default" style="border-style: dashed;"
+					    	data-toggle="tooltip" data-placement="right" title="添加按钮，仅管理员可见">
+					    	<i class="fa fa-fw fa-plus"></i>
+					    </button>
+					</div>
+			    </div>
+			</div>
+	    </section>
+	</div>
+	<!--end of row -->
+
+</div>
+
+<%}%>
+
+
+
+
+
+<style type="text/css">
+	.ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+</style>
+
+<link rel="stylesheet" href="/yh/js/plugins/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+
+<script>
+	// template.helper('replaceReturn', function (content) {
+	//     return content.replace(/\n/g, "$");
+	// });
+
+	//$('#side-menu li#${module_id!}').parent().parent().addClass('active').find('ul').addClass('in');
+</script>
+
+<%include("/eeda/component/jsTemplate/inputField.js", {id:'input_field'}){} %>
+<%include("/eeda/component/jsTemplate/inputPicField.js", {}){} %>
+<%include("/eeda/component/jsTemplate/textareaField.js", {}){} %>
+<%include("/eeda/component/jsTemplate/inputHiddenField.js", {}){} %>
+<%include("/eeda/component/jsTemplate/inputDateField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableInputDateField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/inputDateQueryField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/inputCustomerField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/fieldSection.js", {}){} %>
+<%include("/eeda/component/jsTemplate/inputSpField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/inputLocationField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/inputProductField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/inputCustomizeSelectField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/tableCustomizeSelectField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/detailTable.js", { id:'table_template'}){} %>
+<%include("/eeda/component/jsTemplate/button.js", { id:'button_template'}){} %>
+<%include("/eeda/component/jsTemplate/inputDropDownField.js", {}){} %>
+<%include("/eeda/component/jsTemplate/inputDataGridField.js", {}){} %>
+<!-- 模态框 -->
+<%include("/eeda/profile/module/editOrder_search_list_modal.html", {}){} %>
+
+
+<script>
+    requirejs(['/js/common.js'], function (common) {
+        requirejs(['app/order/main']);
+    });
+</script>

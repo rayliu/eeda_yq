@@ -1,0 +1,52 @@
+<%layout("/layout2.html"){%>
+<link href="/css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="/js/lib/sco/css/sco.message.css" rel="stylesheet">
+
+
+<div id="page-wrapper">
+	<div class="row">
+		<input type="hidden" id='module_id' value="${module_id}">
+        <input type="hidden" id='module_version' value="${module_version}">
+        <input type="hidden" id='structure_id' value="">
+		<h2><span id='module_name'></span>查询</h2>
+		<form id='searchForm'>
+		    <section id='fields'  class="row">
+
+		    </section>
+		</form>
+	    <section id='actions'  class="row">
+	    	<div class="col-lg-12">
+				<div id ='button-bar' class="form-group button-bar" >
+					<!--button id="searchBtn" class="btn  btn-primary" type="button">查询</button>
+                    <button id="resetBtn" class="btn  btn-default" type="button">清空条件</button>
+                    <a class="btn btn-success" href="/m/${module_id}-add">新建</a-->
+			    </div>
+			</div>
+	    </section>
+	    <section id='list' class="row">
+
+	    </section>
+
+	</div>
+	<!--end of row -->
+
+</div>
+
+<%}%>
+
+<%include("/eeda/component/jsTemplate/inputField.js", {id:'input_field'}){} %>
+<%include("/eeda/component/jsTemplate/inputHiddenField.js", {}){} %>
+<%include("/eeda/component/jsTemplate/inputDateQueryField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/inputCustomerField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/inputSpField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/inputLocationField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/inputCustomizeSelectField.js",{}){} %>
+<%include("/eeda/component/jsTemplate/searchTable.js", {}){} %>
+<%include("/eeda/component/jsTemplate/button.js", { id:'button_template'}){} %>
+<%include("/eeda/component/jsTemplate/inputDropDownField.js", {}){} %>
+
+<script>
+    requirejs(['/js/common.js'], function (common) {
+        requirejs(['app/order/searchOrder']);
+    });
+</script>

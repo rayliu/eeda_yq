@@ -1,0 +1,74 @@
+<div class="modal fade" id="editAddBtnType" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">点"新增"时弹出列表</h4>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm" action="">
+                    <div class="form-group ">
+                        <input id="modal_s_id" class="form-control" type="hidden">
+                        <label class="control-label" for="inputSuccess">表名</label>
+                        <input id="modal_structure_name" class="form-control" type="text" name="name" disabled="">
+                    </div>
+                    <div class="form-group ">
+                        <label class="control-label" for="inputSuccess">数据来源</label>
+                        <select id="modal_module_source" class="form-control">
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: none;">
+                        <label>列表选择</label>
+                        <label class="radio-inline">
+                            <input type="radio" name="data_list_select" id='multiple' value="multiple" checked="">多选
+                        </label>
+                        <label class="radio-inline" style=" margin-top: 5px;">
+                            <input type="radio" name="data_list_select" id='single' value="single">单选
+                        </label>
+                    </div>
+                    
+                    <div id="modal_add_fillback_div" class="form-group">
+                        <label class="control-label" for="inputSuccess">回填字段</label>
+                        <section class='well'>
+                            <div class="form-group">
+                                <button name="addFillbackField" type="button" class="addFillbackField btn btn-success btn-xs">添加</button>
+                                <label class="control-label" for="inputSuccess">
+                                    这里会默认把单据ID回填到<span style="color:red;">REF_T_ID</span>
+                                </label>
+                                <div class="row">
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div id="modal_field_type_pop_div" class="form-group" style="display: none;">
+                        <label class="control-label" for="inputSuccess">弹出列表高级设定</label>
+                        <section class='well'>
+                            <label class="control-label" for="inputSuccess">选择表单</label>
+                            <select class="form-control" id="modal_field_type_ext_type">
+                                <option selected="">运输单</option>
+                                <option>提货单</option>
+                                <option>供应商单</option>
+                                <option>网点单</option>
+                                <option>仓库单</option>
+                                <option>产品单</option>
+                            </select>
+                            <div id="customize_list">
+                                <label class="control-label" for="inputSuccess">请输入自定义列表值（每行为一个选项）：</label>
+                                <textarea id="modal_field_type_ext_text" class="form-control" rows="3"></textarea>
+                            </div>
+                        </section>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button id="modal_table_add_btn_type_ok_btn" type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

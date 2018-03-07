@@ -1,0 +1,74 @@
+<div class="modal fade" id="editBtnVisibleConditionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">满足以下条件时
+                    <select class="form-control" name="b_display" style="display: initial;width: initial;">
+                        <option value="true" {{if b_display == '显示'}}selected{{/if}}>显示</option>
+                        <option value="false" {{if b_display == '不显示'}}selected{{/if}}>不显示</option>
+                    </select> 
+                按钮</h4>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm" action="">
+                    <div id="modal_add_field_div" class="form-group">
+                         <input name="modal_row_id" class="form-control" type="hidden">
+                        <input name="modal_command_li_index" class="form-control" type="hidden">
+                        <label class="control-label" for="inputSuccess">根据字段判断&nbsp;&nbsp;<button name="addField" type="button" class="addColField btn btn-success btn-xs">添加</button></label>
+                        <section class='well'>
+                            <div class="form-group">
+                                <div class="row">
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button name="ok_btn" type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- /.在action modal 对话框中新增一个条件的模板 -->
+<script id="editBtnVisibleConditionModal_add_btn_visible_condition_template" type="text/html">
+        <div class="col-lg-12" style = "margin-top: 3px;">
+            <a class="delete" href="javascript:void(0)" title="删除"><i class="glyphicon glyphicon-remove"></i></a>
+            <select name="modal_field_name" class="form-control" style="display: initial;width: initial;">
+                {{each field_list as field}}
+                    <option value='structure_id:{{field.STRUCTURE_ID}}, field_name:F{{field.ID}}_{{field.FIELD_NAME}}, display_name:{{field.FIELD_DISPLAY_NAME}}'
+                        {{if field.FIELD_DISPLAY_NAME == display_name}}selected{{/if}}
+                    >{{field.FIELD_DISPLAY_NAME}}</option>
+                {{/each}}
+            </select>
+            <select class="form-control" name="operator" style="display: initial;width: initial;">
+                <option {{if operator == '='}}selected{{/if}}>=</option>
+                <option {{if operator == '!='}}selected{{/if}}>!=</option>
+                <option {{if operator == '包含'}}selected{{/if}}>包含</option>
+                <option {{if operator == '不包含'}}selected{{/if}}>不包含</option>
+                <option {{if operator == '自定义条件'}}selected{{/if}}>自定义条件</option>
+            </select> 
+            <input class="form-control" type="text" name="field_value" style="display: initial;width: 40%;" value="{{field_value}}">
+            
+        </div>
+    
+</script>
+
+<!-- /.在action table 列中显示的模板 -->
+<script id="module_action_table_btn_visible_template" type="text/html">
+    <li style="margin-top: 5px;">    
+        <a class="delete" href="javascript:void(0)" title="删除"><i class="glyphicon glyphicon-remove"></i>
+        </a>
+        当<a href="javascript:void">条件</a> 成立时显示
+        <a name="edit_btn_visible_condition" style="cursor: pointer;"><i class="fa fa-edit"></i></a>    
+        <input name="edit_btn_visible_condition_json" type="hidden">
+    </li>
+</script>

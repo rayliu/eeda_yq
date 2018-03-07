@@ -1,0 +1,168 @@
+<div class="modal fade" id="editBtnActionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">点击后执行以下命令</h4>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm" action="">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <input name="modal_row_id" class="form-control" type="hidden">
+                                <input name="modal_command_li_index" class="form-control" type="hidden">
+                                <label class="control-label" for="inputSuccess">名称</label>
+                                <input type="text" name="command_name" class="form-control" value="">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess">执行</label>
+                                <div name='table_list'>
+                                    <select class="form-control" name="action" >
+                                        <option>更新</option>
+                                        <option>新增</option>
+                                        <option>页面跳转</option>
+                                        <option>打印</option>
+                                        <option>发送短信</option>
+                                        <option>发送邮件</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" id="target_order_div">
+                            <div class="form-group ">
+                                <label class="control-label" for="inputSuccess">目标单据</label>
+                                <select class="form-control" name="target_order"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul class="nav nav-tabs" role="tablist" id="command_tab_list" style="display: none;">
+                                <li role="presentation" class="active">
+                                    <a href="#action_tab_1" aria-controls="fields" role="tab" data-toggle="tab" action="1">动作1</a>
+                                </li>
+                                <span style="position: relative; top: 5px; ">
+                                    <a id="add_command_tab" class="btn btn-outline btn-primary btn-xs" href="javascript:void(0)" title="增加"><i class="fa fa-plus"></i></a>
+                                </span>
+                            </ul>
+                            <div class="tab-content" name="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="action_tab_1">
+                                    <div class="row" id="action_row" style="display: none;">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label class="control-label" for="inputSuccess">数据源</label>
+                                                <select class="form-control" name="data_source" >
+
+                                                </select>
+                                                <!--input type="text" name="data_source" class="form-control" value=""-->
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group ">
+                                                <label class="control-label" for="inputSuccess">目标</label>
+                                                <input type="text" name="target_obj" class="form-control" value="" placeholder="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="control-label" for="inputSuccess">执行前判断</label>
+                                        <input type="text" name="condition" class="form-control" value="">
+                                    </div>
+                                    <div id="modal_add_field_div" class="form-group">
+                                        <div id="modal_link_setting_div" class="form-group" style="display: none;">
+                                            <select class="form-control" name="link_action" style="width: 25%;display: inline;">
+                                                <option>原页面跳转</option>
+                                                <option>新增一页跳转</option>
+                                            </select>目标单据
+                                            <input name="target_module" class="form-control" style="display: initial;width: initial;" type="text">
+                                        </div>
+                                        <div id="modal_print_setting_div" class="form-group" style="display: none;">
+                                            <label class="control-label" for="inputSuccess">PDF模板名: (打印设置请联系技术人员)</label>
+                                            <input name="print_template" class="form-control" type="text">
+                                        </div>
+                                        <div id="sms_setting_div" style="display: none;">
+                                          <label class="control-label" for="inputSuccess">短信字段赋值&nbsp;&nbsp;</label>
+                                          <section class='well'>
+                                              <div class="form-group">
+                                                  <div class="row">
+                                                    <label class="control-label" for="inputSuccess">用户名</label>
+                                                    <input name="sms_user" class="form-control" type="text">
+                                                    <label class="control-label" for="inputSuccess">密码</label>
+                                                    <input name="sms_pwd" class="form-control" type="text">
+                                                    <label class="control-label" for="inputSuccess">发送内容</label>
+                                                    <input name="sms_body" class="form-control" type="text">
+                                                    <label class="control-label" for="inputSuccess">手机号码</label>
+                                                    <input name="sms_phone_no" class="form-control" type="text">
+                                                  </div>
+                                              </div>
+                                          </section>
+                                        </div>
+                                        <div id="email_setting_div" style="display: none;">
+                                          <label class="control-label" for="inputSuccess">邮件字段赋值&nbsp;&nbsp;</label>
+                                          <section class='well'>
+                                              <div class="form-group">
+                                                  <div class="row">
+                                                    <label class="control-label" for="inputSuccess">用户名</label>
+                                                    <input name="email_user" class="form-control" type="text">
+                                                    <label class="control-label" for="inputSuccess">密码</label>
+                                                    <input name="email_pwd" class="form-control" type="text">
+                                                    <label class="control-label" for="inputSuccess">发送内容</label>
+                                                    <input name="email_body" class="form-control" type="text">
+                                                  </div>
+                                              </div>
+                                          </section>
+                                        </div>
+                                        <div id="field_setting_div" name="field_setting_div">
+                                          <label class="control-label" for="inputSuccess">字段赋值&nbsp;&nbsp;<button name="addField" type="button" class="addColField btn btn-success btn-xs">添加</button></label>
+                                          <section class='well'>
+                                              <div class="form-group">
+                                                  <div class="row">
+
+                                                  </div>
+                                              </div>
+                                          </section>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" >校验正确性</button>
+                <button name="ok_btn" type="button" class="btn btn-primary">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div class="modal fade" id="editBtnActionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    
+</div>
+<script id="editBtnActionModal_add_field_template" type="text/html">
+        <div class="col-lg-12" style = "margin-top: 3px;">
+            <a class="delete" href="javascript:void(0)" title="删除"><i class="glyphicon glyphicon-remove"></i></a>
+            <input class="form-control" type="text" name="field_value" style="display: initial;width: 50%;" value="{{field_value}}">
+        </div>
+
+</script>
+
+<script id="module_action_command_template" type="text/html">
+    <li style="margin-top: 5px;">
+        <a class="remove delete_command" href="javascript:void(0)" title="删除">
+            <i class="glyphicon glyphicon-remove"></i>
+        </a>&nbsp;
+        <strong style="color: green;" name="command_name">空</strong>...
+        <a name="btnCommandSetting" style="cursor: pointer;"><i class="fa fa-edit"></i></a>
+        <input name="actionCommandJson" type="hidden">
+    </li>
+</script>
