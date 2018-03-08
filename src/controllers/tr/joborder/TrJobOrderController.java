@@ -1348,7 +1348,7 @@ public class TrJobOrderController extends Controller {
 	        		  +" LEFT JOIN custom_plan_order cpo on cpo.ref_job_order_id = jocd.order_id "	        		  
 	        		  +" where jocd.order_id ="+orderId
 	        		  + " and jocd.order_type = '"+office.get("type")+"'  AND ifnull(cpo.delete_flag, 'N') = 'N' "
-	        		  +" union all "
+	        		  +" union "
 	        		  +" select cpo.ref_job_order_id, null id ,jod.doc_name,jod.upload_time, jod.remark,u.c_name, "
 	        		  +" jod.uploader,null share_flag, jod.cms_share_flag,null ,jod.new_flag cms_new_flag "
 	        		  +" from custom_plan_order_doc jod  "
