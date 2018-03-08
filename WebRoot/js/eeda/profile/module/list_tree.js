@@ -177,6 +177,7 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                         var field = json.FORM_FIELDS[i];
                         fields_dataTable.row.add(field).draw(false);
                     }
+                    fieldCont.add_elect_flag();
                     //回显按钮列表
                     btnsCont.list_dataTable.clear().draw();
                     var toolbar_list_table = btnsCont.list_dataTable;

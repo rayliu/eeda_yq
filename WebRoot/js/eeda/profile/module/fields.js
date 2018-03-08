@@ -31,7 +31,8 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         		//选中中tr前，重置tr中的elect_flag之前为Y的
         		$('#fields_table tbody tr').each(function(){
             		if($(this).attr("elect_flag")=="Y"){
-            			$(this).attr("elect_flag","N");
+            			alert("上一条未确定，请点击确定再操作");
+            			return;
             		}
             	});
         		 current_tr = this;
@@ -292,11 +293,34 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         	});
         	return flag;
         }
+        
+        //保存后，重刷字段table表
+        var refresh_table = function(form_field_list){
+        	 dataTable.clear().draw();
+             for (var i = 0; i < form_field_list.length; i++) {
+                 var field = form_field_list[i];
+                 dataTable.row.add(field).draw(false);
+             }
+        }
+        
+        //由于从数据库中load出来的tr没有经过操作，所以没有elect_flag。要给它添加elect_flag
+        var add_elect_flag = function(){
+        	$('#fields_table tbody tr').each(function(){
+        		if($(this).children('td').eq(0).text()=="表中数据为空"){
+        			return;
+        		}else if($(this).attr("id")){
+        			$(this).attr("elect_flag","N");
+        		}
+        	});
+        }
+        
         return {
         	check:check,
             clear: clear,
             buildFieldsDetail: buildFieldsDetail,
-            dataTable: dataTable
+            dataTable: dataTable,
+            refresh_table:refresh_table,
+            add_elect_flag:add_elect_flag
         };
     
 });
