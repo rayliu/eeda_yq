@@ -62,7 +62,11 @@ define(['jquery', './list_tree', './fields', './template_tab', './btns', './even
             // if(!$("#orderForm").valid()){
             //     return;
             // }
-
+            //提交前，校验数据
+            if(!fieldContr.check()){
+            	alert("字段列表尚有操作未完成");
+                return;
+            }
             saveAction($(this));
         });
 

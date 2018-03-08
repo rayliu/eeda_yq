@@ -215,7 +215,7 @@ define(['jquery', 'template', 'dataTablesBootstrap', 'sco'], function ($, templa
         $auth_table.on('click', '.delete', function(e){
             e.preventDefault();
             var tr = $(this).parent().parent();
-            eeda.deletedAuthTableIds.push(tr.attr('id'))
+            deletedAuthTableIds.push(tr.attr('id'))
 
             auth_table.row(tr).remove().draw();
         });

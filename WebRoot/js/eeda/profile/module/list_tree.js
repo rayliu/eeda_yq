@@ -143,8 +143,8 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                 $("#addProductDiv").hide();
                 $("#displayDiv").hide();
             }
+            $(".form_info input[type='text']").val("");
             $("#module_id").text(treeNode.id);
-
             $("#form_name").val(treeNode.name);
             $("#module_url").val(treeNode.url);
 
