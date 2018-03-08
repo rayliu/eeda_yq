@@ -58,7 +58,9 @@ public class tradeBillProfitAndPaymentController extends Controller{
            	 	 + " LEFT JOIN trade_job_order_arap tjoa ON tjoa.order_id = tjo.id"
            	 	 + " LEFT JOIN party p ON p.id = tjo.customer_id"
            	 	 + " WHERE tjo.delete_flag = 'N' and tjo.office_id = "+office_id
-           	 	 + " GROUP BY tjo.id ) A WHERE 1 = 1 "+condition+" AND (charge_rmb - cost_rmb) < 0 ORDER BY customer_name";
+           	 	 + " GROUP BY tjo.id ) A WHERE 1 = 1 "+condition+" AND (charge_rmb - cost_rmb) < 0 "
+           	 	 //+ " ORDER BY customer_name";
+           	 	 + " ORDER BY order_export_date desc";
         }else{
         	 sql = "SELECT*,ROUND(charge_rmb-cost_rmb,2) profit,ROUND(((charge_rmb-cost_rmb)/charge_rmb)*100,2) profit_rate "
         	 	 + " FROM (SELECT tjo.id,tjo.customer_id,tjo.order_no,p.abbr customer_name,tjo.order_export_date,"
@@ -68,7 +70,8 @@ public class tradeBillProfitAndPaymentController extends Controller{
         	 	 + " LEFT JOIN trade_job_order_arap tjoa ON tjoa.order_id = tjo.id"
         	 	 + " LEFT JOIN party p ON p.id = tjo.customer_id"
         	 	 + " WHERE tjo.delete_flag = 'N' and tjo.office_id = "+office_id
-        	 	 + " GROUP BY tjo.id ) A WHERE 1 = 1  "+condition+" ORDER BY customer_name";
+        	 	 //+ " GROUP BY tjo.id ) A WHERE 1 = 1  "+condition+" ORDER BY customer_name";
+        	 	 + " GROUP BY tjo.id ) A WHERE 1 = 1  "+condition+" ORDER BY order_export_date desc";
         }
         
         String sqlTotal = "select count(1) total from ("+sql+") C";
