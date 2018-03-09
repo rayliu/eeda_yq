@@ -25,9 +25,9 @@ define(['jquery'], function ($) {
         var current_tr_index = 0;
         var current_tr=null;
 
-        $('#fields_table tbody').on('click', 'tr', function () {
+        $('#open_form_fields_table tbody').on('click', 'tr', function () {
             current_tr = this;
-            $('#fields_table tbody tr').css('background-color','#fff');
+            $('#open_form_fields_table tbody tr').css('background-color','#fff');
             $(current_tr).css('background-color','#00BCD4');
             current_tr_index = dataTable.row( this ).index();
             var data = dataTable.row( this ).data();
@@ -55,7 +55,7 @@ define(['jquery'], function ($) {
         $('#addFieldBtn').click(function(){
             dataTable.row.add({}).draw(false);
             current_tr_index = dataTable.rows().data().length;
-            current_tr = $('#fields_table tr:eq('+current_tr_index+')');
+            current_tr = $('#open_form_fields_table tr:eq('+current_tr_index+')');
         });
         
         //回写到table

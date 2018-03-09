@@ -32,12 +32,20 @@ define(['jquery', './list_tree', './fields', './template_tab', './btns', './even
                 var order = data;
                 console.log(order);
                 if(order.ID>0){
+                	//回显
                     var form_field_list = order.FORM_FIELD_LIST;
                     fieldContr.refresh_table(form_field_list);
+                    //
+                    var btn_list_query = order.BTN_LIST_QUERY;
+                    var btn_list_edit = order.BTN_LIST_EDIT;
+                    btnsCont.refresh_table(btn_list_query,btn_list_edit);
+                    //
                     var permission_list = order.PERMISSION_LIST;
                     perCont.refresh_table(permission_list);
+                    //
                     var module_role_list = order.MODULE_ROLE_LIST;
                     authCont.refresh_table(module_role_list);
+                    
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     btn.attr('disabled', false);
                 }else{

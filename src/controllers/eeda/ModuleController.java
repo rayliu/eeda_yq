@@ -257,6 +257,11 @@ public class ModuleController extends Controller {
         orderRec.set("permission_list", getPermissionList(module_id.toString()));
         orderRec.set("module_role_list", getAuthList(module_id.toString()));
         
+        List<Record> btn_list_query = getFormBtns(form_id, "list");
+        orderRec.set("btn_list_query", btn_list_query);
+        List<Record> btn_list_edit = getFormBtns(form_id, "edit");
+        orderRec.set("btn_list_edit", btn_list_edit);
+        
         renderJson(orderRec);
     }
     @SuppressWarnings("null")

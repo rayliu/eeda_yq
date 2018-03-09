@@ -28,13 +28,18 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         		$(this).css('background-color','#fff');
         		return;
         	}else{
-        		//选中中tr前，重置tr中的elect_flag之前为Y的
+        		var flag = false;
+        		//选中中tr前，tr中有的elect_fla之前为Y的，表示上一条没有确定
         		$('#fields_table tbody tr').each(function(){
             		if($(this).attr("elect_flag")=="Y"){
             			alert("上一条未确定，请点击确定再操作");
-            			return;
+            			flag = true;
+            			return false;
             		}
             	});
+        		if(flag){
+        			return;
+        		}
         		 current_tr = this;
                  $(current_tr).attr("elect_flag","Y");//将当前选中tr的elect_flag设为Y，表示当前行被选中，可以对当前行编辑
                  $('#fields_table tbody tr').css('background-color','#fff');

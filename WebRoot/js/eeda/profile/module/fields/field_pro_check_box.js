@@ -48,9 +48,9 @@ define(['jquery'], function ($) {
         var current_tr_index = 0;
         var current_tr=null;
 
-        $('#fields_table tbody').on('click', 'tr', function () {
+        $('#field_checkbox_table tbody').on('click', 'tr', function () {
             current_tr = this;
-            $('#fields_table tbody tr').css('background-color','#fff');
+            $('#field_checkbox_table  tbody tr').css('background-color','#fff');
             $(current_tr).css('background-color','#00BCD4');
             current_tr_index = dataTable.row( this ).index();
             var data = dataTable.row( this ).data();
