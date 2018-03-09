@@ -29,6 +29,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
@@ -242,8 +243,7 @@ public class ModuleController extends Controller {
         // 处理权限点
         List<Map<String, String>> permission_list = (ArrayList<Map<String, String>>) dto
                 .get("permission_list");
-        DbUtils.handleList(permission_list, module_id, Permission.class,
-                "module_id");
+        handlePermission(permission_list,module_id);
         // 处理岗位权限
         handleAuth(dto, module_id);
         // 处理打印模板
@@ -254,6 +254,9 @@ public class ModuleController extends Controller {
         Record orderRec = Db.findById("eeda_modules", module_id);
         List<Record> form_field_list = Db.find("select * from eeda_form_field where form_id = ?", form_id);
         orderRec.set("form_field_list", form_field_list);
+        orderRec.set("permission_list", getPermissionList(module_id.toString()));
+        orderRec.set("module_role_list", getAuthList(module_id.toString()));
+        
         renderJson(orderRec);
     }
     @SuppressWarnings("null")
@@ -409,6 +412,40 @@ public class ModuleController extends Controller {
         return formRec.getLong("id");
     }
 
+    private void handlePermission(List<Map<String, String>> list, Long module_id){
+    	if(list!=null){
+    		for (Map<String, String> rowMap : list) {//获取每一行
+    			Permission permission = new Permission();
+    			String rowId = (rowMap.get("id")==null?String.valueOf(rowMap.get("ID")):rowMap.get("id"));
+    			String action = rowMap.get("action");
+    			if(StringUtils.isEmpty(rowId) || "null".equals(rowId)){
+	    			if(!"DELETE".equals(action)){
+	    				DbUtils.setModelValues(rowMap, permission);
+	    				permission.set("module_id", module_id);
+	    				permission.save();	
+	    			}
+	    		}else{
+	    				if("DELETE".equals(action)  ){//delete
+	        				Model<?> deleteModel = permission.findById(rowId);
+	        				//删除关联的role_permission表中的数据
+	            			List<Record> role_permission_list = Db.find("select * from role_permission where permission_id = ?",rowId);
+	            			if(role_permission_list.size()>0){
+	            				for(Record re : role_permission_list){
+	            					Db.update("delete from role_permission where id = ?", re.get("id"));
+	            				}
+	            			}
+	            			//最后才删除 permission表的数据
+	            			deleteModel.delete();
+	            		}else{//UPDATE
+	            			Model<?> updateModel = permission.findById(rowId);
+	            			DbUtils.setModelValues(rowMap, updateModel);
+	            			updateModel.update();
+	            		}
+	    		}
+    		}
+    	}
+    }
+    
     private void handleAuth(Map<String, ?> dto, Long module_id) {
         List<Map<String, ?>> auth_list = (ArrayList<Map<String, ?>>) dto
                 .get("auth_list");
@@ -456,40 +493,46 @@ public class ModuleController extends Controller {
                             "delete from role_permission where module_role_id=?",
                             rowId);
                 } else {// UPDATE
-                    ModuleRole mr = ModuleRole.dao.findById(rowId);
-                    String mr_role_id = mr.getLong("role_id").toString();
-                    if (!mr_role_id.equals(role_id)) {
-                        mr.set("role_id", role_id).save();
-                    }
-                    String mr_id = mr.getLong("id").toString();
-                    List<Map<String, String>> permissionList = (List) map
-                            .get("permission_list");
-                    for (Map<String, ?> p : permissionList) {
-                        String row_id = (String) p.get("id");
-                        String permissionId = (String) p.get("permission_id");
-                        String permissionCode = (String) p
-                                .get("permission_code");
-                        boolean is_auth = (Boolean) p.get("is_authorize");
-                        RolePermission rp = RolePermission.dao.findById(row_id);
-                        if (rp != null) {
-                            rp.set("module_id", module_id);
-                            rp.set("role_id", role_id);
-                            rp.set("role_code", role_code);
-                            rp.set("permission_id", permissionId);
-                            rp.set("permission_code", permissionCode);
-                            rp.set("is_authorize", is_auth);
-                            rp.set("module_role_id", mr_id);
-                            rp.update();
-                        } else {
-                            rp = new RolePermission();
-                            rp.set("module_id", module_id);
-                            rp.set("role_id", role_id);
-                            rp.set("role_code", role_code);
-                            rp.set("permission_id", permissionId);
-                            rp.set("permission_code", permissionCode);
-                            rp.set("is_authorize", is_auth);
-                            rp.set("module_role_id", mr_id);
-                            rp.save();
+                    Record mr = Db.findById("module_role", rowId);
+                    if(mr!=null){
+                    	String mr_role_id = mr.getLong("role_id").toString();
+                        if (!mr_role_id.equals(role_id)) {
+                        	mr.set("role_id",role_id);
+                        	Db.update("module_role", mr);
+                        }
+                        String mr_id = mr.getLong("id").toString();
+                        List<Map<String, String>> permissionList = (List) map
+                                .get("permission_list");
+                        for (Map<String, ?> p : permissionList) {
+                            String row_id = (String) p.get("id");
+                            String permissionId = (String) p.get("permission_id");
+                            String permissionCode = (String) p
+                                    .get("permission_code");
+                            boolean is_auth = (Boolean) p.get("is_authorize");
+                            Record permission = Db.findById("permission", permissionId);
+                            if(permission!=null){
+                            	RolePermission rp = RolePermission.dao.findById(row_id);
+                            	if (rp != null) {
+                                    rp.set("module_id", module_id);
+                                    rp.set("role_id", role_id);
+                                    rp.set("role_code", role_code);
+                                    rp.set("permission_id", permissionId);
+                                    rp.set("permission_code", permissionCode);
+                                    rp.set("is_authorize", is_auth);
+                                    rp.set("module_role_id", mr_id);
+                                    rp.update();
+                                } else {
+                                    rp = new RolePermission();
+                                    rp.set("module_id", module_id);
+                                    rp.set("role_id", role_id);
+                                    rp.set("role_code", role_code);
+                                    rp.set("permission_id", permissionId);
+                                    rp.set("permission_code", permissionCode);
+                                    rp.set("is_authorize", is_auth);
+                                    rp.set("module_role_id", mr_id);
+                                    rp.save();
+                                }
+                            }
                         }
                     }
                 }

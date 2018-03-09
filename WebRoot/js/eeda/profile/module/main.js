@@ -34,6 +34,10 @@ define(['jquery', './list_tree', './fields', './template_tab', './btns', './even
                 if(order.ID>0){
                     var form_field_list = order.FORM_FIELD_LIST;
                     fieldContr.refresh_table(form_field_list);
+                    var permission_list = order.PERMISSION_LIST;
+                    perCont.refresh_table(permission_list);
+                    var module_role_list = order.MODULE_ROLE_LIST;
+                    authCont.refresh_table(module_role_list);
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     btn.attr('disabled', false);
                 }else{

@@ -301,6 +301,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
                  var field = form_field_list[i];
                  dataTable.row.add(field).draw(false);
              }
+             add_elect_flag();
         }
         
         //由于从数据库中load出来的tr没有经过操作，所以没有elect_flag。要给它添加elect_flag

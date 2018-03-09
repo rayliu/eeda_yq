@@ -175,11 +175,20 @@ define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
             $("#editField").modal('hide');
         });
 
-        
-
-        
-
-        
+        var refresh_table = function(permission_list){
+        	deletedPermisstionTableIds.length = 0;
+        	dataTable.clear().draw();
+             for (var i = 0; i < permission_list.length; i++) {
+                 var permission = permission_list[i];
+                 var permissionItem ={
+                     ID: permission.ID,
+                     CODE: permission.CODE,
+                     NAME: permission.NAME,
+                     URL: permission.URL
+                 };
+                 dataTable.row.add(permissionItem).draw(false);
+             }
+        }
 
         //单据预览
         $('#previewBtn').click(function(){
@@ -196,6 +205,7 @@ define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
         });
 
         return {
+        	refresh_table:refresh_table,
             deletedPermisstionTableIds: deletedPermisstionTableIds
         }; 
     

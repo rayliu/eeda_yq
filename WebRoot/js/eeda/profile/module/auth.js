@@ -273,7 +273,24 @@ define(['jquery', 'template', 'dataTablesBootstrap', 'sco'], function ($, templa
             return items_array;
         };
 
+        var refresh_table = function(module_role_list){
+        	deletedAuthTableIds.length = 0;
+        	permission_list.length=0;
+        	auth_table.clear().draw();
+            for (var i = 0; i < module_role_list.length; i++) {
+                var auth = module_role_list[i];
+                var authItem ={
+                    ID: auth.ID,
+                    ROLE_ID: auth.ROLE_ID,
+                    ROLE_PERMISSION: auth.PERMISSION_LIST
+                };
+                generateCheckGroup(authItem.ROLE_PERMISSION,permission_list);
+                auth_table.row.add(authItem).draw(false);
+            }
+        }
+        
         return {
+        	refresh_table :refresh_table,
             deletedAuthTableIds: deletedAuthTableIds,
             buildAuthTableDetail: buildAuthTableDetail
         }; 
