@@ -39,7 +39,7 @@ define(['jquery', './print'], function ($, printCont) {
                                 }else{
                                     window.open(url);
                                 }
-                            }else if(event.TYPE == "save"){
+                            }else if(event.TYPE == "save"||event.TYPE == "set_value"){
                                 var $form = $("#module_form");
                                 var data = getFormData($form);
                                 console.log('save action....');
@@ -47,7 +47,14 @@ define(['jquery', './print'], function ($, printCont) {
                                 if(order_id==-1){
                                     doAdd(data);
                                 }else{
-                                    doUpdate(data);
+                                	if(event.TYPE == "set_value"){
+                                		data.type = "set_value";
+                                		data.event_id = event.ID;
+                                		data.form_id = event.FORM_ID.toString();
+                                	}else{
+                                		data.TYPE = "save";
+                                	}
+                                	doUpdate(data);
                                 }
                             }else if(event.TYPE == "refresh_list"){
                                 var dataTable = $('#list_table').DataTable();
@@ -134,7 +141,11 @@ define(['jquery', './print'], function ($, printCont) {
         function doUpdate(data){
             $.post('/form/'+data.module_id+'-doUpdate', {data: JSON.stringify(data)}, function(dto){
                 if(dto){
+                	if(dto.TYPE=="set_value"){
+                		$("input[name='"+dto.TEXT_NAME+"']").val(dto.TEXT_VALUE);
+                	}
                     $('.Huialert-success').show();
+                    
                 }else{
                     $('.Huialert-error').show();
                 }

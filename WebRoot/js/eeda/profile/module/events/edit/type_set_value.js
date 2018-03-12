@@ -51,6 +51,18 @@ define(['jquery'], function ($) {
           ]
         });
 
+        var deleteList=[];
+        $('#edit_set_value_fields_table tbody').on('click', 'button', function () {
+          var btn = $(this);
+          var tr = btn.closest('tr');
+          var id = dataTable.row(tr).data().ID;
+
+          dataTable.row(tr).remove().draw();
+
+          deleteList.push({ID: id.toString(), action:'DELETE'});
+          return false;
+        });
+        
         var buildDto = function(){
 
             var dto = {
@@ -70,8 +82,8 @@ define(['jquery'], function ($) {
 
               itemList.push(item);
             }
-
-            dto.SET_FIELD_LIST = itemList;
+            var list = itemList.concat(deleteList);
+            dto.SET_FIELD_LIST = list;
             return dto;
         };
 

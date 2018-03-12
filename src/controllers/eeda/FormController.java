@@ -241,90 +241,107 @@ public class FormController extends Controller {
         
         Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
-        String module_id = (String) dto.get("module_id");
-        Record formRec = Db.findFirst("select * from eeda_form_define where "
-                + " module_id=?", module_id);
-        if(formRec ==null){
-            logger.debug("-------------form 没有定义!---------------");
-            redirect("/");
-            return rec;
-        }
-        Long form_id = formRec.getLong("id");
-        for (Entry<String, ?> entry : dto.entrySet()) { 
-            String key = entry.getKey();
-            if(key.startsWith("form_"+form_id)){
-                String colName = key.split("-")[1];
-                String value = String.valueOf(entry.getValue()).trim();
-                //处理-自动编号
-                String fieldId = colName.split("_")[0].substring(1);
-                String fieldName = colName.split("_")[1];
-                Record fieldRec = 
-                        Db.findFirst("select * from eeda_form_field where form_id=? and field_name=?",
-                                form_id, fieldName);
-                if(fieldRec != null){
-                    String field_type = fieldRec.getStr("field_type");
-                    if("自动编号".equals(field_type) && StrKit.isBlank(value)){
-                        String orderNo = handleAutoNo(form_id, colName, fieldId);
-                        value = orderNo;
-                    }
-                }
-                rec.set(colName, value);
-            }
-        }
-        
-        String order_id = (String) dto.get("order_id");
-        if (StrKit.isBlank(order_id)) {
-            Db.save("form_"+form_id, rec);
+        if("set_value".equals(dto.get("type"))){
+        	List<Record> esvi_list = Db.find("select * from eeda_form_event_set_value_item where event_id = ?",dto.get("event_id"));
+        	if(esvi_list.size()>0){
+        		for(Record esvi :esvi_list){
+            		Record field = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name = ?",dto.get("form_id"),esvi.get("name"));
+                	if(field!=null){
+                		String form_name = "form_"+dto.get("form_id");
+                		String column_name = "f"+field.get("id")+"_"+field.get("field_name");
+                		Db.update("update "+form_name+" set "+column_name+" = '"+esvi.get("value")+"' where id = ?",dto.get("order_id"));
+                		rec.set("text_name", form_name+"-"+column_name);
+                		rec.set("text_value", esvi.get("value"));
+                		rec.set("type", dto.get("type"));
+                	}
+            	}
+        	}
         }else{
-            rec.set("id", order_id);
-            Db.update("form_"+form_id, rec);
-        }
-        
-        //处理从表保存
-        List<Map<String, ?>> detailList = (ArrayList<Map<String, ?>>)dto.get("detail_tables");
-        for (Map<String, ?> detail : detailList) {
-             String table_id = (String) detail.get("table_id");
-             String field_id = table_id.split("_")[2];
-             //1.通过field_id 找到对应的明细表 form_id
-             Record detailRec = Db.findFirst("select distinct form.* from eeda_form_field f, eeda_form_field_type_detail_ref ref, eeda_form_define form "
-                +" where f.id = ref.field_id "
-                +" and ref.target_form_name = form.name"
-                +" and f.id = ?", field_id);
-             //2.通过field_id 找到对应的明细表 的 关联字段, 现在先做单个//TODO
-             Record detailConditionRec = Db.findFirst("select ref.* from eeda_form_field f, eeda_form_field_type_detail_ref_join_condition ref "
-                     +" where f.id = ref.field_id "
-                     +" and f.id = ?", field_id);
-             String field_from = detailConditionRec.getStr("field_from");
-             String field_to = detailConditionRec.getStr("field_to");
-             //主表关联值
-             Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1]);//获取数据库对应的名称: f59_xh
-             String field_from_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
-             Object from_field_value = rec.get(field_from_name);
-             //从表关联值
-             Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1]);//获取数据库对应的名称: f59_xh
-             String field_to_name = "f"+field_to_rec.getLong("id")+"_"+field_to_rec.getStr("field_name");
-             
-             Long detail_form_id = detailRec.getLong("id");
-             List<Map<String, ?>> detailDataList = (List<Map<String, ?>>)detail.get("data_list");
-             for (Map<String, ?> rowMap : detailDataList) {
-                 Record rowRec = new Record();
-                 for (Entry<String, ?> entry : rowMap.entrySet()) { 
-                     String colName = entry.getKey();
-                     String value = String.valueOf(entry.getValue()).trim();
-                     if("id".equals(colName)){
-                         if(!StrKit.isBlank(value)){
-                             rowRec.set(colName, Long.valueOf(value));
+        	String module_id = (String) dto.get("module_id");
+            Record formRec = Db.findFirst("select * from eeda_form_define where "
+                    + " module_id=?", module_id);
+            if(formRec ==null){
+                logger.debug("-------------form 没有定义!---------------");
+                redirect("/");
+                return rec;
+            }
+            Long form_id = formRec.getLong("id");
+            for (Entry<String, ?> entry : dto.entrySet()) { 
+                String key = entry.getKey();
+                if(key.startsWith("form_"+form_id)){
+                    String colName = key.split("-")[1];
+                    String value = String.valueOf(entry.getValue()).trim();
+                    //处理-自动编号
+                    String fieldId = colName.split("_")[0].substring(1);
+                    String fieldName = colName.split("_")[1];
+                    Record fieldRec = 
+                            Db.findFirst("select * from eeda_form_field where form_id=? and field_name=?",
+                                    form_id, fieldName);
+                    if(fieldRec != null){
+                        String field_type = fieldRec.getStr("field_type");
+                        if("自动编号".equals(field_type) && StrKit.isBlank(value)){
+                            String orderNo = handleAutoNo(form_id, colName, fieldId);
+                            value = orderNo;
+                        }
+                    }
+                    rec.set(colName, value);
+                }
+            }
+            
+            String order_id = (String) dto.get("order_id");
+            if (StrKit.isBlank(order_id)) {
+                Db.save("form_"+form_id, rec);
+            }else{
+                rec.set("id", order_id);
+                Db.update("form_"+form_id, rec);
+            }
+            
+            //处理从表保存
+            List<Map<String, ?>> detailList = (ArrayList<Map<String, ?>>)dto.get("detail_tables");
+            for (Map<String, ?> detail : detailList) {
+                 String table_id = (String) detail.get("table_id");
+                 String field_id = table_id.split("_")[2];
+                 //1.通过field_id 找到对应的明细表 form_id
+                 Record detailRec = Db.findFirst("select distinct form.* from eeda_form_field f, eeda_form_field_type_detail_ref ref, eeda_form_define form "
+                    +" where f.id = ref.field_id "
+                    +" and ref.target_form_name = form.name"
+                    +" and f.id = ?", field_id);
+                 //2.通过field_id 找到对应的明细表 的 关联字段, 现在先做单个//TODO
+                 Record detailConditionRec = Db.findFirst("select ref.* from eeda_form_field f, eeda_form_field_type_detail_ref_join_condition ref "
+                         +" where f.id = ref.field_id "
+                         +" and f.id = ?", field_id);
+                 String field_from = detailConditionRec.getStr("field_from");
+                 String field_to = detailConditionRec.getStr("field_to");
+                 //主表关联值
+                 Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+                 String field_from_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
+                 Object from_field_value = rec.get(field_from_name);
+                 //从表关联值
+                 Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+                 String field_to_name = "f"+field_to_rec.getLong("id")+"_"+field_to_rec.getStr("field_name");
+                 
+                 Long detail_form_id = detailRec.getLong("id");
+                 List<Map<String, ?>> detailDataList = (List<Map<String, ?>>)detail.get("data_list");
+                 for (Map<String, ?> rowMap : detailDataList) {
+                     Record rowRec = new Record();
+                     for (Entry<String, ?> entry : rowMap.entrySet()) { 
+                         String colName = entry.getKey();
+                         String value = String.valueOf(entry.getValue()).trim();
+                         if("id".equals(colName)){
+                             if(!StrKit.isBlank(value)){
+                                 rowRec.set(colName, Long.valueOf(value));
+                             }
+                         }else{
+                             rowRec.set(colName, value);
                          }
-                     }else{
-                         rowRec.set(colName, value);
                      }
-                 }
-                 rowRec.set(field_to_name, from_field_value);//关联字段 赋值
-                 if(rowRec.get("id")==null){
-                     Db.save("form_"+detail_form_id, rowRec);
-                 }else{
-                     Db.update("form_"+detail_form_id, rowRec);
-                 }
+                     rowRec.set(field_to_name, from_field_value);//关联字段 赋值
+                     if(rowRec.get("id")==null){
+                         Db.save("form_"+detail_form_id, rowRec);
+                     }else{
+                         Db.update("form_"+detail_form_id, rowRec);
+                     }
+                }
             }
         }
         return rec;

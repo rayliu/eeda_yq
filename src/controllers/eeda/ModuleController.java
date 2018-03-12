@@ -165,6 +165,7 @@ public class ModuleController extends Controller {
             }
             module.set("module_name", module_name);
             module.update();
+            Db.update("update eeda_form_define set name='"+module_name+"' where module_id ='"+module.get("id")+"'");
         }
 
         renderJson(module);

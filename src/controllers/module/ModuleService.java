@@ -243,10 +243,15 @@ public class ModuleService {
                     item.set("value", value);
                     Db.save("eeda_form_event_set_value_item", item);
                 } else {
-                    item = Db.findById("eeda_form_event_set_value_item", field_id);
-                    item.set("name", name);
-                    item.set("value", value);
-                    Db.update("eeda_form_event_set_value_item", item);
+                	if("DELETE".equals(field.get("action"))){
+                		item = Db.findById("eeda_form_event_set_value_item", field_id);
+                		Db.delete("eeda_form_event_set_value_item", item);
+                	}else{
+                		item.set("id", field_id);
+                        item.set("name", name);
+                        item.set("value", value);
+                        Db.update("eeda_form_event_set_value_item", item);
+                	}
                 }
             }
         }
