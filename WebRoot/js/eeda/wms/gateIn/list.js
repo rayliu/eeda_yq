@@ -262,6 +262,23 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         	invTable.ajax.url("/gateIn/list?inv_flag=Y").load();
         }
         
+        $('#downloadBtn').click(function(e){
+        	var self = this;
+        	self.diabled = true;
+        	var text_value = $(self).text();
+        	$(self).text("导出中...");
+        	
+        	var itemJson = buildCondition();
+	        var url = "/gateIn/downloadList?error_flag=N&jsonStr="+JSON.stringify(itemJson);
+	        $.post(url, function(data){
+	            if(data){
+	            	window.open(data);
+	            }
+	            self.diabled = false;
+	            $(self).text(text_value);
+	        });
+	    });
+        
         getQuantity();
 	});
 });

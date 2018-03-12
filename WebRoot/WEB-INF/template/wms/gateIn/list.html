@@ -21,7 +21,7 @@
                         <div class="col-lg-4" style="display:block;">        
                             <%include("/eeda/component/form/inputDateQueryField.html", 
                             {	id:'create_time', 
-	                            label:'创建时间', 
+	                            label:'入库时间', 
 	                            value:''
 	                        }){} %>
                         </div>
@@ -40,10 +40,23 @@
                                 label: '组件名称', 
                                 value: ''
                             }){}%>
-                            
                         </div>
-                        <div class="col-lg-4">
-	                        <label class="radio-inline">
+                        <div class="col-lg-4" style="display:block;">        
+                            <%include("/eeda/component/form/inputDateQueryField.html", 
+                            {	id:'out_time', 
+	                            label:'出库时间', 
+	                            value:''
+	                        }){} %>
+                        </div>
+                    </div>
+                    <div class="row">
+                   		<div class="col-lg-4">
+                        </div>
+                    	<div class="col-lg-4">
+                        </div>
+                    	<div class="col-lg-4">
+                    		<label>出入库类型</label>
+	                        <label class="radio-inline" style="margin-left:50px">
 						        <input type="radio" name="orderType" id="" value="gateIn" checked> 入库记录
 						    </label>
 						    <label class="radio-inline">
@@ -54,6 +67,7 @@
                     <div class="form-group button-bar" >
                         <button id="searchBtn" class="btn btn-default" type="button">查询</button>
                         <button id="resetBtn" class="btn btn-default" type="button">清空条件</button>
+                        <button id="downloadBtn" class="btn btn-default" type="button">导出明细</button>
                         <button id="uploadBtn" class="btn btn-default" style="display: none;"  type="button">导入单据</button>
                         <input type="file" id="toFileUpload" name="files[]" 
 						     style="position:absolute;;  opacity:0;" data-url="/importOrder/importMac?order_type=gateIn">
