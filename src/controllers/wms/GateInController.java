@@ -347,15 +347,20 @@ public class GateInController extends Controller {
             
     	}
     
-    	sql = "select gi.*, ifnull(u.c_name, u.user_name) creator_name,pro.item_no,pro.id product_id,pro.item_name,pro.part_name part_name "
+    	sql = "select"
+    		+ " A.part_no ,"
+    		+ " A.part_name,"
+    		+ " group_concat(distinct A.shelves SEPARATOR '  ;  ') shelves,"
+    		+ " sum(A.quantity) total_quantity "
+    		+ " from "
+    		+ " (select gi.*,pro.item_no,pro.item_name,pro.part_name part_name "
 			+ " from gate_in gi "
-			+ " left join user_login u on u.id = gi.creator"
 			+ " left join wmsproduct pro on pro.part_no = gi.part_no"
 			+ " where gi.office_id="+office_id
 			+ error_flag
 			+ inv_flag
 			+ condition
-			+ " group by gi.id  ";
+			+ " group by gi.id) A group by A.part_no  ";
     	
     	String operate_time = "create_time";
     	String excelName = "入库明细";
@@ -365,8 +370,8 @@ public class GateInController extends Controller {
     	}
     	
         String exportSql = sql;
-        String[] headers = new String[]{"组件编码", "组件名称","QR_code","数量","货架","操作时间","操作人"};
-        String[] fields = new String[]{"part_no", "part_name","qr_code", "quantity","shelves",operate_time,"creator_name"};
+        String[] headers = new String[]{"组件编码", "组件名称","货架","总数"};
+        String[] fields = new String[]{"part_no", "part_name","shelves", "total_quantity"};
         String fileName = generateExcel(headers, fields, exportSql,excelName);
         renderText(fileName);
     }
