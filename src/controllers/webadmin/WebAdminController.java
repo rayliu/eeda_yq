@@ -229,7 +229,7 @@ public class WebAdminController extends Controller {
     	//手机推送申请
     	String sql_mobile = "select * from wc_ad_mobile_promotion where status = '新建'";
     	//促广告提醒
-    	String sql_cu = "select * from wc_ad_cu where status = '关闭'";
+    	String sql_cu = "select * from wc_ad_cu where status = '关闭' and delete_flag !='Y'";
     	//钻石提醒
     	String sql_diamond = "select * from wc_ad_diamond where status = '新建' and trade_status = 'TRADE_SUCCESS'";
     	List<Record> nopass = Db.find(sql_nopass);
