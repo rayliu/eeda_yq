@@ -257,6 +257,49 @@ public class ModuleService {
         }
     }
     
+    public void saveEventSaveSetValue(Map<String, ?> event, Long event_id){
+    	 Map<String, ?> dto = (Map<String, ?>) event.get("SAVE");
+    	 if (dto != null) {
+    		 String condition = (String) dto.get("CONDITION");
+             String id = (String) dto.get("id".toUpperCase());
+             Record itemRec = new Record();
+             if (StrKit.isBlank(id)) {
+                 itemRec.set("event_id", event_id);
+                 itemRec.set("condition", condition);
+                 Db.save("eeda_form_event_save_set_value", itemRec);
+             } else {
+                 itemRec = Db.findById("eeda_form_event_save_set_value", id);
+                 itemRec.set("condition", condition);
+                 Db.update("eeda_form_event_save_set_value", itemRec);
+             }
+    		 
+    		 List<Map<String, String>> field_list = (ArrayList<Map<String, String>>) dto
+                     .get("SET_FIELD_LIST");
+             for (Map<String, String> field : field_list) {
+                 String name = (String) field.get("NAME");
+                 String value = (String) field.get("VALUE");
+                 String field_id = (String)field.get("id".toUpperCase());
+                 Record item = new Record();
+                 if (StrKit.isBlank(field_id)) {
+                     item.set("event_id", event_id);
+                     item.set("name", name);
+                     item.set("value", value);
+                     Db.save("eeda_form_event_save_set_value_item", item);
+                 } else {
+                 	if("DELETE".equals(field.get("action"))){
+                 		item = Db.findById("eeda_form_event_save_set_value_item", field_id);
+                 		Db.delete("eeda_form_event_save_set_value_item", item);
+                 	}else{
+                 		item.set("id", field_id);
+                         item.set("name", name);
+                         item.set("value", value);
+                         Db.update("eeda_form_event_save_set_value_item", item);
+                 	}
+                 }
+             }
+    	 }
+    }
+    
     public void saveEventSetCss(Map<String, ?> event, Long event_id) {
         Map<String, ?> dto = (Map<String, ?>) event.get("SET_CSS");
         if (dto != null) {
@@ -468,6 +511,9 @@ public class ModuleService {
 
         Map<String, ?> fieldTypeObj = (Map<String, ?>) field
                 .get("DETAIL_REF");
+        if(fieldTypeObj==null){
+        	return;
+        }
         String refId = fieldTypeObj.get("id".toUpperCase()).toString();
         String target_form_name = (String) fieldTypeObj
                 .get("target_form_name".toUpperCase());

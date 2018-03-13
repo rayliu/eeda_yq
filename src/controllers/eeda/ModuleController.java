@@ -263,6 +263,9 @@ public class ModuleController extends Controller {
         List<Record> btn_list_edit = getFormBtns(form_id, "edit");
         orderRec.set("btn_list_edit", btn_list_edit);
         
+        List<Record> editEventList = Db.find("select essvi.* from eeda_form_event_save_set_value_item essvi "
+        									+ "left join eeda_form_event efe on essvi.event_id = efe.id where efe.form_id = ?", form_id);
+        orderRec.set("editEventList", editEventList);
         renderJson(orderRec);
     }
     @SuppressWarnings("null")
@@ -320,6 +323,9 @@ public class ModuleController extends Controller {
                 } else if ("set_value".equals(type)) {
                     ModuleService ms = new ModuleService(this);
                     ms.saveEventSetValue(event, rec.getLong("id"));
+                }else if("save".equals(type)){
+                	ModuleService ms = new ModuleService(this);
+                	ms.saveEventSaveSetValue(event, rec.getLong("id"));
                 }
                 Db.update("eeda_form_event", rec);
             } else {
@@ -346,6 +352,9 @@ public class ModuleController extends Controller {
                 } else if ("list_add_row".equals(type)) {
                     ModuleService ms = new ModuleService(this);
                     ms.saveEventListAddRow(event, rec.getLong("id"));
+                }else if("save".equals(type)){
+                	ModuleService ms = new ModuleService(this);
+                	ms.saveEventSaveSetValue(event, rec.getLong("id"));
                 }
             }
         }
@@ -614,6 +623,15 @@ public class ModuleController extends Controller {
                         event.getLong("id"));
                 
                 event.set("list_add_row", rec);
+            }else if("save".equals(eventType)){
+            	Record cssRec = Db.findFirst(
+                        "select * from eeda_form_event_save_set_value where event_id=?",
+                        event.getLong("id"));
+            	List<Record> itemList = Db.find(
+                         "select * from eeda_form_event_save_set_value_item where event_id=?",
+                         event.getLong("id"));
+            	cssRec.set("set_field_list", itemList);
+                event.set("save", cssRec);
             }
         }
 

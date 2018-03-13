@@ -1,5 +1,5 @@
-define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set_value'],
-   function ($, tree, setCssCont, setValueCont) {
+define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set_value','./events/edit/type_save_set_value'],
+   function ($, tree, setCssCont, setValueCont,saveSetValueCont) {
     
     //---------------tree handle
     var setting = {
@@ -49,7 +49,7 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
       if(currentNode.SET_VALUE){
         $('#edit_event_value_id').val(currentNode.SET_VALUE.ID||'');
         $('#edit_event_set_value_condition').val(currentNode.SET_VALUE.CONDITION);
-
+        $('#edit_save_set_value_div').hide();
         var itemList = currentNode.SET_VALUE.SET_FIELD_LIST;
         setValueCont.dataTable.clear().draw();
         if(itemList){
@@ -58,6 +58,18 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
               setValueCont.dataTable.row.add(item).draw(false);
           }
         }
+      }else if(currentNode.SAVE){
+          $('#edit_event_save_value_id').val(currentNode.SAVE.ID);
+          $('#edit_event_save_set_value_condition').val(currentNode.SAVE.CONDITION);
+          $('#edit_set_value_div').hide();
+          var itemList = currentNode.SAVE.SET_FIELD_LIST;
+          saveSetValueCont.dataTable.clear().draw();
+          if(itemList){
+            for (var i = 0; i < itemList.length; i++) {
+                var item = itemList[i];
+                saveSetValueCont.dataTable.row.add(item).draw(false);
+            }
+          }
       }else if(currentNode.SET_CSS){
         $('#edit_event_css_id').val(currentNode.SET_CSS.ID||'');
         $('#edit_event_set_css_condition').val(currentNode.SET_CSS.CONDITION);
@@ -239,6 +251,11 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
               TARGET_FIELD_NAME: $('#edit_event_target_list').val()
             };
             currentNode.EVENT_TARGET_LIST = dto;
+         }else if(type=='save'){
+             var dto = saveSetValueCont.buildDto();
+
+             currentNode.EVENT_NAME= event_name;
+             currentNode.SAVE = dto;
          }
          zTreeObj.updateNode(currentNode);
     });
@@ -271,6 +288,8 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
           $('#edit_set_value_div').show();
        }else if(type == 'list_add_row'){
           $('#edit_list_add_row_div').show();
+       }else if(type =="save"){
+    	   $('#edit_save_set_value_div').show();
        }
     });
 
@@ -294,10 +313,20 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
       $('#edit_set_css_target_field').val('');
 
       setValueCont.dataTable.clear().draw();
-      setValueCont.dataTable.clear().draw();
+      saveSetValueCont.dataTable.clear().draw();
     }
 
+    var refresh_table = function(itemList){
+    	saveSetValueCont.dataTable.clear().draw();
+        if(itemList){
+          for (var i = 0; i < itemList.length; i++) {
+              var item = itemList[i];
+              saveSetValueCont.dataTable.row.add(item).draw(false);
+          }
+        }
+    }
     return {
+    	refresh_table:refresh_table,
         clear: clear,
         zTreeObj: zTreeObj,
         displayBtnTree: displayBtnTree,

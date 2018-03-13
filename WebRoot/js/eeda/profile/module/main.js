@@ -1,6 +1,6 @@
-define(['jquery', './list_tree', './fields', './template_tab', './btns', './events', './permission', './auth',
+define(['jquery', './list_tree', './fields', './template_tab', './btns', './events', './edit_events', './permission', './auth',
          './print_template/print_template', './interface/interface', 'zTree'], 
-    function ($, listCont, fieldContr, templateCont, btnsCont, eventsCont, perCont, authCont, printCont, interfaceCont) {
+    function ($, listCont, fieldContr, templateCont, btnsCont, eventsCont,editEventCont, perCont, authCont, printCont, interfaceCont) {
 
         $(document).ready(function() {
 
@@ -45,6 +45,9 @@ define(['jquery', './list_tree', './fields', './template_tab', './btns', './even
                     //
                     var module_role_list = order.MODULE_ROLE_LIST;
                     authCont.refresh_table(module_role_list);
+                    //
+                    var editEventList = order.EDITEVENTLIST;
+                    editEventCont.refresh_table(editEventList);
                     
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     btn.attr('disabled', false);

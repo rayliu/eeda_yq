@@ -2,7 +2,7 @@ define(['jquery'], function ($) {
     
 
         var dataTable = eeda.dt({
-          id: 'edit_set_value_fields_table',
+          id: 'edit_save_set_value_fields_table',
           paging: false,
           lengthChange: false,
           columns: [
@@ -52,22 +52,23 @@ define(['jquery'], function ($) {
         });
 
         var deleteList=[];
-        $('#edit_set_value_fields_table tbody').on('click', 'button', function () {
+        $('#edit_save_set_value_fields_table tbody').on('click', 'button', function () {
           var btn = $(this);
           var tr = btn.closest('tr');
           var id = dataTable.row(tr).data().ID;
 
           dataTable.row(tr).remove().draw();
-
-          deleteList.push({ID: id.toString(), action:'DELETE'});
+          if(id!=null){
+        	  deleteList.push({ID: id.toString(), action:'DELETE'});
+          }
           return false;
         });
         
         var buildDto = function(){
 
             var dto = {
-              ID: $('#edit_event_value_id').val(),
-              CONDITION : $('#edit_event_set_value_condition').val()
+              ID: $('#edit_event_save_value_id').val(),
+              CONDITION : $('#edit_event_save_set_value_condition').val()
             };
 
             var data = dataTable.rows().data();
@@ -84,13 +85,14 @@ define(['jquery'], function ($) {
             }
             var list = itemList.concat(deleteList);
             dto.SET_FIELD_LIST = list;
+            deleteList.length = 0;
             return dto;
         };
 
-        $('#edit_set_value_table_addBtn').click(function(){
+        $('#edit_save_set_value_table_addBtn').click(function(){
             dataTable.row.add({}).draw(false);
             current_tr_index = dataTable.rows().data().length;
-            current_tr = $('#edit_set_value_fields_table tr:eq('+current_tr_index+')');
+            current_tr = $('#edit_save_set_value_fields_table tr:eq('+current_tr_index+')');
         });
 
         return {
