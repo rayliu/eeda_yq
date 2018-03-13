@@ -281,7 +281,9 @@ public class TaoController extends Controller {
     	//String input = getPara("input");
     	List<Record> userList = new ArrayList<Record>();
     	
-    	userList = Db.find("select id,user_name from user_login");
+    	userList = Db.find("select ul.id,ifnull(com.c_name,com.company_name) user_name from user_login ul "
+    			+ " left join wc_company com on com.creator = ul.id"
+    			+ " where com.id is not null");
     	
     	renderJson(userList);
     }
