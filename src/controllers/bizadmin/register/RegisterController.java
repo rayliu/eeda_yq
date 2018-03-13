@@ -34,6 +34,10 @@ public class RegisterController extends Controller {
 	public void index() {
 		render(getRequest().getRequestURI()+"/index.html");
 	}
+	
+	public void agreement(){
+		render("/BusinessAdmin/register/agreement.html");
+	}
     
 	@Before(Tx.class)
 	public void info() throws UnsupportedEncodingException{
