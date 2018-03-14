@@ -122,8 +122,10 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
     }
     
     var zTreeObj; 
-
+    
+    var update_flag = "N";
     $('#listEventConfirmBtn').click(function(event) {
+    	update_flag = "Y";
          var type=$('#list_event_type').val();
          currentNode.name = $('#list_event_name').val();
          currentNode.type = type;
@@ -222,11 +224,15 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
       
     }
 
+    var listEvent_update_flag = function(){
+    	return update_flag;
+    }
     return {
         clear: clear,
         zTreeObj: zTreeObj,
         displayBtnTree: displayBtnTree,
-        buildTreeNodes: buildTreeNodes
+        buildTreeNodes: buildTreeNodes,
+        listEvent_update_flag:listEvent_update_flag
           // list_dataTable: list_dataTable,
           // edit_dataTable: edit_dataTable
     };

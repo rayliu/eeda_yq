@@ -74,8 +74,13 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         	}
         } );
 
+        var update_flag = "N";
+        var field_update_flag = function(){
+        	return update_flag;
+        }
         var deleteList=[];
         $('#fields_table tbody').on('click', 'button', function () {
+          update_flag = "Y";
           var btn = $(this);
           var tr = btn.closest('tr');
           var id = dataTable.row(tr).data().ID;
@@ -249,6 +254,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
 
         //回写到table
         $('#field_tab_confirmFieldBtn').click(function(){
+        	update_flag = "Y";
         	if($(current_tr).attr("elect_flag")!="Y"){
         		alert("请您选中需要编辑的行，再进行操作");
         		return;
@@ -301,6 +307,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         
         //保存后，重刷字段table表
         var refresh_table = function(form_field_list){
+        	 update_flag = "N";
         	 dataTable.clear().draw();
              for (var i = 0; i < form_field_list.length; i++) {
                  var field = form_field_list[i];
@@ -326,7 +333,8 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             buildFieldsDetail: buildFieldsDetail,
             dataTable: dataTable,
             refresh_table:refresh_table,
-            add_elect_flag:add_elect_flag
+            add_elect_flag:add_elect_flag,
+            field_update_flag:field_update_flag
         };
     
 });

@@ -236,11 +236,20 @@ public class ModuleController extends Controller {
         ms.processFieldType(field_list, form_id);
 
         // 根据字段去建表
-        buildFormTable(form_id);
+        if("Y".equals(dto.get("field_update_flag"))){
+        	buildFormTable(form_id);
+        }
+        
         // 处理按钮
-        handleBtns(dto, form_id);
+        if("Y".equals(dto.get("btn_update_flag"))){
+        	handleBtns(dto, form_id);
+        }
+        
         // 处理事件
-        handleEvents(dto, form_id);
+        if("Y".equals(dto.get("event_update_flag"))||"Y".equals(dto.get("editEvent_update_flag"))){
+        	handleEvents(dto, form_id);
+        }
+        
         // 处理权限点
         List<Map<String, String>> permission_list = (ArrayList<Map<String, String>>) dto
                 .get("permission_list");

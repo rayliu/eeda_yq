@@ -1,6 +1,6 @@
 define(['jquery'], function ($) {
     
-
+	var update_flag = "N";
         var list_dataTable = eeda.dt({
           id: 'list_btns_table',
           paging: false,
@@ -31,6 +31,7 @@ define(['jquery'], function ($) {
 
         var list_btns_deleteIds=[];
         $('#list_btns_table tbody').on('click', 'button', function () {
+          update_flag = "Y";
           var btn = $(this);
           var tr = btn.closest('tr');
           var id = list_dataTable.row(tr).data().ID;
@@ -126,6 +127,7 @@ define(['jquery'], function ($) {
         
         //回写到table
         $('#comfirmListBtn').click(function(){
+        	update_flag = "Y";
         	if($(current_tr).attr("elect_flag")!="Y"){
         		alert("请您选中需要编辑的行，再进行操作");
         		return;
@@ -172,6 +174,7 @@ define(['jquery'], function ($) {
 
         var edit_btns_deleteIds=[];
         $('#edit_btns_table tbody').on('click', 'button', function () {
+          update_flag = "Y";
           var btn = $(this);
           var tr = btn.closest('tr');
           var id = edit_dataTable.row(tr).data().ID;
@@ -237,6 +240,7 @@ define(['jquery'], function ($) {
         
         //回写到table
         $('#comfirmEditBtn').click(function(){
+        	update_flag = "Y";
         	if($(current_tr).attr("elect_flag")!="Y"){
         		alert("请您选中需要编辑的行，再进行操作");
         		return;
@@ -256,6 +260,7 @@ define(['jquery'], function ($) {
         var refresh_table = function(btn_list_query,btn_list_edit){
         	list_btns_deleteIds.length = 0;
         	edit_btns_deleteIds.length = 0;
+        	update_flag = "N";
         	//回显按钮列表
         	list_dataTable.clear().draw();
             for (var i = 0; i < btn_list_query.length; i++) {
@@ -270,12 +275,16 @@ define(['jquery'], function ($) {
             }
         }
 
+        var btn_update_flag = function(){
+        	return update_flag;
+        }
         return {
         	refresh_table:refresh_table,
             clear: clear,
             buildTableDetail: buildTableDetail,
             list_dataTable: list_dataTable,
-            edit_dataTable: edit_dataTable
+            edit_dataTable: edit_dataTable,
+            btn_update_flag:btn_update_flag
         };
     
 });

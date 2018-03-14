@@ -221,8 +221,9 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
     }
     
     var zTreeObj; 
-
+    var update_flag = "N";
     $('#editEventConfirmBtn').click(function(event) {
+    	update_flag = "Y";
          var type=$('#edit_event_type').val();
          currentNode.name = $('#edit_event_name').val();
          currentNode.type = type;
@@ -317,6 +318,7 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
     }
 
     var refresh_table = function(itemList){
+    	update_flag = "N";
     	saveSetValueCont.dataTable.clear().draw();
         if(itemList){
           for (var i = 0; i < itemList.length; i++) {
@@ -325,12 +327,18 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
           }
         }
     }
+    
+    var editEvent_update_flag = function(){
+    	return update_flag;
+    }
+    
     return {
     	refresh_table:refresh_table,
         clear: clear,
         zTreeObj: zTreeObj,
         displayBtnTree: displayBtnTree,
-        buildTreeNodes: buildTreeNodes
+        buildTreeNodes: buildTreeNodes,
+        editEvent_update_flag:editEvent_update_flag
           // list_dataTable: list_dataTable,
           // edit_dataTable: edit_dataTable
     };

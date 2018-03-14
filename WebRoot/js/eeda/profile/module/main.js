@@ -6,7 +6,6 @@ define(['jquery', './list_tree', './fields', './template_tab', './btns', './even
 
             var saveAction=function(btn, is_start){
             is_start = is_start || false; 
-
             var ue = UE.getEditor('container');
             var dto = {
                 module_id: $('#module_id').text(),
@@ -14,9 +13,13 @@ define(['jquery', './list_tree', './fields', './template_tab', './btns', './even
                     name: $('#form_name').val(),
                     code: $('#form_code').val(),
                 },
+                field_update_flag:fieldContr.field_update_flag(),
                 fields: fieldContr.buildFieldsDetail(),
                 template_content: ue.getContent(),
+                btn_update_flag: btnsCont.btn_update_flag(),
                 btns: btnsCont.buildTableDetail(),
+                event_update_flag:eventsCont.listEvent_update_flag(),
+                editEvent_update_flag:editEventCont.editEvent_update_flag(),
                 events: eventsCont.buildTreeNodes(),
                 permission_list: eeda.buildTableDetail('permission_table', perCont.deletedPermisstionTableIds),
                 auth_list: authCont.buildAuthTableDetail(),
