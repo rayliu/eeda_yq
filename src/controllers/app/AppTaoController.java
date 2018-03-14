@@ -41,7 +41,8 @@ public class AppTaoController extends Controller {
     			+ " from wc_ad_cu wcu "
     			+ " LEFT JOIN wc_company com on com.creator = wcu.creator"
     			+ " LEFT JOIN category cgr on cgr.id = com.trade_type"
-    			+ " where ifnull(wcu.title,'') != '' "
+    			+ " where ifnull(wcu.title,'') != '' and wcu.status = '开启' "
+    			+ " and delete_flag != 'Y'"
     			+ "	and (now() BETWEEN wcu.begin_date and wcu.end_date)"
     			+ " order by wcu.create_time desc");
     	Record data = new Record();
