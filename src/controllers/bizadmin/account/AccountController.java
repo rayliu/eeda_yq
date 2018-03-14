@@ -51,7 +51,7 @@ public class AccountController extends Controller {
 	    setAttr("diamond",diamond);
 	    
 	   
-	    String sql_cu = "select count(*) count_cu from wc_ad_cu where (now() BETWEEN begin_date and end_date) and creator = "+userId;
+	    String sql_cu = "select count(*) count_cu from wc_ad_cu where (now() BETWEEN begin_date and end_date) and delete_flag = 'N' and creator = "+userId;
 	    Record re_cu = Db.findFirst(sql_cu);
 	    setAttr("cu",re_cu);
 	    

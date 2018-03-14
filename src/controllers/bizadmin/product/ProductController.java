@@ -41,7 +41,7 @@ public class ProductController extends Controller {
 		Long userId = LoginUserController.getLoginUserId(this);
 		String sql_cu  = "SELECT if(DATEDIFF(max(end_date),now())>0,cast(DATEDIFF(max(end_date),now()) as char),'0') leave_days,max(end_date) end_date "
 				+ "FROM `wc_ad_cu` "
-				+ "where status='开启' and creator ="+userId;
+				+ "where status='开启' and delete_flag != 'Y' and creator ="+userId;
 		Record re_cu = Db.findFirst(sql_cu);
 		if(re_cu == null){
 			re_cu = new Record();
@@ -88,8 +88,13 @@ public class ProductController extends Controller {
         	condition += " and pro.category_name = '"+name+"'";
         }
         //String condition = DbUtils.buildConditions(getParaMap());
-        String sql = "select * from wc_product pro"
-        		+ "  where creator = "+ userId
+        String sql = "select pro.*,"
+        		+ " if(cu.id >0 ,'Y','N') cu,"
+        		+ " DATEDIFF(max(cu.end_date),now()) left_days"
+        		+ " from wc_product pro"
+        		+ " left join wc_ad_cu cu on cu.creator = pro.creator"
+    			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
+        		+ "  where pro.creator = "+ userId
         		+ condition;
         
         Record rec = Db.findFirst("select count(1) total from ("+sql+") B");

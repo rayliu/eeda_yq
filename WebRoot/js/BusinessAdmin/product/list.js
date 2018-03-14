@@ -1,10 +1,5 @@
 define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, metisMenu) {
   $(document).ready(function() {
-	  var  cu_leave_days = $("#cu_leave_days").val();
-	  var info=""
-    	  if(cu_leave_days<=0){
-    		  info = "disabled"
-    	  }
       var dataTable = eeda.dt({
           id: 'eeda_table',
           paging: true,
@@ -46,12 +41,18 @@ define(['jquery', 'dataTablesBootstrap', 'validate_cn', 'sco'], function ($, met
                 }
               }
             },
-            { "data": "CU_FLAG", "width": "100px",
+            { "data": "CU", "width": "100px",
               render:function(data,type,full,meta){
                 if(data == 'Y'){
-                	return "<input type='checkbox' class = 'cu'  data-id="+full.ID+" checked>";
+                	if(full.CU_FLAG != 'N'){
+                		return "<input type='checkbox' class = 'cu'  data-id="+full.ID+" checked>";
+                	}else{
+                		return "<input type='checkbox' class = 'cu' data-id="+full.ID+" >";
+                	}
+                	//return '促销中';
                 }else{
-                	return "<input type='checkbox' class = 'cu' data-id="+full.ID+" "+info+">";
+                	return "<input type='checkbox' class = 'cu' data-id="+full.ID+" >";
+                	//return '未开通促销服务';
                 }
               }
             },
