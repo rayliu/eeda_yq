@@ -49,10 +49,12 @@ define(['jquery', './print'], function ($, printCont) {
                                 }else{
                                 	if(event.TYPE == "set_value"){
                                 		data.type = "set_value";
-                                		data.event_id = event.ID;
+                                		data.event_id = event.ID;                         		
                                 		data.form_id = event.FORM_ID.toString();
                                 	}else{
                                 		data.TYPE = "save";
+                                		data.event_id = event.ID.toString();                         		
+                                		data.form_id = event.FORM_ID.toString();
                                 	}
                                 	doUpdate(data);
                                 }
@@ -141,9 +143,26 @@ define(['jquery', './print'], function ($, printCont) {
         function doUpdate(data){
             $.post('/form/'+data.module_id+'-doUpdate', {data: JSON.stringify(data)}, function(dto){
                 if(dto){
-                	if(dto.TYPE=="set_value"){
-                		$("input[name='"+dto.TEXT_NAME+"']").val(dto.TEXT_VALUE);
+//                	if(dto.TYPE=="set_value"){
+//                		$("input[name='"+dto.TEXT_NAME+"']").val(dto.TEXT_VALUE);
+//                	}
+                	if(dto){
+                		$("#order_id").val(dto.ID);
+                		var keys = [];
+                		var form_name = "";
+             	        for (var key in dto){
+             	        	if(key=="FORM_NAME"){
+             	        		form_name = dto.FORM_NAME+"-";
+             	        		continue;
+             	        	}
+             	        	keys.push(key);
+             	        }
+             	        for(var i = 0;i<keys.length;i++){
+             	        	var input_name = form_name+keys[i].toLocaleLowerCase();
+             	        	$("input[name='"+input_name+"']").val(dto[keys[i]]);
+             	        }
                 	}
+                	  
                     $('.Huialert-success').show();
                     
                 }else{

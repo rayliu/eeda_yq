@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 
 import models.UserLogin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
@@ -241,31 +242,34 @@ public class FormController extends Controller {
         
         Gson gson = new Gson();  
         Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+        
+        String module_id = (String) dto.get("module_id");
+        Record formRec = Db.findFirst("select * from eeda_form_define where "
+                + " module_id=?", module_id);
+        if(formRec ==null){
+            logger.debug("-------------form 没有定义!---------------");
+            redirect("/");
+            return rec;
+        }
+        Long form_id = formRec.getLong("id");
+        
         if("set_value".equals(dto.get("type"))){
         	List<Record> esvi_list = Db.find("select * from eeda_form_event_set_value_item where event_id = ?",dto.get("event_id"));
         	if(esvi_list.size()>0){
         		for(Record esvi :esvi_list){
-            		Record field = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name = ?",dto.get("form_id"),esvi.get("name"));
+            		Record field = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name = ?",form_id,esvi.get("name"));
                 	if(field!=null){
-                		String form_name = "form_"+dto.get("form_id");
+                		String form_name = "form_"+form_id;
                 		String column_name = "f"+field.get("id")+"_"+field.get("field_name");
                 		Db.update("update "+form_name+" set "+column_name+" = '"+esvi.get("value")+"' where id = ?",dto.get("order_id"));
-                		rec.set("text_name", form_name+"-"+column_name);
-                		rec.set("text_value", esvi.get("value"));
-                		rec.set("type", dto.get("type"));
+//                		rec.set("text_name", form_name+"-"+column_name);
+//                		rec.set("text_value", esvi.get("value"));
+//                		rec.set("type", dto.get("type"));
                 	}
             	}
         	}
         }else{
-        	String module_id = (String) dto.get("module_id");
-            Record formRec = Db.findFirst("select * from eeda_form_define where "
-                    + " module_id=?", module_id);
-            if(formRec ==null){
-                logger.debug("-------------form 没有定义!---------------");
-                redirect("/");
-                return rec;
-            }
-            Long form_id = formRec.getLong("id");
+        	
             for (Entry<String, ?> entry : dto.entrySet()) { 
                 String key = entry.getKey();
                 if(key.startsWith("form_"+form_id)){
@@ -288,9 +292,32 @@ public class FormController extends Controller {
                 }
             }
             
+            
+            
             String order_id = (String) dto.get("order_id");
             if (StrKit.isBlank(order_id)) {
+            	if(StringUtils.isNotBlank((String)dto.get("event_id"))&&StringUtils.isNotBlank((String)dto.get("form_id"))){
+                	List<Record> esvi_list = Db.find("select * from eeda_form_event_save_set_value_item where event_id = ?",dto.get("event_id"));
+                	if(esvi_list.size()>0){
+                		for(Record esvi :esvi_list){
+                    		Record field = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name = ?",form_id,esvi.get("name"));
+                        	if(field!=null){
+                        		UserLogin user = LoginUserController.getLoginUser(this);
+                        		String column_name = "f"+field.get("id")+"_"+field.get("field_name");
+                        		
+                        		if("系统变量.当前用户名".equals(esvi.get("value"))){
+                        			rec.set(column_name, user.get("c_name"));
+                        		}else if("系统变量.当前时间".equals(esvi.get("value"))){
+                        			rec.set(column_name, new Date());
+                        		}else{
+                        			rec.set(column_name, esvi.get("value"));
+                        		}
+                        	}
+                    	}
+                	}
+                }
                 Db.save("form_"+form_id, rec);
+                rec.set("form_name","form_"+form_id);
             }else{
                 rec.set("id", order_id);
                 Db.update("form_"+form_id, rec);
@@ -540,10 +567,14 @@ public class FormController extends Controller {
                         + " </div> "
                         + "</div> ";
             }else if("日期时间".equals(fieldType)){
+            	 String disabled = "";
+                 if("Y".equals(read_only)){
+                     disabled = "disabled";
+                 }
                 replaceNameDest = "<div id='"+inputId+"_div'>"
                         + "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
                         + " <div class='formControls col-xs-8 col-sm-9'>"
-                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd HH:mm:ss\"})' name='"+inputId+"' class='input-text Wdate'>"
+                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd HH:mm:ss\"})' name='"+inputId+"' class='input-text Wdate'"+disabled+">"
                         + " </div> "
                         + "</div> ";
             }else if("多行文本".equals(fieldType)){
