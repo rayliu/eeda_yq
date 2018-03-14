@@ -49,7 +49,11 @@ public class AppShopController extends Controller {
     	
     	
     	//产品信息
-    	List<Record> productList = Db.find(" select pro.id, pro.cover, pro.name,pro.price from wc_product pro"
+    	List<Record> productList = Db.find(" select pro.id, pro.cover, pro.name,pro.price,pro.cu_flag,"
+    			+ " if(cu.id >0 ,'Y','N') user_cu"
+    			+ " from wc_product pro"
+    			+ " left join wc_ad_cu cu on cu.creator = pro.creator"
+    			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
     			+ " where pro.creator = ? and pro.is_active != 'N' order by pro.id desc limit 0,3",shop_id);
     	
     	//案例信息
