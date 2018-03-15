@@ -73,7 +73,6 @@ public class FormController extends Controller {
         //edit 跳转到编辑页面; 
         //doUpdate 编辑的保存动作
         
-        //doDelete 表单删除的动作
         
         //click 表单按钮的动作
         //valueChange 表单按钮的动作, 参数 {field_name, value, old_value}
@@ -223,6 +222,11 @@ public class FormController extends Controller {
             }
             
             render("/eeda/form/template.html");
+        }else if("doDelete".equals(action)){
+        	String form_name = "form_"+form_id;
+        	Record form  = Db.findById(form_name, order_id);
+            boolean result = Db.delete(form_name, form);
+            renderJson("{\"result\":"+result+"}");
         }else{
             Record rec = new Record();
             if("doGet".equals(action)){

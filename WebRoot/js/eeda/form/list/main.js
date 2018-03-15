@@ -37,7 +37,7 @@ define(['jquery', '../btns', 'hui'], function ($) {
             render: function ( data, type, full, meta ) {
 
               return '<a style="text-decoration:none" class="ml-5" href="/form/'+module_id+'-edit-'+data.ID+'" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>'
-                    +'<a style="text-decoration:none" class="ml-5" href="/form/'+module_id+'-doDelete-'+data.ID+'" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> ';
+                    +'<a style="text-decoration:none" href="javascript:;" class="ml-5 delete" module_id='+module_id+' id='+data.ID+' title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> ';
             }
         };
         colsSetting.push(btnCol);
@@ -65,6 +65,19 @@ define(['jquery', '../btns', 'hui'], function ($) {
 
         $('#list_table').on( 'keyup', 'tfoot input', function () {
             globalSearch();
+        });
+        
+        //删除
+        $('#list_table').on( 'click', '.delete', function () {
+        	var module_id = $(this).attr("module_id");
+        	var id = $(this).attr("id");
+            $.post('/form/'+module_id+'-doDelete-'+id,function(data){
+            	if(data.result){
+            		var tr = $(this).closest('tr');
+            		dataTable.row(tr).remove().draw();
+            		alert("删除成功");
+            	}
+            });
         });
 
         var globalSearch = function(){
