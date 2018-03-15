@@ -42,6 +42,17 @@ define(['jquery'], function ($) {
           ]
         });
 
+        var ref_table_deleteIds = [];
+        $('#field_detail_ref_table tbody').on('click', 'button', function () {
+          var btn = $(this);
+          var tr = btn.closest('tr');
+          var id = connect_dataTable.row(tr).data().ID;
+
+          connect_dataTable.row(tr).remove().draw();
+
+          ref_table_deleteIds.push({ID: id, action:'DELETE'});
+          return false;
+        });
 
         var display_dataTable = eeda.dt({
           id: 'field_detail_ref_display_table',
@@ -79,6 +90,18 @@ define(['jquery'], function ($) {
           ]
         });
 
+        var ref_display_table_deleteIds = [];
+        $('#field_detail_ref_display_table tbody').on('click', 'button', function () {
+          var btn = $(this);
+          var tr = btn.closest('tr');
+          var id = display_dataTable.row(tr).data().ID;
+
+          display_dataTable.row(tr).remove().draw();
+
+          ref_display_table_deleteIds.push({ID: id, action:'DELETE'});
+          return false;
+        });
+        
         var buildDto = function(){
             var dto = {
               ID: $('#detail_ref_id').val(),
@@ -113,7 +136,11 @@ define(['jquery'], function ($) {
               itemList.push(item);
             }
 
-            dto.DISPLAY_FIELD = itemList;
+            var list = itemList.concat(ref_table_deleteIds,ref_display_table_deleteIds);
+            
+            dto.DISPLAY_FIELD = list;
+            ref_table_deleteIds.length = 0;
+            ref_display_table_deleteIds.length = 0;
             return dto;
         };
 

@@ -468,7 +468,7 @@ public class ModuleService {
 
         Map<String, ?> fieldTypeObj = (Map<String, ?>) field
                 .get("auto_no".toUpperCase());
-        String checkId = (String)fieldTypeObj.get("id".toUpperCase());
+        String checkId = String.valueOf(fieldTypeObj.get("ID"));
         String is_gen_before_save = (String) fieldTypeObj
                 .get("is_gen_before_save".toUpperCase());
        
@@ -487,7 +487,7 @@ public class ModuleService {
         List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
                 .get("item_list".toUpperCase());
         for (Map<String, ?> item : list) {
-            String id = (String)item.get("id".toUpperCase());
+            String id =  String.valueOf(item.get("ID"));
             String type = (String) item.get("type".toUpperCase());
             String value = (String) item.get("value".toUpperCase());
            
@@ -575,10 +575,14 @@ public class ModuleService {
             } else {
                 itemRec = Db.findById("eeda_form_field_type_detail_ref_display_field",
                         id);
-                itemRec.set("field_id", fieldId);
-                itemRec.set("target_field_name", target_field_name);
-                itemRec.set("value", value);
-                Db.update("eeda_form_field_type_detail_ref_display_field", itemRec);
+                if("DELETE".equals(display_field.get("action"))){
+                	Db.delete("eeda_form_field_type_detail_ref_display_field", itemRec);
+                }else{
+                	itemRec.set("field_id", fieldId);
+                    itemRec.set("target_field_name", target_field_name);
+                    itemRec.set("value", value);
+                    Db.update("eeda_form_field_type_detail_ref_display_field", itemRec);
+                }
             }
         }
     }
