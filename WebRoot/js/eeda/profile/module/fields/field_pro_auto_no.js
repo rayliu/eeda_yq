@@ -62,7 +62,7 @@ define(['jquery'], function ($) {
 
           dataTable.row(tr).remove().draw();
 
-          deleteList.push({ID: id, is_delete:'Y'});
+          deleteList.push({ID: id.toString(), is_delete:'Y'});
           return false;
         });
 
@@ -83,8 +83,9 @@ define(['jquery'], function ($) {
 
               itemList.push(item);
             }
-
-            dto.ITEM_LIST = itemList;
+            var list = itemList.concat(deleteList);
+            dto.ITEM_LIST = list;
+            deleteList.length = 0;
             return dto;
         };
 

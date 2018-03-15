@@ -262,7 +262,8 @@ public class ModuleController extends Controller {
         //ms.saveInterface(dto, form_id);
 
         Record orderRec = Db.findById("eeda_modules", module_id);
-        List<Record> form_field_list = Db.find("select * from eeda_form_field where form_id = ?", form_id);
+        List<Record> form_field_list = getFormFields(form_id);
+//      List<Record> form_field_list = Db.find("select * from eeda_form_field where form_id = ?", form_id);
         orderRec.set("form_field_list", form_field_list);
         orderRec.set("permission_list", getPermissionList(module_id.toString()));
         orderRec.set("module_role_list", getAuthList(module_id.toString()));

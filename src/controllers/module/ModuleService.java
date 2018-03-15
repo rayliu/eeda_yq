@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
@@ -403,7 +405,7 @@ public class ModuleService {
         if ("复选框".equals(fieldType)) {
             saveCheckBox(field, field_id);
         }else if ("自动编号".equals(fieldType)) {
-//            saveAutoNo(field, field_id);
+            saveAutoNo(field, field_id);
         }else if ("从表引用".equals(fieldType)) {
             saveDetailRef(field, field_id);
         }else if ("字段引用".equals(fieldType)) {
@@ -466,17 +468,17 @@ public class ModuleService {
 
         Map<String, ?> fieldTypeObj = (Map<String, ?>) field
                 .get("auto_no".toUpperCase());
-        Object checkId = fieldTypeObj.get("id".toUpperCase());
+        String checkId = (String)fieldTypeObj.get("id".toUpperCase());
         String is_gen_before_save = (String) fieldTypeObj
                 .get("is_gen_before_save".toUpperCase());
        
         Record rec = new Record();
-        if (!(checkId instanceof java.lang.Double)) {
+        if (StringUtils.isBlank(checkId)) {
             rec.set("field_id", fieldId);
             rec.set("is_gen_before_save", is_gen_before_save);
             Db.save("eeda_form_field_type_auto_no", rec);
         } else {
-            rec = Db.findById("eeda_form_field_type_checkbox", checkId);
+            rec = Db.findById("eeda_form_field_type_auto_no", checkId);
             rec.set("field_id", fieldId);
             rec.set("is_gen_before_save", is_gen_before_save);
             Db.update("eeda_form_field_type_auto_no", rec);
@@ -485,23 +487,28 @@ public class ModuleService {
         List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
                 .get("item_list".toUpperCase());
         for (Map<String, ?> item : list) {
-            Object id = item.get("id".toUpperCase());
+            String id = (String)item.get("id".toUpperCase());
             String type = (String) item.get("type".toUpperCase());
             String value = (String) item.get("value".toUpperCase());
            
             Record itemRec = new Record();
-            if (!(id instanceof java.lang.Double)) {
+            if (StringUtils.isBlank(id)) {
                 itemRec.set("field_id", fieldId);
                 itemRec.set("type", type);
                 itemRec.set("value", value);
                 Db.save("eeda_form_field_type_auto_no_item", itemRec);
             } else {
-                itemRec = Db.findById("eeda_form_field_type_auto_no_item",
+            	itemRec = Db.findById("eeda_form_field_type_auto_no_item",
                         id);
-                itemRec.set("field_id", fieldId);
-                itemRec.set("type", type);
-                itemRec.set("value", value);
-                Db.update("eeda_form_field_type_auto_no_item", itemRec);
+            	if("Y".equals(item.get("is_delete"))){
+            		Db.delete("eeda_form_field_type_auto_no_item", itemRec);
+            	}else{
+                    itemRec.set("field_id", fieldId);
+                    itemRec.set("type", type);
+                    itemRec.set("value", value);
+                    Db.update("eeda_form_field_type_auto_no_item", itemRec);
+            	}
+                
             }
         }
     }
