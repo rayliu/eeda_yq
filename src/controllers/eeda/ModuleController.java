@@ -113,7 +113,7 @@ public class ModuleController extends Controller {
     public void searchModule() {
         String parent_id = getPara("id");
         String cons = "";
-        String sql = "select id, module_name, parent_id, office_id, seq, version, url from eeda_modules where office_id="
+        String sql = "select id, module_name, parent_id, office_id, seq, version, url from eeda_modules where delete_flag!='Y' and office_id="
                 + LoginUserController.getLoginUser(this).get("office_id");
 
         List<Record> modules = null;
@@ -171,6 +171,17 @@ public class ModuleController extends Controller {
         renderJson(module);
     }
 
+    @Before(Tx.class)
+    public void deleteModuleTree(){
+    	String id = getPara("id");
+    	String nodeName = getPara("nodeName");
+    	int result1 = Db.update("update eeda_modules set delete_flag = 'Y' where id = ? and module_name = ?",id,nodeName);
+    	int result2 = Db.update("update eeda_form_define set delete_flag = 'Y' where module_id = ? and name = ?",id,nodeName);
+    	if(result1>0||result2>0){
+    		renderJson("{\"result\":"+true+"}");
+    	}
+    }
+    
     @Before(Tx.class)
     public void updateModuleSeq() {
         String node_id = getPara("node_id");
@@ -387,7 +398,7 @@ public class ModuleController extends Controller {
                     .get("MODULE_NAME").toString() : openDto.get("module_name").toString();
             eventOpen.set("module_name",moduleName);
             
-            Record rec = Db.findFirst("select * from eeda_form_define where name=?", moduleName);
+            Record rec = Db.findFirst("select * from eeda_form_define where delete_flag!='Y' and name=?", moduleName);
             eventOpen.set("module_id", rec.get("module_id"));
             eventOpen.set("open_type",
                     openDto.get("open_type") == null ? openDto.get("OPEN_TYPE")
@@ -400,7 +411,7 @@ public class ModuleController extends Controller {
             String moduleName = openDto.get("module_name").toString();
             eventOpen.set("module_name", moduleName);
             
-            Record rec = Db.findFirst("select * from eeda_form_define where name=?", moduleName);
+            Record rec = Db.findFirst("select * from eeda_form_define where delete_flag!='Y' and name=?", moduleName);
             eventOpen.set("module_id", rec.get("module_id"));
             eventOpen.set("open_type", openDto.get("open_type"));
             Db.save("eeda_form_event_open", eventOpen);

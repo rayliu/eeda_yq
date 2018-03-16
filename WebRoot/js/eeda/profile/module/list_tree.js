@@ -17,7 +17,7 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
             edit: {
                 enable: true,
                 editNameSelectAll: true,
-                showRemoveBtn: false,
+                showRemoveBtn: true,
                 //showRenameBtn: showRenameBtn,
                 renameTitle: "编辑",
                 removeTitle: "删除",
@@ -38,7 +38,8 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                 onRename: onRename,
                 beforeDrop: beforeDrop,//判断禁止模块拖拽到模块下
                 onDrop: onDrop,
-                onClick: onNodeClick
+                onClick: onNodeClick,
+                beforeRemove:beforeRemove
             }
         };
 
@@ -130,10 +131,21 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
             });
         };
 
+        function beforeRemove(treeId, treeNode) {
+        	var btn = $("#"+treeNode.tId+"_remove");
+                //异步创建节点
+                var zTree = $.fn.zTree.getZTreeObj("moduleTree");
+                var nodeName = treeNode.MODULE_NAME!=null?treeNode.MODULE_NAME:treeNode.name;
+                $.post('/module/deleteModuleTree', {id: treeNode.id,nodeName:nodeName}, function(data){
+                	alert("删除成功!");
+                	viewModule();
+                },'json');
+        };
+
         function removeHoverDom(treeId, treeNode) {
             $("#addBtn_"+treeNode.tId).unbind().remove();
         };
-
+        
         function onNodeClick(event, treeId, treeNode){
             if (treeNode.level==0 ||treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
             if(treeNode.parentTId != null){
@@ -266,21 +278,27 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
         };
         //---------------------------  tree handler end -------------
 
-        // 显示当前用户公司的所有模块
-        $.get('/module/searchModule', function(data){
-            console.log(data);
-            var zNodes =[];
-            for(var i=0; i<data.length && data.length>0; i++){
-    	        var node={};
-    	        node.name=data[i].MODULE_NAME;
-    	        node.id=data[i].ID;
-                node.isParent=true;
-    	        //node.click=nodePlusClickHandler;
-    	        zNodes.push(node);
-    	        //console.log(node);
-            }
-            $.fn.zTree.init($("#moduleTree"), setting, zNodes);
-        },'json');
+        
+        
+        var viewModule = function(){
+        	// 显示当前用户公司的所有模块
+            $.get('/module/searchModule', function(data){
+                console.log(data);
+                var zNodes =[];
+                for(var i=0; i<data.length && data.length>0; i++){
+        	        var node={};
+        	        node.name=data[i].MODULE_NAME;
+        	        node.id=data[i].ID;
+                    node.isParent=true;
+        	        //node.click=nodePlusClickHandler;
+        	        zNodes.push(node);
+        	        //console.log(node);
+                }
+                $.fn.zTree.init($("#moduleTree"), setting, zNodes);
+            },'json');
+        };
+        
+        viewModule();
         
         $('#addModuleBtn').click(function function_name (argument) {
             var zTree = $.fn.zTree.getZTreeObj("moduleTree");
@@ -288,7 +306,6 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                 zTree.addNodes(null, {parent_id: null, id: data.ID, name:"新模块", isParent:true});
             },'json');
         });
-
 
     });
 });
