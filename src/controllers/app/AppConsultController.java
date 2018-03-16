@@ -84,7 +84,29 @@ public class AppConsultController extends Controller {
     	Db.save("wc_feedback", feedback);
 
     	Record data = new Record();
-    	data.set("result", true);
+    	data.set("result", "true");
+        renderJson(data);  
+    }
+    
+    /**
+     * 回复列表内容
+     * @throws UnsupportedEncodingException 
+     * @throws IOException
+     */
+    @Before(Tx.class)
+    public void save_wedding_date() throws UnsupportedEncodingException{
+    	String login_id = getPara("login_id");
+    	login_id = URLDecoder.decode(login_id, "UTF-8");
+    	String value = getPara("values");
+    	value = URLDecoder.decode(value, "UTF-8");
+    	
+    	Record user = new Record();
+    	user.set("wedding_date", value);
+    	user.set("id", login_id);
+    	Db.update("user_login", user);
+
+    	Record data = new Record();
+    	data.set("result", "true");
         renderJson(data);  
     }
     
