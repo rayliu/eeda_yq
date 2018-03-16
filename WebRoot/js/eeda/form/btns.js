@@ -1,4 +1,5 @@
 define(['jquery', './print'], function ($, printCont) {
+	var deleteList=[];
         //按钮事件响应
         $('body').on('click', 'button', function(event) {
             event.preventDefault();
@@ -14,6 +15,8 @@ define(['jquery', './print'], function ($, printCont) {
                 var target_table_id = btn.closest('table').attr('id');
                 var target_table_tr = btn.closest('tr');
 
+                var id =  $(this).parent().parent().attr("id");
+                deleteList.push({ID: id, is_delete:'Y'});
                 var dataTable = $('#'+target_table_id).DataTable();
 
                 //var row_index = table.row( this ).index();
@@ -116,9 +119,10 @@ define(['jquery', './print'], function ($, printCont) {
                   });
                   ar.push(rowAr);
                 });
+                var list = ar.concat(deleteList);
                 var table_item={
                     table_id: id,
-                    data_list: ar
+                    data_list: list
                 };
                 detail_tables.push(table_item);
             });
@@ -159,7 +163,7 @@ define(['jquery', './print'], function ($, printCont) {
              	        }
              	        for(var i = 0;i<keys.length;i++){
              	        	var input_name = form_name+keys[i].toLocaleLowerCase();
-             	        	$("input[name='"+input_name+"']").val(dto[keys[i]]);
+             	        	$("[name='"+input_name+"']").val(dto[keys[i]]);
              	        }
                 	}
                 	  

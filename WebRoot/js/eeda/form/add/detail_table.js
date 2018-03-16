@@ -50,10 +50,15 @@ define(['jquery', 'sco', '../btns'], function ($, sco, btnCont) {
                             +'" eeda_type="'+eeda_type
                             +'" placeholder="'+placeholder+'" ';
 
+                        if(field.FIELD_TYPE == '日期时间'){
+                        	str+= "onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\'})\" class=\"input-text Wdate\""
+                        }else{
+                        	str+= "class=\"input-text\""
+                        }
                         if(field.FIELD_TYPE == '字段引用'){
                             str+= " target_form='"+field.REF.TARGET_FORM_ID+"' target_field_name='"+field.REF.TARGET_FIELD_NAME+"'"
                         }
-                        return str+' class="input-text" style="width: 100%;"/>'
+                        return str+'  style="width: 100%;"/>'
                             +"<span class='dropDown'>"
                             +"     <ul name='"+field.FIELD_NAME+"_list' class='pull-right dropDown-menu menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;'/>"
                             +"</span>";    

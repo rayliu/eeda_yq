@@ -370,7 +370,12 @@ public class FormController extends Controller {
                      if(rowRec.get("id")==null){
                          Db.save("form_"+detail_form_id, rowRec);
                      }else{
-                         Db.update("form_"+detail_form_id, rowRec);
+                    	 if("Y".equals(rowRec.get("is_delete"))){
+                    		 Record re = Db.findById("form_"+detail_form_id, rowRec.get("id"));
+                    		 Db.delete("form_"+detail_form_id, re);
+                    	 }else{
+                    		 Db.update("form_"+detail_form_id, rowRec);
+                    	 }
                      }
                 }
             }
