@@ -68,7 +68,7 @@ public class EedaMenuInterceptor implements Interceptor {
                     + " and u.office_id=m.office_id and m.id=p.module_id "
                     + " and rp.role_id=r.id and rp.permission_id=p.id and rp.module_id=m.id and rp.is_authorize=1"
                     + " and rp.permission_code like '%list' "
-                    + " and m.parent_id=module.id and m.office_id=? and u.user_name=?"
+                    + " and m.parent_id=module.id and m.delete_flag!='Y' and m.office_id=? and u.user_name=?"
                 + " ) order by seq";
         List<Record> modules = Db.find(sql, office_id, username);
         for (Record module : modules) {
@@ -81,7 +81,7 @@ public class EedaMenuInterceptor implements Interceptor {
                     + " and u.office_id=m.office_id and m.id=p.module_id "
                     + " and rp.role_id=r.id and rp.permission_id=p.id and rp.module_id=m.id and rp.is_authorize=1"
                     + " and rp.permission_code like '%list' "
-                    + " and m.parent_id=? and m.office_id=? and u.user_name=?"
+                    + " and m.parent_id=? and m.delete_flag!='Y' and m.office_id=? and u.user_name=?"
                     + " order by m.seq";
 
             List<Record> orders = Db.find(sql, module.get("id"), office_id,

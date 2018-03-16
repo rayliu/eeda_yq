@@ -57,6 +57,21 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
 //                 }else{
 //                   $('#is_not_list_col').prop('checked', true);
 //                 }
+                 if(data.READ_ONLY=="Y"){
+                	 $('#read_only').prop('checked', true);
+                 }else{
+                	 $('#read_only').prop('checked', false);
+                 }
+                 if(data.REQUIRED=="Y"){
+                	 $('#required').prop('checked', true);
+                 }else{
+                	 $('#required').prop('checked', false);
+                 }
+                 if(data.LISTED=="N"){
+                	 $('#is_not_list_col').prop('checked', true);
+                 }else{
+                	 $('#is_not_list_col').prop('checked', false);
+                 }
 
                  if(!data.FIELD_TYPE){
                    //清空所有属性

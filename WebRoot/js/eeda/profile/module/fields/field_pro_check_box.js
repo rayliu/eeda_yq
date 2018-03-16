@@ -76,11 +76,23 @@ define(['jquery'], function ($) {
 
               itemList.push(item);
             }
-
-            dto.ITEM_LIST = itemList;
+            var list = itemList.concat(deleteList);
+            dto.ITEM_LIST = list;
             return dto;
         };
 
+        var deleteList=[];
+        $('#field_checkbox_table tbody').on('click', 'button', function () {
+          var btn = $(this);
+          var tr = btn.closest('tr');
+          var id = dataTable.row(tr).data().ID;
+
+          dataTable.row(tr).remove().draw();
+
+          deleteList.push({ID: id, is_delete:'Y'});
+          return false;
+        });
+        
         var clear = function(){
           dataTable.clear().draw();
         };

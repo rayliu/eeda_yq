@@ -265,10 +265,10 @@ public class FormController extends Controller {
                 	if(field!=null){
                 		String form_name = "form_"+form_id;
                 		String column_name = "f"+field.get("id")+"_"+field.get("field_name");
-                		Db.update("update "+form_name+" set "+column_name+" = '"+esvi.get("value")+"' where id = ?",dto.get("order_id"));
-//                		rec.set("text_name", form_name+"-"+column_name);
-//                		rec.set("text_value", esvi.get("value"));
-//                		rec.set("type", dto.get("type"));
+                		Record form = Db.findById(form_name, dto.get("order_id"));
+                		form.set(column_name, esvi.get("value"));
+                		Db.update(form_name, form);
+                		renderJson(form);
                 	}
             	}
         	}

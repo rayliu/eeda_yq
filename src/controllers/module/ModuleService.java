@@ -592,13 +592,13 @@ public class ModuleService {
 
         Map<String, ?> fieldTypeObj = (Map<String, ?>) field
                 .get("check_box".toUpperCase());
-        Object checkId = fieldTypeObj.get("id".toUpperCase());
+        String checkId = String.valueOf(fieldTypeObj.get("ID"));
         String is_single_check = (String) fieldTypeObj
                 .get("is_single_check".toUpperCase());
         String line_display_num = (String) fieldTypeObj
                 .get("line_display_numbers".toUpperCase());
         Record rec = new Record();
-        if (!(checkId instanceof java.lang.Double)) {
+        if (StringUtils.isBlank(checkId)) {
             rec.set("field_id", fieldId);
             rec.set("is_single_check", is_single_check);
             rec.set("line_display_num", line_display_num);
@@ -614,7 +614,7 @@ public class ModuleService {
         List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
                 .get("item_list".toUpperCase());
         for (Map<String, ?> checkBox : list) {
-            Object id = checkBox.get("id".toUpperCase());
+            String id = String.valueOf(checkBox.get("ID"));
             String name = (String) checkBox.get("name".toUpperCase());
             String code = (String) checkBox.get("code".toUpperCase());
             Object seq = checkBox.get("seq".toUpperCase());
@@ -622,7 +622,7 @@ public class ModuleService {
                     .toUpperCase());
 
             Record itemRec = new Record();
-            if (!(id instanceof java.lang.Double)) {
+            if (StringUtils.isBlank(id)) {
                 itemRec.set("field_id", fieldId);
                 itemRec.set("seq", seq);
                 itemRec.set("name", name);
@@ -632,12 +632,16 @@ public class ModuleService {
             } else {
                 itemRec = Db.findById("eeda_form_field_type_checkbox_item",
                         id);
-                itemRec.set("field_id", fieldId);
-                itemRec.set("name", name);
-                itemRec.set("code", code);
-                itemRec.set("seq", seq);
-                itemRec.set("is_default", is_default);
-                Db.update("eeda_form_field_type_checkbox_item", itemRec);
+                if("Y".equals(checkBox.get("is_delete"))){
+                	Db.delete("eeda_form_field_type_checkbox_item", itemRec);
+                }else{
+                	itemRec.set("field_id", fieldId);
+                    itemRec.set("name", name);
+                    itemRec.set("code", code);
+                    itemRec.set("seq", seq);
+                    itemRec.set("is_default", is_default);
+                    Db.update("eeda_form_field_type_checkbox_item", itemRec);
+                }
             }
         }
     }

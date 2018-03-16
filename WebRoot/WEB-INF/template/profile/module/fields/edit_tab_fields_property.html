@@ -89,26 +89,26 @@
         <div class="row">
             <div class="col-lg-4">
                 <%include("/eeda/component/form/inputField.html", 
-                                            {   id:'is_public', 
+                                            {   id:'required', 
                                                 type: 'checkbox',
                                                 label:'必填',
-                                                value:order.is_public!''
+                                                value:order.required!''
                                             }){}%>
             </div>
             <div class="col-lg-4">
                 <%include("/eeda/component/form/inputField.html", 
-                                            {   id:'is_public', 
+                                            {   id:'hide', 
                                                 type: 'checkbox',
                                                 label:'隐藏',
-                                                value:order.is_public!''
+                                                value:order.hide!''
                                             }){}%>
             </div>
             <div class="col-lg-4">
                 <%include("/eeda/component/form/inputField.html", 
-                                            {   id:'is_public', 
+                                            {   id:'hide_block', 
                                                 type: 'checkbox',
                                                 label:'是否占位(隐藏时仍占页面位置)',
-                                                value:order.is_public!''
+                                                value:order.hide!''
                                             }){}%>
             </div>
         </div>
