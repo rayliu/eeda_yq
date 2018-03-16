@@ -51,6 +51,7 @@ import controllers.alipay.AlipayController;
 import controllers.app.AppAskController;
 import controllers.app.AppBestCaseController;
 import controllers.app.AppCategoryController;
+import controllers.app.AppCityController;
 import controllers.app.AppConsultController;
 import controllers.app.AppControllerForMobile;
 import controllers.app.AppLoginController;
@@ -160,6 +161,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/app/login", AppLoginController.class);
         me.add("/app/consult", AppConsultController.class);
         me.add("/app/myProject", AppMyProjectController.class);
+        me.add("/app/city", AppCityController.class);
     }
 
 	private void setWeddingRoute(Routes me) {

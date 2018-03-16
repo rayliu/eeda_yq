@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.codec.Base64;
 
@@ -27,12 +28,16 @@ public class AppCategoryController extends Controller {
      * @throws IOException
      */
     public void searchShopByType() throws IOException{ 
-    	String category_name = getPara();
+    	String category_name = getPara("category_name");
     	category_name = URLDecoder.decode(category_name, "UTF-8");
+    	String cityCode = getPara("cityCode");
     	
     	String conditions = "";
-    	
+
     	conditions += " and ctg.name = '"+category_name+"'";
+    	if(StringUtils.isNotBlank(cityCode)){
+    		conditions += " and wc.city = '" + cityCode + "'";
+    	}
     	
     	//商家列表
     	List<Record> shopList = Db.find(" select * from(select ul.id shop_id,ul.influence, "

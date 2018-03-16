@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.codec.Base64;
 
@@ -27,13 +28,22 @@ public class AppBestCaseController extends Controller {
      * @throws IOException
      */
     public void orderData() throws IOException{
+    	String cityCode = getPara("cityCode");
+    	
+    	String conditions = "";
+
+    	if(StringUtils.isNotBlank(cityCode)){
+    		conditions += " and wc.city = '" + cityCode + "'";
+    	}
+    	
     	//精选婚礼
     	List<Record> caseList = Db.find(" SELECT cas.id, cas.name title,cas.picture_name cover,"
     			+ " wc.c_name shop_name ,wc.logo shop_logo "
     			+ " FROM"
     			+ " `wc_case` cas"
     			+ " left join wc_company wc on wc.creator = cas.creator"
-    			+ " where cas.flag = '1'");
+    			+ " where cas.flag = '1'"
+    			+ conditions);
     	
     	//案例明细表关联
     	for (Record item : caseList) {
