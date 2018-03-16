@@ -49,7 +49,6 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
       if(currentNode.SET_VALUE){
         $('#edit_event_value_id').val(currentNode.SET_VALUE.ID||'');
         $('#edit_event_set_value_condition').val(currentNode.SET_VALUE.CONDITION);
-        $('#edit_save_set_value_div').hide();
         var itemList = currentNode.SET_VALUE.SET_FIELD_LIST;
         setValueCont.dataTable.clear().draw();
         if(itemList){
@@ -61,7 +60,6 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
       }else if(currentNode.SAVE){
           $('#edit_event_save_value_id').val(currentNode.SAVE.ID);
           $('#edit_event_save_set_value_condition').val(currentNode.SAVE.CONDITION);
-          $('#edit_set_value_div').hide();
           var itemList = currentNode.SAVE.SET_FIELD_LIST;
           saveSetValueCont.dataTable.clear().draw();
           if(itemList){
@@ -92,6 +90,29 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
         $('#edit_event_target_list').val(currentNode.LIST_ADD_ROW.TARGET_FIELD_NAME);
       }
       
+      hide_div(currentNode.TYPE);
+    }
+    
+    var hide_div = function(type){
+    	$("#edit_list_add_row_div").hide();
+    	$("#edit_open_form_div").hide();
+    	$("#edit_set_css_div").hide();
+    	$("#edit_set_value_div").hide();
+    	$("#edit_save_set_value_div").hide();
+    	$("#edit_check_form_div").hide();
+    	if(type=="save"){
+    		$("#edit_save_set_value_div").show();
+    	}else if(type=="open"){
+    		$("#edit_open_form_div").show();
+    	}else if(type=="list_add_row"){
+    		$("#edit_list_add_row_div").show();
+    	}else if(type=="set_value"){
+    		$("#edit_set_value_div").show();
+    	}else if(type=="set_css"){
+    		$("#edit_set_css_div").show();
+    	}else if(type=="check"){
+    		$("#edit_check_form_div").show();
+    	}
     }
     
     var newCount=1;
@@ -279,26 +300,9 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
     }
 
     $('#edit_event_type').change(function(event) {
-       hideAllDiv();
        var type = $(this).val();
-       if(type == 'open'){
-          $('#edit_open_form_div').show();
-       }else if(type == 'set_css'){
-          $('#edit_set_css_div').show();
-       }else if(type == 'set_value'){
-          $('#edit_set_value_div').show();
-       }else if(type == 'list_add_row'){
-          $('#edit_list_add_row_div').show();
-       }else if(type =="save"){
-    	   $('#edit_save_set_value_div').show();
-       }
+       hide_div(type);
     });
-
-    var hideAllDiv = function(){
-      $('#edit_open_form_div').hide();
-      $('#edit_set_css_div').hide();
-      $('#edit_list_add_row_div').hide();
-    }
 
     var clear = function(){
       $('#edit_event_id').val('');

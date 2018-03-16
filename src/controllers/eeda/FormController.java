@@ -268,7 +268,8 @@ public class FormController extends Controller {
                 		Record form = Db.findById(form_name, dto.get("order_id"));
                 		form.set(column_name, esvi.get("value"));
                 		Db.update(form_name, form);
-                		renderJson(form);
+                		form.set("form_name", form_name);
+                		rec = form;
                 	}
             	}
         	}

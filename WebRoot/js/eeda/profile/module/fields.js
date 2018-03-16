@@ -264,6 +264,8 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
           }else if (checkText == '字段引用') {
             //checkboxCont.dataTable.clear().draw();
             $('.ref_config').show();
+          }else if(checkText == '字段引用'){
+        	  
           }
         });
 

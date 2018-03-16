@@ -44,12 +44,40 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
       $('#list_event_type').val(currentNode.type);
 
       if(currentNode.OPEN_FORM){
-        $('#event_open_condition').val(currentNode.OPEN_FORM.CONDITION);
-        $('#event_open_module').val(currentNode.OPEN_FORM.MODULE_NAME);
-        $('#event_open_type').val(currentNode.OPEN_FORM.OPEN_TYPE);
+        $('#list_event_open_condition').val(currentNode.OPEN_FORM.CONDITION);
+        $('#list_event_open_module').val(currentNode.OPEN_FORM.MODULE_NAME);
+        $('#list_event_open_type').val(currentNode.OPEN_FORM.OPEN_TYPE);
       }
-      
+      hide_div(currentNode.TYPE);
     }
+    
+    var hide_div = function(type){
+    	$("#list_list_add_row_div").hide();
+    	$("#list_open_form_div").hide();
+    	$("#list_set_css_div").hide();
+    	$("#list_set_value_div").hide();
+    	$("#list_save_set_value_div").hide();
+    	$("#list_check_form_div").hide();
+    	$("#list_assign_form_div").hide();
+    	if(type=="save"){
+    		$("#list_save_set_value_div").show();
+    	}else if(type=="open"){
+    		$("#list_open_form_div").show();
+    	}else if(type=="list_add_row"){
+    		$("#list_list_add_row_div").show();
+    	}else if(type=="set_value"){
+    		$("#list_set_value_div").show();
+    	}else if(type=="set_css"){
+    		$("#list_set_css_div").show();
+    	}else if(type=="check"){
+    		$("#list_check_form_div").show();
+    	}
+    }
+    
+    $('#list_event_type').change(function(event) {
+        var type = $(this).val();
+        hide_div(type);
+     });
     
     var newCount=1;
     function addHoverDom(treeId, treeNode) {
