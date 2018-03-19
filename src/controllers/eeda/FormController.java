@@ -169,6 +169,9 @@ public class FormController extends Controller {
 //                        + " target_form='"++"' target_field_name='"+field_name+"'"
                         ref.set("target_form_id", refForm.getLong("id"));
                         ref.set("target_field_name", field_name);
+                    }else if("下拉列表".equals(field_rec.getStr("field_type"))){
+                    	List<Record> dropdown_list = Db.find("select * from eeda_form_field_type_dropdown where field_id=?", field_rec.getLong("id"));
+                    	record.set("dropdown_list",dropdown_list);
                     }
                 }
                 rec.set("display_field_list", itemList);
@@ -609,6 +612,10 @@ public class FormController extends Controller {
             }else if("按钮".equals(fieldType)){
                 FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_btn(form_name, fieldRec, fieldRec.getLong("id"));
+                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
+            }else if("下拉列表".equals(fieldType)){
+            	FormService fs = new FormService(this);
+                replaceNameDest = fs.processFieldType_dropdown(form_name, fieldRec, fieldRec.getLong("id"));
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
             }else{
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"

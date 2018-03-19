@@ -344,6 +344,9 @@ public class ModuleController extends Controller {
                 } else if ("set_value".equals(type)) {
                     ModuleService ms = new ModuleService(this);
                     ms.saveEventSetValue(event, rec.getLong("id"));
+                } else if ("list_add_row".equals(type)) {
+                    ModuleService ms = new ModuleService(this);
+                    ms.saveEventListAddRow(event, rec.getLong("id"));
                 }else if("save".equals(type)){
                 	ModuleService ms = new ModuleService(this);
                 	ms.saveEventSaveSetValue(event, rec.getLong("id"));
@@ -1006,6 +1009,10 @@ public class ModuleController extends Controller {
                 if (field_list.size() > 0)
                     ref.set("item_list", field_list);
                 
+            }else if("下拉列表".equals(type)){
+            	 List<Record> field_list = Db.find("select * from eeda_form_field_type_dropdown where field_id=?",field.get("id"));
+            	 if (field_list.size() > 0)
+            		 field.set("dropdown_list", field_list);
             }
         }
         return recList;

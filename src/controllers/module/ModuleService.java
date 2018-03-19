@@ -12,6 +12,7 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.sun.org.apache.regexp.internal.recompile;
 
 import controllers.util.PingYinUtil;
 
@@ -459,6 +460,8 @@ public class ModuleService {
                     Db.update("eeda_form_field_type_ref_item", itemRec);
                 }
             }
+        }else if("下拉列表".equals(fieldType)){
+        	saveDropdown(field, field_id);
         }
         
     }
@@ -644,5 +647,36 @@ public class ModuleService {
                 }
             }
         }
+    }
+    
+    public void saveDropdown(Map<String, ?> field, Long field_id){
+    	Map<String,Object> fieldTypeObj =  (Map<String,Object>)field.get("DROPDOWN");
+    	if(fieldTypeObj==null){
+        	return;
+        }
+    	List<Map<String,Object>> list = (ArrayList<Map<String,Object>>)fieldTypeObj.get("ITEM_LIST");
+    	if(list.size()>0){
+    		for(int i = 0;i<list.size();i++){
+    			String dropdown_id = String.valueOf(list.get(i).get("ID"));
+            	Record re = new Record();
+            	if(StringUtils.isBlank(dropdown_id)){
+        			re.set("field_id", field_id);
+            		re.set("sequence", list.get(i).get("SEQUENCE"));
+            		re.set("value", list.get(i).get("VALUE"));
+            		re.set("name", list.get(i).get("NAME"));
+            		Db.save("eeda_form_field_type_dropdown", re);
+            	}else{
+            		re = Db.findById("eeda_form_field_type_dropdown", dropdown_id);
+            		if("Y".equals(list.get(i).get("is_delete"))){
+            			Db.delete("eeda_form_field_type_dropdown", re);
+            		}else{
+                		re.set("sequence", list.get(i).get("SEQUENCE"));
+                		re.set("value", list.get(i).get("VALUE"));
+                		re.set("name", list.get(i).get("NAME"));
+                		Db.update("eeda_form_field_type_dropdown", re);
+            		}
+            	}
+    		}
+    	}
     }
 }

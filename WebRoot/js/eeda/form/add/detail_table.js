@@ -42,24 +42,42 @@ define(['jquery', 'sco', '../btns'], function ($, sco, btnCont) {
                             data='';
                         var eeda_type="";
                         var placeholder="";
-                        if(field.FIELD_TYPE == '字段引用'){
-                            eeda_type="drop_down";
-                            placeholder="请选择";
-                        }
-                        var str= '<input type="text" name="'+field.FIELD_NAME+'" value="'+data
-                            +'" eeda_type="'+eeda_type
-                            +'" placeholder="'+placeholder+'" ';
-
-                        if(field.FIELD_TYPE == '日期时间'){
-                        	str+= "onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\'})\" class=\"input-text Wdate\""
+                        var str = "";
+                        
+                        if(field.FIELD_TYPE == '下拉列表'){
+                        	str = "<select name='"+field.FIELD_NAME+"' style='width: 100%;' class='form-control input-text'>"
+                        	var list = field.DROPDOWN_LIST;
+                        	var dropdownStr = "";
+                        	for(var i = 0;i<list.length;i++){
+                        		if(data==list[i].NAME){
+                        			dropdownStr += "<option value='"+list[i].VALUE+"' class='input-text' selected='selected'>"+list[i].NAME+"</option>";
+                        		}else{
+                        			dropdownStr += "<option class='input-text' style='width: 100%;' value='"+list[i].VALUE+"'>"+list[i].NAME+"</option>";
+                        		}
+                        	}
+                        	str+=dropdownStr+"</select>";
+                                
                         }else{
-                        	str+= "class=\"input-text\""
+                        	if(field.FIELD_TYPE == '字段引用'){
+                                eeda_type="drop_down";
+                                placeholder="请选择";
+                            }
+                            str= '<input type="text" name="'+field.FIELD_NAME+'" value="'+data
+                                +'" eeda_type="'+eeda_type
+                                +'" placeholder="'+placeholder+'" ';
+
+                            if(field.FIELD_TYPE == '日期时间'){
+                            	str+= "onfocus=\"WdatePicker({dateFmt:\'yyyy-MM-dd HH:mm:ss\'})\" class=\"input-text Wdate\""
+                            }else{
+                            	str+= "class=\"input-text\""
+                            }
+                            if(field.FIELD_TYPE == '字段引用'){
+                                str+= " target_form='"+field.REF.TARGET_FORM_ID+"' target_field_name='"+field.REF.TARGET_FIELD_NAME+"'"
+                            }
+                            str+'  style="width: 100%;"/>';
                         }
-                        if(field.FIELD_TYPE == '字段引用'){
-                            str+= " target_form='"+field.REF.TARGET_FORM_ID+"' target_field_name='"+field.REF.TARGET_FIELD_NAME+"'"
-                        }
-                        return str+'  style="width: 100%;"/>'
-                            +"<span class='dropDown'>"
+                        
+                        return str+"<span class='dropDown'>"
                             +"     <ul name='"+field.FIELD_NAME+"_list' class='pull-right dropDown-menu menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;'/>"
                             +"</span>";    
                     }

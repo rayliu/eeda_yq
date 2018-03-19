@@ -38,10 +38,13 @@ define(['jquery', 'hui', '../btns', '../add/detail_table', '../value_change', '.
                     var field_id = '[name=form_'+module_form_id+'-'+p.toLowerCase()+']';
                     //console.log ( field_id +" = "+value ) ;
                     var type = $(field_id).attr('type');
+                    var tagName = $(field_id).prop("tagName");
                     if(type == "text"){ //inputBox
                         $(field_id).val(data[p]);// 根据ID 显示所有的属性 
                     }else if(type == "radio"){
                         $(field_id+"[value='"+data[p]+"']").prop("checked",true);
+                    }else if(tagName == "SELECT"){
+                    	$(field_id).find("option[value='"+data[p]+"']").attr("selected","selected");
                     }
                 }
             } 

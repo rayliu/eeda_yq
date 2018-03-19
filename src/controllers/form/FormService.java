@@ -60,7 +60,7 @@ public class FormService {
             }
             String checkboxStr = 
                     "<div class='radio-box'>"
-                    + "     <input type='radio' origin_name='"+form_name+"-"+fieldDisplayName
+                    + "     <input type='checkbox' origin_name='"+form_name+"-"+fieldDisplayName
                     +"'          name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+index+"' value='"+name+"' "+checked+"/>"
                     + "     <label for='"+fieldName+index+"'>"+name+"</label>"
                     +"</div>";
@@ -157,5 +157,29 @@ public class FormService {
                 +"    </tbody>"
                 +"</table>";
         return returnStr;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Before(Tx.class)
+    public String processFieldType_dropdown(String form_name, Record fieldRec, Long field_id){
+        String returnStr = "";
+        String fieldDisplayName = fieldRec.getStr("field_display_name");
+        String fieldName = fieldRec.getStr("field_name");
+        Long form_id = fieldRec.getLong("form_id");
+        String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
+        List<Record> dropdown_list = Db.find(
+                "select * from eeda_form_field_type_dropdown where field_id=? order by sequence", field_id);
+        
+        returnStr = "<label class='form-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
+                + " <div class='formControls skin-minimal col-xs-8 col-sm-9'>"
+                + " <select id='"+inputId+"' name='"+inputId+"' class='form-control input-text'>";
+        String dropdownStr = "";
+        for (Record r : dropdown_list) {
+            String value = r.getStr("value");
+            String name = r.getStr("name");
+            dropdownStr += "<option value='"+value+"'>"+name+"</option>";
+        }
+        returnStr+=dropdownStr;
+        return returnStr+"</select></div>";
     }
 }

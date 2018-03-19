@@ -1,5 +1,5 @@
-define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref', './fields/field_pro_ref', './fields/field_pro_auto_no'], 
-  function ($, checkboxCont, detailTableCont, refCont, autoNoCont) {
+define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref', './fields/field_pro_ref','./fields/field_pro_dropdown','./fields/field_pro_auto_no'], 
+  function ($, checkboxCont, detailTableCont, refCont,dropdownCont, autoNoCont) {
     
 
         var dataTable = eeda.dt({
@@ -85,6 +85,8 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
                      re_display_detail_ref_values(data);
                  }else if(data.FIELD_TYPE == '字段引用'){
                      re_display_ref_values(data);
+                 }else if(data.FIELD_TYPE == '下拉列表'){
+                	 re_display_dropdown_values(data);
                  }
         	}
         } );
@@ -102,6 +104,9 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
 
           dataTable.row(tr).remove().draw();
 
+          if(id==null){
+        	  return;
+          }
           deleteList.push({ID: id, is_delete:'Y'});
           return false;
         });
@@ -196,6 +201,17 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             }
           }
         }
+        
+        var re_display_dropdown_values = function(data){
+        	var display_list = data.DROPDOWN_LIST;
+        	dropdownCont.dataTable.clear().draw();
+            if(display_list){
+              for (var i = 0; i < display_list.length; i++) {
+                  var item = display_list[i];
+                  dropdownCont.dataTable.row.add(item).draw(false);
+              }
+            }
+        }
 
         var buildFieldsDetail = function(){
             var data = dataTable.rows().data();
@@ -264,8 +280,8 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
           }else if (checkText == '字段引用') {
             //checkboxCont.dataTable.clear().draw();
             $('.ref_config').show();
-          }else if(checkText == '字段引用'){
-        	  
+          }else if(checkText == '下拉列表'){
+        	$('.dropdown_config').show();
           }
         });
 
@@ -301,6 +317,9 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             }else if (checkText == '字段引用') {
               var dto = refCont.buildDto();
               item.REF = dto;
+            }else if(checkText == '下拉列表'){
+        	  var dto = dropdownCont.buildDto();
+              item.DROPDOWN = dto;
             }
 
             dataTable.row(current_tr).data( item ).draw();

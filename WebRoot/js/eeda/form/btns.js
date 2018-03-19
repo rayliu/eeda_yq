@@ -14,13 +14,14 @@ define(['jquery', './print'], function ($, printCont) {
             }else if(btn_name == "table_delete_row_btn"){
                 var target_table_id = btn.closest('table').attr('id');
                 var target_table_tr = btn.closest('tr');
+                var dataTable = $('#'+target_table_id).DataTable();
                 dataTable.row(target_table_tr).remove().draw();
                 var id =  $(this).parent().parent().attr("id");
                 if(id==null){
                 	return;
                 }
                 deleteList.push({ID: id, is_delete:'Y'});
-                var dataTable = $('#'+target_table_id).DataTable();
+               
 
                 //var row_index = table.row( this ).index();
                 
