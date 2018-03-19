@@ -58,7 +58,9 @@ define(['jquery'], function ($) {
           var id = dataTable.row(tr).data().ID;
 
           dataTable.row(tr).remove().draw();
-
+          if(id==null){
+        	  return;
+          }
           deleteList.push({ID: id.toString(), action:'DELETE'});
           return false;
         });

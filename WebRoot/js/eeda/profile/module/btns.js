@@ -38,6 +38,9 @@ define(['jquery'], function ($) {
 
           list_dataTable.row(tr).remove().draw();
 
+          if(id==null){
+        	  return;
+          }
           list_btns_deleteIds.push({ID: id, action:'DELETE'});
           return false;
         });
@@ -181,6 +184,9 @@ define(['jquery'], function ($) {
 
           edit_dataTable.row(tr).remove().draw();
 
+          if(id==null){
+        	  return;
+          }
           edit_btns_deleteIds.push({ID: id, action:'DELETE'});
           return false;
         });

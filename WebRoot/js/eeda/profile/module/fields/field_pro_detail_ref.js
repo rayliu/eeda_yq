@@ -49,7 +49,9 @@ define(['jquery'], function ($) {
           var id = connect_dataTable.row(tr).data().ID;
 
           connect_dataTable.row(tr).remove().draw();
-
+          if(id==null){
+        	  return;
+          }
           ref_table_deleteIds.push({ID: id, action:'DELETE'});
           return false;
         });
@@ -97,7 +99,9 @@ define(['jquery'], function ($) {
           var id = display_dataTable.row(tr).data().ID;
 
           display_dataTable.row(tr).remove().draw();
-
+          if(id==null){
+        	  return;
+          }
           ref_display_table_deleteIds.push({ID: id, action:'DELETE'});
           return false;
         });

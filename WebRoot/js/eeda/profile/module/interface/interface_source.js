@@ -111,6 +111,9 @@ define(['jquery'],
 
           dataTable.row(tr).remove().draw();
 
+          if(id==null){
+        	  return;
+          }
           deleteList.push({ID: id, is_delete:'Y'});
           return false;
         });

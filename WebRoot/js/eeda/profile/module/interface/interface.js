@@ -125,7 +125,7 @@ define(['jquery', './interface_source', './interface_cols', './interface_filter'
 
           dataTable.row(tr).remove().draw();
 
-          if(id){
+          if(id!=null){
             deleteList.push({ID: id, is_delete:'Y'});
           }
 
