@@ -58,16 +58,19 @@ public class FormService {
             if("Y".equals(isDefault)){
                 checked = "checked";
             }
-            String checkboxStr = 
-                    "<div class='radio-box'>"
-                    + "     <input type='checkbox' origin_name='"+form_name+"-"+fieldDisplayName
-                    +"'          name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+index+"' value='"+name+"' "+checked+"/>"
-                    + "     <label for='"+fieldName+index+"'>"+name+"</label>"
-                    +"</div>";
-//                "<label class='radio-inline'>"
-//                    + "<input type='radio' origin_name='"+form_name+"-"+fieldDisplayName
-//                    +"' name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+"' value='"+name+"' "+checked+"/>"
-//                    + name+"</label>";
+            String checkboxStr = "";
+            if("Y".equals(checkBox.get("is_single_check"))){
+            	checkboxStr = "<label class='radio-inline'>"
+                         + "<input type='radio' class='ml-10' origin_name='"+form_name+"-"+fieldDisplayName
+                         +"' name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+"' value='"+name+"' "+checked+"/>"
+                         + name+"</label>";
+            }else{
+            	checkboxStr = "<div class='radio-box'>"
+                        + "     <input type='checkbox' origin_name='"+form_name+"-"+fieldDisplayName
+                        +"'          name='form_"+form_id+"-f"+field_id+"_"+fieldName+"' id='"+fieldName+index+"' value='"+name+"' "+checked+"/>"
+                        + "     <label for='"+fieldName+index+"'>"+name+"</label>"
+                        +"</div>";
+            }
             returnStr+=checkboxStr;
         }
         return returnStr+"</div>";
