@@ -44,7 +44,8 @@
 		    		<h3>模块定义 </h3>
 
 		    		<div>
-		    			<input type="radio" name="form_type" value="form" checked>表单
+						<input type="radio" name="form_type" value="form" checked>表单
+						<input type="radio" name="form_type" value="search_form">自定义查询
 			    		<input type="radio" name="form_type" value="report">报表
 		    		</div>
 			    		
@@ -57,10 +58,13 @@
 				  <ul class="nav nav-tabs" role="tablist">
 				    <li role="presentation" class="active" >
 				 	 	<a href="#info" aria-controls="permission" role="tab" data-toggle="tab">基本信息</a>
-				 	 </li>
-				 	 <li role="presentation" >
+				 	</li>
+				 	<li role="presentation" >
 				 	 	<a href="#fields" aria-controls="permission" role="tab" data-toggle="tab">字段</a>
-				 	 </li>
+					</li>
+					<li role="presentation" >
+						<a href="#custom_search" aria-controls="permission" role="tab" data-toggle="tab">自定义查询</a>
+					</li>
 				 	 <li role="presentation" >
 				 	 	<a href="#template" aria-controls="permission" role="tab" data-toggle="tab">表单模板</a>
 				 	 </li>
@@ -94,6 +98,9 @@
                     </div>
                     <div class="tab-pane" id="fields">
                         <%include("/profile/module/fields/edit_tab_fields.html", {}){} %>
+					</div>
+					<div class="tab-pane" id="custom_search">
+                        <%include("/profile/module/custom_search/custom_search.html", {}){} %>
                     </div>
                     <div class="tab-pane" id="template">
                         <%include("/profile/module/edit_tab_template.html", {}){} %>

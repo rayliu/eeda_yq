@@ -1,6 +1,7 @@
-define(['jquery', './list_tree', './fields', './template_tab', './btns', './events', './edit_events', './permission', './auth',
+define(['jquery', './list_tree', './fields', './custom_search/custom_search', './template_tab', './btns', './events', './edit_events', './permission', './auth',
          './print_template/print_template', './interface/interface', 'zTree'], 
-    function ($, listCont, fieldContr, templateCont, btnsCont, eventsCont,editEventCont, perCont, authCont, printCont, interfaceCont) {
+    function ($, listCont, fieldContr, customSearchCont, templateCont, btnsCont, eventsCont,editEventCont, 
+        perCont, authCont, printCont, interfaceCont) {
 
         $(document).ready(function() {
 
