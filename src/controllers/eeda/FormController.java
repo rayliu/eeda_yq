@@ -376,7 +376,9 @@ public class FormController extends Controller {
                      }else{
                     	 if("Y".equals(rowRec.get("is_delete"))){
                     		 Record re = Db.findById("form_"+detail_form_id, rowRec.get("id"));
-                    		 Db.delete("form_"+detail_form_id, re);
+                    		 if(re!=null){
+                    			 Db.delete("form_"+detail_form_id, re);
+                    		 }
                     	 }else{
                     		 Db.update("form_"+detail_form_id, rowRec);
                     	 }

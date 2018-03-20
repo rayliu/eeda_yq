@@ -1,4 +1,25 @@
 define(['jquery', './print'], function ($, printCont) {
+	$.fn.serializeObject = function () {
+	    var o = {};
+	    var a = this.serializeArray();
+	    $.each(a, function () {
+	        if (o[this.name] !== undefined) {
+	            if (!o[this.name].push) {
+	                o[this.name] = [o[this.name]];
+	            }
+	            o[this.name].push(this.value || '');
+	        } else {
+	            o[this.name] = this.value || '';
+	        }
+	    });
+	    var $radio = $('input[type=radio],input[type=checkbox]',this);
+	    $.each($radio,function(){
+	        if(!o.hasOwnProperty(this.name)){
+	            o[this.name] = '';
+	        }
+	    });
+	    return o;
+	};
 	var deleteList=[];
         //按钮事件响应
         $('body').on('click', 'button', function(event) {
@@ -95,15 +116,14 @@ define(['jquery', './print'], function ($, printCont) {
         function getFormData($form){
             // Find disabled inputs, and remove the "disabled" attribute
             var disabled = $form.find(':input:disabled').removeAttr('disabled');
-            var unindexed_array = $form.serializeArray();
+            var unindexed_array = $form.serializeObject();
             // re-disabled the set of inputs that you previously enabled
             disabled.attr('disabled','disabled');
 
-            var indexed_array = {};
-
-            $.map(unindexed_array, function(n, i){
-                indexed_array[n['name']] = n['value'];
-                
+            $.each(unindexed_array, function(index, item) {
+            	if(Object.prototype.toString.call(item)=='[object Array]'){
+            		unindexed_array[index] = item.toString();
+            	}
             });
 
             var tables = $('table[type=dynamic]');
@@ -122,7 +142,9 @@ define(['jquery', './print'], function ($, printCont) {
                   $.each(rowData, function(e, v) {
                     rowAr[v['name']] = v['value'];
                   });
-                  ar.push(rowAr);
+                  if(rowData.length>0){
+                	  ar.push(rowAr);
+                  }
                 });
                 var list = ar.concat(deleteList);
                 var table_item={
@@ -132,9 +154,9 @@ define(['jquery', './print'], function ($, printCont) {
                 detail_tables.push(table_item);
             });
 
-            indexed_array.detail_tables = detail_tables;
+            unindexed_array.detail_tables = detail_tables;
 
-            return indexed_array;
+            return unindexed_array;
         }
 
 

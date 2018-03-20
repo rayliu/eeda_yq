@@ -45,6 +45,16 @@ define(['jquery', 'hui', '../btns', '../add/detail_table', '../value_change', '.
                         $(field_id+"[value='"+data[p]+"']").prop("checked",true);
                     }else if(tagName == "SELECT"){
                     	$(field_id).find("option[value='"+data[p]+"']").attr("selected","selected");
+                    }else if(type == "checkbox"){
+                    	if(data[p].indexOf(",")>0){
+                    		var array = data[p].split(",");
+                    		for(var i = 0;i<array.length;i++){
+                        		$(field_id+"[value='"+array[i]+"']").prop("checked",true);
+                        	}
+                    	}else{
+                    		$(field_id+"[value='"+data[p]+"']").prop("checked",true);
+                    	}
+                    	
                     }
                 }
             } 
