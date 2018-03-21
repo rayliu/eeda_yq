@@ -35,6 +35,7 @@ import controllers.form.FormService;
 import controllers.form.TemplateService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.PingYinUtil;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -83,7 +84,7 @@ public class FormController extends Controller {
         
         if("doQuery".equals(action)){
             
-            Map listMap = queryForm(Long.valueOf(module_id));
+            Map<String,Object> listMap = queryForm(Long.valueOf(module_id));
             renderJson(listMap);
             return;
         }
@@ -431,13 +432,38 @@ public class FormController extends Controller {
     
     private List<Record> list(Long form_id){
         setAttr("btnList", getFormBtns(form_id, "list"));
-        
-        List<Record> fieldList = Db.find("select * from eeda_form_field where "
-                + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
+        List<Record> fieldList = new ArrayList<Record>();
+        Record re = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
+        if("search_form".equals(re.get("type"))){
+        	fieldList = getDisplayCols(form_id);
+        }else if("form".equals(re.get("type"))){
+        	fieldList = Db.find("select * from eeda_form_field where "
+                    + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
+        }
         setAttr("form_id", form_id);
         setAttr("field_list", fieldList);
         setAttr("field_list_json", JsonKit.toJson(fieldList));
         return fieldList;
+    }
+    
+    private List<Record> getDisplayCols (Long form_id){
+    	List<Record> fieldList = new ArrayList<Record>();
+    	List<Record> custom_search_source_list = Db.find("select * from eeda_form_custom_search_source where form_id = ?",form_id);
+    	for(int i = 0;i<custom_search_source_list.size();i++){
+    		String source_form_name = custom_search_source_list.get(i).get("form_name");
+    		//根据数据源表的form_name,查出该字段本来的表
+    		Record define_source = Db.findFirst("select * from eeda_form_define where name=?",source_form_name);
+    		//查数据列表
+    		List<Record> custom_search_cols_list = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
+    		for(int j = 0;j<custom_search_cols_list.size();j++){
+    			String expression = custom_search_cols_list.get(j).get("expression");
+    			int index = expression.indexOf(".");
+    			String name = expression.substring(index+1);
+    			Record field = Db.findFirst("select * from eeda_form_field where field_display_name=? and form_id=? ",name,define_source.get("id"));
+    			fieldList.add(field);
+    		}
+    	}
+    	return fieldList;
     }
     
     private List<Record> getFormBtns(Long formId, String type) {
@@ -487,15 +513,44 @@ public class FormController extends Controller {
         return rec;
     }
     
-    private Map queryForm(Long form_id){
-        
+    private Map<String,Object> queryForm(Long form_id){
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
             sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-        String sql = "select * from form_"+form_id+" where 1=1 "; 
-        List<Record> list = Db.find(sql);
+        
+        String sql = "";
+        Record define = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
+        if("search_form".equals(define.get("type"))){
+        	String field_name = "";
+        	//先查数据源表，遍历拿到需要的form_name
+        	List<Record> custom_search_source_list = Db.find("select * from eeda_form_custom_search_source where form_id = ?",form_id);
+        	for(int i = 0;i<custom_search_source_list.size();i++){
+        		String source_form_name = custom_search_source_list.get(i).get("form_name");
+        		//将form_name变成首字母拼音，用做表的别名
+        		String source_form_name_py = PingYinUtil.getFirstSpell(source_form_name);
+        		//根据数据源表的form_name,查出该字段本来的表
+        		Record define_source = Db.findFirst("select * from eeda_form_define where name=?",source_form_name);
+        		//查数据列表
+        		List<Record> custom_search_cols_list = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
+        		for(int j = 0;j<custom_search_cols_list.size();j++){
+        			String expression = custom_search_cols_list.get(j).get("expression");
+        			int index = expression.indexOf(".");
+        			String name = expression.substring(index+1);
+        			Record field = Db.findFirst("select * from eeda_form_field where field_display_name=? and form_id=? ",name,define_source.get("id"));
+        			String str = "";
+        			if(custom_search_cols_list.size()>1&&j>0){
+        				str = ","; 
+        			}
+        			field_name += str+source_form_name_py+"."+"f"+field.get("id")+"_"+field.get("field_name");
+        		}
+        		sql = "select "+field_name+" from form_"+define_source.get("id")+" "+source_form_name_py+" where 1=1";
+        	}
+        }else if("form".equals(define.get("type"))){
+        	sql = "select * from form_"+form_id+" where 1=1 "; 
+        }
+        
         String condition = DbUtils.buildConditions(getParaMap());
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
@@ -503,7 +558,7 @@ public class FormController extends Controller {
         setAttr("queryTotal", sqlTotal);
         
         List<Record> orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
-        Map orderListMap = new HashMap();
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
         orderListMap.put("recordsTotal", rec.getLong("total"));
         orderListMap.put("recordsFiltered", rec.getLong("total"));

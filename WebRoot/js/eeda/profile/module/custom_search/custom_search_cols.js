@@ -12,23 +12,23 @@ define(['jquery'],
                     }
                     return '<button type="button" class="btn table_btn btn-xs delete_field" >'+
                           '<i class="fa fa-trash-o"></i> 删除</button>'
-                          +'<input name="ID" type="hidden" value="'+data+'">';
+                          +'<input name="id" type="hidden" value="'+data+'">';
                   }
               },
-              { "data": "COL_NAME",
+              { "data": "FIELD_NAME",
                 "render": function ( data, type, full, meta ) {
                   if(!data){
                       data='';
                     }
-                  return '<input name="col_name" value="'+data+'">';
+                  return '<input name="field_name" value="'+data+'">';
                 }
               }, 
-              { "data": "VALUE",
+              { "data": "EXPRESSION",
                 "render": function ( data, type, full, meta ) {
                   if(!data){
                       data='';
                     }
-                  return '<input name="value" value="'+data+'">';
+                  return '<input name="expression" value="'+data+'">';
                 }
               },
               { "data": "WIDTH",
@@ -39,12 +39,12 @@ define(['jquery'],
                   return '<input name="width" value="'+data+'">';
                 }
               }, 
-              { "data": "IS_VISIBLE",
+              { "data": "HIDDEN_FLAG",
                 "render": function ( data, type, full, meta ) {
                   if(!data){
                       data='';
                     }
-                  return '<input name="visible" value="'+data+'">';
+                  return '<input name="hidden_flag" value="'+data+'">';
                 }
               }
           ]
@@ -62,7 +62,9 @@ define(['jquery'],
 
           dataTable.row(tr).remove().draw();
 
-          deleteList.push({ID: id, is_delete:'Y'});
+          if(id!=""){
+        	  deleteList.push({ID: id.toString(), IS_DELETE:'Y'});
+          }
           return false;
         });
 
@@ -74,10 +76,10 @@ define(['jquery'],
             for (var i = 0; i < inputs.length/5; i++) {
               var item={
                 ID: $(inputs[i*5]).val(),
-                COL_NAME: $(inputs[i*5 + 1]).val(),
-                VALUE: $(inputs[i*5 + 2]).val(),
+                FIELD_NAME: $(inputs[i*5 + 1]).val(),
+                EXPRESSION: $(inputs[i*5 + 2]).val(),
                 WIDTH: $(inputs[i*5 + 3]).val(),
-                IS_VISIBLE: $(inputs[i*5 + 4]).val()
+                HIDDEN_FLAG: $(inputs[i*5 + 4]).val()
               };
 
               itemList.push(item);

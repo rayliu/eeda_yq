@@ -18,6 +18,7 @@ import models.eeda.profile.Module;
 import models.eeda.profile.ModuleRole;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.rewrite.RewriteAppender;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -250,6 +251,8 @@ public class ModuleController extends Controller {
         if("Y".equals(dto.get("field_update_flag"))){
         	buildFormTable(form_id);
         }
+        //处理自定义查询
+        handleCustomSearch(dto, form_id);
         
         // 处理按钮
         if("Y".equals(dto.get("btn_update_flag"))){
@@ -283,7 +286,8 @@ public class ModuleController extends Controller {
         orderRec.set("btn_list_query", btn_list_query);
         List<Record> btn_list_edit = getFormBtns(form_id, "edit");
         orderRec.set("btn_list_edit", btn_list_edit);
-        
+        orderRec.set("custom_search_source", getCustomSearchSource(form_id));
+        orderRec.set("custom_search_cols", getCustomSearchCols(form_id));
         List<Record> editEventList = Db.find("select essvi.* from eeda_form_event_save_set_value_item essvi "
         									+ "left join eeda_form_event efe on essvi.event_id = efe.id where efe.form_id = ?", form_id);
         orderRec.set("editEventList", editEventList);
@@ -421,6 +425,81 @@ public class ModuleController extends Controller {
         }
     }
 
+    private void handleCustomSearch(Map<String, ?> dto, Long form_id){
+    	  Map<String, Object> customSearch = (Map<String, Object>) dto.get("customSearch");
+    	  Map<String, Object> custom_search_source = (Map<String, Object>)customSearch.get("custom_search_source");
+    	  if(custom_search_source!=null){
+    		  List<Map<String, String>> block_arr = (ArrayList<Map<String, String>>)custom_search_source.get("block_arr");
+    		  if(block_arr.size()>0){
+    			  for(int i = 0;i<block_arr.size();i++){
+    				  String id = block_arr.get(i).get("ID");
+    				  String form_name = block_arr.get(i).get("FORM_NAME");
+    				  String connect_type = block_arr.get(i).get("CONNECT_TYPE");
+    				  String is_delete = block_arr.get(i).get("IS_DELETE");
+    				  Record re = new Record();
+    				  if(StringUtils.isBlank(id)){
+    					  re.set("form_id", form_id);
+    					  re.set("form_name", form_name);
+    					  re.set("connect_type", connect_type);
+    					  Db.save("eeda_form_custom_search_source", re);
+    				  }else{
+    					  re = Db.findById("eeda_form_custom_search_source", id);
+    					  if(re!=null){
+    						  if("Y".equals(is_delete)){
+        						  Db.delete("eeda_form_custom_search_source", re);
+        					  }else{
+            					  re.set("form_name", form_name);
+            					  re.set("connect_type", connect_type);
+            					  Db.update("eeda_form_custom_search_source", re);
+        					  }
+    					  }
+    				  }
+    			  }
+    		  }
+    		  List<Map<String, String>> join_list = (ArrayList<Map<String, String>>)custom_search_source.get("join_list");
+    		  if(join_list.size()>0){
+    			  
+    		  }
+    	  }
+    	  List<Map<String, String>> custom_search_cols = (ArrayList<Map<String, String>>)customSearch.get("custom_search_cols");
+    	  if(custom_search_cols.size()>0){
+    		  for(int i = 0;i<custom_search_cols.size();i++){
+    			  String id = custom_search_cols.get(i).get("ID");
+    			  String field_name = custom_search_cols.get(i).get("FIELD_NAME");
+    			  String expression = custom_search_cols.get(i).get("EXPRESSION");
+    			  String width = custom_search_cols.get(i).get("WIDTH");
+    			  String hidden_flag = custom_search_cols.get(i).get("HIDDEN_FLAG");
+    			  String is_delete = custom_search_cols.get(i).get("IS_DELETE");
+    			  Record re = new Record();
+    			  if(StringUtils.isBlank(id)){
+    				  re.set("form_id", form_id);
+    				  re.set("field_name",field_name);
+    				  re.set("expression",expression);
+    				  re.set("width",width);
+    				  re.set("hidden_flag",hidden_flag);
+    				  Db.save("eeda_form_custom_search_cols", re);
+    			  }else{
+    				  re = Db.findById("eeda_form_custom_search_cols", id);
+    				  if(re!=null){
+    					  if("Y".equals(is_delete)){
+        					  Db.delete("eeda_form_custom_search_cols", re);
+        				  }else{
+            				  re.set("field_name",field_name);
+            				  re.set("expression",expression);
+            				  re.set("width",width);
+            				  re.set("hidden_flag",hidden_flag);
+            				  Db.update("eeda_form_custom_search_cols", re);
+        				  }
+    				  }
+    			  }
+    		  }
+    	  }
+    	  List<Map<String, String>> custom_search_filter = (ArrayList<Map<String, String>>)customSearch.get("custom_search_filter");
+    	  if(custom_search_filter!=null){
+    		  
+    	  }
+    }
+    
     private void handleBtns(Map<String, ?> dto, Long form_id)
             throws InstantiationException, IllegalAccessException {
         List<Map<String, String>> btn_list = (ArrayList<Map<String, String>>) dto
@@ -437,6 +516,7 @@ public class ModuleController extends Controller {
         if (formRec != null) {
             formRec.set("name", infoMap.get("name"));
             formRec.set("code", infoMap.get("code"));
+            formRec.set("type", infoMap.get("type"));
             formRec.set("template_content", tempalteContent);
             formRec.set("module_id", module_id);
             Db.update("eeda_form_define", formRec);
@@ -444,6 +524,7 @@ public class ModuleController extends Controller {
             formRec = new Record();
             formRec.set("name", infoMap.get("name"));
             formRec.set("code", infoMap.get("code"));
+            formRec.set("type", infoMap.get("type"));
             formRec.set("template_content", tempalteContent);
             formRec.set("module_id", module_id);
             Db.save("eeda_form_define", formRec);
@@ -893,7 +974,8 @@ public class ModuleController extends Controller {
             Long form_id = formRec.getLong("id");
             rec.set("form", formRec);
             rec.set("form_fields", getFormFields(form_id));
-
+            rec.set("custom_search_source",getCustomSearchSource(form_id));
+            rec.set("custom_search_cols",getCustomSearchCols(form_id));
             List<Record> btn_list_query = getFormBtns(form_id, "list");
             rec.set("btn_list_query", btn_list_query);
             List<Record> btn_list_edit = getFormBtns(form_id, "edit");
@@ -1016,6 +1098,16 @@ public class ModuleController extends Controller {
             }
         }
         return recList;
+    }
+    
+    private List<Record> getCustomSearchSource(Long form_id){
+    	List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source where form_id = ?",form_id);
+    	return sourceList;
+    }
+    
+    private List<Record> getCustomSearchCols(Long form_id){
+    	List<Record> colsList = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
+    	return colsList;
     }
 
     private void buildCheckBox(Record field) {

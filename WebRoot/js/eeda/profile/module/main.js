@@ -12,6 +12,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                 module_id: $('#module_id').text(),
                 info:{
                     name: $('#form_name').val(),
+                    type: $('input[name="form_type"]:checked').val(),
                     code: $('#form_code').val(),
                 },
                 field_update_flag:fieldContr.field_update_flag(),
@@ -22,6 +23,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                 event_update_flag:eventsCont.listEvent_update_flag(),
                 editEvent_update_flag:editEventCont.editEvent_update_flag(),
                 events: eventsCont.buildTreeNodes(),
+                customSearch: customSearchCont.buildDetail(),
                 permission_list: eeda.buildTableDetail('permission_table', perCont.deletedPermisstionTableIds),
                 auth_list: authCont.buildAuthTableDetail(),
                 print_template: printCont.buildPrintTemplateDetail(),
@@ -52,6 +54,10 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                     //
                     var editEventList = order.EDITEVENTLIST;
                     editEventCont.refresh_table(editEventList);
+                    //
+                    customSearchCont.clear();
+                    customSearchCont.sourceDisplay(order.CUSTOM_SEARCH_SOURCE);
+                    customSearchCont.colsDisplay(order.CUSTOM_SEARCH_COLS);
                     
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     btn.attr('disabled', false);

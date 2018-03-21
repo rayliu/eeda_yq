@@ -1,5 +1,5 @@
-define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', './interface/interface'], 
-    function ($, tree, fieldCont, btnsCont, eventsCont, editEventCont, intCont) {
+define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', './interface/interface','./custom_search/custom_search'], 
+    function ($, tree, fieldCont, btnsCont, eventsCont, editEventCont, intCont,customSearchCont) {
 
     $(document).ready(function() {
     	
@@ -180,6 +180,7 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                     $("#form_id").val(module_obj.FORM.ID);
                     $('#form_code').val(module_obj.FORM.CODE);
                     $('#form_name').val(module_obj.FORM.NAME);
+                    $('input[value="'+module_obj.FORM.TYPE+'"]').attr("checked",true);
 
                     ue.setContent(module_obj.FORM.TEMPLATE_CONTENT);
 
@@ -190,6 +191,16 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                         fields_dataTable.row.add(field).draw(false);
                     }
                     fieldCont.add_elect_flag();
+                    
+                    //回显自定义查询
+                    customSearchCont.clear();
+                    if(json.CUSTOM_SEARCH_SOURCE.length>0){
+                    	customSearchCont.sourceDisplay(json.CUSTOM_SEARCH_SOURCE);
+                    }
+                    if(json.CUSTOM_SEARCH_COLS.length>0){
+                    	customSearchCont.colsDisplay(json.CUSTOM_SEARCH_COLS);
+                    }
+                    
                     //回显按钮列表
                     btnsCont.list_dataTable.clear().draw();
                     var toolbar_list_table = btnsCont.list_dataTable;
