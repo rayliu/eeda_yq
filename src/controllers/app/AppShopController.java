@@ -45,7 +45,8 @@ public class AppShopController extends Controller {
     			+ " left join wc_ad_cu cu on cu.creator = ul.id"
     			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
     			+ " left join wc_ad_hui hui on hui.creator = ul.id"
-    			+ " where ul.id = ?",shop_id);
+    			+ " where ul.id = ?"
+    			+ " group by ul.id",shop_id);
     	
     	
     	//产品信息
@@ -54,7 +55,8 @@ public class AppShopController extends Controller {
     			+ " from wc_product pro"
     			+ " left join wc_ad_cu cu on cu.creator = pro.creator"
     			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
-    			+ " where pro.creator = ? and pro.is_active != 'N' order by pro.id desc limit 0,3",shop_id);
+    			+ " where pro.creator = ? and pro.is_active != 'N'"
+    			+ " group by pro.id order by pro.id desc limit 0,3",shop_id);
     	
     	//案例信息
     	List<Record> caseList = Db.find(" select wc.*  from wc_case wc"
@@ -96,7 +98,8 @@ public class AppShopController extends Controller {
     			+ " left join wc_ad_cu cu on cu.creator = ul.id"
     			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
     			+ " left join wc_ad_hui hui on hui.creator = ul.id"
-    			+ " where ul.id = ?",shop_id);
+    			+ " where ul.id = ?"
+    			+ " group by ul.id",shop_id);
     	
     	
     	
