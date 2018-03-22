@@ -7,7 +7,7 @@ define(['jquery', 'sco', 'jquery_ui', 'validate_cn'], function ($) {
           pageLength: false,
           ajax: "/BusinessAdmin/ad/list",
           columns: [
-            { "data": "ORDER_NO","width": "100px"},
+            { "data": "ORDER_NO","width": "100px","className":"order_no"},
             { "data": "PUT_IN_DAYS","width": "60px"},
             { "data": "BEGIN_DATE","width": "60px" },
             { "data": "END_DATE", "width": "60px" },
