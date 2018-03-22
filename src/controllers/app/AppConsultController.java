@@ -43,6 +43,8 @@ public class AppConsultController extends Controller {
     	login_id = URLDecoder.decode(login_id, "UTF-8");
     	String remark = getPara("values");
     	remark = URLDecoder.decode(remark, "UTF-8");
+    	String project = getPara("values");
+    	project = URLDecoder.decode(project, "UTF-8");
     	
     	Record user = Db.findById("user_login", login_id);
     	String user_name = user.getStr("user_name");
@@ -53,6 +55,7 @@ public class AppConsultController extends Controller {
     	consult.set("shop_id", shop_id);
     	consult.set("user_name", user_name);
     	consult.set("mobile", mobile);
+    	consult.set("project", project);
     	consult.set("wedding_date", wedding_date);
     	consult.set("remark", remark);
     	consult.set("create_time", new Date());

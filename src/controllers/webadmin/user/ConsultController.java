@@ -47,9 +47,13 @@ public class ConsultController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
          
-    	String sql = "select * from wc_consult "
+    	String sql = "select wc.*,com.company_name ,cat.name category_name"
+    			+ " from wc_consult wc "
+    			+ " left join wc_company com on com.creator = wc.shop_id"
+    			+ " left join category cat on cat.id = com.trade_type"
     			+ " where 1=1 "
-    			+ " order by create_time desc";
+    			+ " group by wc.id"
+    			+ " order by wc.create_time desc";
     	
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);

@@ -10,6 +10,9 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                     { "data": "USER_NAME", "width":"60px"},
 	                     { "data": "MOBILE", "width":"60px"},
 	                     { "data": "WEDDING_DATE", "width":"60px"},
+	                     { "data": "COMPANY_NAME", "width":"100px"},
+	                     { "data": "CATEGORY_NAME", "width":"60px"},
+	                     { "data": "PROJECT", "width":"100px"},
 	                     { "data": "REMARK", "width":"60px"},
 	                     { "data": "CREATE_TIME", "width":"60px"}
                      ]
