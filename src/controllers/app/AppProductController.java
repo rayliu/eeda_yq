@@ -101,7 +101,8 @@ public class AppProductController extends Controller {
     			+ " from wc_product pro"
     			+ " left join wc_ad_cu cu on cu.creator = pro.creator"
     			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
-    			+ " where pro.creator = ? and pro.is_active != 'N' order by id desc",shop_id);
+    			+ " where pro.creator = ? and pro.is_active != 'N'"
+    			+ " group by pro.id order by pro.id desc",shop_id);
     	
     	Record data = new Record();
     	data.set("shopList", shopList);

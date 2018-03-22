@@ -228,8 +228,8 @@ define(['jquery', 'sco', 'file_upload',"validate_cn"], function ($, metisMenu) {
 	    			window.location.href="/BusinessAdmin/product";
 	    		}else{
 	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+	    			$(self).attr('disabled',false);
 	    		}
-	    		$(self).attr('disabled',false);
 	    	});
 	    });
 	});
