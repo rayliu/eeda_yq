@@ -110,7 +110,7 @@ public class CuController extends Controller {
         Record order = new Record();
 
 		DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
-		order.set("order_no", "CX" + format.format(new Date()) + (Math.random()*9+1)*100);
+		order.set("order_no", "CX" + format.format(new Date()) + String.valueOf((Math.random()*9+1)*100));
     	order.set("begin_date", begin_date);
     	order.set("end_date", end_date);
     	order.set("cover", cover);

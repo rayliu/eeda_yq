@@ -125,7 +125,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 				  $('#WIDtotal_amount').val(price);
 				  $('#alipayment_form').submit();
 				  
-				  window.location.href="/BusinessAdmin/ad/cu";
+				  //window.location.href="/BusinessAdmin/ad/cu";
 	    		}else{
 	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
 	    			$(self).attr('disabled',false);
