@@ -85,7 +85,7 @@ define(['jquery', 'sco', 'jquery_ui', 'validate_cn'], function ($) {
 		  $.post("/BusinessAdmin/ad/diamond_save",{jsonStr:JSON.stringify(order)},function(data){
 			  if(data){
 				  //新开支付页面
-				  $('#WIDout_trade_no').val(data.ID);
+				  $('#WIDout_trade_no').val(data.ORDER_NO);
 				  $('#WIDtotal_amount').val($("#total_price").text());
 				  $('#diamond_alipayment_form').submit();
 			  }else{
@@ -96,10 +96,10 @@ define(['jquery', 'sco', 'jquery_ui', 'validate_cn'], function ($) {
 	  });
 	  
 	  $("#eeda_table").on("click",".pay",function(){
-		  var id = $(this).parent().parent().attr("id");
+		  var order_no = $(this).parent().parent().find(".order_no").text();
 		  var total_price = $(this).parent().parent().find(".total_price").text();
 		  //新开支付页面
-		  $('#WIDout_trade_no').val(id);
+		  $('#WIDout_trade_no').val(order_no);
 		  $('#WIDtotal_amount').val($("#total_price").text());
 		  $('#diamond_alipayment_form').submit();
 	  });

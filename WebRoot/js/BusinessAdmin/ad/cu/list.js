@@ -32,7 +32,7 @@ define(['jquery', 'dataTablesBootstrap', 'file_upload', 'validate_cn', 'sco'], f
           serverSide: true, 
           ajax: "/BusinessAdmin/ad/cu/list",
           columns: [
-            { "data": "ORDER_NO" ,"width": "80px"},
+            { "data": "ORDER_NO" ,"width": "80px","className":"order_no"},
             { "data": "TITLE", "width": "100px"},
             { "data": "COVER", "width": "100px",
                 render: function(data,type,full,meta){
@@ -41,14 +41,21 @@ define(['jquery', 'dataTablesBootstrap', 'file_upload', 'validate_cn', 'sco'], f
             },
             { "data": "BEGIN_DATE","width": "100px" },
             { "data": "END_DATE", "width": "100px" },
-            { "data": "PRICE", "width": "100px"},
+            { "data": "PRICE", "width": "100px","className":"total_price"},
             { "data": "STATUS","width": "100px" ,
                 render: function(data,type,full,meta){
                 	var status = '开启';
                 	if(data=='开启'){
                 		status = '关闭';
                 	}
-                    return data + " <button class='stdbtn btn_blue statusBtn' id='"+full.ID+"' content='"+full.CONTENT+"' href='#title'>"+status+"</button>";
+                	
+                	if(full.TRADE_STATUS == '未付款'){
+                		return "未付款<input type='button' class='stdbtn btn_yellow pay' value='支付'>";
+                	}if(full.TRADE_STATUS != 'TRADE_SUCCESS'){
+                		return "支付处理中";
+                	}else{
+                		return data + " <button class='stdbtn btn_blue statusBtn' id='"+full.ID+"' content='"+full.CONTENT+"' href='#title'>"+status+"</button>";
+                	}
                 }
             },
             { "data": null, "width": "100px",
@@ -62,6 +69,15 @@ define(['jquery', 'dataTablesBootstrap', 'file_upload', 'validate_cn', 'sco'], f
 		 var refleshTable = function(){
 	    	  dataTable.ajax.url("/BusinessAdmin/ad/cu/list").load();
 	     }
+		 
+		 $("#eeda_table").on("click",".pay",function(){
+			  var order_no = $(this).parent().parent().find(".order_no").text();
+			  var total_price = $(this).parent().parent().find(".total_price").text();
+			  //新开支付页面
+			  $('#WIDout_trade_no').val(order_no);
+			  $('#WIDtotal_amount').val($("#total_price").text());
+			  $('#alipayment_form').submit();
+		  });
 		
 		
 		$('#eeda_table').on('click','.statusBtn',function(){

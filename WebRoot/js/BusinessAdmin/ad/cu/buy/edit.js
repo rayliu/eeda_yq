@@ -117,20 +117,22 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 			ad.price = $("#price").text();
 			ad.remark=$("#remark").val();
 			var self = this;
+			self.disabled = true;
 			$.post('/BusinessAdmin/ad/cu/save',{advertisement:JSON.stringify(ad)},function(data) {
 				if(data){
-		    			$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-		    			$(self).attr('disabled',false);
-		    			window.location.href="/BusinessAdmin/ad/cu";
-		    		}else{
-		    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-		    		}
-				});
-			}).fail(function(){
-				alert("操作失败");
+				//新开支付页面
+				  $('#WIDout_trade_no').val(data.ORDER_NO);
+				  $('#WIDtotal_amount').val(price);
+				  $('#alipayment_form').submit();
+				  
+				  window.location.href="/BusinessAdmin/ad/cu";
+	    		}else{
+	    			$.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+	    			$(self).attr('disabled',false);
+	    		}
 			});
-		
-		
-		 
+		}).fail(function(){
+			alert("操作失败");
+		});
 	});	
 })

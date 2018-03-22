@@ -24,16 +24,28 @@ public class AlipayController extends Controller {
 
         String out_trade_no = getPara("out_trade_no");
         logger.debug("out_trade_no ="+out_trade_no);
-        Record rec = Db.findFirst("select * from wc_ad_diamond where id=?", out_trade_no);
-        if(rec != null){
-            String trade_status = getPara("trade_status");
-            logger.debug("getPara(\"trade_status\") =" + trade_status);
-            rec.set("trade_status", trade_status);
-            Db.update("wc_ad_diamond", rec);
+        //判断付款的项目
+        if(out_trade_no.contains("CX")){
+        	Record rec = Db.findFirst("select * from wc_ad_cu where order_no =?", out_trade_no);
+            if(rec != null){
+                String trade_status = getPara("trade_status");
+                logger.debug("getPara(\"trade_status\") =" + trade_status);
+                rec.set("trade_status", trade_status);
+                Db.update("wc_ad_cu", rec);
+            }
+            
+        	redirect("/BusinessAdmin/ad/cu");
+        }else if(out_trade_no.contains("ZS")){
+        	Record rec = Db.findFirst("select * from wc_ad_diamond where order_no =?", out_trade_no);
+            if(rec != null){
+                String trade_status = getPara("trade_status");
+                logger.debug("getPara(\"trade_status\") =" + trade_status);
+                rec.set("trade_status", trade_status);
+                Db.update("wc_ad_diamond", rec);
+            }
+            
+        	redirect("/BusinessAdmin/ad/diamond");
         }
-        
-    	redirect("/BusinessAdmin/ad/diamond");
-        //renderText("notify...");
     }
     
     public void ali_return(){

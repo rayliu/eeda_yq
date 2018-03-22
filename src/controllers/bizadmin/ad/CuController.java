@@ -110,7 +110,7 @@ public class CuController extends Controller {
         Record order = new Record();
 
 		DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
-		order.set("order_no", format.format(new Date()));
+		order.set("order_no", "CX" + format.format(new Date()) + (Math.random()*9+1)*100);
     	order.set("begin_date", begin_date);
     	order.set("end_date", end_date);
     	order.set("cover", cover);
@@ -121,7 +121,7 @@ public class CuController extends Controller {
     	order.set("remark", remark);
     	order.set("create_time", new Date());
     	order.set("creator",user_id);
-    	order.set("status","开启");
+    	order.set("status","关闭");
     	Db.save("wc_ad_cu", order);
     	renderJson(order);
 	}
