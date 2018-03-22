@@ -197,9 +197,13 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                     if(json.CUSTOM_SEARCH_SOURCE.length>0){
                     	customSearchCont.sourceDisplay(json.CUSTOM_SEARCH_SOURCE);
                     }
+                    if(json.CUSTOM_SEARCH_SOURCE_CONDITION.length>0){
+                    	customSearchCont.sourceConditionDisplay(json.CUSTOM_SEARCH_SOURCE_CONDITION);
+                    }
                     if(json.CUSTOM_SEARCH_COLS.length>0){
                     	customSearchCont.colsDisplay(json.CUSTOM_SEARCH_COLS);
                     }
+                    
                     
                     //回显按钮列表
                     btnsCont.list_dataTable.clear().draw();

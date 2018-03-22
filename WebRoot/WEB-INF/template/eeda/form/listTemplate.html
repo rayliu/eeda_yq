@@ -21,15 +21,19 @@
 
                     <%
                         var headers=[''];
-
+						var form_type = "form";
                         for(field in field_list){
                             array.add(headers, field);
+                            if(field.CUSTOM_SEARCH=="Y"){
+                            	form_type = "search_form";
+                            }
                         }
                     %>
                     <%include("/eeda/component/form/detailTableWithFoot.html", 
                         {
                             id:'list_table',
-                            headers: headers
+                            headers: headers,
+                            form_type:form_type
                         }){} %>
 
                 </div>

@@ -287,6 +287,7 @@ public class ModuleController extends Controller {
         List<Record> btn_list_edit = getFormBtns(form_id, "edit");
         orderRec.set("btn_list_edit", btn_list_edit);
         orderRec.set("custom_search_source", getCustomSearchSource(form_id));
+        orderRec.set("custom_search_source_Condition", getCustomSearchCondition(form_id));
         orderRec.set("custom_search_cols", getCustomSearchCols(form_id));
         List<Record> editEventList = Db.find("select essvi.* from eeda_form_event_save_set_value_item essvi "
         									+ "left join eeda_form_event efe on essvi.event_id = efe.id where efe.form_id = ?", form_id);
@@ -429,7 +430,7 @@ public class ModuleController extends Controller {
     	  Map<String, Object> customSearch = (Map<String, Object>) dto.get("customSearch");
     	  Map<String, Object> custom_search_source = (Map<String, Object>)customSearch.get("custom_search_source");
     	  if(custom_search_source!=null){
-    		  List<Map<String, String>> block_arr = (ArrayList<Map<String, String>>)custom_search_source.get("block_arr");
+    		  /*List<Map<String, String>> block_arr = (ArrayList<Map<String, String>>)custom_search_source.get("block_arr");
     		  if(block_arr.size()>0){
     			  for(int i = 0;i<block_arr.size();i++){
     				  String id = block_arr.get(i).get("ID");
@@ -455,10 +456,42 @@ public class ModuleController extends Controller {
     					  }
     				  }
     			  }
-    		  }
+    		  }*/
     		  List<Map<String, String>> join_list = (ArrayList<Map<String, String>>)custom_search_source.get("join_list");
     		  if(join_list.size()>0){
-    			  
+    			  for(int i =0;i<join_list.size();i++){
+    				  String id = join_list.get(i).get("ID");
+    				  String form_left = join_list.get(i).get("FORM_LEFT");
+    				  String form_left_field = join_list.get(i).get("FORM_LEFT_FIELD");
+    				  String form_right = join_list.get(i).get("FORM_RIGHT");
+    				  String form_right_field = join_list.get(i).get("FORM_RIGHT_FIELD");
+    				  String operator = join_list.get(i).get("OPERATOR");
+    				  String is_delete = join_list.get(i).get("IS_DELETE");
+    				  Record re = new Record();
+    				  if(StringUtils.isBlank(id)){
+    					  re.set("form_id", form_id);
+    					  re.set("form_left", form_left);
+    					  re.set("form_left_field", form_left_field);
+    					  re.set("form_right", form_right);
+    					  re.set("form_right_field", form_right_field);
+    					  re.set("operator", operator);
+    					  Db.save("eeda_form_custom_search_source_condition", re);
+    				  }else{
+    					  re = Db.findById("eeda_form_custom_search_source_condition", id);
+    					  if(re!=null){
+    						  if("Y".equals(is_delete)){
+        						  Db.delete("eeda_form_custom_search_source_condition", re);
+        					  }else{
+        						  re.set("form_left", form_left);
+            					  re.set("form_left_field", form_left_field);
+            					  re.set("form_right", form_right);
+            					  re.set("form_right_field", form_right_field);
+            					  re.set("operator", operator);
+            					  Db.update("eeda_form_custom_search_source_condition", re);
+        					  }
+    					  }
+    				  }
+    			  }
     		  }
     	  }
     	  List<Map<String, String>> custom_search_cols = (ArrayList<Map<String, String>>)customSearch.get("custom_search_cols");
@@ -975,6 +1008,7 @@ public class ModuleController extends Controller {
             rec.set("form", formRec);
             rec.set("form_fields", getFormFields(form_id));
             rec.set("custom_search_source",getCustomSearchSource(form_id));
+            rec.set("custom_search_source_Condition",getCustomSearchCondition(form_id));
             rec.set("custom_search_cols",getCustomSearchCols(form_id));
             List<Record> btn_list_query = getFormBtns(form_id, "list");
             rec.set("btn_list_query", btn_list_query);
@@ -1103,6 +1137,11 @@ public class ModuleController extends Controller {
     private List<Record> getCustomSearchSource(Long form_id){
     	List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source where form_id = ?",form_id);
     	return sourceList;
+    }
+    
+    private List<Record> getCustomSearchCondition(Long form_id){
+    	List<Record> sourceConditionList = Db.find("select * from eeda_form_custom_search_source_condition where form_id = ?",form_id);
+    	return sourceConditionList;
     }
     
     private List<Record> getCustomSearchCols(Long form_id){

@@ -15,7 +15,7 @@
                     <th width="100" field_name="f${field.ID}_${field.FIELD_NAME!''}">${field.FIELD_DISPLAY_NAME!''}</th>
               <%}
         	}%>
-            <th width="120">操作</th>
+            <%if(form_type=="form"){%><th width="120">操作</th><%}%>
         </tr>
     </thead>
 

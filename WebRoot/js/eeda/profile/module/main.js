@@ -57,6 +57,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                     //
                     customSearchCont.clear();
                     customSearchCont.sourceDisplay(order.CUSTOM_SEARCH_SOURCE);
+                    customSearchCont.sourceConditionDisplay(order.CUSTOM_SEARCH_SOURCE_CONDITION);
                     customSearchCont.colsDisplay(order.CUSTOM_SEARCH_COLS);
                     
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
