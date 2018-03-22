@@ -122,7 +122,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 				if(data){
 				//新开支付页面
 				  $('#WIDout_trade_no').val(data.ORDER_NO);
-				  $('#WIDtotal_amount').val(price);
+				  $('#WIDtotal_amount').val(data.PRICE);
 				  $('#alipayment_form').submit();
 				  
 				  //window.location.href="/BusinessAdmin/ad/cu";

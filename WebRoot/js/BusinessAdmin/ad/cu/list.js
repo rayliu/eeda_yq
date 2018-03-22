@@ -75,7 +75,7 @@ define(['jquery', 'dataTablesBootstrap', 'file_upload', 'validate_cn', 'sco'], f
 			  var total_price = $(this).parent().parent().find(".total_price").text();
 			  //新开支付页面
 			  $('#WIDout_trade_no').val(order_no);
-			  $('#WIDtotal_amount').val($("#total_price").text());
+			  $('#WIDtotal_amount').val(total_price);
 			  $('#alipayment_form').submit();
 		  });
 		
