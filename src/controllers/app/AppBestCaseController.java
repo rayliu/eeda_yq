@@ -86,8 +86,10 @@ public class AppBestCaseController extends Controller {
     			+ " group by ul.id",re.getLong("creator"));
     	//案例明细
     	List<Record> caseList = Db.find(""
-    			+ " select * from wc_case_item"
-    			+ " where order_id = ?",case_id);
+    			+ " select wci.*,wc.name case_name from wc_case_item wci"
+    			+ " left join wc_case wc on wc.id = wci.order_id "
+    			+ " where wci.order_id = ?"
+    			+ " group by wci.id",case_id);
     	
     	Record data = new Record();
     	data.set("shop", shopList);
