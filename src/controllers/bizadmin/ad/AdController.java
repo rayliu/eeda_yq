@@ -113,7 +113,8 @@ public class AdController extends Controller {
 		
 		Record order = new Record();
 		DateFormat format = new SimpleDateFormat("yyyyMMddhhmmss");
-		order.set("order_no", "ZS" + format.format(new Date()) + String.valueOf((Math.random()*9+1)*100));
+		String random = Integer.toString((int)(Math.random()*9+1)*100);
+		order.set("order_no", "ZS" + format.format(new Date()) + random);
 		order.set("years", years);
 		order.set("total_price", total_price);
 		order.set("status", status);
