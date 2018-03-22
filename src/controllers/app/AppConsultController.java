@@ -43,7 +43,7 @@ public class AppConsultController extends Controller {
     	login_id = URLDecoder.decode(login_id, "UTF-8");
     	String remark = getPara("values");
     	remark = URLDecoder.decode(remark, "UTF-8");
-    	String project = getPara("values");
+    	String project = getPara("project");
     	project = URLDecoder.decode(project, "UTF-8");
     	
     	Record user = Db.findById("user_login", login_id);
