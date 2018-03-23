@@ -25,7 +25,8 @@ define(['jquery', 'metisMenu',  'dataTablesBootstrap', 'sco'], function ($, meti
 	                    		 return str;
 	                    	 }
 	                     },
-	                     { "data": "CTEATE_TIME", "width":"90px"}, 
+	                     { "data": "USER_NAME", "width":"90px"}, 
+	                     { "data": "CREATE_TIME", "width":"90px"}, 
 	                     { "width":"60px",
 	                    	 "render":function(data,type,full,meta){
 	                    		 return '<button type="button" class="updateBtn modifibtn">修改</button>&nbsp<button class="delete-btn delete">删除</button>';

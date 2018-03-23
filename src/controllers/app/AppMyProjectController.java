@@ -49,10 +49,15 @@ public class AppMyProjectController extends Controller {
     		orderList = Db.find("select * from wc_my_project where type='byTime'");
     		for(Record re :orderList){
         		Long order_id = re.getLong("id");
+        		String condition = "";
+        		if(order_id == 11){
+        			condition = " and (item.creator is not null and item.creator= '"+ login_id +"')";
+        		}
         		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date"
         				+ " from wc_my_project_item item"
         				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
         				+ " where item.by_time_order_id = ? "
+        				+ condition
         				+ " order by item.id",login_id, order_id);
         		
         		//计算勾选总数
@@ -68,10 +73,15 @@ public class AppMyProjectController extends Controller {
     		orderList = Db.find("select * from wc_my_project where type='byProject'");
         	for(Record re :orderList){
         		Long order_id = re.getLong("id");
+        		String condition = "";
+        		if(order_id == 11){
+        			condition = " and (item.creator is not null and item.creator= '"+ login_id +"')";
+        		}
         		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date"
         				+ " from wc_my_project_item item"
         				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
         				+ " where item.order_id = ?"
+        				+ condition
         				+ " order by item.id",login_id, order_id);
         		
         		//计算勾选总数

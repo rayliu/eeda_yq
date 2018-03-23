@@ -113,17 +113,19 @@ public class ProjectController extends Controller {
         String order_id = getPara("order_id");
         String type = getPara("type");
         if("byProject".equals(type)){
-        	condition = " where order_id = "+order_id;
+        	condition = " and item.order_id = "+order_id;
         }else if("byTime".equals(type)){
-        	condition = " where by_time_order_id = "+order_id;
+        	condition = " and item.by_time_order_id = "+order_id;
         }
-    	String sql = "select * from wc_my_project_item ";
+    	String sql = "select item.*,ul.user_name from wc_my_project_item item"
+    			+ " left join user_login ul on ul.id = item.creator"
+    			+ " where 1 = 1 and item.item_name is not null";
     	
         String sqlTotal = "select count(1) total from ("+sql+ condition+") A";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by 'id' desc " +sLimit);
+        List<Record> orderList = Db.find(sql+ condition + " order by item.id desc " +sLimit);
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));
