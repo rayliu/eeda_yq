@@ -51,7 +51,7 @@ public class AppMyProjectController extends Controller {
         		Long order_id = re.getLong("id");
         		String condition = "";
         		if(order_id == 11){
-        			condition = " and (item.creator is not null and item.creator= '"+ login_id +"')";
+        			condition = " and if(item.creator is null,'" + login_id + "',item.creator)= '"+ login_id +"'";
         		}
         		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date"
         				+ " from wc_my_project_item item"
@@ -75,7 +75,7 @@ public class AppMyProjectController extends Controller {
         		Long order_id = re.getLong("id");
         		String condition = "";
         		if(order_id == 11){
-        			condition = " and (item.creator is not null and item.creator= '"+ login_id +"')";
+        			condition = " and if(item.creator is null,'" + login_id + "',item.creator)= '"+ login_id +"'";
         		}
         		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date"
         				+ " from wc_my_project_item item"
