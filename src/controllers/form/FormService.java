@@ -185,4 +185,19 @@ public class FormService {
         returnStr+=dropdownStr;
         return returnStr+"</select></div>";
     }
+    
+    @SuppressWarnings("unchecked")
+    @Before(Tx.class)
+    public String processFieldType_imgUpload(String form_name, Record fieldRec, Long field_id){
+        String returnStr = "";
+        String fieldDisplayName = fieldRec.getStr("field_display_name");
+        String fieldName = fieldRec.getStr("field_name");
+        Long form_id = fieldRec.getLong("form_id");
+        String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
+        returnStr = "<label class='form-label' style='width: 10%;margin-left: 1.3%;margin-right: 2%;float:left;'>"+fieldDisplayName+"</label>"
+        		+ "<span style='width:30%;' class='btn-upload'><a href='javascript:void();' class='btn btn-primary radius'><i class='iconfont'>&#xf0020;</i> 上传图片</a>"
+        				+ "<input type='file' id='fileupload"+fieldRec.get("id")+"' multiple name='files' class='input-file'></span>"
+        				+ "<div id='f"+fieldRec.get("id")+"' name='upload' style='margin-top:-1%;'></div>";
+        return returnStr;
+    }
 }

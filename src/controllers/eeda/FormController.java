@@ -3,6 +3,7 @@ package controllers.eeda;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.upload.UploadFile;
 
 import controllers.form.FormService;
 import controllers.form.TemplateService;
@@ -295,6 +297,8 @@ public class FormController extends Controller {
                         if("自动编号".equals(field_type) && StrKit.isBlank(value)){
                             String orderNo = handleAutoNo(form_id, colName, fieldId);
                             value = orderNo;
+                        }else if("图片".equals(field_type)){
+                        	rec.set(colName, value);
                         }
                     }
                     rec.set(colName, value);
@@ -332,6 +336,28 @@ public class FormController extends Controller {
                 Db.update("form_"+form_id, rec);
             }
             
+            //
+            List<Map<String, ?>> img_list = (ArrayList<Map<String, ?>>)dto.get("img_list");
+        	if(img_list.size()>0){
+        		for(int i =0;i<img_list.size();i++){
+        			String id = (String) img_list.get(i).get("id");
+        			String is_delete = (String) img_list.get(i).get("is_delete");
+        			Record img = new Record();
+        			if(StringUtils.isBlank(id)){
+        				img.set("img_name", img_list.get(i).get("name"));
+        				img.set("field_id", img_list.get(i).get("field_id"));
+        				img.set("order_id", rec.get("id"));
+        				Db.save("eeda_form_field_type_img", img);
+        			}else{
+        				img = Db.findById("eeda_form_field_type_img", id);
+        				if(img!=null){
+        					if("Y".equals(is_delete)){
+            					Db.delete("eeda_form_field_type_img", img);
+            				}
+        				}
+        			}
+        		}
+        	}
             //处理从表保存
             List<Map<String, ?>> detailList = (ArrayList<Map<String, ?>>)dto.get("detail_tables");
             for (Map<String, ?> detail : detailList) {
@@ -485,12 +511,12 @@ public class FormController extends Controller {
                     +" and ref.target_form_name = form.name"
                     +" and field.field_type='从表引用' "
                     +" and field.form_id=?", form_id);
-        for (Record record : fieldList) {
-            Long d_form_id = record.getLong("form_id");
-            Long field_id = record.getLong("field_id");
+        for (Record fieldRec : fieldList) {
+            Long d_form_id = fieldRec.getLong("form_id");
+            Long field_id = fieldRec.getLong("field_id");
             
-            String field_from = record.getStr("field_from");
-            String field_to = record.getStr("field_to");
+            String field_from = fieldRec.getStr("field_from");
+            String field_to = fieldRec.getStr("field_to");
             //主表关联值
             Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1]);//获取数据库对应的名称: f59_xh
             String field_from_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
@@ -507,7 +533,17 @@ public class FormController extends Controller {
             
             detailList.add(table_record);
         }
+        
+        List<Record> imgFieldList = Db.find("select * from  eeda_form_field field"
+        		+ " where field.field_type='图片' "
+                +" and field.form_id=?", form_id);
+        for (Record imgFieldRec : imgFieldList) {
+        	List<Record> imgList = Db.find("select * from eeda_form_field_type_img where order_id = ? and field_id = ?",order_id,imgFieldRec.get("id"));
+        	imgFieldRec.set("imgList", imgList);
+        }
+        
         rec.set("detail_tables", detailList);
+        rec.set("imgFieldList", imgFieldList);
         return rec;
     }
     
@@ -714,6 +750,10 @@ public class FormController extends Controller {
             	FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_dropdown(form_name, fieldRec, fieldRec.getLong("id"));
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
+            }else if("图片".equals(fieldType)){
+            	FormService fs = new FormService(this);
+                replaceNameDest = fs.processFieldType_imgUpload(form_name, fieldRec, fieldRec.getLong("id"));
+                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
             }else{
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + "<input type='text' name='"+inputId+"' class='form-control'>";
@@ -736,6 +776,18 @@ public class FormController extends Controller {
         setAttr("form_content", template_content);
         
         setAttr("btnList", getFormBtns(form_id, "edit"));
+    }
+    
+    public void uploadImg(){
+    	String order_id = getPara("order_id");
+    	String img_url = getPara("img_url");
+    	
+    	UploadFile file = getFile();
+    	String fileName = file.getFileName();
+    	
+    	Record re = new Record();
+    	re.set("fileName", fileName);
+    	renderJson(re);
     }
     
 }

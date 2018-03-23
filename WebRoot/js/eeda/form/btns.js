@@ -1,4 +1,4 @@
-define(['jquery', './print'], function ($, printCont) {
+define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMenu) {
 	$.fn.serializeObject = function () {
 	    var o = {};
 	    var a = this.serializeArray();
@@ -129,7 +129,16 @@ define(['jquery', './print'], function ($, printCont) {
             var tables = $('table[type=dynamic]');
             var field_id_list = [];
             var detail_tables = [];
+            var img_list = [];
 
+            $("table img").each(function(){
+            	var img = {};
+            	img.id = $(this).attr("id");
+            	img.name = $(this).attr("name");
+            	img.field_id = $(this).parent().parent().attr("id").split("f")[1];
+            	img_list.push(img);
+            });
+            
             $.each(tables, function(index, item) {
                 var id=$(item).attr('id');
                 var field_id = id.split('_')[2];
@@ -155,6 +164,7 @@ define(['jquery', './print'], function ($, printCont) {
             });
 
             unindexed_array.detail_tables = detail_tables;
+            unindexed_array.img_list = img_list.concat(imgDeleteIds);
 
             return unindexed_array;
         }
@@ -201,5 +211,41 @@ define(['jquery', './print'], function ($, printCont) {
                 }
             });
         }
-
+        $("td").on("click","input[name='files']",function(){
+        	var self = $(this);
+	        $('#'+self.attr("id")).fileupload({
+				autoUpload: true, 
+			    url: '/form/uploadImg?order_id='+order_id,
+			    dataType: 'json',
+//			    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+//			    maxFileSize: 1 * 1024,
+//			    messages: {
+//			        maxFileSize: 'File exceeds maximum allowed size of 99MB',
+//			        acceptFileTypes: 'File type not allowed'
+//			    },
+		        done: function (e, data) {
+		        	if(data.result){
+		        		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
+		        		var returnStr = "<div style='width:170px;height:170px;margin-right:10px;float: left;'>"
+		        			+"<span style='cursor:pointer;background-color:#FFFFFF;font-size: 20px;position: relative;left:150px;top:29px;'><i class='Hui-iconfont'>&#xe706;</i></span>"
+		        			+"<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='width: 170px;height: 139px; max-width: 100%;max-height: 100%; '/></div>";
+		        		var id = $(this).parent().parent().find("div[name='upload']").attr("id");
+		        		$("#"+id).append(returnStr);
+		        	}
+			    	
+			     },
+		        error: function () {
+		            alert('上传的时候出现了错误！');
+		        }
+	        });
+        });
+        
+        var imgDeleteIds = [];
+        $("td").on("click","span[name='deleteImgBtn']",function(){
+        	$(this).parent().remove();
+        	var img = {};
+        	img.id = $(this).parent().find("img").attr("id");
+        	img.is_delete = "Y";
+        	imgDeleteIds.push(img);
+        });
 });
