@@ -92,7 +92,7 @@ public class AppConsultController extends Controller {
     }
     
     /**
-     * 回复列表内容
+     * 更改婚期内容
      * @throws UnsupportedEncodingException 
      * @throws IOException
      */

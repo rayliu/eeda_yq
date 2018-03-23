@@ -52,7 +52,8 @@ public class AppMyProjectController extends Controller {
         		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date"
         				+ " from wc_my_project_item item"
         				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
-        				+ " where item.by_time_order_id = ? ",login_id, order_id);
+        				+ " where item.by_time_order_id = ? "
+        				+ " order by item.id",login_id, order_id);
         		
         		//计算勾选总数
         		List<Record> checkItem = Db.find("select ref.id from wc_my_project_ref ref"
@@ -67,9 +68,11 @@ public class AppMyProjectController extends Controller {
     		orderList = Db.find("select * from wc_my_project where type='byProject'");
         	for(Record re :orderList){
         		Long order_id = re.getLong("id");
-        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date from wc_my_project_item item"
+        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date"
+        				+ " from wc_my_project_item item"
         				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
-        				+ " where item.order_id = ?",login_id, order_id);
+        				+ " where item.order_id = ?"
+        				+ " order by item.id",login_id, order_id);
         		
         		//计算勾选总数
         		List<Record> checkItem = Db.find("select ref.id from wc_my_project_ref ref"
@@ -128,9 +131,10 @@ public class AppMyProjectController extends Controller {
 	        	rec = new Record();
 	            rec.set("item_id", item_id);
 	            rec.set("user_id", user_id);
-	            if(StringUtils.isNotBlank(complete_date)){
-	                rec.set("complete_date", complete_date);
-	            }
+	            rec.set("complete_date", new Date());
+//	            if(StringUtils.isNotBlank(complete_date)){
+//	                rec.set("complete_date", complete_date);
+//	            }
 	            rec.set("user_id", user_id);
 	            Db.save("wc_my_project_ref", rec);
         	}
@@ -139,5 +143,37 @@ public class AppMyProjectController extends Controller {
 
         renderJson(return_data);  
     }
+    
+    /**
+     * 新增自定义项目
+     * @throws UnsupportedEncodingException 
+     * @throws IOException
+     */
+    @Before(Tx.class)
+    public void save_new_project() throws UnsupportedEncodingException{
+    	String login_id = getPara("login_id");
+    	login_id = URLDecoder.decode(login_id, "UTF-8");
+    	String value = getPara("values");
+    	value = URLDecoder.decode(value, "UTF-8");
+    	
+    	Record order = new Record();
+    	order.set("item_name", value);
+    	order.set("creator", login_id);
+    	order.set("order_id", 11);
+    	order.set("create_time", new Date());
+    	Db.save("wc_my_project_item", order);
+    	
+    	//添加用户关联表
+    	Record ref = new Record();
+    	ref.set("item_id", order.get("id"));
+    	ref.set("user_id", login_id);
+    	ref.set("complete_date", new Date());
+    	Db.save("wc_my_project_ref", ref);
+
+    	Record data = new Record();
+    	data.set("result", "true");
+        renderJson(data);  
+    }
+    
 
 }
