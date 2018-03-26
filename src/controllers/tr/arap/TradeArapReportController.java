@@ -123,7 +123,7 @@ public class TradeArapReportController extends Controller {
         		+"			LEFT JOIN trade_cost_application_order_rel tcaCost ON tcaCost.job_order_arap_id = tjoa.id"
         		+"			LEFT JOIN trade_arap_cost_application_order tcaoCost ON tcaoCost.id = tcaCost.application_order_id"
         		+"			WHERE"
-        		+"			tjo.office_id = 7 AND tjo.delete_flag = 'N' AND tjo.delete_flag = 'N'"
+        		+"			tjo.office_id = 7 AND tjo.delete_flag = 'N'"
         		+"			GROUP BY tjoa.id"
         		+"		) B"
         		+"			WHERE 1 = 1";
