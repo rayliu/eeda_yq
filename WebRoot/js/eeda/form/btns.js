@@ -217,8 +217,8 @@ define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMe
 				autoUpload: true, 
 			    url: '/form/uploadImg?order_id='+order_id,
 			    dataType: 'json',
+//			    maxFileSize:1 * 1024 ,
 //			    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-//			    maxFileSize: 1 * 1024,
 //			    messages: {
 //			        maxFileSize: 'File exceeds maximum allowed size of 99MB',
 //			        acceptFileTypes: 'File type not allowed'
@@ -226,9 +226,9 @@ define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMe
 		        done: function (e, data) {
 		        	if(data.result){
 		        		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
-		        		var returnStr = "<div style='width:170px;height:170px;margin-right:10px;float: left;'>"
-		        			+"<span style='cursor:pointer;background-color:#FFFFFF;font-size: 20px;position: relative;left:150px;top:29px;'><i class='Hui-iconfont'>&#xe706;</i></span>"
-		        			+"<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='width: 170px;height: 139px; max-width: 100%;max-height: 100%; '/></div>";
+		        		var returnStr = "<div style='width:150px;height:150px;margin-right:10px;float: left;position:relative;'>"
+		        			+"<span style='cursor:pointer;background-color:#FFFFFF;font-size: 20px;position: absolute;left:87%;'><i class='Hui-iconfont'>&#xe706;</i></span>"
+		        			+"<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='width: 150px;height: 145px; max-width: 100%;max-height: 100%; '/></div>";
 		        		var id = $(this).parent().parent().find("div[name='upload']").attr("id");
 		        		$("#"+id).append(returnStr);
 		        	}
