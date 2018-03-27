@@ -15,7 +15,7 @@ define(['jquery'],
                           +'<input name="ID" type="hidden" value="'+data+'">';;
                   }
               },
-              { "data": "PARA_NAME",
+              { "data": "PARAM_NAME",
                 "render": function ( data, type, full, meta ) {
                   if(!data){
                       data='';
@@ -31,7 +31,7 @@ define(['jquery'],
                   return '<input name="value" value="'+data+'">';
                 }
               },
-              { "data": "IS_MANDATORY",
+              { "data": "MUST_FLAG",
                 "render": function ( data, type, full, meta ) {
                   if(!data){
                       data='';
@@ -62,7 +62,9 @@ define(['jquery'],
 
           dataTable.row(tr).remove().draw();
 
-          deleteList.push({ID: id, is_delete:'Y'});
+          if(id!=""){
+        	  deleteList.push({ID: id, is_delete:'Y'});
+          }
           return false;
         });
 
@@ -74,9 +76,9 @@ define(['jquery'],
             for (var i = 0; i < inputs.length/5; i++) {
               var item={
                 ID: $(inputs[i*5]).val(),
-                PARA_NAME: $(inputs[i*5 + 1]).val(),
+                PARAM_NAME: $(inputs[i*5 + 1]).val(),
                 DATA_TYPE: $(inputs[i*5 + 2]).val(),
-                IS_MANDATORY: $(inputs[i*5 + 3]).val(),
+                MUST_FLAG: $(inputs[i*5 + 3]).val(),
                 DEFAULT_VALUE: $(inputs[i*5 + 4]).val()
               };
 

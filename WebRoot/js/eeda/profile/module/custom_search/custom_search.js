@@ -24,6 +24,13 @@ define(['jquery', './custom_search_source', './custom_search_cols', './custom_se
             custom_cols_table.row.add(field).draw(false);
         }
 	}
+	var filterDisplay = function(custom_search_filter){
+		var custom_filter_table = filterCont.dataTable;
+		for (var i = 0; i < custom_search_filter.length; i++) {
+            var field = custom_search_filter[i];
+            custom_filter_table.row.add(field).draw(false);
+        }
+	}
 
         var clear = function() {
           sourceCont.clear(); 
@@ -36,7 +43,8 @@ define(['jquery', './custom_search_source', './custom_search_cols', './custom_se
             buildDetail: buildDetail,
             sourceDisplay:sourceDisplay,
             sourceConditionDisplay:sourceConditionDisplay,
-            colsDisplay:colsDisplay
+            colsDisplay:colsDisplay,
+            filterDisplay:filterDisplay
         };
     
 });

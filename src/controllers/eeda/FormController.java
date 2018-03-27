@@ -562,10 +562,11 @@ public class FormController extends Controller {
         	String lieNameStr = getLieNameStr(form_id);
         	String biaoNameStr = getBiaoNameStr(form_id);
         	String joinStr = getJoinStr(form_id);
+        	String filterStr = getFilterStr(form_id);
         	sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 ";
         	int index = biaoNameStr.indexOf(" ");
         	
-        	orderList = Db.find(sql+ condition + " order by "+biaoNameStr.substring(index)+".id desc " +sLimit);
+        	orderList = Db.find(sql+ condition+filterStr + " order by "+biaoNameStr.substring(index)+".id desc " +sLimit);
         }else if("form".equals(define.get("type"))){
         	sql = "select * from form_"+form_id+" where 1=1 "; 
         	orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
@@ -643,6 +644,30 @@ public class FormController extends Controller {
     	return JoinStr;
     }
 
+    private String getFilterStr(Long form_id){
+    	String filterStr = "";
+    	List<Record> filterList = Db.find("select * from eeda_form_custom_search_filter where form_id = ?",form_id);
+    	for(int i = 0;i<filterList.size();i++){
+    		String param_name = filterList.get(i).get("param_name");
+    		int index = param_name.indexOf(".");
+    		String param_name_py = PingYinUtil.getFirstSpell(param_name);
+    		String lie_name_py = param_name_py.substring(index);
+    		String biao_name_py = param_name_py.substring(0,index);
+    		
+    		
+    		String data_type = filterList.get(i).get("data_type");
+    		String must_flag = filterList.get(i).get("must_flag");
+    		String default_value = filterList.get(i).get("default_value");
+    		
+    		Record field = Db.findFirst("select eff.* from eeda_form_field eff"
+    				+ " left join eeda_form_define efd on efd.id = eff.form_id"
+    				+ " where efd.name = ? and eff.field_name = ? ",param_name.substring(0,index),lie_name_py);
+    		
+    		filterStr+=" and "+biao_name_py+".f"+field.get("id")+"_"+lie_name_py+" = '"+default_value+"'";
+    	}
+    	return filterStr;
+    }
+    
     private void edit(Long form_id, Long order_id, Record formRec) throws IOException{
         List<Record> fieldList = Db.find("select * from eeda_form_field where "
                 + " form_id=?", form_id);

@@ -289,6 +289,7 @@ public class ModuleController extends Controller {
         orderRec.set("custom_search_source", getCustomSearchSource(form_id));
         orderRec.set("custom_search_source_Condition", getCustomSearchCondition(form_id));
         orderRec.set("custom_search_cols", getCustomSearchCols(form_id));
+        orderRec.set("custom_search_filter", getCustomSearchFilter(form_id));
         List<Record> editEventList = Db.find("select essvi.* from eeda_form_event_save_set_value_item essvi "
         									+ "left join eeda_form_event efe on essvi.event_id = efe.id where efe.form_id = ?", form_id);
         orderRec.set("editEventList", editEventList);
@@ -528,8 +529,37 @@ public class ModuleController extends Controller {
     		  }
     	  }
     	  List<Map<String, String>> custom_search_filter = (ArrayList<Map<String, String>>)customSearch.get("custom_search_filter");
-    	  if(custom_search_filter!=null){
-    		  
+    	  if(custom_search_filter.size()>0){
+    		  for(int i = 0;i<custom_search_filter.size();i++){
+    			  String id = custom_search_filter.get(i).get("ID");
+    			  String param_name = custom_search_filter.get(i).get("PARAM_NAME");
+    			  String data_type = custom_search_filter.get(i).get("DATA_TYPE");
+    			  String must_flag = custom_search_filter.get(i).get("MUST_FLAG");
+    			  String default_value = custom_search_filter.get(i).get("DEFAULT_VALUE");
+    			  String is_delete = custom_search_filter.get(i).get("IS_DELETE");
+    			  Record re = new Record();
+    			  if(StringUtils.isBlank(id)){
+    				  re.set("form_id", form_id);
+    				  re.set("param_name",param_name);
+    				  re.set("data_type",data_type);
+    				  re.set("must_flag",must_flag);
+    				  re.set("default_value",default_value);
+    				  Db.save("eeda_form_custom_search_filter", re);
+    			  }else{
+    				  re = Db.findById("eeda_form_custom_search_filter", id);
+    				  if(re!=null){
+    					  if("Y".equals(is_delete)){
+        					  Db.delete("eeda_form_custom_search_filter", re);
+        				  }else{
+            				  re.set("param_name",param_name);
+            				  re.set("data_type",data_type);
+            				  re.set("must_flag",must_flag);
+            				  re.set("default_value",default_value);
+            				  Db.update("eeda_form_custom_search_filter", re);
+        				  }
+    				  }
+    			  }
+    		  }
     	  }
     }
     
@@ -1010,6 +1040,7 @@ public class ModuleController extends Controller {
             rec.set("custom_search_source",getCustomSearchSource(form_id));
             rec.set("custom_search_source_Condition",getCustomSearchCondition(form_id));
             rec.set("custom_search_cols",getCustomSearchCols(form_id));
+            rec.set("custom_search_filter",getCustomSearchFilter(form_id));
             List<Record> btn_list_query = getFormBtns(form_id, "list");
             rec.set("btn_list_query", btn_list_query);
             List<Record> btn_list_edit = getFormBtns(form_id, "edit");
@@ -1147,6 +1178,11 @@ public class ModuleController extends Controller {
     private List<Record> getCustomSearchCols(Long form_id){
     	List<Record> colsList = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
     	return colsList;
+    }
+    
+    private List<Record> getCustomSearchFilter(Long form_id){
+    	List<Record> filterList = Db.find("select * from eeda_form_custom_search_filter where form_id = ?",form_id);
+    	return filterList;
     }
 
     private void buildCheckBox(Record field) {
