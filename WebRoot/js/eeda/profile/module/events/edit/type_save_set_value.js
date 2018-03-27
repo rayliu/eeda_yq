@@ -95,6 +95,57 @@ define(['jquery'], function ($) {
             current_tr = $('#edit_save_set_value_fields_table tr:eq('+current_tr_index+')');
         });
 
+        
+        var dataTable = eeda.dt({
+            id: 'list_save_set_value_fields_table',
+            paging: false,
+            lengthChange: false,
+            columns: [
+                {  "data": "ID", "width": "30px",
+                    "render": function ( data, type, full, meta ) {
+                      var id='';
+                      if(data){
+                        id=data;
+                      }
+                      return '<button type="button" class="btn table_btn delete_btn btn-xs" >'
+                            +'<i class="fa fa-trash-o"></i> 删除</button>'
+                            +'<input name="id" type="hidden" value="'+id+'">';
+                    }
+                },
+                { "data": "NAME", "width": "200px",
+                  "render": function ( data, type, full, meta ) {
+                      if(!data)
+                           data='';
+                      return '<div class="form-group input-group">'
+                             +'     <input type="text" class="form-control" name="name" value="'+data+'"">'
+                             +'     <span class="input-group-btn">'
+                             +'         <button class="btn btn-default formular_pop"  target="name" type="button"><i class="fa fa-edit"></i>'
+                             +'         </button>'
+                             +'     </span>'
+                             +' </div>';
+                    }
+                },
+                { "data": null, "width": "30px",
+                  "render": function ( data, type, full, meta ) {
+                      return '=';
+                    }
+                },
+                { "data": "VALUE",
+                  "render": function ( data, type, full, meta ) {
+                      if(!data)
+                           data='';
+                      return '<div class="form-group input-group" style="width: 100%;">'
+                             +'     <input type="text" class="form-control" name="value" value="'+data+'">'
+                             +'     <span class="input-group-btn">'
+                             +'         <button class="btn btn-default formular_pop" target="value" type="button"><i class="fa fa-edit"></i>'
+                             +'         </button>'
+                             +'     </span>'
+                             +' </div>';
+                    }
+                }
+            ]
+          });
+        
         return {
             buildDto: buildDto,
             dataTable: dataTable

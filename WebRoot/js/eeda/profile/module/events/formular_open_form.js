@@ -1,8 +1,7 @@
 define(['jquery'], function ($) {
-    
 
         var dataTable = eeda.dt({
-          id: 'open_form_fields_table',
+          id: 'list_open_form_fields_table',
           paging: false,
           lengthChange: false,
           columns: [
@@ -25,9 +24,9 @@ define(['jquery'], function ($) {
         var current_tr_index = 0;
         var current_tr=null;
 
-        $('#open_form_fields_table tbody').on('click', 'tr', function () {
+        $('#list_open_form_fields_table tbody').on('click', 'tr', function () {
             current_tr = this;
-            $('#open_form_fields_table tbody tr').css('background-color','#fff');
+            $('#list_open_form_fields_table tbody tr').css('background-color','#fff');
             $(current_tr).css('background-color','#00BCD4');
             current_tr_index = dataTable.row( this ).index();
             var data = dataTable.row( this ).data();
@@ -55,7 +54,7 @@ define(['jquery'], function ($) {
         $('#addFieldBtn').click(function(){
             dataTable.row.add({}).draw(false);
             current_tr_index = dataTable.rows().data().length;
-            current_tr = $('#open_form_fields_table tr:eq('+current_tr_index+')');
+            current_tr = $('#list_open_form_fields_table tr:eq('+current_tr_index+')');
         });
         
         //回写到table
@@ -69,6 +68,26 @@ define(['jquery'], function ($) {
             dataTable.row(current_tr).data( item ).draw();
         });
 
+        var dataTable = eeda.dt({
+            id: 'edit_open_form_fields_table',
+            paging: false,
+            lengthChange: false,
+            columns: [
+                { "width": "30px",
+                    "render": function ( data, type, full, meta ) {
+                      return '<button type="button" class="btn table_btn delete_btn btn-xs" >'+
+                            '<i class="fa fa-trash-o"></i> 删除</button>';
+                    }
+                },
+                { "data": "FIELD_DISPLAY_NAME", "width": "50px"}, 
+                { "data": "OPERATOR", "width": "50px",
+                  "render": function ( data, type, full, meta ) {
+                      return '=';
+                    }
+                }, 
+                { "data": "FORMULAR", "width": "30px"}
+            ]
+          });
 
         return {
             buildFieldsDetail: buildFieldsDetail,

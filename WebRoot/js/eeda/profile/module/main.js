@@ -59,6 +59,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                     customSearchCont.sourceDisplay(order.CUSTOM_SEARCH_SOURCE);
                     customSearchCont.sourceConditionDisplay(order.CUSTOM_SEARCH_SOURCE_CONDITION);
                     customSearchCont.colsDisplay(order.CUSTOM_SEARCH_COLS);
+                    customSearchCont.filterDisplay(order.CUSTOM_SEARCH_FILTER);
                     
                     $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                     btn.attr('disabled', false);
@@ -93,10 +94,31 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
         $('.formular_pop').on('click', function(e){
             var targetId = $(this).attr('target');
             $('#formular_edit_modal_target_id').val(targetId);
-
+            if("custom_filter_condition"==targetId){
+            	$('#formular_edit_modal_formular').val($("#"+targetId).val());
+            	var names = $("#custom_cols_table").DataTable().$("input[name='expression']");
+            	$("#field").html("");
+            	for(var i = 0;i<names.length;i++){
+            		$("#field").append("<span class='list-group-item' style='cursor:pointer;'>"+names[i].defaultValue+"</span>");
+            	}
+            }else if("list_event_open_condition"==targetId){
+            	$("#field").html("");
+            }else if("list_event_set_css_condition"==targetId){
+            	$("#field").html("");
+            }else if("list_event_set_value_condition"==targetId){
+            	$("#field").html("");
+            }else if("list_event_save_set_value_condition"==targetId){
+            	$("#field").html("");
+            }else{
+            	$("#field").html("");
+            }
+            
             $('#formular_edit_modal').modal('show');
         });
 
+        $("#field").on("click",".list-group-item",function(){
+        	$("#formular_edit_modal_formular").val($('#formular_edit_modal_formular').val()+$(this).text());
+        });
 
         //---------------tree handle
         var setting = {
@@ -137,8 +159,8 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
         function onNodeDblClick(event, treeId, treeNode){
           if (treeNode.level==0 ) return;
 
-          var oldStr = $('#formular_edit_modal_formular').text();
-          $('#formular_edit_modal_formular').text(oldStr + treeNode.value);
+          var oldStr = $('#formular_edit_modal_formular').val();
+          $('#formular_edit_modal_formular').val(oldStr + treeNode.value);
         }
 
         function removeHoverDom(treeId, treeNode) {
@@ -185,13 +207,13 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
 
          $('.formular_operator button').click(function(event) {
             var btn = $(this);
-            var oldStr = $('#formular_edit_modal_formular').text();
-            $('#formular_edit_modal_formular').text(oldStr + btn.text);
+            var oldStr = $('#formular_edit_modal_formular').val();
+            $('#formular_edit_modal_formular').val(oldStr + btn.text());
          });
 
          $('#formular_edit_modal_ok_btn').click(function(event) {
             var targetId = $('#formular_edit_modal_target_id').val();
-            $('#'+targetId).text($('#formular_edit_modal_formular').text());
+            $('#'+targetId).val($('#formular_edit_modal_formular').val());
             $('#formular_edit_modal').modal('hide');
          });
     });
