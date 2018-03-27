@@ -1,4 +1,4 @@
-define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
+define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,openFormCont) {
     
     //---------------tree handle
     var setting = {
@@ -161,7 +161,8 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($) {
             currentNode.openForm={
               condition : $('#list_event_open_condition').val(),
               module_name : $('#list_event_open_module').val(),
-              open_type : $('#list_event_open_type').val()
+              open_type : $('#list_event_open_type').val(),
+              table_list:openFormCont.buildFieldsListDetail()
           }
          }
          zTreeObj.updateNode(currentNode);

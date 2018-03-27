@@ -29,6 +29,9 @@
                             }){}%>
             </div>
         </div>
+        <div class="form-group button-bar">
+                <button type="button" class="btn btn-success btn-xs" id="${type}_open_form_table_addBtn">添加</button>
+        </div>
         <div>
             <%include("/eeda/component/form/detailTable.html", 
                 {
@@ -36,7 +39,7 @@
                     headers:['',
                         '名称',
                         '操作',
-                        '表达式']
+                        '值']
                 }){} %>
         </div>
     </div>

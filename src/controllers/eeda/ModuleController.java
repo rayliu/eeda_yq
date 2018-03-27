@@ -413,6 +413,8 @@ public class ModuleController extends Controller {
                     openDto.get("open_type") == null ? openDto.get("OPEN_TYPE")
                             : openDto.get("open_type"));
             Db.update("eeda_form_event_open", eventOpen);
+            
+            
         } else {
             eventOpen = new Record();
             eventOpen.set("event_id", event_id);
