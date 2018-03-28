@@ -50,7 +50,7 @@ public class SpController extends Controller {
 	@Before(EedaMenuInterceptor.class)
 	 public void edit(){ 
 		String id = getPara("id");
-        String sql_user = "select ca.name trade_name,ul.id uid,ul.invitation_code,ul.user_name,wc.* "
+        String sql_user = "select ca.name trade_name,ul.id uid,ul.invitation_code,ul.influence,ul.user_name,wc.* "
         		+ " from user_login ul "
         		+ " left join wc_company wc on wc.creator = ul.id "
         		+ " left join category ca on ca.id = wc.trade_type "

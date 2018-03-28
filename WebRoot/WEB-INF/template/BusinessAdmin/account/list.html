@@ -8,8 +8,8 @@
                 </div>  
                 <div class="xx-detail">
                     <h3>${user.company_name!''}</h3>
-                    <p>商家邀请码 ：<strong class="red anchorbutton" >${user.invitation_code!''}</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;影响力 ：<strong class="red anchorbutton">0</strong></p>
-                    <p>您成功用邀请码邀请 0 对新人使用婚礼帮并注册，您的影响力是：0 。 影响力有助商家排名上升。      </p>
+                    <p>商家邀请码 ：<strong class="red anchorbutton" >${user.invitation_code!''}</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;影响力 ：<strong class="red anchorbutton">${user.influence!'0'}</strong></p>
+                    <p>您成功用邀请码邀请 ${user.influence!'0'} 对新人使用婚礼帮并注册，您的影响力是：${user.influence!'0'} 。 影响力有助商家排名上升。      </p>
                 </div>
                 <div class="product-table">
                     <table cellpadding="0" cellspacing="0" border="0" class="stdtable">

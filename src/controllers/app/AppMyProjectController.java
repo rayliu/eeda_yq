@@ -53,11 +53,13 @@ public class AppMyProjectController extends Controller {
         		if(order_id == 11){
         			condition = " and if(item.creator is null,'" + login_id + "',item.creator)= '"+ login_id +"'";
         		}
-        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date"
+        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,if(pro.project='自定义','Y','N') defined_flag,ref.complete_date new_complete_date"
         				+ " from wc_my_project_item item"
+        				+ " left join wc_my_project pro on pro.id = item.order_id"
         				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
         				+ " where item.by_time_order_id = ? "
         				+ condition
+        				+ " group by item.id"
         				+ " order by item.id",login_id, order_id);
         		
         		//计算勾选总数
@@ -77,11 +79,13 @@ public class AppMyProjectController extends Controller {
         		if(order_id == 11){
         			condition = " and if(item.creator is null,'" + login_id + "',item.creator)= '"+ login_id +"'";
         		}
-        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,ref.complete_date new_complete_date"
+        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,if(pro.project='自定义','Y','N') defined_flag,ref.complete_date new_complete_date"
         				+ " from wc_my_project_item item"
+        				+ " left join wc_my_project pro on pro.id = item.order_id"
         				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
         				+ " where item.order_id = ?"
         				+ condition
+        				+ " group by item.id"
         				+ " order by item.id",login_id, order_id);
         		
         		//计算勾选总数
@@ -118,8 +122,8 @@ public class AppMyProjectController extends Controller {
         	rec.set("complete_date", complete_date);
         	Db.update("wc_my_project_ref", rec);
         }
-        return_data.set("result", true);
-
+        return_data.set("result", "true");
+        return_data.set("type", "save_date");
         renderJson(return_data);  
     }
     
@@ -149,7 +153,8 @@ public class AppMyProjectController extends Controller {
 	            Db.save("wc_my_project_ref", rec);
         	}
         }
-        return_data.set("result", true);
+        return_data.set("result", "true");
+        return_data.set("type", "save_check");
 
         renderJson(return_data);  
     }
@@ -173,15 +178,35 @@ public class AppMyProjectController extends Controller {
     	order.set("create_time", new Date());
     	Db.save("wc_my_project_item", order);
     	
-    	//添加用户关联表
-    	Record ref = new Record();
-    	ref.set("item_id", order.get("id"));
-    	ref.set("user_id", login_id);
-    	ref.set("complete_date", new Date());
-    	Db.save("wc_my_project_ref", ref);
+//    	//添加用户关联表
+//    	Record ref = new Record();
+//    	ref.set("item_id", order.get("id"));
+//    	ref.set("user_id", login_id);
+//    	ref.set("complete_date", new Date());
+//    	Db.save("wc_my_project_ref", ref);
 
     	Record data = new Record();
     	data.set("result", "true");
+    	data.set("type", "add");
+        renderJson(data);  
+    }
+    
+    /**
+     * 删除自定义项目
+     * @throws UnsupportedEncodingException 
+     * @throws IOException
+     */
+    @Before(Tx.class)
+    public void delete_project() throws UnsupportedEncodingException{
+    	String id = getPara("id");
+    	
+    	//先删关联明细
+    	Db.update("delete from wc_my_project_ref where item_id = ?",id);
+    	
+    	Db.deleteById("wc_my_project_item", id);
+    	Record data = new Record();
+    	data.set("result", "true");
+    	data.set("type", "delete");
         renderJson(data);  
     }
     
