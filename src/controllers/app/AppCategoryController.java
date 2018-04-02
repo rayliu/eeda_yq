@@ -57,7 +57,7 @@ public class AppCategoryController extends Controller {
     			+ " left join wc_ad_hui hui on hui.creator = ul.id"
     			+ " where 1 = 1 and system_type ='商家后台' and ul.status = '通过'"
     			+ conditions
-    			+ "group by ul.id) A order by influence desc, diamond desc,cu desc,hui desc");
+    			+ "group by ul.id) A order by diamond desc,cu desc,hui desc,influence desc");
     	
     	Record data = new Record();
     	data.set("shopList", shopList);
