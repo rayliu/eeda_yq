@@ -7,7 +7,7 @@ define(['jquery', 'validate_cn',  'dataTablesBootstrap', 'sco', 'file_upload'], 
   		  $(this).fileupload({
   				validation: {allowedExtensions: ['*']},
   				autoUpload: true, 
-  			    url: '/BusinessAdmin/account/saveFile',
+  			    url: '/WebAdmin/account/saveFile',
   			    dataType: 'json',
   			    add: function(e, data) {
 			        var uploadErrors = [];
