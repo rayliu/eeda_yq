@@ -3,6 +3,7 @@ package controllers.arap.salesReport;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class SalesBillReportController extends Controller {
 		render("/eeda/arap/SalesReport/SalesBillReport.html");
 	}
 	
-	public long list() {
+	public void list() {
 		String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
@@ -115,6 +116,18 @@ public class SalesBillReportController extends Controller {
         		+" GROUP BY A.order_no "
         		+ " ORDER BY order_export_date desc";
 		
+        String flag = getPara("flag");
+        if("empty".equals(flag)){
+        	 Map map = new HashMap();
+             map.put("draw", 1);
+             map.put("recordsTotal", 0);
+             map.put("recordsFiltered", 0);
+             map.put("data", new ArrayList<Record>());
+             renderJson(map); 
+             return;
+        }
+        
+        
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
@@ -126,9 +139,6 @@ public class SalesBillReportController extends Controller {
         map.put("recordsFiltered", rec.getLong("total"));
         map.put("data", orderList);
         renderJson(map); 
-        
-        return total;
-		
 	}
 	
 	public void listTotal() {
