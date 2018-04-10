@@ -4,7 +4,7 @@
 	<tstamp>
 	    <format property="touch.time" pattern="yyMMdd.hhmm" />
 	</tstamp>
-	<!-- 定义一些变量，其值是基于其他的变量值 -->
+	<!-- 定义一些变量，其值是基于其他的变量 值   -->
 	<property name="project.classpath" value="WebRoot/WEB-INF/classes"></property>
 	
 	<!--path id="project.classpath">
