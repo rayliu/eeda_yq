@@ -28,79 +28,6 @@ import com.aliyuncs.profile.IClientProfile;
 import com.jfinal.kit.PropKit;
 
 public class AliSmsUtil {
-    private static MNSClient client = null;
-    private static AtomicLong totalCount = new AtomicLong(0);
-
-    private static String endpoint = null;
-    private static String accessId = null;
-    private static String accessKey = null;
-
-    private static String topicName = null;
-    private static String queueName = "JavaSDKPerfTestQueue";
-    private static int threadNum = 100;
-    private static int totalSeconds = 180;
-    
-    private static String signName = null;
-    private static String SMSTemplateCode = null;
-    
-    protected static boolean parseConf(String template) {
-        String confFilePath = System.getProperty("user.dir") + System.getProperty("file.separator") + "perf_test_config.properties";
-
-        BufferedInputStream bis = null;
-        try {
-            bis = new BufferedInputStream(new FileInputStream(confFilePath));
-            if (bis == null) {
-                System.out.println("ConfFile not opened: " + confFilePath);
-                return false;
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("ConfFile not found: " + confFilePath);
-            return false;
-        }
-
-        // load file
-        Properties properties = new Properties();
-        try {
-            properties.load(bis);
-        } catch(IOException e) {
-            System.out.println("Load ConfFile Failed: " + e.getMessage());
-            return false;
-        } finally {
-            try {
-                bis.close();
-            } catch (Exception e) {
-                // do nothing
-            }
-        }
-
-        // init the member parameters
-        endpoint = properties.getProperty("Endpoint");
-        System.out.println("Endpoint: " + endpoint);
-        accessId = properties.getProperty("AccessId");
-        System.out.println("AccessId: " + accessId);
-        accessKey = properties.getProperty("AccessKey");
-
-        topicName = properties.getProperty("TopicName");
-        System.out.println("topicName: " + topicName);
-        signName = properties.getProperty("signName");
-        System.out.println("signName: " + signName);
-        
-        if("sendMsg".equals(template)){
-        	SMSTemplateCode = properties.getProperty("SMSTemplateCode");//发送信息
-        }else if("sendCode".equals(template)){
-        	SMSTemplateCode = properties.getProperty("SCODETemplateCode");//发送验证码
-        }
-        System.out.println("TemplateCode: " + SMSTemplateCode);
-        
-        queueName = properties.getProperty("QueueName", queueName);
-        System.out.println("QueueName: " + queueName);
-        threadNum = Integer.parseInt(properties.getProperty("ThreadNum", String.valueOf(threadNum)));
-        System.out.println("ThreadNum: " + threadNum);
-        totalSeconds = Integer.parseInt(properties.getProperty("TotalSeconds", String.valueOf(totalSeconds)));
-        System.out.println("TotalSeconds: " + totalSeconds);
-
-        return true;
-    }
     
     public static void main(String[] args) throws ClientException {
         //TemplateCode   SMS_116480127   忘记密码
@@ -115,8 +42,11 @@ public class AliSmsUtil {
         final String product = "Dysmsapi";//短信API产品名称（短信产品名固定，无需修改）
         final String domain = "dysmsapi.aliyuncs.com";//短信API产品域名（接口地址固定，无需修改）
         //替换成你的AK
+//        final String accessKeyId = "LTAIVWXpVd6i8V9E";//你的accessKeyId,参考本文档步骤2
+//        final String accessKeySecret = "NulQ2k8XfHxHQOcKksIt8ghgEbsY8M";//你的accessKeySecret，参考本文档步骤2
         final String accessKeyId = PropKit.get("accessKeyId");//你的accessKeyId,参考本文档步骤2
         final String accessKeySecret = PropKit.get("accessKeySecret");//你的accessKeySecret，参考本文档步骤2
+
         //初始化ascClient,暂时不支持多region（请勿修改）
         IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId,
         accessKeySecret);
@@ -134,7 +64,7 @@ public class AliSmsUtil {
          request.setTemplateCode(templateCode);
          //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
          //友情提示:如果JSON中需要带换行符,请参照标准的JSON协议对换行符的要求,比如短信内容中包含\r\n的情况在JSON中需要表示成\\r\\n,否则会导致JSON在服务端解析失败
-         request.setTemplateParam("{\"name\":\"Tom\", \"code\":\"123\"}");
+         request.setTemplateParam("{\"code\":\""+verifyCode +"\"}");
          //可选-上行短信扩展码(扩展码字段控制在7位或以下，无特殊需求用户请忽略此字段)
          //request.setSmsUpExtendCode("90997");
          //可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
