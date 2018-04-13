@@ -15,6 +15,7 @@ import org.apache.shiro.codec.Base64;
 import sun.misc.BASE64Decoder;
 import sun.nio.cs.UnicodeEncoder;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
@@ -110,7 +111,7 @@ public class AppLoginController extends Controller {
     }
     
     
-    public void send_code(){
+    public void send_code() throws ClientException{
     	boolean result = false;
     	String errMsg = "";
     	
@@ -119,7 +120,7 @@ public class AppLoginController extends Controller {
     	Record user = Db.findFirst("select * from user_login where phone=? and system_type = 'mobile' ",mobile);
     	if(user != null){
     		code= (int)((Math.random()*9+1)*1000);//4位数随机码
-        	AliSmsUtil.sendSms(String.valueOf(code), mobile,"sendCode");
+        	AliSmsUtil.sendSms(String.valueOf(code), mobile,"SMS_116480127");
         	result = true;
     	}else{
     		errMsg = "此号码未注册";

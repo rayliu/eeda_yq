@@ -33,6 +33,7 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -232,13 +233,14 @@ public class BizAdminController extends Controller {
     	renderJson(re);
     }
     
-    public void sendCode(){
+    public void sendCode() throws ClientException{
     	String phone = getPara("phone");
     	
     	int code= (int)((Math.random()*9+1)*1000);//4位数随机码
         getSession().setAttribute("register_code", String.valueOf(code));
-    	AliSmsUtil.sendSms(String.valueOf(code), phone,"sendCode");
-    	
+        
+        //TemplateCode   SMS_116480127   忘记密码
+    	AliSmsUtil.sendSms(String.valueOf(code), phone, "SMS_116480127");
     	
     	renderJson(true);
     }

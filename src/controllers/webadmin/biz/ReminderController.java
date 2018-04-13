@@ -17,6 +17,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
@@ -63,7 +64,7 @@ public class ReminderController extends Controller {
 	}
 	
 	@Before(Tx.class)
-	public void pass(){
+	public void pass() throws ClientException{
 		String id = getPara("id");
 		String status = getPara("status");
 		boolean result = false;
@@ -83,7 +84,7 @@ public class ReminderController extends Controller {
 	}
 	
 	@Before(Tx.class)
-	private void sendMsg(String mobile){
+	private void sendMsg(String mobile) throws ClientException{
     	AliSmsUtil.sendSms(null, mobile,"sendMsg");//发送通知信息
     }
 	
