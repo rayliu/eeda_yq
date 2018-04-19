@@ -47,7 +47,15 @@ public class AppTaoController extends Controller {
     			+ " `wc_ad_banner_photo` ban"
     			+ " order by ban.ad_index asc; ");
     	
-   
+    	String limit = "";
+    	String page_size = getPara("page_size");
+    	String data_index = getPara("data_index");
+    	if(StringUtils.isNotBlank(page_size)){
+    		if(StringUtils.isBlank(data_index)){
+    			data_index = "0";
+    		}
+    		limit = " limit " + data_index + ","+ page_size;
+    	}
     	//促销广告
     	List<Record> cuList = Db.find(" select "
     			+ " wcu.id id ,cgr.`name` trade_type,wcu.cover,"
@@ -60,10 +68,46 @@ public class AppTaoController extends Controller {
     			+ " and delete_flag != 'Y'"
     			+ "	and (now() BETWEEN wcu.begin_date and wcu.end_date) "
     			+ cuCondition
-    			+ " order by wcu.create_time desc");
+    			+ " order by wcu.create_time desc" + limit);
     	Record data = new Record();
     	data.set("bannerList", bannerList);
     	data.set("cuList", cuList);
         renderJson(data);  
+    }
+    
+    
+    /**
+     * 分页数据加载
+     * @throws IOException
+     */
+    public void cuList(){
+    	String cityCode = getPara("cityCode");
+    	String data_index = getPara("data_index");
+    	String page_size = getPara("page_size");
+    	String limit = "";
+    	if(StringUtils.isNotBlank(page_size) && StringUtils.isNotBlank(data_index)){
+    		limit = " limit " + data_index + ","+ page_size;
+    	}
+    	
+    	String condition = "";
+    	if(StringUtils.isNotBlank(cityCode)){
+    		condition = " and com.city ='" + cityCode + "'";
+    	}
+   
+    	//促销广告
+    	List<Record> cuList = Db.find(" select "
+    			+ " wcu.id id ,cgr.`name` trade_type,wcu.cover,"
+    			+ " com.c_name company_name,wcu.begin_date,wcu.end_date,wcu.title,wcu.content,"
+    			+ " wcu.creator user_id"
+    			+ " from wc_ad_cu wcu "
+    			+ " LEFT JOIN wc_company com on com.creator = wcu.creator"
+    			+ " LEFT JOIN category cgr on cgr.id = com.trade_type"
+    			+ " where ifnull(wcu.title,'') != '' and wcu.status = '开启' "
+    			+ " and delete_flag != 'Y'"
+    			+ condition
+    			+ "	and (now() BETWEEN wcu.begin_date and wcu.end_date) "
+    			+ " order by wcu.create_time desc " + limit);
+
+        renderJson(cuList);  
     }
 }

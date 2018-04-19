@@ -63,4 +63,12 @@ public class AppCategoryController extends Controller {
     	data.set("shopList", shopList);
         renderJson(data);  
     }
+    
+    public void categoryList(){
+    	List<Record> list = Db.find("select * from category ");
+    	
+    	Record data = new Record();
+    	data.set("categoryList", list);
+        renderJson(data);  
+    }
 }

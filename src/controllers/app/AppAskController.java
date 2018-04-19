@@ -33,13 +33,22 @@ public class AppAskController extends Controller {
      * @throws IOException
      */
     public void askList() throws IOException{
+    	String limit = "";
+    	String page_size = getPara("page_size");
+    	String data_index = getPara("data_index");
+    	if(StringUtils.isNotBlank(page_size)){
+    		if(StringUtils.isBlank(data_index)){
+    			data_index = "0";
+    		}
+    		limit = " limit " + data_index + ","+ page_size;
+    	}
     	//商家列表
     	List<Record> askList = Db.find(""
     			+ " select wq.id id,wq.create_time,wq.title,ul.user_name login_name,"
     			+ " cast((select count(0) from wc_response where question_id = wq.id) as char) answer_count"
     			+ " from wc_question wq"
     			+ " left join user_login ul on ul.id = wq.creator"
-    			+ " order by wq.id desc");
+    			+ " order by wq.id desc" + limit);
     	
     	
     	Record data = new Record();
@@ -54,12 +63,23 @@ public class AppAskController extends Controller {
     public void responseList() throws IOException{
     	String question_id = getPara();
     	question_id = URLDecoder.decode(question_id, "UTF-8");
-    	//商家列表
+    	
+    	String limit = "";
+    	String page_size = getPara("page_size");
+    	String data_index = getPara("data_index");
+    	if(StringUtils.isNotBlank(page_size)){
+    		if(StringUtils.isBlank(data_index)){
+    			data_index = "0";
+    		}
+    		limit = " limit " + data_index + ","+ page_size;
+    	}
+    	
+    	//回答列表
     	List<Record> responseList = Db.find(" select wr.id id,wr.create_time,wr.value,ul.user_name user_name"
     			+ " from wc_response wr"
     			+ " left join user_login ul on ul.id = wr.creator"
     			+ " where question_id = ?"
-    			+ " order by wr.id desc",question_id);
+    			+ " order by wr.id desc"+limit,question_id);
     	
 
     	Record data = new Record();
