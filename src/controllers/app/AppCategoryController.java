@@ -39,6 +39,8 @@ public class AppCategoryController extends Controller {
     		conditions += " and wc.city = '" + cityCode + "'";
     	}
     	
+    	List<Record> list = Db.find("select * from category ");
+    	
     	//商家列表
     	List<Record> shopList = Db.find(" select * from(select ul.id shop_id,ul.influence, "
     			+ " ifnull(wc.c_name,wc.company_name) company_name,"
@@ -61,6 +63,7 @@ public class AppCategoryController extends Controller {
     	
     	Record data = new Record();
     	data.set("shopList", shopList);
+    	data.set("categoryList", list);
         renderJson(data);  
     }
     
