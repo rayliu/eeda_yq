@@ -88,17 +88,25 @@ public class AppLoginController extends Controller {
     	String login_id = null;
     	String wedding_date = null;
     	String user_name = null;
-    	String password = URLDecoder.decode(getPara("password"), "UTF-8");
-    	String mobile = URLDecoder.decode(getPara("mobile"), "UTF-8");
-
-    	Record user = Db.findFirst("select * from user_login where phone = ? and password = ? and status != '停用'",mobile, password);
+    	String password = getPara("password");
+    	String mobile = getPara("mobile");
+    	String sha1Pwd = MD5Util.encode("SHA1",password);
+    	Record user = Db.findFirst("select * from user_login where phone = ? and system_type = 'mobile'",mobile);
     	if(user != null){
-    		result = true;
-    		login_id = user.getLong("id").toString();
-    		user_name = user.getStr("user_name");
-    		wedding_date = user.get("wedding_date").toString();
+    		if("停用".equals(user.getStr("status"))){
+    			errMsg = "账号已被停用";
+    		}else{
+    			if(sha1Pwd.equals(user.getStr("password"))){
+    				result = true;
+            		login_id = user.getLong("id").toString();
+            		user_name = user.getStr("user_name");
+            		wedding_date = user.get("wedding_date").toString();
+    			}else{
+    				errMsg = "密码不正确，请重新输入";
+    			}
+    		}
     	}else{
-    		errMsg = "用户名或密码不正确";
+    		errMsg = "此手机未注册";
     	}
     	
     	Record data = new Record();

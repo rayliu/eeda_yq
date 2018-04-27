@@ -69,9 +69,16 @@ public class AppTaoController extends Controller {
     			+ "	and (now() BETWEEN wcu.begin_date and wcu.end_date) "
     			+ cuCondition
     			+ " order by wcu.create_time desc" + limit);
+    	
+    	//地址列表
+    	List<Record> locList = Db.find(""
+    			+ " select *,loc.name city_name FROM location_management lm"
+    			+ " left join location loc on loc.code = lm.code");
+    	
     	Record data = new Record();
     	data.set("bannerList", bannerList);
     	data.set("cuList", cuList);
+    	data.set("locList", locList);
         renderJson(data);  
     }
     
