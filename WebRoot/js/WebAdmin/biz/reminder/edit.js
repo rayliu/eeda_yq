@@ -69,7 +69,28 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 				 }
 			 });
 		 }
+	 });
+	  
+	  
+	  $('#confirm').on('click',function(){
+		 var self = this;
 		 
+		 var id = $("#user_id").val(); 
+		 var reason = $("#reason").val(); 
+		 this.disabled = true;
+		 $.post('/WebAdmin/biz/reminder/refuse',{id:id,reason:reason},function(data){
+			 if(data){
+				 $.scojs_message('操作成功', $.scojs_message.TYPE_OK);
+				 window.location.href = "/WebAdmin/biz/reminder";
+			 }else{
+				 $.scojs_message('处理失败', $.scojs_message.TYPE_ERROR);
+			 }
+		 });
+	 });
+	  
+	  
+	  $('#cancel').on('click',function(){
+		  hidelayer();
 	 });
   });
 });

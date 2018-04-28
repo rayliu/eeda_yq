@@ -83,6 +83,27 @@ public class ReminderController extends Controller {
 		renderJson(result);
 	}
 	
+	
+	@Before(Tx.class)
+	public void refuse() throws ClientException{
+		String id = getPara("id");
+		String reason = getPara("reason");
+		boolean result = false;
+		
+		Record user = null;
+		if(StringUtils.isNotBlank(id)){
+			user = Db.findById("user_login", id);
+			user.set("status", "已拒绝");
+			user.set("refuse_reason", reason);
+			user.set("is_stop", 0);
+			Db.update("user_login",user);
+			result = true;
+			//短信提醒用户
+			sendMsg(user.getStr("phone"));
+		}
+		renderJson(result);
+	}
+	
 	@Before(Tx.class)
 	private void sendMsg(String mobile) throws ClientException{
     	AliSmsUtil.sendSms(null, mobile,"sendMsg");//发送通知信息
