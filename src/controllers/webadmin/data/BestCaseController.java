@@ -94,7 +94,8 @@ public class BestCaseController extends Controller {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
         String sql="select wco.c_name productor,wc.* from wc_case wc " 
-        		+  " LEFT JOIN wc_company wco on wc.creator = wco.creator  where wc.flag=1";
+        		+ " LEFT JOIN wc_company wco on wc.creator = wco.creator  where wc.flag=1"
+        		+ " order by wc.id desc";
     	String condition = DbUtils.buildConditions(getParaMap());
     	System.out.println(sql);
         String sqlTotal = "select count(1) total from ("+sql+") B";

@@ -43,6 +43,7 @@ public class AppBestCaseController extends Controller {
     			+ " `wc_case` cas"
     			+ " left join wc_company wc on wc.creator = cas.creator"
     			+ " where cas.flag = '1'"
+    			+ " order by cas.id desc"
     			+ conditions);
     	
     	//案例明细表关联
