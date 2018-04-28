@@ -15,6 +15,26 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 	  }
 	  init();
 	  
+	  $('#refuseBtn').on('click', function(){
+	    	showlayer($("#refuse_reason"));
+	  });
+	  
+	  function hidelayer(){
+		  $("#layer").hide();
+		  $(".pop").hide();
+	  }
+	    
+	  function showlayer(pop_object){
+		  var bh=$(window).height();//获取屏幕高度
+		  var bw=$(window).width();//获取屏幕宽度
+		  $("#layer").css({
+            height:bh,
+            width:bw,
+            display:"block"
+		  });
+		  pop_object.show();
+	  }
+	  
 	  $("#delButton").on('click',function(){
 		 self = $(this);
 		 var result = confirm('你确定要删除这个商家吗？');

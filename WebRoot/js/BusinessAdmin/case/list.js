@@ -8,6 +8,25 @@ $(document).ready(function() {
 			autoUpload:true,
 			url:"/BusinessAdmin/case/saveFile",
 			dataType:"json",
+			add: function(e, data) {
+		        var uploadErrors = [];
+		        var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+
+				//文件类型判断
+		        if(data.originalFiles[0]['type'] && !acceptFileTypes.test(data.originalFiles[0]['type'])) {
+		        	//uploadErrors.push('图片类型不对');
+		        	$.scojs_message('图片类型不对', $.scojs_message.TYPE_ERROR);
+		        	return;
+		        }
+
+				//文件大小判断
+		        if(data.originalFiles[0]['size'] > 512000) {
+		            $.scojs_message('文件不能大于500K', $.scojs_message.TYPE_ERROR);
+		            return;
+		        }else{
+		        	data.submit();
+		        }
+			},
 			done:function (e, data) {
         		if(data){
         			$('#example_img').attr('value',data.result.NAME);

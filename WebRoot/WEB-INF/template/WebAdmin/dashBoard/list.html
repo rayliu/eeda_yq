@@ -23,7 +23,7 @@
             <div class="baseinfo-list">
                 <h3>地区管理</h3>
                 <div style="margin:5px 0 0 0">
-                	<button class="modifibtn" id="add_loc">添加地区</button>
+                	<button class="modifibtn" id="add_loc" style="width:100px">添加地区</button>
                 </div>
                 
 		        <%include("/eeda/component/form/detailTable.html", 
@@ -36,7 +36,7 @@
         	<div class="baseinfo-list">
                 <h3>分类管理</h3>
                 <div style="margin:5px 0 0 0">
-                	<button class="modifibtn" id="add_category">添加分类</button>
+                	<button class="modifibtn" id="add_category" style="width:100px">添加分类</button>
                 </div>
                 
 		        <%include("/eeda/component/form/detailTable.html", 
@@ -58,13 +58,15 @@
                     display_value: address!''
                 }){} %>
                 <br/>
-		      <button class="modifibtn" id="sure_add_loc">确定添加</button>
+		      <button class="modifibtn" id="sure_add_loc" style="width:100px">确定添加</button>
 		     </div>       
     	</div>
     	<div class='pop' id='pop_category' style="margin-left:10%;margin-top:-10%;">
 	    	<div style="margin-top:20%;">
-	    		<label>分類的名字</label><input type="text" id='category_name'/>
-    			<button class="modifibtn"  id = "sure_add_category">确定添加</button>
+	    		<label>分類的名字</label><input type="text" class="form-control input_text" id='category_name'/>
+	    		<br>
+	    		<br>
+    			<button class="modifibtn"  id = "sure_add_category" style="width:100px">确定添加</button>
 	    	</div>
     	</div>
 <%}%>

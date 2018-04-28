@@ -281,10 +281,7 @@ public class ProductController extends Controller {
         renderJson(order);
 	}
 	
-	//开通促销
-	public void cuOperation(){
-		
-	}
+
 	
 	//上传相关文档
     @Before(Tx.class)
