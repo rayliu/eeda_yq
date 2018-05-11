@@ -40,9 +40,9 @@ public class ListController extends Controller {
         
         String module_name = getPara(0);
         if("jobOrder".equals(module_name)){
-            JobOrderController c = new JobOrderController();
-            c.setHttpServletRequest(this.getRequest());
-            c.index();
+            //JobOrderController c = new JobOrderController();
+//            c.setHttpServletRequest(this.getRequest());
+//            c.index();
             
             Map<String, String> templateMap = EedaMenuInterceptor.menuUrlTemplateCache.get(user_id);
             String templatePath = null;
