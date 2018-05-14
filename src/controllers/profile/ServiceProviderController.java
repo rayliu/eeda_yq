@@ -987,16 +987,16 @@ public class ServiceProviderController extends Controller {
         List<Record> rec = null;
         String dock_names =judge_rec.get("dock_names");
         if(StringUtils.isBlank(dock_names)){        	
-        	sql="SELECT	* FROM ( SELECT	dock.id dock_id,"
+        	sql="SELECT	* FROM ((SELECT	dock.id dock_id,"
         			+ " GROUP_CONCAT( CONCAT(ifnull(dock.dock_name, ''),':',ifnull(dock.land_contacts, ''),':',ifnull(dock.land_contact_phone, '')	) ) dock_names,"
         			+ " NULL port_id "
         			+ " FROM dockinfo dock	"
         			+ "	WHERE office_id = "+office_id+" AND ( dock.dock_name LIKE '%"+addressInputStr+"%'	)"
-        			+ "	LIMIT 0,25"
-        			+ "	UNION	SELECT	NULL dock_id, CONCAT(NAME, '-', CODE) dock_names, lo.id port_id"
+        			+ "	LIMIT 0,25)"
+        			+ "	UNION	(SELECT	NULL dock_id, CONCAT(NAME, '-', CODE) dock_names, lo.id port_id"
         			+ " FROM location lo"
         			+ " WHERE type = 'port'"
-        			+ "	AND (CONCAT(NAME, '-', CODE) LIKE '%"+addressInputStr+"%')	LIMIT 0,25) A";
+        			+ "	AND (CONCAT(NAME, '-', CODE) LIKE '%"+addressInputStr+"%')	LIMIT 0,25)) A";
         	
 //        	sql = "SELECT	GROUP_CONCAT( CONCAT(ifnull(di.dock_name, ''),':',ifnull(di.land_contacts, ''),':',	ifnull(di.land_contact_phone, '')"
 //        			+ "	) ) dock_names FROM dockinfo di WHERE office_id ="+office_id+addStr + " limit 0,25";
