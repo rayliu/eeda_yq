@@ -50,10 +50,10 @@ public class AppMyProjectController extends Controller {
     		for(Record re :orderList){
         		Long order_id = re.getLong("id");
         		String condition = "";
-        		if(order_id == 11){
-        			condition = " and if(item.creator is null,'" + login_id + "',item.creator)= '"+ login_id +"'";
-        		}
-        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,if(pro.project='自定义','Y','N') defined_flag,ref.complete_date new_complete_date"
+        		condition = " and if(item.creator is null,'" + login_id + "',item.creator)= '"+ login_id +"'";
+        		
+        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,if(pro.project='自定义','Y','N') defined_flag,ref.complete_date new_complete_date,"
+        				+ " if(item.creator>0,'Y','N') self_add "
         				+ " from wc_my_project_item item"
         				+ " left join wc_my_project pro on pro.id = item.order_id"
         				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
@@ -76,10 +76,10 @@ public class AppMyProjectController extends Controller {
         	for(Record re :orderList){
         		Long order_id = re.getLong("id");
         		String condition = "";
-        		if(order_id == 11){
-        			condition = " and if(item.creator is null,'" + login_id + "',item.creator)= '"+ login_id +"'";
-        		}
-        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,if(pro.project='自定义','Y','N') defined_flag,ref.complete_date new_complete_date"
+        		condition = " and if(item.creator is null,'" + login_id + "',item.creator)= '"+ login_id +"'";
+        		
+        		List<Record> item = Db.find("select item.*,if(ref.id>0,'Y','N') is_check,if(pro.project='自定义','Y','N') defined_flag,ref.complete_date new_complete_date,"
+        				+ " if(item.creator>0,'Y','N') self_add "
         				+ " from wc_my_project_item item"
         				+ " left join wc_my_project pro on pro.id = item.order_id"
         				+ " left join wc_my_project_ref ref on ref.item_id = item.id and ref.user_id = ?"
@@ -171,10 +171,16 @@ public class AppMyProjectController extends Controller {
     	String value = getPara("values");
     	value = URLDecoder.decode(value, "UTF-8");
     	
+    	String item_id = getPara("item_id");
+    	if(StringUtils.isBlank(item_id)){
+    		item_id = "11";
+    	}
+    	
+    	
     	Record order = new Record();
     	order.set("item_name", value);
     	order.set("creator", login_id);
-    	order.set("order_id", 11);
+    	order.set("order_id", item_id);
     	order.set("create_time", new Date());
     	Db.save("wc_my_project_item", order);
     	
