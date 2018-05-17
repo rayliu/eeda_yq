@@ -64,6 +64,32 @@
 	                            }){} %>
 	                        </div>
 	                    </div>
+	                    <div class="row">
+	                    	<div class="col-lg-4">
+	                            <%include("/eeda/component/form/inputFinItem.html", 
+	                                                {   id: 'fin_name', 
+	                                                    label: '费用名称', 
+	                                                    list:'list', 
+	                                                    value: ''
+	                                                }){}%>
+	                        </div>
+	         
+	                        <div class="col-lg-4">
+	                            <div class="form-group">
+								    <label class="search-label">类别 </label>
+								        <select id="type" name="type" class="form-control search-control valid">
+								        	<option value=""></option>
+								        	<option value="海运"> 海运 </option>
+					                        <option value="空运"> 空运 </option>
+					                        <option value="陆运"> 陆运 </option>
+					                        <option value="贸易"> 贸易 </option>
+					                        <option value="报关"> 报关 </option>
+					                        <option value="保险"> 保险 </option>
+									    </select>
+									</div>
+	                        </div>
+	                    </div>
+	                    
 	                    <div class="form-group button-bar" >
                             <button id="searchBtn" class="btn btn_grey" type="button">查询 </button>
                             <button id="resetBtn" class="btn btn_white" type="button">清空条件</button>

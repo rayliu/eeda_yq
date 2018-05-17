@@ -96,6 +96,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var start_date = $("#create_stamp_begin_time").val();
           var end_date = $("#create_stamp_end_time").val();
           var audit_flag = $("#audit_flag").val();
+          var fin_name = $("#fin_name").val();
+          var type = $("#type").val();
           /*  
               查询规则：参数对应DB字段名
               *_no like
@@ -110,6 +112,8 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 			           +"&customer_name_like="+customer_name
 			           +"&sp_id="+sp
 			           +"&sp_name_like="+sp_name
+			           +"&charge_id="+fin_name
+			           +"&type_name="+type
 		               +"&create_stamp_begin_time="+start_date
 		               +"&create_stamp_end_time="+end_date
           			   +"&audit_flag="+audit_flag;

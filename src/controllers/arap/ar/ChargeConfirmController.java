@@ -77,7 +77,7 @@ public class ChargeConfirmController extends Controller {
         
         
         String sql = "select * from( "
-        		+ " select joa.*,jo.id jobid,jo.order_no,jo.order_export_date,jo.create_stamp,jo.customer_id,p.abbr customer_name,p1.abbr sp_name,f.name charge_name,u.name unit_name,"
+        		+ " select joa.*,joa.type type_name,jo.id jobid,jo.order_no,jo.order_export_date,jo.create_stamp,jo.customer_id,p.abbr customer_name,p1.abbr sp_name,f.name charge_name,u.name unit_name,"
         		+ " c.name currency_name, c1. NAME exchange_currency_name "
 				+ " from job_order_arap joa "
 				+ " left join job_order jo on jo.id=joa.order_id "
