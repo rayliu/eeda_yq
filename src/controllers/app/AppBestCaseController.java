@@ -28,9 +28,18 @@ public class AppBestCaseController extends Controller {
      * @throws IOException
      */
     public void orderData() throws IOException{
-    	String cityCode = getPara("cityCode");
     	
     	String conditions = "";
+    	String limit = "";
+    	String cityCode = getPara("cityCode");
+    	String page_size = getPara("page_size");
+    	String data_index = getPara("data_index");
+    	if(StringUtils.isNotBlank(page_size)){
+    		if(StringUtils.isBlank(data_index)){
+    			data_index = "0";
+    		}
+    		limit = " limit " + data_index + ","+ page_size;
+    	}
 
     	if(StringUtils.isNotBlank(cityCode)){
     		conditions += " and wc.city = '" + cityCode + "'";
@@ -43,15 +52,15 @@ public class AppBestCaseController extends Controller {
     			+ " `wc_case` cas"
     			+ " left join wc_company wc on wc.creator = cas.creator"
     			+ " where cas.flag = '1'"
-    			+ " order by cas.id desc"
-    			+ conditions);
+    			+ conditions
+    			+ " order by cas.id desc" + limit);
     	
     	//案例明细表关联
     	for (Record item : caseList) {
     		Long order_id = item.getLong("id");
     		List<Record> itemList = Db.find(" SELECT id,photo"
         			+ "  FROM"
-        			+ " `wc_case_item` where order_id = ? order by create_time",order_id);
+        			+ " `wc_case_item` where order_id = ? order by create_time limit 0,2",order_id);
     		item.set("itemList", itemList);
 		}
     	
@@ -66,6 +75,16 @@ public class AppBestCaseController extends Controller {
     public void findById() throws UnsupportedEncodingException{
     	String case_id = getPara();
     	case_id = URLDecoder.decode(case_id, "UTF-8");
+    	String limit = "";
+    	String page_size = getPara("page_size");
+    	String data_index = getPara("data_index");
+    	if(StringUtils.isNotBlank(page_size)){
+    		if(StringUtils.isBlank(data_index)){
+    			data_index = "0";
+    		}
+    		limit = " limit " + data_index + ","+ page_size;
+    	}
+    	
     	//店铺信息
     	Record re = Db.findById("wc_case", case_id);
     	//商家列表
@@ -90,10 +109,39 @@ public class AppBestCaseController extends Controller {
     			+ " select wci.*,wc.name case_name from wc_case_item wci"
     			+ " left join wc_case wc on wc.id = wci.order_id "
     			+ " where wci.order_id = ?"
-    			+ " group by wci.id",case_id);
+    			+ " group by wci.id "+limit,case_id);
     	
     	Record data = new Record();
     	data.set("shop", shopList);
+    	data.set("caseList", caseList);
+        renderJson(data);  	
+    }
+    
+    
+    /*
+     * 精选明细
+     */
+    public void picList() throws UnsupportedEncodingException{
+    	String case_id = getPara("case_id");
+    	case_id = URLDecoder.decode(case_id, "UTF-8");
+    	String limit = "";
+    	String page_size = getPara("page_size");
+    	String data_index = getPara("data_index");
+    	if(StringUtils.isNotBlank(page_size)){
+    		if(StringUtils.isBlank(data_index)){
+    			data_index = "0";
+    		}
+    		limit = " limit " + data_index + ","+ page_size;
+    	}
+    	
+    	//案例明细
+    	List<Record> caseList = Db.find(""
+    			+ " select wci.*,wc.name case_name from wc_case_item wci"
+    			+ " left join wc_case wc on wc.id = wci.order_id "
+    			+ " where wci.order_id = ?"
+    			+ " group by wci.id "+limit,case_id);
+    	
+    	Record data = new Record();
     	data.set("caseList", caseList);
         renderJson(data);  	
     }

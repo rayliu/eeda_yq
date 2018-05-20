@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.codec.Base64;
 
@@ -29,6 +30,15 @@ public class AppProductController extends Controller {
     public void orderData() throws IOException{
     	String product_id = getPara();
     	product_id = URLDecoder.decode(product_id, "UTF-8");
+    	String limit = "";
+    	String page_size = getPara("page_size");
+    	String data_index = getPara("data_index");
+    	if(StringUtils.isNotBlank(page_size)){
+    		if(StringUtils.isBlank(data_index)){
+    			data_index = "0";
+    		}
+    		limit = " limit " + data_index + ","+ page_size;
+    	}
     	
     	//产品信息
     	List<Record> product = Db.find("SELECT pro.*,com.c_name shop_name,"
@@ -46,12 +56,33 @@ public class AppProductController extends Controller {
     			+ " WHERE pro.id = ?"
     			+ " group by pro.id",product_id);
     	//明细表信息
-    	List<Record> productItemList = Db.find("SELECT * FROM wc_product_pic WHERE order_id = ?",product_id);
+    	List<Record> productItemList = Db.find("SELECT * FROM wc_product_pic WHERE order_id = ?"+limit,product_id);
     	
     	
     	Record data = new Record();
     	data.set("product", product);
     	data.set("productItemList", productItemList);
+        renderJson(data);  
+    }
+    
+    public void picList(){
+    	String product_id = getPara("prod_id");
+    	String limit = "";
+    	String page_size = getPara("page_size");
+    	String data_index = getPara("data_index");
+    	if(StringUtils.isNotBlank(page_size)){
+    		if(StringUtils.isBlank(data_index)){
+    			data_index = "0";
+    		}
+    		limit = " limit " + data_index + ","+ page_size;
+    	}
+    	
+    	//明细表信息
+    	List<Record> productItemList = Db.find("SELECT * FROM wc_product_pic WHERE order_id = ?" + limit,product_id);
+    	
+    	
+    	Record data = new Record();
+    	data.set("itemList", productItemList);
         renderJson(data);  
     }
     
