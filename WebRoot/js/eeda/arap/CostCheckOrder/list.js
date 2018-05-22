@@ -189,10 +189,10 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           var sp = $("#sp").val();
 
           var sp_input = $("#sp_input").val().trim(); 
-          if(!sp_input){
-              $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
-              return;
-          }
+//          if(!sp_input){
+//              $.scojs_message('请选择结算公司', $.scojs_message.TYPE_ERROR);
+//              return;
+//          }
           var type = $("#type").val(); 
           var order_export_date_begin_time = $("#order_export_date_begin_time").val();
           var order_export_date_end_time = $("#order_export_date_end_time").val();
