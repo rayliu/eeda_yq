@@ -77,7 +77,7 @@ public class ReminderController extends Controller {
 			Db.update("user_login",user);
 			result = true;
 			//短信提醒用户
-			sendMsg(user.getStr("phone"));
+			sendPassMsg(user.getStr("phone"));
 		}
 		
 		renderJson(result);
@@ -99,14 +99,19 @@ public class ReminderController extends Controller {
 			Db.update("user_login",user);
 			result = true;
 			//短信提醒用户
-			sendMsg(user.getStr("phone"));
+			sendRefuseMsg(user.getStr("phone"),reason);
 		}
 		renderJson(result);
 	}
 	
 	@Before(Tx.class)
-	private void sendMsg(String mobile) throws ClientException{
-    	AliSmsUtil.sendSms(null, mobile,"sendMsg");//发送通知信息
+	private void sendRefuseMsg(String mobile,String reason) throws ClientException{
+		AliSmsUtil.sendSms("{\"desc\":\""+reason +"\"}", mobile,"SMS_130928155");//发送通知信息
+    }
+	
+	@Before(Tx.class)
+	private void sendPassMsg(String mobile) throws ClientException{
+		AliSmsUtil.sendSms(null, mobile,"SMS_130913202");//发送通知信息
     }
 	
 	 

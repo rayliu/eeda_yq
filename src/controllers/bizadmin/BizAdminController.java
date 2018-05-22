@@ -240,7 +240,7 @@ public class BizAdminController extends Controller {
         getSession().setAttribute("register_code", String.valueOf(code));
         
         //TemplateCode   SMS_116480127   忘记密码
-    	AliSmsUtil.sendSms(String.valueOf(code), phone, "SMS_116480127");
+    	AliSmsUtil.sendSms("{\"code\":\""+code +"\"}", phone, "SMS_116480127");
     	
     	renderJson(true);
     }
