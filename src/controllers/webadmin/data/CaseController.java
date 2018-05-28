@@ -155,7 +155,8 @@ public class CaseController extends Controller {
         String sql = " select wco.c_name productor,wc.* from wc_case wc "
         				+ " left join wc_company wco on wc.creator=wco.creator"
         				+ " where 1 = 1 "
-        				+ condition;
+        				+ condition
+        				+ " order by wc.id desc";
 
         String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);

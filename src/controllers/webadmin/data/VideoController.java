@@ -117,7 +117,8 @@ public class VideoController extends Controller {
     			+ " LEFT JOIN wc_company wc ON vc.creator = wc.creator  "
     			+ " left join location loc on loc.code = ifnull(wc.city,wc.province)"
     			+ " where 1 = 1"
-    			+ condition;
+    			+ condition
+    			+ " order by vc.id desc";
 
 
         String sqlTotal = "select count(1) total from ("+sql+") B";

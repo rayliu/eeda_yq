@@ -47,7 +47,7 @@ public class AppBestCaseController extends Controller {
     	
     	//精选婚礼
     	List<Record> caseList = Db.find(" SELECT cas.id, cas.name title,cas.picture_name cover,"
-    			+ " wc.c_name shop_name ,wc.logo shop_logo "
+    			+ " wc.c_name shop_name ,wc.logo shop_logo,cas.creator shop_id "
     			+ " FROM"
     			+ " `wc_case` cas"
     			+ " left join wc_company wc on wc.creator = cas.creator"
