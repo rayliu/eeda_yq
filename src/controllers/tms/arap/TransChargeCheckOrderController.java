@@ -997,7 +997,7 @@ public class TransChargeCheckOrderController extends Controller {
     	TransJobOrderArap tjoa = new TransJobOrderArap().findById(dto.get("tjor_id"));
     	TransJobOrder tjo = new TransJobOrder().findById(dto.get("tjo_id"));
     	String chargeOrderId=(String)dto.get("order_id");
-    	tjoa.set("sp_id",(String)dto.get("sp_id"));
+    	//tjoa.set("sp_id",(String)dto.get("sp_id"));
     	
     	String container_no = (String)dto.get("container_no");
     	if(container_no.isEmpty()){

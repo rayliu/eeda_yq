@@ -823,7 +823,7 @@ public class CostCheckOrderController extends Controller {
     	}else{
     		joa.set("exchange_total_amount_rmb",exchange_total_amount_rmb);
     	}
-    	joa.set("sp_id",(String)dto.get("sp_id"));
+    	//joa.set("sp_id",(String)dto.get("sp_id"));
     	joa.set("charge_id",(String)dto.get("charge_id"));
     	joa.set("currency_id",(String)dto.get("currency_id"));
     	joa.set("exchange_currency_id",(String)dto.get("exchange_currency_id"));
