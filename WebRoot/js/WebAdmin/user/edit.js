@@ -7,9 +7,9 @@ $(document).ready(function() {
             serverSide: true, //不打开会出现排序不对
             ajax: "/WebAdmin/user/myprojectList?user_id="+$('#user_id').val(),
             columns: [
-	                     { "data": "PROJECT", "width":"60px"},
+	                     { "data": "PROJECT", "width":"160px"},
 	                     { "data": "ITEM_NAME", "width":"120px"},
-	                     { "data": "COMPLEATE_TIME", "width":"120px"}
+	                     { "data": "COMPLETE_DATE", "width":"120px"}
                      ]
         });
         

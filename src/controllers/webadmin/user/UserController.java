@@ -82,7 +82,7 @@ public class UserController extends Controller {
     		sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
     	}
     	
-    	String sql = "select mp.project , item.item_name,item.complete_date"
+    	String sql = "select mp.project , item.item_name,ref.complete_date"
     			+ " from wc_my_project_ref ref "
     			+ " LEFT JOIN wc_my_project_item item on item.id = ref.item_id"
     			+ " LEFT JOIN wc_my_project mp on mp.id = item.order_id"
