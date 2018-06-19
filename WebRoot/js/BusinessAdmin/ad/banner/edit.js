@@ -51,8 +51,8 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 				        }
 
 						//文件大小判断
-				        if(data.originalFiles[0]['size'] > 1024000) {
-				            $.scojs_message('文件不能大于1000K', $.scojs_message.TYPE_ERROR);
+				        if(data.originalFiles[0]['size'] > 512000) {
+				            $.scojs_message('文件不能大于500K', $.scojs_message.TYPE_ERROR);
 				            return;
 				        }else{
 				        	data.submit();
