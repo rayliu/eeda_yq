@@ -18,7 +18,15 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 				},
 				phone:{
 					required:true,
-					isMobile:true
+					isMobile:true,
+					remote:{
+						type:"post",
+						url:"/BusinessAdmin/register/check_mobile",
+						dataType:"json",
+						dataFilter:function(data,type){
+							return data;
+						}
+					}
 				},
 				password:{
 					required:true,
@@ -35,16 +43,14 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 					remote:"用户名已存在"
 				},
 				phone:{
-					isMobile:"不合法手机号码"
+					isMobile:"不合法手机号码",
+					remote:"手机号码已被注册"
 				},
 				passwordagain:{
 					equalTo:"前后秘密不一致"
 				}
 			}
 		});
-		
-		
-		
 		
 		
 		 jQuery.validator.addMethod("isMobile", function(value, element) { 

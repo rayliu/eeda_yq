@@ -67,6 +67,17 @@ public class RegisterController extends Controller {
 		renderJson(result);
 	}
 	
+	public void check_mobile(){
+		boolean result = false;
+		String mobile = getPara("phone");
+		String sql = "select * from user_login where phone = ?";
+		Record re = Db.findFirst(sql,mobile);
+		if(re == null){
+			result = true;
+		}
+		renderJson(result);
+	}
+	
     //生成随机数字和字母,  
     public String getStringRandom(int length) {  
           
