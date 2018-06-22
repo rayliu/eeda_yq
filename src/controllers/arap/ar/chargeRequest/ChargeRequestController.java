@@ -255,10 +255,10 @@ public class ChargeRequestController extends Controller {
         		+" 	) A "
         		+" WHERE "
         		+" 	( "
-        		+" 		(ifnull(usd, 0)-paid_usd > 0.02) "
-        		+" 		OR (ifnull(cny, 0)-paid_cny > 0.02) "
-        		+" 		OR (ifnull(hkd, 0)-paid_hkd > 0.01) "
-        		+" 		OR (ifnull(jpy, 0)-paid_jpy > 0.01) "
+        		+" 		((ifnull(usd, 0)-paid_usd > 0.02) or ifnull(paid_usd,0) = 0 ) "
+        		+" 		and ((ifnull(cny, 0)-paid_cny > 0.02) or ifnull(paid_cny,0) = 0) "
+        		+" 		and ((ifnull(hkd, 0)-paid_hkd > 0.01) or ifnull(paid_hkd,0) = 0) "
+        		+" 		and ((ifnull(jpy, 0)-paid_jpy > 0.01) or ifnull(paid_jpy,0) = 0) "
         		+" 	) ";
 		
         String condition = DbUtils.buildConditions(getParaMap());
