@@ -1,85 +1,119 @@
 <%layout("/WebAdmin/layout.html"){%>
-  <div class="">
     <div class="pageheader notab overhide">
-      <div class="bd-detail">
-      <h4>商家详细</h4>
-      <input type="hidden" value="${user.uid!''}" id="user_id"/>
-      <p class="bd">
-      				<span>商家名称：${user.c_name!''}</span> <span>商家行业：${user.trade_name!''}</span>  
-      				<span>注册类型：<%if(user.user_type!''=='1'){%>个人<%}else {%>公司<%}%></span>
-      				 <span>商家性质：<%if(diamond.whether!''=='Y') {%> 钻石会员 <%}else {%>普通商家<% }%></span>
-      				  
-      				<input type="button" value="删除商家" id="delButton"  class="red-deletbtn">
-      </p>
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="userdetailtable bdtable mt10">
-        <tbody><tr>
-          <td>账号资料</td>
-          <td><span>用户名：${user.user_name!''}</span>  <span>负责人：${user.contact!''}</span> <span>联系电话:${user.telephone!''}</span></td>
-        </tr>
-        <tr>
-          <td rowspan="3">商铺资料</td>
-          <td><span>电话：${user.shop_telephone!''}</span> <span>QQ：${user.qq!''}</span>    <span> 注册时间：${user.create_time!''}</span> </td>
-        </tr>
-        <tr>
-          <td><span>地址：${user.address!''}</span></td>
-        </tr>
-        <tr>
-          <td><span>邀请码： ${user.invitation_code!''}</span>邀请人数（影响力）:${user.influence!'0'}<span></span> <span>密码：********</span></td>
-        </tr>
-        <tr>
-          <td>公司LOGO</td>
-          <td><img src="/upload/${user.logo!''}" style="width:100px;height:100px"></td>
-        </tr>
-        <tr>
-          <td>营业执照/身份证</td>
-          <td><img src="/upload/${user.company_pic!user.ID_CARD!''}"  style="width:300px;height:200px"></td>
-        </tr>
-        <tr>
-          <td>公司简介</td>
-          <td><textarea style="width:200px; height:60px; border:1px solid #ccc;" class="textin">${user.about!''}</textarea></td>
-        </tr>
-      </tbody></table>
-      <div class="mt10">
-      <h4>在线支付记录</h4>
-       <%include("/eeda/component/form/detailTable.html", 
-          {
-              id:'eeda_table', 
-              headers:['序号', '购买时间', '订单编号','产品分类','投放时间','天数','价格']
-          }){} %> 
-      </div>
-      </div>
-      <div class="mt10 bdgray">
-        <a  class=" modifibtn" href="/WebAdmin/tao_manage/product/${user.uid!''}">产品管理</a>  
-        <a  class="modifibtn" value="视频管理" href="/WebAdmin/tao_manage/video/${user.uid!''}">视频管理</a> 
-        <a class="modifibtn" href="/WebAdmin/tao_manage/case/${user.uid!''}">案例管理</a>
-      </div>
-      
-      <div class="mt10 bdgray">
-      <h4>升级钻石商家</h4>
-      <p class="bd"><span>状态：<%if(diamond.is_diamond!''=='Y') {%>钻石会员<%}else {%>非钻石会员<% }%></span>  剩余【<span style="color:red">${diamond.leave_days!'0'}</span>】天</p>
-      <div><span>设置结束时间</span><input type='date' last_date="${diamond.last_date!''}" value="${diamond.last_date!''}" id="new_date"/><input type="button" class="modifibtn" style="width:130px; margin-left:10px;" value="升级/延期钻石商家" id="update_dimond"></div>
-      </div>
-      
-      <div class="mt10 bdgray">
-      <h4>”促“广告服务</h4>
-      <p class="bd"><span>状态：<%if(cu.is_cu!''=='Y') {%>开启<%}else {%>没开通<% }%></span>  <% if(cu.LEAVE_DAYS!'0'=='0'){%><span>暂无开通促广告</span><%} else {%>促广告服务 剩余【<span style="color:red">${cu.LEAVE_DAYS!'0'}</span>】天 <%}%></p>
-      <div><span>设置结束时间</span> <input type="date" last_date="${cu.end_date!''}"  value="${cu.end_date!''}" id='cu_date'/><input type="button" class="modifibtn" style="width:130px; margin-left:10px;" value="开启/延期服务" id='update_cu'></div>
-      </div>
-      
-      <div class="mt10 bdgray">
-	      <h4>”惠“ 广告</h4>
-	      <div class="bd">状态：<span id="hui_status">${hui.status!'关闭'}</span> 
-		      <input type="button" type="button"
-		       <% if(hui.status!''=='开启'){%>disabled="disabled"<%}%> class="modifibtn huiBtn" value="开启">  
-		      <input type="button"
-		      <% if(hui.status!'关闭'=='关闭'){%>disabled="disabled"<%}%> class="modifibtn huiBtn"  value="关闭">
-		      <input type="button" type="button" 
-		      <% if(hui.status!''=='禁用'){%>disabled="disabled"<%}%> class="modifibtn huiBtn" value="禁用">
-	      </div>
-      </div>
-      
+        <div class="bd-detail">
+            <h4>商家详细</h4>
+            <input type="hidden" value="${user.uid!''}" id="user_id" />
+            <p class="bd">    
+            <span>商家名称：${user.c_name!''}</span>  
+            <span>商家行业：${user.trade_name!''}</span>    
+            <span>注册类型：<%if(user.user_type!''=='1'){%>个人<%}else {%>公司<%}%></span>
+ 			<span>商家性质：<%if(diamond.whether!''=='Y') {%> 钻石会员 <%}else {%>普通商家<% }%></span>
+                <input type="button" value="删除商家"
+                id="delButton" class="red-deletbtn">
+            </p>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="userdetailtable bdtable mt10">
+                <tbody>
+                    <tr>
+                        <td>账号资料</td>
+                        <td>
+	                        <span>用户名：${user.user_name!''}</span>  
+	                        <span>负责人：${user.contact!''}</span>  
+	                        <span>联系电话:${user.telephone!''}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="3">商铺资料</td>
+                        <td>
+                        	<span>电话：${user.shop_telephone!''}</span>  
+	                        <span>QQ：${user.qq!''}</span>  
+	                        <span> 注册时间：${user.create_time!''}</span> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        	<span>地址：${user.address!''}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        	<span>邀请码： ${user.invitation_code!''}</span>邀请人数（影响力）:${user.influence!'0'}<span></span>  
+                        	<span>密码：********</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>公司LOGO</td>
+                        <td>
+                            <img src="/upload/${user.logo!''}" onerror="src='/images/empty.png'" style="width:100px;height:100px;border:1px solid #CCCCCC">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>营业执照/身份证</td>
+                        <td>
+                            <img src="/upload/${user.company_pic!user.ID_CARD!''}" onerror="src='/images/empty.png'" style="width:300px;height:200px;border:1px solid #CCCCCC">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>公司简介</td>
+                        <td>
+                            <textarea style="width:400px; height:200px; border:1px solid #ccc;" class="textin">${user.about!''}</textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mt10">
+                <h4>在线支付记录</h4>
+                <%include( "/eeda/component/form/detailTable.html", 
+                	{ id: 'eeda_table', headers:[ '序号', '购买时间', '订单编号', '产品分类', '投放时间', '天数', '价格'] }){} 
+                %>
+            </div>
+            
+            <div class="mt10">
+                <h4>子级邀请人列表</h4>
+            	<div style="margin:5px 0 0 0">
+                	<input type="button" class="modifibtn" value="添加" id="add_btn"/>
+            	</div>
+                <%include( "/eeda/component/form/detailTable.html", 
+                	{ id: 'invite_list', headers:[ '','邀请码', '邀请人姓名', '电话', '支付宝号', '公司', '备注'] }){} 
+                %>
+            </div>
+        </div>
+        <div class="mt10 bdgray"> 
+        	<a class="modifibtn" href="/WebAdmin/tao_manage/product/${user.uid!''}">产品管理</a>  
+        	<a class="modifibtn" value="视频管理" href="/WebAdmin/tao_manage/video/${user.uid!''}">视频管理</a>  
+        	<a class="modifibtn" href="/WebAdmin/tao_manage/case/${user.uid!''}">案例管理</a>
+        </div>
+        <div class="mt10 bdgray">
+            <h4>升级钻石商家</h4>
+            <p class="bd"><span>状态：<%if(diamond.is_diamond!''=='Y') {%>钻石会员<%}else {%>非钻石会员<% }%></span> 剩余【<span style="color:red">${diamond.leave_days!'0'}</span>】天</p>
+            <div><span>设置结束时间</span>
+                <input type='date' last_date="${diamond.last_date!''}" value="${diamond.last_date!''}" id="new_date" />
+                <input type="button" class="modifibtn" style="width:130px; margin-left:10px;" value="升级/延期钻石商家" id="update_dimond">
+            </div>
+        </div>
+        <div class="mt10 bdgray">
+            <h4>”促“广告服务</h4>
+            <p class="bd"><span>状态：<%if(cu.is_cu!''=='Y') {%>开启<%}else {%>没开通<% }%></span> 
+                <% if(cu.LEAVE_DAYS! '0'=='0' ){%><span>暂无开通促广告</span>
+                <%} else {%>促广告服务 剩余【<span style="color:red">${cu.LEAVE_DAYS!'0'}</span>】天
+                <%}%>
+            </p>
+            <div><span>设置结束时间</span> 
+                <input type="date" last_date="${cu.end_date!''}" value="${cu.end_date!''}" id='cu_date' />
+                <input type="button" class="modifibtn" style="width:130px; margin-left:10px;" value="开启/延期服务" id='update_cu'>
+            </div>
+        </div>
+        <div class="mt10 bdgray">
+            <h4>”惠“ 广告</h4>
+            <div class="bd">状态：<span id="hui_status">${hui.status!'关闭'}</span> 
+                <input type="button" type="button" <% if(hui.status! ''=='开启' ){%>disabled="disabled"
+                <%}%>class="modifibtn huiBtn" value="开启">
+                    <input type="button" <% if(hui.status! '关闭'=='关闭' ){%>disabled="disabled"
+                <%}%>class="modifibtn huiBtn" value="关闭">
+                    <input type="button" <% if(hui.status! ''=='禁用' ){%>disabled="disabled"
+                <%}%>class="modifibtn huiBtn" value="禁用">  
+            </div>
+        </div>
     </div>
-</div>
 <%}%>
     
 <script>
@@ -87,3 +121,4 @@
          requirejs(['/js/WebAdmin/biz/edit.js']);
     });
 </script>
+	

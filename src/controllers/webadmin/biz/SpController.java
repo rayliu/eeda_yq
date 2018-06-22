@@ -284,4 +284,60 @@ public class SpController extends Controller {
     	renderJson(r);
     }
     
+    @Before(Tx.class)
+    public void add_item(){
+    	String user_id = getPara("user_id");
+    	
+    	Record order = new Record();
+    	order.set("user_id", user_id);
+    	Db.save("wc_inviter", order);
+    	
+    	renderJson(true);
+    }
+    
+    @Before(Tx.class)
+    public void delete_item(){
+    	String item_id = getPara("item_id");
+    	
+    	Record order = new Record();
+    	order.set("id", item_id);
+    	Db.delete("wc_inviter", order);
+    	
+    	renderJson(true);
+    }
+    
+    @Before(Tx.class)
+    public void update_item(){
+    	String item_id = getPara("item_id");
+    	String item_name = getPara("item_name");
+    	String item_value = getPara("item_value");
+    	
+    	Record order = new Record();
+    	order.set("id", item_id);
+    	order.set(item_name, item_value);
+    	Db.update("wc_inviter", order);
+    	
+    	renderJson(true);
+    }
+    
+    public void inviteList(){
+    	String user_id = getPara("user_id");
+
+        String sLimit = "";
+        String pageIndex = getPara("draw");
+        if (getPara("start") != null && getPara("length") != null) {
+        	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
+        }
+    	String sql = " select * from wc_inviter iv where user_id = ?";
+    	String sqlTotal = "select count(1) total from ("+sql+ ") B";
+        Record rec = Db.findFirst(sqlTotal, user_id);
+        List<Record> orderList = Db.find(sql + sLimit, user_id);
+        Map map = new HashMap();
+        map.put("draw", pageIndex);
+        map.put("recordsTotal", rec.getLong("total"));
+        map.put("recordsFiltered", rec.getLong("total"));
+        map.put("data", orderList);
+        renderJson(map);
+    }
+    
 }

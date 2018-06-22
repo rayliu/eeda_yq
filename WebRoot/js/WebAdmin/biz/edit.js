@@ -18,15 +18,139 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 	                    		 return data;
 	                    	 }
 	                     }
-	                    
                    ]
       });
+	
+	var table_id = 'invite_list';
+	var add_btn = 'add_btn';
+	var table_url = "/WebAdmin/biz/inviteList?user_id="+$("#user_id").val();
 	  
-	  //初始化页面js
-	  function init(){
-		 
-	  }
-	  init();
+	var dataTable = eeda.dt({
+        id: table_id,
+        paging: true,
+        serverSide: false, //不打开会出现排序不对
+        ajax: table_url,
+        createdRow:function ( row, data, index ) {
+            if(data){
+                $(row).attr('id', data.ID);
+            }
+        },
+        columns: [
+			{ "data": "ID", "width":"10px",
+			    "render":function(data,type,full,meta){
+			    	if(!data){
+			    		data = '';
+			    	}
+			    	return '<button type="button" class="delete layui-btn" item_id="'+full.ID+'"">删除</button>';
+			    }
+			},
+	        { "data": "INVITE_CODE", "width":"60px",
+	            "render":function(data,type,full,meta){
+	            	if(!data)
+	            		data = '';
+	                return '<input type="text" name="invite_code" style="width:100%;" value="'+data+'">';
+	            }
+	        },
+	        { "data": "INVITER_NAME", "width":"60px",
+	            "render":function(data,type,full,meta){
+	            	if(!data)
+	            		data = '';
+	                return '<input type="text" name="inviter_name" style="width:100%" value="'+data+'">';
+	            }
+	        },
+	        { "data": "PHONE", "width":"60px",
+	            "render":function(data,type,full,meta){
+	            	if(!data)
+	            		data = '';
+	                return '<input type="text" name="phone" style="width:100%" value="'+data+'">';
+	            }
+	        },
+	        { "data": "ALIPAY_NO", "width":"60px",
+	            "render":function(data,type,full,meta){
+	            	if(!data)
+	            		data = '';
+	                return '<input type="text" name="alipay_no" style="width:100%" value="'+data+'">';
+	            }
+	        },
+	        { "data": "COMPANY", "width":"60px",
+	            "render":function(data,type,full,meta){
+	            	if(!data)
+	            		data = '';
+	                return '<input type="text" name="company" style="width:100%" value="'+data+'">';
+	            }
+	        },
+	        { "data": "REMARK", "width":"60px",
+	            "render":function(data,type,full,meta){
+	            	if(!data)
+	            		data = '';
+	                return '<textarea name="remark" style="width:100%">'+data+'</textarea>';
+	            }
+	        }           
+        ]
+    });
+	
+	
+	  //保存后异步刷新
+	var item_table = $('#'+table_id).DataTable();
+    reflesh_table = function(){
+    	var url = table_url;
+    	item_table.ajax.url(url).load();
+    };
+	
+
+    $('#' + add_btn).on('click', function(){
+        var item = {};
+        
+        $.post("/WebAdmin/biz/add_item",{user_id:$("#user_id").val()},function(data){
+        	if(data){
+        		reflesh_table();
+        	}else{
+        		$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+        	}
+        }).fail(function(){
+        	$.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
+        })
+    });
+    
+    //删除一行
+    $("#" + table_id).on('click', '.delete', function(e){
+        e.preventDefault();
+        var tr = $(this).parent().parent();
+
+        $.post("/WebAdmin/biz/delete_item",{item_id:$(this).attr('item_id')},function(data){
+        	if(data){
+        		reflesh_table();
+        	}else{
+        		$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+        		
+        	}
+        }).fail(function(){
+        	$.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
+        });
+    }); 
+    
+    //编辑一行
+    $("#" + table_id).on('blur', 'input,textarea', function(e){
+    	e.preventDefault();
+    	var self = this;
+    	
+    	var item_id = $(self).parent().parent().attr('id');
+    	var item_name = $(self).attr('name');
+    	var item_value = $(self).val();
+
+    	$.post("/WebAdmin/biz/update_item",{item_id: item_id, item_name: item_name, item_value: item_value},function(data){
+        	if(data){
+        		//reflesh_table();
+        	}else{
+        		$.scojs_message('操作失败', $.scojs_message.TYPE_ERROR);
+        		
+        	}
+        }).fail(function(){
+        	$.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
+        });
+    	
+    });
+
 	  
 	  $("#delButton").on('click',function(){
 		var self=$(this);
@@ -66,7 +190,7 @@ define(['jquery', 'validate_cn', 'sco', 'file_upload'], function ($, metisMenu) 
 	      		}
 	      	});
 		  
-	  })
+	  });
 	  
 	   $("#update_cu").click(function(){
 		  var id = $("#user_id").val();
