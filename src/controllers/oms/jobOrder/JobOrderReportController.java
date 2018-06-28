@@ -404,7 +404,7 @@ public class JobOrderReportController extends Controller {
 			order_id_arr = order_id.split(",");
 		}
 		String [] accountIdArray_id = null;
-		if(order_id!=null){
+		if(StringUtils.isNotBlank(order_id)){
 			accountIdArray_id = accountIdArray.split(",");
 		}
 		
@@ -448,6 +448,78 @@ public class JobOrderReportController extends Controller {
 			fileName = "/report/jobOrder/land_invoice.jasper";
 			outFileName = "/download/Invoice分单";
 			List<Record> list = Db.find("select id from job_order_arap where land_item_id in (?)", landIds);
+			if(list.size()<0){
+				renderJson("{\"result\":false}");
+				return;
+			}
+			String[] landIds_arr = landIds.split(",");
+			hm.put("landIds", landIds_arr);
+		}
+		hm.put("order_id", order_id_arr);
+		hm.put("account_ids", accountIdArray_id);
+		fileName = getContextPath() + fileName;
+		outFileName = getContextPath() + outFileName + order_no;
+		String file = PrintPatterns.getInstance().print(fileName, outFileName,hm);
+		renderText(file.substring(file.indexOf("download")-1));
+	}
+	
+	//打印debitNote
+	public void printTrDebitNotePDF() {
+		String debit_note = getPara("debit_note");
+		String order_id = getPara("itemIds");
+		String accountIdArray = getPara("accountIdArray");
+		String landIds = getPara("landIds");
+		String order_no = getPara("order_no");
+		String order_type = getPara("order_type");
+		String [] order_id_arr = null;
+		if(order_id!=null){
+			order_id_arr = order_id.split(",");
+		}
+		String [] accountIdArray_id = null;
+		if(StringUtils.isNotBlank(order_id)){
+			accountIdArray_id = accountIdArray.split(",");
+		}
+		
+		String fileName;
+		String outFileName;
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		if("debitNote".equals(debit_note)){
+			if(order_type.contains("空运")){
+				fileName = "/report/jobOrder/tr_AIR_debitNote.jasper";
+				outFileName = "/download/tr_AIR_DB-";
+			}else{
+				fileName = "/report/jobOrder/tr_debitNote.jasper";
+				outFileName = "/download/tr_DB-";			
+			}
+		}else if ("debit_note_eng".equals(debit_note)){
+			if(order_type.contains("空运")){
+				fileName = "/report/jobOrder/tr_AIR_debitNote_eng.jasper";
+				outFileName = "/download/tr_AIR_DB-";
+			}else{
+				fileName = "/report/jobOrder/tr_debitNote_eng.jasper";
+				outFileName = "/download/tr_DB-";			
+			}
+		}else if ("invoice".equals(debit_note)){
+			if(order_type.contains("空运")){
+				fileName = "/report/jobOrder/tr_AIR_INVOICE.jasper";
+				outFileName = "/download/tr_AIR_IN-";
+			}else{
+				fileName = "/report/jobOrder/tr_INVOICE.jasper";
+				outFileName = "/download/tr_IN-";				
+			}
+		}else if ("invoice_eng".equals(debit_note)){
+			if(order_type.contains("空运")){
+				fileName = "/report/jobOrder/tr_AIR_INVOICE_eng.jasper";
+				outFileName = "/download/tr_AIR_IN-";
+			}else{
+				fileName = "/report/jobOrder/tr_INVOICE_eng.jasper";
+				outFileName = "/download/tr_IN-";				
+			}
+			
+		}else {
+			fileName = "/report/jobOrder/land_invoice.jasper";
+			outFileName = "/download/Invoice分单";
+			List<Record> list = Db.find("select id from trade_job_order_arap where land_item_id in (?)", landIds);
 			if(list.size()<0){
 				renderJson("{\"result\":false}");
 				return;
