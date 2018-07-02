@@ -54,8 +54,20 @@ public class UserController extends Controller {
         }
          
     	String sql = "select * from ("
-    			+ " SELECT id,user_name,phone,invitation_code,wedding_date,create_time,status "
-    			+ " FROM user_login where system_type='mobile'"
+    			+ " SELECT ul.id,ul.user_name,ul.phone,"
+    			+ " (select com.company_name from wc_inviter inv"
+    			+ " left join wc_company com on com.creator = inv.user_id"
+    			+ " where inv.invite_code = ul.invitation_code and ifnull(inv.invite_code,'')!='' ) parent_name,"
+    			+ " (select c_ul.invitation_code from wc_inviter inv "
+    			+ " left join user_login c_ul on c_ul.id = inv.user_id"
+    			+ " where inv.invite_code = ul.invitation_code and ifnull(inv.invite_code,'')!='') parent_code,"
+    			+ " (select inv.inviter_name from wc_inviter inv"
+    			+ " where inv.invite_code = ul.invitation_code and ifnull(inv.invite_code,'')!=''"
+    			+ " ) inviter_name,"
+    			+ " ul.invitation_code,ul.wedding_date,ul.create_time,ul.status,"
+    			+ " ul.remark1,ul.remark2,ul.remark3 "
+    			+ " FROM user_login ul "
+    			+ "	where ul.system_type='mobile'"
         		+ " ) A where 1=1 ";
     	
     	String condition = DbUtils.buildConditions(getParaMap());

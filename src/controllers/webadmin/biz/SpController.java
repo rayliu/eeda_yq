@@ -191,9 +191,9 @@ public class SpController extends Controller {
 	@Before(Tx.class)
 	public void delete(){
 		String id = getPara("id");
-		String sql_delcompany="delete from wc_company where creator = "+id;
-		Db.update(sql_delcompany);
-		String sql = "delete from user_login where id = "+id;
+//		String sql_delcompany="delete from wc_company where creator = "+id;
+//		Db.update(sql_delcompany);
+		String sql = "update user_login set is_delete = 'Y' where id = "+id;
 		Db.update(sql);
 		renderJson(true);
 	}
@@ -263,7 +263,7 @@ public class SpController extends Controller {
     			+ " left join location loc on loc.code = ifnull(wc.city,wc.province)  and loc.code <>''"
     			+ " left join (select creator,datediff(max(end_date),now()) leave_days "
     			+ " from wc_ad_diamond wad  group by creator) A  on A.creator = ul.id "
-    			+ " where ul.status = '通过' and ul.system_type = '商家后台' "
+    			+ " where ul.status = '通过' and ul.system_type = '商家后台' and is_delete != 'Y'"
     			+ condition;
         String sqlTotal = "select count(1) total from ("+sql+ ") B";
         Record rec = Db.findFirst(sqlTotal);
@@ -301,7 +301,8 @@ public class SpController extends Controller {
     	
     	Record order = new Record();
     	order.set("id", item_id);
-    	Db.delete("wc_inviter", order);
+    	order.set("is_delete", "Y");
+    	Db.update("wc_inviter", order);
     	
     	renderJson(true);
     }
@@ -328,7 +329,7 @@ public class SpController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
-    	String sql = " select * from wc_inviter iv where user_id = ?";
+    	String sql = " select * from wc_inviter iv where user_id = ? and is_delete != 'Y'";
     	String sqlTotal = "select count(1) total from ("+sql+ ") B";
         Record rec = Db.findFirst(sqlTotal, user_id);
         List<Record> orderList = Db.find(sql + sLimit, user_id);
