@@ -129,4 +129,28 @@ public class UserController extends Controller {
     	renderJson(result);
     }
     
+    @Before(Tx.class)
+    public void update_remark(){
+    	Record result = new Record();
+    	String id = getPara("id");
+    	String remark1 = getPara("remark1");
+    	String remark2 = getPara("remark2");
+    	String remark3 = getPara("remark3");
+    	
+    	if(StringUtils.isNotBlank(id)){
+    		Record order = Db.findById("user_login", id);
+    		order.set("remark1", remark1);
+    		order.set("remark2", remark2);
+    		order.set("remark3", remark3);
+    		Db.update("user_login",order);
+    		
+    		result.set("result", true);
+    	}else{
+    		result.set("result", false);
+    	}
+    	
+    	renderJson(result);
+    	
+    }
+    
 }

@@ -58,20 +58,53 @@ $(document).ready(function() {
     	location.href = '/WebAdmin/user/edit?id='+ id;
     });
     
-    $('#eeda_table').on('click','.remark1',function(){
+    $('#eeda_table').on('blur', '.remark1', function(){
+    	var self = this;
     	var id = $(this).data('id');
-    	
-    })
+    	var remark = $(this).val();
+
+    	self.disabled = true;
+    	$.post("/WebAdmin/user/update_remark",{id: id, remark1: remark},function(data){
+    		if(data.RESULT) {
+    			$.scojs_message('更新成功', $.scojs_message.TYPE_OK);
+    		} else {
+    			$.scojs_message('更新失败', $.scojs_message.TYPE_ERROR);
+    		}
+    		self.disabled = false;
+    	});
+    });
     
-    $('#eeda_table').on('click','.remark2',function(){
+    $('#eeda_table').on('blur','.remark2',function(){
+    	var self = this;
     	var id = $(this).data('id');
-    	
-    })
+    	var remark = $(this).val();
+
+    	self.disabled = true;
+    	$.post("/WebAdmin/user/update_remark",{id: id, remark2: remark},function(data){
+    		if(data.RESULT) {
+    			$.scojs_message('更新成功', $.scojs_message.TYPE_OK);
+    		} else {
+    			$.scojs_message('更新失败', $.scojs_message.TYPE_ERROR);
+    		}
+    		self.disabled = false;
+    	});
+    });
     
-    $('#eeda_table').on('click','.remark3',function(){
+    $('#eeda_table').on('blur','.remark3',function(){
+    	var self = this;
     	var id = $(this).data('id');
-    	
-    })
+    	var remark = $(this).val();
+
+    	self.disabled = true;
+    	$.post("/WebAdmin/user/update_remark",{id: id, remark3: remark},function(data){
+    		if(data.RESULT) {
+    			$.scojs_message('更新成功', $.scojs_message.TYPE_OK);
+    		} else {
+    			$.scojs_message('更新失败', $.scojs_message.TYPE_ERROR);
+    		}
+    		self.disabled = false;
+    	});
+    });
 
  	arrefleshTable = function(){
  		 dataTable.ajax.url("/WebAdmin/user/quotation/list").load();
