@@ -1,0 +1,69 @@
+<%layout("/WebAdmin/layout.html"){%>
+	<style type="text/css">
+	.Popup{
+	       background-color:#fff; 
+	       left:30%; 
+	       padding:1px; 
+	       position:fixed; 
+	       top:50%; 
+	       z-index:5; 
+	       border-radius:6px; 
+	       display:none; 
+	 }
+	</style>
+	<div class="pageheader notab overhide">
+        <h4>信息推送</h4>
+        <p>&nbsp; </p>
+        <button type='button' class='modifibtn' id="addBtn" style="margin:10px 0 10px 0">新增项目</button>
+		<%include("/eeda/component/form/detailTable.html", 
+            {
+                id:'eeda_table', 
+                headers:['设备','推送目标','标题', '内容', '状态', '操作时间']
+        }){} %>
+    </div>
+    <div id="layer"></div>
+   	<div class="Popup" id="pop_loc" style="margin-top:-20%;width:500px;height:500px;">
+   		<div style="margin:30px 0 0 50px">
+   			<h4 style="margin-left:170px">消息推送</h4><br/>
+   			<div style="text-align:left;line-height:35px">
+   				<div class="">
+				    <label for="action">推送到</label><br>
+				    <select id="action" style="width:150px">
+	               		<option value="IOS">IOS</option>
+	               		<option value="ANDROID">安卓</option>
+	               	</select>
+				</div>
+				<div class="">
+				    <label for="target">推送目标</label><br>
+				    <select id="target" style="width:150px">
+	               		<option value="ALL">推送给全部设备</option>
+	               		<!-- <option value="DEVICE">根据设备推送</option>
+	               		<option value="ACCOUNT">根据账号推送</option> -->
+<!-- 	               		<option value="ALIAS">根据别名推送</option>
+	               		<option value="TAG">根据标签推送</option> -->
+	               	</select>
+				</div>
+		<!-- 		<div class="">
+				    <label for="target_value">目标内容</label><br>
+				    <textarea id="target_value" placeholder="根据Target来设定，多个值使用逗号分隔，最多支持100个。" style="width:85%" row="5"></textarea>
+				</div> -->
+				<div class="">
+				    <label for="title">消息标题</label><br>
+				    <textarea id="title" placeholder="发送的消息的标题" style="width:85%" row="5"></textarea>
+				</div>
+				<div class="">
+				    <label for="body">消息内容</label><br>
+				    <textarea id="body" placeholder="发送的消息内容" style="width:85%" row="5"></textarea>
+				</div>
+	      		<button class="modifibtn" id="confirmBtn" style="margin-top:30px; margin-left:170px">提交推送</button>
+            </div>  
+	    </div>       
+   	</div>
+    
+    
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['/js/WebAdmin/user/cloudpush/list.js']);
+    });
+</script>

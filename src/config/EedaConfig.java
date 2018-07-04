@@ -82,6 +82,7 @@ import controllers.webadmin.data.TaoManageController;
 import controllers.webadmin.data.VideoController;
 import controllers.webadmin.msg.DashBoardController;
 import controllers.webadmin.user.AskController;
+import controllers.webadmin.user.CloudpushController;
 import controllers.webadmin.user.ConsultController;
 import controllers.webadmin.user.FeedBackController;
 import controllers.webadmin.user.ProjectController;
@@ -208,6 +209,7 @@ public class EedaConfig extends JFinalConfig {
         
         me.add("/WebAdmin/user/consult", ConsultController.class);
         me.add("/WebAdmin/user/feedback", FeedBackController.class);
+        me.add("/WebAdmin/user/cloudpush", CloudpushController.class);
         
         //地址
         me.add("/serviceProvider", LocationController.class);
