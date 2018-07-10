@@ -193,7 +193,7 @@ public class SpController extends Controller {
 		String id = getPara("id");
 //		String sql_delcompany="delete from wc_company where creator = "+id;
 //		Db.update(sql_delcompany);
-		String sql = "update user_login set is_delete = 'Y' where id = "+id;
+		String sql = "update user_login set is_delete = 'Y',phone = CONCAT(phone,'-','del') where id = "+id;
 		Db.update(sql);
 		renderJson(true);
 	}
