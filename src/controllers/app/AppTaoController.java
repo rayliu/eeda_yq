@@ -33,10 +33,14 @@ public class AppTaoController extends Controller {
     	String bannerPhoto= " ban.photo";
     	String cuCondition = "";
     	if(StringUtils.isNotBlank(cityCode)){
-    		bannerUser = "if((select wc.id from wc_company wc where wc.city = '" + cityCode + "'"
-    				+ " and wc.creator = ban.creator) is not null,ban.user_id, ban.default_user_id)";
-    		bannerPhoto = "if((select wc.id from wc_company wc where wc.city = '" + cityCode + "'"
-    				+ " and wc.creator = ban.creator) is not null,ban.photo, ban.default_photo)";
+    		bannerUser = "if((select wc.id from wc_company wc"
+    				+ " left join user_login ul on ul.id = wc.creator"
+    				+ " where wc.city = '" + cityCode + "'"
+    				+ " and wc.creator = ban.user_id and ul.is_delete != 'Y') is not null,ban.user_id, ban.default_user_id)";
+    		bannerPhoto = "if((select wc.id from wc_company wc"
+    				+ " left join user_login ul on ul.id = wc.creator"
+    				+ " where wc.city = '" + cityCode + "'"
+    				+ " and wc.creator = ban.user_id and ul.is_delete != 'Y') is not null,ban.photo, ban.default_photo)";
     		cuCondition = " and com.city ='" + cityCode + "'";
     	}
     	//横幅广告
@@ -63,9 +67,10 @@ public class AppTaoController extends Controller {
     			+ " wcu.creator user_id"
     			+ " from wc_ad_cu wcu "
     			+ " LEFT JOIN wc_company com on com.creator = wcu.creator"
+    			+ " LEFT JOIN user_login ul on ul.id = wcu.creator"
     			+ " LEFT JOIN category cgr on cgr.id = com.trade_type"
     			+ " where ifnull(wcu.title,'') != '' and wcu.status = '开启' "
-    			+ " and delete_flag != 'Y'"
+    			+ " and delete_flag != 'Y' and ul.is_delete != 'Y'"
     			+ "	and (now() BETWEEN wcu.begin_date and wcu.end_date) "
     			+ cuCondition
     			+ " order by wcu.create_time desc" + limit);

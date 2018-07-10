@@ -51,7 +51,8 @@ public class AppBestCaseController extends Controller {
     			+ " FROM"
     			+ " `wc_case` cas"
     			+ " left join wc_company wc on wc.creator = cas.creator"
-    			+ " where cas.flag = '1'"
+    			+ " left join user_login ul on ul.id = wc.creator"
+    			+ " where cas.flag = '1' and ul.is_delete != 'Y'"
     			+ conditions
     			+ " order by cas.id desc" + limit);
     	

@@ -57,7 +57,7 @@ public class AppCategoryController extends Controller {
     			+ " left join wc_ad_cu cu on cu.creator = ul.id"
     			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
     			+ " left join wc_ad_hui hui on hui.creator = ul.id"
-    			+ " where 1 = 1 and system_type ='商家后台' and ul.status = '通过'"
+    			+ " where 1 = 1 and ul.system_type ='商家后台' and ul.status = '通过' and ul.is_delete != 'Y'"
     			+ conditions
     			+ "group by ul.id) A order by diamond desc,cu desc,hui desc,influence desc");
     	
@@ -105,7 +105,7 @@ public class AppCategoryController extends Controller {
     			+ " left join wc_ad_cu cu on cu.creator = ul.id"
     			+ " and ((now() BETWEEN cu.begin_date and cu.end_date) and cu.status = '开启')"
     			+ " left join wc_ad_hui hui on hui.creator = ul.id"
-    			+ " where 1 = 1 and system_type ='商家后台' and ul.status = '通过'"
+    			+ " where 1 = 1 and ul.system_type ='商家后台' and ul.status = '通过' and ul.is_delete != 'Y'"
     			+ conditions
     			+ "group by ul.id) A order by diamond desc,cu desc,hui desc,influence desc" + limit);
     	
