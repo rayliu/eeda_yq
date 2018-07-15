@@ -71,6 +71,8 @@ import controllers.webadmin.ad.TaoController;
 import controllers.webadmin.biz.BannerApplicationController;
 import controllers.webadmin.biz.DiamondController;
 import controllers.webadmin.biz.InviteCodeController;
+import controllers.webadmin.biz.InviterController;
+import controllers.webadmin.biz.InviterDetailController;
 import controllers.webadmin.biz.MobilePushController;
 import controllers.webadmin.biz.NoticeController;
 import controllers.webadmin.biz.ReminderController;
@@ -194,6 +196,8 @@ public class EedaConfig extends JFinalConfig {
         me.add("/WebAdmin/biz/mobilePush", MobilePushController.class);
         me.add("/WebAdmin/biz/notice", NoticeController.class);
         me.add("/WebAdmin/biz/inviteCode", InviteCodeController.class);
+        me.add("/WebAdmin/biz/inviter", InviterController.class);
+        me.add("/WebAdmin/biz/inviterDetail", InviterDetailController.class);
         me.add("/WebAdmin/biz/diamond", DiamondController.class);
         
         me.add("/WebAdmin/ad", AdController.class);

@@ -1,0 +1,34 @@
+<%layout("/WebAdmin/layout.html"){%>
+    <div class="pageheader notab overhide">
+        <h3>邀请人详细统计页</h3>
+        <div>
+	   		<br>
+   			<h4>月邀请人数统计<h4>
+			<input type="month" id="begin_date"> ~ 
+			<input type="month" id="end_date">
+			<select style="height:22px;display:none" id="location">
+	            <option value=''>全国</option>
+	            <%
+	            	for(location in locations!)
+	            	{ 
+	            %>
+	            	<option value='${location.code!''}'>${location.city!''}</option>
+	            <%
+	            	}
+	            %>
+	        </select>
+	        <button class="modifibtn" id="searchBtn">查询</button>
+	   </div>
+		<%include("/eeda/component/form/detailTable.html", 
+            {
+                id:'eeda_table', 
+                style:'width:1220px',
+                headers:['邀请人','上级公司','上级邀请码','子级邀请码', '用 户', '电 话','婚 期', '注册时间', '备注（咨询）', '备注（成功下单）', '备注（结算邀请人）']
+        }){} %>
+     </div>
+<%}%>
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    	 requirejs(['/js/WebAdmin/biz/inviterDetail/list.js']);
+    });
+</script>

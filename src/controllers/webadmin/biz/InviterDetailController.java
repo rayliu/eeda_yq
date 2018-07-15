@@ -1,4 +1,4 @@
-package controllers.webadmin.user;
+package controllers.webadmin.biz;
 
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
@@ -27,13 +27,18 @@ import controllers.util.DbUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
-public class UserController extends Controller {
+public class InviterDetailController extends Controller {
 
-	private Logger logger = Logger.getLogger(UserController.class);
+	private Logger logger = Logger.getLogger(InviterDetailController.class);
 	Subject currentUser = SecurityUtils.getSubject();
 
 	public void index() {
-		render(getRequest().getRequestURI()+"/userList.html");
+		 //获取地区
+        String sql_loc="select loc.name city,lm.* from location_management lm "
+        				+ "left join location loc on lm.code = loc.code";
+        List<Record> locations = Db.find(sql_loc);
+        setAttr("locations",locations);
+		render(getRequest().getRequestURI()+"/list.html");
 	}
 	
 	public void edit() {
@@ -52,27 +57,54 @@ public class UserController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        
+        String begin_date = getPara("begin_date");
+        String end_date = getPara("end_date");
+        String location = getPara("location");
+        
+        String condition = "";
+        if(StringUtils.isNotBlank(begin_date) || StringUtils.isNotBlank(end_date)){
+        	if(StringUtils.isBlank(begin_date)){
+        		begin_date = "2000-01-01" ;
+        	}else{
+        		begin_date = begin_date+"-01" ;
+        	}
+        	
+        	if(StringUtils.isNotBlank(end_date)){
+        		end_date = end_date + "-31";
+        	}else{
+        		end_date = "2037-01-01";
+        	}
+        	
+        	condition = " and ul.create_time between '" + begin_date + "' and '" + end_date + "'";
+        }
+        if(StringUtils.isNotBlank(location)){
+        	condition += " and com.city = '"+location+"'";
+        }
          
-    	String sql = "select * from ("
+    	String sql = ""
     			+ " SELECT ul.id,ul.user_name,ul.phone,"
-    			+ " (select com.company_name from wc_inviter inv"
-    			+ " left join wc_company com on com.creator = inv.user_id"
-    			+ " where inv.invite_code = ul.invitation_code and ifnull(inv.invite_code,'')!='' ) parent_name,"
-    			+ " (select c_ul.invitation_code from wc_inviter inv "
-    			+ " left join user_login c_ul on c_ul.id = inv.user_id"
-    			+ " where inv.invite_code = ul.invitation_code and ifnull(inv.invite_code,'')!='') parent_code,"
-    			+ " (select inv.inviter_name from wc_inviter inv"
-    			+ " where inv.invite_code = ul.invitation_code and ifnull(inv.invite_code,'')!=''"
-    			+ " ) inviter_name,"
-    			+ " ul.invitation_code,ul.wedding_date,ul.create_time,ul.status,"
-    			+ " ul.remark1,ul.remark2,ul.remark3 "
-    			+ " FROM user_login ul "
+    			+ " p_com.company_name parent_name,"
+    			+ " p_ul.invitation_code parent_code,"
+    			+ " iv.inviter_name inviter_name,"
+    			+ " ul.invitation_code,"
+    			+ " ul.wedding_date,"
+    			+ " ul.create_time,"
+    			+ " ul.remark1,"
+    			+ " ul.remark2,"
+    			+ " ul.remark3 "
+    			+ " FROM wc_inviter iv "
+    			+ " left join user_login p_ul on p_ul.id = iv.user_id"
+    			+ " left join wc_company p_com on p_com.creator = iv.user_id"
+    			+ " left join user_login ul on ul.invitation_code = iv.invite_code and ifnull(ul.invitation_code,'') != '' "
+    			+ " left join wc_company com on com.creator = ul.id"
     			+ "	where ul.system_type='mobile'"
-        		+ " ) A where 1=1 ";
+    			+ "	and ifnull(ul.invitation_code,'') != ''"
+    			+ condition
+        		+ " group by iv.id ";
     	
-    	String condition = DbUtils.buildConditions(getParaMap());
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
