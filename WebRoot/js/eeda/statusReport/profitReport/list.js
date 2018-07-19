@@ -10,7 +10,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
           serverSide: true, //不打开会出现排序不对
           ajax: "/profitReport/list",
           columns: [
-              { "data": "ORDER_EXPORT_DATE","width":"60px","class":"order_export_date" },
+              { "data": "ORDER_EXPORT_DATE_SORT","width":"60px","class":"order_export_date" },
               { "data": "CUSTOMER_NAME","width":"60px","class":"customer_name"},
               { "data": "PIECES","width":"50px","class":"pieces",
                 "render": function ( data, type, full, meta ) {

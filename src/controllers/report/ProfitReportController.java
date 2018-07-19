@@ -54,7 +54,7 @@ public class ProfitReportController extends Controller {
         String date_type = getPara("date_type");
         String type = getPara("type");
         String condition = "";
-        String group_condition="";
+        String group_condition="''";
         
         String ref_office = "";
         Record relist = Db.findFirst("select DISTINCT CAST(group_concat(ref_office_id) AS char) office_id from party where type='CUSTOMER' and ref_office_id is not null and office_id=?",office_id);
@@ -113,9 +113,21 @@ public class ProfitReportController extends Controller {
             }
             
         }
+        
         if(StringUtils.isNotBlank(begin_date)||StringUtils.isNotBlank(end_date)){
-        	condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
+        	if(StringUtils.isNotBlank(begin_date)) {
+        		condition += " and jo.order_export_date between '"+begin_date;
+        	}else {
+        		condition += " and jo.order_export_date between '1970-01-01'";
+        	}
+        	if(StringUtils.isNotBlank(end_date)) {
+        		condition += "' and '"+end_date+"' "; 
+        	}else {
+        		condition += "' and '2037-12-31' "; 
+        	}
+        	
         }
+        
         if(StringUtils.isNotBlank(type)){
         	condition+=" and jo.type = '"+type+"'";
         }
@@ -129,7 +141,7 @@ public class ProfitReportController extends Controller {
                 + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '5T') t5_count,"
                 + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '8T') t8_count,"
                 + " (select count(1) from job_order_land_item  where order_id in (B.truck_order_ids) and truck_type= '10T') t10_count "  //get_truck_type(B.truck_order_ids)''
-    	        + " from (select order_export_date,customer_id,"
+    	        + " from (select order_export_date_sort,customer_id,"
     			+ " sum(ifnull(pieces,0)) pieces,"
     			+ " sum(ifnull(gross_weight,0)) gross_weight, "
     			+ " sum(ifnull(volume,0)) volume, "
@@ -142,7 +154,7 @@ public class ProfitReportController extends Controller {
     			+ " SUM(IFNULL(ari_kg, 0)) ari_kg,"
     			+ " group_concat(CAST(id as CHAR) separator ', ' ) truck_order_ids"
     			+ " from ("
-    			+ " select "+group_condition+" order_export_date, jo.customer_id, jo.pieces,jo.order_export_date order_export_date_sort,"
+    			+ " select if("+group_condition+"='',jo.order_export_date,"+group_condition+") order_export_date_sort, jo.customer_id, jo.pieces,jo.order_export_date ,"
     			+ " jo.gross_weight, jo.volume,p.abbr customer_name,"
     			+ " (select ("
     			+ "    count(case when container_type = '20''GP' then container_type end) +"
@@ -158,7 +170,7 @@ public class ProfitReportController extends Controller {
     			+ " (SELECT count(volume) FROM job_order jo1 WHERE jo1.id = jo.id and volume is NOT null "
     			+ "	 AND jo1.type IN ('出口散货','进口散货')) ocean_lcl_bill, "
     			+ " (select sum(volume) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口散货', '进口散货')) ocean_lcl_cbm,"
-    			+ " (select sum(gross_weight) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口空运', '进口空运')) ari_kg,"
+    			+ " (select sum(fee_count) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口空运', '进口空运')) ari_kg,"
     			+ " (SELECT	count(gross_weight) FROM job_order jo1 WHERE jo1.id = jo.id and jo1.gross_weight is not null "
     			+ "	 AND jo1.type IN ('出口空运','进口空运')) ari_kg_bill, "
     			+ " jo.id "
@@ -168,7 +180,7 @@ public class ProfitReportController extends Controller {
     			+ condition
     			 + " and jo.delete_flag = 'N'"
  				+ " ) A where 1=1"
-    			+ " GROUP BY A.order_export_date_sort DESC"
+    			+ " GROUP BY A.order_export_date_sort,customer_id DESC"
     			+ " )B "
     			+ "  ";
     	
@@ -269,7 +281,21 @@ public class ProfitReportController extends Controller {
             
         }
         
-        condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
+        
+        
+        if(StringUtils.isNotBlank(begin_date)||StringUtils.isNotBlank(end_date)){
+        	if(StringUtils.isNotBlank(begin_date)) {
+        		condition += " and jo.order_export_date between '"+begin_date;
+        	}else {
+        		condition += " and jo.order_export_date between '1970-01-01'";
+        	}
+        	if(StringUtils.isNotBlank(end_date)) {
+        		condition += "' and '"+end_date+"' "; 
+        	}else {
+        		condition += "' and '2037-12-31' "; 
+        	}
+        	
+        }
         
 
         
@@ -313,7 +339,7 @@ public class ProfitReportController extends Controller {
     			+ " (SELECT count(volume) FROM job_order jo1 WHERE jo1.id = jo.id and volume is NOT null "
     			+ "	 AND jo1.type IN ('出口散货','进口散货')) ocean_lcl_bill, "
     			+ " (select sum(volume) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口散货', '进口散货')) ocean_lcl_cbm,"
-    			+ " (select sum(gross_weight) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口空运', '进口空运')) ari_kg,"
+    			+ " (select sum(fee_count) from job_order jo1 where jo1.id=jo.id and jo1.type in('出口空运', '进口空运')) ari_kg,"
     			+ " (SELECT	count(gross_weight) FROM job_order jo1 WHERE jo1.id = jo.id and jo1.gross_weight is not null "
     			+ "	 AND jo1.type IN ('出口空运','进口空运')) ari_kg_bill, "
     			+ " jo.id "
@@ -396,7 +422,20 @@ public class ProfitReportController extends Controller {
 	            
 	        }
 	        
-	        condition += " and jo.order_export_date between '"+begin_date+"' and '"+end_date+"' "; 
+	        if(StringUtils.isNotBlank(begin_date)||StringUtils.isNotBlank(end_date)){
+	        	if(StringUtils.isNotBlank(begin_date)) {
+	        		condition += " and jo.order_export_date between '"+begin_date;
+	        	}else {
+	        		condition += " and jo.order_export_date between '1970-01-01'";
+	        	}
+	        	if(StringUtils.isNotBlank(end_date)) {
+	        		condition += "' and '"+end_date+"' "; 
+	        	}else {
+	        		condition += "' and '2037-12-31' "; 
+	        	}
+	        	
+	        }
+	        
 	        if(StringUtils.isNotBlank(type)){
 	        	condition+=" and jo.type = '"+type+"'";
 	        }
