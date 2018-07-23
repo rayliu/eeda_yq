@@ -47,6 +47,7 @@ import controllers.util.DbUtils;
 import controllers.util.EedaCommonHandler;
 import controllers.util.MD5Util;
 import controllers.util.ParentOffice;
+import controllers.util.PhoneAddress;
 import controllers.util.getCurrentPermission;
 
 public class WebAdminController extends Controller {
@@ -111,6 +112,16 @@ public class WebAdminController extends Controller {
         	//视频案例数
         	Record video = Db.findFirst("select count(1) total from video_case");
         	setAttr("wcvideo", video);
+        	
+//        	List<Record> users = Db.find("select * from user_login where system_type = 'mobile'");
+//        	for (Record u :users) {
+//				String mobile = u.getStr("phone");
+//				String city = PhoneAddress.check2city(mobile);
+//				u.set("location", city);
+//				Db.update("user_login", u);
+//			}
+        	
+        	
             render("/WebAdmin/dashBoard/list.html");
         }
     }

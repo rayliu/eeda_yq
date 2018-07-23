@@ -52,9 +52,15 @@ public class UserController extends Controller {
         if (getPara("start") != null && getPara("length") != null) {
         	sLimit = " LIMIT " + getPara("start") + ", " + getPara("length");
         }
+        
+        String location = getPara("location");
+        String condition = "";
+        if(StringUtils.isNotBlank(location)){
+        	condition += " and ul.location like '%"+location+"%'";
+        }
          
     	String sql = "select * from ("
-    			+ " SELECT ul.id,ul.user_name,ul.phone,"
+    			+ " SELECT ul.id,ul.user_name,ul.phone,ul.location,"
     			+ " (select com.company_name from wc_inviter inv"
     			+ " left join wc_company com on com.creator = inv.user_id"
     			+ " where inv.invite_code = ul.invitation_code and ifnull(inv.invite_code,'')!='' ) parent_name,"
@@ -68,15 +74,17 @@ public class UserController extends Controller {
     			+ " ul.remark1,ul.remark2,ul.remark3 "
     			+ " FROM user_login ul "
     			+ "	where ul.system_type='mobile'"
+    			+ condition
         		+ " ) A where 1=1 ";
+    			
     	
-    	String condition = DbUtils.buildConditions(getParaMap());
+    	//String condition = DbUtils.buildConditions(getParaMap());
 
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        String sqlTotal = "select count(1) total from ("+sql+") B";
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_time desc " +sLimit);
+        List<Record> orderList = Db.find(sql + " order by create_time desc " +sLimit);
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

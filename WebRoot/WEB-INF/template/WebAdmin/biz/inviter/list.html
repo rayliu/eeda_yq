@@ -5,18 +5,7 @@
    		<h4>月邀请人数统计<h4>
 		<input type="month" id="begin_date"> ~ 
 		<input type="month" id="end_date">
-		<select style="height:22px;display:none" id="location">
-            <option value=''>全国</option>
-            <%
-            	for(location in locations!)
-            	{ 
-            %>
-            	<option value='${location.code!''}'>${location.city!''}</option>
-           
-            <%
-            	}
-            %>
-        </select>
+		<input type="text" id="location" placeholder="请输入城市"  style="height:18px;">
         <button class="modifibtn" id="searchBtn">查询</button>
    </div>
       <%include("/eeda/component/form/detailTable.html", 

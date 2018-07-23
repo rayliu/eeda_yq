@@ -14,6 +14,7 @@ $(document).ready(function() {
                     { "data": "USER_NAME", "width":"60px"},
                     { "data": "PHONE", "width":"80px" },
                     { "data": "WEDDING_DATE", "width":"80px"},
+                    { "data": "LOCATION", "width":"80px"},
                     { "data": "CREATE_TIME", "width":"80px"},
                     { "data": "REMARK1", "width":"60px",
                     	 "render":function(data,type,full,meta){

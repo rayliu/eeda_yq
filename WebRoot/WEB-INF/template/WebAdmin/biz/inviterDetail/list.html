@@ -6,7 +6,8 @@
    			<h4>月邀请人数统计<h4>
 			<input type="month" id="begin_date"> ~ 
 			<input type="month" id="end_date">
-			<select style="height:22px;display:none" id="location">
+			<input type="text" id="location" placeholder="请输入城市"  style="height:18px;">
+			<select style="height:22px;display:none" id="location1">
 	            <option value=''>全国</option>
 	            <%
 	            	for(location in locations!)
@@ -23,7 +24,7 @@
             {
                 id:'eeda_table', 
                 style:'width:1220px',
-                headers:['邀请人','上级公司','上级邀请码','子级邀请码', '用 户', '电 话','婚 期', '注册时间', '备注（咨询）', '备注（成功下单）', '备注（结算邀请人）']
+                headers:['邀请人','上级公司','上级邀请码','子级邀请码', '用 户', '电 话','婚 期','电话归属地', '注册时间', '备注（咨询）', '备注（成功下单）', '备注（结算邀请人）']
         }){} %>
      </div>
 <%}%>

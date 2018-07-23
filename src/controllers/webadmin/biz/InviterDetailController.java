@@ -79,7 +79,7 @@ public class InviterDetailController extends Controller {
         	condition = " and ul.create_time between '" + begin_date + "' and '" + end_date + "'";
         }
         if(StringUtils.isNotBlank(location)){
-        	condition += " and com.city = '"+location+"'";
+        	condition += " and ul.location like '%"+location+"%'";
         }
          
     	String sql = ""
@@ -90,6 +90,7 @@ public class InviterDetailController extends Controller {
     			+ " ul.invitation_code,"
     			+ " ul.wedding_date,"
     			+ " ul.create_time,"
+    			+ " ul.location,"
     			+ " ul.remark1,"
     			+ " ul.remark2,"
     			+ " ul.remark3 "
@@ -108,7 +109,7 @@ public class InviterDetailController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql+ condition + " order by create_time desc " +sLimit);
+        List<Record> orderList = Db.find(sql + " order by create_time desc " +sLimit);
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

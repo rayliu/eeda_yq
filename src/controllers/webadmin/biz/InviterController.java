@@ -71,7 +71,7 @@ public class InviterController extends Controller {
         	condition = " and u.create_time between '" + begin_date + "' and '" + end_date + "'";
         }
         if(StringUtils.isNotBlank(location)){
-        	condition += " and wc.city = '"+location+"'";
+        	condition += " and u.location like '%"+location+"%'";
         }
          
         String sql = "SELECT iv.*, com.company_name,"

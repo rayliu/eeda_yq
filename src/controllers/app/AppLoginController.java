@@ -4,11 +4,15 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.codec.Base64;
 
@@ -24,7 +28,9 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.util.AliSmsUtil;
 import controllers.util.EedaHttpKit;
+import controllers.util.HttpUtils;
 import controllers.util.MD5Util;
+import controllers.util.PhoneAddress;
 
 public class AppLoginController extends Controller {
 
@@ -53,6 +59,7 @@ public class AppLoginController extends Controller {
     		Record user_login = new Record();
         	user_login.set("invitation_code", invite_code);
         	user_login.set("phone", mobile);
+        	user_login.set("location", PhoneAddress.check2city(mobile));
         	user_login.set("wedding_date", wedding_date);
         	user_login.set("user_name", user_name);
         	user_login.set("system_type", "mobile");
@@ -80,6 +87,7 @@ public class AppLoginController extends Controller {
     	data.set("errMsg", errMsg);
         renderJson(data);  
     }
+    
     
     @Before(Tx.class)
     public void login() throws UnsupportedEncodingException{

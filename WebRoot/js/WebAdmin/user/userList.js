@@ -15,6 +15,7 @@ $(document).ready(function() {
                      },
                      { "data": "WEDDING_DATE", "width":"80px"},
                      { "data": "CREATE_TIME", "width":"80px"},
+                     { "data": "LOCATION", "width":"80px"},
                      { "data": "STATUS", "width":"80px"},
                      { "data": "PARENT_CODE", "width":"60px"},
                      { "data": "PARENT_NAME", "width":"60px"},
@@ -52,6 +53,12 @@ $(document).ready(function() {
                  ]
     });
     
+    $('#searchBtn').on('click',function(){
+    	var begin_date = $('#begin_date').val();
+    	var end_date = $('#end_date').val();
+    	var location = $('#location').val();
+    	dataTable.ajax.url("/WebAdmin/user/list?begin_date="+begin_date+"&end_date="+end_date+"&location="+location).load();
+    });
     
     $('#eeda_table').on('click','.edit',function(){
     	var id = $(this).data('id');
