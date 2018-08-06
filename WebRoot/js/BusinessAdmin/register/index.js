@@ -55,7 +55,7 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 		
 		 jQuery.validator.addMethod("isMobile", function(value, element) { 
 			  var length = value.length; 
-			  var mobile = /^1(3|4|5|7|8)\d{9}$/; 
+			  var mobile = /^1[1-9]\d{9}$/; 
 			  return this.optional(element) || (length == 11 && mobile.test(value)); 
 		  }, "请正确填写您的手机号码"); 
 		 

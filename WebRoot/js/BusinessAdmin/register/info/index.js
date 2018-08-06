@@ -50,7 +50,7 @@ define(['jquery', 'sco', 'file_upload',"validate_cn",'dataTablesBootstrap'], fun
 		
 		jQuery.validator.addMethod("isPhone", function(value,element) { 
 			  var length = value.length; 
-			  var mobile = /^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/; 
+			  var mobile = /^1[1-9]\d{9}$/; 
 			  var tel = /^\d{3,4}-?\d{7,9}$/; 
 			  return this.optional(element) || (tel.test(value) || mobile.test(value)); 
 
