@@ -75,6 +75,17 @@ public class AppLoginController extends Controller {
         			String code = re.getStr("influence");
         			re.set("influence", Integer.parseInt(code) + 1);
         			Db.update("user_login",re);
+        		} else {  //子级要邀请人
+        			Record child = Db.findFirst("select * from wc_inviter where invite_code = ? and is_delete != 'Y'",invite_code);
+        			if(child != null){
+        				String user_id = child.get("id").toString();
+        				Record u = Db.findById("user_login", user_id);
+        				if(u != null){
+                			String code2 = u.getStr("influence");
+                			u.set("influence", Integer.parseInt(code2) + 1);
+                			Db.update("user_login",re);
+                		}
+        			}
         		}
         	}
         	result = true;
