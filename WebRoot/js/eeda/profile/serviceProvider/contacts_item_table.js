@@ -143,7 +143,7 @@ define(['jquery', 'metisMenu', 'template', 'sb_admin',  'dataTablesBootstrap', '
             	}
         	}
         	if(name=="EMAIL"){
-        		var re = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+        		var re = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
         		if(!re.test(data)&&len>0){
         			$(this).parent().append("<span style='color:red;display:block;' class='error_span'>邮箱格式不正确</span>");
         			return;
