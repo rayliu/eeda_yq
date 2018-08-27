@@ -21,7 +21,7 @@ $(document).ready(function() {
                     		 if(!data){
                     			 data = '';
                     		 }
-                    		 return "<textarea style='width:100%' class='remark1' data-id='"+full.ID+"'>"+data+"</textarea>";
+                    		 return "<textarea style='width:100%' row='3' disabled class='remark1' data-id='"+full.ID+"'>"+data+"</textarea>";
                     	 }
                     },
                     { "data": "REMARK2", "width":"60px",
@@ -29,7 +29,7 @@ $(document).ready(function() {
                     		 if(!data){
                     			 data = '';
                     		 }
-                    		 return "<textarea style='width:100%' class='remark2' data-id='"+full.ID+"'>"+data+"</textarea>";
+                    		 return "<textarea style='width:100%' row='3' disabled class='remark2' data-id='"+full.ID+"'>"+data+"</textarea>";
                     	 }
                     },
                     { "data": "REMARK3", "width":"60px",
@@ -37,7 +37,7 @@ $(document).ready(function() {
                     		 if(!data){
                     			 data = '';
                     		 }
-                    		 return "<textarea style='width:100%' class='remark3' data-id='"+full.ID+"'>"+data+"</textarea>";
+                    		 return "<textarea style='width:100%' row='3' disabled class='remark3' data-id='"+full.ID+"'>"+data+"</textarea>";
                     	 }
                     }
                  ]
