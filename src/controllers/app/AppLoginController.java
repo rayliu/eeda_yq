@@ -78,7 +78,7 @@ public class AppLoginController extends Controller {
         		} else {  //子级要邀请人
         			Record child = Db.findFirst("select * from wc_inviter where invite_code = ? and is_delete != 'Y'",invite_code);
         			if(child != null){
-        				String user_id = child.get("id").toString();
+        				String user_id = child.get("user_id").toString();
         				Record u = Db.findById("user_login", user_id);
         				if(u != null){
                 			String code2 = u.getStr("influence");
