@@ -83,7 +83,7 @@ public class AppLoginController extends Controller {
         				if(u != null){
                 			String code2 = u.getStr("influence");
                 			u.set("influence", Integer.parseInt(code2) + 1);
-                			Db.update("user_login",re);
+                			Db.update("user_login",u);
                 		}
         			}
         		}
