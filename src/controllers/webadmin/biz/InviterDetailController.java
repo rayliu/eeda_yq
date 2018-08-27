@@ -109,7 +109,7 @@ public class InviterDetailController extends Controller {
         Record rec = Db.findFirst(sqlTotal);
         logger.debug("total records:" + rec.getLong("total"));
         
-        List<Record> orderList = Db.find(sql + " order by iv.id, ul.create_time desc " +sLimit);
+        List<Record> orderList = Db.find(sql + " order by ul.create_time desc, iv.id DESC " +sLimit);
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("draw", pageIndex);
         map.put("recordsTotal", rec.getLong("total"));

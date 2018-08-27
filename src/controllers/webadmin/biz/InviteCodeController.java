@@ -63,10 +63,7 @@ public class InviteCodeController extends Controller {
         	condition = " and create_time between '" + begin_date + "' and '" + end_date + "'";
         }
          
-        String sql = "SELECT ("
-        		+ " select count(0) from user_login "
-        		+ " where invitation_code = ul.invitation_code and system_type = 'mobile' "+ condition 
-        		+ " ) invite_count,"
+        String sql = "SELECT  ul.influence invite_count,"
         		+ " cat.`name` category_name, "
         		+ " ifnull(com.c_name,com.company_name) compnay_name,"
         		+ " ul.invitation_code, "
