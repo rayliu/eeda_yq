@@ -1,25 +1,18 @@
 package controllers.job;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream.GetField;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import models.UserLogin;
 
 import com.jfinal.aop.Before;
 import com.jfinal.kit.PropKit;
@@ -27,9 +20,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
-import com.jfinal.upload.UploadFile;
 
-import controllers.profile.ProductController;
 import controllers.util.bigExcel.BigXlsxHandleUitl;
 
 public class ImportJob implements Runnable{
@@ -139,6 +130,7 @@ public class ImportJob implements Runnable{
 		}
 		return resultMap;
 	}
+
 	
 	public static void unZip(String path,String new_path){
 		boolean unzip_result = false;
@@ -153,11 +145,13 @@ public class ImportJob implements Runnable{
 	    			unzip_result = unZipFile(pathName , path);
 	    			
 	    			if(unzip_result){
-	    				if(moveTotherFolders(pathName , new_path)){
-	    					System.out.println("移动成功");
-	    				}else{
-	    					System.out.println("移动失败");
-	    				}
+//	    				if(moveTotherFolders(pathName , new_path)){
+//	    					System.out.println("移动成功");
+//	    				}else{
+//	    					System.out.println("移动失败");
+//	    				}
+	    				delZipFile(path);
+	    				System.out.println("解压成功");
 	    			}else{
 	    				System.out.println("解压失败");
 	    			}
@@ -166,6 +160,23 @@ public class ImportJob implements Runnable{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	// 删除zip 文件
+	public static void delZipFile(String path) {
+		File file = new File(path);
+		if (file.isDirectory()) {
+			File[] files = file.listFiles();
+			for (File f : files) {
+				if (f.getName().endsWith(".zip")) { // zip文件 判断 是否存在
+					if (f.delete()) {
+						System.out.println("zip文件已经删除");
+					} else {
+						System.out.println("zip文件删除失败");
+					}
+				}
+			}
 		}
 	}
 	
