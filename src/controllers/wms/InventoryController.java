@@ -392,16 +392,18 @@ public class InventoryController extends Controller {
    
     @Before(Tx.class)
     public void gateOut(){
-    	String id = getPara("id");
+    	String ids = getPara("ids");
+    	boolean result = false;
     	
-    	GateIn gi = GateIn.dao.findById(id);
-    	gi.set("out_flag", "Y");
-    	gi.set("self_out_flag", "Y");
-    	gi.set("out_time",new Date());
-    	gi.update();
+    	Db.update("update gate_in set out_flag = 'Y', self_out_flag = 'Y' where id in (" + ids + ")");
+//    	GateIn gi = GateIn.dao.findById(id);
+//    	gi.set("out_flag", "Y");
+//    	gi.set("self_out_flag", "Y");
+//    	gi.set("out_time",new Date());
+//    	gi.update();
+    	result = true;
     	
-    	
-    	renderJson(gi);
+    	renderJson(result);
     }
     
     @Before(Tx.class)

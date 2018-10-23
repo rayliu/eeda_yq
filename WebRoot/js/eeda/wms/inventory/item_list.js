@@ -13,7 +13,12 @@ $(document).ready(function() {
 	        $.unblockUI();
 	    },
         columns:[
- 				 { "data": "SHELVES","width":"100px"},
+ 				 { "data": "ID","width":"100px",
+                     "render": function ( data, type, full, meta ) {
+                    	return '<input type="checkbox" class="check_box" value="'+data+'">';
+                     }
+                 },
+ 				{ "data": "SHELVES","width":"100px"},
  				 { "data": "QUANTITY","width":"100px","class":'quantity'},
  				 { "data": "QR_CODE","width":"400px"},
  				 { "data": "CREATE_TIME","width":"120px"},
@@ -31,6 +36,49 @@ $(document).ready(function() {
         ]
     });
 	
+	$("#gateOutBtn").on('click', function(e){
+		var self = this;
+		var ids = [];
+		$("#item_table .check_box:checked").each(function(){
+			var id = this.value;
+			ids.push(id);
+		});
+		
+		if(ids.length == 0){
+			$.scojs_message('未勾选条目', $.scojs_message.TYPE_ERROR);
+			return false;
+		}
+		
+		$.blockUI({ 
+            message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
+        });
+		self.disabled = true;
+    	$.post('/inventory/gateOut',{ids: ids.toString()},function(data){
+    		if(data){
+    			$.scojs_message('出库成功', $.scojs_message.TYPE_OK);
+    			searchData(page_part_no);
+    			order.searchPartData($('#itemNoHidden').val());
+    			self.disabled = false;
+    			$('#totalLabel').text($('#totalLabel').text()-ids.length);
+    			$('#totalBox').text($('#totalBox').text()-ids.length);
+    			//$('#totalPiece').text($('#totalPiece').text()-quantity);
+    		}else{
+    			$.scojs_message('出库失败', $.scojs_message.TYPE_ERROR);
+    			searchData(page_part_no);
+    		}
+    		$.unblockUI();
+    		self.disabled = false;
+    	}).fail(function() {
+            $.scojs_message('后台报错', $.scojs_message.TYPE_ERROR);
+            self.disabled = false;
+            searchData(page_part_no);
+            $.unblockUI();
+            self.disabled = false;
+        });
+	});
+	
+	
+	
 	
 	$("#item_table").on('click', '.gateOut', function(e){
 		var self= this;
@@ -43,7 +91,7 @@ $(document).ready(function() {
             message: '<h1><img src="/images/loading.gif" style="height: 50px; margin-top: -3px;"/> LOADING...</h1>' 
         });
 		self.disabled = true;
-    	$.post('/inventory/gateOut',{id:id},function(data){
+    	$.post('/inventory/gateOut',{ids: id},function(data){
     		if(data){
     			$.scojs_message('出库成功', $.scojs_message.TYPE_OK);
     			searchData(page_part_no);
@@ -63,7 +111,6 @@ $(document).ready(function() {
             searchData(page_part_no);
             $.unblockUI();
         });
-		
 	});
 	
 	
