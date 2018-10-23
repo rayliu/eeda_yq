@@ -3,6 +3,8 @@ package controllers.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.json.JSONObject;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
@@ -13,15 +15,15 @@ public class PhoneAddress {
 	public static Record check2record(String phone){
 		// TODO Auto-generated method stub
 		Record rec = new Record();
-		String host = "https://jisushouji.market.alicloudapi.com";
-	    String path = "/shouji/query";
+		String host = "https://api04.aliyun.venuscn.com";
+	    String path = "/mobile";
 	    String method = "GET";
 	    String appcode = "c55e6a37345948c69b974fbb708d61bd";
 	    Map<String, String> headers = new HashMap<String, String>();
 	    //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
 	    headers.put("Authorization", "APPCODE " + appcode);
 	    Map<String, String> querys = new HashMap<String, String>();
-	    querys.put("shouji", phone);
+	    querys.put("mobile", phone);
 	
 	    String city = null;
 	    try {
@@ -43,11 +45,12 @@ public class PhoneAddress {
 	    	Gson gson = new Gson();  
 	        Map<String, ?> dto= gson.fromJson(josnStr, HashMap.class);  
 	        String msg = (String) dto.get("msg");
-	        String status = (String) dto.get("status");
-	        rec.set("status", status);
+	        String ret = (String) dto.get("ret");
+	        rec.set("status", ret);
 	        rec.set("msg", msg);
-	    	if("ok".equals(msg)){
-	    		Map<String, Object> result =  (Map<String, Object>) dto.get("result");
+	        
+	    	if("success".equals(msg)){
+	    		Map<String, Object> result =  (Map<String, Object>) dto.get("data");
 	    		rec = rec.setColumns(result);
 	    	}
 	    } catch (Exception e) {
@@ -94,15 +97,15 @@ public class PhoneAddress {
 	public static String check2city(String phone){
 		// TODO Auto-generated method stub
 		Record rec = new Record();
-		String host = "https://jisushouji.market.alicloudapi.com";
-	    String path = "/shouji/query";
+		String host = "https://api04.aliyun.venuscn.com";
+	    String path = "/mobile";
 	    String method = "GET";
 	    String appcode = "c55e6a37345948c69b974fbb708d61bd";
 	    Map<String, String> headers = new HashMap<String, String>();
 	    //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
 	    headers.put("Authorization", "APPCODE " + appcode);
 	    Map<String, String> querys = new HashMap<String, String>();
-	    querys.put("shouji", phone);
+	    querys.put("mobile", phone);
 	
 	    String city = null;
 	    try {
@@ -124,11 +127,11 @@ public class PhoneAddress {
 	    	Gson gson = new Gson();  
 	        Map<String, ?> dto= gson.fromJson(josnStr, HashMap.class);  
 	        String msg = (String) dto.get("msg");
-	        String status = (String) dto.get("status");
+	        String status = (String) dto.get("ret");
 	        rec.set("status", status);
 	        rec.set("msg", msg);
-	    	if("ok".equals(msg)){
-	    		Map<String, Object> result =  (Map<String, Object>) dto.get("result");
+	    	if("success".equals(msg)){
+	    		Map<String, Object> result =  (Map<String, Object>) dto.get("data");
 	    		rec = rec.setColumns(result);
 	    		city = rec.getStr("city");
 	    	}
