@@ -127,8 +127,8 @@ public class PhoneAddress {
 	    	Gson gson = new Gson();  
 	        Map<String, ?> dto= gson.fromJson(josnStr, HashMap.class);  
 	        String msg = (String) dto.get("msg");
-	        String status = (String) dto.get("ret");
-	        rec.set("status", status);
+	        //String status = (String) dto.get("ret");
+	        //rec.set("status", status);
 	        rec.set("msg", msg);
 	    	if("success".equals(msg)){
 	    		Map<String, Object> result =  (Map<String, Object>) dto.get("data");
