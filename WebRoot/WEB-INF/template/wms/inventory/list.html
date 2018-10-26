@@ -129,7 +129,7 @@
 	               </div>
 		        </div>
 		        <div class="modal-footer">
-		        	<button type="button" id="gateOutBtn" class="btn  btn-primary">批量出库</button>
+		        	<button type="button" id="gateOutBtn" class="btn  btn-primary <%if(shiro.hasPermission('inventory.gateOut')==false){%>hidden%}%>">批量出库</button>
 		            <button type="button" id="returnBtn" class="btn  btn-default" data-dismiss="modal">返回</button>
 		        </div>
 		    </div>
