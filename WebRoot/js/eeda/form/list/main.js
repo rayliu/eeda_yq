@@ -35,8 +35,8 @@ define(['jquery', '../btns', 'hui'], function ($) {
         var btnCol = {
             data: null,
             render: function ( data, type, full, meta ) {
-        		return '<a style="text-decoration:none" class="ml-5" href="/form/'+module_id+'-edit-'+data.ID+'" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>'
-                +'<a style="text-decoration:none" href="javascript:;" class="ml-5 delete" module_id='+module_id+' id='+data.ID+' title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> ';
+        		return '<a class="btn btn-xs" style="text-decoration:none" class="ml-5" href="/form/'+module_id+'-edit-'+data.ID+'" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>'
+                +' <a class="btn btn-xs" style="text-decoration:none" href="javascript:;" class="ml-5 delete" module_id='+module_id+' id='+data.ID+' title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> ';
             }
         };
         if(field_list_json[0].CUSTOM_SEARCH!="Y"){
