@@ -60,7 +60,7 @@ define(['jquery', '../btns', 'hui'], function ($) {
             var th = $('#list_table thead th').eq($(this).index());
             var title = th.text();
             var field_name = th.attr('field_name');
-            if(title!="")
+            if(title!="" && title!="操作")
                 $(this).html('<input type="text" placeholder="过滤..." data-index="'+i+'" field_name="'+field_name+'" style="width: 100%;"/>');
         });
 
