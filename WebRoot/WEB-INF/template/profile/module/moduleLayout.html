@@ -85,62 +85,6 @@
         </nav>
         <!-- /.navbar-static-top -->
 
-        <nav  id='left_side_bar' class="navbar-default navbar-static-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav" id="side-menu">
-                        <%
-                        for(module in modules){
-                        %>
-                            <li id="${module.id!}">
-                                <a href="#"><i class="fa fa-file-text fa-fw"></i>${module.module_name!}<span class="fa arrow"></span></a>
-                                <% if(module.orders != null ){%>
-                                    <ul class="nav nav-second-level">
-                                        <%
-                                        for(order in module.orders){
-                                        %>
-                                            <li id="${order.id}">
-                                                <a href="/${order.url!''}">${order.module_name!}</a>
-                                            </li>
-                                        <%}%>
-                                    </ul>
-                                <%}%>
-                            </li>
-                        <%}%>
-
-                        <li id="menu_sys_profile">
-                            <a href="#"><i class="fa fa-cog fa-fw"></i> 系统配置<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="/role">岗位</a>
-                                </li>
-                                <li>
-                                    <a href="/privilege">岗位权限</a>
-                                </li>
-                                <li>
-                                    <a href="/loginUser">登录用户</a>
-                                </li>
-
-                                <li>
-                                    <a href="/userRole">用户岗位</a>
-                                </li>
-                                <li>
-                                    <a href="/module">模块定义</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
-                        </li>
-
-                </ul>
-                <!--  /#side-menu -->
-            </div>
-            <!-- /.sidebar-collapse -->
-        </nav>
-        <!-- /.navbar-static-side -->
-        <a id='hide_menu_btn' href="#" style="position: absolute;left: 250px;top: 250px; z-index:1; height: 200px; background-color: rgb(241, 241, 241); border-top-right-radius: 10px; border-bottom-right-radius:10px;" title="隐藏菜单">
-            <i id='hide_menu_icon' class="fa fa-angle-double-left fa-2x" style="
-    margin-top: 90px;"
-></i>
-        </a>
         ${layoutContent}
 
     </div>
