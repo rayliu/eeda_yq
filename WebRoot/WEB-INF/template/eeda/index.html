@@ -183,8 +183,12 @@
 <script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/lib/layer/2.4/layer.js"></script>
 <script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/static/h-ui/js/H-ui.js"></script> 
 <script type="text/javascript" src="/theme/H-ui.admin.page3.1.1/static/h-ui.admin/js/H-ui.admin.page.js"></script> 
+<script src="/js/lib/require2.3.2.min.js"></script>
 <!--/_footer /作为公共模版分离出去-->
 
-<!--/请在上方写此页面业务相关的脚本-->
-
+<script>
+    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        
+    });
+</script>
 <%}%>

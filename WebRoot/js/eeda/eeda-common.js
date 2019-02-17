@@ -1,5 +1,10 @@
-define(['jquery', 'dataTablesBootstrap', 'sb_admin'], function($){
+define(['jquery', 'dataTablesBootstrap', 'sb_admin','hui_admin', 'WdatePicker'], function($){
   
+    //Hui 动态载入左侧菜单，展开失效的解决方案。
+    $(".Hui-aside").Huifold({
+        titCell:'.menu_dropdown dl dt',
+        mainCell:'.menu_dropdown dl dd',
+    });
     var url = window.location;
     // var element = $('ul.nav a').filter(function() {
     //     return this.href == url;
