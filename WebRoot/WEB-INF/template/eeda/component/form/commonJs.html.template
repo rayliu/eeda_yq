@@ -28,7 +28,8 @@
             ueditor: 'ueditor/ueditor.all.min',
             printMe: 'printMe/jquery-printme.min',
             hui: '../../theme/H-ui.admin.page3.1.1/static/h-ui/js/H-ui',
-            hui_admin: '../../theme/H-ui.admin.page3.1.1/static/h-ui.admin/js/H-ui.admin.page'
+            hui_admin: '../../theme/H-ui.admin.page3.1.1/static/h-ui.admin/js/H-ui.admin.page',
+            WdatePicker: '../../theme/H-ui.admin.page3.1.1/lib/My97DatePicker/4.8/WdatePicker'
         },
         shim: {
             jquery_ui: {
