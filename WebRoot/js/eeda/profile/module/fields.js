@@ -113,6 +113,8 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
 
         var re_display_auto_no_values = function(data) {
           var ref = data.AUTO_NO;
+          if(!ref)
+            return;
           $('#auto_no_id').val(ref.ID);
 
           if(ref.IS_GEN_BEFORE_SAVE == 'Y'){
