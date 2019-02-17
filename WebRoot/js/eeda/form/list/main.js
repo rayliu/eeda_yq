@@ -1,9 +1,6 @@
-define(['jquery', '../btns', 'hui'], function ($) {
+define(['jquery','hui_admin', '../btns'], function ($) {
 
-//        $(".Hui-aside").Huifold({
-//            titCell:'.menu_dropdown dl dt',
-//            mainCell:'.menu_dropdown dl dd',
-//        });
+        
         
         document.title = '查询 | ' + document.title;
 
