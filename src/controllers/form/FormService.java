@@ -138,7 +138,7 @@ public class FormService {
                 "select * from eeda_form_field_type_detail_ref_join_condition where field_id=?", field_id);
         
         List<Record> display_list = Db.find(
-                "select * from eeda_form_field_type_detail_ref_display_field where field_id=?", field_id);
+                "select * from eeda_form_field_type_detail_ref_display_field where field_id=? order by sort_no", field_id);
         String fieldStr = "<th></th>";//默认第一列是放按钮的
         
         for (Record r : display_list) {

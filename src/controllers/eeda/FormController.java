@@ -147,7 +147,7 @@ public class FormController extends Controller {
             for (String fieldId : fieldIdList) {
                 Record rec = new Record();
                 List<Record> itemList = Db.find("select * from eeda_form_field_type_detail_ref_display_field where "
-                        + " field_id=?", fieldId);
+                        + " field_id=? order by sort_no", fieldId);
                 for (Record record : itemList) {
                     String target_field_name = record.getStr("target_field_name");
                     String form_name = target_field_name.split("\\.")[0];

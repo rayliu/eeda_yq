@@ -64,3 +64,7 @@ table td{
 .area-list a:hover{
     color: #34b2fb;
 }
+
+table .eeda td ul.dropDown-menu{
+    position: absolute;
+}

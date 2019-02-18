@@ -209,7 +209,8 @@ public class MainController extends Controller {
         
         String inputRandomCode = getPara("inputRandomCode");
         boolean loginSuccess = CaptchaRender.validate(this, inputRandomCode);
-        if (!loginSuccess) {
+        //if (!loginSuccess) {
+        if (false) {
             String errMsg = "验证码不正确";
             setAttr("errMsg", errMsg);
             logger.debug(errMsg);

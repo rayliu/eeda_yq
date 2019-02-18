@@ -53,9 +53,10 @@ define(['jquery', 'sco'], function ($) {
             
             
             drop_list.css({ 
-                left:0-inputField.width()-10+"px", 
-                top: "11px",
-                width: inputField.width()+"px"
+                position: "absolute",
+                left: inputField.width()-28+"px", 
+                top: inputField.height()+54+"px",
+                width: inputField.width()+20+"px"
             });
             span_drop.addClass('open');
             //eeda.hidePopList();
@@ -73,7 +74,7 @@ define(['jquery', 'sco'], function ($) {
 
         var ul = item.closest('ul');
         var inputField_name = ul.attr('input_name');
-        var inputField = ul.parent().parent().find('input');
+        var inputField = ul.parent().parent().find('input[name='+inputField_name+']');
         inputField.val(value);
         //处理引用字段
         var item_list_str = inputField.attr('item_list');

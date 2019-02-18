@@ -1145,7 +1145,7 @@ public class ModuleController extends Controller {
                     ref.set("join_condition", condition_list);
                 
                 List<Record> field_list = Db
-                        .find("select * from eeda_form_field_type_detail_ref_display_field where field_id=?",
+                        .find("select * from eeda_form_field_type_detail_ref_display_field where field_id=? order by sort_no",
                                 field.get("id"));
                 if (field_list.size() > 0)
                     ref.set("display_field", field_list);
