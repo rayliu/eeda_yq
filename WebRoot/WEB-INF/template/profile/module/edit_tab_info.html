@@ -1,4 +1,4 @@
-<div class="form-group">
+<div style="margin-top: 20px;">
     <div class="col-lg-12">
         <section class='form_info'>
             <div class="row">
@@ -23,7 +23,6 @@
                     <%include("/eeda/component/form/inputField.html", 
                                                 {   id:'desc', 
                                                     label:'描述',
-                                                    required:'required',
                                                     value:order.desc!''
                                                 }){}%>
                 </div>
@@ -38,6 +37,14 @@
                                                 }){}%>
                 </div>
                 <div class="col-lg-4">
+                    <%include("/eeda/component/form/inputField.html", 
+                                                {   id:'is_home_index', 
+                                                    type: 'checkbox',
+                                                    label:'是否为首页',
+                                                    value:order.is_home_index!''
+                                                }){}%>
+                </div>
+                <div class="col-lg-4">
                     <%include("/eeda/component/form/selectField.html", 
                                 {   id:'type', 
                                     label:'按钮工具栏位置', 
@@ -49,28 +56,29 @@
                                 }){}%>
                 </div>
             </div>
-
+            <br>
+            <br>
             <h4>查询列表配置</h4>
             <div class="row">
                 <div class="col-lg-4">
                     <%include("/eeda/component/form/inputField.html", 
-                        {   id:'is_public', 
+                        {   id:'', 
                             type: 'checkbox',
                             label:'是否分页显示',
-                            checked: 'checked',
+                            checked: '',
                             value:order.is_public!''
                         }){}%>
                 </div>
                 <div class="col-lg-4">
                     <%include("/eeda/component/form/inputField.html", 
-                        {   id:'is_public',
+                        {   id:'',
                             label:'分页显示条数',
                             value:order.is_public!''
                         }){}%>
                 </div>
                 <div class="col-lg-4">
                     <%include("/eeda/component/form/inputField.html", 
-                        {   id:'is_public',
+                        {   id:'',
                             label:'列表宽度(px)',
                             value:order.is_public!''
                         }){}%>
@@ -79,7 +87,7 @@
             <div class="row">
                 <div class="col-lg-4">
                     <%include("/eeda/component/form/selectField.html", 
-                                {   id:'type', 
+                                {   id:'', 
                                     label:'查询方式', 
                                     value:order.type!'',
                                     value_list:[
@@ -90,7 +98,7 @@
                 </div>
                 <div class="col-lg-4">
                     <%include("/eeda/component/form/inputField.html", 
-                        {   id:'is_public',
+                        {   id:'',
                             type: 'checkbox',
                             label:'底部显示汇总行',
                             value:order.is_public!''

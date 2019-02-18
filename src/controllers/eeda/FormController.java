@@ -472,6 +472,22 @@ public class FormController extends Controller {
         return fieldList;
     }
     
+    public List<Record> list(Long form_id,Controller controller){
+    	controller.setAttr("btnList", getFormBtns(form_id, "list"));
+        List<Record> fieldList = new ArrayList<Record>();
+        Record re = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
+        if("search_form".equals(re.get("type"))){
+        	fieldList = getDisplayCols(form_id);
+        }else if("form".equals(re.get("type"))){
+        	fieldList = Db.find("select * from eeda_form_field where "
+                    + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
+        }
+        controller.setAttr("form_id", form_id);
+        controller.setAttr("field_list", fieldList);
+        controller.setAttr("field_list_json", JsonKit.toJson(fieldList));
+        return fieldList;
+    }
+    
     private List<Record> getDisplayCols (Long form_id){
     	List<Record> fieldList = new ArrayList<Record>();
     		//查数据列表

@@ -177,13 +177,16 @@ label.error {
 
 .form-group{
 	margin-bottom: 5px !important;
+    height: 34px;
 }
 .form-group .search-control{
 	height:22px;
 }
 
 .form-group label{
-	margin: 5px 0;	
+    width: 80px;
+    margin: 5px 0;
+    float: left;
 }
 
 .search_panel .form-group{

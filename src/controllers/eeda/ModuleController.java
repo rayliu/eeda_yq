@@ -571,17 +571,20 @@ public class ModuleController extends Controller {
                 .get("btns");
         DbUtils.handleList(btn_list, form_id, FormBtn.class, "form_id");
     }
-
+    
     @SuppressWarnings("null")
     private Long handleInfo(Map<String, ?> dto, Long module_id) {
         String tempalteContent = dto.get("template_content").toString();
         Map<String, String> infoMap = (Map) dto.get("info");
         Record formRec = Db.findFirst(
                 "select * from eeda_form_define where module_id=?", module_id);
+        Db.update("update eeda_form_define set is_home_index = 'N' where is_home_index = 'Y'");
         if (formRec != null) {
             formRec.set("name", infoMap.get("name"));
             formRec.set("code", infoMap.get("code"));
             formRec.set("type", infoMap.get("type"));
+            formRec.set("is_public", infoMap.get("is_public"));
+            formRec.set("is_home_index", infoMap.get("is_home_index"));
             formRec.set("template_content", tempalteContent);
             formRec.set("module_id", module_id);
             Db.update("eeda_form_define", formRec);
@@ -590,6 +593,8 @@ public class ModuleController extends Controller {
             formRec.set("name", infoMap.get("name"));
             formRec.set("code", infoMap.get("code"));
             formRec.set("type", infoMap.get("type"));
+            formRec.set("is_public", infoMap.get("is_public"));
+            formRec.set("is_home_index", infoMap.get("is_home_index"));
             formRec.set("template_content", tempalteContent);
             formRec.set("module_id", module_id);
             Db.save("eeda_form_define", formRec);
@@ -1493,5 +1498,14 @@ public class ModuleController extends Controller {
         } else {
             renderText("failed");
         }
+    }
+    
+    /**
+     * 检查是否有设为首页的
+     */
+    public void checkExistIndex(){
+    	String module_id = getPara("module_id");
+    	List<Record> existIndexList = Db.find("select id,name from eeda_form_define where is_home_index='Y' and module_id!=?",module_id);
+    	renderJson(existIndexList);
     }
 }

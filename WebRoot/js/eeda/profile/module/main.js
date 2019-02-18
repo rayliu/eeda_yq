@@ -14,6 +14,9 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                     name: $('#form_name').val(),
                     type: $('input[name="form_type"]:checked').val(),
                     code: $('#form_code').val(),
+                    desc: $('#desc').val(),
+                    is_public: $('#is_public').prop("checked")==true?'Y':'N',
+                    is_home_index: $('#is_home_index').prop("checked")==true?'Y':'N'
                 },
                 field_update_flag:fieldContr.field_update_flag(),
                 fields: fieldContr.buildFieldsDetail(),
@@ -75,6 +78,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
 
 
         $('#saveBtn').on('click', function(e){
+            var self = $(this);
             $(this).attr('disabled', true);
 
             //阻止a 的默认响应行为，不需要跳转
@@ -85,11 +89,38 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             // }
             //提交前，校验数据
             if(!fieldContr.check()){
+                $(this).attr('disabled', false);
             	alert("字段列表尚有操作未完成");
                 return;
             }
-            saveAction($(this));
+
+            var module_id = $('#module_id').text();
+            $.post("/module/checkExistIndex",{module_id:module_id},function(data){
+                if(data.length>0){
+                    var mymessage = confirm("已有设为首页的页面，是否继续？");
+                    if(!mymessage){
+                        self.attr('disabled', false);
+                        return false;
+                    }
+                    saveAction(self);
+                }else{
+                    saveAction(self);
+                }
+            });
         });
+
+        var checkExistIndex = function(){
+            var module_id = $('#module_id').text();
+            $.post("/module/checkExistIndex",{module_id:module_id},function(data){debugger
+                if(data.length>0){
+                    var mymessage = confirm("已有设为首页的页面，是否继续？");
+                    if(!mymessage){
+                        return false;
+                    }
+                }
+                return true;
+            });
+        }
 
         $('.formular_pop').on('click', function(e){
             var targetId = $(this).attr('target');

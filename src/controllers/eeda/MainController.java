@@ -6,6 +6,7 @@ import interceptor.SetAttrLoginUserInterceptor;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
@@ -35,6 +36,7 @@ import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.plugin.shiro.ShiroKit;
+import com.jfinal.kit.JsonKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -86,6 +88,22 @@ public class MainController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
         if (isAuthenticated()) {
+        	Record re = Db.findFirst("select id,name,module_id from eeda_form_define where is_home_index = 'Y'");
+        	if(re!=null){
+        		setAttr("action", "list");
+                setAttr("module_id", re.getLong("module_id"));
+                Record title = Db.findFirst("select m1.module_name level2,m2.module_name level1 from eeda_modules m1 "
+                		+ " LEFT JOIN eeda_modules m2 on m1.parent_id = m2.id"
+                		+ " where m1.id = ?",re.getLong("module_id"));
+                if(title != null){
+                	 setAttr("level1", title.get("level1"));
+                     setAttr("level2", title.get("level2"));
+                }
+                FormController form = new FormController();
+                form.list(re.getLong("id"),this);
+                render("/eeda/form/listTemplate.html");
+                return;
+        	}
             render("/eeda/index.html");
         }
     }
@@ -517,7 +535,6 @@ public class MainController extends Controller {
         renderJson(orderDto);
     }
 
-    
     public void m_getOrderData() {
         Record orderDto = new Record();
         String jsonStr=getPara("params");

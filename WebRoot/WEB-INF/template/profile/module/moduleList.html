@@ -2,7 +2,11 @@
 <link href="/js/lib/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="/js/lib/sco/css/sco.message.css" rel="stylesheet">
 <link href="/js/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
-
+<style>
+	.form-group .search-control {
+	    height: 34px;
+	}
+</style>
 <div id="page-wrapper">
 
 <div class="row">
@@ -12,7 +16,7 @@
 	</div>
 	<div class="col-lg-4" style="padding-top: 20px;">
 		<div class="form-group">
-            <label>清除用户菜单缓存： </label>
+            <label style="width: 150px;">清除用户菜单缓存： </label>
             <select id ="user_id" >
             	<%  
                     for(user in users![]){

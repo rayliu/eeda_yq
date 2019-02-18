@@ -156,6 +156,7 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                 $("#displayDiv").hide();
             }
             $(".form_info input[type='text']").val("");
+            $(".form_info input[type='checkbox']").prop("checked",false);
             $("#module_id").text(treeNode.id);
             $("#form_name").val(treeNode.name);
             $("#module_url").val(treeNode.url);
@@ -180,7 +181,13 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                     $("#form_id").val(module_obj.FORM.ID);
                     $('#form_code').val(module_obj.FORM.CODE);
                     $('#form_name').val(module_obj.FORM.NAME);
-                    $('input[value="'+module_obj.FORM.TYPE+'"]').attr("checked",true);
+                    if(module_obj.FORM.IS_HOME_INDEX=='Y'){
+                        $("#is_home_index").prop("checked",true);
+                    }
+                    if(module_obj.FORM.IS_PUBLIC=='Y'){
+                        $("#is_public").prop("checked",true);
+                    }
+                    $('input[value="'+module_obj.FORM.TYPE+'"]').prop("checked",true);
 
                     ue.setContent(module_obj.FORM.TEMPLATE_CONTENT);
 
