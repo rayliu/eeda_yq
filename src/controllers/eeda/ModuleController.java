@@ -85,7 +85,7 @@ public class ModuleController extends Controller {
     public void getDataList() {
         Record s = getStructureByName("数据列表");
         Record field = getFieldByName("数据列表.名称");
-        String fieldName = "F" + field.get("id").toString() + "_"
+        String fieldName = "F" + field.getLong("id").toString() + "_"
                 + field.getStr("field_name");
         String sql = "select id," + fieldName + " name from t_"
                 + s.getLong("id");
@@ -911,7 +911,7 @@ public class ModuleController extends Controller {
                     String sql = "select * from eeda_structure_action where module_id=? and action_name=?";
                     Record rec = Db.findFirst(sql, module_id, action_name);
                     if (rec != null) {
-                        permission_id = rec.get("id").toString();
+                        permission_id = rec.getLong("id").toString();
                     }
                 }
                 String is_auth = role_auth_map.get("bAuth") == Boolean.TRUE ? "Y"
@@ -923,7 +923,7 @@ public class ModuleController extends Controller {
                 if (rec != null) {// update
                     String sql = "update eeda_module_permission set permission_id=?, is_auth=?, office_id=? where id=?";
                     int updateCount = Db.update(sql, permission_id, is_auth,
-                            null, rec.get("id"));
+                            null, rec.getLong("id"));
                 } else {// insert
                     String sql = "insert into eeda_module_permission (module_id, role_id, permission_id, is_auth, office_id) values(?, ?, ?, ?, ?)";
                     Db.update(sql, module_id, role_id, permission_id, is_auth,
@@ -951,12 +951,12 @@ public class ModuleController extends Controller {
         String fieldSql = "select * from eeda_form_field where form_id=?";
         List<Record> fieldList = Db.find(fieldSql, form_id);
         for (Record field : fieldList) {
-            String fieldName = "f" + field.get("id").toString() + "_"
+            String fieldName = "f" + field.getLong("id").toString() + "_"
                     + field.getStr("field_name");
             String createField = "";
             // 根据ID判断字段是否已存在
             Record oldFieldRec = Db.findFirst("show columns from " + tableName
-                    + " like '" + "f" + field.get("id").toString() + "_%'");
+                    + " like '" + "f" + field.getLong("id").toString() + "_%'");
             if ("日期".equals(field.getStr("field_type"))) {
                 if (oldFieldRec != null) {
                     createField = "ALTER TABLE `" + tableName + "` "
@@ -1154,12 +1154,12 @@ public class ModuleController extends Controller {
                 Record ref = Db
                         .findFirst(
                                 "select * from eeda_form_field_type_ref where field_id=?",
-                                field.get("id"));
+                                field.getLong("id"));
                 field.set("ref", ref);
                 
                 List<Record> field_list = Db
                         .find("select * from eeda_form_field_type_ref_item where field_id=?",
-                                field.get("id"));
+                                field.getLong("id"));
                 if (field_list.size() > 0)
                     ref.set("item_list", field_list);
                 
@@ -1196,11 +1196,11 @@ public class ModuleController extends Controller {
         Record checkBox = Db
                 .findFirst(
                         "select * from eeda_form_field_type_checkbox where field_id=?",
-                        field.get("id"));
+                        field.getLong("id"));
 
         List<Record> list = Db
                 .find("select * from eeda_form_field_type_checkbox_item where field_id=?",
-                        field.get("id"));
+                        field.getLong("id"));
         if (list.size() > 0)
             checkBox.set("item_list", list);
 
@@ -1407,7 +1407,7 @@ public class ModuleController extends Controller {
         Record field = Db
                 .findFirst(
                         "select * from eeda_field where structure_id=? and field_display_name =?",
-                        structure.get("id"), field_name);
+                        structure.getLong("id"), field_name);
 
         return field;
     }
