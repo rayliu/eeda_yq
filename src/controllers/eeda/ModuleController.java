@@ -52,7 +52,7 @@ public class ModuleController extends Controller {
     public void index() {
         List<UserLogin> users = UserLogin.dao.find(
                 "select * from user_login where office_id=?",
-                LoginUserController.getLoginUser(this).get("office_id"));
+                LoginUserController.getLoginUser(this).getLong("office_id"));
         setAttr("users", users);
         render("/profile/module/moduleList.html");
     }
@@ -60,7 +60,7 @@ public class ModuleController extends Controller {
     public void getActiveModules() {
         String sql = "select id, module_name, parent_id, office_id, seq from eeda_modules "
                 + "where status = '启用' and sys_only ='N' and office_id="
-                + LoginUserController.getLoginUser(this).get("office_id");
+                + LoginUserController.getLoginUser(this).getLong("office_id");
 
         List<Record> modules = Db.find(sql);
         if (modules == null) {
@@ -68,7 +68,7 @@ public class ModuleController extends Controller {
         } else {
             for (Record module : modules) {
                 String fieldSql = "select f.* from eeda_structure s, eeda_field f where  f.structure_id = s.id and s.parent_id is null and s.module_id=?";
-                List<Record> fields = Db.find(fieldSql, module.get("id"));
+                List<Record> fields = Db.find(fieldSql, module.getLong("id"));
                 if (fields != null && fields.size() > 0) {
                     module.set("field_list", fields);
                     module.set("structure_id", fields.get(0)
@@ -115,7 +115,7 @@ public class ModuleController extends Controller {
         String parent_id = getPara("id");
         String cons = "";
         String sql = "select id, module_name, parent_id, office_id, seq, version, url from eeda_modules where delete_flag!='Y' and office_id="
-                + LoginUserController.getLoginUser(this).get("office_id");
+                + LoginUserController.getLoginUser(this).getLong("office_id");
 
         List<Record> modules = null;
         if (StringUtils.isEmpty(parent_id)) {
@@ -132,7 +132,7 @@ public class ModuleController extends Controller {
         String parent_id = getPara("parent_id");
         String module_name = getPara("name");
         Long office_id = LoginUserController.getLoginUser(this)
-                .get("office_id");
+                .getLong("office_id");
 
         Module module = new Module();
         if (!StringUtils.isEmpty(parent_id)) {
@@ -166,7 +166,7 @@ public class ModuleController extends Controller {
             }
             module.set("module_name", module_name);
             module.update();
-            Db.update("update eeda_form_define set name='"+module_name+"' where module_id ='"+module.get("id")+"'");
+            Db.update("update eeda_form_define set name='"+module_name+"' where module_id ='"+module.getLong("id")+"'");
         }
 
         renderJson(module);
@@ -213,7 +213,7 @@ public class ModuleController extends Controller {
 
         // 重新算序号
         String sql = "select id, module_name, parent_id, office_id, seq from eeda_modules where office_id="
-                + LoginUserController.getLoginUser(this).get("office_id")
+                + LoginUserController.getLoginUser(this).getLong("office_id")
                 + " order by seq";
         List<Module> modules = Module.dao.find(sql);
         int newSeq = 1;
@@ -1004,7 +1004,7 @@ public class ModuleController extends Controller {
             if("id".equals(existFieldName))
                 continue;
             for (Record field : fieldList) {
-                String fieldName = "f" + field.get("id").toString() + "_"
+                String fieldName = "f" + field.getLong("id").toString() + "_"
                         + field.getStr("field_name");
                 if(existFieldName.equals(fieldName)){
                     is_exist = true;
@@ -1125,10 +1125,10 @@ public class ModuleController extends Controller {
                 Record ref = Db
                         .findFirst(
                                 "select * from eeda_form_field_type_auto_no where field_id=?",
-                                field.get("id"));
+                                field.getLong("id"));
                 List<Record> item_list = Db
                         .find("select * from eeda_form_field_type_auto_no_item where field_id=?",
-                                field.get("id"));
+                                field.getLong("id"));
                 if (item_list.size() > 0)
                     ref.set("item_list", item_list);
                 field.set("auto_no", ref);
@@ -1136,17 +1136,17 @@ public class ModuleController extends Controller {
                 Record ref = Db
                         .findFirst(
                                 "select * from eeda_form_field_type_detail_ref where field_id=?",
-                                field.get("id"));
+                                field.getLong("id"));
 
                 List<Record> condition_list = Db
                         .find("select * from eeda_form_field_type_detail_ref_join_condition where field_id=?",
-                                field.get("id"));
+                                field.getLong("id"));
                 if (condition_list.size() > 0)
                     ref.set("join_condition", condition_list);
                 
                 List<Record> field_list = Db
                         .find("select * from eeda_form_field_type_detail_ref_display_field where field_id=? order by sort_no",
-                                field.get("id"));
+                                field.getLong("id"));
                 if (field_list.size() > 0)
                     ref.set("display_field", field_list);
                 field.set("detail_ref", ref);
@@ -1164,7 +1164,7 @@ public class ModuleController extends Controller {
                     ref.set("item_list", field_list);
                 
             }else if("下拉列表".equals(type)){
-            	 List<Record> field_list = Db.find("select * from eeda_form_field_type_dropdown where field_id=?",field.get("id"));
+            	 List<Record> field_list = Db.find("select * from eeda_form_field_type_dropdown where field_id=?",field.getLong("id"));
             	 if (field_list.size() > 0)
             		 field.set("dropdown_list", field_list);
             }
