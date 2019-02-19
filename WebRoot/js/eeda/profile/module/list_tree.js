@@ -5,8 +5,6 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
     	
         var module_obj;
 
-        $('#menu_sys_profile').addClass('active').find('ul').addClass('in');
-
         //---------------tree handle
         var setting = {
             view: {
@@ -166,6 +164,8 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                 console.log(json);
                 module_obj = json;
 
+                //跳回tab第一页
+                $("#displayDiv ul[role=tablist] li:first a").click();
                 //fields clear
                 fieldCont.clear();
 
