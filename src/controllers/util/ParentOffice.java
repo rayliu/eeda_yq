@@ -32,7 +32,7 @@ public class ParentOffice{
 		try{
 			userName = currentUser.getPrincipal().toString();
 			currentOffice = UserLogin.dao.findFirst("select * from user_login where user_name = ?",userName);
-		    parentOffice = Office.dao.findFirst("select * from office where id = ?",currentOffice.get("office_id"));
+		    parentOffice = Office.dao.findFirst("select * from office where id = ?",currentOffice.getLong("office_id"));
 		}catch(NullPointerException ex){
 			ex.printStackTrace();
 			controller.redirect("/login");
@@ -47,8 +47,8 @@ public class ParentOffice{
 	    map.put("parentOfficeId", parentID);
 	    map.put("currentBelongOfficeId", (Long) parentOffice.get("belong_office"));*/
 	    ParentOfficeModel pom = new ParentOfficeModel();
-	    pom.setBelongOffice((Long) parentOffice.get("belong_office"));
-	    pom.setCurrentOfficeId((Long) currentOffice.get("office_id"));
+	    pom.setBelongOffice(parentOffice.getLong("belong_office"));
+	    pom.setCurrentOfficeId(currentOffice.getLong("office_id"));
 	    pom.setParentOfficeId(parentID);
 		return pom;
 	}
