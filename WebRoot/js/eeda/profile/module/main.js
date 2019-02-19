@@ -247,5 +247,25 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             $('#'+targetId).val($('#formular_edit_modal_formular').val());
             $('#formular_edit_modal').modal('hide');
          });
+
+         $('#addProductDiv input[name=form_type]').change(function(e){
+            var val = this.value;
+            if(val=='form'){
+                //显示所有tab
+                $('#tablist li').show();
+            }else{
+                $('#tablist li').hide();
+                //显示tab：info, 自定义查询
+                $('#tablist li:nth-child(1)'
+                +', #tablist li:nth-child(3)'
+                +', #tablist li:nth-child(5)'
+                +', #tablist li:nth-child(6)'
+                +', #tablist li:nth-child(8)'
+                +', #tablist li:nth-child(9)').show();
+            }
+            //跳回tab第一页
+            $("#displayDiv ul[role=tablist] li:first a").click();
+
+         });
     });
 });
