@@ -621,7 +621,7 @@ public class ModuleController extends Controller {
 	            			List<Record> role_permission_list = Db.find("select * from role_permission where permission_id = ?",rowId);
 	            			if(role_permission_list.size()>0){
 	            				for(Record re : role_permission_list){
-	            					Db.update("delete from role_permission where id = ?", re.get("id"));
+	            					Db.update("delete from role_permission where id = ?", re.getLong("id"));
 	            				}
 	            			}
 	            			//最后才删除 permission表的数据
