@@ -1508,4 +1508,38 @@ public class ModuleController extends Controller {
     	List<Record> existIndexList = Db.find("select id,name from eeda_form_define where is_home_index='Y' and module_id!=?",module_id);
     	renderJson(existIndexList);
     }
+    /**
+     * 获取所有forms
+     */
+    public void getAllForms(){
+        Long officeId = LoginUserController.getLoginUser(this).getLong("office_id");
+        List<Record> formList = Db.find("select ef.id, ef.code, ef.name from eeda_modules em, eeda_form_define ef "
+                + "where em.id=ef.module_id and em.parent_id is not null and em.delete_flag ='N' and em.office_id=?", officeId);
+        renderJson(formList);
+        
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
+        orderListMap.put("draw", 0);
+        orderListMap.put("recordsTotal", formList.size());
+        orderListMap.put("recordsFiltered", formList.size());
+
+        orderListMap.put("data", formList);
+        renderJson(orderListMap);
+    }
+    
+    public void getFormFields(){
+        Long officeId = LoginUserController.getLoginUser(this).getLong("office_id");
+        String form_name = getPara("form_name");
+        List<Record> formList = Db.find("select ef.name form_name, eff.id, eff.form_id, eff.field_name, eff.field_display_name, "
+                + "eff.field_type, em.office_id from eeda_form_define ef, eeda_form_field eff, eeda_modules em "
+                + "where ef.id=eff.form_id and ef.module_id=em.id and em.office_id=? and ef.name=?", officeId, form_name);
+        renderJson(formList);
+        
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
+        orderListMap.put("draw", 0);
+        orderListMap.put("recordsTotal", formList.size());
+        orderListMap.put("recordsFiltered", formList.size());
+
+        orderListMap.put("data", formList);
+        renderJson(orderListMap);
+    }
 }

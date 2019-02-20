@@ -139,7 +139,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
           $('#ref_field').val(ref.REF_FIELD);
           $('#ref_condition').val(ref.REF_CONDITION);
 
-          if(ref.IS_DROPDOWN == 'Y'){
+          if(ref.REF_FIELD_DISPLAY_TYPE == 'dropdown'){
             $('#is_dropdown').prop('checked', true);
           }else{
             $('#is_dropdown').prop('checked', false);

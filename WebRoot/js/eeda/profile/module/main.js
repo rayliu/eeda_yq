@@ -4,7 +4,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
         perCont, authCont, printCont, interfaceCont) {
 
         $(document).ready(function() {
-
+            $('html, body').animate({scrollTop:0});
             var saveAction=function(btn, is_start){
             is_start = is_start || false; 
             var ue = UE.getEditor('container');
@@ -147,30 +147,110 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             $('#formular_edit_modal').modal('show');
         });
 
+        //-------选择引用表单 start----
+        var form_select_pop_dataTable = eeda.dt({
+            id: 'form_select_pop_dataTable',
+            paging: true,
+            lengthChange: false,
+            columns: [
+                { "data": "ID", "width": "30px",
+                    "render": function ( data, type, full, meta ) {
+                        var id='';
+                        if(data){
+                          id=data;
+                        }
+                      return '<input type="radio" name="checkBox" style="margin-right:5px;">'
+                      +'<input name="id" type="hidden" value="'+id+'">';
+                    }
+                },
+                { "data": "NAME",
+                    "render": function ( data, type, full, meta ) {
+                        var str = "";
+                        if(data){
+                            str = data;
+                        }
+                        return data;
+                     }
+                }
+            ]
+          });
+
         $('.form_select_pop').on('click', function(e){
-            // var targetId = $(this).attr('target');
-            // $('#formular_edit_modal_target_id').val(targetId);
-            // if("custom_filter_condition"==targetId){
-            // 	$('#formular_edit_modal_formular').val($("#"+targetId).val());
-            // 	var names = $("#custom_cols_table").DataTable().$("input[name='expression']");
-            // 	$("#field").html("");
-            // 	for(var i = 0;i<names.length;i++){
-            // 		$("#field").append("<span class='list-group-item' style='cursor:pointer;'>"+names[i].defaultValue+"</span>");
-            // 	}
-            // }else if("list_event_open_condition"==targetId){
-            // 	$("#field").html("");
-            // }else if("list_event_set_css_condition"==targetId){
-            // 	$("#field").html("");
-            // }else if("list_event_set_value_condition"==targetId){
-            // 	$("#field").html("");
-            // }else if("list_event_save_set_value_condition"==targetId){
-            // 	$("#field").html("");
-            // }else{
-            // 	$("#field").html("");
-            // }
-            
+            var url="/module/getAllForms";
+            form_select_pop_dataTable.ajax.url(url).load();
+            var targetId = $(this).attr('target');
+            $('#form_select_modal_target_id').val(targetId);
             $('#form_select_modal').modal('show');
         });
+
+        $('#form_select_modal_ok_btn').click(function(event) {
+            var targetId = $('#form_select_modal_target_id').val();
+            var form_name = $('#form_select_pop_dataTable td input[type=radio]:checked').closest('tr').find('td:nth-child(2)').text();
+            $('#'+targetId).val(form_name);
+            $('#form_select_modal').modal('hide');
+         });
+        //-------选择引用表单 end----
+
+        //-------选择引用表单的字段 start----
+        var form_fields_select_pop_dataTable = eeda.dt({
+            id: 'form_fields_select_pop_dataTable',
+            paging: true,
+            lengthChange: false,
+            columns: [
+                { "data": "ID", "width": "30px",
+                    "render": function ( data, type, full, meta ) {
+                        var id='';
+                        if(data){
+                        id=data;
+                        }
+                    return '<input type="radio" name="checkBox" style="margin-right:5px;">'
+                    +'<input name="id" type="hidden" value="'+id+'">';
+                    }
+                },
+                { "data": "FIELD_DISPLAY_NAME",
+                    "render": function ( data, type, full, meta ) {
+                        var str = "";
+                        if(data){
+                            str = data;
+                        }
+                        return data;
+                    }
+                },
+                { "data": "FIELD_TYPE",
+                    "render": function ( data, type, full, meta ) {
+                        var str = "";
+                        if(data){
+                            str = data;
+                        }
+                        return data;
+                    }
+                }
+            ]
+        });
+
+        $('.form_fields_select_pop').on('click', function(e){
+            var ref_form = $('#ref_form').val();
+            if(!ref_form){
+                alert('请先选择引用表单.');
+                return;
+            }
+                
+            $('#form_fields_select_modal_form_name').text(ref_form);
+            var url="/module/getFormFields?form_name="+ref_form;
+            form_fields_select_pop_dataTable.ajax.url(url).load();
+            var targetId = $(this).attr('target');
+            $('#form_fields_select_modal_target_id').val(targetId);
+            $('#form_fields_select_modal').modal('show');
+        });
+
+        $('#form_fields_select_modal_ok_btn').click(function(event) {
+            var targetId = $('#form_fields_select_modal_target_id').val();
+            var field_name = $('#form_fields_select_pop_dataTable td input[type=radio]:checked').closest('tr').find('td:nth-child(2)').text();
+            var form_name=$('#form_fields_select_modal_form_name').text();
+            $('#'+targetId).val(form_name+'.'+field_name);
+            $('#form_fields_select_modal').modal('hide');
+        });
+        //-------选择引用表单的字段 end----
 
         $("#field").on("click",".list-group-item",function(){
         	$("#formular_edit_modal_formular").val($('#formular_edit_modal_formular').val()+$(this).text());

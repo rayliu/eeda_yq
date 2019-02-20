@@ -1,26 +1,34 @@
 <div class="form-group">
     <div class="col-lg-12">
-        <h5>从表引用配置</h5>
+        <h5>字段引用配置</h5>
         <div class="row">
             <input type="hidden" id="ref_id">
-            <div class="col-lg-4">
-                <%include("/eeda/component/form/inputField.html", 
+            <div class="col-lg-6">
+                <%include("/profile/module/component/selectFormField.html", 
                                             {   id:'ref_form',
                                                 label:'引用表单'
                                             }){}%>
             </div>
-            <div class="col-lg-4">
-                <%include("/eeda/component/form/inputField.html", 
+            <div class="col-lg-6">
+                <%include("/profile/module/component/selectFormField_fields.html", 
                                             {   id:'ref_field',
                                                 label:'引用字段'
                                             }){}%>
             </div>
-            <div class="col-lg-4">
-                <%include("/eeda/component/form/inputField.html", 
-                                            {   id:'is_dropdown',
-                                                type: 'checkbox',
-                                                label:'作为下拉列表'
-                                            }){}%>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <label class="search-label">显示样式: </label>
+                <div class="form-group" style="float: left;" >
+                    <label class="radio-inline">
+                        <input type="radio" name="ref_field_display_type" value="dropdown" checked> 下拉列表
+                    </label>
+                </div>
+                <div class="form-group" >
+                    <label class="radio-inline">
+                        <input type="radio" name="ref_field_display_type" value="pop"> 弹框列表
+                    </label>
+                </div>
             </div>
         </div>
         <div class="row">

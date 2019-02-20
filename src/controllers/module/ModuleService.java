@@ -12,7 +12,6 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
-import com.sun.org.apache.regexp.internal.recompile;
 
 import controllers.util.PingYinUtil;
 
