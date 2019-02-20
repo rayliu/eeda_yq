@@ -9,13 +9,23 @@ define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMe
 	            }
 	            o[this.name].push(this.value || '');
 	        } else {
-	            o[this.name] = this.value || '';
+	        	if($("input[name='"+this.name+"']").hasClass("Wdate")){
+	        		o[this.name] = this.value || null;
+	        	}else{
+	        		o[this.name] = this.value || '';
+	        	}
 	        }
 	    });
 	    var $radio = $('input[type=radio],input[type=checkbox]',this);
 	    $.each($radio,function(){
 	        if(!o.hasOwnProperty(this.name)){
 	            o[this.name] = '';
+	        }
+	    });
+	    var $file_name = $('.file_name',this);
+	    $.each($file_name,function(){
+	        if($(this).text()!=''){
+	            o[$(this).attr("name")] = $(this).text();
 	        }
 	    });
 	    return o;
@@ -211,7 +221,7 @@ define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMe
                 }
             });
         }
-        $("td").on("click","input[name='files']",function(){
+        $("td").on("click","input[name='img_files']",function(){
         	var self = $(this);
 	        $('#'+self.attr("id")).fileupload({
 				autoUpload: true, 
@@ -231,6 +241,33 @@ define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMe
 		        			+"<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='width: 150px;height: 145px; max-width: 100%;max-height: 100%; '/></div>";
 		        		var id = $(this).parent().parent().find("div[name='upload']").attr("id");
 		        		$("#"+id).append(returnStr);
+		        	}
+			    	
+			     },
+		        error: function () {
+		            alert('上传的时候出现了错误！');
+		        }
+	        });
+        });
+        
+        $("td").on("click","input[name='files']",function(){
+        	var self = $(this);
+	        $('#'+self.attr("id")).fileupload({
+				autoUpload: true, 
+			    url: '/form/uploadFile',
+			    dataType: 'json',
+//			    maxFileSize:1 * 1024 ,
+//			    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+//			    messages: {
+//			        maxFileSize: 'File exceeds maximum allowed size of 99MB',
+//			        acceptFileTypes: 'File type not allowed'
+//			    },
+		        done: function (e, data) {
+		        	if(data.result.RESULT){
+		        		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
+		        		var returnStr = "<a style='color:#06c;text-decoration: underline;' href='"+data.result.FILEURL+"' download='w3logo'>"+data.result.FILENAME+"</a>"
+		        		$('#'+self.attr("id")).parent().parent().find(".file_name").html("");
+		        		$('#'+self.attr("id")).parent().parent().find(".file_name").append(returnStr);
 		        	}
 			    	
 			     },

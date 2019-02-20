@@ -703,20 +703,24 @@ public class FormController extends Controller {
             String replaceNameDest ="";
             String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
             
+            String requiredStr = "";
+            if("Y".equals(fieldRec.getStr("REQUIRED"))){
+            	requiredStr = "<span style='float:left;color:red;line-height: 31px;font-size: 16px;margin-left: -10px;'>*</span>";
+            }
             if("自动编号".equals(fieldType)){
-                replaceNameDest = "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
-                        + "<div class='formControls col-xs-8 col-sm-9'>"
+                replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
+                        + "<div class='formControls col-xs-8 col-sm-8'>"
                         + "  <input type='text' name='"+inputId+"' class='input-text' autocomplete='off'  placeholder='系统自动生成' disabled>"
-                        + "</div>";
+                        + "</div>"+requiredStr;
             }else if("文本".equals(fieldType)){
                 String disabled = "";
                 if("Y".equals(read_only)){
                     disabled = "disabled";
                 }
-                replaceNameDest = "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
-                        + "<div class='formControls col-xs-8 col-sm-9'>"
+                replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
+                        + "<div class='formControls col-xs-8 col-sm-8'>"
                         + "  <input type='text' name='"+inputId+"' class='input-text' autocomplete='off' "+disabled+" >"
-                        + "</div>";
+                        + "</div>"+requiredStr;
             }else if("全国城市".equals(fieldType)){
                 String disabled = "";
                 if("Y".equals(read_only)){
@@ -745,44 +749,44 @@ public class FormController extends Controller {
                         "        "+
                         "    <ul id='"+inputId+"_list——1' class='pull-right dropDown-menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;'>"+
                         "    </ul>"+
-                        "</div>";
+                        "</div>"+requiredStr;
             }else if("日期".equals(fieldType)){
                 replaceNameDest = "<div id='"+inputId+"_div'>"
-                        + "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
-                        + " <div class='formControls col-xs-8 col-sm-9'>"
+                        + "<label class='search-label'>"+fieldDisplayName+"</label>"
+                        + " <div class='formControls col-xs-8 col-sm-8'>"
                         + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd\"})' name='"+inputId+"' class='input-text Wdate'>"
                         + " </div> "
-                        + "</div> ";
+                        + "</div> "+requiredStr;
             }else if("日期时间".equals(fieldType)){
             	 String disabled = "";
                  if("Y".equals(read_only)){
                      disabled = "disabled";
                  }
                 replaceNameDest = "<div id='"+inputId+"_div'>"
-                        + "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
-                        + " <div class='formControls col-xs-8 col-sm-9'>"
+                        + "<label class='search-label'>"+fieldDisplayName+"</label>"
+                        + " <div class='formControls col-xs-8 col-sm-8'>"
                         + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd HH:mm:ss\"})' name='"+inputId+"' class='input-text Wdate'"+disabled+">"
                         + " </div> "
-                        + "</div> ";
+                        + "</div> "+requiredStr;
             }else if("多行文本".equals(fieldType)){
                 replaceNameDest = "<div id='"+inputId+"_div'>"
-                        + "<label class='search-label col-xs-4 col-sm-1'>"+fieldDisplayName+"</label>"
+                        + "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + " <div class='formControls col-xs-8 col-sm-11'>"
                         + "    <textarea class='textarea valid' placeholder='' name='"+inputId+"' ></textarea>"
                         + " </div> "
-                        + "</div> ";
+                        + "</div> "+requiredStr;
             }else if("复选框".equals(fieldType)){
                 FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_checkbox(form_name, fieldRec, fieldRec.getLong("id"));
-                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
+                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> "+requiredStr;
             }else if("从表引用".equals(fieldType)){
                 FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_detail(form_name, fieldRec, fieldRec.getLong("id"));
-                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
+                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> "+requiredStr;
             }else if("字段引用".equals(fieldType)){
                 FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_ref(form_name, fieldRec, fieldRec.getLong("id"));
-                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
+                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div' style='height:0px;'>"+replaceNameDest+"</div> "+requiredStr;
             }else if("按钮".equals(fieldType)){
                 FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_btn(form_name, fieldRec, fieldRec.getLong("id"));
@@ -790,7 +794,11 @@ public class FormController extends Controller {
             }else if("下拉列表".equals(fieldType)){
             	FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_dropdown(form_name, fieldRec, fieldRec.getLong("id"));
-                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
+                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> "+requiredStr;
+            }else if("附件".equals(fieldType)){
+            	FormService fs = new FormService(this);
+                replaceNameDest = fs.processFieldType_fileUpload(form_name, fieldRec, fieldRec.getLong("id"));
+                replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> "+requiredStr;
             }else if("图片".equals(fieldType)){
             	FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_imgUpload(form_name, fieldRec, fieldRec.getLong("id"));
@@ -830,5 +838,13 @@ public class FormController extends Controller {
     	re.set("fileName", fileName);
     	renderJson(re);
     }
-    
+    public void uploadFile(){
+    	File file = getFile().getFile();
+    	String fileName = file.getName();
+    	Record re = new Record();
+    	re.set("fileName", fileName);
+    	re.set("fileUrl", "/upload/"+fileName);
+    	re.set("result", true);
+    	renderJson(re);
+    }
 }

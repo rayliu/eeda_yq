@@ -302,6 +302,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             item.SEQ=$('#seq').val();
             item.READ_ONLY=$('#read_only').prop('checked')==true?'Y':'N';
             item.LISTED=$('#is_not_list_col').prop('checked')==true?'N':'Y';
+            item.REQUIRED=$('#required').prop('checked')==true?'Y':'N';
             
 
             var checkText=$('#field_type').find("option:selected").text();

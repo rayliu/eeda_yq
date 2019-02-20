@@ -46,8 +46,8 @@ public class FormService {
         
         List<Record> list = Db.find(
                 "select * from eeda_form_field_type_checkbox_item where field_id=?", field_id);
-        returnStr = "<label class='form-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
-                + " <div class='formControls skin-minimal col-xs-8 col-sm-9'>";
+        returnStr = "<label class='form-label'>"+fieldDisplayName+"</label>"
+                + " <div class='formControls skin-minimal col-xs-8 col-sm-8'>";
         int index = 0;
         for (Record r : list) {
             index++;
@@ -112,15 +112,15 @@ public class FormService {
         
         String listJson = JsonKit.toJson(itemList);
         
-        returnStr = "<label class='search-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
-                + "<div class='formControls col-xs-8 col-sm-9'>"
+        returnStr = "<label class='search-label'>"+fieldDisplayName+"</label>"
+                + "<div class='formControls col-xs-8 col-sm-8'>"
                 + " <input type='text' name='"+inputId+"' class='input-text' autocomplete='off' placeholder='请选择' eeda_type='drop_down'"
                 + "    target_form='"+refForm.getLong("id")+"' target_field_name='"+field_name+"'"
                 + "    item_list='"+listJson+"'>"
                 + "</div>"
-                + "<span class='dropDown'>"
+                + "<div class='dropDown'>"
                 + "     <ul id='"+inputId+"_list' class='dropDown-menu menu radius box-shadow'>"
-                + "</span>";
+                + "</div>";
         
         return returnStr;
     }
@@ -173,8 +173,8 @@ public class FormService {
         List<Record> dropdown_list = Db.find(
                 "select * from eeda_form_field_type_dropdown where field_id=? order by sequence", field_id);
         
-        returnStr = "<label class='form-label col-xs-4 col-sm-3'>"+fieldDisplayName+"</label>"
-                + " <div class='formControls skin-minimal col-xs-8 col-sm-9'>"
+        returnStr = "<label class='form-label'>"+fieldDisplayName+"</label>"
+                + " <div class='formControls skin-minimal col-xs-8 col-sm-8'>"
                 + " <select id='"+inputId+"' name='"+inputId+"' class='form-control input-text'>";
         String dropdownStr = "";
         for (Record r : dropdown_list) {
@@ -194,10 +194,29 @@ public class FormService {
         String fieldName = fieldRec.getStr("field_name");
         Long form_id = fieldRec.getLong("form_id");
         String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
-        returnStr = "<label class='form-label' style='width: 10%;margin-left: 1.3%;margin-right: 2%;float:left;'>"+fieldDisplayName+"</label>"
+        returnStr = "<label class='form-label'>"+fieldDisplayName+"</label>"
         		+ "<span style='width:30%;' class='btn-upload'><a href='javascript:void();' class='btn btn-primary radius'><i class='iconfont'>&#xf0020;</i> 上传图片</a>"
-        				+ "<input type='file' id='fileupload"+fieldRec.get("id")+"' multiple name='files' class='input-file'></span>"
+        				+ "<input type='file' id='fileupload"+fieldRec.get("id")+"' multiple name='img_files' class='input-file'></span>"
         				+ "<div id='f"+fieldRec.get("id")+"' name='upload' style='margin-top:1%;'></div>";
+        return returnStr;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Before(Tx.class)
+    public String processFieldType_fileUpload(String form_name, Record fieldRec, Long field_id){
+        String returnStr = "";
+        String fieldDisplayName = fieldRec.getStr("field_display_name");
+        String fieldName = fieldRec.getStr("field_name");
+        Long form_id = fieldRec.getLong("form_id");
+        String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
+        returnStr = "<label class='form-label'>"+fieldDisplayName+"</label>"
+        		  + "<div class='formControls col-xs-8 col-sm-8'>"
+        		  + "<span class='btn-upload form-group' style='float:left;'>"
+        		  + "<a href='javascript:void();' class='btn btn-primary size-S radius'>上传文件</a>"
+        		  + "<input type='file' id='fileupload"+fieldRec.get("id")+"' multiple name='files' class='input-file'>"
+        		  + "</span>"
+        		  + "<span name='"+inputId+"' class='col-sm-8 file_name' style='overflow: hidden; text-overflow: ellipsis;white-space: nowrap;'></span>"
+                  + " </div>";
         return returnStr;
     }
 }

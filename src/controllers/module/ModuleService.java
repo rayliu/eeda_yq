@@ -360,6 +360,7 @@ public class ModuleService {
             String field_type = (String) field.get("field_type".toUpperCase());
             String read_only = (String) field.get("read_only".toUpperCase());
             String listed = (String) field.get("listed".toUpperCase());
+            String required = (String) field.get("required".toUpperCase());
             
             Record itemRec = new Record();
             if (!(id instanceof java.lang.Double)) {
@@ -370,6 +371,7 @@ public class ModuleService {
                 itemRec.set("field_type", field_type);
                 itemRec.set("read_only", read_only);
                 itemRec.set("listed", listed);
+                itemRec.set("required", required);
                 if (seq instanceof java.lang.Long)
                     itemRec.set("seq", seq);
                 Db.save("eeda_form_field", itemRec);
@@ -384,6 +386,7 @@ public class ModuleService {
                     itemRec.set("seq", seq);
                 itemRec.set("read_only", read_only);
                 itemRec.set("listed", listed);
+                itemRec.set("required", required);
                 Db.update("eeda_form_field", itemRec);
             }
 
@@ -417,21 +420,21 @@ public class ModuleService {
                     .get("ref_form".toUpperCase());
             String ref_field = (String) fieldTypeObj
                     .get("ref_field".toUpperCase());
-            String is_dropdown = (String) fieldTypeObj
-                    .get("is_dropdown".toUpperCase());
+            String display_type = (String) fieldTypeObj
+                    .get("display_type".toUpperCase());
             Record rec = new Record();
             if (StrKit.isBlank(refId)) {
                 rec.set("field_id", field_id);
                 rec.set("ref_form", ref_form);
                 rec.set("ref_field", ref_field);
-                rec.set("is_dropdown", is_dropdown);
+                rec.set("display_type", display_type);
                 Db.save("eeda_form_field_type_ref", rec);
             } else {
                 rec = Db.findById("eeda_form_field_type_ref", refId);
                 rec.set("field_id", field_id);
                 rec.set("ref_form", ref_form);
                 rec.set("ref_field", ref_field);
-                rec.set("is_dropdown", is_dropdown);
+                rec.set("display_type", display_type);
                 Db.update("eeda_form_field_type_ref", rec);
             }
             
