@@ -66,7 +66,7 @@
 				 	<li role="presentation" >
 				 	 	<a href="#fields" aria-controls="permission" role="tab" data-toggle="tab">字段</a>
 					</li>
-					<li role="presentation" >
+					<li role="presentation" style="display: none;">
 						<a href="#custom_search" aria-controls="permission" role="tab" data-toggle="tab">自定义查询</a>
 					</li>
 				 	 <li role="presentation" >
@@ -199,7 +199,7 @@
     
 
 <%include("/profile/module/events/formular/formular_modal.html", {}){} %>
-   
+<%include("/profile/module/component/form_select_modal.html", {}){} %>   
 <%}%>
 
 <script>

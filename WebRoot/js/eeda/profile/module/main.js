@@ -147,6 +147,31 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             $('#formular_edit_modal').modal('show');
         });
 
+        $('.form_select_pop').on('click', function(e){
+            // var targetId = $(this).attr('target');
+            // $('#formular_edit_modal_target_id').val(targetId);
+            // if("custom_filter_condition"==targetId){
+            // 	$('#formular_edit_modal_formular').val($("#"+targetId).val());
+            // 	var names = $("#custom_cols_table").DataTable().$("input[name='expression']");
+            // 	$("#field").html("");
+            // 	for(var i = 0;i<names.length;i++){
+            // 		$("#field").append("<span class='list-group-item' style='cursor:pointer;'>"+names[i].defaultValue+"</span>");
+            // 	}
+            // }else if("list_event_open_condition"==targetId){
+            // 	$("#field").html("");
+            // }else if("list_event_set_css_condition"==targetId){
+            // 	$("#field").html("");
+            // }else if("list_event_set_value_condition"==targetId){
+            // 	$("#field").html("");
+            // }else if("list_event_save_set_value_condition"==targetId){
+            // 	$("#field").html("");
+            // }else{
+            // 	$("#field").html("");
+            // }
+            
+            $('#form_select_modal').modal('show');
+        });
+
         $("#field").on("click",".list-group-item",function(){
         	$("#formular_edit_modal_formular").val($('#formular_edit_modal_formular').val()+$(this).text());
         });
@@ -253,6 +278,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             if(val=='form'){
                 //显示所有tab
                 $('#tablist li').show();
+                $('#tablist li:nth-child(3)').hide();
             }else{
                 $('#tablist li').hide();
                 //显示tab：info, 自定义查询
