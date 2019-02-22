@@ -20,19 +20,14 @@ define(['jquery'], function ($) {
                           +'<input name="id" type="hidden" value="'+id+'">';
                   }
               },
-              { "data": "NAME",
+              { "data": "FROM_NAME",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                          data='';
-                    return '<input type="text" name="name" value="'+data+'" class="form-control" style="width:200px"/>';
+                    return '<input type="text" name="value" value="'+data+'" class="form-control" style="width:200px" disabled/>';;
                   }
               },
-              { "data": "operator",
-                "render": function ( data, type, full, meta ) {
-                    return '=';
-                  }
-              },
-              { "data": "VALUE",
+              { "data": "TO_NAME",
                 "render": function ( data, type, full, meta ) {
                     if(!data)
                          data='';
@@ -68,8 +63,8 @@ define(['jquery'], function ($) {
             for (var i = 0; i < inputs.length/3; i++) {
               var item={
                 ID: $(inputs[i*3]).val(),
-                NAME: $(inputs[i*3 + 1]).val(),
-                VALUE: $(inputs[i*3 + 2]).val()
+                FROM_NAME: $(inputs[i*3 + 1]).val(),
+                TO_NAME: $(inputs[i*3 + 2]).val()
               };
 
               itemList.push(item);
@@ -82,12 +77,77 @@ define(['jquery'], function ($) {
         var clear = function(){
           dataTable.clear().draw();
         };
+        //-------选择引用表单的字段 start----
+        var form_fields_select_pop_dataTable = eeda.dt({
+          id: 'form_fields_select_pop_dataTable',
+          paging: true,
+          lengthChange: false,
+          columns: [
+              { "data": "ID", "width": "30px",
+                  "render": function ( data, type, full, meta ) {
+                      var id='';
+                      if(data){
+                      id=data;
+                      }
+                  return '<input type="checkBox" name="checkBox" style="margin-right:5px;">'
+                  +'<input name="id" type="hidden" value="'+id+'">';
+                  }
+              },
+              { "data": "FIELD_DISPLAY_NAME",
+                  "render": function ( data, type, full, meta ) {
+                      var str = "";
+                      if(data){
+                          str = data;
+                      }
+                      return data;
+                  }
+              },
+              { "data": "FIELD_TYPE",
+                  "render": function ( data, type, full, meta ) {
+                      var str = "";
+                      if(data){
+                          str = data;
+                      }
+                      return data;
+                  }
+              }
+          ]
+        });
 
         $('#add_ref_btn').click(function(){
-            dataTable.row.add({}).draw(false);
-            current_tr_index = dataTable.rows().data().length;
-            current_tr = $('#field_ref_display_table tr:eq('+current_tr_index+')');
+            var ref_form = $('#ref_form').val();
+            if(!ref_form){
+                alert('请先选择引用表单.');
+                return;
+            }
+                
+            $('#form_fields_select_modal_form_name').text(ref_form);
+            var url="/module/getFormFields?form_name="+ref_form;
+            form_fields_select_pop_dataTable.ajax.url(url).load();
+            var targetId = $(this).attr('target');
+            $('#form_fields_select_modal_target_id').val(targetId);
+            $('#form_fields_select_modal').modal('show');
+            $('.modal-backdrop').css({"z-index":"0"});
         });
+
+        $('#form_fields_select_modal_ok_btn').click(function(event) {
+          var targetId = $('#form_fields_select_modal_target_id').val();
+          var form_name=$('#form_fields_select_modal_form_name').text();
+          var tr_rows = $('#form_fields_select_pop_dataTable td input[type=checkBox]:checked').closest('tr');
+          for(var i=0; i< tr_rows.length; i++){
+            var tr = tr_rows[i];
+            var field_name = $(tr).find('td:nth-child(2)').text();
+            var item={};
+            item.ID = "";
+            item.FROM_NAME = form_name+'.'+field_name;
+            item.TO_NAME = "";
+            dataTable.row.add(item).draw(false);
+          }
+           
+          //$('#'+targetId).val(form_name+'.'+field_name);
+          $('#form_fields_select_modal').modal('hide');
+        });
+        //-------选择引用表单的字段 end----
 
         return {
             clear: clear,

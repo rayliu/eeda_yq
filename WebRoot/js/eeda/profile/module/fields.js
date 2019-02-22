@@ -31,63 +31,67 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         		var flag = false;
         		//选中中tr前，tr中有的elect_fla之前为Y的，表示上一条没有确定
         		$('#fields_table tbody tr').each(function(){
-            		if($(this).attr("elect_flag")=="Y"){
-            			alert("上一条未确定，请点击确定再操作");
+            		if($(this).attr("elect_flag")=="Y" && fields_property_change=='Y'){
+            			alert("上一个字段修改未确定，请点击确定再操作");
             			flag = true;
             			return false;
             		}
             	});
         		if(flag){
         			return;
-        		}
-        		 current_tr = this;
-                 $(current_tr).attr("elect_flag","Y");//将当前选中tr的elect_flag设为Y，表示当前行被选中，可以对当前行编辑
-                 $('#fields_table tbody tr').css('background-color','#fff');
-                 $(current_tr).css('background-color','#00BCD4');
-                 current_tr_index = dataTable.row( this ).index();
-                 var data = dataTable.row( this ).data();
-                 
-                 $('#field_display_name').val(data.FIELD_DISPLAY_NAME);
-                 $('#field_type').val(data.FIELD_TYPE).change();
-                 $('#sort_type').val(data.SORT_TYPE);
-                 $('#default_value').val(data.DEFAULT_VALUE);
-                 $('#seq').val(data.SEQ);
+            }
+              
+              fields_property_re_display_running=true;
+        		  current_tr = this;
+              $(current_tr).attr("elect_flag","Y");//将当前选中tr的elect_flag设为Y，表示当前行被选中，可以对当前行编辑
+              $('#fields_table tbody tr').css('background-color','#fff');
+              $(current_tr).css('background-color','#00BCD4');
+              current_tr_index = dataTable.row( this ).index();
+              var data = dataTable.row( this ).data();
+              
+              $('#field_display_name').val(data.FIELD_DISPLAY_NAME);
+              $('#field_type').val(data.FIELD_TYPE).change();
+              $('#sort_type').val(data.SORT_TYPE);
+              $('#default_value').val(data.DEFAULT_VALUE);
+              $('#seq').val(data.SEQ);
 //                 if(data.LISTED == 'Y'){
 //                   $('#is_not_list_col').prop('checked', false);
 //                 }else{
 //                   $('#is_not_list_col').prop('checked', true);
 //                 }
-                 if(data.READ_ONLY=="Y"){
-                	 $('#read_only').prop('checked', true);
-                 }else{
-                	 $('#read_only').prop('checked', false);
-                 }
-                 if(data.REQUIRED=="Y"){
-                	 $('#required').prop('checked', true);
-                 }else{
-                	 $('#required').prop('checked', false);
-                 }
-                 if(data.LISTED=="N"){
-                	 $('#is_not_list_col').prop('checked', true);
-                 }else{
-                	 $('#is_not_list_col').prop('checked', false);
-                 }
+              if(data.READ_ONLY=="Y"){
+                $('#read_only').prop('checked', true);
+              }else{
+                $('#read_only').prop('checked', false);
+              }
+              if(data.REQUIRED=="Y"){
+                $('#required').prop('checked', true);
+              }else{
+                $('#required').prop('checked', false);
+              }
+              if(data.LISTED=="N"){
+                $('#is_not_list_col').prop('checked', true);
+              }else{
+                $('#is_not_list_col').prop('checked', false);
+              }
 
-                 if(!data.FIELD_TYPE){
-                   //清空所有属性
-                   $('#check_box_id').val('');
-                   checkboxCont.dataTable.clear().draw();
-                 }else if(data.FIELD_TYPE == '自动编号'){
-                     re_display_auto_no_values(data);
-                 }else if(data.FIELD_TYPE == '复选框'){
-                     re_display_checkbox_values(data);
-                 }else if(data.FIELD_TYPE == '从表引用'){
-                     re_display_detail_ref_values(data);
-                 }else if(data.FIELD_TYPE == '字段引用'){
-                     re_display_ref_values(data);
-                 }else if(data.FIELD_TYPE == '下拉列表'){
-                	 re_display_dropdown_values(data);
-                 }
+              if(!data.FIELD_TYPE){
+                //清空所有属性
+                $('#check_box_id').val('');
+                checkboxCont.dataTable.clear().draw();
+              }else if(data.FIELD_TYPE == '自动编号'){
+                  re_display_auto_no_values(data);
+              }else if(data.FIELD_TYPE == '复选框'){
+                  re_display_checkbox_values(data);
+              }else if(data.FIELD_TYPE == '从表引用'){
+                  re_display_detail_ref_values(data);
+              }else if(data.FIELD_TYPE == '字段引用'){
+                  re_display_ref_values(data);
+              }else if(data.FIELD_TYPE == '下拉列表'){
+                  re_display_dropdown_values(data);
+              }
+
+              fields_property_re_display_running=false;
         	}
         } );
 
@@ -139,10 +143,11 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
           $('#ref_field').val(ref.REF_FIELD);
           $('#ref_condition').val(ref.REF_CONDITION);
 
-          if(ref.REF_FIELD_DISPLAY_TYPE == 'dropdown'){
-            $('#is_dropdown').prop('checked', true);
+          var $radios= $('input[name=ref_field_display_type]');
+          if(ref.DISPLAY_TYPE == 'dropdown'){
+            $radios.filter('[value=dropdown]').prop('checked', true);
           }else{
-            $('#is_dropdown').prop('checked', false);
+            $radios.filter('[value=pop]').prop('checked', true);
           }
           var display_list = ref.ITEM_LIST;
           refCont.dataTable.clear().draw();
@@ -286,7 +291,14 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         	$('.dropdown_config').show();
           }
         });
-
+        //取消字段修改
+        $('#field_tab_cancelFieldBtn').click(function(){
+          $(current_tr).attr("elect_flag","N");
+            $(current_tr).css('background-color','#fff');
+            $("#fields_property input[type='text']").val("");
+            $("#fields_property input[type='checkbox']").prop("checked",false);
+            fields_property_change='N';
+        });
         //回写到table
         $('#field_tab_confirmFieldBtn').click(function(){
         	update_flag = "Y";
@@ -330,6 +342,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             $(current_tr).css('background-color','#fff');
             $("#fields_property input[type='text']").val("");
             $("#fields_property input[type='checkbox']").prop("checked",false);
+            fields_property_change='N';
         });
 
         var check = function(){
@@ -365,6 +378,16 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         		}
         	});
         }
+        //回显标记位
+        var fields_property_re_display_running=false;
+        var fields_property_change='N';
+        //等回显完，才判断所选字段的属性是否被改动
+        $('#fields_property input, #fields_property select').change(function(){
+          //列表中有行被选中才监听
+          if(current_tr && !fields_property_re_display_running){
+            fields_property_change='Y';
+          }
+        });
         
         return {
         	check:check,

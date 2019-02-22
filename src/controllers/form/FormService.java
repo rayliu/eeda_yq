@@ -85,43 +85,59 @@ public class FormService {
         Long form_id = fieldRec.getLong("form_id");
         Record ref = Db.findFirst(
                 "select * from eeda_form_field_type_ref where field_id=?", field_id);
-        
+        String displayType = ref.getStr("display_type");
         String target_form_name = ref.getStr("ref_form");
         Record refForm = Db.findFirst(
                 "select * from eeda_form_define where name=?", target_form_name);
+        //回填字段
+//        String target_form_field = ref.getStr("ref_field");
+//        Record field_rec = FormService.getFieldName(target_form_field.split("\\.")[0], target_form_field.split("\\.")[1]);//获取数据库对应的名称: f59_xh
         
-        String target_form_field = ref.getStr("ref_field");
-        Record field_rec = FormService.getFieldName(target_form_field.split("\\.")[0], target_form_field.split("\\.")[1]);//获取数据库对应的名称: f59_xh
-        String field_name = "f"+field_rec.get("id")+"_"+field_rec.getStr("field_name");
         
-        String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
-        
+        String inputId = "form_"+form_id+"-f"+field_id+"_"+fieldName.toLowerCase();
+        String target_search_field_name = "";
         List<Record> itemList = Db.find(
                 "select * from eeda_form_field_type_ref_item where field_id=?", field_id);
         for (Record record : itemList) {
-            String name = record.getStr("name");
-            Record rec = FormService.getFieldName(name.split("\\.")[0], name.split("\\.")[1]);
+            String from_name = record.getStr("from_name");
+            Record rec = FormService.getFieldName(from_name.split("\\.")[0], from_name.split("\\.")[1]);
             String t_field_name = "f"+rec.get("id")+"_"+rec.getStr("field_name");//获取数据库对应的名称: f59_xh
-            record.set("target_field_name", t_field_name);
             
-            String value = record.getStr("value");
-            Record value_rec = FormService.getFieldName(value.split("\\.")[0], value.split("\\.")[1]);
-            String v_field_name = "f"+value_rec.get("id")+"_"+value_rec.getStr("field_name");//获取数据库对应的名称: f59_xh
-            record.set("origin_field_name", v_field_name);
+            target_search_field_name += (","+t_field_name);//查询的字段
+            
+            record.set("from_field_name", t_field_name);
+            //回填字段
+            String to_name = record.getStr("to_name");
+            if(StrKit.notBlank(to_name)){
+                if(to_name.indexOf("\\.")==-1){
+                    to_name=form_name+"."+to_name;
+                }
+                Record value_rec = FormService.getFieldName(to_name.split("\\.")[0], to_name.split("\\.")[1]);
+                String v_field_name = "f"+value_rec.get("id")+"_"+value_rec.getStr("field_name");//获取数据库对应的名称: f59_xh
+                record.set("to_field_name", v_field_name);
+            }
         }
         
         String listJson = JsonKit.toJson(itemList);
-        
-        returnStr = "<label class='search-label'>"+fieldDisplayName+"</label>"
-                + "<div class='formControls col-xs-8 col-sm-8'>"
-                + " <input type='text' name='"+inputId+"' class='input-text' autocomplete='off' placeholder='请选择' eeda_type='drop_down'"
-                + "    target_form='"+refForm.getLong("id")+"' target_field_name='"+field_name+"'"
-                + "    item_list='"+listJson+"'>"
-                + "</div>"
-                + "<div class='dropDown'>"
-                + "     <ul id='"+inputId+"_list' class='dropDown-menu menu radius box-shadow'>"
-                + "</div>";
-        
+        target_search_field_name=target_search_field_name.substring(1);//去掉第一个，
+        if("dropdown".equals(displayType)){
+            returnStr = "<label class='search-label'>"+fieldDisplayName+"</label>"
+                    + "<div class='formControls col-xs-8 col-sm-8'>"
+                    + " <input type='text' name='"+inputId+"' class='input-text' autocomplete='off' placeholder='请选择' eeda_type='drop_down'"
+                    + "    target_form='"+refForm.getLong("id")+"' target_field_name='"+target_search_field_name+"'"
+                    + "    item_list='"+listJson+"'>"
+                    + "</div>"
+                    + "<div class='dropDown'>"
+                    + "     <ul id='"+inputId+"_list' class='dropDown-menu menu radius box-shadow'>"
+                    + "</div>";
+        }else{
+            returnStr = "<label class='search-label'>"+fieldDisplayName+"</label>"
+                    + "<div class='formControls col-xs-8 col-sm-8'>"
+                    + " <input type='text' name='"+inputId+"' class='input-text' autocomplete='off' placeholder='请选择' eeda_type='pop'"
+                    + "    target_form='"+refForm.getLong("id")+"' target_field_name='"+target_search_field_name+"'"
+                    + "    item_list='"+listJson+"'>"
+                    + "</div>";
+        }
         return returnStr;
     }
     

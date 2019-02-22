@@ -61,6 +61,9 @@ define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMe
 
                 var module_id = $('#module_id').val();
                 var order_id = $('#order_id').val();
+                if(btn_id.split('-').length<=1)
+                    return;
+                    
                 var btn_id = btn_id.split('-')[1].split('_')[1];
 
                 $.post('/form/'+module_id+'-click-'+btn_id, function(events){

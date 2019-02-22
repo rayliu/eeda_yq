@@ -10,58 +10,18 @@
             </div>
             <div class="col-lg-6">
                 <%include("/eeda/component/form/selectField.html", 
-                            {   id:'field_type', 
-                                label:'类型', 
-                                value:order.type!'',
-                                value_list:[
-                                    {code:'文本', value:'文本'},
-                                    {code:'多行文本', value:'多行文本'},
-                                    {code:'数字', value:'数字'},
-                                    {code:'日期', value:'日期'},
-                                    {code:'日期时间', value:'日期时间'},
-                                    {code:'下拉列表', value:'下拉列表'},
-                                    {code:'全国城市', value:'全国城市'},
-                                    {code:'复选框', value:'复选框'},
-                                    {code:'树', value:'树'},
-                                    {code:'网址', value:'网址'},
-                                    {code:'注释', value:'注释'},
-                                    {code:'网页', value:'网页'},
-                                    {code:'附件', value:'附件'},
-                                    {code:'字段引用', value:'字段引用'},
-                                    {code:'从表引用', value:'从表引用'},
-                                    {code:'自动编号', value:'自动编号'},
-                                    {code:'图片', value:'图片'},
-                                    {code:'按钮', value:'按钮'}
-                                ]
-                            }){}%>
+                {   id:'type', 
+                    label:'对齐方式', 
+                    value:order.type!'',
+                    value_list:[
+                        {code:'top', value:'靠左'},
+                        {code:'bottom', value:'居中'},
+                        {code:'bottom', value:'靠右'}
+                    ]
+                }){}%>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <%include("/eeda/component/form/selectField.html", 
-                            {   id:'sort_type', 
-                                label:'排序', 
-                                value:order.type!'',
-                                value_list:[
-                                    {code:'', value:''},
-                                    {code:'升序', value:'升序'},
-                                    {code:'降序', value:'降序'}
-                                ]
-                            }){}%>
-            </div>
-            <div class="col-lg-6">
-                <%include("/eeda/component/form/selectField.html", 
-                            {   id:'type', 
-                                label:'对齐方式', 
-                                value:order.type!'',
-                                value_list:[
-                                    {code:'top', value:'靠左'},
-                                    {code:'bottom', value:'居中'},
-                                    {code:'bottom', value:'靠右'}
-                                ]
-                            }){}%>
-            </div>
-        </div>
+        
         <div class="row">
             <div class="col-lg-6">
                 <%include("/eeda/component/form/inputField.html", 
@@ -142,24 +102,53 @@
                                             }){}%>
             </div>
         </div>
-
+        <div class="row">
+                <div class="col-lg-6">
+                        <%include("/eeda/component/form/selectField.html", 
+                        {   id:'field_type', 
+                            label:'类型', 
+                            value:order.type!'',
+                            value_list:[
+                                {code:'文本', value:'文本'},
+                                {code:'多行文本', value:'多行文本'},
+                                {code:'数字', value:'数字'},
+                                {code:'日期', value:'日期'},
+                                {code:'日期时间', value:'日期时间'},
+                                {code:'下拉列表', value:'下拉列表'},
+                                {code:'全国城市', value:'全国城市'},
+                                {code:'复选框', value:'复选框'},
+                                {code:'树', value:'树'},
+                                {code:'网址', value:'网址'},
+                                {code:'注释', value:'注释'},
+                                {code:'网页', value:'网页'},
+                                {code:'附件', value:'附件'},
+                                {code:'字段引用', value:'字段引用'},
+                                {code:'从表引用', value:'从表引用'},
+                                {code:'自动编号', value:'自动编号'},
+                                {code:'图片', value:'图片'},
+                                {code:'按钮', value:'按钮'}
+                            ]
+                        }){}%>
+                    
+                </div>
+            </div>
 
         <div id="text_config" class="row config ">
             <%include("/profile/module/fields/edit_tab_fields_pro_text.html", {}){}%>
         </div>
-        <div class="row config auto_no_config" style="display: none;">
+        <div class="row config auto_no_config" style="display: none;border: solid 1px gold;background-color: aliceblue;">
             <%include("/profile/module/fields/edit_tab_fields_pro_auto_no.html", {}){}%>
         </div>
-        <div class="row config check_box_config" style="display: none;">
+        <div class="row config check_box_config" style="display: none;border: solid 1px gold;background-color: aliceblue;">
             <%include("/profile/module/fields/edit_tab_fields_pro_check_box.html", {}){}%>
         </div>
-        <div class="row config detail_table_re_config" style="display: none;">
+        <div class="row config detail_table_re_config" style="display: none;border: solid 1px gold;background-color: aliceblue;">
             <%include("/profile/module/fields/edit_tab_fields_pro_detail_table.html", {}){}%>
         </div>
-        <div class="row config ref_config" style="display: none;">
+        <div class="row config ref_config" style="display: none;border: solid 1px gold;background-color: aliceblue;">
             <%include("/profile/module/fields/edit_tab_fields_pro_ref.html", {}){}%>
         </div>
-        <div class="row config dropdown_config" style="display: none;">
+        <div class="row config dropdown_config" style="display: none;border: solid 1px gold;background-color: aliceblue;">
             <%include("/profile/module/fields/edit_tab_fields_pro_dropdown.html", {}){}%>
         </div>
 
@@ -200,6 +189,18 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-lg-6">
+                    <%include("/eeda/component/form/selectField.html", 
+                                {   id:'sort_type', 
+                                    label:'排序', 
+                                    value:order.type!'',
+                                    value_list:[
+                                        {code:'', value:''},
+                                        {code:'升序', value:'升序'},
+                                        {code:'降序', value:'降序'}
+                                    ]
+                                }){}%>
+                </div>
                 <div class="col-lg-6">
                     <%include("/eeda/component/form/inputField.html", 
                                                 {   id:'is_public',
@@ -245,6 +246,7 @@
             <div class="row">
                 <div class="form-group button-bar" >
                     <button type="button" class="btn btn-success" id="field_tab_confirmFieldBtn" style="margin-left: 15px;">确定</button>
+                    <button type="button" class="btn btn-default" id="field_tab_cancelFieldBtn" style="margin-left: 15px;">取消</button>
                 </div>
             </div>
     </div>

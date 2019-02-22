@@ -444,21 +444,21 @@ public class ModuleService {
             
             for (Map<String, ?> row : list) {
                 String id = row.get("id".toUpperCase()).toString();
-                String name = (String) row.get("name".toUpperCase());
-                String value = (String) row.get("value".toUpperCase());
+                String name = (String) row.get("from_name".toUpperCase());
+                String value = (String) row.get("to_name".toUpperCase());
 
                 Record itemRec = new Record();
                 if (StrKit.isBlank(id)) {
                     itemRec.set("field_id", field_id);
-                    itemRec.set("name", name);
-                    itemRec.set("value", value);
+                    itemRec.set("from_name", name);
+                    itemRec.set("to_name", value);
                     Db.save("eeda_form_field_type_ref_item", itemRec);
                 } else {
                     itemRec = Db.findById("eeda_form_field_type_ref_item",
                             id);
                     itemRec.set("field_id", field_id);
-                    itemRec.set("name", name);
-                    itemRec.set("value", value);
+                    itemRec.set("from_name", name);
+                    itemRec.set("to_name", value);
                     Db.update("eeda_form_field_type_ref_item", itemRec);
                 }
             }

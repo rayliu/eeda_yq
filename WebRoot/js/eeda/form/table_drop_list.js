@@ -1,7 +1,7 @@
 define(['jquery', 'sco'], function ($) {
 
 
-    $('table').on('keyup click', 'input[eeda_type=drop_down]', function(event) {
+    $('table .eeda').on('keyup click', 'input[eeda_type=drop_down]', function(event) {
         var inputField = $(this);
         var inputField_name = inputField.attr('name');
 
@@ -66,7 +66,7 @@ define(['jquery', 'sco'], function ($) {
     });
 
 
-    $('table').on('click', 'ul.dropDown-menu a', function(e){
+    $('table .eeda').on('click', 'ul.dropDown-menu a', function(e){
         var item = $(this);
         var id = item.attr('id');
         var value = item.text();

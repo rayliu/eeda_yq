@@ -320,6 +320,8 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
         	        //console.log(node);
                 }
                 $.fn.zTree.init($("#moduleTree"), setting, zNodes);
+
+                $('html, body').animate({scrollTop:0});
             },'json');
         };
         

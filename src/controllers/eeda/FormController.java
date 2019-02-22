@@ -565,7 +565,20 @@ public class FormController extends Controller {
     
     private Map<String,Object> queryForm(Long form_id){
     	List<Record> orderList = new ArrayList<Record>();
+    	//两种参数写法, 第一种为空就换第二种再试
     	String condition = DbUtils.buildConditions(getParaMap());
+    	if(StrKit.isBlank(condition) && StrKit.notBlank(getPara("target_field")) && StrKit.notBlank(getPara("like_str"))){
+    	    String fields = getPara("target_field");
+    	    String like_str = getPara("like_str");
+    	    String[] fieldsArr = fields.split(",");
+    	    List<String> list = new ArrayList<String>();
+    	    for (int i = 0; i < fieldsArr.length; i++) {
+                String fieldName=fieldsArr[i];
+                String likeStr = fieldName+" like '%"+like_str+"%'";
+                list.add(likeStr);
+            }
+    	    condition=" and ("+StringUtils.join(list.toArray(), " or ") +")";
+    	}
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
