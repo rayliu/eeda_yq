@@ -49,6 +49,20 @@ define(['jquery'], function ($) {
            
         } );
 
+        var ref_table_deleteIds = [];
+        $('#field_ref_display_table tbody').on('click', 'button', function () {
+          var btn = $(this);
+          var tr = btn.closest('tr');
+          var id = dataTable.row(tr).data().ID;
+
+          dataTable.row(tr).remove().draw();
+          if(id==null){
+        	  return;
+          }
+          ref_table_deleteIds.push({ID: id, action:'DELETE'});
+          return false;
+        });
+
         var buildDto = function(){
             var dto = {
               ID: $('#ref_id').val(),
@@ -69,8 +83,8 @@ define(['jquery'], function ($) {
 
               itemList.push(item);
             }
-
-            dto.ITEM_LIST = itemList;
+            var list = itemList.concat(ref_table_deleteIds);//加上删除的IDs
+            dto.ITEM_LIST = list;
             return dto;
         };
 

@@ -412,60 +412,67 @@ public class ModuleService {
         }else if ("从表引用".equals(fieldType)) {
             saveDetailRef(field, field_id);
         }else if ("字段引用".equals(fieldType)) {
-            Map<String, ?> fieldTypeObj = (Map<String, ?>) field
-                    .get("REF");
-            String refId = fieldTypeObj.get("id".toUpperCase()).toString();
-            String ref_form = (String) fieldTypeObj
-                    .get("ref_form".toUpperCase());
-            String ref_field = (String) fieldTypeObj
-                    .get("ref_field".toUpperCase());
-            String display_type = (String) fieldTypeObj
-                    .get("display_type".toUpperCase());
-            Record rec = new Record();
-            if (StrKit.isBlank(refId)) {
-                rec.set("field_id", field_id);
-                rec.set("ref_form", ref_form);
-                rec.set("ref_field", ref_field);
-                rec.set("display_type", display_type);
-                Db.save("eeda_form_field_type_ref", rec);
-            } else {
-                rec = Db.findById("eeda_form_field_type_ref", refId);
-                rec.set("field_id", field_id);
-                rec.set("ref_form", ref_form);
-                rec.set("ref_field", ref_field);
-                rec.set("display_type", display_type);
-                Db.update("eeda_form_field_type_ref", rec);
-            }
-            
-            List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
-                    .get("item_list".toUpperCase());
-            if(list==null)
-                return;
-            
-            for (Map<String, ?> row : list) {
-                String id = row.get("id".toUpperCase()).toString();
-                String name = (String) row.get("from_name".toUpperCase());
-                String value = (String) row.get("to_name".toUpperCase());
+            saveFieldRef(field, field_id);
+        }else if("下拉列表".equals(fieldType)){
+        	saveDropdown(field, field_id);
+        }
+        
+    }
 
-                Record itemRec = new Record();
-                if (StrKit.isBlank(id)) {
-                    itemRec.set("field_id", field_id);
-                    itemRec.set("from_name", name);
-                    itemRec.set("to_name", value);
-                    Db.save("eeda_form_field_type_ref_item", itemRec);
-                } else {
-                    itemRec = Db.findById("eeda_form_field_type_ref_item",
-                            id);
+    public void saveFieldRef(Map<String, ?> field, Long field_id) {
+        Map<String, ?> fieldTypeObj = (Map<String, ?>) field
+                .get("REF");
+        String refId = fieldTypeObj.get("id".toUpperCase()).toString();
+        String ref_form = (String) fieldTypeObj
+                .get("ref_form".toUpperCase());
+        String ref_field = (String) fieldTypeObj
+                .get("ref_field".toUpperCase());
+        String display_type = (String) fieldTypeObj
+                .get("display_type".toUpperCase());
+        Record rec = new Record();
+        if (StrKit.isBlank(refId)) {
+            rec.set("field_id", field_id);
+            rec.set("ref_form", ref_form);
+            rec.set("ref_field", ref_field);
+            rec.set("display_type", display_type);
+            Db.save("eeda_form_field_type_ref", rec);
+        } else {
+            rec = Db.findById("eeda_form_field_type_ref", refId);
+            rec.set("field_id", field_id);
+            rec.set("ref_form", ref_form);
+            rec.set("ref_field", ref_field);
+            rec.set("display_type", display_type);
+            Db.update("eeda_form_field_type_ref", rec);
+        }
+        
+        List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
+                .get("item_list".toUpperCase());
+        if(list==null)
+            return;
+        
+        for (Map<String, ?> row : list) {
+            String id = row.get("id".toUpperCase()).toString();
+            String name = (String) row.get("from_name".toUpperCase());
+            String value = (String) row.get("to_name".toUpperCase());
+
+            Record itemRec = new Record();
+            if (StrKit.isBlank(id)) {
+                itemRec.set("field_id", field_id);
+                itemRec.set("from_name", name);
+                itemRec.set("to_name", value);
+                Db.save("eeda_form_field_type_ref_item", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_field_type_ref_item", id);
+                if("DELETE".equals(row.get("action"))){
+                    Db.delete("eeda_form_field_type_ref_item", itemRec);
+                }else{
                     itemRec.set("field_id", field_id);
                     itemRec.set("from_name", name);
                     itemRec.set("to_name", value);
                     Db.update("eeda_form_field_type_ref_item", itemRec);
                 }
             }
-        }else if("下拉列表".equals(fieldType)){
-        	saveDropdown(field, field_id);
         }
-        
     }
     
     private void saveAutoNo(Map<String, ?> field, Long field_id) {

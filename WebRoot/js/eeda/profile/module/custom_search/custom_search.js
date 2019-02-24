@@ -10,7 +10,7 @@ define(['jquery', './custom_search_source', './custom_search_cols', './custom_se
 	}
 	
 	var sourceDisplay = function(custom_search_source){
-		//sourceCont.display(custom_search_source); 
+		sourceCont.display(custom_search_source); 
 	}
 	var sourceConditionDisplay = function(custom_search_source_condition){
 		if(custom_search_source_condition.length>0){

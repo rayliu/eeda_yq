@@ -6,6 +6,9 @@
 	.form-group .search-control {
 	    height: 34px;
 	}
+	#addProductDiv input {
+		margin-left: 5px;
+	}
 </style>
 <div id="page-wrapper">
 
@@ -46,15 +49,16 @@
     		<div class="btn-header">
 		    	<div id="addProductDiv" style="display: block;">
 		    		<h3>模块定义 </h3>
-
 		    		<div>
-						<input type="radio" name="form_type" value="form" checked>表单
-						<input type="radio" name="form_type" value="search_form">自定义查询报表
-			    		<!-- <input type="radio" name="form_type" value="report">报表 -->
-		    		</div>
-			    		
-
-		    		
+						<input type="radio" name="form_type" value="form" checked>PC-表单 
+						<input type="radio" name="form_type" value="search_form">PC-自定义查询 
+						<input type="radio" name="form_type" value="app_form">APP-表单 
+						<input type="radio" name="form_type" value="app_search_form">APP-自定义查询 
+						<!-- <input type="radio" name="form_type" value="APP">微信-表单
+						<input type="radio" name="form_type" value="APP">微信-自定义查询 -->
+						<input type="radio" name="form_type" value="wxa_form">微信小程序-表单 
+						<input type="radio" name="form_type" value="wxa_search_form">微信小程序-自定义查询
+		    		</div>    		
 				</div>
 			</div>
 			<div>

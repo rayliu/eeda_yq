@@ -498,10 +498,18 @@ public class FormController extends Controller {
     			String lie_name = expression.substring(index+1);
     			String biao_name = expression.substring(0,index);
     			Record define_source = Db.findFirst("select * from eeda_form_define where name=?",biao_name);
-    			Record field = Db.findFirst("select * from eeda_form_field where field_display_name=? and form_id=? ",lie_name,define_source.get("id"));
-    			field.set("listed","Y");
-    			field.set("custom_search","Y");
-    			fieldList.add(field);
+    			if("ID".equals(lie_name)){
+    			    Record field = new Record();
+    			    field.set("field_name","id");
+                    field.set("listed","N");
+                    field.set("custom_search","N");
+                    fieldList.add(field);
+    			}else{
+        			Record field = Db.findFirst("select * from eeda_form_field where field_display_name=? and form_id=? ",lie_name,define_source.get("id"));
+        			field.set("listed","Y");
+        			field.set("custom_search","Y");
+        			fieldList.add(field);
+    			}
     		}
     	return fieldList;
     }
@@ -589,13 +597,13 @@ public class FormController extends Controller {
         Record define = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
         if("search_form".equals(define.get("type"))){
         	String lieNameStr = getLieNameStr(form_id);
-        	String biaoNameStr = getBiaoNameStr(form_id);
-        	String joinStr = getJoinStr(form_id);
+        	String biaoNameStr = "";//getBiaoNameStr(form_id);//join
+        	String joinStr = getJoinStr(form_id);//left join
         	String filterStr = getFilterStr(form_id);
         	sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 ";
         	int index = biaoNameStr.indexOf(" ");
-        	
-        	orderList = Db.find(sql+ condition+filterStr + " order by "+biaoNameStr.substring(index)+".id desc " +sLimit);
+        	//+ " order by "+biaoNameStr.substring(index)+".id desc " 
+        	orderList = Db.find(sql+ condition+filterStr +sLimit);
         }else if("form".equals(define.get("type"))){
         	sql = "select * from form_"+form_id+" where 1=1 "; 
         	orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
@@ -630,7 +638,11 @@ public class FormController extends Controller {
 			if(lieNameStr.length()>0){
 				str = ",";
 			}
-			lieNameStr += str+biao_name_py+".f"+field.get("id")+"_"+field.get("field_name");
+			if("ID".equals(lie_name)){
+			    lieNameStr += str+biao_name_py+".id";
+			}else{
+			    lieNameStr += str+biao_name_py+".f"+field.get("id")+"_"+field.get("field_name");
+			}
     	}
     	return lieNameStr;
     }
@@ -645,7 +657,44 @@ public class FormController extends Controller {
     }
     
     private String getJoinStr(Long form_id){
-    	String JoinStr = "";
+        //TODO: 加office ID
+        //判断是join 还是 left join
+        //将两个表名存入Record中
+        Map<String, String> leftJoinMap = new HashMap<String, String>();
+        Map<String, String> joinMap = new HashMap<String, String>();
+    	String joinStr = "";
+    	List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source where form_id = ?",form_id);
+    	for(int i = 0;i<sourceList.size();i++){
+    	    String form_name1 = sourceList.get(i).get("form_name");
+            Record form_define1 = Db.findFirst("select * from eeda_form_define where name=? ",form_name1);
+            String form_py1 = PingYinUtil.getFirstSpell(form_name1);
+            String connectType1 = sourceList.get(i).get("connect_type"); 
+            
+            if(i==(sourceList.size()-1)){
+                continue;
+            }
+            String form_name2 = sourceList.get(i+1).get("form_name");
+            Record form_define2 = Db.findFirst("select * from eeda_form_define where name=? ",form_name2);
+            String form_py2 = PingYinUtil.getFirstSpell(form_name2);
+            String connectType2 = sourceList.get(i+1).get("connect_type"); 
+            if(StrKit.isBlank(connectType2))
+                continue;
+            
+            if("left_join".equals(connectType2)){
+                String key = form_name1+"-"+form_name2;
+                String joinTableStr = "form_"+form_define1.getLong("id")+" "+form_py1
+                        +" left join "+"form_"+form_define2.getLong("id")+" "+form_py2;
+                leftJoinMap.put(key, joinTableStr);
+            }else{
+                String key = form_name1+"-"+form_name2;
+                String joinTableStr = "form_"+form_define1.getLong("id")+" "+form_py1
+                        +", "+"form_"+form_define2.getLong("id")+" "+form_py2;
+                joinMap.put(key, joinTableStr);
+            }
+    	}
+    	
+    	//构造两个连接表的条件
+    	Map<String, String> fieldJoinMap = new HashMap<String, String>();
     	List<Record> sourceConditionList = Db.find("select * from eeda_form_custom_search_source_condition where form_id = ?",form_id);
     	for(int i = 0;i<sourceConditionList.size();i++){
     		String form_left = sourceConditionList.get(i).get("form_left");
@@ -653,7 +702,8 @@ public class FormController extends Controller {
     		String form_left_py = PingYinUtil.getFirstSpell(form_left);
     		String form_left_field = sourceConditionList.get(i).get("form_left_field");
     		int index_left = form_left_field.indexOf(".");
-    		Record field_left = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name=?",form_left_define.get("id"),form_left_field.substring(index_left+1));
+    		Record field_left = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name=?",
+    		        form_left_define.get("id"),form_left_field.substring(index_left+1));
     		String lie_name_left = "f"+field_left.get("id")+"_"+field_left.get("field_name");
     		
     		String form_right = sourceConditionList.get(i).get("form_right");
@@ -666,11 +716,19 @@ public class FormController extends Controller {
     		
     		String operator = sourceConditionList.get(i).get("operator");
     		
-    		
-    		
-    		JoinStr+=operator+" form_"+form_right_define.get("id")+" "+form_right_py+" on "+form_right_py+"."+lie_name_right+"="+form_left_py+"."+lie_name_left;
+    		String key = form_left+"-"+form_right;
+    		String value = form_left_py+"."+lie_name_left+"="+form_right_py+"."+lie_name_right;
+    		fieldJoinMap.put(key, value);
     	}
-    	return JoinStr;
+
+        String onStr = "";
+        //构造SQL
+        for (String key : leftJoinMap.keySet()) {
+            String talbeValue = leftJoinMap.get(key);
+            String condition = fieldJoinMap.get(key);
+            onStr+=talbeValue+" on "+condition;
+        }
+    	return onStr;
     }
 
     private String getFilterStr(Long form_id){

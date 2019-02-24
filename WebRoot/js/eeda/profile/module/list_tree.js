@@ -187,7 +187,7 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                     if(module_obj.FORM.IS_PUBLIC=='Y'){
                         $("#is_public").prop("checked",true);
                     }
-                    $('input[value="'+module_obj.FORM.TYPE+'"]').prop("checked",true);
+                    $('input[value="'+module_obj.FORM.TYPE+'"]').prop("checked",true).trigger('change');
 
                     ue.setContent(module_obj.FORM.TEMPLATE_CONTENT);
 
