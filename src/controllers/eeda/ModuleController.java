@@ -434,7 +434,7 @@ public class ModuleController extends Controller {
     	  Map<String, Object> custom_search_source = (Map<String, Object>)customSearch.get("custom_search_source");
     	  if(custom_search_source!=null){
     		  List<Map<String, String>> block_arr = (ArrayList<Map<String, String>>)custom_search_source.get("block_arr");
-    		  if(block_arr.size()>0){
+    		  if(block_arr!=null && block_arr.size()>0){
     			  for(int i = 0;i<block_arr.size();i++){
     				  String id = block_arr.get(i).get("ID");
     				  String form_name = block_arr.get(i).get("FORM_NAME");
