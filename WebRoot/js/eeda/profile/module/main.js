@@ -95,30 +95,26 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             }
 
             var module_id = $('#module_id').text();
-            $.post("/module/checkExistIndex",{module_id:module_id},function(data){
-                if(data.length>0){
-                    var mymessage = confirm("已有设为首页的页面，是否继续？");
-                    if(!mymessage){
-                        self.attr('disabled', false);
-                        return false;
-                    }
-                    saveAction(self);
-                }else{
-                    saveAction(self);
-                }
-            });
+            if($("#is_home_index").prop("checked")){
+            	checkExistIndex(self);
+            }else{
+            	saveAction(self);
+            }
         });
 
-        var checkExistIndex = function(){
+        var checkExistIndex = function(self){
             var module_id = $('#module_id').text();
             $.post("/module/checkExistIndex",{module_id:module_id},function(data){debugger
                 if(data.length>0){
-                    var mymessage = confirm("已有设为首页的页面，是否继续？");
-                    if(!mymessage){
-                        return false;
-                    }
+                	 var mymessage = confirm("已有设为首页的页面，是否继续？");
+                     if(!mymessage){
+                         self.attr('disabled', false);
+                         return false;
+                     }
+                     saveAction(self);
+                }else{
+                    saveAction(self);
                 }
-                return true;
             });
         }
 

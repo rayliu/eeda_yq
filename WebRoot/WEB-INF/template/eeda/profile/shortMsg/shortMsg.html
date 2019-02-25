@@ -1,0 +1,73 @@
+<%layout("/eeda/theme/h-ui/layout.html"){%>
+<style>
+	.search-label{
+		width:80px;
+		float:left;
+	}
+	.row{
+		margin-top: 25px;
+		overflow: hidden;
+	}
+	.HuiTab{
+		overflow: hidden;
+		min-height: 195px;
+	}
+	.radioList .radio-box{
+		padding:0px;
+		cursor: pointer;
+	}
+</style>
+<section class="Hui-article-box">
+	<nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a> 
+		<span class="c-999 en">&gt;</span>
+		<span class="c-666">短信设置</span> 
+		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+	</nav>
+	<div class="Hui-article">
+		<article class="cl pd-20" style="padding-top:10px;">
+			<div class="Huialert Huialert-success" style="display: none;">
+                <i class="Hui-iconfont">&#xe6a6;</i>操作成功。
+            </div>
+            <div class="Huialert Huialert-error"  style="display: none;">
+                <i class="Hui-iconfont">&#xe6a6;</i>操作失败，原因：未知，请重新尝试或联系客服。
+            </div>
+			
+			<div id="tab_demo" class="HuiTab pt-20">
+				<div class="tabBar clearfix">
+					<span>阿里云</span>
+				</div>
+			  	<div class="tabCon">
+			  		<form id="shortMsgFrom" class="col-md-12">
+						<div class="row">
+							<div class="col-md-6">
+								<label class="search-label">APPID：</label>
+								<div class="formControls col-xs-8 col-md-8">
+									<input type="text" name="app_id" value="${shortMsg.app_id!''}" class="input-text" autocomplete="off" placeholder="" >
+								</div>
+							</div>
+							<div class="col-md-6">
+								<label class="search-label">Secret：</label>
+								<div class="formControls col-xs-8 col-md-8">
+									<input type="text" name="app_secret" value="${shortMsg.app_secret!''}" class="input-text" autocomplete="off" placeholder="">
+								</div>
+							</div>
+						</div>
+					</form>
+			  	</div>
+			</div>
+			<div class="ml-20 mt-20">
+				<button class="btn btn-success radius" type="button" id="save_btn">保存</button>
+			</div>
+		</article>
+	</div>
+	<footer class="footer" style="position: absolute;bottom:0px;width:100%;">
+		<p>本后台系统由<a href="" target="_blank" title="创诚易达信息技术有限公司">创诚易达信息技术有限公司</a>提供前端技术支持</p>
+	</footer>
+</section>
+
+<%}%>
+<script>
+requirejs(['/js/eeda/eeda-common.js'], function (common) {
+	requirejs(['app/profile/shortMsg/shortMsg']);
+});
+</script>

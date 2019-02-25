@@ -578,7 +578,9 @@ public class ModuleController extends Controller {
         Map<String, String> infoMap = (Map) dto.get("info");
         Record formRec = Db.findFirst(
                 "select * from eeda_form_define where module_id=?", module_id);
-        Db.update("update eeda_form_define set is_home_index = 'N' where is_home_index = 'Y'");
+        if("Y".equals(infoMap.get("is_home_index"))){
+        	Db.update("update eeda_form_define set is_home_index = 'N' where is_home_index = 'Y'");
+        }
         if (formRec != null) {
             formRec.set("name", infoMap.get("name"));
             formRec.set("code", infoMap.get("code"));

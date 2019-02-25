@@ -14,6 +14,8 @@ import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 
 public class SetAttrLoginUserInterceptor implements Interceptor{
 	private Log logger = Log.getLog(SetAttrLoginUserInterceptor.class);
@@ -21,9 +23,19 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 	public void intercept(Invocation ai) {
 		Subject currentUser = SecurityUtils.getSubject();
 		if(currentUser.isAuthenticated()){
-			UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=?",currentUser.getPrincipal());
-			if(user.get("c_name") != null && !"".equals(user.get("c_name"))){
-				ai.getController().setAttr("userId", user.get("c_name"));
+			Record login_user = (Record)currentUser.getSession().getAttribute("login_user");
+			if(login_user==null){
+				login_user = Db.findFirst("select ul.*,r.code role_code"
+						+ " from user_login ul"
+						+ " left join user_role ur on ur.user_name = ul.user_name"
+						+ " left join role r on r.id = ur.role_id"
+						+ " where ul.user_name=?",currentUser.getPrincipal());
+				currentUser.getSession().setAttribute("login_user",login_user);
+			}
+			ai.getController().setAttr("login_user", login_user);
+			
+			if(login_user.get("c_name") != null && !"".equals(login_user.get("c_name"))){
+				ai.getController().setAttr("userId", login_user.get("c_name"));
 			}else{
 				ai.getController().setAttr("userId", currentUser.getPrincipal());
 			}
@@ -36,6 +48,9 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 	        
 			ai.getController().setAttr("user_login_id", currentUser.getPrincipal());
 			ai.getController().setAttr("permissionMap", ai.getController().getSessionAttr("permissionMap"));
+		}else{
+			ai.getController().redirect("/login");
+			return;
 		}
 		setSysTitle(ai.getController());
 		ai.invoke();

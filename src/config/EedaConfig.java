@@ -131,6 +131,8 @@ public class EedaConfig extends JFinalConfig {
         me.add("/userRole",controllers.profile.UserRoleController.class,contentPath);
 
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
+        me.add("/email", controllers.eeda.EmailController.class, contentPath);
+        me.add("/shortMsg", controllers.eeda.ShortMsgController.class, contentPath);
         
         /*me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);//全国城市
         
