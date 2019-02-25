@@ -1,0 +1,20 @@
+<div class="modal fade" id="pop_template">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">数据列表</div>
+            <input type="hidden" id="pop_template_target_field_id" value=""/>
+            <div class="modal-body">
+                    <%include("/eeda/component/form/detailTable.html", 
+                    {
+                        id:'pop_list_table',
+                        headers: ['','1','2']
+                    }){} %>
+            </div>
+            <div class="modal-footer">
+                <button class="btn  btn-default return" data-dismiss="modal">返回</button>
+                <button class="btn btn-primary confirm" id="pop_modal_ok_btn">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
