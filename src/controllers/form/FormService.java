@@ -119,7 +119,9 @@ public class FormService {
         }
         
         String listJson = JsonKit.toJson(itemList);
-        target_search_field_name=target_search_field_name.substring(1);//去掉第一个，
+        if(StrKit.notBlank(target_search_field_name)){
+            target_search_field_name=target_search_field_name.substring(1);//去掉第一个，
+        }
         if("dropdown".equals(displayType)){
             returnStr = "<label class='search-label'>"+fieldDisplayName+"</label>"
                     + "<div class='formControls col-xs-8 col-sm-8'>"
