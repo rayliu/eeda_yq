@@ -6,75 +6,77 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
         $(document).ready(function() {
             
             var saveAction=function(btn, is_start){
-            is_start = is_start || false; 
-            var ue = UE.getEditor('container');
-            var dto = {
-                module_id: $('#module_id').text(),
-                info:{
-                    name: $('#form_name').val(),
-                    type: $('input[name="form_type"]:checked').val(),
-                    code: $('#form_code').val(),
-                    desc: $('#desc').val(),
-                    is_public: $('#is_public').prop("checked")==true?'Y':'N',
-                    is_home_index: $('#is_home_index').prop("checked")==true?'Y':'N'
-                },
-                field_update_flag:fieldContr.field_update_flag(),
-                fields: fieldContr.buildFieldsDetail(),
-                template_content: ue.getContent(),
-                btn_update_flag: btnsCont.btn_update_flag(),
-                btns: btnsCont.buildTableDetail(),
-                event_update_flag:eventsCont.listEvent_update_flag(),
-                editEvent_update_flag:editEventCont.editEvent_update_flag(),
-                events: eventsCont.buildTreeNodes(),
-                customSearch: customSearchCont.buildDetail(),
-                permission_list: eeda.buildTableDetail('permission_table', perCont.deletedPermisstionTableIds),
-                auth_list: authCont.buildAuthTableDetail(),
-                print_template: printCont.buildPrintTemplateDetail(),
-                interface: interfaceCont.buildDetail()
-            };
+                is_start = is_start || false; 
+                var ue = UE.getEditor('container');
+                var app_ue = UE.getEditor('app_container');
+                var dto = {
+                    module_id: $('#module_id').text(),
+                    info:{
+                        name: $('#form_name').val(),
+                        type: $('input[name="form_type"]:checked').val(),
+                        code: $('#form_code').val(),
+                        desc: $('#desc').val(),
+                        is_public: $('#is_public').prop("checked")==true?'Y':'N',
+                        is_home_index: $('#is_home_index').prop("checked")==true?'Y':'N'
+                    },
+                    field_update_flag:fieldContr.field_update_flag(),
+                    fields: fieldContr.buildFieldsDetail(),
+                    template_content: ue.getContent(),
+                    app_template_content: app_ue.getContent(),
+                    btn_update_flag: btnsCont.btn_update_flag(),
+                    btns: btnsCont.buildTableDetail(),
+                    event_update_flag:eventsCont.listEvent_update_flag(),
+                    editEvent_update_flag:editEventCont.editEvent_update_flag(),
+                    events: eventsCont.buildTreeNodes(),
+                    customSearch: customSearchCont.buildDetail(),
+                    permission_list: eeda.buildTableDetail('permission_table', perCont.deletedPermisstionTableIds),
+                    auth_list: authCont.buildAuthTableDetail(),
+                    print_template: printCont.buildPrintTemplateDetail(),
+                    interface: interfaceCont.buildDetail()
+                };
 
-            console.log('saveBtn.click....');
-            console.log(dto);
+                console.log('saveBtn.click....');
+                console.log(dto);
 
-            //异步向后台提交数据
-            $.post('/module/saveStructure', {params:JSON.stringify(dto)}, function(data){
-                var order = data;
-                console.log(order);
-                if(order.ID>0){
-                	//回显
-                    var form_field_list = order.FORM_FIELD_LIST;
-                    fieldContr.refresh_table(form_field_list);
-                    //
-                    var btn_list_query = order.BTN_LIST_QUERY;
-                    var btn_list_edit = order.BTN_LIST_EDIT;
-                    btnsCont.refresh_table(btn_list_query,btn_list_edit);
-                    //
-                    var permission_list = order.PERMISSION_LIST;
-                    perCont.refresh_table(permission_list);
-                    //
-                    var module_role_list = order.MODULE_ROLE_LIST;
-                    authCont.refresh_table(module_role_list);
-                    //
-                    var editEventList = order.EDITEVENTLIST;
-                    editEventCont.refresh_table(editEventList);
-                    //
-                    customSearchCont.clear();
-                    customSearchCont.sourceDisplay(order.CUSTOM_SEARCH_SOURCE);
-                    customSearchCont.sourceConditionDisplay(order.CUSTOM_SEARCH_SOURCE_CONDITION);
-                    customSearchCont.colsDisplay(order.CUSTOM_SEARCH_COLS);
-                    customSearchCont.filterDisplay(order.CUSTOM_SEARCH_FILTER);
-                    
-                    $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
-                    btn.attr('disabled', false);
-                }else{
+                //异步向后台提交数据
+                $.post('/module/saveStructure', {params:JSON.stringify(dto)}, function(data){
+                    var order = data;
+                    console.log(order);
+                    if(order.ID>0){
+                        //回显
+                        var form_field_list = order.FORM_FIELD_LIST;
+                        fieldContr.refresh_table(form_field_list);
+                        //
+                        var btn_list_query = order.BTN_LIST_QUERY;
+                        var btn_list_edit = order.BTN_LIST_EDIT;
+                        btnsCont.refresh_table(btn_list_query,btn_list_edit);
+                        //
+                        var permission_list = order.PERMISSION_LIST;
+                        perCont.refresh_table(permission_list);
+                        //
+                        var module_role_list = order.MODULE_ROLE_LIST;
+                        authCont.refresh_table(module_role_list);
+                        //
+                        var editEventList = order.EDITEVENTLIST;
+                        editEventCont.refresh_table(editEventList);
+                        //
+                        customSearchCont.clear();
+                        customSearchCont.sourceDisplay(order.CUSTOM_SEARCH_SOURCE);
+                        customSearchCont.sourceConditionDisplay(order.CUSTOM_SEARCH_SOURCE_CONDITION);
+                        customSearchCont.colsDisplay(order.CUSTOM_SEARCH_COLS);
+                        customSearchCont.filterDisplay(order.CUSTOM_SEARCH_FILTER);
+                        
+                        $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+                        btn.attr('disabled', false);
+                    }else{
+                        $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+                        btn.attr('disabled', false);
+                    }
+                },'json').fail(function() {
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                     btn.attr('disabled', false);
-                }
-            },'json').fail(function() {
-                $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
-                btn.attr('disabled', false);
-            });
-        };
+                });
+            };
 
 
         $('#saveBtn').on('click', function(e){

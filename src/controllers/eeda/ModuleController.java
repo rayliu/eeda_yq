@@ -575,6 +575,7 @@ public class ModuleController extends Controller {
     @SuppressWarnings("null")
     private Long handleInfo(Map<String, ?> dto, Long module_id) {
         String tempalteContent = dto.get("template_content").toString();
+        String appTempalteContent = dto.get("app_template_content").toString();
         Map<String, String> infoMap = (Map) dto.get("info");
         Record formRec = Db.findFirst(
                 "select * from eeda_form_define where module_id=?", module_id);
@@ -588,6 +589,7 @@ public class ModuleController extends Controller {
             formRec.set("is_public", infoMap.get("is_public"));
             formRec.set("is_home_index", infoMap.get("is_home_index"));
             formRec.set("template_content", tempalteContent);
+            formRec.set("app_template", appTempalteContent);
             formRec.set("module_id", module_id);
             Db.update("eeda_form_define", formRec);
         } else {
@@ -598,6 +600,7 @@ public class ModuleController extends Controller {
             formRec.set("is_public", infoMap.get("is_public"));
             formRec.set("is_home_index", infoMap.get("is_home_index"));
             formRec.set("template_content", tempalteContent);
+            formRec.set("app_template", appTempalteContent);
             formRec.set("module_id", module_id);
             Db.save("eeda_form_define", formRec);
         }

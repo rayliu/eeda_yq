@@ -172,6 +172,9 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                 var ue = UE.getEditor('container');
                 ue.execCommand('cleardoc');//clear content
 
+                var app_ue = UE.getEditor('app_container');
+                app_ue.execCommand('cleardoc');//clear content
+
                 btnsCont.clear();
                 eventsCont.clear();
                 editEventCont.clear();
@@ -190,6 +193,7 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                     $('input[value="'+module_obj.FORM.TYPE+'"]').prop("checked",true).trigger('change');
 
                     ue.setContent(module_obj.FORM.TEMPLATE_CONTENT);
+                    app_ue.setContent(module_obj.FORM.APP_TEMPLATE);
 
                     var fields_dataTable = fieldCont.dataTable;//$('#fields_table').DataTable();
                     
