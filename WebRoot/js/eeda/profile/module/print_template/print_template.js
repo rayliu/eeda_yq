@@ -98,6 +98,7 @@ define(['jquery', 'ueditor'],
             ue.setContent('');
           }
           $('#templateDetail').modal('show');
+          $('.modal-backdrop').css({"z-index":"0"});
        });
 
 

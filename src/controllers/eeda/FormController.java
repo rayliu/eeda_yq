@@ -203,8 +203,11 @@ public class FormController extends Controller {
                     Record rec = Db.findFirst("select * from eeda_form_event_open where event_id=?", event.getLong("id"));
                     event.set("open", rec);
                 }else if("print".equals(event.getStr("type"))){
-                    List<Record> template_list = Db.find("select * from eeda_form_print_template where form_id=?", form_id);
-                    event.set("template_list", template_list);
+                	 FormService fs = new FormService(this);
+                	 String orderId = getPara("order_id");
+                	 
+                	 List<Record> template_list = fs.getPrintTemplate(form_id,Long.valueOf(orderId));
+                     event.set("template_list", template_list);
                 }else if("list_add_row".equals(event.getStr("type"))){
                     Record rec = Db.findFirst("select * from eeda_form_event_list_add_row where event_id=?", event.getLong("id"));
                     String field = rec.getStr("target_field_name");

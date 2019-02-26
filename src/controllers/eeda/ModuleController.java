@@ -23,6 +23,10 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
@@ -311,6 +315,13 @@ public class ModuleController extends Controller {
             String desc = (String) field.get("desc".toUpperCase());
             String content = (String) field.get("content".toUpperCase());
             
+            Document doc = Jsoup.parseBodyFragment(content);
+            Element body = doc.body();
+            Elements tds = body.getElementsByTag("td");
+            for (Element td : tds) {
+            	td.html(td.text());
+            }
+            content = doc.body().html();
             Record itemRec = new Record();
             if (StrKit.isBlank(id)) {
                 itemRec.set("form_id", form_id);

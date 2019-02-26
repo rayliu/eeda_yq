@@ -37,6 +37,9 @@ define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMe
             var btn = $(this);
             var btn_id = btn.attr('id');
             var btn_name = btn.attr('name');
+            if(btn_id==undefined && btn_name==undefined){
+            	return false;
+            }
             
             if(btn_name == "add_detail_row_btn"){
                 var target_table_id = btn.attr('target_table');
@@ -66,7 +69,7 @@ define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMe
                     
                 var btn_id = btn_id.split('-')[1].split('_')[1];
 
-                $.post('/form/'+module_id+'-click-'+btn_id, function(events){
+                $.post('/form/'+module_id+'-click-'+btn_id,{order_id:order_id}, function(events){
                     console.log(events);
                     if(events){
                         for (var i = 0; i < events.length; i++) {
@@ -106,11 +109,9 @@ define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMe
                                 var template_list = event.TEMPLATE_LIST;
                                 $('#template_list').empty();
                                 $.each(template_list, function(index, item) {
-                                    var html='<div class="radio">'
-                                             +'  <label>'
-                                             +'       <input type="radio" name="template_id" value="'+item.ID+'" checked>'+item.NAME
-                                             +'       <pre id="template_content_'+item.ID +'" style="display:none;">'+item.CONTENT+'</pre>'
-                                             +'   </label>'
+                                	var html ='<div class="radio" style="width:100px;cursor: pointer;">'
+                                             +'	<input type="radio" name="template_id" value="'+item.ID+'" checked>'+item.NAME
+                                             +'	<pre id="template_content_'+item.ID +'" style="display:none;">'+item.CONTENT+'</pre>'
                                              +'</div>';
                                     $('#template_list').append(html);
                                 });

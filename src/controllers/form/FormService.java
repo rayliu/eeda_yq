@@ -237,4 +237,98 @@ public class FormService {
                   + " </div>";
         return returnStr;
     }
+    
+    @SuppressWarnings("unchecked")
+    @Before(Tx.class)
+    public List<Record> getPrintTemplate(Long form_id,Long order_id){
+    	Record formRec = Db.findFirst("select id,name from eeda_form_define where id = ?",form_id);
+    	List<Record> fieldList = Db.find("select id,field_name,field_display_name,field_type from eeda_form_field where form_id=?", form_id);
+    	List<Record> template_list = Db.find("select id,name,content from eeda_form_print_template where form_id=?", form_id);
+    	String form_name = formRec.getStr("name");
+    	
+    	String tableName = "form_"+form_id;
+    	Record order = Db.findFirst("select * from "+tableName+" where id=?",order_id);
+        for(Record field : fieldList){
+        	String fieldDisplayName = field.getStr("field_display_name");
+        	String fieldType = field.getStr("field_type");
+            String replaceNameOrigin = "#{"+form_name+"."+fieldDisplayName+"}";
+            String columnName = "f"+field.getLong("id")+"_"+field.getStr("field_name");
+            
+            String html = "";
+            if("从表引用".equals(fieldType)){
+            	 List<Record> display_list = Db.find(
+                         "select id,target_field_name from eeda_form_field_type_detail_ref_display_field where field_id= ? order by sort_no", field.getLong("id"));
+                 String fieldStr = "";
+                 
+                 for (Record r : display_list) {
+                     String name = r.getStr("target_field_name");
+                     if(name.indexOf(".")>0){
+                         fieldStr+="<th>"+name.split("\\.")[1]+"</th>";
+                     }else{
+                         fieldStr+="<th>"+name+"</th>";
+                     }
+                 }
+                 String tbodyStr = formDetail(form_id,order_id);
+                 html = "<table id='detail_print_table_"+field.getLong("id")+"' type='dynamic' class='table detail_table table-striped table-bordered table-hover display' style='width:100%;'>"
+                         +"    <thead class='eeda'>"
+                         +"        <tr>"
+                         + fieldStr
+                         +"        </tr>"
+                         +"    </thead>"
+                         +"    <tbody>"
+                         +tbodyStr
+                         +"    </tbody>"
+                         +"</table>";
+            }else{
+            	html = "<div class='print-form'><label style='float:left;'>"+fieldDisplayName+"：</label><div>"+order.get(columnName)+"</div></div>";
+            }
+            template_list.get(0).set("content",template_list.get(0).getStr("content").replace(replaceNameOrigin, html));
+        }
+        
+        return template_list;
+    }
+    
+    private String formDetail(Long form_id, Long order_id){
+    	Record rec = Db.findFirst("select * from form_"+form_id+" where "
+                + " id=?", order_id);
+    	List<Record> refFieldList = Db.find("select distinct field.id field_id, form.id form_id, form.name, cond.field_from, cond.field_to "
+                +"from eeda_form_field field, eeda_form_field_type_detail_ref ref,"
+                + " eeda_form_field_type_detail_ref_join_condition cond,"
+                +"    eeda_form_define form"
+                +" where "
+                +" field.id = ref.field_id"
+                +" and field.id = cond.field_id"
+                +" and ref.target_form_name = form.name"
+                +" and field.field_type='从表引用' "
+                +" and field.form_id=?", form_id);
+    	
+    	StringBuffer tbodySb = new StringBuffer();
+    	for (Record fieldRec : refFieldList) {
+            Long d_form_id = fieldRec.getLong("form_id");
+            List<Record> fieldList = Db.find("select id,field_name,field_display_name,field_type from eeda_form_field where form_id=?", d_form_id);
+            
+            String field_from = fieldRec.getStr("field_from");
+            String field_to = fieldRec.getStr("field_to");
+            //主表关联值
+            Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+            String field_from_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
+            Object from_field_value = rec.get(field_from_name);
+            //从表关联值
+            Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+            String field_to_name = "f"+field_to_rec.getLong("id")+"_"+field_to_rec.getStr("field_name");
+            
+            List<Record> dataList = Db.find("select * from form_"+d_form_id+" where "+field_to_name+"=?", from_field_value);
+            StringBuffer trSb = new StringBuffer();
+            for(Record data :dataList){
+            	trSb = new StringBuffer().append("<tr>");
+            	for(Record field : fieldList){
+            		String columnName = "f"+field.getLong("id")+"_"+field.getStr("field_name");
+            		trSb.append("<td>"+data.get(columnName)+"</td>");
+            	}
+            	trSb.append("</tr>");
+            	tbodySb.append(trSb);
+            }
+        }
+        return tbodySb.toString();
+    }
 }

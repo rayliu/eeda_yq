@@ -13,7 +13,7 @@ define(['jquery', 'printMe', 'sco'], function ($) {
     });
 
     $('#ok_print_btn').click(function(event) {
-        $("#template_content").printMe({ "path": ["/css/print/eeda_print.css"] });
+        $("#template_content").printMe({"path": ["/css/print/eeda_print.css?v=2"]});
 
     });
 });
