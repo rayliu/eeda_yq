@@ -27,6 +27,7 @@
 							<!-- <li><a href="#">切换账户</a></li> -->
 							<%if(login_user.role_code!''=='admin'){%><li><a href="/email">邮件设置</a></li><%}%>
 							<%if(login_user.role_code!''=='admin'){%><li><a href="/shortMsg">短信设置</a></li><%}%>
+							<%if(login_user.role_code!''=='admin'){%><li><a href="/sysLog">系统日志</a></li><%}%>
 							<li><a href="/logout">退出</a></li>
 						</ul>
 					</li>

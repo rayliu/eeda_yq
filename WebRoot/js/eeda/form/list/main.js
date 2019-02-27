@@ -33,7 +33,7 @@ define(['jquery','hui_admin', '../btns'], function ($) {
             data: null,
             render: function ( data, type, full, meta ) {
         		return '<a class="btn btn-xs" style="text-decoration:none" class="ml-5" href="/form/'+module_id+'-edit-'+data.ID+'" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>'
-                +' <a class="btn btn-xs" style="text-decoration:none" href="javascript:;" class="ml-5 delete" module_id='+module_id+' id='+data.ID+' title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> ';
+                +' <a class="btn btn-xs delete" style="text-decoration:none" href="javascript:;" class="ml-5 delete" module_id='+module_id+' id='+data.ID+' title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> ';
             }
         };
         if(field_list_json[0].CUSTOM_SEARCH!="Y"){
@@ -69,13 +69,17 @@ define(['jquery','hui_admin', '../btns'], function ($) {
         $('#list_table').on( 'click', '.delete', function () {
         	var module_id = $(this).attr("module_id");
         	var id = $(this).attr("id");
-            $.post('/form/'+module_id+'-doDelete-'+id,function(data){
-            	if(data.result){
-            		var tr = $(this).closest('tr');
-            		dataTable.row(tr).remove().draw();
-            		alert("删除成功");
-            	}
-            });
+        	if(confirm("您确定删除该单据吗？")){
+                $.post('/form/'+module_id+'-doDelete-'+id,function(data){
+                	if(data.result){
+                		var tr = $(this).closest('tr');
+                		dataTable.row(tr).remove().draw();
+                		alert("删除成功");
+                	}else{
+                		alert("删除失败");
+                	}
+                });
+        	}
         });
 
         var globalSearch = function(){

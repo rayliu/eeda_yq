@@ -133,7 +133,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/sys", controllers.eeda.SysInfoController.class, contentPath);
         me.add("/email", controllers.eeda.EmailController.class, contentPath);
         me.add("/shortMsg", controllers.eeda.ShortMsgController.class, contentPath);
-        
+        me.add("/sysLog", controllers.eeda.SysLogController.class, contentPath);
         /*me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);//全国城市
         
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);

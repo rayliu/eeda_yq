@@ -593,6 +593,13 @@ public class ModuleController extends Controller {
         if("Y".equals(infoMap.get("is_home_index"))){
         	Db.update("update eeda_form_define set is_home_index = 'N' where is_home_index = 'Y'");
         }
+        Document doc = Jsoup.parseBodyFragment(tempalteContent);
+        Element body = doc.body();
+        Elements tds = body.getElementsByTag("td");
+        for (Element td : tds) {
+        	td.html(td.text());
+        }
+        tempalteContent = doc.body().html();
         if (formRec != null) {
             formRec.set("name", infoMap.get("name"));
             formRec.set("code", infoMap.get("code"));
@@ -958,7 +965,7 @@ public class ModuleController extends Controller {
         String createTableSql = "CREATE TABLE if not exists `" + tableName
                 + "` (" + " `id` BIGINT(20) NOT NULL AUTO_INCREMENT,"
 //                + " `parent_form_id` BIGINT(20) NULL,"
-//                + " `eeda_delete` char(1) NOT NULL DEFAULT 'N',"
+                + " `eeda_delete` char(1) NOT NULL DEFAULT 'N',"
                 + "PRIMARY KEY (`id`))";
         Db.update(createTableSql);
 

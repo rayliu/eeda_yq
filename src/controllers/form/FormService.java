@@ -1,8 +1,13 @@
 package controllers.form;
 
+import interceptor.SetAttrLoginUserInterceptor;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import models.UserLogin;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -11,6 +16,8 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+
+import controllers.profile.LoginUserController;
 
 public class FormService {
     private Controller cont = null;
@@ -330,5 +337,20 @@ public class FormService {
             }
         }
         return tbodySb.toString();
+    }
+    
+    public boolean saveSysLog(String action,String jsonStr,long form_id,long order_id,long user_id,long office_id,String ip){
+    	Record sysLog = new Record();
+    	sysLog.set("log_type", "operate");
+    	sysLog.set("operation_obj", jsonStr);
+    	sysLog.set("action_type", action);
+    	sysLog.set("create_stamp", new Date());
+    	sysLog.set("user_id", user_id);
+    	sysLog.set("ip",ip);
+    	sysLog.set("office_id", office_id);
+    	sysLog.set("form_id", form_id);
+    	sysLog.set("order_id", order_id);
+    	Db.save("sys_log", sysLog);
+    	return true;
     }
 }

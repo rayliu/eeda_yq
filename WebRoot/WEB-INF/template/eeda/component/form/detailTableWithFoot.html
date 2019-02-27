@@ -1,5 +1,5 @@
 <table id="${id}" class="table table-border table-bordered table-bg table-hover table-sort">
-    <tfoot class="search">
+	<tfoot class="search">
         <tr class="text-c">
             <%for(name in headers){%>
                 <th></th>
@@ -9,13 +9,17 @@
     </tfoot>
     <thead class="head">
         <tr class="text-c">
-        	<%for(field in headers){
-                if(field==''){%>
-                    <th width="25"></th>
-              <%}else{%>
-                    <th width="100" field_name="f${field.ID}_${field.FIELD_NAME!''}">${field.FIELD_DISPLAY_NAME!''}</th>
-              <%}
-        	}%>
+        	<%for(field in headers){%>
+        		<%if(form_type=='fixed'){%>
+                    <th width="100" field_name="${field.name!''}">${field.display_name!''}</th>
+                <%}else{%>
+					<%if(field==''){%>
+	                    <th width="25"></th>
+	              	<%}else{%>
+	              		<th width="100" field_name="f${field.ID!''}_${field.FIELD_NAME!''}">${field.FIELD_DISPLAY_NAME!''}</th>
+	              	<%}%>
+              	<%}%>
+        	<%}%>
             <%if(form_type=="form"){%><th width="120">操作</th><%}%>
         </tr>
     </thead>

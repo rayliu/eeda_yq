@@ -32,6 +32,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
+import com.jfinal.weixin.sdk.kit.IpKit;
 
 import controllers.form.FormService;
 import controllers.form.TemplateService;
@@ -232,9 +233,13 @@ public class FormController extends Controller {
             
             render("/eeda/form/template.html");
         }else if("doDelete".equals(action)){
+        	FormService formService = new FormService(this);
+        	String ip = MainController.getIpAddress(getRequest());
+        	formService.saveSysLog(action,getPara("data"),form_id,order_id,user_id,office_id,ip);
         	String form_name = "form_"+form_id;
         	Record form  = Db.findById(form_name, order_id);
-            boolean result = Db.delete(form_name, form);
+        	form.set("eeda_delete","Y");
+            boolean result = Db.update(form_name, form);
             renderJson("{\"result\":"+result+"}");
         }else{
             Record rec = new Record();
@@ -242,6 +247,9 @@ public class FormController extends Controller {
                 rec = getForm(form_id, order_id);
                 renderJson(rec);
             }else if ("doAdd".equals(action) || "doUpdate".equals(action)){
+            	FormService formService = new FormService(this);
+            	String ip = MainController.getIpAddress(getRequest());
+            	formService.saveSysLog(action,getPara("data"),form_id,order_id,user_id,office_id,ip);
                 rec = saveForm();
                 renderJson(rec);
             }
@@ -603,12 +611,12 @@ public class FormController extends Controller {
         	String biaoNameStr = "";//getBiaoNameStr(form_id);//join
         	String joinStr = getJoinStr(form_id);//left join
         	String filterStr = getFilterStr(form_id);
-        	sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 ";
+        	sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 and eeda_delete='N' ";
         	int index = biaoNameStr.indexOf(" ");
         	//+ " order by "+biaoNameStr.substring(index)+".id desc " 
         	orderList = Db.find(sql+ condition+filterStr +sLimit);
         }else if("form".equals(define.get("type"))){
-        	sql = "select * from form_"+form_id+" where 1=1 "; 
+        	sql = "select * from form_"+form_id+" where 1=1 and eeda_delete='N' "; 
         	orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
         }
 
