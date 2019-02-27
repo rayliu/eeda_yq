@@ -193,8 +193,10 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                     $('input[value="'+module_obj.FORM.TYPE+'"]').prop("checked",true).trigger('change');
 
                     ue.setContent(module_obj.FORM.TEMPLATE_CONTENT);
-                    app_ue.setContent(module_obj.FORM.APP_TEMPLATE);
-
+                    if(!module_obj.FORM.APP_TEMPLATE){
+                        app_ue.setContent(module_obj.FORM.APP_TEMPLATE);
+                    }
+                        
                     var fields_dataTable = fieldCont.dataTable;//$('#fields_table').DataTable();
                     
                     for (var i = 0; i < json.FORM_FIELDS.length; i++) {
