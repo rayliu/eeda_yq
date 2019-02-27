@@ -193,7 +193,7 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                     $('input[value="'+module_obj.FORM.TYPE+'"]').prop("checked",true).trigger('change');
 
                     ue.setContent(module_obj.FORM.TEMPLATE_CONTENT);
-                    if(!module_obj.FORM.APP_TEMPLATE){
+                    if(module_obj.FORM.APP_TEMPLATE!=null){
                         app_ue.setContent(module_obj.FORM.APP_TEMPLATE);
                     }
                         
