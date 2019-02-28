@@ -1,5 +1,35 @@
+<style>
+	.pd-0{
+	 padding:0px;
+	}
+</style>
 <div class="form-group">
     <div class="col-lg-12">
+    	<div class="row" style="margin-bottom: 20px;">
+            <div class="col-lg-12 pd-0">
+	            <div class="col-lg-3 pd-0">
+	                <div class="col-lg-12 pd-0" id="${type}_event_db_source_div">
+  						<input type="edit" id="${type}_event_db_source" name="${type}_event_db_source" class="form-control" placeholder="请输入数据源" value="" autocomplete="off" style="">
+					</div>
+	            </div>
+	            <div style="float:left;padding:10px 5px;">对 </div>
+	            <div class="col-lg-3 pd-0">
+	                <div class="col-lg-12 pd-0" id="${type}_event_target_table_div">
+    					<input type="edit" id="${type}_event_target" name="${type}_event_target" class="form-control" placeholder="请输入赋值目标" value="" autocomplete="off" style="">
+					</div>
+	            </div>
+	            <div style="float:left;padding:10px 5px;">执行</div>
+	            <div class="col-lg-2 pd-0">
+	                <div class="col-lg-12 pd-0">
+					    <select id="${type}_event_set_value_type" name="${type}_event_set_value_type" class="form-control">
+					        	<option value="set_value">赋值</option>
+					        	<option value="loops_set_value">循环赋值</option>
+					    </select>
+					</div>
+	            </div>
+	            <div style="float:left;padding:10px 5px;">操作</div>
+            </div>
+        </div>
         <div class="row">
             <input type="hidden" id="${type}_event_value_id">
             <div class="col-lg-12">

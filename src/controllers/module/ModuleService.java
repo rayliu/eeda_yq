@@ -219,15 +219,24 @@ public class ModuleService {
     public void saveEventSetValue(Map<String, ?> event, Long event_id) {
         Map<String, ?> dto = (Map<String, ?>) event.get("SET_VALUE");
         if (dto != null) {
-            String condition = (String) dto.get("CONDITION");
             String id = (String) dto.get("id".toUpperCase());
+            String db_source = (String) dto.get("DB_SOURCE");
+            String target = (String) dto.get("TARGET");
+            String set_value_type = (String) dto.get("SET_VALUE_TYPE");
+            String condition = (String) dto.get("CONDITION");
             Record itemRec = new Record();
             if (StrKit.isBlank(id)) {
                 itemRec.set("event_id", event_id);
+                itemRec.set("db_source", db_source);
+                itemRec.set("target", target);
+                itemRec.set("set_value_type", set_value_type);
                 itemRec.set("condition", condition);
                 Db.save("eeda_form_event_set_value", itemRec);
             } else {
                 itemRec = Db.findById("eeda_form_event_set_value", id);
+                itemRec.set("db_source", db_source);
+                itemRec.set("target", target);
+                itemRec.set("set_value_type", set_value_type);
                 itemRec.set("condition", condition);
                 Db.update("eeda_form_event_set_value", itemRec);
             }

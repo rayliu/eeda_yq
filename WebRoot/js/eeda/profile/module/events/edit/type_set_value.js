@@ -69,6 +69,9 @@ define(['jquery'], function ($) {
 
             var dto = {
               ID: $('#edit_event_value_id').val(),
+              DB_SOURCE: $('#edit_event_db_source').val(),
+              TARGET: $('#edit_event_target').val(),
+              SET_VALUE_TYPE: $('#edit_event_set_value_type').val(),
               CONDITION : $('#edit_event_set_value_condition').val()
             };
 

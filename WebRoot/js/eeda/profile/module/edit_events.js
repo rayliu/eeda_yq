@@ -48,6 +48,9 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
 
       if(currentNode.SET_VALUE){
         $('#edit_event_value_id').val(currentNode.SET_VALUE.ID||'');
+        $('#edit_event_db_source').val(currentNode.SET_VALUE.DB_SOURCE);
+        $('#edit_event_target').val(currentNode.SET_VALUE.TARGET);
+        $('#edit_event_set_value_type').val(currentNode.SET_VALUE.SET_VALUE_TYPE);
         $('#edit_event_set_value_condition').val(currentNode.SET_VALUE.CONDITION);
         var itemList = currentNode.SET_VALUE.SET_FIELD_LIST;
         setValueCont.dataTable.clear().draw();
@@ -311,6 +314,9 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
 
       
       $('#edit_event_value_id').val('');
+      $('#edit_event_db_source').val('');
+      $('#edit_event_target').val('');
+      $('#edit_event_set_value_type').val('');
       $('#edit_event_set_value_condition').val('');
 
       $('#edit_event_css_id').val('');

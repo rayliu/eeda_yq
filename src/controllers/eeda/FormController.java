@@ -197,8 +197,7 @@ public class FormController extends Controller {
             renderJson(recList);
         }else if("click".equals(action)){
             Long btn_id = order_id;
-            List<Record> recList = Db.find("select * from eeda_form_event where "
-                    + " btn_id=?", btn_id);
+            List<Record> recList = Db.find("select * from eeda_form_event where btn_id=?", btn_id);
             for (Record event : recList) {
                 if("open".equals(event.getStr("type"))){
                     Record rec = Db.findFirst("select * from eeda_form_event_open where event_id=?", event.getLong("id"));
@@ -214,6 +213,12 @@ public class FormController extends Controller {
                     String field = rec.getStr("target_field_name");
                     Record target_field_rec = FormService.getFieldName(field.split("\\.")[0], field.split("\\.")[1]);
                     rec.set("field_id", target_field_rec.getLong("id"));
+                    event.set("list_add_row", rec);
+                }else if("set_value".equals(event.getStr("type"))){
+                    Record rec = Db.findFirst("select * from eeda_form_event_set_value where event_id=?", event.getLong("id"));
+                    FormService fs = new FormService(this);
+                    String orderId = getPara("order_id");
+               	 	boolean result = fs.setValue(rec,form_id,Long.valueOf(orderId));
                     event.set("list_add_row", rec);
                 }
             }
