@@ -66,7 +66,7 @@ define(['jquery', 'template', 'sco', '/js/lib/ueditor/ueditor.config.js', 'uedit
                     field_name=field_name.replace("#{", "").replace("}", "").split(".")[1];
                     if(field_name.indexOf("明细表")>=0 || field_name.indexOf("从表")>=0){
                         var htmlStr = '<li class="mui-table-view-cell">'+
-                            '<a class="mui-navigate-right" href="/app/form/list">'+
+                            '<a class="mui-navigate-right" href="javascript:void(0)">'+
                             '    明细表'+
                             '</a>'+
                         '</li>'; 
@@ -82,8 +82,7 @@ define(['jquery', 'template', 'sco', '/js/lib/ueditor/ueditor.config.js', 'uedit
                 }
             });
                 
-            //从后台获取数据，不适合动态改变数据
-            //$('#app_iframe').attr('src', '/app/form/456');
+            
         });
     });
  });

@@ -195,6 +195,7 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                     ue.setContent(module_obj.FORM.TEMPLATE_CONTENT);
                     if(module_obj.FORM.APP_TEMPLATE!=null){
                         app_ue.setContent(module_obj.FORM.APP_TEMPLATE);
+                        $('#appRefreshBtn').click();//app UI 回显
                     }
                         
                     var fields_dataTable = fieldCont.dataTable;//$('#fields_table').DataTable();
