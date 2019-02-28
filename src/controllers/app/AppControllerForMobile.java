@@ -64,8 +64,19 @@ public class AppControllerForMobile extends Controller {
         } else {
             return false;
         }
-
     }
-
+    public void index(){//app端的首页
+        render("/lego_app/home.html");
+    }
+    public void mainMenu(){//首页应该是一个9宫格，或是统计数据
+        render("/lego_app/login.html");
+    }
     
+    public void login(){
+        render("/lego_app/login.html");
+    }
+    
+    public void setting(){
+        render("/lego_app/setting.html");
+    }
 }

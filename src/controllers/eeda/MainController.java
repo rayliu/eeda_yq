@@ -50,6 +50,7 @@ import controllers.util.ParentOffice;
 import controllers.util.getCurrentPermission;
 
 public class MainController extends Controller {
+    private final static String[] AGENT = { "Android", "iPhone", "iPod", "iPad", "Windows Phone", "MQQBrowser" };
     private static final String RANDOM_CODE_KEY = "eeda";
 	private Log logger = Log.getLog(MainController.class);
     // in config route已经将路径默认设置为/eeda
@@ -87,25 +88,48 @@ public class MainController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
-        if (isAuthenticated()) {
-        	Record re = Db.findFirst("select id,name,module_id from eeda_form_define where is_home_index = 'Y'");
-        	if(re!=null){
-        		setAttr("action", "list");
-                setAttr("module_id", re.getLong("module_id"));
-                Record title = Db.findFirst("select m1.module_name level2,m2.module_name level1 from eeda_modules m1 "
-                		+ " LEFT JOIN eeda_modules m2 on m1.parent_id = m2.id"
-                		+ " where m1.id = ?",re.getLong("module_id"));
-                if(title != null){
-                	 setAttr("level1", title.get("level1"));
-                     setAttr("level2", title.get("level2"));
-                }
-                FormController form = new FormController();
-                form.list(re.getLong("id"),this);
-                render("/eeda/form/listTemplate.html");
-                return;
-        	}
-            render("/eeda/index.html");
+        if(isMobile(getRequest())){
+            redirect("/app");
+        }else{
+            if (isAuthenticated()) {
+            	Record re = Db.findFirst("select id,name,module_id from eeda_form_define where is_home_index = 'Y'");
+            	if(re!=null){
+            		setAttr("action", "list");
+                    setAttr("module_id", re.getLong("module_id"));
+                    Record title = Db.findFirst("select m1.module_name level2,m2.module_name level1 from eeda_modules m1 "
+                    		+ " LEFT JOIN eeda_modules m2 on m1.parent_id = m2.id"
+                    		+ " where m1.id = ?",re.getLong("module_id"));
+                    if(title != null){
+                    	 setAttr("level1", title.get("level1"));
+                         setAttr("level2", title.get("level2"));
+                    }
+                    FormController form = new FormController();
+                    form.list(re.getLong("id"),this);
+                    render("/eeda/form/listTemplate.html");
+                    return;
+            	}
+                render("/eeda/index.html");
+            }
         }
+    }
+    
+    private static boolean isMobile(HttpServletRequest request) {
+        boolean isMobile = false;
+        String ua = request.getHeader("User-Agent");
+        if (ua != null) {
+            if (!ua.contains("Windows NT") || (ua.contains("Windows NT") && ua.contains("compatible; MSIE 9.0;"))) {
+                // 排除 苹果桌面系统
+                if (!ua.contains("Windows NT") && !ua.contains("Macintosh")) {
+                    for (String item : AGENT) {
+                        if (ua.contains(item)) {
+                            isMobile = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return isMobile;
     }
     
     public void captcha() {

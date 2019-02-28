@@ -43,6 +43,7 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.app.AppControllerForMobile;
+import controllers.app.AppFormController;
 import controllers.eeda.FormController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
@@ -111,12 +112,11 @@ public class EedaConfig extends JFinalConfig {
 
         setAppRoute(me, contentPath);
         setScmRoute(me, contentPath);
-        
-        
     }
     
     private void setAppRoute(Routes me, String contentPath) {
         me.add("/app", AppControllerForMobile.class);
+        me.add("/app/form", AppFormController.class);
     }
 
 	private void setScmRoute(Routes me, String contentPath) {

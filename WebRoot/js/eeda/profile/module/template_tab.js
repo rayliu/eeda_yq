@@ -1,5 +1,5 @@
-define(['jquery', 'sco', '/js/lib/ueditor/ueditor.config.js', 'ueditor'], function ($) {
-    $(document).ready(function(template) {
+define(['jquery', 'template', 'sco', '/js/lib/ueditor/ueditor.config.js', 'ueditor'], function ($, template) {
+    $(document).ready(function() {
 
         var ue_config = {
             allowDivTransToP:false, initialFrameHeight: 600,
@@ -40,9 +40,50 @@ define(['jquery', 'sco', '/js/lib/ueditor/ueditor.config.js', 'ueditor'], functi
                 }
             }()
         };
-        
+
     	var ue = UE.getEditor('container', ue_config);
 
         var app_ue = UE.getEditor('app_container', ue_config);
+
+        $('#appRefreshBtn').click(function(){
+            var form_input_field=
+                    '<div class="mui-input-row">'+
+                        '<label>{{label}}</label>'+
+                        '<input type="text" placeholder="普通输入框" disabled value="{{value}}">'+
+                    '</div>';
+            var render = template.compile(form_input_field);
+            var app_content = app_ue.getContent();
+            var doms = $.parseHTML(app_content);//解析Html串
+            //var pList = $(doms).children("p");//children()方法：查找img元素
+            var dataArr=[];
+            var form_fields = $("#app_iframe").contents().find("#form_fields");
+            var app_form_list = $("#app_iframe").contents().find("#app_form_list");
+            form_fields.empty();
+            app_form_list.empty();
+            doms.forEach(element => {
+                var field_name = $(element).text()
+                if(field_name.indexOf(".")>0){
+                    field_name=field_name.replace("#{", "").replace("}", "").split(".")[1];
+                    if(field_name.indexOf("明细表")>=0 || field_name.indexOf("从表")>=0){
+                        var htmlStr = '<li class="mui-table-view-cell">'+
+                            '<a class="mui-navigate-right" href="/app/form/list">'+
+                            '    明细表'+
+                            '</a>'+
+                        '</li>'; 
+                        //dataArr.push(data);
+                        app_form_list.append(htmlStr);
+                    }else{
+                        data={"label":field_name, "value":"demo", "disabled":true};
+                        var htmlStr = render(data); 
+                        //dataArr.push(data);
+                        form_fields.append(htmlStr);
+                    }
+                    
+                }
+            });
+                
+            //从后台获取数据，不适合动态改变数据
+            //$('#app_iframe').attr('src', '/app/form/456');
+        });
     });
  });
