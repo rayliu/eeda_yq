@@ -60,6 +60,8 @@ define(['jquery', 'template', 'sco', '/js/lib/ueditor/ueditor.config.js', 'uedit
             var app_form_list = $("#app_iframe").contents().find("#app_form_list");
             form_fields.empty();
             app_form_list.empty();
+            if(!doms)
+                return;
             doms.forEach(element => {
                 var field_name = $(element).text()
                 if(field_name.indexOf(".")>0){
