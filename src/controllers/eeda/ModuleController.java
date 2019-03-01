@@ -12,13 +12,10 @@ import java.util.Map;
 import models.Permission;
 import models.RolePermission;
 import models.UserLogin;
-import models.eeda.Field;
 import models.eeda.FormBtn;
 import models.eeda.profile.Module;
-import models.eeda.profile.ModuleRole;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.rewrite.RewriteAppender;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -29,6 +26,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
@@ -41,7 +39,6 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import controllers.module.ModuleService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
-import controllers.util.PingYinUtil;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -341,8 +338,13 @@ public class ModuleController extends Controller {
     
     private void handleEvents(Map<String, ?> dto, Long form_id)
             throws InstantiationException, IllegalAccessException {
-        List<Map<String, ?>> event_list = (ArrayList<Map<String, ?>>) dto
-                .get("events");
+        Map<String, List> map = (LinkedTreeMap) dto.get("events");
+        List<Double > deleted_event_list = map.get("node_delete_ids");
+        for (Double  id : deleted_event_list) {
+            Db.deleteById("eeda_form_event", id.longValue());
+            //TODO:还要删掉子表的数据
+        }
+        List<Map<String, ?>> event_list = map.get("node_list");
         for (Map<String, ?> event : event_list) {
             if (event.get("id") != null) {
                 Long id = ((Double) event.get("id")).longValue();
@@ -402,6 +404,8 @@ public class ModuleController extends Controller {
     }
 
     private void saveEventOpen(Map<String, ?> event, Long event_id) {
+        Long office_id = LoginUserController.getLoginUser(this)
+                .getLong("office_id");
         Map<String, ?> openDto = (Map<String, ?>) event.get("openForm");
         if (openDto == null) {
             openDto = (Map<String, ?>) event.get("OPEN_FORM");
@@ -417,8 +421,10 @@ public class ModuleController extends Controller {
             String moduleName = openDto.get("module_name") == null ? openDto
                     .get("MODULE_NAME").toString() : openDto.get("module_name").toString();
             eventOpen.set("module_name",moduleName);
-            
-            Record rec = Db.findFirst("select * from eeda_form_define where delete_flag!='Y' and name=?", moduleName);
+
+            Record rec = Db.findFirst("select * from eeda_form_define fd, eeda_modules em"
+                    + " where fd.module_id=em.id and fd.delete_flag!='Y' and fd.name=?"
+                    + " and em.office_id=?", moduleName, office_id);
             eventOpen.set("module_id", rec.get("module_id"));
             eventOpen.set("open_type",
                     openDto.get("open_type") == null ? openDto.get("OPEN_TYPE")
@@ -433,7 +439,9 @@ public class ModuleController extends Controller {
             String moduleName = openDto.get("module_name").toString();
             eventOpen.set("module_name", moduleName);
             
-            Record rec = Db.findFirst("select * from eeda_form_define where delete_flag!='Y' and name=?", moduleName);
+            Record rec = Db.findFirst("select * from eeda_form_define fd, eeda_modules em"
+                    + " where fd.module_id=em.id and fd.delete_flag!='Y' and fd.name=?"
+                    + " and em.office_id=?", moduleName, office_id);
             eventOpen.set("module_id", rec.get("module_id"));
             eventOpen.set("open_type", openDto.get("open_type"));
             Db.save("eeda_form_event_open", eventOpen);

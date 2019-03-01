@@ -2,16 +2,21 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
     
     //---------------tree handle
     var setting = {
+        data: {
+          keep: {
+            parent: true//节点父节点属性锁，是否始终保持 isParent = true
+          }
+        },
         view: {
             addHoverDom: addHoverDom,
             removeHoverDom: removeHoverDom,
             selectedMulti: false
         },
         edit: {
-            enable: false,
+            enable: true,
             editNameSelectAll: true,
-            showRemoveBtn: false,
-            //showRenameBtn: showRenameBtn,
+            showRemoveBtn: setRemoveBtn,
+            showRenameBtn: setRenameBtn,
             renameTitle: "编辑",
             removeTitle: "删除",
             drag:{
@@ -28,11 +33,27 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
         },
         callback: {
         //     beforeRename: beforeRename,
-        //     onRename: onRename,
+        //    onRename: onRename,
         //     beforeDrop: beforeDrop,//判断禁止模块拖拽到模块下
         //     onDrop: onDrop,
-             onClick: onNodeClick
+            onClick: onNodeClick,
+            beforeRemove:beforeRemove
         }
+    };
+
+    function setRenameBtn(treeId, treeNode) {
+      return !treeNode.isParent;
+    }
+
+    function setRemoveBtn(treeId, treeNode) {
+      return !treeNode.isParent;
+    }
+
+    var delete_node_ids = [];
+    //点击节点删除的处理
+    function beforeRemove(treeId, treeNode) {
+      update_flag = "Y";
+      delete_node_ids.push(treeNode.id);
     };
 
     var currentNode;
@@ -82,8 +103,10 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
     var newCount=1;
     function addHoverDom(treeId, treeNode) {
             var sObj = $("#" + treeNode.tId + "_span");
-            //如果是单据则不能在其下级添加节点
-            if (treeNode.level==2 || treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+            //如果是1级则不能在其下级添加节点
+            if (treeNode.level==0 || treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+            //如果是叶子则不能在其下级添加节点
+            if (!treeNode.isParent) return;
 
             var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
                 + "' title='添加' onfocus='this.blur();'></span>";
@@ -122,6 +145,8 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
     };
 
     var displayBtnTree=function(){
+      update_flag = "N";
+      delete_node_ids = [];
       var btns = [];
       $.post('/module/searchFormBtns', {form_id: $('#form_id').val(), type:'list'}, 
           function(data){
@@ -145,15 +170,13 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
               }
           },
           'json');
-
-      
     }
     
     var zTreeObj; 
     
     var update_flag = "N";
     $('#listEventConfirmBtn').click(function(event) {
-    	update_flag = "Y";
+    	  update_flag = "Y";
          var type=$('#list_event_type').val();
          currentNode.name = $('#list_event_name').val();
          currentNode.type = type;
@@ -240,7 +263,10 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
            }
         });
       }
-      return node_list;
+      return {
+        node_list: node_list,
+        node_delete_ids: delete_node_ids
+      };
     };
 
     var clear = function(){
