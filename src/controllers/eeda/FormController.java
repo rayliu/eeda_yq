@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.JsonKit;
+import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
@@ -39,6 +40,7 @@ import controllers.form.TemplateService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PingYinUtil;
+import controllers.util.PoiUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -220,6 +222,97 @@ public class FormController extends Controller {
                     String orderId = getPara("order_id");
                	 	boolean result = fs.setValue(rec,form_id,Long.valueOf(orderId));
                     event.set("list_add_row", rec);
+                }
+                //导出excel
+                else if("export_excel".equals(event.getStr("type"))){  
+                	Date date = new Date();
+    		        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+                	String fileName = title.get("level2") + format.format(date) + ".xls";
+                	String filePath = "/download/download_order";
+                	
+                	Record define = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
+                	String condition = DbUtils.buildConditions(getParaMap());
+                    if("search_form".equals(define.get("type"))){
+                    	//自定义查询
+                        String lieNameStr = getLieNameStr(form_id);
+                    	String biaoNameStr = "";//getBiaoNameStr(form_id);//join
+                    	String joinStr = getJoinStr(form_id);//left join
+                    	String filterStr = getFilterStr(form_id);
+                    	String sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 ";
+
+                    	//做生成excel处理
+                    	String sqlExport = sql+ condition+filterStr;
+                    	List<Record> list = getDisplayCols(form_id);
+                    	String[] title_name = new String[list.size()];
+                    	for(Record item : list){
+                    		String name = item.getStr("FIELD_DISPLAY_NAME");
+                    		title_name[list.indexOf(item)] = name;
+                    	}
+                    	
+                    	String lieNameStrWithoutTable = getLieNameStrWithoutTable(form_id);
+                  		String[] content = lieNameStrWithoutTable.toUpperCase().split(",");
+                  		
+                  		boolean result = PoiUtils.generateExcel(title_name, content, sqlExport,PathKit.getWebRootPath()+filePath, fileName);
+                  		if(result){
+                  			System.out.println("ok");
+                  		}else{
+                  			System.out.println("error");
+                  		}  
+                    } else {
+//                    	表单列表查询
+                    	List<Record> fieldList = Db.find("select * from eeda_form_field where "
+                                + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
+                    	String[] title_name = new String[fieldList.size()];
+                    	String[] content = new String[fieldList.size()];
+                    	for(Record item : fieldList){
+                    		String name = item.getStr("FIELD_DISPLAY_NAME");
+                    		String text = item.getStr("FIELD_NAME").toUpperCase();
+                    		String item_id = item.get("ID").toString();
+                    		title_name[fieldList.indexOf(item)] = name;
+                    		content[fieldList.indexOf(item)] = "F"+item_id+ "_"+text;
+                    	}
+                    	String sql = "select * from form_"+form_id+" where 1=1 "; 
+                    	String sqlExport = sql+ condition + " order by id desc ";
+                    	
+                    	boolean result = PoiUtils.generateExcel(title_name, content, sqlExport,PathKit.getWebRootPath()+filePath, fileName);
+                  		if(result){
+                  			System.out.println("ok");
+                  		}else{
+                  			System.out.println("error");
+                  		}  
+                    }
+              		event.set("template_name", filePath+ "/" + fileName);
+                }
+                //下载导入excel模板
+                else if("download_template".equals(event.getStr("type"))){
+                	String fileName = title.get("level2") + ".xls";
+                	String filePath = "/download/download_template";
+                	File file = new File(PathKit.getWebRootPath() + filePath + fileName);
+                	Record define = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
+                	//做生成excel处理
+                	String sqlExport = "select 1 = 1;";
+                	List<Record> list = null;
+                    if("search_form".equals(define.get("type"))){
+                    	list = getDisplayCols(form_id);
+                    }else if("form".equals(define.get("type"))){
+                    	list = Db.find("select * from eeda_form_field where "
+                                + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
+                    }
+                	String[] title_name = new String[list.size()];
+                	for(Record item : list){
+                		String name = item.getStr("FIELD_DISPLAY_NAME");
+                		title_name[list.indexOf(item)] = name;
+                	}
+              		String[] content = {};
+              		
+              		boolean result = PoiUtils.generateExcel(title_name, content, sqlExport,PathKit.getWebRootPath()+filePath, fileName);
+              		if(result){
+              			System.out.println("ok");
+              		}else{
+              			System.out.println("error");
+              		}  
+                    
+                    event.set("template_name", filePath+ "/" + fileName);
                 }
             }
             renderJson(recList);
@@ -658,6 +751,30 @@ public class FormController extends Controller {
 			    lieNameStr += str+biao_name_py+".id";
 			}else{
 			    lieNameStr += str+biao_name_py+".f"+field.get("id")+"_"+field.get("field_name");
+			}
+    	}
+    	return lieNameStr;
+    }
+    
+    private String getLieNameStrWithoutTable(Long form_id){
+    	String lieNameStr = "";
+    	List<Record> colsList = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
+    	for(int i = 0;i<colsList.size();i++){
+    		String expression = colsList.get(i).get("expression");
+    		int index = expression.indexOf(".");
+    		String lie_name = expression.substring(index+1);
+			String biao_name = expression.substring(0,index);
+			String biao_name_py = PingYinUtil.getFirstSpell(expression.substring(0,index));
+			Record define = Db.findFirst("select * from eeda_form_define where name = ?",biao_name);
+			Record field = Db.findFirst("select * from eeda_form_field where field_display_name = ? and form_id = ?",lie_name,define.get("id"));
+			String str = "";
+			if(lieNameStr.length()>0){
+				str = ",";
+			}
+			if("ID".equals(lie_name)){
+			    lieNameStr += "id";
+			}else{
+			    lieNameStr += str+"f"+field.get("id")+"_"+field.get("field_name");
 			}
     	}
     	return lieNameStr;

@@ -7,11 +7,15 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
@@ -19,6 +23,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+import com.jfinal.kit.PathKit;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 
 public class PoiUtils {
 	static SimpleDateFormat sFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -309,5 +317,54 @@ public class PoiUtils {
 			this.header = header;
 		}
 		
+	}
+	
+	/**
+	 * 写内容到excel中
+	 * @throws IOException 
+	 */
+	@SuppressWarnings("deprecation")
+	public static boolean generateExcel(String[] title_name, String[] content, String sqlExport, String filePath,String fileName){
+	    boolean result = false;
+	    try {
+	        System.out.println("generateExcel begin...");
+	        File file = new File(filePath);
+	        if(!file.exists()){
+	            file.mkdir();
+	        }
+	        HSSFWorkbook workbook = new HSSFWorkbook();
+	        HSSFSheet sheet = workbook.createSheet("FirstSheet");  
+	
+	        HSSFRow rowhead = sheet.createRow((short)0);
+	        for (int i = 0; i < title_name.length; i++) {
+	            rowhead.createCell((short)i).setCellValue(title_name[i]);
+	        }
+	
+	        List<Record> recs = Db.find(sqlExport);
+	        if(recs!=null){
+	            for (int j = 1; j <= recs.size(); j++) {
+	                HSSFRow row = sheet.createRow((short)j);
+	                Record rec = recs.get(j-1);
+	                for (int k = 0; k < content.length;k++){
+	                    Object obj = rec.get(content[k]);
+	                    String strValue = "";
+	                    if(obj != null){
+	                        strValue =obj.toString();
+	                    }
+	                    row.createCell((short)k).setCellValue(strValue);
+	                }
+	            }
+	        }
+	
+	        fileName =   filePath + "/"+ fileName;
+	        FileOutputStream fileOut = new FileOutputStream(fileName);
+	        workbook.write(fileOut);
+	        fileOut.close();
+	        result = true;
+	        System.out.println("Your excel file has been generated!");
+	    } catch ( Exception ex ) {
+	        ex.printStackTrace();
+	    }
+	    return result;
 	}
 }

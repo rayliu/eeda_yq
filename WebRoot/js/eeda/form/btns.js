@@ -120,6 +120,12 @@ define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMe
                                 var target_table_id = "detail_table_"+event.LIST_ADD_ROW.FIELD_ID;
                                 var dataTable = $('#'+target_table_id).DataTable();
                                 dataTable.row.add({}).draw(false);
+                            } else if(event.TYPE == "download_template"){
+                            	console.log(' download....');
+                            	window.location.href = event.TEMPLATE_NAME;    
+                            } else if(event.TYPE == "export_excel"){
+                            	console.log(' export_excel....');
+                            	window.location.href = event.TEMPLATE_NAME;    
                             }
                         }
                     }
