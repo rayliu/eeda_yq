@@ -30,7 +30,7 @@
 <%}%>
 
 <script>
-	requirejs(['/js/eeda/eeda-common.js'], function (common) {
+	requirejs([], function (common) {
 		<%if(action=='add'){%>
 			requirejs(['app/lego_app/form/add/main']);
 		<%} else if(action=='edit'){%>
