@@ -1,5 +1,7 @@
 package controllers.app;
 
+import interceptor.SetAttrLoginUserInterceptor;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,11 +11,13 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.JsonKit;
@@ -24,7 +28,8 @@ import com.jfinal.plugin.activerecord.Record;
 import controllers.form.FormService;
 import controllers.util.DbUtils;
 
-@Clear
+@RequiresAuthentication
+@Before(SetAttrLoginUserInterceptor.class)
 public class AppFormController extends Controller {
 
     private Logger logger = Logger.getLogger(AppFormController.class);

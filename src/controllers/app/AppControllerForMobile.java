@@ -1,22 +1,23 @@
 package controllers.app;
 
+import interceptor.SetAttrLoginUserInterceptor;
+
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.codec.Base64;
 
-import sun.misc.BASE64Decoder;
-
+import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
 import controllers.util.MD5Util;
 
-//@RequiresAuthentication
-//@Before(SetAttrLoginUserInterceptor.class)
+
 public class AppControllerForMobile extends Controller {
 
     private Logger logger = Logger.getLogger(AppControllerForMobile.class);

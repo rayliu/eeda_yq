@@ -88,29 +88,34 @@ public class MainController extends Controller {
     
     @Before(EedaMenuInterceptor.class)
     public void index() {
-        if(isMobile(getRequest())){
-            redirect("/app");
-        }else{
-            if (isAuthenticated()) {
-            	Record re = Db.findFirst("select id,name,module_id from eeda_form_define where is_home_index = 'Y'");
-            	if(re!=null){
-            		setAttr("action", "list");
-                    setAttr("module_id", re.getLong("module_id"));
-                    Record title = Db.findFirst("select m1.module_name level2,m2.module_name level1 from eeda_modules m1 "
-                    		+ " LEFT JOIN eeda_modules m2 on m1.parent_id = m2.id"
-                    		+ " where m1.id = ?",re.getLong("module_id"));
-                    if(title != null){
-                    	 setAttr("level1", title.get("level1"));
-                         setAttr("level2", title.get("level2"));
-                    }
-                    FormController form = new FormController();
-                    form.list(re.getLong("id"),this);
-                    render("/eeda/form/listTemplate.html");
-                    return;
-            	}
-                render("/eeda/index.html");
+        if (isAuthenticated()) {
+            if(isMobile(getRequest())){
+                redirect("/app");
+                return;
+            }else{
+                goDefaultPage();
             }
         }
+    }
+
+    public void goDefaultPage() {
+        Record re = Db.findFirst("select id,name,module_id from eeda_form_define where is_home_index = 'Y'");
+        if(re!=null){
+            setAttr("action", "list");
+            setAttr("module_id", re.getLong("module_id"));
+            Record title = Db.findFirst("select m1.module_name level2,m2.module_name level1 from eeda_modules m1 "
+                    + " LEFT JOIN eeda_modules m2 on m1.parent_id = m2.id"
+                    + " where m1.id = ?",re.getLong("module_id"));
+            if(title != null){
+                 setAttr("level1", title.get("level1"));
+                 setAttr("level2", title.get("level2"));
+            }
+            FormController form = new FormController();
+            form.list(re.getLong("id"),this);
+            render("/eeda/form/listTemplate.html");
+            return;
+        }
+        render("/eeda/index.html");
     }
     
     private static boolean isMobile(HttpServletRequest request) {
@@ -213,7 +218,12 @@ public class MainController extends Controller {
     public void login() {
 
     	if (isAuthenticated()) {
-    		redirect("/home");
+    	    if(isMobile(getRequest())){
+                redirect("/app");
+                return;
+            }else{
+                goDefaultPage();
+            }
     	}
     	
     	//获取子系统的名字,显示在登陆页面
@@ -284,13 +294,21 @@ public class MainController extends Controller {
             	
             	setLoginLog(user);
 
-            	redirect("/home");
-            	//render("/eeda/index.html");
+            	if(isMobile(getRequest())){
+                    redirect("/app");
+                    return;
+                }else{
+                    goDefaultPage();
+                }
             }else{
             	setAttr("userId",currentUser.getPrincipal());
             	setLoginLog(user);
-            	redirect("/home");
-            	//render("/eeda/index.html");
+            	if(isMobile(getRequest())){
+                    redirect("/app");
+                    return;
+                }else{
+                    goDefaultPage();
+                }
             };
           
             
