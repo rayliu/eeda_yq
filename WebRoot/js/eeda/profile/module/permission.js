@@ -88,7 +88,7 @@ define(['jquery', 'dataTablesBootstrap', 'sco'], function ($) {
                     "render": function ( data, type, full, meta ) {
                         if(!data)
                             data='';
-                        return '/<input type="text" name="url" value="'+data+'" class="form-control"/>';
+                        return '/<input type="text" name="url" value="'+data+'" class="form-control" disabled/>';
                     }
                 }
             ]

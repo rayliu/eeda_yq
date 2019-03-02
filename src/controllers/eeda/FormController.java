@@ -345,14 +345,47 @@ public class FormController extends Controller {
                 rec = getForm(form_id, order_id);
                 renderJson(rec);
             }else if ("doAdd".equals(action) || "doUpdate".equals(action)){
-            	FormService formService = new FormService(this);
-            	String ip = MainController.getIpAddress(getRequest());
-            	formService.saveSysLog(action,getPara("data"),form_id,order_id,user_id,office_id,ip);
                 rec = saveForm();
+                String ip = MainController.getIpAddress(getRequest());
+//            	saveSysLog(action,getPara("data"),form_id,order_id,user_id,office_id,ip);
+                String jsonStr = getPara("data");
+                Gson gson = new Gson();
+                Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+                String dto_order_id = (String)dto.get("order_id");
+                Record sysLog = new Record();
+                if(StrKit.isBlank(dto_order_id)){
+                    action = "doAdd";
+                }
+            	
+                sysLog.set("log_type", "operate");
+                sysLog.set("operation_obj", getPara("data"));
+                sysLog.set("action_type", action);
+                sysLog.set("create_stamp", new Date());
+                sysLog.set("user_id", user_id);
+                sysLog.set("ip",ip);
+                sysLog.set("office_id", office_id);
+                sysLog.set("form_id", form_id);
+                sysLog.set("order_id", rec.get("id").toString());
+                Db.save("sys_log", sysLog);
+                
                 renderJson(rec);
             }
             
         }
+    }
+    
+    private boolean saveSysLog(String action,String jsonStr,long form_id,long order_id,long user_id,long office_id,String ip){
+        Record sysLog = new Record();
+        sysLog.set("log_type", "operate");
+        sysLog.set("operation_obj", jsonStr);
+        sysLog.set("action_type", action);
+        sysLog.set("create_stamp", new Date());
+        sysLog.set("user_id", user_id);
+        sysLog.set("ip",ip);
+        sysLog.set("office_id", office_id);
+        sysLog.set("form_id", form_id);
+        sysLog.set("order_id", order_id);
+        return Db.save("sys_log", sysLog);
     }
     
     private Record saveForm(){
