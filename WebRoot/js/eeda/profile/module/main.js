@@ -68,6 +68,8 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                         
                         $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                         btn.attr('disabled', false);
+                        //保存成功后刷新一下module
+                        listCont.refresh_module_info(order.ID, order.MODULE_NAME);
                     }else{
                         $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                         btn.attr('disabled', false);
@@ -100,13 +102,13 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             if($("#is_home_index").prop("checked")){
             	checkExistIndex(self);
             }else{
-            	saveAction(self);
+                saveAction(self);
             }
         });
 
         var checkExistIndex = function(self){
             var module_id = $('#module_id').text();
-            $.post("/module/checkExistIndex",{module_id:module_id},function(data){debugger
+            $.post("/module/checkExistIndex",{module_id:module_id},function(data){
                 if(data.length>0){
                 	 var mymessage = confirm("已有设为首页的页面，是否继续？");
                      if(!mymessage){

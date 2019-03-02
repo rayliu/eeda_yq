@@ -1,7 +1,7 @@
 define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', './interface/interface','./custom_search/custom_search'], 
     function ($, tree, fieldCont, btnsCont, eventsCont, editEventCont, intCont,customSearchCont) {
 
-    $(document).ready(function() {
+    // $(document).ready(function() {
     	
         var module_obj;
 
@@ -153,13 +153,18 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                 $("#addProductDiv").hide();
                 $("#displayDiv").hide();
             }
+            redisplay_module(treeNode.id, treeNode.name);
+        };
+
+        function redisplay_module(module_id, module_name){
+            debugger
             $(".form_info input[type='text']").val("");
             $(".form_info input[type='checkbox']").prop("checked",false);
-            $("#module_id").text(treeNode.id);
-            $("#form_name").val(treeNode.name);
-            $("#module_url").val(treeNode.url);
+            $("#module_id").text(module_id);
+            $("#form_name").val(module_name);
+            //$("#module_url").val(treeNode.url);
 
-            $.post('/module/getOrderStructure', {module_id: treeNode.id}, function(json){
+            $.post('/module/getOrderStructure', {module_id: module_id}, function(json){
                 console.log('getOrderStructure....');
                 console.log(json);
                 module_obj = json;
@@ -307,7 +312,7 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
 	                }
                 }
             }, 'json');
-        };
+        }
         //---------------------------  tree handler end -------------
 
         
@@ -341,5 +346,8 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
             },'json');
         });
 
-    });
+    // });
+    return {
+        refresh_module_info:redisplay_module
+    }; 
 });
