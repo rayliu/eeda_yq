@@ -1032,7 +1032,7 @@ public class ModuleController extends Controller {
         for (Record existFieldRec : existFieldList) {
             boolean is_exist = false;
             String existFieldName=existFieldRec.getStr("field");
-            if("id".equals(existFieldName))
+            if("id".equals(existFieldName)||"eeda_delete".equals(existFieldName))
                 continue;
             for (Record field : fieldList) {
                 String fieldName = "f" + field.getLong("id").toString() + "_"
