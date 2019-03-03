@@ -102,17 +102,18 @@ public class MainController extends Controller {
         Record re = Db.findFirst("select id,name,module_id from eeda_form_define where is_home_index = 'Y'");
         if(re!=null){
             setAttr("action", "list");
-            setAttr("module_id", re.getLong("module_id"));
+            Long moduleId = re.getLong("module_id");
+            setAttr("module_id", moduleId);
             Record title = Db.findFirst("select m1.module_name level2,m2.module_name level1 from eeda_modules m1 "
                     + " LEFT JOIN eeda_modules m2 on m1.parent_id = m2.id"
-                    + " where m1.id = ?",re.getLong("module_id"));
+                    + " where m1.id = ?", moduleId);
             if(title != null){
                  setAttr("level1", title.get("level1"));
                  setAttr("level2", title.get("level2"));
             }
             FormController form = new FormController();
             form.list(re.getLong("id"),this);
-            render("/eeda/form/listTemplate.html");
+            redirect("/form/"+moduleId+"-list");
             return;
         } else {
         	redirect("/home");
