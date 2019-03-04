@@ -1,5 +1,5 @@
 define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 
-        'validate_cn', 'sco', 'datetimepicker_CN', 'jq_blockui'], function ($, metisMenu) { 
+        'validate_cn', 'sco', 'datetimepicker_CN', 'jq_blockui', 'layer'], function ($, metisMenu) { 
 
 var queryOffice=function(){
 	var offices=[];
@@ -166,8 +166,8 @@ $(document).ready(function(){
 	});
 	//查询
 	var userId = $("#userId").val();
-	officeList();
-	customerList();
+	// officeList();
+	// customerList();
 	//选择默认的网点
 	$("#tobdy").on('click','.is_main',function(){
 		//保存默认网点
@@ -236,9 +236,9 @@ $(document).ready(function(){
         if(!$("#leadsForm").valid()){
             return;
         }
-        $.blockUI({ 
-            message: '<h4><img src="/images/loading.gif" style="height: 20px; margin-top: -3px;"/> 正在提交...</h4>' 
-        });
+        var layer_index = layer.load(1, {
+			shade: [0.3,'#000'] //0.3透明度的黑色背景
+		});
         $(this).attr('disabled', true);
         
         var officeIds=[];
@@ -258,24 +258,23 @@ $(document).ready(function(){
 
         //异步向后台提交数据
         $.post('/loginUser/saveUser',$("#leadsForm").serialize() , function(data){
+			layer.close(layer_index); 
             var order = data;
             if(order.ID>0){
-                $.unblockUI();
                 //异步刷新明细表
                 eeda.contactUrl("edit?id",order.ID);
                 $('#userId').val(order.ID);
-                $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+                layer.alert('保存成功', {icon: 1});
                 $("#assigning_role").show();
                 $('#saveBtn').attr('disabled', false);
             }else{
-                $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+                layer.alert('保存失败', {icon: 2});
                 $('#saveBtn').attr('disabled', false);
-                $.unblockUI();
             }
         },'json').fail(function() {
-            $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
+            layer.alert('保存失败', {icon: 2});
             $('#saveBtn').attr('disabled', false);
-            $.unblockUI();
+            layer.close(layer_index); 
         });
     });  
 

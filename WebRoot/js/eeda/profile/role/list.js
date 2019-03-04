@@ -5,21 +5,23 @@ define(['jquery', 'metisMenu', 'sb_admin', 'dataTablesBootstrap', 'validate_cn']
 		$("#breadcrumb_li").text('岗位列表');
 
 	var dataTable = eeda.dt({
-			id: 'example',
-	        "ajax": "/role/list",
+			id: 'role_table',
+			"ajax": "/role/list",
+			paging:true,
+            lengthChange:false,
 	        "columns": [
 	            { "data": "NAME",},
 	            { "data": "REMARK"}, 
 	            { "data": null,
 	            	"width": "20%",
 	            	"render": function ( data, type, full, meta ) {
-						var role_update_permission = Role.UpdatePermission;
-						var role_del_permission = Role.DelPermission;
+						var role_update_permission = true;//Role.UpdatePermission;
+						var role_del_permission = true;//Role.DelPermission;
 
 						var str="";
-						if(data.CODE != "admin"|| this_rode =='admin' ){
+						if(data.CODE != "admin"){//|| this_rode =='admin' 
 							if(role_update_permission){
-								str += "<nobr><a class='btn  btn-primary btn-sm' href='/role/ClickRole?id="+full.ID+"' target='_blank'>"
+								str += "<nobr><a class='btn  btn-primary btn-sm' href='/role/edit?id="+full.ID+"'>"
 									+ "<i class='fa fa-edit fa-fw'></i> "
 									+ "编辑"
 									+ "</a> ";
