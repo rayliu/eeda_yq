@@ -115,11 +115,8 @@ public class MainController extends Controller {
             form.list(re.getLong("id"),this);
             redirect("/form/"+moduleId+"-list");
             return;
-        } else {
-        	redirect("/home");
-        	return;
         }
-//        render("/eeda/index.html");
+        render("/eeda/index.html");
     }
     
     private static boolean isMobile(HttpServletRequest request) {

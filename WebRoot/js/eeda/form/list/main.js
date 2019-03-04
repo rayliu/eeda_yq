@@ -1,6 +1,4 @@
-define(['jquery','hui_admin', '../btns'], function ($) {
-
-        
+define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, layui) {
         
         document.title = '查询 | ' + document.title;
 

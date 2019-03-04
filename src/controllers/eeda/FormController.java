@@ -35,6 +35,9 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 import com.jfinal.weixin.sdk.kit.IpKit;
 
+import controllers.eeda.import_excel.ReaderXLS;
+import controllers.eeda.import_excel.ReaderXlSX;
+import controllers.eeda.import_excel.CheckOrder;
 import controllers.form.FormService;
 import controllers.form.TemplateService;
 import controllers.profile.LoginUserController;
@@ -313,6 +316,8 @@ public class FormController extends Controller {
               		}  
                     
                     event.set("template_name", filePath+ "/" + fileName);
+                }else if("import_excel".equals(event.getStr("type"))){
+                	event.set("form_id", form_id);
                 }
             }
             renderJson(recList);
@@ -374,6 +379,59 @@ public class FormController extends Controller {
         }
     }
     
+	public void import_excel(){
+    	String module_id = getPara("module_id");
+    	String form_id = getPara("form_id");
+    	UploadFile uploadFile = getFile();
+		File file = uploadFile.getFile();
+		
+		UserLogin user = LoginUserController.getLoginUser(this);
+		String fileName = file.getName(); //文件名称
+		String msg = "";
+		boolean result = false;
+
+		Record resultMap = new Record();
+		try {
+			String[] title = null;
+			List<Map<String, String>> content = new ArrayList<Map<String, String>>();
+			//exel格式区分
+			long start = new Date().getTime();
+			if (fileName.endsWith(".xls")) {
+				title = ReaderXLS.getXlsTitle(file);
+				content = ReaderXLS.getXlsContent(file);
+			} else if (fileName.endsWith(".xlsx")) {
+				title = ReaderXlSX.getXlsTitle(file);
+				content = ReaderXlSX.getXlsContent(file);
+			} else {
+				resultMap.set("result", false);
+				resultMap.set("cause", "导入失败，请选择正确的excel文件（xls/xlsx）");
+			}
+
+			if (title != null && content.size() > 0) {
+				CheckOrder checkOrder = new CheckOrder();
+//			
+//				// 内容校验
+//				resultMap = checkOrder.importMLCheck(content,order_id);
+				// 内容开始导入
+//				if(resultMap.getBoolean("result")){
+					resultMap = checkOrder.importMLValue(content, user.toRecord(), form_id);
+//				}
+				System.out.println("总行数：" + content.size());
+				System.out.println(new Date().getTime() - start);
+			}else{
+				resultMap.set("result", false);
+				resultMap.set("cause", "导入失败，excel内容不能为空");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultMap.set("result", false);
+			resultMap.set("cause", "导入失败，请检测excel内容是否填写规范（尽量避免函数求值列内容）<br/>（建议使用Microsoft Office Excel软件操作数据）");
+		}
+
+		renderJson(resultMap);
+    }
+	
+	
     private boolean saveSysLog(String action,String jsonStr,long form_id,long order_id,long user_id,long office_id,String ip){
         Record sysLog = new Record();
         sysLog.set("log_type", "operate");

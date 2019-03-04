@@ -1,4 +1,4 @@
-define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMenu) {
+define(['jquery', 'layui', './print','file_upload','sco'], function ($, printCont,metisMenu) {
 	$.fn.serializeObject = function () {
 	    var o = {};
 	    var a = this.serializeArray();
@@ -126,12 +126,55 @@ define(['jquery', './print','file_upload','sco'], function ($, printCont,metisMe
                             } else if(event.TYPE == "export_excel"){
                             	console.log(' export_excel....');
                             	window.location.href = event.TEMPLATE_NAME;    
+                            } else if(event.TYPE == "import_excel"){
+                            	console.log(' import_excel....');  
+                            	var form_id = event.FORM_ID;
+                            	var btn = "form_"+event.FORM_ID+'-btn_'+btn_id;
+                            	upload_value(btn, btn_id, module_id, form_id);
+                            	
                             }
                         }
                     }
                 });
             }
         });
+//        $.post('/form/'+module_id+'-click-'+btn_id,{order_id:order_id}, function(events){
+        
+        var upload_value = function(btn, btn_id, module_id, form_id) {
+        	layui.config({dir: '/js/lib/layui/'});
+        	layui.use(['upload', 'layer'], function(){
+    			var layer = layui.layer,upload = layui.upload;
+
+            	upload.render({
+        	    elem: '#'+ btn
+        	    ,accept: 'file' //普通文件
+        	    ,url: '/form/import_excel?module_id='+module_id+'&form_id='+form_id
+        	    ,done: function(res){
+        	      	console.log(res)
+        	      	var result = res.RESULT;
+        	      	var cause = res.CAUSE;
+
+        	       	layer.open({
+        		        type: 1
+        		        ,offset: 'auto' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+        		        ,id: 'layerDemoauto' //防止重复弹出
+        		        ,content: '<div style="padding: 20px">'+ cause +'</div>'
+        		        ,btn: '关闭'
+        		        ,btnAlign: 'c' //按钮居中
+        		        ,shade: 0 //不显示遮罩
+        		        ,yes: function(){
+        		          	layer.closeAll();
+        		        }
+        		    });
+
+    	    	    }
+    	        });
+        	})
+	
+    		
+    		
+
+        }
 
         function getFormData($form){
             // Find disabled inputs, and remove the "disabled" attribute
