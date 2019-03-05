@@ -74,12 +74,12 @@ define(['jquery', 'metisMenu', 'layer', 'sb_admin', 'dataTables', 'validate_cn',
                         layer.close(layer_index); 
                         $('#role_id').val(data.ID)
                         layer.alert('保存成功', {icon: 1});
-                        //$.scojs_message('保存成功', $.scojs_message.TYPE_OK);
+                        $('#saveRoleBtn').attr('disabled', false);
                     }
                 }).fail(function() {
-                    layer.alert('保存失败', {icon: 1});
+                    layer.alert('保存失败', {icon: 2});
                     $('#saveRoleBtn').attr('disabled', false);
-                    $.unblockUI();
+                    layer.close(layer_index); 
                 });
             });
 

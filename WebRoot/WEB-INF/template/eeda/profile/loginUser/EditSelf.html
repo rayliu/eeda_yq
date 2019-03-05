@@ -1,107 +1,101 @@
-<%layout("/eeda/layout.html"){%>
+<%layout("/eeda/theme/h-ui/layout.html"){%>
 
-	<div id="page-wrapper">
-		<div class="row">
-             <div class="col-lg-12">
-             	<div class="btn-header">
-				</div>
-            <%if(status=='ok'){%>
-                <div class="alert alert-success alert-dismissable">
-                    保存成功.
-                </div>
-            <%}%>
-
-            <div class="simple_order_list_div">
-                <ul id="orderTabs" class="nav nav-tabs">
-                    <li class="active">
-                        <a id='oceanDetailTab' href="#oceanDetail" data-toggle="tab" >基本信息</a>
-                    </li>
-                    <li>
-                        <a id='airDetailTab' href="#airDetail" data-toggle="tab" >修改密码</a>
-                    </li>
-                </ul>
-                <form lass="form-horizontal" id='leadsForm' name="leadsForm" action="/loginUser/savePerson" method="post">
-                    <input id="userId" name="userId" type="hidden" value="${lu.id!''}">
-                    <input id="oldPwd" name="oldPwd" type="hidden" value="${lu.password!''}">
-                    <input id="username" name="username" type="hidden" value="${lu.user_name!''}">
-                    <div class="tab-content">
-                        <div class="tab-pane fade active in" id="oceanDetail">
-                            <div class="form-group">
-                                <div class="col-lg-12">
-                                    <div class="form-group ">
-                                        <label class="control-label">登陆名</label>
-                                        <span  class="form-control" >${lu.user_name!''}</span >
+    <section class="Hui-article-box">
+        <nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a> 
+            <span class="c-999 en">&gt;</span>
+            <span class="c-666">个人信息</span>
+            <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+        </nav>
+        <div class="Hui-article">
+            <article class="cl pd-20" style="padding-top:10px;">
+                    <div id="tab_demo" class="HuiTab">
+                        <div class="tabBar clearfix">
+                            <span>基本信息</span>
+                            <span>修改密码</span>
+                        </div>
+                        <form class="form form-horizontal responsive" id='leadsForm' name="leadsForm" action="" method="post">
+                            <div class="tabCon">
+                                <!-- 基本信息一 -->
+                                <input id="userId" name="userId" type="hidden" value="${lu.id!''}">
+                                <input id="oldPwd" name="oldPwd" type="hidden" value="${lu.password!''}">
+                                <input id="username" name="username" type="hidden" value="${lu.user_name!''}">
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">登陆名</label>
+                                    <div class="formControls col-xs-8">
+                                        <label>${lu.user_name!''}</label>    
                                     </div>
-                                    <div class="form-group ">
-                                        <label class="control-label">中文名(必填)</label>
-                                        <input id="chineseName" name="chineseName" type="text" class="form-control" value="${lu.c_name!''}" placeholder="请输入中文名">
+                                </div>
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">中文名(必填)</label>
+                                    <div class="formControls col-xs-8">
+                                        <input type="text" class="input-text" placeholder="请输入中文名" id="chineseName" name="chineseName" 
+                                        autocomplete="off" value="${lu.c_name!''}">
                                     </div>
-                                    <div class="form-group">
-                                         <label class="control-label">固话tel</label>
-                                         <input type="text" class="form-control" id="user_tel" name="user_tel" value="${lu.user_tel!''}">
-                                     </div>
-                                     <div class="form-group">
-                                         <label class="control-label">移动电话phone</label>
-                                         <input type="text" class="form-control" id="user_phone" name="user_phone" value="${lu.user_phone!''}">
-                                     </div>
-                                     <div class="form-group">
-                                         <label class="control-label">传真</label>
-                                         <input type="text" class="form-control" id="user_fax" name="user_fax" value="${lu.user_fax!''}">
-                                     </div>
+                                </div>
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">固话tel</label>
+                                    <div class="formControls col-xs-8">
+                                        <input type="text" class="input-text" placeholder="请输入固话" id="user_tel" name="user_tel" 
+                                        autocomplete="off" value="${lu.user_tel!''}">
+                                    </div>
+                                </div>
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">移动电话phone</label>
+                                    <div class="formControls col-xs-8">
+                                        <input type="text" class="input-text" placeholder="请输入移动电话" 
+                                        id="user_phone" name="user_phone" value="${lu.user_phone!''}"
+                                        autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">传真</label>
+                                    <div class="formControls col-xs-8">
+                                        <input type="text" class="input-text" placeholder="请输入传真" 
+                                        id="user_fax" name="user_fax" value="${lu.user_fax!''}"
+                                        autocomplete="off">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane fade in" id="airDetail">
-                            <div class="form-group">
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                         <label class="control-label">旧密码</label>
-                                         <input type="password" class="form-control" id="old_pwd" name="old_pwd">
-                                     </div>
-                                      <div class="form-group">
-                                         <label class="control-label">新密码</label>
-                                         <input type="password" class="form-control" id="new_pwd" name="password">
-                                     </div>
-                                      <div class="form-group">
-                                         <label class="control-label">密码提示</label>
-                                         <input type="text" class="form-control" id="pw_hint" name="pw_hint" value="${lu.password_hint!''}">
-                                     </div>
+                            <div class="tabCon">
+                                <!-- 修改密码 -->
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">旧密码</label>
+                                    <div class="formControls col-xs-8">
+                                        <input type="password" class="input-text" placeholder="请输入旧密码" 
+                                        id="old_pwd" name="old_pwd"
+                                        autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">新密码</label>
+                                    <div class="formControls col-xs-8">
+                                        <input type="password" class="input-text" placeholder="请输入新密码" 
+                                        id="new_pwd" name="password"
+                                        autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">密码提示</label>
+                                    <div class="formControls col-xs-8">
+                                        <input type="text" class="input-text" placeholder="请输入密码提示" 
+                                        id="pw_hint" name="pw_hint" value="${lu.password_hint!''}"
+                                        autocomplete="off">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                    
                     <div class="button-bar" >
-                        <button type="submit" class="btn  btn-primary">保存</button>
-                        <a class="btn  btn-primary" href="/loginUser">取消</a>
+                        <button id="saveBtn" type="button" class="btn btn-primary">保存</button>
+                        <a class="btn btn-primary" href="/loginUser">返回</a>
                     </div>
-                </form>
-            </div>
-             <div class="panel panel-default" style="display: none;">
-                   
-            		
-            	 <div class="panel-body">
-                    <div class="row-fluid">
-            		
-						
-						
-			            
-			             
-			             
-			             	
-			         
-            			</div>
-            		</div>
-					
-							
-				</div>
-			</div>
-		</div>
-	</div>
+            </article>
+        </div>
+    </section>
+	
 <%}%>
 
 <script>
-    requirejs(['/js/common.js', '/js/eeda/eeda-common.js'], function (common) {
-        requirejs(['app/profile/loginUser/userProfile']);
+    requirejs(['/js/eeda/eeda-common.js','app/profile/loginUser/userProfile'], function (common) {
     });
 </script>

@@ -23,7 +23,7 @@
 					<li><%if(login_user.role_code!''=='admin'){%>超级管理员<%}%></li>
 					<li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A">${login_user.c_name!''} <i class="Hui-iconfont">&#xe6d5;</i></a>
 						<ul class="dropDown-menu menu radius box-shadow">
-							<li><a href="javascript:;" onClick="myselfinfo()">个人信息</a></li>
+							<li><a href="/loginUser/editPerson">个人信息</a></li>
 							<%if(login_user.role_code!''=='admin'){%><li><a href="/loginUser">用户设置</a></li><%}%>
 							<%if(login_user.role_code!''=='admin'){%><li><a href="/module" target="_blank">后台设置</a></li><%}%>
 							<%if(login_user.role_code!''=='admin'){%><li><a href="/email">邮件设置</a></li><%}%>
