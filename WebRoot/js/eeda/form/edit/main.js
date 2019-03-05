@@ -1,5 +1,5 @@
 define(['jquery', 'hui', '../btns', '../add/detail_table', '../value_change', '../drop_list_change', 
-    '../table_drop_list', '../city_list'],
+    '../table_drop_list', '../city_list', 'layer'],
     function ($, huiCont, btnCont, tableCont) {
 //        $(".Hui-aside").Huifold({
 //            titCell:'.menu_dropdown dl dt',
@@ -10,18 +10,22 @@ define(['jquery', 'hui', '../btns', '../add/detail_table', '../value_change', '.
         $(".HuiTab").Huitab({
             index:0
         });
-
+        var layer_index = layer.load(1, {
+            shade: [0.3,'#000'] //0.3透明度的黑色背景
+        });
         var form_define_json = JSON.parse($("#form_define").text());
 
         var order_id = $('#order_id').val();
         var module_form_id = form_define_json.ID;
         console.log('edit.....');
-
+        
         //这里用回调保证 先应用了 dataTable setting,  再取数据回显
         tableCont.callback(function(){
+            
             $.post('/form/'+form_define_json.MODULE_ID+"-doGet-"+order_id,  function(data){
                 console.log(data);
                 fillFormData(data);
+                layer.close(layer_index); 
             });
         });
         
