@@ -1,4 +1,4 @@
-define(['jquery', 'layui', './print','file_upload','sco'], function ($, printCont,metisMenu) {
+define(['jquery', 'layui', './print','file_upload','layer'], function ($, printCont,metisMenu) {
 	$.fn.serializeObject = function () {
 	    var o = {};
 	    var a = this.serializeArray();
@@ -234,17 +234,26 @@ define(['jquery', 'layui', './print','file_upload','sco'], function ($, printCon
 
 
         function doAdd(data){
+            var layer_index = layer.load(1, {
+                shade: [0.3,'#000'] //0.3透明度的黑色背景
+            });
             $.post('/form/'+data.module_id+'-doAdd', {data: JSON.stringify(data)}, function(dto){
                 if(dto){
+                    layer.close(layer_index); 
+                    layer.alert('操作成功', {icon: 1});
                     var url = '/form/'+data.module_id+'-edit-'+dto.ID;
                     window.location.href=url;
                 }else{
-                    $('.Huialert-error').show();
+                    layer.close(layer_index); 
+                    layer.alert('操作失败', {icon: 2});
                 }
             });
         }
 
         function doUpdate(data){
+            var layer_index = layer.load(1, {
+                shade: [0.3,'#000'] //0.3透明度的黑色背景
+            });
             $.post('/form/'+data.module_id+'-doUpdate', {data: JSON.stringify(data)}, function(dto){
                 if(dto){
 //                	if(dto.TYPE=="set_value"){
@@ -267,10 +276,11 @@ define(['jquery', 'layui', './print','file_upload','sco'], function ($, printCon
              	        }
                 	}
                 	  
-                    $('.Huialert-success').show();
-                    
+                    layer.close(layer_index); 
+                    layer.alert('操作成功', {icon: 1});
                 }else{
-                    $('.Huialert-error').show();
+                    layer.close(layer_index); 
+                    layer.alert('操作失败', {icon: 2});
                 }
             });
         }
