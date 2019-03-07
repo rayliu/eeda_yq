@@ -157,7 +157,6 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
         };
 
         function redisplay_module(module_id, module_name){
-            debugger
             $(".form_info input[type='text']").val("");
             $(".form_info input[type='checkbox']").prop("checked",false);
             $("#module_id").text(module_id);

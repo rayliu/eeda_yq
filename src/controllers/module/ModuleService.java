@@ -219,7 +219,14 @@ public class ModuleService {
     public void saveEventSetValue(Map<String, ?> event, Long event_id) {
         Map<String, ?> dto = (Map<String, ?>) event.get("SET_VALUE");
         if (dto != null) {
-            String id = (String) dto.get("id".toUpperCase());
+            String id = "";
+            Object objId = dto.get("id".toUpperCase());
+            if (objId instanceof java.lang.Double) {
+                id = String.valueOf(((Double) objId).longValue());
+            } else {
+                id = (String) objId;
+            }
+            
             String db_source = (String) dto.get("DB_SOURCE");
             String target = (String) dto.get("TARGET");
             String set_value_type = (String) dto.get("SET_VALUE_TYPE");
@@ -246,7 +253,14 @@ public class ModuleService {
             for (Map<String, String> field : field_list) {
                 String name = (String) field.get("NAME");
                 String value = (String) field.get("VALUE");
-                String field_id = (String)field.get("id".toUpperCase());
+                String field_id = "";
+                Object objFieldId = field.get("id".toUpperCase());
+                if (objFieldId instanceof java.lang.Double) {
+                    field_id = String.valueOf(((Double) objFieldId).longValue());
+                } else {
+                    field_id = (String) objId;
+                }
+//                String field_id = (String)field.get("id".toUpperCase());
                 Record item = new Record();
                 if (StrKit.isBlank(field_id)) {
                     item.set("event_id", event_id);

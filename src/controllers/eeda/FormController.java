@@ -26,24 +26,24 @@ import com.google.gson.Gson;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.JsonKit;
-import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
-import com.jfinal.weixin.sdk.kit.IpKit;
 
+import controllers.eeda.import_excel.CheckOrder;
 import controllers.eeda.import_excel.ReaderXLS;
 import controllers.eeda.import_excel.ReaderXlSX;
-import controllers.eeda.import_excel.CheckOrder;
+import controllers.form.FormClickService;
+import controllers.form.FormEventConfigService;
 import controllers.form.FormService;
+import controllers.form.FormTableConfigService;
 import controllers.form.TemplateService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PingYinUtil;
-import controllers.util.PoiUtils;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -118,74 +118,15 @@ public class FormController extends Controller {
         logger.debug("-------------Eeda module:"+module_id+", form_id:"+form_id+", action: "+action+"---------------");
         
         if("eventConfig".equals(action)){
-            List<Record> itemList = Db.find("select * from eeda_form_event where menu_type='default_event_add_after_open'"
-                    + " and form_id=?", form_id);
-            for (Record record : itemList) {
-                String type = record.getStr("type");
-                if("set_value".equals(type)){
-                    Record cssRec = Db.findFirst("select * from eeda_form_event_set_value where event_id=?", record.getLong("id"));
-                    record.set("set_value", cssRec);
-                    
-                    List<Record> list = Db.find("select * from eeda_form_event_set_value_item where "
-                            + " event_id=?", record.getLong("id"));
-                    for (Record rec : list) {
-                        String name = rec.getStr("name");
-                        Record field_rec = FormService.getFieldName(name.split("\\.")[0], name.split("\\.")[1]);//获取数据库对应的名称: f59_xh
-                        String field_name = "form_"+field_rec.getLong("form_id")+"-f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
-                        rec.set("field_name", field_name);
-                        
-                        String value = rec.getStr("value");
-                        if("系统变量.当前用户名".equals(value)){
-                            String userName=user.getStr("c_name");
-                            rec.set("value", userName);
-                        }
-                    }
-                    record.set("set_value_item", list);
-                }
-            }
-            
+            FormEventConfigService ecs = new FormEventConfigService(this);
+            List<Record> itemList = ecs.getEventConfig(user, form_id);
             renderJson(itemList);
         }else if("tableConfig".equals(action)){
             String jsonStr = getPara("field_id_list");
             Gson gson = new Gson();
             ArrayList<String> fieldIdList = gson.fromJson(jsonStr, ArrayList.class);
-            List<Record> list = new ArrayList<Record>();
-            for (String fieldId : fieldIdList) {
-                Record rec = new Record();
-                List<Record> itemList = Db.find("select * from eeda_form_field_type_detail_ref_display_field where "
-                        + " field_id=? order by sort_no", fieldId);
-                for (Record record : itemList) {
-                    String target_field_name = record.getStr("target_field_name");
-                    String form_name = target_field_name.split("\\.")[0];
-                    String field_display_name = target_field_name.split("\\.")[1];
-                    Record field_rec = FormService.getFieldName(form_name, field_display_name);//获取数据库对应的名称: f59_xh
-                    record.set("field_name", "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name"));
-                    record.set("field_display_name", field_rec.getStr("field_display_name"));
-                    record.set("field_type", field_rec.getStr("field_type"));
-                    
-                    if("字段引用".equals(field_rec.getStr("field_type"))){
-                        Record ref = Db.findFirst(
-                                "select * from eeda_form_field_type_ref where field_id=?", field_rec.getLong("id"));
-                        record.set("ref", ref);
-                        
-                        String target_form_name = ref.getStr("ref_form");
-                        Record refForm = Db.findFirst(
-                                "select * from eeda_form_define where name=?", target_form_name);
-                        
-                        String target_form_field = ref.getStr("ref_field");
-                        Record target_field_rec = FormService.getFieldName(target_form_field.split("\\.")[0], target_form_field.split("\\.")[1]);//获取数据库对应的名称: f59_xh
-                        String field_name = "f"+target_field_rec.get("id")+"_"+target_field_rec.getStr("field_name");
-//                        + " target_form='"++"' target_field_name='"+field_name+"'"
-                        ref.set("target_form_id", refForm.getLong("id"));
-                        ref.set("target_field_name", field_name);
-                    }else if("下拉列表".equals(field_rec.getStr("field_type"))){
-                    	List<Record> dropdown_list = Db.find("select * from eeda_form_field_type_dropdown where field_id=?", field_rec.getLong("id"));
-                    	record.set("dropdown_list",dropdown_list);
-                    }
-                }
-                rec.set("display_field_list", itemList);
-                list.add(rec);
-            }
+            FormTableConfigService ets = new FormTableConfigService(this);
+            List<Record> list = ets.getTableConfig(fieldIdList);
             renderJson(list);
         }else if("valueChange".equals(action)){
             List<Record> recList = Db.find("select * from eeda_form_event where "
@@ -202,124 +143,8 @@ public class FormController extends Controller {
             renderJson(recList);
         }else if("click".equals(action)){
             Long btn_id = order_id;
-            List<Record> recList = Db.find("select * from eeda_form_event where btn_id=?", btn_id);
-            for (Record event : recList) {
-                if("open".equals(event.getStr("type"))){
-                    Record rec = Db.findFirst("select * from eeda_form_event_open where event_id=?", event.getLong("id"));
-                    event.set("open", rec);
-                }else if("print".equals(event.getStr("type"))){
-                	 FormService fs = new FormService(this);
-                	 String orderId = getPara("order_id");
-                	 
-                	 List<Record> template_list = fs.getPrintTemplate(form_id,Long.valueOf(orderId));
-                     event.set("template_list", template_list);
-                }else if("list_add_row".equals(event.getStr("type"))){
-                    Record rec = Db.findFirst("select * from eeda_form_event_list_add_row where event_id=?", event.getLong("id"));
-                    String field = rec.getStr("target_field_name");
-                    Record target_field_rec = FormService.getFieldName(field.split("\\.")[0], field.split("\\.")[1]);
-                    rec.set("field_id", target_field_rec.getLong("id"));
-                    event.set("list_add_row", rec);
-                }else if("set_value".equals(event.getStr("type"))){
-                    Record rec = Db.findFirst("select * from eeda_form_event_set_value where event_id=?", event.getLong("id"));
-                    FormService fs = new FormService(this);
-                    String orderId = getPara("order_id");
-               	 	boolean result = fs.setValue(rec,form_id,Long.valueOf(orderId));
-                    event.set("list_add_row", rec);
-                }
-                //导出excel
-                else if("export_excel".equals(event.getStr("type"))){  
-                	Date date = new Date();
-    		        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-                	String fileName = title.get("level2") + format.format(date) + ".xls";
-                	String filePath = "/download/download_order";
-                	
-                	Record define = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
-                	String condition = DbUtils.buildConditions(getParaMap());
-                    if("search_form".equals(define.get("type"))){
-                    	//自定义查询
-                        String lieNameStr = getLieNameStr(form_id);
-                    	String biaoNameStr = "";//getBiaoNameStr(form_id);//join
-                    	String joinStr = getJoinStr(form_id);//left join
-                    	String filterStr = getFilterStr(form_id);
-                    	String sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 ";
-
-                    	//做生成excel处理
-                    	String sqlExport = sql+ condition+filterStr;
-                    	List<Record> list = getDisplayCols(form_id);
-                    	String[] title_name = new String[list.size()];
-                    	for(Record item : list){
-                    		String name = item.getStr("FIELD_DISPLAY_NAME");
-                    		title_name[list.indexOf(item)] = name;
-                    	}
-                    	
-                    	String lieNameStrWithoutTable = getLieNameStrWithoutTable(form_id);
-                  		String[] content = lieNameStrWithoutTable.toUpperCase().split(",");
-                  		
-                  		boolean result = PoiUtils.generateExcel(title_name, content, sqlExport,PathKit.getWebRootPath()+filePath, fileName);
-                  		if(result){
-                  			System.out.println("ok");
-                  		}else{
-                  			System.out.println("error");
-                  		}  
-                    } else {
-//                    	表单列表查询
-                    	List<Record> fieldList = Db.find("select * from eeda_form_field where "
-                                + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
-                    	String[] title_name = new String[fieldList.size()];
-                    	String[] content = new String[fieldList.size()];
-                    	for(Record item : fieldList){
-                    		String name = item.getStr("FIELD_DISPLAY_NAME");
-                    		String text = item.getStr("FIELD_NAME").toUpperCase();
-                    		String item_id = item.get("ID").toString();
-                    		title_name[fieldList.indexOf(item)] = name;
-                    		content[fieldList.indexOf(item)] = "F"+item_id+ "_"+text;
-                    	}
-                    	String sql = "select * from form_"+form_id+" where 1=1 "; 
-                    	String sqlExport = sql+ condition + " order by id desc ";
-                    	
-                    	boolean result = PoiUtils.generateExcel(title_name, content, sqlExport,PathKit.getWebRootPath()+filePath, fileName);
-                  		if(result){
-                  			System.out.println("ok");
-                  		}else{
-                  			System.out.println("error");
-                  		}  
-                    }
-              		event.set("template_name", filePath+ "/" + fileName);
-                }
-                //下载导入excel模板
-                else if("download_template".equals(event.getStr("type"))){
-                	String fileName = title.get("level2") + ".xls";
-                	String filePath = "/download/download_template";
-                	File file = new File(PathKit.getWebRootPath() + filePath + fileName);
-                	Record define = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
-                	//做生成excel处理
-                	String sqlExport = "select 1 = 1;";
-                	List<Record> list = null;
-                    if("search_form".equals(define.get("type"))){
-                    	list = getDisplayCols(form_id);
-                    }else if("form".equals(define.get("type"))){
-                    	list = Db.find("select * from eeda_form_field where "
-                                + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
-                    }
-                	String[] title_name = new String[list.size()];
-                	for(Record item : list){
-                		String name = item.getStr("FIELD_DISPLAY_NAME");
-                		title_name[list.indexOf(item)] = name;
-                	}
-              		String[] content = {};
-              		
-              		boolean result = PoiUtils.generateExcel(title_name, content, sqlExport,PathKit.getWebRootPath()+filePath, fileName);
-              		if(result){
-              			System.out.println("ok");
-              		}else{
-              			System.out.println("error");
-              		}  
-                    
-                    event.set("template_name", filePath+ "/" + fileName);
-                }else if("import_excel".equals(event.getStr("type"))){
-                	event.set("form_id", form_id);
-                }
-            }
+            FormClickService ecs = new FormClickService(this);
+            List<Record> recList = ecs.handleClickAction(title, form_id, btn_id);
             renderJson(recList);
         }else if(!action.startsWith("do")){
             if("edit".equals(action)){
@@ -350,34 +175,38 @@ public class FormController extends Controller {
                 rec = getForm(form_id, order_id);
                 renderJson(rec);
             }else if ("doAdd".equals(action) || "doUpdate".equals(action)){
-                rec = saveForm();
-                String ip = MainController.getIpAddress(getRequest());
-//            	saveSysLog(action,getPara("data"),form_id,order_id,user_id,office_id,ip);
-                String jsonStr = getPara("data");
-                Gson gson = new Gson();
-                Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
-                String dto_order_id = (String)dto.get("order_id");
-                Record sysLog = new Record();
-                if(StrKit.isBlank(dto_order_id)){
-                    action = "doAdd";
+                rec = saveForm();//如果是set_value, 对外部表操作，则返回空rec
+                if(rec.getColumnNames().length>0){
+                    String ip = MainController.getIpAddress(getRequest());
+    //            	saveSysLog(action,getPara("data"),form_id,order_id,user_id,office_id,ip);
+                    String jsonStr = getPara("data");
+                    Gson gson = new Gson();
+                    Map<String, ?> dto= gson.fromJson(jsonStr, HashMap.class);
+                    String dto_order_id = (String)dto.get("order_id");
+                    Record sysLog = new Record();
+                    if(StrKit.isBlank(dto_order_id)){
+                        action = "doAdd";
+                    }
+                	
+                    sysLog.set("log_type", "operate");
+                    sysLog.set("operation_obj", getPara("data"));
+                    sysLog.set("action_type", action);
+                    sysLog.set("create_stamp", new Date());
+                    sysLog.set("user_id", user_id);
+                    sysLog.set("ip",ip);
+                    sysLog.set("office_id", office_id);
+                    sysLog.set("form_id", form_id);
+                    sysLog.set("order_id", rec.get("id").toString());
+                    Db.save("sys_log", sysLog);
                 }
-            	
-                sysLog.set("log_type", "operate");
-                sysLog.set("operation_obj", getPara("data"));
-                sysLog.set("action_type", action);
-                sysLog.set("create_stamp", new Date());
-                sysLog.set("user_id", user_id);
-                sysLog.set("ip",ip);
-                sysLog.set("office_id", office_id);
-                sysLog.set("form_id", form_id);
-                sysLog.set("order_id", rec.get("id").toString());
-                Db.save("sys_log", sysLog);
-                
                 renderJson(rec);
             }
             
         }
     }
+    
+    
+    
     
 	public void import_excel(){
     	String module_id = getPara("module_id");
@@ -688,7 +517,7 @@ public class FormController extends Controller {
         return fieldList;
     }
     
-    private List<Record> getDisplayCols (Long form_id){
+    public static List<Record> getDisplayCols (Long form_id){
     	List<Record> fieldList = new ArrayList<Record>();
     		//查数据列表
     		List<Record> custom_search_cols_list = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
@@ -823,7 +652,7 @@ public class FormController extends Controller {
         return orderListMap;
     }
     
-    private String getLieNameStr(Long form_id){
+    public static String getLieNameStr(Long form_id){
     	String lieNameStr = "";
     	List<Record> colsList = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
     	for(int i = 0;i<colsList.size();i++){
@@ -847,29 +676,7 @@ public class FormController extends Controller {
     	return lieNameStr;
     }
     
-    private String getLieNameStrWithoutTable(Long form_id){
-    	String lieNameStr = "";
-    	List<Record> colsList = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
-    	for(int i = 0;i<colsList.size();i++){
-    		String expression = colsList.get(i).get("expression");
-    		int index = expression.indexOf(".");
-    		String lie_name = expression.substring(index+1);
-			String biao_name = expression.substring(0,index);
-			String biao_name_py = PingYinUtil.getFirstSpell(expression.substring(0,index));
-			Record define = Db.findFirst("select * from eeda_form_define where name = ?",biao_name);
-			Record field = Db.findFirst("select * from eeda_form_field where field_display_name = ? and form_id = ?",lie_name,define.get("id"));
-			String str = "";
-			if(lieNameStr.length()>0){
-				str = ",";
-			}
-			if("ID".equals(lie_name)){
-			    lieNameStr += "id";
-			}else{
-			    lieNameStr += str+"f"+field.get("id")+"_"+field.get("field_name");
-			}
-    	}
-    	return lieNameStr;
-    }
+    
     
     private String getBiaoNameStr(Long form_id){
     	String biaoNameStr = "";
@@ -880,7 +687,7 @@ public class FormController extends Controller {
     	return biaoNameStr;
     }
     
-    private String getJoinStr(Long form_id){
+    public static String getJoinStr(Long form_id){
         //TODO: 加office ID
         //判断是join 还是 left join
         //将两个表名存入Record中
@@ -955,7 +762,7 @@ public class FormController extends Controller {
     	return onStr;
     }
 
-    private String getFilterStr(Long form_id){
+    public static String getFilterStr(Long form_id){
     	String filterStr = "";
     	List<Record> filterList = Db.find("select * from eeda_form_custom_search_filter where form_id = ?",form_id);
     	for(int i = 0;i<filterList.size();i++){

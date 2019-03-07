@@ -41,26 +41,31 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
       if (treeNode.level==0 ) return;
       if (!treeNode.type && treeNode.level==1  ) return;
 
+      
       currentNode = treeNode;
       $('#edit_event_id').val(currentNode.ID || '');
       $('#edit_event_name').val(currentNode.name);
       $('#edit_event_type').val(currentNode.type).change();
 
-      if(currentNode.SET_VALUE){
+      if(currentNode.TYPE=='set_value'){
+        clearSetValueInputs();//clear input
+        setValueCont.dataTable.clear().draw();
+        if(!currentNode.SET_VALUE)
+          return;
+          
         $('#edit_event_value_id').val(currentNode.SET_VALUE.ID||'');
         $('#edit_event_db_source').val(currentNode.SET_VALUE.DB_SOURCE);
         $('#edit_event_target').val(currentNode.SET_VALUE.TARGET);
         $('#edit_event_set_value_type').val(currentNode.SET_VALUE.SET_VALUE_TYPE);
         $('#edit_event_set_value_condition').val(currentNode.SET_VALUE.CONDITION);
         var itemList = currentNode.SET_VALUE.SET_FIELD_LIST;
-        setValueCont.dataTable.clear().draw();
         if(itemList){
           for (var i = 0; i < itemList.length; i++) {
               var item = itemList[i];
               setValueCont.dataTable.row.add(item).draw(false);
           }
         }
-      }else if(currentNode.SAVE){
+      }else if(currentNode.TYPE=='save'){
           $('#edit_event_save_value_id').val(currentNode.SAVE.ID);
           $('#edit_event_save_set_value_condition').val(currentNode.SAVE.CONDITION);
           var itemList = currentNode.SAVE.SET_FIELD_LIST;
@@ -71,7 +76,7 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
                 saveSetValueCont.dataTable.row.add(item).draw(false);
             }
           }
-      }else if(currentNode.SET_CSS){
+      }else if(currentNode.TYPE=='set_css'){
         $('#edit_event_css_id').val(currentNode.SET_CSS.ID||'');
         $('#edit_event_set_css_condition').val(currentNode.SET_CSS.CONDITION);
         $('#edit_set_css_target_field').val(currentNode.SET_CSS.TARGET_FIELD);
@@ -84,11 +89,11 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
               setCssCont.dataTable.row.add(item).draw(false);
           }
         }
-      }else if(currentNode.OPEN_FORM){
+      }else if(currentNode.TYPE=='open'){
         $('#event_open_condition').val(currentNode.OPEN_FORM.CONDITION);
         $('#event_open_module').val(currentNode.OPEN_FORM.MODULE_NAME);
         $('#event_open_type').val(currentNode.OPEN_FORM.OPEN_TYPE);
-      }else if(currentNode.LIST_ADD_ROW){
+      }else if(currentNode.TYPE=="list_add_row"){
         $('#edit_event_target_list_id').val(currentNode.LIST_ADD_ROW.ID);
         $('#edit_event_target_list').val(currentNode.LIST_ADD_ROW.TARGET_FIELD_NAME);
       }
@@ -96,6 +101,14 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
       hide_div(currentNode.TYPE);
     }
     
+    var clearSetValueInputs = function(){
+      $('#edit_event_value_id').val('');
+      $('#edit_event_db_source').val('');
+      $('#edit_event_target').val('');
+      $('#edit_event_set_value_type').val('');
+      $('#edit_event_set_value_condition').val('');
+    }
+
     var hide_div = function(type){
     	$("#edit_list_add_row_div").hide();
     	$("#edit_open_form_div").hide();

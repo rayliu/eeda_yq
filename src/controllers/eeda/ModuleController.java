@@ -240,7 +240,7 @@ public class ModuleController extends Controller {
         Db.update(" update eeda_modules set url = ? where id=?", url, module_id);
 
         // handle info
-        Long form_id = handleInfo(dto, module_id);
+        Long form_id = handleInfo(dto, module_id, user.getLong("office_id"));
         // handle fields and build/update table
         List<Map<String, String>> field_list = (ArrayList<Map<String, String>>) dto
                 .get("fields");
@@ -592,7 +592,7 @@ public class ModuleController extends Controller {
     }
     
     @SuppressWarnings("null")
-    private Long handleInfo(Map<String, ?> dto, Long module_id) {
+    private Long handleInfo(Map<String, ?> dto, Long module_id, Long office_id) {
         String tempalteContent = dto.get("template_content").toString();
         String appTempalteContent = dto.get("app_template_content").toString();
         Map<String, String> infoMap = (Map) dto.get("info");
@@ -617,6 +617,7 @@ public class ModuleController extends Controller {
             formRec.set("template_content", tempalteContent);
             formRec.set("app_template", appTempalteContent);
             formRec.set("module_id", module_id);
+            formRec.set("office_id", office_id);
             Db.update("eeda_form_define", formRec);
         } else {
             formRec = new Record();
@@ -628,6 +629,7 @@ public class ModuleController extends Controller {
             formRec.set("template_content", tempalteContent);
             formRec.set("app_template", appTempalteContent);
             formRec.set("module_id", module_id);
+            formRec.set("office_id", office_id);
             Db.save("eeda_form_define", formRec);
         }
         return formRec.getLong("id");
@@ -821,8 +823,10 @@ public class ModuleController extends Controller {
                 List<Record> itemList = Db.find(
                         "select * from eeda_form_event_set_value_item where event_id=?",
                         event.getLong("id"));
-                cssRec.set("set_field_list", itemList);
-                event.set("set_value", cssRec);
+                if(cssRec!=null){
+                    cssRec.set("set_field_list", itemList);
+                    event.set("set_value", cssRec);
+                }
             }else if("list_add_row".equals(eventType)){
                 Record rec = Db.findFirst(
                         "select * from eeda_form_event_list_add_row where event_id=?",

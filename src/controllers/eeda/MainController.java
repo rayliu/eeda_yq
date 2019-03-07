@@ -99,7 +99,8 @@ public class MainController extends Controller {
     }
 
     public void goDefaultPage() {
-        Record re = Db.findFirst("select id,name,module_id from eeda_form_define where is_home_index = 'Y'");
+        UserLogin user = LoginUserController.getLoginUser(this);
+        Record re = Db.findFirst("select id,name,module_id from eeda_form_define where is_home_index = 'Y' and office_id=?", user.getLong("office_id"));
         if(re!=null){
             setAttr("action", "list");
             Long moduleId = re.getLong("module_id");
@@ -116,7 +117,7 @@ public class MainController extends Controller {
             redirect("/form/"+moduleId+"-list");
             return;
         }
-        render("/eeda/index.html");
+        redirect("/home");
     }
     
     private static boolean isMobile(HttpServletRequest request) {

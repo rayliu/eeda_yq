@@ -73,6 +73,10 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
                     console.log(events);
                     if(events){
                         for (var i = 0; i < events.length; i++) {
+                            var isLastEvent=false;//是最后的一个，就刷新一次页面，把数据更新出来
+                            if(i=events.length-1){
+                                isLastEvent=true;
+                            }
                             var event = events[i];
                             if(event.TYPE == "open"){
                                 var url = '/form/'+event.OPEN.MODULE_ID+'-add';
@@ -86,7 +90,7 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
                             }else if(event.TYPE == "save"||event.TYPE == "set_value"){
                                 var $form = $("#module_form");
                                 var data = getFormData($form);
-                                console.log('save action....');
+                                console.log('event.TYPE='+event.TYPE);
                                 console.log(data);
                                 if(order_id==-1){
                                     doAdd(data);
@@ -100,7 +104,7 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
                                 		data.event_id = event.ID.toString();                         		
                                 		data.form_id = event.FORM_ID.toString();
                                 	}
-                                	doUpdate(data);
+                                	doUpdate(data, isLastEvent);
                                 }
                             }else if(event.TYPE == "refresh_list"){
                                 var dataTable = $('#list_table').DataTable();
@@ -250,7 +254,7 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
             });
         }
 
-        function doUpdate(data){
+        function doUpdate(data, isLastEvent){
             var layer_index = layer.load(1, {
                 shade: [0.3,'#000'] //0.3透明度的黑色背景
             });
@@ -277,7 +281,15 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
                 	}
                 	  
                     layer.close(layer_index); 
-                    layer.alert('操作成功', {icon: 1});
+                    layer.alert('操作成功', {
+                        icon: 1,
+                        end:function(){
+                            if(isLastEvent){
+                                window.location.reload(); 
+                            }
+                        }
+                    });
+                    
                 }else{
                     layer.close(layer_index); 
                     layer.alert('操作失败', {icon: 2});

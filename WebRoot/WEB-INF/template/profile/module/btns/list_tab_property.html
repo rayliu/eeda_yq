@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="form-group" style="margin-top: 10px;">
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-6">
@@ -41,6 +41,15 @@
                                             {   id:'list_btn_color', 
                                                 label:'颜色',
                                                 value:order.seq!''
+                                            }){}%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <%include("/eeda/component/form/inputField.html", 
+                                            {   id:'list_btn_hide_condition', 
+                                                label:'隐藏条件',
+                                                value:order.hide_conditon!''
                                             }){}%>
             </div>
         </div>
