@@ -20,8 +20,10 @@
 			</nav-->
 			<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
 				<ul class="cl">
-					<li><%if(login_user.role_code!''=='admin'){%>超级管理员<%}%></li>
-					<li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A">${login_user.c_name!''} <i class="Hui-iconfont">&#xe6d5;</i></a>
+					<li>${office_name!''} </li>
+					<li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A">
+						${login_user.c_name!''} <%if(login_user.role_code!''=='admin'){%>(超级管理员)<%}%>
+						<i class="Hui-iconfont">&#xe6d5;</i></a>
 						<ul class="dropDown-menu menu radius box-shadow">
 							<li><a href="/loginUser/editPerson">个人信息</a></li>
 							<%if(login_user.role_code!''=='admin'){%><li><a href="/loginUser">用户设置</a></li><%}%>

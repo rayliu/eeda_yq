@@ -17,7 +17,8 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                         code: $('#form_code').val(),
                         desc: $('#desc').val(),
                         is_public: $('#is_public').prop("checked")==true?'Y':'N',
-                        is_home_index: $('#is_home_index').prop("checked")==true?'Y':'N'
+                        is_home_index: $('#is_home_index').prop("checked")==true?'Y':'N',
+                        is_single_record: $('#is_single_record').prop("checked")==true?'Y':'N'
                     },
                     field_update_flag:fieldContr.field_update_flag(),
                     fields: fieldContr.buildFieldsDetail(),

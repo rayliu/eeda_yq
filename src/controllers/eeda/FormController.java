@@ -154,8 +154,17 @@ public class FormController extends Controller {
             }else if("add".equals(action)){
                 edit(form_id, null, formRec);
             }else if("list".equals(action)){
-                list(form_id);
-                render("/eeda/form/listTemplate.html");
+                if("Y".equals(formRec.getStr("is_single_record"))){//单页显示，不需要list
+                    Record orderRec = Db.findFirst("select * from form_"+form_id);
+                    if(orderRec!=null){//有一条数据，跳转去edit页面
+                        redirect("/form/"+module_id+"-edit-"+orderRec.getLong("id"));
+                    }else{//无数据，跳转去add页面，有可能是一个展示页面，不需要记录数据
+                        redirect("/form/"+module_id+"-add");
+                    }
+                }else{
+                    list(form_id);
+                    render("/eeda/form/listTemplate.html");
+                }
                 return;
             }
             

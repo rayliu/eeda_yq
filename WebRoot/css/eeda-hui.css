@@ -68,3 +68,8 @@ table td{
 table .eeda td ul.dropDown-menu{
     position: absolute;
 }
+
+.Hui-article a:not(.btn) {
+    text-decoration: underline;
+    color: blue;
+}

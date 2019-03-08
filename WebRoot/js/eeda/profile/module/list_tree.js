@@ -191,6 +191,9 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
                     if(module_obj.FORM.IS_HOME_INDEX=='Y'){
                         $("#is_home_index").prop("checked",true);
                     }
+                    if(module_obj.FORM.IS_SINGLE_RECORD=='Y'){
+                        $("#is_single_record").prop("checked",true);
+                    }
                     if(module_obj.FORM.IS_PUBLIC=='Y'){
                         $("#is_public").prop("checked",true);
                     }

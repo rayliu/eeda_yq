@@ -605,8 +605,14 @@ public class ModuleController extends Controller {
         Element body = doc.body();
         Elements tds = body.getElementsByTag("td");
         for (Element td : tds) {
-        	td.html(td.text());
+            String tdHtml = td.html();
+            if(tdHtml.indexOf("<a")>=0){
+                td.html(tdHtml);
+            }else{
+                td.html(td.text());
+            }
         }
+        
         tempalteContent = doc.body().html();
         if (formRec != null) {
             formRec.set("name", infoMap.get("name"));
@@ -614,6 +620,7 @@ public class ModuleController extends Controller {
             formRec.set("type", infoMap.get("type"));
             formRec.set("is_public", infoMap.get("is_public"));
             formRec.set("is_home_index", infoMap.get("is_home_index"));
+            formRec.set("is_single_record", infoMap.get("is_single_record"));
             formRec.set("template_content", tempalteContent);
             formRec.set("app_template", appTempalteContent);
             formRec.set("module_id", module_id);
@@ -626,6 +633,7 @@ public class ModuleController extends Controller {
             formRec.set("type", infoMap.get("type"));
             formRec.set("is_public", infoMap.get("is_public"));
             formRec.set("is_home_index", infoMap.get("is_home_index"));
+            formRec.set("is_single_record", infoMap.get("is_single_record"));
             formRec.set("template_content", tempalteContent);
             formRec.set("app_template", appTempalteContent);
             formRec.set("module_id", module_id);

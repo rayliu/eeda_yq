@@ -32,6 +32,7 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 						+ " where ul.user_name=?",currentUser.getPrincipal());
 				currentUser.getSession().setAttribute("login_user",login_user);
 			}
+			Long officeId=login_user.getLong("office_id");
 			ai.getController().setAttr("login_user", login_user);
 			
 			if(login_user.get("c_name") != null && !"".equals(login_user.get("c_name"))){
@@ -40,7 +41,7 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 				ai.getController().setAttr("userId", currentUser.getPrincipal());
 			}
 			
-			UserOffice uo = UserOffice.dao.findFirst("select * from user_office where user_name ='"+currentUser.getPrincipal()+"' and is_main=1");
+			UserOffice uo = UserOffice.dao.findFirst("select * from user_office where user_name =? and office_id=? and is_main=1", currentUser.getPrincipal(), officeId);
 	        if(uo != null){
 	            Office office = Office.dao.findById(uo.getLong("office_id"));
 	            ai.getController().setAttr("office_name", office.get("office_name"));

@@ -56,6 +56,16 @@
                                 }){}%>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <%include("/eeda/component/form/inputField.html", 
+                                                {   id:'is_single_record', 
+                                                    type: 'checkbox',
+                                                    label:'单一显示页',
+                                                    value:order.is_single_record!''
+                                                }){}%>
+                </div>
+            </div>
             <br>
             <br>
             <h4>查询列表配置</h4>
