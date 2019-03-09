@@ -1,11 +1,14 @@
 define(['jquery', './list_tree', './fields', './custom_search/custom_search', './template_tab', './btns', './events', './edit_events', './permission', './auth',
-         './print_template/print_template', './interface/interface', 'zTree'], 
+         './print_template/print_template', './interface/interface', 'zTree', 'layer'], 
     function ($, listCont, fieldContr, customSearchCont, templateCont, btnsCont, eventsCont,editEventCont, 
         perCont, authCont, printCont, interfaceCont) {
 
         $(document).ready(function() {
             
             var saveAction=function(btn, is_start){
+                var layer_index = layer.load(1, {
+                    shade: [0.3,'#000'] //0.3透明度的黑色背景
+                });
                 is_start = is_start || false; 
                 var ue = UE.getEditor('container');
                 var app_ue = UE.getEditor('app_container');
@@ -67,15 +70,18 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                         customSearchCont.colsDisplay(order.CUSTOM_SEARCH_COLS);
                         customSearchCont.filterDisplay(order.CUSTOM_SEARCH_FILTER);
                         
+                        layer.close(layer_index); 
                         $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
                         btn.attr('disabled', false);
                         //保存成功后刷新一下module
                         listCont.refresh_module_info(order.ID, order.MODULE_NAME);
                     }else{
+                        layer.close(layer_index); 
                         $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                         btn.attr('disabled', false);
                     }
                 },'json').fail(function() {
+                    layer.close(layer_index); 
                     $.scojs_message('保存失败', $.scojs_message.TYPE_ERROR);
                     btn.attr('disabled', false);
                 });
@@ -83,6 +89,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
 
 
         $('#saveBtn').on('click', function(e){
+            
             var self = $(this);
             $(this).attr('disabled', true);
 
@@ -98,7 +105,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             	alert("字段列表尚有操作未完成");
                 return;
             }
-
+            
             var module_id = $('#module_id').text();
             if($("#is_home_index").prop("checked")){
             	checkExistIndex(self);

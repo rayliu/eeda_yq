@@ -1,4 +1,5 @@
-define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', './interface/interface','./custom_search/custom_search'], 
+define(['jquery', 'zTree', './fields', './btns', './events', 
+    './edit_events', './interface/interface','./custom_search/custom_search', 'layer'], 
     function ($, tree, fieldCont, btnsCont, eventsCont, editEventCont, intCont,customSearchCont) {
 
     // $(document).ready(function() {
@@ -157,6 +158,9 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
         };
 
         function redisplay_module(module_id, module_name){
+            var layer_index = layer.load(1, {
+                shade: [0.3,'#000'] //0.3透明度的黑色背景
+            });
             $(".form_info input[type='text']").val("");
             $(".form_info input[type='checkbox']").prop("checked",false);
             $("#module_id").text(module_id);
@@ -313,6 +317,8 @@ define(['jquery', 'zTree', './fields', './btns', './events', './edit_events', '.
 	                    interface_dataTable.row.add(item).draw(false);
 	                }
                 }
+                //回显完毕，关掉loading
+                layer.close(layer_index); 
             }, 'json');
         }
         //---------------------------  tree handler end -------------

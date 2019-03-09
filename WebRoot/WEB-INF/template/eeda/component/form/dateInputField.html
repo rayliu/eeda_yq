@@ -24,20 +24,22 @@
      </div>
 </div>
 <script>
-$(document).ready(function() {
-	//时间控件
-	$('#${id}_div').datetimepicker({  
-	    format: 'yyyy-MM-dd',  
-	    language: 'zh-CN'
-	}).on('changeDate', function(ev){
-	    $(".bootstrap-datetimepicker-widget").hide();   
-	    $('#${id}').trigger('keyup');
-	});
+requirejs(['jquery'], function ($) {
+	$(document).ready(function() {
+		//时间控件
+		$('#${id}_div').datetimepicker({  
+			format: 'yyyy-MM-dd',  
+			language: 'zh-CN'
+		}).on('changeDate', function(ev){
+			$(".bootstrap-datetimepicker-widget").hide();   
+			$('#${id}').trigger('keyup');
+		});
 
-    //回显
-    var dateValue = '${value}';
-    if(dateValue){
-        $('#${id}').val(dateValue.substr(0,10));
-    }
+		//回显
+		var dateValue = '${value}';
+		if(dateValue){
+			$('#${id}').val(dateValue.substr(0,10));
+		}
+	});
 });
 </script>

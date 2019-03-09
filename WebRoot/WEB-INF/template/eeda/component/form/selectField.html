@@ -10,10 +10,12 @@
     </select>
 </div>
 <script type="text/javascript">
+requirejs(['jquery'], function ($) {
 	$(document).ready(function() {
 		var value= '${value!''}';
 		if(value){
 			$('#${id}').val(value);
 		}
 	});
+});
 </script>
