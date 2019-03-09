@@ -195,7 +195,7 @@ eeda.dt = function(opt){
 }
 
 eeda.hidePopList=function(){
-    var listArr=$(".dropDown-menu");
+    var listArr=$("section .dropDown-menu");
     $(listArr).each(function(i, el) {
         if($(el).is(':visible')){
           $(el).hide();
