@@ -454,11 +454,12 @@
 
   </style>
   <title>${SYS_CONFIG.system_title!'易得 SAAS'}</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/js/lib/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/froala/design-blocks@master/dist/css/froala_blocks.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/css/froala_editor.pkgd.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/css/froala_style.min.css">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/css/froala_editor.pkgd.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/css/froala_style.min.css"> -->
+  <link rel="stylesheet" href="/js/lib/layer/theme/default/layer.css">
 </head>
 
 <body>
@@ -475,18 +476,27 @@
 				</div>
 				</div>
 				<div class="row mt-4">
-				<div class="col">
-					<input type="text" class="form-control" placeholder="邮箱" name="username" value="demo">
-				</div>
-				</div>
-				<div class="row mt-4">
-				<div class="col">
-					<input type="password" name="password" type="password" class="form-control mb-1" placeholder="密码" value="123456">
-					<p class="text-right">
-					<a href="#">忘记密码？</a>
-					</p>
-				</div>
-				</div>
+          <div class="col">
+            <input type="text" class="form-control" placeholder="邮箱" name="username" value="demo">
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <input type="password" name="password" type="password" class="form-control mb-1" placeholder="密码" value="123456">
+          </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-6">
+                <p class="text-left">
+                  <a href="/register">免费注册</a>
+                </p>
+            </div>
+            <div class="col-6">
+                <p class="text-right">
+                  <a href="/forgetPwd">忘记密码？</a>
+                </p>
+            </div>
+        </div>
 				<div class="row mt-4">
 				<div class="col">
 					<button class="btn btn-outline-success" type="submit" type="button">登 录</button>
@@ -528,11 +538,11 @@
       </div>
     </div>
   </footer>
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/js/froala_editor.pkgd.min.js"></script>
-  <script src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"></script>
+  <script type="text/javascript" src="/js/lib/jquery/jquery-1.10.2.js"></script>
+  <script type="text/javascript" src="/js/lib/popper/1.11.0/popper.min.js"></script>
+  <script type="text/javascript" src="/js/lib/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/js/froala_editor.pkgd.min.js"></script> -->
+  <script type="text/javascript" src="/js/lib/fontawesome/5.5.0/all.js"></script>
 
 </body>
 
