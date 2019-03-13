@@ -134,7 +134,7 @@ public class RegisterUserController extends Controller {
 
         try {
             // 注册成功后发一封通知邮件给易达管理员
-            notifyAdmin(mobile);
+            notifyAdmin(email);
 
             // 保存成功后，跳转登录页面
             Record errRec = new Record();
@@ -168,9 +168,9 @@ public class RegisterUserController extends Controller {
         emailTo.setFrom(EedaConfig.mailUser);// 设置发信人
         emailTo.setSubject("新用户注册信息:" + mobile);
         Date date = new Date();
-        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String newDate = sf.format(date);
-        String basePath = newDate + " 用户: " + mobile + "lego 注册了新账号";
+        String basePath = newDate + " 用户: " + mobile + ", 在“易得系统”注册了新账号";
 
         emailTo.setMsg(basePath);
 

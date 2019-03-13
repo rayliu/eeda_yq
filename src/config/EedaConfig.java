@@ -134,6 +134,9 @@ public class EedaConfig extends JFinalConfig {
         me.add("/email", controllers.eeda.EmailController.class, contentPath);
         me.add("/shortMsg", controllers.eeda.ShortMsgController.class, contentPath);
         me.add("/sysLog", controllers.eeda.SysLogController.class, contentPath);
+        //register loginUser
+        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
+        me.add("/forgetPwd",controllers.profile.ResetPassWordController.class,contentPath);
         /*me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);//全国城市
         
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
@@ -143,9 +146,7 @@ public class EedaConfig extends JFinalConfig {
         me.add("/finItem", FinItemController.class, contentPath);
         me.add("/custom", CustomController.class, contentPath);
         me.add("/containerType", ContainerTypeController.class, contentPath);
-        //register loginUser
-//        me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
-        //me.add("/reset",controllers.profile.ResetPassWordController.class,contentPath);
+        
         
         me.add("/location", controllers.profile.LocationController.class, contentPath);
         me.add("/office", controllers.profile.OfficeController.class, contentPath);
