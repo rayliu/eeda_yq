@@ -165,6 +165,7 @@ define(['jquery', 'zTree', './fields', './btns', './events',
             $(".form_info input[type='checkbox']").prop("checked",false);
             $("#module_id").text(module_id);
             $("#form_name").val(module_name);
+            
             //$("#module_url").val(treeNode.url);
 
             $.post('/module/getOrderStructure', {module_id: module_id}, function(json){
@@ -187,7 +188,9 @@ define(['jquery', 'zTree', './fields', './btns', './events',
                 eventsCont.clear();
                 editEventCont.clear();
                 intCont.clear();
-
+                if(!module_obj.FORM){//如果form未创建，则取拼音首字母作为form_code
+                    $('#form_code').val(module_obj.MODULE_NAME_PY);
+                }
                 if(module_obj.FORM){
                     $("#form_id").val(module_obj.FORM.ID);
                     $('#form_code').val(module_obj.FORM.CODE);
@@ -326,6 +329,9 @@ define(['jquery', 'zTree', './fields', './btns', './events',
         
         
         var viewModule = function(){
+            var layer_index = layer.load(1, {
+                shade: [0.3,'#000'] //0.3透明度的黑色背景
+            });
         	// 显示当前用户公司的所有模块
             $.get('/module/searchModule', function(data){
                 console.log(data);
@@ -340,7 +346,7 @@ define(['jquery', 'zTree', './fields', './btns', './events',
         	        //console.log(node);
                 }
                 $.fn.zTree.init($("#moduleTree"), setting, zNodes);
-
+                layer.close(layer_index); 
                 $('html, body').animate({scrollTop:0});
             },'json');
         };

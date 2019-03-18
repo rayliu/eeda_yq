@@ -22,8 +22,9 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 	@Override
 	public void intercept(Invocation ai) {
 		Subject currentUser = SecurityUtils.getSubject();
+		Record login_user = null;
 		if(currentUser.isAuthenticated()){
-			Record login_user = (Record)currentUser.getSession().getAttribute("login_user");
+			login_user = (Record)currentUser.getSession().getAttribute("login_user");
 			if(login_user==null){
 				login_user = Db.findFirst("select ul.*,r.code role_code"
 						+ " from user_login ul"
@@ -44,7 +45,8 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 			UserOffice uo = UserOffice.dao.findFirst("select * from user_office where user_name =? and office_id=? and is_main=1", currentUser.getPrincipal(), officeId);
 	        if(uo != null){
 	            Office office = Office.dao.findById(uo.getLong("office_id"));
-	            ai.getController().setAttr("office_name", office.get("office_name"));
+	            ai.getController().setAttr("office_name", office.getStr("office_name"));
+	            ai.getController().setAttr("office_support", office.getStr("office_support"));
 	        }
 	        
 			ai.getController().setAttr("user_login_id", currentUser.getPrincipal());
@@ -53,21 +55,28 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 			ai.getController().redirect("/login");
 			return;
 		}
-		setSysTitle(ai.getController());
+		setSysTitle(ai.getController(), login_user);
 		ai.invoke();
 	}
 	
-	private void setSysTitle(Controller controller) {
+	private void setSysTitle(Controller controller, Record user) {
 		HttpServletRequest request = controller.getRequest();
 		String serverName = request.getServerName();
         String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
         
         logger.debug("Current host path:"+basePath);
+        
+        //未登录时按host URL来显示
         OfficeConfig of = OfficeConfig.dao.findFirst("select * from office_config where domain like '"+serverName +"%' or domain like '%"+serverName +"%'");
         if(of==null){//没有配置公司的信息会导致页面出错，显示空白页
-        	of = new OfficeConfig();
-        	of.set("system_title", "易达物流");
-        	of.set("logo", "/yh/img/eeda_logo.ico");
+            	of = new OfficeConfig();
+            	of.set("system_title", "易得SAAS");
+            of.set("system_sub_title", "软件系统极速开发平台");
+            	of.set("logo", "/yh/img/eeda_logo.ico");
+        }
+        //登录后按user office config来显示
+        if(user!=null) {
+            of = OfficeConfig.dao.findFirst("select * from office_config where office_id=?", user.getLong("office_id"));
         }
         controller.setAttr("SYS_CONFIG", of);
 	}

@@ -1,6 +1,6 @@
 define(['jquery','hui'], function ($,huiCont) {
     $(document).ready(function() {
-        document.title = '邮件设置 | '+document.title;
+        document.title = '系统日志 | '+document.title;
         
         $.Huitab = function(tabBar,tabCon,class_name,tabEvent,i){
         	var $tab_menu = $(tabBar);
