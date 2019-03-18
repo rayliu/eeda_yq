@@ -1,5 +1,6 @@
 package controllers.profile;
 
+import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
 import java.util.HashMap;
@@ -49,37 +50,48 @@ public class OfficeController extends Controller {
         render("/yh/profile/office/office.html");
     }
 
-    // 链接到添加分公司页面
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_O_CREATE})
-    public void editOffice() {
-        render("/yh/profile/office/edit.html");
+    @Before(EedaMenuInterceptor.class)
+    public void setting() {
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long officeId = user.getLong("office_id");
+        Record officeRec = Db.findFirst("select * from office where  id=?", officeId);
+        Record officeConfigRec = Db.findFirst("select * from office_config where office_id=?", officeId);
+        setAttr("officeConfig", officeConfigRec);
+        setAttr("office", officeRec);
+        render("/eeda/profile/office/edit.html");
     }
 
-    // 编辑分公司信息
-    @RequiresPermissions(value = {PermissionConstant.PERMSSION_O_UPDATE})
-    public void edit() {
-        String id = getPara();
+    //保存公司信息
+    public void save() {
+        String id = getPara("id");
+        
+        String officeName = getPara("office_name");
+        String officeDesc = getPara("office_desc");
+        String officeSupport = getPara("office_support");
         Office office = Office.dao.findById(id);
-        setAttr("ul", office);
-        logger.debug("abbr:"+office.getStr("abbr"));
-        if(office.get("location") != null && !"".equals(office.get("location"))){
-	        String code = office.get("location");
-	
-	        List<Location> provinces = Location.dao.find("select * from location where pcode ='1'");
-	        Location l = Location.dao.findFirst("select * from location where code = (select pcode from location where code = '"+code+"')");
-	        Location location = null;
-	        if(provinces.contains(l)){
-	        	location = Location.dao
-		                .findFirst("select l.name as city,l1.name as province,l.code from location l left join location  l1 on l.pcode =l1.code left join location l2 on l1.pcode = l2.code where l.code = '"
-		                        + code + "'");
-	        }else{
-	        	location = Location.dao
-		                .findFirst("select l.name as district, l1.name as city,l2.name as province,l.code from location l left join location  l1 on l.pcode =l1.code left join location l2 on l1.pcode = l2.code where l.code ='"
-		                        + code + "'");
-	        }
-	        setAttr("location", location);
-		}
-        render("/yh/profile/office/edit.html");
+        if(office!=null) {
+            office.set("office_name", officeName);
+            office.set("company_intro", officeDesc);
+            office.set("office_support", officeSupport);
+            office.update();
+        }
+        String systemTitle = getPara("system_title");
+        String systemSubTitle = getPara("system_sub_title");
+        Record officeConfig = Db.findFirst("select * from office_config where office_id=?", id);
+        
+        if(officeConfig==null) {
+            officeConfig = new Record();
+            officeConfig.set("system_title", systemTitle);
+            officeConfig.set("system_sub_title", systemSubTitle);
+            officeConfig.set("office_id", id);
+            Db.save("office_config", officeConfig);
+        }else {
+            officeConfig.set("system_title", systemTitle);
+            officeConfig.set("system_sub_title", systemSubTitle);
+            Db.update("office_config", officeConfig);
+        }
+        
+        renderText("ok");
     }
 
     // 添加分公司

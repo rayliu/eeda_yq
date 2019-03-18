@@ -1,0 +1,89 @@
+<%layout("/eeda/theme/h-ui/layout_no_left_menu.html"){%>
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_773173_qbig7yrk05.css" />
+    
+    <style>
+        .cases-list .item-box {
+            background-color: #fff;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        .cases-list .pic-box{
+            width: 94px;
+            height: 94px;
+            border:#5a98de solid 1px;
+            border-radius: 4px;
+        }
+        .cases-list .pic-box.selected{
+            background-color:lightsteelblue;
+        }
+        .cases-list .pic-box i{
+            color: #5a98de;
+        }
+        .cases-list .pic-box:hover{
+            cursor: pointer;
+            background-color:lightsteelblue;
+            border:#5a98de solid 1px;
+            border-radius: 4px;
+        }
+        
+        .cases-list .pic-box img {
+            width: 94px;
+            height: 94px;
+            filter: progid:DXImageTransform.Microsoft.Alpha(opacity=100);
+            -moz-opacity: 1.0;
+            opacity: 1;
+            -webkit-transition: all 0.1s linear;
+            -moz-transition: all 0.1s linear;
+            -o-transition: all 0.5s linear;
+            transition: all 0.5s linear
+        }
+
+        .cases-list .item.hover .pic-box img {
+            filter: progid:DXImageTransform.Microsoft.Alpha(opacity=80);
+            -moz-opacity: 0.8;
+            opacity: 0.8;
+            -webkit-transition: all 0.1s linear;
+            -moz-transition: all 0.1s linear;
+            -o-transition: all 0.1s linear;
+            transition: all 0.1s linear
+        }
+
+        .cases-list .item .text-box {
+            padding: 10px
+        }
+    </style>
+    <section class="container">
+        <div class="row mt-20 text-c">
+            <H1>感谢您选择易得极速平台，从现在开始帮您解决管理问题</H1>
+            <h5>我们想更了解您，以便为您更精准的推荐内容</h5>
+            <h3>您的职业是？</h3>
+        </div>
+        <div class="row clearfix cases-list clearfix">
+            <div class="item col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
+            <div class="item col-xs-12 col-sm-6 col-md-4 col-lg-6">
+                <%for(item in itemList){%>
+                    <div class="item col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="item-box">
+                            <div class="text-c pic-box" data="${item.name!''}">
+                                <i class="iconfont ${item.icon_class!''}" style="font-size: 38px;"></i>
+                                <div>
+                                    ${item.name!''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <%}%>
+            </div>
+            <div class="item col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
+        </div>
+        <div class="row mt-50 text-c">
+                <input id="nextBtn" class="btn btn-primary radius" type="button" value="下一步">
+        </div>
+    </section>
+
+    <%}%>
+    <script>
+        requirejs(['/js/eeda/eeda-common.js','app/welcome/step2'], function (common) {
+            
+        });
+    </script>

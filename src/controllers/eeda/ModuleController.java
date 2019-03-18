@@ -39,6 +39,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import controllers.module.ModuleService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import controllers.util.PingYinUtil;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -986,7 +987,7 @@ public class ModuleController extends Controller {
                 + "` (" + " `id` BIGINT(20) NOT NULL AUTO_INCREMENT,"
 //                + " `parent_form_id` BIGINT(20) NULL,"
                 + " `eeda_delete` char(1) NOT NULL DEFAULT 'N',"
-                + "PRIMARY KEY (`id`))";
+                + "PRIMARY KEY (`id`)) ENGINE = InnoDB";
         Db.update(createTableSql);
 
         
@@ -1099,6 +1100,8 @@ public class ModuleController extends Controller {
             rec.set("print_template_list", print_template_list);
             List<Record> interface_list = getInterface(form_id);
             rec.set("interface_list", interface_list);
+        }else {
+            rec.set("module_name_py", PingYinUtil.getFirstSpell(module.getStr("module_name")));
         }
         rec.set("module_version", module.get("version"));
         rec.set("sys_only", sys_only);

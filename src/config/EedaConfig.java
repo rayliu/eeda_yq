@@ -137,6 +137,8 @@ public class EedaConfig extends JFinalConfig {
         //register loginUser
         me.add("/register",controllers.profile.RegisterUserController.class,contentPath);
         me.add("/forgetPwd",controllers.profile.ResetPassWordController.class,contentPath);
+        me.add("/company", controllers.profile.OfficeController.class, contentPath);
+        me.add("/survey", controllers.eeda.SurveyController.class, contentPath);
         /*me.add("/serviceProvider", controllers.profile.ServiceProviderController.class, contentPath);//全国城市
         
         me.add("/warehouse",controllers.profile.WarehouseController.class,contentPath);
@@ -149,7 +151,7 @@ public class EedaConfig extends JFinalConfig {
         
         
         me.add("/location", controllers.profile.LocationController.class, contentPath);
-        me.add("/office", controllers.profile.OfficeController.class, contentPath);
+        
         me.add("/product", controllers.profile.ProductController.class, contentPath);
         me.add("/customerRemind", controllers.report.CustomerRemindController.class, contentPath);
 
