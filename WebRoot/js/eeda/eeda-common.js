@@ -1,4 +1,4 @@
-define(['jquery', 'dataTablesBootstrap', 'sb_admin','hui_admin', 'WdatePicker'], function($){
+define(['jquery', 'dataTablesBootstrap', 'sb_admin','hui_admin', 'WdatePicker','./common/header.js'], function($){
   
     //Hui 动态载入左侧菜单，展开失效的解决方案。
     $(".Hui-aside").Huifold({
