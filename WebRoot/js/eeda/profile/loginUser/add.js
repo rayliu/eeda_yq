@@ -127,6 +127,7 @@ var customerList = function(){
 		}
 	},'json');
 };
+
 $(document).ready(function(){
   	$("#addOffice").on('click',function(){
 		$("#tobdy").append('<tr><td><select class="form-control sOffice" name="officeSelect"></select>'
@@ -186,20 +187,7 @@ $(document).ready(function(){
 		queryCustomer();
 		
 	});
-	/*$.post('/loginUser/isSelectAll',{userId:userId},function(data){
-		if(data == "checked"){
-			$("#selectAllOffice").prop("checked",true);
-		}else{
-			$("#selectAllOffice").prop("checked",false);
-		};
-	});
-	$.post('/loginUser/isSelectAllCustomer',{userId:userId},function(data){
-		if(data == "checked"){
-			$("#selectAllCustomer").prop("checked",true);
-		}else{
-			$("#selectAllCustomer").prop("checked",false);
-		};
-	});*/
+	
 	//添加全部网点
 	$("#selectAllOffice").on('click',function(){
 		var is_check = $("#selectAllOffice").prop("checked");
@@ -227,7 +215,25 @@ $(document).ready(function(){
 		};
 	});
 	
-	
+	$('#leadsForm').validate({
+		rules: {
+			username: {
+			   required: true,
+			   email:true
+			},
+			name: {
+				required: true
+			},
+            password:{
+              required: true,
+              isPwd: true,
+            },
+            confirm_password:{
+              required: true,
+              equalTo: "#password"
+            }
+		}
+	});
 	 //------------save
     $('#saveBtn').click(function(e){
         //阻止a 的默认响应行为，不需要跳转
@@ -282,6 +288,5 @@ $(document).ready(function(){
 		$("#assigning_role").show();
 	}
 	});
-	$.unblockUI();
 
 });

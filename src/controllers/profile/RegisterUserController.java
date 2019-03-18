@@ -127,11 +127,34 @@ public class RegisterUserController extends Controller {
         //将新注册公司的ID设值到注册用户中
         Record user = new Record();
         user.set("user_name", email);
+        user.set("c_name", email);
         String sha1Pwd = MD5Util.encode("SHA1", pwd);
         user.set("password", sha1Pwd);
         user.set("office_id", office.get("id"));
         Db.save("user_login", user);
 
+        //创建管理员角色
+        Record role = new Record();
+        role.set("code", "admin");
+        role.set("name", "系统管理员");
+        role.set("remark", "拥有所有权限");
+        role.set("office_id", office.get("id"));
+        Db.save("role", role);
+        
+        //关联user-role
+        Record userRole = new Record();
+        userRole.set("user_name", email);
+        userRole.set("role_id", role.getLong("id"));
+        userRole.set("role_code", "admin");
+        Db.save("user_role", userRole);
+        
+        //user_office
+        Record userCompany = new Record();
+        userCompany.set("user_name", email);
+        userCompany.set("office_id", office.get("id"));
+        userCompany.set("is_main", 1);
+        Db.save("user_office", userCompany);
+        
         try {
             // 注册成功后发一封通知邮件给易达管理员
             notifyAdmin(email);
