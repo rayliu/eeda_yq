@@ -201,9 +201,9 @@ public class EedaConfig extends JFinalConfig {
     private void setTableMapping() {
         arp.addMapping("office", Office.class);
         arp.addMapping("user_login", UserLogin.class);
-        arp.addMapping("role", Role.class);
+        arp.addMapping("t_rbac_role", Role.class);
         arp.addMapping("permission", Permission.class);
-        arp.addMapping("user_role", UserRole.class);
+        arp.addMapping("t_rbac_ref_user_role", UserRole.class);
         arp.addMapping("role_permission", RolePermission.class);
         
         arp.addMapping("eeda_modules", Module.class);

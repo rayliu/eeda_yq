@@ -139,14 +139,14 @@ public class RegisterUserController extends Controller {
         role.set("name", "系统管理员");
         role.set("remark", "拥有所有权限");
         role.set("office_id", office.get("id"));
-        Db.save("role", role);
+        Db.save("t_rbac_role", role);
         
         //关联user-role
         Record userRole = new Record();
         userRole.set("user_name", email);
         userRole.set("role_id", role.getLong("id"));
         userRole.set("role_code", "admin");
-        Db.save("user_role", userRole);
+        Db.save("t_rbac_ref_user_role", userRole);
         
         //user_office
         Record userCompany = new Record();
@@ -154,6 +154,18 @@ public class RegisterUserController extends Controller {
         userCompany.set("office_id", office.get("id"));
         userCompany.set("is_main", 1);
         Db.save("user_office", userCompany);
+        
+        //t_rbac_group  添加一个顶级部门
+        Record department = new Record();
+        department.set("name", "总公司");
+        department.set("office_id", office.get("id"));
+        Db.save("t_rbac_group", department);
+        
+        //t_rbac_ref_group_user  添加一个顶级部门的人员
+        Record departmentUser = new Record();
+        departmentUser.set("group_id", department.getLong("id"));
+        departmentUser.set("user_id", user.getLong("id"));
+        Db.save("t_rbac_ref_group_user", departmentUser);
         
         try {
             // 注册成功后发一封通知邮件给易达管理员

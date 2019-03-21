@@ -20,7 +20,7 @@ public class getCurrentPermission extends Controller{
 		return new getCurrentPermission();
 	}	
 	public Map<String,String> currentHasPermission(Subject currentUser,ParentOfficeModel pom){
-		String sql = "select distinct p.id, p.code, p.name,r.permission_code,r.is_authorize from permission p left join (select rp.* from user_role  ur left join role_permission  rp on rp.role_code = ur.role_code where ur.user_name ='" + currentUser.getPrincipal() + "' and  rp.office_id =  " + pom.getParentOfficeId() + ")r on r.permission_code = p.code ";
+		String sql = "select distinct p.id, p.code, p.name,r.permission_code,r.is_authorize from permission p left join (select rp.* from t_rbac_ref_user_role  ur left join role_permission  rp on rp.role_code = ur.role_code where ur.user_name ='" + currentUser.getPrincipal() + "' and  rp.office_id =  " + pom.getParentOfficeId() + ")r on r.permission_code = p.code ";
 		Map<String,String> map = new HashMap<String,String>(); 
 		List<Permission> list = Permission.dao.find(sql);
 		for (Permission permission : list) {

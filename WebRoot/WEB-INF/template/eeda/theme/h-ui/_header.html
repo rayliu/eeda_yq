@@ -23,17 +23,23 @@
 			</nav-->
 			<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
 				<ul class="cl">
-					<li class="dropDown dropDown_hover"> 
-						<span class="badge badge-warning radius">个人版</span>
+					<li class="dropDown dropDown_hover mr-10"> 
+						<span class="badge badge-warning radius">企业试用版</span>
 					</li>
-					<li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A">
-						${office_name!''}
-						<i class="Hui-iconfont">&#xe6d5;</i></a>
-						<ul class="dropDown-menu menu radius box-shadow">
-							<!-- <li><a href="/company/switch">切换企业</a></li> -->
-							<%if(login_user.role_code!''=='admin'){%><li><a href="/company/setting">企业设置</a></li><%}%>
-							<%if(login_user.role_code!''=='admin'){%><li><a href="/loginUser">添加企业成员</a></li><%}%>
-						</ul>
+					<li class="dropDown dropDown_hover">
+						
+						<%if(login_user.role_code!''=='admin'){%>
+							<a href="#" class="dropDown_A">${office_name!'企业名称未设置'}
+							<i class="Hui-iconfont">&#xe6d5;</i></a>
+							<ul class="dropDown-menu menu radius box-shadow">
+								<!-- <li><a href="/company/switch">切换企业</a></li> -->
+								<%if(login_user.role_code!''=='admin'){%><li><a href="/company/setting">企业设置</a></li><%}%>
+								<%if(login_user.role_code!''=='admin'){%><li><a href="/company/department">部门及成员设置</a></li><%}%>
+								<%if(login_user.role_code!''=='admin'){%><li><a href="/role">角色权限设置</a></li><%}%>
+							</ul>
+						<%}else{%>
+							${office_name!'企业名称未设置'}
+						<%}%>
 					</li>
 					<!-- <li id="Hui-msg"> 
 						<a href="#" title="消息"><span class="badge badge-danger">1</span>
@@ -49,7 +55,7 @@
 						</ul>
 					</li> 
 					<li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A">
-						${login_user.c_name!''} <%if(login_user.role_code!''=='admin'){%>(超级管理员)<%}%>
+						${login_user.c_name!''} (${login_user.role_name!''})
 						<i class="Hui-iconfont">&#xe6d5;</i></a>
 						<ul class="dropDown-menu menu radius box-shadow">
 							<li><a href="/loginUser/editPerson">个人信息</a></li>

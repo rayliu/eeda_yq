@@ -26,10 +26,10 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 		if(currentUser.isAuthenticated()){
 			login_user = (Record)currentUser.getSession().getAttribute("login_user");
 			if(login_user==null){
-				login_user = Db.findFirst("select ul.*,r.code role_code"
+				login_user = Db.findFirst("select ul.*,r.code role_code,r.name role_name"
 						+ " from user_login ul"
-						+ " left join user_role ur on ur.user_name = ul.user_name"
-						+ " left join role r on r.id = ur.role_id"
+						+ " left join t_rbac_ref_user_role ur on ur.user_name = ul.user_name"
+						+ " left join t_rbac_role r on r.id = ur.role_id"
 						+ " where ul.user_name=?",currentUser.getPrincipal());
 				currentUser.getSession().setAttribute("login_user",login_user);
 			}
@@ -47,6 +47,11 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 	            Office office = Office.dao.findById(uo.getLong("office_id"));
 	            ai.getController().setAttr("office_name", office.getStr("office_name"));
 	            ai.getController().setAttr("office_support", office.getStr("office_support"));
+	        }
+	        //登录后按user office config来显示
+	        if(login_user!=null) {
+	            Office office = Office.dao.findById(login_user.getLong("office_id"));
+	            ai.getController().setAttr("office_name", office.getStr("office_name"));
 	        }
 	        
 			ai.getController().setAttr("user_login_id", currentUser.getPrincipal());

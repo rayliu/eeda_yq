@@ -1284,7 +1284,7 @@ public class ModuleController extends Controller {
         } else {
             // 获取user的权限,看看是否有对应权限
             String authSql = "select  sa.*, mp.is_auth, mp.role_id, er.name role_name, ur.user_name "
-                    + " from eeda_structure_action sa, eeda_module_permission mp, role er, eeda_user_role ur "
+                    + " from eeda_structure_action sa, eeda_module_permission mp, t_rbac_role er, eeda_user_role ur "
                     + " where sa.module_id = mp.module_id and sa.id = mp.permission_id and mp.role_id =er.id and mp.role_id = ur.role_id"
                     + " and sa.module_id=? and ur.user_name=?";
 
@@ -1355,7 +1355,7 @@ public class ModuleController extends Controller {
 
     private List<Record> getAuthList(String module_id) {
         List<Record> authRecs = Db
-                .find("select mr.*, r.code, r.name from module_role mr, role r where mr.module_id=? and mr.role_id=r.id",
+                .find("select mr.*, r.code, r.name from module_role mr, t_rbac_role r where mr.module_id=? and mr.role_id=r.id",
                         module_id);
         for (Record record : authRecs) {
             long module_role_id = record.getLong("id");
@@ -1467,7 +1467,7 @@ public class ModuleController extends Controller {
     public void getRoleList() {
         Long office_id = LoginUserController.getLoginUser(this)
                 .get("office_id");
-        List<Record> recs = Db.find("select * from role where office_id=?",
+        List<Record> recs = Db.find("select * from t_rbac_role where office_id=?",
                 office_id);
         renderJson(recs);
     }

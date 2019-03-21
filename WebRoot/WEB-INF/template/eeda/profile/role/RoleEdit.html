@@ -3,9 +3,9 @@
 	<section class="Hui-article-box">
 		<nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a> 
 			<span class="c-999 en">&gt;</span>
-			<span class="c-666">岗位设置</span> 
+			<span class="c-666">角色设置</span> 
 			<span class="c-999 en">&gt;</span>
-			<span class="c-666">编辑岗位</span> 
+			<span class="c-666">编辑角色</span> 
 			<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
 		</nav>
 		<div class="Hui-article">
@@ -13,7 +13,7 @@
 				<form action="/role/editRole" method="post" class="form form-horizontal responsive" id='editForm' name="form1" novalidate="novalidate">
 					<input id="role_id" class="form-control" type="hidden" name="id" value="${role.id!''}">
 					<div class="row cl">
-						<label class="form-label col-xs-3">岗位名称：</label>
+						<label class="form-label col-xs-3">角色名称：</label>
 						<div class="formControls col-xs-8">
 							<input type="text" class="input-text" placeholder="岗位名称" id="rolename" name="rolename" 
 							autocomplete="off" value="${role.name!''}">
@@ -31,7 +31,7 @@
 					<hr/>
 					<button id="saveRoleBtn" type="button" class="btn  btn-primary">保存</button>
 					<!-- <a id="assigning_role" type="button" style = "display:none" href="/userRole/addOrUpdate?id=${lu.id!''}" class="btn  btn-primary">分配岗位</a> -->
-					<a class="btn  btn-primary" type="button" href="/loginUser">返回</a>
+					<a class="btn  btn-primary" type="button" href="/role">返回</a>
 				</div>
 			</article>
 		</div>
@@ -106,18 +106,9 @@
 							</div>
 						</div>
 					</div>
-					
-					
-		
-		
 				</div>
 			</div>
 	</section>
-
-
-
-
-	
 <%}%>
 		
 <script>

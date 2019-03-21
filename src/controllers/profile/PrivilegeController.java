@@ -53,7 +53,7 @@ public class PrivilegeController extends Controller {
 		String rolename = getPara("rolename");
 		String code = null;
 		if(rolename!=null){
-			Role role = Role.dao.findFirst("select * from role where name=? and office_id=?",rolename,parentID);
+			Role role = Role.dao.findFirst("select * from t_rbac_role where name=? and office_id=?",rolename,parentID);
 			code = role.get("code");
 		}
 		
@@ -94,7 +94,7 @@ public class PrivilegeController extends Controller {
 	public void roleList() {
 		Long parentID = pom.getParentOfficeId();
 		
-		String sql_m = "select distinct r.name,r.code from role_permission  rp left join role r on r.code =rp.role_code  where (r.office_id = " + parentID + " and rp.office_id =  " + parentID + ") or rp.office_id is null group by r.name,r.code";
+		String sql_m = "select distinct r.name,r.code from role_permission  rp left join t_rbac_role r on r.code =rp.role_code  where (r.office_id = " + parentID + " and rp.office_id =  " + parentID + ") or rp.office_id is null group by r.name,r.code";
 
 		// 获取当前页的数据
 		List<Record> orders = Db.find(sql_m);
@@ -121,7 +121,7 @@ public class PrivilegeController extends Controller {
 	@RequiresPermissions(value = {PermissionConstant.PERMSSION_RP_CREATE})
 	public void seachNewRole(){
 		Long parentID = pom.getParentOfficeId();
-		String sql_m = "select r.code,r.name from role r left join (select * from role_permission where office_id = " + parentID +" ) rp on r.code = rp.role_code where rp.role_code is null and r.office_id = " + parentID;
+		String sql_m = "select r.code,r.name from t_rbac_role r left join (select * from role_permission where office_id = " + parentID +" ) rp on r.code = rp.role_code where rp.role_code is null and r.office_id = " + parentID;
 		List<Record> orders = Db.find(sql_m);
 		renderJson(orders);
 	}
@@ -133,7 +133,7 @@ public class PrivilegeController extends Controller {
 		String[] ps = permissions.split(",");
 		//根据角色名称找到角色代码
 		Long parentID = pom.getParentOfficeId();
-		Role role = Role.dao.findFirst("select * from role where name=?",rolename);
+		Role role = Role.dao.findFirst("select * from t_rbac_role where name=?",rolename);
 		for (String str : ps) {
 			RolePermission r = new RolePermission();
 			r.set("role_code", role.get("code"));
@@ -158,7 +158,7 @@ public class PrivilegeController extends Controller {
 		Long parentID = pom.getParentOfficeId();
 		
 		
-		Role role = Role.dao.findFirst("select * from role where name=? and office_id = ?",rolename,parentID);
+		Role role = Role.dao.findFirst("select * from t_rbac_role where name=? and office_id = ?",rolename,parentID);
 		List<RolePermission> rp = RolePermission.dao.find("select * from role_permission where role_code =? and office_id = ?",role.get("code"),parentID);
 		
 		 List<Object> ids = new ArrayList<Object>();

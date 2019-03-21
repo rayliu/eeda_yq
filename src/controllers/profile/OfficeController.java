@@ -3,6 +3,7 @@ package controllers.profile;
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,11 +24,14 @@ import org.apache.shiro.subject.Subject;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.weixin.sdk.utils.Base64Utils;
 
+import controllers.util.MD5Util;
 import controllers.util.ParentOffice;
 import controllers.util.PermissionConstant;
 @RequiresAuthentication
@@ -36,6 +40,7 @@ public class OfficeController extends Controller {
     private Log logger = Log.getLog(LoginUserController.class);
     Subject currentUser = SecurityUtils.getSubject();
     ParentOfficeModel pom = ParentOffice.getInstance().getOfficeId(this);
+    
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_O_LIST})
     public void index() {
     	OfficeConfig officeConfig = OfficeConfig.dao.findFirst("select * from office_config where office_id = ?",pom.getParentOfficeId());
@@ -59,6 +64,34 @@ public class OfficeController extends Controller {
         setAttr("officeConfig", officeConfigRec);
         setAttr("office", officeRec);
         render("/eeda/profile/office/edit.html");
+    }
+    
+    @Before(EedaMenuInterceptor.class)
+    public void department() {
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long officeId = user.getLong("office_id");
+        List<Record> group1_list = Db.find("select trg.*, (select count(user_id) from t_rbac_ref_group_user trrgu where trrgu.group_id = trg.id) ppl_count"
+                + " from t_rbac_group trg"
+                + " where trg.is_delete!='Y' and trg.office_id=? and trg.parent_id is null",officeId);
+        for(int i = 0;i<group1_list.size();i++){
+            List<Record> group2_list = Db.find("select trg.*, (select count(user_id) from t_rbac_ref_group_user trrgu where trrgu.group_id = trg.id) ppl_count"
+                    + " from t_rbac_group trg"
+                    + " where trg.is_delete!='Y' and trg.office_id=? and trg.parent_id = ?",officeId,group1_list.get(i).getLong("id"));
+            group1_list.get(i).set("group2_list", group2_list);
+            for(int j = 0;j<group2_list.size();j++){
+                List<Record> group3_list = Db.find("select trg.*,(select count(user_id) from t_rbac_ref_group_user trrgu where trrgu.group_id = trg.id) ppl_count"
+                        + " from t_rbac_group trg"
+                        + " where trg.is_delete!='Y' and trg.office_id=? and trg.parent_id = ?",officeId,group2_list.get(j).getLong("id"));
+                group2_list.get(j).set("group3_list", group3_list);
+                for(int k=0;k<group3_list.size();k++){
+                    List<Record> group4_list = Db.find("select * from t_rbac_group where trg.is_delete!='Y' and trg.office_id=? and parent_id=?",officeId,group3_list.get(k).getLong("id"));
+                    group3_list.get(k).set("group4_list", group4_list);
+                }
+            }
+        }
+        setAttr("group1_list", group1_list);
+//        setAttr("user_type",user_type);
+        render("/eeda/profile/office/department.html");
     }
 
     //保存公司信息
@@ -93,7 +126,171 @@ public class OfficeController extends Controller {
         
         renderText("ok");
     }
+    
+    //updateDepartmentName
+    public void updateGroupName() {
+        String group_id = getPara("group_id");
+        String group_name = getPara("group_name");
+        Record group = new Record();
+        boolean result = false;
+        if(StrKit.notBlank(group_id)){
+            group = Db.findById("t_rbac_group", group_id);
+            group.set("name", group_name);
+            result = Db.update("t_rbac_group",group);
+        }
+        renderText("ok");
+    }
+    
+    public void createGroup(){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long officeId = user.getLong("office_id");
+        String group_id = getPara("group_id");
+        String group_name = getPara("group_name");
+        Record group = new Record();
+        boolean result = false;
+        if(StrKit.notBlank(group_id)){
+            group.set("name", group_name);
+            group.set("parent_id", group_id);
+            group.set("office_id", officeId);
+            result = Db.save("t_rbac_group",group);
+            group.set("result", result);
+        }
+        renderJson(group);
+    }
+    @Before(Tx.class)
+    public void deleteGroup(){
+        String id = getPara("id");
+        
+        boolean group_result = false;
+        Db.update("delete from t_rbac_ref_group_user where group_id = ?", id);
+        //删除部门前，先删除部门下的子部门
+        int deleteGroupNum = 0;//删除部门下，子部门的数量
+        List<Record> groupList = Db.find("select * from t_rbac_group where parent_id = ?", id);
+        for(Record group : groupList){
+            Db.update("delete from t_rbac_ref_group_user where group_id = ?",group.getLong("id"));
+            Db.delete("t_rbac_group",group);
+            deleteGroupNum++;
+        }
+        logger.debug("删除子部门数量: "+deleteGroupNum);
+        Record group = Db.findById("t_rbac_group", id);
+        group_result = Db.delete("t_rbac_group",group);
+        renderJson("{\"result\":"+group_result+"}");
+    }
+    
+    public void roleList(){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long officeId = user.getLong("office_id");
+        List<Record> roleList = Db.find("select * from t_rbac_role where is_delete!='Y' and office_id=?", officeId);
+        renderJson(roleList);
+    }
+    
+    @Before(Tx.class)
+    public void saveUser(){
+        UserLogin userLogin = LoginUserController.getLoginUser(this);
+        long officeId = userLogin.getLong("office_id");
+        String user_id = getPara("user_id");
+        String group_id = getPara("group_id");
+        String user_name = getPara("user_name");
+        String password =  MD5Util.encode("SHA1",getPara("pwd"));
+        String c_name = getPara("c_name");
+//        String mobile = (String)dto.get("mobile");
+        String role_id = getPara("role_id");
+        
+        Record user = new Record();
+        Record user_role = new Record();
+        //查找用户名是否存在
+        Record suerRe = Db.findFirst("select * from user_login where user_name = ?", user_name);
+        if(suerRe!=null) {
+            suerRe.set("reuslt", false);
+            suerRe.set("msg", "用户名"+user_name+"已存在");
+            renderJson(suerRe);
+            return;
+        }
+        boolean user_result = false;
+        if(StrKit.notBlank(user_id)){
+            user = Db.findById("user_login",user_id);
+            user.set("user_name", user_name);
+            user.set("c_name", c_name);
+//            user.set("type", "system");
+//            user.set("mobile", mobile);
+            user_result = Db.update("user_login", user);
+            
+            Db.update("delete from t_rbac_ref_user_role where user_name = ?", user_name);
+            
+            user_role = new Record();
+            user_role.set("role_id", role_id);
+            user_role.set("user_name", user_name);
+            Db.save("t_rbac_ref_user_role",user_role);
+        }else{
+            user.set("user_name", user_name);
+            user.set("password", password);
+            user.set("c_name", c_name);
+//            user.set("mobile", mobile);
+//            user.set("type", "system");
+            user.set("office_id", officeId);
+            user.set("create_time",new Date());
+            user_result = Db.save("user_login", user);
+            
+            user_role.set("role_id", role_id);
+            user_role.set("user_name", user_name);
+            Db.save("t_rbac_ref_user_role",user_role);
+        }
+        boolean result = false;
+        if(user_result){
+            Db.update("delete from t_rbac_ref_group_user where user_id = ?",user.getLong("id"));
+            Record re = new Record();
+            re.set("group_id", group_id);
+            re.set("user_id", user.getLong("id"));
+            result = Db.save("t_rbac_ref_group_user", re);
+        }
+        Record resultRe = new Record();
+        resultRe.set("result", result);
+        renderJson(resultRe);
+    }
+    
+    @Before(Tx.class)
+    public void deleteUser(){
+        String id = Base64Utils.decode(getPara("id"));
+        if(id.indexOf("-")>0){
+            id = id.substring(0,id.indexOf("-"));
+        }
+        boolean user_result = false;
+        Db.update("delete from t_rbac_ref_group_user where user_id = ?", id);
+        Db.update("delete from t_rbac_ref_user_role where user_id = ?", id);
+        Record user = Db.findById("t_rbac_user", id);
+        user_result = Db.delete("t_rbac_user",user);
+        renderJson("{\"result\":"+user_result+"}");
+    }
+    
+    public void updateUserPwd(){
+        String user_id = Base64Utils.decode(getPara("user_id"));
+        if(user_id.indexOf("-")>0){
+            user_id = user_id.substring(0,user_id.indexOf("-"));
+        }
+        String new_pwd = getPara("new_pwd");
+        String password =  MD5Util.encode("SHA1",new_pwd);
+        int resultNumber = Db.update("update t_rbac_user set password=? where id = ?",password,user_id);
+        renderJson("{\"resultNumber\":"+resultNumber+"}");
+    }
+    
+    public void getDepartmentUser() {
+        String group_id = getPara("group_id");
+        List<Record> userList = Db.find("select ul.*, g.id group_id, g.name group_name, r.id role_id, r.name role_name from t_rbac_ref_group_user gu "
+                + "left join user_login ul on gu.user_id=ul.id "
+                + "left join t_rbac_group g on gu.group_id=g.id "
+                + "left join t_rbac_ref_user_role ur on ur.user_name=ul.user_name "
+                + "left join t_rbac_role r on ur.role_id=r.id "
+                + "where gu.group_id=?", group_id);
+        Map<String,Object> orderListMap = new HashMap<String,Object>();
+        
+        orderListMap.put("draw", 0);
+        orderListMap.put("recordsTotal", userList.size());
+        orderListMap.put("recordsFiltered", userList.size());
 
+        orderListMap.put("data", userList);
+
+        renderJson(orderListMap);
+    }
     // 添加分公司
     @RequiresPermissions(value = {PermissionConstant.PERMSSION_O_CREATE, PermissionConstant.PERMSSION_O_UPDATE}, logical=Logical.OR)
     @Before(Tx.class)
@@ -144,7 +341,7 @@ public class OfficeController extends Controller {
             Db.save("office", office);
             //自动将新的公司给是管理员的用户
             
-            List<UserRole> urList = UserRole.dao.find("select * from user_role ur left join user_login ul on ur.user_name = ul.user_name left join office o on o.id = ul.office_id  where role_code = 'admin' and (o.id = ? or o.belong_office = ?)",pom.getParentOfficeId(),pom.getParentOfficeId());
+            List<UserRole> urList = UserRole.dao.find("select * from t_rbac_ref_user_role ur left join user_login ul on ur.user_name = ul.user_name left join office o on o.id = ul.office_id  where role_code = 'admin' and (o.id = ? or o.belong_office = ?)",pom.getParentOfficeId(),pom.getParentOfficeId());
             if(urList.size()>0){
             	for (UserRole userRole : urList) {
                 	UserOffice uo = new UserOffice();

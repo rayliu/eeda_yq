@@ -61,23 +61,23 @@ public class UserRoleController extends Controller {
 		Long parentID =pom.getBelongOffice();
 		if(parentID == null || "".equals(parentID)){
 			parentID = pom.getParentOfficeId();
-			totalWhere ="select count(1) total from user_role ur "
-					+ " left join role r on r.id = ur.role_id "
+			totalWhere ="select count(1) total from t_rbac_ref_user_role ur "
+					+ " left join t_rbac_role r on r.id = ur.role_id "
 					+ " left join user_login ul on ur.user_name = ul.user_name "
 					+ " where ifnull(ul.is_stop, 0) != 1 and r.office_id = " + parentID;
 			sql = "select ur.user_name,ul.c_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code "
-					+ " from user_role ur left join role r on r.id=ur.role_id "
+					+ " from t_rbac_ref_user_role ur left join t_rbac_role r on r.id=ur.role_id "
 					+ " left join user_login ul on ur.user_name = ul.user_name "
 					+ " left join office o on ul.office_id = o.id "
 					+ " where ifnull(ul.is_stop, 0) != 1 and (o.id = " + parentID + " or o.belong_office = " + parentID + ") "
 							+ "and (r.office_id = " + parentID + " or r.office_id is null) group by ur.user_name" + sLimit;
 
 		}else{
-			totalWhere ="select count(1) total from user_role ur "
+			totalWhere ="select count(1) total from t_rbac_ref_user_role ur "
 					+ " left join user_login ul on ur.user_name = ul.user_name "
 					+ " where ifnull(ul.is_stop, 0) != 1 and ul.office_id = " + pom.getCurrentOfficeId();
 			sql = "select ur.user_name,ul.c_name,group_concat(r.name separator '<br>') name,ur.remark,ur.role_code "
-					+ " from user_role ur left join role r on r.id=ur.role_id "
+					+ " from t_rbac_ref_user_role ur left join t_rbac_role r on r.id=ur.role_id "
 					+ " left join user_login ul on ur.user_name = ul.user_name "
 					+ " where ifnull(ul.is_stop, 0) != 1 and ul.office_id = " + pom.getCurrentOfficeId() + " and r.office_id = " + parentID + " group by ur.user_name" + sLimit;
 		}
@@ -114,7 +114,7 @@ public class UserRoleController extends Controller {
 	public void addOrUpdate(){
 		String id = getPara("id");
 		UserLogin user = UserLogin.dao.findFirst("select * from user_login where id = ?",id);
-		List<UserRole> list = UserRole.dao.find("select * from user_role where user_name = ?",user.get("user_name"));
+		List<UserRole> list = UserRole.dao.find("select * from t_rbac_ref_user_role where user_name = ?",user.get("user_name"));
 		if(list.size()>0){
 			setAttr("user_name", user.get("user_name"));		
 			render("/eeda/profile/userRole/assigning_roles.html");
@@ -129,9 +129,9 @@ public class UserRoleController extends Controller {
 		Long parentID = pom.getBelongOffice();
 		//系统管理员
 		if(parentID == null || "".equals(parentID)){
-			sql = "select u.*, ur.role_code from user_login u left join office o on u.office_id = o.id left join user_role ur on u.user_name = ur.user_name where ur.role_id is null and (o.id = " + pom.getParentOfficeId() +" or o.belong_office= "+ pom.getParentOfficeId() +")";
+			sql = "select u.*, ur.role_code from user_login u left join office o on u.office_id = o.id left join t_rbac_ref_user_role ur on u.user_name = ur.user_name where ur.role_id is null and (o.id = " + pom.getParentOfficeId() +" or o.belong_office= "+ pom.getParentOfficeId() +")";
 		}else{
-			sql = "select u.*, ur.role_code from user_login u left join office o on u.office_id = o.id left join user_role ur on u.user_name = ur.user_name where ur.role_id is null and o.id = " + pom.getCurrentOfficeId();
+			sql = "select u.*, ur.role_code from user_login u left join office o on u.office_id = o.id left join t_rbac_ref_user_role ur on u.user_name = ur.user_name where ur.role_id is null and o.id = " + pom.getCurrentOfficeId();
 		}
 		
 		List<Record> orders = Db.find(sql);
@@ -154,9 +154,9 @@ public class UserRoleController extends Controller {
 		String r = getPara("roles");
 		
 		if(StrKit.isBlank(r)){
-		    Db.update("delete from user_role where user_name= ? ", userName);
+		    Db.update("delete from t_rbac_ref_user_role where user_name= ? ", userName);
 		}else{
-		    Db.update("delete from user_role where user_name= ? and role_id not in("+r+")", userName);
+		    Db.update("delete from t_rbac_ref_user_role where user_name= ? and role_id not in("+r+")", userName);
 		
             String[] role_ids = r.split(",");
             //要添加的role
@@ -166,7 +166,7 @@ public class UserRoleController extends Controller {
                     UserRole ur = new UserRole();
                     ur.set("user_name", userName);
                     logger.debug("role_id:"+role_id);
-                    UserRole role = UserRole.dao.findFirst("select * from user_role where user_name=? and role_id=?", userName, role_id);
+                    UserRole role = UserRole.dao.findFirst("select * from t_rbac_ref_user_role where user_name=? and role_id=?", userName, role_id);
                     if(role == null){
                     	ur.set("role_id", role_id);
                         ur.save();
@@ -208,11 +208,11 @@ public class UserRoleController extends Controller {
 		
 		String sql = "SELECT  r.id, r.code, r.name, "
 		        + " if("
-		        + "      (select count(1) from user_role ur1 where user_name=?"
+		        + "      (select count(1) from t_rbac_ref_user_role ur1 where user_name=?"
                 + "             and ur1.role_id = r.id"
                 + "      )>0,"
-                + "      'Y', 'N') is_assign FROM role r"
-		        +"     LEFT JOIN  user_role ur ON ur.role_id = r.id"
+                + "      'Y', 'N') is_assign FROM t_rbac_role r"
+		        +"     LEFT JOIN  t_rbac_ref_user_role ur ON ur.role_id = r.id"
 		        +"     WHERE r.office_id = ? group by id";
 		Record rec = Db.findFirst("select count(1) total from ("+sql+") B " ,username, officeId);
 		logger.debug("total records:" + rec.getLong("total"));
@@ -268,7 +268,7 @@ public class UserRoleController extends Controller {
 			String key = rp.get("module_name");
 			/*select p.code, p.name,p.module_name ,r.permission_code from permission p left join  (select * from role_permission rp where rp.role_code =?) r on r.permission_code = p.code where p.module_name=?*/
 			
-			List<RolePermission> childOrders = RolePermission.dao.find("select distinct p.id, p.code, p.name,p.module_name ,r.permission_code from permission p left join (select rp.* from user_role  ur left join role_permission  rp on rp.role_code = ur.role_code where ur.user_name =? and  rp.office_id =  " + parentID + ")r on r.permission_code = p.code where p.module_name=? order by p.id",username,key);
+			List<RolePermission> childOrders = RolePermission.dao.find("select distinct p.id, p.code, p.name,p.module_name ,r.permission_code from permission p left join (select rp.* from t_rbac_ref_user_role  ur left join role_permission  rp on rp.role_code = ur.role_code where ur.user_name =? and  rp.office_id =  " + parentID + ")r on r.permission_code = p.code where p.module_name=? order by p.id",username,key);
 			Record r = new Record();
 			r.set("module_name", key);
 			r.set("childrens", childOrders);

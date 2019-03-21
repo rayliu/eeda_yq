@@ -18,7 +18,7 @@ define(['jquery', 'layer'], function ($) {
         }
 
         var val = $('.pic-box.selected').attr("data");
-        layer.msg(val);
+        //layer.msg(val);
         $.post('/survey/step2save',{val:val},function(data){
             if(data=='ok')
                 window.location.href='/home';
