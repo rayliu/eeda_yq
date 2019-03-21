@@ -1,0 +1,162 @@
+<%layout("/eeda/theme/h-ui/layout.html"){%>
+	<style>
+		.body {
+	    background: #fff;
+	    border: 1px solid #d4d4d4;
+	    min-height: 300px;
+	    max-height: 600px;
+	    max-width: 1190px;
+	    overflow:  hidden;
+	}
+	.structManage {
+	    min-width: 220px;
+	    height:600px;
+	    border-right: 1px solid #D2D2D2;
+	    background: #f4f7fa;
+	    float: left;
+	}
+	.c_nav {
+	    background: #d9e3ec;
+	    height: 32px;
+	}
+	.c_nav a.on {
+	    font-weight: bold;
+	    color: #000;
+	    border-bottom: 1px solid #F4F7FA;
+	    background: #f4f7fa;
+	    position: relative;
+    }
+    .c_nav a:nth-child(2) {
+    	border-right: 1px solid #d9e3ec;
+	}
+	.c_nav a {
+	    display: inline-block;
+	    width: 109px;
+	    border-bottom: 1px solid #D2D2D2;
+	    height: 32px;
+	    text-align: center;
+	    color: #666666;
+	    line-height: 32px;
+	}
+	.layui-icon{
+		width:5%;
+	}
+	.click{
+		width:100%;
+		height:26px;
+		line-height: 26px;
+		cursor:pointer;
+	}
+	.click:hover{
+		background-color: #E8F2FA;
+	}
+	
+	
+	.accountListPanel {
+	    margin-left: 220px;
+	    padding: 20px 10px 0px 20px;
+	    background: #fff;
+	    min-height: 700px;
+	}
+	.con_head{
+		height:65px;
+		border-bottom:solid 1px #ccc;
+	}
+	.con_head .con_head_title{
+		font-weight:bold;
+		font-size:18px;
+		margin-bottom: 10px;
+	}
+	.con_head p{
+		color:#3164A2;
+		font-size:12px;
+	}
+	.con_head span{
+		cursor: pointer;
+	}
+	.con_body{
+	
+	}
+	</style>
+	<section class="Hui-article-box">
+		<nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a> 
+			<span class="c-999 en">&gt;</span>
+			<span class="c-666">部门及成员设置</span>
+			<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<div class="Hui-article">
+			<article class="cl pd-20" style="padding-top:10px;">
+					<div class="body">
+							<div class="structManage">
+								<div class="c_nav">
+									<a href="javascript:void(0);" class="on bd_r"><span class="icon_diff icon_party" style="margin-right:2px;"></span>组织架构</a>
+									<a href="javascript:void(0);" class=""><span class="icon_diff icon_group" style="margin-right:2px;"></span></a>
+								</div>
+								<%for(gl1 in group1_list){%>
+								<div class="organization" title="${gl1.name!''}">
+									<div class="click" #if(for.index==0)style="background-color:#d9e3ec;"#end>
+										<i class="Hui-iconfont">&#xe67e;</i>
+										<span id="${gl1.id!''}" class="name">${gl1.name!''}</span>
+										<span>(${gl1.ppl_count!''}人)</span>
+									</div>
+									<ul class="" style="margin-left:7%;">
+										<%for(gl2 in gl1.group2_list){%>
+										<li>
+											<div class="organization" title="${gl2.name!}">
+												<div class="click">
+													<i class="Hui-iconfont">&#xe67e;</i>
+													<span id="${gl2.id!}" class="name">${gl2.name!}</span>
+													<span>(${gl2.ppl_count!''}人)</span>
+												</div>
+												<ul class="" style="margin-left:7%;">
+													<%for(gl3 in gl2.group3_list){%>
+														<li>
+															<div class="organization" title="${gl3.name!}">
+																<div class="click">
+																	<i class="Hui-iconfont">&#xe67e;</i>
+																	<span id="${gl3.id!}" class="name">${gl3.name!}</span>
+																	<span>(${gl3.ppl_count!''}人)</span>
+																</div>
+																<ul class="" style="margin-left:7%;display:none;"></ul>
+															</div>
+														</li>
+													<%}%>
+												</ul>
+											</div>
+										</li>
+										<%}%>
+									</ul>
+								</div>
+								<%}%>
+							</div>
+							<div class="accountListPanel">
+									<input type="hidden" id="group_id" value="${group1_list[0].id!}"/>
+								<div class="con_head">
+									<div class="con_head_title">${group1_list[0].name!}</div>
+									<p><span id="updateGroupName">修改名字</span> | 
+										<span id="createGroup">新建子部门</span> | 
+										<span id="deleteGroup">删除部门</span> | 
+										<span id="createUser">添加成员</span> | 
+										<a style="color: #3164A2;" href="/role">添加角色</a></p>
+								</div>
+								<div class="con_body">
+									<%include("/eeda/component/form/detailTable.html", 
+									{
+										id:'eeda_table',
+										style:'width:800px',
+										headers:['账号', '姓名', '部门', '角色', '账号状态', '操作']
+									}){} %>
+								</div>
+							</div>
+					</div>
+			</article>	<!-- /.col-lg-12 -->
+		</div><!-- /.row-->
+	</section>
+	<form id="test_form">
+		<input type="text" name="test" />
+	</form>
+<%}%>
+<script>
+	requirejs(['/js/eeda/eeda-common.js','app/profile/office/department'], function (common) {
+	});
+</script>

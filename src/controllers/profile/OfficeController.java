@@ -181,7 +181,11 @@ public class OfficeController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         long officeId = user.getLong("office_id");
         List<Record> roleList = Db.find("select * from t_rbac_role where is_delete!='Y' and office_id=?", officeId);
-        renderJson(roleList);
+        List<Record> departmentList = Db.find("select * from t_rbac_group where is_delete!='Y' and office_id=?", officeId);
+        Record rec = new Record();
+        rec.set("role_list", roleList);
+        rec.set("department_list", departmentList);
+        renderJson(rec);
     }
     
     @Before(Tx.class)
@@ -190,6 +194,7 @@ public class OfficeController extends Controller {
         long officeId = userLogin.getLong("office_id");
         String user_id = getPara("user_id");
         String group_id = getPara("group_id");
+        String new_group_id = getPara("department_id");
         String user_name = getPara("user_name");
         String password =  MD5Util.encode("SHA1",getPara("pwd"));
         String c_name = getPara("c_name");
@@ -198,14 +203,7 @@ public class OfficeController extends Controller {
         
         Record user = new Record();
         Record user_role = new Record();
-        //查找用户名是否存在
-        Record suerRe = Db.findFirst("select * from user_login where user_name = ?", user_name);
-        if(suerRe!=null) {
-            suerRe.set("reuslt", false);
-            suerRe.set("msg", "用户名"+user_name+"已存在");
-            renderJson(suerRe);
-            return;
-        }
+        
         boolean user_result = false;
         if(StrKit.notBlank(user_id)){
             user = Db.findById("user_login",user_id);
@@ -222,6 +220,14 @@ public class OfficeController extends Controller {
             user_role.set("user_name", user_name);
             Db.save("t_rbac_ref_user_role",user_role);
         }else{
+          //查找用户名是否存在
+            Record suerRe = Db.findFirst("select * from user_login where user_name = ?", user_name);
+            if(suerRe!=null) {
+                suerRe.set("reuslt", false);
+                suerRe.set("msg", "用户名"+user_name+"已存在");
+                renderJson(suerRe);
+                return;
+            }
             user.set("user_name", user_name);
             user.set("password", password);
             user.set("c_name", c_name);
@@ -237,9 +243,13 @@ public class OfficeController extends Controller {
         }
         boolean result = false;
         if(user_result){
-            Db.update("delete from t_rbac_ref_group_user where user_id = ?",user.getLong("id"));
+            Db.update("delete from t_rbac_ref_group_user where user_id = ?", user.getLong("id"));
             Record re = new Record();
-            re.set("group_id", group_id);
+            if(StrKit.isBlank(new_group_id)) {
+                re.set("group_id", group_id);
+            }else {
+                re.set("group_id", new_group_id);
+            }
             re.set("user_id", user.getLong("id"));
             result = Db.save("t_rbac_ref_group_user", re);
         }
