@@ -1,20 +1,9 @@
 package controllers.profile;
 
-import interceptor.EedaMenuInterceptor;
-import interceptor.SetAttrLoginUserInterceptor;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import models.Location;
-import models.Office;
-import models.ParentOfficeModel;
-import models.UserLogin;
-import models.UserOffice;
-import models.UserRole;
-import models.eeda.profile.OfficeConfig;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -34,6 +23,14 @@ import com.jfinal.weixin.sdk.utils.Base64Utils;
 import controllers.util.MD5Util;
 import controllers.util.ParentOffice;
 import controllers.util.PermissionConstant;
+import interceptor.EedaMenuInterceptor;
+import interceptor.SetAttrLoginUserInterceptor;
+import models.Office;
+import models.ParentOfficeModel;
+import models.UserLogin;
+import models.UserOffice;
+import models.UserRole;
+import models.eeda.profile.OfficeConfig;
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
 public class OfficeController extends Controller {

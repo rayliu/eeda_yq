@@ -45,17 +45,23 @@ public class FormService {
     			Record detailRef = Db.findFirst("select id,target_form_name from eeda_form_field_type_detail_ref where field_id = ?",detailField.getLong("id"));
     			Record detailForm = Db.findFirst("select id,name from eeda_form_define where name = ?",detailRef.getStr("target_form_name"));
     			rec = getFormOrField(detailForm.getStr("name")+"."+nameArry[2]);
-    			rec.set("this_type", "field");
-    			rec.set("real_name", "f"+rec.getLong("id")+"_"+rec.getStr("field_name"));
+    			if(rec!=null) {
+        			rec.set("this_type", "field");
+        			rec.set("real_name", "f"+rec.getLong("id")+"_"+rec.getStr("field_name"));
+    			}
     		}else if(nameArry.length==2){
     			Record form = getFormOrField(nameArry[0]);
     			rec = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name = ?",form.getLong("id"),nameArry[1]);
-    			rec.set("this_type", "field");
-    			rec.set("real_name", "f"+rec.getLong("id")+"_"+rec.getStr("field_name"));
+    			if(rec!=null) {
+    			    rec.set("this_type", "field");
+    			    rec.set("real_name", "f"+rec.getLong("id")+"_"+rec.getStr("field_name"));
+    			}
     		}else{
     			rec = Db.findFirst("select * from eeda_form_define where name = ?",name);
-    			rec.set("this_type", "form");
-    			rec.set("real_name", "form_"+rec.getLong("id"));
+    			if(rec!=null) {
+        			rec.set("this_type", "form");
+        			rec.set("real_name", "form_"+rec.getLong("id"));
+    			}
     		}
     	}
 

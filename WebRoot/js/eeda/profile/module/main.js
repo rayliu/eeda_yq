@@ -1,7 +1,7 @@
 define(['jquery', './list_tree', './fields', './custom_search/custom_search', './template_tab', './btns', './events', './edit_events', './permission', './auth',
-         './print_template/print_template', './interface/interface', 'zTree', 'layer'], 
+         './print_template/print_template', './interface/interface', './charts/charts', 'zTree', 'layer'], 
     function ($, listCont, fieldContr, customSearchCont, templateCont, btnsCont, eventsCont,editEventCont, 
-        perCont, authCont, printCont, interfaceCont) {
+        perCont, authCont, printCont, interfaceCont, chartsCont) {
 
         $(document).ready(function() {
             
@@ -36,7 +36,8 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                     permission_list: eeda.buildTableDetail('permission_table', perCont.deletedPermisstionTableIds),
                     auth_list: authCont.buildAuthTableDetail(),
                     print_template: printCont.buildPrintTemplateDetail(),
-                    interface: interfaceCont.buildDetail()
+                    interface: interfaceCont.buildDetail(),
+                    charts: chartsCont.buildDetail()
                 };
 
                 console.log('saveBtn.click....');
@@ -69,6 +70,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                         customSearchCont.sourceConditionDisplay(order.CUSTOM_SEARCH_SOURCE_CONDITION);
                         customSearchCont.colsDisplay(order.CUSTOM_SEARCH_COLS);
                         customSearchCont.filterDisplay(order.CUSTOM_SEARCH_FILTER);
+                        chartsCont.display(order.CHARTS);
                         
                         layer.close(layer_index); 
                         $.scojs_message('保存成功', $.scojs_message.TYPE_OK);
@@ -302,13 +304,14 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             $('#formular_edit_modal').modal('hide');
          });
 
+         //切换form类型
          $('#addProductDiv input[name=form_type]').change(function(e){
             var val = this.value;
             if(val=='form'){
                 //显示所有tab
                 $('#tablist li').show();
                 $('#tablist li:nth-child(3)').hide();
-            }else{
+            }else if(val=='search_form'){
                 $('#tablist li').hide();
                 //显示tab：info, 自定义查询
                 $('#tablist li:nth-child(1)'
@@ -317,6 +320,12 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                 +', #tablist li:nth-child(6)'
                 +', #tablist li:nth-child(8)'
                 +', #tablist li:nth-child(9)').show();
+            }else{
+                $('#tablist li').hide();
+                //显示tab：info, 自定义查询
+                $('#tablist li:nth-child(1)'
+                +', #tablist li:nth-child(3)'
+                +', #tablist li:nth-child(10)').show();
             }
             //跳回tab第一页
             $("#displayDiv ul[role=tablist] li:first a").click();

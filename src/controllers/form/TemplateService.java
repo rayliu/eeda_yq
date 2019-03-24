@@ -1,16 +1,43 @@
 package controllers.form;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.jfinal.kit.LogKit;
 import com.jfinal.kit.StrKit;
+import com.jfinal.plugin.activerecord.Record;
 
 public class TemplateService {
     
     public static TemplateService getInstance(){
         return new TemplateService();
+    }
+    
+    //举例：#{柱状图}, 必须是一个表的名字，不能是字段（含.）
+    //结果：转换成<div form_name='form_69' class='eeda_chart_container'></div>
+    //即 eeda_chart_container是容器，在JS中替换输出成真正的图表
+    public String processCharts(String content){
+        Pattern pattern = Pattern.compile("(?<=#\\{)[^\\}]+");//匹配花括号
+        Matcher matcher = pattern.matcher(content);
+        while (matcher.find()) {
+            String formName = matcher.group(0);
+            
+            if(formName.indexOf(".")==-1) {
+                Record formRec = FormService.getFormOrField(formName);
+                if(formRec!=null) {
+                    Long formId = formRec.getLong("id");
+                    String html = "<div form_name='form_"+formId+"' class='eeda_chart_container' style='width: 400px;height:300px;'></div>";
+                    String replaceFormName = "#{"+formName+"}";
+                    content=content.replace(replaceFormName, html);
+                }
+            }
+        }
+        return content;
     }
     
     public String processTab(String content){

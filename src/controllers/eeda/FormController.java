@@ -215,7 +215,11 @@ public class FormController extends Controller {
     }
     
     
-    
+    public void chart() {
+        String form_id = getPara("form_id");
+        Record chartRec = Db.findFirst("select * from eeda_form_charts where form_id=?", form_id);
+        renderJson(chartRec);
+    }
     
 	public void import_excel(){
     	String module_id = getPara("module_id");
@@ -558,6 +562,12 @@ public class FormController extends Controller {
         return recList;
     }
     
+    private Record getFormCharts(Long formId) {
+        Record rec = Db.findFirst(
+                "select * from eeda_form_charts where form_id=?", formId);
+        return rec;
+    }
+    
     private Record getForm(Long form_id, Long order_id){
         Record rec = Db.findFirst("select * from form_"+form_id+" where "
                 + " id=?", order_id);
@@ -803,8 +813,10 @@ public class FormController extends Controller {
         String form_name = formRec.getStr("name");
         
         String template_content = formRec.getStr("template_content");
-        template_content = TemplateService.getInstance().processTab(template_content);
-        
+        TemplateService ts = TemplateService.getInstance();
+        template_content = ts.processTab(template_content);
+        template_content = ts.processCharts(template_content);
+
         for (Record fieldRec : fieldList) {
             String fieldDisplayName=fieldRec.getStr("field_display_name");
             String fieldName=fieldRec.getStr("field_name");
@@ -930,12 +942,10 @@ public class FormController extends Controller {
         formRec.set("fields", fieldList);
         formRec.set("template_content", "");
         setAttr("form_define", JsonKit.toJson(formRec));
-        
         setAttr("order_id", order_id);
-        
         setAttr("form_content", template_content);
-        
         setAttr("btnList", getFormBtns(form_id, "edit"));
+        setAttr("charts", getFormCharts(form_id));
     }
     
     public void uploadImg(){

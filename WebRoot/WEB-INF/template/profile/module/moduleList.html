@@ -54,6 +54,7 @@
 		    		<div>
 						<input type="radio" name="form_type" value="form" checked>表单 
 						<input type="radio" name="form_type" value="search_form">自定义查询 
+						<input type="radio" name="form_type" value="charts">图表
 		    		</div>    		
 				</div>
 			</div>
@@ -81,9 +82,7 @@
 				 	 <li role="presentation">
 				 	 	<a href="#formular" aria-controls="permission" role="tab" data-toggle="tab">回写公式</a>
 				 	 </li>
-				  	 <!-- <li role="presentation">
-				 	 	<a href="#permission" aria-controls="permission" role="tab" data-toggle="tab">权限</a>
-				 	 </li>
+				  	 <!-- 
 				 	 <li role="presentation">
 				 	 	<a href="#role_permission" aria-controls="role_permission" role="tab" data-toggle="tab">岗位-权限</a>
 				 	 </li> -->
@@ -92,7 +91,10 @@
 				 	 </li>
 				 	 <li role="presentation">
 				 	 	<a href="#data_interface" aria-controls="role_permission" role="tab" data-toggle="tab">数据接口</a>
-				 	 </li>
+					 </li>
+					 <li role="presentation">
+						<a href="#charts" aria-controls="charts" role="tab" data-toggle="tab">图表类型</a>
+					 </li>
 				  </ul>
 
 				  <!-- Tab panes -->
@@ -175,6 +177,9 @@
                     </div>
                     <div class="tab-pane" id="data_interface">
                         <%include("/profile/module/interface/interface.html", {}){} %>
+					</div>
+					<div class="tab-pane" id="charts">
+                        <%include("/profile/module/charts/charts.html", {}){} %>
                     </div>
 				  </div>
 

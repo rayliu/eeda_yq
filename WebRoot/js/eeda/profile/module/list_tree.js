@@ -1,6 +1,8 @@
 define(['jquery', 'zTree', './fields', './btns', './events', 
-    './edit_events', './interface/interface','./custom_search/custom_search', 'layer'], 
-    function ($, tree, fieldCont, btnsCont, eventsCont, editEventCont, intCont,customSearchCont) {
+    './edit_events', './interface/interface','./custom_search/custom_search',
+    './charts/charts', 'layer'], 
+    function ($, tree, fieldCont, btnsCont, eventsCont, editEventCont, intCont
+        ,customSearchCont, chartsCont) {
 
     // $(document).ready(function() {
     	
@@ -320,6 +322,8 @@ define(['jquery', 'zTree', './fields', './btns', './events',
 	                    interface_dataTable.row.add(item).draw(false);
 	                }
                 }
+                //回显charts
+                chartsCont.display(module_obj.CHARTS);
                 //回显完毕，关掉loading
                 layer.close(layer_index); 
             }, 'json');

@@ -53,7 +53,10 @@ public class ModuleController extends Controller {
     @Before(EedaMenuInterceptor.class)
     public void index() {
         List<UserLogin> users = UserLogin.dao.find(
-                "select * from user_login where office_id=?",
+                "select u.* from user_login u "
+                + " left join t_rbac_ref_group_user gu on gu.user_id=u.id"
+                + " left join t_rbac_group g on gu.group_id=g.id"
+                + " where g.office_id=?",
                 LoginUserController.getLoginUser(this).getLong("office_id"));
         setAttr("users", users);
         render("/profile/module/moduleList.html");
@@ -249,9 +252,10 @@ public class ModuleController extends Controller {
         ModuleService ms = new ModuleService(this);
         ms.processFieldType(field_list, form_id);
 
-        // 根据字段去建表
-        if("Y".equals(dto.get("field_update_flag"))){
-        	buildFormTable(form_id);
+        //根据字段更新去更新表字段, 或没字段也要建空表
+        Record formExistRec=Db.findFirst("SHOW TABLES LIKE 'form_"+form_id+"'");
+        if("Y".equals(dto.get("field_update_flag"))||formExistRec==null){
+            buildFormTable(form_id);
         }
         //处理自定义查询
         handleCustomSearch(dto, form_id);
@@ -276,7 +280,9 @@ public class ModuleController extends Controller {
         handlePrintTemplate(dto, form_id);
         // 处理数据接口
         //ms.saveInterface(dto, form_id);
-
+        // 处理图表
+        ms.handleCharts(dto, form_id);
+        
         Record orderRec = Db.findById("eeda_modules", module_id);
         List<Record> form_field_list = getFormFields(form_id);
 //      List<Record> form_field_list = Db.find("select * from eeda_form_field where form_id = ?", form_id);
@@ -1100,6 +1106,8 @@ public class ModuleController extends Controller {
             rec.set("print_template_list", print_template_list);
             List<Record> interface_list = getInterface(form_id);
             rec.set("interface_list", interface_list);
+            Record charts = getCharts(form_id);
+            rec.set("charts", charts);
         }else {
             rec.set("module_name_py", PingYinUtil.getFirstSpell(module.getStr("module_name")));
         }
@@ -1112,6 +1120,12 @@ public class ModuleController extends Controller {
         rec.set("permission_list", permission_list);
         rec.set("auth_list", auth_list);
         // rec.set("search_obj", search_obj);
+        return rec;
+    }
+    
+    private Record getCharts(Long formId) {
+        Record rec = Db.findFirst(
+                "select * from eeda_form_charts where form_id=?",formId);
         return rec;
     }
     

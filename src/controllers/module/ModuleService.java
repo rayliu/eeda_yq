@@ -21,16 +21,16 @@ public class ModuleService {
     public ModuleService(Controller cont) {
         this.cont = cont;
     }
-    
+
     @SuppressWarnings({ "unused", "unchecked" })
     @Before(Tx.class)
     public void saveInterface(Map<String, ?> dto, Long form_id) {
         List<Map<String, String>> interface_list = (ArrayList<Map<String, String>>) dto.get("interface");
-        
+
         for (Map<String, ?> interfaceObj : interface_list) {
             String id = interfaceObj.get("id".toUpperCase()).toString();
             String is_delete = (String) interfaceObj.get("is_delete");
-            if("Y".equals(is_delete)){
+            if ("Y".equals(is_delete)) {
                 Db.deleteById("eeda_form_interface", id);
                 Db.update("delete from eeda_form_interface_source where interface_id=?", id);
                 Db.update("delete from eeda_form_interface_source_join where interface_id=?", id);
@@ -44,7 +44,7 @@ public class ModuleService {
             String height = interfaceObj.get("height".toUpperCase()).toString();
             String width = interfaceObj.get("width".toUpperCase()).toString();
             String filter_condition = (String) interfaceObj.get("filter_condition".toUpperCase());
-            
+
             Record itemRec = new Record();
             if (StrKit.isBlank(id)) {
                 itemRec.set("form_id", form_id);
@@ -66,29 +66,27 @@ public class ModuleService {
                 Db.update("eeda_form_interface", itemRec);
             }
             Long interface_id = itemRec.getLong("id");
-            //处理数据源
-            Map<String, ?> source = (Map<String, ?>) interfaceObj
-                    .get("SOURCE");
-            //handleBlocks(source, interface_id);
-//            handleJoins(source, interface_id);
+            // 处理数据源
+            Map<String, ?> source = (Map<String, ?>) interfaceObj.get("SOURCE");
+            // handleBlocks(source, interface_id);
+            // handleJoins(source, interface_id);
 
-            //处理数据列
+            // 处理数据列
             handleInterfaceCols(interfaceObj, interface_id);
-            //处理参数
+            // 处理参数
             handleInterfaceFilter(interfaceObj, interface_id);
         }
     }
 
     private void handleInterfaceFilter(Map<String, ?> dto, long interface_id) {
-        List<Map<String, ?>> col_list = (ArrayList<Map<String, ?>>) dto
-                .get("FILTER");
+        List<Map<String, ?>> col_list = (ArrayList<Map<String, ?>>) dto.get("FILTER");
         for (Map<String, ?> col : col_list) {
             String id = col.get("id".toUpperCase()).toString();
             String para_name = (String) col.get("para_name".toUpperCase());
             String data_type = (String) col.get("data_type".toUpperCase());
             String is_mandatory = (String) col.get("is_mandatory".toUpperCase());
             String default_value = (String) col.get("default_value".toUpperCase());
-            
+
             Record itemRec = new Record();
             if (StrKit.isBlank(id)) {
                 itemRec.set("interface_id", interface_id);
@@ -107,17 +105,16 @@ public class ModuleService {
             }
         }
     }
-    
+
     private void handleInterfaceCols(Map<String, ?> dto, long interface_id) {
-        List<Map<String, ?>> col_list = (ArrayList<Map<String, ?>>) dto
-                .get("COLS");
+        List<Map<String, ?>> col_list = (ArrayList<Map<String, ?>>) dto.get("COLS");
         for (Map<String, ?> col : col_list) {
             String id = col.get("id".toUpperCase()).toString();
             String col_name = (String) col.get("col_name".toUpperCase());
             String value = (String) col.get("value".toUpperCase());
             String width = col.get("width".toUpperCase()).toString();
             String visible = (String) col.get("is_visible".toUpperCase());
-            
+
             Record itemRec = new Record();
             if (StrKit.isBlank(id)) {
                 itemRec.set("interface_id", interface_id);
@@ -140,15 +137,14 @@ public class ModuleService {
     }
 
     private void handleJoins(Map<String, ?> dto, long interface_id) {
-        List<Map<String, ?>> join_list = (ArrayList<Map<String, ?>>) dto
-                .get("join_list");
+        List<Map<String, ?>> join_list = (ArrayList<Map<String, ?>>) dto.get("join_list");
         for (Map<String, ?> join : join_list) {
             String id = join.get("id".toUpperCase()).toString();
             String form_left = (String) join.get("form_left".toUpperCase());
             String form_left_field = (String) join.get("form_left_field".toUpperCase());
             String form_right = (String) join.get("form_right".toUpperCase());
             String form_right_field = (String) join.get("form_right_field".toUpperCase());
-            
+
             Record itemRec = new Record();
             if (StrKit.isBlank(id)) {
                 itemRec.set("interface_id", interface_id);
@@ -169,14 +165,13 @@ public class ModuleService {
     }
 
     private void handleBlocks(Map<String, ?> dto, long interface_id) {
-        List<Map<String, ?>> block_list = (ArrayList<Map<String, ?>>) dto
-                .get("block_arr");
+        List<Map<String, ?>> block_list = (ArrayList<Map<String, ?>>) dto.get("block_arr");
         for (Map<String, ?> block : block_list) {
             String id = block.get("id".toUpperCase()).toString();
             String form_name = (String) block.get("form_name".toUpperCase());
             String seq = block.get("seq".toUpperCase()).toString();
             String join_type = (String) block.get("join_type".toUpperCase());
-            
+
             Record itemRec = new Record();
             if (StrKit.isBlank(id)) {
                 itemRec.set("interface_id", interface_id);
@@ -192,18 +187,15 @@ public class ModuleService {
                 Db.update("eeda_form_interface_source", itemRec);
             }
         }
-        
+
     }
-    
+
     public void saveEventListAddRow(Map<String, ?> event, Long event_id) {
         Map<String, ?> dto = (Map<String, ?>) event.get("EVENT_TARGET_LIST");
         if (dto == null) {
-           return;
+            return;
         }
-        Record eventListAddRow = Db
-                .findFirst(
-                        "select * from eeda_form_event_list_add_row where event_id=?",
-                        event_id);
+        Record eventListAddRow = Db.findFirst("select * from eeda_form_event_list_add_row where event_id=?", event_id);
         String target_field_name = dto.get("target_field_name".toUpperCase()).toString();
         if (eventListAddRow != null) {
             eventListAddRow.set("target_field_name", target_field_name);
@@ -215,7 +207,7 @@ public class ModuleService {
             Db.save("eeda_form_event_list_add_row", eventListAddRow);
         }
     }
-    
+
     public void saveEventSetValue(Map<String, ?> event, Long event_id) {
         Map<String, ?> dto = (Map<String, ?>) event.get("SET_VALUE");
         if (dto != null) {
@@ -226,7 +218,7 @@ public class ModuleService {
             } else {
                 id = (String) objId;
             }
-            
+
             String db_source = (String) dto.get("DB_SOURCE");
             String target = (String) dto.get("TARGET");
             String set_value_type = (String) dto.get("SET_VALUE_TYPE");
@@ -248,8 +240,7 @@ public class ModuleService {
                 Db.update("eeda_form_event_set_value", itemRec);
             }
 
-            List<Map<String, String>> field_list = (ArrayList<Map<String, String>>) dto
-                    .get("SET_FIELD_LIST");
+            List<Map<String, String>> field_list = (ArrayList<Map<String, String>>) dto.get("SET_FIELD_LIST");
             for (Map<String, String> field : field_list) {
                 String name = (String) field.get("NAME");
                 String value = (String) field.get("VALUE");
@@ -260,7 +251,7 @@ public class ModuleService {
                 } else {
                     field_id = (String) objId;
                 }
-//                String field_id = (String)field.get("id".toUpperCase());
+                // String field_id = (String)field.get("id".toUpperCase());
                 Record item = new Record();
                 if (StrKit.isBlank(field_id)) {
                     item.set("event_id", event_id);
@@ -268,63 +259,62 @@ public class ModuleService {
                     item.set("value", value);
                     Db.save("eeda_form_event_set_value_item", item);
                 } else {
-                	if("DELETE".equals(field.get("action"))){
-                		item = Db.findById("eeda_form_event_set_value_item", field_id);
-                		Db.delete("eeda_form_event_set_value_item", item);
-                	}else{
-                		item.set("id", field_id);
+                    if ("DELETE".equals(field.get("action"))) {
+                        item = Db.findById("eeda_form_event_set_value_item", field_id);
+                        Db.delete("eeda_form_event_set_value_item", item);
+                    } else {
+                        item.set("id", field_id);
                         item.set("name", name);
                         item.set("value", value);
                         Db.update("eeda_form_event_set_value_item", item);
-                	}
+                    }
                 }
             }
         }
     }
-    
-    public void saveEventSaveSetValue(Map<String, ?> event, Long event_id){
-    	 Map<String, ?> dto = (Map<String, ?>) event.get("SAVE");
-    	 if (dto != null) {
-    		 String condition = (String) dto.get("CONDITION");
-             String id = (String) dto.get("id".toUpperCase());
-             Record itemRec = new Record();
-             if (StrKit.isBlank(id)) {
-                 itemRec.set("event_id", event_id);
-                 itemRec.set("condition", condition);
-                 Db.save("eeda_form_event_save_set_value", itemRec);
-             } else {
-                 itemRec = Db.findById("eeda_form_event_save_set_value", id);
-                 itemRec.set("condition", condition);
-                 Db.update("eeda_form_event_save_set_value", itemRec);
-             }
-    		 
-    		 List<Map<String, String>> field_list = (ArrayList<Map<String, String>>) dto
-                     .get("SET_FIELD_LIST");
-             for (Map<String, String> field : field_list) {
-                 String name = (String) field.get("NAME");
-                 String value = (String) field.get("VALUE");
-                 String field_id = (String)field.get("id".toUpperCase());
-                 Record item = new Record();
-                 if (StrKit.isBlank(field_id)) {
-                     item.set("event_id", event_id);
-                     item.set("name", name);
-                     item.set("value", value);
-                     Db.save("eeda_form_event_save_set_value_item", item);
-                 } else {
-                 	if("DELETE".equals(field.get("action"))){
-                 		item = Db.findById("eeda_form_event_save_set_value_item", field_id);
-                 		Db.delete("eeda_form_event_save_set_value_item", item);
-                 	}else{
-                 		item.set("id", field_id);
-                         item.set("name", name);
-                         item.set("value", value);
-                         Db.update("eeda_form_event_save_set_value_item", item);
-                 	}
-                 }
-             }
-    	 }
+
+    public void saveEventSaveSetValue(Map<String, ?> event, Long event_id) {
+        Map<String, ?> dto = (Map<String, ?>) event.get("SAVE");
+        if (dto != null) {
+            String condition = (String) dto.get("CONDITION");
+            String id = (String) dto.get("id".toUpperCase());
+            Record itemRec = new Record();
+            if (StrKit.isBlank(id)) {
+                itemRec.set("event_id", event_id);
+                itemRec.set("condition", condition);
+                Db.save("eeda_form_event_save_set_value", itemRec);
+            } else {
+                itemRec = Db.findById("eeda_form_event_save_set_value", id);
+                itemRec.set("condition", condition);
+                Db.update("eeda_form_event_save_set_value", itemRec);
+            }
+
+            List<Map<String, String>> field_list = (ArrayList<Map<String, String>>) dto.get("SET_FIELD_LIST");
+            for (Map<String, String> field : field_list) {
+                String name = (String) field.get("NAME");
+                String value = (String) field.get("VALUE");
+                String field_id = (String) field.get("id".toUpperCase());
+                Record item = new Record();
+                if (StrKit.isBlank(field_id)) {
+                    item.set("event_id", event_id);
+                    item.set("name", name);
+                    item.set("value", value);
+                    Db.save("eeda_form_event_save_set_value_item", item);
+                } else {
+                    if ("DELETE".equals(field.get("action"))) {
+                        item = Db.findById("eeda_form_event_save_set_value_item", field_id);
+                        Db.delete("eeda_form_event_save_set_value_item", item);
+                    } else {
+                        item.set("id", field_id);
+                        item.set("name", name);
+                        item.set("value", value);
+                        Db.update("eeda_form_event_save_set_value_item", item);
+                    }
+                }
+            }
+        }
     }
-    
+
     public void saveEventSetCss(Map<String, ?> event, Long event_id) {
         Map<String, ?> dto = (Map<String, ?>) event.get("SET_CSS");
         if (dto != null) {
@@ -345,8 +335,7 @@ public class ModuleService {
                 Db.update("eeda_form_event_css", itemRec);
             }
 
-            List<Map<String, String>> field_list = (ArrayList<Map<String, String>>) dto
-                    .get("SET_FIELD_LIST");
+            List<Map<String, String>> field_list = (ArrayList<Map<String, String>>) dto.get("SET_FIELD_LIST");
             for (Map<String, String> field : field_list) {
                 String name = (String) field.get("NAME");
                 String value = (String) field.get("VALUE");
@@ -367,29 +356,26 @@ public class ModuleService {
         }
     }
 
-    public void processFieldType(List<Map<String, String>> field_list,
-            long form_id) {
+    public void processFieldType(List<Map<String, String>> field_list, long form_id) {
         for (Map<String, ?> field : field_list) {
             Object id = field.get("id".toUpperCase());
             String is_delete = (String) field.get("is_delete");
-            if("Y".equals(is_delete)){
+            if ("Y".equals(is_delete)) {
                 Db.deleteById("eeda_form_field", id);
                 continue;
             }
-            String field_display_name = (String) field.get("field_display_name"
-                    .toUpperCase());
+            String field_display_name = (String) field.get("field_display_name".toUpperCase());
             Object seq = field.get("seq".toUpperCase());
             String field_type = (String) field.get("field_type".toUpperCase());
             String read_only = (String) field.get("read_only".toUpperCase());
             String listed = (String) field.get("listed".toUpperCase());
             String required = (String) field.get("required".toUpperCase());
-            
+
             Record itemRec = new Record();
             if (!(id instanceof java.lang.Double)) {
                 itemRec.set("form_id", form_id);
                 itemRec.set("field_display_name", field_display_name);
-                itemRec.set("field_name",
-                        PingYinUtil.getFirstSpell(field_display_name));
+                itemRec.set("field_name", PingYinUtil.getFirstSpell(field_display_name));
                 itemRec.set("field_type", field_type);
                 itemRec.set("read_only", read_only);
                 itemRec.set("listed", listed);
@@ -401,8 +387,7 @@ public class ModuleService {
             } else {
                 itemRec = Db.findById("eeda_form_field", id);
                 itemRec.set("field_display_name", field_display_name);
-                itemRec.set("field_name",
-                        PingYinUtil.getFirstSpell(field_display_name));
+                itemRec.set("field_name", PingYinUtil.getFirstSpell(field_display_name));
                 itemRec.set("field_type", field_type);
                 if (seq != null && !StrKit.isBlank(seq.toString()))
                     itemRec.set("seq", seq);
@@ -421,7 +406,7 @@ public class ModuleService {
             // 处理字段类型(例如, 复选框: 男, 女)
             saveFieldType(field, field_id);
         }
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -430,28 +415,24 @@ public class ModuleService {
         String fieldType = (String) field.get("field_type".toUpperCase());
         if ("复选框".equals(fieldType)) {
             saveCheckBox(field, field_id);
-        }else if ("自动编号".equals(fieldType)) {
+        } else if ("自动编号".equals(fieldType)) {
             saveAutoNo(field, field_id);
-        }else if ("从表引用".equals(fieldType)) {
+        } else if ("从表引用".equals(fieldType)) {
             saveDetailRef(field, field_id);
-        }else if ("字段引用".equals(fieldType)) {
+        } else if ("字段引用".equals(fieldType)) {
             saveFieldRef(field, field_id);
-        }else if("下拉列表".equals(fieldType)){
-        	saveDropdown(field, field_id);
+        } else if ("下拉列表".equals(fieldType)) {
+            saveDropdown(field, field_id);
         }
-        
+
     }
 
     public void saveFieldRef(Map<String, ?> field, Long field_id) {
-        Map<String, ?> fieldTypeObj = (Map<String, ?>) field
-                .get("REF");
+        Map<String, ?> fieldTypeObj = (Map<String, ?>) field.get("REF");
         String refId = fieldTypeObj.get("id".toUpperCase()).toString();
-        String ref_form = (String) fieldTypeObj
-                .get("ref_form".toUpperCase());
-        String ref_field = (String) fieldTypeObj
-                .get("ref_field".toUpperCase());
-        String display_type = (String) fieldTypeObj
-                .get("display_type".toUpperCase());
+        String ref_form = (String) fieldTypeObj.get("ref_form".toUpperCase());
+        String ref_field = (String) fieldTypeObj.get("ref_field".toUpperCase());
+        String display_type = (String) fieldTypeObj.get("display_type".toUpperCase());
         Record rec = new Record();
         if (StrKit.isBlank(refId)) {
             rec.set("field_id", field_id);
@@ -467,12 +448,11 @@ public class ModuleService {
             rec.set("display_type", display_type);
             Db.update("eeda_form_field_type_ref", rec);
         }
-        
-        List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
-                .get("item_list".toUpperCase());
-        if(list==null)
+
+        List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj.get("item_list".toUpperCase());
+        if (list == null)
             return;
-        
+
         for (Map<String, ?> row : list) {
             String id = row.get("id".toUpperCase()).toString();
             String name = (String) row.get("from_name".toUpperCase());
@@ -486,9 +466,9 @@ public class ModuleService {
                 Db.save("eeda_form_field_type_ref_item", itemRec);
             } else {
                 itemRec = Db.findById("eeda_form_field_type_ref_item", id);
-                if("DELETE".equals(row.get("action"))){
+                if ("DELETE".equals(row.get("action"))) {
                     Db.delete("eeda_form_field_type_ref_item", itemRec);
-                }else{
+                } else {
                     itemRec.set("field_id", field_id);
                     itemRec.set("from_name", name);
                     itemRec.set("to_name", value);
@@ -497,16 +477,14 @@ public class ModuleService {
             }
         }
     }
-    
+
     private void saveAutoNo(Map<String, ?> field, Long field_id) {
         Long fieldId = field_id;
 
-        Map<String, ?> fieldTypeObj = (Map<String, ?>) field
-                .get("auto_no".toUpperCase());
+        Map<String, ?> fieldTypeObj = (Map<String, ?>) field.get("auto_no".toUpperCase());
         String checkId = String.valueOf(fieldTypeObj.get("ID"));
-        String is_gen_before_save = (String) fieldTypeObj
-                .get("is_gen_before_save".toUpperCase());
-       
+        String is_gen_before_save = (String) fieldTypeObj.get("is_gen_before_save".toUpperCase());
+
         Record rec = new Record();
         if (StringUtils.isBlank(checkId)) {
             rec.set("field_id", fieldId);
@@ -519,13 +497,12 @@ public class ModuleService {
             Db.update("eeda_form_field_type_auto_no", rec);
         }
 
-        List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
-                .get("item_list".toUpperCase());
+        List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj.get("item_list".toUpperCase());
         for (Map<String, ?> item : list) {
-            String id =  String.valueOf(item.get("ID"));
+            String id = String.valueOf(item.get("ID"));
             String type = (String) item.get("type".toUpperCase());
             String value = (String) item.get("value".toUpperCase());
-           
+
             Record itemRec = new Record();
             if (StringUtils.isBlank(id)) {
                 itemRec.set("field_id", fieldId);
@@ -533,32 +510,29 @@ public class ModuleService {
                 itemRec.set("value", value);
                 Db.save("eeda_form_field_type_auto_no_item", itemRec);
             } else {
-            	itemRec = Db.findById("eeda_form_field_type_auto_no_item",
-                        id);
-            	if("Y".equals(item.get("is_delete"))){
-            		Db.delete("eeda_form_field_type_auto_no_item", itemRec);
-            	}else{
+                itemRec = Db.findById("eeda_form_field_type_auto_no_item", id);
+                if ("Y".equals(item.get("is_delete"))) {
+                    Db.delete("eeda_form_field_type_auto_no_item", itemRec);
+                } else {
                     itemRec.set("field_id", fieldId);
                     itemRec.set("type", type);
                     itemRec.set("value", value);
                     Db.update("eeda_form_field_type_auto_no_item", itemRec);
-            	}
-                
+                }
+
             }
         }
     }
-    
+
     private void saveDetailRef(Map<String, ?> field, Long field_id) {
         Long fieldId = field_id;
 
-        Map<String, ?> fieldTypeObj = (Map<String, ?>) field
-                .get("DETAIL_REF");
-        if(fieldTypeObj==null){
-        	return;
+        Map<String, ?> fieldTypeObj = (Map<String, ?>) field.get("DETAIL_REF");
+        if (fieldTypeObj == null) {
+            return;
         }
         String refId = fieldTypeObj.get("id".toUpperCase()).toString();
-        String target_form_name = (String) fieldTypeObj
-                .get("target_form_name".toUpperCase());
+        String target_form_name = (String) fieldTypeObj.get("target_form_name".toUpperCase());
         Record rec = new Record();
         if (StrKit.isBlank(refId)) {
             rec.set("field_id", fieldId);
@@ -574,7 +548,8 @@ public class ModuleService {
         List<Map<String, ?>> join_condition_list = (ArrayList<Map<String, ?>>) fieldTypeObj
                 .get("join_condition".toUpperCase());
         for (Map<String, ?> condition : join_condition_list) {
-            String id = condition.get("id".toUpperCase()).toString();;
+            String id = condition.get("id".toUpperCase()).toString();
+            ;
             String field_from = (String) condition.get("field_from".toUpperCase());
             String field_to = (String) condition.get("field_to".toUpperCase());
 
@@ -585,19 +560,18 @@ public class ModuleService {
                 itemRec.set("field_to", field_to);
                 Db.save("eeda_form_field_type_detail_ref_join_condition", itemRec);
             } else {
-                itemRec = Db.findById("eeda_form_field_type_detail_ref_join_condition",
-                        id);
+                itemRec = Db.findById("eeda_form_field_type_detail_ref_join_condition", id);
                 itemRec.set("field_id", fieldId);
                 itemRec.set("field_from", field_from);
                 itemRec.set("field_to", field_to);
                 Db.update("eeda_form_field_type_detail_ref_join_condition", itemRec);
             }
         }
-        
-        List<Map<String, ?>> display_list = (ArrayList<Map<String, ?>>) fieldTypeObj
-                .get("display_field".toUpperCase());
+
+        List<Map<String, ?>> display_list = (ArrayList<Map<String, ?>>) fieldTypeObj.get("display_field".toUpperCase());
         for (Map<String, ?> display_field : display_list) {
-            String id = display_field.get("id".toUpperCase()).toString();;
+            String id = display_field.get("id".toUpperCase()).toString();
+            ;
             String target_field_name = (String) display_field.get("target_field_name".toUpperCase());
             String value = (String) display_field.get("value".toUpperCase());
 
@@ -608,12 +582,11 @@ public class ModuleService {
                 itemRec.set("value", value);
                 Db.save("eeda_form_field_type_detail_ref_display_field", itemRec);
             } else {
-                itemRec = Db.findById("eeda_form_field_type_detail_ref_display_field",
-                        id);
-                if("DELETE".equals(display_field.get("action"))){
-                	Db.delete("eeda_form_field_type_detail_ref_display_field", itemRec);
-                }else{
-                	itemRec.set("field_id", fieldId);
+                itemRec = Db.findById("eeda_form_field_type_detail_ref_display_field", id);
+                if ("DELETE".equals(display_field.get("action"))) {
+                    Db.delete("eeda_form_field_type_detail_ref_display_field", itemRec);
+                } else {
+                    itemRec.set("field_id", fieldId);
                     itemRec.set("target_field_name", target_field_name);
                     itemRec.set("value", value);
                     Db.update("eeda_form_field_type_detail_ref_display_field", itemRec);
@@ -625,13 +598,10 @@ public class ModuleService {
     private void saveCheckBox(Map<String, ?> field, Long field_id) {
         Long fieldId = field_id;
 
-        Map<String, ?> fieldTypeObj = (Map<String, ?>) field
-                .get("check_box".toUpperCase());
+        Map<String, ?> fieldTypeObj = (Map<String, ?>) field.get("check_box".toUpperCase());
         String checkId = String.valueOf(fieldTypeObj.get("ID"));
-        String is_single_check = (String) fieldTypeObj
-                .get("is_single_check".toUpperCase());
-        String line_display_num = (String) fieldTypeObj
-                .get("line_display_numbers".toUpperCase());
+        String is_single_check = (String) fieldTypeObj.get("is_single_check".toUpperCase());
+        String line_display_num = (String) fieldTypeObj.get("line_display_numbers".toUpperCase());
         Record rec = new Record();
         if (StringUtils.isBlank(checkId)) {
             rec.set("field_id", fieldId);
@@ -646,15 +616,13 @@ public class ModuleService {
             Db.update("eeda_form_field_type_checkbox", rec);
         }
 
-        List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj
-                .get("item_list".toUpperCase());
+        List<Map<String, ?>> list = (ArrayList<Map<String, ?>>) fieldTypeObj.get("item_list".toUpperCase());
         for (Map<String, ?> checkBox : list) {
             String id = String.valueOf(checkBox.get("ID"));
             String name = (String) checkBox.get("name".toUpperCase());
             String code = (String) checkBox.get("code".toUpperCase());
             Object seq = checkBox.get("seq".toUpperCase());
-            String is_default = (String) checkBox.get("is_default"
-                    .toUpperCase());
+            String is_default = (String) checkBox.get("is_default".toUpperCase());
 
             Record itemRec = new Record();
             if (StringUtils.isBlank(id)) {
@@ -665,12 +633,11 @@ public class ModuleService {
                 itemRec.set("is_default", is_default);
                 Db.save("eeda_form_field_type_checkbox_item", itemRec);
             } else {
-                itemRec = Db.findById("eeda_form_field_type_checkbox_item",
-                        id);
-                if("Y".equals(checkBox.get("is_delete"))){
-                	Db.delete("eeda_form_field_type_checkbox_item", itemRec);
-                }else{
-                	itemRec.set("field_id", fieldId);
+                itemRec = Db.findById("eeda_form_field_type_checkbox_item", id);
+                if ("Y".equals(checkBox.get("is_delete"))) {
+                    Db.delete("eeda_form_field_type_checkbox_item", itemRec);
+                } else {
+                    itemRec.set("field_id", fieldId);
                     itemRec.set("name", name);
                     itemRec.set("code", code);
                     itemRec.set("seq", seq);
@@ -680,35 +647,52 @@ public class ModuleService {
             }
         }
     }
-    
-    public void saveDropdown(Map<String, ?> field, Long field_id){
-    	Map<String,Object> fieldTypeObj =  (Map<String,Object>)field.get("DROPDOWN");
-    	if(fieldTypeObj==null){
-        	return;
+
+    public void saveDropdown(Map<String, ?> field, Long field_id) {
+        Map<String, Object> fieldTypeObj = (Map<String, Object>) field.get("DROPDOWN");
+        if (fieldTypeObj == null) {
+            return;
         }
-    	List<Map<String,Object>> list = (ArrayList<Map<String,Object>>)fieldTypeObj.get("ITEM_LIST");
-    	if(list.size()>0){
-    		for(int i = 0;i<list.size();i++){
-    			String dropdown_id = String.valueOf(list.get(i).get("ID"));
-            	Record re = new Record();
-            	if(StringUtils.isBlank(dropdown_id)){
-        			re.set("field_id", field_id);
-            		re.set("sequence", list.get(i).get("SEQUENCE"));
-            		re.set("value", list.get(i).get("VALUE"));
-            		re.set("name", list.get(i).get("NAME"));
-            		Db.save("eeda_form_field_type_dropdown", re);
-            	}else{
-            		re = Db.findById("eeda_form_field_type_dropdown", dropdown_id);
-            		if("Y".equals(list.get(i).get("is_delete"))){
-            			Db.delete("eeda_form_field_type_dropdown", re);
-            		}else{
-                		re.set("sequence", list.get(i).get("SEQUENCE"));
-                		re.set("value", list.get(i).get("VALUE"));
-                		re.set("name", list.get(i).get("NAME"));
-                		Db.update("eeda_form_field_type_dropdown", re);
-            		}
-            	}
-    		}
-    	}
+        List<Map<String, Object>> list = (ArrayList<Map<String, Object>>) fieldTypeObj.get("ITEM_LIST");
+        if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                String dropdown_id = String.valueOf(list.get(i).get("ID"));
+                Record re = new Record();
+                if (StringUtils.isBlank(dropdown_id)) {
+                    re.set("field_id", field_id);
+                    re.set("sequence", list.get(i).get("SEQUENCE"));
+                    re.set("value", list.get(i).get("VALUE"));
+                    re.set("name", list.get(i).get("NAME"));
+                    Db.save("eeda_form_field_type_dropdown", re);
+                } else {
+                    re = Db.findById("eeda_form_field_type_dropdown", dropdown_id);
+                    if ("Y".equals(list.get(i).get("is_delete"))) {
+                        Db.delete("eeda_form_field_type_dropdown", re);
+                    } else {
+                        re.set("sequence", list.get(i).get("SEQUENCE"));
+                        re.set("value", list.get(i).get("VALUE"));
+                        re.set("name", list.get(i).get("NAME"));
+                        Db.update("eeda_form_field_type_dropdown", re);
+                    }
+                }
+            }
+        }
+    }
+    
+    public void handleCharts(Map<String, ?> dto, Long form_id) {
+        Map<String, Object> charts = (Map<String, Object>) dto.get("charts");
+        String chart_type = (String)charts.get("chart_type");
+        String chart_id = (String)charts.get("chart_id");
+        Record re = new Record();
+        if (StrKit.isBlank(chart_id)) {
+            re.set("form_id", form_id);
+            re.set("chart_type", chart_type);
+            Db.save("eeda_form_charts", re);
+        } else {
+            re = Db.findById("eeda_form_charts", chart_id);
+            re.set("form_id", form_id);
+            re.set("chart_type", chart_type);
+            Db.update("eeda_form_charts", re);
+        }
     }
 }
