@@ -311,6 +311,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                 //显示所有tab
                 $('#tablist li').show();
                 $('#tablist li:nth-child(3)').hide();
+                $('#tablist li:nth-child(10)').hide();
             }else if(val=='search_form'){
                 $('#tablist li').hide();
                 //显示tab：info, 自定义查询

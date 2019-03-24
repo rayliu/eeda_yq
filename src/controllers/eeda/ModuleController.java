@@ -849,13 +849,15 @@ public class ModuleController extends Controller {
                 
                 event.set("list_add_row", rec);
             }else if("save".equals(eventType)){
-            	Record cssRec = Db.findFirst(
+                Record cssRec = Db.findFirst(
                         "select * from eeda_form_event_save_set_value where event_id=?",
                         event.getLong("id"));
-            	List<Record> itemList = Db.find(
-                         "select * from eeda_form_event_save_set_value_item where event_id=?",
-                         event.getLong("id"));
-            	cssRec.set("set_field_list", itemList);
+                if(cssRec!=null) {
+                    List<Record> itemList = Db.find(
+                             "select * from eeda_form_event_save_set_value_item where event_id=?",
+                             event.getLong("id"));
+                    cssRec.set("set_field_list", itemList);
+                }
                 event.set("save", cssRec);
             }
         }

@@ -66,6 +66,8 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
           }
         }
       }else if(currentNode.TYPE=='save'){
+          if(!currentNode.SAVE)
+            return;
           $('#edit_event_save_value_id').val(currentNode.SAVE.ID);
           $('#edit_event_save_set_value_condition').val(currentNode.SAVE.CONDITION);
           var itemList = currentNode.SAVE.SET_FIELD_LIST;
