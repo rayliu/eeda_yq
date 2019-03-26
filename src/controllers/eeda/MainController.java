@@ -143,12 +143,12 @@ public class MainController extends Controller {
     }
 
     public void captcha() {
-        CaptchaRender cr = new CaptchaRender();
-        cr.setContext(this.getRequest(), this.getResponse());
-        cr.setCaptchaName(RANDOM_CODE_KEY);
-        cr.render();
-        renderNull();
-    }
+		CaptchaRender cr = new CaptchaRender();
+		cr.setContext(this.getRequest(), this.getResponse());
+		cr.setCaptchaName(RANDOM_CODE_KEY);
+		cr.render();
+		renderNull();
+	}
 
     @Before(EedaMenuInterceptor.class)
     public void home() {
@@ -242,20 +242,18 @@ public class MainController extends Controller {
             render("/eeda/theme/h-ui/login.html");
             return;
         }
-        String sha1Pwd = MD5Util.encode("SHA1", getPara("password"));
-        UsernamePasswordToken token = new UsernamePasswordToken(username, sha1Pwd);
 
         String inputRandomCode = getPara("inputRandomCode");
-        boolean loginSuccess = CaptchaRender.validate(this, inputRandomCode);
-        // if (!loginSuccess) {
-        if (false) {
+        if(!CaptchaRender.validate(this, inputRandomCode)){
             String errMsg = "验证码不正确";
             setAttr("errMsg", errMsg);
             logger.debug(errMsg);
             render("/eeda/theme/h-ui/login.html");
             return;
         }
-
+        
+        String sha1Pwd = MD5Util.encode("SHA1", getPara("password"));
+        UsernamePasswordToken token = new UsernamePasswordToken(username, sha1Pwd);
         if (getPara("remember") != null && "Y".equals(getPara("remember")))
             token.setRememberMe(true);
 

@@ -451,7 +451,20 @@
       position: static;
       width: auto
     }
-
+    #LAY-user-login-vercode{
+      display: inline-block;
+      width: 65%;
+    }
+    #imgId{
+      display:inline-block;
+      padding: 0px; 
+      width: 33%;
+    }
+    #error_div {
+      margin-bottom: 15px;
+      clear: both;
+      height: 45px;
+    }
   </style>
   <title>${SYS_CONFIG.system_title!'易得 SAAS'}</title>
   <link rel="stylesheet" href="/js/lib/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -475,6 +488,14 @@
 					<h1>${SYS_CONFIG.system_title!'易得 SAAS'}</h1>
 				</div>
 				</div>
+        
+         <% 
+          if(errMsg!''!=''){ %>
+            <div  id="error_div" style="text-align: center; color: #d61518; background-color: rgb(248, 215, 218);">
+                <div style="padding-top: 12px" id="error_text">${errMsg!''}</div>
+            </div>
+          <% } %>
+
 				<div class="row mt-4">
           <div class="col">
             <input type="text" class="form-control" placeholder="邮箱" name="username" value="demo">
@@ -482,7 +503,13 @@
         </div>
         <div class="row mt-4">
           <div class="col">
-            <input type="password" name="password" type="password" class="form-control mb-1" placeholder="密码" value="123456">
+            <input type="password" name="password" type="password" class="form-control -1" placeholder="密码" value="123456">
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col">
+            <input type="text" name="inputRandomCode" id="LAY-user-login-vercode" lay-verify="required" class="form-control col-8" placeholder="图形验证码">
+            <img src="/captcha"  id="imgId" class="form-control col-4" onclick="javascript:this.src='/captcha?' + new Date().getTime();">
           </div>
         </div>
         <div class="row mt-4">
@@ -543,7 +570,6 @@
   <script type="text/javascript" src="/js/lib/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/froala-editor@2.9.1/js/froala_editor.pkgd.min.js"></script> -->
   <script type="text/javascript" src="/js/lib/fontawesome/5.5.0/all.js"></script>
-
 </body>
 
 </html>
