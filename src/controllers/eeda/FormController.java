@@ -897,7 +897,7 @@ public class FormController extends Controller {
             }else if("多行文本".equals(fieldType)){
                 replaceNameDest = "<div id='"+inputId+"_div'>"
                         + "<label class='search-label'>"+fieldDisplayName+"</label>"
-                        + " <div class='formControls col-xs-8 col-sm-11'>"
+                        + " <div class='formControls col-xs-8 col-sm-8'>"
                         + "    <textarea class='textarea valid' placeholder='' name='"+inputId+"' ></textarea>"
                         + " </div> "
                         + "</div> "+requiredStr;

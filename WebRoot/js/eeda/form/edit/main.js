@@ -50,6 +50,8 @@ define(['jquery', 'hui', '../btns', '../add/detail_table', '../value_change', '.
                         $(field_id+"[value='"+data[p]+"']").prop("checked",true);
                     }else if(tagName == "SELECT"){
                     	element.find("option[value='"+data[p]+"']").attr("selected","selected");
+                    }else if(tagName == "TEXTAREA"){
+                    	element.text(data[p]);
                     }else if(type == "checkbox"){
                     	if(data[p].indexOf(",")>0){
                     		var array = data[p].split(",");
