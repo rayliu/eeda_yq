@@ -22,9 +22,9 @@ public class FormService {
         this.cont = cont;
     } 
     
-    public static Record getFieldName(String form_name, String feild_display_name){
+    public static Record getFieldName(String form_name, String feild_display_name, Long office_id){
         Record rec = Db.findFirst("select f.* from eeda_form_define form, eeda_form_field f "
-        		+ "where form.id = f.form_id and form.name=? and f.field_display_name=?", form_name, feild_display_name);
+        		+ "where form.id = f.form_id and form.name=? and f.field_display_name=? and form.office_id=?", form_name, feild_display_name, office_id);
 
         return rec;
     }
@@ -121,7 +121,7 @@ public class FormService {
     
     @SuppressWarnings("unchecked")
     @Before(Tx.class)
-    public String processFieldType_ref(String form_name, Record fieldRec, Long field_id){
+    public String processFieldType_ref(String form_name, Record fieldRec, Long field_id, Long office_id){
         String returnStr = "";
         String fieldDisplayName=fieldRec.getStr("field_display_name");
         String fieldName=fieldRec.getStr("field_name");
@@ -131,7 +131,7 @@ public class FormService {
         String displayType = ref.getStr("display_type");
         String target_form_name = ref.getStr("ref_form");
         Record refForm = Db.findFirst(
-                "select * from eeda_form_define where name=?", target_form_name);
+                "select * from eeda_form_define where name=? and office_id=?", target_form_name, office_id);
         //回填字段
 //        String target_form_field = ref.getStr("ref_field");
 //        Record field_rec = FormService.getFieldName(target_form_field.split("\\.")[0], target_form_field.split("\\.")[1]);//获取数据库对应的名称: f59_xh
@@ -143,7 +143,7 @@ public class FormService {
                 "select * from eeda_form_field_type_ref_item where field_id=?", field_id);
         for (Record record : itemList) {
             String from_name = record.getStr("from_name");
-            Record rec = FormService.getFieldName(from_name.split("\\.")[0], from_name.split("\\.")[1]);
+            Record rec = FormService.getFieldName(from_name.split("\\.")[0], from_name.split("\\.")[1], office_id);
             String t_field_name = "f"+rec.get("id")+"_"+rec.getStr("field_name");//获取数据库对应的名称: f59_xh
             
             target_search_field_name += (","+t_field_name);//查询的字段
@@ -155,7 +155,7 @@ public class FormService {
                 if(to_name.indexOf("\\.")==-1){
                     to_name=form_name+"."+to_name;
                 }
-                Record value_rec = FormService.getFieldName(to_name.split("\\.")[0], to_name.split("\\.")[1]);
+                Record value_rec = FormService.getFieldName(to_name.split("\\.")[0], to_name.split("\\.")[1], office_id);
                 String v_field_name = "f"+value_rec.get("id")+"_"+value_rec.getStr("field_name");//获取数据库对应的名称: f59_xh
                 record.set("to_field_name", v_field_name);
             }
@@ -285,6 +285,7 @@ public class FormService {
     @Before(Tx.class)
     public List<Record> getPrintTemplate(Long form_id,Long order_id){
     	Record formRec = Db.findFirst("select id,name from eeda_form_define where id = ?",form_id);
+    	Long office_id=formRec.getLong("office_id");
     	List<Record> fieldList = Db.find("select id,field_name,field_display_name,field_type from eeda_form_field where form_id=?", form_id);
     	List<Record> template_list = Db.find("select id,name,content from eeda_form_print_template where form_id=?", form_id);
     	String form_name = formRec.getStr("name");
@@ -311,7 +312,7 @@ public class FormService {
                          fieldStr+="<th>"+name+"</th>";
                      }
                  }
-                 String tbodyStr = formDetail(form_id,order_id);
+                 String tbodyStr = formDetail(form_id,order_id, office_id);
                  html = "<table id='detail_print_table_"+field.getLong("id")+"' type='dynamic' class='table detail_table table-striped table-bordered table-hover display' style='width:100%;'>"
                          +"    <thead class='eeda'>"
                          +"        <tr>"
@@ -331,7 +332,7 @@ public class FormService {
         return template_list;
     }
     
-    private String formDetail(Long form_id, Long order_id){
+    private String formDetail(Long form_id, Long order_id, Long office_id){
     	Record rec = Db.findFirst("select * from form_"+form_id+" where "
                 + " id=?", order_id);
     	List<Record> refFieldList = Db.find("select distinct field.id field_id, form.id form_id, form.name, cond.field_from, cond.field_to "
@@ -353,11 +354,11 @@ public class FormService {
             String field_from = fieldRec.getStr("field_from");
             String field_to = fieldRec.getStr("field_to");
             //主表关联值
-            Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+            Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
             String field_from_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
             Object from_field_value = rec.get(field_from_name);
             //从表关联值
-            Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+            Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
             String field_to_name = "f"+field_to_rec.getLong("id")+"_"+field_to_rec.getStr("field_name");
             
             List<Record> dataList = Db.find("select * from form_"+d_form_id+" where "+field_to_name+"=?", from_field_value);

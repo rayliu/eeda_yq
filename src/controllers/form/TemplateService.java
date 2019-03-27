@@ -31,7 +31,7 @@ public class TemplateService {
                 Record formRec = FormService.getFormOrField(formName);
                 if(formRec!=null) {
                     Long formId = formRec.getLong("id");
-                    String html = "<div form_name='form_"+formId+"' class='eeda_chart_container' style='width: 400px;height:300px;'></div>";
+                    String html = "<div form_name='form_"+formId+"' class='eeda_chart_container' style='width: 350px;height:250px;'></div>";
                     String replaceFormName = "#{"+formName+"}";
                     content=content.replace(replaceFormName, html);
                 }

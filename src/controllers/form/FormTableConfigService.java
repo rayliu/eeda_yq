@@ -13,7 +13,7 @@ public class FormTableConfigService {
         this.cont = cont;
     } 
     
-    public List<Record> getTableConfig(ArrayList<String> fieldIdList) {
+    public List<Record> getTableConfig(ArrayList<String> fieldIdList, Long office_id) {
         List<Record> list = new ArrayList<Record>();
         for (String fieldId : fieldIdList) {
             Record rec = new Record();
@@ -23,7 +23,7 @@ public class FormTableConfigService {
                 String target_field_name = record.getStr("target_field_name");
                 String form_name = target_field_name.split("\\.")[0];
                 String field_display_name = target_field_name.split("\\.")[1];
-                Record field_rec = FormService.getFieldName(form_name, field_display_name);//获取数据库对应的名称: f59_xh
+                Record field_rec = FormService.getFieldName(form_name, field_display_name, office_id);//获取数据库对应的名称: f59_xh
                 record.set("field_name", "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name"));
                 record.set("field_display_name", field_rec.getStr("field_display_name"));
                 record.set("field_type", field_rec.getStr("field_type"));
@@ -38,7 +38,7 @@ public class FormTableConfigService {
                             "select * from eeda_form_define where name=?", target_form_name);
                     
                     String target_form_field = ref.getStr("ref_field");
-                    Record target_field_rec = FormService.getFieldName(target_form_field.split("\\.")[0], target_form_field.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+                    Record target_field_rec = FormService.getFieldName(target_form_field.split("\\.")[0], target_form_field.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
                     String field_name = "f"+target_field_rec.get("id")+"_"+target_field_rec.getStr("field_name");
 //                        + " target_form='"++"' target_field_name='"+field_name+"'"
                     ref.set("target_form_id", refForm.getLong("id"));

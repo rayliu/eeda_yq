@@ -110,6 +110,7 @@ public class AppFormController extends Controller {
     
     //获取APP 模板中的显示字段
     private List<Record> getForm(String module_id, Long form_id, Long order_id, Record formRec){
+        Long office_id=formRec.getLong("office_id");
         List<Record> fieldList = new LinkedList<Record>();
         
         Record orderRec = Db.findFirst("select * from form_"+form_id+" where id=?", order_id);
@@ -125,7 +126,7 @@ public class AppFormController extends Controller {
             Record fieldRec = new Record();
             String fieldName=p.text();
             fieldName = fieldName.replace("#{", "").replace("}", "");
-            Record field_rec = FormService.getFieldName(fieldName.split("\\.")[0], fieldName.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+            Record field_rec = FormService.getFieldName(fieldName.split("\\.")[0], fieldName.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
             String field_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
             String value= "";
             if(fieldName.indexOf("明细表")>=0 || fieldName.indexOf("从表")>=0){

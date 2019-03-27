@@ -15,6 +15,7 @@ public class FormEventConfigService {
     } 
     
     public List<Record> getEventConfig(UserLogin user, Long form_id) {
+        Long office_id = user.getLong("office_id");
         List<Record> itemList = Db.find("select * from eeda_form_event where menu_type='default_event_add_after_open'"
                 + " and form_id=?", form_id);
         for (Record record : itemList) {
@@ -27,7 +28,7 @@ public class FormEventConfigService {
                         + " event_id=?", record.getLong("id"));
                 for (Record rec : list) {
                     String name = rec.getStr("name");
-                    Record field_rec = FormService.getFieldName(name.split("\\.")[0], name.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+                    Record field_rec = FormService.getFieldName(name.split("\\.")[0], name.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
                     String field_name = "form_"+field_rec.getLong("form_id")+"-f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
                     rec.set("field_name", field_name);
                     

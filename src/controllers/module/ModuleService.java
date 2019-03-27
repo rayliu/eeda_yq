@@ -660,7 +660,9 @@ public class ModuleService {
                 Record re = new Record();
                 if (StringUtils.isBlank(dropdown_id)) {
                     re.set("field_id", field_id);
-                    re.set("sequence", list.get(i).get("SEQUENCE"));
+                    String seq = (String) list.get(i).get("SEQUENCE");
+                    if(StrKit.notBlank(seq))
+                        re.set("sequence", seq);
                     re.set("value", list.get(i).get("VALUE"));
                     re.set("name", list.get(i).get("NAME"));
                     Db.save("eeda_form_field_type_dropdown", re);
@@ -669,7 +671,9 @@ public class ModuleService {
                     if ("Y".equals(list.get(i).get("is_delete"))) {
                         Db.delete("eeda_form_field_type_dropdown", re);
                     } else {
-                        re.set("sequence", list.get(i).get("SEQUENCE"));
+                        String seq = (String) list.get(i).get("SEQUENCE");
+                        if(StrKit.notBlank(seq))
+                            re.set("sequence", seq);
                         re.set("value", list.get(i).get("VALUE"));
                         re.set("name", list.get(i).get("NAME"));
                         Db.update("eeda_form_field_type_dropdown", re);

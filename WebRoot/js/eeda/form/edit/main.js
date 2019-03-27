@@ -41,14 +41,15 @@ define(['jquery', 'hui', '../btns', '../add/detail_table', '../value_change', '.
                     var value = data[p]; 
                     var field_id = '[name=form_'+module_form_id+'-'+p.toLowerCase()+']';
                     //console.log ( field_id +" = "+value ) ;
-                    var type = $(field_id).attr('type');
-                    var tagName = $(field_id).prop("tagName");
+                    var element = $(field_id);
+                    var type = element.attr('type');
+                    var tagName = element.prop("tagName");
                     if(type == "text"){ //inputBox
-                        $(field_id).val(data[p]);// 根据ID 显示所有的属性 
+                        element.val(data[p]);// 根据ID 显示所有的属性 
                     }else if(type == "radio"){
                         $(field_id+"[value='"+data[p]+"']").prop("checked",true);
                     }else if(tagName == "SELECT"){
-                    	$(field_id).find("option[value='"+data[p]+"']").attr("selected","selected");
+                    	element.find("option[value='"+data[p]+"']").attr("selected","selected");
                     }else if(type == "checkbox"){
                     	if(data[p].indexOf(",")>0){
                     		var array = data[p].split(",");
@@ -58,7 +59,11 @@ define(['jquery', 'hui', '../btns', '../add/detail_table', '../value_change', '.
                     	}else{
                     		$(field_id+"[value='"+data[p]+"']").prop("checked",true);
                     	}
-                    	
+                    }else{//非input元素
+                        if(element.hasClass('file_name')){//附件
+                            var aHtml = '<a style="color:#06c;text-decoration: underline;" href="/upload/'+data[p]+'" download="'+data[p]+'">'+data[p]+'</a>';
+                            element.html(aHtml);
+                        }
                     }
                 }
             } 

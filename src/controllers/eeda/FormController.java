@@ -108,7 +108,7 @@ public class FormController extends Controller {
         }
        
         Record formRec = Db.findFirst("select * from eeda_form_define where "
-                + " module_id=?", module_id);
+                + " module_id=? and office_id=?", module_id, office_id);
         if(formRec ==null){
             logger.debug("-------------form 没有定义!---------------");
             redirect("/");
@@ -126,7 +126,7 @@ public class FormController extends Controller {
             Gson gson = new Gson();
             ArrayList<String> fieldIdList = gson.fromJson(jsonStr, ArrayList.class);
             FormTableConfigService ets = new FormTableConfigService(this);
-            List<Record> list = ets.getTableConfig(fieldIdList);
+            List<Record> list = ets.getTableConfig(fieldIdList, office_id);
             renderJson(list);
         }else if("valueChange".equals(action)){
             List<Record> recList = Db.find("select * from eeda_form_event where "
@@ -144,7 +144,7 @@ public class FormController extends Controller {
         }else if("click".equals(action)){
             Long btn_id = order_id;
             FormClickService ecs = new FormClickService(this);
-            List<Record> recList = ecs.handleClickAction(title, form_id, btn_id);
+            List<Record> recList = ecs.handleClickAction(title, form_id, btn_id, office_id);
             renderJson(recList);
         }else if(!action.startsWith("do")){
             if("edit".equals(action)){
@@ -304,7 +304,7 @@ public class FormController extends Controller {
             return rec;
         }
         Long form_id = formRec.getLong("id");
-        
+        Long office_id = formRec.getLong("office_id");
         if("set_value".equals(dto.get("type"))){
         	List<Record> esvi_list = Db.find("select * from eeda_form_event_set_value_item where event_id = ?",dto.get("event_id"));
         	if(esvi_list.size()>0){
@@ -417,11 +417,11 @@ public class FormController extends Controller {
                  String field_from = detailConditionRec.getStr("field_from");
                  String field_to = detailConditionRec.getStr("field_to");
                  //主表关联值
-                 Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+                 Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
                  String field_from_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
                  Object from_field_value = rec.get(field_from_name);
                  //从表关联值
-                 Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+                 Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
                  String field_to_name = "f"+field_to_rec.getLong("id")+"_"+field_to_rec.getStr("field_name");
                  
                  Long detail_form_id = detailRec.getLong("id");
@@ -569,6 +569,8 @@ public class FormController extends Controller {
     }
     
     private Record getForm(Long form_id, Long order_id){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        Long office_id = user.getLong("office_id");
         Record rec = Db.findFirst("select * from form_"+form_id+" where "
                 + " id=?", order_id);
         List<Record> detailList= new ArrayList<Record>();
@@ -590,11 +592,11 @@ public class FormController extends Controller {
             String field_from = fieldRec.getStr("field_from");
             String field_to = fieldRec.getStr("field_to");
             //主表关联值
-            Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+            Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
             String field_from_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
             Object from_field_value = rec.get(field_from_name);
             //从表关联值
-            Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1]);//获取数据库对应的名称: f59_xh
+            Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
             String field_to_name = "f"+field_to_rec.getLong("id")+"_"+field_to_rec.getStr("field_name");
             
             List<Record> dataList = Db.find("select * from form_"+d_form_id+" where "+field_to_name+"=?", from_field_value);
@@ -644,17 +646,17 @@ public class FormController extends Controller {
         String sql = "";
         Record define = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
         if("search_form".equals(define.get("type"))){
-        	String lieNameStr = getLieNameStr(form_id);
-        	String biaoNameStr = "";//getBiaoNameStr(form_id);//join
-        	String joinStr = getJoinStr(form_id);//left join
-        	String filterStr = getFilterStr(form_id);
-        	sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 and eeda_delete='N' ";
-        	int index = biaoNameStr.indexOf(" ");
-        	//+ " order by "+biaoNameStr.substring(index)+".id desc " 
-        	orderList = Db.find(sql+ condition+filterStr +sLimit);
+            String lieNameStr = getLieNameStr(form_id);
+            String biaoNameStr = "";//getBiaoNameStr(form_id);//join
+            String joinStr = getJoinStr(form_id);//left join
+            String filterStr = getFilterStr(form_id);
+            sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 ";//TODO: and eeda_delete='N' 
+            int index = biaoNameStr.indexOf(" ");
+            //+ " order by "+biaoNameStr.substring(index)+".id desc " 
+            orderList = Db.find(sql+ condition+filterStr +sLimit);
         }else if("form".equals(define.get("type"))){
-        	sql = "select * from form_"+form_id+" where 1=1 and eeda_delete='N' "; 
-        	orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
+            sql = "select * from form_"+form_id+" where 1=1 and eeda_delete='N' "; 
+            orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
         }
 
         String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
@@ -806,6 +808,7 @@ public class FormController extends Controller {
     }
     
     private void edit(Long form_id, Long order_id, Record formRec) throws IOException{
+        Long officeId = formRec.getLong("office_id");
         List<Record> fieldList = Db.find("select * from eeda_form_field where "
                 + " form_id=?", form_id);
         
@@ -851,11 +854,11 @@ public class FormController extends Controller {
                 }
                 
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
-                        + "<div class=''>"+
+                        + "<div class='col-xs-8 col-sm-8'>"+
                         "    <input id='"+inputId+"_province' type='text' class='province' field_type='list' value='' style='display:none;'/>"+
                         "    <input id='"+inputId+"' type='text' field_type='list' value='' style='display:none;'/>"+
                         "    <input type='text' class='input-text city_input'"+
-                        "    name='"+inputId+"' autocomplete='off'"+
+                        "    name='"+inputId+"' autocomplete='new-password'"+
                         "    placeholder='请选择城市' >"+
                         "    <div id='"+inputId+"_list' class='area-list pull-right dropDown-menu default dropdown-scroll' tabindex='-1'  "+
                         "    style='top: 35%; left: 2%; display: none;'>"+
@@ -908,7 +911,7 @@ public class FormController extends Controller {
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> "+requiredStr;
             }else if("字段引用".equals(fieldType)){
                 FormService fs = new FormService(this);
-                replaceNameDest = fs.processFieldType_ref(form_name, fieldRec, fieldRec.getLong("id"));
+                replaceNameDest = fs.processFieldType_ref(form_name, fieldRec, fieldRec.getLong("id"), officeId);
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div' style='height:0px;'>"+replaceNameDest+"</div> "+requiredStr;
             }else if("按钮".equals(fieldType)){
                 FormService fs = new FormService(this);

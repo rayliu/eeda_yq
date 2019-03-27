@@ -22,7 +22,7 @@ public class FormClickService {
     } 
     
     public List<Record> handleClickAction(Record title, Long form_id,
-            Long btn_id) {
+            Long btn_id, Long office_id) {
         List<Record> recList = Db.find("select * from eeda_form_event where btn_id=?", btn_id);
         for (Record event : recList) {
             if("open".equals(event.getStr("type"))){
@@ -37,7 +37,7 @@ public class FormClickService {
             }else if("list_add_row".equals(event.getStr("type"))){
                 Record rec = Db.findFirst("select * from eeda_form_event_list_add_row where event_id=?", event.getLong("id"));
                 String field = rec.getStr("target_field_name");
-                Record target_field_rec = FormService.getFieldName(field.split("\\.")[0], field.split("\\.")[1]);
+                Record target_field_rec = FormService.getFieldName(field.split("\\.")[0], field.split("\\.")[1], office_id);
                 rec.set("field_id", target_field_rec.getLong("id"));
                 event.set("list_add_row", rec);
             }else if("set_value".equals(event.getStr("type"))){
