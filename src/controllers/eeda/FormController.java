@@ -144,8 +144,18 @@ public class FormController extends Controller {
         }else if("click".equals(action)){
             Long btn_id = order_id;
             FormClickService ecs = new FormClickService(this);
-            List<Record> recList = ecs.handleClickAction(title, form_id, btn_id, office_id);
-            renderJson(recList);
+            
+            List<Record> recList;
+            try {
+                recList = ecs.handleClickAction(title, form_id, btn_id, office_id);
+                renderJson(recList);
+            }  catch (Exception e) {
+                e.printStackTrace();
+                Record errRec = new Record();
+                errRec.set("error_code", 500);
+                errRec.set("error_msg", e.getMessage());
+                renderJson(errRec);
+            }
         }else if(!action.startsWith("do")){
             if("edit".equals(action)){
                 edit(form_id, order_id, formRec);
@@ -340,9 +350,11 @@ public class FormController extends Controller {
                             String orderNo = handleAutoNo(form_id, colName, fieldId);
                             value = orderNo;
                         }else if("图片".equals(field_type)){
-                        	rec.set(colName, value);
+                            rec.set(colName, value);
                         }
                     }
+                    if("null".equals(value))
+                        continue;
                     rec.set(colName, value);
                 }
             }
@@ -818,7 +830,7 @@ public class FormController extends Controller {
         String template_content = formRec.getStr("template_content");
         TemplateService ts = TemplateService.getInstance();
         template_content = ts.processTab(template_content);
-        template_content = ts.processCharts(template_content);
+        template_content = ts.processCharts(template_content, officeId);
 
         for (Record fieldRec : fieldList) {
             String fieldDisplayName=fieldRec.getStr("field_display_name");
@@ -838,7 +850,7 @@ public class FormController extends Controller {
                         + "<div class='formControls col-xs-8 col-sm-8'>"
                         + "  <input type='text' name='"+inputId+"' class='input-text' autocomplete='off'  placeholder='系统自动生成' disabled>"
                         + "</div>"+requiredStr;
-            }else if("文本".equals(fieldType)){
+            }else if("文本".equals(fieldType)||"网址".equals(fieldType)){
                 String disabled = "";
                 if("Y".equals(read_only)){
                     disabled = "disabled";
@@ -894,7 +906,7 @@ public class FormController extends Controller {
                         + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd HH:mm:ss\"})' name='"+inputId+"' class='input-text Wdate'"+disabled+">"
                         + " </div> "
                         + "</div> "+requiredStr;
-            }else if("多行文本".equals(fieldType)){
+            }else if("多行文本".equals(fieldType)||"网页HTML".equals(fieldType)){
                 replaceNameDest = "<div id='"+inputId+"_div'>"
                         + "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + " <div class='formControls col-xs-8 col-sm-8'>"
@@ -918,7 +930,7 @@ public class FormController extends Controller {
                 replaceNameDest = fs.processFieldType_btn(form_name, fieldRec, fieldRec.getLong("id"));
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
             }else if("下拉列表".equals(fieldType)){
-            	FormService fs = new FormService(this);
+                FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_dropdown(form_name, fieldRec, fieldRec.getLong("id"));
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> "+requiredStr;
             }else if("附件".equals(fieldType)){
@@ -926,7 +938,7 @@ public class FormController extends Controller {
                 replaceNameDest = fs.processFieldType_fileUpload(form_name, fieldRec, fieldRec.getLong("id"));
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> "+requiredStr;
             }else if("图片".equals(fieldType)){
-            	FormService fs = new FormService(this);
+                FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_imgUpload(form_name, fieldRec, fieldRec.getLong("id"));
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> ";
             }else{

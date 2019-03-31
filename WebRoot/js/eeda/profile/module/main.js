@@ -308,23 +308,23 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
          $('#addProductDiv input[name=form_type]').change(function(e){
             var val = this.value;
             if(val=='form'){
-                //显示所有tab 1-基本信息  2字段 3自定义查询 4表单模板 5工具栏按你说 6事件响应 7回写公式 8打印模板 9数据接口 10图表
+                //显示所有tab 1-基本信息  2字段 3自定义查询 4表单模板 5工具栏按钮 6事件响应 7回写公式 8打印模板 9数据接口 10图表
                 $('#tablist li').show();
-                $('#tablist li:nth-child(3)').hide();
-                $('#tablist li:nth-child(10)').hide();
+                $('#tablist li.customize_search').hide();
+                $('#tablist li.charts').hide();
             }else if(val=='search_form'){
                 $('#tablist li').hide();
                 //显示自定义查询tab
-                $('#tablist li:nth-child(1)'
-                +', #tablist li:nth-child(3)'
-                +', #tablist li:nth-child(5)'
-                +', #tablist li:nth-child(6)').show();
+                $('#tablist li.info'
+                +', #tablist li.customize_search'
+                +', #tablist li.toolbar'
+                +', #tablist li.event').show();
             }else{
                 $('#tablist li').hide();
                 //显示图表tab
-                $('#tablist li:nth-child(1)'
-                +', #tablist li:nth-child(3)'
-                +', #tablist li:nth-child(10)').show();
+                $('#tablist li.info'
+                +', #tablist li.customize_search'
+                +', #tablist li.charts').show();
             }
             //跳回tab第一页
             $("#displayDiv ul[role=tablist] li:first a").click();

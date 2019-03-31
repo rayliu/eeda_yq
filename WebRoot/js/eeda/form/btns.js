@@ -30,14 +30,14 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
 	    });
 	    return o;
 	};
-	var deleteList=[];
+	    var deleteList=[];
         //按钮事件响应
         $('body').on('click', 'button', function(event) {
             event.preventDefault();
             var btn = $(this);
             var btn_id = btn.attr('id');
             var btn_name = btn.attr('name');
-            if(btn_id==undefined && btn_name==undefined){
+            if(btn_id==undefined && btn_name==undefined) {
             	return false;
             }
             
@@ -60,6 +60,7 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
                 //var row_index = table.row( this ).index();
                 
             }else{
+                
                 console.log('['+btn_id+'] btn click:');
 
                 var module_id = $('#module_id').val();
@@ -68,7 +69,12 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
                     return;
                     
                 var btn_id = btn_id.split('-')[1].split('_')[1];
-
+                if(typeof parseInt(btn_id) !== 'number'){
+                    return;
+                }
+                var layer_index = layer.load(1, {
+                    shade: [0.3,'#000'] //0.3透明度的黑色背景
+                });
                 $.post('/form/'+module_id+'-click-'+btn_id,{order_id:order_id}, function(events){
                     console.log(events);
                     if(events){
@@ -135,9 +141,9 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
                             	var form_id = event.FORM_ID;
                             	var btn = "form_"+event.FORM_ID+'-btn_'+btn_id;
                             	upload_value(btn, btn_id, module_id, form_id);
-                            	
                             }
                         }
+                        layer.closeAll();
                     }
                 });
             }
@@ -255,15 +261,12 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
         }
 
         function doUpdate(data, isLastEvent){
-            var layer_index = layer.load(1, {
-                shade: [0.3,'#000'] //0.3透明度的黑色背景
-            });
             $.post('/form/'+data.module_id+'-doUpdate', {data: JSON.stringify(data)}, function(dto){
-                if(dto){
+                if(!dto.ERROR_CODE){
 //                	if(dto.TYPE=="set_value"){
 //                		$("input[name='"+dto.TEXT_NAME+"']").val(dto.TEXT_VALUE);
 //                	}
-                	if(dto){
+                	if(dto.ID){
                 		$("#order_id").val(dto.ID);
                 		var keys = [];
                 		var form_name = "";
@@ -280,7 +283,7 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
              	        }
                 	}
                 	  
-                    layer.close(layer_index); 
+                    layer.closeAll(); 
                     layer.alert('操作成功', {
                         icon: 1,
                         end:function(){
@@ -291,7 +294,7 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
                     });
                     
                 }else{
-                    layer.close(layer_index); 
+                    layer.closeAll(); 
                     layer.alert('操作失败', {icon: 2});
                 }
             });

@@ -118,7 +118,7 @@
                                 {code:'全国城市', value:'全国城市'},
                                 {code:'复选框', value:'复选框'},
                                 {code:'网址', value:'网址'},
-                                {code:'网页', value:'网页'},
+                                {code:'网页HTML', value:'网页HTML'},
                                 {code:'附件', value:'附件'},
                                 {code:'字段引用', value:'字段引用'},
                                 {code:'从表引用', value:'从表引用'},
@@ -131,7 +131,7 @@
                 </div>
             </div>
 
-        <div id="text_config" class="row config ">
+        <div id="text_config" class="row config" style="display: none;border: solid 1px gold;background-color: aliceblue;">
             <%include("/profile/module/fields/edit_tab_fields_pro_text.html", {}){}%>
         </div>
         <div class="row config auto_no_config" style="display: none;border: solid 1px gold;background-color: aliceblue;">
@@ -148,6 +148,12 @@
         </div>
         <div class="row config dropdown_config" style="display: none;border: solid 1px gold;background-color: aliceblue;">
             <%include("/profile/module/fields/edit_tab_fields_pro_dropdown.html", {}){}%>
+        </div>
+        <div class="row config file_config" style="display: none;border: solid 1px gold;background-color: aliceblue;">
+            <%include("/profile/module/fields/edit_tab_fields_pro_file_upload.html", {}){}%>
+        </div>
+        <div class="row config pic_config" style="display: none;border: solid 1px gold;background-color: aliceblue;">
+            <%include("/profile/module/fields/edit_tab_fields_pro_pic_upload.html", {}){}%>
         </div>
 
         <br><br>

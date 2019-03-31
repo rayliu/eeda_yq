@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import bsh.EvalError;
-import bsh.Interpreter;
-
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.JsonKit;
@@ -15,6 +12,10 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+
+import bsh.EvalError;
+import bsh.Interpreter;
+import controllers.form.event.EventService;
 
 public class FormService {
     private Controller cont = null;
@@ -29,44 +30,7 @@ public class FormService {
         return rec;
     }
     
-    /**
-     * 获取form或者field
-     * @param name 传入的name,如入库单、入库单.单号等
-     * @return
-     */
-    public static Record getFormOrField(String name){
-    	Record rec = new Record();
-    	
-    	if(StrKit.notBlank(name)){
-    		String[] nameArry = name.split("\\.");
-    		if(nameArry.length==3){
-    			Record form = getFormOrField(nameArry[0]);
-    			Record detailField = Db.findFirst("select id from eeda_form_field where form_id = ? and field_display_name = ?",form.getLong("id"),nameArry[1]);
-    			Record detailRef = Db.findFirst("select id,target_form_name from eeda_form_field_type_detail_ref where field_id = ?",detailField.getLong("id"));
-    			Record detailForm = Db.findFirst("select id,name from eeda_form_define where name = ?",detailRef.getStr("target_form_name"));
-    			rec = getFormOrField(detailForm.getStr("name")+"."+nameArry[2]);
-    			if(rec!=null) {
-        			rec.set("this_type", "field");
-        			rec.set("real_name", "f"+rec.getLong("id")+"_"+rec.getStr("field_name"));
-    			}
-    		}else if(nameArry.length==2){
-    			Record form = getFormOrField(nameArry[0]);
-    			rec = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name = ?",form.getLong("id"),nameArry[1]);
-    			if(rec!=null) {
-    			    rec.set("this_type", "field");
-    			    rec.set("real_name", "f"+rec.getLong("id")+"_"+rec.getStr("field_name"));
-    			}
-    		}else{
-    			rec = Db.findFirst("select * from eeda_form_define where name = ?",name);
-    			if(rec!=null) {
-        			rec.set("this_type", "form");
-        			rec.set("real_name", "form_"+rec.getLong("id"));
-    			}
-    		}
-    	}
-
-        return rec;
-    } 
+    
     
     @SuppressWarnings("unchecked")
     @Before(Tx.class)
@@ -256,7 +220,7 @@ public class FormService {
         Long form_id = fieldRec.getLong("form_id");
         String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
         returnStr = "<label class='form-label'>"+fieldDisplayName+"</label>"
-        		+ "<span style='width:30%;' class='btn-upload'><a href='javascript:void();' class='btn btn-primary radius'><i class='iconfont'>&#xf0020;</i> 上传图片</a>"
+        		+ "<span style='width:30%;' class='btn-upload'><a href='javascript:void();' class='btn btn-primary size-S radius'><i class='Hui-iconfont'>&#xe642;</i>图片</a>"
         				+ "<input type='file' id='fileupload"+fieldRec.get("id")+"' multiple name='img_files' class='input-file'></span>"
         				+ "<div id='f"+fieldRec.get("id")+"' name='upload' style='margin-top:1%;'></div>";
         return returnStr;
@@ -273,7 +237,7 @@ public class FormService {
         returnStr = "<label class='form-label'>"+fieldDisplayName+"</label>"
         		  + "<div class='formControls col-xs-8 col-sm-8'>"
         		  + "<span class='btn-upload form-group' style='float:left;'>"
-        		  + "<a href='javascript:void();' class='btn btn-primary size-S radius'>上传文件</a>"
+        		  + "<a href='javascript:void();' class='btn btn-primary size-S radius'><i class='Hui-iconfont'>&#xe642;</i>上传文件</a>"
         		  + "<input type='file' id='fileupload"+fieldRec.get("id")+"' multiple name='files' class='input-file'>"
         		  + "</span>"
         		  + "<span name='"+inputId+"' class='col-sm-8 file_name' style='overflow: hidden; text-overflow: ellipsis;white-space: nowrap;'></span>"
@@ -388,184 +352,23 @@ public class FormService {
      * @return
      */
     public boolean saveSysLog(String action,String jsonStr,long form_id,long order_id,long user_id,long office_id,String ip){
-    	Record sysLog = new Record();
-    	sysLog.set("log_type", "operate");
-    	sysLog.set("operation_obj", jsonStr);
-    	sysLog.set("action_type", action);
-    	sysLog.set("create_stamp", new Date());
-    	sysLog.set("user_id", user_id);
-    	sysLog.set("ip",ip);
-    	sysLog.set("office_id", office_id);
-    	sysLog.set("form_id", form_id);
-    	sysLog.set("order_id", order_id);
-    	return Db.save("sys_log", sysLog);
+        Record sysLog = new Record();
+        sysLog.set("log_type", "operate");
+        sysLog.set("operation_obj", jsonStr);
+        sysLog.set("action_type", action);
+        sysLog.set("create_stamp", new Date());
+        sysLog.set("user_id", user_id);
+        sysLog.set("ip",ip);
+        sysLog.set("office_id", office_id);
+        sysLog.set("form_id", form_id);
+        sysLog.set("order_id", order_id);
+        return Db.save("sys_log", sysLog);
     }
     
-    public boolean setValue(Record rec,long form_id,long order_id){
-    	boolean result = false;
-    	//订单数据
-    	Record order = Db.findFirst("select * from form_"+form_id+" where id=?",order_id);
-    	
-    	Record currentFormRec = Db.findFirst("select * from eeda_form_define where id=?",form_id);
-    	String currentFormName = currentFormRec.getStr("name");//本表单中文名
-    	        
-    	String sourceFormName = rec.getStr("db_source");//数据源-表名
-    	Record dbSource = getFormOrField(sourceFormName);
-    	Record detailForm = new Record();
-    	if("从表引用".equals(dbSource.getStr("field_type"))){
-    		Record detailRef = Db.findFirst("select id,target_form_name from eeda_form_field_type_detail_ref where field_id = ?",dbSource.getLong("id"));
-    		detailForm = Db.findFirst("select id,name from eeda_form_define where name = ?",detailRef.getStr("target_form_name"));
-    	}else{
-    		detailForm = dbSource;
-    	}
-    	
-		String detailFormName = "form_"+detailForm.getLong("id");//数据源-表名
-		String targetFormChineseName = rec.getStr("target");
-		Record targetForm = getFormOrField(targetFormChineseName);
-		String targetFormName = "form_"+targetForm.getLong("id");//目标表-表名
-		//条件替换成字段 {库存表.货品代码}={入库单.明细表.货品代码}-> f386_hpdm=f69_hpdm
-		String conditionStr =rec.getStr("condition");
-		String condition = replaceStr(conditionStr);
-		
-		//赋值操作List
-		List<Record> setValueItem = Db.find("select * from eeda_form_event_set_value_item where event_id = ?",rec.getLong("EVENT_ID"));
-		if(rec!=null && "set_value".equals(rec.getStr("set_value_type"))){
-		    //数据源主表跟从表关联条件
-            Record refJoinCondition = Db.findFirst("select * from eeda_form_field_type_detail_ref_join_condition where field_id = ?",dbSource.getLong("id"));
-//            Record field_from = getFormOrField(refJoinCondition.getStr("field_from"));//主表关联条件列
-//            Record field_to = getFormOrField(refJoinCondition.getStr("field_to"));//从表关联条件列
-            
-            String sql = "select * from "+targetFormName+" where 1=1";
-            if(StrKit.notBlank(condition)){
-                sql+=" and "+condition;
-            }
-            Record re = null;//目标表 order
-            if(currentFormName.equals(targetFormChineseName)){//如果是本表单，则加上ID
-                sql+=" and id="+order_id;
-                re = Db.findFirst(sql);
-            }else{
-                re = Db.findFirst(sql);
-            }
-            if(re==null)
-                return false;
-            //循环赋值操作list（可能存在赋多个值）
-            for(Record item:setValueItem){
-                Record targetField = getFormOrField(item.getStr("name"));//获取需要赋值操作的列
-                //变成实际的值操作
-                String targetFieldColumnName = "f"+targetField.getLong("id")+"_"+targetField.getStr("field_name");
-                String evalString = "evalResult="+replaceStrWithValue(item.getStr("value"), re, order);
-                //调用beanshell进行计算
-                String evalResult = "";
-                Interpreter interpreter = new Interpreter();
-                try {
-                    //设置输入参数：
-                    interpreter.eval(evalString);
-                    System.out.println("evalResult="+ interpreter.get("evalResult"));
-                    evalResult=interpreter.get("evalResult").toString();
-                } catch (EvalError evalError) {//报错说明不是表达式
-                    evalError.printStackTrace();
-                    evalResult=item.getStr("value");
-                }
-                if(re!=null)
-                    re.set(targetFieldColumnName, evalResult);
-            }
-            if(re!=null)
-                Db.update(targetFormName,re);
-    	}else if(rec!=null && "loops_set_value".equals(rec.getStr("set_value_type"))){
-    		//数据源主表跟从表关联条件
-    		Record refJoinCondition = Db.findFirst("select * from eeda_form_field_type_detail_ref_join_condition where field_id = ?",dbSource.getLong("id"));
-    		Record field_from = getFormOrField(refJoinCondition.getStr("field_from"));//主表关联条件列
-    		Record field_to = getFormOrField(refJoinCondition.getStr("field_to"));//从表关联条件列
-    		
-    		//数据源表的集合
-    		List<Record> sourceList = Db.find("select * from "+detailFormName+" where "+field_to.getStr("real_name")+"='"+order.get(field_from.getStr("real_name"))+"'");
-    		//源表循环集合执行赋值操作
-    		for(Record record :sourceList){
-    			//目标表字段不变，循环的源表记录需替换为值，例如：select * from stock where f386_hpdm=f69_hpdm  -> f386_hpdm='123'
-    		    String replaceFieldName=getReplaceFieldName(sourceFormName, conditionStr);//f69_hpdm
-    			condition = condition.replace(replaceFieldName, "'"+record.get(replaceFieldName)+"'");
-    			Record re = Db.findFirst("select * from "+targetFormName+" where "+condition);//目标表
-    			if(re==null){//如果目标表没记录，就新增一条
-    			    re = new Record();
-    			}
-    			
-    			//循环赋值操作list（可能存在赋多个值）
-    			for(Record item:setValueItem){
-    				Record targetField = getFormOrField(item.getStr("name"));//获取需要赋值操作的列
-    				//变成实际的值操作
-    				String targetFieldColumnName = "f"+targetField.getLong("id")+"_"+targetField.getStr("field_name");
-    				String evalString = "evalResult="+replaceStrWithValue(item.getStr("value"), re, record);
-    				//调用beanshell进行计算
-    				String evalResult = "";
-    		        Interpreter interpreter = new Interpreter();
-    		        try {
-    		            //设置输入参数：
-    		            interpreter.eval(evalString);
-    		            System.out.println("evalResult="+ interpreter.get("evalResult"));
-    		            evalResult=interpreter.get("evalResult").toString();
-    		        } catch (EvalError evalError) {
-    		            evalError.printStackTrace();
-    		        }
-    				re.set(targetFieldColumnName, evalResult);
-    			}
-    			if(re!=null){//如果目标表没记录，就新增一条
-    			    Db.update(targetFormName,re);
-    			}else{
-    			    Db.save(targetFormName,re);
-    			}
-    		}
-    	}
-    	return true;
+    public boolean setValue(Record rec,long form_id,long order_id) throws Exception{
+        EventService es = new EventService();
+        boolean result = es.handleSetValue(rec, form_id, order_id);
+        return result;
     }
-    
-    //举例：sourceName=入库单.明细表， origCondition=‘{库存表.货品代码}={入库单.明细表.货品代码}’
-    //结果：返回 f69_hpdm
-    //即 f69_hpdm 需要被替换成真正的值
-    private String getReplaceFieldName(String sourceName, String origCondition){
-        String fieldColumnName = "";
-        Pattern pattern = Pattern.compile("(?<=\\{)[^\\}]+");//匹配花括号
-        Matcher matcher = pattern.matcher(origCondition);
-        while (matcher.find()) {
-            String fieldName = matcher.group(0);
-            if(fieldName.indexOf(sourceName)>=0){
-                Record field = getFormOrField(fieldName);
-                fieldColumnName = "f"+field.getLong("id")+"_"+field.getStr("field_name");
-                break;
-            }
-        }
-        return fieldColumnName;
-    }
-    
-    //表达式不止两个表如何处理？
-    private String replaceStrWithValue(String str, Record target, Record orig){
-        Pattern pattern = Pattern.compile("(?<=\\{)[^\\}]+");//匹配花括号
-        Matcher matcher = pattern.matcher(str);
-        while (matcher.find()) {
-            System.out.println(matcher.group(0));
-            String newStr = matcher.group(0);
-            Record field = getFormOrField(newStr);
-            String fieldColumnName = "f"+field.getLong("id")+"_"+field.getStr("field_name");
-            
-            if(target!=null && target.getColumns().get(fieldColumnName)!=null){
-                str = str.replace("{"+newStr+"}", target.getStr(fieldColumnName));
-            }else{
-                str = str.replace("{"+newStr+"}", orig.getStr(fieldColumnName));
-            }
-            //String value = 
-            
-        }
-    	return str;
-    }
-    
-    private String replaceStr(String str){
-        Pattern pattern = Pattern.compile("(?<=\\{)[^\\}]+");//匹配花括号
-        Matcher matcher = pattern.matcher(str);
-        while (matcher.find()) {
-            System.out.println(matcher.group(0));
-            String newStr = matcher.group(0);
-            Record field = getFormOrField(newStr);
-            str = str.replace("{"+newStr+"}", field.getStr("real_name"));
-        }
-        return str;
-    }
+
 }

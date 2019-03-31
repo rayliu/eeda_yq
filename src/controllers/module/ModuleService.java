@@ -249,7 +249,7 @@ public class ModuleService {
                 if (objFieldId instanceof java.lang.Double) {
                     field_id = String.valueOf(((Double) objFieldId).longValue());
                 } else {
-                    field_id = (String) objId;
+                    field_id = (String) objFieldId;
                 }
                 // String field_id = (String)field.get("id".toUpperCase());
                 Record item = new Record();
@@ -277,7 +277,9 @@ public class ModuleService {
         Map<String, ?> dto = (Map<String, ?>) event.get("SAVE");
         if (dto != null) {
             String condition = (String) dto.get("CONDITION");
-            String id = (String) dto.get("id".toUpperCase());
+            String id = "";
+            if(dto.get("id".toUpperCase())!=null)
+                id = ""+ ((Double)dto.get("id".toUpperCase())).intValue();
             Record itemRec = new Record();
             if (StrKit.isBlank(id)) {
                 itemRec.set("event_id", event_id);

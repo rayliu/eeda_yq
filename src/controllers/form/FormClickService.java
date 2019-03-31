@@ -22,7 +22,7 @@ public class FormClickService {
     } 
     
     public List<Record> handleClickAction(Record title, Long form_id,
-            Long btn_id, Long office_id) {
+            Long btn_id, Long office_id) throws NumberFormatException, Exception {
         List<Record> recList = Db.find("select * from eeda_form_event where btn_id=?", btn_id);
         for (Record event : recList) {
             if("open".equals(event.getStr("type"))){

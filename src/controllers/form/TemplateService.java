@@ -21,14 +21,14 @@ public class TemplateService {
     //举例：#{柱状图}, 必须是一个表的名字，不能是字段（含.）
     //结果：转换成<div form_name='form_69' class='eeda_chart_container'></div>
     //即 eeda_chart_container是容器，在JS中替换输出成真正的图表
-    public String processCharts(String content){
+    public String processCharts(String content, Long office_id){
         Pattern pattern = Pattern.compile("(?<=#\\{)[^\\}]+");//匹配花括号
         Matcher matcher = pattern.matcher(content);
         while (matcher.find()) {
             String formName = matcher.group(0);
             
             if(formName.indexOf(".")==-1) {
-                Record formRec = FormService.getFormOrField(formName);
+                Record formRec = FormUtil.getFormOrField(formName, office_id);
                 if(formRec!=null) {
                     Long formId = formRec.getLong("id");
                     String html = "<div form_name='form_"+formId+"' class='eeda_chart_container' style='width: 350px;height:250px;'></div>";

@@ -287,8 +287,10 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
           }else if (checkText == '字段引用') {
             //checkboxCont.dataTable.clear().draw();
             $('.ref_config').show();
-          }else if(checkText == '下拉列表'){
-        	$('.dropdown_config').show();
+          }else if(checkText == '附件'){
+        	  $('.file_config').show();
+          }else if(checkText == '图片'){
+        	  $('.pic_config').show();
           }
         });
         //取消字段修改

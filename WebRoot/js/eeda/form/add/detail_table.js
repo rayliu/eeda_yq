@@ -72,13 +72,15 @@ define(['jquery', 'sco', '../btns'], function ($, sco, btnCont) {
                             	str+= "class=\"input-text\""
                             }
                             if(field.FIELD_TYPE == '字段引用'){
-                                str+= " target_form='"+field.REF.TARGET_FORM_ID+"' target_field_name='"+field.REF.TARGET_FIELD_NAME+"'"
+                                str+= " target_form='"+field.REF.TARGET_FORM_ID
+                                     +"' target_field_name='"+field.REF.TARGET_FIELD_NAME+"'"
+                                     +" item_list='"+JSON.stringify(field.REF.REF_ITEM_LIST)+"'";
                             }
                             str+'  style="width: 100%;"/>';
                         }
                         
                         return str+"<span class='dropDown'>"
-                            +"     <ul name='"+field.FIELD_NAME+"_list' class='pull-right dropDown-menu menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;'/>"
+                            +"     <ul name='"+field.FIELD_NAME+"_list' class='pull-right dropDown-menu menu default dropdown-scroll' tabindex='-1' style='top: 35%; left: 2%;display:none;'/>"
                             +"</span>";    
                     }
                  }
