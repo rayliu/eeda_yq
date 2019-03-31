@@ -1,0 +1,71 @@
+<%layout("/eeda/theme/h-ui/layout.html"){%>
+
+    <section class="Hui-article-box">
+        <nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a> 
+            <span class="c-999 en">&gt;</span>
+            <span class="c-666">企业设置</span>
+            <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+        </nav>
+        <div class="Hui-article">
+            <article class="cl pd-20" style="padding-top:10px;">
+                    <div id="tab_demo" >
+                       
+                        <form class="form form-horizontal responsive" id='leadsForm' name="leadsForm" action="" method="post">
+                            <input type="hidden" name="id" value="${office.id!''}"/>
+                            <div class="">
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">企业名称</label>
+                                    <div class="formControls col-xs-4">
+                                        <input type="text" class="input-text" placeholder="请输入企业名称" 
+                                        id="old_pwd" name="office_name" value="${office.office_name!''}"
+                                        autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">系统标题</label>
+                                    <div class="formControls col-xs-4">
+                                        <input type="text" class="input-text" placeholder="请输入系统标题" 
+                                        id="system_title" name="system_title" value="${officeConfig.system_title!'易得SAAS'}"
+                                        autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">系统副标题</label>
+                                    <div class="formControls col-xs-4">
+                                        <input type="text" class="input-text" placeholder="系统副标题" 
+                                        id="system_sub_title" name="system_sub_title" value="${officeConfig.system_sub_title!'软件系统极速开发平台'}"
+                                        autocomplete="off">
+                                    </div>
+                                </div>
+                                
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">系统介绍</label>
+                                    <div class="formControls col-xs-4">
+										<textarea class="textarea"  name="office_desc" placeholder="请输入系统介绍" rows="" cols="" name="">${office.company_intro!''}</textarea>
+                                    </div>
+                                </div>
+                                <div class="row cl">
+                                    <label class="form-label col-xs-3">客服支持</label>
+                                    <div class="formControls col-xs-4">
+                                            <input type="text" class="input-text" placeholder="请输入客服支持qq号,微信号等" 
+                                            name="office_support" value="${office.office_support!''}"
+                                            autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="button-bar" >
+                        <button id="saveBtn" type="button" class="btn btn-primary">保存</button>
+                        <a class="btn btn-primary" href="/">返回</a>
+                    </div>
+            </article>
+        </div>
+    </section>
+	
+<%}%>
+
+<script>
+    requirejs(['/js/eeda/eeda-common.js','app/profile/office/edit'], function (common) {
+    });
+</script>
