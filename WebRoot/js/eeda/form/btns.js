@@ -1,4 +1,5 @@
-define(['jquery', 'layui', './print','file_upload','layer'], function ($, printCont,metisMenu) {
+define(['jquery', './print', './event/element_set_enable', 'file_upload','layer', 'layui'], 
+    function ($, printCont,element_set_enable_cont) {
 	$.fn.serializeObject = function () {
 	    var o = {};
 	    var a = this.serializeArray();
@@ -75,24 +76,116 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
                 var layer_index = layer.load(1, {
                     shade: [0.3,'#000'] //0.3透明度的黑色背景
                 });
-                $.post('/form/'+module_id+'-click-'+btn_id,{order_id:order_id}, function(events){
-                    console.log(events);
-                    if(events){
-                        for (var i = 0; i < events.length; i++) {
+                $.post('/form/'+module_id+'-click-'+btn_id,{order_id:order_id}, function(results){
+                    console.log(results);
+                    if(results){
+                        for (var i = 0; i < results.length; i++) {
+                            var result = results[i];
+                            var event_id = results[i].ID;
+                            var form_id = results[i].FORM_ID
+                            var event_json = results[i].EVENT_JSON;
+                            var event = JSON.parse(event_json)[0];
+                            var condition = "";//TODO:
+                            var actions=event.children;
+                            for (var j = 0; j < actions.length; j++) {
+                                var isLastEvent=false;//是最后的一个，就刷新一次页面，把数据更新出来
+                                if(j=actions.length-1){
+                                    isLastEvent=true;
+                                }
+
+                                var action = actions[j];
+                                var action_type=action.action_type;
+                                console.log('action_type='+action_type);
+                                switch (action_type) {
+                                    case 'open_link'://打开链接
+                                        var event_action_setting=action.event_action_setting;
+                                        var radio_open_link=event_action_setting.radio_open_link;
+                                        switch (radio_open_link) {//打开链接有四种情况
+                                            case 'open_form':
+                                                var module_id = event_action_setting.module_id;
+                                                var url = '/form/'+module_id+'-list';
+                                                if(event_action_setting.open_form_type=='edit'){
+                                                    url = '/form/'+module_id+'-add';
+                                                }else{
+                                                    url = '/form/'+module_id+'-list';
+                                                }
+                                                if(event_action_setting.open_link_type == 'new'){
+                                                    window.open(url);
+                                                }else if(event_action_setting.open_link_type = 'current'){
+                                                    window.location.href=url;
+                                                }
+                                                break;
+                                            
+                                            default:
+                                                break;
+                                        }
+                                        break;
+                                    case 'save_form'://保存表单
+                                        var $form = $("#module_form");
+                                        var data = getFormData($form);
+                                        console.log(data);
+                                        if(order_id==-1){
+                                            doAdd(data);
+                                        }else{
+                                            if(event.TYPE == "set_value"){
+                                                data.type = "set_value";
+                                                data.event_id = event.ID;                         		
+                                                data.form_id = event.FORM_ID.toString();
+                                            }else{
+                                                data.TYPE = "save";
+                                                data.event_id = event_id;                         		
+                                                data.form_id = form_id;
+                                            }
+                                            doUpdate(data, isLastEvent);
+                                        }        
+                                        break;
+                                    case 'form_set_value'://表单赋值
+                                        break;
+                                    case 'print':
+                                        var template_list = result.TEMPLATE_LIST;
+                                        $('#template_list').empty();
+                                        $.each(template_list, function(index, item) {
+                                            var html ='<div class="radio" style="width:100px;cursor: pointer;">'
+                                                    +'	<input type="radio" name="template_id" value="'+item.ID+'" checked>'+item.NAME
+                                                    +'	<pre id="template_content_'+item.ID +'" style="display:none;">'+item.CONTENT+'</pre>'
+                                                    +'</div>';
+                                            $('#template_list').append(html);
+                                        });
+                                        $('#print_template_list').modal('show');
+                                        break; 
+                                    case 'element_set_enable':
+                                        element_set_enable_cont.handle(action);
+                                        break;
+                                    case 'table_add_row'://表格新增一行
+                                        var event_action_setting=action.event_action_setting;
+                                        var target_table_id = "detail_table_"+event_action_setting.target_table_field_id;
+                                        var dataTable = $('#'+target_table_id).DataTable();
+                                        dataTable.row.add({}).draw(false);
+                                        break; 
+                                    default:
+                                        break;
+                                }
+                            }
+                        }//end of for
+                        layer.closeAll();
+                        
+                        //旧逻辑
+                        /*
+                        for (var i = 0; i < results.length; i++) {
                             var isLastEvent=false;//是最后的一个，就刷新一次页面，把数据更新出来
                             if(i=events.length-1){
                                 isLastEvent=true;
                             }
                             var event = events[i];
                             if(event.TYPE == "open"){
-                                var url = '/form/'+event.OPEN.MODULE_ID+'-add';
-                                if(event.OPEN.OPEN_TYPE = 'newTab'){
-                                    window.open(url);
-                                }else if(event.OPEN.OPEN_TYPE = 'self'){
-                                    window.location.href=url;
-                                }else{
-                                    window.open(url);
-                                }
+                                // var url = '/form/'+event.OPEN.MODULE_ID+'-add';
+                                // if(event.OPEN.OPEN_TYPE = 'newTab'){
+                                //     window.open(url);
+                                // }else if(event.OPEN.OPEN_TYPE = 'self'){
+                                //     window.location.href=url;
+                                // }else{
+                                //     window.open(url);
+                                // }
                             }else if(event.TYPE == "save"||event.TYPE == "set_value"){
                                 var $form = $("#module_form");
                                 var data = getFormData($form);
@@ -116,20 +209,9 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
                                 var dataTable = $('#list_table').DataTable();
                                 dataTable.ajax.reload();
                             }else if(event.TYPE == "print"){
-                                var template_list = event.TEMPLATE_LIST;
-                                $('#template_list').empty();
-                                $.each(template_list, function(index, item) {
-                                	var html ='<div class="radio" style="width:100px;cursor: pointer;">'
-                                             +'	<input type="radio" name="template_id" value="'+item.ID+'" checked>'+item.NAME
-                                             +'	<pre id="template_content_'+item.ID +'" style="display:none;">'+item.CONTENT+'</pre>'
-                                             +'</div>';
-                                    $('#template_list').append(html);
-                                });
-                                $('#print_template_list').modal('show');
+                                
                             }else if(event.TYPE == "list_add_row"){
-                                var target_table_id = "detail_table_"+event.LIST_ADD_ROW.FIELD_ID;
-                                var dataTable = $('#'+target_table_id).DataTable();
-                                dataTable.row.add({}).draw(false);
+                                
                             } else if(event.TYPE == "download_template"){
                             	console.log(' download....');
                             	window.location.href = event.TEMPLATE_NAME;    
@@ -142,8 +224,8 @@ define(['jquery', 'layui', './print','file_upload','layer'], function ($, printC
                             	var btn = "form_"+event.FORM_ID+'-btn_'+btn_id;
                             	upload_value(btn, btn_id, module_id, form_id);
                             }
-                        }
-                        layer.closeAll();
+                        }*/
+                        
                     }
                 });
             }

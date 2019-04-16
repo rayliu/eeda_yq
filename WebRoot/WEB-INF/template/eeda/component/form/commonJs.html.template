@@ -95,12 +95,12 @@
             hui_admin:{
                 deps: ['hui']
             },
-	    layui:{
-	            deps: ['jquery']
-	    },
-            layer:{
-                deps: ['jquery']
-	    }
+            layui:{
+                    deps: ['jquery']
+            },
+                layer:{
+                    deps: ['jquery']
+            }
         }
     });
 </script>

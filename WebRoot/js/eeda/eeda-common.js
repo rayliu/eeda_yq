@@ -1,5 +1,14 @@
-define(['jquery', 'dataTablesBootstrap', 'sb_admin','hui_admin', 'WdatePicker','./common/header.js'], function($){
-  
+define(['jquery','bootstrap','dataTablesBootstrap','hui','hui_admin'], function($){
+    console.log('enter common...');
+$(document).ready(function(){
+    //全局：当浏览器改变大小时刷新其底下的 dataTable, 解决表头不齐的问题
+    $(window).on('resize', function(){
+        $('table.table').filter(':not(.customized)').DataTable().columns.adjust();
+    });
+
+    $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) { 
+        console.log(message);
+    };
     //Hui 动态载入左侧菜单，展开失效的解决方案。
     $(".Hui-aside").Huifold({
         titCell:'.menu_dropdown dl dt',
@@ -72,10 +81,7 @@ define(['jquery', 'dataTablesBootstrap', 'sb_admin','hui_admin', 'WdatePicker','
         $(tab_div_id+' table.table').filter(':not(.customized)').DataTable().columns.adjust();
     });
 
-    //全局：当浏览器改变大小时刷新其底下的 dataTable, 解决表头不齐的问题
-    $(window).on('resize', function(){
-        $('table.table').filter(':not(.customized)').DataTable().columns.adjust();
-    });
+    
 
     //只要属性中使用 limit=10, 控制td长度, 超出10 显示...
     jQuery.fn.limit=function(){ 
@@ -102,41 +108,14 @@ define(['jquery', 'dataTablesBootstrap', 'sb_admin','hui_admin', 'WdatePicker','
           //没选中, 获取已弹出list 并隐藏
           eeda.hidePopList();
         }
+
+        
     });
 
-    $(document).ready(function() {
-      $('#version_no').text(eeda_version);
-      //需要TODO时才加载TODO.js
-      var moudleUrl = window.location.pathname.split('/')[1];
-      if(moudleUrl.length>0 && location.search.indexOf('type')>0){
-        require(['app/index/todo'], function (todoController) {
-            if(moudleUrl.length>0 && location.search.indexOf('type')>0){
-                todoController.updateTodo();
-            }
-
-            $('#menu_todo_list').click(function(){
-              if($(".planOrderWait").html()==""){
-                todoController.updateTodo();
-              }
-            });
-
-            var pathname = window.location.pathname;
-            if(pathname == '/')
-                return;
-            if(window.location.search.indexOf('type=')==-1){
-                pathname = pathname.split('/')[1];
-                var folder_li = $('#left_side_bar').find('[href="/'+pathname+'"]').parent().parent().parent();
-                folder_li.addClass('active').find('ul').addClass('in');
-            }
-        });
-      }
-   });
 var eeda={};
 window.eeda =eeda;
 
-$.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) { 
-    console.log(message);
-};
+
 //dataTables builder for 1.10
 eeda.dt = function(opt){
     var option = {
@@ -1156,5 +1135,5 @@ eeda.refreshUrl = refreshUrl;
               }
           }).find('li').first().focus();
       };
-      
+    });//end of $.ready  
 });

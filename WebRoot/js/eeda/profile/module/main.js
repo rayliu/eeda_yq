@@ -2,8 +2,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
          './print_template/print_template', './interface/interface', './charts/charts', 'zTree', 'layer'], 
     function ($, listCont, fieldContr, customSearchCont, templateCont, btnsCont, eventsCont,editEventCont, 
         perCont, authCont, printCont, interfaceCont, chartsCont) {
-
-        $(document).ready(function() {
+            console.log('enter module main...');
             
             var saveAction=function(btn, is_start){
                 var layer_index = layer.load(1, {
@@ -207,103 +206,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
         	$("#formular_edit_modal_formular").val($('#formular_edit_modal_formular').val()+$(this).text());
         });
 
-        //---------------tree handle
-        var setting = {
-            view: {
-                // addHoverDom: addHoverDom,
-                // removeHoverDom: removeHoverDom,
-                selectedMulti: false
-            },
-            edit: {
-                enable: false,
-                editNameSelectAll: true,
-                showRemoveBtn: false,
-                //showRenameBtn: showRenameBtn,
-                renameTitle: "编辑",
-                removeTitle: "删除",
-                drag:{
-                    isCopy: false,
-                    isMove: true
-                }
-            },
-            // async: {
-            //     enable: true,
-            //     type: 'get',
-            //     url:"/module/searchFormBtnEvents",
-            //     autoParam:["id", "formId", "level=lv"],
-            //     dataFilter: dataFilter//处理返回来的JSON 变为 nodes
-            // },
-            callback: {
-            //     beforeRename: beforeRename,
-            //     onRename: onRename,
-            //     beforeDrop: beforeDrop,//判断禁止模块拖拽到模块下
-            //     onDrop: onDrop,
-                 onClick: onNodeClick,
-                 onDblClick: onNodeDblClick
-            }
-        };
-
-        function onNodeDblClick(event, treeId, treeNode){
-          if (treeNode.level==0 ) return;
-
-          var oldStr = $('#formular_edit_modal_formular').val();
-          $('#formular_edit_modal_formular').val(oldStr + treeNode.value);
-        }
-
-        function removeHoverDom(treeId, treeNode) {
-            $("#addBtn_"+treeNode.tId).unbind().remove();
-        };
-
-        function onNodeClick(event, treeId, treeNode){
-          if (treeNode.level==0 ) return;
-
-          $('#function_desc').html(treeNode.desc);
-        }
-
-        var zNodes = [
-           { name:"日期与时间函数", 
-             isParent:true, 
-             children: [
-                {name:"当前日期时间", value:"当前日期时间()", desc:"用途:返回当前日期时间<br>返回类型: 日期与时间 2018-01-01 12:00:00<br>示例: 当前日期时间()"},
-                {name:"当前日期", value:"当前日期()", desc:"用途:返回当前日期<br>返回类型: 2018-01-01<br>示例: 当前日期()"},
-                {name:"年份", value:"年份值()", desc:"用途:返回当前日期格式其年份<br>返回类型: 2018<br>示例: 年份值('2018-01-10')"},
-                {name:"月份", value:"月份值()", desc:"用途:返回当前日期格式其月份<br>返回类型: 1<br>示例: 月份值('2018-01-10')"},
-                {name:"日期", value:"日期值()", desc:"用途:返回当前日期格式其日期<br>返回类型: 10<br>示例: 日期值('2018-01-10')"},
-                {name:"季度", value:"季度()", desc:"用途:返回当前日期格式其季度<br>返回类型: 1<br>示例: 季度('2018-01-10')"}
-             ]
-           },
-           { name:"文本函数", isParent:true,
-             children: [
-                {name:"当前日期时间", value:"当前日期时间()", desc:"用途:返回当前日期时间<br>返回类型: 日期与时间 2018-01-01 12:00:00<br>示例: 当前日期时间()"},
-                {name:"当前日期", value:"当前日期()", desc:"用途:返回当前日期<br>返回类型: 2018-01-01<br>示例: 当前日期()"},
-                {name:"年份", value:"年份值()", desc:"用途:返回当前日期格式其年份<br>返回类型: 2018<br>示例: 年份值('2018-01-10')"},
-                {name:"月份", value:"月份值()", desc:"用途:返回当前日期格式其月份<br>返回类型: 1<br>示例: 月份值('2018-01-10')"},
-                {name:"日期", value:"日期值()", desc:"用途:返回当前日期格式其日期<br>返回类型: 10<br>示例: 日期值('2018-01-10')"},
-                {name:"季度", value:"季度()", desc:"用途:返回当前日期格式其季度<br>返回类型: 1<br>示例: 季度('2018-01-10')"}
-             ]
-           },
-           { name:"逻辑判断函数", isParent:true},
-           { name:"常量", isParent:true},
-           { name:"系统变量", isParent:true},
-           { name:"数值函数", isParent:true},
-           { name:"查找函数", isParent:true},
-           { name:"统计函数", isParent:true},
-         ];
-
-         var zTreeObj = $.fn.zTree.init($("#functionTree"), setting, zNodes);
-
-         $('.formular_operator button').click(function(event) {
-            var btn = $(this);
-            var oldStr = $('#formular_edit_modal_formular').val();
-            $('#formular_edit_modal_formular').val(oldStr + btn.text());
-         });
-
-         $('#formular_edit_modal_ok_btn').click(function(event) {
-            var targetId = $('#formular_edit_modal_target_id').val();
-            $('#'+targetId).val($('#formular_edit_modal_formular').val());
-            $('#formular_edit_modal').modal('hide');
-         });
-
+        
          //切换form类型
          $('#addProductDiv input[name=form_type]').change(function(e){
             var val = this.value;
@@ -330,5 +233,4 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             $("#displayDiv ul[role=tablist] li:first a").click();
 
          });
-    });
 });

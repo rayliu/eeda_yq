@@ -2,8 +2,7 @@ package controllers.form;
 
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Map;
 
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
@@ -13,8 +12,6 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
-import bsh.EvalError;
-import bsh.Interpreter;
 import controllers.form.event.EventService;
 
 public class FormService {
@@ -248,7 +245,7 @@ public class FormService {
     @SuppressWarnings("unchecked")
     @Before(Tx.class)
     public List<Record> getPrintTemplate(Long form_id,Long order_id){
-    	Record formRec = Db.findFirst("select id,name from eeda_form_define where id = ?",form_id);
+    	Record formRec = Db.findFirst("select id, name, office_id from eeda_form_define where id = ?",form_id);
     	Long office_id=formRec.getLong("office_id");
     	List<Record> fieldList = Db.find("select id,field_name,field_display_name,field_type from eeda_form_field where form_id=?", form_id);
     	List<Record> template_list = Db.find("select id,name,content from eeda_form_print_template where form_id=?", form_id);
@@ -365,9 +362,9 @@ public class FormService {
         return Db.save("sys_log", sysLog);
     }
     
-    public boolean setValue(Record rec,long form_id,long order_id) throws Exception{
+    public boolean setValue(Map setting,long form_id,long order_id) throws Exception{
         EventService es = new EventService();
-        boolean result = es.handleSetValue(rec, form_id, order_id);
+        boolean result = es.handleSetValue(setting, form_id, order_id);
         return result;
     }
 

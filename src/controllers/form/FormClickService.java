@@ -3,10 +3,16 @@ package controllers.form;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jfinal.core.Controller;
+import com.jfinal.kit.JsonKit;
 import com.jfinal.kit.PathKit;
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
@@ -23,17 +29,37 @@ public class FormClickService {
     
     public List<Record> handleClickAction(Record title, Long form_id,
             Long btn_id, Long office_id) throws NumberFormatException, Exception {
+        FormService fs = new FormService(cont);
         List<Record> recList = Db.find("select * from eeda_form_event where btn_id=?", btn_id);
         for (Record event : recList) {
+            String eventJson=event.getStr("event_json");
+            if(StrKit.isBlank(eventJson)) continue;
+            Gson gson = new Gson();
+            List<Map<String,Object>> jsonList = gson.fromJson(eventJson,new TypeToken<List<Map<String,Object>>>() { }.getType());
+            List<Map<String,Object>> childrenList= (List)jsonList.get(0).get("children");
+            for (Map<String, Object> map : childrenList) {
+                String actionType=(String)map.get("action_type");
+                String orderId = cont.getPara("order_id");
+                switch (actionType) {
+                    case "print":
+                        
+                        List<Record> template_list = fs.getPrintTemplate(form_id,Long.valueOf(orderId));
+                        event.set("template_list", template_list);
+                        break;
+                    case "form_set_value":
+                        Map<String, Object> event_action_setting=(Map)map.get("event_action_setting");
+                        fs.setValue(event_action_setting,form_id,Long.valueOf(orderId));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            //旧逻辑
             if("open".equals(event.getStr("type"))){
-                Record rec = Db.findFirst("select * from eeda_form_event_open where event_id=?", event.getLong("id"));
-                event.set("open", rec);
+//                Record rec = Db.findFirst("select * from eeda_form_event_open where event_id=?", event.getLong("id"));
+//                event.set("open", rec);
             }else if("print".equals(event.getStr("type"))){
-                 FormService fs = new FormService(cont);
-                 String orderId = cont.getPara("order_id");
                  
-                 List<Record> template_list = fs.getPrintTemplate(form_id,Long.valueOf(orderId));
-                 event.set("template_list", template_list);
             }else if("list_add_row".equals(event.getStr("type"))){
                 Record rec = Db.findFirst("select * from eeda_form_event_list_add_row where event_id=?", event.getLong("id"));
                 String field = rec.getStr("target_field_name");
@@ -41,11 +67,7 @@ public class FormClickService {
                 rec.set("field_id", target_field_rec.getLong("id"));
                 event.set("list_add_row", rec);
             }else if("set_value".equals(event.getStr("type"))){
-                Record rec = Db.findFirst("select * from eeda_form_event_set_value where event_id=?", event.getLong("id"));
-                FormService fs = new FormService(cont);
-                String orderId = cont.getPara("order_id");
-                boolean result = fs.setValue(rec,form_id,Long.valueOf(orderId));
-                event.set("list_add_row", rec);
+                
             }
             //导出excel
             else if("export_excel".equals(event.getStr("type"))){  

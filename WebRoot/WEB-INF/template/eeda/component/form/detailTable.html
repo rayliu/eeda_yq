@@ -1,10 +1,12 @@
 <table id="${id}" class="table table-border table-bordered table-bg table-hover table-sort" >
     <thead class="eeda">
+		<%if(headers.~size>0){%>
         <tr>
         	<%for(name in headers){%>
         		<th>${name}</th>
         	<%}%>
-        </tr>
+		</tr>
+		<%}%>
     </thead>
     <tbody>
     	<%for(record in value_list![]){

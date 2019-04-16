@@ -51,13 +51,13 @@
     ${form_define}
 </textarea>
 <script>
-    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    requirejs(['dataTablesBootstrap'], function (common) {
         <%if(action=='add'){%>
-            requirejs(['app/form/add/main']);
+            requirejs(['app/form/add/main','/js/eeda/eeda-common.js']);
         <%} else if(action=='edit'){%>
-            requirejs(['app/form/edit/main']);
+            requirejs(['app/form/edit/main', '/js/eeda/eeda-common.js']);
         <%} else if(action=='list'){%>
-            requirejs(['app/form/list/main']);
+            requirejs(['app/form/list/main', '/js/eeda/eeda-common.js']);
         <%}%>
     });
 </script>

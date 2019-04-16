@@ -29,7 +29,9 @@
                   <option value="${user.id}">${user.c_name}</option>
                 <%}%>
             </select>
-            <button  id="clearBtn" class="btn btn-success btn-xs">清除</button>
+			<button  id="clearBtn" class="btn btn-success btn-xs">清除</button>
+			
+			<button  id="addEventBtn1" class="btn btn-success btn-xs">action_pop</button>
         </div>
 	</div>
 </div>
@@ -235,7 +237,7 @@
 
 <script>
 	window.UEDITOR_HOME_URL = "/js/lib/ueditor/";
-    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    requirejs(['eeda_common'], function () {
         requirejs(['app/profile/module/main']);
     });
 </script>

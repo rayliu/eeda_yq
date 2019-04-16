@@ -1,6 +1,27 @@
-define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set_value','./events/edit/type_save_set_value'],
-   function ($, tree, setCssCont, setValueCont,saveSetValueCont) {
+define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_set_css', './events/edit/type_set_value','./events/edit/type_save_set_value'],
+   function ($, tree, eventPopCont, setCssCont, setValueCont,saveSetValueCont) {
     
+    $('#list_addEventBtn,#edit_addEventBtn, #addEventBtn1').click(function(){
+        $('.event_config').hide();
+        var data_type = $(this).attr('data_type');
+        var event_action_json = $('#'+data_type+'_event_action_json').val();
+        if(event_action_json&&event_action_json.length>0){
+            var nodes= JSON.parse(event_action_json);
+            eventPopCont.redisplayActionTree(nodes);
+        }else{//清空ActionTree
+            var actionNodes = [
+                { name:"条件(空)", 
+                    action_type: 'condition',
+                    isParent:true, 
+                    children: []
+                }
+            ]
+            eventPopCont.redisplayActionTree(actionNodes);
+        }
+        $('#formular_edit_modal').modal('show');
+        $('#formular_edit_modal .modal-backdrop').css({"z-index":0});
+    });
+
     //---------------tree handle
     var setting = {
         view: {
@@ -9,10 +30,10 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
             selectedMulti: false
         },
         edit: {
-            enable: false,
+            enable: true,
             editNameSelectAll: true,
-            showRemoveBtn: false,
-            //showRenameBtn: showRenameBtn,
+            showRemoveBtn: showRemoveBtn,
+            showRenameBtn: false,
             renameTitle: "编辑",
             removeTitle: "删除",
             drag:{
@@ -32,7 +53,8 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
         //     onRename: onRename,
         //     beforeDrop: beforeDrop,//判断禁止模块拖拽到模块下
         //     onDrop: onDrop,
-             onClick: onNodeClick
+            onRemove: zTreeOnRemove,
+            onClick: onNodeClick
         }
     };
 
@@ -43,9 +65,28 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
 
       
       currentNode = treeNode;
-      $('#edit_event_id').val(currentNode.ID || '');
       $('#edit_event_name').val(currentNode.name);
-      $('#edit_event_type').val(currentNode.type).change();
+      $('#edit_event_type').val(currentNode.type);
+
+      $('#edit_event_action').val(currentNode.EVENT_ACTION);
+      $('#edit_event_action_json').val(currentNode.EVENT_JSON);
+      var event_action_nodes = "";
+      if(currentNode.EVENT_JSON)
+          event_action_nodes = JSON.parse( currentNode.EVENT_JSON );
+      //redisplay tree
+      var action_setting = {
+          view: {
+              selectedMulti: false
+          },
+          edit: {
+              enable: false
+          },
+          callback: {
+              //onClick: onNodeClick,
+              //onDblClick: onNodeDblClick
+          }
+      };
+      $.fn.zTree.init($("#edit_event_tree"), action_setting, event_action_nodes);
 
       if(currentNode.TYPE=='set_value'){
         clearSetValueInputs();//clear input
@@ -137,7 +178,7 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
     function addHoverDom(treeId, treeNode) {
             var sObj = $("#" + treeNode.tId + "_span");
             //如果是单据则不能在其下级添加节点
-            if (treeNode.name=='工具栏按钮' || treeNode.name=='页面内按钮' || treeNode.name=='表单默认事件') return;
+            if (treeNode.name=='工具栏按钮' || treeNode.name=='页面内按钮' || treeNode.name=='页面事件') return;
 
             if (treeNode.level==2 || treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
             if (treeNode.level==1 && treeNode.MENU_TYPE=='value_change') return;
@@ -151,25 +192,32 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
                 //异步创建节点
                 var zTree = $.fn.zTree.getZTreeObj("editEventTree");
                 var nodeName = "新事件" + (newCount++);
+                $('#edit_event_tree').empty();//清空动作预览树
+                $('#edit_event_action_json').val("");
+                //清空modal动作树
+                var actionTreeObj = $.fn.zTree.getZTreeObj("actionTree");
+                var root_node = actionTreeObj.getNodes()[0];
+                actionTreeObj.removeChildNodes(root_node);
+
                 if(treeNode.name == '值变化'){
                   var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, menu_type:'value_change'});
                   currentNode=newNodes[0];
                   $('#edit_event_name').val(currentNode.name);
                   $('#edit_event_type').val(currentNode.type);
                   $('#edit_event_field').val(currentNode.field);
-                }else if(treeNode.type == 'default_event_add_after_open' 
+                }else if(treeNode.type == 'default_event_on_load' 
                   || treeNode.type == 'default_event_edit_after_open' 
                   || treeNode.type == 'default_event_save_before' 
                   || treeNode.type == 'default_event_save_after' ){
                     var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, menu_type: treeNode.type});
                     currentNode=newNodes[0];
                     $('#edit_event_name').val(currentNode.name);
-                    $('#edit_event_type').val(currentNode.type);
-                }else if(treeNode.type == 'page_btn' ){
+                    $('#edit_event_action').val(treeNode.type);
+                }else if(treeNode.type == 'page_btn' || treeNode.type == 'btn' ){
                     var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, menu_type: treeNode.type});
                     currentNode=newNodes[0];
                     $('#edit_event_name').val(currentNode.name);
-                    $('#edit_event_type').val(currentNode.type);
+                    $('#edit_event_action').val('click');
                 }else{
                   var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, menu_type:'btn'});
                   currentNode=newNodes[0];
@@ -182,9 +230,24 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
             });
         };
 
+    function showRenameBtn(treeId, treeNode){
+        return !treeNode.isParent;
+    }
+
+    function showRemoveBtn(treeId, treeNode){
+        return !treeNode.isParent;
+    }
+
     function removeHoverDom(treeId, treeNode) {
-            $("#addBtn_"+treeNode.tId).unbind().remove();
-        };
+        $("#addBtn_"+treeNode.tId).unbind().remove();
+    };
+
+    var deleteList=[];
+    function zTreeOnRemove(event, treeId, treeNode) {
+        update_flag = "Y";
+        console.log(treeNode);
+        deleteList.push(treeNode.id);
+    }
 
     function dataFilter(treeId, parentNode, childNodes) {
         if (!childNodes) return null;
@@ -239,16 +302,13 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
                 });
                 var zNodes = [
                    { name:"工具栏按钮", isParent:true, open: true, children: btns, formId:$('#form_id').val()},
+                   { name:"页面内按钮", isParent:true, children: page_btn_arr, formId:$('#form_id').val()},
                    { name:"值变化", isParent:true, formId:$('#form_id').val()},
-                   { name:"表单默认事件", isParent:true, formId:$('#form_id').val(), type:'default_event_root',
+                   { name:"页面事件", isParent:true, formId:$('#form_id').val(), type:'default_event_root',
                       children: [
-                        { name:"新增-打开表单后", isParent:true, formId:$('#form_id').val(), type:'default_event_add_after_open'},
-                        { name:"修改-打开表单后", isParent:true, formId:$('#form_id').val(), type:'default_event_edit_after_open'},
-                        { name:"保存表单前", isParent:true, formId:$('#form_id').val(), type:'default_event_save_before'},
-                        { name:"保存表单后", isParent:true, formId:$('#form_id').val(), type:'default_event_save_after'}
+                        { name:"页面载入时", isParent:true, formId:$('#form_id').val(), type:'default_event_on_load'},
                       ]
-                   },
-                   { name:"页面内按钮", isParent:true, children: page_btn_arr, formId:$('#form_id').val()}
+                   }
                 ];
 
                 zTreeObj = $.fn.zTree.init($("#editEventTree"), setting, zNodes);
@@ -262,42 +322,16 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
     var zTreeObj; 
     var update_flag = "N";
     $('#editEventConfirmBtn').click(function(event) {
-    	update_flag = "Y";
-         var type=$('#edit_event_type').val();
+    	   update_flag = "Y";
+         var edit_event_action=$('#edit_event_action').val();
+         var edit_event_action_json= $('#edit_event_action_json').val();
          currentNode.name = $('#edit_event_name').val();
-         currentNode.type = type;
-         if(type=='open'){
-            currentNode.openForm={
-              condition : $('#edit_event_open_condition').val(),
-              module_name : $('#edit_event_open_module').val(),
-              open_type : $('#edit_event_open_type').val()
-            }
-          }else if(type=='set_css'){
-            var set_css_dto = setCssCont.buildDto();
-
-            var event_name = $('#edit_event_name').val();
-            var operation_type=$('#edit_event_type').val();
-
-            currentNode.EVENT_NAME= event_name;
-            currentNode.SET_CSS = set_css_dto;
-         }else if(type=='set_value'){
-            var dto = setValueCont.buildDto();
-
-            currentNode.EVENT_NAME= event_name;
-            currentNode.SET_VALUE = dto;
-         }else if(type=='list_add_row'){
-            var dto = {
-              ID: $('#edit_event_target_list_id').val(),
-              TARGET_FIELD_NAME: $('#edit_event_target_list').val()
-            };
-            currentNode.EVENT_TARGET_LIST = dto;
-         }else if(type=='save'){
-             var dto = saveSetValueCont.buildDto();
-
-             currentNode.EVENT_NAME= event_name;
-             currentNode.SAVE = dto;
-         }
+         currentNode.event_action = edit_event_action;
+         currentNode.event_action_json=edit_event_action_json;
+         
          zTreeObj.updateNode(currentNode);
+         $('#edit_event_name').val('');
+         $('#edit_event_action_json').val('');
     });
 
     var buildTreeNodes=function(){
@@ -363,7 +397,8 @@ define(['jquery', 'zTree', './events/edit/type_set_css', './events/edit/type_set
         zTreeObj: zTreeObj,
         displayBtnTree: displayBtnTree,
         buildTreeNodes: buildTreeNodes,
-        editEvent_update_flag:editEvent_update_flag
+        editEvent_update_flag:editEvent_update_flag,
+        deleteList:deleteList
           // list_dataTable: list_dataTable,
           // edit_dataTable: edit_dataTable
     };

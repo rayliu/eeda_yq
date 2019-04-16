@@ -42,7 +42,16 @@ define(['jquery'], function ($) {
                            +'     </span>'
                            +' </div>';
                   }
+              },
+              { "data": null,
+                "render": function ( data, type, full, meta ) {
+                    if(!data)
+                         data='';
+                    return '<div class="radio-box"><input type="checkbox" origin_name="入库单-额外服务" name="form_92-f438_ewfw" id="ewfw1" value="清关"><label for="ewfw1">清关</label></div>'
+                        +'<div class="radio-box"><input type="checkbox" origin_name="入库单-额外服务" name="form_92-f438_ewfw" id="ewfw1" value="清关"><label for="ewfw1">清关</label></div>';
+                  }
               }
+              
           ]
         });
 
@@ -77,7 +86,7 @@ define(['jquery'], function ($) {
             current_tr = $('#edit_set_css_fields_table tr:eq('+current_tr_index+')');
         });
         
-        var dataTable = eeda.dt({
+        var listDataTable = eeda.dt({
             id: 'list_set_css_fields_table',
             paging: false,
             lengthChange: false,

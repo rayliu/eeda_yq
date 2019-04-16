@@ -363,8 +363,25 @@ public class FormController extends Controller {
             
             String order_id = (String) dto.get("order_id");
             if (StrKit.isBlank(order_id)) {
-            	if(StringUtils.isNotBlank((String)dto.get("event_id"))&&StringUtils.isNotBlank((String)dto.get("form_id"))){
-                	List<Record> esvi_list = Db.find("select * from eeda_form_event_save_set_value_item where event_id = ?",dto.get("event_id"));
+                String event_id = "";
+                Object event_id_obj = dto.get("event_id");
+                if (event_id_obj instanceof java.lang.Double) {
+                    event_id = String.valueOf(((Double) event_id_obj).longValue());
+                } else {
+                    event_id = (String) event_id_obj;
+                }
+                
+                String event_form_id = "";
+                Object event_form_id_obj = dto.get("form_id");
+                if (event_form_id_obj instanceof java.lang.Double) {
+                    event_form_id = String.valueOf(((Double) event_form_id_obj).longValue());
+                } else {
+                    event_form_id = (String) event_form_id_obj;
+                }
+                
+                if(StringUtils.isNotBlank(event_id)&&StringUtils.isNotBlank(event_form_id)){
+                
+                	List<Record> esvi_list = Db.find("select * from eeda_form_event_save_set_value_item where event_id = ?", event_id);
                 	if(esvi_list.size()>0){
                 		for(Record esvi :esvi_list){
                     		Record field = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name = ?",form_id,esvi.get("name"));
@@ -824,9 +841,11 @@ public class FormController extends Controller {
         List<Record> fieldList = Db.find("select * from eeda_form_field where "
                 + " form_id=?", form_id);
         
-        Record orderRec = Db.findFirst("select * from form_"+form_id+" where id=?", order_id);
-        String form_name = formRec.getStr("name");
         
+        List<Record> eventsList = Db.find("select * from eeda_form_event where form_id=?", form_id);
+        formRec.set("events", eventsList);
+        
+        String form_name = formRec.getStr("name");
         String template_content = formRec.getStr("template_content");
         TemplateService ts = TemplateService.getInstance();
         template_content = ts.processTab(template_content);
@@ -934,7 +953,7 @@ public class FormController extends Controller {
                 replaceNameDest = fs.processFieldType_dropdown(form_name, fieldRec, fieldRec.getLong("id"));
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> "+requiredStr;
             }else if("附件".equals(fieldType)){
-            	FormService fs = new FormService(this);
+                FormService fs = new FormService(this);
                 replaceNameDest = fs.processFieldType_fileUpload(form_name, fieldRec, fieldRec.getLong("id"));
                 replaceNameDest="<div id='"+form_name+"-"+fieldDisplayName+"_div'>"+replaceNameDest+"</div> "+requiredStr;
             }else if("图片".equals(fieldType)){

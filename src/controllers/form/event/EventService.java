@@ -2,9 +2,12 @@ package controllers.form.event;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -17,7 +20,7 @@ public class EventService {
 
     public EventService() {}
 
-    public boolean handleSetValue(Record rec, long form_id, long order_id) throws Exception {
+    public boolean handleSetValue(Map settingMap, long form_id, long order_id) throws Exception {
         boolean result = false;
         // 订单数据
         Record order = Db.findFirst("select * from form_" + form_id + " where id=?", order_id);
@@ -25,7 +28,7 @@ public class EventService {
         Record currentFormRec = Db.findFirst("select * from eeda_form_define where id=?", form_id);
         String currentFormName = currentFormRec.getStr("name");// 本表单中文名
         Long office_id = currentFormRec.getLong("office_id");
-        String sourceFormName = rec.getStr("db_source");// 数据源-表名
+        String sourceFormName = (String)settingMap.get("source_table_name");// 数据源-表名
         Record dbSource = FormUtil.getFormOrField(sourceFormName, office_id);
         Record detailForm = new Record();
         if ("从表引用".equals(dbSource.getStr("field_type"))) {
@@ -39,17 +42,37 @@ public class EventService {
         }
 
         String detailFormName = "form_" + detailForm.getLong("id");// 数据源-表名
-        String targetFormChineseName = rec.getStr("target");
+        
+        String targetFormChineseName = (String)settingMap.get("target_table_name");//目标表-表名
         Record targetForm = FormUtil.getFormOrField(targetFormChineseName, office_id);
         String targetFormName = "form_" + targetForm.getLong("id");// 目标表-表名
         // 条件替换成字段 {库存表.货品代码}={入库单.明细表.货品代码}-> f386_hpdm=f69_hpdm
-        String conditionStr = rec.getStr("condition");
+        String conditionStr = (String)settingMap.get("condition");
         String condition = replaceStr(conditionStr, office_id);
-
+        String set_value_action_type = (String)settingMap.get("form_set_value_action_type");
+        // 循环赋值操作list（可能存在赋多个值）
+        String form_set_value_edit_field_data = (String)settingMap.get("form_set_value_edit_field_data"); 
+        Gson gson = new Gson();
+        List<Map<String,Object>> setValueJsonList = gson.fromJson(form_set_value_edit_field_data, 
+                new TypeToken<List<Map<String,Object>>>() { }.getType());
+        List<Record> setValueList = new LinkedList<Record>();
+        int row_num = setValueJsonList.size()/2;//每两个值为一行，field_name, expression
+        for (int i = 0; i < row_num; i++) {
+            Map field1 = setValueJsonList.get(i*2);
+            Map field2 = setValueJsonList.get(i*2+1);
+            Record rowRec = new Record();
+            if("field_name".equals(field1.get("name").toString())){
+                rowRec.set("field_name", field1.get("value"));
+                rowRec.set("expression", field2.get("value"));
+            }else{
+                rowRec.set("field_name", field2.get("value"));
+                rowRec.set("expression", field1.get("value"));
+            }
+            setValueList.add(rowRec);
+        }
+        
         // 赋值操作List
-        List<Record> setValueItem = Db.find("select * from eeda_form_event_set_value_item where event_id = ?",
-                rec.getLong("EVENT_ID"));
-        if (rec != null && "set_value".equals(rec.getStr("set_value_type"))) {
+        if ("set_value".equals(set_value_action_type)) {
             // 数据源主表跟从表关联条件
             Record refJoinCondition = Db.findFirst(
                     "select * from eeda_form_field_type_detail_ref_join_condition where field_id = ?",
@@ -77,7 +100,7 @@ public class EventService {
             recList.add(re);
             recList.add(order);
             // 循环赋值操作list（可能存在赋多个值）
-            for (Record item : setValueItem) {
+            for (Record item : setValueList) {
                 Record targetField = FormUtil.getFormOrField(item.getStr("name"), office_id);// 获取需要赋值操作的列
                 // 变成实际的值操作
                 String targetFieldColumnName = "f" + targetField.getLong("id") + "_" + targetField.getStr("field_name");
@@ -93,14 +116,14 @@ public class EventService {
                     evalResult = interpreter.get("evalResult").toString();
                 } catch (EvalError evalError) {// 报错说明不是表达式
                     evalError.printStackTrace();
-                    evalResult = item.getStr("value");
+                    evalResult = (String)item.get("value");
                 }
                 if (re != null)
                     re.set(targetFieldColumnName, evalResult);
             }
             if (re != null)
                 Db.update(targetFormName, re);
-        } else if (rec != null && "loops_set_value".equals(rec.getStr("set_value_type"))) {
+        } else if ("loops_set_value".equals(set_value_action_type)) {
             // 数据源主表跟从表关联条件
             Record refJoinCondition = Db.findFirst(
                     "select * from eeda_form_field_type_detail_ref_join_condition where field_id = ?",
@@ -127,12 +150,12 @@ public class EventService {
                 }
 
                 // 循环赋值操作list（可能存在赋多个值）
-                for (Record item : setValueItem) {
-                    Record targetField = FormUtil.getFormOrField(item.getStr("name"), office_id);// 获取需要赋值操作的列
+                for (Record item : setValueList) {
+                    Record targetField = FormUtil.getFormOrField(item.getStr("field_name"), office_id);// 获取需要赋值操作的列
                     // 变成实际的值操作
                     String targetFieldColumnName = "f" + targetField.getLong("id") + "_"
                             + targetField.getStr("field_name");
-                    String expression = item.getStr("value");
+                    String expression = item.getStr("expression");
                     
                     //多个取值的源记录
                     List<Record> recList = new LinkedList<Record>();

@@ -1,3 +1,21 @@
+<style>
+    .panel-body {
+        padding: 0px;
+        min-height:400px;
+    }
+    div.event_config{
+        display: none;
+    }
+
+    #formular_edit_modal .form-group .search-control {
+        width: inherit; 
+        height: 22px;
+    }
+    #formular_edit_modal .col-lg-12>.form-group .search-control {
+        width: inherit; 
+    }
+   
+</style>
 <div id='formular_edit_modal' class="modal fade">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -9,36 +27,10 @@
             <form>
                 <input type="hidden" id="formular_edit_modal_target_id">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                字段(单击添加到表达式中)
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body pre-scrollable">
-                                <div class="list-group" id="field">
-                                    <!-- <a href="#" class="list-group-item">入库单.单号</a>
-                                    <a href="#" class="list-group-item">入库单.客户</a>
-                                    <a href="#" class="list-group-item">入库单.出货日期</a>
-                                    <a href="#" class="list-group-item">入库单.POL</a>
-                                    <a href="#" class="list-group-item">入库单.POD</a>
-                                    <a href="#" class="list-group-item">Morbi leo risus</a>
-                                    <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-                                    <a href="#" class="list-group-item">Vestibulum at eros</a>
-                                    <a href="#" class="list-group-item">单号</a>
-                                    <a href="#" class="list-group-item">客户</a>
-                                    <a href="#" class="list-group-item">出货日期</a>
-                                    <a href="#" class="list-group-item">POL</a>
-                                    <a href="#" class="list-group-item">POD</a> -->
-                                </div>
-                            </div>
-                            <!-- /.panel-body -->
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                函数类别(双击添加到表达式中)
+                                添加动作
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body pre-scrollable">
@@ -49,53 +41,74 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="panel panel-default">
+                            <div class="panel-heading" style="padding: 6px 15px;">
+                                组织动作 
+                                <button id="event_action_edit_condition_btn" 
+                                class="btn btn-default btn-xs">编辑条件</button>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body pre-scrollable">
+                                <ul id="actionTree" class="ztree"></ul>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-5">
+                        <div class="panel panel-default">
                             <div class="panel-heading">
-                                函数说明
+                                动作配置
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body pre-scrollable" >
-                                <p id="function_desc" style="line-height: 1.5;"></p>
+                                <div class="event_config" id="event_config_open_link">
+                                    <%include("/profile/module/events/formular/link/config_open_link.html", {}){} %>
+                                </div>
+                                <div class="event_config" id="event_config_close_window">
+                                    <%include("/profile/module/events/formular/link/config_close_window.html", {}){} %>
+                                </div>
+                                <div class="event_config" id="event_config_element_set_enable">
+                                    <%include("/profile/module/events/formular/element/config_element_enable.html", {}){} %>
+                                </div>
+                                <div class="event_config" id="event_config_element_set_show_hide">
+                                    <%include("/profile/module/events/formular/element/config_element_show_hide.html", {}){} %>
+                                </div>
+                                <div class="event_config" id="event_config_element_set_text">
+                                    <%include("/profile/module/events/formular/element/config_element_set_text.html", {}){} %>
+                                </div>
+                                <div class="event_config" id="event_config_element_set_checkbox">
+                                    <%include("/profile/module/events/formular/element/config_element_set_checkbox.html", {}){} %>
+                                </div>
+                                <div class="event_config" id="event_config_element_set_droplist">
+                                    <%include("/profile/module/events/formular/element/config_element_set_droplist.html", {}){} %>
+                                </div>
+                                <div class="event_config" id="event_config_element_set_focus">
+                                    <%include("/profile/module/events/formular/element/config_element_set_focus.html", {}){} %>
+                                </div>
+                                <div class="event_config" id="event_config_table">
+                                    <%include("/profile/module/events/formular/table/config_table.html", {}){} %>
+                                </div>
+                                <div class="event_config" id="event_config_form_set_value">
+                                    <%include("/profile/module/events/formular/form/config_form_set_value.html", {}){} %>
+                                </div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading formular_operator">
-                                操作符: 
-                                <button type="button"> + </button>
-                                <button type="button"> - </button>
-                                <button type="button"> * </button>
-                                <button type="button"> / </button>
-                                <button type="button"> = </button>
-                                <button type="button"> > </button>
-                                <button type="button"> >= </button>
-                                <button type="button"> < </button>
-                                <button type="button"> <= </button>
-                                <button type="button"> <> </button>
-                                <button type="button"> and </button>
-                                <button type="button"> or </button>
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body"  style="padding: 0;">
-                            <textarea id="formular_edit_modal_formular" class="form-control" rows="3"> </textarea>
-                            </div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                </div>
+                
       		</form>
       </div>
       <div class="modal-footer">
-        <button type="button" id="validate"  class="btn btn-default">校验</button>
         <button type="button" id="formular_edit_modal_ok_btn" class="btn btn-primary">确定</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<!-- sub moddal -->
+<%include("/profile/module/events/formular/formular_condition_modal.html", {}){} %>
+<%include("/profile/module/events/formular/form/config_form_set_value_field_modal.html", {}){} %>
+<%include("/profile/module/events/formular/table/table_add_row_modal.html", {}){} %>
 
 
 

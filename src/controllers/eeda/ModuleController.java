@@ -85,35 +85,40 @@ public class ModuleController extends Controller {
     }
 
     /**
-     * 获取下拉列表和数据列表
+     * 获取主表中所有从表字段的列表
      */
-    public void getDataList() {
-        Record s = getStructureByName("数据列表");
-        Record field = getFieldByName("数据列表.名称");
-        String fieldName = "F" + field.getLong("id").toString() + "_"
-                + field.getStr("field_name");
-        String sql = "select id," + fieldName + " name from t_"
-                + s.getLong("id");
-        // +"where office_id="+LoginUserController.getLoginUser().get("office_id");
-
-        List<Record> modules = Db.find(sql);
-        if (modules == null) {
-            modules = Collections.EMPTY_LIST;
+    public void getFormSubTableList() {
+        String form_id = getPara("form_id");
+        
+        List<Record> tableFieldRecs = Db.find("select id, field_name, field_display_name from eeda_form_field where field_type='从表引用' and form_id=?", form_id);
+        if (tableFieldRecs == null) {
+            tableFieldRecs = Collections.EMPTY_LIST;
         }
-        for (Record m : modules) {
-            String m_sql = "select * from t_" + s.getLong("id") + " where id=?";
-            Record sRec = Db.findFirst(m_sql, m.getLong("id"));
-
-            String colStr = sRec.getStr("F48_XSZD");
-            String[] colArr = colStr.split(";");
-            List fList = new ArrayList();
-            for (String fName : colArr) {
-                Record f = getFieldByName(fName);
-                fList.add(f);
+        renderJson(tableFieldRecs);
+    }
+    /**
+     * 获取从表所有字段列表，如：入库单.从表
+     */
+    public void getFieldsByFormName() {
+        String form_id= getPara("form_id").trim();
+        String form_field=getPara("field_name").trim();
+        List<Record> fieldsRecs=Collections.EMPTY_LIST;
+        String[] nameArry = form_field.split("\\.");
+        Record fieldRec = Db.findFirst("select * from eeda_form_field where form_id=? and field_display_name=?", form_id, nameArry[1]);
+        if(fieldRec!=null) {
+            long field_id = fieldRec.getLong("id");
+            Record fieldRefRec = Db.findFirst("select * from eeda_form_field_type_detail_ref where field_id=?", field_id);
+            if(fieldRefRec!=null) {
+                String ref_form_name = fieldRefRec.getStr("target_form_name");
+                Long office_id = LoginUserController.getLoginUser(this).getLong("office_id");
+                Record rec = Db.findFirst("select * from eeda_form_define where name = ? and office_id=?", ref_form_name, office_id);
+                if(rec!=null) {
+                    fieldsRecs=Db.find("select * from eeda_form_field where form_id=?", rec.getLong("id"));
+                }
             }
-            m.set("FIELD_LIST", fList);
         }
-        renderJson(modules);
+
+        renderJson(fieldsRecs);
     }
 
     public void searchModule() {
@@ -262,12 +267,12 @@ public class ModuleController extends Controller {
         
         // 处理按钮
         if("Y".equals(dto.get("btn_update_flag"))){
-        	handleBtns(dto, form_id);
+            handleBtns(dto, form_id);
         }
         
         // 处理事件
         if("Y".equals(dto.get("event_update_flag"))||"Y".equals(dto.get("editEvent_update_flag"))){
-        	handleEvents(dto, form_id);
+            handleEvents(dto, form_id);
         }
         
         // 处理权限点
@@ -361,6 +366,18 @@ public class ModuleController extends Controller {
                 rec.set("type", event.get("type"));
                 rec.set("menu_type", event.get("menu_type".toUpperCase()));
                 
+                if(event.get("event_action")!=null){
+                    rec.set("event_action", event.get("event_action"));
+                }else {
+                    rec.set("event_action", event.get("event_action".toUpperCase()));
+                }
+                if(event.get("event_action_json")!=null){
+                    rec.set("event_json", event.get("event_action_json"));
+                }else {
+                    rec.set("event_json", event.get("event_action_json".toUpperCase()));
+                }
+                
+                //以下的处理已作废 2019-04-05
                 String type = (String) event.get("type");
                 if ("open".equals(type)) {
                     saveEventOpen(event, id);
@@ -385,9 +402,11 @@ public class ModuleController extends Controller {
                 rec.set("type", event.get("type"));
                 rec.set("form_id", form_id);
                 rec.set("btn_id", event.get("btn_id"));
-                
                 rec.set("menu_type", event.get("menu_type"));
-               
+                
+                rec.set("event_action", event.get("event_action"));
+                rec.set("event_json", event.get("event_action_json"));
+                
                 Db.save("eeda_form_event", rec);
 
                 String type = (String) event.get("type");
@@ -804,9 +823,9 @@ public class ModuleController extends Controller {
             list = Db
                     .find("select * from eeda_form_event where form_id=? and menu_type='value_change'",
                             form_id);
-        }else if ("新增-打开表单后".equals(getPara("name"))) {
+        }else if ("页面载入时".equals(getPara("name"))) {
             list = Db
-                    .find("select * from eeda_form_event where form_id=? and menu_type='default_event_add_after_open'",
+                    .find("select * from eeda_form_event where form_id=? and event_action='default_event_on_load'",
                             form_id);
         }else{
             Long btn_id = getParaToLong("id");
@@ -1427,15 +1446,7 @@ public class ModuleController extends Controller {
         renderJson(recs);
     }
 
-    public void getFieldsByStructureId() {
-        String structure_id = getPara("structure_id").trim();
-        List<Record> fieldsRecs = Db.find(
-                "select * from eeda_field where structure_id=?", structure_id);
-
-        if (fieldsRecs == null)
-            fieldsRecs = Collections.EMPTY_LIST;
-        renderJson(fieldsRecs);
-    }
+   
 
     public void getStructureByName() {
         String name = getPara("name").trim();

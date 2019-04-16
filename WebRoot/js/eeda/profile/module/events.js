@@ -1,4 +1,5 @@
-define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,openFormCont) {
+define(['jquery', 'zTree', './events/formular_open_form', './edit_events']
+  , function ($,zTree,openFormCont,editEventsCont) {
     
     //---------------tree handle
     var setting = {
@@ -16,7 +17,7 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
             enable: true,
             editNameSelectAll: true,
             showRemoveBtn: setRemoveBtn,
-            showRenameBtn: setRenameBtn,
+            showRenameBtn: false,
             renameTitle: "编辑",
             removeTitle: "删除",
             drag:{
@@ -63,6 +64,24 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
       currentNode = treeNode;
       $('#list_event_name').val(currentNode.name);
       $('#list_event_type').val(currentNode.type);
+
+      $('#list_event_action').val(currentNode.EVENT_ACTION);
+      $('#list_event_action_json').val(currentNode.EVENT_JSON);
+      var event_action_nodes = JSON.parse( currentNode.EVENT_JSON );
+      //redisplay tree
+      var action_setting = {
+          view: {
+              selectedMulti: false
+          },
+          edit: {
+              enable: false
+          },
+          callback: {
+              //onClick: onNodeClick,
+              //onDblClick: onNodeDblClick
+          }
+      };
+      $.fn.zTree.init($("#list_event_tree"), action_setting, event_action_nodes);
 
       if(currentNode.OPEN_FORM){
         $('#list_event_open_condition').val(currentNode.OPEN_FORM.CONDITION);
@@ -176,19 +195,17 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
     
     var update_flag = "N";
     $('#listEventConfirmBtn').click(function(event) {
-    	  update_flag = "Y";
-         var type=$('#list_event_type').val();
+    	   update_flag = "Y";
+         //var type=$('#list_event_type').val();
+         var list_event_action=$('#list_event_action').val();
+         var list_event_action_json= $('#list_event_action_json').val();
          currentNode.name = $('#list_event_name').val();
-         currentNode.type = type;
-         if(type=='open'){
-            currentNode.openForm={
-              condition : $('#list_event_open_condition').val(),
-              module_name : $('#list_event_open_module').val(),
-              open_type : $('#list_event_open_type').val(),
-              table_list:openFormCont.buildFieldsListDetail()
-          }
-         }
+         currentNode.event_action = list_event_action;
+         currentNode.event_action_json=list_event_action_json;
+         
          zTreeObj.updateNode(currentNode);
+         $('#list_event_name').val('');
+         $('#event_action_json').val('');
     });
 
     var buildTreeNodes=function(){
@@ -226,10 +243,19 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
           }
         }
       }
-
+      //页面按钮
+      var page_btn_nodes = zTree.getNodes()[1].children;
+      $.each(page_btn_nodes, function(index, item) {
+        var nodes = item.children;
+        if(nodes){
+            $.each(nodes, function(index, node) {
+              node_list.push(node);
+          });
+        }
+      });
       //值改变
       if(zTreeObj){
-        var value_change_nodes = zTree.getNodes()[1].children;
+        var value_change_nodes = zTree.getNodes()[2].children;
         if(value_change_nodes){
           for(var i = 0;i<value_change_nodes.length;i++){
             var node = value_change_nodes[i];
@@ -242,7 +268,7 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
         }
 
         //默认事件
-        var default_event_nodes = zTree.getNodes()[2].children;
+        var default_event_nodes = zTree.getNodes()[3].children;
         $.each(default_event_nodes, function(index, item) {
            var nodes = item.children;
            if(nodes){
@@ -251,18 +277,8 @@ define(['jquery', 'zTree', './events/formular_open_form'], function ($,zTree,ope
              });
            }
         });
-        
-        //页面按钮
-        var page_btn_nodes = zTree.getNodes()[3].children;
-        $.each(page_btn_nodes, function(index, item) {
-           var nodes = item.children;
-           if(nodes){
-              $.each(nodes, function(index, node) {
-                node_list.push(node);
-             });
-           }
-        });
       }
+      delete_node_ids=delete_node_ids.concat(editEventsCont.deleteList);
       return {
         node_list: node_list,
         node_delete_ids: delete_node_ids

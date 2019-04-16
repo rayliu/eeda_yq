@@ -174,6 +174,7 @@ define(['jquery', 'zTree', './fields', './btns', './events',
                 console.log('getOrderStructure....');
                 console.log(json);
                 module_obj = json;
+                window.module_obj=module_obj;
 
                 //跳回tab第一页
                 $("#displayDiv ul[role=tablist] li:first a").click();

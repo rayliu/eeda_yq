@@ -278,6 +278,8 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
           }else if (checkText == '自动编号') {
             //autoNoCont.dataTable.clear().draw();
             $('.auto_no_config').show();
+          }else if (checkText == '下拉列表') {
+            $('.dropdown_config').show();
           }else if (checkText == '复选框') {
             checkboxCont.dataTable.clear().draw();
             $('.check_box_config').show();

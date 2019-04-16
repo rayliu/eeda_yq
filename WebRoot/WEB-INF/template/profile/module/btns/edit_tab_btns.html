@@ -1,23 +1,64 @@
-<div class="form-group" style="margin-top: 20px;">
-    <div class="col-lg-12">
-        
-            <ul class="nav nav-tabs" role="tablist">
+<div class="form-group">
+    <div class="">
+        <div class="col-lg-12">
+            <ul class="nav nav-tabs" role="tablist" style="margin-top: 10px;">
                 <li role="presentation" class="active" >
-                    <a href="#list_toolbar" aria-controls="permission" role="tab" data-toggle="tab">查询列表页面的按钮栏</a>
+                    <a href="#pc_btns" aria-controls="permission" role="tab" data-toggle="tab">PC</a>
                 </li>
                 <li role="presentation" >
-                    <a href="#edit_toolbar" aria-controls="permission" role="tab" data-toggle="tab">表单编辑页面的按钮栏</a>
+                    <a href="#app_btns" aria-controls="permission" role="tab" data-toggle="tab">APP</a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane fade in active" id="list_toolbar">
-                    <%include("/profile/module/btns/edit_tab_btns_list_tab.html", {}){} %>
+                <div class="tab-pane active" id="pc_btns" style="padding: 10px;">
+                    <ul class="nav nav-tabs" role="tablist" style="margin-top: 10px;">
+                        <li role="presentation" class="active" >
+                            <a href="#list_toolbar" aria-controls="permission" role="tab" data-toggle="tab">
+                                PC查询页按钮栏
+                            </a>
+                        </li>
+                        <li role="presentation" >
+                            <a href="#edit_toolbar" aria-controls="permission" role="tab" data-toggle="tab">
+                                PC编辑页按钮栏
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="list_toolbar">
+                            <%include("/profile/module/btns/edit_tab_btns_list_tab.html", {}){} %>
+                        </div>
+                        <div class="tab-pane" id="edit_toolbar">
+                            <%include("/profile/module/btns/edit_tab_btns_edit_tab.html", {}){} %>
+                        </div>
+                        
+                    </div>
                 </div>
-                <div class="tab-pane" id="edit_toolbar">
-                    <%include("/profile/module/btns/edit_tab_btns_edit_tab.html", {}){} %>
+                <div class="tab-pane" id="app_btns" style="padding: 10px;">
+                    <ul class="nav nav-tabs" role="tablist" style="margin-top: 10px;">
+                        <li role="presentation" class="active" >
+                            <a href="#list_toolbar_app" aria-controls="permission" role="tab" data-toggle="tab">
+                                APP查询页按钮栏
+                            </a>
+                        </li>
+                        <li role="presentation" >
+                            <a href="#edit_toolbar_app" aria-controls="permission" role="tab" data-toggle="tab">
+                                APP编辑页按钮栏
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="list_toolbar_app">
+                            <%include("/profile/module/btns/edit_tab_btns_list_tab_app.html", {}){} %>
+                        </div>
+                        <div class="tab-pane" id="edit_toolbar_app">
+                            <%include("/profile/module/btns/edit_tab_btns_edit_tab_app.html", {}){} %>
+                        </div>
+                        
+                    </div>
                 </div>
-                
             </div>
-        
+                
+            
+        </div>
     </div>
 </div>

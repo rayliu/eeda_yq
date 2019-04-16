@@ -1,6 +1,6 @@
-define(['jquery', 'hui', '../btns', '../add/detail_table', '../value_change', '../drop_list_change', 
+define(['jquery', 'hui', '../btns', '../add/detail_table', '../event/events','../value_change', '../drop_list_change', 
     '../table_drop_list', '../city_list', 'layer'],
-    function ($, huiCont, btnCont, tableCont) {
+    function ($, huiCont, btnCont, tableCont, eventCont) {
 //        $(".Hui-aside").Huifold({
 //            titCell:'.menu_dropdown dl dt',
 //            mainCell:'.menu_dropdown dl dd',
@@ -24,6 +24,7 @@ define(['jquery', 'hui', '../btns', '../add/detail_table', '../value_change', '.
             
             $.post('/form/'+form_define_json.MODULE_ID+"-doGet-"+order_id,  function(data){
                 console.log(data);
+                eventCont.handle('default_event_on_load', form_define_json);//处理页面载入时的处理事件
                 fillFormData(data);
                 layer.close(layer_index); 
             });

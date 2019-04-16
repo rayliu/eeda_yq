@@ -52,7 +52,7 @@
     ${field_list_json!''}
 </textarea>
 <script>
-    requirejs(['/js/eeda/eeda-common.js'], function (common) {
+    requirejs(['eeda_common','../js/eeda/common/header.js'], function (common) {
         <%if(action=='add'){%>
             requirejs(['app/form/add/main']);
         <%} else if(action=='edit'){%>
