@@ -1,9 +1,14 @@
 package controllers.form;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.JsonKit;
@@ -368,4 +373,38 @@ public class FormService {
         return result;
     }
 
+    public void setDroplist(Map setting,long form_id,long order_id)  {
+        // 订单数据
+        Record order = Db.findFirst("select * from form_" + form_id + " where id=?", order_id);
+//        Record currentFormRec = Db.findFirst("select * from eeda_form_define where id=?", form_id);
+//        String currentFormName = currentFormRec.getStr("name");// 本表单中文名
+//        Long office_id = currentFormRec.getLong("office_id");
+        
+        String treeJsonStr = (String)setting.get("tree_json");
+        List<Map<String,Object>> selected_nodes=getCheckedNodes(treeJsonStr);
+        for (Map<String,Object> node : selected_nodes) {
+            String selectValue=(String)node.get("select_value");
+            long fieldId=((Double)node.get("id")).longValue();
+            Record fieldRec = Db.findFirst("select * from eeda_form_field where id=?", fieldId);
+            String colName = "f"+fieldId+"_"+fieldRec.getStr("field_name");
+            order.set(colName, selectValue);
+            Db.update("form_"+form_id, order);
+        }
+    }
+
+    private List<Map<String,Object>> getCheckedNodes(String treeJsonStr) {
+        List<Map<String,Object>> selected_nodes=new LinkedList<>();
+        Gson gson = new Gson();
+        List<Map<String,Object>> nodeList = gson.fromJson(treeJsonStr, 
+                new TypeToken<List<Map<String,Object>>>() { }.getType());
+        for (Map<String,Object> node : nodeList) {
+            List<Map<String,Object>> subNodeList= (List<Map<String, Object>>) node.get("children");
+            for (Map<String,Object> subNode : subNodeList) {
+                if((Boolean)subNode.get("checked")) {
+                    selected_nodes.add(subNode);
+                }
+            }
+        }
+        return selected_nodes;
+    }
 }

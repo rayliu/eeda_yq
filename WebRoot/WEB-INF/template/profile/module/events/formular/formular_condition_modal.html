@@ -1,0 +1,76 @@
+<style>
+    .panel-body {
+        padding: 0px;
+        min-height:400px;
+    }
+    div.event_config{
+        display: none;
+    }
+
+    #formular_conditon_modal .condition_box{
+        border: solid 1px;
+        height: 200px;
+        margin: 15px;
+        padding: 10px;
+    }
+
+    #formular_conditon_modal .condition_desc_box{
+        border: solid 1px;
+        height: 140px;
+        margin: 15px;
+        padding: 10px;
+    }
+
+    #formular_conditon_modal .condition_field{
+        width: 200px;
+    }
+
+    #formular_conditon_modal .fx_btn{
+        margin-top: -3px;
+        margin-left: -5px;
+    }
+   
+</style>
+<div id='formular_conditon_modal' class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">条件编辑</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+            <input type="hidden" id="formular_condition_modal_target_id">
+            <div class="row">
+                <div class="col-lg-12">
+                    符合
+                    <select id="formular_conditon_match_type">
+                        <option value="and">全部</option>
+                        <option value="or">任何</option>
+                    </select>
+                    以下条件 
+                    <button id="formular_condition_add_btn" type="button" class="btn btn-primary btn-xs">添加</button>
+                </div>
+                <div class="condition_box pre-scrollable">
+                    <ul id="formular_condition"></ul>
+                </div>
+                <div class="col-lg-12">条件描述</div>
+                <div class="condition_desc_box pre-scrollable">
+                    <ul id="formular_condition_desc" ></ul>
+                </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+            <button type="button" id="formular_condition_modal_cancel_btn" class="btn btn-default">取消</button>
+        <button type="button" id="formular_condition_modal_ok_btn" class="btn btn-primary">确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- sub moddal -->
+<%include("/profile/module/events/formular/form/config_form_set_value_field_modal.html", {}){} %>
+<%include("/profile/module/events/formular/table/table_add_row_modal.html", {}){} %>
+
+
+

@@ -1,0 +1,35 @@
+<style>
+    #config_element_set_checkbox_tree.ztree li a{
+        height: 20px;
+    }
+    .form-group #config_element_set_checkbox_tree label{
+        width: inherit;
+        margin: 0 0;
+        float: none;
+    }
+</style>
+<div class="form-group">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12" style="margin-top: 3px;">
+                选择要设置选中状态的部件
+            </div>
+            <div class="col-lg-12"style="margin-top: 3px;">
+                <div class="pre-scrollable" style="height: 330px;border: solid 1px #ddd;">
+                    <ul id="config_element_set_checkbox_tree" class="ztree"></ul>
+                </div>
+            </div>
+            <div class="col-lg-12" style="margin-top: 3px;">
+                设置选中状态为:
+            </div>
+            <div class="col-lg-12" style="margin-top: 3px;">
+                <select id="set_text_type">
+                    <option value="值">值</option>
+                    <option value="变量值">变量值</option>
+                </select>
+                <input id="event_search_nodes" type="text"  style="">
+                <button id="config_element_set_checkbox_edit_field_btn" class="btn btn-default btn-xs">编辑</button>
+            </div>
+        </div>
+    </div>
+</div>

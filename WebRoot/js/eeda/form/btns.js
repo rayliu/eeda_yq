@@ -1,5 +1,5 @@
-define(['jquery', './print', './event/element_set_enable', 'file_upload','layer', 'layui'], 
-    function ($, printCont,element_set_enable_cont) {
+define(['jquery', './print', './event/element_set_enable', './event/element_set_droplist', 'file_upload','layer', 'layui'], 
+    function ($, printCont,element_set_enable_cont, element_set_enable_cont) {
 	$.fn.serializeObject = function () {
 	    var o = {};
 	    var a = this.serializeArray();
@@ -119,6 +119,9 @@ define(['jquery', './print', './event/element_set_enable', 'file_upload','layer'
                                             default:
                                                 break;
                                         }
+                                        break;
+                                    case 'element_set_droplist':
+                                        element_set_enable_cont.handle(action);
                                         break;
                                     case 'save_form'://保存表单
                                         var $form = $("#module_form");

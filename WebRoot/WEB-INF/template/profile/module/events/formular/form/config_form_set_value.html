@@ -1,0 +1,32 @@
+<div class="form-group">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12" style="margin-top: 5px;">
+                从<input id="form_set_value_source" type="text" placeholder="请输入数据源" style="width: 40%;">
+                对
+                <input id="form_set_value_target" type="text" placeholder="请输入赋值目标" style="width: 40%;">
+                
+            </div>
+            <div class="col-lg-12" style="margin-top: 3px;">
+                满足条件 
+                <!-- <button id="" class="btn btn-success btn-xs">编辑</button> -->
+            </div>
+            <div class="col-lg-12" style="margin-top: 3px;">
+                <div>
+                    <textarea name="" id="form_set_value_condition" class="pre-scrollable" style="height: 60px; width:100%;border: solid 1px #ddd;"></textarea>
+                </div>
+            </div>
+            <div class="col-lg-12" style="margin-top: 3px;">
+                执行
+                <select id="form_set_value_action_type">
+                    <option value="set_value">赋值</option>
+                    <option value="loops_set_value">循环赋值</option>
+                </select>
+            </div>
+            <div class="col-lg-12" style="margin-top: 3px;">
+                赋值字段 <button id="form_set_value_edit_field_btn" class="btn btn-success btn-xs">编辑</button>
+                <input type="hidden" id="form_set_value_edit_field_data" style="width:100%">
+            </div>
+        </div>
+    </div>
+</div>
