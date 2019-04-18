@@ -1,6 +1,6 @@
-define(['jquery', 'hui', './detail_table', '../btns', '../value_change', '../drop_list_change', 
+define(['jquery', 'hui', './detail_table', '../event/events', '../btns', '../value_change', '../drop_list_change', 
     '../table_drop_list', 'datetimepicker_CN', '../city_list', '../charts/form_chart'], 
-    function ($, huiCont, tableCont) {
+    function ($, huiCont, tableCont, eventCont) {
     
 //    $(".Hui-aside").Huifold({
 //        titCell:'.menu_dropdown dl dt',
@@ -23,7 +23,10 @@ define(['jquery', 'hui', './detail_table', '../btns', '../value_change', '../dro
         });
     });
 
-    //判断是否有defaut-event:   新增-打开表单
+    var form_define_json = JSON.parse($("#form_define").text());
+    eventCont.handle('event_add_page_onload', form_define_json);//处理 新增页面打开后 载入时的处理事件
+
+    //判断是否有需要后台执行的defaut-event:   新增-打开表单
     var module_id = $('#module_id').val();
     $.post('/form/'+module_id+'-eventConfig', function(data, textStatus, xhr) {
         console.log("eventConfig.....");

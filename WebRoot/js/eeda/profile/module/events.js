@@ -61,6 +61,8 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events']
     function onNodeClick(event, treeId, treeNode){
       if (treeNode.level==0 || treeNode.level==1 ) return;
 
+      $('#list_events_property').show();
+
       currentNode = treeNode;
       $('#list_event_name').val(currentNode.name);
       $('#list_event_type').val(currentNode.type);
@@ -206,6 +208,8 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events']
          zTreeObj.updateNode(currentNode);
          $('#list_event_name').val('');
          $('#event_action_json').val('');
+
+         $('#list_events_property').hide();
     });
 
     var buildTreeNodes=function(){

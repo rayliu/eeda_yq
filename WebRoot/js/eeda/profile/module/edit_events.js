@@ -61,12 +61,13 @@ define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_se
     var currentNode;
     function onNodeClick(event, treeId, treeNode){
       if (treeNode.level==0 ) return;
-      if (!treeNode.type && treeNode.level==1  ) return;
+      if (!treeNode.event_action && treeNode.level==1  ) return;
 
+      $('#edit_events_property').show();
       
       currentNode = treeNode;
       $('#edit_event_name').val(currentNode.name);
-      $('#edit_event_type').val(currentNode.type);
+      $('#edit_event_type').val(currentNode.event_action);
 
       $('#edit_event_action').val(currentNode.EVENT_ACTION);
       $('#edit_event_action_json').val(currentNode.EVENT_JSON);
@@ -179,10 +180,9 @@ define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_se
             var sObj = $("#" + treeNode.tId + "_span");
             //如果是单据则不能在其下级添加节点
             if (treeNode.name=='工具栏按钮' || treeNode.name=='页面内按钮' || treeNode.name=='页面事件') return;
-
+            if (treeNode.level==1 && (treeNode.event_action=='event_add_page_onload')) return;
             if (treeNode.level==2 || treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
             if (treeNode.level==1 && treeNode.MENU_TYPE=='value_change') return;
-            if (treeNode.level==0 && treeNode.type=='default_event_root') return;
 
             var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
                 + "' title='添加' onfocus='this.blur();'></span>";
@@ -258,6 +258,7 @@ define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_se
             childNodes[i].id = childNodes[i].ID;
             childNodes[i].parent_id = childNodes[i].PARENT_ID;
             childNodes[i].type = childNodes[i].TYPE;
+            childNodes[i].event_action = childNodes[i].EVENT_ACTION;
             childNodes[i].isParent=false;
 
             if(node.MENU_TYPE=='value_change'){
@@ -304,11 +305,10 @@ define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_se
                    { name:"工具栏按钮", isParent:true, open: true, children: btns, formId:$('#form_id').val()},
                    { name:"页面内按钮", isParent:true, children: page_btn_arr, formId:$('#form_id').val()},
                    { name:"值变化", isParent:true, formId:$('#form_id').val()},
-                   { name:"页面事件", isParent:true, formId:$('#form_id').val(), type:'default_event_root',
-                      children: [
-                        { name:"页面载入时", isParent:true, formId:$('#form_id').val(), type:'default_event_on_load'},
-                      ]
-                   }
+                   { name:"新增页面打开后", isParent:true, formId:$('#form_id').val(), type:'event_add_page_onload'},
+                   { name:"编辑页面打开后", isParent:true, formId:$('#form_id').val(), type:'event_edit_page_onload'},
+                   { name:"表单保存前", isParent:true, formId:$('#form_id').val(), type:'event_before_save_form'},
+                   { name:"表单保存后", isParent:true, formId:$('#form_id').val(), type:'event_after_save_form'},
                 ];
 
                 zTreeObj = $.fn.zTree.init($("#editEventTree"), setting, zNodes);
@@ -332,6 +332,8 @@ define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_se
          zTreeObj.updateNode(currentNode);
          $('#edit_event_name').val('');
          $('#edit_event_action_json').val('');
+
+         $('#edit_events_property').hide();
     });
 
     var buildTreeNodes=function(){

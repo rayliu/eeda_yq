@@ -1,5 +1,5 @@
 define(['jquery', './print', './event/element_set_enable', './event/element_set_droplist', 'file_upload','layer', 'layui'], 
-    function ($, printCont,element_set_enable_cont, element_set_enable_cont) {
+    function ($, printCont,element_set_enable_cont, element_set_droplist_cont) {
 	$.fn.serializeObject = function () {
 	    var o = {};
 	    var a = this.serializeArray();
@@ -88,11 +88,6 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                             var condition = "";//TODO:
                             var actions=event.children;
                             for (var j = 0; j < actions.length; j++) {
-                                var isLastEvent=false;//是最后的一个，就刷新一次页面，把数据更新出来
-                                if(j=actions.length-1){
-                                    isLastEvent=true;
-                                }
-
                                 var action = actions[j];
                                 var action_type=action.action_type;
                                 console.log('action_type='+action_type);
@@ -115,7 +110,9 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                                                     window.location.href=url;
                                                 }
                                                 break;
-                                            
+                                            case 'reload':
+                                                //window.location.reload();
+                                                break
                                             default:
                                                 break;
                                         }
@@ -139,7 +136,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                                                 data.event_id = event_id;                         		
                                                 data.form_id = form_id;
                                             }
-                                            doUpdate(data, isLastEvent);
+                                            doUpdate(data);
                                         }        
                                         break;
                                     case 'form_set_value'://表单赋值
@@ -348,9 +345,9 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
         function doUpdate(data, isLastEvent){
             $.post('/form/'+data.module_id+'-doUpdate', {data: JSON.stringify(data)}, function(dto){
                 if(!dto.ERROR_CODE){
-//                	if(dto.TYPE=="set_value"){
-//                		$("input[name='"+dto.TEXT_NAME+"']").val(dto.TEXT_VALUE);
-//                	}
+                    if(window.location.pathname.indexOf('-add')>0 && dto.ID){
+                        history.pushState({foo: "create"}, "", data.module_id+"-edit-"+dto.ID);
+                    }
                 	if(dto.ID){
                 		$("#order_id").val(dto.ID);
                 		var keys = [];
@@ -372,9 +369,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                     layer.alert('操作成功', {
                         icon: 1,
                         end:function(){
-                            if(isLastEvent){
-                                window.location.reload(); 
-                            }
+                           
                         }
                     });
                     

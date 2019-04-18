@@ -55,7 +55,7 @@
         <%if(action=='add'){%>
             requirejs(['app/form/add/main','/js/eeda/eeda-common.js']);
         <%} else if(action=='edit'){%>
-            requirejs(['app/form/edit/main', '/js/eeda/eeda-common.js']);
+            requirejs(['/js/eeda/eeda-common.js','app/form/edit/main']);
         <%} else if(action=='list'){%>
             requirejs(['app/form/list/main', '/js/eeda/eeda-common.js']);
         <%}%>

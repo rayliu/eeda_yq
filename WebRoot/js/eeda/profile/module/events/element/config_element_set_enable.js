@@ -39,6 +39,7 @@ define(['jquery'], function ($) {
             }
         },
         callback: {
+            onCheck:zTreeOnCheck
             //onClick: onNodeClick
         }
     };
@@ -116,24 +117,18 @@ define(['jquery'], function ($) {
         eventModuleTreeObj.expandAll(true);
     };
     
-    
-    $('#config_element_set_enable_tree').on('click', 'label, .button.chk', function(){
-        var tagName = $(this).prop("tagName");
+    function zTreeOnCheck(event, treeId, treeNode) {
+        console.log(treeNode.tId + ", " + treeNode.name + "," + treeNode.checked);
         var treeObj = $.fn.zTree.getZTreeObj("config_element_set_enable_tree");
-        
-        if("LABEL"==tagName){
-            var tId = $(this).closest('li').attr('id');
-            var selected_node=treeObj.getNodeByTId(tId);
-            var input_name=$(this).find('input').attr('name');
-            var radio_val=$('input[name='+input_name+']:checked').val();//like config_enable_field_88
-            selected_node.radio_val=radio_val;
-            console.log(input_name+' radio_val:'+radio_val);
-            treeObj.updateNode(selected_node);
-        }
-        
-        
+        var selected_node=treeNode;
+        var input_name=$('#'+treeNode.tId).find('input').attr('name');
+        var radio_val=$('input[name='+input_name+']:checked').val();//like config_enable_field_88
+        selected_node.radio_val=radio_val;
+        console.log(input_name+' radio_val:'+radio_val);
+        treeObj.updateNode(selected_node);
+
         changeActionTreeNode();
-    });
+    };
 
     function changeActionTreeNode(){
         var treeObj = $.fn.zTree.getZTreeObj("config_element_set_enable_tree");

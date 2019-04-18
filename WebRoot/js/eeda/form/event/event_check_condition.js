@@ -1,49 +1,5 @@
-define( ['jquery','./element_set_enable','./element_set_show_hide'],
-     function ($, element_set_enable_cont, element_set_show_hide_cont) {
-        var handle = function(formObj, action_type){
-            console.log('enter on_load.js');
-            console.log(formObj);
-            var onload_list = get_onload_list(formObj, action_type);
-            onload_list.forEach(event => {
-                var event_json = event.EVENT_JSON;
-                if(!event_json) return;
-
-                var nodes = JSON.parse(event_json);
-                console.log(nodes);
-                nodes.forEach(node => {
-                    //条件不通过就直接返回
-                    if(!check_condition(node)) return;
-
-                    var children = node.children;
-                    children.forEach(action => {
-                        var action_type = action.action_type;
-                        switch (action_type) {
-                            case 'element_set_enable':
-                                element_set_enable_cont.handle(action);
-                                break;
-                            case 'element_set_show_hide':
-                                element_set_show_hide_cont.handle(action);
-                                break;
-                            default:
-                                break;
-                        }
-                    });
-                });
-            });
-        }
-
-        var get_onload_list=function(formObj,action_type){
-            var onload_list =[];
-            var events = formObj.EVENTS;
-            events.forEach(e => {
-                if(e.EVENT_ACTION==action_type){
-                    onload_list.push(e);
-                }
-            });
-            return onload_list;
-        }
-
-    // check condition
+define(['jquery'], function ($) {
+    console.log('enter event_check_condition.js')
     function check_condition(node){
         var action_type = node.action_type
         var condition_json = node.condition_json;
@@ -146,6 +102,6 @@ define( ['jquery','./element_set_enable','./element_set_show_hide'],
     }
 
 	return {
-        handle:handle
+        check_condition:check_condition
     }
 });

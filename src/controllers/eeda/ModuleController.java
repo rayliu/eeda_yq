@@ -374,7 +374,7 @@ public class ModuleController extends Controller {
                 if(event.get("event_action_json")!=null){
                     rec.set("event_json", event.get("event_action_json"));
                 }else {
-                    rec.set("event_json", event.get("event_action_json".toUpperCase()));
+                    rec.set("event_json", event.get("EVENT_JSON"));
                 }
                 
                 //以下的处理已作废 2019-04-05
@@ -404,8 +404,16 @@ public class ModuleController extends Controller {
                 rec.set("btn_id", event.get("btn_id"));
                 rec.set("menu_type", event.get("menu_type"));
                 
-                rec.set("event_action", event.get("event_action"));
-                rec.set("event_json", event.get("event_action_json"));
+                if(event.get("event_action")!=null){
+                    rec.set("event_action", event.get("event_action"));
+                }else {
+                    rec.set("event_action", event.get("event_action".toUpperCase()));
+                }
+                if(event.get("event_action_json")!=null){
+                    rec.set("event_json", event.get("event_action_json"));
+                }else {
+                    rec.set("event_json", event.get("event_action_json".toUpperCase()));
+                }
                 
                 Db.save("eeda_form_event", rec);
 
@@ -823,9 +831,21 @@ public class ModuleController extends Controller {
             list = Db
                     .find("select * from eeda_form_event where form_id=? and menu_type='value_change'",
                             form_id);
-        }else if ("页面载入时".equals(getPara("name"))) {
+        }else if ("新增页面打开后".equals(getPara("name"))) {
             list = Db
-                    .find("select * from eeda_form_event where form_id=? and event_action='default_event_on_load'",
+                    .find("select * from eeda_form_event where form_id=? and event_action='event_add_page_onload'",
+                            form_id);
+        }else if ("编辑页面打开后".equals(getPara("name"))) {
+            list = Db
+                    .find("select * from eeda_form_event where form_id=? and event_action='event_edit_page_onload'",
+                            form_id);
+        }else if ("表单保存前".equals(getPara("name"))) {
+            list = Db
+                    .find("select * from eeda_form_event where form_id=? and event_action='event_before_save_form'",
+                            form_id);
+        }else if ("表单保存后".equals(getPara("name"))) {
+            list = Db
+                    .find("select * from eeda_form_event where form_id=? and event_action='event_after_save_form'",
                             form_id);
         }else{
             Long btn_id = getParaToLong("id");

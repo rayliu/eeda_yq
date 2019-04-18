@@ -24,8 +24,8 @@ define(['jquery', 'hui', '../btns', '../add/detail_table', '../event/events','..
             
             $.post('/form/'+form_define_json.MODULE_ID+"-doGet-"+order_id,  function(data){
                 console.log(data);
-                eventCont.handle('default_event_on_load', form_define_json);//处理页面载入时的处理事件
                 fillFormData(data);
+                eventCont.handle('event_edit_page_onload', form_define_json);//处理 编辑页面打开后 载入时的处理事件
                 layer.close(layer_index); 
             });
         });
