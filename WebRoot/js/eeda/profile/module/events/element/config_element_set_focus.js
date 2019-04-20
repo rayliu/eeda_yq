@@ -10,7 +10,7 @@ define(['jquery'], function ($) {
         var event_action_setting = node.event_action_setting;
         if(event_action_setting){
             var nodes=JSON.parse(event_action_setting.tree_json);
-            eventModuleTreeObj = $.fn.zTree.init($("#config_element_set_checkbox_tree"), setting, nodes);
+            eventModuleTreeObj = $.fn.zTree.init($("#config_element_set_focus_tree"), setting, nodes);
             eventModuleTreeObj.expandAll(true);
         }
     }
@@ -18,7 +18,9 @@ define(['jquery'], function ($) {
     //---------------tree handle
     var setting = {
         check: {
-            enable: true
+            enable: true,
+            chkStyle: "radio",
+            radioType: "all"
         },
         view: {
             //addHoverDom: addHoverDom,
@@ -39,14 +41,21 @@ define(['jquery'], function ($) {
             }
         },
         callback: {
-            onClick: onNodeClick
+            onClick: onNodeClick,
+            onCheck: zTreeOnCheck
         }
     };
 
     function onNodeClick(event, treeId, treeNode){
         if (treeNode.level==0 ) return;
-        
     }
+
+    function zTreeOnCheck(event, treeId, treeNode) {
+        console.log(treeNode.tId + ", " + treeNode.name + "," + treeNode.checked);
+        eventModuleTreeObj.selectNode(treeNode);
+
+        changeActionTreeNode();
+    };
 
     var fields_children=[];
     var defaultNodes = [
@@ -70,18 +79,18 @@ define(['jquery'], function ($) {
                 id: field.ID,
                 name: field.FIELD_DISPLAY_NAME+'('+field.FIELD_TYPE+')'
             };
-            let field_types = ['复选框'];
+            let field_types = ['文本', '多行文本', '日期', '日期时间', '网址', '网页HTML'];
             if(field_types.includes(field.FIELD_TYPE))
                 fields_children.push(node);
             defaultNodes[0].children=fields_children;
         }
 
-        eventModuleTreeObj = $.fn.zTree.init($("#config_element_set_checkbox_tree"), setting, defaultNodes);
+        eventModuleTreeObj = $.fn.zTree.init($("#config_element_set_focus_tree"), setting, defaultNodes);
         eventModuleTreeObj.expandAll(true);
     };
 
     function changeActionTreeNode(){
-        var treeObj = $.fn.zTree.getZTreeObj("config_element_set_checkbox_tree");
+        var treeObj = $.fn.zTree.getZTreeObj("config_element_set_focus_tree");
         var nodes=treeObj.getNodes();
 
         var event_action_setting={
