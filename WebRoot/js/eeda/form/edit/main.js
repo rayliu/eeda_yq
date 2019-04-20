@@ -1,6 +1,6 @@
-define(['jquery', 'hui', '../btns', '../add/detail_table', '../event/events','../value_change', '../drop_list_change', 
+define(['jquery',  '../btns', '../add/detail_table', '../event/events','../value_change', '../drop_list_change', 
     '../table_drop_list', '../city_list', 'layer'],
-    function ($, huiCont, btnCont, tableCont, eventCont) {
+    function ($, btnCont, tableCont, eventCont) {
 //        $(".Hui-aside").Huifold({
 //            titCell:'.menu_dropdown dl dt',
 //            mainCell:'.menu_dropdown dl dd',

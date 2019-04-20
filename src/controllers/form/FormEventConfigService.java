@@ -5,8 +5,10 @@ import java.util.List;
 import models.UserLogin;
 
 import com.jfinal.core.Controller;
+import com.jfinal.kit.LogKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.ehcache.CacheKit;
 
 public class FormEventConfigService {
     private Controller cont = null;
@@ -16,7 +18,15 @@ public class FormEventConfigService {
     
     public List<Record> getEventConfig(UserLogin user, Long form_id) {
         Long office_id = user.getLong("office_id");
-        List<Record> itemList = Db.find("select * from eeda_form_event where menu_type='default_event_add_after_open'"
+        String key = "FormEventConfig_"+form_id;
+        List<Record> itemList = CacheKit.get("formCache",key);
+        if(itemList!=null) {
+            LogKit.info(key+" load from cache...");
+            return itemList;
+        }
+        
+        
+        itemList = Db.find("select * from eeda_form_event where menu_type='default_event_add_after_open'"
                 + " and form_id=?", form_id);
         for (Record record : itemList) {
             String type = record.getStr("type");
@@ -41,6 +51,7 @@ public class FormEventConfigService {
                 record.set("set_value_item", list);
             }
         }
+        CacheKit.put("formCache", key, itemList);
         return itemList;
     }
 }

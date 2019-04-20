@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jfinal.core.Controller;
+import com.jfinal.kit.LogKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.ehcache.CacheKit;
 
 public class FormTableConfigService {
     private Controller cont = null;
@@ -16,8 +18,18 @@ public class FormTableConfigService {
     
     public List<Record> getTableConfig(ArrayList<String> fieldIdList, Long office_id) {
         List<Record> list = new ArrayList<Record>();
+       
         for (String fieldId : fieldIdList) {
             Record rec = new Record();
+            
+            String key = "tableConfig_"+fieldId;
+            Record tableConfigRec = CacheKit.get("formCache",key);
+            if(tableConfigRec!=null) {
+                LogKit.info(key+" load from cache...");
+                list.add(tableConfigRec);
+                continue;
+            }
+            
             List<Record> itemList = Db.find("select * from eeda_form_field_type_detail_ref_display_field where "
                     + " field_id=? order by sort_no", fieldId);
             for (Record record : itemList) {
@@ -73,6 +85,7 @@ public class FormTableConfigService {
                 }
             }
             rec.set("display_field_list", itemList);
+            CacheKit.put("formCache", key, rec);
             list.add(rec);
         }
         return list;

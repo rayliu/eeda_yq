@@ -79,23 +79,6 @@ define(['jquery'], function ($) {
         eventModuleTreeObj = $.fn.zTree.init($("#config_element_set_checkbox_tree"), setting, defaultNodes);
         eventModuleTreeObj.expandAll(true);
     };
-    
-    
-    $('#config_element_set_checkbox_tree').on('click', 'label, .button.chk', function(){
-        var tagName = $(this).prop("tagName");
-        var treeObj = $.fn.zTree.getZTreeObj("config_element_set_checkbox_tree");
-        
-        if("LABEL"==tagName){
-            var tId = $(this).closest('li').attr('id');
-            var selected_node=treeObj.getNodeByTId(tId);
-            var input_name=$(this).find('input').attr('name');
-            var radio_val=$('input[name='+input_name+']:checked').val();//like config_enable_field_88
-            selected_node.radio_val=radio_val;
-            console.log(input_name+' radio_val:'+radio_val);
-            treeObj.updateNode(selected_node);
-        }
-        changeActionTreeNode();
-    });
 
     function changeActionTreeNode(){
         var treeObj = $.fn.zTree.getZTreeObj("config_element_set_checkbox_tree");

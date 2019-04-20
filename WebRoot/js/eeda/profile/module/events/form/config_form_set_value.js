@@ -19,6 +19,9 @@ define(['jquery'], function ($) {
             $('#form_set_value_target').val(setting.target_table_name);
             $('#form_set_value_condition').val(setting.condition);
             $('#form_set_value_action_type').val(setting.form_set_value_action_type);
+            if(!setting.form_set_value_edit_field_data){ 
+                return;
+            }
             var form_set_value_edit_field_data=JSON.parse(setting.form_set_value_edit_field_data);
             var row_length = form_set_value_edit_field_data.length/2;
             dataTable.clear().draw();//清除所有数据行

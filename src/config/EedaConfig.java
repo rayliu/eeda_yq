@@ -40,6 +40,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
+import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.app.AppControllerForMobile;
@@ -171,6 +172,7 @@ public class EedaConfig extends JFinalConfig {
 
     @Override
 	public void configPlugin(Plugins me) {
+        me.add(new EhCachePlugin());
         // 加载Shiro插件, for backend notation, not for UI
     	me.add(new ShiroPlugin(routes));
     	

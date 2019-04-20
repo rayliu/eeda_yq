@@ -52,6 +52,10 @@ public class EventService {
         String set_value_action_type = (String)settingMap.get("form_set_value_action_type");
         // 循环赋值操作list（可能存在赋多个值）
         String form_set_value_edit_field_data = (String)settingMap.get("form_set_value_edit_field_data"); 
+        if (StrKit.isBlank(form_set_value_edit_field_data)) {
+            throw new Exception("目标表-赋值字段 未设置。");
+        }
+            
         Gson gson = new Gson();
         List<Map<String,Object>> setValueJsonList = gson.fromJson(form_set_value_edit_field_data, 
                 new TypeToken<List<Map<String,Object>>>() { }.getType());

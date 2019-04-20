@@ -59,6 +59,9 @@ define(['jquery', './event_formular_pop_action', './event_formular_pop_condition
                 case 'element_set_text':
                     name="设置文本";
                     break;
+                case 'element_set_radio':
+                    name="设置单选框选中";
+                    break;
                 case 'element_set_checkbox':
                     name="设置复选框选中";
                     break;
@@ -106,7 +109,8 @@ define(['jquery', './event_formular_pop_action', './event_formular_pop_condition
            children: [
               {name:"显示/隐藏", action_type:"element_set_show_hide", desc:"用途:显示/隐藏某个部件"},
               {name:"设置文本", action_type:"element_set_text", desc:"用途:设置某个部件的文本"},
-              {name:"设置复选框选中", action_type:"element_set_checkbox", desc:"用途:设置某个图片部件的图片"},
+              {name:"设置单选框选中", action_type:"element_set_radio", desc:""},
+              {name:"设置复选框选中", action_type:"element_set_checkbox", desc:""},
               {name:"设置下拉列表选中", action_type:"element_set_droplist", desc:"用途:设置某个图片部件的选中，取消选中，切换选中状态"},
               {name:"启用/禁用", action_type:"element_set_enable", desc:"用途:设置某个部件的启用/禁用"},
               {name:"获取焦点", action_type:"element_set_focus", desc:""},

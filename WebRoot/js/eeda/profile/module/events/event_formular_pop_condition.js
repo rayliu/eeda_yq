@@ -146,6 +146,8 @@ define(['jquery'], function ($) {
             var treeObj = $.fn.zTree.getZTreeObj("actionTree");
             var node = treeObj.getNodes()[0];
             var formular_conditon_match_type=node.formular_conditon_match_type;
+            if(!formular_conditon_match_type)
+                formular_conditon_match_type='and';
             $('#formular_conditon_match_type').val(formular_conditon_match_type);
 
             var condition_json=node.condition_json;

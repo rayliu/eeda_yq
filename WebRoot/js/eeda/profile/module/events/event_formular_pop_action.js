@@ -57,6 +57,10 @@ define(['jquery', './event_formular_pop_config' ], function ($, configCont) {
                     configCont.setActionTreeObjNode(treeNode, actionTreeObj);
                     $('#event_config_element_set_text').show();
                     break;
+                case 'element_set_radio':
+                    configCont.setActionTreeObjNode(treeNode, actionTreeObj);
+                    $('#event_config_element_set_radio').show();
+                    break;
                 case 'element_set_checkbox':
                     configCont.setActionTreeObjNode(treeNode, actionTreeObj);
                     $('#event_config_element_set_checkbox').show();

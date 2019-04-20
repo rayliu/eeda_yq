@@ -1,5 +1,5 @@
-define(['jquery', './print', './event/element_set_enable', './event/element_set_droplist', 'file_upload','layer', 'layui'], 
-    function ($, printCont,element_set_enable_cont, element_set_droplist_cont) {
+define(['jquery', './print', './event/element_set_enable', './event/element_set_droplist', './event/events', 'file_upload','layer', 'layui'], 
+    function ($, printCont,element_set_enable_cont, element_set_droplist_cont, event_cont) {
 	$.fn.serializeObject = function () {
 	    var o = {};
 	    var a = this.serializeArray();
@@ -78,6 +78,11 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                 });
                 $.post('/form/'+module_id+'-click-'+btn_id,{order_id:order_id}, function(results){
                     console.log(results);
+                    if(results.ERROR_CODE==500){
+                        layer.closeAll();
+                        layer.alert('操作失败,请联系客服查看错误。', {icon: 2});
+                        return;
+                    }
                     if(results){
                         for (var i = 0; i < results.length; i++) {
                             var result = results[i];
@@ -122,6 +127,11 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                                         break;
                                     case 'save_form'://保存表单
                                         var $form = $("#module_form");
+
+                                        //保存前处理
+                                        var form_define_obj = JSON.parse($("#form_define").text());
+                                        event_cont.handle('event_before_save_form', form_define_obj);
+
                                         var data = getFormData($form);
                                         console.log(data);
                                         if(order_id==-1){

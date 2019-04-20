@@ -862,7 +862,11 @@ public class FormController extends Controller {
             
             String requiredStr = "";
             if("Y".equals(fieldRec.getStr("REQUIRED"))){
-            	requiredStr = "<span style='float:left;color:red;line-height: 31px;font-size: 16px;margin-left: -10px;'>*</span>";
+                requiredStr = "<span style='float:left;color:red;line-height: 31px;font-size: 16px;margin-left: -10px;'>*</span>";
+            }
+            String disabled = "";
+            if("Y".equals(read_only)){
+                disabled = "disabled";
             }
             if("自动编号".equals(fieldType)){
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
@@ -870,27 +874,19 @@ public class FormController extends Controller {
                         + "  <input type='text' name='"+inputId+"' class='input-text' autocomplete='off'  placeholder='系统自动生成' disabled>"
                         + "</div>"+requiredStr;
             }else if("文本".equals(fieldType)||"网址".equals(fieldType)){
-                String disabled = "";
-                if("Y".equals(read_only)){
-                    disabled = "disabled";
-                }
+                
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + "<div class='formControls col-xs-8 col-sm-8'>"
-                        + "  <input type='text' name='"+inputId+"' class='input-text' autocomplete='off' "+disabled+" >"
+                        + "  <input type='text' name='"+inputId+"' class='input-text "+disabled+"' autocomplete='off' "+disabled+" >"
                         + "</div>"+requiredStr;
             }else if("全国城市".equals(fieldType)){
-                String disabled = "";
-                if("Y".equals(read_only)){
-                    disabled = "disabled";
-                }
-                
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + "<div class='col-xs-8 col-sm-8'>"+
                         "    <input id='"+inputId+"_province' type='text' class='province' field_type='list' value='' style='display:none;'/>"+
                         "    <input id='"+inputId+"' type='text' field_type='list' value='' style='display:none;'/>"+
-                        "    <input type='text' class='input-text city_input'"+
+                        "    <input type='text' class='input-text city_input "+disabled+"'"+
                         "    name='"+inputId+"' autocomplete='new-password'"+
-                        "    placeholder='请选择城市' >"+
+                        "    placeholder='请选择城市' "+disabled+" >"+
                         "    <div id='"+inputId+"_list' class='area-list pull-right dropDown-menu default dropdown-scroll' tabindex='-1'  "+
                         "    style='top: 35%; left: 2%; display: none;'>"+
                         "        <div class='area-list-title'>"+
@@ -915,21 +911,17 @@ public class FormController extends Controller {
                         + " </div> "
                         + "</div> "+requiredStr;
             }else if("日期时间".equals(fieldType)){
-            	 String disabled = "";
-                 if("Y".equals(read_only)){
-                     disabled = "disabled";
-                 }
                 replaceNameDest = "<div id='"+inputId+"_div'>"
                         + "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + " <div class='formControls col-xs-8 col-sm-8'>"
-                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd HH:mm:ss\"})' name='"+inputId+"' class='input-text Wdate'"+disabled+">"
+                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd HH:mm:ss\"})' name='"+inputId+"' class='input-text Wdate "+disabled+"' "+disabled+">"
                         + " </div> "
                         + "</div> "+requiredStr;
             }else if("多行文本".equals(fieldType)||"网页HTML".equals(fieldType)){
                 replaceNameDest = "<div id='"+inputId+"_div'>"
                         + "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + " <div class='formControls col-xs-8 col-sm-8'>"
-                        + "    <textarea class='textarea valid' placeholder='' name='"+inputId+"' ></textarea>"
+                        + "    <textarea class='textarea valid "+disabled+"' placeholder='' name='"+inputId+"' "+disabled+"></textarea>"
                         + " </div> "
                         + "</div> "+requiredStr;
             }else if("复选框".equals(fieldType)){

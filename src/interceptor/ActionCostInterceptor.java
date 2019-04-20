@@ -13,7 +13,7 @@ public class ActionCostInterceptor implements Interceptor {
         ai.invoke();
         long end = System.currentTimeMillis();
         long renderTime = end - start;
-        logger.debug(ai.getControllerKey()+"."+ai.getMethodName()+" action cost:"+renderTime+"ms");
+        logger.info(ai.getControllerKey()+"."+ai.getMethodName()+" action cost:"+renderTime+"ms");
     }
 
 }

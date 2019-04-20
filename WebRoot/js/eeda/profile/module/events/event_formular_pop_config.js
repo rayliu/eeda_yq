@@ -1,11 +1,13 @@
 define(['jquery','./table/config_table_add_row','./form/config_form_set_value',
  './element/config_element_set_enable','./element/config_element_set_show_hide',
  './element/config_element_set_text','./element/config_element_set_checkbox'
- ,'./element/config_element_set_droplist','./element/config_element_set_focus'], 
+ ,'./element/config_element_set_droplist','./element/config_element_set_radio'
+ ,'./element/config_element_set_focus'], 
     function ($, config_table_add_row_cont, config_form_set_value_cont, 
         config_element_set_enable_cont, config_element_set_show_hide_cont,
         config_element_set_text_cont, config_element_set_checkbox_cont
-        ,config_element_set_droplist_cont, config_element_set_focus_cont) {
+        ,config_element_set_droplist_cont, config_element_set_radio_cont
+        , config_element_set_focus_cont) {
 
     var actionTreeObj, actionTreeObjNode;
     var setActionTreeObjNode =function(node, tree){
@@ -27,6 +29,10 @@ define(['jquery','./table/config_table_add_row','./form/config_form_set_value',
             case 'element_set_text':
                 config_element_set_text_cont.loadFields();
                 config_element_set_text_cont.setActionTreeObjNode(node, tree);
+                break;
+            case 'element_set_radio':
+                config_element_set_radio_cont.loadFields();
+                config_element_set_radio_cont.setActionTreeObjNode(node, tree);
                 break;
             case 'element_set_checkbox':
                 config_element_set_checkbox_cont.loadFields();

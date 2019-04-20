@@ -144,6 +144,7 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events']
                 $('#list_event_type').val(currentNode.type);
 
                 zTree.selectNode(currentNode);
+                $('#list_events_property').show();
                 return false;
             });
         };
@@ -258,7 +259,7 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events']
         }
       });
       //值改变
-      if(zTreeObj){
+      if(zTree){
         var value_change_nodes = zTree.getNodes()[2].children;
         if(value_change_nodes){
           for(var i = 0;i<value_change_nodes.length;i++){
@@ -271,16 +272,35 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events']
           }
         }
 
-        //默认事件
-        var default_event_nodes = zTree.getNodes()[3].children;
-        $.each(default_event_nodes, function(index, item) {
-           var nodes = item.children;
-           if(nodes){
-              $.each(nodes, function(index, node) {
-                node_list.push(node);
-             });
-           }
-        });
+        //"新增页面打开后" 默认事件
+        var event_add_page_onload_nodes = zTree.getNodes()[3].children;
+        if(event_add_page_onload_nodes){
+          event_add_page_onload_nodes.forEach(node => {
+            node_list.push(node);
+          });
+        }
+        
+        //"编辑页面打开后" 默认事件
+        var event_edit_page_onload_nodes = zTree.getNodes()[4].children;
+        if(event_edit_page_onload_nodes){
+          event_edit_page_onload_nodes.forEach(node => {
+            node_list.push(node);
+          });
+        }
+        //"表单保存前" 默认事件
+        var event_before_save_form_nodes = zTree.getNodes()[5].children;
+        if(event_before_save_form_nodes){
+          event_before_save_form_nodes.forEach(node => {
+            node_list.push(node);
+          });
+        }
+        //"表单保存后" 默认事件
+        var event_after_save_form_nodes = zTree.getNodes()[6].children;
+        if(event_after_save_form_nodes){
+          event_after_save_form_nodes.forEach(node => {
+            node_list.push(node);
+          });
+        }
       }
       delete_node_ids=delete_node_ids.concat(editEventsCont.deleteList);
       return {

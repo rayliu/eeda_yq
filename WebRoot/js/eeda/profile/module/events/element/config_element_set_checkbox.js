@@ -39,14 +39,44 @@ define(['jquery'], function ($) {
             }
         },
         callback: {
-            onClick: onNodeClick
+            onClick: onNodeClick,
+            onCheck: zTreeOnCheck
         }
     };
 
     function onNodeClick(event, treeId, treeNode){
-        if (treeNode.level==0 ) return;
-        
+        if (treeNode.level==0 ) return; 
+        var checkbox_val = treeNode.checkbox_val;
+        $("#config_element_set_checkbox_input").val(checkbox_val);
+
+        var item_list=treeNode.item_list;
+        //var select=$('#config_element_set_droplist_set_value');
+        zNodes=[];
+        for (let index = 0; index < item_list.length; index++) {
+            const item = item_list[index];
+            var node={id:item.ID, pId:0, name:item.NAME};
+            zNodes.push(node);
+        }
+        $.fn.zTree.init($("#ul_tree"), check_box_setting, zNodes);
     }
+
+    function zTreeOnCheck(event, treeId, treeNode) {
+        console.log(treeNode.tId + ", " + treeNode.name + "," + treeNode.checked);
+        console.log(treeNode);
+        eventModuleTreeObj.selectNode(treeNode);
+
+        var item_list=treeNode.item_list;
+        //var select=$('#config_element_set_droplist_set_value');
+        zNodes=[];
+        for (let index = 0; index < item_list.length; index++) {
+            const item = item_list[index];
+            var node={id:item.ID, pId:0, name:item.NAME};
+            zNodes.push(node);
+        }
+        $.fn.zTree.init($("#ul_tree"), check_box_setting, zNodes);
+
+        changeActionTreeNode();
+    };
 
     var fields_children=[];
     var defaultNodes = [
@@ -70,12 +100,13 @@ define(['jquery'], function ($) {
             if(field_types.includes(field.FIELD_TYPE)){
                 var field_type = "checkbox多选";
                 if(field.CHECK_BOX.IS_SINGLE_CHECK=='Y')
-                    field_type = "radio单选";
+                    continue;
 
                 var node = {
                     type:'field',
                     id: field.ID,
-                    name: field.FIELD_DISPLAY_NAME+'('+field_type+')'
+                    name: field.FIELD_DISPLAY_NAME+'('+field_type+')',
+                    item_list: field.CHECK_BOX.ITEM_LIST
                 };
 
                 fields_children.push(node);
@@ -113,11 +144,86 @@ define(['jquery'], function ($) {
             tree_json:JSON.stringify(nodes)
         };
 
-        // var node_name = "在 "+target_table_name+" 添加 "+row_length+" 行";
-        // actionTreeObjNode.name=node_name;
         actionTreeObjNode.event_action_setting=event_action_setting;//
         actionTreeObj.updateNode(actionTreeObjNode);
     }
+
+    var check_box_setting = {
+        view: {
+            dblClickExpand: false,
+            showLine: false,
+            showIcon: false
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            beforeClick: beforeClick,
+            onClick: onClick
+        }
+    };
+
+    var zNodes =[
+        // {id:1, pId:0, name:"北京"},
+        // {id:2, pId:0, name:"天津"},
+        // {id:3, pId:0, name:"上海"},
+        // {id:6, pId:0, name:"重庆"}
+     ];
+
+    function beforeClick(treeId, treeNode) {
+        var check = (treeNode && !treeNode.isParent);
+        if (!check) alert("只能选择城市...");
+        return check;
+    }
+    
+    function onClick(e, treeId, treeNode) {
+        var zTree = $.fn.zTree.getZTreeObj("ul_tree"),
+        nodes = zTree.getSelectedNodes(),
+        v = "";
+        nodes.sort(function compare(a,b){return a.id-b.id;});
+        for (var i=0, l=nodes.length; i<l; i++) {
+            v += nodes[i].name + ",";
+        }
+        if (v.length > 0 ) v = v.substring(0, v.length-1);
+        var cityObj = $("#config_element_set_checkbox_input");
+        cityObj.val(v);
+
+        var selected_node = eventModuleTreeObj.getSelectedNodes()[0];
+        selected_node.checkbox_val=v;
+        changeActionTreeNode();
+    }
+
+    function showMenu() {
+        var cityObj = $("#config_element_set_checkbox_input");
+        var cityOffset = cityObj.offset();
+        var cityposition=cityObj.position();
+        var modal_offset = $('#formular_edit_modal .modal-content').offset();
+        console.log(cityposition);
+        $("#config_element_set_checkbox_menu_content").css(
+            {left:cityOffset.left-modal_offset.left + "px", top:cityOffset.top-8 + "px"}).slideDown("fast");
+
+        $("body").bind("mousedown", onBodyDown);
+    }
+    function hideMenu() {
+        $("#config_element_set_checkbox_menu_content").fadeOut("fast");
+        $("body").unbind("mousedown", onBodyDown);
+    }
+    function onBodyDown(event) {
+        if (!(event.target.id == "config_element_set_checkbox_edit_btn" ||
+            event.target.id == "config_element_set_checkbox_menu_content" ||
+            $(event.target).parents("#config_element_set_checkbox_menu_content").length>0)) {
+            hideMenu();
+        }
+    }
+
+    $('#config_element_set_checkbox_edit_btn').click(function(){
+        showMenu();
+        return false;
+    });
+
+    var ul_tree=$.fn.zTree.init($("#ul_tree"), check_box_setting, zNodes);
 
     return {
         loadFields:loadFields,

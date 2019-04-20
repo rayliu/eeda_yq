@@ -24,6 +24,11 @@ define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_se
 
     //---------------tree handle
     var setting = {
+        data: {
+            keep: {
+                parent: true
+            }
+        },
         view: {
             addHoverDom: addHoverDom,
             removeHoverDom: removeHoverDom,
@@ -67,7 +72,6 @@ define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_se
       
       currentNode = treeNode;
       $('#edit_event_name').val(currentNode.name);
-      $('#edit_event_type').val(currentNode.event_action);
 
       $('#edit_event_action').val(currentNode.EVENT_ACTION);
       $('#edit_event_action_json').val(currentNode.EVENT_JSON);
@@ -180,7 +184,10 @@ define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_se
             var sObj = $("#" + treeNode.tId + "_span");
             //如果是单据则不能在其下级添加节点
             if (treeNode.name=='工具栏按钮' || treeNode.name=='页面内按钮' || treeNode.name=='页面事件') return;
-            if (treeNode.level==1 && (treeNode.event_action=='event_add_page_onload')) return;
+            if (treeNode.level==1 && (treeNode.event_action=='event_add_page_onload'
+                ||treeNode.event_action=='event_edit_page_onload'
+                ||treeNode.event_action=='event_before_save_form'
+                ||treeNode.event_action=='event_after_save_form')) return;
             if (treeNode.level==2 || treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
             if (treeNode.level==1 && treeNode.MENU_TYPE=='value_change') return;
 
@@ -205,17 +212,23 @@ define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_se
                   $('#edit_event_name').val(currentNode.name);
                   $('#edit_event_type').val(currentNode.type);
                   $('#edit_event_field').val(currentNode.field);
-                }else if(treeNode.type == 'default_event_on_load' 
-                  || treeNode.type == 'default_event_edit_after_open' 
-                  || treeNode.type == 'default_event_save_before' 
-                  || treeNode.type == 'default_event_save_after' ){
-                    var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, menu_type: treeNode.type});
+                }else if(treeNode.type == 'event_add_page_onload' 
+                  || treeNode.type == 'event_edit_page_onload' 
+                  || treeNode.type == 'event_before_save_form' 
+                  || treeNode.type == 'event_after_save_form' ){
+                    var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, 
+                        isParent:false, name:nodeName, EVENT_ACTION: treeNode.type});
                     currentNode=newNodes[0];
+                    zTree.selectNode(currentNode);
+                    $('#edit_events_property').show();
                     $('#edit_event_name').val(currentNode.name);
                     $('#edit_event_action').val(treeNode.type);
                 }else if(treeNode.type == 'page_btn' || treeNode.type == 'btn' ){
-                    var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, menu_type: treeNode.type});
+                    var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, 
+                        isParent:false, name:nodeName, EVENT_ACTION: treeNode.type});
                     currentNode=newNodes[0];
+                    zTree.selectNode(currentNode);
+                    $('#edit_events_property').show();
                     $('#edit_event_name').val(currentNode.name);
                     $('#edit_event_action').val('click');
                 }else{

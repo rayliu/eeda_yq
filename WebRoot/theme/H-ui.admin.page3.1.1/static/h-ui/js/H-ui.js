@@ -57,6 +57,7 @@ Bootstrap.Switch v1.3
 /* =======================================================================
  * jQuery.IEMobileHack.js判断浏览器
  * ======================================================================== */
+console.log('enter H-ui.js');
 !function(){
 	if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
 		var msViewportStyle = document.createElement("style");

@@ -20,15 +20,17 @@
                 </div>
             </div>
             <div class="col-lg-12" style="margin-top: 3px;">
-                设置选中状态为:
+                设置选中状态
+                <span style="font-size: 12px;color: #aaa;">(按下 Ctrl 或 Cmd 键可以进行多选)</span>
             </div>
             <div class="col-lg-12" style="margin-top: 3px;">
-                <select id="set_text_type">
-                    <option value="值">值</option>
-                    <option value="变量值">变量值</option>
-                </select>
-                <input id="event_search_nodes" type="text"  style="">
-                <button id="config_element_set_checkbox_edit_field_btn" class="btn btn-default btn-xs">编辑</button>
+                <input id="config_element_set_checkbox_input" type="text"  style="width: 88%;" disabled>
+                <button id="config_element_set_checkbox_edit_btn" class="btn btn-default btn-xs"
+                style="margin-left: -5px;margin-top: -3px;">选择</button>
+                <div id="config_element_set_checkbox_menu_content" class="menuContent" 
+                    style="display:none; position: fixed;background-color: #fff;">
+                    <ul id="ul_tree" class="ztree" style="margin-top:0; width:160px;border: 1px solid #617775;"></ul>
+                </div>
             </div>
         </div>
     </div>

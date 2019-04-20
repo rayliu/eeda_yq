@@ -10,7 +10,7 @@ define(['jquery'], function ($) {
         var event_action_setting = node.event_action_setting;
         if(event_action_setting){
             var nodes=JSON.parse(event_action_setting.tree_json);
-            eventModuleTreeObj = $.fn.zTree.init($("#config_element_set_text_tree"), setting, nodes);
+            eventModuleTreeObj = $.fn.zTree.init($("#config_element_set_radio_tree"), setting, nodes);
             eventModuleTreeObj.expandAll(true);
         }
     }
@@ -44,17 +44,29 @@ define(['jquery'], function ($) {
         }
     };
 
+    function onNodeClick(event, treeId, treeNode){
+        if (treeNode.level==0 ) return;
+    };
+
     function zTreeOnCheck(event, treeId, treeNode) {
         console.log(treeNode.tId + ", " + treeNode.name + "," + treeNode.checked);
+        console.log(treeNode);
         eventModuleTreeObj.selectNode(treeNode);
-        $('#config_element_set_text_input').val(treeNode.text_val);
+
+        var item_list=treeNode.item_list;
+        var select=$('#config_element_set_radio_set_value');
+        select.empty();
+        for (let index = 0; index < item_list.length; index++) {
+            const element = item_list[index];
+            var select_html='<option value="'+element.NAME+'">'+element.NAME+'</option>';
+            select.append(select_html);
+        }
         changeActionTreeNode();
     };
 
-    function onNodeClick(event, treeId, treeNode){
-        if (treeNode.level==0 ) return;
-        $('#config_element_set_text_input').val(treeNode.text_val);
-    }
+    $('#config_element_set_radio_set_value').change(function(){
+        changeActionTreeNode();
+    });
 
     var fields_children=[];
     var defaultNodes = [
@@ -73,38 +85,44 @@ define(['jquery'], function ($) {
         
         for (var i = 0; i < module_obj.FORM_FIELDS.length; i++) {
             var field = module_obj.FORM_FIELDS[i];
-            var node = {
-                type:'field',
-                id: field.ID,
-                name: field.FIELD_DISPLAY_NAME+'('+field.FIELD_TYPE+')'
-            };
-            let field_types = ['文本', '多行文本', '日期', '日期时间', '网址', '网页HTML'];
-            if(field_types.includes(field.FIELD_TYPE))
+            
+            let field_types = ['复选框'];
+            if(field_types.includes(field.FIELD_TYPE)){
+                var field_type = "checkbox多选";
+                if(field.CHECK_BOX.IS_SINGLE_CHECK=='Y'){
+                    field_type = "radio单选";
+                }else{
+                    continue;
+                }  
+
+                var node = {
+                    type:'field',
+                    id: field.ID,
+                    name: field.FIELD_DISPLAY_NAME+'('+field_type+')',
+                    item_list: field.CHECK_BOX.ITEM_LIST
+                };
+
                 fields_children.push(node);
+            }
+                
             defaultNodes[0].children=fields_children;
         }
 
-        eventModuleTreeObj = $.fn.zTree.init($("#config_element_set_text_tree"), setting, defaultNodes);
+        eventModuleTreeObj = $.fn.zTree.init($("#config_element_set_radio_tree"), setting, defaultNodes);
         eventModuleTreeObj.expandAll(true);
     };
-    
-    
-    $('#config_element_set_text_input').keyup(function(){
-        var val = $(this).val();
-        // var treeObj = $.fn.zTree.getZTreeObj("config_element_set_text_tree");
-        var selected_node = eventModuleTreeObj.getSelectedNodes()[0];
-        
-        selected_node.text_val=val;
-        console.log('text_val:'+val);
-        eventModuleTreeObj.updateNode(selected_node);
-        
-        changeActionTreeNode();
-    });
 
     function changeActionTreeNode(){
-        var treeObj = $.fn.zTree.getZTreeObj("config_element_set_text_tree");
-        var nodes=treeObj.getNodes();
 
+        var treeObj = $.fn.zTree.getZTreeObj("config_element_set_radio_tree");
+        if(treeObj.getSelectedNodes().length>0){
+            var select_node = treeObj.getSelectedNodes()[0];
+            var select_value= $('#config_element_set_radio_set_value').val();
+            select_node.select_value = select_value
+            treeObj.updateNode(select_node);
+        }
+
+        var nodes=treeObj.getNodes();
         var event_action_setting={
             tree_json:JSON.stringify(nodes)
         };

@@ -14,8 +14,8 @@
            timeToLiveSeconds="3600">
     </defaultCache>
     
-    <!--system cache name sysCache-->
-    <cache name="sysCache"
+    <!-- cache for form define, session time out 30min-->
+    <cache name="formCache"
            maxEntriesLocalHeap="10000"
            maxEntriesLocalDisk="20000"
            eternal="false"
@@ -27,15 +27,15 @@
            transactionalMode="off"
             />
             
-	<!--service cache name serviceCache, 30s time out-->
-    <cache name="serviceCache"
+	<!--cache for module design, session time out 30min-->
+    <cache name="moduleCache"
            maxEntriesLocalHeap="10000"
            maxEntriesLocalDisk="20000"
            eternal="false"
            overflowToDisk="false"
            diskSpoolBufferSizeMB="0"
-           timeToIdleSeconds="0"
-           timeToLiveSeconds="3"
+           timeToIdleSeconds="1800"
+           timeToLiveSeconds="3600"
            memoryStoreEvictionPolicy="LRU"
            transactionalMode="off"
             />

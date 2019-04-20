@@ -1,5 +1,9 @@
-define( ['jquery','./element_set_enable','./element_set_show_hide'],
-     function ($, element_set_enable_cont, element_set_show_hide_cont) {
+define( ['jquery','./element_set_enable','./element_set_show_hide'
+        ,'./element_set_text','./element_set_radio'
+        ,'./element_set_checkbox'],
+     function ($, element_set_enable_cont, element_set_show_hide_cont
+        , element_set_text_cont, element_set_radio_cont
+        , element_set_checkbox_cont) {
         var handle = function(formObj, action_type){
             console.log('enter on_load.js');
             console.log(formObj);
@@ -18,6 +22,15 @@ define( ['jquery','./element_set_enable','./element_set_show_hide'],
                     children.forEach(action => {
                         var action_type = action.action_type;
                         switch (action_type) {
+                            case 'element_set_checkbox':
+                                element_set_checkbox_cont.handle(action);
+                                break;
+                            case 'element_set_radio':
+                                element_set_radio_cont.handle(action);
+                                break;
+                            case 'element_set_text':
+                                element_set_text_cont.handle(action);
+                                break;
                             case 'element_set_enable':
                                 element_set_enable_cont.handle(action);
                                 break;
