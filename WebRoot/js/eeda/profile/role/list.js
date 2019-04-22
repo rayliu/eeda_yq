@@ -1,4 +1,4 @@
-define(['jquery', 'dataTables', 'layer'], function ($) {
+define(['jquery', 'layer'], function ($) {
 
 	$(document).ready(function() {
 		document.title = '角色设置';

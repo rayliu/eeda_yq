@@ -157,6 +157,7 @@
 	</form>
 <%}%>
 <script>
-	requirejs(['/js/eeda/eeda-common.js','app/profile/office/department'], function (common) {
+	requirejs(['/js/eeda/eeda-common.js'], function (common) {
+		requirejs(['app/profile/office/department']);
 	});
 </script>

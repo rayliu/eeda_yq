@@ -44,7 +44,8 @@
 <%}%>
 <script>
 	//app根目录在WebRoot/js/
-    requirejs(['/js/eeda/eeda-common.js','app/profile/role/rolePermissionEdit'], function () {
+    requirejs(['/js/eeda/eeda-common.js'], function () {
+		requirejs(['app/profile/role/rolePermissionEdit']);
     });
 </script>
 
