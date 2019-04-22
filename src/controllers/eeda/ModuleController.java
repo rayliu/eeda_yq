@@ -1635,4 +1635,22 @@ public class ModuleController extends Controller {
         orderListMap.put("data", formList);
         renderJson(orderListMap);
     }
+    
+    public void getMenuList() {
+        List<Record> menuList= new ArrayList<Record>();
+        UserLogin user= LoginUserController.getLoginUser(this);
+        Long office_id = user.get("office_id");
+        List<Record> level1List = Db.find("select *, 1 level from eeda_modules "
+                + "where parent_id is null and delete_flag='N' and office_id=? order by seq", office_id);
+        for(Record lvl1:level1List) {
+            //查询后台所有的module，不含delete
+            List<Record> level2List = Db.find("select m.*, 2 level from eeda_modules m "
+                    + " where m.parent_id=? and m.delete_flag='N' and m.office_id=? order by seq", lvl1.getLong("id"), office_id);
+            if(level2List==null || level2List.size()==0)
+                continue;
+            lvl1.set("lvl2_list", level2List);
+            menuList.add(lvl1);
+        }
+        renderJson(menuList);
+    }
 }

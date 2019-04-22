@@ -84,15 +84,15 @@ public class FormClickService {
                 String condition = DbUtils.buildConditions(cont.getParaMap());
                 if("search_form".equals(define.get("type"))){
                     //自定义查询
-                    String lieNameStr = FormController.getLieNameStr(form_id);
+                    String lieNameStr = FormController.getLieNameStr(form_id, office_id);
                     String biaoNameStr = "";//getBiaoNameStr(form_id);//join
-                    String joinStr = FormController.getJoinStr(form_id);//left join
+                    String joinStr = FormController.getJoinStr(form_id, office_id);//left join
                     String filterStr = FormController.getFilterStr(form_id);
                     String sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 ";
 
                     //做生成excel处理
                     String sqlExport = sql+ condition+filterStr;
-                    List<Record> list = FormController.getDisplayCols(form_id);
+                    List<Record> list = FormController.getDisplayCols(form_id, office_id);
                     String[] title_name = new String[list.size()];
                     for(Record item : list){
                         String name = item.getStr("FIELD_DISPLAY_NAME");
@@ -143,7 +143,7 @@ public class FormClickService {
                 String sqlExport = "select 1 = 1;";
                 List<Record> list = null;
                 if("search_form".equals(define.get("type"))){
-                    list = FormController.getDisplayCols(form_id);
+                    list = FormController.getDisplayCols(form_id, office_id);
                 }else if("form".equals(define.get("type"))){
                     list = Db.find("select * from eeda_form_field where "
                             + " form_id=? order by if(isnull(seq),1,0), seq", form_id);

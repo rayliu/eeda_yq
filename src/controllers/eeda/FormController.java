@@ -531,10 +531,11 @@ public class FormController extends Controller {
         setAttr("btnList", getFormBtns(form_id, "list"));
         List<Record> fieldList = new ArrayList<Record>();
         Record re = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
+        long office_id = re.getLong("office_id");
         if("search_form".equals(re.get("type"))){
-        	fieldList = getDisplayCols(form_id);
+            fieldList = getDisplayCols(form_id, office_id);
         }else if("form".equals(re.get("type"))){
-        	fieldList = Db.find("select * from eeda_form_field where "
+            fieldList = Db.find("select * from eeda_form_field where "
                     + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
         }
         setAttr("form_id", form_id);
@@ -547,8 +548,9 @@ public class FormController extends Controller {
     	controller.setAttr("btnList", getFormBtns(form_id, "list"));
         List<Record> fieldList = new ArrayList<Record>();
         Record re = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
+        long office_id = re.getLong("office_id");
         if("search_form".equals(re.get("type"))){
-        	fieldList = getDisplayCols(form_id);
+            fieldList = getDisplayCols(form_id, office_id);
         }else if("form".equals(re.get("type"))){
         	fieldList = Db.find("select * from eeda_form_field where "
                     + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
@@ -559,8 +561,8 @@ public class FormController extends Controller {
         return fieldList;
     }
     
-    public static List<Record> getDisplayCols (Long form_id){
-    	List<Record> fieldList = new ArrayList<Record>();
+    public static List<Record> getDisplayCols (Long form_id, Long office_id){
+        List<Record> fieldList = new ArrayList<Record>();
     		//查数据列表
     		List<Record> custom_search_cols_list = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
     		for(int j = 0;j<custom_search_cols_list.size();j++){
@@ -568,7 +570,7 @@ public class FormController extends Controller {
     			int index = expression.indexOf(".");
     			String lie_name = expression.substring(index+1);
     			String biao_name = expression.substring(0,index);
-    			Record define_source = Db.findFirst("select * from eeda_form_define where name=?",biao_name);
+    			Record define_source = Db.findFirst("select * from eeda_form_define where name=? and office_id=?",biao_name, office_id);
     			if("ID".equals(lie_name)){
     			    Record field = new Record();
     			    field.set("field_name","id");
@@ -576,13 +578,14 @@ public class FormController extends Controller {
                     field.set("custom_search","N");
                     fieldList.add(field);
     			}else{
-        			Record field = Db.findFirst("select * from eeda_form_field where field_display_name=? and form_id=? ",lie_name,define_source.get("id"));
+    			    String source_form_id=define_source.get("id").toString();
+        			Record field = Db.findFirst("select * from eeda_form_field where field_display_name=? and form_id=? ", lie_name, source_form_id);
         			field.set("listed","Y");
         			field.set("custom_search","Y");
         			fieldList.add(field);
     			}
     		}
-    	return fieldList;
+    		return fieldList;
     }
     
     private List<Record> getFormBtns(Long formId, String type) {
@@ -674,10 +677,11 @@ public class FormController extends Controller {
         
         String sql = "";
         Record define = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
+        long office_id=define.getLong("office_id");
         if("search_form".equals(define.get("type"))){
-            String lieNameStr = getLieNameStr(form_id);
-            String biaoNameStr = "";//getBiaoNameStr(form_id);//join
-            String joinStr = getJoinStr(form_id);//left join
+            String lieNameStr = getLieNameStr(form_id, office_id);
+            String biaoNameStr = "" ;//getBiaoNameStr(form_id, office_id);//join
+            String joinStr = getJoinStr(form_id, office_id);//left join
             String filterStr = getFilterStr(form_id);
             sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 ";//TODO: and eeda_delete='N' 
             int index = biaoNameStr.indexOf(" ");
@@ -702,7 +706,7 @@ public class FormController extends Controller {
         return orderListMap;
     }
     
-    public static String getLieNameStr(Long form_id){
+    public static String getLieNameStr(Long form_id, long office_id){
     	String lieNameStr = "";
     	List<Record> colsList = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
     	for(int i = 0;i<colsList.size();i++){
@@ -711,7 +715,7 @@ public class FormController extends Controller {
     		String lie_name = expression.substring(index+1);
 			String biao_name = expression.substring(0,index);
 			String biao_name_py = PingYinUtil.getFirstSpell(expression.substring(0,index));
-			Record define = Db.findFirst("select * from eeda_form_define where name = ?",biao_name);
+			Record define = Db.findFirst("select * from eeda_form_define where name = ? and office_id=?",biao_name, office_id);
 			Record field = Db.findFirst("select * from eeda_form_field where field_display_name = ? and form_id = ?",lie_name,define.get("id"));
 			String str = "";
 			if(lieNameStr.length()>0){
@@ -728,16 +732,16 @@ public class FormController extends Controller {
     
     
     
-    private String getBiaoNameStr(Long form_id){
+    private String getBiaoNameStr(Long form_id, long office_id){
     	String biaoNameStr = "";
     	List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source_condition where form_id = ?",form_id);
 		String form_name = sourceList.get(0).get("form_left");
-		Record re = Db.findFirst("select * from eeda_form_define where name = ?",form_name);
+		Record re = Db.findFirst("select * from eeda_form_define where name = ? and office_id=?",form_name, office_id);
 		biaoNameStr = "form_"+re.get("id")+" "+PingYinUtil.getFirstSpell(form_name);
     	return biaoNameStr;
     }
     
-    public static String getJoinStr(Long form_id){
+    public static String getJoinStr(Long form_id , long office_id){
         //TODO: 加office ID
         //判断是join 还是 left join
         //将两个表名存入Record中
@@ -747,7 +751,7 @@ public class FormController extends Controller {
     	List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source where form_id = ?",form_id);
     	for(int i = 0;i<sourceList.size();i++){
     	    String form_name1 = sourceList.get(i).get("form_name");
-            Record form_define1 = Db.findFirst("select * from eeda_form_define where name=? ",form_name1);
+            Record form_define1 = Db.findFirst("select * from eeda_form_define where name=? and office_id=?", form_name1, office_id);
             String form_py1 = PingYinUtil.getFirstSpell(form_name1);
             String connectType1 = sourceList.get(i).get("connect_type"); 
             
@@ -779,7 +783,7 @@ public class FormController extends Controller {
     	List<Record> sourceConditionList = Db.find("select * from eeda_form_custom_search_source_condition where form_id = ?",form_id);
     	for(int i = 0;i<sourceConditionList.size();i++){
     		String form_left = sourceConditionList.get(i).get("form_left");
-    		Record form_left_define = Db.findFirst("select * from eeda_form_define where name=?",form_left);
+    		Record form_left_define = Db.findFirst("select * from eeda_form_define where name=? and office_id=?",form_left, office_id);
     		String form_left_py = PingYinUtil.getFirstSpell(form_left);
     		String form_left_field = sourceConditionList.get(i).get("form_left_field");
     		int index_left = form_left_field.indexOf(".");
@@ -788,7 +792,7 @@ public class FormController extends Controller {
     		String lie_name_left = "f"+field_left.get("id")+"_"+field_left.get("field_name");
     		
     		String form_right = sourceConditionList.get(i).get("form_right");
-    		Record form_right_define = Db.findFirst("select * from eeda_form_define where name=?",form_right);
+    		Record form_right_define = Db.findFirst("select * from eeda_form_define where name=? and office_id=?", form_right, office_id);
     		String form_right_py = PingYinUtil.getFirstSpell(form_right);
     		String form_right_field = sourceConditionList.get(i).get("form_right_field");
     		int index_right = form_right_field.indexOf(".");
