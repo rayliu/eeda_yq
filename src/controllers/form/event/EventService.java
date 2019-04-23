@@ -144,6 +144,7 @@ public class EventService {
                 // f386_hpdm='123'
                 String replaceFieldName = getReplaceFieldName(sourceFormName, conditionStr, office_id);//来源表字段，从表.货品代码 f69_hpdm
                 String conditionAfterChange = condition.replace(replaceFieldName, "'" + record.get(replaceFieldName) + "'");
+                conditionAfterChange=conditionAfterChange.replace("==", "=");
                 Record re = Db.findFirst("select * from " + targetFormName + " where " + conditionAfterChange);// 目标表
                 if (re == null) {
                     //如果目标表没记录，就新增一条

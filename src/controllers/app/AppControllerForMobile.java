@@ -1,6 +1,7 @@
 package controllers.app;
 
 import interceptor.SetAttrLoginUserInterceptor;
+import models.UserLogin;
 
 import java.io.IOException;
 
@@ -15,6 +16,8 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
+import controllers.eeda.FormController;
+import controllers.profile.LoginUserController;
 import controllers.util.MD5Util;
 
 
@@ -67,7 +70,7 @@ public class AppControllerForMobile extends Controller {
         }
     }
     public void index(){//app端的首页
-        render("/lego_app/home.html");
+        goDefaultPage();
     }
     public void mainMenu(){//首页应该是一个9宫格，或是统计数据
         render("/lego_app/login.html");
@@ -79,5 +82,28 @@ public class AppControllerForMobile extends Controller {
     
     public void setting(){
         render("/lego_app/setting.html");
+    }
+    
+    public void goDefaultPage() {
+        UserLogin user = LoginUserController.getLoginUser(this);
+        Record re = Db.findFirst(
+                "select id,name,module_id from eeda_form_define where is_home_index = 'Y' and office_id=?",
+                user.getLong("office_id"));
+        if (re != null) {
+            setAttr("action", "list");
+            Long moduleId = re.getLong("module_id");
+            setAttr("module_id", moduleId);
+            Record title = Db.findFirst("select m1.module_name level2,m2.module_name level1 from eeda_modules m1 "
+                    + " LEFT JOIN eeda_modules m2 on m1.parent_id = m2.id" + " where m1.id = ?", moduleId);
+            if (title != null) {
+                setAttr("level1", title.get("level1"));
+                setAttr("level2", title.get("level2"));
+            }
+            FormController form = new FormController();
+            form.list(re.getLong("id"), this);
+            redirect("/app/form/" + moduleId + "-list");
+            return;
+        }
+        render("/lego_app/home.html");
     }
 }

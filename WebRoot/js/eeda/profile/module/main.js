@@ -157,39 +157,108 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
         });
 
         //-------选择引用表单 start----
-        var form_select_pop_dataTable = eeda.dt({
-            id: 'form_select_pop_dataTable',
-            paging: true,
-            lengthChange: false,
-            columns: [
-                { "data": "ID", "width": "30px",
-                    "render": function ( data, type, full, meta ) {
-                        var id='';
-                        if(data){
-                          id=data;
-                        }
-                      return '<input type="radio" name="checkBox" style="margin-right:5px;">'
-                      +'<input name="id" type="hidden" value="'+id+'">';
-                    }
-                },
-                { "data": "NAME",
-                    "render": function ( data, type, full, meta ) {
-                        var str = "";
-                        if(data){
-                            str = data;
-                        }
-                        return data;
-                     }
+        var setting = {
+            view: {
+                //addHoverDom: addHoverDom,
+                //removeHoverDom: removeHoverDom,
+                selectedMulti: false
+            },
+            edit: {
+                enable: false,
+                editNameSelectAll: true,
+                showRemoveBtn: false,
+                showRenameBtn: false,
+                renameTitle: "编辑",
+                removeTitle: "删除",
+                drag:{
+                    isCopy: false,
+                    isMove: true
                 }
-            ]
-          });
+            },
+            callback: {
+                onClick: onNodeClick
+            }
+          };
+    
+          function onNodeClick(e, treeId, treeNode) {
+              if (treeNode.level==0 ) return; 
+              var menuContent=$(e.target).closest('.menuContent');
+              menuContent.parent().find('input').val(treeNode.name);
+              hideMenu(menuContent);
+          }
+    
+          var zNodes=[];
+          var loadModuleTree = function(menuContent){
+            var layer_index = layer.load(1, {
+                shade: [0.3,'#000'] //0.3透明度的黑色背景
+            });
+            $.post('/module/getMenuList', function(result){
+                if(!result)
+                    return;
+        
+                var menuList = result;
+                for(var i=0;i<menuList.length;i++){
+                    var preMenu = i>0?menuList[i-1]:null;
+                    var menu = menuList[i];
+                    var node = {
+                        id:menu.ID,
+                        name: menu.MODULE_NAME,
+                        parent_id: menu.PARENT_ID,
+                        isParent:true, 
+                        children: []
+                    };
+    
+                    if(menu.LVL2_LIST){
+                      for (let index = 0; index < menu.LVL2_LIST.length; index++) {
+                          const sub_menu = menu.LVL2_LIST[index];
+                          var sub_node = {
+                              id: sub_menu.ID,
+                              name: sub_menu.MODULE_NAME,
+                              parent_id: sub_menu.PARENT_ID
+                          };
+                          node.children.push(sub_node);
+                      }
+                    }
+                    zNodes.push(node);
+                }
+                var eventModuleTreeObj = $.fn.zTree.init(menuContent.find('.ztree'), setting, zNodes);
+                eventModuleTreeObj.expandAll(true);
+                layer.close(layer_index); 
+                showMenu(menuContent);
+            });
+        };
+
+            function showMenu(menuContent) {
+                var targetObj = $('#ref_form');
+                var targetOffset = targetObj.offset();
+                var target_position=targetObj.position();
+                //var modal_offset = $('#formular_edit_modal .modal-content').offset();
+                console.log(target_position);
+                menuContent.css(
+                    {left:85 + "px", top:39 + "px"}).slideDown("fast");
+        
+                $("body").bind("mousedown", onBodyDown);
+            }
+            function hideMenu(menuContent) {
+                    menuContent.fadeOut("fast");
+                    $("body").unbind("mousedown", onBodyDown);
+            }
+            function onBodyDown(event) {
+                if (!(event.target.className == "form_select_pop" ||
+                    event.target.className == "menuContent" ||
+                    $(event.target).parents(".menuContent").length>0)) {
+                    var menuContent=$('.menuContent');
+                    hideMenu(menuContent);
+                }
+            }
+    
+            $('#add_custom_search_source_btn').click(function(event) {
+              showMenu();
+            });
 
         $('.form_select_pop').on('click', function(e){
-            var url="/module/getAllForms";
-            form_select_pop_dataTable.ajax.url(url).load();
-            var targetId = $(this).attr('target');
-            $('#form_select_modal_target_id').val(targetId);
-            $('#form_select_modal').modal('show');
+            var menuContent = $(e.target).parent().find('.menuContent');
+            loadModuleTree(menuContent);
         });
 
         $('#form_select_modal_ok_btn').click(function(event) {

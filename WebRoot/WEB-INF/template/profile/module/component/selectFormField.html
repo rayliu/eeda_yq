@@ -1,5 +1,10 @@
 <div class="form-group" style="display: flex;">
     <label >引用表单</label>
     <input id="${id}" class="form-control" style="margin-top: 5px;width: 80%;display: inline;"/>
-    <button class="form_select_pop" style="margin-top: 5px;width: 50px;" target="${id}" class="btn btn-success">选择</button>
+    <div class="menuContent" 
+        style="display:none; position: absolute;background-color: #fff;z-index: 99;max-height: 400px;
+        overflow-y: scroll;border: 1px solid #617775;">
+        <ul id="form_select_ul_tree" class="ztree" style="margin-top:0; width:160px;"></ul>
+    </div>
+    <button class="form_select_pop" style="margin-top: 5px;width: 50px;" target="${id}" class="btn btn-success btn-xs">选择</button>
 </div>

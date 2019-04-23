@@ -1,5 +1,6 @@
-define(['jquery', './print', './event/element_set_enable', './event/element_set_droplist', './event/events', 'file_upload','layer', 'layui'], 
-    function ($, printCont,element_set_enable_cont, element_set_droplist_cont, event_cont) {
+define(['jquery', './print', './event/element_set_enable', './event/element_set_droplist'
+    , './event/element_set_text','./event/events', 'file_upload','layer', 'layui'], 
+    function ($, printCont,element_set_enable_cont, element_set_droplist_cont, element_set_text_cont, event_cont) {
 	$.fn.serializeObject = function () {
 	    var o = {};
 	    var a = this.serializeArray();
@@ -63,7 +64,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
             }else{
                 
                 console.log('['+btn_id+'] btn click:');
-
+                var form_define_obj = JSON.parse($("#form_define").text());
                 var module_id = $('#module_id').val();
                 var order_id = $('#order_id').val();
                 if(btn_id.split('-').length<=1)
@@ -89,6 +90,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                             var event_id = results[i].ID;
                             var form_id = results[i].FORM_ID
                             var event_json = results[i].EVENT_JSON;
+                            if(!event_json) continue;
                             var event = JSON.parse(event_json)[0];
                             var condition = "";//TODO:
                             var actions=event.children;
@@ -122,6 +124,9 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                                                 break;
                                         }
                                         break;
+                                    case 'element_set_text':
+                                        element_set_text_cont.handle(action);
+                                        break;
                                     case 'element_set_droplist':
                                         element_set_enable_cont.handle(action);
                                         break;
@@ -129,7 +134,6 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                                         var $form = $("#module_form");
 
                                         //保存前处理
-                                        var form_define_obj = JSON.parse($("#form_define").text());
                                         event_cont.handle('event_before_save_form', form_define_obj);
 
                                         var data = getFormData($form);
@@ -173,6 +177,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                                         dataTable.row.add({}).draw(false);
                                         break; 
                                     default:
+                                        event_cont.handle(action_type, form_define_obj);
                                         break;
                                 }
                             }

@@ -40,12 +40,18 @@
 		</style>
 	</head>
 
-	<body>
+	<body class="mui-ios mui-ios-11 mui-ios-11-0 mui-fullscreen">
 		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
-			<!--侧滑菜单部分-->
+			<!--侧滑菜单部分1-->
 			<%include("/lego_app/layout/_sideMenu.html",{}){} %>
 			<!--主界面部分-->
-			${layoutContent}
+			<div class="mui-inner-wrap">
+				${layoutContent}
+			</div>
+			
+
+			<script src="/js/lib/require2.3.2.min.js"></script>
+			<%include("/eeda/component/form/commonJs.html",{}){} %>
 		</div>
 		<script src="/lego_app/js/mui.min.js"></script>
 		<script>

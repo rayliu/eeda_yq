@@ -39,6 +39,11 @@ public class AppFormController extends Controller {
         String action = getPara(1);
         Long order_id = getParaToLong(2);
         String detailFiledId = getPara(3);
+        String showMenu = getPara("menu");
+        setAttr("showSideMenu", "N");
+        if("Y".equals(showMenu)) {
+            setAttr("showSideMenu", "Y");
+        }
         setAttr("action", action);
         setAttr("module_id", module_id);
         //以下为表单的标准 action
@@ -80,8 +85,17 @@ public class AppFormController extends Controller {
             }else if("add".equals(action)){
                 //edit(form_id, null, formRec);
             }else if("list".equals(action)){
-                list(form_id);
-                render("/lego_app/list.html");
+                if("Y".equals(formRec.getStr("is_single_record"))){//单页显示，不需要list
+                    Record orderRec = Db.findFirst("select * from form_"+form_id);
+                    if(orderRec!=null){//有一条数据，跳转去edit页面
+                        redirect("/app/form/"+module_id+"-edit-"+orderRec.getLong("id")+"?menu=Y");
+                    }else{//无数据，跳转去add页面，有可能是一个展示页面，不需要记录数据
+                        redirect("/app/form/"+module_id+"-add?menu=Y");
+                    }
+                }else{
+                    list(form_id);
+                    render("/lego_app/form/list.html");
+                }
                 return;
             }else if("detailList".equals(action)){
                 //最后一个参数3是从表的field.id, 通过它获取从表的form_id, 再关联出从表数据
@@ -89,7 +103,7 @@ public class AppFormController extends Controller {
                 render("/lego_app/form_detail_list.html");
                 return;
             }
-            render("/lego_app/form.html");
+            render("/lego_app/form/edit.html");
         }else{
             Record rec = new Record();
             if("doGet".equals(action)){
@@ -105,7 +119,7 @@ public class AppFormController extends Controller {
             
         }
         
-        render("/lego_app/form.html");
+        render("/lego_app/form/edit.html");
     }
     
     //获取APP 模板中的显示字段
@@ -211,6 +225,7 @@ public class AppFormController extends Controller {
                 + " form_id=? and app_display_col='Y'", form_id);
         setAttr("form_id", form_id);
         setAttr("display_field", displayField);
+        if(displayField==null) return;
         String field_col_name = "f"+displayField.getLong("id")+"_"+displayField.getStr("field_name");
         setAttr("field_col_name", field_col_name);
     }
