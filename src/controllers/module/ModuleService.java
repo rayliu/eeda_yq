@@ -372,6 +372,7 @@ public class ModuleService {
             String read_only = (String) field.get("read_only".toUpperCase());
             String listed = (String) field.get("listed".toUpperCase());
             String required = (String) field.get("required".toUpperCase());
+            String app_display_col = (String) field.get("app_display_col".toUpperCase());
 
             Record itemRec = new Record();
             if (!(id instanceof java.lang.Double)) {
@@ -382,6 +383,7 @@ public class ModuleService {
                 itemRec.set("read_only", read_only);
                 itemRec.set("listed", listed);
                 itemRec.set("required", required);
+                itemRec.set("app_display_col", app_display_col);
                 if (seq instanceof java.lang.Long)
                     itemRec.set("seq", seq);
                 Db.save("eeda_form_field", itemRec);
@@ -396,6 +398,7 @@ public class ModuleService {
                 itemRec.set("read_only", read_only);
                 itemRec.set("listed", listed);
                 itemRec.set("required", required);
+                itemRec.set("app_display_col", app_display_col);
                 Db.update("eeda_form_field", itemRec);
             }
 

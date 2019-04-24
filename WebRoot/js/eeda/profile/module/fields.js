@@ -75,6 +75,12 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
                 $('#is_not_list_col').prop('checked', false);
               }
 
+              if(data.APP_DISPLAY_COL=="Y"){
+                $('#app_display_col').prop('checked', true);
+              }else{
+                $('#app_display_col').prop('checked', false);
+              }
+
               if(!data.FIELD_TYPE){
                 //清空所有属性
                 $('#check_box_id').val('');
@@ -239,6 +245,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             $('#default_value').val('');
             $('#seq').val('');
             $('#is_not_list_col').prop('checked', false);
+            $('#app_display_col').prop('checked', false);
             
             $('#ref_id').val('');
             $('#ref_form').val('');
@@ -319,7 +326,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             item.READ_ONLY=$('#read_only').prop('checked')==true?'Y':'N';
             item.LISTED=$('#is_not_list_col').prop('checked')==true?'N':'Y';
             item.REQUIRED=$('#required').prop('checked')==true?'Y':'N';
-            
+            item.APP_DISPLAY_COL=$('#app_display_col').prop('checked')==true?'Y':'N';
 
             var checkText=$('#field_type').find("option:selected").text();
             if(checkText == '文本'){

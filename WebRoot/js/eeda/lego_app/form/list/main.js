@@ -1,6 +1,6 @@
-define(['jquery', 'template', 'mui', '../btns'], function ($, template) {
+define(['jquery', 'template', 'mui', '../btns'], function ($, template, mui) {
 
-        
+    // mui.plusReady(function() {
         
         document.title = '查询 | ' + document.title;
 
@@ -41,4 +41,5 @@ define(['jquery', 'template', 'mui', '../btns'], function ($, template) {
             var url = '/form/'+$('#form_id').val()+'-doQuery?1=1'+query;
             dataTable.ajax.url(url).load();
         }
+    // });
 });

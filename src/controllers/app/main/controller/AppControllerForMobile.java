@@ -1,4 +1,4 @@
-package controllers.app;
+package controllers.app.main.controller;
 
 import interceptor.SetAttrLoginUserInterceptor;
 import models.UserLogin;

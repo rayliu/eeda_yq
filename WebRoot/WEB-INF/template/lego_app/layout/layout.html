@@ -1,91 +1,27 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
-		<title>易得SAAS软件平台</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<link rel="stylesheet" href="/lego_app/css/mui.min.css">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>易得SAAS</title>
+		<link href="/lego_app/css/mui.min.css" rel="stylesheet" />
+
 		<style>
-			html,
-			body {
-				background-color: #efeff4;
-			}
-			p {
-				text-indent: 22px;
-			}
-			span.mui-icon {
+			ul {
 				font-size: 14px;
-				color: #007aff;
-				margin-left: -15px;
-				padding-right: 10px;
+				color: #8f8f94;
 			}
-			.mui-off-canvas-left {
-				color: #fff;
-			}
-			.title {
-				margin: 35px 15px 10px;
-			}
-			.title+.content {
-				margin: 10px 15px 35px;
-				color: #bbb;
-				text-indent: 1em;
-				font-size: 14px;
-				line-height: 24px;
-			}
-			input {
-				color: #000;
+			.mui-btn {
+				padding: 10px;
 			}
 		</style>
 	</head>
 
 	<body class="mui-ios mui-ios-11 mui-ios-11-0 mui-fullscreen">
-		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
-			<!--侧滑菜单部分1-->
-			<%include("/lego_app/layout/_sideMenu.html",{}){} %>
-			<!--主界面部分-->
-			<div class="mui-inner-wrap">
-				${layoutContent}
-			</div>
-			
-
-			<script src="/js/lib/require2.3.2.min.js"></script>
-			<%include("/eeda/component/form/commonJs.html",{}){} %>
-		</div>
-		<script src="/lego_app/js/mui.min.js"></script>
-		<script>
-			mui.init();
-			mui('#offCanvasSide').on('tap','a', function(e) {
-				//获取当前点击的url
-				var myUrl = this.href;
-				mui.openWindow({  
-					url:myUrl,
-				})  
-			});
-			 //侧滑容器父节点
-			var offCanvasWrapper = mui('#offCanvasWrapper');
-			 //主界面容器
-			var offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
-			 //菜单容器
-			var offCanvasSide = document.getElementById("offCanvasSide");
-		
-			 //移动效果是否为整体移动
-			var moveTogether = false;
-			
-			
-			 //主界面和侧滑菜单界面均支持区域滚动；
-			mui('#offCanvasSideScroll').scroll();
-			mui('#offCanvasContentScroll').scroll();
-			 //实现ios平台原生侧滑关闭页面；
-			if (mui.os.plus && mui.os.ios) {
-				mui.plusReady(function() { //5+ iOS暂时无法屏蔽popGesture时传递touch事件，故该demo直接屏蔽popGesture功能
-					plus.webview.currentWebview().setStyle({
-						'popGesture': 'none'
-					});
-				});
-			}
-		</script>
+		${layoutContent}
+		<script src="/js/lib/require2.3.2.min.js"></script>
+		<%include("/eeda/component/form/commonJs.html",{}){} %>
 	</body>
-
+	<script src="/lego_app/js/mui.min.js"></script>
 </html>

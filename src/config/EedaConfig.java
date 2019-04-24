@@ -43,8 +43,8 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
-import controllers.app.AppControllerForMobile;
-import controllers.app.AppFormController;
+import controllers.app.form.controller.AppFormController;
+import controllers.app.main.controller.AppControllerForMobile;
 import controllers.eeda.FormController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;

@@ -1,49 +1,26 @@
 <aside id="offCanvasSide" class="mui-off-canvas-left">
 	<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
 		<div class="mui-scroll">
-			<div class="title">系统导航</div>
+			<div class="title"><h3>易得SAAS</h3></div>
 			<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted">
-				<li class="mui-table-view-cell mui-collapse">
-					<a href='#' class="mui-navigate-right">
-						订单管理
-					</a>
-					<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted" style="margin-top: 10px;">
-						<li class="mui-table-view-cell">
-							<a class="mui-navigate" href="/app/form/194-list" style="text-overflow: clip;">
-								采购订单
-							</a>
-						</li>
-						<li class="mui-table-view-cell">
-							<a class="mui-navigate" href="/app/form/194-list" style="text-overflow: clip;">
-								采购订单
-							</a>
-						</li>
-						
-					</ul>
-				</li>
-				<li class="mui-table-view-cell  mui-collapse">
-					<a href='#' class="mui-navigate-right">
-						Item 2
-					</a>
-					<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted" style="margin-top: 10px;">
-						<li class="mui-table-view-cell">
-							<a class="mui-navigate" href="/app/form/194-list" style="text-overflow: clip;">
-								采购订单
-							</a>
-						</li>
-						<li class="mui-table-view-cell">
-							<a class="mui-navigate" href="/app/form/194-list" style="text-overflow: clip;">
-								采购订单
-							</a>
-						</li>
-					</ul>
-				</li>
-				<li class="mui-table-view-cell mui-collapse">
-					<a href='#' class="mui-navigate-right">
-						Item 3
-					</a>
-				</li>
 				
+				<%for(lv1 in side_menu){%>
+					<li class="mui-table-view-cell mui-collapse">
+						<a href='#' class="mui-navigate-right">
+							${lv1.module_name!''}
+						</a>
+						<ul class="mui-table-view mui-table-view-chevron mui-table-view-inverted" style="margin-top: 10px;">
+							<% var lv2_list=lv1.LVL2_LIST;
+							for(lv2 in lv2_list){%>
+							<li class="mui-table-view-cell">
+								<a class="mui-navigate" href="/app/form/${lv2.id!''}-list" style="text-overflow: clip;">
+									${lv2.module_name!''}
+								</a>
+							</li>
+							<%}%>
+						</ul>
+					</li>
+				<%}%>
 			</ul>
 		</div>
 	</div>

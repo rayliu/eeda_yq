@@ -1,8 +1,5 @@
-package controllers.app;
+package controllers.app.form.controller;
 
-import interceptor.SetAttrLoginUserInterceptor;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,15 +15,20 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.jfinal.aop.Before;
-import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.JsonKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.ehcache.CacheKit;
 
+import controllers.app.form.service.AppFormService;
 import controllers.form.FormService;
+import controllers.form.FormTableConfigService;
+import controllers.form.FormUtil;
+import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
+import interceptor.SetAttrLoginUserInterceptor;
+import models.UserLogin;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -34,18 +36,21 @@ public class AppFormController extends Controller {
 
     private Logger logger = Logger.getLogger(AppFormController.class);
     
-    public void index(){
+    public void index() throws Exception{
         String module_id = getPara(0);
         String action = getPara(1);
         Long order_id = getParaToLong(2);
-        String detailFiledId = getPara(3);
+        String detailFieldId = getPara(3);
         String showMenu = getPara("menu");
         setAttr("showSideMenu", "N");
         if("Y".equals(showMenu)) {
             setAttr("showSideMenu", "Y");
+            setAttr("side_menu", getMenuList());
         }
         setAttr("action", action);
         setAttr("module_id", module_id);
+        setAttr("order_id", order_id);
+        setAttr("detail_field_id", detailFieldId);
         //以下为表单的标准 action
         
         //list 跳转到form 列表查询 页面;
@@ -78,12 +83,13 @@ public class AppFormController extends Controller {
         
         
         if(!action.startsWith("do")){
+            AppFormService afs = new AppFormService(this);
             if("edit".equals(action)){
                 //edit(form_id, order_id, formRec);
             }else if("view".equals(action)){
                 setAttr("order_id", order_id);
             }else if("add".equals(action)){
-                //edit(form_id, null, formRec);
+                afs.edit(form_id, null, formRec);
             }else if("list".equals(action)){
                 if("Y".equals(formRec.getStr("is_single_record"))){//单页显示，不需要list
                     Record orderRec = Db.findFirst("select * from form_"+form_id);
@@ -100,7 +106,7 @@ public class AppFormController extends Controller {
             }else if("detailList".equals(action)){
                 //最后一个参数3是从表的field.id, 通过它获取从表的form_id, 再关联出从表数据
                 //getDetaiList(form_id, detailFiledId);
-                render("/lego_app/form_detail_list.html");
+                render("/lego_app/form/form_detail_list.html");
                 return;
             }
             render("/lego_app/form/edit.html");
@@ -228,6 +234,103 @@ public class AppFormController extends Controller {
         if(displayField==null) return;
         String field_col_name = "f"+displayField.getLong("id")+"_"+displayField.getStr("field_name");
         setAttr("field_col_name", field_col_name);
+    }
+    
+    private List<Record> getMenuList() {
+        String key = "appMenu";
+        List<Record> menuList = CacheKit.get("formCache",key);
+        if(menuList!=null) return menuList;
+        
+        menuList = new ArrayList<Record>();
+        UserLogin user= LoginUserController.getLoginUser(this);
+        Long office_id = user.get("office_id");
+        String role_id=getPara("role_id");
+        List<Record> level1List = Db.find("select *, 1 level from eeda_modules "
+                + "where parent_id is null and delete_flag='N' and office_id=? order by seq", office_id);
+        for(Record lvl1:level1List) {
+            //查询后台设置中，开放出来的module
+            List<Record> level2List = Db.find("select m.*, 2 level from eeda_modules m, eeda_form_define fd "
+                    + " where fd.module_id=m.id and fd.is_public='Y'"
+                    + " and m.parent_id=? and m.delete_flag='N' and m.office_id=? order by seq", lvl1.getLong("id"), office_id);
+            if(level2List==null || level2List.size()==0)
+                continue;
+            //获取CRUD权限
+            handleOpeationPermission(level2List, office_id, role_id);
+            
+            menuList.add(lvl1);
+            for(Record lvl2:level2List) {
+                //判断当前的角色role是否有该menu的权限
+                String sql = "select rp.role_id, rp.permission_id, " + 
+                        " p.permission_name, p.permission_type, pm.menu_id, m.module_name menu_name" +
+                        " from t_rbac_ref_role_permission rp " +
+                        " left join t_rbac_permission p on rp.permission_id = p.id" +
+                        " left join t_rbac_ref_permission_menu pm on rp.permission_id = pm.permission_id and pm.office_id=?" +
+                        " left join eeda_modules m on pm.menu_id = m.id"+
+                        " where rp.role_id=? and m.id=?";
+                Record menuRec = Db.findFirst(sql, office_id, role_id, lvl2.getLong("id"));
+                if(menuRec!=null) {
+                    lvl2.set("is_menu_open", "Y");
+                }else {
+                    lvl2.set("is_menu_open", "N");
+                }
+            }
+            lvl1.set("lvl2_list", level2List);
+        }
+        CacheKit.put("formCache",key, menuList);
+        return menuList;
+    }
+    
+    private void handleOpeationPermission(List<Record> level2List, long office_id, String role_id) {
+        for(Record lvl2:level2List) {
+            Long moduleId = lvl2.getLong("id");
+            //判断当前的角色role是否有CRUD operation的权限
+            String sql = "select rp.role_id, rp.permission_id, " + 
+                    "   p.permission_name, p.permission_type" + 
+                    "   from t_rbac_ref_role_permission rp " + 
+                    "   left join t_rbac_permission p on rp.permission_id = p.id" + 
+                    " where p.permission_type='operation' and rp.office_id=? and rp.role_id=? and p.module_id=?";
+            List<Record> permissionList = Db.find(sql, office_id, role_id, moduleId);
+            lvl2.set("permission_list", permissionList);
+        }
+    }
+    
+    public void detailTable() {
+        String form_id_str = getPara(0);
+        String order_id_str = getPara(1);
+        String field_id = getPara(2);
+        
+        Long form_id=0l;
+        if(StrKit.notBlank(form_id_str)) {
+            form_id=Long.valueOf(form_id_str);
+        }
+        Long order_id=0l;
+        if(StrKit.notBlank(order_id_str)) {
+            order_id=Long.valueOf(order_id_str);
+        }
+        
+        UserLogin user= LoginUserController.getLoginUser(this);
+        Long office_id = user.get("office_id");
+        
+        FormTableConfigService ets = new FormTableConfigService(this);
+        //获取子表的字段设置属性
+        ArrayList<String> fieldIdList = new ArrayList<String>();
+        fieldIdList.add(field_id);
+        List<Record> table_define_list = ets.getTableConfig(fieldIdList, office_id);
+        //获取整个form的数据
+        Record data_rec = FormUtil.getFormData(form_id, order_id, office_id);
+        List<Record> data_list = new LinkedList<Record>();
+        List<Record> detail_table_list =data_rec.get("DETAIL_TABLES");
+        String table_id = "detail_table_"+field_id;
+        for (Record record : detail_table_list) {
+            if(table_id.equals(record.getStr("TABLE_ID"))) {
+                data_list=record.get("DATA_LIST");
+            }
+        }
+        
+        Record returnRec = new Record();
+        returnRec.set("table_define_list", table_define_list);
+        returnRec.set("data_list", data_list);
+        renderJson(returnRec); 
     }
     
     public void detailList(){

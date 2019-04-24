@@ -174,7 +174,14 @@
                                                     value:order.is_public!''
                                                 }){}%>
                 </div>
-                
+                <div class="col-lg-6">
+                    <%include("/eeda/component/form/inputField.html", 
+                                                {   id:'app_display_col', 
+                                                    type: 'checkbox',
+                                                    label:'作为APP查询列',
+                                                    value:order.app_display_col!''
+                                                }){}%>
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-6">
