@@ -105,5 +105,6 @@
             eeda_common:{
                 deps: ['jquery','bootstrap','dataTablesBootstrap','WdatePicker','hui','hui_admin']
             }
+        }
     });
 </script>
