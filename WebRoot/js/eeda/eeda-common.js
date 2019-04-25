@@ -1,4 +1,4 @@
-define(['jquery','bootstrap','dataTablesBootstrap','hui','hui_admin'], function($){
+define(['jquery','bootstrap','dataTablesBootstrap','hui','hui_admin', 'header'], function($){
     console.log('enter common...');
 $(document).ready(function(){
     //全局：当浏览器改变大小时刷新其底下的 dataTable, 解决表头不齐的问题

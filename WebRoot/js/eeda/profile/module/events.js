@@ -247,19 +247,18 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events']
             node_list.push(node);
           }
         }
-      }
-      //页面按钮
-      var page_btn_nodes = zTree.getNodes()[1].children;
-      $.each(page_btn_nodes, function(index, item) {
-        var nodes = item.children;
-        if(nodes){
-            $.each(nodes, function(index, node) {
-              node_list.push(node);
-          });
-        }
-      });
-      //值改变
-      if(zTree){
+        //页面按钮
+        var page_btn_nodes = zTree.getNodes()[1].children;
+        $.each(page_btn_nodes, function(index, item) {
+          var nodes = item.children;
+          if(nodes){
+              $.each(nodes, function(index, node) {
+                node_list.push(node);
+            });
+          }
+        });
+
+        //值改变
         var value_change_nodes = zTree.getNodes()[2].children;
         if(value_change_nodes){
           for(var i = 0;i<value_change_nodes.length;i++){

@@ -6,6 +6,7 @@
         paths: {
             app: '../eeda',
             eeda_common: '../eeda/eeda-common',
+            header: '../eeda/common/header',
             jquery: 'jquery/jquery-1.10.2',
             jquery_ui:'jquery-ui-1.11.4/jquery-ui',
             jq_blockui: 'jquery-blockUI-2.7/jquery.blockUI',
