@@ -1,0 +1,32 @@
+<%layout("/lego_app/layout/layout.html"){%>
+	<header class="mui-bar mui-bar-nav" style="padding-right: 15px;">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">${form_name!''}</h1>
+	</header>
+	<div class="mui-content">
+			<input type="hidden" id="module_id" value="${module_id!''}">
+			<input type="hidden" id="form_id" value="${form_id!''}">
+			<input type="hidden" id="order_id" value="${order_id!''}">
+			<input type="hidden" id="detail_field_id" value="${detail_field_id!''}">
+		<ul id="app_form_list" class="mui-table-view mui-table-view-striped mui-table-view-condensed">
+			<!-- <li class="mui-table-view-cell">
+				<div class="mui-table">
+					<div class="mui-table-cell mui-col-xs-10">
+						<!-- <h4 class="mui-ellipsis">信息化推进办公室张彦合同付款信息化</h4> 
+						<h5>申请人：李四</h5>
+						<h5>申请人：李四</h5>
+						<h5>申请人：李四</h5>
+						<h5>申请人：李四</h5>
+						<!-- <p class="mui-h6 mui-ellipsis">Hi，李明明，申请交行信息卡，100元等你拿，李明明，申请交行信息卡，100元等你拿，</p>
+					</div>
+				</div>
+			</li> -->
+		</ul>
+	</div>
+	<%include("/lego_app/jsTemplate/detailListItem.art",{}){} %>
+<%}%>
+<script>
+	requirejs([], function (common) {
+		requirejs(['app/lego_app/form/detailList/main']);
+	});
+</script>
