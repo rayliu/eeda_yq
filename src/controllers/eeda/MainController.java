@@ -120,7 +120,7 @@ public class MainController extends Controller {
             redirect("/form/" + moduleId + "-list");
             return;
         }
-        render("/eeda/index/welcome.html");
+        redirect("/welcome");
     }
 
     private static boolean isMobile(HttpServletRequest request) {
@@ -423,7 +423,25 @@ public class MainController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         Record rec = Db.findFirst("select * from eeda_survey where user_id=?", user.getLong("id"));
         if(rec!=null) {
-            goDefaultPage();
+            Record re = Db.findFirst(
+                    "select id,name,module_id from eeda_form_define where is_home_index = 'Y' and office_id=?",
+                    user.getLong("office_id"));
+            if (re != null) {
+                setAttr("action", "list");
+                Long moduleId = re.getLong("module_id");
+                setAttr("module_id", moduleId);
+                Record title = Db.findFirst("select m1.module_name level2,m2.module_name level1 from eeda_modules m1 "
+                        + " LEFT JOIN eeda_modules m2 on m1.parent_id = m2.id" + " where m1.id = ?", moduleId);
+                if (title != null) {
+                    setAttr("level1", title.get("level1"));
+                    setAttr("level2", title.get("level2"));
+                }
+                FormController form = new FormController();
+                form.list(re.getLong("id"), this);
+                redirect("/form/" + moduleId + "-list");
+                return;
+            }
+            render("/eeda/index/welcome.html");
         }else {
             redirect("/survey/step1");
         }
