@@ -120,7 +120,7 @@ public class MainController extends Controller {
             redirect("/form/" + moduleId + "-list");
             return;
         }
-        redirect("/home");
+        render("/eeda/index/welcome.html");
     }
 
     private static boolean isMobile(HttpServletRequest request) {
@@ -423,7 +423,7 @@ public class MainController extends Controller {
         UserLogin user = LoginUserController.getLoginUser(this);
         Record rec = Db.findFirst("select * from eeda_survey where user_id=?", user.getLong("id"));
         if(rec!=null) {
-            render("/eeda/index/welcome.html");
+            goDefaultPage();
         }else {
             redirect("/survey/step1");
         }
