@@ -633,7 +633,7 @@ public class ModuleController extends Controller {
         Record formRec = Db.findFirst(
                 "select * from eeda_form_define where module_id=?", module_id);
         if("Y".equals(infoMap.get("is_home_index"))){
-        	Db.update("update eeda_form_define set is_home_index = 'N' where is_home_index = 'Y'");
+            Db.update("update eeda_form_define set is_home_index = 'N' where is_home_index = 'Y' and office_id=?", office_id);
         }
         Document doc = Jsoup.parseBodyFragment(tempalteContent);
         Element body = doc.body();
@@ -1597,9 +1597,11 @@ public class ModuleController extends Controller {
      * 检查是否有设为首页的
      */
     public void checkExistIndex(){
-    	String module_id = getPara("module_id");
-    	List<Record> existIndexList = Db.find("select id,name from eeda_form_define where is_home_index='Y' and module_id!=?",module_id);
-    	renderJson(existIndexList);
+        Long officeId = LoginUserController.getLoginUser(this).getLong("office_id");
+        String module_id = getPara("module_id");
+        List<Record> existIndexList = Db.find("select id,name from eeda_form_define where is_home_index='Y' "
+                + "and module_id!=? and office_id=?", module_id, officeId);
+        renderJson(existIndexList);
     }
     /**
      * 获取所有forms
