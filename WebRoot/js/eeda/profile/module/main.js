@@ -1,7 +1,7 @@
-define(['jquery', './list_tree', './fields', './custom_search/custom_search', './template_tab', './btns', './events', './edit_events', './permission', './auth',
-         './print_template/print_template', './interface/interface', './charts/charts', 'zTree', 'layer'], 
+define(['jquery', './list_tree', './fields', './custom_search/custom_search', './template_tab', './btns', './events', './edit_events', 
+         './print_template/print_template', './interface/interface', './charts/charts', 'zTree', 'layer', 'jsplumb'], 
     function ($, listCont, fieldContr, customSearchCont, templateCont, btnsCont, eventsCont,editEventCont, 
-        perCont, authCont, printCont, interfaceCont, chartsCont) {
+         printCont, interfaceCont, chartsCont) {
             console.log('enter module main...');
             
             var saveAction=function(btn, is_start){
@@ -32,8 +32,8 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                     editEvent_update_flag:editEventCont.editEvent_update_flag(),
                     events: eventsCont.buildTreeNodes(),
                     customSearch: customSearchCont.buildDetail(),
-                    permission_list: eeda.buildTableDetail('permission_table', perCont.deletedPermisstionTableIds),
-                    auth_list: authCont.buildAuthTableDetail(),
+                    //permission_list: eeda.buildTableDetail('permission_table', perCont.deletedPermisstionTableIds),
+                    //auth_list: authCont.buildAuthTableDetail(),
                     print_template: printCont.buildPrintTemplateDetail(),
                     interface: interfaceCont.buildDetail(),
                     charts: chartsCont.buildDetail()
@@ -55,11 +55,11 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                         var btn_list_edit = order.BTN_LIST_EDIT;
                         btnsCont.refresh_table(btn_list_query,btn_list_edit);
                         //
-                        var permission_list = order.PERMISSION_LIST;
-                        perCont.refresh_table(permission_list);
+                        //var permission_list = order.PERMISSION_LIST;
+                        //perCont.refresh_table(permission_list);
                         //
-                        var module_role_list = order.MODULE_ROLE_LIST;
-                        authCont.refresh_table(module_role_list);
+                        // var module_role_list = order.MODULE_ROLE_LIST;
+                        // authCont.refresh_table(module_role_list);
                         //
                         var editEventList = order.EDITEVENTLIST;
                         editEventCont.refresh_table(editEventList);

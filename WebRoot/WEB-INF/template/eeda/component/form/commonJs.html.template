@@ -34,7 +34,8 @@
             WdatePicker: '../../theme/H-ui.admin.page3.1.1/lib/My97DatePicker/4.8/WdatePicker',
             mui:'../../lego_app/js/mui.min',
             layui: 'layui/layui',
-            layer: 'layui/layer'
+            layer: 'layui/layer',
+            jsplumb: 'jsplumb/jsplumb-2.9.1.min'
         },
         shim: {
             jquery_ui: {

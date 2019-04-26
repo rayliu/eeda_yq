@@ -64,7 +64,11 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
             }else{
                 
                 console.log('['+btn_id+'] btn click:');
-                var form_define_obj = JSON.parse($("#form_define").text());
+                var form_define_obj = {};
+                if($("#form_define").text()){//list页面没有 form_define
+                    form_define_obj =JSON.parse($("#form_define").text());
+                }
+                    
                 var module_id = $('#module_id').val();
                 var order_id = $('#order_id').val();
                 if(btn_id.split('-').length<=1)

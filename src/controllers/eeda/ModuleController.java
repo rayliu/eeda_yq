@@ -276,11 +276,11 @@ public class ModuleController extends Controller {
         }
         
         // 处理权限点
-        List<Map<String, String>> permission_list = (ArrayList<Map<String, String>>) dto
-                .get("permission_list");
-        handlePermission(permission_list,module_id);
+//        List<Map<String, String>> permission_list = (ArrayList<Map<String, String>>) dto
+//                .get("permission_list");
+//        handlePermission(permission_list,module_id);
         // 处理岗位权限
-        handleAuth(dto, module_id);
+//        handleAuth(dto, module_id);
         // 处理打印模板
         handlePrintTemplate(dto, form_id);
         // 处理数据接口
@@ -378,22 +378,22 @@ public class ModuleController extends Controller {
                 }
                 
                 //以下的处理已作废 2019-04-05
-                String type = (String) event.get("type");
-                if ("open".equals(type)) {
-                    saveEventOpen(event, id);
-                }else if("set_css".equals(type)){
-                    ModuleService ms = new ModuleService(this);
-                    ms.saveEventSetCss(event, id);
-                } else if ("set_value".equals(type)) {
-                    ModuleService ms = new ModuleService(this);
-                    ms.saveEventSetValue(event, rec.getLong("id"));
-                } else if ("list_add_row".equals(type)) {
-                    ModuleService ms = new ModuleService(this);
-                    ms.saveEventListAddRow(event, rec.getLong("id"));
-                }else if("save".equals(type)){
-                	ModuleService ms = new ModuleService(this);
-                	ms.saveEventSaveSetValue(event, rec.getLong("id"));
-                }
+//                String type = (String) event.get("type");
+//                if ("open".equals(type)) {
+//                    saveEventOpen(event, id);
+//                }else if("set_css".equals(type)){
+//                    ModuleService ms = new ModuleService(this);
+//                    ms.saveEventSetCss(event, id);
+//                } else if ("set_value".equals(type)) {
+//                    ModuleService ms = new ModuleService(this);
+//                    ms.saveEventSetValue(event, rec.getLong("id"));
+//                } else if ("list_add_row".equals(type)) {
+//                    ModuleService ms = new ModuleService(this);
+//                    ms.saveEventListAddRow(event, rec.getLong("id"));
+//                }else if("save".equals(type)){
+//                	ModuleService ms = new ModuleService(this);
+//                	ms.saveEventSaveSetValue(event, rec.getLong("id"));
+//                }
                 Db.update("eeda_form_event", rec);
             } else {
 
@@ -417,22 +417,22 @@ public class ModuleController extends Controller {
                 
                 Db.save("eeda_form_event", rec);
 
-                String type = (String) event.get("type");
-                if ("open".equals(type)) {
-                    saveEventOpen(event, rec.getLong("id"));
-                } else if ("set_css".equals(type)) {
-                    ModuleService ms = new ModuleService(this);
-                    ms.saveEventSetCss(event, rec.getLong("id"));
-                } else if ("set_value".equals(type)) {
-                    ModuleService ms = new ModuleService(this);
-                    ms.saveEventSetValue(event, rec.getLong("id"));
-                } else if ("list_add_row".equals(type)) {
-                    ModuleService ms = new ModuleService(this);
-                    ms.saveEventListAddRow(event, rec.getLong("id"));
-                }else if("save".equals(type)){
-                	ModuleService ms = new ModuleService(this);
-                	ms.saveEventSaveSetValue(event, rec.getLong("id"));
-                }
+//                String type = (String) event.get("type");
+//                if ("open".equals(type)) {
+//                    saveEventOpen(event, rec.getLong("id"));
+//                } else if ("set_css".equals(type)) {
+//                    ModuleService ms = new ModuleService(this);
+//                    ms.saveEventSetCss(event, rec.getLong("id"));
+//                } else if ("set_value".equals(type)) {
+//                    ModuleService ms = new ModuleService(this);
+//                    ms.saveEventSetValue(event, rec.getLong("id"));
+//                } else if ("list_add_row".equals(type)) {
+//                    ModuleService ms = new ModuleService(this);
+//                    ms.saveEventListAddRow(event, rec.getLong("id"));
+//                }else if("save".equals(type)){
+//                	ModuleService ms = new ModuleService(this);
+//                	ms.saveEventSaveSetValue(event, rec.getLong("id"));
+//                }
             }
         }
     }
