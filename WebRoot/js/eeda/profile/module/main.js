@@ -1,7 +1,9 @@
 define(['jquery', './list_tree', './fields', './custom_search/custom_search', './template_tab', './btns', './events', './edit_events', 
-         './print_template/print_template', './interface/interface', './charts/charts', 'zTree', 'layer', 'jsplumb'], 
+         './print_template/print_template', './interface/interface', './charts/charts','./flow/flow', 'zTree', 'layer'], 
     function ($, listCont, fieldContr, customSearchCont, templateCont, btnsCont, eventsCont,editEventCont, 
          printCont, interfaceCont, chartsCont) {
+
+    $(document).ready(function(){     
             console.log('enter module main...');
             
             var saveAction=function(btn, is_start){
@@ -302,4 +304,5 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             $("#displayDiv ul[role=tablist] li:first a").click();
 
          });
+    });
 });
