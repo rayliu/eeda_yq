@@ -3,7 +3,10 @@ define(['jquery','bootstrap','dataTablesBootstrap','hui','hui_admin', 'header'],
 $(document).ready(function(){
     //全局：当浏览器改变大小时刷新其底下的 dataTable, 解决表头不齐的问题
     $(window).on('resize', function(){
-        $('table.table').filter(':not(.customized)').DataTable().columns.adjust();
+        var common_table = $('table.table').filter(':not(.customized)');
+        if(common_table){
+            common_table.DataTable().columns.adjust();
+        }
     });
 
     $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) { 
