@@ -1,5 +1,5 @@
 define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, layui) {
-        
+    $(document).ready(function(){    
         document.title = '查询 | ' + document.title;
 
         var module_id=$('#module_id').val();
@@ -89,4 +89,5 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
             var url = '/form/'+$('#form_id').val()+'-doQuery?1=1'+query;
             dataTable.ajax.url(url).load();
         }
+    });
 });

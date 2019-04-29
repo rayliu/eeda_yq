@@ -1,10 +1,7 @@
 define(['jquery',  '../btns', '../add/detail_table', '../event/events','../value_change', '../drop_list_change', 
     '../table_drop_list', '../city_list', 'layer'],
     function ($, btnCont, tableCont, eventCont) {
-//        $(".Hui-aside").Huifold({
-//            titCell:'.menu_dropdown dl dt',
-//            mainCell:'.menu_dropdown dl dd',
-//        });
+    $(document).ready(function(){        
         document.title = '编辑 | ' + document.title;
 
         $(".HuiTab").Huitab({
@@ -104,5 +101,5 @@ define(['jquery',  '../btns', '../add/detail_table', '../event/events','../value
                 }
             } 
         };
-
+    });
 });
