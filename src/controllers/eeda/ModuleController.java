@@ -6,6 +6,7 @@ import interceptor.SetAttrLoginUserInterceptor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -634,18 +635,26 @@ public class ModuleController extends Controller {
                 .get("app_btns");
         List<Map<String, Object>> app_edit_btn_list=(ArrayList<Map<String, Object >>)app_btn_list.get(0)
                 .get("children");
+        
+        //处理删除的按钮
+        List<Long> oldIds= new LinkedList<Long>();
+        List<Record> oldList=Db.find("select id from eeda_form_btn where form_id=?", form_id); 
+        for (Record record : oldList) {
+            oldIds.add(record.getLong("id"));
+        }
+        
+        List<Long> newIds= new LinkedList<Long>();
         for (int i = 0; i < app_edit_btn_list.size(); i++) {
             Map<String, Object> btnNode = (Map<String, Object>)app_edit_btn_list.get(i);
             
-            String btn_id="";
+            long btn_id=0l;
             Object btn_id_obj = btnNode.get("btn_id");
             if (btn_id_obj instanceof java.lang.Double) {
-                btn_id = String.valueOf(((Double) btn_id_obj).longValue());
-            } else {
-                btn_id = (String) btn_id_obj;
+                btn_id = ((Double) btn_id_obj).longValue();
+                newIds.add(btn_id);
             }
             
-            if(StrKit.isBlank(btn_id)) {
+            if(btn_id==0) {
                 String name=(String)btnNode.get("name");
                 String type=(String)btnNode.get("type");
                 Record rec = new Record();
@@ -663,6 +672,11 @@ public class ModuleController extends Controller {
                 rec.set("seq", i);
                 Db.update("eeda_form_btn", rec);
             }
+        }
+        //差集，得到要删除的ids
+        oldIds.removeAll(newIds);
+        for (Long id : oldIds) {
+            Db.deleteById("eeda_form_btn", id);
         }
     }
     

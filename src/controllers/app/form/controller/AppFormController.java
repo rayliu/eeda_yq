@@ -88,6 +88,9 @@ public class AppFormController extends Controller {
                 //edit(form_id, order_id, formRec);
             }else if("view".equals(action)){
                 setAttr("order_id", order_id);
+                List<Record> recList = Db.find(
+                        "select * from eeda_form_btn where form_id=? and type=?", form_id, "app_btn_edit");
+                setAttr("btnList", recList);
             }else if("add".equals(action)){
                 afs.edit(form_id, null, formRec);
             }else if("list".equals(action)){
