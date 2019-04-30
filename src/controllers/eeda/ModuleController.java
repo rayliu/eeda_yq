@@ -269,7 +269,10 @@ public class ModuleController extends Controller {
         if("Y".equals(dto.get("btn_update_flag"))){
             handleBtns(dto, form_id);
         }
-        
+        // 处理按钮
+        if("Y".equals(dto.get("app_btn_update_flag"))){
+            handleAppBtns(dto, form_id);
+        }
         // 处理事件
         if("Y".equals(dto.get("event_update_flag"))||"Y".equals(dto.get("editEvent_update_flag"))){
             handleEvents(dto, form_id);
@@ -623,6 +626,44 @@ public class ModuleController extends Controller {
         List<Map<String, String>> btn_list = (ArrayList<Map<String, String>>) dto
                 .get("btns");
         DbUtils.handleList(btn_list, form_id, FormBtn.class, "form_id");
+    }
+    
+    private void handleAppBtns(Map<String, ?> dto, Long form_id)
+            throws InstantiationException, IllegalAccessException {
+        List<Map<String, Object>> app_btn_list = (ArrayList<Map<String, Object >>) dto
+                .get("app_btns");
+        List<Map<String, Object>> app_edit_btn_list=(ArrayList<Map<String, Object >>)app_btn_list.get(0)
+                .get("children");
+        for (int i = 0; i < app_edit_btn_list.size(); i++) {
+            Map<String, Object> btnNode = (Map<String, Object>)app_edit_btn_list.get(i);
+            
+            String btn_id="";
+            Object btn_id_obj = btnNode.get("btn_id");
+            if (btn_id_obj instanceof java.lang.Double) {
+                btn_id = String.valueOf(((Double) btn_id_obj).longValue());
+            } else {
+                btn_id = (String) btn_id_obj;
+            }
+            
+            if(StrKit.isBlank(btn_id)) {
+                String name=(String)btnNode.get("name");
+                String type=(String)btnNode.get("type");
+                Record rec = new Record();
+                rec.set("form_id", form_id);
+                rec.set("name", name);
+                rec.set("type", type);
+                rec.set("seq", i);
+                Db.save("eeda_form_btn", rec);
+            }else {
+                Record rec = Db.findById("eeda_form_btn", btn_id);
+                String name=(String)btnNode.get("name");
+                String type=(String)btnNode.get("type");
+                rec.set("name", name);
+                rec.set("type", type);
+                rec.set("seq", i);
+                Db.update("eeda_form_btn", rec);
+            }
+        }
     }
     
     @SuppressWarnings("null")
@@ -1125,8 +1166,8 @@ public class ModuleController extends Controller {
         List<Record> structure_list = null;// getStructureRecs(module_id);
         Record formRec = getForm(module_id);
 
-        List<Record> permission_list = getPermissionList(module_id);
-        List<Record> auth_list = getAuthList(module_id);
+//        List<Record> permission_list = getPermissionList(module_id);
+//        List<Record> auth_list = getAuthList(module_id);
         // String search_obj = getSearchObj(module_id);
 
         Record rec = new Record();
@@ -1143,6 +1184,10 @@ public class ModuleController extends Controller {
             rec.set("btn_list_query", btn_list_query);
             List<Record> btn_list_edit = getFormBtns(form_id, "edit");
             rec.set("btn_list_edit", btn_list_edit);
+            
+            List<Record> app_edit_btn_list = getFormBtns(form_id, "app_btn_edit");
+            rec.set("app_edit_btn_list", app_edit_btn_list);
+            
             List<Record> print_template_list = getPrintTemplate(form_id);
             rec.set("print_template_list", print_template_list);
             List<Record> interface_list = getInterface(form_id);
@@ -1158,8 +1203,8 @@ public class ModuleController extends Controller {
         // rec.set("structure_list", structure_list);
         // rec.set("action_list", action_list);
         // rec.set("event_list", event_list);
-        rec.set("permission_list", permission_list);
-        rec.set("auth_list", auth_list);
+//        rec.set("permission_list", permission_list);
+//        rec.set("auth_list", auth_list);
         // rec.set("search_obj", search_obj);
         return rec;
     }

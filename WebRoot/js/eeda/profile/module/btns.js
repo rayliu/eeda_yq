@@ -78,7 +78,7 @@ define(['jquery'], function ($) {
         	}
         } );
 
-        //同时把两个table 的row 都放进去
+        //同时把两个btn table 的row 都放进去处理
         var buildTableDetail = function(){
             var data = list_dataTable.rows().data();
             var itemList = [];

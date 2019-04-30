@@ -34,27 +34,7 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="app_btns" style="padding: 10px;">
-                    <ul class="nav nav-tabs" role="tablist" style="margin-top: 10px;">
-                        <li role="presentation" class="active" >
-                            <a href="#list_toolbar_app" aria-controls="permission" role="tab" data-toggle="tab">
-                                APP查询页按钮栏
-                            </a>
-                        </li>
-                        <li role="presentation" >
-                            <a href="#edit_toolbar_app" aria-controls="permission" role="tab" data-toggle="tab">
-                                APP编辑页按钮栏
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane fade in active" id="list_toolbar_app">
-                            <%include("/profile/module/btns/edit_tab_btns_list_tab_app.html", {}){} %>
-                        </div>
-                        <div class="tab-pane" id="edit_toolbar_app">
-                            <%include("/profile/module/btns/edit_tab_btns_edit_tab_app.html", {}){} %>
-                        </div>
-                        
-                    </div>
+                    <%include("/profile/module/btns/edit_tab_btns_app.html", {}){} %>
                 </div>
             </div>
                 

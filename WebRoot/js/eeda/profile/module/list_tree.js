@@ -1,7 +1,7 @@
-define(['jquery', 'zTree', './fields', './btns', './events', 
+define(['jquery', 'zTree', './fields', './btns', './btns/app_btns', './events', 
     './edit_events', './interface/interface','./custom_search/custom_search',
     './charts/charts', 'layer'], 
-    function ($, tree, fieldCont, btnsCont, eventsCont, editEventCont, intCont
+    function ($, tree, fieldCont, btnsCont, appBtnsCont, eventsCont, editEventCont, intCont
         ,customSearchCont, chartsCont) {
 
     // $(document).ready(function() {
@@ -253,37 +253,39 @@ define(['jquery', 'zTree', './fields', './btns', './events',
                         var field = json.BTN_LIST_EDIT[i];
                         toolbar_edit_table.row.add(field).draw(false);
                     }
+                    //回显app btn树
+                    appBtnsCont.displayAppBtnApp(json.APP_EDIT_BTN_LIST);
                     //回显事件树的按钮列表
                     eventsCont.displayBtnTree();
                     editEventCont.displayBtnTree();
                 }
 
-                var permission_dataTable = $('#permission_table').DataTable();
-                permission_dataTable.clear().draw();
-                for (var i = 0; i < json.PERMISSION_LIST.length; i++) {
-                    var permission = json.PERMISSION_LIST[i];
-                    var permissionItem ={
-                        ID: permission.ID,
-                        CODE: permission.CODE,
-                        NAME: permission.NAME,
-                        URL: permission.URL
-                    };
+                // var permission_dataTable = $('#permission_table').DataTable();
+                // permission_dataTable.clear().draw();
+                // for (var i = 0; i < json.PERMISSION_LIST.length; i++) {
+                //     var permission = json.PERMISSION_LIST[i];
+                //     var permissionItem ={
+                //         ID: permission.ID,
+                //         CODE: permission.CODE,
+                //         NAME: permission.NAME,
+                //         URL: permission.URL
+                //     };
 
-                    permission_dataTable.row.add(permissionItem).draw(false);
-                }
+                //     permission_dataTable.row.add(permissionItem).draw(false);
+                // }
 
-                var auth_dataTable = $('#auth_table').DataTable();
-                auth_dataTable.clear().draw();
-                for (var i = 0; i < json.AUTH_LIST.length; i++) {
-                    var auth = json.AUTH_LIST[i];
-                    var authItem ={
-                        ID: auth.ID,
-                        ROLE_ID: auth.ROLE_ID,
-                        ROLE_PERMISSION: auth.PERMISSION_LIST
-                    };
+                // var auth_dataTable = $('#auth_table').DataTable();
+                // auth_dataTable.clear().draw();
+                // for (var i = 0; i < json.AUTH_LIST.length; i++) {
+                //     var auth = json.AUTH_LIST[i];
+                //     var authItem ={
+                //         ID: auth.ID,
+                //         ROLE_ID: auth.ROLE_ID,
+                //         ROLE_PERMISSION: auth.PERMISSION_LIST
+                //     };
 
-                    auth_dataTable.row.add(authItem).draw(false);
-                }
+                //     auth_dataTable.row.add(authItem).draw(false);
+                // }
 
                 var print_template_dataTable = $('#print_template_table').DataTable();
                 print_template_dataTable.clear().draw();

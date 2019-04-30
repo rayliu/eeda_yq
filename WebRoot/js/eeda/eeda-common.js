@@ -4,7 +4,7 @@ $(document).ready(function(){
     //全局：当浏览器改变大小时刷新其底下的 dataTable, 解决表头不齐的问题
     $(window).on('resize', function(){
         var common_table = $('table.table').filter(':not(.customized)');
-        if(common_table){
+        if(!(common_table && common_table.length && common_table.length>0)){
             common_table.DataTable().columns.adjust();
         }
     });

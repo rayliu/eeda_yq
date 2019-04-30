@@ -1,6 +1,6 @@
-define(['jquery', './list_tree', './fields', './custom_search/custom_search', './template_tab', './btns', './events', './edit_events', 
+define(['jquery', './list_tree', './fields', './custom_search/custom_search', './template_tab', './btns', './btns/app_btns', './events', './edit_events', 
          './print_template/print_template', './interface/interface', './charts/charts','./flow/flow', 'zTree', 'layer'], 
-    function ($, listCont, fieldContr, customSearchCont, templateCont, btnsCont, eventsCont,editEventCont, 
+    function ($, listCont, fieldContr, customSearchCont, templateCont, btnsCont, appBtnCont, eventsCont, editEventCont, 
          printCont, interfaceCont, chartsCont) {
 
     $(document).ready(function(){     
@@ -30,6 +30,8 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                     app_template_content: app_ue.getContent(),
                     btn_update_flag: btnsCont.btn_update_flag(),
                     btns: btnsCont.buildTableDetail(),
+                    app_btn_update_flag: appBtnCont.btn_update_flag(),
+                    app_btns: appBtnCont.buildDto(),
                     event_update_flag:eventsCont.listEvent_update_flag(),
                     editEvent_update_flag:editEventCont.editEvent_update_flag(),
                     events: eventsCont.buildTreeNodes(),
