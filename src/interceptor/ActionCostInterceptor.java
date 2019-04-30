@@ -15,15 +15,15 @@ public class ActionCostInterceptor implements Interceptor {
         long end = System.currentTimeMillis();
         long renderTime = end - start;
         logger.info(ai.getControllerKey()+"."+ai.getMethodName()+" action cost:"+renderTime+"ms");
-//        String url = ai.getControllerKey();
-//        if(url.indexOf("/app")>-1) {
-//            String userAgent = ai.getController().getRequest().getHeader("User-Agent")!=null?ai.getController().getRequest().getHeader("User-Agent").toLowerCase():"";
-//            boolean isWeiXin = false;
-//            if(!(userAgent.indexOf("micromessenger")>-1)){
-//                ai.getController().render("/lego_app/weiXinError.html");
-//                return;
-//            }
-//        }
+        String url = ai.getControllerKey();
+        if(url.indexOf("/app")>-1) {
+            String userAgent = ai.getController().getRequest().getHeader("User-Agent")!=null?ai.getController().getRequest().getHeader("User-Agent").toLowerCase():"";
+            boolean isWeiXin = false;
+            if(!(userAgent.indexOf("micromessenger")>-1)){
+                ai.getController().render("/lego_app/weiXinError.html");
+                return;
+            }
+        }
     }
 
 }
