@@ -1,25 +1,8 @@
 package config;
 
-import handler.UrlHanlder;
-import interceptor.ActionCostInterceptor;
-
 import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 import java.sql.SQLException;
-
-import models.Location;
-import models.Office;
-import models.Permission;
-import models.Role;
-import models.RolePermission;
-import models.UserLogin;
-import models.UserOffice;
-import models.UserRole;
-import models.eeda.Field;
-import models.eeda.FormBtn;
-import models.eeda.FormEvent;
-import models.eeda.profile.Module;
-import models.eeda.profile.ModuleRole;
-import models.eeda.profile.OfficeConfig;
 
 import org.apache.log4j.Logger;
 import org.beetl.ext.jfinal.BeetlRenderFactory;
@@ -48,6 +31,22 @@ import controllers.app.main.controller.AppControllerForMobile;
 import controllers.eeda.FormController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
+import handler.UrlHanlder;
+import interceptor.ActionCostInterceptor;
+import models.Location;
+import models.Office;
+import models.Permission;
+import models.Role;
+import models.RolePermission;
+import models.UserLogin;
+import models.UserOffice;
+import models.UserRole;
+import models.eeda.Field;
+import models.eeda.FormBtn;
+import models.eeda.FormEvent;
+import models.eeda.profile.Module;
+import models.eeda.profile.ModuleRole;
+import models.eeda.profile.OfficeConfig;
 
 public class EedaConfig extends JFinalConfig {
     private Logger logger = Logger.getLogger(EedaConfig.class);
@@ -58,9 +57,9 @@ public class EedaConfig extends JFinalConfig {
       
     public static String mailUser;
     public static String mailPwd;
+    public static boolean isLocalhost=false;
     
     /**
-     * 
      * 供Shiro插件使用 。
      */
     Routes routes;
@@ -76,10 +75,8 @@ public class EedaConfig extends JFinalConfig {
         
         me.setDevMode(getPropertyToBoolean("devMode", false));
         
-    	// 微信 ApiConfigKit 设为开发模式可以在开发阶段输出请求交互的 xml 与 json 数据
-    	ApiConfigKit.setDevMode(me.getDevMode());
-        
-    	
+        // 微信 ApiConfigKit 设为开发模式可以在开发阶段输出请求交互的 xml 与 json 数据
+        ApiConfigKit.setDevMode(me.getDevMode());
 
         BeetlRenderFactory templateFactory = new BeetlRenderFactory();
         me.setMainRenderFactory(templateFactory);
@@ -102,6 +99,22 @@ public class EedaConfig extends JFinalConfig {
         // get pid
         String pid = name.split("@")[0];
         logger.info("Pid is: " + pid);
+        
+     // 操作系统信息
+        OperatingSystemMXBean operateSystemMBean = ManagementFactory
+                .getOperatingSystemMXBean();
+        String operateName = operateSystemMBean.getName();
+        logger.info("操作系统: " + operateName);
+        int processListCount = operateSystemMBean.getAvailableProcessors();
+        logger.info("CPU 内核数量: " + processListCount);
+        String archName = operateSystemMBean.getArch();
+        logger.info("系统架构: " + archName);
+        String versionName = operateSystemMBean.getVersion();
+        logger.info("系统版本号: " + versionName);
+
+        if(operateName.indexOf("Mac")>-1) {
+            isLocalhost=true;
+        }
     }
 
     @Override
