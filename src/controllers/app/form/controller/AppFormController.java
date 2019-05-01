@@ -171,21 +171,17 @@ public class AppFormController extends Controller {
     
     private Map<String,Object> queryForm(Long form_id){
         List<Record> orderList = new ArrayList<Record>();
-        
-        //两种参数写法, 第一种为空就换第二种再试
-        String condition = DbUtils.buildConditions(getParaMap());
-        if(StrKit.isBlank(condition) && StrKit.notBlank(getPara("target_field")) && StrKit.notBlank(getPara("like_str"))){
-            String fields = getPara("target_field");
-            String like_str = getPara("like_str");
-            String[] fieldsArr = fields.split(",");
-            List<String> list = new ArrayList<String>();
-            for (int i = 0; i < fieldsArr.length; i++) {
-                String fieldName=fieldsArr[i];
-                String likeStr = fieldName+" like '%"+like_str+"%'";
-                list.add(likeStr);
-            }
-            condition=" and ("+StringUtils.join(list.toArray(), " or ") +")";
+        String str = (getPara("s")==null?"":getPara("s"));
+        //获取APP查询列
+        String condition = "";
+        List<Record> colList = Db.find("select * from eeda_form_field where form_id=? and app_display_col='Y'", form_id);
+        for (Record colRec : colList) {
+            String colName = "f"+colRec.getLong("id")+"_"+colRec.getStr("field_name");
+            String likeStr = colName+" like '%"+str+"%'";
+            condition = " and "+likeStr;
         }
+        
+        
         String sLimit = "";
         String pageIndex = getPara("draw");
         if (getPara("start") != null && getPara("length") != null) {
