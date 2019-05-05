@@ -180,12 +180,18 @@ public class AppFormController extends Controller {
                         value = sdf_datetime.format(datetime);
                         break;
                     case "字段引用":
-                       
                         Record field_ref=fs.processFieldType_ref(form_name, fieldRec, field_rec.getLong("id"), office_id);
                         fieldRec.set("field_ref", field_ref);
                         break;
                     case "下拉列表":
                         List<Record> item_list=fs.processFieldType_dropdown(form_name, fieldRec, field_rec.getLong("id"));
+                        fieldRec.set("item_list", item_list);
+                        break;
+                    case "复选框":
+                        Record checkBox = Db.findFirst(
+                                "select * from eeda_form_field_type_checkbox where field_id=?", field_rec.getLong("id"));
+                        fieldRec.set("is_single_check", checkBox.get("is_single_check"));
+                        item_list=fs.processFieldType_checkbox(form_name, fieldRec, field_rec.getLong("id"));
                         fieldRec.set("item_list", item_list);
                         break;
                     default:

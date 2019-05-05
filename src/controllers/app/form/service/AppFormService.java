@@ -269,4 +269,10 @@ public class AppFormService {
 //        returnStr+=dropdownStr;
         return dropdown_list;
     }
+    
+    public List<Record> processFieldType_checkbox(String form_name, Record fieldRec, Long field_id){
+        List<Record> itemList = Db.find(
+                "select * from eeda_form_field_type_checkbox_item where field_id=?", field_id);
+        return itemList;
+    }
 }

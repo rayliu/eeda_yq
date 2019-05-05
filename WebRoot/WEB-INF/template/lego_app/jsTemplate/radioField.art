@@ -2,15 +2,12 @@
     <div class="mui-input-row" style="height: auto;">
         <label>{{display_name}}</label>
         <div class="mui-card" style="margin: 5px 15px;">
+            {{each item_list}}
                 <div class="mui-input-row mui-radio">
-                    <label>radio</label>
-                    <input name="{{name}}" type="radio">
+                    <label>{{$value.NAME}}</label>
+                    <input name="{{name}}" value="{{$value.NAME}}" type="radio" {{if value==$value.NAME}} checked {{/if}}>
                 </div>
-                <div class="mui-input-row mui-radio">
-                    <label>radio</label>
-                    <input name="{{name}}" type="radio" checked="">
-                </div>
-            
+            {{/each}}
         </div>
     </div>
 </script> 

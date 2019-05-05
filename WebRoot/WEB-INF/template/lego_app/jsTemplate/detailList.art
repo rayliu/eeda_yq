@@ -1,7 +1,7 @@
 <script type="text/templete" id="detail_list_field">
     <li class="mui-table-view-cell">
-		<a class="mui-navigate-right" href="{{value}}">
-			{{display_name}}
-		</a>
-	</li>
+    <a class="mui-navigate-right" href="{{value}}">
+           <label>{{display_name}}</label>
+    </a>
+  </li>
 </script> 
