@@ -2,6 +2,7 @@
     if(showSideMenu=="Y")
         page='layoutSideMenu.html';
     layout("/lego_app/layout/"+page){%>
+        <link href="/lego_app/css/mui.picker.min.css" rel="stylesheet" />
     <!--侧滑菜单部分-->       
     <header class="mui-bar mui-bar-nav" style="padding-right: 15px;">
         <%if(showSideMenu=="Y"){%>
@@ -19,20 +20,35 @@
         <div id="action_popover" class="mui-popover">
             <ul class="mui-table-view"> 
                 <%for(btn in btnList![]){%>
-                    <li class="mui-table-view-cell"><a id="form_${btn.form_id}-btn_${btn.id}" href="#">${btn.name!''}</a></li>
+                    <li class="mui-table-view-cell"><a id="form_${btn.form_id}-btn_${btn.id}" btn_id="${btn.id}" href="#">${btn.name!''}</a></li>
                 <%}%>
             </ul>
         </div>
     <%}%>
+    <!-- 动态组件  popup 超过7个就要跳去选择页 -->
+    <div id="popover" class="mui-popover">
+        <ul class="mui-table-view" >
+            <li class="mui-table-view-cell"><a href="#">Item1</a></li>
+            <li class="mui-table-view-cell"><a href="#">Item2</a></li>
+            <li class="mui-table-view-cell"><a href="#">Item3</a></li>
+            <li class="mui-table-view-cell"><a href="#">Item4</a></li>
+            <li class="mui-table-view-cell"><a href="#">Item5</a></li>
+            <li class="mui-table-view-cell"><a href="#">Item6</a></li>
+            <li class="mui-table-view-cell"><a href="#">Item7</a></li>
+        </ul>
+    </div>
+    <!-- 动态组件 -->
+
     <div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
-        <input type="hidden" id="module_id" value="${module_id!''}">
-        <input type="hidden" id="form_id" value="${form_id!''}">
-        <input type="hidden" id="order_id" value="${order_id!''}">
+        
         <div class="mui-scroll" style="padding-left: 10%;">
                 ${form_content!''}
         </div>
         
-        <form class="mui-input-group">
+        <form id="module_form" class="mui-input-group">
+            <input type="hidden" id="module_id" name="module_id" value="${module_id!''}">
+            <input type="hidden" id="form_id" name="form_id" value="${form_id!''}">
+            <input type="hidden" id="order_id" name="order_id" value="${order_id!''}">
             <div id="form_fields">
                 <!-- 字段 -->
                 <!-- 你也许需要才能看到数据刷新本页 -->
@@ -40,10 +56,17 @@
             <ul id="app_form_list" class="mui-table-view mui-table-view-chevron">
                 
             </ul>
+
         </form>
+        
     </div>
     <!-- off-canvas backdrop -->
     <div class="mui-off-canvas-backdrop"></div>
+
+    <%include("/lego_app/jsTemplate/dropdownField.art",{}){} %>
+    <%include("/lego_app/jsTemplate/checkboxField.art",{}){} %>
+    <%include("/lego_app/jsTemplate/radioField.art",{}){} %>
+    <%include("/lego_app/jsTemplate/selectField.art",{}){} %>
     <%include("/lego_app/jsTemplate/inputField.art",{}){} %>
     <%include("/lego_app/jsTemplate/detailList.art",{}){} %>
 <%}%>

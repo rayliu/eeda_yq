@@ -86,7 +86,7 @@ define(['jquery', 'zTree'], function ($) {
         var treeObj=$.fn.zTree.getZTreeObj('app_btn_tree');
         return treeObj.getNodes();
     }
-    var app_event_update_flag = function(){
+    var btn_update_flag = function(){
         return update_flag;
     }
 
@@ -104,12 +104,12 @@ define(['jquery', 'zTree'], function ($) {
             { name:"编辑页按钮", isParent:true, children: newNodes}
         ];
     
-        zTreeObj = $.fn.zTree.init($("#app_event_tree"), setting, zNodes);
+        zTreeObj = $.fn.zTree.init($("#app_btn_tree"), setting, zNodes);
         zTreeObj.expandAll(true);
     }
     return{
         buildDto: buildDto,
-        app_event_update_flag:app_event_update_flag,
+        btn_update_flag:btn_update_flag,
         displayAppBtnApp: displayAppBtnApp
     }
 });

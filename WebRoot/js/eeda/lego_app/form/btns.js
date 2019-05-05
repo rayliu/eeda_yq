@@ -1,4 +1,119 @@
 define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
+    $(document).ready(function(){
+    $('#action_popover a').click(function(){
+        var btn_id=$(this).attr('btn_id');
+        var module_id = $('#module_id').val();
+        var order_id = $('#order_id').val();
+        $.post('/form/'+module_id+'-click-'+btn_id,{order_id:order_id}, function(results){
+            console.log(results);
+            if(results.ERROR_CODE==500){
+                mui.alert('操作失败,请刷新页面或联系客服查看错误。');
+                return;
+            }
+            if(!results) return;
+            for (var i = 0; i < results.length; i++) {
+                var result = results[i];
+                var event_id = results[i].ID;
+                var form_id = results[i].FORM_ID
+                var event_json = results[i].EVENT_JSON;
+                if(!event_json) continue;
+                var event = JSON.parse(event_json)[0];
+                var condition = "";//TODO:
+                var actions=event.children;
+                for (var j = 0; j < actions.length; j++) {
+                    var action = actions[j];
+                    var action_type=action.action_type;
+                    console.log('action_type='+action_type);
+                    switch (action_type) {
+                        case 'open_link'://打开链接
+                            var event_action_setting=action.event_action_setting;
+                            var radio_open_link=event_action_setting.radio_open_link;
+                            switch (radio_open_link) {//打开链接有四种情况
+                                case 'open_form':
+                                    var module_id = event_action_setting.module_id;
+                                    var url = '/form/'+module_id+'-list';
+                                    if(event_action_setting.open_form_type=='edit'){
+                                        url = '/form/'+module_id+'-add';
+                                    }else{
+                                        url = '/form/'+module_id+'-list';
+                                    }
+                                    if(event_action_setting.open_link_type == 'new'){
+                                        window.open(url);
+                                    }else if(event_action_setting.open_link_type = 'current'){
+                                        window.location.href=url;
+                                    }
+                                    break;
+                                case 'reload':
+                                    //window.location.reload();
+                                    break
+                                default:
+                                    break;
+                            }
+                            break;
+                        case 'element_set_text':
+                            element_set_text_cont.handle(action);
+                            break;
+                        case 'element_set_droplist':
+                            element_set_enable_cont.handle(action);
+                            break;
+                        case 'save_form'://保存表单
+                            var $form = $("#module_form");
+
+                            //保存前处理，APP的处理与PC端的略有不同
+                            //event_cont.handle('event_before_save_form', form_define_obj);
+
+                            var data = getFormData($form);
+                            console.log(data);
+                            if(order_id==-1){
+                                doAdd(data);
+                            }else{
+                                if(event.TYPE == "set_value"){
+                                    data.type = "set_value";
+                                    data.event_id = event.ID;                         		
+                                    data.form_id = event.FORM_ID.toString();
+                                }else{
+                                    data.TYPE = "save";
+                                    data.event_id = event_id;                         		
+                                    data.form_id = form_id;
+                                }
+                                doUpdate(data);
+                            }        
+                            break;
+                        case 'form_set_value'://表单赋值
+                            break;
+                        case 'print':
+                            var template_list = result.TEMPLATE_LIST;
+                            $('#template_list').empty();
+                            $.each(template_list, function(index, item) {
+                                var html ='<div class="radio" style="width:100px;cursor: pointer;">'
+                                        +'	<input type="radio" name="template_id" value="'+item.ID+'" checked>'+item.NAME
+                                        +'	<pre id="template_content_'+item.ID +'" style="display:none;">'+item.CONTENT+'</pre>'
+                                        +'</div>';
+                                $('#template_list').append(html);
+                            });
+                            $('#print_template_list').modal('show');
+                            break; 
+                        case 'element_set_enable':
+                            element_set_enable_cont.handle(action);
+                            break;
+                        case 'table_add_row'://表格新增一行
+                            var event_action_setting=action.event_action_setting;
+                            var target_table_id = "detail_table_"+event_action_setting.target_table_field_id;
+                            var dataTable = $('#'+target_table_id).DataTable();
+                            dataTable.row.add({}).draw(false);
+                            break; 
+                        default:
+                            event_cont.handle(action_type, form_define_obj);
+                            break;
+                    }
+                }
+            }//end of for
+            
+        });
+        mui('#action_popover').popover('hide');
+    });
+
+    //old from pc
 	$.fn.serializeObject = function () {
 	    var o = {};
 	    var a = this.serializeArray();
@@ -32,7 +147,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
 	};
 	var deleteList=[];
         //按钮事件响应
-        $('body').on('click', 'button', function(event) {
+        $('body').on('click', 'button111', function(event) {
             event.preventDefault();
             var btn = $(this);
             var btn_id = btn.attr('id');
@@ -190,7 +305,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                     var url = '/form/'+data.module_id+'-edit-'+dto.ID;
                     window.location.href=url;
                 }else{
-                    $('.Huialert-error').show();
+                    mui.alert('操作失败,请刷新页面或联系客服查看错误。');
                 }
             });
         }
@@ -218,10 +333,10 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
              	        }
                 	}
                 	  
-                    $('.Huialert-success').show();
+                    mui.alert('操作成功。');
                     
                 }else{
-                    $('.Huialert-error').show();
+                    mui.alert('操作失败,请刷新页面或联系客服查看错误。');
                 }
             });
         }
@@ -289,4 +404,5 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
         	img.is_delete = "Y";
         	imgDeleteIds.push(img);
         });
+    });
 });

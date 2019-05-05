@@ -1,12 +1,14 @@
 package controllers.app.form.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.jsoup.Jsoup;
@@ -26,14 +28,16 @@ import controllers.form.FormService;
 import controllers.form.FormTableConfigService;
 import controllers.form.FormUtil;
 import controllers.profile.LoginUserController;
-import controllers.util.DbUtils;
 import interceptor.SetAttrLoginUserInterceptor;
 import models.UserLogin;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
 public class AppFormController extends Controller {
-
+    SimpleDateFormat sdf_datetime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+            Locale.CHINESE);
+    SimpleDateFormat sdf_date = new SimpleDateFormat("yyyy-MM-dd",
+            Locale.CHINESE);
     private Logger logger = Logger.getLogger(AppFormController.class);
     
     public void index() throws Exception{
@@ -84,9 +88,7 @@ public class AppFormController extends Controller {
         
         if(!action.startsWith("do")){
             AppFormService afs = new AppFormService(this);
-            if("edit".equals(action)){
-                //edit(form_id, order_id, formRec);
-            }else if("view".equals(action)){
+            if("edit".equals(action) || "view".equals(action)){
                 setAttr("order_id", order_id);
                 List<Record> recList = Db.find(
                         "select * from eeda_form_btn where form_id=? and type=?", form_id, "app_btn_edit");
@@ -159,9 +161,31 @@ public class AppFormController extends Controller {
                 fieldRec.set("value", "/app/form/"+module_id+"-detailList-"+order_id+"-"+field_rec.getLong("id"));//link
                 fieldList.add(fieldRec);
             }else if(orderRec.get(field_name.toUpperCase())!=null){
-                value= orderRec.get(field_name.toUpperCase()).toString();
+                fieldRec.set("id", field_rec.getLong("id"));
+                fieldRec.set("field_name", field_rec.getStr("field_name"));
+                value=orderRec.get(field_name.toUpperCase()).toString();
                 fieldRec.set("display_type", "field");
                 fieldRec.set("display_name", field_rec.getStr("field_display_name"));
+                fieldRec.set("field_type", field_rec.getStr("field_type"));
+                String fieldType=field_rec.getStr("field_type");
+                switch (fieldType) {
+                    case "日期":
+                        Date date = orderRec.getDate(field_name.toUpperCase());
+                        value = sdf_date.format(date);
+                        break;
+                    case "日期时间":
+                        Date datetime = orderRec.getDate(field_name.toUpperCase());
+                        value = sdf_datetime.format(datetime);
+                        break;
+                    case "字段引用":
+                        AppFormService fs = new AppFormService(this);
+                        Record field_ref=fs.processFieldType_ref(form_name, fieldRec, field_rec.getLong("id"), office_id);
+                        fieldRec.set("field_ref", field_ref);
+                        break;
+                    default:
+                        break;
+                }
+                
                 fieldRec.set("value", value);
                 fieldList.add(fieldRec);
             }

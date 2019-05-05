@@ -18,7 +18,7 @@ define(['jquery', 'template', 'mui', '../btns'], function ($, template, mui) {
             result.data.forEach(element => {
                 var str = template('app_form_list_item', { 
                     "value":element[field_col_name.toUpperCase()],
-                    "link":"/app/form/"+module_id+"-view-"+element['ID']
+                    "link":"/app/form/"+module_id+"-edit-"+element['ID']
                 }); 
                 app_form_list.append(str); 
             });
@@ -35,7 +35,7 @@ define(['jquery', 'template', 'mui', '../btns'], function ($, template, mui) {
                 result.data.forEach(element => {
                     var str = template('app_form_list_item', { 
                         "value":element[field_col_name.toUpperCase()],
-                        "link":"/app/form/"+module_id+"-view-"+element['ID']
+                        "link":"/app/form/"+module_id+"-edit-"+element['ID']
                     }); 
                     app_form_list.append(str); 
                 });

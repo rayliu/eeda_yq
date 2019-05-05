@@ -1,10 +1,10 @@
 <div class="form-group">
     <div class="col-lg-12">
             <ul class="nav nav-tabs" role="tablist" style="margin-top: 10px;">
-                <li role="presentation" class="active" >
+                <li role="presentation" class="active" data="pc">
                     <a href="#pc_events" aria-controls="permission" role="tab" data-toggle="tab">PC</a>
                 </li>
-                <li role="presentation" >
+                <li role="presentation"  data="app">
                     <a href="#app_events" aria-controls="permission" role="tab" data-toggle="tab">APP</a>
                 </li>
             </ul>
@@ -32,10 +32,15 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="app_events" style="padding: 10px;">
-                    企业正式版方可使用
+                    <div class="col-lg-2">
+                        <section class='left'>
+                            <ul id="app_event_tree" class="ztree"></ul>
+                        </section>
+                    </div>
+                    <div class="col-lg-10">
+                        <%include("/profile/module/events/list_tab_property.html", {type:'app_edit'}){} %>
+                    </div>
                 </div>
             </div>
-            
-        
     </div>
 </div>

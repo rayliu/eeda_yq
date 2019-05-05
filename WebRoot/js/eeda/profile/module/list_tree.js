@@ -255,9 +255,11 @@ define(['jquery', 'zTree', './fields', './btns', './btns/app_btns', './events',
                     }
                     //回显app btn树
                     appBtnsCont.displayAppBtnApp(json.APP_EDIT_BTN_LIST);
+                    
                     //回显事件树的按钮列表
                     eventsCont.displayBtnTree();
                     editEventCont.displayBtnTree();
+                    appBtnsCont.displayAppBtnApp(json.APP_EDIT_BTN_LIST);
                 }
 
                 // var permission_dataTable = $('#permission_table').DataTable();

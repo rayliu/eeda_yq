@@ -201,14 +201,22 @@ define(['jquery', './event_formular_pop_action', './event_formular_pop_condition
                 view: { selectedMulti: false},
                 edit: { enable: false}
             };
-            var data=$('#pc_events li.active').attr('data');
-            if('list_events'==data){
-                $.fn.zTree.init($("#list_event_tree"), action_setting, nodes);
-                $('#list_event_action_json').val(nodes_json);
+
+            var tab = $('#events li.active').attr('data');
+            if(tab=='pc'){
+                var data=$('#pc_events li.active').attr('data');
+                if('list_events'==data){
+                    $.fn.zTree.init($("#list_event_tree"), action_setting, nodes);
+                    $('#list_event_action_json').val(nodes_json);
+                }else{
+                    $.fn.zTree.init($("#edit_event_tree"), action_setting, nodes);
+                    $('#edit_event_action_json').val(nodes_json);
+                }
             }else{
-                $.fn.zTree.init($("#edit_event_tree"), action_setting, nodes);
-                $('#edit_event_action_json').val(nodes_json);
+                $.fn.zTree.init($("#app_edit_event_tree"), action_setting, nodes);
+                $('#app_edit_event_action_json').val(nodes_json);
             }
+            
             $('#formular_edit_modal').modal('hide');
         });
 

@@ -33,6 +33,7 @@
             hui_admin: '../../theme/H-ui.admin.page3.1.1/static/h-ui.admin/js/H-ui.admin.page',
             WdatePicker: '../../theme/H-ui.admin.page3.1.1/lib/My97DatePicker/4.8/WdatePicker',
             mui:'../../lego_app/js/mui.min',
+            mui_picker:'../../lego_app/js/mui.picker.min',
             layui: 'layui/layui',
             layer: 'layui/layer',
             jsplumb: 'jsplumb/jsplumb-2.9.1.min'
@@ -103,6 +104,13 @@
             },
             layer:{
                     deps: ['jquery']
+            },
+            mui_picker:{
+                    deps: ['mui']
+            },
+            jsplumb:{
+                deps: ['jquery', 'jquery_ui'],
+                exports: 'jsPlumb'
             },
             eeda_common:{
                 deps: ['jquery','bootstrap','dataTablesBootstrap','WdatePicker','hui','hui_admin']

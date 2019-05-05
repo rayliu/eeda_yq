@@ -1,5 +1,5 @@
-define(['jquery', 'zTree', './events/formular_open_form', './edit_events']
-  , function ($,zTree,openFormCont,editEventsCont) {
+define(['jquery', 'zTree', './events/formular_open_form', './edit_events','./events/app_event/app_event']
+  , function ($,zTree,openFormCont,editEventsCont, appEventCont) {
     
     //---------------tree handle
     var setting = {
@@ -167,31 +167,33 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events']
     };
 
     var displayBtnTree=function(){
-      update_flag = "N";
-      delete_node_ids = [];
-      var btns = [];
-      $.post('/module/searchFormBtns', {form_id: $('#form_id').val(), type:'list'}, 
-          function(data){
-              if(data && data.TOOL_BAR_BTNS){
-                var tool_bar_btns = data.TOOL_BAR_BTNS;
-                for (var i=0; i<tool_bar_btns.length; i++) {
-                    var btn = tool_bar_btns[i];
-                    var node = {
-                      id:btn.ID,
-                      formId: btn.FORM_ID,
-                      name: btn.NAME,
-                      isParent:true
-                    };
-                    btns.push(node);
-                }
-                var zNodes = [
-                   { name:"工具栏按钮", isParent:true, open: true, children: btns}
-                ];
+        update_flag = "N";
+        delete_node_ids = [];
+        var btns = [];
+        $.post('/module/searchFormBtns', {form_id: $('#form_id').val(), type:'list'}, 
+            function(data){
+                if(data && data.TOOL_BAR_BTNS){
+                  var tool_bar_btns = data.TOOL_BAR_BTNS;
+                  for (var i=0; i<tool_bar_btns.length; i++) {
+                      var btn = tool_bar_btns[i];
+                      var node = {
+                        id:btn.ID,
+                        formId: btn.FORM_ID,
+                        name: btn.NAME,
+                        isParent:true
+                      };
+                      btns.push(node);
+                  }
+                  var zNodes = [
+                    { name:"工具栏按钮", isParent:true, open: true, children: btns}
+                  ];
 
-                 zTreeObj = $.fn.zTree.init($("#listEventTree"), setting, zNodes);
-              }
-          },
-          'json');
+                  zTreeObj = $.fn.zTree.init($("#listEventTree"), setting, zNodes);
+                }
+            },
+            'json');
+        //回显app的event tree
+        appEventCont.displayAppEventTree();
     }
     
     var zTreeObj; 

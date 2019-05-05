@@ -1,6 +1,6 @@
 define(['jquery', './list_tree', './fields', './custom_search/custom_search', './template_tab', './btns', './btns/app_btns', './events', './edit_events', 
-         './print_template/print_template', './interface/interface', './charts/charts','./flow/flow', 'zTree', 'layer'], 
-    function ($, listCont, fieldContr, customSearchCont, templateCont, btnsCont, appBtnCont, eventsCont, editEventCont, 
+         './events/app_event/app_event', './print_template/print_template', './interface/interface', './charts/charts','./flow/flow', 'zTree', 'layer'], 
+    function ($, listCont, fieldContr, customSearchCont, templateCont, btnsCont, appBtnCont, eventsCont, editEventCont, appEventsCont,
          printCont, interfaceCont, chartsCont) {
 
     $(document).ready(function(){     
@@ -35,6 +35,8 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                     event_update_flag:eventsCont.listEvent_update_flag(),
                     editEvent_update_flag:editEventCont.editEvent_update_flag(),
                     events: eventsCont.buildTreeNodes(),
+                    app_event_update_flag:appEventsCont.isAppEventUpdated(),
+                    app_events: appEventsCont.buildDto(),
                     customSearch: customSearchCont.buildDetail(),
                     //permission_list: eeda.buildTableDetail('permission_table', perCont.deletedPermisstionTableIds),
                     //auth_list: authCont.buildAuthTableDetail(),

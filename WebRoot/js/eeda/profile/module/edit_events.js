@@ -1,7 +1,7 @@
 define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_set_css', './events/edit/type_set_value','./events/edit/type_save_set_value'],
    function ($, tree, eventPopCont, setCssCont, setValueCont,saveSetValueCont) {
     
-    $('#list_addEventBtn,#edit_addEventBtn, #addEventBtn1').click(function(){
+    $('#list_addEventBtn,#edit_addEventBtn, #addEventBtn1, #app_edit_addEventBtn').click(function(){
         $('.event_config').hide();
         var data_type = $(this).attr('data_type');
         var event_action_json = $('#'+data_type+'_event_action_json').val();

@@ -278,7 +278,9 @@ public class ModuleController extends Controller {
         if("Y".equals(dto.get("event_update_flag"))||"Y".equals(dto.get("editEvent_update_flag"))){
             handleEvents(dto, form_id);
         }
-        
+        if("Y".equals(dto.get("app_event_update_flag"))){
+            handleAppEvents(dto, form_id);
+        }
         // 处理权限点
 //        List<Map<String, String>> permission_list = (ArrayList<Map<String, String>>) dto
 //                .get("permission_list");
@@ -437,6 +439,59 @@ public class ModuleController extends Controller {
 //                	ModuleService ms = new ModuleService(this);
 //                	ms.saveEventSaveSetValue(event, rec.getLong("id"));
 //                }
+            }
+        }
+    }
+    
+    private void handleAppEvents(Map<String, ?> dto, Long form_id)
+            throws InstantiationException, IllegalAccessException {
+        
+//        List<Double > deleted_event_list = map.get("node_delete_ids");
+//        for (Double  id : deleted_event_list) {
+//            Db.deleteById("eeda_form_event", id.longValue());
+//            //TODO:还要删掉子表的数据
+//        }
+        
+        List<Map<String, Object>> app_btn_list = (ArrayList<Map<String, Object >>) dto
+                .get("app_events");
+        List<Map<String, Object>> app_edit_btn_list=(ArrayList<Map<String, Object >>)app_btn_list.get(0)
+                .get("children");
+        for (int i = 0; i < app_edit_btn_list.size(); i++) {//btn下的children才是event
+            Map<String, Object> btnNode = (Map<String, Object>)app_edit_btn_list.get(i);
+            
+            List<Map<String, Object>> app_btn_event_list=(ArrayList<Map<String, Object >>)btnNode
+                    .get("children");
+            if(app_btn_event_list==null) continue;
+            for (int j = 0; j < app_btn_event_list.size(); j++) {
+                Map<String, Object> eventNode = (Map<String, Object>)app_btn_event_list.get(j);
+                long event_id=0l;
+                Object event_id_obj = eventNode.get("btn_id");
+                if (event_id_obj instanceof java.lang.Double) {
+                    event_id = ((Double) event_id_obj).longValue();
+    //                newIds.add(btn_id);
+                }
+                
+                if(event_id==0) {
+                    Record rec = new Record();
+                    rec.set("name", eventNode.get("name"));
+                    rec.set("type", eventNode.get("type"));
+                    rec.set("form_id", form_id);
+                    rec.set("btn_id", btnNode.get("btn_id"));
+                    rec.set("menu_type", eventNode.get("menu_type"));
+                    rec.set("event_action", eventNode.get("event_action".toUpperCase()));
+                    rec.set("event_json", eventNode.get("EVENT_JSON"));
+                   
+                    Db.save("eeda_form_event", rec);
+                }else {
+                    Record rec = Db.findById("eeda_form_event", event_id);
+                    rec.set("name", eventNode.get("name"));
+                    rec.set("type", eventNode.get("type"));
+                    rec.set("menu_type", eventNode.get("menu_type".toUpperCase()));
+                    rec.set("event_action", eventNode.get("event_action".toUpperCase()));
+                    rec.set("event_json", eventNode.get("EVENT_JSON"));
+                    
+                    Db.update("eeda_form_event", rec);
+                }
             }
         }
     }
@@ -1407,25 +1462,6 @@ public class ModuleController extends Controller {
 
         }
         return action_list;
-    }
-
-    private List<Record> getEventList(Long form_id) {
-        List<Record> event_list = Db.find(
-                "select * from eeda_form_event where form_id=?", form_id);
-        if (event_list == null) {
-            event_list = Collections.EMPTY_LIST;
-        }
-
-        for (Record event : event_list) {
-            String eventType = event.getStr("type");
-            if ("open".equals(eventType)) {
-                Record openRec = Db.findFirst(
-                        "select * from eeda_form_event_open where event_id=?",
-                        event.getInt("id"));
-                event.set("open_form", openRec);
-            }
-        }
-        return event_list;
     }
 
     private List<Record> buildValueRecList(Map dto) {
