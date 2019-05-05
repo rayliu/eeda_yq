@@ -1,0 +1,5 @@
+<script type="text/templete" id="detail_list_field">
+    <li class="mui-table-view-cell">
+		{{data.F400_HPDM}}
+	</li>
+</script> 

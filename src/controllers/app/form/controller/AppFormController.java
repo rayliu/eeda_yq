@@ -168,6 +168,8 @@ public class AppFormController extends Controller {
                 fieldRec.set("display_name", field_rec.getStr("field_display_name"));
                 fieldRec.set("field_type", field_rec.getStr("field_type"));
                 String fieldType=field_rec.getStr("field_type");
+                
+                AppFormService fs = new AppFormService(this);
                 switch (fieldType) {
                     case "日期":
                         Date date = orderRec.getDate(field_name.toUpperCase());
@@ -178,9 +180,13 @@ public class AppFormController extends Controller {
                         value = sdf_datetime.format(datetime);
                         break;
                     case "字段引用":
-                        AppFormService fs = new AppFormService(this);
+                       
                         Record field_ref=fs.processFieldType_ref(form_name, fieldRec, field_rec.getLong("id"), office_id);
                         fieldRec.set("field_ref", field_ref);
+                        break;
+                    case "下拉列表":
+                        List<Record> item_list=fs.processFieldType_dropdown(form_name, fieldRec, field_rec.getLong("id"));
+                        fieldRec.set("item_list", item_list);
                         break;
                     default:
                         break;

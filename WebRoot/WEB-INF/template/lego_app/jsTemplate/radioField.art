@@ -1,0 +1,16 @@
+<script type="text/templete" id="form_radio_field">
+    <div class="mui-input-row" style="height: auto;">
+        <label>{{display_name}}</label>
+        <div class="mui-card" style="margin: 5px 15px;">
+                <div class="mui-input-row mui-radio">
+                    <label>radio</label>
+                    <input name="{{name}}" type="radio">
+                </div>
+                <div class="mui-input-row mui-radio">
+                    <label>radio</label>
+                    <input name="{{name}}" type="radio" checked="">
+                </div>
+            
+        </div>
+    </div>
+</script> 

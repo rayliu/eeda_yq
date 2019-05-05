@@ -1,0 +1,15 @@
+<script type="text/templete" id="form_checkbox_field">
+    <div class="mui-input-row" style="height: auto;">
+        <label>{{display_name}}</label>
+        <div class="mui-card" style="margin: 5px 15px;">
+            <div class="mui-input-row mui-checkbox">
+                <label>{{name}}</label>
+                <input name="{{name}}" value="Item 1" type="checkbox">
+            </div>
+            <div class="mui-input-row mui-checkbox">
+                <label>{{name}}</label>
+                <input name="{{name}}" value="Item 2" type="checkbox">
+            </div>
+        </div>
+    </div>
+</script> 

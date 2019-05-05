@@ -1,0 +1,8 @@
+<script type="text/templete" id="form_dropdown_field">
+    <div class="mui-input-row">
+        <label>{{display_name}}</label>
+        <input type="text" name="{{name}}" placeholder="请选择..." value="{{value}}" 
+            eeda_type="drop_down" target_form="{{target_form_id}}" target_field_name="{{target_field_name}}" 
+            item_list="{{item_list}}" >
+    </div>
+</script> 

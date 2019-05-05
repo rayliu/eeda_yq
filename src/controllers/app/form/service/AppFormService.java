@@ -178,6 +178,7 @@ public class AppFormService {
         return rec;
     }
     
+    
     public Record processFieldType_ref(String form_name, Record fieldRec, Long field_id, Long office_id){
         
         String fieldName=fieldRec.getStr("field_name");
@@ -245,5 +246,27 @@ public class AppFormService {
         rec.set("target_field_name", target_search_field_name);
         rec.set("item_list", listJson);
         return rec;
+    }
+    
+    public List<Record> processFieldType_dropdown(String form_name, Record fieldRec, Long field_id){
+        String returnStr = "";
+        String fieldDisplayName = fieldRec.getStr("field_display_name");
+        String fieldName = fieldRec.getStr("field_name");
+        Long form_id = fieldRec.getLong("form_id");
+        String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
+        List<Record> dropdown_list = Db.find(
+                "select * from eeda_form_field_type_dropdown where field_id=? order by sequence", field_id);
+        
+//        returnStr = "<label class='form-label'>"+fieldDisplayName+"</label>"
+//                + " <div class='formControls skin-minimal col-xs-8 col-sm-8'>"
+//                + " <select id='"+inputId+"' name='"+inputId+"' class='form-control input-text'>";
+//        String dropdownStr = "";
+//        for (Record r : dropdown_list) {
+//            String value = r.getStr("value");
+//            String name = r.getStr("name");
+//            dropdownStr += "<option value='"+value+"'>"+name+"</option>";
+//        }
+//        returnStr+=dropdownStr;
+        return dropdown_list;
     }
 }
