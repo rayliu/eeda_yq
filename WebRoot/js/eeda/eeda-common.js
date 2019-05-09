@@ -122,6 +122,7 @@ window.eeda =eeda;
 //dataTables builder for 1.10
 eeda.dt = function(opt){
     var option = {
+        dom: '<"top"i>t<"bottom"flp><"clear">',
         processing: opt.hasOwnProperty('processing')?opt.processing:true,
         searching: opt.hasOwnProperty('searching')?opt.searching : false,
         select: opt.hasOwnProperty('select')?opt.select :false,
