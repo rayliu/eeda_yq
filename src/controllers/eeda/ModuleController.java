@@ -690,25 +690,26 @@ public class ModuleController extends Controller {
     
     private void handleAppBtns(Map<String, ?> dto, Long form_id)
             throws InstantiationException, IllegalAccessException {
-        List<Map<String, Object>> app_btns = (ArrayList<Map<String, Object >>) dto
-                .get("app_btns");
+    	Map<String, Object> data  = (Map<String, Object>)dto.get("app_btns");
+        List<Map<String, Object>> app_btns = (ArrayList<Map<String, Object >>) data
+                .get("nodes");
         List<Map<String, Object>> app_btn_list=(ArrayList<Map<String, Object >>)app_btns.get(0)
                 .get("children");
         List<Map<String, Object>> app_btn_edit=(ArrayList<Map<String, Object >>)app_btns.get(1)
                 .get("children");
+        List<Object> delete_app_btns = (ArrayList<Object>) data
+                .get("delete_list");
         
         app_btn_list.addAll(app_btn_edit);//放在一起处理
         List<Long> newIds= new LinkedList<Long>();
         for (int i = 0; i < app_btn_list.size(); i++) {
             Map<String, Object> btnNode = (Map<String, Object>)app_btn_list.get(i);
-            
             long btn_id=0l;
             Object btn_id_obj = btnNode.get("btn_id");
             if (btn_id_obj instanceof java.lang.Double) {
                 btn_id = ((Double) btn_id_obj).longValue();
                 newIds.add(btn_id);
             }
-            
             if(btn_id==0) {
                 String name=(String)btnNode.get("name");
                 String type=(String)btnNode.get("type");
@@ -729,6 +730,16 @@ public class ModuleController extends Controller {
             }
         }
         //处理删除的按钮
+        if(delete_app_btns.size()>0) {
+        	for (int i = 0; i < delete_app_btns.size(); i++) {
+        		Object  btn_id_str = delete_app_btns.get(i);
+        		 if (btn_id_str instanceof java.lang.Double) {
+        			 btn_id_str = ((Double) btn_id_str).longValue();
+                }
+        		Record del_order = Db.findById("eeda_form_btn", btn_id_str);
+        		Db.delete("eeda_form_btn", del_order);
+			}
+        }
     }
     
     @SuppressWarnings("null")

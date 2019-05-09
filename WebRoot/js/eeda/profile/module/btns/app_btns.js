@@ -84,7 +84,11 @@ define(['jquery', 'zTree'], function ($) {
 
     var buildDto=function(){
         var treeObj=$.fn.zTree.getZTreeObj('app_btn_tree');
-        return treeObj.getNodes();
+        var obj={
+            delete_list:deleteList,
+            nodes: treeObj.getNodes()
+        }
+        return obj;
     }
     var btn_update_flag = function(){
         return update_flag;
@@ -95,7 +99,7 @@ define(['jquery', 'zTree'], function ($) {
 
         for (var i = 0; i < btn_list.length; i++) {
             var field = btn_list[i];
-            var node={btn_id: field.ID, isParent:false, name:field.NAME, type:field.TYPE};
+            var node={id:field.ID,btn_id: field.ID, isParent:false, name:field.NAME, type:field.TYPE};
             formId=field.FORM_ID;
             if(field.TYPE=='app_btn_list'){
                 listNodes.push(node);
