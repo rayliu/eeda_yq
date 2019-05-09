@@ -76,7 +76,7 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
         OfficeConfig of = OfficeConfig.dao.findFirst("select * from office_config where domain like '"+serverName +"%' or domain like '%"+serverName +"%'");
         if(of==null){//没有配置公司的信息会导致页面出错，显示空白页
             	of = new OfficeConfig();
-            	of.set("system_title", "易得SAAS");
+            	of.set("system_title", "易得SaaS");
             of.set("system_sub_title", "软件系统极速开发平台");
             	of.set("logo", "/yh/img/eeda_logo.ico");
         }

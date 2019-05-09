@@ -19,6 +19,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.form.FormService;
+import controllers.form.FormUtil;
 import controllers.form.TemplateService;
 import controllers.form.event.EventService;
 
@@ -270,9 +271,58 @@ public class AppFormService {
         return dropdown_list;
     }
     
+    
     public List<Record> processFieldType_checkbox(String form_name, Record fieldRec, Long field_id){
         List<Record> itemList = Db.find(
                 "select * from eeda_form_field_type_checkbox_item where field_id=?", field_id);
         return itemList;
+    }
+    
+    //从表记录
+    public Record processFieldType_detailRef(long form_id, long field_id, Record orderRec, long office_id){
+        
+        Record table_record = new Record(); 
+        Record fieldRec = Db.findFirst("select distinct field.id field_id, field.field_display_name, form.id form_id, form.name, cond.field_from, cond.field_to "
+                    +"from eeda_form_field field, eeda_form_field_type_detail_ref ref,"
+                    + " eeda_form_field_type_detail_ref_join_condition cond,"
+                    +"    eeda_form_define form"
+                    +" where "
+                    +" field.id = ref.field_id"
+                    +" and field.id = cond.field_id"
+                    +" and ref.target_form_name = form.name"
+                    +" and field.field_type='从表引用' "
+                    +" and field.form_id=? and field.id=?", form_id, field_id);
+        if (fieldRec!=null) {
+            Long detail_form_id = fieldRec.getLong("form_id");
+//            Long field_id = fieldRec.getLong("field_id");
+            
+            String field_from = fieldRec.getStr("field_from");
+            String field_to = fieldRec.getStr("field_to");
+            //主表关联值
+            Record field_rec = FormService.getFieldName(field_from.split("\\.")[0], field_from.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
+            String field_from_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
+            Object from_field_value = null;
+            if(orderRec!=null) {//表单新增时，orderRec==null
+                from_field_value = orderRec.get(field_from_name);
+            }
+            //从表关联值
+            Record field_to_rec = FormService.getFieldName(field_to.split("\\.")[0], field_to.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
+            String field_to_name = "f"+field_to_rec.getLong("id")+"_"+field_to_rec.getStr("field_name");
+            
+            List<Record> dataList = Db.find("select * from form_"+detail_form_id+" where "+field_to_name+"=?", from_field_value);
+            //从表引用: 需要显示的字段
+            List<Record> targetFieldList = new LinkedList<Record>();
+            List<Record> fieldList = Db.find("select * from eeda_form_field_type_detail_ref_display_field where field_id=?", field_id);
+            for (Record rec : fieldList) {
+                String target_field_name = rec.getStr("target_field_name");
+                Record targetFieldRec = FormUtil.getFormOrField(target_field_name, office_id);
+                targetFieldList.add(targetFieldRec);
+            }
+            table_record.set("table_name", fieldRec.getStr("field_display_name"));
+            table_record.set("table_id", "detail_table_"+field_id);//主表中该从表字段的ID
+            table_record.set("data_list", dataList);
+            table_record.set("field_list", targetFieldList);
+        }
+        return table_record;
     }
 }

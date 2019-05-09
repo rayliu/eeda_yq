@@ -452,12 +452,16 @@ public class ModuleController extends Controller {
 //            //TODO:还要删掉子表的数据
 //        }
         
-        List<Map<String, Object>> app_btn_list = (ArrayList<Map<String, Object >>) dto
+        List<Map<String, Object>> app_btns = (ArrayList<Map<String, Object >>) dto
                 .get("app_events");
-        List<Map<String, Object>> app_edit_btn_list=(ArrayList<Map<String, Object >>)app_btn_list.get(0)
+        List<Map<String, Object>> app_btn_list=(ArrayList<Map<String, Object >>)app_btns.get(0)
                 .get("children");
-        for (int i = 0; i < app_edit_btn_list.size(); i++) {//btn下的children才是event
-            Map<String, Object> btnNode = (Map<String, Object>)app_edit_btn_list.get(i);
+        List<Map<String, Object>> app_btn_edit=(ArrayList<Map<String, Object >>)app_btns.get(1)
+                .get("children");
+        app_btn_list.addAll(app_btn_edit);
+        
+        for (int i = 0; i < app_btn_list.size(); i++) {//btn下的children才是event
+            Map<String, Object> btnNode = (Map<String, Object>)app_btn_list.get(i);
             
             List<Map<String, Object>> app_btn_event_list=(ArrayList<Map<String, Object >>)btnNode
                     .get("children");
@@ -465,7 +469,7 @@ public class ModuleController extends Controller {
             for (int j = 0; j < app_btn_event_list.size(); j++) {
                 Map<String, Object> eventNode = (Map<String, Object>)app_btn_event_list.get(j);
                 long event_id=0l;
-                Object event_id_obj = eventNode.get("btn_id");
+                Object event_id_obj = eventNode.get("id");
                 if (event_id_obj instanceof java.lang.Double) {
                     event_id = ((Double) event_id_obj).longValue();
     //                newIds.add(btn_id);
@@ -483,7 +487,7 @@ public class ModuleController extends Controller {
                    
                     Db.save("eeda_form_event", rec);
                 }else {
-                    Record rec = Db.findById("eeda_form_event", event_id);
+                    Record rec = Db.findFirst("select * from eeda_form_event where id=? and form_id=?", event_id, form_id);
                     rec.set("name", eventNode.get("name"));
                     rec.set("type", eventNode.get("type"));
                     rec.set("menu_type", eventNode.get("menu_type".toUpperCase()));
@@ -686,21 +690,17 @@ public class ModuleController extends Controller {
     
     private void handleAppBtns(Map<String, ?> dto, Long form_id)
             throws InstantiationException, IllegalAccessException {
-        List<Map<String, Object>> app_btn_list = (ArrayList<Map<String, Object >>) dto
+        List<Map<String, Object>> app_btns = (ArrayList<Map<String, Object >>) dto
                 .get("app_btns");
-        List<Map<String, Object>> app_edit_btn_list=(ArrayList<Map<String, Object >>)app_btn_list.get(0)
+        List<Map<String, Object>> app_btn_list=(ArrayList<Map<String, Object >>)app_btns.get(0)
+                .get("children");
+        List<Map<String, Object>> app_btn_edit=(ArrayList<Map<String, Object >>)app_btns.get(1)
                 .get("children");
         
-        //处理删除的按钮
-        List<Long> oldIds= new LinkedList<Long>();
-        List<Record> oldList=Db.find("select id from eeda_form_btn where form_id=?", form_id); 
-        for (Record record : oldList) {
-            oldIds.add(record.getLong("id"));
-        }
-        
+        app_btn_list.addAll(app_btn_edit);//放在一起处理
         List<Long> newIds= new LinkedList<Long>();
-        for (int i = 0; i < app_edit_btn_list.size(); i++) {
-            Map<String, Object> btnNode = (Map<String, Object>)app_edit_btn_list.get(i);
+        for (int i = 0; i < app_btn_list.size(); i++) {
+            Map<String, Object> btnNode = (Map<String, Object>)app_btn_list.get(i);
             
             long btn_id=0l;
             Object btn_id_obj = btnNode.get("btn_id");
@@ -728,11 +728,7 @@ public class ModuleController extends Controller {
                 Db.update("eeda_form_btn", rec);
             }
         }
-        //差集，得到要删除的ids
-        oldIds.removeAll(newIds);
-        for (Long id : oldIds) {
-            Db.deleteById("eeda_form_btn", id);
-        }
+        //处理删除的按钮
     }
     
     @SuppressWarnings("null")
@@ -919,10 +915,12 @@ public class ModuleController extends Controller {
     public void searchFormBtns() {
         Long form_id = getParaToLong("form_id");
         String type = getPara("type");
-        List<Record> list = Db.find(
-                "select * from eeda_form_btn where form_id=? and type=?",
-                form_id, type);
-        
+        List<Record> list = Collections.EMPTY_LIST;
+        if(type.indexOf(",")>0) {
+            list = Db.find("select * from eeda_form_btn where form_id=? and type in ("+type+")", form_id);
+        }else {
+            list = Db.find("select * from eeda_form_btn where form_id=? and type=?", form_id, type);
+        }
         List<Record> page_btn_list = Db.find(
                 "select * from eeda_form_field where form_id=? and field_type='按钮'",
                 form_id);
@@ -1254,8 +1252,10 @@ public class ModuleController extends Controller {
             List<Record> btn_list_edit = getFormBtns(form_id, "edit");
             rec.set("btn_list_edit", btn_list_edit);
             
-            List<Record> app_edit_btn_list = getFormBtns(form_id, "app_btn_edit");
-            rec.set("app_edit_btn_list", app_edit_btn_list);
+            List<Record> app_btn_list = getFormBtns(form_id, "app_btn_list");
+            List<Record> app_btn_edit = getFormBtns(form_id, "app_btn_edit");
+            app_btn_edit.addAll(app_btn_list);
+            rec.set("app_edit_btn_list", app_btn_edit);
             
             List<Record> print_template_list = getPrintTemplate(form_id);
             rec.set("print_template_list", print_template_list);

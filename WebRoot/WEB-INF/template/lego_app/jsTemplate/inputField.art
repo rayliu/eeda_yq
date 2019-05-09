@@ -1,6 +1,6 @@
 <script type="text/templete" id="form_input_field">
     <div class="mui-input-row">
         <label>{{display_name}}</label>
-        <input type="text" name="{{name}}" placeholder="普通输入框" value="{{value}}" >
+        <input type="text" name="{{name}}" placeholder="请输入..." value="{{value}}" >
     </div>
 </script> 

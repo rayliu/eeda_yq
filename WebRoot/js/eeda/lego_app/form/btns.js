@@ -31,11 +31,11 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                             switch (radio_open_link) {//打开链接有四种情况
                                 case 'open_form':
                                     var module_id = event_action_setting.module_id;
-                                    var url = '/form/'+module_id+'-list';
+                                    var url = '/app/form/'+module_id+'-list';
                                     if(event_action_setting.open_form_type=='edit'){
-                                        url = '/form/'+module_id+'-add';
+                                        url = '/app/form/'+module_id+'-add';
                                     }else{
-                                        url = '/form/'+module_id+'-list';
+                                        url = '/app/form/'+module_id+'-list';
                                     }
                                     if(event_action_setting.open_link_type == 'new'){
                                         window.open(url);
@@ -64,7 +64,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
 
                             var data = getFormData($form);
                             console.log(data);
-                            if(order_id==-1){
+                            if(order_id==""){
                                 doAdd(data);
                             }else{
                                 if(event.TYPE == "set_value"){
@@ -203,7 +203,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                                 var data = getFormData($form);
                                 console.log('save action....');
                                 console.log(data);
-                                if(order_id==-1){
+                                if(order_id==""){
                                     doAdd(data);
                                 }else{
                                 	if(event.TYPE == "set_value"){
@@ -247,7 +247,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             var disabled = $form.find(':input:disabled').removeAttr('disabled');
             var unindexed_array = $form.serializeObject();
             // re-disabled the set of inputs that you previously enabled
-            disabled.attr('disabled','disabled');
+            
 
             $.each(unindexed_array, function(index, item) {
             	if(Object.prototype.toString.call(item)=='[object Array]'){
@@ -255,7 +255,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             	}
             });
 
-            var tables = $('table[type=dynamic]');
+            var tables = $('.mui-slider-item.table');
             var field_id_list = [];
             var detail_tables = [];
             var img_list = [];
@@ -274,8 +274,8 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                 field_id_list.push(field_id);
 
                 var ar = [];
-                $("#"+id+" tbody tr").each(function() {// tr:nth-child(n+2)
-                  rowData = $(this).find('input, select, textarea').serializeArray();
+                $("#"+id+" ul li").each(function(index, el) {// tr:nth-child(n+2)
+                  rowData = $(el).find('input, select, textarea').serializeArray();
                   var rowAr = {};
                   $.each(rowData, function(e, v) {
                     rowAr[v['name']] = v['value'];
@@ -295,15 +295,21 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             unindexed_array.detail_tables = detail_tables;
             unindexed_array.img_list = img_list.concat(imgDeleteIds);
 
+            disabled.attr('disabled','disabled');
             return unindexed_array;
         }
 
 
         function doAdd(data){
+            mui.showLoading("正在提交..."); 
             $.post('/form/'+data.module_id+'-doAdd', {data: JSON.stringify(data)}, function(dto){
+                mui.hideLoading(); 
                 if(dto){
-                    var url = '/form/'+data.module_id+'-edit-'+dto.ID;
-                    window.location.href=url;
+                    if(window.location.pathname.indexOf('-add')>0 && dto.ID){
+                        history.pushState({foo: "create"}, "", data.module_id+"-edit-"+dto.ID);
+                    }
+                    $("#order_id").val(dto.ID);
+                    mui.alert('操作成功。');
                 }else{
                     mui.alert('操作失败,请刷新页面或联系客服查看错误。');
                 }
@@ -311,7 +317,9 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
         }
 
         function doUpdate(data){
+            mui.showLoading("正在提交..."); 
             $.post('/form/'+data.module_id+'-doUpdate', {data: JSON.stringify(data)}, function(dto){
+                mui.hideLoading(); 
                 if(dto){
 //                	if(dto.TYPE=="set_value"){
 //                		$("input[name='"+dto.TEXT_NAME+"']").val(dto.TEXT_VALUE);

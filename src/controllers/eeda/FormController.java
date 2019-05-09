@@ -347,11 +347,22 @@ public class FormController extends Controller {
                                     form_id, fieldName);
                     if(fieldRec != null){
                         String field_type = fieldRec.getStr("field_type");
-                        if("自动编号".equals(field_type) && StrKit.isBlank(value)){
-                            String orderNo = handleAutoNo(form_id, colName, fieldId);
-                            value = orderNo;
-                        }else if("图片".equals(field_type)){
-                            rec.set(colName, value);
+                        switch(field_type) {
+                            case "自动编号":
+                                if(StrKit.isBlank(value)){
+                                    String orderNo = handleAutoNo(form_id, colName, fieldId);
+                                    value = orderNo;
+                                }
+                                break;
+                            case "图片":
+                                rec.set(colName, value);
+                                break;
+                            case "日期":
+                            case "日期时间":
+                                if(StrKit.isBlank(value)){
+                                    continue;
+                                }
+                                break;
                         }
                     }
                     if("null".equals(value))

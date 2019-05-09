@@ -1,7 +1,7 @@
-define(['jquery', 'template', 'mui', '../btns'], function ($, template, mui) {
+define(['jquery', 'template', 'mui', 'mui_loading', '../btns'], function ($, template, mui) {
 
     // mui.plusReady(function() {
-        
+        mui.showLoading("正在加载.."); 
         document.title = '查询 | ' + document.title;
 
         var module_id=$('#module_id').val();
@@ -22,9 +22,11 @@ define(['jquery', 'template', 'mui', '../btns'], function ($, template, mui) {
                 }); 
                 app_form_list.append(str); 
             });
+            mui.hideLoading();
         });
 
         var globalSearch = function(){
+            mui.showLoading("正在加载..");
             var query="";
             var value=$('#searchInput').val();
 
@@ -39,6 +41,7 @@ define(['jquery', 'template', 'mui', '../btns'], function ($, template, mui) {
                     }); 
                     app_form_list.append(str); 
                 });
+                mui.hideLoading();
             });
         }
         // 搜索事件,获取搜索关键词

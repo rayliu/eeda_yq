@@ -73,7 +73,7 @@ define(['jquery', 'zTree'], function ($) {
             //创建节点
             var nodeName = "按钮" + (newCount++);
             //id:data.ID, id: data.ID, 
-            var newNodes = zTreeObj.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, type:'app_btn_edit'});
+            var newNodes = zTreeObj.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, type:treeNode.type});
             currentNode=newNodes[0];
             return false;
         });
@@ -91,17 +91,22 @@ define(['jquery', 'zTree'], function ($) {
     }
 
     var displayAppBtnApp=function(btn_list){
-        var newNodes=[], formId;
+        var listNodes=[], editNodes=[], formId;
+
         for (var i = 0; i < btn_list.length; i++) {
             var field = btn_list[i];
-            var node={btn_id: field.ID, isParent:false, name:field.NAME, type:'app_btn_edit'};
+            var node={btn_id: field.ID, isParent:false, name:field.NAME, type:field.TYPE};
             formId=field.FORM_ID;
-            newNodes.push(node);
+            if(field.TYPE=='app_btn_list'){
+                listNodes.push(node);
+            }else{
+                editNodes.push(node);
+            }
         }
 
         var zNodes = [
-            // { name:"查询列表按钮", isParent:true, open: true, children: [], formId:'1'},
-            { name:"编辑页按钮", isParent:true, children: newNodes}
+            { name:"列表页按钮", isParent:true, open: true, children: listNodes, type:'app_btn_list'},
+            { name:"编辑页按钮", isParent:true, children: editNodes, type:'app_btn_edit'}
         ];
     
         zTreeObj = $.fn.zTree.init($("#app_btn_tree"), setting, zNodes);

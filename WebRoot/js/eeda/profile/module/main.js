@@ -47,7 +47,6 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
 
                 console.log('saveBtn.click....');
                 console.log(dto);
-
                 //异步向后台提交数据
                 $.post('/module/saveStructure', {params:JSON.stringify(dto)}, function(data){
                     var order = data;

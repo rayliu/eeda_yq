@@ -47,18 +47,19 @@ define(['jquery',  '../btns', '../add/detail_table', '../event/events','../value
                     }else if(type == "radio"){
                         $(field_id+"[value='"+data[p]+"']").prop("checked",true);
                     }else if(tagName == "SELECT"){
-                    	element.find("option[value='"+data[p]+"']").attr("selected","selected");
+                        element.find("option[value='"+data[p]+"']").attr("selected","selected");
                     }else if(tagName == "TEXTAREA"){
-                    	element.text(data[p]);
+                        element.text(data[p]);
                     }else if(type == "checkbox"){
-                    	if(data[p].indexOf(",")>0){
-                    		var array = data[p].split(",");
-                    		for(var i = 0;i<array.length;i++){
-                        		$(field_id+"[value='"+array[i]+"']").prop("checked",true);
-                        	}
-                    	}else{
-                    		$(field_id+"[value='"+data[p]+"']").prop("checked",true);
-                    	}
+                        $(field_id).prop("checked",false);
+                        if(data[p].indexOf(",")>0){
+                            var array = data[p].split(",");
+                            for(var i = 0;i<array.length;i++){
+                                $(field_id+"[value='"+array[i]+"']").prop("checked",true);
+                            }
+                        }else{
+                            $(field_id+"[value='"+data[p]+"']").prop("checked",true);
+                        }
                     }else{//非input元素
                         if(element.hasClass('file_name')){//附件
                             var aHtml = '<a style="color:#06c;text-decoration: underline;" href="/upload/'+data[p]+'" download="'+data[p]+'">'+data[p]+'</a>';
@@ -69,18 +70,18 @@ define(['jquery',  '../btns', '../add/detail_table', '../event/events','../value
             } 
             
             if(data.IMGFIELDLIST.length>0){
-            	var imgfieldlist = data.IMGFIELDLIST;
-            	for ( var p in imgfieldlist){
-            		var imglist = imgfieldlist[p].IMGLIST;
-            		if(imglist.length>0){
-            			for(var i in imglist){
-            				var returnStr = "<div style='width:150px;height:150px;margin-right:10px;float: left;position:relative;'>"
-            					+"<span name='deleteImgBtn' style='cursor:pointer;color:red;font-size:20px;position:absolute;left:87%;'><i class='Hui-iconfont'>&#xe706;</i></span>"
-            					+"<img id='"+imglist[i].ID+"' name='"+imglist[i].IMG_NAME+"' src='/upload/"+imglist[i].IMG_NAME+"' style='width: 150px;height:145px; max-width: 100%;max-height: 100%; '/></div>";
+                var imgfieldlist = data.IMGFIELDLIST;
+                for ( var p in imgfieldlist){
+                    var imglist = imgfieldlist[p].IMGLIST;
+                    if(imglist.length>0){
+                        for(var i in imglist){
+                            var returnStr = "<div style='width:150px;height:150px;margin-right:10px;float: left;position:relative;'>"
+                                +"<span name='deleteImgBtn' style='cursor:pointer;color:red;font-size:20px;position:absolute;left:87%;'><i class='Hui-iconfont'>&#xe706;</i></span>"
+                                +"<img id='"+imglist[i].ID+"' name='"+imglist[i].IMG_NAME+"' src='/upload/"+imglist[i].IMG_NAME+"' style='width: 150px;height:145px; max-width: 100%;max-height: 100%; '/></div>";
                             $("#f"+imglist[i].FIELD_ID).append(returnStr);
-            			}
-            		}
-            	}
+                        }
+                    }
+                }
             }
             
             // 开始遍历  从表

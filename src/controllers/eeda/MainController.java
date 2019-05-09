@@ -400,7 +400,7 @@ public class MainController extends Controller {
                 + "%' or domain like '%" + serverName + "%'");
         if (of == null) {// 没有配置公司的信息会导致页面出错，显示空白页
             of = new OfficeConfig();
-            of.set("system_title", "易达物流");
+            of.set("system_title", "易得SAAS");
             of.set("logo", "/eeda/img/eeda_logo.ico");
         }
         // UserOffice uo = UserOffice.dao.findFirst("select * from user_office where

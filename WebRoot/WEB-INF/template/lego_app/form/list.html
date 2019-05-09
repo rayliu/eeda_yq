@@ -3,8 +3,18 @@
     <header class="mui-bar mui-bar-nav" style="padding-right: 15px;">
         <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
         <h1 class="mui-title">${form_name!''}</h1>
-        <!-- <a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" href="#action_popover"></a> -->
+        <%if(btnList.~size>0){%>
+            <a id="menu" class="mui-action-menu mui-btn-link mui-pull-right" href="#action_popover">操作</a>
+            <%}%>
     </header>
+    <!--右上角弹出菜单-->
+    <div id="action_popover" class="mui-popover">
+        <ul class="mui-table-view"> 
+            <%for(btn in btnList![]){%>
+                <li class="mui-table-view-cell"><a id="form_${btn.form_id}-btn_${btn.id}" btn_id="${btn.id}" href="#">${btn.name!''}</a></li>
+            <%}%>
+        </ul>
+    </div>
     <input type="hidden" id="module_id" value="${module_id!''}">
     <input type="hidden" id="form_id" value="${form_id!''}">
     <input type="hidden" id="field_col_name" value="${field_col_name!''}">

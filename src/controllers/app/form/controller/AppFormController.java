@@ -85,7 +85,6 @@ public class AppFormController extends Controller {
         setAttr("form_id", form_id);
         setAttr("form_name", formRec.getStr("name"));
         
-        
         if(!action.startsWith("do")){
             AppFormService afs = new AppFormService(this);
             if("edit".equals(action) || "view".equals(action)){
@@ -94,7 +93,9 @@ public class AppFormController extends Controller {
                         "select * from eeda_form_btn where form_id=? and type=?", form_id, "app_btn_edit");
                 setAttr("btnList", recList);
             }else if("add".equals(action)){
-                afs.edit(form_id, null, formRec);
+                List<Record> recList = Db.find(
+                        "select * from eeda_form_btn where form_id=? and type=?", form_id, "app_btn_edit");
+                setAttr("btnList", recList);
             }else if("list".equals(action)){
                 if("Y".equals(formRec.getStr("is_single_record"))){//单页显示，不需要list
                     Record orderRec = Db.findFirst("select * from form_"+form_id);
@@ -119,9 +120,8 @@ public class AppFormController extends Controller {
             Record rec = new Record();
             if("doGet".equals(action)){
                 //获取APP 模板中的显示字段
-                List<Record> fieldList = getForm(module_id, form_id, order_id, formRec);
-                renderJson(fieldList);
-                
+                Record orderRec = getForm(module_id, form_id, order_id, formRec);
+                renderJson(orderRec);
                 return;
             }else if ("doAdd".equals(action) || "doUpdate".equals(action)){
 //                rec = saveForm();
@@ -134,7 +134,7 @@ public class AppFormController extends Controller {
     }
     
     //获取APP 模板中的显示字段
-    private List<Record> getForm(String module_id, Long form_id, Long order_id, Record formRec){
+    private Record getForm(String module_id, Long form_id, Long order_id, Record formRec){
         Long office_id=formRec.getLong("office_id");
         List<Record> fieldList = new LinkedList<Record>();
         
@@ -142,6 +142,8 @@ public class AppFormController extends Controller {
         String form_name = formRec.getStr("name");
         
         String app_template_content = formRec.getStr("app_template");
+        
+        List<Record> detailList= new ArrayList<Record>();//从表的记录放进这里
         
         //根据app_template_content往页面输出field_list，然后页面通过JS生成页面元素
         Document doc = Jsoup.parseBodyFragment(app_template_content);
@@ -154,16 +156,11 @@ public class AppFormController extends Controller {
             Record field_rec = FormService.getFieldName(fieldName.split("\\.")[0], fieldName.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
             String field_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");
             String value= "";
-            if(fieldName.indexOf("明细表")>=0 || fieldName.indexOf("从表")>=0){
-                fieldRec.set("display_type", "list");
-                fieldRec.set("display_name", fieldName.split("\\.")[1]);
-                //最后一个参数是从表的field.id, 通过它获取从表的form_id, 再关联出从表数据
-                fieldRec.set("value", "/app/form/"+module_id+"-detailList-"+order_id+"-"+field_rec.getLong("id"));//link
-                fieldList.add(fieldRec);
-            }else if(orderRec.get(field_name.toUpperCase())!=null){
+            
                 fieldRec.set("id", field_rec.getLong("id"));
                 fieldRec.set("field_name", field_rec.getStr("field_name"));
-                value=orderRec.get(field_name.toUpperCase()).toString();
+                if(orderRec!=null)
+                    value = orderRec.get(field_name.toUpperCase())==null?"":orderRec.get(field_name.toUpperCase()).toString();
                 fieldRec.set("display_type", "field");
                 fieldRec.set("display_name", field_rec.getStr("field_display_name"));
                 fieldRec.set("field_type", field_rec.getStr("field_type"));
@@ -172,12 +169,16 @@ public class AppFormController extends Controller {
                 AppFormService fs = new AppFormService(this);
                 switch (fieldType) {
                     case "日期":
+                        if(orderRec==null) break;
                         Date date = orderRec.getDate(field_name.toUpperCase());
-                        value = sdf_date.format(date);
+                        if(date!=null)
+                            value = sdf_date.format(date);
                         break;
                     case "日期时间":
+                        if(orderRec==null) break;
                         Date datetime = orderRec.getDate(field_name.toUpperCase());
-                        value = sdf_datetime.format(datetime);
+                        if(datetime!=null)
+                            value = sdf_datetime.format(datetime);
                         break;
                     case "字段引用":
                         Record field_ref=fs.processFieldType_ref(form_name, fieldRec, field_rec.getLong("id"), office_id);
@@ -194,15 +195,23 @@ public class AppFormController extends Controller {
                         item_list=fs.processFieldType_checkbox(form_name, fieldRec, field_rec.getLong("id"));
                         fieldRec.set("item_list", item_list);
                         break;
+                    case "从表引用":
+                        Record table_record=fs.processFieldType_detailRef(form_id, field_rec.getLong("id"), orderRec, office_id);
+                        detailList.add(table_record);
+                        break;
                     default:
                         break;
                 }
                 
                 fieldRec.set("value", value);
                 fieldList.add(fieldRec);
-            }
-        }
-        return fieldList;
+            
+        }//end of doc
+        
+        Record returnRec = new Record();
+        returnRec.set("field_list", fieldList);
+        returnRec.set("detail_tables", detailList);
+        return returnRec;
     }
     
     private Map<String,Object> queryForm(Long form_id){
@@ -260,7 +269,9 @@ public class AppFormController extends Controller {
     
     
     private void list(Long form_id){
-        //setAttr("btnList", getFormBtns(form_id, "list"));
+        List<Record> recList = Db.find(
+                "select * from eeda_form_btn where form_id=? and type=?", form_id, "app_btn_list");
+        setAttr("btnList", recList);
         Record re = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
         Record displayField = Db.findFirst("select * from eeda_form_field where "
                 + " form_id=? and app_display_col='Y'", form_id);

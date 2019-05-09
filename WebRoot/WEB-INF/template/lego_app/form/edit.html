@@ -37,6 +37,17 @@
             <li class="mui-table-view-cell"><a href="#">Item7</a></li>
         </ul>
     </div>
+
+    <div id="edit_popover" class="mui-popover mui-popup">
+        <input type="hidden" id="edit_popover_table_id"  value="">
+        <input type="hidden" id="edit_popover_li_id"  value="">
+        <ul class="mui-table-view" style="max-height: max-content;">
+        </ul>
+        <div class="mui-popup-buttons">
+            <span id="edit_popover_ok" class="mui-popup-button">确定</span>
+            <span id="edit_popover_cancel" class="mui-popup-button mui-popup-button-bold">取消</span>
+        </div>
+    </div>
     <!-- 动态组件 -->
 
     <div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
@@ -46,23 +57,28 @@
         </div>
         
         <form id="module_form" class="mui-input-group">
+            <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted" style="display: none;">
+                <a class="mui-control-item mui-active" href="#form_fields">
+                    基本信息
+                </a>
+                
+            </div>
             <input type="hidden" id="module_id" name="module_id" value="${module_id!''}">
             <input type="hidden" id="form_id" name="form_id" value="${form_id!''}">
             <input type="hidden" id="order_id" name="order_id" value="${order_id!''}">
-            <div id="form_fields">
-                <!-- 字段 -->
-                <!-- 你也许需要才能看到数据刷新本页 -->
+            <div class="mui-slider-group">
+                <div id="form_fields" class="mui-slider-item mui-control-content mui-active" style="background-color: #fff;margin-top: 5px;">
+                    <!-- 字段 -->
+                    <!-- 你也许需要才能看到数据刷新本页 -->
+                </div>
             </div>
-            <ul id="app_form_list" class="mui-table-view mui-table-view-chevron">
-                
-            </ul>
-
         </form>
         
     </div>
     <!-- off-canvas backdrop -->
     <div class="mui-off-canvas-backdrop"></div>
 
+    
     <%include("/lego_app/jsTemplate/dropdownField.art",{}){} %>
     <%include("/lego_app/jsTemplate/checkboxField.art",{}){} %>
     <%include("/lego_app/jsTemplate/radioField.art",{}){} %>
@@ -73,9 +89,7 @@
 
 <script>
     requirejs([], function (common) {
-        <%if(action=='add'){%>
-            requirejs(['app/lego_app/form/add/main']);
-        <%} else if(action=='edit'){%>
+        <%if(action=='edit' || action=='add'){%>
             requirejs(['app/lego_app/form/edit/main']);
         <%} else if(action=='view'){%>
             requirejs(['app/lego_app/form/view/main']);

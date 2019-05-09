@@ -459,14 +459,24 @@
       display:inline-block;
       padding: 0px; 
       width: 33%;
+      margin-top: -3px;
     }
     #error_div {
       margin-bottom: 15px;
       clear: both;
       height: 45px;
     }
+
+    section.fdb-block{
+        padding: 13rem 0;background-image: url(/images/photo-bg.jpeg);
+    }
+    @media screen and (max-width: 768px) {
+        section.fdb-block{
+          padding: 5rem 0;background-image: url(/images/photo-bg.jpeg);
+        }
+    }
   </style>
-  <title>${SYS_CONFIG.system_title!'易得 SAAS'}</title>
+  <title>${SYS_CONFIG.system_title!'易得 SaaS'}</title>
   <link rel="stylesheet" href="/js/lib/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/froala/froala_blocks.min.css">
   <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"> -->
@@ -474,8 +484,7 @@
 </head>
 
 <body>
-  <section class="fdb-block" style="padding: 13rem 0;background-image: url(/images/photo-bg.jpeg);"
-	data-block-type="forms" data-id="1">
+  <section class="fdb-block" data-block-type="forms" data-id="1">
 	<form class="form form-horizontal" action="/login" method="post">
 		<div class="container">
 		<div class="row justify-content-center">
@@ -483,7 +492,7 @@
 			<div class="fdb-box">
 				<div class="row">
 				<div class="col">
-					<h1>${SYS_CONFIG.system_title!'易得 SAAS'}</h1>
+					<h1>${SYS_CONFIG.system_title!'易得 SaaS'}</h1>
 				</div>
 				</div>
         
