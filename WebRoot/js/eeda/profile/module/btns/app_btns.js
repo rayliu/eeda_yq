@@ -84,9 +84,13 @@ define(['jquery', 'zTree'], function ($) {
 
     var buildDto=function(){
         var treeObj=$.fn.zTree.getZTreeObj('app_btn_tree');
+        var tree_nodes=null;
+        if(treeObj){
+           tree_nodes= treeObj.getNodes()
+        }
         var obj={
             delete_list:deleteList,
-            nodes: treeObj.getNodes()
+            nodes: tree_nodes
         }
         return obj;
     }

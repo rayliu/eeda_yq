@@ -121,7 +121,11 @@ define(['jquery', 'zTree'], function ($) {
 
     var buildDto=function(){
         var treeObj=$.fn.zTree.getZTreeObj('app_event_tree');
-        return treeObj.getNodes();
+        var tree_node =null;
+        if(treeObj){
+            tree_node = treeObj.getNodes()
+        }
+        return tree_node;
     }
     var isAppEventUpdated = function(){
         return update_flag;
