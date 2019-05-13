@@ -351,18 +351,12 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             });
         }
         
-        mui(document).on('tap', '.img_files', function(){
+        mui("#module_form").on('tap', '.img_files', function(){
             var self = $(this);
             $('#'+self.attr("id")).fileupload({
                 autoUpload: true, 
                 url: '/form/uploadImg?order_id='+order_id,
                 dataType: 'json',
-//			    maxFileSize:1 * 1024 ,
-//			    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-//			    messages: {
-//			        maxFileSize: 'File exceeds maximum allowed size of 99MB',
-//			        acceptFileTypes: 'File type not allowed'
-//			    },
                 done: function (e, data) {
                     if(data.result){
                         var strHtml = "";
@@ -386,6 +380,8 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                 }
             });
         });
+
+
 
         $("td").on("click","input[name='files']",function(){
             var self = $(this);
