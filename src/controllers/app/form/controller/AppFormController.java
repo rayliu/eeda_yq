@@ -208,9 +208,20 @@ public class AppFormController extends Controller {
             
         }//end of doc
         
+        List<Record> imgFieldList = Db.find("select * from  eeda_form_field field"
+                + " where field.field_type='图片' "
+                +" and field.form_id=?", form_id);
+        for (Record imgFieldRec : imgFieldList) {
+            List<Record> imgList = Db.find("select * from eeda_form_field_type_img where order_id = ? and field_id = ?",order_id,imgFieldRec.get("id"));
+            imgFieldRec.set("img_list", imgList);
+        }
+        
+        
+        
         Record returnRec = new Record();
         returnRec.set("field_list", fieldList);
         returnRec.set("detail_tables", detailList);
+        returnRec.set("img_field_list", imgFieldList);
         return returnRec;
     }
     

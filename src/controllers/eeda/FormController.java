@@ -181,14 +181,14 @@ public class FormController extends Controller {
             
             render("/eeda/form/template.html");
         }else if("doDelete".equals(action)){
-        	FormService formService = new FormService(this);
-        	String ip = MainController.getIpAddress(getRequest());
-        	formService.saveSysLog(action,getPara("data"),form_id,order_id,user_id,office_id,ip);
-        	String form_name = "form_"+form_id;
-        	Record form  = Db.findById(form_name, order_id);
-        	form.set("eeda_delete","Y");
-            boolean result = Db.update(form_name, form);
-            renderJson("{\"result\":"+result+"}");
+            FormService formService = new FormService(this);
+            String ip = MainController.getIpAddress(getRequest());
+            formService.saveSysLog(action,getPara("data"),form_id,order_id,user_id,office_id,ip);
+            String form_name = "form_"+form_id;
+            Record form  = Db.findById(form_name, order_id);
+            form.set("eeda_delete","Y");
+                boolean result = Db.update(form_name, form);
+                renderJson("{\"result\":"+result+"}");
         }else{
             Record rec = new Record();
             if("doGet".equals(action)){
@@ -941,23 +941,23 @@ public class FormController extends Controller {
     }
     
     public void uploadImg(){
-    	String order_id = getPara("order_id");
-    	String img_url = getPara("img_url");
-    	
-    	UploadFile file = getFile();
-    	String fileName = file.getFileName();
-    	
-    	Record re = new Record();
-    	re.set("fileName", fileName);
-    	renderJson(re);
+        String order_id = getPara("order_id");
+        String img_url = getPara("img_url");
+        
+        UploadFile file = getFile();
+        String fileName = file.getFileName();
+        
+        Record re = new Record();
+        re.set("fileName", fileName);
+        renderJson(re);
     }
     public void uploadFile(){
-    	File file = getFile().getFile();
-    	String fileName = file.getName();
-    	Record re = new Record();
-    	re.set("fileName", fileName);
-    	re.set("fileUrl", "/upload/"+fileName);
-    	re.set("result", true);
-    	renderJson(re);
+        File file = getFile().getFile();
+        String fileName = file.getName();
+        Record re = new Record();
+        re.set("fileName", fileName);
+        re.set("fileUrl", "/upload/"+fileName);
+        re.set("result", true);
+        renderJson(re);
     }
 }

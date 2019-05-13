@@ -1,5 +1,5 @@
 define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
-    $(document).ready(function(){
+    
     $('#action_popover a').click(function(){
         var btn_id=$(this).attr('btn_id');
         var module_id = $('#module_id').val();
@@ -108,44 +108,44 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                     }
                 }
             }//end of for
-            
+
         });
         mui('#action_popover').popover('hide');
     });
 
     //old from pc
-	$.fn.serializeObject = function () {
-	    var o = {};
-	    var a = this.serializeArray();
-	    $.each(a, function () {
-	        if (o[this.name] !== undefined) {
-	            if (!o[this.name].push) {
-	                o[this.name] = [o[this.name]];
-	            }
-	            o[this.name].push(this.value || '');
-	        } else {
-	        	if($("input[name='"+this.name+"']").hasClass("Wdate")){
-	        		o[this.name] = this.value || null;
-	        	}else{
-	        		o[this.name] = this.value || '';
-	        	}
-	        }
-	    });
-	    var $radio = $('input[type=radio],input[type=checkbox]',this);
-	    $.each($radio,function(){
-	        if(!o.hasOwnProperty(this.name)){
-	            o[this.name] = '';
-	        }
-	    });
-	    var $file_name = $('.file_name',this);
-	    $.each($file_name,function(){
-	        if($(this).text()!=''){
-	            o[$(this).attr("name")] = $(this).text();
-	        }
-	    });
-	    return o;
-	};
-	var deleteList=[];
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                if($("input[name='"+this.name+"']").hasClass("Wdate")){
+                    o[this.name] = this.value || null;
+                }else{
+                    o[this.name] = this.value || '';
+                }
+            }
+        });
+        var $radio = $('input[type=radio],input[type=checkbox]',this);
+        $.each($radio,function(){
+            if(!o.hasOwnProperty(this.name)){
+                o[this.name] = '';
+            }
+        });
+        var $file_name = $('.file_name',this);
+        $.each($file_name,function(){
+            if($(this).text()!=''){
+                o[$(this).attr("name")] = $(this).text();
+            }
+        });
+        return o;
+    };
+    var deleteList=[];
         //按钮事件响应
         $('body').on('click', 'button111', function(event) {
             event.preventDefault();
@@ -153,7 +153,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             var btn_id = btn.attr('id');
             var btn_name = btn.attr('name');
             if(btn_id==undefined && btn_name==undefined){
-            	return false;
+                return false;
             }
             
             if(btn_name == "add_detail_row_btn"){
@@ -167,7 +167,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                 dataTable.row(target_table_tr).remove().draw();
                 var id =  $(this).parent().parent().attr("id");
                 if(id==null){
-                	return;
+                    return;
                 }
                 deleteList.push({ID: id, is_delete:'Y'});
                
@@ -206,16 +206,16 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                                 if(order_id==""){
                                     doAdd(data);
                                 }else{
-                                	if(event.TYPE == "set_value"){
-                                		data.type = "set_value";
-                                		data.event_id = event.ID;                         		
-                                		data.form_id = event.FORM_ID.toString();
-                                	}else{
-                                		data.TYPE = "save";
-                                		data.event_id = event.ID.toString();                         		
-                                		data.form_id = event.FORM_ID.toString();
-                                	}
-                                	doUpdate(data);
+                                    if(event.TYPE == "set_value"){
+                                        data.type = "set_value";
+                                        data.event_id = event.ID;                         		
+                                        data.form_id = event.FORM_ID.toString();
+                                    }else{
+                                        data.TYPE = "save";
+                                        data.event_id = event.ID.toString();                         		
+                                        data.form_id = event.FORM_ID.toString();
+                                    }
+                                    doUpdate(data);
                                 }
                             }else if(event.TYPE == "refresh_list"){
                                 var dataTable = $('#list_table').DataTable();
@@ -224,7 +224,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                                 var template_list = event.TEMPLATE_LIST;
                                 $('#template_list').empty();
                                 $.each(template_list, function(index, item) {
-                                	var html ='<div class="radio" style="width:100px;cursor: pointer;">'
+                                    var html ='<div class="radio" style="width:100px;cursor: pointer;">'
                                              +'	<input type="radio" name="template_id" value="'+item.ID+'" checked>'+item.NAME
                                              +'	<pre id="template_content_'+item.ID +'" style="display:none;">'+item.CONTENT+'</pre>'
                                              +'</div>';
@@ -242,6 +242,8 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             }
         });
 
+        var imgDeleteIds = [];
+
         function getFormData($form){
             // Find disabled inputs, and remove the "disabled" attribute
             var disabled = $form.find(':input:disabled').removeAttr('disabled');
@@ -250,9 +252,9 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             
 
             $.each(unindexed_array, function(index, item) {
-            	if(Object.prototype.toString.call(item)=='[object Array]'){
-            		unindexed_array[index] = item.toString();
-            	}
+                if(Object.prototype.toString.call(item)=='[object Array]'){
+                    unindexed_array[index] = item.toString();
+                }
             });
 
             var tables = $('.mui-slider-item.table');
@@ -260,12 +262,12 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             var detail_tables = [];
             var img_list = [];
 
-            $("table img").each(function(){
-            	var img = {};
-            	img.id = $(this).attr("id");
-            	img.name = $(this).attr("name");
-            	img.field_id = $(this).parent().parent().attr("id").split("f")[1];
-            	img_list.push(img);
+            $(".pic_list img").each(function(){
+                var img = {};
+                img.id = $(this).attr("id");
+                img.name = $(this).attr("name");
+                img.field_id = $(this).parent().parent().attr("id");
+                img_list.push(img);
             });
             
             $.each(tables, function(index, item) {
@@ -281,7 +283,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                     rowAr[v['name']] = v['value'];
                   });
                   if(rowData.length>0){
-                	  ar.push(rowAr);
+                      ar.push(rowAr);
                   }
                 });
                 var list = ar.concat(deleteList);
@@ -324,23 +326,23 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
 //                	if(dto.TYPE=="set_value"){
 //                		$("input[name='"+dto.TEXT_NAME+"']").val(dto.TEXT_VALUE);
 //                	}
-                	if(dto){
-                		$("#order_id").val(dto.ID);
-                		var keys = [];
-                		var form_name = "";
-             	        for (var key in dto){
-             	        	if(key=="FORM_NAME"){
-             	        		form_name = dto.FORM_NAME+"-";
-             	        		continue;
-             	        	}
-             	        	keys.push(key);
-             	        }
-             	        for(var i = 0;i<keys.length;i++){
-             	        	var input_name = form_name+keys[i].toLocaleLowerCase();
-             	        	$("[name='"+input_name+"']").val(dto[keys[i]]);
-             	        }
-                	}
-                	  
+                    if(dto){
+                        $("#order_id").val(dto.ID);
+                        var keys = [];
+                        var form_name = "";
+                         for (var key in dto){
+                             if(key=="FORM_NAME"){
+                                 form_name = dto.FORM_NAME+"-";
+                                 continue;
+                             }
+                             keys.push(key);
+                         }
+                         for(var i = 0;i<keys.length;i++){
+                             var input_name = form_name+keys[i].toLocaleLowerCase();
+                             $("[name='"+input_name+"']").val(dto[keys[i]]);
+                         }
+                    }
+                      
                     mui.alert('操作成功。');
                     
                 }else{
@@ -348,69 +350,89 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                 }
             });
         }
-        $("td").on("click","input[name='img_files']",function(){
-        	var self = $(this);
-	        $('#'+self.attr("id")).fileupload({
-				autoUpload: true, 
-			    url: '/form/uploadImg?order_id='+order_id,
-			    dataType: 'json',
+        
+        mui(document).on('tap', '.img_files', function(){
+            var self = $(this);
+            $('#'+self.attr("id")).fileupload({
+                autoUpload: true, 
+                url: '/form/uploadImg?order_id='+order_id,
+                dataType: 'json',
 //			    maxFileSize:1 * 1024 ,
 //			    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
 //			    messages: {
 //			        maxFileSize: 'File exceeds maximum allowed size of 99MB',
 //			        acceptFileTypes: 'File type not allowed'
 //			    },
-		        done: function (e, data) {
-		        	if(data.result){
-		        		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
-		        		var returnStr = "<div style='width:150px;height:150px;margin-right:10px;float: left;position:relative;'>"
-		        			+"<span style='cursor:pointer;background-color:#FFFFFF;font-size: 20px;position: absolute;left:87%;'><i class='Hui-iconfont'>&#xe706;</i></span>"
-		        			+"<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='width: 150px;height: 145px; max-width: 100%;max-height: 100%; '/></div>";
-		        		var id = $(this).parent().parent().find("div[name='upload']").attr("id");
-		        		$("#"+id).append(returnStr);
-		        	}
-			    	
-			     },
-		        error: function () {
-		            alert('上传的时候出现了错误！');
-		        }
-	        });
+                done: function (e, data) {
+                    if(data.result){
+                        var strHtml = "";
+                        strHtml += "<span>";
+                        strHtml += "<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='height:4rem;width:4rem;border: solid 1px #eee;margin-top: 10px;'/>";
+                        strHtml += '<span class="mui-icon mui-icon-closeempty"></span>'
+                        strHtml += '</span>';
+                        $(strHtml).insertBefore($(this).closest('.add_pic_btn'));
+
+                        // $.scojs_message('上传成功', $.scojs_message.TYPE_OK);
+                        // var returnStr = "<div style='width:150px;height:150px;margin-right:10px;float: left;position:relative;'>"
+                        // 	+"<span style='cursor:pointer;background-color:#FFFFFF;font-size: 20px;position: absolute;left:87%;'><i class='Hui-iconfont'>&#xe706;</i></span>"
+                        // 	+"<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='width: 150px;height: 145px; max-width: 100%;max-height: 100%; '/></div>";
+                        // var id = $(this).parent().parent().find("div[name='upload']").attr("id");
+                        // $("#"+id).append(returnStr);
+                    }
+                    
+                 },
+                error: function () {
+                    alert('上传的时候出现了错误！');
+                }
+            });
         });
-        
+
         $("td").on("click","input[name='files']",function(){
-        	var self = $(this);
-	        $('#'+self.attr("id")).fileupload({
-				autoUpload: true, 
-			    url: '/form/uploadFile',
-			    dataType: 'json',
+            var self = $(this);
+            $('#'+self.attr("id")).fileupload({
+                autoUpload: true, 
+                url: '/form/uploadFile',
+                dataType: 'json',
 //			    maxFileSize:1 * 1024 ,
 //			    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
 //			    messages: {
 //			        maxFileSize: 'File exceeds maximum allowed size of 99MB',
 //			        acceptFileTypes: 'File type not allowed'
 //			    },
-		        done: function (e, data) {
-		        	if(data.result.RESULT){
-		        		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
-		        		var returnStr = "<a style='color:#06c;text-decoration: underline;' href='"+data.result.FILEURL+"' download='w3logo'>"+data.result.FILENAME+"</a>"
-		        		$('#'+self.attr("id")).parent().parent().find(".file_name").html("");
-		        		$('#'+self.attr("id")).parent().parent().find(".file_name").append(returnStr);
-		        	}
-			    	
-			     },
-		        error: function () {
-		            alert('上传的时候出现了错误！');
-		        }
-	        });
+                done: function (e, data) {
+                    if(data.result.RESULT){
+                        $.scojs_message('上传成功', $.scojs_message.TYPE_OK);
+                        var returnStr = "<a style='color:#06c;text-decoration: underline;' href='"+data.result.FILEURL+"' download='w3logo'>"+data.result.FILENAME+"</a>"
+                        $('#'+self.attr("id")).parent().parent().find(".file_name").html("");
+                        $('#'+self.attr("id")).parent().parent().find(".file_name").append(returnStr);
+                    }
+                    
+                 },
+                error: function () {
+                    alert('上传的时候出现了错误！');
+                }
+            });
         });
         
-        var imgDeleteIds = [];
+       
         $("td").on("click","span[name='deleteImgBtn']",function(){
-        	$(this).parent().remove();
-        	var img = {};
-        	img.id = $(this).parent().find("img").attr("id");
-        	img.is_delete = "Y";
-        	imgDeleteIds.push(img);
+            $(this).parent().remove();
+            var img = {};
+            img.id = $(this).parent().find("img").attr("id");
+            img.is_delete = "Y";
+            imgDeleteIds.push(img);
         });
-    });
+        
+    
+        var imgDelete=function(){
+            $(this).parent().remove();
+            var img = {};
+            img.id = $(this).parent().find("img").attr("id");
+            img.is_delete = "Y";
+            imgDeleteIds.push(img);
+        }
+
+    return{
+        imgDelete: imgDelete
+    }
 });
