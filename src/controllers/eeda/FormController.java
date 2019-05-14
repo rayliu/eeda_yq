@@ -1,10 +1,8 @@
 package controllers.eeda;
 
-import interceptor.EedaMenuInterceptor;
-import interceptor.SetAttrLoginUserInterceptor;
-
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,8 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import models.UserLogin;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -33,6 +29,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
+import cn.hutool.core.io.FileUtil;
 import controllers.eeda.import_excel.CheckOrder;
 import controllers.eeda.import_excel.ReaderXLS;
 import controllers.eeda.import_excel.ReaderXlSX;
@@ -45,6 +42,9 @@ import controllers.form.TemplateService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PingYinUtil;
+import interceptor.EedaMenuInterceptor;
+import interceptor.SetAttrLoginUserInterceptor;
+import models.UserLogin;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -419,28 +419,12 @@ public class FormController extends Controller {
                 Db.update("form_"+form_id, rec);
             }
             
-            //
+            //img_list
             List<Map<String, ?>> img_list = (ArrayList<Map<String, ?>>)dto.get("img_list");
-        	if(img_list.size()>0){
-        		for(int i =0;i<img_list.size();i++){
-        			String id = (String) img_list.get(i).get("id");
-        			String is_delete = (String) img_list.get(i).get("is_delete");
-        			Record img = new Record();
-        			if(StringUtils.isBlank(id)){
-        				img.set("img_name", img_list.get(i).get("name"));
-        				img.set("field_id", img_list.get(i).get("field_id"));
-        				img.set("order_id", rec.get("id"));
-        				Db.save("eeda_form_field_type_img", img);
-        			}else{
-        				img = Db.findById("eeda_form_field_type_img", id);
-        				if(img!=null){
-        					if("Y".equals(is_delete)){
-            					Db.delete("eeda_form_field_type_img", img);
-            				}
-        				}
-        			}
-        		}
-        	}
+            saveFiles(rec.getStr("id"), img_list, "img");
+            //file_list
+            List<Map<String, ?>> file_list = (ArrayList<Map<String, ?>>)dto.get("file_list");
+            saveFiles(rec.getStr("id"), file_list, "file");
             //处理从表保存
             List<Map<String, ?>> detailList = (ArrayList<Map<String, ?>>)dto.get("detail_tables");
             for (Map<String, ?> detail : detailList) {
@@ -497,6 +481,30 @@ public class FormController extends Controller {
             }
         }
         return rec;
+    }
+    private void saveFiles(String order_id, List<Map<String, ?>> img_list, String type) {
+        if(img_list.size()>0){
+        	for(int i =0;i<img_list.size();i++){
+        		String id = (String) img_list.get(i).get("id");
+        		String is_delete = (String) img_list.get(i).get("is_delete");
+        		Record img = new Record();
+        		if(StringUtils.isBlank(id)){
+        			img.set("img_name", img_list.get(i).get("name"));
+        			img.set("field_id", img_list.get(i).get("field_id"));
+        			img.set("img_url", img_list.get(i).get("url"));
+        			img.set("order_id", order_id);
+        			img.set("type", type);
+        			Db.save("eeda_form_field_type_img", img);
+        		}else{
+        			img = Db.findById("eeda_form_field_type_img", id);
+        			if(img!=null){
+        				if("Y".equals(is_delete)){
+        					Db.delete("eeda_form_field_type_img", img);
+        				}
+        			}
+        		}
+        	}
+        }
     }
     private String handleAutoNo(Long form_id, String colName, String fieldId) {
         List<Record> fieldRecs = 
@@ -947,16 +955,47 @@ public class FormController extends Controller {
         UploadFile file = getFile();
         String fileName = file.getFileName();
         
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+        long office_id = user.getLong("office_id");
+        
+        Date d=new Date();
+        SimpleDateFormat sf=new SimpleDateFormat("yyyyMMdd");
+        String dateStr = sf.format(d);
+        //不加d_就不能创建目录，见鬼了。。。。
+        String webroot = FileUtil.getWebRoot().getPath();
+        String targetDir = webroot+"/upload/"+office_id+"/pic_"+dateStr;
+        FileUtil.mkdir(targetDir);
+        FileUtil.copy(webroot+"/upload/"+fileName, targetDir, true);
+        FileUtil.del(webroot+"/upload/"+fileName);
+        
         Record re = new Record();
         re.set("fileName", fileName);
         renderJson(re);
     }
+    
     public void uploadFile(){
+        UserLogin user = LoginUserController.getLoginUser(this);
+        long user_id = user.getLong("id");
+        long office_id = user.getLong("office_id");
+        
+        Date d=new Date();
+        SimpleDateFormat sf=new SimpleDateFormat("yyyyMMdd");
+        String dateStr = sf.format(d);
+        
         File file = getFile().getFile();
+        String webroot = FileUtil.getWebRoot().getPath();
+        
         String fileName = file.getName();
+        //不加doc_ 就不能创建目录，见鬼了。。。。
+        String targetDir = webroot+"/upload/"+office_id+"/doc_"+dateStr;
+        FileUtil.mkdir(targetDir);
+        FileUtil.copy(webroot+"/upload/"+fileName, targetDir, true);
+        FileUtil.del(file);
+        
         Record re = new Record();
-        re.set("fileName", fileName);
-        re.set("fileUrl", "/upload/"+fileName);
+        re.set("file_name", fileName);
+        re.set("file_url", "/upload/"+office_id+"/doc_"+dateStr+"/"+fileName);
         re.set("result", true);
         renderJson(re);
     }

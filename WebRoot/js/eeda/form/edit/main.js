@@ -68,7 +68,22 @@ define(['jquery',  '../btns', '../add/detail_table', '../event/events','../value
                     }
                 }
             } 
-            
+            if(data.FILE_FIELD_LIST.length>0){
+                var field_file_list = data.FILE_FIELD_LIST;
+                for ( var p in field_file_list){
+                    var filelist = field_file_list[p].FILE_LIST;
+                    if(filelist.length>0){
+                        for(var i in filelist){
+                            var returnStr = "<div style='margin-right:15px;float: left;'>"
+                                +"       <a id='"+filelist[i].ID+"' style='color:#06c;text-decoration: underline;' href='" + filelist[i].IMG_URL+"' download='"+filelist[i].IMG_NAME+"'>"+filelist[i].IMG_NAME+"</a>"
+                                +'       <span name="deleteFileBtn" style="cursor:pointer;color:red;font-size:20px;"><i class="Hui-iconfont"></i></span>'
+                                +'</div>';
+                            $("#f"+filelist[i].FIELD_ID).append(returnStr);
+                        }
+                    }
+                }
+            }
+
             if(data.IMGFIELDLIST.length>0){
                 var imgfieldlist = data.IMGFIELDLIST;
                 for ( var p in imgfieldlist){

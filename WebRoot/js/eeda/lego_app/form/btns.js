@@ -365,15 +365,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                         strHtml += '<span class="mui-icon mui-icon-closeempty"></span>'
                         strHtml += '</span>';
                         $(strHtml).insertBefore($(this).closest('.add_pic_btn'));
-
-                        // $.scojs_message('上传成功', $.scojs_message.TYPE_OK);
-                        // var returnStr = "<div style='width:150px;height:150px;margin-right:10px;float: left;position:relative;'>"
-                        // 	+"<span style='cursor:pointer;background-color:#FFFFFF;font-size: 20px;position: absolute;left:87%;'><i class='Hui-iconfont'>&#xe706;</i></span>"
-                        // 	+"<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='width: 150px;height: 145px; max-width: 100%;max-height: 100%; '/></div>";
-                        // var id = $(this).parent().parent().find("div[name='upload']").attr("id");
-                        // $("#"+id).append(returnStr);
                     }
-                    
                  },
                 error: function () {
                     alert('上传的时候出现了错误！');

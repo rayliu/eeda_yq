@@ -222,9 +222,11 @@ public class FormService {
         Long form_id = fieldRec.getLong("form_id");
         String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
         returnStr = "<label class='form-label'>"+fieldDisplayName+"</label>"
-        		+ "<span style='width:30%;' class='btn-upload'><a href='javascript:void();' class='btn btn-primary size-S radius'><i class='Hui-iconfont'>&#xe642;</i>图片</a>"
-        				+ "<input type='file' id='fileupload"+fieldRec.get("id")+"' multiple name='img_files' class='input-file'></span>"
-        				+ "<div id='f"+fieldRec.get("id")+"' name='upload' style='margin-top:1%;'></div>";
+            + "<span style='width:30%;' class='btn-upload'>"
+            + "  <a href='javascript:void();' class='btn btn-primary size-S radius'><i class='Hui-iconfont'>&#xe642;</i>图片</a>"
+            + "  <input type='file' id='fileupload"+fieldRec.get("id")+"' multiple name='img_files' class='input-file'>"
+            + "</span>"
+            + "<div id='f"+fieldRec.get("id")+"' name='upload' style='margin-top:1%;'></div>";
         return returnStr;
     }
     
@@ -237,13 +239,11 @@ public class FormService {
         Long form_id = fieldRec.getLong("form_id");
         String inputId = "form_"+form_id+"-f"+fieldRec.get("id")+"_"+fieldName.toLowerCase();
         returnStr = "<label class='form-label'>"+fieldDisplayName+"</label>"
-        		  + "<div class='formControls col-xs-8 col-sm-8'>"
-        		  + "<span class='btn-upload form-group' style='float:left;'>"
-        		  + "<a href='javascript:void();' class='btn btn-primary size-S radius'><i class='Hui-iconfont'>&#xe642;</i>上传文件</a>"
-        		  + "<input type='file' id='fileupload"+fieldRec.get("id")+"' multiple name='files' class='input-file'>"
-        		  + "</span>"
-        		  + "<span name='"+inputId+"' class='col-sm-8 file_name' style='overflow: hidden; text-overflow: ellipsis;white-space: nowrap;'></span>"
-                  + " </div>";
+                + "  <span style='width:30%;' class='btn-upload'>"
+                + "    <a href='javascript:void();' class='btn btn-primary size-S radius'><i class='Hui-iconfont'>&#xe642;</i>上传文件</a>"
+                + "    <input type='file' id='fileupload"+fieldRec.get("id")+"' multiple name='files' class='input-file'>"
+                + "  </span>"
+                + "<div id='f"+fieldRec.get("id")+"' name='file_upload' class='file_list' style='margin-top:1%;'></div>";
         return returnStr;
     }
     

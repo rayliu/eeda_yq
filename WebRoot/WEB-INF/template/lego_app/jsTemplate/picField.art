@@ -1,0 +1,15 @@
+<script type="text/templete" id="form_pic_field">
+    <div class="mui-input-row" style="height: auto;padding: 11px 15px;">    
+        <div  style="margin-bottom: 5px;">{{display_name}}</div>
+            <div id="{{id}}" class="pic_list">
+                <div class="picbox add_pic_btn" style="height:4rem;width:4rem;">
+                    <a href="#" style="height:4rem;width:4rem;display: block; background-color: #eee;padding: 10%;">
+                        <span class="mui-icon mui-icon-plusempty" style="font-size: 50px;position: relative;">
+                            <input id="fileupload{{id}}" type="file" name="{{name}}" class="img_files" multiple="multiple" accept="image/*">
+                        </span>
+                    </a>
+                </div>
+            </div>
+            
+    </div>
+</script> 

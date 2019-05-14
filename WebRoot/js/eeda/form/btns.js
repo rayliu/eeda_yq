@@ -1,38 +1,38 @@
 define(['jquery', './print', './event/element_set_enable', './event/element_set_droplist'
     , './event/element_set_text','./event/events', 'file_upload','layer', 'layui'], 
     function ($, printCont,element_set_enable_cont, element_set_droplist_cont, element_set_text_cont, event_cont) {
-	$.fn.serializeObject = function () {
-	    var o = {};
-	    var a = this.serializeArray();
-	    $.each(a, function () {
-	        if (o[this.name] !== undefined) {
-	            if (!o[this.name].push) {
-	                o[this.name] = [o[this.name]];
-	            }
-	            o[this.name].push(this.value || '');
-	        } else {
-	        	if($("input[name='"+this.name+"']").hasClass("Wdate")){
-	        		o[this.name] = this.value || null;
-	        	}else{
-	        		o[this.name] = this.value || '';
-	        	}
-	        }
-	    });
-	    var $radio = $('input[type=radio],input[type=checkbox]',this);
-	    $.each($radio,function(){
-	        if(!o.hasOwnProperty(this.name)){
-	            o[this.name] = '';
-	        }
-	    });
-	    var $file_name = $('.file_name',this);
-	    $.each($file_name,function(){
-	        if($(this).text()!=''){
-	            o[$(this).attr("name")] = $(this).text();
-	        }
-	    });
-	    return o;
-	};
-	    var deleteList=[];
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                if($("input[name='"+this.name+"']").hasClass("Wdate")){
+                    o[this.name] = this.value || null;
+                }else{
+                    o[this.name] = this.value || '';
+                }
+            }
+        });
+        var $radio = $('input[type=radio],input[type=checkbox]',this);
+        $.each($radio,function(){
+            if(!o.hasOwnProperty(this.name)){
+                o[this.name] = '';
+            }
+        });
+        var $file_name = $('.file_name',this);
+        $.each($file_name,function(){
+            if($(this).text()!=''){
+                o[$(this).attr("name")] = $(this).text();
+            }
+        });
+        return o;
+    };
+        var deleteList=[];
         //按钮事件响应
         $('body').on('click', 'button', function(event) {
             event.preventDefault();
@@ -40,7 +40,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
             var btn_id = btn.attr('id');
             var btn_name = btn.attr('name');
             if(btn_id==undefined && btn_name==undefined) {
-            	return false;
+                return false;
             }
             
             if(btn_name == "add_detail_row_btn"){
@@ -54,7 +54,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                 dataTable.row(target_table_tr).remove().draw();
                 var id =  $(this).parent().parent().attr("id");
                 if(id==null){
-                	return;
+                    return;
                 }
                 deleteList.push({ID: id, is_delete:'Y'});
                
@@ -213,16 +213,16 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                                 if(order_id==-1){
                                     doAdd(data);
                                 }else{
-                                	if(event.TYPE == "set_value"){
-                                		data.type = "set_value";
-                                		data.event_id = event.ID;                         		
-                                		data.form_id = event.FORM_ID.toString();
-                                	}else{
-                                		data.TYPE = "save";
-                                		data.event_id = event.ID.toString();                         		
-                                		data.form_id = event.FORM_ID.toString();
-                                	}
-                                	doUpdate(data, isLastEvent);
+                                    if(event.TYPE == "set_value"){
+                                        data.type = "set_value";
+                                        data.event_id = event.ID;                         		
+                                        data.form_id = event.FORM_ID.toString();
+                                    }else{
+                                        data.TYPE = "save";
+                                        data.event_id = event.ID.toString();                         		
+                                        data.form_id = event.FORM_ID.toString();
+                                    }
+                                    doUpdate(data, isLastEvent);
                                 }
                             }else if(event.TYPE == "refresh_list"){
                                 var dataTable = $('#list_table').DataTable();
@@ -232,16 +232,16 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                             }else if(event.TYPE == "list_add_row"){
                                 
                             } else if(event.TYPE == "download_template"){
-                            	console.log(' download....');
-                            	window.location.href = event.TEMPLATE_NAME;    
+                                console.log(' download....');
+                                window.location.href = event.TEMPLATE_NAME;    
                             } else if(event.TYPE == "export_excel"){
-                            	console.log(' export_excel....');
-                            	window.location.href = event.TEMPLATE_NAME;    
+                                console.log(' export_excel....');
+                                window.location.href = event.TEMPLATE_NAME;    
                             } else if(event.TYPE == "import_excel"){
-                            	console.log(' import_excel....');  
-                            	var form_id = event.FORM_ID;
-                            	var btn = "form_"+event.FORM_ID+'-btn_'+btn_id;
-                            	upload_value(btn, btn_id, module_id, form_id);
+                                console.log(' import_excel....');  
+                                var form_id = event.FORM_ID;
+                                var btn = "form_"+event.FORM_ID+'-btn_'+btn_id;
+                                upload_value(btn, btn_id, module_id, form_id);
                             }
                         }*/
                         
@@ -252,38 +252,38 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
 //        $.post('/form/'+module_id+'-click-'+btn_id,{order_id:order_id}, function(events){
         
         var upload_value = function(btn, btn_id, module_id, form_id) {
-        	layui.config({dir: '/js/lib/layui/'});
-        	layui.use(['upload', 'layer'], function(){
-    			var layer = layui.layer,upload = layui.upload;
+            layui.config({dir: '/js/lib/layui/'});
+            layui.use(['upload', 'layer'], function(){
+                var layer = layui.layer,upload = layui.upload;
 
-            	upload.render({
-        	    elem: '#'+ btn
-        	    ,accept: 'file' //普通文件
-        	    ,url: '/form/import_excel?module_id='+module_id+'&form_id='+form_id
-        	    ,done: function(res){
-        	      	console.log(res)
-        	      	var result = res.RESULT;
-        	      	var cause = res.CAUSE;
+                upload.render({
+                elem: '#'+ btn
+                ,accept: 'file' //普通文件
+                ,url: '/form/import_excel?module_id='+module_id+'&form_id='+form_id
+                ,done: function(res){
+                      console.log(res)
+                      var result = res.RESULT;
+                      var cause = res.CAUSE;
 
-        	       	layer.open({
-        		        type: 1
-        		        ,offset: 'auto' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
-        		        ,id: 'layerDemoauto' //防止重复弹出
-        		        ,content: '<div style="padding: 20px">'+ cause +'</div>'
-        		        ,btn: '关闭'
-        		        ,btnAlign: 'c' //按钮居中
-        		        ,shade: 0 //不显示遮罩
-        		        ,yes: function(){
-        		          	layer.closeAll();
-        		        }
-        		    });
+                       layer.open({
+                        type: 1
+                        ,offset: 'auto' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                        ,id: 'layerDemoauto' //防止重复弹出
+                        ,content: '<div style="padding: 20px">'+ cause +'</div>'
+                        ,btn: '关闭'
+                        ,btnAlign: 'c' //按钮居中
+                        ,shade: 0 //不显示遮罩
+                        ,yes: function(){
+                              layer.closeAll();
+                        }
+                    });
 
-    	    	    }
-    	        });
-        	})
-	
-    		
-    		
+                    }
+                });
+            })
+    
+            
+            
 
         }
 
@@ -295,22 +295,32 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
             disabled.attr('disabled','disabled');
 
             $.each(unindexed_array, function(index, item) {
-            	if(Object.prototype.toString.call(item)=='[object Array]'){
-            		unindexed_array[index] = item.toString();
-            	}
+                if(Object.prototype.toString.call(item)=='[object Array]'){
+                    unindexed_array[index] = item.toString();
+                }
             });
 
             var tables = $('table[type=dynamic]');
             var field_id_list = [];
             var detail_tables = [];
             var img_list = [];
+            var file_list = [];
 
             $("table img").each(function(){
-            	var img = {};
-            	img.id = $(this).attr("id");
-            	img.name = $(this).attr("name");
-            	img.field_id = $(this).parent().parent().attr("id").split("f")[1];
-            	img_list.push(img);
+                var img = {};
+                img.id = $(this).attr("id");
+                img.name = $(this).attr("name");
+                img.field_id = $(this).parent().parent().attr("id").split("f")[1];
+                img_list.push(img);
+            });
+
+            $(".file_list a").each(function(){
+                var file = {};
+                file.id = $(this).attr("id");
+                file.name = $(this).attr("download");
+                file.url=$(this).attr("href");
+                file.field_id = $(this).parent().parent().attr("id").split("f")[1];
+                file_list.push(file);
             });
             
             $.each(tables, function(index, item) {
@@ -326,7 +336,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                     rowAr[v['name']] = v['value'];
                   });
                   if(rowData.length>0){
-                	  ar.push(rowAr);
+                      ar.push(rowAr);
                   }
                 });
                 var list = ar.concat(deleteList);
@@ -339,6 +349,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
 
             unindexed_array.detail_tables = detail_tables;
             unindexed_array.img_list = img_list.concat(imgDeleteIds);
+            unindexed_array.file_list = file_list.concat(fileDeleteIds);
 
             return unindexed_array;
         }
@@ -367,23 +378,23 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                     if(window.location.pathname.indexOf('-add')>0 && dto.ID){
                         history.pushState({foo: "create"}, "", data.module_id+"-edit-"+dto.ID);
                     }
-                	if(dto.ID){
-                		$("#order_id").val(dto.ID);
-                		var keys = [];
-                		var form_name = "";
-             	        for (var key in dto){
-             	        	if(key=="FORM_NAME"){
-             	        		form_name = dto.FORM_NAME+"-";
-             	        		continue;
-             	        	}
-             	        	keys.push(key);
-             	        }
-             	        for(var i = 0;i<keys.length;i++){
-             	        	var input_name = form_name+keys[i].toLocaleLowerCase();
-             	        	$("[name='"+input_name+"']").val(dto[keys[i]]);
-             	        }
-                	}
-                	  
+                    if(dto.ID){
+                        $("#order_id").val(dto.ID);
+                        var keys = [];
+                        var form_name = "";
+                         for (var key in dto){
+                             if(key=="FORM_NAME"){
+                                 form_name = dto.FORM_NAME+"-";
+                                 continue;
+                             }
+                             keys.push(key);
+                         }
+                         for(var i = 0;i<keys.length;i++){
+                             var input_name = form_name+keys[i].toLocaleLowerCase();
+                             $("[name='"+input_name+"']").val(dto[keys[i]]);
+                         }
+                    }
+                      
                     layer.closeAll(); 
                     layer.alert('操作成功', {
                         icon: 1,
@@ -399,67 +410,77 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
             });
         }
         $("td").on("click","input[name='img_files']",function(){
-        	var self = $(this);
-	        $('#'+self.attr("id")).fileupload({
-				autoUpload: true, 
-			    url: '/form/uploadImg?order_id='+order_id,
-			    dataType: 'json',
+            var self = $(this);
+            $('#'+self.attr("id")).fileupload({
+                autoUpload: true, 
+                url: '/form/uploadImg?order_id='+order_id,
+                dataType: 'json',
 //			    maxFileSize:1 * 1024 ,
 //			    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
 //			    messages: {
 //			        maxFileSize: 'File exceeds maximum allowed size of 99MB',
 //			        acceptFileTypes: 'File type not allowed'
 //			    },
-		        done: function (e, data) {
-		        	if(data.result){
-		        		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
-		        		var returnStr = "<div style='width:150px;height:150px;margin-right:10px;float: left;position:relative;'>"
-		        			+"<span style='cursor:pointer;background-color:#FFFFFF;font-size: 20px;position: absolute;left:87%;'><i class='Hui-iconfont'>&#xe706;</i></span>"
-		        			+"<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='width: 150px;height: 145px; max-width: 100%;max-height: 100%; '/></div>";
-		        		var id = $(this).parent().parent().find("div[name='upload']").attr("id");
-		        		$("#"+id).append(returnStr);
-		        	}
-			    	
-			     },
-		        error: function () {
-		            alert('上传的时候出现了错误！');
-		        }
-	        });
+                done: function (e, data) {
+                    if(data.result){
+                        $.scojs_message('上传成功', $.scojs_message.TYPE_OK);
+                        var returnStr = "<div style='width:150px;height:150px;margin-right:10px;float: left;position:relative;'>"
+                            +"<span style='cursor:pointer;background-color:#FFFFFF;font-size: 20px;position: absolute;left:87%;'><i class='Hui-iconfont'>&#xe706;</i></span>"
+                            +"<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='width: 150px;height: 145px; max-width: 100%;max-height: 100%; '/></div>";
+                        var id = $(this).parent().parent().find("div[name='upload']").attr("id");
+                        $("#"+id).append(returnStr);
+                    }
+                    
+                 },
+                error: function () {
+                    alert('上传的时候出现了错误！');
+                }
+            });
         });
         
         $("td").on("click","input[name='files']",function(){
-        	var self = $(this);
-	        $('#'+self.attr("id")).fileupload({
-				autoUpload: true, 
-			    url: '/form/uploadFile',
-			    dataType: 'json',
+            var self = $(this);
+            $('#'+self.attr("id")).fileupload({
+                autoUpload: true, 
+                url: '/form/uploadFile',
+                dataType: 'json',
 //			    maxFileSize:1 * 1024 ,
 //			    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
 //			    messages: {
 //			        maxFileSize: 'File exceeds maximum allowed size of 99MB',
 //			        acceptFileTypes: 'File type not allowed'
 //			    },
-		        done: function (e, data) {
-		        	if(data.result.RESULT){
-		        		$.scojs_message('上传成功', $.scojs_message.TYPE_OK);
-		        		var returnStr = "<a style='color:#06c;text-decoration: underline;' href='"+data.result.FILEURL+"' download='w3logo'>"+data.result.FILENAME+"</a>"
-		        		$('#'+self.attr("id")).parent().parent().find(".file_name").html("");
-		        		$('#'+self.attr("id")).parent().parent().find(".file_name").append(returnStr);
-		        	}
-			    	
-			     },
-		        error: function () {
-		            alert('上传的时候出现了错误！');
-		        }
-	        });
+                done: function (e, data) {
+                    if(data.result.RESULT){
+                        var returnStr = "<div style='margin-right:15px;float: left;'>"
+                                +"       <a style='color:#06c;text-decoration: underline;' href='" + data.result.FILE_URL+"' download='"+data.result.FILE_NAME+"'>"+data.result.FILE_NAME+"</a>"
+                                +'       <span name="deleteImgBtn" style="cursor:pointer;color:red;font-size:20px;"><i class="Hui-iconfont"></i></span>'
+                                +'</div>';
+                        $(e.target).parent().parent().find('.file_list').append(returnStr);
+                    }
+                    
+                 },
+                error: function () {
+                    alert('上传的时候出现了错误！');
+                }
+            });
         });
         
         var imgDeleteIds = [];
         $("td").on("click","span[name='deleteImgBtn']",function(){
-        	$(this).parent().remove();
-        	var img = {};
-        	img.id = $(this).parent().find("img").attr("id");
-        	img.is_delete = "Y";
-        	imgDeleteIds.push(img);
+            $(this).parent().remove();
+            var img = {};
+            img.id = $(this).parent().find("img").attr("id");
+            img.is_delete = "Y";
+            imgDeleteIds.push(img);
+        });
+
+        var fileDeleteIds = [];
+        $("td").on("click","span[name='deleteFileBtn']",function(){
+            $(this).parent().remove();
+            var img = {};
+            img.id = $(this).parent().find("a").attr("id");
+            img.is_delete = "Y";
+            fileDeleteIds.push(img);
         });
 });
