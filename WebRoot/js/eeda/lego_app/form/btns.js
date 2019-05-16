@@ -99,8 +99,29 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                         case 'table_add_row'://表格新增一行
                             var event_action_setting=action.event_action_setting;
                             var target_table_id = "detail_table_"+event_action_setting.target_table_field_id;
-                            var dataTable = $('#'+target_table_id).DataTable();
-                            dataTable.row.add({}).draw(false);
+
+                            var form_define = window.form_define;
+                            var field_list = getTableFields(target_table_id, form_define);
+
+                            var $ul = $('#edit_popover ul');
+                            $ul.empty();
+
+                            var $li=$(this).closest('li');
+                            $('#edit_popover_table_id').val(target_table_id);
+                            $(field_list).each(function(index, field){
+                                var display_name = field.FIELD_DISPLAY_NAME;
+                                var name = "F"+field.ID+"_"+field.FIELD_NAME;
+                                if(!display_name) return;//continue
+                                var li_html='<li class="mui-table-view-cell">'
+                                            +'    <div class="mui-input-row">'
+                                            +'        <label>'+display_name+'</label>'
+                                            +'        <input type="text" name="'+name+'" display_name="'+display_name+'" placeholder="请输入..." value="">'
+                                            +'    </div>'
+                                            +'</li>';
+                                $ul.append(li_html);
+                            });
+                            
+                            mui('#edit_popover').popover('toggle');
                             break; 
                         default:
                             event_cont.handle(action_type, form_define_obj);
@@ -112,6 +133,19 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
         });
         mui('#action_popover').popover('hide');
     });
+
+    var getTableFields=function(target_table_id, form_define){
+        var field_list = [];
+        var detail_tables = form_define.DETAIL_TABLES;
+        detail_tables.forEach(table => {
+            if(table.TABLE_ID == target_table_id){
+                field_list = table.FIELD_LIST;
+                return false;
+            }
+        });
+        
+        return field_list;
+    }
 
     //old from pc
     $.fn.serializeObject = function () {
@@ -145,102 +179,9 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
         });
         return o;
     };
-    var deleteList=[];
+        var deleteList=[];
         //按钮事件响应
-        $('body').on('click', 'button111', function(event) {
-            event.preventDefault();
-            var btn = $(this);
-            var btn_id = btn.attr('id');
-            var btn_name = btn.attr('name');
-            if(btn_id==undefined && btn_name==undefined){
-                return false;
-            }
-            
-            if(btn_name == "add_detail_row_btn"){
-                var target_table_id = btn.attr('target_table');
-                var dataTable = $('#'+target_table_id).DataTable();
-                dataTable.row.add({}).draw(false);
-            }else if(btn_name == "table_delete_row_btn"){
-                var target_table_id = btn.closest('table').attr('id');
-                var target_table_tr = btn.closest('tr');
-                var dataTable = $('#'+target_table_id).DataTable();
-                dataTable.row(target_table_tr).remove().draw();
-                var id =  $(this).parent().parent().attr("id");
-                if(id==null){
-                    return;
-                }
-                deleteList.push({ID: id, is_delete:'Y'});
-               
-
-                //var row_index = table.row( this ).index();
-                
-            }else{
-                console.log('['+btn_id+'] btn click:');
-
-                var module_id = $('#module_id').val();
-                var order_id = $('#order_id').val();
-                if(btn_id.split('-').length<=1)
-                    return;
-                    
-                var btn_id = btn_id.split('-')[1].split('_')[1];
-
-                $.post('/form/'+module_id+'-click-'+btn_id,{order_id:order_id}, function(events){
-                    console.log(events);
-                    if(events){
-                        for (var i = 0; i < events.length; i++) {
-                            var event = events[i];
-                            if(event.TYPE == "open"){
-                                var url = '/form/'+event.OPEN.MODULE_ID+'-add';
-                                if(event.OPEN.OPEN_TYPE = 'newTab'){
-                                    window.open(url);
-                                }else if(event.OPEN.OPEN_TYPE = 'self'){
-                                    window.location.href=url;
-                                }else{
-                                    window.open(url);
-                                }
-                            }else if(event.TYPE == "save"||event.TYPE == "set_value"){
-                                var $form = $("#module_form");
-                                var data = getFormData($form);
-                                console.log('save action....');
-                                console.log(data);
-                                if(order_id==""){
-                                    doAdd(data);
-                                }else{
-                                    if(event.TYPE == "set_value"){
-                                        data.type = "set_value";
-                                        data.event_id = event.ID;                         		
-                                        data.form_id = event.FORM_ID.toString();
-                                    }else{
-                                        data.TYPE = "save";
-                                        data.event_id = event.ID.toString();                         		
-                                        data.form_id = event.FORM_ID.toString();
-                                    }
-                                    doUpdate(data);
-                                }
-                            }else if(event.TYPE == "refresh_list"){
-                                var dataTable = $('#list_table').DataTable();
-                                dataTable.ajax.reload();
-                            }else if(event.TYPE == "print"){
-                                var template_list = event.TEMPLATE_LIST;
-                                $('#template_list').empty();
-                                $.each(template_list, function(index, item) {
-                                    var html ='<div class="radio" style="width:100px;cursor: pointer;">'
-                                             +'	<input type="radio" name="template_id" value="'+item.ID+'" checked>'+item.NAME
-                                             +'	<pre id="template_content_'+item.ID +'" style="display:none;">'+item.CONTENT+'</pre>'
-                                             +'</div>';
-                                    $('#template_list').append(html);
-                                });
-                                $('#print_template_list').modal('show');
-                            }else if(event.TYPE == "list_add_row"){
-                                var target_table_id = "detail_table_"+event.LIST_ADD_ROW.FIELD_ID;
-                                var dataTable = $('#'+target_table_id).DataTable();
-                                dataTable.row.add({}).draw(false);
-                            }
-                        }
-                    }
-                });
-            }
-        });
+        
 
         
 
