@@ -497,9 +497,11 @@ public class FormController extends Controller {
         			Db.save("eeda_form_field_type_img", img);
         		}else{
         			img = Db.findById("eeda_form_field_type_img", id);
+        			
         			if(img!=null){
         				if("Y".equals(is_delete)){
-        					Db.delete("eeda_form_field_type_img", img);
+        				    img.set("is_delete", "Y");
+        					Db.update("eeda_form_field_type_img", img);
         				}
         			}
         		}
@@ -970,7 +972,8 @@ public class FormController extends Controller {
         FileUtil.del(webroot+"/upload/"+fileName);
         
         Record re = new Record();
-        re.set("fileName", fileName);
+        re.set("file_name", fileName);
+        re.set("file_url", "/upload/"+office_id+"/pic_"+dateStr+"/"+fileName);
         renderJson(re);
     }
     

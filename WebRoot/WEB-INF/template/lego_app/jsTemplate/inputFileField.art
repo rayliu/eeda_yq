@@ -4,20 +4,12 @@
         <div style="margin-bottom: 5px;">{{display_name}}</div>
             <div id="{{id}}" class="file_list">
                 <ul style="padding-left: 0px;margin-block-start: 0em;margin-block-end: 0em;">
-                    <li style="list-style-type:none;">
-                        <div>
-                            <span class="mui-icon-extra mui-icon-extra-order" style="margin-right: 5px;float:left;padding: 1.2rem;height:4rem;width:4rem;border: solid 1px #eee;position: relative;"></span>
-                            <div class="mui-ellipsis" style="float:left;width:65%;margin-top: 6%;">magazine-rewq.jpg</div>
-                            <span class="mui-icon mui-icon-closeempty" style="margin-top: 6%;"></span>
-                        </div>
-                        
-                    </li>
                 </ul>
-                <div style="clear:both;padding-top: 5px;"></div>
-                <div id="add_file_btn" class="filebox add_file_btn" style="height:4rem;width:4rem;">
+                
+                <div id="add_file_btn" class="filebox add_file_btn" style="height:4rem;width:4rem;position: relative;">
                     <a href="#" style="height:4rem;width:4rem;display: block; background-color: #eee;padding: 0.36rem;">
                         <span class="mui-icon mui-icon-plusempty" style="font-size: 50px;">
-                            <input type="file" name="{{name}}" class="upload_files" multiple="multiple">
+                            <input id="fileupload{{id}}" type="file" name="{{name}}" class="upload_files" multiple="multiple">
                         </span>
                     </a>
                 </div>

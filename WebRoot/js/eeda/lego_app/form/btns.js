@@ -242,7 +242,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             }
         });
 
-        var imgDeleteIds = [];
+        
 
         function getFormData($form){
             // Find disabled inputs, and remove the "disabled" attribute
@@ -261,13 +261,23 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             var field_id_list = [];
             var detail_tables = [];
             var img_list = [];
-
+            var file_list = [];
             $(".pic_list img").each(function(){
                 var img = {};
                 img.id = $(this).attr("id");
                 img.name = $(this).attr("name");
+                img.url = $(this).attr("src");
                 img.field_id = $(this).parent().parent().attr("id");
                 img_list.push(img);
+            });
+
+            $(".file_list ul a").each(function(){
+                var file = {};
+                file.id = $(this).attr("id");
+                file.name = $(this).text();
+                file.url = $(this).attr('href');
+                file.field_id = $(this).closest('.file_list').attr("id");
+                file_list.push(file);
             });
             
             $.each(tables, function(index, item) {
@@ -296,7 +306,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
 
             unindexed_array.detail_tables = detail_tables;
             unindexed_array.img_list = img_list.concat(imgDeleteIds);
-
+            unindexed_array.file_list = file_list.concat(fileDeleteIds);
             disabled.attr('disabled','disabled');
             return unindexed_array;
         }
@@ -361,7 +371,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
                     if(data.result){
                         var strHtml = "";
                         strHtml += "<span>";
-                        strHtml += "<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='height:4rem;width:4rem;border: solid 1px #eee;margin-top: 10px;'/>";
+                        strHtml += "<img name='"+data.result.FILE_NAME+"' src='"+data.result.FILE_URL+"' style='height:4rem;width:4rem;border: solid 1px #eee;margin-top: 10px;'/>";
                         strHtml += '<span class="mui-icon mui-icon-closeempty"></span>'
                         strHtml += '</span>';
                         $(strHtml).insertBefore($(this).closest('.add_pic_btn'));
@@ -373,13 +383,11 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             });
         });
 
-
-
-        $("td").on("click","input[name='files']",function(){
+        mui("#module_form").on('tap', '.upload_files', function(){
             var self = $(this);
             $('#'+self.attr("id")).fileupload({
                 autoUpload: true, 
-                url: '/form/uploadFile',
+                url: '/form/uploadFile?order_id='+order_id,
                 dataType: 'json',
 //			    maxFileSize:1 * 1024 ,
 //			    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
@@ -389,12 +397,16 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
 //			    },
                 done: function (e, data) {
                     if(data.result.RESULT){
-                        $.scojs_message('上传成功', $.scojs_message.TYPE_OK);
-                        var returnStr = "<a style='color:#06c;text-decoration: underline;' href='"+data.result.FILEURL+"' download='w3logo'>"+data.result.FILENAME+"</a>"
-                        $('#'+self.attr("id")).parent().parent().find(".file_name").html("");
-                        $('#'+self.attr("id")).parent().parent().find(".file_name").append(returnStr);
+                        var strHtml = ""
+                                +'<li style="list-style-type:none;clear: both;margin-bottom: 1.2rem;">'
+                                +'    <div>'
+                                +'        <span class="mui-icon-extra mui-icon-extra-order" style="margin-right: 5px;float:left;padding: 1.2rem;height:4rem;width:4rem;border: solid 1px #eee;position: relative;"></span>'
+                                +'        <a id="" href="'+data.result.FILE_URL+'" class="mui-ellipsis" style="float:left;width:65%;margin-top: 6%;">'+data.result.FILE_NAME+'</a>'
+                                +'        <span class="mui-icon mui-icon-closeempty" style="margin-top: 6%;background-color: #f0d54e;border-radius: 15px;"></span>'
+                                +'    </div>'
+                                +'</li>';
+                        $('#'+self.attr("id")).closest('.file_list').children('ul').append(strHtml);
                     }
-                    
                  },
                 error: function () {
                     alert('上传的时候出现了错误！');
@@ -411,7 +423,7 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             imgDeleteIds.push(img);
         });
         
-    
+        var imgDeleteIds = [];
         var imgDelete=function(){
             $(this).parent().remove();
             var img = {};
@@ -420,7 +432,17 @@ define(['jquery','file_upload','sco'], function ($, printCont,metisMenu) {
             imgDeleteIds.push(img);
         }
 
+        var fileDeleteIds = [];
+        var fileDelete=function(){
+            $(this).parent().remove();
+            var file = {};
+            file.id = $(this).parent().find("a").attr("id");
+            file.is_delete = "Y";
+            fileDeleteIds.push(file);
+        }
+
     return{
-        imgDelete: imgDelete
+        imgDelete:  imgDelete,
+        fileDelete: fileDelete
     }
 });

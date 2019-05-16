@@ -310,6 +310,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                 var img = {};
                 img.id = $(this).attr("id");
                 img.name = $(this).attr("name");
+                img.url=$(this).attr("src");
                 img.field_id = $(this).parent().parent().attr("id").split("f")[1];
                 img_list.push(img);
             });
@@ -426,7 +427,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                         $.scojs_message('上传成功', $.scojs_message.TYPE_OK);
                         var returnStr = "<div style='width:150px;height:150px;margin-right:10px;float: left;position:relative;'>"
                             +"<span style='cursor:pointer;background-color:#FFFFFF;font-size: 20px;position: absolute;left:87%;'><i class='Hui-iconfont'>&#xe706;</i></span>"
-                            +"<img name='"+data.result.FILENAME+"' src='/upload/"+data.result.FILENAME+"' style='width: 150px;height: 145px; max-width: 100%;max-height: 100%; '/></div>";
+                            +"<img name='"+data.result.FILE_NAME+"' src='"+data.result.FILE_URL+"' style='width: 150px;height: 145px; max-width: 100%;max-height: 100%; '/></div>";
                         var id = $(this).parent().parent().find("div[name='upload']").attr("id");
                         $("#"+id).append(returnStr);
                     }

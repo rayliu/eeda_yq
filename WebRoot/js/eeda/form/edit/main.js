@@ -92,7 +92,7 @@ define(['jquery',  '../btns', '../add/detail_table', '../event/events','../value
                         for(var i in imglist){
                             var returnStr = "<div style='width:150px;height:150px;margin-right:10px;float: left;position:relative;'>"
                                 +"<span name='deleteImgBtn' style='cursor:pointer;color:red;font-size:20px;position:absolute;left:87%;'><i class='Hui-iconfont'>&#xe706;</i></span>"
-                                +"<img id='"+imglist[i].ID+"' name='"+imglist[i].IMG_NAME+"' src='/upload/"+imglist[i].IMG_NAME+"' style='width: 150px;height:145px; max-width: 100%;max-height: 100%; '/></div>";
+                                +"<img id='"+imglist[i].ID+"' name='"+imglist[i].IMG_NAME+"' src='"+imglist[i].IMG_URL+"' style='width: 150px;height:145px; max-width: 100%;max-height: 100%; '/></div>";
                             $("#f"+imglist[i].FIELD_ID).append(returnStr);
                         }
                     }

@@ -93,7 +93,7 @@ public class FormUtil {
                 + " where field.field_type='图片' "
                 +" and field.form_id=?", form_id);
         for (Record imgFieldRec : imgFieldList) {
-            List<Record> imgList = Db.find("select * from eeda_form_field_type_img where order_id = ? and field_id = ? and type='img'",order_id,imgFieldRec.get("id"));
+            List<Record> imgList = Db.find("select * from eeda_form_field_type_img where order_id = ? and field_id = ? and type='img' and is_delete='N'", order_id, imgFieldRec.get("id"));
             imgFieldRec.set("imgList", imgList);
         }
         rec.set("imgFieldList", imgFieldList);
@@ -102,7 +102,7 @@ public class FormUtil {
                 + " where field.field_type='附件' "
                 +" and field.form_id=?", form_id);
         for (Record fileRec : fileList) {
-            List<Record> imgList = Db.find("select * from eeda_form_field_type_img where order_id = ? and field_id = ? and type='file'",order_id, fileRec.get("id"));
+            List<Record> imgList = Db.find("select * from eeda_form_field_type_img where order_id = ? and field_id = ? and type='file' and is_delete='N'", order_id, fileRec.get("id"));
             fileRec.set("file_list", imgList);
         }
         rec.set("file_field_list", fileList);

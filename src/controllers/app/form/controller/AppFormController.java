@@ -212,16 +212,23 @@ public class AppFormController extends Controller {
                 + " where field.field_type='图片' "
                 +" and field.form_id=?", form_id);
         for (Record imgFieldRec : imgFieldList) {
-            List<Record> imgList = Db.find("select * from eeda_form_field_type_img where order_id = ? and field_id = ?",order_id,imgFieldRec.get("id"));
+            List<Record> imgList = Db.find("select * from eeda_form_field_type_img where order_id = ? and field_id = ? and type='img' and is_delete='N'",order_id,imgFieldRec.get("id"));
             imgFieldRec.set("img_list", imgList);
         }
         
-        
+        List<Record> fileFieldList = Db.find("select * from  eeda_form_field field"
+                + " where field.field_type='附件' "
+                +" and field.form_id=?", form_id);
+        for (Record fileRec : fileFieldList) {
+            List<Record> imgList = Db.find("select * from eeda_form_field_type_img where order_id = ? and field_id = ? and type='file' and is_delete='N'", order_id, fileRec.get("id"));
+            fileRec.set("file_list", imgList);
+        }
         
         Record returnRec = new Record();
         returnRec.set("field_list", fieldList);
         returnRec.set("detail_tables", detailList);
         returnRec.set("img_field_list", imgFieldList);
+        returnRec.set("file_field_list", fileFieldList);
         return returnRec;
     }
     
