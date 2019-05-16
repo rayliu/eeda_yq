@@ -27,6 +27,7 @@ import controllers.app.form.service.AppFormService;
 import controllers.form.FormService;
 import controllers.form.FormTableConfigService;
 import controllers.form.FormUtil;
+import controllers.form.TemplateService;
 import controllers.profile.LoginUserController;
 import interceptor.SetAttrLoginUserInterceptor;
 import models.UserLogin;
@@ -96,6 +97,12 @@ public class AppFormController extends Controller {
                 List<Record> recList = Db.find(
                         "select * from eeda_form_btn where form_id=? and type=?", form_id, "app_btn_edit");
                 setAttr("btnList", recList);
+                if("Y".equals(showMenu)) {
+                    String template_content = formRec.getStr("app_template");
+                    TemplateService ts = TemplateService.getInstance();
+                    template_content = ts.processCharts(template_content, formRec.getLong("office_id"));
+                    setAttr("form_content", template_content);
+                }
             }else if("list".equals(action)){
                 if("Y".equals(formRec.getStr("is_single_record"))){//单页显示，不需要list
                     Record orderRec = Db.findFirst("select * from form_"+form_id);

@@ -415,16 +415,16 @@ public class FormController extends Controller {
                 Db.save("form_"+form_id, rec);
                 rec.set("form_name","form_"+form_id);
             }else{
-                rec.set("id", order_id);
+                rec.set("id", Long.valueOf(order_id));
                 Db.update("form_"+form_id, rec);
             }
             
             //img_list
             List<Map<String, ?>> img_list = (ArrayList<Map<String, ?>>)dto.get("img_list");
-            saveFiles(rec.getStr("id"), img_list, "img");
+            saveFiles(rec.getLong("id"), img_list, "img");
             //file_list
             List<Map<String, ?>> file_list = (ArrayList<Map<String, ?>>)dto.get("file_list");
-            saveFiles(rec.getStr("id"), file_list, "file");
+            saveFiles(rec.getLong("id"), file_list, "file");
             //处理从表保存
             List<Map<String, ?>> detailList = (ArrayList<Map<String, ?>>)dto.get("detail_tables");
             for (Map<String, ?> detail : detailList) {
@@ -482,7 +482,7 @@ public class FormController extends Controller {
         }
         return rec;
     }
-    private void saveFiles(String order_id, List<Map<String, ?>> img_list, String type) {
+    private void saveFiles(Long order_id, List<Map<String, ?>> img_list, String type) {
         if(img_list.size()>0){
         	for(int i =0;i<img_list.size();i++){
         		String id = (String) img_list.get(i).get("id");

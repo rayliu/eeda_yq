@@ -33,6 +33,7 @@ define(['jquery', 'template', './field_ref', '../btns', 'mui', 'mui_loading', 'm
 
             var field_list = result.FIELD_LIST;
             var detail_tables = result.DETAIL_TABLES;
+            if(!field_list) return;
             field_list.forEach(element => {
                 var type = element.DISPLAY_TYPE;
                 
