@@ -574,6 +574,7 @@ public class ModuleService {
         }
 
         List<Map<String, ?>> display_list = (ArrayList<Map<String, ?>>) fieldTypeObj.get("display_field".toUpperCase());
+        if(display_list==null) return ;
         for (Map<String, ?> display_field : display_list) {
             String id = display_field.get("id".toUpperCase()).toString();
             ;
@@ -632,7 +633,8 @@ public class ModuleService {
             Record itemRec = new Record();
             if (StringUtils.isBlank(id)) {
                 itemRec.set("field_id", fieldId);
-                itemRec.set("seq", seq);
+                if(StrKit.notBlank(seq.toString()))
+                    itemRec.set("seq", seq);
                 itemRec.set("name", name);
                 itemRec.set("code", code);
                 itemRec.set("is_default", is_default);
@@ -645,7 +647,8 @@ public class ModuleService {
                     itemRec.set("field_id", fieldId);
                     itemRec.set("name", name);
                     itemRec.set("code", code);
-                    itemRec.set("seq", seq);
+                    if(seq!=null && StrKit.notBlank(seq.toString()))
+                        itemRec.set("seq", seq);
                     itemRec.set("is_default", is_default);
                     Db.update("eeda_form_field_type_checkbox_item", itemRec);
                 }

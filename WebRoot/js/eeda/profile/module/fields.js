@@ -13,9 +13,22 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
                           '<i class="fa fa-trash-o"></i> 删除</button>';
                   }
               },
-              { "data": "SEQ", "width": "50px"},
-              { "data": "FIELD_DISPLAY_NAME"}, 
-              { "data": "FIELD_TYPE"}, 
+              { "data": "SEQ", "width": "50px", 
+                "render": function ( data, type, full, meta ) {
+                  if(!data) data = '';
+                  return '<input type="text" style="width:50px;" value="'+data+'">';
+                }
+              },
+              { "data": "FIELD_DISPLAY_NAME", "width": "150px"}, 
+              { "data": "FIELD_TYPE", "width": "120px"}, 
+              { "data": "LISTED", "width": "80px", 
+                "render": function ( data, type, full, meta ) {
+                  var checked="checked";
+                  if(data=='Y') 
+                    checked="";
+                  return '<input type="checkbox" value="'+data+'" '+checked+'>';
+                }
+              },
               { "data": "SORT_TYPE", "width": "30px"}
           ]
         });
@@ -367,6 +380,31 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         	});
         	return flag;
         }
+
+        //序号输入
+        $('#fields_table tbody').on('focus', 'input[type=text]', function(e){
+            e.preventDefault();//不触发选中行
+            return false;
+        });
+        $('#fields_table tbody').on('change', 'input[type=text]', function(e){
+            e.preventDefault();
+            var item = dataTable.rows(current_tr_index).data()[0];
+            item.SEQ = this.value;
+
+            dataTable.row(current_tr).data( item ).draw();
+        });
+
+        $('#fields_table tbody').on('change', 'input[type=checkbox]', function(e){
+          e.preventDefault();
+          var item = dataTable.rows(current_tr_index).data()[0];
+          if($(this).prop('checked')){
+            item.LISTED = 'N';  
+          }else{
+            item.LISTED = 'Y';  
+          }
+          
+          dataTable.row(current_tr).data( item ).draw();
+      });
         
         //保存后，重刷字段table表
         var refresh_table = function(form_field_list){

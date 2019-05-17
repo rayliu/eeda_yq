@@ -27,13 +27,6 @@ define(['jquery'], function ($) {
                       return '<input type="text" name="sequence" value="'+data+'" class="form-control" style="width:100px"/>';
                     }
                 },
-              { "data": "VALUE",
-                "render": function ( data, type, full, meta ) {
-                    if(!data)
-                         data='';
-                    return '<input type="text" name="value" value="'+data+'" class="form-control" style="width:200px"/>';
-                  }
-              },
               { "data": "NAME",
                   "render": function ( data, type, full, meta ) {
                       if(!data)
@@ -61,12 +54,11 @@ define(['jquery'], function ($) {
             var data = dataTable.rows().data();
             var inputs = dataTable.$('input, select');
             var itemList = [];
-            for (var i = 0; i < inputs.length/4; i++) {
+            for (var i = 0; i < inputs.length/3; i++) {
               var item={
-                ID: $(inputs[i*4]).val(),
-                SEQUENCE: $(inputs[i*4 + 1]).val(),
-                VALUE: $(inputs[i*4 + 2]).val(),
-                NAME: $(inputs[i*4 + 3]).val()
+                ID: $(inputs[i*3]).val(),
+                SEQUENCE: $(inputs[i*3 + 1]).val(),
+                NAME: $(inputs[i*3 + 2]).val()
               };
 
               itemList.push(item);
