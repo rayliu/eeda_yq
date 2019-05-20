@@ -1,5 +1,4 @@
 define(['jquery', 'layer'], function ($) {
-
 	$(document).ready(function() {
 		document.title = '角色设置';
 		var dataTable = eeda.dt({

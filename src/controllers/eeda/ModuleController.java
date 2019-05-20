@@ -1761,4 +1761,8 @@ public class ModuleController extends Controller {
         }
         renderJson(menuList);
     }
+    
+    public void moduleMarket() {
+        render("/profile/moduleMarket/moduleMarket.html");
+    }
 }

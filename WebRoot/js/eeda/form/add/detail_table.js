@@ -10,7 +10,6 @@ define(['jquery', 'sco', '../btns'], function ($, sco, btnCont) {
 
     var module_id = $('#module_id').val();
     $.post('/form/'+module_id+'-tableConfig', {field_id_list: JSON.stringify(field_id_list)}, function(data, textStatus, xhr) {
-        console.log('textStatus:'+textStatus);
         console.log(data);
         if(data.length ==0){//无从表
             if(getDataFunc){
@@ -87,11 +86,12 @@ define(['jquery', 'sco', '../btns'], function ($, sco, btnCont) {
                  cols.push(col);
                  field_id=field.FIELD_ID;
             });
-
+            console.log(cols);
             var dataTable = eeda.dt({
                 id: 'detail_table_'+field_id,
                 columns: cols,
-                initComplete: function(settings) {
+                initComplete: function(settings, json) {
+                    console.log(json);
                     //等table 初始完成后, 才执行 查数据的动作
                     if(getDataFunc){
                         getDataFunc();

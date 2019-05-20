@@ -10,7 +10,7 @@ $(document).ready(function(){
     });
 
     $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) { 
-        console.log(message);
+        console.error(message);
     };
     //Hui 动态载入左侧菜单，展开失效的解决方案。
     $(".Hui-aside").Huifold({
@@ -121,6 +121,25 @@ window.eeda =eeda;
 
 //dataTables builder for 1.10
 eeda.dt = function(opt){
+    var ajaxSetting = '';
+    if(opt.ajax){
+        ajaxSetting= {
+            url: opt.ajax || '',
+            type: 'POST',
+            dataType: 'JSON',
+            success: function(data,status,xhr){
+                console.log(status);
+            },error: function (xhr, error, thrown) {
+                console.log(error);
+                if(xhr.responseText.indexOf('忘记密码')>0){
+                    alert( '您未登录, 请重新登录.' );
+                }else{
+                    throw error;
+                }
+            }
+        };
+    }
+
     var option = {
         dom: '<"top"i>t<"bottom"flp><"clear">',
         processing: opt.hasOwnProperty('processing')?opt.processing:true,
@@ -150,25 +169,9 @@ eeda.dt = function(opt){
         },
         drawCallback: opt.drawCallback || function ( settings ) {},
         initComplete: opt.initComplete || function ( settings ) {},
-        //ajax: opt.ajax || '',
-        ajax: {
-            url: opt.ajax || '',
-            type: 'POST'
-        },
-        // ajax: {
-        //   url: opt.ajax || '',
-          // success:     function(data,status,xhr){
-          //   console.log(status);
-          // },
-          // error: function (xhr, error, thrown) {
-            // if(xhr.responseText.indexOf('忘记密码')>0){
-            //   alert( '您未登录, 请重新登录.' );
-            // }else{
-            //   throw error;
-            // }
-            //alert(error);
-        //   }
-        // } || '',
+        // ajax: opt.ajax || '',
+        ajax: ajaxSetting,
+
         columns: opt.columns || []
     };
 

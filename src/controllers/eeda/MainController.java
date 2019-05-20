@@ -109,11 +109,12 @@ public class MainController extends Controller {
             setAttr("action", "list");
             Long moduleId = re.getLong("module_id");
             setAttr("module_id", moduleId);
-            Record title = Db.findFirst("select m1.module_name level2,m2.module_name level1 from eeda_modules m1 "
+            Record title = Db.findFirst("select m1.module_name level2, m1.id level2_id, m2.module_name level1 from eeda_modules m1 "
                     + " LEFT JOIN eeda_modules m2 on m1.parent_id = m2.id" + " where m1.id = ?", moduleId);
             if (title != null) {
                 setAttr("level1", title.get("level1"));
                 setAttr("level2", title.get("level2"));
+                setAttr("level2_id", title.get("level2_id"));
             }
             FormController form = new FormController();
             form.list(re.getLong("id"), this);
@@ -430,11 +431,12 @@ public class MainController extends Controller {
                 setAttr("action", "list");
                 Long moduleId = re.getLong("module_id");
                 setAttr("module_id", moduleId);
-                Record title = Db.findFirst("select m1.module_name level2,m2.module_name level1 from eeda_modules m1 "
+                Record title = Db.findFirst("select m1.module_name level2, m1.id level2_id,m2.module_name level1 from eeda_modules m1 "
                         + " LEFT JOIN eeda_modules m2 on m1.parent_id = m2.id" + " where m1.id = ?", moduleId);
                 if (title != null) {
                     setAttr("level1", title.get("level1"));
                     setAttr("level2", title.get("level2"));
+                    setAttr("level2_id", title.get("level2_id"));
                 }
                 FormController form = new FormController();
                 form.list(re.getLong("id"), this);

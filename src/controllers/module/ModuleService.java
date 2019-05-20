@@ -12,6 +12,7 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.plugin.ehcache.CacheKit;
 
 import controllers.util.PingYinUtil;
 
@@ -599,6 +600,9 @@ public class ModuleService {
                 }
             }
         }
+        
+        String key = "tableConfig_"+fieldId;
+        CacheKit.remove("formCache",key);
     }
 
     private void saveCheckBox(Map<String, ?> field, Long field_id) {

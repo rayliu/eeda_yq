@@ -307,5 +307,17 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
             $("#displayDiv ul[role=tablist] li:first a").click();
 
          });
+         
+         $('#moduleMarketBtn').click(function(e){
+            layer.open({
+                type: 2,
+                title: '模板市场',
+                shadeClose: true,
+                shade: false,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['893px', '600px'],
+                content: '/module/moduleMarket'
+            });
+        });
     });
 });

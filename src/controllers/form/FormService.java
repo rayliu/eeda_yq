@@ -205,9 +205,8 @@ public class FormService {
                 + " <select id='"+inputId+"' name='"+inputId+"' class='form-control input-text'>";
         String dropdownStr = "";
         for (Record r : dropdown_list) {
-            String value = r.getStr("value");
             String name = r.getStr("name");
-            dropdownStr += "<option value='"+value+"'>"+name+"</option>";
+            dropdownStr += "<option value='"+name+"'>"+name+"</option>";
         }
         returnStr+=dropdownStr;
         return returnStr+"</select></div>";

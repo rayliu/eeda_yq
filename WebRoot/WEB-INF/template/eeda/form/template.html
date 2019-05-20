@@ -17,7 +17,7 @@
             <span class="c-gray en">&gt;</span>
             ${level1!''}
             <span class="c-gray en">&gt;</span>
-           ${level2!''}
+            <a href="/form/${level2_id!''}-list">${level2!''}</a>
             <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
         </nav>
 
@@ -51,13 +51,13 @@
     ${form_define}
 </textarea>
 <script>
-    requirejs(['dataTablesBootstrap'], function (common) {
+    requirejs(['eeda_common','../js/eeda/common/header.js'], function (common) {
         <%if(action=='add'){%>
-            requirejs(['app/form/add/main','/js/eeda/eeda-common.js']);
+            requirejs(['app/form/add/main']);
         <%} else if(action=='edit'){%>
-            requirejs(['/js/eeda/eeda-common.js','app/form/edit/main']);
+            requirejs(['app/form/edit/main']);
         <%} else if(action=='list'){%>
-            requirejs(['app/form/list/main', '/js/eeda/eeda-common.js']);
+            requirejs(['app/form/list/main']);
         <%}%>
     });
 </script>
