@@ -51,7 +51,7 @@
     ${form_define}
 </textarea>
 <script>
-    requirejs(['eeda_common','../js/eeda/common/header.js'], function (common) {
+    requirejs(['eeda_common'], function (common) {
         <%if(action=='add'){%>
             requirejs(['app/form/add/main']);
         <%} else if(action=='edit'){%>

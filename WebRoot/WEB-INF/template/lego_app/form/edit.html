@@ -12,7 +12,9 @@
         <%}%>
         <h1 class="mui-title">${form_name!''}</h1>
         <%if(showSideMenu=="N"){%>
-        <a id="menu" class="mui-action-menu mui-btn-link mui-pull-right" href="#action_popover">操作</a>
+            <%if(btnList.~size>0){%>
+                <a id="menu" class="mui-action-menu mui-btn-link mui-pull-right" href="#action_popover">操作</a>
+            <%}%>
         <%}%>
     </header>
     <%if(showSideMenu=="N"){%>
