@@ -1,0 +1,58 @@
+#offCanvasContentScroll{
+    overflow: auto;
+}
+
+.mui-bar-nav~.mui-content {
+    padding-top: 49px;
+}
+
+.mui-content .mui-search{
+    padding: 0px 5px;
+}
+#module_form .mui-control-item.mui-active {
+    font-size: 17px;
+    color: #007aff;
+    border-bottom: 5px solid #007aff;
+}
+#module_form .mui-control-item {
+    color: #ccc;
+}
+#module_form .mui-card .mui-input-row::after{
+    background-color: inherit;
+}
+
+#edit_popover.mui-popup{
+    text-align: left;
+    transform: translate3d(-50%,-50%,0) scale(1);
+    -webkit-transform: translate3d(-50%,-50%,0) scale(1);
+}
+
+#edit_popover .mui-table-view-cell{
+    padding: 7px 7px;
+}
+
+#edit_popover .mui-input-row label{
+    padding: 5px 5px;
+}
+
+#edit_popover .mui-input-row label~input{
+    border: 1px solid #ccc;
+    padding-left: 5px;
+    height: 30px;
+}
+
+.picbox input, .filebox input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.pic_list .mui-icon-closeempty{
+    position: relative;
+    left: -12px;
+    top: -55px;
+    background-color: #f0d54e;
+    border-radius: 15px;
+}
+
