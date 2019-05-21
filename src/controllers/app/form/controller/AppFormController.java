@@ -159,6 +159,7 @@ public class AppFormController extends Controller {
         for (Element p : ps) {
             Record fieldRec = new Record();
             String fieldName=p.text();
+            if(StrKit.isBlank(fieldName)) continue;
             fieldName = fieldName.replace("#{", "").replace("}", "");
             Record field_rec = FormService.getFieldName(fieldName.split("\\.")[0], fieldName.split("\\.")[1], office_id);//获取数据库对应的名称: f59_xh
             String field_name = "f"+field_rec.getLong("id")+"_"+field_rec.getStr("field_name");

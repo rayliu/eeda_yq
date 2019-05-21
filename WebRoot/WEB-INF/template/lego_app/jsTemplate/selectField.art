@@ -3,7 +3,7 @@
         <label>{{display_name}}</label>
         <select name="{{name}}" class="" style="width:65%;">
             {{each item_list}}
-                <option value="{{$value.VALUE}}" {{if value==$value.VALUE}} selected {{/if}} >{{$value.VALUE}}</option>
+                <option value="{{$value.NAME}}" {{if value==$value.NAME}} selected {{/if}} >{{$value.NAME}}</option>
             {{/each}}
         </select>
     </div>
