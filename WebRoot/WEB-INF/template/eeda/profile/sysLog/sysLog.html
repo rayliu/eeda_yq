@@ -1,30 +1,30 @@
 <%layout("/eeda/theme/h-ui/layout.html"){%>
 <style>
-	.dataTables_wrapper{
-		margin-top: 20px;
-	}
+    .dataTables_wrapper{
+        margin-top: 20px;
+    }
 </style>
 <section class="Hui-article-box">
-	<nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a> 
-		<span class="c-999 en">&gt;</span>
-		<span class="c-666">系统日志</span> 
-		<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
-	</nav>
-	<div class="Hui-article">
-		<article class="cl pd-20" style="padding-top:10px;">
-			<div class="Huialert Huialert-success" style="display: none;">
+    <nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a> 
+        <span class="c-999 en">&gt;</span>
+        <span class="c-666">系统日志</span> 
+        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+    </nav>
+    <div class="Hui-article">
+        <article class="cl pd-20" style="padding-top:10px;">
+            <div class="Huialert Huialert-success" style="display: none;">
                 <i class="Hui-iconfont">&#xe6a6;</i>操作成功。
             </div>
             <div class="Huialert Huialert-error"  style="display: none;">
                 <i class="Hui-iconfont">&#xe6a6;</i>操作失败，原因：未知，请重新尝试或联系客服。
             </div>
-			
-			<div id="tab_demo" class="HuiTab pt-20">
-				<div class="tabBar clearfix">
-					<span>登录日志</span>
-					<span>单据操作日志</span>
-				</div>
-			  	<div class="tabCon">
+            
+            <div id="tab_demo" class="HuiTab pt-20">
+                <div class="tabBar clearfix">
+                    <span>登录日志</span>
+                    <span>单据操作日志</span>
+                </div>
+                  <div class="tabCon">
                      <%include("/eeda/component/form/detailTableWithFoot.html", 
                      {
                          id:'login_table',
@@ -32,8 +32,8 @@
                          {name:'sl.ip',display_name:'ip地址'},{name:'sl.create_stamp',display_name:'创建时间'}],
                          form_type:'fixed'
                      }){} %>
-			  	</div>
-			  	<div class="tabCon">
+                  </div>
+                  <div class="tabCon">
                     <%include("/eeda/component/form/detailTableWithFoot.html", 
                     {
                         id:'operate_table',
@@ -42,18 +42,18 @@
                         {name:'sl.ip',display_name:'ip地址'},{name:'o.office_name',display_name:'公司'},{name:'sl.create_stamp',display_name:'创建时间'}],
                         form_type:'fixed'
                     }){} %>
-			  	</div>
-			</div>
-		</article>
-	</div>
-	<footer class="footer" style="position: absolute;bottom:0px;width:100%;">
-		<p>本系统由<a href="" target="_blank" title="创诚易达信息技术有限公司">创诚易达信息技术有限公司</a>提供技术支持</p>
-	</footer>
+                  </div>
+            </div>
+        </article>
+    </div>
+    <footer class="footer" style="position: absolute;bottom:0px;width:100%;">
+        <p>本系统由<a href="" target="_blank" title="创诚易达信息技术有限公司">创诚易达信息技术有限公司</a>提供技术支持</p>
+    </footer>
 </section>
 
 <%}%>
 <script>
-requirejs(['/js/eeda/eeda-common.js'], function (common) {
-	requirejs(['app/profile/sysLog/sysLog']);
+requirejs(['eeda_common'], function (common) {
+    requirejs(['app/profile/sysLog/sysLog']);
 });
 </script>

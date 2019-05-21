@@ -290,7 +290,7 @@ public class OfficeController extends Controller {
                 + "where gu.group_id=?", group_id);
         Map<String,Object> orderListMap = new HashMap<String,Object>();
         
-        orderListMap.put("draw", 0);
+        orderListMap.put("draw", null);
         orderListMap.put("recordsTotal", userList.size());
         orderListMap.put("recordsFiltered", userList.size());
 

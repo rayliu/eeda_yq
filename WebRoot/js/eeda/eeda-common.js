@@ -125,11 +125,13 @@ eeda.dt = function(opt){
     if(opt.ajax){
         ajaxSetting= {
             url: opt.ajax || '',
-            type: 'POST',
+            type: 'post',
             dataType: 'JSON',
-            success: function(data,status,xhr){
-                console.log(status);
-            },error: function (xhr, error, thrown) {
+            dataSrc: function ( json ) {
+                console.log(json);
+                return json.data;
+            },
+            error: function (xhr, error, thrown) {
                 console.log(error);
                 if(xhr.responseText.indexOf('忘记密码')>0){
                     alert( '您未登录, 请重新登录.' );
@@ -158,7 +160,7 @@ eeda.dt = function(opt){
         responsive: opt.hasOwnProperty('responsive')?opt.responsive : true,
         autoWidth: opt.hasOwnProperty('autoWidth')?opt.autoWidth : false,
         pageLength: opt.hasOwnProperty('pageLength')?opt.pageLength : 10,
-        lengthMenu: [ [10, 25, 50, 100,250,500,1000, '99999999'], [10, 25, 50, 100,250,500,1000, "All"] ],
+        lengthMenu: [ [10, 25, 50, 100, '99999999'], [10, 25, 50, 100, "All"] ],
         language: {
             "url": "/js/lib/datatables/i18n/Chinese.json"
         },
