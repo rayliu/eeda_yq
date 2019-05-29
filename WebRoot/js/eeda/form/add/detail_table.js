@@ -92,8 +92,8 @@ define(['jquery', 'sco', '../btns'], function ($, sco, btnCont) {
                 columns: cols,
                 initComplete: function(settings, json) {
                     console.log(json);
-                    //等table 初始完成后, 才执行 查数据的动作
-                    if(getDataFunc){
+                    //等所有 table 初始完成后, 才执行 查数据的动作
+                    if( index==(data.length-1) && getDataFunc){
                         getDataFunc();
                     }
                 }

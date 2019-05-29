@@ -240,7 +240,7 @@ public class AppFormController extends Controller {
         return returnRec;
     }
     
-    private Map<String,Object> queryForm(Long form_id){
+    private Map<String,Object> queryForm(Long form_id) throws Exception{
         List<Record> orderList = new ArrayList<Record>();
         String str = (getPara("s")==null?"":getPara("s"));
         //获取APP查询列
@@ -260,6 +260,8 @@ public class AppFormController extends Controller {
         }
         Record displayFieldRec = Db.findFirst("select * from eeda_form_field where "
                 + " form_id=? and app_display_col='Y'", form_id);
+        if(displayFieldRec!=null)
+            throw new Exception("表单没有定义APP查询显示字段！");
         Long fieldId=displayFieldRec.getLong("id");
         String fieldName=displayFieldRec.getStr("field_name");
         String displayFieldName=displayFieldRec.getStr("field_display_name");
