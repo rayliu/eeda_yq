@@ -359,7 +359,8 @@ public class ModuleController extends Controller {
         Map<String, List> map = (LinkedTreeMap) dto.get("events");
         List<Double > deleted_event_list = map.get("node_delete_ids");
         for (Double  id : deleted_event_list) {
-            Db.deleteById("eeda_form_event", id.longValue());
+            if(id!=null)
+                Db.deleteById("eeda_form_event", id.longValue());
             //TODO:还要删掉子表的数据
         }
         List<Map<String, ?>> event_list = map.get("node_list");
