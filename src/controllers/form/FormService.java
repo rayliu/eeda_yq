@@ -109,6 +109,7 @@ public class FormService {
                 "select * from eeda_form_field_type_ref_item where field_id=?", field_id);
         for (Record record : itemList) {
             String from_name = record.getStr("from_name");
+            if(from_name==null) continue;
             Record rec = FormService.getFieldName(from_name.split("\\.")[0], from_name.split("\\.")[1], office_id);
             String t_field_name = "f"+rec.get("id")+"_"+rec.getStr("field_name");//获取数据库对应的名称: f59_xh
             
