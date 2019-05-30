@@ -38,9 +38,15 @@
     </target>
 	
     <target name="copy_uat_config" >
-            <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-lego-uat" overwrite="true"/>
-            <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-lego-uat" overwrite="true"/> 
-        </target>
+        <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-lego-uat" overwrite="true"/>
+        <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-lego-uat" overwrite="true"/> 
+    
+        <copy tofile="${project.classpath}/beetl.properties" file="src/beetl.properties" overwrite="true"/>
+        <copy tofile="${project.classpath}/ehcache.xml" file="src/ehcache.xml" overwrite="true"/>
+    	    <copy tofile="${project.classpath}/beetl.properties" file="src/beetl.properties" overwrite="true"/>
+    	    <copy tofile="${project.classpath}/log4j.properties" file="src/log4j.properties" overwrite="true"/>
+    	    <copy tofile="${project.classpath}/c3p0.properties" file="src/c3p0.properties" overwrite="true"/>
+    </target>
 
     
 	<target name="generate_js_version" >
