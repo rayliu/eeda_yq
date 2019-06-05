@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -653,13 +654,14 @@ public class FormController extends Controller {
         long office_id=define.getLong("office_id");
         if("search_form".equals(define.get("type"))){
             String lieNameStr = getLieNameStr(form_id, office_id);
-            String biaoNameStr = "" ;//getBiaoNameStr(form_id, office_id);//join
+            String biaoNameStr = getBiaoNameStr(form_id, office_id);//join
             String joinStr = getJoinStr(form_id, office_id);//left join
             String filterStr = getFilterStr(form_id);
+            String sortStr = getSortStr(form_id, office_id);
             sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 ";//TODO: and eeda_delete='N' 
             int index = biaoNameStr.indexOf(" ");
             //+ " order by "+biaoNameStr.substring(index)+".id desc " 
-            orderList = Db.find(sql+ condition+filterStr +sLimit);
+            orderList = Db.find(sql+ condition+filterStr + sortStr+sLimit);
         }else if("form".equals(define.get("type"))){
             sql = "select * from form_"+form_id+" where 1=1 and eeda_delete='N' "; 
             orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
@@ -703,15 +705,44 @@ public class FormController extends Controller {
     	return lieNameStr;
     }
     
-    
+    public static String getSortStr(Long form_id, long office_id){
+        String sortStr = "";
+        List<Record> colsList = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
+        for(int i = 0;i<colsList.size();i++){
+            Record item = colsList.get(i);
+            String sort = item.get("sort");
+            if(StrKit.isBlank(sort))
+                continue;
+            String expression = item.get("expression");
+            int index = expression.indexOf(".");
+            String lie_name = expression.substring(index+1);
+            String biao_name = expression.substring(0,index);
+            String biao_name_py = PingYinUtil.getFirstSpell(expression.substring(0,index));
+            Record define = Db.findFirst("select * from eeda_form_define where name = ? and office_id=?",biao_name, office_id);
+            Record field = Db.findFirst("select * from eeda_form_field where field_display_name = ? and form_id = ?",lie_name,define.get("id"));
+            String str = "";
+            if(sortStr.length()>0){
+                str = ",";
+            }
+            
+            sortStr += str+biao_name_py+".f"+field.get("id")+"_"+field.get("field_name")+" "+ sort;
+            
+        }
+        if(sortStr.length()>0) {
+            sortStr = " order by "+sortStr;
+        }
+        return sortStr;
+    }
     
     private String getBiaoNameStr(Long form_id, long office_id){
-    	String biaoNameStr = "";
-    	List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source_condition where form_id = ?",form_id);
-		String form_name = sourceList.get(0).get("form_left");
-		Record re = Db.findFirst("select * from eeda_form_define where name = ? and office_id=?",form_name, office_id);
-		biaoNameStr = "form_"+re.get("id")+" "+PingYinUtil.getFirstSpell(form_name);
-    	return biaoNameStr;
+        String biaoNameStr = "";
+        List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source_condition where form_id = ?",form_id);
+        if(sourceList.size() == 0)
+            return biaoNameStr;
+        String form_name = sourceList.get(0).get("form_left");
+        Record re = Db.findFirst("select * from eeda_form_define where name = ? and office_id=?",form_name, office_id);
+        biaoNameStr = "form_"+re.get("id")+" "+PingYinUtil.getFirstSpell(form_name);
+        return biaoNameStr;
     }
     
     public static String getJoinStr(Long form_id , long office_id){
@@ -720,14 +751,19 @@ public class FormController extends Controller {
         //将两个表名存入Record中
         Map<String, String> leftJoinMap = new HashMap<String, String>();
         Map<String, String> joinMap = new HashMap<String, String>();
-    	String joinStr = "";
-    	List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source where form_id = ?",form_id);
-    	for(int i = 0;i<sourceList.size();i++){
-    	    String form_name1 = sourceList.get(i).get("form_name");
+        	String joinStr = "";
+        	List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source where form_id = ?",form_id);
+        	for(int i = 0;i<sourceList.size();i++){
+        	    String form_name1 = sourceList.get(i).get("form_name");
             Record form_define1 = Db.findFirst("select * from eeda_form_define where name=? and office_id=?", form_name1, office_id);
             String form_py1 = PingYinUtil.getFirstSpell(form_name1);
             String connectType1 = sourceList.get(i).get("connect_type"); 
             
+            if(sourceList.size()==1) {
+                String key = form_name1;
+                String joinTableStr = "form_"+form_define1.getLong("id")+" "+form_py1;
+                joinMap.put(key, joinTableStr);
+            }
             if(i==(sourceList.size()-1)){
                 continue;
             }
@@ -749,44 +785,52 @@ public class FormController extends Controller {
                         +", "+"form_"+form_define2.getLong("id")+" "+form_py2;
                 joinMap.put(key, joinTableStr);
             }
-    	}
-    	
-    	//构造两个连接表的条件
-    	Map<String, String> fieldJoinMap = new HashMap<String, String>();
-    	List<Record> sourceConditionList = Db.find("select * from eeda_form_custom_search_source_condition where form_id = ?",form_id);
-    	for(int i = 0;i<sourceConditionList.size();i++){
-    		String form_left = sourceConditionList.get(i).get("form_left");
-    		Record form_left_define = Db.findFirst("select * from eeda_form_define where name=? and office_id=?",form_left, office_id);
-    		String form_left_py = PingYinUtil.getFirstSpell(form_left);
-    		String form_left_field = sourceConditionList.get(i).get("form_left_field");
-    		int index_left = form_left_field.indexOf(".");
-    		Record field_left = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name=?",
-    		        form_left_define.get("id"),form_left_field.substring(index_left+1));
-    		String lie_name_left = "f"+field_left.get("id")+"_"+field_left.get("field_name");
-    		
-    		String form_right = sourceConditionList.get(i).get("form_right");
-    		Record form_right_define = Db.findFirst("select * from eeda_form_define where name=? and office_id=?", form_right, office_id);
-    		String form_right_py = PingYinUtil.getFirstSpell(form_right);
-    		String form_right_field = sourceConditionList.get(i).get("form_right_field");
-    		int index_right = form_right_field.indexOf(".");
-    		Record field_right = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name=?",form_right_define.get("id"),form_right_field.substring(index_right+1));
-    		String lie_name_right = "f"+field_right.get("id")+"_"+field_right.get("field_name");
-    		
-    		String operator = sourceConditionList.get(i).get("operator");
-    		
-    		String key = form_left+"-"+form_right;
-    		String value = form_left_py+"."+lie_name_left+"="+form_right_py+"."+lie_name_right;
-    		fieldJoinMap.put(key, value);
-    	}
+        	}
+        	
+        	//构造两个连接表的条件
+        	Map<String, String> fieldJoinMap = new HashMap<String, String>();
+        	List<Record> sourceConditionList = Db.find("select * from eeda_form_custom_search_source_condition where form_id = ?",form_id);
+        	for(int i = 0;i<sourceConditionList.size();i++){
+        		String form_left = sourceConditionList.get(i).get("form_left");
+        		Record form_left_define = Db.findFirst("select * from eeda_form_define where name=? and office_id=?",form_left, office_id);
+        		String form_left_py = PingYinUtil.getFirstSpell(form_left);
+        		String form_left_field = sourceConditionList.get(i).get("form_left_field");
+        		int index_left = form_left_field.indexOf(".");
+        		Record field_left = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name=?",
+        		        form_left_define.get("id"),form_left_field.substring(index_left+1));
+        		String lie_name_left = "f"+field_left.get("id")+"_"+field_left.get("field_name");
+        		
+        		String form_right = sourceConditionList.get(i).get("form_right");
+        		Record form_right_define = Db.findFirst("select * from eeda_form_define where name=? and office_id=?", form_right, office_id);
+        		String form_right_py = PingYinUtil.getFirstSpell(form_right);
+        		String form_right_field = sourceConditionList.get(i).get("form_right_field");
+        		int index_right = form_right_field.indexOf(".");
+        		Record field_right = Db.findFirst("select * from eeda_form_field where form_id = ? and field_display_name=?",form_right_define.get("id"),form_right_field.substring(index_right+1));
+        		String lie_name_right = "f"+field_right.get("id")+"_"+field_right.get("field_name");
+        		
+        		String operator = sourceConditionList.get(i).get("operator");
+        		
+        		String key = form_left+"-"+form_right;
+        		String value = form_left_py+"."+lie_name_left+"="+form_right_py+"."+lie_name_right;
+        		fieldJoinMap.put(key, value);
+        	}
 
         String onStr = "";
-        //构造SQL
-        for (String key : leftJoinMap.keySet()) {
-            String talbeValue = leftJoinMap.get(key);
-            String condition = fieldJoinMap.get(key);
-            onStr+=talbeValue+" on "+condition;
+        if(sourceConditionList.size()==0) {//单表没连接的
+            for (String key : joinMap.keySet()) {
+                String talbeValue = joinMap.get(key);
+                onStr = talbeValue;
+            }
+        }else {//多表有连接的
+          //构造SQL
+            for (String key : leftJoinMap.keySet()) {
+                String talbeValue = leftJoinMap.get(key);
+                String condition = fieldJoinMap.get(key);
+                onStr+=talbeValue+" on "+condition;
+            }
         }
-    	return onStr;
+        
+    	    return onStr;
     }
 
     public static String getFilterStr(Long form_id){

@@ -88,6 +88,9 @@
                                 <div class="event_config" id="event_config_element_set_focus">
                                     <%include("/profile/module/events/formular/element/config_element_set_focus.html", {}){} %>
                                 </div>
+                                <div class="event_config" id="event_config_set_global_variable">
+                                    <%include("/profile/module/events/formular/variable/config_set_global_variable.html", {}){} %>
+                                </div>
                                 <div class="event_config" id="event_config_table">
                                     <%include("/profile/module/events/formular/table/config_table.html", {}){} %>
                                 </div>
@@ -109,6 +112,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <!-- sub moddal -->
+<%include("/profile/module/events/formular/variable/formular_global_variable_modal.html", {}){} %>
 <%include("/profile/module/events/formular/formular_condition_modal.html", {}){} %>
 <%include("/profile/module/events/formular/form/config_form_set_value_field_modal.html", {}){} %>
 <%include("/profile/module/events/formular/table/table_add_row_modal.html", {}){} %>

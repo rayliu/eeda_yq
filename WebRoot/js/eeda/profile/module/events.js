@@ -29,7 +29,7 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events','./eve
             enable: true,
             type: 'get',
             url:"/module/searchFormBtnEvents",
-            autoParam:["id", "formId", "level=lv"],
+            autoParam:["id","name", "formId", "level=lv"],
             dataFilter: dataFilter//处理返回来的JSON 变为 nodes
         },
         callback: {
@@ -65,10 +65,11 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events','./eve
 
       currentNode = treeNode;
       $('#list_event_name').val(currentNode.name);
-      $('#list_event_type').val(currentNode.type);
+      $('#list_event_action').val("click");
 
       $('#list_event_action').val(currentNode.EVENT_ACTION);
       $('#list_event_action_json').val(currentNode.EVENT_JSON);
+      if(!currentNode.EVENT_JSON) return;
       var event_action_nodes = JSON.parse( currentNode.EVENT_JSON );
       //redisplay tree
       var action_setting = {
@@ -137,14 +138,14 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events','./eve
                 //异步创建节点
                 var zTree = $.fn.zTree.getZTreeObj("listEventTree");
                 var nodeName = "新事件" + (newCount++);
-                //id:data.ID, id: data.ID, 
-                var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, type:'open'});
-                currentNode=newNodes[0];
+                var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, isParent:false, name:nodeName, type:treeNode.type, EVENT_ACTION:"click"});
+                
+                var currentNode=newNodes[0];
                 $('#list_event_name').val(currentNode.name);
                 $('#list_event_type').val(currentNode.type);
-
+                $('#list_event_action').val("click");
                 zTree.selectNode(currentNode);
-                $('#list_events_property').show();
+                $('#list_events_property').show(); 
                 return false;
             });
         };
@@ -170,7 +171,8 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events','./eve
         update_flag = "N";
         delete_node_ids = [];
         var btns = [];
-        $.post('/module/searchFormBtns', {form_id: $('#form_id').val(), type:'list'}, 
+        var formId = $('#form_id').val();
+        $.post('/module/searchFormBtns', {form_id: formId, type:'list'}, 
             function(data){
                 if(data && data.TOOL_BAR_BTNS){
                   var tool_bar_btns = data.TOOL_BAR_BTNS;
@@ -185,7 +187,12 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events','./eve
                       btns.push(node);
                   }
                   var zNodes = [
-                    { name:"工具栏按钮", isParent:true, open: true, children: btns}
+                    { name:"工具栏按钮", isParent:true, open: true, children: btns},
+                    { name:"列表交互", isParent:true, open: true, children: [
+                        {formId:formId, name:"选中行", isParent:true, open: true, type:'list_event_mark_row'},
+                        {formId:formId, name:"取消选中行", isParent:true, open: true, type:'list_event_unmark_row'}
+                      ]
+                    }
                   ];
 
                   zTreeObj = $.fn.zTree.init($("#listEventTree"), setting, zNodes);
@@ -220,16 +227,19 @@ define(['jquery', 'zTree', './events/formular_open_form', './edit_events','./eve
       
       zTreeObj = $.fn.zTree.getZTreeObj("listEventTree");
       if(zTreeObj){
-        var toolBarNodes = zTreeObj.getNodes()[0].children;
-        for(var i = 0;i<toolBarNodes.length;i++){
-          var eventNodes = toolBarNodes[i].children;
-
-          if(!eventNodes) 
-            continue;
-
-          for(var j = 0;j<eventNodes.length;j++){
-            var node=eventNodes[j];
-            node_list.push(node);
+        //0: toolbar按钮,  1: 列表交互
+        for(var i = 0;i<2;i++){
+          var toolBarNodes = zTreeObj.getNodes()[i].children;
+          for(var j = 0;j<toolBarNodes.length;j++){
+            var eventNodes = toolBarNodes[j].children;
+  
+            if(!eventNodes) 
+              continue;
+  
+            for(var k = 0;k<eventNodes.length;k++){
+              var node=eventNodes[k];
+              node_list.push(node);
+            }
           }
         }
       }

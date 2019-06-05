@@ -1,4 +1,6 @@
-define(['jquery', './event_formular_pop_config' ], function ($, configCont) {
+// ---- 中间的 Tree
+define(['jquery', './event_formular_pop_config' ], 
+    function ($, configCont) {
 
         //---------------tree handle
         var setting = {
@@ -84,7 +86,12 @@ define(['jquery', './event_formular_pop_config' ], function ($, configCont) {
                     break;  
                 case 'table_delete_row':
                     $('#event_config_table_delete_row').show();
-                    break;    
+                    break;
+                case 'set_global_variable'://设置全局变量
+                    configCont.setActionTreeObjNode(treeNode, actionTreeObj);
+                    $('#event_config_set_global_variable').show();
+                    break;
+                    
                 default:
                     break;
             }

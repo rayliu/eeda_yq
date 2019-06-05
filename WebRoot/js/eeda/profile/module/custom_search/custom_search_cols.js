@@ -30,6 +30,49 @@ define(['jquery'],
                     }
                   return '<input name="expression" value="'+data+'">';
                 }
+              }, 
+              { "data": "SORT",
+                "render": function ( data, type, full, meta ) {
+                  if(!data){
+                      data='';
+                  }
+                  var opt1 = '<option value=""></option>';
+                  var opt2 = '<option value="desc">降序</option>';
+                  var opt3 = '<option value="asc">升序</option>';
+                  if(data==''){
+                    opt1 = '<option value="" selected></option>';
+                  }
+                  if(data=='desc'){
+                    opt2 = '<option value="desc" selected>降序</option>';
+                  }
+                  if(data=='asc'){
+                      opt3 = '<option value="asc" selected>升序/option>';
+                  }
+                  return '<select name="sort_flag" class="form-control" style="width:100%">'
+                          +opt1
+                          +opt2
+                          +opt3
+                          +'</select>';
+                }
+              }, 
+              { "data": "HIDDEN_FLAG",
+                "render": function ( data, type, full, meta ) {
+                  if(!data){
+                      data='';
+                  }
+                  var opt1 = '<option value="N">否</option>';
+                  var opt2 = '<option value="Y">是</option>';  
+                  if(data=='N'){
+                    opt1 = '<option value="N" selected>否</option>';
+                  }
+                  if(data=='Y'){
+                      opt2 = '<option value="Y" selected>是</option>';
+                  }
+                  return '<select name="hidden_flag" class="form-control" style="width:100%">'
+                          +opt1
+                          +opt2
+                          +'</select>';
+                }
               },
               { "data": "WIDTH",
                 "render": function ( data, type, full, meta ) {
@@ -37,14 +80,6 @@ define(['jquery'],
                       data='';
                     }
                   return '<input name="width" value="'+data+'">';
-                }
-              }, 
-              { "data": "HIDDEN_FLAG",
-                "render": function ( data, type, full, meta ) {
-                  if(!data){
-                      data='';
-                    }
-                  return '<input name="hidden_flag" value="'+data+'">';
                 }
               }
           ]
@@ -73,13 +108,14 @@ define(['jquery'],
             var data = dataTable.rows().data();
             var inputs = dataTable.$('input, select');
             var itemList = [];
-            for (var i = 0; i < inputs.length/5; i++) {
+            for (var i = 0; i < inputs.length/6; i++) {
               var item={
-                ID: $(inputs[i*5]).val(),
-                FIELD_NAME: $(inputs[i*5 + 1]).val(),
-                EXPRESSION: $(inputs[i*5 + 2]).val(),
-                WIDTH: $(inputs[i*5 + 3]).val(),
-                HIDDEN_FLAG: $(inputs[i*5 + 4]).val()
+                ID: $(inputs[i*6]).val(),
+                FIELD_NAME: $(inputs[i*6 + 1]).val(),
+                EXPRESSION: $(inputs[i*6 + 2]).val(),
+                SORT: $(inputs[i*6 + 3]).val(),
+                HIDDEN_FLAG: $(inputs[i*6 + 4]).val(),
+                WIDTH: $(inputs[i*6 + 5]).val()
               };
 
               itemList.push(item);

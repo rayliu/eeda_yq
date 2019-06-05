@@ -28,6 +28,7 @@ import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.reflect.TypeToken;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
@@ -620,6 +621,7 @@ public class ModuleController extends Controller {
     			  String id = custom_search_cols.get(i).get("ID");
     			  String field_name = custom_search_cols.get(i).get("FIELD_NAME");
     			  String expression = custom_search_cols.get(i).get("EXPRESSION");
+    			  String sort = custom_search_cols.get(i).get("SORT");
     			  String width = custom_search_cols.get(i).get("WIDTH");
     			  String hidden_flag = custom_search_cols.get(i).get("HIDDEN_FLAG");
     			  String is_delete = custom_search_cols.get(i).get("IS_DELETE");
@@ -628,6 +630,7 @@ public class ModuleController extends Controller {
     				  re.set("form_id", form_id);
     				  re.set("field_name",field_name);
     				  re.set("expression",expression);
+    				  re.set("sort",sort);
     				  re.set("width",width);
     				  re.set("hidden_flag",hidden_flag);
     				  Db.save("eeda_form_custom_search_cols", re);
@@ -639,6 +642,7 @@ public class ModuleController extends Controller {
         				  }else{
             				  re.set("field_name",field_name);
             				  re.set("expression",expression);
+            				  re.set("sort",sort);
             				  re.set("width",width);
             				  re.set("hidden_flag",hidden_flag);
             				  Db.update("eeda_form_custom_search_cols", re);
@@ -947,31 +951,37 @@ public class ModuleController extends Controller {
 
         Long form_id = getParaToLong("formId");
         List<Record> list = null;
-        if ("值变化".equals(getPara("name"))) {
-            list = Db
-                    .find("select * from eeda_form_event where form_id=? and menu_type='value_change'",
-                            form_id);
-        }else if ("新增页面打开后".equals(getPara("name"))) {
-            list = Db
-                    .find("select * from eeda_form_event where form_id=? and event_action='event_add_page_onload'",
-                            form_id);
-        }else if ("编辑页面打开后".equals(getPara("name"))) {
-            list = Db
-                    .find("select * from eeda_form_event where form_id=? and event_action='event_edit_page_onload'",
-                            form_id);
-        }else if ("表单保存前".equals(getPara("name"))) {
-            list = Db
-                    .find("select * from eeda_form_event where form_id=? and event_action='event_before_save_form'",
-                            form_id);
-        }else if ("表单保存后".equals(getPara("name"))) {
-            list = Db
-                    .find("select * from eeda_form_event where form_id=? and event_action='event_after_save_form'",
-                            form_id);
-        }else{
-            Long btn_id = getParaToLong("id");
-            list = Db.find(
-                    "select * from eeda_form_event where form_id=? and btn_id=?",
-                    form_id, btn_id);
+        String name = getPara("name");
+        switch(name) {
+            case "值变化":
+                list = Db.find("select * from eeda_form_event where form_id=? and menu_type='value_change'",
+                        form_id);
+                break;
+            case "新增页面打开后":
+                list = Db.find("select * from eeda_form_event where form_id=? and event_action='event_add_page_onload'",
+                        form_id);
+                break;
+            case "编辑页面打开后":
+                list = Db.find("select * from eeda_form_event where form_id=? and event_action='event_edit_page_onload'",
+                        form_id);
+                break;
+            case "表单保存前":
+                list = Db.find("select * from eeda_form_event where form_id=? and event_action='event_before_save_form'",
+                        form_id);
+                break;
+            case "表单保存后":
+                list = Db.find("select * from eeda_form_event where form_id=? and event_action='event_after_save_form'",
+                        form_id);
+                break;
+            case "选中行":
+                list = Db.find("select * from eeda_form_event where form_id=? and type='list_event_mark_row'",
+                        form_id);
+                break;
+            default:
+                Long btn_id = getParaToLong("id");
+                list = Db.find("select * from eeda_form_event where form_id=? and btn_id=?",
+                        form_id, btn_id);
+                break;
         }
         
         for (Record event : list) {
@@ -1761,6 +1771,48 @@ public class ModuleController extends Controller {
             menuList.add(lvl1);
         }
         renderJson(menuList);
+    }
+    
+    public void getGlobalVar() {
+        UserLogin user= LoginUserController.getLoginUser(this);
+        Long office_id = user.get("office_id");
+        List<Record> list = Db.find("select * from eeda_form_global_var where office_id=?", office_id);
+        
+        renderJson(list);
+    }
+    
+    public void saveGlobalVar() {
+        UserLogin user= LoginUserController.getLoginUser(this);
+        Long office_id = user.get("office_id");
+        
+        String jsonStr = getPara("params");
+        Gson gson = new Gson();
+        List<Map<String,Object>> nodeList = gson.fromJson(jsonStr, 
+                new TypeToken<List<Map<String,Object>>>() { }.getType());
+        for (Map<String, Object> recMap : nodeList) {
+            String id = recMap.get("ID")==null?"":recMap.get("ID").toString();
+            String name = recMap.get("NAME")==null?"":recMap.get("NAME").toString();
+            String value = recMap.get("VALUE")==null?"":recMap.get("VALUE").toString();
+            String action = recMap.get("action")==null?"":recMap.get("action").toString();
+            if(StrKit.isBlank(id)) {
+                
+                Record rec = new Record();
+                rec.set("name", name);
+                rec.set("value", value);
+                rec.set("office_id", office_id);
+                Db.save("eeda_form_global_var", rec);
+            }else {
+                Record rec = Db.findById("eeda_form_global_var", id);
+                if("DELETE".equals(action)){
+                    Db.delete("eeda_form_global_var", rec);
+                    continue;
+                }
+                rec.set("name", name);
+                rec.set("value", value);
+                Db.update("eeda_form_global_var", rec);
+            } 
+        }
+        renderNull();
     }
     
     public void moduleMarket() {

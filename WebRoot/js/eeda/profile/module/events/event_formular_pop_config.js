@@ -2,18 +2,18 @@ define(['jquery','./table/config_table_add_row','./form/config_form_set_value',
  './element/config_element_set_enable','./element/config_element_set_show_hide',
  './element/config_element_set_text','./element/config_element_set_checkbox'
  ,'./element/config_element_set_droplist','./element/config_element_set_radio'
- ,'./element/config_element_set_focus'], 
+ ,'./element/config_element_set_focus', './var/global_variable'], 
     function ($, config_table_add_row_cont, config_form_set_value_cont, 
         config_element_set_enable_cont, config_element_set_show_hide_cont,
         config_element_set_text_cont, config_element_set_checkbox_cont
         ,config_element_set_droplist_cont, config_element_set_radio_cont
-        , config_element_set_focus_cont) {
+        , config_element_set_focus_cont, global_variable_cont) {
 
     var actionTreeObj, actionTreeObjNode;
     var setActionTreeObjNode =function(node, tree){
         actionTreeObjNode=node;
         actionTreeObj=tree;
-        
+
         switch (node.action_type) {
             case 'open_link':
                 redisplay(node);
@@ -51,6 +51,9 @@ define(['jquery','./table/config_table_add_row','./form/config_form_set_value',
                 break;
             case 'table_add_row':
                 config_table_add_row_cont.setActionTreeObjNode(node, tree);
+                break;
+            case 'set_global_variable':
+                global_variable_cont.setActionTreeObjNode(node, tree);
                 break;
             default:
                 break;

@@ -1,3 +1,4 @@
+// ---- 动作编辑对话框最右边的 Tree
 define(['jquery'], function ($) {
        //condition modal --------------------
        $('#event_action_edit_condition_btn').click(function(event) {

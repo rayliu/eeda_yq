@@ -1,3 +1,4 @@
+// ---- 左边的 Tree
 define(['jquery', './event_formular_pop_action', './event_formular_pop_condition'], function ($, actionCont, conditionCont) {
 
         //---------------tree handle
@@ -71,6 +72,9 @@ define(['jquery', './event_formular_pop_action', './event_formular_pop_condition
                 case 'element_set_focus':
                     name="获取焦点";
                     break;
+                case 'set_global_variable':
+                    name="设置变量";
+                    break;
                 case 'save_form':
                     name="保存表单";
                      break;
@@ -131,7 +135,7 @@ define(['jquery', './event_formular_pop_action', './event_formular_pop_condition
           { name:"全局变量", 
            isParent:true, 
            children: [
-              {name:"设置变量值", action_type:"set_global_valu", desc:"用途:打开链接"}
+              {name:"设置变量", action_type:"set_global_variable", desc:""}
            ]
           },
           { name:"表格(中继器)", 
@@ -143,8 +147,8 @@ define(['jquery', './event_formular_pop_action', './event_formular_pop_condition
                 isParent:true, 
                 children: [
                     {name:"添加行", action_type:"table_add_row", desc:""},
-                    {name:"标记行", action_type:"table_mark_row", desc:""},
-                    {name:"取消标记", action_type:"table_unmark_row", desc:""},
+                    {name:"选中行", action_type:"table_mark_row", desc:""},
+                    {name:"取消选中记", action_type:"table_unmark_row", desc:""},
                     {name:"更新行", action_type:"table_update_row", desc:""},
                     {name:"删除行", action_type:"table_delete_row", desc:""}
                 ]
