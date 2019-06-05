@@ -4,20 +4,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
-import org.apache.shiro.codec.Base64;
-
-import sun.misc.BASE64Decoder;
-import sun.nio.cs.UnicodeEncoder;
 
 import com.aliyuncs.exceptions.ClientException;
 import com.jfinal.aop.Before;
@@ -25,15 +14,14 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.render.CaptchaRender;
 
 import controllers.util.AliSmsUtil;
-import controllers.util.EedaHttpKit;
-import controllers.util.HttpUtils;
 import controllers.util.MD5Util;
 import controllers.util.PhoneAddress;
 
 public class AppLoginController extends Controller {
-
+    private static final String RANDOM_CODE_KEY = "eeda_webclub";
     private Logger logger = Logger.getLogger(AppLoginController.class);
     
     
@@ -141,7 +129,17 @@ public class AppLoginController extends Controller {
     public void send_code() throws ClientException{
     	boolean result = false;
     	String errMsg = "";
-    	
+    	String validateCode = getPara("validate_code");
+    	boolean loginSuccess = CaptchaRender.validate(this, validateCode);
+    	if (!loginSuccess) {
+    	        Record data = new Record();
+            data.set("result", false);
+            data.set("msg", "验证码不正确");
+            data.set("code", "504");
+            logger.debug(errMsg);
+            renderJson(data);
+            return;
+        }
     	String mobile = getPara("mobile");
     	int code = 0;
     	//Record user = Db.findFirst("select * from user_login where phone=? and system_type = 'mobile' ",mobile);
@@ -182,4 +180,11 @@ public class AppLoginController extends Controller {
         renderJson(data);  
     }
     
+    public void captcha() {
+        CaptchaRender cr = new CaptchaRender();
+        cr.setContext(this.getRequest(), this.getResponse());
+        cr.setCaptchaName(RANDOM_CODE_KEY);
+        cr.render();
+        renderNull();
+    }
 }
