@@ -1,17 +1,8 @@
 package controllers.profile;
 
-import interceptor.EedaMenuInterceptor;
-import interceptor.SetAttrLoginUserInterceptor;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import models.Office;
-import models.ParentOfficeModel;
-import models.Toll;
-import models.UserOffice;
-import models.eeda.profile.Unit;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -30,6 +21,10 @@ import com.jfinal.plugin.activerecord.Record;
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
 import controllers.util.PermissionConstant;
+import interceptor.EedaMenuInterceptor;
+import interceptor.SetAttrLoginUserInterceptor;
+import models.ParentOfficeModel;
+import models.eeda.profile.Unit;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
