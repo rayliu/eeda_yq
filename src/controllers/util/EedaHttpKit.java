@@ -346,6 +346,24 @@ public class EedaHttpKit {
 				try {br.close();} catch (IOException e) {e.printStackTrace();}
 		}
 	}
+	
+	// 得到客户的IP
+    public static String getClientIpAddr(HttpServletRequest request) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        // 可能会有多个以逗号分隔，取第一个
+        ip = (ip.split(",")[0]).trim();
+        return ip;
+
+    }
 }
 
 

@@ -17,6 +17,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.render.CaptchaRender;
 
 import controllers.util.AliSmsUtil;
+import controllers.util.EedaHttpKit;
 import controllers.util.MD5Util;
 import controllers.util.PhoneAddress;
 
@@ -136,7 +137,7 @@ public class AppLoginController extends Controller {
             data.set("result", false);
             data.set("msg", "验证码不正确");
             data.set("code", "504");
-            logger.debug(errMsg);
+            logger.debug("验证码不正确, 请求来自IP:"+ EedaHttpKit.getClientIpAddr(getRequest()));
             renderJson(data);
             return;
         }
