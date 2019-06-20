@@ -1,0 +1,51 @@
+<style>
+    .radio {
+        margin-top: 0px; 
+        margin-bottom: 0px; 
+    }
+</style>
+<div class="form-group">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12" style="margin-top: 3px;">
+                选择要设置的全局变量
+                <a id="add_global_var_btn" href="javascript:void(0);" style="float: right;">添加全局变量</a>
+            </div>
+            <div class="col-lg-12"style="margin-top: 3px;">
+                <div class="pre-scrollable" style="height: 330px;border: solid 1px #ddd;">
+                    <ul id="config_global_var_ul" >
+                        <li>
+                            <div class="radio">
+                                <label>
+                                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                  Option one is this and that&mdash;be sure to include why it's great
+                                </label>
+                              </div>
+                        </li>
+                        <li>
+                            <div class="radio">
+                                <label>
+                                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                  Option one is this and that&mdash;be sure to include why it's great
+                                </label>
+                              </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-12" style="margin-top: 3px;">
+                设置变量为:
+            </div>
+            <div class="col-lg-12" style="margin-top: 3px;">
+                <select id="set_global_var_type">
+                    <option value=""></option>
+                    <option value="选中项的值">选中项的值</option>
+                    <option value="值">值</option>
+                </select>
+                <input id="config_element_set_global_var_input" type="text"  style="width: 55%;">
+                <button id="config_element_set_global_var_edit_field_btn" class="btn btn-default btn-xs"
+                style="margin-left: -5px;margin-top: -3px;">fx</button>
+            </div>
+        </div>
+    </div>
+</div>
