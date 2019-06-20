@@ -98,6 +98,8 @@ define(['jquery', 'sco', '../btns'], function ($, sco, btnCont) {
                     }
                 }
             });
+            window['dataTable_'+field_id]= dataTable;
+            window['dataTable_'+field_id+'_cols']= cols;
         });
     });
 

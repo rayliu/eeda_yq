@@ -118,7 +118,7 @@ define(['jquery', './event_formular_pop_action', './event_formular_pop_condition
               {name:"设置下拉列表选中", action_type:"element_set_droplist", desc:"用途:设置某个图片部件的选中，取消选中，切换选中状态"},
               {name:"启用/禁用", action_type:"element_set_enable", desc:"用途:设置某个部件的启用/禁用"},
               {name:"获取焦点", action_type:"element_set_focus", desc:""},
-              //{name:"展开/折叠树节点", action_type:"element_set_node_open", desc:""},
+              {name:"处理全局变量", action_type:"element_handle_global_variable", desc:""},
            ]
           },
           { name:"表单", 

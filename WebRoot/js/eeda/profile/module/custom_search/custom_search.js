@@ -6,6 +6,7 @@ define(['jquery', './custom_search_source', './custom_search_cols', './custom_se
 		dto.custom_search_source = sourceCont.buildDetail();
 		dto.custom_search_cols = colCont.buildDetail();
 		dto.custom_search_filter = filterCont.buildDetail();
+		dto.custom_filter_condition = $('#custom_filter_condition').val();
 		return dto;
 	}
 	

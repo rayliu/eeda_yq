@@ -109,4 +109,13 @@ public class FormUtil {
         
         return rec;
     }
+    
+    //处理GSON 中对象int 默认取出来是double的bug
+    public static Long getId(Object obj) {
+        Long lId= -1l;
+        if (obj instanceof java.lang.Double) {
+            lId = ((Double) obj).longValue();
+       }
+        return lId;
+    }
 }

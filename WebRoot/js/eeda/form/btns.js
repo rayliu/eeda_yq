@@ -1,6 +1,7 @@
 define(['jquery', './print', './event/element_set_enable', './event/element_set_droplist'
-    , './event/element_set_text','./event/events', 'file_upload','layer', 'layui'], 
-    function ($, printCont,element_set_enable_cont, element_set_droplist_cont, element_set_text_cont, event_cont) {
+    , './event/element_set_text','./event/events', './event/set_global_variable', 'file_upload','layer', 'layui'], 
+    function ($, printCont,element_set_enable_cont, 
+        element_set_droplist_cont, element_set_text_cont, event_cont, set_global_variable_cont) {
     $.fn.serializeObject = function () {
         var o = {};
         var a = this.serializeArray();
@@ -180,6 +181,9 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
                                         var dataTable = $('#'+target_table_id).DataTable();
                                         dataTable.row.add({}).draw(false);
                                         break; 
+                                    case 'set_global_variable'://全局变量设置
+                                        set_global_variable_cont.handle(action);
+                                        break; 
                                     default:
                                         event_cont.handle(action_type, form_define_obj);
                                         break;
@@ -326,6 +330,7 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
             
             $.each(tables, function(index, item) {
                 var id=$(item).attr('id');
+                if(!id) return true;//continue
                 var field_id = id.split('_')[2];
                 field_id_list.push(field_id);
 

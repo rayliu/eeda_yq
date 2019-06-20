@@ -153,10 +153,11 @@ eeda.dt = function(opt){
         lengthChange: opt.hasOwnProperty('lengthChange')?opt.lengthChange:true,
         serverSide: opt.hasOwnProperty('serverSide')?opt.serverSide : false, 
         
-        // scrollX: opt.scrollX || true,
-        // scrollY: opt.scrollY || true, 
+        scrollX: opt.hasOwnProperty('scrollX')?opt.scrollX : true,
+        scrollY: opt.hasOwnProperty('scrollY')?opt.scrollX : true,
         scrollCollapse: opt.hasOwnProperty('scrollCollapse')?opt.scrollCollapse : true,
-
+        fixedColumns: opt.hasOwnProperty('fixedColumns')?opt.scrollX : true,
+        
         responsive: opt.hasOwnProperty('responsive')?opt.responsive : true,
         autoWidth: opt.hasOwnProperty('autoWidth')?opt.autoWidth : false,
         pageLength: opt.hasOwnProperty('pageLength')?opt.pageLength : 10,

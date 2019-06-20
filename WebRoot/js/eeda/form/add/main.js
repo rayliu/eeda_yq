@@ -18,9 +18,11 @@ define(['jquery', 'hui', './detail_table', '../event/events', '../btns', '../val
                 $(item).trigger('keyup');
             });
         });
-
-        var form_define_json = JSON.parse($("#form_define").text());
-        eventCont.handle('event_add_page_onload', form_define_json);//处理 新增页面打开后 载入时的处理事件
+        //这里用回调保证 先应用了 dataTable setting,  再取数据回显
+        tableCont.callback(function(){
+            var form_define_json = JSON.parse($("#form_define").text());
+            eventCont.handle('event_add_page_onload', form_define_json);//处理 新增页面打开后 载入时的处理事件
+        });
 
         //判断是否有需要后台执行的defaut-event:   新增-打开表单
         var module_id = $('#module_id').val();

@@ -1,9 +1,9 @@
 define( ['jquery','./element_set_enable','./element_set_show_hide'
         ,'./element_set_text','./element_set_radio'
-        ,'./element_set_checkbox','./element_set_focus'],
+        ,'./element_set_checkbox','./element_set_focus', './table_add_row'],
      function ($, element_set_enable_cont, element_set_show_hide_cont
         , element_set_text_cont, element_set_radio_cont
-        , element_set_checkbox_cont, element_set_focus_cont) {
+        , element_set_checkbox_cont, element_set_focus_cont, table_add_row_cont) {
         var handle = function(formObj, action_type){
             console.log('enter on_load.js');
             console.log(formObj);
@@ -39,6 +39,9 @@ define( ['jquery','./element_set_enable','./element_set_show_hide'
                                 break;
                             case 'element_set_show_hide':
                                 element_set_show_hide_cont.handle(action);
+                                break;
+                            case 'table_add_row':
+                                table_add_row_cont.handle(action);
                                 break;
                             default:
                                 break;

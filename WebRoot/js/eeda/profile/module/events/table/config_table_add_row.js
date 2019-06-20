@@ -1,5 +1,6 @@
 define(['jquery'], function ($) {
     var dataTable;
+    var columns = [];
     $('#table_set_add_row_btn').click(function(){
         $('#formular_table_add_row_modal').modal('show');
         $('#formular_table_add_row_modal .modal-backdrop').css({"z-index":"0"});
@@ -15,14 +16,15 @@ define(['jquery'], function ($) {
         $.post('/module/getFieldsByFormName', {form_id:form_id, field_name:field_name}, function(list){
             
             //动态设置列
-            var columns = [];
+            columns = [];
             list.forEach(element => {
                 var col = {
                     data: element.FIELD_NAME,
                     title: element.FIELD_DISPLAY_NAME,
+                    width: '200px',
                     render: function ( data, type, full, meta ) {
-                        return '<input type="text" name="'+element.FIELD_NAME+'" style="width:85%;">'
-                        +'<button type="button" class="formular_btn btn-default btn-xs"> fx </button>';
+                        return '<input type="text" name="'+element.FIELD_NAME+'" style="width:100%;" value="'+data+'">';
+                        //+'<button type="button" class="formular_btn btn-default btn-xs"> fx </button>';
 				    }
                 };
                 columns.push(col);
@@ -34,7 +36,24 @@ define(['jquery'], function ($) {
                 lengthChange: false,
                 info: false,
                 searching: false,
-                columns: columns
+                scrollY:        "300px",
+                scrollX:        true,
+                scrollCollapse: true,
+                fixedColumns: true,
+                autoWidth: true,
+                columns: columns,
+                initComplete:function(){
+                    //获取action节点的数据进行回显
+                    if(!actionTreeObjNode.event_action_setting) return ;
+                    if(!actionTreeObjNode.event_action_setting.item_list) return ;
+                    var itemList = actionTreeObjNode.event_action_setting.item_list;
+                    var item = {};
+                    for (var i = 0; i < itemList.length; i++) {
+                        var el = itemList[i];
+                        item[el.field_name]=el.expression;
+                    }
+                    dataTable.row.add(item).draw(true);
+                }
             });
             
         });
@@ -62,11 +81,24 @@ define(['jquery'], function ($) {
     }
     
     $('#formular_table_add_row_modal_ok_btn').click(function(){
+        var inputs = dataTable.$('input, select');
+        var itemList = [];
+        for (var i = 0; i < inputs.length/columns.length; i++) {
+            for (var j = 0; j < columns.length; j++) {
+                var field_name = columns[j].data;
+                var item={
+                    field_name: field_name,
+                    expression: $(inputs[i*columns.length+j]).val()
+                };
+                itemList.push(item);
+            }
+        }
+
         var data = dataTable.rows().data();//all data
         var row_length = data.toArray().length;
         $('#config_table_row_num').text(row_length);
         //set acttionTree node
-        changeActionTreeNode();
+        changeActionTreeNode(itemList);
 
         $('#formular_table_add_row_modal').modal('hide');
     });
@@ -82,16 +114,18 @@ define(['jquery'], function ($) {
         if(!node.event_action_setting) return ;
         $('#config_sub_table_list').val(node.event_action_setting.target_table_name);
         $('#config_table_row_num').text(node.event_action_setting.table_add_row_num);
+
     }
 
-    function changeActionTreeNode(){
+    function changeActionTreeNode(itemList){
         var target_table_name=$('#config_sub_table_list').val();
         var target_table_field_id=$('#config_sub_table_list option:selected').attr('field_id');
         var row_length=$('#config_table_row_num').text();
         var event_action_setting={
             target_table_field_id:target_table_field_id,
             target_table_name:target_table_name,
-            table_add_row_num:row_length
+            table_add_row_num:row_length,
+            item_list: itemList
         };
 
         var node_name = "在 "+target_table_name+" 添加 "+row_length+" 行";

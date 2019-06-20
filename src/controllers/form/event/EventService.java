@@ -142,8 +142,11 @@ public class EventService {
             for (Record record : sourceList) {
                 // 目标表字段不变，循环的源表记录需替换为值，例如：select * from stock where f386_hpdm=f69_hpdm ->
                 // f386_hpdm='123'
-                String replaceFieldName = getReplaceFieldName(sourceFormName, conditionStr, office_id);//来源表字段，从表.货品代码 f69_hpdm
-                String conditionAfterChange = condition.replace(replaceFieldName, "'" + record.get(replaceFieldName) + "'");
+                String conditionAfterChange=condition;
+                List<String> replaceFieldList = getReplaceFieldName(sourceFormName, conditionStr, office_id);//来源表字段，从表.货品代码 f69_hpdm
+                for (String replaceFieldName : replaceFieldList) {
+                    conditionAfterChange = conditionAfterChange.replace(replaceFieldName, "'" + record.get(replaceFieldName) + "'");
+                }
                 conditionAfterChange=conditionAfterChange.replace("==", "=");
                 Record re = Db.findFirst("select * from " + targetFormName + " where " + conditionAfterChange);// 目标表
                 if (re == null) {
@@ -194,10 +197,11 @@ public class EventService {
         return true;
     }
 
-    // 举例：sourceName=入库单.明细表， origCondition=‘{库存表.货品代码}={入库单.明细表.货品代码}’
+    // 举例：sourceName=入库单.明细表， origCondition=‘{库存表.货品代码}={入库单.明细表.货品代码} and {库存表.货品代码}={入库单.明细表.货品代码}’
     // 结果：返回 f69_hpdm
     // 即 f69_hpdm 需要被替换成真正的值
-    private String getReplaceFieldName(String sourceName, String origCondition, Long office_id) {
+    private List<String> getReplaceFieldName(String sourceName, String origCondition, Long office_id) {
+        List<String> list = new LinkedList<String>();
         String fieldColumnName = "";
         Pattern pattern = Pattern.compile("(?<=\\{)[^\\}]+");// 匹配花括号
         Matcher matcher = pattern.matcher(origCondition);
@@ -206,10 +210,10 @@ public class EventService {
             if (fieldName.indexOf(sourceName) >= 0) {
                 Record field = FormUtil.getFormOrField(fieldName, office_id);
                 fieldColumnName = "f" + field.getLong("id") + "_" + field.getStr("field_name");
-                break;
+                list.add(fieldColumnName);
             }
         }
-        return fieldColumnName;
+        return list;
     }
 
     // 表达式里不止两个表参数如何处理？用list

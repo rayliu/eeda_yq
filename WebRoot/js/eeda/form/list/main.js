@@ -5,12 +5,13 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
         var module_id=$('#module_id').val();
         var order_id=$('#order_id').val();
         var field_list_json = JSON.parse($('#field_list_json').text());
+        var list_action_json = JSON.parse($('#list_action_json').text());
 
         var colsSetting = [
             {
                 data: null,
                 render: function ( data, type, full, meta ) {
-                  return '<input type="checkBox" name="checkBox" style="margin-right:5px;">';
+                  return '<input type="checkbox" name="checkbox" style="margin-right:5px;">';
                 }
             }
         ];
@@ -42,7 +43,10 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
             id: 'list_table',
             paging: true,
             serverSide: true,
-            columns: colsSetting
+            columns: colsSetting,
+            drawCallback:function(){
+                redisplayCheckbox();
+            }
         });
 
         var url = '/form/'+$('#form_id').val()+'-doQuery';
@@ -50,6 +54,7 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
 
         console.log('doQuery.................');
         dataTable.ajax.url(url).load();
+
 
         $('#list_table tfoot.search th').each( function (i, item) {
             var th = $('#list_table thead th').eq($(this).index());
@@ -89,5 +94,98 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
             var url = '/form/'+$('#form_id').val()+'-doQuery?1=1'+query;
             dataTable.ajax.url(url).load();
         }
-    });
+
+         //checkbox事件响应
+         $('body').on('click', 'input[type=checkbox]', function(event) {
+            var tr=$(this).closest('tr').index();
+            var checked = $(this).prop('checked');
+            console.log('input checked='+checked);
+            for (var i=0;i<list_action_json.length;i++){
+                var field = list_action_json[i];
+                if(field.TYPE=="list_event_mark_row" && checked){
+                    var event_json = field.EVENT_JSON;
+                    var event_json_obj = JSON.parse(event_json);
+                    var children = event_json_obj[0].children;
+                    $(children).each(function(index, item){
+                        var event_action_setting=item.event_action_setting;
+                        var checked_var=event_action_setting.checked_var;
+                        //把列表的列表结构也要传过去，否则下页不知道如何取字段名
+                        var variable_define = sessionStorage.getItem(checked_var+'_define');
+                        if(!variable_define){
+                            var checked_var_define=$('#field_list_json').val();
+                            sessionStorage.setItem(checked_var+'_define', checked_var_define);
+                        }
+
+                        var checked_var_option=event_action_setting.checked_var_option;
+                        //往sessionStorage写变量
+                        var variable = sessionStorage.getItem(checked_var);
+                        if(!variable){
+                            variable = [];
+                        }else{
+                            variable=JSON.parse(variable);
+                        }
+                            
+                        var data = dataTable.row(tr).data();
+                        console.log(data);
+                        variable.push(data);
+                        sessionStorage.setItem(checked_var, JSON.stringify(variable));
+                    });
+                    break;
+                }
+                else if(field.TYPE=="list_event_unmark_row" && !checked){
+                    var field = list_action_json[i];
+                    var event_json = field.EVENT_JSON;
+                    var event_json_obj = JSON.parse(event_json);
+                    var children = event_json_obj[0].children;
+                    $(children).each(function(index, item){
+                        var event_action_setting=item.event_action_setting;
+                        var checked_var=event_action_setting.checked_var;
+                        var checked_var_option=event_action_setting.checked_var_option;
+                        //从sessionStorage变量中， 通过ID 删除 记录
+                        var variable = sessionStorage.getItem(checked_var);
+                        if(!variable){
+                            variable = [];
+                        }else{
+                            variable=JSON.parse(variable);
+                        }
+                            
+                        var data = dataTable.row(tr).data();
+                        var delete_id = data.ID;
+                        console.log('delete_id='+delete_id+', ID='+data.ID);
+                        var new_arr=[];
+                        $(variable).each(function(index, item){
+                            if(delete_id == item.ID) return true;//continue
+                            new_arr.push(item);
+                        });
+                        sessionStorage.setItem(checked_var, JSON.stringify(new_arr));
+                    });
+                    break;
+                }
+            };
+         });
+
+         var redisplayCheckbox=function(){
+            for (var i=0;i<list_action_json.length;i++){
+                var field = list_action_json[i];
+                if(field.TYPE=="list_event_mark_row"){
+                    var event_json = field.EVENT_JSON;
+                    var event_json_obj = JSON.parse(event_json);
+                    var children = event_json_obj[0].children;
+                    $(children).each(function(index, item){
+                        var event_action_setting=item.event_action_setting;
+                        var checked_var=event_action_setting.checked_var;
+                        var variable = sessionStorage.getItem(checked_var);
+                        if(variable){
+                            var var_arr=JSON.parse(variable);
+                            $(var_arr).each(function(index, row){
+                                var row_id = row.ID;
+                                console.log(row_id);
+                                $('#'+row_id+' td:eq(0) input').prop('checked', true);
+                            });
+                        }
+                    });
+                }
+            }
+         }
+    });//end of doc ready
 });

@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -562,9 +564,14 @@ public class FormController extends Controller {
             fieldList = Db.find("select * from eeda_form_field where "
                     + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
         }
+        List<Record> fieldActionList = new ArrayList<Record>();
+        fieldActionList = Db.find("select * from eeda_form_event where form_id=? "
+                + "and type in ('list_event_mark_row', 'list_event_unmark_row')", form_id);
+        
         setAttr("form_id", form_id);
         setAttr("field_list", fieldList);
         setAttr("field_list_json", JsonKit.toJson(fieldList));
+        setAttr("list_action_json", JsonKit.toJson(fieldActionList));
         return fieldList;
     }
     
@@ -650,27 +657,31 @@ public class FormController extends Controller {
         }
         
         String sql = "";
+        String sqlTotal = "";
         Record define = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
         long office_id=define.getLong("office_id");
         if("search_form".equals(define.get("type"))){
             String lieNameStr = getLieNameStr(form_id, office_id);
             String biaoNameStr = getBiaoNameStr(form_id, office_id);//join
             String joinStr = getJoinStr(form_id, office_id);//left join
+            if(joinStr.length()>0)
+                biaoNameStr="";
             String filterStr = getFilterStr(form_id);
+            String filterConditionStr = getFilterConditionStr(form_id, office_id);
             String sortStr = getSortStr(form_id, office_id);
             sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 ";//TODO: and eeda_delete='N' 
             int index = biaoNameStr.indexOf(" ");
             //+ " order by "+biaoNameStr.substring(index)+".id desc " 
-            orderList = Db.find(sql+ condition+filterStr + sortStr+sLimit);
+            orderList = Db.find(sql+ condition+filterStr + filterConditionStr + sortStr+sLimit);
+            sqlTotal = "select count(1) total from ("+sql+ condition+filterStr + filterConditionStr +") B";
         }else if("form".equals(define.get("type"))){
             sql = "select * from form_"+form_id+" where 1=1 and eeda_delete='N' "; 
+            sqlTotal = "select count(1) total from ("+sql+ condition +") B";
             orderList = Db.find(sql+ condition + " order by id desc " +sLimit);
         }
-
-        String sqlTotal = "select count(1) total from ("+sql+ condition+") B";
+        
         Record rec = Db.findFirst(sqlTotal);
         setAttr("queryTotal", sqlTotal);
-        
         
         Map<String,Object> orderListMap = new HashMap<String,Object>();
         orderListMap.put("draw", pageIndex);
@@ -679,6 +690,36 @@ public class FormController extends Controller {
 
         orderListMap.put("data", orderList);
         return orderListMap;
+    }
+    
+    public String getFilterConditionStr(Long form_id, Long office_id){
+        String filterConditionStr = "";
+        Record rec = Db.findFirst("select * from eeda_form_custom_search_filter_condition where form_id=?", form_id);
+        if(rec==null)
+            return "";
+        
+        filterConditionStr = rec.getStr("condition");
+        Pattern pattern = Pattern.compile("(?<=\\{)[^\\}]+");// 匹配花括号
+        Matcher matcher = pattern.matcher(filterConditionStr);
+        while (matcher.find()) {
+            System.out.println(matcher.group(0));
+            String newStr = matcher.group(0);
+            String[] nameArry = newStr.split("\\.");
+            String tableName = nameArry[0];
+            String fieldName = nameArry[1];
+            String biao_name_py = PingYinUtil.getFirstSpell(tableName);
+            if("ID".equals(fieldName.toUpperCase())){
+                filterConditionStr = filterConditionStr.replace("{" + newStr + "}", biao_name_py+".id");
+            }else{
+                Record field = FormUtil.getFormOrField(newStr, office_id);
+                String lieNameStr = biao_name_py+".f"+field.get("id")+"_"+field.get("field_name");
+                filterConditionStr = filterConditionStr.replace("{" + newStr + "}", lieNameStr);
+            }
+        }
+        if(StrKit.notBlank(filterConditionStr)) {
+            filterConditionStr = " and "+filterConditionStr;
+        }
+        return filterConditionStr;
     }
     
     public static String getLieNameStr(Long form_id, long office_id){
