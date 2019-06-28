@@ -1,4 +1,4 @@
-define(['jquery'], function ($) {
+define(['jquery', './config_form_set_value_pop_condition'], function ($) {
     var actionTreeObj, actionTreeObjNode;
     var setActionTreeObjNode =function(node, tree){
         actionTreeObjNode=node;
@@ -9,15 +9,21 @@ define(['jquery'], function ($) {
     var redisplay= function(node){
         var setting = node.event_action_setting;
         if(!setting){
+            $('#form_set_value_name').val();
             $('#form_set_value_source').val('');
             $('#form_set_value_target').val('');
             $('#form_set_value_condition').val('');
             $('#form_set_value_action_type').val('');
             dataTable.clear().draw();//清除所有数据行
         }else{
+            $('#form_set_value_name').val(setting.form_set_value_name);
             $('#form_set_value_source').val(setting.source_table_name);
             $('#form_set_value_target').val(setting.target_table_name);
             $('#form_set_value_condition').val(setting.condition);
+            $('#form_set_value_sub_source').val(setting.form_set_value_sub_source);//子数据源
+            $('#form_set_value_sub_join_condition').val(setting.form_set_value_sub_join_condition);//子数据源关联条件
+            $('#form_set_value_sub_filter_condition').val(setting.form_set_value_sub_filter_condition);//子数据源满足条件
+
             $('#form_set_value_action_type').val(setting.form_set_value_action_type);
             if(!setting.form_set_value_edit_field_data){ 
                 return;
@@ -44,7 +50,6 @@ define(['jquery'], function ($) {
                 dataTable.row.add(item).draw(true);
             }
         }
-        
     }
 
     var dataTable = eeda.dt({
@@ -103,7 +108,6 @@ define(['jquery'], function ($) {
     
     $('#formular_form_set_value_field_modal_ok_btn').click(function(){
         var data = dataTable.$('input').serializeArray();
-        console.log(data);
         $('#form_set_value_edit_field_data').val(JSON.stringify(data));
         //set acttionTree node
         changeActionTreeNode();
@@ -115,27 +119,39 @@ define(['jquery'], function ($) {
         changeActionTreeNode();
     });
 
-    $('#form_set_value_action_type').change(function(){
+    $('#form_set_value_action_type, #form_set_value_sub_filter_condition').change(function(){
+        changeActionTreeNode();
+    });
+
+    $('#form_set_value_name').blur(function(){
         changeActionTreeNode();
     });
 
     function changeActionTreeNode(){
+        var form_set_value_name = $('#form_set_value_name').val();
         var source_table_name=$('#form_set_value_source').val();
         var target_table_name=$('#form_set_value_target').val();
         var condition=$('#form_set_value_condition').val();
+        var form_set_value_sub_source = $('#form_set_value_sub_source').val();//子数据源
+        var form_set_value_sub_join_condition = $('#form_set_value_sub_join_condition').val();//子数据源关联条件
+        var form_set_value_sub_filter_condition = $('#form_set_value_sub_filter_condition').val();//子数据源满足条件
         var form_set_value_action_type=$('#form_set_value_action_type').val();
         var form_set_value_edit_field_data=$('#form_set_value_edit_field_data').val();
         var event_action_setting={
+            form_set_value_name:form_set_value_name,
             source_table_name:source_table_name,
             target_table_name:target_table_name,
             condition:condition,
+            form_set_value_sub_source: form_set_value_sub_source,
+            form_set_value_sub_join_condition: form_set_value_sub_join_condition,
+            form_set_value_sub_filter_condition: form_set_value_sub_filter_condition,
             form_set_value_action_type:form_set_value_action_type,
             form_set_value_edit_field_data:form_set_value_edit_field_data
         };
 
-        // var node_name = "在 "+target_table_name+" 添加 "+row_length+" 行";
-        // actionTreeObjNode.name=node_name;
-        actionTreeObjNode.event_action_setting=event_action_setting;//
+        var node_name = "表单赋值 "+form_set_value_name;
+        actionTreeObjNode.name=node_name;
+        actionTreeObjNode.event_action_setting=event_action_setting;
         actionTreeObj.updateNode(actionTreeObjNode);
     }
 

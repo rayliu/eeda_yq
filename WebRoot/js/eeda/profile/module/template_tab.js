@@ -1,4 +1,4 @@
-define(['jquery', 'template', 'sco', '/js/lib/ueditor/ueditor.config.js', 'ueditor'], function ($, template) {
+define(['jquery', 'template', 'sco', 'ueditor'], function ($, template) {
     $(document).ready(function() {
 
         var ue_config = {

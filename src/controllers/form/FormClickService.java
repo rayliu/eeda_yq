@@ -43,16 +43,22 @@ public class FormClickService {
                 Map<String, Object> event_action_setting=null;
                 switch (actionType) {
                     case "print":
-                        List<Record> template_list = fs.getPrintTemplate(form_id,Long.valueOf(orderId));
-                        event.set("template_list", template_list);
+                        if(StrKit.notBlank(orderId)) {
+                            List<Record> template_list = fs.getPrintTemplate(form_id,Long.valueOf(orderId));
+                            event.set("template_list", template_list);
+                        }
                         break;
                     case "form_set_value"://表单赋值
-                        event_action_setting=(Map)map.get("event_action_setting");
-                        fs.setValue(event_action_setting,form_id,Long.valueOf(orderId));
+                        if(StrKit.notBlank(orderId)) {
+                            event_action_setting=(Map)map.get("event_action_setting");
+                            fs.setValue(event_action_setting,form_id,Long.valueOf(orderId));
+                        }
                         break;
                     case "element_set_droplist"://本表单改变某个字段的值
-                        event_action_setting=(Map)map.get("event_action_setting");
-                        fs.setDroplist(event_action_setting,form_id,Long.valueOf(orderId));
+                        if(StrKit.notBlank(orderId)) {
+                            event_action_setting=(Map)map.get("event_action_setting");
+                            fs.setDroplist(event_action_setting,form_id,Long.valueOf(orderId));
+                        }
                         break;
                     default:
                         break;

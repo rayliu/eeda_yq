@@ -2,20 +2,41 @@
     <div class="col-lg-12">
         <div class="row">
             <div class="col-lg-12" style="margin-top: 5px;">
-                从<input id="form_set_value_source" type="text" placeholder="请输入数据源" style="width: 40%;">
-                对
-                <input id="form_set_value_target" type="text" placeholder="请输入赋值目标" style="width: 40%;">
-                
+                动作名称<input id="form_set_value_name" type="text" placeholder="请输入动作名称" style="width: 80%;">
             </div>
+            <div class="col-lg-12" style="margin-top: 5px;">
+                从<input id="form_set_value_source" type="text" placeholder="请输入数据源" style="width: 40%;">
+                对<input id="form_set_value_target" type="text" placeholder="请输入赋值目标" style="width: 40%;">
+            </div>
+            
             <div class="col-lg-12" style="margin-top: 3px;">
-                满足条件 
-                <!-- <button id="" class="btn btn-success btn-xs">编辑</button> -->
+                关联条件
             </div>
             <div class="col-lg-12" style="margin-top: 3px;">
                 <div>
                     <textarea name="" id="form_set_value_condition" class="pre-scrollable" style="height: 60px; width:100%;border: solid 1px #ddd;"></textarea>
                 </div>
             </div>
+
+            <div class="row" style="clear:both; margin:10px; border: 1px solid gold; background-color: aliceblue;">
+                <div class="col-lg-12" style="margin-top: 3px;">
+                    子数据源 <input id="form_set_value_sub_source" type="text" placeholder="子数据源" style="width: 40%;">
+                </div>
+                <div class="col-lg-12" style="margin-top: 3px;">
+                    子数据源关联条件
+                </div>
+                <div class="col-lg-12" style="margin-top: 3px;">
+                    <div>
+                        <textarea name="" id="form_set_value_sub_join_condition" class="pre-scrollable" style="height: 60px; width:100%;border: solid 1px #ddd;"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-12" style="margin-top: 3px;">
+                    子数据源满足条件   
+                    <button id="form_set_value_edit_condition_btn" class="btn btn-default btn-xs">编辑条件</button>
+                    <input type="hidden" id="form_set_value_sub_filter_condition" style="display:block;">
+                </div>
+            </div>
+            
             <div class="col-lg-12" style="margin-top: 3px;">
                 执行
                 <select id="form_set_value_action_type">

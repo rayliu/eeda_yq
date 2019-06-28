@@ -28,6 +28,7 @@
             file_upload: 'jQuery-File-Upload-9.9.3/js/jquery.fileupload',
             echarts: 'echarts/4.2.1/echarts.common.min',
             ueditor: 'ueditor/ueditor.all.min',
+            ueditor_config: 'ueditor/ueditor.config',
             printMe: 'printMe/jquery-printme.min',
             hui: '../../theme/H-ui.admin.page3.1.1/static/h-ui/js/H-ui',
             hui_admin: '../../theme/H-ui.admin.page3.1.1/static/h-ui.admin/js/H-ui.admin.page',
@@ -115,6 +116,9 @@
             jsplumb:{
                 deps: ['jquery', 'jquery_ui'],
                 exports: 'jsPlumb'
+            },
+            ueditor:{
+                deps: ['ueditor_config']
             },
             eeda_common:{
                 deps: ['jquery','bootstrap','dataTablesBootstrap','WdatePicker','hui','hui_admin']

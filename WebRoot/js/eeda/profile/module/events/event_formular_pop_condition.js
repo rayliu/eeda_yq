@@ -115,6 +115,8 @@ define(['jquery'], function ($) {
         });
 
         $('#formular_condition_modal_ok_btn').click(function(){
+            if($('#formular_condition_type').val()=='form_set_value') 
+                return;
             build_condition_json();
             $('#formular_conditon_modal').modal('hide');
         });

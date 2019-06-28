@@ -53,7 +53,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         		if(flag){
         			return;
             }
-              
+              $('#field_property_div').show();
               fields_property_re_display_running=true;
         		  current_tr = this;
               $(current_tr).attr("elect_flag","Y");//将当前选中tr的elect_flag设为Y，表示当前行被选中，可以对当前行编辑
@@ -67,6 +67,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
               $('#sort_type').val(data.SORT_TYPE);
               $('#default_value').val(data.DEFAULT_VALUE);
               $('#seq').val(data.SEQ);
+              $('#col_width').val(data.COL_WIDTH);
 //                 if(data.LISTED == 'Y'){
 //                   $('#is_not_list_col').prop('checked', false);
 //                 }else{
@@ -257,6 +258,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             $('#sort_type').val('');
             $('#default_value').val('');
             $('#seq').val('');
+            $('#col_width').val('');
             $('#is_not_list_col').prop('checked', false);
             $('#app_display_col').prop('checked', false);
             
@@ -317,12 +319,14 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
         });
         //取消字段修改
         $('#field_tab_cancelFieldBtn').click(function(){
-          $(current_tr).attr("elect_flag","N");
+            $(current_tr).attr("elect_flag","N");
             $(current_tr).css('background-color','#fff');
             $("#fields_property input[type='text']").val("");
             $("#fields_property input[type='checkbox']").prop("checked",false);
             fields_property_change='N';
+            $('#field_property_div').hide();
         });
+        
         //回写到table
         $('#field_tab_confirmFieldBtn').click(function(){
         	update_flag = "Y";
@@ -336,6 +340,7 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             item.SORT_TYPE=$('#sort_type').val();
             item.DEFAULT_VALUE=$('#default_value').val();
             item.SEQ=$('#seq').val();
+            item.COL_WIDTH=$('#col_width').val();
             item.READ_ONLY=$('#read_only').prop('checked')==true?'Y':'N';
             item.LISTED=$('#is_not_list_col').prop('checked')==true?'N':'Y';
             item.REQUIRED=$('#required').prop('checked')==true?'Y':'N';
@@ -367,6 +372,8 @@ define(['jquery', './fields/field_pro_check_box', './fields/field_pro_detail_ref
             $("#fields_property input[type='text']").val("");
             $("#fields_property input[type='checkbox']").prop("checked",false);
             fields_property_change='N';
+
+            $('#field_property_div').hide();
         });
 
         var check = function(){

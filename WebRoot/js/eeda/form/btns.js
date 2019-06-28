@@ -143,8 +143,8 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
 
                                         var data = getFormData($form);
                                         console.log(data);
-                                        if(order_id==-1){
-                                            doAdd(data);
+                                        if(order_id==-1 || order_id==''){
+                                            doAdd(data, btn_id);
                                         }else{
                                             if(event.TYPE == "set_value"){
                                                 data.type = "set_value";
@@ -361,15 +361,17 @@ define(['jquery', './print', './event/element_set_enable', './event/element_set_
         }
 
 
-        function doAdd(data){
+        function doAdd(data, btn_id){
             var layer_index = layer.load(1, {
                 shade: [0.3,'#000'] //0.3透明度的黑色背景
             });
             $.post('/form/'+data.module_id+'-doAdd', {data: JSON.stringify(data)}, function(dto){
                 if(dto){
+                    var url = '/form/'+data.module_id+'-edit-'+dto.ID;
+                    //重新点一次保存，否则因为没orderID，没法触发保存中设置的事件
+                    $.post('/form/'+data.module_id+'-click-'+btn_id,{order_id:dto.ID});
                     layer.close(layer_index); 
                     layer.alert('操作成功', {icon: 1});
-                    var url = '/form/'+data.module_id+'-edit-'+dto.ID;
                     window.location.href=url;
                 }else{
                     layer.close(layer_index); 
