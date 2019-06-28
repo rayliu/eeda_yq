@@ -21,7 +21,8 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
             var visible = field.LISTED=="Y"?true:false;
             var col={
                 data: ('f'+field.ID+'_'+field.FIELD_NAME).toUpperCase(),
-                visible: visible
+                visible: visible,
+                width: field.COL_WIDTH
             };
             //console.log(col);
             colsSetting.push(col);

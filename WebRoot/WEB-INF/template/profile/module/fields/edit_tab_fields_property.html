@@ -193,9 +193,9 @@
                 </div>
                 <div class="col-lg-6">
                     <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'is_public',
-                                                    label:'字体大小px',
-                                                    value:order.is_public!''
+                                                {   id:'col_width',
+                                                    label:'列宽px',
+                                                    value:order.col_width!''
                                                 }){}%>
                 </div>
             </div>
@@ -215,7 +215,7 @@
                 <div class="col-lg-6">
                     <%include("/eeda/component/form/inputField.html", 
                                                 {   id:'is_public',
-                                                    label:'列宽px',
+                                                    label:'字体大小px',
                                                     value:order.is_public!''
                                                 }){}%>
                 </div>
@@ -223,16 +223,16 @@
             <div class="row">
                 <div class="col-lg-9">
                     <%include("/eeda/component/form/inputField.html", 
-                                                {   id:'is_public',
+                                                {   id:'background_color',
                                                     label:'背景颜色',
-                                                    value:order.is_public!''
+                                                    value:order.background_color!''
                                                 }){}%>
                 </div>
                 <div class="col-lg-3">
                     <%include("/eeda/component/form/inputField.html", 
                                                 {   id:'is_public',
                                                     type: 'checkbox',
-                                                    label:'全行变色',
+                                                    label:'全行背景变色',
                                                     value:order.is_public!''
                                                 }){}%>
                 </div>
@@ -249,7 +249,7 @@
                     <%include("/eeda/component/form/inputField.html", 
                                                 {   id:'is_public',
                                                     type: 'checkbox',
-                                                    label:'全行变色',
+                                                    label:'全行字体变色',
                                                     value:order.is_public!''
                                                 }){}%>
                 </div>
