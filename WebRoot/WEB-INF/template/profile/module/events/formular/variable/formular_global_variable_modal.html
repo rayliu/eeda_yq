@@ -1,0 +1,74 @@
+<style>
+    .panel-body {
+        padding: 0px;
+        min-height:400px;
+    }
+    div.event_config{
+        display: none;
+    }
+
+    #formular_conditon_modal .condition_box{
+        border: solid 1px;
+        height: 200px;
+        margin: 15px;
+        padding: 10px;
+    }
+
+    #formular_conditon_modal .condition_desc_box{
+        border: solid 1px;
+        height: 140px;
+        margin: 15px;
+        padding: 10px;
+    }
+
+    #formular_conditon_modal .condition_field{
+        width: 200px;
+    }
+
+    #formular_conditon_modal .fx_btn{
+        margin-top: -3px;
+        margin-left: -5px;
+    }
+   
+</style>
+<div id='formular_global_variable_modal' class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">全局变量</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+            <input type="hidden" id="parent_target_id">
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-default btn-xs" 
+                    id="formular_global_variable_add_btn">添加</button>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 5px;">
+                <div class="col-lg-12">
+                      <%include("/eeda/component/form/detailTable.html", 
+                      {
+                          id: 'global_variable_table', 
+                          headers:['',
+                              '变量名称',
+                              '默认值']
+                      }){} %>
+                </div>
+            </div>
+            
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="formular_global_variable_cancel_btn" class="btn btn-default">取消</button>
+        <button type="button" id="formular_global_variable_ok_btn" class="btn btn-primary">确定</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
