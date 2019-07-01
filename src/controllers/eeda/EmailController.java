@@ -20,11 +20,11 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
-import controllers.util.InnerHttpRequest;
 import controllers.util.MailUtil;
-import controllers.util.OssUtil;
+
 import interceptor.EedaMenuInterceptor;
 import interceptor.SetAttrLoginUserInterceptor;
+
 @Before({SetAttrLoginUserInterceptor.class,EedaMenuInterceptor.class})
 public class EmailController extends Controller {
     private static final String RANDOM_CODE_KEY = "eeda";
