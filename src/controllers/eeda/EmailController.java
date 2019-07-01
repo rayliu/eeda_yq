@@ -1,54 +1,30 @@
 package controllers.eeda;
 
-import interceptor.EedaMenuInterceptor;
-import interceptor.SetAttrLoginUserInterceptor;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import models.ParentOfficeModel;
-import models.UserLogin;
-import models.eeda.profile.OfficeConfig;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.Email;
-import org.apache.commons.mail.SimpleEmail;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.ext.plugin.shiro.ShiroKit;
-import com.jfinal.kit.JsonKit;
+import com.jfinal.kit.LogKit;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
-import com.jfinal.plugin.activerecord.tx.Tx;
-import com.jfinal.render.CaptchaRender;
 
-import controllers.profile.LoginUserController;
-import controllers.util.EedaCommonHandler;
-import controllers.util.MD5Util;
-import controllers.util.ParentOffice;
-import controllers.util.getCurrentPermission;
+import controllers.util.InnerHttpRequest;
+import controllers.util.MailUtil;
+import controllers.util.OssUtil;
+import interceptor.EedaMenuInterceptor;
+import interceptor.SetAttrLoginUserInterceptor;
 @Before({SetAttrLoginUserInterceptor.class,EedaMenuInterceptor.class})
 public class EmailController extends Controller {
     private static final String RANDOM_CODE_KEY = "eeda";
@@ -82,4 +58,32 @@ public class EmailController extends Controller {
     	}
     	renderJson("{\"result\":"+true+"}");
     }
+    
+    /**
+     * @param email_content 邮件内容
+     * @param email_address	邮件地址
+     * @param email_title	邮件标题
+     */
+    /**
+     * 2019/6/28邮件测试
+     */
+  	public void sendTestEmailMsg(){
+  		String type = getPara("type");
+  		
+  		Record login_user = getAttr("login_user");
+    	Record emailRec = Db.findFirst("select * from email_setting where office_id = ? and type=?",
+    			login_user.getLong("office_id"), type);
+//    	LogKit.error(message);
+  		String host = emailRec.getStr("host");//邮件服务器主机host，目前只支持SMTP协议(可以是163或者qq)pop3 smtp
+		int port = Integer.valueOf(emailRec.getStr("port"));//邮件服务器端口 995
+		String username = emailRec.getStr("name");//登录邮件服务器的账号
+		String password = emailRec.getStr("pwd");//登录邮件服务器的密码，该密码通常是通过短信动态授权第三方登录的密码
+		
+		String mailFrom = "log@logclub.com";
+		String to = getPara("to");
+		
+		MailUtil.sendMailForTest(host, port, username, password, mailFrom, to);
+		renderText("ok");
+		
+  	}
 }

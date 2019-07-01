@@ -34,19 +34,19 @@
             <div class="radioList row">
 				<div class="col-md-1">
 					<div class="radio-box">
-						<input type="radio" id="smtp" name="smtp" <%if(smtp.checked!'N'=='Y'){%>checked<%}else if(aliyun.checked!'N'=='N'&&send_cloud.checked!'N'=='N'){%>checked<%}%> />
-						<label for="radio-1">Smtp</label>
+						<input type="radio" id="smtp" name="smtp" value="smtp" <%if(smtp.checked!'N'=='Y'){%>checked<%}else if(aliyun.checked!'N'=='N'&&send_cloud.checked!'N'=='N'){%>checked<%}%> />
+						<label for="radio-1">SMTP</label>
 					</div>
 				</div>
 				<div class="col-md-1">
 					<div class="radio-box">
-						<input type="radio" id="aliyun" name="aliyun" <%if(aliyun.checked!'N'=='Y'){%>checked=<%}%> />
+						<input type="radio" id="aliyun" name="aliyun" value="aliyun" <%if(aliyun.checked!'N'=='Y'){%>checked=<%}%> />
 						<label for="radio-1">阿里云</label>
 					</div>
 				</div>
 				<div class="col-md-2">
 					<div class="radio-box">
-						<input type="radio" id="send_cloud" name="send_cloud" <%if(send_cloud.checked!'N'=='Y'){%>checked<%}%> />
+						<input type="radio" id="send_cloud" name="send_cloud" value="send_cloud" <%if(send_cloud.checked!'N'=='Y'){%>checked<%}%> />
 						<label for="radio-1">SendCloud</label>
 					</div>
 				</div>
@@ -139,8 +139,31 @@
 				<button class="btn btn-success radius" type="button" id="save_btn">保存</button>
 			</div>
 		</article>
+
+		<div style="padding:0 0 0 35px">
+			<div>
+				<form id="emailTest" class="col-md-12">
+					<div class="row">
+						<div style="width: 40%;height: 50px;">
+							<label class="search-label">发送地址：</label>
+							<div style="display: inline-block;">
+								<input type="text" name="email_address" value="" class="input-text" autocomplete="off" placeholder="" >
+							</div>
+							
+							<div style="display: inline-block;margin-left: 10px">
+								<button class="btn btn-success radius" type="button" id="emailTest_btn">发送测试邮件</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		
 	</div>
-	<footer class="footer" style="position: absolute;bottom:0px;width:100%;">
+
+	
+
+	<footer class="footer" style="position: absolute;bottom:0px;width:100%;z-index: 99;background-color: #fff">
 		<p>本系统由<a href="http://www.eeda123.com" target="_blank" title="创诚易达信息技术有限公司">创诚易达信息技术有限公司</a>提供技术支持</p>
 	</footer>
 </section>

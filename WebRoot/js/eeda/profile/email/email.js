@@ -56,5 +56,19 @@ define(['jquery','hui'], function ($,huiCont) {
     			$(".Huialert-error").show();
             });;
         });
+
+        $("#emailTest_btn").click(function(){
+            var email_address=$("input[name=email_address]").val();
+            var type=$("input[type=radio]:checked").val();
+            $.post("/email/sendTestEmailMsg",{type:type, to:email_address},function(data){
+                if(data == 'ok'){
+                    alert('发送成功');
+                }else{
+                    alert('发送失败');
+                }
+            })
+
+
+        });
     });
 });
