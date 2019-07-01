@@ -17,7 +17,7 @@
 		cursor: pointer;
 	}
 </style>
-<section class="Hui-article-box">
+<section class="Hui-article-box"
 	<nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a> 
 		<span class="c-999 en">&gt;</span>
 		<span class="c-666">邮件设置</span> 
@@ -32,6 +32,7 @@
                 <i class="Hui-iconfont">&#xe6a6;</i>操作失败，原因：未知，请重新尝试或联系客服。
             </div>
             <div class="radioList row">
+            	<div class="col-md-1">发送方式：</div>
 				<div class="col-md-1">
 					<div class="radio-box">
 						<input type="radio" id="smtp" name="smtp" value="smtp" <%if(smtp.checked!'N'=='Y'){%>checked<%}else if(aliyun.checked!'N'=='N'&&send_cloud.checked!'N'=='N'){%>checked<%}%> />
@@ -54,7 +55,7 @@
 			
 			<div id="tab_demo" class="HuiTab pt-20">
 				<div class="tabBar clearfix">
-					<span>Smtp</span>
+					<span>SMTP</span>
 					<span>阿里云</span>
 					<span>SendCloud</span>
 				</div>
