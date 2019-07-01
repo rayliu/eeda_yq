@@ -10,7 +10,7 @@
 	}
 	.HuiTab{
 		overflow: hidden;
-		min-height: 195px;
+		min-height: 100px;
 	}
 	.radioList .radio-box{
 		padding:0px;
@@ -59,7 +59,25 @@
 				<button class="btn btn-success radius" type="button" id="save_btn">保存</button>
 			</div>
 		</article>
+		<div style="height:110px; padding:0 40px">
+			<form id="emailTest" class="col-md-12">
+				<div class="row">
+					<div style="height: 50px;">
+						<label class="search-label">收信人：</label>
+						<div style="display: inline-block;">
+							<input type="text" name="addressee" value="" class="input-text" autocomplete="off" placeholder="" >
+						</div>
+						
+						<div style="display: inline-block;margin-left: 10px">
+							<button class="btn btn-success radius" type="button" id="smsTest_btn">发送测试短信</button>
+							测试前请联系<a href="#" class="about" style="color: blue;text-decoration: underline;" >客服人员</a>编辑短信模板
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
+
 	<footer class="footer" style="position: absolute;bottom:0px;width:100%;">
 		<p>本后台系统由<a href="http://www.eeda123.com" target="_blank" title="创诚易达信息技术有限公司">创诚易达信息技术有限公司</a>提供前端技术支持</p>
 	</footer>

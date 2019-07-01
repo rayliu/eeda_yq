@@ -37,5 +37,32 @@ define(['jquery','hui'], function ($,huiCont) {
     			$(".Huialert-error").show();
             });;
         });
+
+        // 验证短信设置是否存在
+        // var appid = $("inptu[name=app_id]").val();
+        // var secret = $("inptu[name=app_secret]").val();
+        // if(appid==null || appid=="" || secret==null || secret==""){
+        //     $("#smsTest_btn").attr("disabled","disabled");
+        //     $("#smsTest_btn").css("background","#666");
+        //     $("#smsTest_btn").css("border","#666 1px solid");
+        //     alert("1");
+        // }else{
+        //      $("#smsTest_btn").removeAttr("disabled");
+        //         alert("2");
+        // }
+
+
+         $("#smsTest_btn").click(function(){
+            var addressee=$("input[name=addressee]").val();
+            $.post("/shortMsg/sendTestSmsMsg",{addressee:addressee},function(data){
+                 if(data == 'ok'){
+                    alert('发送成功');
+                }else{
+                    alert('发送失败');
+                }
+            })
+        });
+
     });
 });
+

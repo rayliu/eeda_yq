@@ -32,12 +32,14 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 
+import com.aliyuncs.exceptions.ClientException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.plugin.shiro.ShiroKit;
 import com.jfinal.kit.JsonKit;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -45,6 +47,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.render.CaptchaRender;
 
 import controllers.profile.LoginUserController;
+import controllers.util.AliSmsUtil;
 import controllers.util.EedaCommonHandler;
 import controllers.util.MD5Util;
 import controllers.util.ParentOffice;
@@ -80,4 +83,17 @@ public class ShortMsgController extends Controller {
 		}
     	renderJson("{\"result\":"+result+"}");
     }
+    
+    //发送测试短信
+    public void sendTestSmsMsg() throws ClientException {
+    	
+    	Record login_user = getAttr("login_user");
+    	Record shortMsg = Db.findFirst("select * from short_setting where office_id = ?",login_user.getLong("office_id"));
+    	String app_id = shortMsg.getStr("app_id");
+    	String app_srcret = shortMsg.getStr("app_srcret");
+    	String addressee = getPara("addressee");//收信人
+    	AliSmsUtil.sendSms("{\"code\":\"1234\"}", addressee,"SMS_135995005");
+    	renderText("ok");
+    }
 }
+
