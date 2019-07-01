@@ -81,7 +81,7 @@ public class OfficeController extends Controller {
                         + " where trg.is_delete!='Y' and trg.office_id=? and trg.parent_id = ?",officeId,group2_list.get(j).getLong("id"));
                 group2_list.get(j).set("group3_list", group3_list);
                 for(int k=0;k<group3_list.size();k++){
-                    List<Record> group4_list = Db.find("select * from t_rbac_group where trg.is_delete!='Y' and trg.office_id=? and parent_id=?",officeId,group3_list.get(k).getLong("id"));
+                    List<Record> group4_list = Db.find("select * from t_rbac_group trg where trg.is_delete!='Y' and trg.office_id=? and parent_id=?",officeId,group3_list.get(k).getLong("id"));
                     group3_list.get(k).set("group4_list", group4_list);
                 }
             }
