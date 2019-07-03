@@ -933,13 +933,13 @@ public class FormController extends Controller {
             if("自动编号".equals(fieldType)){
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + "<div class='formControls col-xs-8 col-sm-8'>"
-                        + "  <input type='text' name='"+inputId+"' class='input-text' autocomplete='off'  placeholder='系统自动生成' disabled>"
+                        + "  <input type='text' name='"+inputId+"' class='input-text' autocomplete='new-password'  placeholder='系统自动生成' disabled>"
                         + "</div>"+requiredStr;
             }else if("文本".equals(fieldType)||"网址".equals(fieldType)){
                 
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + "<div class='formControls col-xs-8 col-sm-8'>"
-                        + "  <input type='text' name='"+inputId+"' class='input-text "+disabled+"' autocomplete='off' "+disabled+" >"
+                        + "  <input type='text' name='"+inputId+"' class='input-text "+disabled+"' autocomplete='new-password' "+disabled+" >"
                         + "</div>"+requiredStr;
             }else if("全国城市".equals(fieldType)){
                 replaceNameDest = "<label class='search-label'>"+fieldDisplayName+"</label>"
@@ -969,14 +969,14 @@ public class FormController extends Controller {
                 replaceNameDest = "<div id='"+inputId+"_div'>"
                         + "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + " <div class='formControls col-xs-8 col-sm-8'>"
-                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd\"})' name='"+inputId+"' class='input-text Wdate'>"
+                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd\"})' name='"+inputId+"' autocomplete='new-password' class='input-text Wdate'>"
                         + " </div> "
                         + "</div> "+requiredStr;
             }else if("日期时间".equals(fieldType)){
                 replaceNameDest = "<div id='"+inputId+"_div'>"
                         + "<label class='search-label'>"+fieldDisplayName+"</label>"
                         + " <div class='formControls col-xs-8 col-sm-8'>"
-                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd HH:mm:ss\"})' name='"+inputId+"' class='input-text Wdate "+disabled+"' "+disabled+">"
+                        + "    <input type='text' onfocus='WdatePicker({dateFmt:\"yyyy-MM-dd HH:mm:ss\"})' name='"+inputId+"' autocomplete='new-password' class='input-text Wdate "+disabled+"' "+disabled+">"
                         + " </div> "
                         + "</div> "+requiredStr;
             }else if("多行文本".equals(fieldType)||"网页HTML".equals(fieldType)){
