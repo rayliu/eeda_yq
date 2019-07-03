@@ -29,8 +29,13 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
         };
 
         //操作按钮
+        var btn_visible = true;
+        if(module_id==206 || module_id==207){
+            var btn_visible =false;
+        }
         var btnCol = {
             data: null,
+            visible: btn_visible,
             render: function ( data, type, full, meta ) {
         		return '<a class="btn btn-xs" style="text-decoration:none" class="ml-5" href="/form/'+module_id+'-edit-'+data.ID+'" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a>'
                 +' <a class="btn btn-xs delete" style="text-decoration:none" href="javascript:;" class="ml-5 delete" module_id='+module_id+' id='+data.ID+' title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> ';
