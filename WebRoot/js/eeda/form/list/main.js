@@ -70,7 +70,9 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
                 $(this).html('<input type="text" placeholder="过滤..." data-index="'+i+'" field_name="'+field_name+'" style="width: 100%;"/>');
         });
 
-        $('#list_table').on( 'keyup', 'tfoot input', function () {
+       
+        $('article').on('keyup', 'tfoot input', function () {
+            console.log($(this).val());
             globalSearch();
         });
         
@@ -93,7 +95,7 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
 
         var globalSearch = function(){
             var query="";
-            $('#list_table tfoot input').each(function(index, el) {
+            $('article tfoot input').each(function(index, el) {
                 query+="&"+$(el).attr('field_name')+"_like="+$(el).val();
             });
 
