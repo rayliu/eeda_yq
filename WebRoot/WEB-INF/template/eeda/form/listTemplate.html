@@ -1,5 +1,6 @@
 <%layout("/eeda/theme/h-ui/layout.html"){%>
 
+    
     <section class="Hui-article-box">
         <nav class="breadcrumb 344343"><i class="Hui-iconfont">&#xe67f;</i> 首页
             <span class="c-gray en">&gt;</span>
@@ -9,6 +10,9 @@
             <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
         </nav>
         <div class="Hui-article">
+                
+                        
+                    
             <article class="cl pd-20">
                 <input type="hidden" id="module_id" value="${module_id!''}">
                 <input type="hidden" id="form_id" value="${form_id!''}">
@@ -16,18 +20,55 @@
                     {
                         btnList: btnList
                     }){} %>
-                <div class="mt-20">
 
-                    <%
-                        var headers=[''];
-						var form_type = "form";
-                        for(field in field_list){
-                            array.add(headers, field);
-                            if(field.CUSTOM_SEARCH=="Y"){
-                            	form_type = "search_form";
-                            }
+                <%
+                    var headers=[''];
+                    var form_type = "form";
+                    for(field in field_list){
+                        array.add(headers, field);
+                        if(field.CUSTOM_SEARCH=="Y"){
+                            form_type = "search_form";
                         }
-                    %>
+                    }
+                %>
+                <!-- search_form -->
+                <div id='search_div' style="display: none;">
+                    <div class="row cl" >
+                        <form id='search_form'>
+                            <%for(field in headers){%>
+                                <%if(field!='' && field.LISTED == 'Y'){%>
+                                    <div class="col-md-4 mb-5">
+                                        <label class="form-label col-xs-4 col-sm-3">${field.FIELD_DISPLAY_NAME!''}</label>
+                                        <%if(field.FIELD_TYPE =='日期时间' || field.FIELD_TYPE =='日期'){%>
+                                            <div class="formControls col-xs-4 col-sm-4">
+                                                    <input type="text" class="input-text Wdate" name="f${field.ID!''}_${field.FIELD_NAME!''}_begin_time"
+                                                        autocomplete="new-password" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+                                            </div>
+                                            <div style="float: left;">~</div>
+                                            <div class="formControls col-xs-4 col-sm-4">
+                                                <input type="text" class="input-text Wdate" name="f${field.ID!''}_${field.FIELD_NAME!''}_end_time"
+                                                    autocomplete="new-password" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})">
+                                            </div>
+                                        <%}else{%>
+                                            <div class="formControls col-xs-8 col-sm-9">
+                                                <input type="text" class="input-text" name="f${field.ID!''}_${field.FIELD_NAME!''}"
+                                                    autocomplete="new-password" placeholder="">
+                                            </div>
+                                        <% }%>
+                                        
+                                    </div>
+                                <%}%>
+                            <%}%>
+                        </div>
+                    </form>
+                    <div class="row cl pl-20">
+                        <button type="button" class="btn btn-success size-M layui-btn" id="search_btn">查询</button>
+                        <button type="button" class="btn btn-default size-M layui-btn" id="reset_btn">重置</button>
+                    </div>
+                </div>
+                <!-- end of search_form -->
+
+                <div class="mt-20">
                     <%include("/eeda/component/form/detailTableWithFoot.html", 
                         {
                             id:'list_table',

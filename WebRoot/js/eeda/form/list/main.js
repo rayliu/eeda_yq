@@ -70,10 +70,45 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
                 $(this).html('<input type="text" placeholder="过滤..." data-index="'+i+'" field_name="'+field_name+'" style="width: 100%;"/>');
         });
 
+        $('#advanced_search_btn').click(function(){
+            var el = $("#search_div");
+            if (el.is(':visible')) {//如果 为可见,:visible是可见的意思,相关用法还有:hidden(隐藏),:first(第一个),:last(最后一个)  
+                el.slideUp();//隐藏  
+            } else {  
+                el.slideDown();//显示  
+            }  
+        });
+
+        $('#search_btn').click(function(){
+            advanceSearch();
+        });
+
+        var advanceSearch = function(){
+            var query="";
+            $('#search_form input').each(function(index, el) {
+                var val = $(el).val()
+                var fiedl_name = $(el).attr('name');
+                if(val){
+                    if(fiedl_name.indexOf('_begin_time') >0 || fiedl_name.indexOf('_end_time') >0){
+                        query+="&"+fiedl_name+"="+val;
+                    }else{
+                        query+="&"+fiedl_name+"_like="+val;
+                    }
+                    
+                }
+            });
+
+            var url = '/form/'+$('#form_id').val()+'-doQuery?1=1'+query;
+            dataTable.ajax.url(url).load();
+        }
+
+        $('#reset_btn').click(function(){
+            $('#search_form')[0].reset();
+            advanceSearch();
+        });
        
         $('article').on('keyup', 'tfoot input', function () {
-            console.log($(this).val());
-            globalSearch();
+            quickSearch();
         });
         
         //删除
@@ -93,10 +128,12 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
         	}
         });
 
-        var globalSearch = function(){
+        var quickSearch = function(){
             var query="";
             $('article tfoot input').each(function(index, el) {
-                query+="&"+$(el).attr('field_name')+"_like="+$(el).val();
+                if($(el).val()){
+                    query+="&"+$(el).attr('field_name')+"_like="+$(el).val();
+                }
             });
 
             var url = '/form/'+$('#form_id').val()+'-doQuery?1=1'+query;

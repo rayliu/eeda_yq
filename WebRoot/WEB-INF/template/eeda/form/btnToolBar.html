@@ -4,10 +4,11 @@
         <%for(btn in btnList![]){%>
             <button type="button" class="btn btn-success layui-btn" id="form_${btn.form_id}-btn_${btn.id}">${btn.name!''}</button>
         <%}%>
+        
         <!--a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
         <a class="btn btn-primary radius" data-title="添加资讯" _href="article-add.html" onclick="article_add('添加资讯','article-add.html')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加资讯</a-->
     </span>
-    <!--span class="r">共有数据：<strong>54</strong> 条</span-->
+    <a id='advanced_search_btn' href='#' class="r mt-5 mr-20" style="text-decoration: underline;color: #06c;">高级查询</a>
 </div>
 <%}%>
 

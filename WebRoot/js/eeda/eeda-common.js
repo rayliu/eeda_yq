@@ -9,9 +9,14 @@ $(document).ready(function(){
         }
     });
 
-    $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) { 
-        console.error(message);
-    };
+    try {
+        $.fn.dataTable.ext.errMode = function ( settings, helpPage, message ) { 
+            console.error(message);
+        };
+    }catch(err) {
+        window.location.reload();
+    }
+   
     //Hui 动态载入左侧菜单，展开失效的解决方案。
     $(".Hui-aside").Huifold({
         titCell:'.menu_dropdown dl dt',
