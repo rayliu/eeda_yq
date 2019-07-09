@@ -1245,19 +1245,20 @@ public class ModuleController extends Controller {
                         .findFirst(
                                 "select * from eeda_form_field_type_detail_ref where field_id=?",
                                 field.getLong("id"));
-
-                List<Record> condition_list = Db
-                        .find("select * from eeda_form_field_type_detail_ref_join_condition where field_id=?",
-                                field.getLong("id"));
-                if (condition_list.size() > 0)
-                    ref.set("join_condition", condition_list);
-                
-                List<Record> field_list = Db
-                        .find("select * from eeda_form_field_type_detail_ref_display_field where field_id=? order by sort_no",
-                                field.getLong("id"));
-                if (field_list.size() > 0)
-                    ref.set("display_field", field_list);
-                field.set("detail_ref", ref);
+                if(ref != null) {
+                    List<Record> condition_list = Db
+                            .find("select * from eeda_form_field_type_detail_ref_join_condition where field_id=?",
+                                    field.getLong("id"));
+                    if (condition_list.size() > 0)
+                        ref.set("join_condition", condition_list);
+                    
+                    List<Record> field_list = Db
+                            .find("select * from eeda_form_field_type_detail_ref_display_field where field_id=? order by sort_no",
+                                    field.getLong("id"));
+                    if (field_list.size() > 0)
+                        ref.set("display_field", field_list);
+                    field.set("detail_ref", ref);
+                }
             }else if ("字段引用".equals(type)) {
                 Record ref = Db
                         .findFirst(

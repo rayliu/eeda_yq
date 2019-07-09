@@ -315,7 +315,7 @@ define(['jquery', './list_tree', './fields', './custom_search/custom_search', '.
                 shadeClose: true,
                 shade: false,
                 maxmin: true, //开启最大化最小化按钮
-                area: ['893px', '600px'],
+                area: ['1080px', '720px'],
                 content: '/module/moduleMarket'
             });
         });
