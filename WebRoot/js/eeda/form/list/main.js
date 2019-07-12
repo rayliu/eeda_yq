@@ -2,6 +2,7 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
     $(document).ready(function(){    
         document.title = '查询 | ' + document.title;
 
+        $('#advanced_search_btn').show();
         var module_id=$('#module_id').val();
         var order_id=$('#order_id').val();
         var field_list_json = JSON.parse($('#field_list_json').text());
