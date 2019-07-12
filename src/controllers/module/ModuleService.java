@@ -570,10 +570,14 @@ public class ModuleService {
                 Db.save("eeda_form_field_type_detail_ref_join_condition", itemRec);
             } else {
                 itemRec = Db.findById("eeda_form_field_type_detail_ref_join_condition", id);
-                itemRec.set("field_id", fieldId);
-                itemRec.set("field_from", field_from);
-                itemRec.set("field_to", field_to);
-                Db.update("eeda_form_field_type_detail_ref_join_condition", itemRec);
+                if ("DELETE".equals(condition.get("action"))) {
+                    Db.delete("eeda_form_field_type_detail_ref_join_condition", itemRec);
+                } else {
+                    itemRec.set("field_id", fieldId);
+                    itemRec.set("field_from", field_from);
+                    itemRec.set("field_to", field_to);
+                    Db.update("eeda_form_field_type_detail_ref_join_condition", itemRec);
+                }
             }
         }
 

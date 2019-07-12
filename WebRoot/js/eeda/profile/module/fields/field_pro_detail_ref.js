@@ -124,8 +124,8 @@ define(['jquery'], function ($) {
 
               itemList.push(item);
             }
-
-            dto.JOIN_CONDITION = itemList;
+            var join_list = itemList.concat(ref_table_deleteIds);
+            dto.JOIN_CONDITION = join_list;
 
              data = display_dataTable.rows().data();
              inputs = display_dataTable.$('input, select');
@@ -140,7 +140,7 @@ define(['jquery'], function ($) {
               itemList.push(item);
             }
 
-            var list = itemList.concat(ref_table_deleteIds,ref_display_table_deleteIds);
+            var list = itemList.concat(ref_display_table_deleteIds);
             
             dto.DISPLAY_FIELD = list;
             ref_table_deleteIds.length = 0;
