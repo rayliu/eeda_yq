@@ -56,13 +56,19 @@ define(['jquery', 'sco'], function ($) {
             }
             drop_list.css({ 
                 position: "absolute",
-                left: inputField.width()-150+"px", 
-                top: inputField.height()+82+"px",
+                left: inputField.offset().left+"px", 
+                top: inputField.height()+72+"px",
                 width: inputField.width()+20+"px"
             });
             span_drop.addClass('open');
             //eeda.hidePopList();
-            drop_list.css('display', 'block');
+            drop_list.closest('.dataTables_scrollBody').css({
+                'overflow':'visible'
+            });
+            drop_list.css({
+                'display':'block',
+                'z-index': 999
+            });
             
         },'json');
     });
