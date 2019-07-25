@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/css/bootstrap/bootstrap.min.3.3.6.css" rel="stylesheet">
+        <link href="/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+        <style>
+            .badge {
+                padding: 6px 15px;
+                background-color: white;
+                color: #777;
+            }
+            .badge.active{
+                background-color: #337ab7;
+                color: white;
+            }
+            .album-img {
+                border: 1px solid #e0e0e0;
+            }
+            .album-img img {
+                display: block;
+                width: 100%;
+            }
+            img {
+                border: 0;
+                vertical-align: middle;
+            }
+            .album-title {
+                display: block;
+                text-align: left;
+                padding: 7px 5px;
+                line-height: 18px;
+                color: #555;
+                text-decoration: none;
+                font-size: 12px;
+                border: solid 1px #e0e0e0;
+                border-top: 0;
+                background-color: white;
+            }
+            .c-999, .c-999 a, a.c-999 {
+                color: #999;
+            }
+        </style>
+    </head>
+    <body style="background-color: #eee;">
+            <section class="row">
+                <div class="col-lg-12" style="margin-left: 20px;padding: 20px;">
+                    <a href="#"><span class="badge active" >全部</span></a>
+                    <a href="#"><span class="badge">TMS领域</span></a>
+                    <a href="#"><span class="badge" >WMS领域</span></a>
+                    <a href="#"><span class="badge" >数据可视化</span></a>
+                </div>
+            </section>
+            <section class="row">
+                <div class="col-lg-12" style="margin-left: 20px;padding: 20px;">
+
+                    <%for(var i=0;i<20;i++){%>
+                    <div class="album-item col-lg-2 col-md-2 col-sm-2" style="width: 250px; margin-bottom: 10px;">
+                        <div class="album-img">
+                            <img src="http://localhost:8080/ueditor/jsp/upload/image/20190311/bg-1.png">
+                        </div>
+                        <div class="album-title">《仙剑奇侠传》赵灵儿
+                            <span class="c-999">(20张)</span>
+                        </div>
+                    </div>
+                    <%}%>
+                </div>
+            </section>
+    </body>    
+</html>
