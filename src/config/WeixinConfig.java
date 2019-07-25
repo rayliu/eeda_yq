@@ -7,6 +7,7 @@ import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.kit.PropKit;
+import com.jfinal.template.Engine;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.wx.WeixinApiController;
@@ -43,5 +44,11 @@ public class WeixinConfig extends JFinalConfig {
         // 1.6新增的2种初始化
 //      ApiConfigKit.setAccessTokenCache(new RedisAccessTokenCache(Redis.use("weixin")));
 //      ApiConfigKit.setAccessTokenCache(new RedisAccessTokenCache("weixin"));
+    }
+
+    @Override
+    public void configEngine(Engine arg0) {
+        // TODO Auto-generated method stub
+        
     }
 }

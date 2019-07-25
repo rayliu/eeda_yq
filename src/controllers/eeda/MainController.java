@@ -33,16 +33,17 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
 
+import com.github.jieblog.plugin.shiro.core.ShiroKit;
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
+import com.jfinal.captcha.CaptchaRender;
 import com.jfinal.core.Controller;
-import com.jfinal.ext.plugin.shiro.ShiroKit;
 import com.jfinal.kit.JsonKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
-import com.jfinal.render.CaptchaRender;
+//import com.jfinal.render.CaptchaRender;
 
 import controllers.profile.LoginUserController;
 import controllers.util.EedaCommonHandler;

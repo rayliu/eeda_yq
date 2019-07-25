@@ -5,33 +5,43 @@ import java.lang.management.OperatingSystemMXBean;
 import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
-import org.beetl.ext.jfinal.BeetlRenderFactory;
+//import org.beetl.ext.jfinal.BeetlRenderFactory;
+import org.beetl.ext.jfinal3.JFinal3BeetlRenderFactory;
 import org.h2.tools.Server;
 
+import com.alibaba.druid.filter.stat.StatFilter;
+import com.github.jieblog.plugin.shiro.core.ShiroInterceptor;
+import com.github.jieblog.plugin.shiro.core.ShiroKit;
+import com.github.jieblog.plugin.shiro.core.ShiroPlugin;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
+import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.UrlSkipHandler;
-import com.jfinal.ext.plugin.shiro.ShiroInterceptor;
-import com.jfinal.ext.plugin.shiro.ShiroKit;
-import com.jfinal.ext.plugin.shiro.ShiroPlugin;
+//import com.jfinal.ext.plugin.shiro.ShiroInterceptor;
+//import com.jfinal.ext.plugin.shiro.ShiroKit;
+//import com.jfinal.ext.plugin.shiro.ShiroPlugin;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
+import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
+import com.jfinal.template.Engine;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
 import controllers.app.form.controller.AppFormController;
 import controllers.app.main.controller.AppControllerForMobile;
+import controllers.backend.api.JavaController;
 import controllers.eeda.FormController;
 import controllers.eeda.MainController;
 import controllers.eeda.ModuleController;
-import handler.UrlHanlder;
+import controllers.front.api.FrontApiController;
+import handler.UrlHandler;
 import interceptor.ActionCostInterceptor;
 import models.Location;
 import models.Office;
@@ -62,10 +72,22 @@ public class EedaConfig extends JFinalConfig {
     /**
      * 供Shiro插件使用 。
      */
-    Routes routes;
+    private Engine engine;
+//    Routes routes;
 
     C3p0Plugin cp;
     ActiveRecordPlugin arp;
+    
+    /**
+     * 运行此 main 方法可以启动项目，此main方法可以放置在任意的Class类定义中，不一定要放于此
+     *
+     * 使用本方法启动过第一次以后，会在开发工具的 debug、run config 中自动生成
+     * 一条启动配置，可对该自动生成的配置再添加额外的配置项，例如 VM argument 可配置为：
+     * -XX:PermSize=64M -XX:MaxPermSize=256M
+     */
+    public static void main(String[] args) {
+        JFinal.start("WebRoot", 8080, "/", 5);
+    }
 
     @Override
 	public void configConstant(Constants me) {
@@ -78,11 +100,17 @@ public class EedaConfig extends JFinalConfig {
         // 微信 ApiConfigKit 设为开发模式可以在开发阶段输出请求交互的 xml 与 json 数据
         ApiConfigKit.setDevMode(me.getDevMode());
 
-        BeetlRenderFactory templateFactory = new BeetlRenderFactory();
-        me.setMainRenderFactory(templateFactory);
-
+        //jfinal 2.2, beetl 2.2.6
+//        BeetlRenderFactory templateFactory = new BeetlRenderFactory();
+//        me.setMainRenderFactory(templateFactory);
+        
+        //jfinal 3.1, beetl 2.9.6
+        JFinal3BeetlRenderFactory rf = new JFinal3BeetlRenderFactory();
+        rf.config();
+        me.setRenderFactory(rf);
+        
         // 注册后，可以使beetl html中使用shiro tag
-        BeetlRenderFactory.groupTemplate.registerFunctionPackage("shiro", new ShiroExt());
+        //rf.groupTemplate.registerFunctionPackage("shiro", new ShiroExt());
 
         //没有权限时跳转到login
         me.setErrorView(401, "/eeda/noLogin.html");//401 authenticate err
@@ -119,7 +147,7 @@ public class EedaConfig extends JFinalConfig {
 
     @Override
 	public void configRoute(Routes me) {
-        this.routes = me;
+//        this.routes = me;
 
         //TODO: 为之后去掉 yh做准备
         String contentPath="/";//"yh";
@@ -137,6 +165,9 @@ public class EedaConfig extends JFinalConfig {
 		// yh project controller
         me.add("/", MainController.class, contentPath);
         me.add("/module", ModuleController.class, contentPath);
+        me.add("/webadmin/java", JavaController.class, contentPath);
+        me.add("/eeda_api", FrontApiController.class, contentPath);
+        
        // me.add("/apidoc", controllers.eeda.DocController.class);基础数据
         
         me.add("/form", FormController.class, contentPath);
@@ -187,16 +218,16 @@ public class EedaConfig extends JFinalConfig {
 	public void configPlugin(Plugins me) {
         me.add(new EhCachePlugin());
         // 加载Shiro插件, for backend notation, not for UI
-    	me.add(new ShiroPlugin(routes));
+        me.add(new ShiroPlugin(engine));
     	
-    	//job启动
+        //job启动
 //    	SchedulerPlugin sp = new SchedulerPlugin("import_job.properties");
 //        me.add(sp);
     	
         mailUser = getProperty("mail_user_name");
         mailPwd = getProperty("mail_pwd");
         // H2 or mysql
-        initDBconnector();
+        DruidPlugin cp = createDbPlugin(me);
 
         me.add(cp);
 
@@ -211,6 +242,22 @@ public class EedaConfig extends JFinalConfig {
 
         setTableMapping();
         
+    }
+    
+    private DruidPlugin createDbPlugin(Plugins me) {
+        // 配置 druid 数据库连接池插件
+        DruidPlugin druidPlugin = new DruidPlugin(PropKit.get("dbUrl"),
+                PropKit.get("username"), PropKit.get("pwd").trim());
+        // 1.统计信息插件
+        StatFilter statFilter = new StatFilter();
+        statFilter.setMergeSql(true);
+        statFilter.setLogSlowSql(true);
+        // 慢查询目前设置为5s,随着优化一步步进行慢慢更改
+        statFilter.setSlowSqlMillis(5000);
+        druidPlugin.addFilter(statFilter);
+//        druidPlugin.setConnectionInitSql("set names utf8mb4");
+        me.add(druidPlugin);
+        return druidPlugin;
     }
 
     private void setTableMapping() {
@@ -305,9 +352,13 @@ public class EedaConfig extends JFinalConfig {
 
     @Override
 	public void configHandler(Handlers me) {
-        me.add(new UrlSkipHandler("/apidoc.*", false));
-        me.add(new UrlHanlder());
-        
+//        me.add(new UrlSkipHandler("/apidoc.*", false));
+        me.add(new UrlHandler());
+    }
+
+    @Override
+    public void configEngine(Engine me) {
+        this.engine = me;
     }
     
 }

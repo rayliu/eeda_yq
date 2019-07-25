@@ -1,0 +1,73 @@
+﻿<%layout("/eeda/theme/h-ui/layout.html"){%>
+	<section class="Hui-article-box">
+		<nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a> 
+			<span class="c-999 en">&gt;</span>
+			<span class="c-666">API</span> 
+			<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<div class="Hui-article">
+			<article class="cl pd-20" style="padding-top:10px;">
+				<div id="btn_tool_bar" class="cl pd-5 bg-1 bk-gray mt-20 mb-20">
+					<span class="l">
+						<a href="/webadmin/java/edit" class="btn btn-success layui-btn" >新增</a>
+					</span>
+				</div>
+				<%include("/eeda/component/form/detailTableWithFoot.html", 
+				{
+					id:'eeda_table',
+					headers:[
+						{name:'title',display_name:'名称'},
+						{name:'url',display_name:'URL'},
+						{name:'type',display_name:'类型'},
+						{name:'schedule',display_name:'定时格式'},
+						{name:'code_length',display_name:'代码长度'},
+						{name:'creator_name',display_name:'创建人'},
+						{name:'create_time',display_name:'创建时间'},
+						{name:'',display_name:'操作'}
+					],
+					form_type:'fixed'
+				}){} %>
+			</article>
+		</div>
+		<footer class="footer" style="position: absolute;bottom:0px;width:100%;">
+			<p>本系统由<a href="" target="_blank" title="创诚易达信息技术有限公司">创诚易达信息技术有限公司</a>提供技术支持</p>
+		</footer>
+	</section>
+	
+
+<section style="padding: 15px; display: none;">
+	<span class="layui-breadcrumb">
+		<a href="/webadmin">首页</a>
+		<a href="javascript:void(0)">代码管理</a>
+		<a href="javascript:void(0)"><cite>api列表</cite></a>
+	</span>
+	<br>
+	<br>
+	<div class="layui-form">
+		<div class="layui-col-md8">
+			<div class="layui-input-inline layui-col-md2">
+					<select lay-filter="chooseSelect" id="chooseSelect">
+		            	<option value="title">名称</option>
+	            	</select>
+				</div>
+			<div class="layui-input-inline layui-col-md3" >
+				<input type="text" name="title" id="title" autocomplete="off" class="layui-input" placeholder="请输入名称">
+			</div>
+			<div class="layui-col-md3">
+					<input type="button" id="searchBtn" class="layui-btn" value="搜索"/>
+					<a href="/webadmin/java/edit" class="layui-btn">新增</a>
+			</div>
+		</div>
+	</div>
+	<div class="layui-row">
+		<table class="layui-hide" id="jfa_table" lay-filter="test"></table>
+	</div>
+</section>
+
+<%}%>
+<script>
+	requirejs(['eeda_common'], function (common) {
+		requirejs(['app/profile/api/list']);
+	});
+</script>
+

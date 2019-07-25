@@ -627,14 +627,14 @@ public class ModuleController extends Controller {
         Document doc = Jsoup.parseBodyFragment(tempalteContent);
         Element body = doc.body();
         Elements tds = body.getElementsByTag("td");
-        for (Element td : tds) {
-            String tdHtml = td.html();
-            if(tdHtml.indexOf("<a")>=0){
-                td.html(tdHtml);
-            }else{
-                td.html(td.text());
-            }
-        }
+//        for (Element td : tds) {
+//            String tdHtml = td.html();
+//            if(tdHtml.indexOf("<a")>=0){
+//                td.html(tdHtml);
+//            }else{
+//                td.html(td.text());
+//            }
+//        }
         
         tempalteContent = doc.body().html();
         if (formRec != null) {

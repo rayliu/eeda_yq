@@ -1,0 +1,142 @@
+﻿<%layout("/eeda/theme/h-ui/layout.html"){%>
+<link rel="stylesheet" type="text/css" href="/js/lib/codemirror-5.39.0/lib/codemirror.css" />
+<link rel="stylesheet" type="text/css" href="/js/lib/codemirror-5.39.0/theme/material.css" />
+<script src="/js/lib/codemirror-5.39.0/lib/codemirror.js"></script>
+<script src="/js/lib/codemirror-5.39.0/mode/clike/clike.js"></script>
+
+<section class="Hui-article-box">
+		<nav class="breadcrumb"><i class="Hui-iconfont"></i> <a href="/" class="maincolor">首页</a> 
+			<span class="c-999 en">&gt;</span>
+			<span><a href="/webadmin/java" class="maincolor">API管理</a></span> 
+			<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+		</nav>
+		<div class="Hui-article">
+			<article class="cl pd-20" style="padding-top:20px;">
+				<form id="orderForm" class="col-md-12">
+					<input type="hidden"  id="id" name="id" value="${order.id!}">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="row cl">
+								<label class="form-label col-xs-3">名称:</label>
+								<div class="formControls col-xs-8">
+									<input type="text" class="input-text" placeholder="" 
+									name="name" autocomplete="new-password" value="${order.name!}">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row cl">
+								<label class="form-label col-xs-3">URL:</label>
+								<div class="formControls col-xs-8">
+									<input type="text" class="input-text" placeholder="" 
+									name="url"  autocomplete="new-password" value="${order.url!}">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="row cl">
+								<label class="form-label col-xs-3">代码类型:</label>
+								<div class="formControls col-xs-8">
+										<span class="select-box">
+											<select class="select" size="1" name="code_type">
+												<option value="java" ${order.code_type! =="java"?'selected':''}>Java</option>
+												<option value="sql" ${order.code_type! =="sql"?'selected':''}>SQL</option>
+											</select>
+										</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 mt-10">
+							<div class="row cl">
+								<label class="form-label col-xs-3">类型:</label>
+								<div class="formControls col-xs-8">
+										<span class="select-box">
+											<select class="select" size="1" name="type">
+												<option value="java" ${order.code_type! =="action"?'selected':''}>Action-通过URL访问触发</option>
+												<option value="sql" ${order.code_type! =="job"?'selected':''}>定时器-定时触发</option>
+												<option value="sql" ${order.code_type! =="interceptor"?'selected':''}>Interceptor-拦截器</option>
+											</select>
+										</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 mt-10">
+							<div class="row cl">
+								<label class="form-label col-xs-3">定时:</label>
+								<div class="formControls col-xs-8">
+									<input type="text" class="input-text" placeholder="请输入格式 * * * * * [分 时 日 月 年]" 
+									name="schedule"  autocomplete="new-password" value="${order.schedule!}">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 mt-10">
+							<div class="row cl">
+								<div class="formControls col-xs-11">
+										<textarea id="editor" name="codes" style="display: none;"
+										placeholder="请输入代码" class="layui-textarea">${order.codes!}</textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+				<div class="row">
+					<div class="col-md-12 ml-20 mt-20">
+						<button class="btn btn-success" type="button" id="save_btn">保存</button>
+					</div>
+				</div>
+				
+			</article>
+		</div>
+	
+		<footer class="footer" style="position: absolute;bottom:0px;width:100%;">
+			<p>本后台系统由<a href="http://www.eeda123.com" target="_blank" title="创诚易达信息技术有限公司">创诚易达信息技术有限公司</a>提供前端技术支持</p>
+		</footer>
+	</section>
+<%}%>
+<script>
+		requirejs(['eeda_common'], function (common) {
+			requirejs(['app/profile/api/edit']);
+		});
+</script>
+<!-- script>
+//Demo
+layui.use('form', function(){
+	var form = layui.form;
+	
+	var myTextarea = document.getElementById('editor');
+	var codeMirrorEditor = CodeMirror.fromTextArea(myTextarea, {
+		mode: "text/x-java",
+		lineNumbers: true,
+		matchBrackets: true, 
+		theme: "material"
+	});
+
+	//监听提交
+	form.on('submit(orderForm)', function(data){
+		var order = {}
+		$("#orderForm input:enabled,select").each(function(){
+			var type = $(this).attr("name");
+			if(type.length>0){
+				order[type] = $(this).val();
+			}
+		});
+		order["codes"] = codeMirrorEditor.getValue();
+		$.post("/webadmin/java/save",{params:JSON.stringify(order)},function(data){
+			if(data.result){
+				layer.msg('保存成功', {icon: 1});
+				var stateObj = { foo: "create" };
+                history.pushState(stateObj, "edit", "edit?id="+data.id);
+				$("input[name='creator']").val(data.creator);
+				$("input[name='creator_name']").val(data.create_name);
+				$("input[name='create_time']").val(data.result.create_time);
+			}else{
+				layer.msg('保存失败', {icon: 2});
+			}
+		});
+		return false;
+	});
+	
+});
+</script-->
