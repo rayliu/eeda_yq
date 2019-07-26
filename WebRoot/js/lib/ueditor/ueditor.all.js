@@ -9967,7 +9967,7 @@ var LocalStorage = UE.LocalStorage = (function () {
 UE.plugins['defaultfilter'] = function () {
     var me = this;
     me.setOpt({
-        'allowDivTransToP':true,
+        'allowDivTransToP':false,
         'disabledTableInTable':true
     });
     //默认的过滤处理
@@ -9995,16 +9995,16 @@ UE.plugins['defaultfilter'] = function () {
                     return;
                 }
                 switch (node.tagName) {
-                    case 'style':
-                    case 'script':
-                        node.setAttr({
-                            cdata_tag: node.tagName,
-                            cdata_data: (node.innerHTML() || ''),
-                            '_ue_custom_node_':'true'
-                        });
-                        node.tagName = 'div';
-                        node.innerHTML('');
-                        break;
+                    // case 'style':
+                    // case 'script':
+                    //     node.setAttr({
+                    //         cdata_tag: node.tagName,
+                    //         cdata_data: (node.innerHTML() || ''),
+                    //         '_ue_custom_node_':'true'
+                    //     });
+                    //     node.tagName = 'div';
+                    //     node.innerHTML('');
+                    //     break;
                     case 'a':
                         if (val = node.getAttr('href')) {
                             node.setAttr('_href', val)

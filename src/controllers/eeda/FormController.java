@@ -910,7 +910,9 @@ public class FormController extends Controller {
         String form_name = formRec.getStr("name");
         String template_content = formRec.getStr("template_content");
         TemplateService ts = TemplateService.getInstance();
-        template_content = ts.processTab(template_content);
+        Map<String, String> contentMap = ts.processTab(template_content);
+        template_content = contentMap.get("body");
+        String template_script = contentMap.get("head");
         template_content = ts.processCharts(template_content, officeId);
 
         for (Record fieldRec : fieldList) {
@@ -1032,6 +1034,8 @@ public class FormController extends Controller {
         setAttr("form_define", JsonKit.toJson(formRec));
         setAttr("order_id", order_id);
         setAttr("form_content", template_content);
+        setAttr("form_head", template_script);
+        
         setAttr("btnList", getFormBtns(form_id, "edit"));
         setAttr("charts", getFormCharts(form_id));
     }

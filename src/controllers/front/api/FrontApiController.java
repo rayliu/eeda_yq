@@ -52,8 +52,10 @@ public class FrontApiController extends Controller {
         //调用beanshell进行计算
         Interpreter interpreter = new Interpreter();
         try {
+            
             interpreter.setStrictJava(true);//严格使用java代码格式
             //设置输入参数：
+            interpreter.set("Db", Db.use());
             interpreter.set("cl", this);
             interpreter.set("ctrl", this);
             interpreter.eval(evalString);

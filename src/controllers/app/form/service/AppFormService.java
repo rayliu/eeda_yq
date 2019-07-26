@@ -41,7 +41,9 @@ public class AppFormService {
         String form_name = formRec.getStr("name");
         String template_content = formRec.getStr("app_template");
         TemplateService ts = TemplateService.getInstance();
-        template_content = ts.processTab(template_content);
+        Map<String, String> contentMap = ts.processTab(template_content);
+        template_content = contentMap.get("body");
+        String template_script = contentMap.get("head");
         template_content = ts.processCharts(template_content, officeId);
 
         for (Record fieldRec : fieldList) {
