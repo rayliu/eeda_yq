@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="/css/bootstrap/bootstrap.min.3.3.6.css" rel="stylesheet">
         <link href="/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+        <script src="/js/lib/require2.3.2.min.js"></script>
+        <%include("/eeda/component/form/commonJs.html",{}){} %>
         <style>
             .badge {
                 padding: 6px 15px;
@@ -41,6 +43,9 @@
             .c-999, .c-999 a, a.c-999 {
                 color: #999;
             }
+            .r{
+                float: right;
+            }
         </style>
     </head>
     <body style="background-color: #eee;">
@@ -54,18 +59,24 @@
             </section>
             <section class="row">
                 <div class="col-lg-12" style="margin-left: 20px;padding: 20px;">
-
-                    <%for(var i=0;i<20;i++){%>
+                    <input type="hidden" id="module_id" value="${module_id!}">
+                    <%for(item in list){%>
                     <div class="album-item col-lg-2 col-md-2 col-sm-2" style="width: 250px; margin-bottom: 10px;">
                         <div class="album-img">
                             <img src="http://localhost:8080/ueditor/jsp/upload/image/20190311/bg-3.png">
                         </div>
-                        <div class="album-title">
-                            <button class="btn btn-primary btn-xs">使用此模板</button>
+                        <div class="album-title">${item.title!''}
+                            <button class="btn btn-primary btn-xs r copy_btn" module_id="${item.module_id!''}">使用此模板</button>
                         </div>
                     </div>
                     <%}%>
                 </div>
             </section>
-    </body>    
+    </body>
+    <script>
+        requirejs(['eeda_common'], function () {
+            requirejs(['app/profile/market/main']);
+        }); 
+    </script>
+    
 </html>

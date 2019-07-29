@@ -1,20 +1,11 @@
 package controllers.eeda;
 
-import interceptor.EedaMenuInterceptor;
-import interceptor.SetAttrLoginUserInterceptor;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import models.Permission;
-import models.RolePermission;
-import models.UserLogin;
-import models.eeda.FormBtn;
-import models.eeda.profile.Module;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -38,11 +29,19 @@ import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
+import controllers.backend.module.CopyModuleService;
 import controllers.module.ModuleService;
 import controllers.module.custom_search.CustomSearchService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
 import controllers.util.PingYinUtil;
+import interceptor.EedaMenuInterceptor;
+import interceptor.SetAttrLoginUserInterceptor;
+import models.Permission;
+import models.RolePermission;
+import models.UserLogin;
+import models.eeda.FormBtn;
+import models.eeda.profile.Module;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -1688,6 +1687,20 @@ public class ModuleController extends Controller {
     }
     
     public void moduleMarket() {
+        String moduleId = getPara("module_id");
+        List<Record> list = Db.find("select * from eeda_module_market where eeda_delete='N'");
+        setAttr("list", list);
+        setAttr("module_id", moduleId);
         render("/profile/moduleMarket/moduleMarket.html");
+    }
+    
+    @Before(Tx.class)
+    public void copyModule() {
+        String fromModuleId = getPara("from_module_id");
+        String toModuleId = getPara("to_module_id");
+        
+        CopyModuleService ms = new CopyModuleService(this);
+        ms.copyModule(fromModuleId, toModuleId);
+        renderText("OK");
     }
 }

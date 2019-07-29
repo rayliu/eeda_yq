@@ -438,6 +438,8 @@ public class ModuleService {
 
     public void saveFieldRef(Map<String, ?> field, Long field_id) {
         Map<String, ?> fieldTypeObj = (Map<String, ?>) field.get("REF");
+        if(fieldTypeObj==null)
+            return;
         String refId = fieldTypeObj.get("id".toUpperCase()).toString();
         String ref_form = (String) fieldTypeObj.get("ref_form".toUpperCase());
         String ref_field = (String) fieldTypeObj.get("ref_field".toUpperCase());
@@ -491,6 +493,8 @@ public class ModuleService {
         Long fieldId = field_id;
 
         Map<String, ?> fieldTypeObj = (Map<String, ?>) field.get("auto_no".toUpperCase());
+        if(fieldTypeObj==null)
+            return;
         String checkId = String.valueOf(fieldTypeObj.get("ID"));
         String is_gen_before_save = (String) fieldTypeObj.get("is_gen_before_save".toUpperCase());
 
@@ -616,6 +620,8 @@ public class ModuleService {
         Long fieldId = field_id;
 
         Map<String, ?> fieldTypeObj = (Map<String, ?>) field.get("check_box".toUpperCase());
+        if(fieldTypeObj==null)
+            return;
         String checkId = String.valueOf(fieldTypeObj.get("ID"));
         String is_single_check = (String) fieldTypeObj.get("is_single_check".toUpperCase());
         String line_display_num = (String) fieldTypeObj.get("line_display_numbers".toUpperCase());
