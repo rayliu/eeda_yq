@@ -59,18 +59,22 @@ public class TemplateService {
                 for (Element td : row1_tds) {
                     if (StrKit.isBlank(td.text()))
                         continue;
-                    String tabName = td.text().split("-")[1].replace("}", "");
-                    tabString += "<span>" + tabName + "</span>";
+                    int tdindex = td.text().indexOf("#{选项卡-");
+                    if(td.text().indexOf("#{选项卡-")!=-1) {
+                    	String tabName = td.text().split("-")[1].replace("}", "");
+                    	tabString += "<span>" + tabName + "</span>";
+                    }
                 }
                 tabString += "</div>";
 
                 Element row2 = table.select("tr:eq(1)").first();
-                Elements row2_tds = row2.select("td");
-                for (Element td : row2_tds) {
-                    String tabContent = td.text();
-                    tabString += "<div class='tabCon'>" + tabContent + "</div>";
+                if(row2 != null) {
+	                Elements row2_tds = row2.select("td");
+	                for (Element td : row2_tds) {
+                		String tabContent = td.text();
+                    	tabString += "<div class='tabCon'>" + tabContent + "</div>";
+	                }
                 }
-
                 table.remove();
             }
             tabString += "</div>";
