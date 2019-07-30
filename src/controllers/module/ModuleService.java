@@ -560,6 +560,7 @@ public class ModuleService {
 
         List<Map<String, ?>> join_condition_list = (ArrayList<Map<String, ?>>) fieldTypeObj
                 .get("join_condition".toUpperCase());
+        if(join_condition_list==null) return ;
         for (Map<String, ?> condition : join_condition_list) {
             String id = condition.get("id".toUpperCase()).toString();
             ;
