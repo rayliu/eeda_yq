@@ -1702,7 +1702,13 @@ public class ModuleController extends Controller {
         
         CopyModuleService ms = new CopyModuleService(this);
         ms.copyModule(fromModuleId, toModuleId);
-        renderText("OK");
+        
+        //copy完之后，调用save，以更新表结构
+        Record formRec = getForm(toModuleId);
+        Long form_id = formRec.getLong("id");
+        buildFormTable(form_id);
+        
+        renderJson(formRec);
     }
     
     @Before(Tx.class)

@@ -23,10 +23,14 @@ public class CopyModuleService {
            fromFormId = fromFormRec.getLong("id");
            if(toFormRec==null) {//没有form，新建
                fromFormId=fromFormRec.getLong("id");
-               fromFormRec.remove("id").set("module_id", toModuleId);
+               String formName = fromFormRec.getStr("name")+"_拷贝";
+               Db.update("update eeda_modules set module_name='"+formName+"' where id=?", toModuleId);
+               fromFormRec.remove("id").set("module_id", toModuleId).set("name", formName);
                Db.save("eeda_form_define", fromFormRec);
            }else {//有form，update
-               fromFormRec.set("id", toFormRec.getLong("id")).set("module_id", toModuleId);
+               String formName = fromFormRec.getStr("name")+"_拷贝";
+               Db.update("update eeda_modules set module_name='"+formName+"' where id=?", toModuleId);
+               fromFormRec.set("id", toFormRec.getLong("id")).set("module_id", toModuleId).set("name", formName);
                Db.update("eeda_form_define", fromFormRec);
            }
        }
@@ -57,6 +61,8 @@ public class CopyModuleService {
            btnRec.remove("id").set("form_id", toFormId);
            Db.save("eeda_form_btn", btnRec);
        }
+       
+       
     }
     
     //复制复选框选项
