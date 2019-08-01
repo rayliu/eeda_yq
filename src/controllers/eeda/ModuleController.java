@@ -30,6 +30,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.backend.module.CopyModuleService;
+import controllers.backend.module.CopySystemService;
 import controllers.module.ModuleService;
 import controllers.module.custom_search.CustomSearchService;
 import controllers.profile.LoginUserController;
@@ -1072,8 +1073,8 @@ public class ModuleController extends Controller {
                 }
             } else {
                 if (oldFieldRec != null) {
-                    if("varchar(255)".equals(oldFieldRec.getStr("TYPE")))
-                        continue;
+//                    if("varchar(255)".equals(oldFieldRec.getStr("TYPE")))
+//                        continue;
                     createField = "ALTER TABLE `" + tableName + "` "
                             + "CHANGE COLUMN `" + oldFieldRec.getStr("field")
                             + "` `" + fieldName
@@ -1688,7 +1689,7 @@ public class ModuleController extends Controller {
     
     public void moduleMarket() {
         String moduleId = getPara("module_id");
-        List<Record> list = Db.find("select * from eeda_module_market where eeda_delete='N'");
+        List<Record> list = Db.find("select * from eeda_module_market where eeda_delete='N' and type='module'");
         setAttr("list", list);
         setAttr("module_id", moduleId);
         render("/profile/moduleMarket/moduleMarket.html");
@@ -1701,6 +1702,17 @@ public class ModuleController extends Controller {
         
         CopyModuleService ms = new CopyModuleService(this);
         ms.copyModule(fromModuleId, toModuleId);
+        renderText("OK");
+    }
+    
+    @Before(Tx.class)
+    public void copySystem() {
+        String fromOfficeId = getPara("from_office_id");
+        UserLogin user= LoginUserController.getLoginUser(this);
+        Long toOfficeId = user.getLong("office_id");
+        
+        CopySystemService ms = new CopySystemService(this);
+        ms.copySystem(fromOfficeId, toOfficeId.toString());
         renderText("OK");
     }
 }
