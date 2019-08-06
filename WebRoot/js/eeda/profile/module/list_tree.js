@@ -5,7 +5,6 @@ define(['jquery', 'zTree', './fields', './btns', './btns/app_btns', './events',
         ,customSearchCont, chartsCont) {
 
     // $(document).ready(function() {
-    	
         var module_obj;
 
         //---------------tree handle
@@ -354,12 +353,15 @@ define(['jquery', 'zTree', './fields', './btns', './btns/app_btns', './events',
         	        zNodes.push(node);
         	        //console.log(node);
                 }
+                $("#loading_icon").remove();
                 $.fn.zTree.init($("#moduleTree"), setting, zNodes);
                 layer.close(layer_index); 
                 $('html, body').animate({scrollTop:0});
             },'json');
         };
         
+        
+
         viewModule();
         
         $('#addModuleBtn').click(function function_name (argument) {
