@@ -333,6 +333,9 @@ public class FormService {
             	trSb = new StringBuffer().append("<tr>");
             	for(Record field : fieldList){
             		String columnName = "f"+field.getLong("id")+"_"+field.getStr("field_name");
+            		if(columnName.equals(field_to_name)) {//如果是主从表关联字段就跳过不显示
+            			continue;
+            		}
             		trSb.append("<td>"+data.get(columnName)+"</td>");
             	}
             	trSb.append("</tr>");
