@@ -64,7 +64,8 @@ define(['jquery'], function ($) {
             	});
         		if(flag){
         			return;
-        		}
+            }
+            $('.btn_property_div').show();
         		current_tr = this;
         		$(current_tr).attr("elect_flag","Y");//将当前选中tr的elect_flag设为Y，表示当前行被选中，可以对当前行编辑
                 $('#list_btns_table tbody tr').css('background-color','#fff');
@@ -128,6 +129,16 @@ define(['jquery'], function ($) {
         	}
         });
         
+        //取消修改
+        $('#cancelListBtn').click(function(){
+          $(current_tr).attr("elect_flag","N");
+          $(current_tr).css('background-color','#fff');
+          $("#fields_property input[type='text']").val("");
+          $("#fields_property input[type='checkbox']").prop("checked",false);
+          fields_property_change='N';
+          $('.btn_property_div').hide();
+        });
+
         //回写到table
         $('#comfirmListBtn').click(function(){
         	update_flag = "Y";
@@ -144,7 +155,10 @@ define(['jquery'], function ($) {
             $(current_tr).attr("elect_flag","N");
             $(current_tr).css('background-color','#fff');
             $("#fields_property input[type='text']").val("");
+            $('.btn_property_div').hide();
         });
+
+
 
         //-------------------edit
         var edit_dataTable = eeda.dt({
@@ -210,7 +224,8 @@ define(['jquery'], function ($) {
             	});
         		if(flag){
         			return;
-        		}
+            }
+            $('.btn_property_div').show();
 	            current_tr = this;
 	            $(current_tr).attr("elect_flag","Y");//将当前选中tr的elect_flag设为Y，表示当前行被选中，可以对当前行编辑
 	            $('#edit_btns_table tbody tr').css('background-color','#fff');
@@ -244,6 +259,16 @@ define(['jquery'], function ($) {
         	}
         });
         
+        //取消修改
+        $('#cancelEditBtn').click(function(){
+          $(current_tr).attr("elect_flag","N");
+          $(current_tr).css('background-color','#fff');
+          $("#fields_property input[type='text']").val("");
+          $("#fields_property input[type='checkbox']").prop("checked",false);
+          fields_property_change='N';
+          $('.btn_property_div').hide();
+        });
+
         //回写到table
         $('#comfirmEditBtn').click(function(){
         	update_flag = "Y";
@@ -260,6 +285,7 @@ define(['jquery'], function ($) {
             $(current_tr).attr("elect_flag","N");
             $(current_tr).css('background-color','#fff');
             $("#fields_property input[type='text']").val("");
+            $('.btn_property_div').hide();
         });
         
         //刷新table

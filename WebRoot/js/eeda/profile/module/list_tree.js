@@ -330,6 +330,8 @@ define(['jquery', 'zTree', './fields', './btns', './btns/app_btns', './events',
                 chartsCont.display(module_obj.CHARTS);
                 //回显完毕，关掉loading
                 layer.close(layer_index); 
+                //隐藏工具栏按钮的属性编辑块
+                $('.btn_property_div').hide();
             }, 'json');
         }
         //---------------------------  tree handler end -------------
