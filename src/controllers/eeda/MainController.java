@@ -423,6 +423,10 @@ public class MainController extends Controller {
     @Before({EedaMenuInterceptor.class, SetAttrLoginUserInterceptor.class})
     public void welcome() {
         UserLogin user = LoginUserController.getLoginUser(this);
+        
+        List<Record> list = Db.find("select * from eeda_module_market where type='sys' and is_show='Y'");
+        setAttr("itemList", list);
+        
         Record rec = Db.findFirst("select * from eeda_survey where user_id=?", user.getLong("id"));
         if(rec!=null) {
             Record re = Db.findFirst(

@@ -90,7 +90,7 @@ public class FormClickService {
                 String condition = DbUtils.buildConditions(cont.getParaMap());
                 if("search_form".equals(define.get("type"))){
                     //自定义查询
-                    String lieNameStr = FormController.getLieNameStr(form_id, office_id);
+                    String lieNameStr = FormController.getLieNameStr(form_id, office_id, false);
                     String biaoNameStr = "";//getBiaoNameStr(form_id);//join
                     String joinStr = FormController.getJoinStr(form_id, office_id);//left join
                     String filterStr = FormController.getFilterStr(form_id);

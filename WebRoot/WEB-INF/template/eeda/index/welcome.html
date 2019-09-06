@@ -1,5 +1,5 @@
 <%layout("/eeda/theme/h-ui/layout_no_left_menu.html"){%>
-    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_773173_qbig7yrk05.css" />
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_1161848_45cvwkhtilg.css" />
     
     <style>
         .cases-list .item-box {
@@ -8,18 +8,34 @@
             margin-top: 20px;
         }
         .cases-list .pic-box{
-            width: 94px;
-            height: 94px;
+            padding-top: 20px;
+            padding: 10px;
+            width: 120px;
+            height: 120px;
             border:#5a98de solid 1px;
             border-radius: 4px;
         }
+
+        .cases-list .pic-box.disable{
+            padding: 10px;
+            width: 120px;
+            height: 120px;
+            border:#eee solid 1px;
+            color: #ccc;
+            border-radius: 4px;
+        }
+        .cases-list .pic-box.disable .iconfont{
+            color: #ccc;
+        }
+
+        
         .cases-list .pic-box.selected{
             background-color:lightsteelblue;
         }
         .cases-list .pic-box i{
             color: #5a98de;
         }
-        .cases-list .pic-box:hover{
+        .cases-list .pic-box:not(.disable):hover{
             cursor: pointer;
             background-color:lightsteelblue;
             border:#5a98de solid 1px;
@@ -54,23 +70,46 @@
     </style>
     <section class="container">
         <div class="row mt-20 text-c">
-            <H1>您的系统现在空空如也，现在开始设计您的专属系统吧</H1>
+            <H1>感谢您选择易得SAAS极速平台，从现在开始帮您解决管理问题</H1>
+            <H3>我们已为您准备了一些官方应用系统模板，请选择一个快速开始</H3>
         </div>
         <div class="row clearfix cases-list clearfix">
-            <div class="item col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
-            <div class="item col-xs-12 col-sm-6 col-md-4 col-lg-6">
-                
+            <div class="item col-xs-12 col-sm-6 col-md-4 col-lg-3"></div><!-- 左栏-->
+            <div class="mt-20 item col-xs-12 col-sm-6 col-md-4 col-lg-6"><!-- 中栏-->
+                <%for(item in itemList){%>
+                    <div class="item col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="item-box">
+                            <div class="text-c pic-box ${item.is_active=='N'?'disable'}" target_sys="${item.ref_id!''}">
+                                <div class="mt-10"><i class="iconfont ${item.icon_class!''}" style="font-size: 38px;"></i></div>
+                                <div>
+                                    ${item.title!''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <%}%>
+                <div class="item col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="item-box">
+                        <div class="text-c pic-box" target_sys="blank">
+                            <div class="mt-10"><i class="iconfont iconjia" style="font-size: 38px;"></i></div>
+                            <div>
+                                从空白模板开始
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="item col-xs-12 col-sm-6 col-md-4 col-lg-3"></div>
+            <div class="item col-xs-12 col-sm-6 col-md-4 col-lg-3"></div><!-- 右栏-->
         </div>
+        
         <div class="row mt-50 text-c">
-                <a id="nextBtn" class="btn btn-primary radius" href="/module" target="_blank">前往后台设置</a>
+                <a id="nextBtn" class="btn btn-primary radius" href="#">开 始</a>
         </div>
     </section>
 
     <%}%>
     <script>
-        requirejs(['/js/eeda/eeda-common.js'], function (common) {
+        requirejs(['/js/eeda/eeda-common.js','app/welcome/main'], function (common) {
             
         });
     </script>

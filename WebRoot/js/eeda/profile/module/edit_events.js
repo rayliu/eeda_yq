@@ -225,7 +225,7 @@ define(['jquery', 'zTree', './events/event_formular_pop', './events/edit/type_se
                     $('#edit_event_action').val(treeNode.type);
                 }else if(treeNode.type == 'page_btn' || treeNode.type == 'btn' ){
                     var newNodes = zTree.addNodes(treeNode, {btn_id: treeNode.id, parent_id: treeNode.tId, 
-                        isParent:false, name:nodeName, EVENT_ACTION: treeNode.type});
+                        isParent:false, name:nodeName, EVENT_ACTION: 'click'});
                     currentNode=newNodes[0];
                     zTree.selectNode(currentNode);
                     $('#edit_events_property').show();

@@ -1,121 +1,41 @@
 define(['jquery'], 
   function ($) {
-        var dataTable = eeda.dt({
-          id: 'custom_cols_table',
-          paging: false,
-          lengthChange: false,
-          columns: [
-              { "data": "ID", "width": "30px",
-                  "render": function ( data, type, full, meta ) {
-                    if(!data){
-                      data='';
-                    }
-                    return '<button type="button" class="btn table_btn btn-xs delete_field" >'+
-                          '<i class="fa fa-trash-o"></i> 删除</button>'
-                          +'<input name="id" type="hidden" value="'+data+'">';
-                  }
-              },
-              { "data": "FIELD_NAME",
-                "render": function ( data, type, full, meta ) {
-                  if(!data){
-                      data='';
-                    }
-                  return '<input name="field_name" value="'+data+'">';
-                }
-              }, 
-              { "data": "EXPRESSION",
-                "render": function ( data, type, full, meta ) {
-                  if(!data){
-                      data='';
-                    }
-                  return '<input name="expression" value="'+data+'">';
-                }
-              }, 
-              { "data": "SORT",
-                "render": function ( data, type, full, meta ) {
-                  if(!data){
-                      data='';
-                  }
-                  var opt1 = '<option value=""></option>';
-                  var opt2 = '<option value="desc">降序</option>';
-                  var opt3 = '<option value="asc">升序</option>';
-                  if(data==''){
-                    opt1 = '<option value="" selected></option>';
-                  }
-                  if(data=='desc'){
-                    opt2 = '<option value="desc" selected>降序</option>';
-                  }
-                  if(data=='asc'){
-                      opt3 = '<option value="asc" selected>升序/option>';
-                  }
-                  return '<select name="sort_flag" class="form-control" style="width:100%">'
-                          +opt1
-                          +opt2
-                          +opt3
-                          +'</select>';
-                }
-              }, 
-              { "data": "HIDDEN_FLAG",
-                "render": function ( data, type, full, meta ) {
-                  if(!data){
-                      data='';
-                  }
-                  var opt1 = '<option value="N">否</option>';
-                  var opt2 = '<option value="Y">是</option>';  
-                  if(data=='N'){
-                    opt1 = '<option value="N" selected>否</option>';
-                  }
-                  if(data=='Y'){
-                      opt2 = '<option value="Y" selected>是</option>';
-                  }
-                  return '<select name="hidden_flag" class="form-control" style="width:100%">'
-                          +opt1
-                          +opt2
-                          +'</select>';
-                }
-              },
-              { "data": "WIDTH",
-                "render": function ( data, type, full, meta ) {
-                  if(!data){
-                      data='';
-                    }
-                  return '<input name="width" value="'+data+'">';
-                }
-              }
-          ]
-        });
-
         $('#add_source_col_btn').click(function(event) {
-            dataTable.row.add({}).draw();
+          var field_li = 
+              '<li style="margin-top: 5px;">'
+                  +'<a href="javascript:;" class="delete_field"><span class="glyphicon glyphicon-remove"></span></a>&ensp;'
+                  +'<input type="text" name="field_name" placeholder="列名 （表名.字段）" autocomplete="off" size="30" value="采购入库单.收货仓库">&ensp;'
+                  +'<input type="text" name="display_name" placeholder="自定义显示名" autocomplete="off">&ensp;'
+                  +'<input type="text" name="seq" placeholder="序号" autocomplete="off" size="5">'
+              +'</li>';
+          $('#display_cols_ul').append(field_li);
         });
 
         var deleteList=[];
-        $('#custom_cols_table tbody').on('click', 'button', function () {
+        $('#display_cols_ul').on('click', 'a.delete_field', function () {
           var btn = $(this);
-          var tr = btn.closest('tr');
-          var id = dataTable.row(tr).data().ID;
-
-          dataTable.row(tr).remove().draw();
-
-          if(id!=""){
+          var li = btn.closest('li');
+          var id = li.attr('id');
+          li.remove();
+          if(id){
         	  deleteList.push({ID: id.toString(), IS_DELETE:'Y'});
           }
           return false;
         });
-
+        
         var buildDetail = function(){
 
-            var data = dataTable.rows().data();
-            var inputs = dataTable.$('input, select');
+            var li_arr = $('#display_cols_ul li');
             var itemList = [];
-            for (var i = 0; i < inputs.length/6; i++) {
+            for (var i = 0; i < li_arr.length; i++) {
+              var li_el = $(li_arr[i]);
               var item={
-                ID: $(inputs[i*6]).val(),
-                FIELD_NAME: $(inputs[i*6 + 1]).val(),
-                EXPRESSION: $(inputs[i*6 + 2]).val(),
-                SORT: $(inputs[i*6 + 3]).val(),
-                HIDDEN_FLAG: $(inputs[i*6 + 4]).val(),
-                WIDTH: $(inputs[i*6 + 5]).val()
+                ID: li_el.attr('id'),
+                FIELD_NAME: li_el.children('input[name=field_name]').val(),
+                EXPRESSION: '',
+                SORT: li_el.children('input[name=seq]').val(),
+                HIDDEN_FLAG: '',
+                WIDTH: ''
               };
 
               itemList.push(item);
@@ -125,15 +45,27 @@ define(['jquery'],
 
             return list;
         };
-
+        var display = function(custom_search_cols){
+          var box = $('#display_cols_ul');
+          for(var i = 0;i<custom_search_cols.length;i++){
+            var field_li = 
+              '<li style="margin-top: 5px;" id="'+ custom_search_cols[i].ID+'">'
+                  +'<a href="javascript:;" class="delete_field"><span class="glyphicon glyphicon-remove"></span></a>&ensp;'
+                  +'<input type="text" name="field_name" placeholder="列名 （表名.字段）" autocomplete="off" size="30" value="'+ custom_search_cols[i].FIELD_NAME+'">&ensp;'
+                  +'<input type="text" name="display_name" placeholder="自定义显示名" autocomplete="off" value="'+ custom_search_cols[i].EXPRESSION+'">&ensp;'
+                  +'<input type="text" name="seq" placeholder="序号" autocomplete="off" size="5" value="'+ custom_search_cols[i].SORT+'">'
+              +'</li>';
+            box.append(field_li);
+          }
+       }
         var clear = function() {
-          dataTable.clear().draw();
+          $('#display_cols_ul').empty();
         }
 
         return {
             clear: clear,
             buildDetail: buildDetail,
-            dataTable: dataTable
+            display: display
         };
 
 });

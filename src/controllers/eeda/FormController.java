@@ -2,7 +2,6 @@ package controllers.eeda;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +11,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -41,6 +39,7 @@ import controllers.form.FormEventConfigService;
 import controllers.form.FormService;
 import controllers.form.FormTableConfigService;
 import controllers.form.FormUtil;
+import controllers.form.SearchFormService;
 import controllers.form.TemplateService;
 import controllers.profile.LoginUserController;
 import controllers.util.DbUtils;
@@ -559,7 +558,8 @@ public class FormController extends Controller {
         Record re = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
         long office_id = re.getLong("office_id");
         if("search_form".equals(re.get("type"))){
-            fieldList = getDisplayCols(form_id, office_id);
+            SearchFormService sfs = new SearchFormService(this);
+            fieldList = sfs.getDisplayCols(form_id, office_id);
         }else if("form".equals(re.get("type"))){
             fieldList = Db.find("select * from eeda_form_field where "
                     + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
@@ -581,7 +581,8 @@ public class FormController extends Controller {
         Record re = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
         long office_id = re.getLong("office_id");
         if("search_form".equals(re.get("type"))){
-            fieldList = getDisplayCols(form_id, office_id);
+            SearchFormService sfs = new SearchFormService(this);
+            fieldList = sfs.getDisplayCols(form_id, office_id);
         }else if("form".equals(re.get("type"))){
         	fieldList = Db.find("select * from eeda_form_field where "
                     + " form_id=? order by if(isnull(seq),1,0), seq", form_id);
@@ -597,24 +598,40 @@ public class FormController extends Controller {
     		//查数据列表
     		List<Record> custom_search_cols_list = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
     		for(int j = 0;j<custom_search_cols_list.size();j++){
-    			String expression = custom_search_cols_list.get(j).get("expression");
-    			int index = expression.indexOf(".");
-    			String lie_name = expression.substring(index+1);
-    			String biao_name = expression.substring(0,index);
-    			Record define_source = Db.findFirst("select * from eeda_form_define where name=? and office_id=?",biao_name, office_id);
-    			if("ID".equals(lie_name)){
-    			    Record field = new Record();
-    			    field.set("field_name","id");
-                    field.set("listed","N");
-                    field.set("custom_search","N");
-                    fieldList.add(field);
-    			}else{
-    			    String source_form_id=define_source.get("id").toString();
-        			Record field = Db.findFirst("select * from eeda_form_field where field_display_name=? and form_id=? ", lie_name, source_form_id);
-        			field.set("listed","Y");
-        			field.set("custom_search","Y");
-        			fieldList.add(field);
-    			}
+    			String fieldName = custom_search_cols_list.get(j).get("field_name");
+    			
+    			Record field = FormUtil.getFormOrField(fieldName, office_id);
+    			field.set("listed","Y");
+    			field.set("custom_search","Y");
+    			fieldList.add(field);
+//    			int index = fieldName.indexOf(".");
+//    			String lie_name = fieldName.substring(index+1);
+//    			String biao_name = fieldName.substring(0,index);
+//    			Record define_source = Db.findFirst("select * from eeda_form_define where name=? and office_id=?",biao_name, office_id);
+//    			if("ID".equals(lie_name)){
+//    			    Record field = new Record();
+//    			    field.set("field_name","id");
+//                    field.set("listed","N");
+//                    field.set("custom_search","N");
+//                    fieldList.add(field);
+//    			}else{
+//    			    String source_form_id=define_source.get("id").toString();
+//        			Record field = Db.findFirst("select * from eeda_form_field where field_display_name=? and form_id=? ", lie_name, source_form_id);
+//        			field.set("listed","Y");
+//        			field.set("custom_search","Y");
+//        			fieldList.add(field);
+//    			}
+    		}
+    		
+    		List<Record> custom_search_sum_cols_list = Db.find("select * from eeda_form_custom_search_sum_col where form_id = ?",form_id);
+    		for(int j = 0;j<custom_search_sum_cols_list.size();j++){
+    		    String fieldDisplayName = custom_search_sum_cols_list.get(j).get("field_display_name");
+                String expression = custom_search_sum_cols_list.get(j).get("expression");
+                Record field = new Record();
+                field.set("field_display_name", fieldDisplayName);
+                field.set("listed","Y");
+                field.set("custom_search","Y");
+                fieldList.add(field);
     		}
     		return fieldList;
     }
@@ -661,19 +678,11 @@ public class FormController extends Controller {
         Record define = Db.findFirst("select * from eeda_form_define where id = ?",form_id);
         long office_id=define.getLong("office_id");
         if("search_form".equals(define.get("type"))){
-            String lieNameStr = getLieNameStr(form_id, office_id);
-            String biaoNameStr = getBiaoNameStr(form_id, office_id);//join
-            String joinStr = getJoinStr(form_id, office_id);//left join
-            if(joinStr.length()>0)
-                biaoNameStr="";
-            String filterStr = getFilterStr(form_id);
-            String filterConditionStr = getFilterConditionStr(form_id, office_id);
-            String sortStr = getSortStr(form_id, office_id);
-            sql = "select "+lieNameStr+" from "+biaoNameStr+" "+joinStr+" where 1=1 ";//TODO: and eeda_delete='N' 
-            int index = biaoNameStr.indexOf(" ");
+            SearchFormService sfs = new SearchFormService(this);
+            sql = sfs.buildQuerySql(form_id, office_id);
             //+ " order by "+biaoNameStr.substring(index)+".id desc " 
-            orderList = Db.find(sql+ condition+filterStr + filterConditionStr + sortStr+sLimit);
-            sqlTotal = "select count(1) total from ("+sql+ condition+filterStr + filterConditionStr +") B";
+            orderList = Db.find(sql+sLimit);//+ condition+filterStr + filterConditionStr + sortStr+sLimit
+            sqlTotal = "select count(1) total from ("+sql +") B";//+ condition+filterStr + filterConditionStr
         }else if("form".equals(define.get("type"))){
             sql = "select * from form_"+form_id+" where 1=1 and eeda_delete='N' "; 
             sqlTotal = "select count(1) total from ("+sql+ condition +") B";
@@ -722,25 +731,38 @@ public class FormController extends Controller {
         return filterConditionStr;
     }
     
-    public static String getLieNameStr(Long form_id, long office_id){
+    
+    
+    public static String getLieNameStr(Long form_id, long office_id, boolean needPrefix){
     	String lieNameStr = "";
     	List<Record> colsList = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
     	for(int i = 0;i<colsList.size();i++){
-    		String expression = colsList.get(i).get("expression");
-    		int index = expression.indexOf(".");
-    		String lie_name = expression.substring(index+1);
-			String biao_name = expression.substring(0,index);
-			String biao_name_py = PingYinUtil.getFirstSpell(expression.substring(0,index));
-			Record define = Db.findFirst("select * from eeda_form_define where name = ? and office_id=?",biao_name, office_id);
-			Record field = Db.findFirst("select * from eeda_form_field where field_display_name = ? and form_id = ?",lie_name,define.get("id"));
+    	    String biao_name_py = "";
+    	    String strMasterFormName = "", strDetailFormName = "", strDetailRefField = "";
+    		String fieldName = colsList.get(i).get("field_name");
+    		Record field = FormUtil.getFormOrField(fieldName, office_id);
+    		if(fieldName.split("\\.").length==3) {//包含从表
+                strDetailRefField = fieldName;
+                strMasterFormName = fieldName.split("\\.")[0];
+                strDetailFormName = fieldName.split("\\.")[1];
+                Record masterRec = FormUtil.getFormOrField(strDetailFormName, office_id);
+                biao_name_py = PingYinUtil.getFirstSpell(masterRec.getStr("name"));
+            }
+    		if(fieldName.split("\\.").length==2) {//不包含从表
+                strMasterFormName = fieldName.split("\\.")[0];
+                Record masterRec = FormUtil.getFormOrField(strMasterFormName, office_id);
+                biao_name_py = PingYinUtil.getFirstSpell(masterRec.getStr("name"));
+            }
+    		
 			String str = "";
 			if(lieNameStr.length()>0){
 				str = ",";
 			}
-			if("ID".equals(lie_name)){
-			    lieNameStr += str+biao_name_py+".id";
-			}else{
+			
+			if(needPrefix) {
 			    lieNameStr += str+biao_name_py+".f"+field.get("id")+"_"+field.get("field_name");
+			}else {
+			    lieNameStr += str+"f"+field.get("id")+"_"+field.get("field_name");
 			}
     	}
     	return lieNameStr;
@@ -775,15 +797,65 @@ public class FormController extends Controller {
         return sortStr;
     }
     
-    private String getBiaoNameStr(Long form_id, long office_id){
+    /*
+     * 字段中需要到的表名
+     * 1. 显示字段中是否包含从表，如果包含则需要去关联从表
+     * 2. 聚合字段中是否包含从表，如果包含则需要去关联从表
+     * 
+     * 结果：   select A.no, B.amount from A, B where A.no = B.no
+     */
+    private String getSqlStr(Long form_id, long office_id){
+        //1. 显示字段中是否包含从表
+        boolean isIncludeDetail = false;
+        String strMasterFormName = "", strDetailFormName = "", strDetailRefField = "";
+        List<Record> colsList = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
+        for(int i = 0;i<colsList.size();i++){
+            String fieldName = colsList.get(i).get("field_name");
+            if(fieldName.split("\\.").length==3) {//包含从表
+                isIncludeDetail = true;
+                strDetailRefField = fieldName;
+                strMasterFormName = fieldName.split("\\.")[0];
+                strDetailFormName = fieldName.split("\\.")[1];
+            }
+        }
+        
         String biaoNameStr = "";
-        List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source_condition where form_id = ?",form_id);
-        if(sourceList.size() == 0)
-            return biaoNameStr;
-        String form_name = sourceList.get(0).get("form_left");
-        Record re = Db.findFirst("select * from eeda_form_define where name = ? and office_id=?",form_name, office_id);
-        biaoNameStr = "form_"+re.get("id")+" "+PingYinUtil.getFirstSpell(form_name);
-        return biaoNameStr;
+        //根据主表的从表引用找到关联字段，构造A，B where A.no=B.no
+        if(isIncludeDetail) {
+            //显示字段
+            Record refRec = FormUtil.getFormOrField(strDetailRefField, office_id);
+            //找主表
+            Record masterRec = FormUtil.getFormOrField(strMasterFormName, office_id);
+            //找从表
+            Record detailRec = FormUtil.getFormOrField(strDetailFormName, office_id);
+            String pyMaster = PingYinUtil.getFirstSpell(masterRec.getStr("name"));
+            String pyDetail = PingYinUtil.getFirstSpell(detailRec.getStr("name"));
+            biaoNameStr = "form_"+masterRec.get("id")+" "+pyMaster+
+                    ", "+"form_"+detailRec.get("id")+" "+pyDetail;
+            
+            String whereStr = "";
+            //找从表引用字段
+            Record refField = Db.findFirst("select * from eeda_form_field where form_id=? and field_type='从表引用' and field_display_name=?",
+                    masterRec.getLong("id"), strDetailFormName);
+//            Record refTargetRec = Db.findFirst("select * from eeda_form_field_type_detail_ref where field_id=? ",
+//                    refField.getLong("id"));
+            //找从表关联字段， 构造 where 
+            List<Record> joinList = Db.find("select * from eeda_form_field_type_detail_ref_join_condition where field_id=? ", 
+                    refField.getLong("id"));
+            for(Record joinField : joinList) {
+                Record fromField = FormUtil.getFormOrField(joinField.getStr("field_from"), office_id);
+                Record toField = FormUtil.getFormOrField(joinField.getStr("field_to"), office_id);
+                whereStr += " and "+pyMaster+".f"+fromField.getLong("id")+"_"+fromField.getStr("field_name")+
+                        "="+pyDetail+".f"+toField.getLong("id")+"_"+toField.getStr("field_name");
+            }
+            biaoNameStr += " where 1=1 "+whereStr;
+        }
+        
+        String colNames = getLieNameStr(form_id, office_id, true);
+        String sumColNames = "";//getSumColNameStr(form_id, office_id, true);
+       
+        String sql = "select "+colNames +", "+ sumColNames +" from "+biaoNameStr;
+        return sql;
     }
     
     public static String getJoinStr(Long form_id , long office_id){

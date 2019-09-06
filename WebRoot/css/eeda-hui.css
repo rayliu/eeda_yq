@@ -1,3 +1,9 @@
+body{
+    font-size: 16px;
+}
+.navbar-wrapper {
+    height: 60px;
+}
 
 .dataTables_length{
     padding-top: 10px;

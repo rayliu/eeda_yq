@@ -1,60 +1,4 @@
 define(['jquery'], function ($) {
-    var dataTable = eeda.dt({
-      id: 'custom_data_source_table',
-      paging: false,
-      lengthChange: false,
-      columns: [
-          { "data": "ID",
-            "width": "30px",
-              "render": function ( data, type, full, meta ) {
-                if(!data){
-                  data='';
-                }
-                return '<button type="button" class="btn table_btn btn-xs delete_field" >'
-                      +'<i class="fa fa-trash-o"></i> 删除</button>'
-                      +'<input name="ID" type="hidden" value="'+data+'">';
-              }
-          },
-          { "data": "FORM_LEFT",
-            "render": function ( data, type, full, meta ) {
-              if(!data){
-                  data='';
-                }
-              return '<input name="form_left" value="'+data+'">';
-            }
-          }, 
-          { "data": "FORM_LEFT_FIELD",
-            "render": function ( data, type, full, meta ) {
-              if(!data){
-                  data='';
-                }
-              return '<input name="form_left_field" value="'+data+'">';
-            }
-          },
-          { "data": "OPERATOR", "width":"70px",
-            "render": function ( data, type, full, meta ) {
-                return '<input name="form_left_field" style="width: 70px;" value="=">';
-              }
-          },
-          { "data": "FORM_RIGHT",
-            "render": function ( data, type, full, meta ) {
-              if(!data){
-                  data='';
-                }
-              return '<input name="form_right" value="'+data+'">';
-            }
-          }, 
-          { "data": "FORM_RIGHT_FIELD",
-            "render": function ( data, type, full, meta ) {
-              if(!data){
-                  data='';
-                }
-              return '<input name="form_right_field" value="'+data+'">';
-            }
-          }
-      ]
-    });
-
       //---------------tree handle
       var setting = {
         view: {
@@ -120,6 +64,7 @@ define(['jquery'], function ($) {
             eventModuleTreeObj.expandAll(true);
         });
     };
+
     loadModuleTree();
 
       function showMenu() {
@@ -155,51 +100,114 @@ define(['jquery'], function ($) {
 
           var box = $('#custom_search_source_box');
 
-          if(box.html().trim() == ''){
-            var form_box = '<div class="table_block" eeda_id="">'+node.name
-                    +'<a href="javascript:;" class="delete_source"><span class="glyphicon glyphicon-remove"></span></a>'
-                    +'</div>'
-            box.append(form_box);
-          }else{
-           var form_box = '<div class="table_block_right">'
-                         +'<div class="connect_line"></div>'
-                         +'<div class="connect_type" style="">  '
-                         +'    <select class="form-control operator" name="operator">'
-                         +'        <option value="join">交集</option>'
-                         +'        <option value="left_join">左关联</option>'
-                         +'    </select> '
-                         +'</div>'
-                         +'<div class="connect_line"></div>'
-                         +'<div class="table_block" eeda_id="">'+node.name
-                         +'    <a href="javascript:;" class="delete_source"><span class="glyphicon glyphicon-remove"></span></a>'
-                         +'</div>'
-                         +'</div>';
-           box.append(form_box);
-         }
+          var field_li = '';
+          var block;
+          var leng_li = 0;
+          var ch = $('#custom_search_source_box').children('.table_block');
+          if(ch) {
+            block = ch.first();
+            leng_li = block.find("li").length;
+          }
+
+          $.post('/module/getFormFieldsWithDetail', {form_name:node.name}, function(data){
+              if(data){
+                var options = '';
+                var fields_arr = data;
+                for (let index = 0; index < fields_arr.length; index++) {
+                  const el = fields_arr[index];
+                  if(el.FIELD_TYPE!="从表引用"){
+                    options+='<option>'+el.FIELD_DISPLAY_NAME+'</option>';
+                  }else{
+                    var detail_fields_arr = el.FIELD_LIST;
+                    for (let i = 0; i < detail_fields_arr.length; i++) {
+                      const d_el = detail_fields_arr[i];
+                      options+='<option>'+d_el.TARGET_FIELD_NAME+'</option>';
+                    }
+                  }
+                }
+                var select_li = '<li class="form-inline">'
+                        +'    <a href="javascript:;" class="delete_source_field"><span class="glyphicon glyphicon-remove"></span></a>'
+                        +'    <select class="form-control operator" name="field">'
+                        +  options
+                        +'    </select> '
+                        +'</li>';
+                for(var i=0;i<leng_li;i++){
+                  field_li += select_li;
+                }
+
+                form_box = "<div class='table_block' field_arr='"+ JSON.stringify(fields_arr) +"' eeda_id='' form_name='"+node.name+"'>"
+                    +'    <div>'+node.name
+                    +'      <a href="javascript:;" class="add_field" style=" "><span class="glyphicon glyphicon-plus"></span></a>'
+                    +'      <a href="javascript:;" class="delete_source"><span class="glyphicon glyphicon-remove"></span></a>'
+                    +'    </div>'
+                    +'    <ul style="padding-top: 5px;">'+field_li+'</ul>'
+                    +'</div>';
+                box.append(form_box);
+              }
+          });
+          
+         
        };
 
-       var delete_block_list=[];
-       $('#custom_search_source_box').on('click', 'a', function(event) {
-           var block = $(this).closest('.table_block_right');
-           var id=$(this).parent().attr('eeda_id');
-           if(id != ''){
-             delete_block_list.push({ID: id.toString(), IS_DELETE:'Y'});
+        var delete_block_list=[];
+        //删除数据源表
+        $('#custom_search_source_box').on('click', 'a.delete_source', function(event) {
+           var block = $(this).closest('.table_block');
+           var id=block.attr('eeda_id');
+           if(id){
+              delete_block_list.push({ID: id.toString(), IS_DELETE:'Y'});
            }
-
-           if(block.is('.table_block_right')){
-             block.remove();
-           }else{
-             lock = $(this).closest('.table_block').remove();
-           }
-
+           lock = $(this).closest('.table_block').remove();
+           
         });
 
+        //添加关联字段
+        $('#custom_search_source_box').on('click', 'a.add_field', function(event) {
+          $('#custom_search_source_box .table_block').each(function(i, el){
+            var block = $(el).closest('.table_block');
+            var field_arr = JSON.parse(block.attr('field_arr'));
+            var ul = block.children("ul").first();
 
-        $('#add_source_condition_btn').click(function(event) {
-            dataTable.row.add({}).draw();
+            var options = '';
+            for (let index = 0; index < field_arr.length; index++) {
+              const el = field_arr[index];
+              if(el.FIELD_TYPE!="从表引用"){
+                options+='<option>'+el.FIELD_DISPLAY_NAME+'</option>';
+              }else{
+                var detail_fields_arr = el.FIELD_LIST;
+                for (let i = 0; i < detail_fields_arr.length; i++) {
+                  const d_el = detail_fields_arr[i];
+                  options+='<option>'+d_el.TARGET_FIELD_NAME+'</option>';
+                }
+              }
+            }
+            var select_li = '<li class="form-inline">'
+                    +'    <a href="javascript:;" class="delete_source_field"><span class="glyphicon glyphicon-remove"></span></a>'
+                    +'    <select class="form-control operator" name="field">'
+                    +  options
+                    +'    </select> '
+                    +'</li>';
+            ul.append(select_li);
+          });
+          
+       });
+
+       var deleteList=[];
+       //删除数据源表内的关联字段
+       $('#custom_search_source_box').on('click', 'a.delete_source_field', function(event) {
+            var btn = $(this);
+            var li =btn.closest('li');
+            var li_index = li.index();//同层所有li都要删除
+           
+
+            $('#custom_search_source_box .table_block').each(function(i, el){
+              var block = $(el).closest('.table_block');
+              var li = block.find("ul li:eq("+li_index+")");
+              li.remove();
+            });
         });
 
-        var deleteList=[];
+        
         $('#custom_data_source_table tbody').on('click', 'button', function () {
           var btn = $(this);
           var tr = btn.closest('tr');
@@ -217,46 +225,48 @@ define(['jquery'], function ($) {
            var block_arr=[];
            var blocks = $('#custom_search_source_box .table_block');
            $.each(blocks, function(index, item) {
-             var block = $(item);
+               var block = $(item);
+               var li_arr = block.find('li');
+               var fields = [];
+               $.each(li_arr, function(i, el){
+                  var obj={
+                      form_name: block.attr('form_name')
+                      ,field_name: $(el).find('select').val()
+                      ,seq: i
+                  }
+                  fields.push(obj);
+               });
 
-             if(index==0){
                var obj={
-                 ID: block.attr('eeda_id'),
-                 SEQ: index,
-                 FORM_NAME: block.text().trim()
+                  ID: block.attr('eeda_id'),
+                  SEQ: index,
+                  FORM_NAME: block.attr('form_name')
+                  ,field_list: fields
                };
                block_arr.push(obj);
-             }else{
-               var obj={
-                 ID: block.attr('eeda_id'),
-                 SEQ: index,
-                 FORM_NAME: block.text().trim(),
-                 CONNECT_TYPE: block.parent().find('.operator').val()
-               };
-               block_arr.push(obj);
-             }
+             
            });
 
            var new_block_arr = block_arr.concat(delete_block_list);
 
-            var data = dataTable.rows().data();
-            var inputs = dataTable.$('input, select');
-            var itemList = [];
-            for (var i = 0; i < inputs.length/6; i++) {
-              var item={
-                ID: $(inputs[i*6]).val(),
-                FORM_LEFT: $(inputs[i*6 + 1]).val(),
-                FORM_LEFT_FIELD: $(inputs[i*6 + 2]).val(),
-                OPERATOR: $(inputs[i*6 + 3]).val(),
-                FORM_RIGHT: $(inputs[i*6 + 4]).val(),
-                FORM_RIGHT_FIELD: $(inputs[i*6 + 5]).val()
+            // var data = dataTable.rows().data();
+            // var inputs = dataTable.$('input, select');
+            // var itemList = [];
+            // for (var i = 0; i < inputs.length/6; i++) {
+            //   var item={
+            //     ID: $(inputs[i*6]).val(),
+            //     FORM_LEFT: $(inputs[i*6 + 1]).val(),
+            //     FORM_LEFT_FIELD: $(inputs[i*6 + 2]).val(),
+            //     OPERATOR: $(inputs[i*6 + 3]).val(),
+            //     FORM_RIGHT: $(inputs[i*6 + 4]).val(),
+            //     FORM_RIGHT_FIELD: $(inputs[i*6 + 5]).val()
                
-              };
+            //   };
 
-              itemList.push(item);
-            }
+            //   itemList.push(item);
+            // }
 
-            var list = itemList.concat(deleteList);
+            var list = [];//itemList.concat(deleteList);
 
             return {
               block_arr: new_block_arr,
@@ -270,37 +280,58 @@ define(['jquery'], function ($) {
         }
         
        var display = function(custom_search_source){
-       	var box = $('#custom_search_source_box');
-       	for(var i = 0;i<custom_search_source.length;i++){
-       		if(custom_search_source[i].CONNECT_TYPE==""||custom_search_source[i].CONNECT_TYPE==null){
-   	            var form_box = '<div class="table_block" eeda_id="'+custom_search_source[i].ID+'">'+custom_search_source[i].FORM_NAME
-   	                   +'<a href="javascript:;" class="delete_source"><span class="glyphicon glyphicon-remove"></span></a>'
-   	                   +'</div>'
-   	            box.append(form_box);
-       		}else{
-       			var selected_jiao = "";
-       			var selected_zuo = "";
-       			if(custom_search_source[i].connect_type=="join"){
-       				selected_jiao = "selected";
-       			}else if(custom_search_source[i].connect_type=="left_join"){
-       				selected_zuo = "selected";
-       			}
-       			var form_box = '<div class="table_block_right">'
-                       +'<div class="connect_line"></div>'
-                       +'<div class="connect_type" style="">  '
-                       +'    <select class="form-control operator" name="operator">'
-                       +'        <option value="join" selected="'+selected_jiao+'">交集</option>'
-                       +'        <option value="left_join" selected="'+selected_zuo+'">左关联</option>'
-                       +'    </select> '
-                       +'</div>'
-                       +'<div class="connect_line"></div>'
-                       +'<div class="table_block" eeda_id="'+custom_search_source[i].ID+'">'+custom_search_source[i].FORM_NAME
-                       +'    <a href="javascript:;" class="delete_source"><span class="glyphicon glyphicon-remove"></span></a>'
-                       +'</div>'
-                       +'</div>';
-       			box.append(form_box);
-       		}
-       	}
+          var box = $('#custom_search_source_box');
+          $.each(custom_search_source, function(i, el){
+            var source = el;
+            var li_length = source.FIELD_LIST.length;
+            $.post('/module/getFormFieldsWithDetail', {form_name: source.FORM_NAME}, function(data){
+                if(!data) return;
+                var options = '';
+                var fields_arr = data;
+                var block =box.find('.table_block[eeda_id='+source.ID+']');
+                block.attr('field_arr', JSON.stringify(fields_arr));
+
+                var ul = block.find('ul');
+
+                for (let index = 0; index < fields_arr.length; index++) {
+                  const el = fields_arr[index];
+                  if(el.FIELD_TYPE!="从表引用"){
+                    options+='<option>'+el.FIELD_DISPLAY_NAME+'</option>';
+                  }else{
+                    var detail_fields_arr = el.FIELD_LIST;
+                    for (let i = 0; i < detail_fields_arr.length; i++) {
+                      const d_el = detail_fields_arr[i];
+                      options+='<option>'+d_el.TARGET_FIELD_NAME+'</option>';
+                    }
+                  }
+                }
+                var select_li = '';
+                for (let index = 0; index < li_length; index++) {
+                    var li='<li class="form-inline">'
+                          +'    <a href="javascript:;" class="delete_source_field"><span class="glyphicon glyphicon-remove"></span></a>'
+                          +'    <select class="form-control operator" name="field">'
+                          +  options
+                          +'    </select> '
+                          +'</li>';
+                    select_li+=li;
+                }
+                var form_box = "<div class='table_block' field_arr='"+JSON.stringify(fields_arr)+"' eeda_id='"+source.ID+"' form_name='"+source.FORM_NAME+"'>"
+                          +'    <div>'+source.FORM_NAME
+                          +'      <a href="javascript:;" class="add_field" style=" "><span class="glyphicon glyphicon-plus"></span></a>'
+                          +'      <a href="javascript:;" class="delete_source"><span class="glyphicon glyphicon-remove"></span></a>'
+                          +'    </div>'
+                          +'    <ul style="padding-top: 5px;">'+select_li+'</ul>'
+                          +'</div>';
+                box.append(form_box);
+
+                //set option selected
+                for (let index = 0; index < li_length; index++) {
+                    var item = source.FIELD_LIST[index];
+                    box.find('.table_block[eeda_id='+source.ID+'] li:eq('+index+') select').val(item.FIELD_NAME);
+                }
+            });
+            
+          });//end of for
        }
 
         var tableDisplay = function(custom_search_source_condition){

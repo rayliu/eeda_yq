@@ -233,6 +233,9 @@ define(['jquery', 'zTree', './fields', './btns', './btns/app_btns', './events',
                     if(json.CUSTOM_SEARCH_COLS.length>0){
                     	customSearchCont.colsDisplay(json.CUSTOM_SEARCH_COLS);
                     }
+                    if(json.CUSTOM_SEARCH_SUM_COLS.length>0){
+                    	customSearchCont.sumColsDisplay(json.CUSTOM_SEARCH_SUM_COLS);
+                    }
                     if(json.CUSTOM_SEARCH_FILTER.length>0){
                     	customSearchCont.filterDisplay(json.CUSTOM_SEARCH_FILTER);
                     }

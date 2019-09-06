@@ -115,7 +115,13 @@ public class FormUtil {
         Long lId= -1l;
         if (obj instanceof java.lang.Double) {
             lId = ((Double) obj).longValue();
-       }
+        }else if(obj instanceof java.lang.String) {
+            if(StrKit.notBlank(obj.toString())) {
+                lId = Long.valueOf(obj.toString());
+            }
+        }else if(obj instanceof java.lang.Long) {
+            lId = (Long)obj;
+        }
         return lId;
     }
 }

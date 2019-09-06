@@ -31,6 +31,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.backend.module.CopyModuleService;
 import controllers.backend.module.CopySystemService;
+import controllers.backend.module.ModulSumModalService;
 import controllers.module.ModuleService;
 import controllers.module.custom_search.CustomSearchService;
 import controllers.profile.LoginUserController;
@@ -1139,6 +1140,7 @@ public class ModuleController extends Controller {
             rec.set("custom_search_source",getCustomSearchSource(form_id));
             rec.set("custom_search_source_Condition",getCustomSearchCondition(form_id));
             rec.set("custom_search_cols",getCustomSearchCols(form_id));
+            rec.set("custom_search_sum_cols",getCustomSearchSumCols(form_id));
             rec.set("custom_search_filter",getCustomSearchFilter(form_id));
             List<Record> btn_list_query = getFormBtns(form_id, "list");
             rec.set("btn_list_query", btn_list_query);
@@ -1282,7 +1284,13 @@ public class ModuleController extends Controller {
     }
     
     private List<Record> getCustomSearchSource(Long form_id){
-    	List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source where form_id = ?",form_id);
+    	List<Record> sourceList = Db.find("select * from eeda_form_custom_search_source where form_id = ? order by seq",form_id);
+    	for (Record rec : sourceList) {
+            String form_name = rec.getStr("form_name");
+            List<Record> sourceColList = Db.find("select * from eeda_form_custom_search_source_col "
+                    + "where form_id = ? and form_name=? order by seq",form_id, form_name);
+            rec.set("field_list", sourceColList);
+        }
     	return sourceList;
     }
     
@@ -1294,6 +1302,11 @@ public class ModuleController extends Controller {
     private List<Record> getCustomSearchCols(Long form_id){
     	List<Record> colsList = Db.find("select * from eeda_form_custom_search_cols where form_id = ?",form_id);
     	return colsList;
+    }
+    
+    private List<Record> getCustomSearchSumCols(Long form_id){
+        List<Record> colsList = Db.find("select * from eeda_form_custom_search_sum_col where form_id = ?",form_id);
+        return colsList;
     }
     
     private List<Record> getCustomSearchFilter(Long form_id){
@@ -1627,6 +1640,23 @@ public class ModuleController extends Controller {
         renderJson(orderListMap);
     }
     
+    public void getFormFieldsWithDetail(){
+        Long officeId = LoginUserController.getLoginUser(this).getLong("office_id");
+        String form_name = getPara("form_name");
+        List<Record> fieldList = Db.find("select ef.name form_name, eff.id, eff.form_id, eff.field_name, eff.field_display_name, "
+                + "eff.field_type, em.office_id from eeda_form_define ef, eeda_form_field eff, eeda_modules em "
+                + "where ef.id=eff.form_id and ef.module_id=em.id and em.office_id=? and ef.name=?", officeId, form_name);
+        for(Record rec: fieldList) {
+            String type = rec.getStr("field_type");
+            if("从表引用".equals(type)) {
+                List<Record> dFieldList = Db.find("select * from eeda_form_field_type_detail_ref_display_field where field_id=? order by sort_no", rec.getLong("id"));
+                rec.set("field_list", dFieldList);
+            }
+        }
+        
+        renderJson(fieldList);
+    }
+    
     public void getMenuList() {
         List<Record> menuList= new ArrayList<Record>();
         UserLogin user= LoginUserController.getLoginUser(this);
@@ -1718,7 +1748,33 @@ public class ModuleController extends Controller {
         Long toOfficeId = user.getLong("office_id");
         
         CopySystemService ms = new CopySystemService(this);
-        ms.copySystem(fromOfficeId, toOfficeId.toString());
+        ms.copySystem(fromOfficeId, toOfficeId.toString(), user);
         renderText("OK");
+    }
+    
+    public void sumModal() {
+        String li_id = getPara("id");
+        String form_arr = getPara("form_arr");
+        
+        setAttr("li_id", li_id);
+        setAttr("form_arr", form_arr);
+        
+        Record rec=Db.findById("eeda_form_custom_search_sum_col", li_id);
+        if(rec!=null) {
+            setAttr("sum_col", rec);
+        }
+        render("/profile/module/custom_search/sum_col_modal.html");
+    }
+    
+    public void getSumModalTree() {
+        UserLogin user= LoginUserController.getLoginUser(this);
+        Long officeId = user.getLong("office_id");
+        String form_arr = getPara("form_arr");
+        Gson gson = new Gson();
+        List<String> formList = gson.fromJson(form_arr, 
+                new TypeToken<List<String>>() { }.getType());
+        ModulSumModalService mSumService = new ModulSumModalService(this);
+        List<Record> list= mSumService.getSumModalTree(formList, officeId);
+        renderJson(list);
     }
 }

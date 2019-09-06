@@ -20,8 +20,12 @@ define(['jquery', 'layer', 'layui','hui_admin', '../btns'], function ($, layer, 
         for (var i=0;i<field_list_json.length;i++){
             var field = field_list_json[i];
             var visible = field.LISTED=="Y"?true:false;
+            var data_name = ('f'+field.ID+'_'+field.FIELD_NAME).toUpperCase();
+            if(field.CUSTOM_SEARCH=="Y"){
+                data_name = (field.FIELD_NAME).toUpperCase();
+            }
             var col={
-                data: ('f'+field.ID+'_'+field.FIELD_NAME).toUpperCase(),
+                data: data_name,
                 visible: visible,
                 width: field.COL_WIDTH
             };

@@ -13,12 +13,45 @@ import com.jfinal.plugin.activerecord.Record;
 import controllers.form.FormUtil;
 
 public class CustomSearchService {
+    
     public void handleCustomSearch(Map<String, ?> dto, Long form_id){
         Map<String, Object> customSearch = (Map<String, Object>) dto.get("customSearch");
         handle_search_source(form_id, customSearch);
         handleCols(form_id, customSearch);
+        handleSumCols(form_id, customSearch);
         handleFilter(form_id, customSearch);
         handleFilterCondition(form_id, customSearch);
+    }
+    private void handleSumCols(Long form_id, Map<String, Object> customSearch) {
+        List<Map<String, String>> custom_search_sum_cols = (ArrayList<Map<String, String>>)customSearch.get("custom_search_sum_cols");
+        if(custom_search_sum_cols.size()>0){
+            for(int i = 0;i<custom_search_sum_cols.size();i++){
+                String id = FormUtil.getId(custom_search_sum_cols.get(i).get("ID")).toString();
+                String field_name = custom_search_sum_cols.get(i).get("FIELD_DISPLAY_NAME");
+                String expression = custom_search_sum_cols.get(i).get("EXPRESSION");
+                String is_delete = custom_search_sum_cols.get(i).get("IS_DELETE");
+                Record re = new Record();
+                if(StringUtils.isBlank(id) || ("-1").equals(id)){
+                    re.set("form_id", form_id);
+                    re.set("field_display_name",field_name);
+                    re.set("expression",expression);
+                   
+                    Db.save("eeda_form_custom_search_sum_col", re);
+                }else{
+                    re = Db.findById("eeda_form_custom_search_sum_col", id);
+                    if(re!=null){
+                        if("Y".equals(is_delete)){
+                            Db.delete("eeda_form_custom_search_sum_col", re);
+                        }else{
+                            re.set("field_display_name",field_name);
+                            re.set("expression",expression);
+                            
+                            Db.update("eeda_form_custom_search_sum_col", re);
+                        }
+                    }
+                }
+            }
+        }
     }
     private void handleFilterCondition(Long form_id, Map<String, Object> customSearch) {
         String filter_condition = (String)customSearch.get("custom_filter_condition");
@@ -46,7 +79,7 @@ public class CustomSearchService {
                 String default_value = custom_search_filter.get(i).get("DEFAULT_VALUE");
                 String is_delete = custom_search_filter.get(i).get("IS_DELETE");
                 Record re = new Record();
-                if(StringUtils.isBlank(id)){
+                if(StringUtils.isBlank(id) || ("-1").equals(id)){
                     re.set("form_id", form_id);
                     re.set("param_name",param_name);
                     re.set("data_type",data_type);
@@ -83,7 +116,7 @@ public class CustomSearchService {
                 String hidden_flag = custom_search_cols.get(i).get("HIDDEN_FLAG");
                 String is_delete = custom_search_cols.get(i).get("IS_DELETE");
                 Record re = new Record();
-                if(StringUtils.isBlank(id)){
+                if(StringUtils.isBlank(id) || ("-1").equals(id)){
                     re.set("form_id", form_id);
                     re.set("field_name",field_name);
                     re.set("expression",expression);
@@ -113,15 +146,22 @@ public class CustomSearchService {
     private void handle_search_source(Long form_id, Map<String, Object> customSearch) {
         Map<String, Object> custom_search_source = (Map<String, Object>)customSearch.get("custom_search_source");
         if(custom_search_source!=null){
-            List<Map<String, String>> block_arr = (ArrayList<Map<String, String>>)custom_search_source.get("block_arr");
+            List<Map<String, ?>> block_arr = (ArrayList<Map<String, ?>>)custom_search_source.get("block_arr");
             if(block_arr!=null && block_arr.size()>0){
+                
+                Db.update("delete from eeda_form_custom_search_source_col where form_id=?", form_id);
+                
                 for(int i = 0;i<block_arr.size();i++){
                     String id = FormUtil.getId(block_arr.get(i).get("ID")).toString();
-                    String form_name = block_arr.get(i).get("FORM_NAME");
-                    String connect_type = block_arr.get(i).get("CONNECT_TYPE");
-                    String is_delete = block_arr.get(i).get("IS_DELETE");
+                    String form_name = (String)block_arr.get(i).get("FORM_NAME");
+                    String connect_type = (String)block_arr.get(i).get("CONNECT_TYPE");
+                    String is_delete = (String)block_arr.get(i).get("IS_DELETE");
+                    Double seq = (Double)block_arr.get(i).get("seq");
+                    
+                    handleSourceFieldList(form_id, block_arr.get(i));
+                    
                     Record re = new Record();
-                    if(StringUtils.isBlank(id)){
+                    if(StringUtils.isBlank(id) || ("-1").equals(id)){
                         re.set("form_id", form_id);
                         re.set("form_name", form_name);
                         re.set("connect_type", connect_type);
@@ -140,38 +180,68 @@ public class CustomSearchService {
                     }
                 }
             }
-            List<Map<String, String>> join_list = (ArrayList<Map<String, String>>)custom_search_source.get("join_list");
-            if(join_list.size()>0){
-                for(int i =0;i<join_list.size();i++){
-                    String id = FormUtil.getId(join_list.get(i).get("ID")).toString();
-                    String form_left = join_list.get(i).get("FORM_LEFT");
-                    String form_left_field = join_list.get(i).get("FORM_LEFT_FIELD");
-                    String form_right = join_list.get(i).get("FORM_RIGHT");
-                    String form_right_field = join_list.get(i).get("FORM_RIGHT_FIELD");
-                    String operator = join_list.get(i).get("OPERATOR");
-                    String is_delete = join_list.get(i).get("IS_DELETE");
-                    Record re = new Record();
-                    if(StringUtils.isBlank(id)){
-                        re.set("form_id", form_id);
-                        re.set("form_left", form_left);
-                        re.set("form_left_field", form_left_field);
-                        re.set("form_right", form_right);
-                        re.set("form_right_field", form_right_field);
-                        re.set("operator", operator);
-                        Db.save("eeda_form_custom_search_source_condition", re);
-                    }else{
-                        re = Db.findById("eeda_form_custom_search_source_condition", id);
-                        if(re!=null){
-                            if("Y".equals(is_delete)){
-                                Db.delete("eeda_form_custom_search_source_condition", re);
-                            }else{
-                                re.set("form_left", form_left);
-                                re.set("form_left_field", form_left_field);
-                                re.set("form_right", form_right);
-                                re.set("form_right_field", form_right_field);
-                                re.set("operator", operator);
-                                Db.update("eeda_form_custom_search_source_condition", re);
-                            }
+            
+            
+            
+            handleJoinList(form_id, custom_search_source);
+        }
+    }
+    
+    private void handleSourceFieldList(Long form_id, Map<String, ?> field) {
+        List<Map<String, ?>> join_list = (ArrayList<Map<String, ?>>)field.get("field_list");
+        if(join_list.size()==0){
+            return;
+        }
+        for(int i =0;i<join_list.size();i++){
+            
+            String form_name = (String)join_list.get(i).get("form_name");
+            String field_name = (String)join_list.get(i).get("field_name");
+            Double seq = (Double)join_list.get(i).get("seq");
+            
+            Record re = new Record();
+            re.set("form_id", form_id);
+            re.set("form_name", form_name);
+            re.set("field_name", field_name);
+            re.set("seq", seq);
+            
+            Db.save("eeda_form_custom_search_source_col", re);
+            
+        }
+        
+    }
+    
+    private void handleJoinList(Long form_id, Map<String, Object> custom_search_source) {
+        List<Map<String, String>> join_list = (ArrayList<Map<String, String>>)custom_search_source.get("join_list");
+        if(join_list.size()>0){
+            for(int i =0;i<join_list.size();i++){
+                String id = FormUtil.getId(join_list.get(i).get("ID")).toString();
+                String form_left = join_list.get(i).get("FORM_LEFT");
+                String form_left_field = join_list.get(i).get("FORM_LEFT_FIELD");
+                String form_right = join_list.get(i).get("FORM_RIGHT");
+                String form_right_field = join_list.get(i).get("FORM_RIGHT_FIELD");
+                String operator = join_list.get(i).get("OPERATOR");
+                String is_delete = join_list.get(i).get("IS_DELETE");
+                Record re = new Record();
+                if(StringUtils.isBlank(id)){
+                    re.set("form_id", form_id);
+                    re.set("form_left", form_left);
+                    re.set("form_left_field", form_left_field);
+                    re.set("form_right", form_right);
+                    re.set("form_right_field", form_right_field);
+                    re.set("operator", operator);
+                    Db.save("eeda_form_custom_search_source_condition", re);
+                }else{
+                    re = Db.findById("eeda_form_custom_search_source_condition", id);
+                    if(re!=null){
+                        if("Y".equals(is_delete)){
+                            Db.delete("eeda_form_custom_search_source_condition", re);
+                        }else{
+                            re.set("form_left", form_left);
+                            re.set("form_left_field", form_left_field);
+                            re.set("form_right", form_right);
+                            re.set("form_right_field", form_right_field);
+                            re.set("operator", operator);
+                            Db.update("eeda_form_custom_search_source_condition", re);
                         }
                     }
                 }
