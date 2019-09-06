@@ -1,0 +1,121 @@
+    <!-- 发起人 -->
+    <div class="initiator_info_div cancel_info_div">
+        <div>
+            <input type="text" id="initiatorName" name="" class="disabled_title " value="发起人" autocomplete="off" disabled>
+        </div>
+        <hr/>
+        <div>
+            <%include("/profile/module/flow/flow_input.html", 
+            {   id:'initiatorName', 
+                label:'谁可以发起这个审批',
+                type:'text'
+            }){}%>
+        </div>
+        <div class="row">
+            <div class="form-group button-bar" >
+                <button type="button" class="btn btn-sure" id="" style="margin-left: 15px;">确定</button>
+                <button type="button" class="btn btn-cancel" id="" style="margin-left: 15px;">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 审批人 -->
+    <div class="approval_info_div cancel_info_div">
+        <div>
+            <%include("/profile/module/flow/flow_div_title.html", 
+            {   id:'approvalTitle', 
+                label:'审批人',
+                type:'text'
+            }){}%>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-lg-6">
+                <%include("/profile/module/flow/flow_input.html", 
+                {   id:'approvalName1', 
+                    name:'approvalName',
+                    label:'指定成员',
+                    type:'radio'
+                }){}%>
+            </div>
+            <div class="col-lg-6">
+                <%include("/profile/module/flow/flow_input.html", 
+                {   id:'approvalName2', 
+                    name:'approvalName',
+                    label:'发起人自选',
+                    type:'radio'
+                }){}%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <%include("/profile/module/flow/flow_input.html", 
+                {   id:'approvalName3', 
+                    name:'approvalName',
+                    label:'发起人自己',
+                    type:'radio'
+                }){}%>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <%include("/profile/module/flow/flow_approval_choice.html", {}){} %>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group button-bar" >
+                <button type="button" class="btn btn-sure" id="" style="margin-left: 15px;">确定</button>
+                <button type="button" class="btn btn-cancel" id="" style="margin-left: 15px;">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 抄送人 -->
+    <div class="copy_info_div cancel_info_div">
+        <div>
+            <%include("/profile/module/flow/flow_div_title.html", 
+            {   id:'approvalTitle', 
+                label:'抄送人',
+                type:'text'
+            }){}%>
+        </div>
+        <hr/>
+        <div>
+            <%include("/profile/module/flow/flow_input.html", 
+            {   id:'approvalName', 
+                label:'谁可以发起这个审批',
+                type:'text'
+            }){}%>
+        </div>
+        <div class="row">
+            <div class="form-group button-bar" >
+                <button type="button" class="btn btn-sure" id="" style="margin-left: 15px;">确定</button>
+                <button type="button" class="btn btn-cancel" id="" style="margin-left: 15px;">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 分支条件 -->
+    <div class="">
+            <div>
+                <%include("/profile/module/flow/flow_div_title.html", 
+                {   id:'approvalTitle', 
+                    label:'抄送人',
+                    type:'text'
+                }){}%>
+            </div>
+            <hr/>
+            <div>
+                <%include("/profile/module/flow/flow_input.html", 
+                {   id:'approvalName', 
+                    label:'谁可以发起这个审批',
+                    type:'text'
+                }){}%>
+            </div>
+            <div class="row">
+                <div class="form-group button-bar" >
+                    <button type="button" class="btn btn-sure" id="" style="margin-left: 15px;">确定</button>
+                    <button type="button" class="btn btn-cancel" id="" style="margin-left: 15px;">取消</button>
+                </div>
+            </div>
+        </div>

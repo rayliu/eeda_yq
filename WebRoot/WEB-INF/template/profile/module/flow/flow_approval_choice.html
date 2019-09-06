@@ -1,0 +1,63 @@
+<!-- 指定成员 -->
+<div class="approval_choice_div appoint_member">
+    <div class="form-group button-bar">
+        <button type="button" class="btn" id="addApprovalBtn">添加成员</button>
+    </div>
+</div>
+
+<!-- 主管 -->
+<!-- <div class="approval_choice_div">2</div> -->
+
+<!-- 角色 -->
+<!-- <div class="approval_choice_div">
+    <div class="form-group button-bar">
+        <button type="button" class="btn" id="addApprovalBtn">添加角色</button>
+    </div>
+</div> -->
+
+<!-- 发起人自选 -->
+<div class="approval_choice_div optional">
+        <select class="form-control select_box" id="number" style="width: 40%;">
+            <option value="number_one">自选一个人</option>
+            <option value="number_many">自选多个人</option>
+        </select>
+        <p style="margin-top: 20px;">选择范围</p>
+        <select class="form-control select_box" id="range" style="width: 40%;display: inline-block;">
+            <option value="range_all">全公司</option>
+            <option value="range_appoint">指定成员</option>
+        </select>
+        <button type="button" class="btn" id="adding_approver">+&nbsp;添加成员</button>
+        <div id="approva_mode_div">
+            <hr/>
+            <p style="margin-top: 20px;">多人审批时采用的审批方式</p>
+            <div>
+                <label for="successively"  style="cursor: pointer;padding-left: 5px;">依次审批</label>
+                <input type="radio" class="approval_method form-control" id="successively" name="approva_mode" style="margin: 0 0 0 0;" value="" autocomplete="off">
+            </div>
+            <div>
+                <label for="agree_all"  style="cursor: pointer;padding-left: 5px;">会签（须所有审批人同意）</label>
+                <input type="radio" class="approval_method form-control" id="agree_all" name="approva_mode" style="margin: 0 0 0 0;" value="" autocomplete="off">
+            </div>
+            <div>
+                <label for="agree_one"  style="cursor: pointer;padding-left: 5px;">或签（一名审批人同意或拒绝即可）</label>
+                <input type="radio" class="approval_method form-control" id="agree_one" name="approva_mode" style="margin: 0 0 0 0;" value="" autocomplete="off">
+            </div>
+        </div>
+</div>
+
+<!-- 发起人自己 -->
+<div class="approval_choice_div oneself" style="color: #aaa;">发起人自己将作为审批人处理审批单</div>
+
+<!-- 表单里的联系人 -->
+<!-- <div class="approval_choice_div">
+    <select>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+    </select>
+</div> -->
+
+<!-- 连续多级主管 -->
+<!-- <div class="approval_choice_div">7</div> -->
+
+

@@ -1,0 +1,12 @@
+    <div>
+        <label class="" <%if(type!'text'=='radio'){%> for="${id}" <%}%>   style="cursor: pointer;padding-left: 5px;">
+            ${label}
+        </label>
+        <input type="${type}" 
+        id="${id}"
+        name=<%if(type!'text'=='radio'){%>${name}<%}else{%>${id}<%}%>"
+        class="form-control approval_people" 
+        placeholder="" 
+        value="" autocomplete="off"
+        style="cursor: pointer; <%if(type!'text'=='radio'){%>height: 15px;width: 15px;float: left;margin:0 0 0 0;<%}%>">
+    </div>
