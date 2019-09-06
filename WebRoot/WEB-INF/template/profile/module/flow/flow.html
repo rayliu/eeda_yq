@@ -1,63 +1,504 @@
-<div class="row" style=" margin-top: 20px;">
-    <div class="col-lg-12">
-        <section class='form_info'>
-            <div class="row">
-                <div class="col-lg-12">
-                    <link rel="stylesheet" href="/css/jsplumbtoolkit/jsplumbtoolkit-demo.css">
-                    <link rel="stylesheet" href="/css/jsplumbtoolkit/jsplumbtoolkit-defaults.css">
-                   <!-- content -->
-                    <script type="text/x-jtk-templates" src="templates.html"></script>
+<style>
+    .flow_div{
+        /* border: 1px solid #ddd; */
+        min-height: 500px;
+        /* padding: 20px 0 30px 0; */
+    }
+    .flow_div_left{
+        background-color: rgb(250, 250, 250);
+        padding: 20px 0 30px 0;
+    }
+    .flow_div_right{
+        padding: 10px 0 30px 0;
+        float: right;
+        position: absolute;
+        right: 2px;
+        background-color: #fff;
+        overflow: hidden;
+        width: 0;
+        bottom: 50px;
+        top: 148px;
+    }
+    .node-wrap {
+        /* border: 1px solid red; */
+        flex-direction: column;
+        -webkit-box-pack: start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+        position: relative;
+        width: 100%;
+    }
+    .title {
+        position: relative;
+        padding-left: 16px;
+        width: 100%;
+        height: 24px;
+        line-height: 25px;
+        font-size: 14px;
+        color: #fff;
+        text-align: left;
+        /* background: #576a95; */
+        border-radius: 4px 4px 0 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .title_initiator{
+        background-color: rgb(92, 184, 92);
+    }
+    .title_approval{
+        background-color:  rgb(241, 157, 102)
+    }
+    .title_copy{
+        background-color: rgb(125, 137, 182);
+    }
+    .title_condition{
+        color:#337ab7;
+    }
+    .node-wrap-box{
+        border: 1px solid #ddd;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        position: relative;
+        width: 170px;
+        min-height: 64px;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        background: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        /* margin: 0 auto; */
+        text-align: initial;
+    }
+    .node-wrap-box:hover{
+        border: 1px solid rgb(110, 183, 255);
+    }
+    .flow_div_left *{
+        margin: 0 auto;
+    }
+    .content {
+        position: relative;
+        font-size: 14px;
+        padding: 12px 16px;
+        padding-right: 30px;
+    }
+    .content .text {
+        display: inline-block;
+        white-space: nowrap;
+    }
+    .content span {
+        float: right;
+    }
+    .add-node-btn-box{
+        /* border: 1px solid yellow; */
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        position: relative;
+        width: 220px;
+        min-height: 64px;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        /* margin: 0 auto; */
+    }
+    .add-node-btn {
+        width: 100%;
+        /* height: 64px; */
+        /* background-color: #ddd; */
+        /* border: 1px red solid; */
+        text-align: center;
+    }
+    .add_btn{
+        border-radius: 50px;
+        height: 25px;
+        width: 25px;
+        /* position: relative;
+        right: 16px; */
+        margin-top: 20px;
+        background-color: #ddd;
+        outline:none;
+        /* margin-left: -11px; */
+        padding:0;
+    }
+    .end-node{
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        position: relative;
+        width: 220px;
+        min-height: 50px;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        /* margin: 0 auto; */
+    }
+    .end-node-circle{
+        display: block;
+        background-color: #ddd;
+        width: 10px;
+        height: 10px;
+        border-radius: 50px;
+    }
+    .end-node-text{
+        text-align: center;
+        margin-top: 5px;
+        color: #aaa;
+    }
+    .approval_info_div,.initiator_info_div,.copy_info_div{
+        display: none;
+        margin: 0 20px; 
+        width: 310px;
+    }
+    .initiator_label{
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 10px;
+        font-weight: 700
+    }
+    .initiator_input{
+        width: 70%;
+    }
+    .edit_div_title{
+        font-size: 14px;
+        height:34px;
+        border-radius: 5px;
+        font-size: 16px;
+        border:1px solid #fff;
+        background-color:#fff;
+        font-weight: bold;
+    }
+    .disabled_title{
+        font-size: 14px;
+        height:34px;
+        border-radius: 5px;
+        font-size: 16px;
+        border:1px solid #fff;
+        background-color:#fff;
+        font-weight: bold;
+    }
+    .approval_choice_div{
+        display: none;
+        margin-top: 20px;
+    }
+    .Y-axis{
+        margin-left: 1px;
+    }
+    .approval_method{
+        cursor: pointer;
+        height: 15px;
+        width: 15px;
+        float: left;
+    }
+    #approva_mode_div{
+        display: none;
+    }
+    #adding_approver{
+        display: none;
+        vertical-align: bottom;
+    }
+    .delete_div,.delete_branch{
+        float: right;
+        width: 25px;
+        text-align: center;
+    }
+    #add_process{
+        width: 300px;
+        height: 120px;
+        position: absolute;
+        top: 20px;
+        left: 140px;
+        background-color: rgb(253, 253, 253);
+        box-shadow: #bcbcbc 0px 0px 10px;
+        padding: 9px;
+        z-index: 5;
+    }
+    #add_process p{
+        float: right;
+        font-size: 20px;
+        color: #aaa;
+        padding: 0 5px;
+        cursor: pointer;
+    }
+    #add_process .col-lg-4{
+        height: 50%;
+        padding: 0;
+        margin: 8px 0 0 5px;
+        border: #ccc solid 1px;
+        border-radius: 5px;
+        overflow: hidden;
+        width: 31%;
+        cursor: pointer;
+        background-color: #fff;
+    }
+    #add_process .col-lg-12{
+        padding: 0 5px;
+    }
+    #xsj{
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-right: 10px solid #fefefe;
+        border-bottom: 10px solid transparent;
+        border-left: 10px solid transparent;
+        position: absolute;
+        left: -20px;
+        top: 2px;
+    }
+    #add_process .add_process_approval:hover{
+        background-color: rgb(241, 157, 102);
+        color: #fff;
+    }
+    #add_process .add_process_copy:hover{
+        background-color: rgb(125, 137, 182);
+        color: #fff;
+    }
+    #add_process .add_process_branch:hover{
+        background-color: rgb(219, 205, 74);
+        color: #fff;
+    }
+    .branch_wrap{
+        display: inline-flex;
+        width: 100%;
+    }
+    .branch_box_wrap {
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        min-height: 230px;
+        width: 100%;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+    }
+    .branch_box {
+        display: flex;
+        overflow: visible;
+        /* min-height: 180px; */
+        height: auto;
+        border-bottom: 2px solid #ddd;
+        border-top: 2px solid #ddd;
+        position: relative;
+        /* margin-top: 15px; */
+    }
+    .branch_condition{
+        padding-top: 30px;
+        display: inline-flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        flex-direction: column;
+        -webkit-box-flex: 1;
+    }
+    .condition-node-box::before{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 2px;
+        height: 100%;
+        background-color: #ddd;
+    }
+    .col-box {
+        display: inline-flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        flex-direction: column;
+        -webkit-box-align: center;
+        align-items: center;
+        position: relative;
+        background-color: #fbfbfb;
+    }
+    .col-box::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        margin: auto;
+        width: 2px;
+        height: 100%;
+        background-color: #ddd;
+    }
+    .add-node-btn-box::before{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+        margin: auto;
+        width: 2px;
+        height: 100%;
+        background-color: #ddd;
+    }
+    .bottom-left-cover-line, .bottom-right-cover-line {
+        position: absolute;
+        height: 3px;
+        width: 50%;
+        background-color: #fbfbfb;
+        bottom: -2px;
+    }
+    .bottom-left-cover-line {
+        left: -1px;
+    }
+    .top-left-cover-line {
+        left: -1px;
+    }
+    .top-left-cover-line, .top-right-cover-line {
+        position: absolute;
+        height: 3px;
+        width: 50%;
+        background-color: #fbfbfb;
+        top: -2px;
+    }
+    .top-right-cover-line {
+        right: -1px;
+    }
+    .bottom-right-cover-line {
+        right: -1px;
+    }
+    .btn-sure:hover {
+        color: #fff;
+        background-color: #449d44;
+        border-color: #398439;
+    }
+    .btn-sure {
+        color: #fff;
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+    }
+    .btn-cancel {
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc;
+    }
+    .btn-cancel:hover {
+        color: #333;
+        background-color: #ccc;
+        border-color: #aaa;
+    }
+</style>
 
-                    <div class="jtk-demo-main" id="jtk-demo-flowchart">
-
-                        <div style="display:flex;">
-                            <!-- the node palette -->
-                            <div class="sidebar node-palette">
-                                <div data-node-type="question" title="Drag to add new" class="sidebar-item">
-                                    <i class="icon-tablet"></i>Question
-                                </div>
-                                <div data-node-type="action" title="Drag to add new" class="sidebar-item">
-                                    <i class="icon-eye-open"></i>Action
-                                </div>
-                                <div data-node-type="output" title="Drag to add new" class="sidebar-item">
-                                    <i class="icon-eye-open"></i>Output
-                                </div>
-                            </div>
-
-                            <!-- this is the main drawing area -->
-                            <div class="jtk-demo-canvas">
-                                <!-- controls -->
-                                <div class="controls" can-undo="false" can-redo="false">
-                                    <i class="fa fa-arrows selected-mode" mode="pan" title="Pan Mode"></i>
-                                    <i class="fa fa-pencil" mode="select" title="Select Mode"></i>
-                                    <i class="fa fa-home" reset title="Zoom To Fit"></i>
-                                    <i class="fa fa-undo" undo title="Undo last action"></i>
-                                    <i class="fa fa-repeat" redo title="Redo last action"></i>
-                                </div>
-                                <!-- miniview -->
-                                <div class="miniview"></div>
-                            </div>
-                        </div>
-
-                        <div class="description">
-                            <p>
-                                流程操作提示
-                            </p>
-                            <ul>
-                                <li>从左侧栏拖拽一个节点到编辑器中</li>
-                                <li>创建连线，点击节点的灰色边框并拖动到另一个节点</li>
-                            </ul>
-                        </div>
-
-                        <!-- the current dataset -->
-                        <div class="jtk-demo-dataset"></div>
+<div class="row" style=" margin-top: 20px;border:1px solid #666">
+    <!-- 流程图 -->
+    <div class="col-lg-12 flow_div flow_div_left">
+        <div class="">
+            <div class="node-wrap initiator_div">
+                <div class="node-wrap-box start-node initiator_staff">
+                    <div>
+                    <div class="title title_initiator">
+                        <span>发起人</span>
                     </div>
-
-                    <!-- /content -->
-               
+                    <div class="content">
+                        <div class="text text_initiator">所有人</div>
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </div>
+                    </div>
+                </div>
+                <div class="add-node-btn-box">
+                    <div class="add-node-btn">
+                        <button class="btn add_btn" type="button">
+                            <span class="glyphicon glyphicon-plus Y-axis"></span>
+                        </button>
+                    </div>
+                </div>
             </div>
-        </section>
-        <br>
-        <br>
+
+                <div class="node-wrap approval_div">
+                    <div class="node-wrap-box approval_staff">
+                        <div>
+                        <div class="title title_approval">
+                            <span>审批人</span>
+                            <span class="delete_div">×</span>
+                        </div>
+                        <div class="content">
+                            <div class="text text_approval">发起人自选</div>
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="add-node-btn-box">
+                        <div class="add-node-btn">
+                            <button class="btn add_btn" type="button">
+                                <span class="glyphicon glyphicon-plus Y-axis"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="node-wrap copy_div">
+                    <div class="node-wrap-box copy_staff">
+                        <div>
+                        <div class="title title_copy">
+                            <span>抄送人</span>
+                            <span class="delete_div">×</span>
+                        </div>
+                        <div class="content">
+                            <div class="text text_copy">发起人自选</div>
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="add-node-btn-box">
+                        <div class="add-node-btn">
+                            <button class="btn add_btn" type="button">
+                                <span class="glyphicon glyphicon-plus Y-axis"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="node-wrap process_end">
+                <div class="end-node">
+                    <div class="end-node-circle"></div>
+                    <div class="end-node-text">流程结束</div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- 设置 -->
+    <div class="flow_div flow_div_right">
+        <!-- 发起人 -->
+        <!-- <div class="flow_div initiator_info_div">
+            发起人
+        </div> -->
+        <!-- 审批人 -->
+        <!-- <div class="flow_div approval_info_div">
+            审批人
+        </div> -->
+        <!-- 抄送人 -->
+        <!-- <div class="flow_div copy_info_div">
+            抄送人
+        </div> -->
+        <%include("/profile/module/flow/flow_property.html", {}){} %>
+    </div>
+
 </div>
+
+<script>
+    requirejs(['eeda_common'], function () {
+        requirejs(['app/profile/module/flow/flow']);
+    });
+</script>
