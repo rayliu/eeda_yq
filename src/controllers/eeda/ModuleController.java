@@ -31,7 +31,7 @@ import com.jfinal.plugin.activerecord.tx.Tx;
 
 import controllers.backend.module.CopyModuleService;
 import controllers.backend.module.CopySystemService;
-import controllers.backend.module.ModulSumModalService;
+import controllers.backend.module.ModuleSumModalService;
 import controllers.module.ModuleService;
 import controllers.module.custom_search.CustomSearchService;
 import controllers.profile.LoginUserController;
@@ -1773,7 +1773,7 @@ public class ModuleController extends Controller {
         Gson gson = new Gson();
         List<String> formList = gson.fromJson(form_arr, 
                 new TypeToken<List<String>>() { }.getType());
-        ModulSumModalService mSumService = new ModulSumModalService(this);
+        ModuleSumModalService mSumService = new ModuleSumModalService(this);
         List<Record> list= mSumService.getSumModalTree(formList, officeId);
         renderJson(list);
     }
