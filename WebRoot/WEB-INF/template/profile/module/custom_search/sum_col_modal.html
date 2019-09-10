@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/css/bootstrap/bootstrap.min.3.3.6.css" rel="stylesheet">
+        <link href="/css/font-awesome/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="/js/lib/zTree_v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+        <script src="/js/lib/require2.3.2.min.js"></script>
+        <%include("/eeda/component/form/commonJs.html",{}){} %>
+        <style>
+            button {
+                height: 32px;
+                line-height: 30px;
+                padding: 0 20px; 
+                border-radius: 2px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+            .btn-success {
+                color: #fff;
+                background-color: #5cb85c;
+                border-color: #4cae4c;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="" style="padding: 10px 0;">
+            <div class="col-xs-12">
+                <div class="col-xs-6" style="border: solid 1px #ddd;height: 385px;margin-right: 5px; overflow: auto;">
+                    <ul id="sum_col_tree" class="ztree">
+                    </ul>
+                </div>
+                <div class="col-xs-6" style="width: 49%;" >
+                    <div class="form-group">
+                        <label class="search-label">字段名称: </label>
+                        <input id="sum_modal_field_name" type="text" style="" value="${sum_col.field_display_name!}">
+                    </div>
+                    <div class="row" style="margin-top: 5px;">
+                        <textarea id="formular" style="border: solid 1px #ddd;height: 342px;width: 255px;">${sum_col.expression!}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="float: right;margin-top: 15px; margin-right: 15px;">
+            <button id='sum_modal_cancel_btn'>取消</button>
+            <button id='sum_modal_ok_btn' class='btn-success' li_id="${li_id!}">确定</button>
+        </div>
+        <input type="hidden" id="form_arr" value='${form_arr!}'>
+    </body>
+    <script>
+        requirejs(['eeda_common','app/profile/module/custom_search/custom_search_sum_modal'], function () {
+            
+        }); 
+    </script>
+</html>
