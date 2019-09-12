@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.jfinal.core.Controller;
 import com.jfinal.kit.LogKit;
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
@@ -105,6 +106,9 @@ public class SearchFormService {
         String strOuterShowCols = buildOuterShowCols(form_id, office_id);
         String strOuterSumCols = buildOuterSumCols(form_id, office_id);
         String strGroupSumCols = " group by "+strOuterShowCols;
+        if(StrKit.isBlank(strOuterSumCols)) {
+        	return "select "+strOuterShowCols+" from ("+strBasicSql+") A "+strGroupSumCols;
+        }
         return "select "+strOuterShowCols+", "+strOuterSumCols+" from ("+strBasicSql+") A "+strGroupSumCols;
     }
     
@@ -146,6 +150,9 @@ public class SearchFormService {
             String sumColsName = getInnerSumColsName(formName, form_id, office_id);
             String fromStr =  buildFromStr(formName, form_id, office_id);
             String sql = "select "+colsName+", "+sumColsName+" from "+fromStr;
+            if(StrKit.isBlank(sumColsName)) {
+            	sql = "select "+colsName+" from "+fromStr;
+            }
             sourceSqlList.add(sql);
         }
         strBasicSql=String.join(" union all ", sourceSqlList);
@@ -164,13 +171,14 @@ public class SearchFormService {
      * @param form_id
      * @return
      */
-    private String getColsName(String form_name, Long form_id, Long office_id, boolean needPrefix){
+    private String getColsName(String master_form_name, Long form_id, Long office_id, boolean needPrefix){
         List<String> strList = new LinkedList<String>();
-        List<Record> list = Db.find("select * from eeda_form_custom_search_source_col where form_id = ? and form_name=? order by seq",form_id, form_name);
+        List<Record> list = Db.find("select * from eeda_form_custom_search_source_col where form_id = ? and form_name=? order by seq",form_id, master_form_name);
         for (Record rec : list) {
-            String field_display_name = form_name+"."+rec.getStr("field_name");
+            String field_display_name = master_form_name+"."+rec.getStr("field_name");
             Record fieldRec = FormUtil.getFormOrField(field_display_name, office_id);
             if(needPrefix) {
+            	String form_name=master_form_name;
                 if(field_display_name.split("\\.").length==3) {//从表的字段
                     form_name = field_display_name.split("\\.")[1];
                 }
