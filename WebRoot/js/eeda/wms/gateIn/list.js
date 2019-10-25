@@ -23,7 +23,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
             id: 'eeda-table',
             paging: true,
             serverSide: true, //不打开会出现排序不对
-            ajax: "/gateIn/list?error_flag=N",
+            //ajax: "/gateIn/list?error_flag=N",
             "drawCallback": function( settings ) {
 		        $.unblockUI();
 		    },
@@ -279,6 +279,7 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
 	        });
 	    });
         
-        getQuantity();
+		//getQuantity();
+		$.unblockUI();
 	});
 });
