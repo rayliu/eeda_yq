@@ -23,11 +23,16 @@ $(document).ready(function(){
         mainCell:'.menu_dropdown dl dd',
     });
     var url = window.location;
-    // var element = $('ul.nav a').filter(function() {
-    //     return this.href == url;
-    // }).addClass('active').parent().parent().addClass('in').parent();
+    //前端menu打开
+    var path = url.pathname.split('-')[0];
+    var a=$('a[href="'+path+'-list"]');
+    var li=a.parent().addClass('current');
+    var dd=a.closest('dd').css('display', 'block');
+    var dt=dd.prev().addClass('selected');
+
     var element = $('ul.nav a').filter(function() {
         var pathname = '/'+url.pathname.split('/')[1];
+        console.log(pathname);
         return this.href.indexOf(pathname)>0;
     }).addClass('active').parent();
 

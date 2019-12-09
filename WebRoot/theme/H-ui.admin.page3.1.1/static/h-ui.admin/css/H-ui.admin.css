@@ -58,6 +58,7 @@ h4{line-height:30px}
 .Hui-aside .menu_dropdown dd ul{padding:3px 8px}
 .Hui-aside .menu_dropdown dd li{line-height:32px}
 .Hui-aside .menu_dropdown dd li a{line-height:32px;padding-left:26px; border-bottom:none; font-weight:normal}
+.Hui-aside .menu_dropdown li.current{background-color:rgba(255,255,255,0.8)}
 .Hui-aside .menu_dropdown li a:hover{text-decoration:none}
 .Hui-aside .menu_dropdown li.current a,.menu_dropdown li.current a:hover{background-color:rgba(255,255,255,0.2)}
 /*菜单收缩切换*/
