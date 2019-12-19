@@ -64,7 +64,7 @@ public class FormUtil {
                     +" and field.id = cond.field_id"
                     +" and ref.target_form_name = form.name"
                     +" and field.field_type='从表引用' "
-                    +" and field.form_id=?", form_id);
+                    +" and field.form_id=? and form.office_id=?", form_id,office_id);
         for (Record fieldRec : fieldList) {
             Long d_form_id = fieldRec.getLong("form_id");
             Long field_id = fieldRec.getLong("field_id");
