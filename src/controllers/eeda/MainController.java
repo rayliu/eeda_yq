@@ -39,12 +39,19 @@ import com.jfinal.aop.Before;
 import com.jfinal.captcha.CaptchaRender;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.JsonKit;
+import com.jfinal.kit.LogKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 //import com.jfinal.render.CaptchaRender;
 
+import cn.hutool.core.codec.Base64;
+import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.HexUtil;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
+import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import controllers.profile.LoginUserController;
 import controllers.util.EedaCommonHandler;
 import controllers.util.MD5Util;
@@ -99,6 +106,44 @@ public class MainController extends Controller {
                 goDefaultPage();
             }
         }
+    }
+    
+    public void sso() {
+    	//获取token
+    	String aesToken = this.getPara("t");
+    	
+    	//生成密钥
+		byte[] key = SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue(), "1234567890123456".getBytes()).getEncoded();
+		//构建
+		SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, key);
+		//解密为字符串
+		String decryptStr = aes.decryptStr(aesToken, CharsetUtil.CHARSET_UTF_8);
+    	LogKit.info(decryptStr);
+    	String[] arr = decryptStr.split("@@");
+    	if(arr.length==3){
+    		String userName = arr[0];
+        	String pwd=arr[1];
+        	String code=arr[2];
+        	Record offRec = Db.findFirst("select * from office where office_code=?", code);
+        	if(offRec!=null){
+        		Long officeId = offRec.getLong("id");
+        		String sha1Pwd = MD5Util.encode("SHA1", pwd);
+        		Record user = Db.findFirst("select * from user_login where office_id=? and user_name=?", officeId, userName);
+        		if(user==null){//无此用户, 新创建一个
+        			//TODO
+        		}else{//有此用户, 设置登录状态, 并同步更新密码
+        			//TODO
+        		}
+        		//UsernamePasswordToken token = new UsernamePasswordToken(userName, sha1Pwd);
+        		sha1Pwd = MD5Util.encode("SHA1", "Gzll123");
+        		UsernamePasswordToken token = new UsernamePasswordToken("admin@gll.com", sha1Pwd);
+    			currentUser.login(token);
+    			goDefaultPage();
+        	}
+        	
+    	}else{
+    		redirect("/login");
+    	}
     }
 
     public void goDefaultPage() {
