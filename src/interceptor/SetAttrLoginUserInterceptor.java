@@ -54,6 +54,7 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 	            Office office = Office.dao.findById(login_user.getLong("office_id"));
 	            ai.getController().setAttr("office", office);
 	            ai.getController().setAttr("office_name", office.getStr("office_name"));
+	            ai.getController().setCookie("Huiskin", office.getStr("default_theme"), 1000*60*60*24);
 	        }
 	        
 			ai.getController().setAttr("user_login_id", currentUser.getPrincipal());
