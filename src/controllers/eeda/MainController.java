@@ -136,7 +136,7 @@ public class MainController extends Controller {
         		}
         		//UsernamePasswordToken token = new UsernamePasswordToken(userName, sha1Pwd);
         		sha1Pwd = MD5Util.encode("SHA1", "Gzll123");
-        		UsernamePasswordToken token = new UsernamePasswordToken("admin@gll.com", sha1Pwd);
+        		UsernamePasswordToken token = new UsernamePasswordToken("ray.liu1@eeda123.com", sha1Pwd);//操作员角色
     			currentUser.login(token);
     			goDefaultPage();
         	}

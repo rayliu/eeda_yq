@@ -21,6 +21,7 @@ import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.UrlSkipHandler;
+import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 //import com.jfinal.ext.plugin.shiro.ShiroInterceptor;
 //import com.jfinal.ext.plugin.shiro.ShiroKit;
 //import com.jfinal.ext.plugin.shiro.ShiroPlugin;
@@ -339,6 +340,9 @@ public class EedaConfig extends JFinalConfig {
 
     @Override
 	public void configInterceptor(Interceptors me) {
+        //页面上可以直接获取session的值
+        me.add(new SessionInViewInterceptor());
+        
     	if("Y".equals(getProperty("is_check_permission"))){
     		logger.debug("is_check_permission = Y");
          	me.add(new ShiroInterceptor());
@@ -348,6 +352,7 @@ public class EedaConfig extends JFinalConfig {
     	// 添加控制层全局拦截器, 每次进入页面时构造菜单项
         //me.addGlobalActionInterceptor(new EedaMenuInterceptor());
         me.add(new ActionCostInterceptor());
+        
     }
 
     @Override

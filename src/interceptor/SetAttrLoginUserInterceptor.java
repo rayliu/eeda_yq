@@ -52,6 +52,7 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 	        //登录后按user office config来显示
 	        if(login_user!=null) {
 	            Office office = Office.dao.findById(login_user.getLong("office_id"));
+	            ai.getController().setAttr("office", office);
 	            ai.getController().setAttr("office_name", office.getStr("office_name"));
 	        }
 	        
