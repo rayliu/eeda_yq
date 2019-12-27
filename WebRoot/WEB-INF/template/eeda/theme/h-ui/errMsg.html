@@ -1,0 +1,38 @@
+<style>
+    body{
+        padding: 20rem 0;background-image: url(/images/photo-bg.jpeg);
+        background-repeat: round
+    }
+    @media screen and (max-width: 768px) {
+        section.fdb-block{
+          padding: 5rem 0;background-image: url(/images/photo-bg.jpeg);
+        }
+    }
+    .errmsg{
+        text-align: center;
+        width: 25%;
+        margin: auto;
+        font-size: 25px;
+        background: #FFF;
+        position: relative;
+    }
+</style>
+<body>
+    <section class="fdb-block" data-block-type="forms" data-id="1"></section>
+    <div class="errmsg">
+        ${errMsg}
+    </div>
+    </section>
+</body>
+<script type="text/javascript" src="/js/lib/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="/js/lib/popper/1.11.0/popper.min.js"></script>
+<script type="text/javascript" src="/js/lib/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/lib/fontawesome/5.5.0/all.js"></script>
+<script>
+    var url = "${url}";
+    if(url!=null && url!=""){
+        setTimeout(function(){
+            window.location.href = url;
+        },3000)
+    }
+</script>

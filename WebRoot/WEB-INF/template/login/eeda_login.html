@@ -27,6 +27,7 @@
 <body style="background-image:url(<% if(SYS_CONFIG.login_bg=="")%>/upload/bg-1.jpg<%else%>${SYS_CONFIG.login_bg!''});background-repeat : no-repeat;background-size: 100%;">
 
     <div class="container" >
+        ${errMsg}
         <div class="row">
             <% var msg=errMsg!'';
               if(msg!='') {%>

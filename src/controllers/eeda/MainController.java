@@ -120,25 +120,29 @@ public class MainController extends Controller {
 		String decryptStr = aes.decryptStr(aesToken, CharsetUtil.CHARSET_UTF_8);
     	LogKit.info(decryptStr);
     	String[] arr = decryptStr.split("@@");
-    	if(arr.length==3){
-    		String userName = arr[0];
-        	String pwd=arr[1];
-        	String code=arr[2];
-        	Record offRec = Db.findFirst("select * from office where office_code=?", code);
+    	if(arr.length==2){
+    		String user_sso_key= arr[0];
+        	String code=arr[1];
+        	Record offRec = Db.findFirst("select o.*,oc.sys_login_url from office o,office_config oc where o.id=oc.office_id and o.office_code=?", code);
         	if(offRec!=null){
+        		
         		Long officeId = offRec.getLong("id");
-        		String sha1Pwd = MD5Util.encode("SHA1", pwd);
-        		Record user = Db.findFirst("select * from user_login where office_id=? and user_name=?", officeId, userName);
+        		Record user = Db.findFirst("select * from user_login where office_id=? and sso_key=?", officeId, user_sso_key);
         		if(user==null){//无此用户, 新创建一个
         			//TODO
-        		}else{//有此用户, 设置登录状态, 并同步更新密码
-        			//TODO
+        			String errMsg = "你尚未注册账号，请联系管理员分配账号！";
+        			String url = offRec.getStr("sys_login_url");
+        			setAttr("errMsg",errMsg);
+        			setAttr("url",url);
+        			render("/eeda/theme/h-ui/errMsg.html");
+        			return;
+        		}else {
+        			String userName = user.getStr("user_name");
+        			String sha1Pwd = user.getStr("password");
+	        		UsernamePasswordToken token = new UsernamePasswordToken(userName, sha1Pwd);//操作员角色
+	    			currentUser.login(token);
+	    			goDefaultPage();
         		}
-        		//UsernamePasswordToken token = new UsernamePasswordToken(userName, sha1Pwd);
-        		sha1Pwd = MD5Util.encode("SHA1", "Gzll123");
-        		UsernamePasswordToken token = new UsernamePasswordToken("ray.liu1@eeda123.com", sha1Pwd);//操作员角色
-    			currentUser.login(token);
-    			goDefaultPage();
         	}
         	
     	}else{

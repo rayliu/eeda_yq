@@ -87,7 +87,7 @@ public class EedaConfig extends JFinalConfig {
      * -XX:PermSize=64M -XX:MaxPermSize=256M
      */
     public static void main(String[] args) {
-        JFinal.start("WebRoot", 8080, "/", 5);
+        JFinal.start("WebRoot", 8081, "/", 5);
     }
 
     @Override
