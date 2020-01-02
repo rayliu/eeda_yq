@@ -137,6 +137,7 @@ public class MainController extends Controller {
         			render("/eeda/theme/h-ui/errMsg.html");
         			return;
         		}else {
+        			logout();
         			String userName = user.getStr("user_name");
         			String sha1Pwd = user.getStr("password");
 	        		//UsernamePasswordToken token = new UsernamePasswordToken(userName, sha1Pwd);//操作员角色
