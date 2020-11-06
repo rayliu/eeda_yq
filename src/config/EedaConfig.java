@@ -47,6 +47,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
+import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.scheduler.SchedulerPlugin;
 import com.jfinal.weixin.sdk.api.ApiConfigKit;
 
@@ -210,11 +211,14 @@ public class EedaConfig extends JFinalConfig {
         mailUser = getProperty("mail_user_name");
         mailPwd = getProperty("mail_pwd");
         // H2 or mysql
-        initDBconnector();
+//        initDBconnector();
+//        me.add(cp);
+        
+     // 配置 druid 数据库连接池插件
+        DruidPlugin druidPlugin = new DruidPlugin(getProperty("dbUrl"), getProperty("username"), getProperty("pwd").trim());
+        me.add(druidPlugin);
 
-        me.add(cp);
-
-        arp = new ActiveRecordPlugin(cp);
+        arp = new ActiveRecordPlugin(druidPlugin);
         arp.setShowSql(true);// 控制台打印Sql
 //        SqlReporter.setLog(true);// log4j 打印Sql
         me.add(arp);
@@ -271,7 +275,7 @@ public class EedaConfig extends JFinalConfig {
         } else {
         	logger.info("DB url: " + url);
             cp = new C3p0Plugin(url, username, pwd);
-            //DataInitUtil.initH2Tables(cp);
+            
 
         }
 
