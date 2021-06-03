@@ -1,12 +1,7 @@
 package controllers.wms.importOrder;
 
-import interceptor.EedaMenuInterceptor;
-import interceptor.SetAttrLoginUserInterceptor;
-
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,18 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.UserLogin;
-import models.wms.GateIn;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.openxml4j.opc.PackageAccess;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 import com.google.gson.Gson;
 import com.jfinal.aop.Before;
@@ -38,10 +26,12 @@ import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.jfinal.upload.UploadFile;
 
+import au.com.bytecode.opencsv.CSVReader;
 import controllers.profile.LoginUserController;
-import controllers.util.ReaderXLS;
-import controllers.util.ReaderXlSX;
 import controllers.util.bigExcel.BigXlsxHandleUitl;
+import interceptor.EedaMenuInterceptor;
+import interceptor.SetAttrLoginUserInterceptor;
+import models.UserLogin;
 
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
@@ -104,7 +94,7 @@ public class ImportOrder extends Controller {
 	                    throw new Exception("文件《"+fileName+"》中未检测到\"入库记录\"，\"出库记录\"，\"盘点单\"关键字<br/>请核查此文件是否为要导入的数据表");
 		        	}
 		        	
-		        	if(resultMap.get("result")){
+		        	if(resultMap.get("result") != null){
 		        		long end = Calendar.getInstance().getTimeInMillis();
 			            long time = (end- start)/1000;
 			        	re.set("complete_time", new Date());

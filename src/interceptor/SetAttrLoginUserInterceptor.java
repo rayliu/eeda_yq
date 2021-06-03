@@ -2,11 +2,6 @@ package interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 
-import models.Office;
-import models.UserLogin;
-import models.UserOffice;
-import models.eeda.profile.OfficeConfig;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
@@ -15,6 +10,11 @@ import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 import com.jfinal.log.Log;
 
+import models.Office;
+import models.UserLogin;
+import models.UserOffice;
+import models.eeda.profile.OfficeConfig;
+
 public class SetAttrLoginUserInterceptor implements Interceptor{
 	private Log logger = Log.getLog(SetAttrLoginUserInterceptor.class);
 	@Override
@@ -22,16 +22,16 @@ public class SetAttrLoginUserInterceptor implements Interceptor{
 		Subject currentUser = SecurityUtils.getSubject();
 		if(currentUser.isAuthenticated()){
 			UserLogin user = UserLogin.dao.findFirst("select * from user_login where user_name=?",currentUser.getPrincipal());
-			if(user.get("c_name") != null && !"".equals(user.get("c_name"))){
-				ai.getController().setAttr("userId", user.get("c_name"));
+			if(user.getStr("c_name") != null && !"".equals(user.getStr("c_name"))){
+				ai.getController().setAttr("userId", user.getStr("c_name"));
 			}else{
 				ai.getController().setAttr("userId", currentUser.getPrincipal());
 			}
 			
 			UserOffice uo = UserOffice.dao.findFirst("select * from user_office where user_name ='"+currentUser.getPrincipal()+"' and is_main=1");
 	        if(uo != null){
-	            Office office = Office.dao.findById(uo.get("office_id"));
-	            ai.getController().setAttr("office_name", office.get("office_name"));
+	            Office office = Office.dao.findById(uo.getLong("office_id"));
+	            ai.getController().setAttr("office_name", office.getStr("office_name"));
 	        }
 	        
 			ai.getController().setAttr("user_login_id", currentUser.getPrincipal());

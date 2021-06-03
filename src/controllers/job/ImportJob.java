@@ -47,7 +47,7 @@ public class ImportJob implements Runnable{
                 	Date begin_time = new Date();
                 	String path = readfile.getPath();
                 	Record result = importOrder(path);
-                	if(result.get("result")){
+                	if(result.get("result") != null){
                 		File this_file = new File(path);
                 		this_file.delete();
                 		System.out.println(path+"导入成功!!!");

@@ -1,8 +1,5 @@
 package controllers.eeda;
 
-import interceptor.EedaMenuInterceptor;
-import interceptor.SetAttrLoginUserInterceptor;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,12 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-
-import models.Office;
-import models.ParentOfficeModel;
-import models.UserLogin;
-import models.UserOffice;
-import models.eeda.profile.OfficeConfig;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.DefaultAuthenticator;
@@ -45,6 +36,13 @@ import controllers.util.EedaCommonHandler;
 import controllers.util.MD5Util;
 import controllers.util.ParentOffice;
 import controllers.util.getCurrentPermission;
+import interceptor.EedaMenuInterceptor;
+import interceptor.SetAttrLoginUserInterceptor;
+import models.Office;
+import models.ParentOfficeModel;
+import models.UserLogin;
+import models.UserOffice;
+import models.eeda.profile.OfficeConfig;
 
 public class MainController extends Controller {
 	private Log logger = Log.getLog(MainController.class);
@@ -263,7 +261,7 @@ public class MainController extends Controller {
         }
         UserOffice uo = UserOffice.dao.findFirst("select * from user_office where user_name ='"+currentUser.getPrincipal()+"' and is_main=1");
         if(uo != null){
-            Office office = Office.dao.findById(uo.get("office_id"));
+            Office office = Office.dao.findById(uo.getLong("office_id"));
             setAttr("office_name", office.get("office_name"));
         }
         setAttr("SYS_CONFIG", of);

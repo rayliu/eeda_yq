@@ -1,17 +1,13 @@
 package controllers.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import models.Office;
-import models.ParentOfficeModel;
-import models.UserLogin;
-import models.UserOffice;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
 import com.jfinal.core.Controller;
+
+import models.Office;
+import models.ParentOfficeModel;
+import models.UserLogin;
 
 
 
@@ -32,7 +28,7 @@ public class ParentOffice{
 		try{
 			userName = currentUser.getPrincipal().toString();
 			currentOffice = UserLogin.dao.findFirst("select * from user_login where user_name = ?",userName);
-		    parentOffice = Office.dao.findFirst("select * from office where id = ?",currentOffice.get("office_id"));
+		    parentOffice = Office.dao.findFirst("select * from office where id = ?",currentOffice.getLong("office_id"));
 		}catch(NullPointerException ex){
 			ex.printStackTrace();
 			controller.redirect("/login");

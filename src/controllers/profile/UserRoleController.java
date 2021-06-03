@@ -1,21 +1,9 @@
 package controllers.profile;
 
-import interceptor.EedaMenuInterceptor;
-import interceptor.SetAttrLoginUserInterceptor;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import models.Office;
-import models.ParentOfficeModel;
-import models.Permission;
-import models.Role;
-import models.RolePermission;
-import models.UserLogin;
-import models.UserOffice;
-import models.UserRole;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -28,9 +16,17 @@ import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 
-import controllers.util.CompareStrList;
 import controllers.util.DbUtils;
 import controllers.util.ParentOffice;
+import interceptor.EedaMenuInterceptor;
+import interceptor.SetAttrLoginUserInterceptor;
+import models.Office;
+import models.ParentOfficeModel;
+import models.Permission;
+import models.RolePermission;
+import models.UserLogin;
+import models.UserOffice;
+import models.UserRole;
 @RequiresAuthentication
 @Before(SetAttrLoginUserInterceptor.class)
 public class UserRoleController extends Controller {
@@ -114,9 +110,9 @@ public class UserRoleController extends Controller {
 	public void addOrUpdate(){
 		String id = getPara("id");
 		UserLogin user = UserLogin.dao.findFirst("select * from user_login where id = ?",id);
-		List<UserRole> list = UserRole.dao.find("select * from user_role where user_name = ?",user.get("user_name"));
+		List<UserRole> list = UserRole.dao.find("select * from user_role where user_name = ?",user.getStr("user_name"));
 		if(list.size()>0){
-			setAttr("user_name", user.get("user_name"));		
+			setAttr("user_name", user.getStr("user_name"));		
 			render("/eeda/profile/userRole/assigning_roles.html");
 		}else{
 			render("/eeda/profile/userRole/addRole.html");
