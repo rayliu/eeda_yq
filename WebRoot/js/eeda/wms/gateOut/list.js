@@ -175,11 +175,13 @@ define(['jquery', 'metisMenu', 'sb_admin',  'dataTablesBootstrap', 'validate_cn'
         };
         
         var getQuantity = function(){
+		var loading = '<img src="/images/loading.gif" style="width: 30px;"></img>';
+		$('#totalPiece').html(loading);
         	var itemJson = buildCondition();
         	var url = "/gateOut/getTotalQuantity";
         	$.post(url,{error_flag:"N",jsonStr:JSON.stringify(itemJson)},function(data){
         		if(data){
-                	$('#totalPiece').html(eeda.formatNum(data.TOTALPIECE));
+                		$('#totalPiece').html(eeda.formatNum(data.TOTALPIECE));
         		}
         	});
         };

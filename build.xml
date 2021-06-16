@@ -55,6 +55,8 @@
 	<target name="copy_fk_uat_config" >
         <copy tofile="${project.classpath}/shiro.ini" file="WebRoot/WEB-INF/config/shiro.ini-fk-uat" overwrite="true"/>
         <copy tofile="${project.classpath}/app_config.txt" file="WebRoot/WEB-INF/config/app_config.txt-fk-uat" overwrite="true"/> 
+		<copy tofile="${project.classpath}/beetl.properties" file="WebRoot/WEB-INF/config/beetl.properties" overwrite="true"/>
+        <copy tofile="${project.classpath}/import_job.properties" file="WebRoot/WEB-INF/config/import_job.properties" overwrite="true"/>
     </target>
     
 	<target name="generate_js_version" >
